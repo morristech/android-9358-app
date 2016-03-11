@@ -1,6 +1,7 @@
 package com.xmd.technician.http;
 
 import com.xmd.technician.http.gson.LoginResult;
+import com.xmd.technician.http.gson.LogoutResult;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -25,4 +26,14 @@ public interface SpaService {
                             @Field(RequestConstant.KEY_PASSWORD) String password,
                             @Field(RequestConstant.KEY_APP_VERSION) String appVersion,
                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
+    /**
+     * @param userToken
+     * @param sessionType
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_LOGOUT)
+    Call<LogoutResult> logout(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                              @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 }

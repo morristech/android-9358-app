@@ -1,6 +1,7 @@
 package com.xmd.technician.msgctrl;
 
 
+import com.xmd.technician.common.UpgradeController;
 import com.xmd.technician.http.RequestController;
 
 /**
@@ -8,17 +9,16 @@ import com.xmd.technician.http.RequestController;
  */
 public class ControllerFactory {
 
-//    private static UpgradeController sUpgradeController;
+    private static UpgradeController sUpgradeController;
     private static RequestController sRequestController;
 
     public static AbstractController createController(int controllerId) {
         switch (controllerId) {
-            /*case ControllerId.UPGRADE_CONTROLLER:
+            case ControllerId.UPGRADE_CONTROLLER:
                 if (sUpgradeController == null) {
                     sUpgradeController = new UpgradeController();
                 }
-                return sUpgradeController;*/
-
+                return sUpgradeController;
             case ControllerId.REQUEST_CONTROLLER:
                 if (sRequestController == null) {
                     sRequestController = new RequestController();

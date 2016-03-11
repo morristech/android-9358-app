@@ -1,8 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.bugtags.library.plugin'
 
 retrolambda {
     javaVersion JavaVersion.VERSION_1_7
+}
+
+bugtags {
+    appKey  "32ae23df06dfde970b3b8affdd3abd30"  //这里是你的 appKey
+    appSecret  "06a30a3bb12cd1a7038546187dd0956e"    //这里是你的 appSecret，管理员在设置页可以查看
 }
 
 android {
@@ -20,7 +26,19 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        manifestPlaceholders = [
+                //Getui placeHolder
+                GETUI_APP_ID        : "Bt4zFr6HYB61JzGr2C37I3",
+                GETUI_APP_KEY       : "ox18zILavRANZiPpipa9J2",
+                GETUI_APP_SECRET    : "km9cV7pMg56y3EsQT3qhY8",
+                PACKAGE_NAME        : "com.xmd.technician",
+                //UMENG_APPKEY for release
+                UMENG_APPKEY_VALUE  : "55b5d44167e58e899c003120",
+                UMENG_CHANNEL_VALUE       : "xiaomodo-tech",
+        ]
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,11 +47,23 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
+    compile(name: 'shidou.appgrade-release', ext: 'aar')
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    compile 'com.bugtags.library:bugtags-lib:latest.integration'
+
+    compile 'com.getui:sdk:2.7.0.0'
+    compile 'com.getui:ext:2.0.3'
+    compile 'com.android.support:support-v4:+'
 }

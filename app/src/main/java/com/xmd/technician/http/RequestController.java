@@ -3,7 +3,9 @@ package com.xmd.technician.http;
 import android.os.Message;
 
 
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.http.gson.LoginResult;
+import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.RxBus;
@@ -35,6 +37,9 @@ public class RequestController extends AbstractController {
         switch (msg.what) {
             case MsgDef.MSG_DEF_LOGIN:
                 doLogin((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_LOGOUT:
+                doLogout();
                 break;
         }
 
@@ -74,4 +79,23 @@ public class RequestController extends AbstractController {
         });
     }
 
+
+    /**
+     * Logout Button Clicked in PopupMoreWindow
+     */
+    private void doLogout() {
+        Call<LogoutResult> call = getSpaService().logout(SharedPreferenceHelper.getUserToken(),
+                RequestConstant.SESSION_TYPE);
+        call.enqueue(new TokenCheckedCallback<LogoutResult>() {
+            @Override
+            protected void postResult(LogoutResult result) {
+                RxBus.getInstance().post(result == null ? new LogoutResult() : result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                RxBus.getInstance().post(new LogoutResult());
+            }
+        });
+    }
 }
