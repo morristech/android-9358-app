@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/avatar_head"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/app_default_padding"
+        android:text="请选择工作时间"
+        android:textColor="@color/colorMain"
+        android:textSize="@dimen/fontTitle" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.xmd.technician.wheel.WheelView
+            android:id="@+id/select_begin_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.xmd.technician.wheel.WheelView
+            android:id="@+id/select_day"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.xmd.technician.wheel.WheelView
+            android:id="@+id/select_end_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+<!--    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/select_cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/layout_default_height"
+            android:layout_weight="1"
+            android:background="@drawable/default_button_background_selector"
+            android:text="取消"
+            android:textColor="@drawable/text_view_text_color_selector" />
+
+        <View
+            android:layout_width="@dimen/layout_line_default_divide_height"
+            android:layout_height="@dimen/layout_default_height"
+            android:background="@color/grey_light3" />
+
+        <Button
+            android:id="@+id/select_confirm_button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/layout_default_height"
+            android:layout_weight="1"
+            android:background="@drawable/default_button_background_selector"
+            android:text="确定"
+            android:textColor="@drawable/text_view_text_color_selector" />
+
+    </LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/personal_item_height"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/select_cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/default_button_background_selector"
+            android:text="@string/cancel"
+            android:textColor="@color/work_status_selector_bg"
+            android:textSize="@dimen/fontHead" />
+
+        <View
+            android:layout_width="@dimen/line_divide_height"
+            android:layout_height="match_parent"
+            android:background="@color/colorLineDivide" />
+
+        <Button
+            android:id="@+id/select_confirm_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/default_button_background_selector"
+            android:text="@string/confirm"
+            android:textColor="@color/work_status_selector_bg"
+            android:textSize="@dimen/fontHead" />
+
+    </LinearLayout>
+</LinearLayout>

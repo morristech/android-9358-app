@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.xmd.technician.window.WorkTimeActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/personal_padding"
+        android:layout_marginLeft="@dimen/search_margin"
+        android:textColor="@color/colorBody"
+        android:textSize="@dimen/fontTitle"
+        android:text="@string/current_work_status"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/personal_margin">
+        <RadioGroup
+            android:id="@+id/work_status_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/status_free"
+                android:layout_width="@dimen/comment_item_height"
+                android:layout_height="@dimen/feedback_btn_height"
+                android:gravity="center"
+                android:button="@null"
+                android:background="@drawable/status_button_selector"
+                android:textColor="@color/work_status_selector_bg"
+                android:textSize="@dimen/fontTitle"
+                android:text="@string/status_free"/>
+
+            <View
+                android:layout_width="@dimen/feedback_btn_height"
+                android:layout_height="@dimen/line_divide_height"
+                android:layout_gravity="center"
+                android:background="@color/colorLineDivide" />
+
+            <RadioButton
+                android:id="@+id/status_busy"
+                android:layout_width="@dimen/comment_item_height"
+                android:layout_height="@dimen/feedback_btn_height"
+                android:gravity="center"
+                android:button="@null"
+                android:background="@drawable/status_button_selector"
+                android:textColor="@color/work_status_selector_bg"
+                android:textSize="@dimen/fontTitle"
+                android:text="@string/status_busy"/>
+        </RadioGroup>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/line_divide_height"
+            android:layout_toRightOf="@+id/work_status_group"
+            android:layout_centerVertical="true"
+            android:background="@color/colorLineDivide" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/line_divide_height"
+            android:layout_toLeftOf="@+id/work_status_group"
+            android:layout_centerVertical="true"
+            android:background="@color/colorLineDivide" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/work_time_padding"
+        android:layout_marginBottom="@dimen/work_time_padding"
+        android:layout_marginLeft="@dimen/search_margin"
+        android:textColor="@color/colorBody"
+        android:textSize="@dimen/fontTitle"
+        android:text="@string/current_work_time"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <LinearLayout
+        android:id="@+id/work_time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/personal_item_height"
+        android:background="@drawable/personal_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/personal_margin"
+            android:layout_marginRight="@dimen/personal_margin"
+            android:gravity="center"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/work_time_text"/>
+
+        <TextView
+            android:id="@+id/work_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/none_selected"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <LinearLayout
+        android:id="@+id/work_day_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/personal_item_height"
+        android:background="@drawable/personal_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/personal_margin"
+            android:layout_marginRight="@dimen/personal_margin"
+            android:gravity="center"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/work_day_text"/>
+
+        <TextView
+            android:id="@+id/work_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/none_selected"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/personal_padding"
+        android:layout_marginLeft="@dimen/personal_margin"
+        android:textColor="@color/colorRemark"
+        android:textSize="@dimen/fontRemark"
+        android:text="@string/time_activity_desc"/>
+</LinearLayout>

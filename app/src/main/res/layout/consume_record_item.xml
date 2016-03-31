@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/coupon_item_height"
+    android:background="@android:color/white"
+    android:paddingTop="@dimen/personal_margin"
+    android:paddingLeft="@dimen/work_time_padding"
+    android:paddingRight="@dimen/personal_padding">
+
+    <com.xmd.technician.widget.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/search_view_height"
+        android:layout_height="@dimen/search_view_height"
+        android:layout_marginRight="@dimen/personal_padding"
+        android:background="@drawable/icon22"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_centerVertical="true"
+        android:textColor="@color/colorTitle"
+        android:textSize="@dimen/fontTitle"
+        android:text="@string/consume"/>
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/colorTitle"
+        android:textSize="@dimen/fontTitle"
+        android:text="yua"/>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/search_margin"
+        android:textColor="@color/colorRemark"
+        android:textSize="@dimen/fontNormal"
+        android:text="03-19"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

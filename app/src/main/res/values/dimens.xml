@@ -2,4 +2,45 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="fontBig">32sp</dimen>
+    <dimen name="fontHead">20sp</dimen>
+    <dimen name="fontTitle">16sp</dimen>
+    <dimen name="fontBody">14sp</dimen>
+    <dimen name="fontNormal">12sp</dimen>
+    <dimen name="fontRemark">11sp</dimen>
+
+    <dimen name="home_button_height">48dp</dimen>
+
+    <dimen name="search_padding_left">12dp</dimen>
+    <dimen name="search_view_height">32dp</dimen>
+    <dimen name="search_margin">8dp</dimen>
+    <dimen name="search_pic_height">16dp</dimen>
+
+    <dimen name="message_item_height">64dp</dimen>
+
+    <dimen name="personal_info_height">83dp</dimen>
+    <dimen name="personal_item_height">44dp</dimen>
+    <dimen name="personal_description_height">40dp</dimen>
+    <dimen name="personal_item_icon_height">20dp</dimen>
+    <dimen name="personal_padding">12dp</dimen>
+    <dimen name="personal_info_margin_top">21dp</dimen>
+    <dimen name="personal_margin">16dp</dimen>
+    <dimen name="personal_item_margin_right">30dp</dimen>
+
+    <dimen name="line_divide_height">1dp</dimen>
+    <dimen name="app_default_padding">12dp</dimen>
+
+    <dimen name="photo_head">48dp</dimen>
+
+    <dimen name="avatar_head">48dp</dimen>
+
+    <dimen name="feedback_btn_height">32dp</dimen>
+    <dimen name="feedback_btn_width">90dp</dimen>
+    <dimen name="comment_item_height">96dp</dimen>
+    <dimen name="work_time_padding">24dp</dimen>
+    <dimen name="dialog_multi_check_default_height">34dp</dimen>
+    <dimen name="default_dialog_width">280dp</dimen>
+    <dimen name="button_radius">4dp</dimen>
+    <dimen name="coupon_item_height">58dp</dimen>
 </resources>

@@ -35,7 +35,9 @@ android {
                 PACKAGE_NAME        : "com.xmd.technician",
                 //UMENG_APPKEY for release
                 UMENG_APPKEY_VALUE  : "55b5d44167e58e899c003120",
-                UMENG_CHANNEL_VALUE       : "xiaomodo-tech",
+                UMENG_CHANNEL_VALUE : "xiaomodo-tech",
+                //ease
+                EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
         ]
     }
 
@@ -43,6 +45,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
 }
@@ -58,12 +66,17 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'shidou.appgrade-release', ext: 'aar')
     compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.bugtags.library:bugtags-lib:latest.integration'
-
     compile 'com.getui:sdk:2.7.0.0'
     compile 'com.getui:ext:2.0.3'
     compile 'com.android.support:support-v4:+'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile files('libs/hyphenatechat_3.1.0.jar')
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support:cardview-v7:23.2.1'
+    compile files('libs/core-3.2.1-SNAPSHOT.jar')
 }

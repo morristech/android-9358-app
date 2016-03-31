@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:id="@+id/info_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/personal_info_height"
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector">
+
+        <com.xmd.technician.widget.CircleImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/photo_head"
+            android:layout_height="@dimen/photo_head"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/search_margin"
+            android:background="@drawable/icon22"/>
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/avatar"
+            android:layout_marginTop="@dimen/personal_info_margin_top"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/fontHead" />
+
+        <Button
+            android:id="@+id/invite_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_name"
+            android:layout_toRightOf="@+id/avatar"
+            android:text="@string/personal_fragment_button_invite"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/club_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_name"
+            android:layout_toRightOf="@+id/avatar"
+            android:layout_marginTop="@dimen/search_margin"
+            android:singleLine="true"
+            android:maxLength="10"
+            android:ellipsize="marquee"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right_arrow"/>
+
+        <ImageButton
+            android:id="@+id/qrcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/personal_margin"
+            android:layout_marginBottom="@dimen/personal_margin"
+            android:layout_marginRight="@dimen/personal_margin"
+            android:background="@null"
+            android:src="@drawable/icon23"
+            android:scaleType="centerInside"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_divide_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorLineDivide" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/personal_description_height"
+        android:paddingLeft="@dimen/personal_padding"
+        android:gravity="center_vertical"
+        android:background="@drawable/personal_item_selector"
+        android:textColor="@color/colorBody"
+        android:textSize="@dimen/fontBody" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:layout_marginTop="@dimen/search_margin"
+        android:background="@color/colorLineDivide" />
+
+    <RelativeLayout
+        android:id="@+id/account_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/personal_item_height"
+        android:padding="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/personal_item_icon_height"
+            android:layout_height="@dimen/personal_item_icon_height"
+            android:background="@drawable/icon24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/search_view_height"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/personal_fragment_layout_account"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right_arrow"/>
+
+        <TextView
+            android:id="@+id/account_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/personal_item_margin_right"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorBtnSelector"
+            android:textSize="@dimen/fontBody"
+            android:text="98yuan"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <RelativeLayout
+        android:id="@+id/time_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/personal_item_height"
+        android:padding="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/personal_item_icon_height"
+            android:layout_height="@dimen/personal_item_icon_height"
+            android:src="@drawable/icon25"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/search_view_height"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/personal_fragment_layout_work_time"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right_arrow"/>
+
+        <ImageView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/personal_margin"
+            android:src="@drawable/icon_free" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:layout_marginTop="@dimen/search_margin"
+        android:background="@color/colorLineDivide" />
+
+    <RelativeLayout
+        android:id="@+id/service_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/personal_item_height"
+        android:padding="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/personal_item_icon_height"
+            android:layout_height="@dimen/personal_item_icon_height"
+            android:src="@drawable/icon26"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/search_view_height"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/personal_fragment_layout_service_items"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/personal_item_margin_right"
+            android:layout_centerVertical="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right_arrow"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <RelativeLayout
+        android:id="@+id/comment_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/personal_item_height"
+        android:padding="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/personal_item_icon_height"
+            android:layout_height="@dimen/personal_item_icon_height"
+            android:src="@drawable/icon27"/>
+
+        <TextView
+            android:id="@+id/comment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/search_view_height"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/personal_fragment_layout_my_comment"/>
+
+        <TextView
+            android:id="@+id/comment_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/comment_title"
+            android:layout_marginLeft="@dimen/personal_padding"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorRemark"
+            android:textSize="@dimen/fontTitle"
+            android:text="(256)"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right_arrow"/>
+
+        <TextView
+            android:id="@+id/unread_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/personal_item_margin_right"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorBtnSelector"
+            android:textSize="@dimen/fontBody"
+            android:text="+2"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:layout_marginTop="@dimen/personal_margin"
+        android:background="@color/colorLineDivide" />
+
+    <RelativeLayout
+        android:id="@+id/setting_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/personal_item_height"
+        android:padding="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/personal_item_icon_height"
+            android:layout_height="@dimen/personal_item_icon_height"
+            android:src="@drawable/icon28"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/search_view_height"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/personal_fragment_layout_setting"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right_arrow"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+</LinearLayout>

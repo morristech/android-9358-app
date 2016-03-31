@@ -27,7 +27,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_TOKEN_EXPIRE,
                 MsgDef.MSG_DEF_LOGIN,
                 MsgDef.MSG_DEF_LOGOUT,
-                MsgDef.MSG_DEF_GET_CLUB_INFO,
+                MsgDef.MSG_DEF_GET_TECH_EDIT_INFO,
                 MsgDef.MSG_DEF_USE_COUPON,
                 MsgDef.MSG_DEF_FILTER_ORDER_LIST,
                 MsgDef.MSG_DEF_GET_ORDER_LIST,
@@ -39,7 +39,20 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CLUB_COUPON_VIEW,
                 MsgDef.MSG_DEF_GET_USER_COUPON_LIST,
                 MsgDef.MSG_DEF_GET_USER_COUPON_VIEW,
-                MsgDef.MSG_DEF_GET_COUPON_USE_DATA
+                MsgDef.MSG_DEF_GET_COUPON_USE_DATA,
+                MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST,
+                MsgDef.MSG_DEF_GET_COMMENT_LIST,
+                MsgDef.MSG_DEF_SUBMIT_INVITE_CODE,
+                MsgDef.MSG_DEF_GET_ICODE,
+                MsgDef.MSG_DEF_REGISTER,
+                MsgDef.MSG_DEF_GET_WORK_TIME,
+                MsgDef.MSG_DEF_UPDATE_WORK_TIME,
+                MsgDef.MSG_DEF_UPLOAD_AVATAR,
+                MsgDef.MSG_DEF_DELETE_ALBUM,
+                MsgDef.MSG_DEF_UPLOAD_ALBUM,
+                MsgDef.MSG_DEF_MODIFY_PASSWORD,
+                MsgDef.MSG_DEF_UPDATE_WORK_STATUS,
+                MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

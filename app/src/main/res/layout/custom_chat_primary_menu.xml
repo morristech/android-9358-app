@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.xmd.technician.window.BrowserActivity">
+
+    <include layout="@layout/activity_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/input_menu"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/holo_green_light"
+        android:layout_above="@+id/input_menu"/>
+
+    <RelativeLayout
+        android:id="@+id/input_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="4dp">
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="32dip"
+            android:layout_alignParentRight="true"
+
+            android:text="@string/button_send"
+            android:textColor="#666666"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_sendmessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/btn_send"
+            android:maxLines="3"
+            android:minHeight="40dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:paddingTop="3dp"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_photo"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_below="@id/et_sendmessage"
+            android:layout_marginLeft="10dip"
+            />
+
+        <Button
+            android:id="@+id/btn_face"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_toRightOf="@+id/btn_photo"
+            android:layout_below="@id/et_sendmessage"
+            android:layout_marginLeft="10dip" />
+
+        <Button
+            android:id="@+id/btn_common_msg"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_toRightOf="@+id/btn_face"
+            android:layout_below="@id/et_sendmessage"
+            android:layout_marginLeft="10dip" />
+
+        <Button
+            android:id="@+id/btn_common_reward"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_toRightOf="@+id/btn_common_msg"
+            android:layout_below="@id/et_sendmessage"
+            android:layout_marginLeft="10dip" />
+
+        <Button
+            android:id="@+id/btn_common_clock"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_toRightOf="@+id/btn_common_reward"
+            android:layout_below="@id/et_sendmessage"
+            android:layout_marginLeft="10dip" />
+
+        <FrameLayout
+            android:id="@+id/extend_menu_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_face"
+            android:visibility="gone">
+            <GridView
+                android:id="@+id/emojicon_menu_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="7"
+                android:stretchMode="columnWidth"
+                android:gravity="center_vertical"/>
+        </FrameLayout>
+    </RelativeLayout>
+</RelativeLayout>

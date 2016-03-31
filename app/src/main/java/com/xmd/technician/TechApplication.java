@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import com.bugtags.library.Bugtags;
 import com.bugtags.library.BugtagsCallback;
 import com.bugtags.library.BugtagsOptions;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMOptions;
 import com.igexin.sdk.PushManager;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
@@ -36,6 +38,7 @@ public class TechApplication extends Application{
 
                 long start = System.currentTimeMillis();
 
+                AppConfig.initialize();
                 ThreadManager.initialize();
                 ControllerRegister.initialize();
                 SharedPreferenceHelper.initialize();
@@ -48,6 +51,10 @@ public class TechApplication extends Application{
                         trackingUserSteps(true).//是否收集用户操作步骤
                         build();
                 Bugtags.start(AppConfig.BUGTAGS_APP_KEY, this, Bugtags.BTGInvocationEventBubble, options);
+
+                EMOptions emOptions = new EMOptions();
+                EMClient.getInstance().init(this, emOptions);
+
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");
             }

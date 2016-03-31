@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/default_dialog_width"
+    android:layout_height="@dimen/default_dialog_width">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="12dp"
+        android:background="@android:color/white">
+        <TextView
+            android:id="@+id/qr_dialog_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/personal_margin"
+            android:text="@string/qr_code_remark"
+            android:textColor="@color/colorRemark"
+            android:textSize="@dimen/fontRemark" />
+
+        <TextView
+            android:id="@+id/qr_dialog_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/qr_dialog_text2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/personal_margin"
+            android:text="@string/qr_code_body"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody" />
+
+        <ImageView
+            android:id="@+id/home_fragment_qr_code_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/qr_dialog_text1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/personal_margin"
+            android:layout_marginLeft="@dimen/personal_margin"
+            android:layout_marginTop="@dimen/personal_margin"
+            android:src="@drawable/icon22" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/qr_dialog_close"
+        android:layout_width="@dimen/search_view_height"
+        android:layout_height="@dimen/search_view_height"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/close" />
+</RelativeLayout>

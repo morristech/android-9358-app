@@ -13,7 +13,7 @@ public class MsgDef {
 
     public static final int MSG_DEF_LOGOUT = 0x0004;
 
-    public static final int MSG_DEF_GET_CLUB_INFO = 0x0009;
+    public static final int MSG_DEF_GET_TECH_EDIT_INFO = 0x0009;
 
     public static final int MSG_DEF_GET_CLUB_COUPON_LIST = 0x0005;
 
@@ -22,6 +22,12 @@ public class MsgDef {
     public static final int MSG_DEF_USE_COUPON = 0x0061;
 
     public static final int MSG_DEF_TOKEN_EXPIRE = 0x0007;
+
+    public static final int MSG_DEF_MODIFY_PASSWORD = 0x0008;
+
+    public static final int MSG_DEF_GET_SERVICE_ITEM_LIST = 0x000A;
+
+    public static final int MSG_DEF_GET_COMMENT_LIST = 0x0017;
 
     public static final int MSG_DEF_GET_NEW_ORDER_COUNT = 0x000B;
 
@@ -49,4 +55,23 @@ public class MsgDef {
 
     public static final int MSG_DEF_GETUI_UNBIND_CLIENT_ID = 0x0018;
 
+    public static final int MSG_DEF_GET_ICODE = 0x0019;
+
+    public static final int MSG_DEF_SUBMIT_INVITE_CODE = 0x001A;
+
+    public static final int MSG_DEF_REGISTER = 0x001B;
+
+    public static final int MSG_DEF_GET_WORK_TIME = 0x001C;
+
+    public static final int MSG_DEF_UPDATE_WORK_TIME = 0x001D;
+
+    public static final int MSG_DEF_UPLOAD_AVATAR = 0x001E;
+
+    public static final int MSG_DEF_UPLOAD_ALBUM = 0x001F;
+
+    public static final int MSG_DEF_DELETE_ALBUM = 0x0020;
+
+    public static final int MSG_DEF_UPDATE_WORK_STATUS = 0x0021;
+
+    public static final int MSG_DEF_GET_TECH_CURRENT_INFO = 0x0022;
 }

@@ -1,4 +1,89 @@
 <resources>
     <string name="app_name">9358技师</string>
     <string name="token_expired_error_msg">账号在其他的地方登录，请重新登录</string>
+    <string name="login_activity_input_username">请输入账号</string>
+    <string name="login_activity_input_password">请输入密码</string>
+    <string name="login_activity_hint_username_not_empty">用户名不能为空</string>
+    <string name="login_activity_hint_password_not_empty">密码不能为空</string>
+
+    <string name="empty_view_loading">加载中...</string>
+    <string name="empty_view_empty">暂无数据</string>
+    <string name="empty_view_failed">数据加载失败，点击刷新</string>
+
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+
+    <string name="home_news">消息</string>
+    <string name="home_order">订单</string>
+    <string name="home_market">营销</string>
+    <string name="home_personal">个人中心</string>
+
+    <!-- MessageFragment -->
+    <string name="message_fragment_title">我的消息</string>
+    <string name="cant_chat_with_yourself">不能和自己聊天</string>
+    <string name="button_send">发送</string>
+    <string name="search_hint">搜索</string>
+
+    <!-- OrderFragment -->
+    <string name="order_fragment_title">我的订单</string>
+
+    <!-- PersonalFragment -->
+    <string name="personal_fragment_title">个人中心</string>
+    <string name="personal_fragment_button_invite">输入会所邀请码</string>
+    <string name="personal_fragment_layout_service_items">我的项目</string>
+    <string name="personal_fragment_layout_work_time">时间设置</string>
+    <string name="personal_fragment_layout_account">我的账户</string>
+    <string name="personal_fragment_layout_my_comment">我的评论</string>
+    <string name="personal_fragment_layout_setting">设置</string>
+    <string name="qr_code_body">让用户给你好评吧！</string>
+    <string name="qr_code_remark">让用户给你好评吧！</string>
+
+    <!-- SettingActivity -->
+    <string name="title_activity_settings">设置</string>
+    <string name="settings_activity_about_us">关于我们</string>
+    <string name="settings_activity_modify_password">修改密码</string>
+    <string name="settings_activity_suggest">意见反馈</string>
+    <string name="setting_activity_layout_exit">退出登录</string>
+
+    <string name="feedback_hint">点击输入反馈...</string>
+
+    <!-- TechInfoActivity-->
+    <string name="title_activity_data_edit">资料编辑</string>
+    <string name="edit_activity_text_view_tip">最多可以添加8张图片，长按可以删除图片。</string>
+    <string name="edit_activity_text_view_desc">基本资料</string>
+    <string name="edit_activity_text_view_head">头像</string>
+    <string name="edit_activity_text_view_change_head">更改头像</string>
+    <string name="edit_activity_text_view_change_head_title">选择更换头像</string>
+    <string name="edit_activity_text_view_name">姓名</string>
+    <string name="edit_activity_text_view_id">编号</string>
+    <string name="edit_activity_text_view_gender">性别</string>
+    <string name="edit_activity_text_view_place">籍贯</string>
+    <string name="edit_activity_text_view_phone">手机</string>
+    <string name="edit_activity_text_view_introduce">介绍</string>
+    <string name="edit_activity_text_view_introduce_desc">请自我介绍(介绍自己来自哪里,介绍自己的姓名,介绍姓名时一定要吸引人,你的姓和名字...)</string>
+
+    <string name="only_number_and_char">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
+    <string name="app_info_title">关于小摩豆</string>
+    <string name="check_update">检查更新</string>
+
+    <string name="reward_amount">打赏:%1$d元</string>
+
+    <string name="current_work_status">目前状态：</string>
+    <string name="current_work_time">上班时间：</string>
+    <string name="status_free">闲</string>
+    <string name="status_busy">忙</string>
+    <string name="work_day_text">重复天数</string>
+    <string name="work_time_text">时间设置</string>
+    <string name="time_activity_desc">注:客户只能预约您的上班时间.</string>
+    <string name="operation_invalid">无效操作...</string>
+    <string name="save">保存</string>
+    <string name="none_selected">未选择</string>
+    <string name="save_waiting">正在保存，请稍后</string>
+    
+    <string name="consume">提现</string>
+    <string name="customer_reward">用户打赏</string>
+    <string name="coupon_commission">优惠券提成</string>
+    <string name="clock_commission">点钟券提成</string>
+
 </resources>

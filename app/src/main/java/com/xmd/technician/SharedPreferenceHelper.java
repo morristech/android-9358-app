@@ -119,8 +119,8 @@ public class SharedPreferenceHelper {
         mSettingPreference.edit().putString(KEY_CLIENT_ID, clientId).apply();
     }
 
-    /*public static String getClientId() {
+    public static String getClientId() {
         return mSettingPreference.getString(KEY_CLIENT_ID, AppConfig.sClientId);
-    }*/
+    }
 
 }

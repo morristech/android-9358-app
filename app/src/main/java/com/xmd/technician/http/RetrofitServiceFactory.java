@@ -1,5 +1,7 @@
 package com.xmd.technician.http;
 
+import com.xmd.technician.SharedPreferenceHelper;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -14,7 +16,7 @@ public class RetrofitServiceFactory {
     public static SpaService getSpaService() {
         if (mSpaService == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(RequestConstant.SERVER_HOST)
+                    .baseUrl(SharedPreferenceHelper.getServerHost())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(buildClient())
                     .build();

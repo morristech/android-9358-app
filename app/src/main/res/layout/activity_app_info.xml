@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.xmd.technician.window.AppInfoActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/avatar_head"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/search_margin"
+        android:textColor="@color/colorRemark"
+        android:textSize="@dimen/fontBody"
+        android:text="@string/app_name"/>
+
+    <Button
+        android:id="@+id/check_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/feedback_confirm_bg"
+        android:textColor="@color/colorHead"
+        android:textSize="@dimen/fontHead"
+        android:text="@string/check_update"/>
+</RelativeLayout>

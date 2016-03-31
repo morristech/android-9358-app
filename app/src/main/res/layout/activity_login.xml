@@ -9,4 +9,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.xmd.technician.window.LoginActivity">
 
+    <com.xmd.technician.widget.ClearableEditText
+        android:id="@+id/login_username_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/login_activity_hint_username_not_empty"/>
+
+    <com.xmd.technician.widget.ClearableEditText
+        android:id="@+id/login_password_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_username_txt"
+        android:hint="@string/login_activity_hint_username_not_empty"/>
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_password_txt"
+        android:text="登录"/>
+
 </RelativeLayout>

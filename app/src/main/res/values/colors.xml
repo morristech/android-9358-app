@@ -3,4 +3,17 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorMain">#ff6666</color>
+    <color name="colorBackground">#f0f0f0</color>
+    <color name="colorTitle">#333333</color>
+    <color name="colorBody">#666666</color>
+    <color name="colorRemark">#999999</color>
+    <color name="colorHead">#ffffff</color>
+
+    <color name="colorLineDivide">#d9d9d9</color>
+    <color name="colorStatusNormal">#d8d8d8</color>
+    <color name="colorBtnNormal">#333333</color>
+    <color name="colorBtnSelector">#ff6666</color>
+    <color name="colorBtnChecked">#fb5549</color>
 </resources>

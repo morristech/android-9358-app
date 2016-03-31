@@ -1,6 +1,7 @@
 package com.xmd.technician.window;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +14,15 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bugtags.library.Bugtags;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
+import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.TokenExpiredResult;
 import com.xmd.technician.msgctrl.RxBus;
@@ -29,15 +33,14 @@ import rx.Subscription;
  * Created by sdcm on 15-10-26.
  */
 public class BaseActivity extends AppCompatActivity {
-    
-    protected ImageView mBack;
-    protected FrameLayout mToolbarRight;
-    protected ImageView mImageRight;
+
     protected TextView mAppTitle;
+    protected ImageView mBack;
+    protected TextView mToolbarRight;
     protected Toolbar mToolbar;
     private ProgressDialog mProgressDialog;
 
-    private Subscription mLogouSubscription;
+    private Subscription mLogoutSubscription;
     private Subscription mTokenExpiredSubscription;
     private Subscription mThrowableSubscription;
 
@@ -45,16 +48,18 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mLogouSubscription = RxBus.getInstance().toObservable(LogoutResult.class).subscribe(
-                logoutResult -> gotoLoginActivity(null)
+        ActivityHelper.getInstance().pushActivity(this);
+
+        mLogoutSubscription = RxBus.getInstance().toObservable(LogoutResult.class).subscribe(
+                logoutResult -> {dismissProgressDialogIfShowing(); gotoLoginActivity(null);}
         );
 
         mTokenExpiredSubscription = RxBus.getInstance().toObservable(TokenExpiredResult.class).subscribe(
-                tokenExpiredResult -> gotoLoginActivity(tokenExpiredResult.expiredReason)
+                tokenExpiredResult -> {dismissProgressDialogIfShowing(); gotoLoginActivity(tokenExpiredResult.expiredReason);}
         );
 
         mThrowableSubscription = RxBus.getInstance().toObservable(Throwable.class).subscribe(
-                throwable -> makeShortToast(throwable.getLocalizedMessage())
+                throwable -> {dismissProgressDialogIfShowing(); makeShortToast(throwable.getLocalizedMessage());}
         );
 
     }
@@ -74,7 +79,8 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mLogouSubscription, mTokenExpiredSubscription, mThrowableSubscription);
+        RxBus.getInstance().unsubscribe(mLogoutSubscription, mTokenExpiredSubscription, mThrowableSubscription);
+        ActivityHelper.getInstance().removeActivity(this);
     }
 
     @Override
@@ -102,7 +108,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void initToolbar() {
-        /*mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -110,13 +116,12 @@ public class BaseActivity extends AppCompatActivity {
             mBack = (ImageView) findViewById(R.id.toolbar_back);
             mBack.setOnClickListener(v -> onBackPressed());
 
-            mToolbarRight = (FrameLayout) findViewById(R.id.toolbar_right);
-            mImageRight = (ImageView) findViewById(R.id.toolbar_right_image);
+            mToolbarRight = (TextView) findViewById(R.id.toolbar_right);
             setRightVisible(false, -1);
 
             mAppTitle = (TextView) findViewById(R.id.toolbar_title);
             mAppTitle.setText(getTitle());
-        }*/
+        }
     }
 
     public void setBackVisible(boolean visible) {
@@ -125,36 +130,46 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void setRightVisible(boolean isVisible, int imgSrc) {
+    public void setRightVisible(boolean isVisible, int srcId) {
         if (mToolbarRight != null) {
             int visible = isVisible ? View.VISIBLE : View.GONE;
             mToolbarRight.setVisibility(visible);
-            mImageRight.setVisibility(visible);
-            if(isVisible && imgSrc != -1) {
-                mImageRight.setBackgroundDrawable(ResourceUtils.getDrawable(imgSrc));
+            if(isVisible && srcId != -1) {
+                mToolbarRight.setText(srcId);
             }
         }
     }
 
-    public void setTitle(String title) {
+    public void setTitle(int srcId) {
         if (mAppTitle != null) {
-            mAppTitle.setText(title);
+            mAppTitle.setText(srcId);
         }
     }
 
     protected void makeShortToast(String str){
-       //Utils.makeShortToast(TechApplication.getAppContext(), str);
+        Toast.makeText(TechApplication.getAppContext(), str, Toast.LENGTH_SHORT).show();
     }
 
     protected void showProgressDialog(String message){
-        /*mProgressDialog = Utils.getSpinnerProgressDialog(this, message);
-        mProgressDialog.show();*/
+        mProgressDialog = getSpinnerProgressDialog(this, message);
+        mProgressDialog.show();
     }
 
     protected void dismissProgressDialogIfShowing(){
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    private ProgressDialog getSpinnerProgressDialog(Context context, String msg) {
+        ProgressDialog progressDialog = new ProgressDialog(
+                context, ProgressDialog.THEME_TRADITIONAL);
+        progressDialog.setProgressStyle(
+                ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage(msg);
+        progressDialog.setCancelable(true);
+
+        return progressDialog;
     }
 
     /**
@@ -170,6 +185,7 @@ public class BaseActivity extends AppCompatActivity {
 
         SharedPreferenceHelper.clearUserInfo();
 
+        ActivityHelper.getInstance().removeAllActivities();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

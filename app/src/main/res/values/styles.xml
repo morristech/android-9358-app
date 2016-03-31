@@ -1,11 +1,58 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.App.Base" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Both of these are needed, hide the action bar -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.App.Base" >
+
+    </style>
+
+    <style name="edit_activity_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="edit_activity_edit_text_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="commentRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rating_bar_bg</item>
+        <item name="android:minHeight">@dimen/personal_padding</item>
+        <item name="android:maxHeight">@dimen/personal_padding</item>
+    </style>
+
+    <style name="dialog_check_box_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dialog_multi_check_default_height</item>
+        <item name="android:paddingLeft">@dimen/personal_margin</item>
+        <item name="android:paddingRight">@dimen/personal_margin</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableRight">@drawable/check_box_style_selector</item>
+        <item name="android:textSize">@dimen/fontTitle</item>
+        <item name="android:textColor">@color/colorBody</item>
+        <item name="android:background">@drawable/personal_item_selector</item>
+    </style>
+
+    <style name="default_dialog_style" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="dialog_qr" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>
