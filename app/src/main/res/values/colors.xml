@@ -16,4 +16,6 @@
     <color name="colorBtnNormal">#333333</color>
     <color name="colorBtnSelector">#ff6666</color>
     <color name="colorBtnChecked">#fb5549</color>
+    <color name="colorServiceName">#f9f9f9</color>
+    <color name="colorServiceHead">#f0eff5</color>
 </resources>

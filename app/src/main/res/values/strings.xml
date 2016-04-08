@@ -5,6 +5,26 @@
     <string name="login_activity_input_password">请输入密码</string>
     <string name="login_activity_hint_username_not_empty">用户名不能为空</string>
     <string name="login_activity_hint_password_not_empty">密码不能为空</string>
+    <string name="login_account_hint">输入手机号</string>
+    <string name="login">登录</string>
+    <string name="find_password">找回密码</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="register">注册</string>
+    <string name="login_signing">正在登录...</string>
+    <string name="next_step">下一步</string>
+
+    <string name="list_item_loading">点击或者上拉，加载更多</string>
+    <string name="list_item_no_more"> ^_^, 没有更多数据</string>
+    <string name="list_item_empty">=_=!!, 还没有数据哦</string>
+
+    <string name="register_security_code_hint">输入验证码</string>
+    <string name="register_send_security_code">发送验证码</string>
+    <string name="invite_club">会所邀请码(必填)</string>
+    <string name="invite_tech">技师邀请码(选填)</string>
+    <string name="register_resend_security_code">重新发送(%1$d)</string>
+    <string name="input_serial_no">输入店内编号</string>
+    <string name="nick_name">昵称</string>
+    <string name="select_gender">选择性别</string>
 
     <string name="empty_view_loading">加载中...</string>
     <string name="empty_view_empty">暂无数据</string>
@@ -35,8 +55,8 @@
     <string name="personal_fragment_layout_account">我的账户</string>
     <string name="personal_fragment_layout_my_comment">我的评论</string>
     <string name="personal_fragment_layout_setting">设置</string>
-    <string name="qr_code_body">让用户给你好评吧！</string>
-    <string name="qr_code_remark">让用户给你好评吧！</string>
+    <string name="qr_code_body">扫我关注＂9358＂</string>
+    <string name="qr_code_remark">点技师，约项目，就上9358</string>
 
     <!-- SettingActivity -->
     <string name="title_activity_settings">设置</string>
@@ -46,6 +66,7 @@
     <string name="setting_activity_layout_exit">退出登录</string>
 
     <string name="feedback_hint">点击输入反馈...</string>
+    <string name="feedback_result">已成功提交，感谢您的反馈！</string>
 
     <!-- TechInfoActivity-->
     <string name="title_activity_data_edit">资料编辑</string>
@@ -61,6 +82,7 @@
     <string name="edit_activity_text_view_phone">手机</string>
     <string name="edit_activity_text_view_introduce">介绍</string>
     <string name="edit_activity_text_view_introduce_desc">请自我介绍(介绍自己来自哪里,介绍自己的姓名,介绍姓名时一定要吸引人,你的姓和名字...)</string>
+    <string name="edit_activity_delete_album">删除此照片？</string>
 
     <string name="only_number_and_char">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 
@@ -80,10 +102,29 @@
     <string name="save">保存</string>
     <string name="none_selected">未选择</string>
     <string name="save_waiting">正在保存，请稍后</string>
-    
+
     <string name="consume">提现</string>
+    <string name="consume_record">%1$d元</string>
+    <string name="reward_record">+%1$d元</string>
     <string name="customer_reward">用户打赏</string>
     <string name="coupon_commission">优惠券提成</string>
     <string name="clock_commission">点钟券提成</string>
+    <string name="consume_tip">关注9358服务公众号，登录提现</string>
+    <string name="user_reward_detail">客户打赏明细</string>
+    <string name="coupon_reward_detail">优惠券提成明细</string>
+    <string name="paid_coupon_detail">点钟券提成明细</string>
+
+    <string name="modify_password_old_hint">输入现在密码</string>
+    <string name="modify_password_new_hint">请输入6-20位新密码，仅限字母和数字</string>
+    <string name="modify_password_confirm_hint">重新输入密码</string>
+    <string name="modify_password_change_confirm_err">新密码不统一</string>
+    <string name="modify_password_failed">修改密码失败</string>
+
+    <string name="service_item">项目</string>
+    <string name="service_price">价格（元）</string>
+    <string name="service_time">时间（分钟）</string>
+    <string name="confirm_select">确认选择</string>
+
+    <string name="title_activity_clip_picture">裁剪照片</string>
 
 </resources>

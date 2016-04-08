@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/avatar"
         android:layout_below="@+id/time"
+        android:background="@drawable/duihuakuang"
         android:text="hello"/>
 
 </RelativeLayout>

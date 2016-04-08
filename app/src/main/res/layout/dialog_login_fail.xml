@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/default_dialog_width"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_login_fail_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_button_height"
+        android:layout_marginLeft="@dimen/personal_margin"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorMain"
+        android:textSize="@dimen/fontTitle" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <TextView
+        android:id="@+id/dialog_login_fail_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_button_height"
+        android:layout_marginLeft="@dimen/personal_margin"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorBody"
+        android:textSize="@dimen/fontBody" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <Button
+        android:id="@+id/login_fail_button_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_button_height"
+        android:background="@drawable/default_button_background_selector"
+        android:text="@string/confirm"
+        android:textColor="@color/colorBody"
+        android:textSize="@dimen/fontTitle" />
+
+</LinearLayout>

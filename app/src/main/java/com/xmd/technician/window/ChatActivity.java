@@ -71,6 +71,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         mInputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
+        mRefreshLayout.setColorSchemeResources(R.color.colorMain);
         mRefreshLayout.setOnRefreshListener(this);
 
         initEmojicon();

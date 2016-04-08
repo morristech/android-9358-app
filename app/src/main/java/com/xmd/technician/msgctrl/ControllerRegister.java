@@ -28,7 +28,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_LOGIN,
                 MsgDef.MSG_DEF_LOGOUT,
                 MsgDef.MSG_DEF_GET_TECH_EDIT_INFO,
-                MsgDef.MSG_DEF_USE_COUPON,
+                MsgDef.MSG_DEF_GET_ACCOUNT_MONEY,
                 MsgDef.MSG_DEF_FILTER_ORDER_LIST,
                 MsgDef.MSG_DEF_GET_ORDER_LIST,
                 MsgDef.MSG_DEF_MANAGE_ORDER,
@@ -36,7 +36,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_SUBMIT_FEEDBACK,
                 MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID,
                 MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID,
-                MsgDef.MSG_DEF_GET_CLUB_COUPON_VIEW,
+                MsgDef.MSG_DEF_GET_CONSUME_DETAIL,
                 MsgDef.MSG_DEF_GET_USER_COUPON_LIST,
                 MsgDef.MSG_DEF_GET_USER_COUPON_VIEW,
                 MsgDef.MSG_DEF_GET_COUPON_USE_DATA,
@@ -52,7 +52,10 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_UPLOAD_ALBUM,
                 MsgDef.MSG_DEF_MODIFY_PASSWORD,
                 MsgDef.MSG_DEF_UPDATE_WORK_STATUS,
-                MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO
+                MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO,
+                MsgDef.MSG_DEF_RESET_PASSWORD,
+                MsgDef.MSG_DEF_UPDATE_TECH_INFO,
+                MsgDef.MSG_DEF_UPDATE_SERVICE_ITEM_LIST
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

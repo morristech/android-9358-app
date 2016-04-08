@@ -9,4 +9,5 @@ public class BaseResult implements Serializable {
 
     public int statusCode;
     public String msg;
+    public int pageCount;
 }

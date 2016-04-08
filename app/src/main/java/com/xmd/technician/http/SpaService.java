@@ -1,10 +1,12 @@
 package com.xmd.technician.http;
 
+import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
 import com.xmd.technician.http.gson.CommentResult;
+import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
@@ -15,14 +17,10 @@ import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -64,15 +62,17 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_FEEDBACK_CREATE)
-    Call<BaseResult> submitFeedback(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                    @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                    @Field(RequestConstant.KEY_COMMENTS) String comments);
+    Call<BaseResult> submitFeedback(@Field(RequestConstant.KEY_COMMENTS) String comments,
+                                    @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                    @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_REGISTER)
-    Call<BaseResult> register(@Field(RequestConstant.KEY_MOBILE) String mobile,
+    Call<LoginResult> register(@Field(RequestConstant.KEY_MOBILE) String mobile,
                               @Field(RequestConstant.KEY_PASSWORD) String passWord,
                               @Field(RequestConstant.KEY_ICODE) String iCode,
+                               @Field(RequestConstant.KEY_CLUB_CODE) String clubCode,
+                               @Field(RequestConstant.KEY_CHANEL) String channel,
                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @GET(RequestConstant.URL_EDIT_INFO)
@@ -82,6 +82,12 @@ public interface SpaService {
     @GET(RequestConstant.URL_CURRENT_INFO)
     Call<TechCurrentResult> getTechCurrentInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                @Query(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_UPDATE_TECH_INFO)
+    Call<BaseResult> updateTechInfo(@Field(RequestConstant.KEY_USER) String user,
+                                    @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                    @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_COMMENT_LIST)
@@ -102,6 +108,15 @@ public interface SpaService {
                                     @Field(RequestConstant.KEY_NEW_PASSWORD) String newPassword,
                                     @Field(RequestConstant.KEY_TOKEN) String userToken,
                                     @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_RESET_PASSWORD)
+    Call<BaseResult> resetPassword(@Field(RequestConstant.KEY_USERNAME) String username,
+                              @Field(RequestConstant.KEY_PASSWORD) String passWord,
+                              @Field(RequestConstant.KEY_ICODE) String iCode,
+                                   @Field(RequestConstant.KEY_TOKEN) String userToken,
+                              @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
 
     /**
      * @param userToken
@@ -185,10 +200,27 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_SERVICE_LIST)
-    Call<ServiceResult> getServiceList(@Field(RequestConstant.KEY_TIME_STAMP) String timestamp,
+    Call<ServiceResult> getServiceList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                       @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_UPDATE_SERVICE_LIST)
+    Call<BaseResult> updateServiceList(@Field(RequestConstant.KEY_IDS) String ids,
                                        @Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_ACCOUNT_MONEY)
+    Call<AccountMoneyResult> getAccountMoney(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CONSUME_DETAIL)
+    Call<ConsumeDetailResult> getConsumeDetail(@Field(RequestConstant.KEY_CONSUME_TYPE) String consumeType,
+                                               @Field(RequestConstant.KEY_PAGE) String page,
+                                               @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                               @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
     /**************************** Push **************************/
     /**
      *

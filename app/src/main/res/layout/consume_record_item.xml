@@ -12,10 +12,10 @@
         android:layout_width="@dimen/search_view_height"
         android:layout_height="@dimen/search_view_height"
         android:layout_marginRight="@dimen/personal_padding"
-        android:background="@drawable/icon22"/>
+        android:background="@drawable/icon22" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/avatar"
@@ -25,13 +25,25 @@
         android:text="@string/consume"/>
 
     <TextView
+        android:id="@+id/remark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/search_margin"
+        android:singleLine="true"
+        android:textColor="@color/colorRemark"
+        android:textSize="@dimen/fontNormal"
+        android:visibility="invisible"/>
+
+    <TextView
         android:id="@+id/amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:textColor="@color/colorTitle"
+        android:textColor="@color/colorMain"
         android:textSize="@dimen/fontTitle"
-        android:text="yua"/>
+        android:text="1111"/>
 
     <TextView
         android:id="@+id/time"

@@ -32,4 +32,11 @@ public class TechDetailInfo {
     public int commentCount;
     public String techTags;
     public String avatarUrl;
+    public String phoneNum;
+
+
+    @Override
+    public String toString() {
+        return "{\"name\":\"" + name + "\",\"gender\":\"" + gender + "\",\"serialNo\":\"" + serialNo + "\",\"provinceCode\":\"" + provinceCode + "\",\"cityCode\":\"" + cityCode + "\",\"province\":\"" + province + "\",\"city\":\"" + city + "\",\"phoneNum\":\"" + phoneNum + "\",\"description\":\"" + description + "\"}";
+    }
 }

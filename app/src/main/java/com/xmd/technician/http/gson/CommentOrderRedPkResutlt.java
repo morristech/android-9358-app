@@ -7,8 +7,11 @@ public class CommentOrderRedPkResutlt extends BaseResult{
     public Content respData;
 
     public class Content{
-        public int commentCount;
+        public int unreadCommentCount;
+        public int allCommentCount;
+        public int accountAmount;
         public int orderCount;
-        public int redPacket;
+        public String techStatus;
+        public String techStatusDesc;
     }
 }

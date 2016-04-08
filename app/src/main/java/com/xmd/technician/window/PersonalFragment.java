@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,12 +16,14 @@ import com.xmd.technician.R;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
+import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.model.TechSummaryInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.CircleImageView;
+import com.xmd.technician.widget.InviteDialog;
 import com.xmd.technician.widget.QRDialog;
 
 import butterknife.Bind;
@@ -37,10 +40,16 @@ public class PersonalFragment extends BaseFragment{
     @Bind(R.id.description) TextView mDescription;
     @Bind(R.id.user_name) TextView mTechName;
     @Bind(R.id.club_name) TextView mClubName;
+    @Bind(R.id.invite_btn) Button mInviteBtn;
     @Bind(R.id.status) ImageView mWorkStatus;
+    @Bind(R.id.account_balance) TextView mAccountMoney;
+    @Bind(R.id.unread_count) TextView mUnreadCommentCount;
+    @Bind(R.id.comment_count) TextView mCommentCount;
 
     private Subscription mTechInfoSubscription;
     private Subscription mCommentOrderSubscription;
+    private Subscription mSubmitInviteSubscription;
+
     private TechSummaryInfo mTechInfo;
     private QRDialog mQRDialog;
 
@@ -61,13 +70,15 @@ public class PersonalFragment extends BaseFragment{
 
         mCommentOrderSubscription = RxBus.getInstance().toObservable(CommentOrderRedPkResutlt.class).subscribe(
                 commentOrderRedPkResult -> handleCommentOrderRedPk(commentOrderRedPkResult));
+
+        mSubmitInviteSubscription = RxBus.getInstance().toObservable(InviteCodeResult.class).subscribe(inviteCodeResult -> submitInviteResult(inviteCodeResult));
     }
 
     @Override
     public void onResume() {
         super.onResume();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO);
-        //MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
     }
 
     @Override
@@ -75,11 +86,15 @@ public class PersonalFragment extends BaseFragment{
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mTechInfoSubscription);
         RxBus.getInstance().unsubscribe(mCommentOrderSubscription);
+        RxBus.getInstance().unsubscribe(mSubmitInviteSubscription);
     }
 
     private void initView(){
         mDescription.setText(mTechInfo.description);
         mTechName.setText(mTechInfo.userName);
+        if(!mTechInfo.status.equals("uncert")){
+            mClubName.setText(mTechInfo.clubName);
+        }
 
         Glide.with(this).load(mTechInfo.imageUrl).into(mAvatar);
     }
@@ -91,8 +106,44 @@ public class PersonalFragment extends BaseFragment{
         }
     }
 
-    private void handleCommentOrderRedPk(CommentOrderRedPkResutlt commentOrderRedPkResutlt){
+    private void handleCommentOrderRedPk(CommentOrderRedPkResutlt result){
+        if(result.respData != null){
+            if(result.respData.accountAmount > 0){
+                mAccountMoney.setText(String.format("%d元", result.respData.accountAmount));
+            }else {
+                mAccountMoney.setText("");
+            }
 
+            if(result.respData.unreadCommentCount > 0){
+                mUnreadCommentCount.setText(String.format("+%d",result.respData.unreadCommentCount));
+            }else {
+                mUnreadCommentCount.setText("");
+            }
+
+            if(result.respData.allCommentCount > 0){
+                mCommentCount.setText(String.format("(%d)",result.respData.allCommentCount));
+            }else {
+                mCommentCount.setText("");
+            }
+
+            if(result.respData.techStatus.equals("valid")||result.respData.techStatus.equals("reject")){
+                mClubName.setVisibility(View.GONE);
+                mInviteBtn.setVisibility(View.VISIBLE);
+            }else{
+                mClubName.setVisibility(View.VISIBLE);
+                mInviteBtn.setVisibility(View.GONE);
+
+                if(result.respData.techStatus.equals("uncert")){
+                    mClubName.setText(result.respData.techStatusDesc);
+                }
+            }
+
+            if(result.respData.techStatus.equals("busy")){
+                mWorkStatus.setImageResource(R.drawable.icon_busy);
+            }else {
+                mWorkStatus.setImageResource(R.drawable.icon_free);
+            }
+        }
     }
 
     @OnClick(R.id.info_item)
@@ -115,7 +166,7 @@ public class PersonalFragment extends BaseFragment{
 
     @OnClick(R.id.service_item)
     public void onServiceItemClick(){
-        Intent intent = new Intent(getActivity(), TechInfoActivity.class);
+        Intent intent = new Intent(getActivity(), ServiceItemActivity.class);
         startActivity(intent);
     }
 
@@ -143,5 +194,18 @@ public class PersonalFragment extends BaseFragment{
             mQRDialog.updateQR(mTechInfo.qrCodeUrl);
         }
         mQRDialog.show();
+    }
+
+    @OnClick(R.id.invite_btn)
+    public void showInviteDialog(){
+        new InviteDialog(getActivity(), R.style.default_dialog_style).show();
+    }
+
+    private void submitInviteResult(InviteCodeResult result){
+        if(result.statusCode == 200){
+            mTechInfo.clubId = result.id;
+            mTechInfo.clubName = result.name;
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
+        }
     }
 }

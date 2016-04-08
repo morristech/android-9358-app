@@ -44,6 +44,7 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
         mListView.setHasFixedSize(true);
         mListView.setLayoutManager( new LinearLayoutManager(this));
         mListView.setAdapter(mAdapter);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMain);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mCommentSubscription = RxBus.getInstance().toObservable(CommentResult.class).subscribe(

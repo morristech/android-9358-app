@@ -13,4 +13,5 @@ public class TechSummaryInfo {
     public String qrCodeUrl;
     public String userName;
     public String clubName;
+    public String status;
 }

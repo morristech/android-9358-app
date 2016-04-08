@@ -66,7 +66,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".window.LoginActivity" />
+        <activity
+            android:name=".window.LoginActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".window.MainActivity" />
 
         <receiver
@@ -88,7 +90,13 @@
         <activity android:name=".window.FeedbackActivity" />
         <activity android:name=".window.AppInfoActivity" />
         <activity android:name=".window.WorkTimeActivity" />
-        <activity android:name=".window.MyAccountActivity"></activity>
+        <activity android:name=".window.MyAccountActivity" />
+        <activity android:name=".window.ConsumeDetailActivity" />
+        <activity android:name=".window.ServiceItemActivity" />
+        <activity android:name=".window.ClipPictureActivity" />
+        <activity android:name=".window.RegisterActivity" />
+        <activity android:name=".window.ResetPasswordActivity" />
+        <activity android:name=".window.InfoInputActivity"></activity>
     </application>
 
 </manifest>

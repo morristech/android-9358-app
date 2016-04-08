@@ -50,7 +50,7 @@ public class TechApplication extends Application{
                         trackingConsoleLog(true).//是否收集console log
                         trackingUserSteps(true).//是否收集用户操作步骤
                         build();
-                Bugtags.start(AppConfig.BUGTAGS_APP_KEY, this, Bugtags.BTGInvocationEventBubble, options);
+                Bugtags.start(AppConfig.BUGTAGS_APP_KEY, this, Bugtags.BTGInvocationEventNone, options);
 
                 EMOptions emOptions = new EMOptions();
                 EMClient.getInstance().init(this, emOptions);
