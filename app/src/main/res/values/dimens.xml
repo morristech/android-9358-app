@@ -43,4 +43,5 @@
     <dimen name="default_dialog_width">280dp</dimen>
     <dimen name="button_radius">4dp</dimen>
     <dimen name="coupon_item_height">58dp</dimen>
+    <dimen name="send_msg_btn_width">67dp</dimen>
 </resources>

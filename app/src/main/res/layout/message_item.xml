@@ -50,5 +50,6 @@
         android:layout_alignParentTop="true"
         android:layout_below="@+id/time"
         android:background="@drawable/unread_count_bg"
+        android:gravity="center"
         android:textSize="@dimen/fontRemark" />
 </RelativeLayout>

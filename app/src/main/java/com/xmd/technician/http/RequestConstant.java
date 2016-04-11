@@ -76,6 +76,7 @@ public class RequestConstant {
     public static final String KEY_ICODE = "code";
     public static final String KEY_CLUB_CODE = "clubCode";
     public static final String KEY_CHANEL = "chanel";
+    public static final String KEY_LOGIN_CHANEL = "loginChanel";
 
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";

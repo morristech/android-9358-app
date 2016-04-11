@@ -164,7 +164,7 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
         params.put(RequestConstant.KEY_PASSWORD, mPassword);
         params.put(RequestConstant.KEY_ICODE, mSecurityCodeEdt.getText().toString());
         params.put(RequestConstant.KEY_CLUB_CODE, mClubInviteEdt.getText().toString());
-        params.put(RequestConstant.KEY_CHANEL, "android"+AppConfig.getAppVersionCode());
+        params.put(RequestConstant.KEY_LOGIN_CHANEL, "android"+AppConfig.getAppVersionCode());
 
         showProgressDialog(getString(R.string.register));
 
@@ -201,7 +201,9 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
                     if (!EMClient.getInstance().updateCurrentUserNick(loginResult.name)) {
                         Logger.e("LoginActivity", "update current user nick fail");
                     }
-                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    Intent intent = new Intent(RegisterActivity.this, InfoInputActivity.class);
+                    intent.putExtra(InfoInputActivity.EXTRA_PHONE_NUM, loginResult.phoneNum);
+                    startActivity(intent);
                     finish();
                 }
 

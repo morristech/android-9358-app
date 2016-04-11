@@ -206,8 +206,8 @@ public class RequestController extends AbstractController {
     private void register(Map<String, String> params){
         Call<LoginResult> call = getSpaService().register(params.get(RequestConstant.KEY_MOBILE),
                 params.get(RequestConstant.KEY_PASSWORD), params.get(RequestConstant.KEY_ICODE),
-                params.get(RequestConstant.KEY_CLUB_CODE),params.get(RequestConstant.KEY_CHANEL),
-                RequestConstant.SESSION_TYPE);
+                params.get(RequestConstant.KEY_CLUB_CODE),params.get(RequestConstant.KEY_LOGIN_CHANEL),
+                RequestConstant.SESSION_TYPE, RequestConstant.SESSION_TYPE);
 
         call.enqueue(new Callback<LoginResult>() {
             @Override

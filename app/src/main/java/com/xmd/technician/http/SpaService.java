@@ -69,11 +69,12 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_REGISTER)
     Call<LoginResult> register(@Field(RequestConstant.KEY_MOBILE) String mobile,
-                              @Field(RequestConstant.KEY_PASSWORD) String passWord,
-                              @Field(RequestConstant.KEY_ICODE) String iCode,
+                               @Field(RequestConstant.KEY_PASSWORD) String passWord,
+                               @Field(RequestConstant.KEY_ICODE) String iCode,
                                @Field(RequestConstant.KEY_CLUB_CODE) String clubCode,
+                               @Field(RequestConstant.KEY_LOGIN_CHANEL) String loginChannel,
                                @Field(RequestConstant.KEY_CHANEL) String channel,
-                              @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @GET(RequestConstant.URL_EDIT_INFO)
     Call<TechEditResult> getTechEditInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
@@ -112,10 +113,10 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_RESET_PASSWORD)
     Call<BaseResult> resetPassword(@Field(RequestConstant.KEY_USERNAME) String username,
-                              @Field(RequestConstant.KEY_PASSWORD) String passWord,
-                              @Field(RequestConstant.KEY_ICODE) String iCode,
+                                   @Field(RequestConstant.KEY_PASSWORD) String passWord,
+                                   @Field(RequestConstant.KEY_ICODE) String iCode,
                                    @Field(RequestConstant.KEY_TOKEN) String userToken,
-                              @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
 
     /**
@@ -149,6 +150,7 @@ public interface SpaService {
                                  @Field(RequestConstant.KEY_PROCESS_TYPE) String processType,
                                  @Field(RequestConstant.KEY_ID) String id,
                                  @Field(RequestConstant.KEY_REASON) String reason);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_ICODE)
     Call<BaseResult> getICode(@Field(RequestConstant.KEY_MOBILE) String mobile);
@@ -190,8 +192,9 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_DELETE_ALBUM)
     Call<AlbumResult> deleteAlbum(@Field(RequestConstant.KEY_ID) String imgFile,
-                                    @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                    @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+                                  @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                  @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_UPDATE_WORKSTATUS)
     Call<BaseResult> updateWorkStatus(@Field(RequestConstant.KEY_STATUS) String status,
@@ -223,7 +226,6 @@ public interface SpaService {
                                                @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
     /**************************** Push **************************/
     /**
-     *
      * @param userId
      * @param userType
      * @param appType
@@ -240,7 +242,6 @@ public interface SpaService {
                                        @Field(RequestConstant.KEY_SECRET) String secret);
 
     /**
-     *
      * @param userToken
      * @param sessionType
      * @param clientId

@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -76,5 +78,23 @@ public class Util {
         byte[] bytes = baoStream.toByteArray();
         imgFile = "data:image/png;base64," + Base64.encodeToString(bytes, Base64.DEFAULT);
         return imgFile;
+    }
+
+    /**
+     * 检测网络是否可用
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isNetWorkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable() && mNetworkInfo.isConnected();
+            }
+        }
+
+        return false;
     }
 }
