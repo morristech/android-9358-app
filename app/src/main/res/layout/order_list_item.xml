@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/order_list_item_height"
+    android:background="@color/list_item_bg"
+    android:orientation="horizontal"
+    android:padding="@dimen/small_space">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.xmd.technician.widget.CircleImageView
+            android:id="@+id/user_head_url"
+            android:layout_width="@dimen/order_list_item_circle_image"
+            android:layout_height="@dimen/order_list_item_circle_image"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon01" />
+
+        <LinearLayout
+            android:layout_width="@dimen/zero"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mrs. Text"
+                android:textSize="@dimen/order_list_item_user_name_size" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_space"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_list_item_order_time_desc"
+                    android:textSize="@dimen/order_list_item_text_size" />
+
+                <TextView
+                    android:id="@+id/order_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/order_list_item_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_space"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_list_item_down_payment_desc"
+                    android:textSize="@dimen/order_list_item_text_size" />
+
+                <TextView
+                    android:id="@+id/order_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/order_list_item_text_size" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            style="@style/list_item_vertical_line"
+            android:layout_marginBottom="@dimen/small_space"
+            android:layout_marginTop="@dimen/small_space" />
+
+        <FrameLayout
+            android:layout_width="@dimen/order_list_item_status_section"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/small_space">
+
+            <LinearLayout
+                android:id="@+id/submit_section"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/order_list_item_status_label"
+                    android:textColor="@color/order_list_item_status_label_color"
+                    android:textSize="@dimen/order_list_item_text_size" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/remain_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/order_list_item_remain_time_color"
+                        android:textSize="@dimen/order_list_item_remain_time_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/order_list_item_minutes"
+                        android:textSize="@dimen/order_list_item_text_size" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/other_status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="@dimen/order_list_item_other_status_size" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/operation"
+        android:layout_width="@dimen/order_list_item_operation_section_width"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/negative"
+            android:layout_width="@dimen/order_list_item_operation_item_width"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_operation_negative_button_bg"
+            android:textColor="@color/selector_operation_negative_button_text" />
+
+        <Button
+            android:id="@+id/positive"
+            android:layout_width="@dimen/order_list_item_operation_item_width"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_operation_positive_button_bg"
+            android:textColor="@color/selector_operation_positive_button_text" />
+    </LinearLayout>
+
+
+</LinearLayout>

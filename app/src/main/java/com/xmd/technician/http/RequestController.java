@@ -19,6 +19,7 @@ import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.ModifyPasswordResult;
 import com.xmd.technician.http.gson.OrderListResult;
+import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
@@ -253,7 +254,7 @@ public class RequestController extends AbstractController {
      */
     private void doGetOrderList(Map<String, String> params) {
         Call<OrderListResult> call = getSpaService().getOrderList(SharedPreferenceHelper.getUserToken(),
-                RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_STATUS),
+                RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_FILTER_ORDER),
                 params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
 
         call.enqueue(new TokenCheckedCallback<OrderListResult>() {
@@ -285,7 +286,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {
-                /*RxBus.getInstance().post(new OrderManageResult());*/
+                RxBus.getInstance().post(new OrderManageResult());
             }
 
             @Override

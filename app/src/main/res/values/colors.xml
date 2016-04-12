@@ -16,4 +16,32 @@
     <color name="colorBtnNormal">#333333</color>
     <color name="colorBtnSelector">#ff6666</color>
     <color name="colorBtnChecked">#fb5549</color>
+
+    <color name="border_line_color">@color/colorPrimary</color>
+    <color name="dialog_line_gray">#DDD</color>
+
+    <color name="tab_bg">#FFF</color>
+    <color name="tab_text_checked_color">#fb5549</color>
+    <color name="tab_text_normal_color">#333</color>
+
+    <color name="list_item_bg">#FFF</color>
+    <color name="list_item_line_color">#dadada</color>
+    <color name="list_item_label_color">#999</color>
+    <color name="list_item_value_color">#333</color>
+    <color name="list_item_number_color">#ff9d09</color>
+
+    <color name="order_list_item_status_label_color">#14bfad</color>
+    <color name="order_list_item_remain_time_color">#fE6765</color>
+
+    <!-- listitem operation button -->
+    <color name="operation_button_positive_bg_normal">#fE6765</color>
+    <color name="operation_button_positive_text_normal">#FFF</color>
+    <color name="operation_button_positive_text_pressed">#FFF</color>
+
+    <color name="operation_button_negative_bg_normal">#CAC7CB</color>
+    <color name="operation_button_negative_text_normal">#FFF</color>
+    <color name="operation_button_negative_text_pressed">#FFF</color>
+
+    <color name="operation_button_bg_pressed">#c9443a</color>
+
 </resources>

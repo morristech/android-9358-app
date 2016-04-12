@@ -10,7 +10,7 @@ import com.xmd.technician.http.RequestConstant;
  */
 public class SharedPreferenceHelper {
 
-    private static final String SETTING_PREFERENCE = "setting_preference";
+    private static final String SETTING_PREFERENCE = "00DF60D934C0D482F0C950B6D3605F50"; //setting_preference
 
     private static SharedPreferences mSettingPreference;
 
@@ -29,12 +29,6 @@ public class SharedPreferenceHelper {
 
     public static void initialize() {
         mSettingPreference = TechApplication.getAppContext().getSharedPreferences(SETTING_PREFERENCE, Activity.MODE_PRIVATE);
-        // In 2.3.0, doesn't encrypt the keys
-        mSettingPreference.edit().remove("userAccount")
-                .remove("userToken")
-                .remove("userName")
-                .remove("serverHost")
-                .remove("lastAutoCheckUpgrade").apply();
     }
 
     public static void setUserAccount(String userAccount) {

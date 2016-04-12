@@ -1,0 +1,56 @@
+<resources>
+
+    <style name="vertical_line">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="list_item_vertical_line" parent="vertical_line">
+        <item name="android:background">@color/list_item_line_color</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+    </style>
+
+    <style name="line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
+    <style name="border_line" parent="line">
+        <item name="android:background">@color/border_line_color</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <style name="list_item_line" parent="line">
+        <item name="android:background">@color/list_item_line_color</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+    </style>
+
+    <style name="dialog_line" parent="line">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <style name="dialog_gray_line" parent="line">
+        <item name="android:background">@color/dialog_line_gray</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <!-- 设置该属性解决空白部分-->
+    <style name="MyToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+    </style>
+
+    <style name="tab_radio_button">
+        <item name="android:padding">8dp</item>
+        <item name="android:background">@color/tab_bg</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/selector_tab_radio_button_text</item>
+    </style>
+
+</resources>

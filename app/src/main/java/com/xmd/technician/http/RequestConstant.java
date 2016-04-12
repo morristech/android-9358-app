@@ -8,7 +8,7 @@ public class RequestConstant {
     /*********************************************************************************************/
     /*                                           urls                                            */
     /*********************************************************************************************/
-    public static final String SERVER_HOST = "http://192.168.1.210:9880";
+    public static final String SERVER_HOST = "http://192.168.2.36:8051";
 //    public static final String SERVER_HOST = "http://spa.93wifi.com";
 
     public static final String BASE_URL = "/spa-manager/api";
@@ -27,8 +27,7 @@ public class RequestConstant {
     public static final String URL_COUPON_USE_DATA = BASE_URL + "/v2/club/redpacket/consumes";
 
     public static final String URL_FEEDBACK_CREATE = BASE_URL + "/v2/manager/club/feedback/create";
-    public static final String URL_GET_ORDER_LIST = BASE_URL + "/v1/profile/tech/order/list";
-    public static final String URL_MANAGE_ORDER = BASE_URL + "/v1/profile/tech/order/";
+
     public static final String URL_NEW_ORDER_COUNT = BASE_URL + "/v2/manager/club/newordercount";
 
     public static final String URL_GETUI_BIND_CLIENT_ID = BASE_URL + "/v2/push/clientid";
@@ -42,6 +41,9 @@ public class RequestConstant {
     public static final String URL_UPLOAD_AVATAR = BASE_URL + "/v1/profile/tech/avatar/base64/upload_a";
     public static final String URL_UPDATE_WORKSTATUS = BASE_URL + "/v1/profile/tech/status/update";
     public static final String URL_GET_SERVICE_LIST = BASE_URL + "/v1/profile/tech/service";
+
+    public static final String URL_GET_ORDER_LIST = BASE_URL + "/v2/tech/profile/orders";
+    public static final String URL_MANAGE_ORDER = BASE_URL + "/v2/tech/profile/order/manage";
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -101,6 +103,11 @@ public class RequestConstant {
     public static final String KEY_APP_MODEL = "appModel";
     public static final String KEY_APP_BRAND = "appBrand";
     public static final String KEY_APP_IMEI = "appImei";
+
+
+    public static final String KEY_FILTER_ORDER = "filterOrder";
+
+
 
     /*********************************************************************************************/
     /*                                        configs                                            */

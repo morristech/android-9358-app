@@ -11,6 +11,7 @@ import com.bugtags.library.BugtagsOptions;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.igexin.sdk.PushManager;
+import com.xmd.technician.common.AppUncaughtExceptionHandler;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.msgctrl.ControllerRegister;
@@ -33,8 +34,10 @@ public class TechApplication extends Application{
                 // for getui push service, do nothing;
                 Logger.v("getui process Start !");
             } else {
-                Logger.v("manager initialize !");
+                Logger.v("Technician initialize !");
                 appContext = getApplicationContext();
+
+                Thread.setDefaultUncaughtExceptionHandler(new AppUncaughtExceptionHandler(appContext));
 
                 long start = System.currentTimeMillis();
 
@@ -45,12 +48,15 @@ public class TechApplication extends Application{
 
                 PushManager.getInstance().initialize(this);
 
-                BugtagsOptions options = new BugtagsOptions.Builder().
-                        trackingCrashLog(true).//是否收集crash
-                        trackingConsoleLog(true).//是否收集console log
-                        trackingUserSteps(true).//是否收集用户操作步骤
-                        build();
-                Bugtags.start(AppConfig.BUGTAGS_APP_KEY, this, Bugtags.BTGInvocationEventBubble, options);
+//                BugtagsOptions options = new BugtagsOptions.Builder().
+//                        trackingCrashLog(true).//是否收集crash
+//                        trackingConsoleLog(true).//是否收集console log
+//                        trackingUserSteps(true).//是否收集用户操作步骤
+//                        build();
+//                Bugtags.start(AppConfig.BUGTAGS_APP_KEY, this, Bugtags.BTGInvocationEventBubble, options);
+
+
+
 
                 EMOptions emOptions = new EMOptions();
                 EMClient.getInstance().init(this, emOptions);

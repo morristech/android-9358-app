@@ -46,7 +46,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Bind(R.id.empty_view_widget) EmptyView mEmptyView;
     @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mRefreshLayout;
     @Bind(R.id.et_sendmessage) EditText mSendMsgEd;
-    @Bind(R.id.list_view) RecyclerView mMsgListView;
+    @Bind(R.id.chat_list) RecyclerView mMsgListView;
     @Bind(R.id.extend_menu_container) FrameLayout mChatExtendMenuContainer;
     @Bind(R.id.emojicon_menu_container) GridView mEmojiconMenuContainer;
 

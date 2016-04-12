@@ -86,4 +86,22 @@
     <string name="coupon_commission">优惠券提成</string>
     <string name="clock_commission">点钟券提成</string>
 
+    <string name="pending_order">待接受</string>
+    <string name="accepted_order">已接受</string>
+    <string name="completed_order">已完成</string>
+    <string name="order_list_item_loading">点击或者上拉，加载更多订单</string>
+    <string name="order_list_item_no_more"> ^_^, 没有更多订单</string>
+    <string name="order_list_item_empty">=_=!!, 还没有订单哦</string>
+
+    <string name="order_list_item_order_time_desc">预约时间:</string>
+    <string name="order_list_item_down_payment_desc">预付款:</string>
+
+    <string name="order_list_item_operation_accept">接受</string>
+    <string name="order_list_item_operation_reject">拒绝</string>
+    <string name="order_list_item_operation_complete">完成</string>
+    <string name="order_list_item_operation_expire">失效</string>
+
+    <string name="order_list_item_status_label">剩余接单时间</string>
+    <string name="order_list_item_minutes">分钟</string>
+
 </resources>

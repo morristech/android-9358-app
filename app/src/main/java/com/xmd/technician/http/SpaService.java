@@ -106,7 +106,7 @@ public interface SpaService {
     /**
      * @param userToken
      * @param sessionType
-     * @param orderType
+     * @param filterOrder
      * @param page
      * @param pageSize
      * @return
@@ -115,7 +115,7 @@ public interface SpaService {
     @POST(RequestConstant.URL_GET_ORDER_LIST)
     Call<OrderListResult> getOrderList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                       @Field(RequestConstant.KEY_STATUS) String orderType,
+                                       @Field(RequestConstant.KEY_FILTER_ORDER) String filterOrder,
                                        @Field(RequestConstant.KEY_PAGE) String page,
                                        @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 

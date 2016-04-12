@@ -23,7 +23,7 @@ import rx.Subscription;
 
 public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
 
-    @Bind(R.id.list_view) RecyclerView mListView;
+    @Bind(R.id.comment_list) RecyclerView mListView;
     @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
 
     private CommentAdapter mAdapter;
@@ -33,7 +33,7 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_list);
+        setContentView(R.layout.activity_comment);
 
         ButterKnife.bind(this);
 

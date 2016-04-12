@@ -3,6 +3,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="zero">0dp</dimen>
+    <dimen name="line_width">1dp</dimen>
+    <dimen name="inter_space">12dp</dimen>
+    <dimen name="small_space">5dp</dimen>
+
     <dimen name="fontBig">32sp</dimen>
     <dimen name="fontHead">20sp</dimen>
     <dimen name="fontTitle">16sp</dimen>
@@ -43,4 +48,14 @@
     <dimen name="default_dialog_width">280dp</dimen>
     <dimen name="button_radius">4dp</dimen>
     <dimen name="coupon_item_height">58dp</dimen>
+
+    <dimen name="order_list_item_height">84dp</dimen>
+    <dimen name="order_list_item_circle_image">48dp</dimen>
+    <dimen name="order_list_item_status_section">96dp</dimen>
+    <dimen name="order_list_item_user_name_size">16sp</dimen>
+    <dimen name="order_list_item_text_size">14sp</dimen>
+    <dimen name="order_list_item_operation_section_width">168dp</dimen>
+    <dimen name="order_list_item_operation_item_width">84dp</dimen>
+    <dimen name="order_list_item_remain_time_size">20sp</dimen>
+    <dimen name="order_list_item_other_status_size">16sp</dimen>
 </resources>

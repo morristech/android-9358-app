@@ -40,7 +40,7 @@ import butterknife.ButterKnife;
 public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,MsgListAdapter.onMsgItemClickListener {
 
     @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.list_view) RecyclerView mMsgListView;
+    @Bind(R.id.message_list) RecyclerView mMsgListView;
     @Bind(R.id.header_container) FrameLayout mHeadContainer;
 
     private MsgListAdapter mAdapter;
@@ -49,7 +49,7 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_list, container, false);
+        return inflater.inflate(R.layout.fragment_message, container, false);
     }
 
     @Override
