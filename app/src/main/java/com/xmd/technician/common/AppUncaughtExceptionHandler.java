@@ -51,7 +51,7 @@ public class AppUncaughtExceptionHandler implements Thread.UncaughtExceptionHand
             @Override
             public void run() {
                 Looper.prepare();
-                Toast.makeText(mContext,"T_T, 程序崩溃了，将重新启动", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext,"T_T, 程序崩溃了，将重新启动", Toast.LENGTH_SHORT).show();
                 Looper.loop();
             }
         }.start();

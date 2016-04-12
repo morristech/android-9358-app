@@ -13,14 +13,19 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.R;
+import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.SmileUtils;
+import com.xmd.technician.chat.chatview.BaseChatView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,7 +89,7 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             conversationHolder.mName.setText(conversation.getUserName());
             if(conversation.getUnreadMsgCount() > 0){
-                conversationHolder.mUnread.setText(conversation.getUnreadMsgCount());
+                conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
                 conversationHolder.mUnread.setVisibility(View.VISIBLE);
             }else {
                 conversationHolder.mUnread.setVisibility(View.INVISIBLE);
@@ -93,10 +98,15 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if(conversation.getAllMsgCount() != 0){
                 // 把最后一条消息的内容作为item的message内容
                 EMMessage lastMessage = conversation.getLastMessage();
-                EMTextMessageBody txtBody = (EMTextMessageBody) lastMessage.getBody();
-                Spannable span = SmileUtils.getSmiledText(mContext, txtBody.getMessage());
+                Spannable span = SmileUtils.getSmiledText(mContext, CommonUtils.getMessageDigest(lastMessage, mContext));
                 conversationHolder.mContent.setText(span, TextView.BufferType.SPANNABLE);
                 conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
+                try {
+                    Glide.with(mContext).load(lastMessage.getStringAttribute("header")).into(conversationHolder.mAvatar);
+                    conversationHolder.mName.setText(lastMessage.getStringAttribute("name"));
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
             }
             if(mOnMsgItemClickListener != null){
                 holder.itemView.setOnClickListener(v -> mOnMsgItemClickListener.onMsgItemClick(conversation));

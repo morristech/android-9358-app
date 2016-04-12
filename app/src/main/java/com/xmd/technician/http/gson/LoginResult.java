@@ -14,4 +14,5 @@ public class LoginResult extends BaseResult{
     public String inviteCode;
     public String emchatId;
     public String emchatPassword;
+    public String message;
 }

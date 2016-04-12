@@ -3,18 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.xmd.technician.window.BrowserActivity">
 
-    <include layout="@layout/activity_list"
+    <include layout="@layout/toolbar" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/input_menu"/>
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/input_menu">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_green_light"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide"
         android:layout_above="@+id/input_menu"/>
 
     <RelativeLayout
@@ -22,76 +31,103 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingTop="4dp">
+        android:layout_marginBottom="@dimen/search_margin">
 
         <Button
             android:id="@+id/btn_send"
-            android:layout_width="wrap_content"
-            android:layout_height="32dip"
+            android:layout_width="@dimen/send_msg_btn_width"
+            android:layout_height="@dimen/search_view_height"
             android:layout_alignParentRight="true"
-
+            android:layout_marginRight="@dimen/search_margin"
+            android:layout_marginTop="@dimen/search_margin"
+            android:minHeight="0dp"
+            android:drawableLeft="@drawable/fas"
+            android:paddingLeft="@dimen/search_margin"
+            android:background="@drawable/login_button_main_selector"
             android:text="@string/button_send"
-            android:textColor="#666666"
-            android:textSize="16sp" />
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/fontTitle" />
 
         <EditText
             android:id="@+id/et_sendmessage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/search_view_height"
             android:layout_toLeftOf="@+id/btn_send"
+            android:layout_margin="@dimen/search_margin"
+            android:background="@android:drawable/editbox_background_normal"
             android:maxLines="3"
-            android:minHeight="40dp"
-            android:paddingBottom="3dp"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
-            android:paddingTop="3dp"
-            android:textSize="18sp" />
+            android:paddingLeft="@dimen/search_margin"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontTitle"
+            android:hint="@string/app_info_title"/>
 
-        <Button
-            android:id="@+id/btn_photo"
-            android:layout_width="32dip"
-            android:layout_height="32dip"
-            android:layout_below="@id/et_sendmessage"
-            android:layout_marginLeft="10dip"
-            />
+        <LinearLayout
+            android:id="@+id/menu_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/personal_item_icon_height"
+            android:layout_below="@+id/et_sendmessage"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/btn_photo"
+                android:layout_width="@dimen/personal_item_icon_height"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/personal_padding"
+                android:layout_marginRight="@dimen/personal_padding"
+                android:scaleType="fitCenter"
+                android:background="@drawable/menu_picture_selector" />
 
-        <Button
-            android:id="@+id/btn_face"
-            android:layout_width="32dip"
-            android:layout_height="32dip"
-            android:layout_toRightOf="@+id/btn_photo"
-            android:layout_below="@id/et_sendmessage"
-            android:layout_marginLeft="10dip" />
+            <ImageButton
+                android:id="@+id/btn_face"
+                android:layout_width="@dimen/personal_item_icon_height"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/personal_padding"
+                android:layout_marginRight="@dimen/personal_padding"
+                android:scaleType="fitCenter"
+                android:background="@drawable/menu_face_selector" />
 
-        <Button
-            android:id="@+id/btn_common_msg"
-            android:layout_width="32dip"
-            android:layout_height="32dip"
-            android:layout_toRightOf="@+id/btn_face"
-            android:layout_below="@id/et_sendmessage"
-            android:layout_marginLeft="10dip" />
+            <ImageButton
+                android:id="@+id/btn_common_msg"
+                android:layout_width="@dimen/personal_item_icon_height"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/personal_padding"
+                android:layout_marginRight="@dimen/personal_padding"
+                android:scaleType="fitCenter"
+                android:background="@drawable/menu_common_selector" />
 
-        <Button
-            android:id="@+id/btn_common_reward"
-            android:layout_width="32dip"
-            android:layout_height="32dip"
-            android:layout_toRightOf="@+id/btn_common_msg"
-            android:layout_below="@id/et_sendmessage"
-            android:layout_marginLeft="10dip" />
+            <ImageButton
+                android:id="@+id/btn_common_reward"
+                android:layout_width="@dimen/personal_item_icon_height"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/personal_padding"
+                android:layout_marginRight="@dimen/personal_padding"
+                android:scaleType="fitCenter"
+                android:background="@drawable/menu_reward_selector" />
 
-        <Button
-            android:id="@+id/btn_common_clock"
-            android:layout_width="32dip"
-            android:layout_height="32dip"
-            android:layout_toRightOf="@+id/btn_common_reward"
-            android:layout_below="@id/et_sendmessage"
-            android:layout_marginLeft="10dip" />
+            <ImageButton
+                android:id="@+id/btn_common_clock"
+                android:layout_width="@dimen/personal_item_icon_height"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/personal_padding"
+                android:layout_marginRight="@dimen/personal_padding"
+                android:scaleType="fitCenter"
+                android:background="@drawable/menu_clock_selector" />
+
+            <ImageButton
+                android:id="@+id/btn_common_coupon"
+                android:layout_width="@dimen/personal_item_icon_height"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/personal_padding"
+                android:layout_marginRight="@dimen/personal_padding"
+                android:scaleType="fitCenter"
+                android:background="@drawable/menu_coupon_selector" />
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/extend_menu_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_face"
+            android:layout_below="@+id/menu_layout"
+            android:layout_marginTop="@dimen/search_margin"
             android:visibility="gone">
             <GridView
                 android:id="@+id/emojicon_menu_container"

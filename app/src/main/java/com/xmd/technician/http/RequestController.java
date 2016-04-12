@@ -8,11 +8,13 @@ import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
 import com.xmd.technician.http.gson.CommentResult;
+import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.FeedbackResult;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.LoginResult;
@@ -20,10 +22,13 @@ import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.ModifyPasswordResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
+import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TokenExpiredResult;
+import com.xmd.technician.http.gson.UpdateServiceResult;
+import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.http.gson.UpdateWorkTimeResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
@@ -66,6 +71,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_MODIFY_PASSWORD:
                 modifyPassWord((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_RESET_PASSWORD:
+                resetPassWord((Map<String, String>) msg.obj);
+                break;
             case MsgDef.MSG_DEF_MANAGE_ORDER:
                 doManageOrder((Map<String, String>) msg.obj);
                 break;
@@ -96,6 +104,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO:
                 getTechCurrentInfo();
                 break;
+            case MsgDef.MSG_DEF_UPDATE_TECH_INFO:
+                updateTechInfo((Map<String, String>) msg.obj);
+                break;
             case MsgDef.MSG_DEF_REGISTER:
                 register((Map<String, String>) msg.obj);
                 break;
@@ -121,10 +132,19 @@ public class RequestController extends AbstractController {
                 updateWorkStatus((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST:
-                getServiceList((Map<String, String>) msg.obj);
+                getServiceList();
+                break;
+            case MsgDef.MSG_DEF_UPDATE_SERVICE_ITEM_LIST:
+                updateServiceList((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT:
                 getCommentOrderRedPkCount();
+                break;
+            case MsgDef.MSG_DEF_GET_ACCOUNT_MONEY:
+                getAccountMoney();
+                break;
+            case MsgDef.MSG_DEF_GET_CONSUME_DETAIL:
+                getConsumeDetail((Map<String, String>) msg.obj);
                 break;
         }
 
@@ -185,14 +205,15 @@ public class RequestController extends AbstractController {
 
     //不能正常工作
     private void register(Map<String, String> params){
-        Call<BaseResult> call = getSpaService().register(params.get(RequestConstant.KEY_MOBILE),
-                params.get(RequestConstant.KEY_PASSWORD),
-                params.get(RequestConstant.KEY_ICODE), RequestConstant.SESSION_TYPE);
+        Call<LoginResult> call = getSpaService().register(params.get(RequestConstant.KEY_MOBILE),
+                params.get(RequestConstant.KEY_PASSWORD), params.get(RequestConstant.KEY_ICODE),
+                params.get(RequestConstant.KEY_CLUB_CODE),params.get(RequestConstant.KEY_LOGIN_CHANEL),
+                RequestConstant.SESSION_TYPE, RequestConstant.SESSION_TYPE);
 
-        call.enqueue(new Callback<BaseResult>() {
+        call.enqueue(new Callback<LoginResult>() {
             @Override
-            public void onResponse(Call<BaseResult> call, Response<BaseResult> response) {
-                BaseResult result = response.body();
+            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                LoginResult result = response.body();
                 if (result != null) {
                     RxBus.getInstance().post(result);
                 } else {
@@ -205,13 +226,12 @@ public class RequestController extends AbstractController {
             }
 
             @Override
-            public void onFailure(Call<BaseResult> call, Throwable t) {
+            public void onFailure(Call<LoginResult> call, Throwable t) {
                 RxBus.getInstance().post(t);
             }
         });
     }
 
-    //不能正常工作
     private void modifyPassWord(Map<String, String> params){
         Call<BaseResult> call = getSpaService().modifyPassword(params.get(RequestConstant.KEY_OLD_PASSWORD),
                 params.get(RequestConstant.KEY_NEW_PASSWORD),
@@ -221,6 +241,36 @@ public class RequestController extends AbstractController {
             @Override
             protected void postResult(BaseResult result) {
                 RxBus.getInstance().post(new ModifyPasswordResult());
+            }
+        });
+    }
+
+    //不能正常工作
+    private void resetPassWord(Map<String, String> params){
+        Call<BaseResult> call = getSpaService().resetPassword(params.get(RequestConstant.KEY_USERNAME),
+                params.get(RequestConstant.KEY_PASSWORD),
+                params.get(RequestConstant.KEY_ICODE),
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+
+        call.enqueue(new Callback<BaseResult>() {
+            @Override
+            public void onResponse(Call<BaseResult> call, Response<BaseResult> response) {
+                BaseResult result = response.body();
+                if (response.code() == 204 || (result != null && result.statusCode == 200)) {
+                    RxBus.getInstance().post(new ResetPasswordResult());
+                } else {
+                    try {
+                        RxBus.getInstance().post(new Throwable(response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResult> call, Throwable t) {
+                RxBus.getInstance().post(t);
             }
         });
     }
@@ -344,6 +394,18 @@ public class RequestController extends AbstractController {
         });
     }
 
+    private void updateTechInfo(Map<String, String> params){
+        Call<BaseResult> call = getSpaService().updateTechInfo(params.get(RequestConstant.KEY_USER),
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+                RxBus.getInstance().post(new UpdateTechInfoResult());
+            }
+        });
+    }
+
     private void getWorkTime(){
         Call<WorkTimeResult> call = getSpaService().getWorkTime(SharedPreferenceHelper.getUserToken(),RequestConstant.SESSION_TYPE);
 
@@ -416,14 +478,25 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getServiceList(Map<String, String> params){
-        Call<ServiceResult> call = getSpaService().getServiceList(params.get(RequestConstant.KEY_TIME_STAMP),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+    private void getServiceList(){
+        Call<ServiceResult> call = getSpaService().getServiceList(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<ServiceResult>() {
             @Override
             protected void postResult(ServiceResult result) {
                 RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    private void updateServiceList(Map<String, String> params){
+        Call<BaseResult> call = getSpaService().updateServiceList(params.get(RequestConstant.KEY_IDS),
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+                RxBus.getInstance().post(new UpdateServiceResult());
             }
         });
     }
@@ -439,24 +512,43 @@ public class RequestController extends AbstractController {
         });
     }
 
+    private void getAccountMoney(){
+        Call<AccountMoneyResult> call = getSpaService().getAccountMoney(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<AccountMoneyResult>() {
+            @Override
+            protected void postResult(AccountMoneyResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    private void getConsumeDetail(Map<String, String> params){
+        Call<ConsumeDetailResult> call = getSpaService().getConsumeDetail(params.get(RequestConstant.KEY_CONSUME_TYPE),
+                params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<ConsumeDetailResult>() {
+            @Override
+            protected void postResult(ConsumeDetailResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
     /**
      * submit feedback
      *
      * @param params
      */
     private void doSubmitFeedback(Map<String, String> params) {
-        Call<BaseResult> call = getSpaService().submitFeedback(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE,
-                params.get(RequestConstant.KEY_COMMENTS));
+        Call<BaseResult> call = getSpaService().submitFeedback(params.get(RequestConstant.KEY_COMMENTS),
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {
                 RxBus.getInstance().post(new FeedbackResult());
-            }
-
-            @Override
-            protected void postError(String errorMsg) {
-                Logger.v("submitFeedback: " + errorMsg);
             }
         });
     }

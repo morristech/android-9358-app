@@ -10,8 +10,12 @@
         android:layout_height="@dimen/search_view_height"
         android:paddingLeft="@dimen/search_padding_left"
         android:background="@android:drawable/editbox_background_normal"
-        android:textColor="@color/colorRemark"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:singleLine="true"
+        android:textColor="@color/colorBody"
         android:textSize="@dimen/fontRemark"
+        android:textColorHint="@color/colorRemark"
         android:hint="@string/search_hint"/>
 
     <ImageButton

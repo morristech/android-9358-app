@@ -12,7 +12,7 @@
         android:paddingLeft="@dimen/app_default_padding"
         android:text="请选择工作时间"
         android:textColor="@color/colorMain"
-        android:textSize="@dimen/fontTitle" />
+        android:textSize="@dimen/fontHead" />
 
     <View
         android:layout_width="match_parent"
@@ -90,7 +90,7 @@
             android:background="@drawable/default_button_background_selector"
             android:text="@string/cancel"
             android:textColor="@color/work_status_selector_bg"
-            android:textSize="@dimen/fontHead" />
+            android:textSize="@dimen/fontTitle" />
 
         <View
             android:layout_width="@dimen/line_divide_height"
@@ -105,7 +105,7 @@
             android:background="@drawable/default_button_background_selector"
             android:text="@string/confirm"
             android:textColor="@color/work_status_selector_bg"
-            android:textSize="@dimen/fontHead" />
+            android:textSize="@dimen/fontTitle" />
 
     </LinearLayout>
 </LinearLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackground">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_button_height"
+        android:layout_marginLeft="@dimen/personal_margin"
+        android:gravity="center"
+        android:text="@string/personal_fragment_button_invite"
+        android:textColor="@color/colorBody"
+        android:textSize="@dimen/fontBody" />
+
+    <View
+        android:id="@+id/invite_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <LinearLayout
+        android:id="@+id/invite_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_button_height"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/invite_club"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/personal_padding"
+            android:background="@android:drawable/editbox_background_normal"
+            android:gravity="center"
+            android:inputType="number"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody"
+            android:textColorHint="@color/colorRemark"
+            android:hint="@string/invite_club"/>
+
+        <EditText
+            android:id="@+id/invite_tech"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/personal_margin"
+            android:layout_marginRight="@dimen/personal_padding"
+            android:background="@android:drawable/editbox_background_normal"
+            android:gravity="center"
+            android:inputType="number"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody"
+            android:textColorHint="@color/colorRemark"
+            android:hint="@string/invite_tech"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/personal_margin"
+        android:layout_marginLeft="@dimen/personal_padding"
+        android:layout_marginRight="@dimen/personal_padding"
+        android:layout_marginBottom="@dimen/personal_padding"
+        android:background="@drawable/login_button_main_selector"
+        android:enabled="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fontTitle"
+        android:text="@string/confirm"/>
+</LinearLayout>

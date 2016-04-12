@@ -1,18 +1,20 @@
 package com.xmd.technician.window;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -30,8 +32,9 @@ import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.widget.EmptyView;
+import com.xmd.technician.common.Util;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,8 +45,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+    protected static final int REQUEST_CODE_LOCAL = 1;
 
-    @Bind(R.id.empty_view_widget) EmptyView mEmptyView;
     @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mRefreshLayout;
     @Bind(R.id.et_sendmessage) EditText mSendMsgEd;
     @Bind(R.id.chat_list) RecyclerView mMsgListView;
@@ -69,8 +72,12 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         mToChatUsername = getIntent().getExtras().getString(ChatConstant.EXTRA_USER_ID);
 
+        setTitle(mToChatUsername);
+        setBackVisible(true);
+
         mInputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
+        mRefreshLayout.setColorSchemeResources(R.color.colorMain);
         mRefreshLayout.setOnRefreshListener(this);
 
         initEmojicon();
@@ -91,6 +98,21 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     protected void onPause() {
         super.onPause();
         EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListener);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_LOCAL) { // 发送本地图片
+                if (data != null) {
+                    Uri selectedImage = data.getData();
+                    if (selectedImage != null) {
+                        sendPicByUri(selectedImage);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -193,7 +215,10 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @OnClick(R.id.btn_photo)
     public void onToggleExtendClicked(){
-        if (mChatExtendMenuContainer.getVisibility() == View.GONE) {
+        hideKeyboard();
+        hideExtendMenuContainer();
+        Util.selectPicFromLocal(this, REQUEST_CODE_LOCAL);
+        /*if (mChatExtendMenuContainer.getVisibility() == View.GONE) {
             hideKeyboard();
             ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                 public void run() {
@@ -210,7 +235,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 mChatExtendMenuContainer.setVisibility(View.GONE);
             }
 
-        }
+        }*/
     }
 
     @OnClick(R.id.et_sendmessage)
@@ -264,18 +289,41 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
     }
 
-    /**
-     * 表情删除
-     */
-    public void onEmojiconDeleteEvent(){
-        if (!TextUtils.isEmpty(mSendMsgEd.getText())) {
-            KeyEvent event = new KeyEvent(0, 0, 0, KeyEvent.KEYCODE_DEL, 0, 0, 0, 0, KeyEvent.KEYCODE_ENDCALL);
-            mSendMsgEd.dispatchKeyEvent(event);
-        }
-    }
-
     //发送消息方法
     //==========================================================================
+
+    /**
+     * 根据图库图片uri发送图片
+     *
+     * @param selectedImage
+     */
+    protected void sendPicByUri(Uri selectedImage) {
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            cursor = null;
+
+            if (picturePath == null || picturePath.equals("null")) {
+                makeShortToast(getString(R.string.cant_find_pictures));
+                return;
+            }
+            sendImageMessage(picturePath);
+        } else {
+            File file = new File(selectedImage.getPath());
+            if (!file.exists()) {
+                makeShortToast(getString(R.string.cant_find_pictures));
+                return;
+
+            }
+            sendImageMessage(file.getAbsolutePath());
+        }
+
+    }
+
     protected void sendTextMessage(String content) {
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
         sendMessage(message);

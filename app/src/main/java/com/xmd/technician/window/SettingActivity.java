@@ -42,7 +42,7 @@ public class SettingActivity extends BaseActivity {
 
     @OnClick(R.id.settings_activity_modify_pw)
     public void gotoModifyPassword(){
-
+        startActivity(new Intent(this, ModifyPasswordActivity.class));
     }
 
     @OnClick(R.id.settings_activity_logout)

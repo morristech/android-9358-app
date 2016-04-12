@@ -2,7 +2,10 @@ package com.xmd.technician;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.text.TextUtils;
+
+import com.xmd.technician.common.FileUtils;
 
 import java.io.File;
 
@@ -43,6 +46,12 @@ public class AppConfig {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            sSDCardPath = Environment.getExternalStorageDirectory().getPath();
+            FileUtils.checkFolderExists(getAppFolder(), true);
+        }
+
     }
 
     /**

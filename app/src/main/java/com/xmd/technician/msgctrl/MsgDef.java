@@ -19,7 +19,7 @@ public class MsgDef {
 
     public static final int MSG_DEF_GET_USER_COUPON_LIST = 0x0006;
 
-    public static final int MSG_DEF_USE_COUPON = 0x0061;
+    public static final int MSG_DEF_GET_ACCOUNT_MONEY = 0x0061;
 
     public static final int MSG_DEF_TOKEN_EXPIRE = 0x0007;
 
@@ -47,7 +47,7 @@ public class MsgDef {
 
     public static final int MSG_DEF_SHOW_SHARE_PLATFORM = 0x0013;
 
-    public static final int MSG_DEF_GET_CLUB_COUPON_VIEW = 0x0014;
+    public static final int MSG_DEF_GET_CONSUME_DETAIL = 0x0014;
 
     public static final int MSG_DEF_GET_USER_COUPON_VIEW = 0x0015;
 
@@ -74,4 +74,10 @@ public class MsgDef {
     public static final int MSG_DEF_UPDATE_WORK_STATUS = 0x0021;
 
     public static final int MSG_DEF_GET_TECH_CURRENT_INFO = 0x0022;
+
+    public static final int MSG_DEF_RESET_PASSWORD = 0x0023;
+
+    public static final int MSG_DEF_UPDATE_TECH_INFO = 0x0024;
+
+    public static final int MSG_DEF_UPDATE_SERVICE_ITEM_LIST = 0x0025;
 }

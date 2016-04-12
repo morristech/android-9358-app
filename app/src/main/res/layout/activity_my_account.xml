@@ -58,7 +58,7 @@
             android:layout_marginBottom="@dimen/personal_padding"
             android:layout_marginRight="@dimen/search_margin"
             android:background="@drawable/account_button_selector_bg"
-            android:textColor="@color/work_status_selector_bg"
+            android:textColor="@color/button_press_bg"
             android:textSize="@dimen/fontBody"
             android:text="@string/consume"/>
     </android.support.v7.widget.CardView>
@@ -113,7 +113,7 @@
             android:layout_marginBottom="@dimen/personal_padding"
             android:layout_marginRight="@dimen/search_margin"
             android:background="@drawable/account_button_selector_bg"
-            android:textColor="@color/work_status_selector_bg"
+            android:textColor="@color/button_press_bg"
             android:textSize="@dimen/fontBody"
             android:text="@string/consume"/>
     </android.support.v7.widget.CardView>
@@ -168,7 +168,7 @@
             android:layout_marginBottom="@dimen/personal_padding"
             android:layout_marginRight="@dimen/search_margin"
             android:background="@drawable/account_button_selector_bg"
-            android:textColor="@color/work_status_selector_bg"
+            android:textColor="@color/button_press_bg"
             android:textSize="@dimen/fontBody"
             android:text="@string/consume"/>
     </android.support.v7.widget.CardView>

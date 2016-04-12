@@ -146,6 +146,12 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void setTitle(String title) {
+        if (mAppTitle != null) {
+            mAppTitle.setText(title);
+        }
+    }
+
     protected void makeShortToast(String str){
         Toast.makeText(TechApplication.getAppContext(), str, Toast.LENGTH_SHORT).show();
     }

@@ -23,7 +23,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,6 +102,7 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
             }
         });
 
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMain);
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 

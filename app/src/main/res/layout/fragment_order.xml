@@ -20,7 +20,6 @@
             android:layout_weight="1"
             android:text="@string/pending_order" />
 
-
         <RadioButton
             android:id="@+id/rb_accept_order"
             style="@style/tab_radio_button"
@@ -36,8 +35,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/completed_order" />
-
     </RadioGroup>
+
+    <View style="@style/line" android:background="@color/tab_bottom_line_color"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_widget"

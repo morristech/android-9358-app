@@ -9,5 +9,4 @@ import java.util.List;
  */
 public class OrderListResult extends BaseResult {
     public List<Order> respData;
-    public int pageCount;
 }

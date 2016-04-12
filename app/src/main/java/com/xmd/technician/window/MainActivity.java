@@ -1,5 +1,6 @@
 package com.xmd.technician.window;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -9,8 +10,11 @@ import android.widget.TextView;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -156,4 +160,13 @@ public class MainActivity extends BaseActivity {
 
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        // 进入聊天页面
+        Intent intent = new Intent(this, ChatActivity.class);
+        // it's single chat
+        intent.putExtra(ChatConstant.EXTRA_USER_ID, SharedPreferenceHelper.getUserName());
+        startActivity(intent);
+    }
 }

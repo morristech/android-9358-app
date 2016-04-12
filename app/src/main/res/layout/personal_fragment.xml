@@ -37,6 +37,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_name"
             android:layout_toRightOf="@+id/avatar"
+            android:layout_marginBottom="@dimen/search_margin"
+            android:background="@drawable/login_button_main_selector"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/fontNormal"
             android:text="@string/personal_fragment_button_invite"
             android:visibility="gone"/>
 
@@ -67,7 +71,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/personal_margin"
             android:layout_marginBottom="@dimen/personal_margin"
-            android:layout_marginRight="@dimen/personal_margin"
+            android:layout_marginRight="@dimen/personal_item_margin_right"
             android:background="@null"
             android:src="@drawable/icon23"
             android:scaleType="centerInside"/>
@@ -137,8 +141,7 @@
             android:layout_marginRight="@dimen/personal_item_margin_right"
             android:layout_centerVertical="true"
             android:textColor="@color/colorBtnSelector"
-            android:textSize="@dimen/fontBody"
-            android:text="98yuan"/>
+            android:textSize="@dimen/fontBody" />
     </RelativeLayout>
 
     <View
@@ -180,7 +183,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/personal_margin"
+            android:layout_marginRight="@dimen/personal_item_margin_right"
             android:src="@drawable/icon_free" />
     </RelativeLayout>
 
@@ -268,8 +271,7 @@
             android:layout_marginLeft="@dimen/personal_padding"
             android:layout_centerVertical="true"
             android:textColor="@color/colorRemark"
-            android:textSize="@dimen/fontTitle"
-            android:text="(256)"/>
+            android:textSize="@dimen/fontTitle" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -286,8 +288,7 @@
             android:layout_marginRight="@dimen/personal_item_margin_right"
             android:layout_centerVertical="true"
             android:textColor="@color/colorBtnSelector"
-            android:textSize="@dimen/fontBody"
-            android:text="+2"/>
+            android:textSize="@dimen/fontBody" />
     </RelativeLayout>
 
     <View

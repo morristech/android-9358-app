@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.xmd.technician.window.InfoInputActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <com.xmd.technician.widget.ClearableEditText
+        android:id="@+id/serial_no"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_button_height"
+        android:layout_marginLeft="@dimen/personal_padding"
+        android:layout_marginRight="@dimen/personal_padding"
+        android:drawableLeft="@drawable/personal"
+        android:drawablePadding="@dimen/personal_padding"
+        android:background="@android:color/transparent"
+        android:digits="@string/only_number_and_char"
+        android:maxLength="5"
+        android:textColor="@color/colorBody"
+        android:textSize="@dimen/fontBody"
+        android:textColorHint="@color/colorRemark"
+        android:hint="@string/input_serial_no"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:layout_marginLeft="@dimen/personal_padding"
+        android:layout_marginRight="@dimen/personal_padding"
+        android:background="@color/colorLineDivide" />
+
+    <com.xmd.technician.widget.ClearableEditText
+        android:id="@+id/nick_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_button_height"
+        android:layout_marginLeft="@dimen/personal_padding"
+        android:layout_marginRight="@dimen/personal_padding"
+        android:drawableLeft="@drawable/icon44"
+        android:drawablePadding="@dimen/personal_padding"
+        android:background="@android:color/transparent"
+        android:textColor="@color/colorBody"
+        android:textSize="@dimen/fontBody"
+        android:textColorHint="@color/colorRemark"
+        android:hint="@string/nick_name"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:layout_marginLeft="@dimen/personal_padding"
+        android:layout_marginRight="@dimen/personal_padding"
+        android:background="@color/colorLineDivide" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_button_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/edit_activity_text_style"
+            android:layout_marginLeft="@dimen/personal_padding"
+            android:layout_marginRight="@dimen/personal_padding"
+            android:drawableLeft="@drawable/icon44"
+            android:drawablePadding="@dimen/personal_padding"
+            android:text="@string/select_gender" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!--TODO: change the resource pic-->
+
+            <RadioButton
+                android:id="@+id/button_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/personal_item_margin_right"
+                android:button="@null"
+                android:drawableLeft="@drawable/radio_button_style_selector"
+                android:drawablePadding="@dimen/search_margin"
+                android:text="男"
+                android:textColor="@drawable/radio_button_text_color_selector"
+                android:textSize="@dimen/fontBody"/>
+
+
+            <RadioButton
+                android:id="@+id/button_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/personal_item_margin_right"
+                android:button="@null"
+                android:checked="true"
+                android:drawableLeft="@drawable/radio_button_style_selector"
+                android:drawablePadding="@dimen/search_margin"
+                android:text="女"
+                android:textColor="@drawable/radio_button_text_color_selector"
+                android:textSize="@dimen/fontBody"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/personal_margin"
+        android:layout_marginLeft="@dimen/personal_padding"
+        android:layout_marginRight="@dimen/personal_padding"
+        android:background="@drawable/login_button_main_selector"
+        android:enabled="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fontTitle"
+        android:text="@string/next_step"/>
+</LinearLayout>
