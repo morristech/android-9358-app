@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,8 +19,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.ActivityHelper;
-import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.TokenExpiredResult;
 import com.xmd.technician.msgctrl.RxBus;
@@ -61,7 +57,6 @@ public class BaseActivity extends AppCompatActivity {
         mThrowableSubscription = RxBus.getInstance().toObservable(Throwable.class).subscribe(
                 throwable -> {dismissProgressDialogIfShowing(); makeShortToast(throwable.getLocalizedMessage());}
         );
-
     }
 
     @Override
@@ -196,4 +191,5 @@ public class BaseActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
 }

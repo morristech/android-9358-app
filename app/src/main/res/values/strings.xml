@@ -148,15 +148,33 @@
     <string name="order_list_item_no_more"> ^_^, 没有更多订单</string>
     <string name="order_list_item_empty">=_=!!, 还没有订单哦</string>
 
-    <string name="order_list_item_order_time_desc">预约时间:</string>
-    <string name="order_list_item_down_payment_desc">预付款:</string>
+    <string name="order_status_operation_accept">接受</string>
+    <string name="order_status_operation_reject">拒绝</string>
+    <string name="order_status_operation_complete">完成</string>
+    <string name="order_status_operation_expire">失效</string>
+    <string name="order_status_operation_delete">删除订单</string>
 
-    <string name="order_list_item_operation_accept">接受</string>
-    <string name="order_list_item_operation_reject">拒绝</string>
-    <string name="order_list_item_operation_complete">完成</string>
-    <string name="order_list_item_operation_expire">失效</string>
+    <string name="order_remain_time_label">剩余接单时间:</string>
+    <string name="order_remain_time_minutes">分钟</string>
+    <string name="amount_unit_format">%1$d元</string>
 
-    <string name="order_list_item_status_label">剩余接单时间</string>
-    <string name="order_list_item_minutes">分钟</string>
+    <string name="order_detail_down_payment">预付款</string>
+    <string name="order_detail_order_time">预约时间</string>
+    <string name="order_detail_order_service">预约项目</string>
+    <string name="order_detail_service_price">项目价格</string>
+    <string name="order_detail_create_time">下单时间</string>
+    <string name="order_detail_order_comment">客户评价</string>
+    <string name="order_detail_order_reward">打赏金额</string>
+    <string name="order_detail_delete_order_confirm">确认删除订单</string>
+    <string name="order_detail_reject_order_confirm">确认拒绝订单</string>
+    <string name="order_detail_failure_order_confirm">确认失效订单</string>
 
+    <string name="order_status_description_submit">收到预约</string>
+    <string name="order_status_description_accept">接受预约</string>
+    <string name="order_status_description_reject">已拒绝</string>
+    <string name="order_status_description_complete">已完成</string>
+    <string name="order_status_description_failure">已失效</string>
+    <string name="order_status_description_overtime">已超时</string>
+
+    <string name="make_call">打电话</string>
 </resources>

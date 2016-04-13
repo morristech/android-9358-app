@@ -2,14 +2,11 @@ package com.xmd.technician.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,7 +15,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.beans.Order;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.widget.CircleImageView;
 
 import java.util.List;
@@ -32,6 +28,9 @@ import butterknife.ButterKnife;
 public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemSlideHelper.Callback {
 
     public interface OnManageButtonClickedListener {
+
+        void onItemClicked(Order order);
+
         void onNegativeButtonClicked(Order order);
 
         void onPositiveButtonClicked(Order order);
@@ -100,15 +99,15 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
             Glide.with(mContext).load(order.headImgUrl).into(itemHolder.mUserHeadUrl);
             itemHolder.mUserName.setText(order.customerName);
             itemHolder.mOrderTime.setText(order.formatAppointTime);
-            itemHolder.mOrderAmount.setText(order.downPayment);
+            itemHolder.mOrderAmount.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), order.downPayment));
 
             // 1) 提交状态能够进行拒绝或者接受
             // 2) 只有普通预约的订单才能由技师来实现完成跟失效，付费预约的必须在核销或者失效的时候更改状态
             if (Constant.ORDER_STATUS_SUBMIT.equals(order.status) ||
                     (Constant.ORDER_STATUS_ACCEPT.equals(order.status) && Constant.ORDER_TYPE_APPOINT.equals(order.orderType))) {
                 if (Constant.ORDER_STATUS_SUBMIT.equals(order.status)) {
-                    itemHolder.mNegative.setText(ResourceUtils.getString(R.string.order_list_item_operation_reject));
-                    itemHolder.mPositive.setText(ResourceUtils.getString(R.string.order_list_item_operation_accept));
+                    itemHolder.mNegative.setText(ResourceUtils.getString(R.string.order_status_operation_reject));
+                    itemHolder.mPositive.setText(ResourceUtils.getString(R.string.order_status_operation_accept));
                     itemHolder.mSubmitSection.setVisibility(View.VISIBLE);
                     itemHolder.mRemainTime.setText(order.remainTime);
                     itemHolder.mOtherStatus.setVisibility(View.GONE);
@@ -117,8 +116,8 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     itemHolder.mSubmitSection.setVisibility(View.GONE);
                     itemHolder.mOtherStatus.setVisibility(View.VISIBLE);
                     itemHolder.mOtherStatus.setText(order.statusName);
-                    itemHolder.mNegative.setText(ResourceUtils.getString(R.string.order_list_item_operation_expire));
-                    itemHolder.mPositive.setText(ResourceUtils.getString(R.string.order_list_item_operation_complete));
+                    itemHolder.mNegative.setText(ResourceUtils.getString(R.string.order_status_operation_expire));
+                    itemHolder.mPositive.setText(ResourceUtils.getString(R.string.order_status_operation_complete));
                 }
                 itemHolder.mNegative.setOnClickListener(v -> mOnManageButtonClickedListener.onNegativeButtonClicked(order));
                 itemHolder.mPositive.setOnClickListener(v -> mOnManageButtonClickedListener.onPositiveButtonClicked(order));
@@ -131,6 +130,9 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 itemHolder.mOperation.setVisibility(View.GONE);
                 itemHolder.isOperationVisible = false;
             }
+
+            itemHolder.itemView.setOnClickListener(v -> mOnManageButtonClickedListener.onItemClicked(order));
+
         } else if (holder instanceof OrderListFooterHolder) {
             OrderListFooterHolder footerHolder = (OrderListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);

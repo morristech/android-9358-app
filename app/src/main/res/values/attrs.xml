@@ -22,4 +22,13 @@
         <attr name="type" />
         <attr name="src" />
     </declare-styleable>
+
+    <declare-styleable name="StepView">
+        <attr name="stepRadius" format="dimension"/>
+        <attr name="totalSteps" format="integer"/>
+        <attr name="todoColor" format="color"/>
+        <attr name="doneColor" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor" format="color" />
+    </declare-styleable>
 </resources>

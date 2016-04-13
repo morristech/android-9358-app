@@ -1,9 +1,8 @@
 package com.xmd.technician.window;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -19,6 +17,7 @@ import com.xmd.technician.Adapter.OrderListRecycleViewAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.beans.Order;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.OrderListResult;
@@ -26,11 +25,11 @@ import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,10 +41,6 @@ import rx.Subscription;
  * Created by sdcm on 16-3-24.
  */
 public class OrderFragment extends BaseFragment implements OrderListRecycleViewAdapter.OnManageButtonClickedListener, SwipeRefreshLayout.OnRefreshListener {
-
-    private static final String FILTER_ORDER_SUBMIT = "submit";
-    private static final String FILTER_ORDER_ACCEPTE = "accept";
-    private static final String FILTER_ORDER_COMPLETE = "complete";
 
     private static final int PAGE_START = 0;
     private static final int PAGE_SIZE = 20;
@@ -59,7 +54,7 @@ public class OrderFragment extends BaseFragment implements OrderListRecycleViewA
 
     private int mPages = PAGE_START;
     private boolean mIsLoadingMore = false;
-    private String mFilterOrder = FILTER_ORDER_SUBMIT;
+    private String mFilterOrder = Constant.FILTER_ORDER_SUBMIT;
     private int mLastVisibleItem;
     private int mPageCount = -1;
     private List<Order> mOrderList = new ArrayList<>();
@@ -86,13 +81,13 @@ public class OrderFragment extends BaseFragment implements OrderListRecycleViewA
         mRgFilterOrder.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.rb_pending_order:
-                    filterOrder(FILTER_ORDER_SUBMIT);
+                    filterOrder(Constant.FILTER_ORDER_SUBMIT);
                     break;
                 case R.id.rb_accept_order:
-                    filterOrder(FILTER_ORDER_ACCEPTE);
+                    filterOrder(Constant.FILTER_ORDER_ACCEPT);
                     break;
                 case R.id.rb_complete_order:
-                    filterOrder(FILTER_ORDER_COMPLETE);
+                    filterOrder(Constant.FILTER_ORDER_COMPLETE);
                     break;
             }
         });
@@ -197,24 +192,39 @@ public class OrderFragment extends BaseFragment implements OrderListRecycleViewA
     }
 
     @Override
+    public void onItemClicked(Order order) {
+        Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+        intent.putExtra(OrderDetailActivity.KEY_ORDER, order);
+        startActivity(intent);
+    }
+
+    @Override
     public void onNegativeButtonClicked(Order order) {
         if (Constant.ORDER_STATUS_SUBMIT.equals(order.status)) {
-            manageOrder(Constant.ORDER_STATUS_REJECTED, order, "");
+            doNegativeOrder(ResourceUtils.getString(R.string.order_detail_reject_order_confirm), Constant.ORDER_STATUS_REJECTED, order, "");
         } else if (Constant.ORDER_STATUS_ACCEPT.equals(order.status)) {
-            manageOrder(Constant.ORDER_STATUS_FAILURE, order, "");
+            doNegativeOrder(ResourceUtils.getString(R.string.order_detail_failure_order_confirm), Constant.ORDER_STATUS_FAILURE, order, "");
         }
     }
 
     @Override
     public void onPositiveButtonClicked(Order order) {
         if (Constant.ORDER_STATUS_SUBMIT.equals(order.status)) {
-            manageOrder(Constant.ORDER_STATUS_ACCEPT, order, "");
+            doManageOrder(Constant.ORDER_STATUS_ACCEPT, order, "");
         } else if (Constant.ORDER_STATUS_ACCEPT.equals(order.status)) {
-            manageOrder(Constant.ORDER_STATUS_COMPLETE, order, "");
+            doManageOrder(Constant.ORDER_STATUS_COMPLETE, order, "");
         }
     }
 
-    private void manageOrder(String type, Order order, String reason) {
+    private void doNegativeOrder(String description, String type, Order order, String reason) {
+        new AlertDialogBuilder(getActivity())
+                .setMessage(description)
+                .setPositiveButton(ResourceUtils.getString(R.string.confirm), v -> doManageOrder(type, order,reason))
+                .setNegativeButton(ResourceUtils.getString(R.string.cancel), null)
+                .show();
+    }
+
+    private void doManageOrder(String type, Order order, String reason) {
         Map<String,String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PROCESS_TYPE, type);
         params.put(RequestConstant.KEY_ID, order.orderId);

@@ -46,6 +46,11 @@ public class Constant {
     public static final String ORDER_STATUS_OVERTIME = "overtime";
 
     /**
+     * 删除
+     */
+    public static final String ORDER_STATUS_DELETE = "delete";
+
+    /**
      * 普通预约
      */
     public static final String ORDER_TYPE_APPOINT = "appoint";
@@ -60,6 +65,19 @@ public class Constant {
 
     public static final int COUPON_DISPLAY_TYPE_CLUB = 1;
     public static final int COUPON_DISPLAY_TYPE_USER = 2;
+
+    /**
+     * 订单界面的待接，已接受，已完成三种状态
+     */
+    public static final String FILTER_ORDER_SUBMIT = "submit";
+    /**
+     * 订单界面的待接，已接受，已完成三种状态
+     */
+    public static final String FILTER_ORDER_ACCEPT = "accept";
+    /**
+     * 订单界面的待接，已接受，已完成三种状态
+     */
+    public static final String FILTER_ORDER_COMPLETE = "complete";
 
     /**
      * status:submit 未接受，accept 同意，reject 拒绝，cancel 取消，complete 完成，failure 失效，sysReject 超时。 不传默认查全部订单
@@ -107,5 +125,6 @@ public class Constant {
      */
     public static final int REQUEST_CODE_FOR_USER_COUPON_LIST_ACTIVITY = 0x0001;
     public static final int REQUEST_CODE_FOR_CONSUME_ACTIVITY = 0x0002;
+    public static final int REQUEST_CODE_FOR_ORDER_DETAIL_ACTIVITY = 0x0003;
 }
 

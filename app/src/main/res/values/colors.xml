@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="transparent">#00000000</color>
+    <color name="app_bg">#efeff4</color>
+
+    <color name="rating_progress_color">#ff9d09</color>
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
@@ -16,7 +22,7 @@
     <color name="colorBtnNormal">#333333</color>
     <color name="colorBtnSelector">#ff6666</color>
     <color name="colorBtnChecked">#fb5549</color>
-    <color name="border_line_color">@color/colorPrimary</color>
+    <color name="border_line_color">@color/colorMain</color>
     <color name="dialog_line_gray">#DDD</color>
 
     <color name="tab_bg">#FFF</color>
@@ -47,4 +53,31 @@
 
     <color name="colorServiceName">#f9f9f9</color>
     <color name="colorServiceHead">#f0eff5</color>
+
+    <color name="order_detail_section_bg_color">#fff</color>
+    <color name="order_detail_step_view_done_color">#14bfad</color>
+    <color name="order_detail_step_view_todo_color">#d9d9d9</color>
+    <color name="order_detail_step_view_text_color">#666666</color>
+    <color name="order_detail_section_item_descrption_text_color">#666</color>
+    <color name="order_detail_section_item_value_text_color">#333</color>
+
+    <!-- Custom Dialog-->
+    <color name="dialog_button_negative_bg_normal">#CAC7CB</color>
+    <color name="dialog_button_negative_text_normal">#FFF</color>
+    <color name="dialog_button_negative_text_pressed">#FFF</color>
+
+    <color name="dialog_button_positive_bg_normal">#fE6765</color>
+    <color name="dialog_button_positive_text_normal">#FFF</color>
+    <color name="dialog_button_positive_text_pressed">#FFF</color>
+
+    <color name="dialog_button_bg_pressed">#c9443a</color>
+
+    <color name="primary_button_color_normal">#fb5549</color>
+    <color name="primary_button_color_pressed">#70fb5549</color>
+    <color name="primary_button_text_color">#FFF</color>
+
+    <color name="popup_window_button_normal">#FFF</color>
+    <color name="popup_window_button_pressed">#fb5549</color>
+    <color name="popup_window_button_text_normal">#333</color>
+    <color name="popup_window_button_text_pressed">#FFF</color>
 </resources>

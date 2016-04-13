@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".TechApplication"
@@ -94,14 +95,21 @@
         <activity android:name=".window.ConsumeDetailActivity" />
         <activity android:name=".window.ServiceItemActivity" />
         <activity android:name=".window.ClipPictureActivity" />
-        <activity android:name=".window.RegisterActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".window.ResetPasswordActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".window.InfoInputActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".window.UploadAvatarActivity"
+        <activity
+            android:name=".window.RegisterActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".window.ResetPasswordActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".window.InfoInputActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".window.UploadAvatarActivity"
             android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".window.OrderDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

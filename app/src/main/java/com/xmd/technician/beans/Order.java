@@ -16,7 +16,7 @@ public class Order implements Serializable {
 
     public String customerName;
 
-    public String createdAt;
+    public String formatCreateTime;
 
     public String formatAppointTime;
 
@@ -28,10 +28,33 @@ public class Order implements Serializable {
 
     public String statusName;
 
-    public String appointTime;
-
     public String remainTime;
 
-    public String downPayment;
+    public int downPayment;
+
+    /**
+     * 服务项目
+     */
+    public String serviceName;
+
+    /**
+     * 项目价格
+     */
+    public String servicePrice;
+
+    /**
+     * 评论
+     */
+    public String comment;
+
+    /**
+     * 订单打赏金额
+     */
+    public int rewardAmount;
+
+    /**
+     * 评分
+     */
+    public int rating;
 
 }

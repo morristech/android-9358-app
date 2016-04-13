@@ -39,9 +39,10 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/order_detail_descriptoin_width"
                     android:layout_height="wrap_content"
-                    android:text="@string/order_list_item_order_time_desc"
+                    android:text="@string/order_detail_order_time"
+                    android:layout_marginRight="@dimen/inter_space"
                     android:textSize="@dimen/order_list_item_text_size" />
 
                 <TextView
@@ -58,9 +59,10 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/order_detail_descriptoin_width"
                     android:layout_height="wrap_content"
-                    android:text="@string/order_list_item_down_payment_desc"
+                    android:layout_marginRight="@dimen/inter_space"
+                    android:text="@string/order_detail_down_payment"
                     android:textSize="@dimen/order_list_item_text_size" />
 
                 <TextView
@@ -94,7 +96,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/order_list_item_status_label"
+                    android:text="@string/order_remain_time_label"
                     android:textColor="@color/order_list_item_status_label_color"
                     android:textSize="@dimen/order_list_item_text_size" />
 
@@ -116,7 +118,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/order_list_item_minutes"
+                        android:text="@string/order_remain_time_minutes"
                         android:textSize="@dimen/order_list_item_text_size" />
 
                 </LinearLayout>

@@ -5,8 +5,18 @@
 
     <dimen name="zero">0dp</dimen>
     <dimen name="line_width">1dp</dimen>
+    <dimen name="large_space">16dp</dimen>
     <dimen name="inter_space">12dp</dimen>
     <dimen name="small_space">5dp</dimen>
+
+    <dimen name="small_radius">5dp</dimen>
+    <dimen name="dialog_content_height">96dp</dimen>
+    <dimen name="dialog_content_text_size">16sp</dimen>
+
+    <dimen name="dialog_button_height">48dp</dimen>
+    <dimen name="dialog_button_text_size">14sp</dimen>
+    <dimen name="dialog_button_row_padding">8dp</dimen>
+    <dimen name="dialog_button_row_height">64dp</dimen>
 
     <dimen name="fontBig">32sp</dimen>
     <dimen name="fontHead">20sp</dimen>
@@ -60,5 +70,20 @@
     <dimen name="order_list_item_remain_time_size">20sp</dimen>
     <dimen name="order_list_item_other_status_size">16sp</dimen>
 
+    <dimen name="order_detail_step_view_text_size">12sp</dimen>
+    <dimen name="order_detail_step_view_step_raidus">14dp</dimen>
+    <dimen name="order_detail_step_view_height">72dp</dimen>
+
+    <dimen name="order_detail_avatar_section_height">80dp</dimen>
+    <dimen name="order_detail_section_item_height">30dp</dimen>
+    <dimen name="order_detail_avatar_view_height">48dp</dimen>
+    <dimen name="order_detail_customer_name_textsize">16sp</dimen>
+    <dimen name="order_detail_telephone_textsize">14sp</dimen>
+    <dimen name="order_detail_descriptoin_width">56dp</dimen>
+
+    <dimen name="order_detail_contact_item_width">64dp</dimen>
+
+
+    <dimen name="call_popup_window_phone_view_height">64dp</dimen>
     <dimen name="send_msg_btn_width">67dp</dimen>
 </resources>
