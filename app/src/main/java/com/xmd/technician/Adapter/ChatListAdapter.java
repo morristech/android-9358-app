@@ -12,6 +12,8 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.chatview.BaseChatView;
 import com.xmd.technician.chat.chatview.ChatViewImage;
+import com.xmd.technician.chat.chatview.ChatViewOrder;
+import com.xmd.technician.chat.chatview.ChatViewReward;
 import com.xmd.technician.chat.chatview.ChatViewText;
 import com.xmd.technician.common.ThreadManager;
 
@@ -20,23 +22,20 @@ import com.xmd.technician.common.ThreadManager;
  */
 public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private static final int RECEIVED_TYPE = 1;
-    private static final int SENT_TYPE =  2;
-
-    private static final int MESSAGE_TYPE_SENT_TXT = 0x01;
-    private static final int MESSAGE_TYPE_RECV_TXT = 0x81;
-    private static final int MESSAGE_TYPE_SENT_IMAGE = 0x02;
-    private static final int MESSAGE_TYPE_RECV_IMAGE = 0x82;
-    private static final int MESSAGE_TYPE_SENT_LOCATION = 0x03;
-    private static final int MESSAGE_TYPE_RECV_LOCATION = 0x83;
-    private static final int MESSAGE_TYPE_SENT_VOICE = 0x04;
-    private static final int MESSAGE_TYPE_RECV_VOICE = 0x84;
-    private static final int MESSAGE_TYPE_SENT_VIDEO = 0x05;
-    private static final int MESSAGE_TYPE_RECV_VIDEO = 0x85;
-    private static final int MESSAGE_TYPE_SENT_FILE = 0x06;
-    private static final int MESSAGE_TYPE_RECV_FILE = 0x86;
-    private static final int MESSAGE_TYPE_SENT_EXPRESSION = 0x07;
-    private static final int MESSAGE_TYPE_RECV_EXPRESSION = 0x87;
+    private static final int MESSAGE_TYPE_SENT_TXT = 1;
+    private static final int MESSAGE_TYPE_RECV_TXT = 2;
+    private static final int MESSAGE_TYPE_SENT_IMAGE = 3;
+    private static final int MESSAGE_TYPE_RECV_IMAGE = 4;
+    private static final int MESSAGE_TYPE_SENT_LOCATION = 5;
+    private static final int MESSAGE_TYPE_RECV_LOCATION = 6;
+    private static final int MESSAGE_TYPE_SENT_VOICE = 7;
+    private static final int MESSAGE_TYPE_RECV_VOICE = 8;
+    private static final int MESSAGE_TYPE_SENT_VIDEO = 9;
+    private static final int MESSAGE_TYPE_RECV_VIDEO = 10;
+    private static final int MESSAGE_TYPE_SENT_FILE = 11;
+    private static final int MESSAGE_TYPE_RECV_FILE = 12;
+    private static final int MESSAGE_TYPE_SENT_EXPRESSION = 13;
+    private static final int MESSAGE_TYPE_RECV_EXPRESSION = 14;
 
     private EMConversation mConversation;
     private EMMessage[] mChatMessages = null;
@@ -104,9 +103,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return -1;
         }
 
-        /*if(customRowProvider != null && customRowProvider.getCustomChatRowType(message) > 0){
-            return customRowProvider.getCustomChatRowType(message) + 13;
-        }*/
+        if(CommonUtils.getCustomChatType(message) > 0){
+            return CommonUtils.getCustomChatType(message);
+        }
 
         if (message.getType() == EMMessage.Type.TXT) {
             if(message.getBooleanAttribute(ChatConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)){
@@ -186,6 +185,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
             case MESSAGE_TYPE_SENT_IMAGE:
                 chatRow = new ChatViewImage(context, EMMessage.Direct.SEND);
+                break;
+            case ChatConstant.MESSAGE_TYPE_RECV_ORDER:
+                chatRow = new ChatViewOrder(context, EMMessage.Direct.RECEIVE);
+                break;
+            case ChatConstant.MESSAGE_TYPE_SENT_ORDER:
+                chatRow = new ChatViewOrder(context, EMMessage.Direct.SEND);
+                break;
+            case ChatConstant.MESSAGE_TYPE_RECV_REWARD:
+                chatRow = new ChatViewReward(context, EMMessage.Direct.RECEIVE);
+                break;
+            case ChatConstant.MESSAGE_TYPE_SENT_BEG_REWARD:
+                chatRow = new ChatViewReward(context, EMMessage.Direct.SEND);
                 break;
             /*case IMAGE:
                 chatRow = new ChatViewImage(context, message, position);

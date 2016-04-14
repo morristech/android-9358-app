@@ -19,6 +19,8 @@ public class SharedPreferenceHelper {
     private static final String KEY_USER_NAME = "435E0648D634175C46BD40AC366545A8";//userName
     private static final String KEY_SERVER_HOST = "1867ABFF59547D665AA22BDC2AB31BBD";//serverHost
     private static final String KEY_USER_ID = "8E44F0089B076E18A718EB9CA3D94674"; //userId
+    private static final String KEY_EMCHAT_ID = "435E0648D634175C46BD40AC366545A1";//emchatId
+    private static final String KEY_USER_AVATAR = "435E0648D634175C46BD40AC366545A2";//avatar
     /**
      * Last time to check the upgrade automatically
      */
@@ -29,6 +31,12 @@ public class SharedPreferenceHelper {
 
     public static void initialize() {
         mSettingPreference = TechApplication.getAppContext().getSharedPreferences(SETTING_PREFERENCE, Activity.MODE_PRIVATE);
+        // In 2.3.0, doesn't encrypt the keys
+        mSettingPreference.edit().remove("userAccount")
+                .remove("userToken")
+                .remove("userName")
+                .remove("serverHost")
+                .remove("lastAutoCheckUpgrade").apply();
     }
 
     public static void setUserAccount(String userAccount) {
@@ -67,6 +75,22 @@ public class SharedPreferenceHelper {
 
     public static String getUserName() {
         return mSettingPreference.getString(KEY_USER_NAME, "");
+    }
+
+    public static void setEmchatId(String emchatId) {
+        mSettingPreference.edit().putString(KEY_EMCHAT_ID, emchatId).apply();
+    }
+
+    public static String getEmchatId() {
+        return mSettingPreference.getString(KEY_EMCHAT_ID, "");
+    }
+
+    public static void setUserAvatar(String avatar) {
+        mSettingPreference.edit().putString(KEY_USER_AVATAR, avatar).apply();
+    }
+
+    public static String getUserAvatar() {
+        return mSettingPreference.getString(KEY_USER_AVATAR, "");
     }
 
     public static void setUserId(String userId) {

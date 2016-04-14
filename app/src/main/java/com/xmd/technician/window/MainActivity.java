@@ -163,10 +163,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        //super.onBackPressed();
         // 进入聊天页面
         Intent intent = new Intent(this, ChatActivity.class);
         // it's single chat
-        intent.putExtra(ChatConstant.EXTRA_USER_ID, SharedPreferenceHelper.getUserName());
+        intent.putExtra(ChatConstant.EXTRA_USER_ID, "d7ab1dc3b20882dd88b7cc7f18f894d6");
         startActivity(intent);
     }
 }

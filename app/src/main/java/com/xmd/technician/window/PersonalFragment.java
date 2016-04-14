@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
@@ -84,9 +85,7 @@ public class PersonalFragment extends BaseFragment{
     @Override
     public void onDestroy() {
         super.onDestroyView();
-        RxBus.getInstance().unsubscribe(mTechInfoSubscription);
-        RxBus.getInstance().unsubscribe(mCommentOrderSubscription);
-        RxBus.getInstance().unsubscribe(mSubmitInviteSubscription);
+        RxBus.getInstance().unsubscribe(mTechInfoSubscription,mCommentOrderSubscription,mSubmitInviteSubscription);
     }
 
     private void initView(){
@@ -102,6 +101,8 @@ public class PersonalFragment extends BaseFragment{
     private void handleTechCurrentResult(TechCurrentResult result){
         if(result.respData != null){
             mTechInfo = result.respData;
+            SharedPreferenceHelper.setUserName(mTechInfo.userName);
+            SharedPreferenceHelper.setUserAvatar(mTechInfo.imageUrl);
             initView();
         }
     }

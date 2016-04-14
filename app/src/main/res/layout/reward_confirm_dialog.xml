@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/default_dialog_width"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_alert_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/personal_margin"
+        android:textColor="@color/colorTitle"
+        android:textSize="@dimen/fontHead"
+        android:gravity="center_horizontal"
+        android:text="@string/confirm" />
+
+    <TextView
+        android:id="@+id/dialog_alert_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/search_margin"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorBody"
+        android:textSize="@dimen/fontBody"
+        android:text="11"/>
+
+    <View
+        android:id="@+id/reset_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:layout_marginTop="@dimen/personal_margin"
+        android:background="@color/colorMain"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/dialog_alert_cancel_btn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/personal_item_height"
+            android:layout_weight="1"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:background="@color/colorHead"
+            android:textColor="@color/colorMain"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/cancel"/>
+        <Button
+            android:id="@+id/dialog_alert_ok_btn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/personal_item_height"
+            android:layout_weight="1"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:background="@color/colorMain"
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/confirm"/>
+    </LinearLayout>
+
+</LinearLayout>

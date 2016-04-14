@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/personal_margin">
+    android:layout_marginTop="@dimen/personal_margin"
+    android:layout_marginLeft="@dimen/coupon_item_height">
 
     <TextView
         android:id="@+id/time"
@@ -31,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/avatar"
         android:layout_below="@+id/time"
-        android:background="@drawable/duihuakuang02"
+        android:background="@drawable/sent_text"
         android:minHeight="@dimen/avatar_head"
         android:autoLink="all"
         android:gravity="center_vertical"
@@ -49,5 +51,134 @@
         android:background="@drawable/icon08"
         android:minHeight="@dimen/avatar_head"
         android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/user_reward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/avatar"
+        android:layout_below="@+id/time"
+        android:background="@drawable/sent_reward"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/avatar_head"
+        android:textColor="@color/colorHead"
+        android:textSize="@dimen/fontBody"
+        android:text="@string/request_user_reward"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/user_coupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/avatar"
+        android:layout_below="@+id/time"
+        android:background="@drawable/sent_coupon"
+        android:minHeight="@dimen/avatar_head"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/coupon_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/fontBody"
+            android:text="@string/request_user_reward"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/coupon_amount"
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/fontBody"
+            android:text="2106.3"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/order_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_below="@+id/time"
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/order_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/personal_padding"
+            android:textColor="@color/colorMain"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/app_info_title"/>
+
+        <TextView
+            android:id="@+id/order_time_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_title"
+            android:layout_marginTop="@dimen/personal_padding"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody"
+            android:text="@string/app_info_title"/>
+
+        <TextView
+            android:id="@+id/order_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_title"
+            android:layout_toRightOf="@+id/order_time_hint"
+            android:layout_marginTop="@dimen/personal_padding"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/fontBody"
+            android:text="@string/app_info_title"/>
+
+        <TextView
+            android:id="@+id/order_service_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_time"
+            android:layout_marginTop="@dimen/personal_padding"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody"
+            android:text="@string/app_info_title"/>
+
+        <TextView
+            android:id="@+id/order_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_time"
+            android:layout_toRightOf="@+id/order_service_hint"
+            android:layout_marginTop="@dimen/personal_padding"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/fontBody"
+            android:text="@string/app_info_title"/>
+
+        <LinearLayout
+            android:id="@+id/order_menu_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_service"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/order_accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/fontBody"
+                android:text="@string/accept"/>
+
+            <Button
+                android:id="@+id/order_refuse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/personal_padding"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/fontBody"
+                android:text="@string/refuse"/>
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

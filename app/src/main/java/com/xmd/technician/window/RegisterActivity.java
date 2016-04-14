@@ -191,6 +191,7 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
             SharedPreferenceHelper.setUserToken(loginResult.token);
             SharedPreferenceHelper.setUserName(loginResult.name);
             SharedPreferenceHelper.setUserId(loginResult.userId);
+            SharedPreferenceHelper.setEmchatId(loginResult.emchatId);
             EMClient.getInstance().login(loginResult.emchatId, loginResult.emchatPassword, new EMCallBack() {
                 @Override
                 public void onSuccess() {

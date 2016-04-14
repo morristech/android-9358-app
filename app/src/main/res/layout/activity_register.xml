@@ -69,7 +69,7 @@
             android:layout_height="@dimen/home_button_height"
             android:layout_marginLeft="@dimen/personal_padding"
             android:layout_marginRight="@dimen/personal_padding"
-            android:drawableLeft="@drawable/password_c"
+            android:drawableLeft="@drawable/ic_yaoqingma"
             android:drawablePadding="@dimen/personal_padding"
             android:background="@android:color/transparent"
             android:digits="@string/only_number_and_char"

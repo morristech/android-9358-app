@@ -9,9 +9,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 import com.xmd.technician.R;
+import com.xmd.technician.chat.chatview.ChatUser;
 
 /**
  * Created by sdcm on 16-3-22.
@@ -119,6 +121,31 @@ public class CommonUtils {
         String path = PathUtil.getInstance().getImagePath()+"/"+ "th"+thumbImageName;
         EMLog.d("msg", "thum image path:" + path);
         return path;
+    }
+
+    public static int getCustomChatType(EMMessage message){
+        int type = 0;
+        if(message.getType() == EMMessage.Type.TXT){
+            try {
+                String msgType = message.getStringAttribute("msgType");
+                if(msgType.equals("reward")){
+                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_REWARD : ChatConstant.MESSAGE_TYPE_SENT_REWARD);
+                }else if(msgType.equals("order")){
+                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_ORDER : ChatConstant.MESSAGE_TYPE_SENT_ORDER);
+                }else if(msgType.equals("paidCouponTip")){
+                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_PAID_COUPON_TIP : ChatConstant.MESSAGE_TYPE_SENT_PAID_COUPON_TIP);
+                }else if(msgType.equals("begReward")){
+                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_BEG_REWARD : ChatConstant.MESSAGE_TYPE_SENT_BEG_REWARD);
+                }else if(msgType.equals("paidCoupon")){
+                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_PAID_COUPON : ChatConstant.MESSAGE_TYPE_SENT_PAID_COUPON);
+                }else if(msgType.equals("ordinaryCoupon")){
+                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_ORDINARY_COUPON : ChatConstant.MESSAGE_TYPE_SENT_ORDINARY_COUPON);
+                }
+            } catch (HyphenateException e) {
+                e.printStackTrace();
+            }
+        }
+        return type;
     }
 
 }

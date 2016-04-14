@@ -140,6 +140,10 @@
     <string name="dynamic_expression">[动态表情]</string>
     <string name="cant_find_pictures">找不到图片</string>
     <string name="request_user_reward">万水千山总是情\n打赏两个行不行～</string>
+    <string name="beg_reward">求打赏</string>
+    <string name="send_request_user_reward">确认发送＂求打赏＂信息？</string>
+    <string name="accept">接受</string>
+    <string name="refuse">拒绝</string>
 
     <string name="pending_order">待接受</string>
     <string name="accepted_order">已接受</string>

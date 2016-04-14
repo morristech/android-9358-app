@@ -19,7 +19,7 @@ public class DefaultEmojiconDatas {
         SmileUtils.ee_12,
         SmileUtils.ee_13,
         SmileUtils.ee_14,
-        SmileUtils.ee_15,
+        /*SmileUtils.ee_15,
         SmileUtils.ee_16,
         SmileUtils.ee_17,
         SmileUtils.ee_18,
@@ -39,7 +39,7 @@ public class DefaultEmojiconDatas {
         SmileUtils.ee_32,
         SmileUtils.ee_33,
         SmileUtils.ee_34,
-        SmileUtils.ee_35,
+        SmileUtils.ee_35,*/
        
     };
     
@@ -58,7 +58,7 @@ public class DefaultEmojiconDatas {
         R.drawable.ee_12,  
         R.drawable.ee_13,  
         R.drawable.ee_14,  
-        R.drawable.ee_15,  
+        /*R.drawable.ee_15,
         R.drawable.ee_16,  
         R.drawable.ee_17,  
         R.drawable.ee_18,  
@@ -78,7 +78,7 @@ public class DefaultEmojiconDatas {
         R.drawable.ee_32,  
         R.drawable.ee_33,  
         R.drawable.ee_34,  
-        R.drawable.ee_35,  
+        R.drawable.ee_35,*/
     };
     
     

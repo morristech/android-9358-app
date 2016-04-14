@@ -14,7 +14,7 @@
         android:layout_height="@dimen/home_button_height"
         android:layout_marginLeft="@dimen/personal_padding"
         android:layout_marginRight="@dimen/personal_padding"
-        android:drawableLeft="@drawable/personal"
+        android:drawableLeft="@drawable/ic_shurubianhao"
         android:drawablePadding="@dimen/personal_padding"
         android:background="@android:color/transparent"
         android:digits="@string/only_number_and_char"
@@ -62,7 +62,7 @@
             style="@style/edit_activity_text_style"
             android:layout_marginLeft="@dimen/personal_padding"
             android:layout_marginRight="@dimen/personal_padding"
-            android:drawableLeft="@drawable/icon44"
+            android:drawableLeft="@drawable/ic_xingbie"
             android:drawablePadding="@dimen/personal_padding"
             android:text="@string/select_gender" />
 
@@ -121,4 +121,10 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/fontTitle"
         android:text="@string/next_step"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

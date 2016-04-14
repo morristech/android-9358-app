@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMContact;
 import com.hyphenate.chat.EMGroupManager;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
@@ -121,6 +122,8 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
             SharedPreferenceHelper.setUserToken(loginResult.token);
             SharedPreferenceHelper.setUserName(loginResult.name);
             SharedPreferenceHelper.setUserId(loginResult.userId);
+            SharedPreferenceHelper.setEmchatId(loginResult.emchatId);
+            SharedPreferenceHelper.setUserAvatar(loginResult.avatarUrl);
             EMClient.getInstance().login(loginResult.emchatId, loginResult.emchatPassword, new EMCallBack() {
                 @Override
                 public void onSuccess() {

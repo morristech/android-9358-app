@@ -3,6 +3,7 @@ package com.xmd.technician.window;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,31 +12,42 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.PopupWindow;
 import android.widget.SimpleAdapter;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.xmd.technician.Adapter.ChatListAdapter;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.SmileUtils;
+import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
+import com.xmd.technician.widget.ConfirmDialog;
+import com.xmd.technician.widget.RewardConfirmDialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +61,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mRefreshLayout;
     @Bind(R.id.et_sendmessage) EditText mSendMsgEd;
-    @Bind(R.id.chat_list) RecyclerView mMsgListView;
-    @Bind(R.id.extend_menu_container) FrameLayout mChatExtendMenuContainer;
+    @Bind(R.id.list_view) RecyclerView mMsgListView;
+    //@Bind(R.id.extend_menu_container) FrameLayout mChatExtendMenuContainer;
     @Bind(R.id.emojicon_menu_container) GridView mEmojiconMenuContainer;
 
     private String mToChatUsername;
@@ -72,7 +84,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         mToChatUsername = getIntent().getExtras().getString(ChatConstant.EXTRA_USER_ID);
 
-        setTitle(mToChatUsername);
+        //setTitle(UserProfileProvider.getInstance().getChatUserInfo(mToChatUsername).getNick());
         setBackVisible(true);
 
         mInputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -218,24 +230,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         hideKeyboard();
         hideExtendMenuContainer();
         Util.selectPicFromLocal(this, REQUEST_CODE_LOCAL);
-        /*if (mChatExtendMenuContainer.getVisibility() == View.GONE) {
-            hideKeyboard();
-            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-                public void run() {
-                    mChatExtendMenuContainer.setVisibility(View.VISIBLE);
-                    //chatExtendMenu.setVisibility(View.VISIBLE);
-                    mEmojiconMenuContainer.setVisibility(View.GONE);
-                }
-            }, 50);
-        } else {
-            if (mEmojiconMenuContainer.getVisibility() == View.VISIBLE) {
-                mEmojiconMenuContainer.setVisibility(View.GONE);
-                //chatExtendMenu.setVisibility(View.VISIBLE);
-            } else {
-                mChatExtendMenuContainer.setVisibility(View.GONE);
-            }
-
-        }*/
     }
 
     @OnClick(R.id.et_sendmessage)
@@ -246,6 +240,26 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @OnClick(R.id.btn_face)
     public void onToggleEmojiconClicked(){
         toggleEmojicon();
+    }
+
+    @OnClick(R.id.btn_common_msg)
+    public void showCommonMessage(){
+        hideKeyboard();
+        hideExtendMenuContainer();
+        showPopupWindow(findViewById(R.id.menu_layout));
+    }
+
+    @OnClick(R.id.btn_common_reward)
+    public void requestReward(){
+        hideKeyboard();
+        hideExtendMenuContainer();
+        new RewardConfirmDialog(this, getString(R.string.beg_reward), getString(R.string.send_request_user_reward)) {
+            @Override
+            public void onConfirmClick() {
+                sendBegRewardMessage(getString(R.string.request_user_reward));
+                super.onConfirmClick();
+            }
+        }.show();
     }
 
     /**
@@ -264,11 +278,17 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     public void hideExtendMenuContainer() {
         //chatExtendMenu.setVisibility(View.GONE);
         mEmojiconMenuContainer.setVisibility(View.GONE);
-        mChatExtendMenuContainer.setVisibility(View.GONE);
+        //mChatExtendMenuContainer.setVisibility(View.GONE);
     }
 
     private void toggleEmojicon() {
-        if (mChatExtendMenuContainer.getVisibility() == View.GONE) {
+        if (mEmojiconMenuContainer.getVisibility() == View.VISIBLE) {
+            mEmojiconMenuContainer.setVisibility(View.GONE);
+        } else {
+            hideKeyboard();
+            mEmojiconMenuContainer.setVisibility(View.VISIBLE);
+        }
+        /*if (mChatExtendMenuContainer.getVisibility() == View.GONE) {
             hideKeyboard();
             ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                 public void run() {
@@ -286,7 +306,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 mEmojiconMenuContainer.setVisibility(View.VISIBLE);
             }
 
-        }
+        }*/
     }
 
     //发送消息方法
@@ -329,13 +349,19 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         sendMessage(message);
     }
 
-    protected void sendVoiceMessage(String filePath, int length) {
-        EMMessage message = EMMessage.createVoiceSendMessage(filePath, length, mToChatUsername);
+    protected void sendImageMessage(String imagePath) {
+        EMMessage message = EMMessage.createImageSendMessage(imagePath, false, mToChatUsername);
         sendMessage(message);
     }
 
-    protected void sendImageMessage(String imagePath) {
-        EMMessage message = EMMessage.createImageSendMessage(imagePath, false, mToChatUsername);
+    protected void sendBegRewardMessage(String content) {
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        message.setAttribute("msgType", "begReward");
+        sendMessage(message);
+    }
+
+    protected void sendVoiceMessage(String filePath, int length) {
+        EMMessage message = EMMessage.createVoiceSendMessage(filePath, length, mToChatUsername);
         sendMessage(message);
     }
 
@@ -365,6 +391,10 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }else if(mChatType == ChatConstant.CHATTYPE_CHATROOM){
             message.setChatType(EMMessage.ChatType.ChatRoom);
         }
+
+        message.setAttribute("name", SharedPreferenceHelper.getUserName());
+        message.setAttribute("header", SharedPreferenceHelper.getUserAvatar());
+        message.setAttribute("time", String.valueOf(new Date()));
         //发送消息
         EMClient.getInstance().chatManager().sendMessage(message);
         //刷新ui
@@ -432,4 +462,41 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             }
         }
     };
+
+    private void showPopupWindow(View view) {
+
+        // 一个自定义的布局，作为显示的内容
+        View contentView = LayoutInflater.from(this).inflate(
+                R.layout.list_pop_window, null);
+
+        final PopupWindow popupWindow = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+        popupWindow.setTouchable(true);
+
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                Log.i("mengdd", "onTouch : ");
+
+                return false;
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+            }
+        });
+
+        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+        // 我觉得这里是API的一个bug
+        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.coupon_bg));
+
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int h = popupWindow.getHeight();
+        // 设置好参数之后再show
+//        popupWindow.showAsDropDown(view, 100, 100);
+        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,location[0], location[1] - 96);
+
+    }
 }

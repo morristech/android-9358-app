@@ -109,6 +109,7 @@ public class ModifyPasswordActivity extends BaseActivity implements TextWatcher,
             SharedPreferenceHelper.setUserToken(loginResult.token);
             SharedPreferenceHelper.setUserName(loginResult.name);
             SharedPreferenceHelper.setUserId(loginResult.userId);
+            SharedPreferenceHelper.setEmchatId(loginResult.emchatId);
             finish();
         }
     }

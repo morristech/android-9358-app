@@ -18,8 +18,10 @@ import android.widget.TextView;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Adapter.MsgListAdapter;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
@@ -114,7 +116,8 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
     @Override
     public void onMsgItemClick(EMConversation conversation) {
         String username = conversation.getUserName();
-        if (username.equals(EMClient.getInstance().getCurrentUser()))
+        String a = EMClient.getInstance().getCurrentUser();
+        if (username.equals(SharedPreferenceHelper.getEmchatId()))
             ((BaseActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
         else {
             // 进入聊天页面

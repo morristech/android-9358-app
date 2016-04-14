@@ -2,6 +2,7 @@ package com.xmd.technician.chat.chatview;
 
 import java.util.Date;
 
+import com.bumptech.glide.Glide;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
@@ -9,7 +10,9 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessage.Direct;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.CommonUtils;
+import com.xmd.technician.chat.UserProfileProvider;
 
 import android.app.Activity;
 import android.content.Context;
@@ -41,12 +44,13 @@ public abstract class BaseChatView extends LinearLayout {
         this.activity = (Activity) context;
         this.mDirect = direct;
         inflater = LayoutInflater.from(context);
-
+        LayoutInflater.from(context).inflate(direct == EMMessage.Direct.RECEIVE ?
+                R.layout.chat_received_item : R.layout.chat_sent_item, this);
         initView();
     }
 
     private void initView() {
-        onInflateView();
+//        onInflateView();
         timeStampView = (TextView) findViewById(R.id.time);
         userAvatarView = (ImageView) findViewById(R.id.avatar);
 
@@ -75,9 +79,9 @@ public abstract class BaseChatView extends LinearLayout {
         }
         //设置头像和nick
         if(message.direct() == Direct.SEND){
-            CommonUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
+            Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).into(userAvatarView);
         }else{
-            CommonUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
+            Glide.with(context).load(UserProfileProvider.getInstance().getChatUserInfo(message.getFrom()).getAvatar()).into(userAvatarView);
         }
 
     }
