@@ -114,6 +114,7 @@ public class OrderDetailActivity extends BaseActivity {
 
         //Avatar
         Glide.with(this).load(mOrder.headImgUrl).into(mAvatar);
+        mAvatar.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, mOrder.emchatId));
         mCustomerName.setText(mOrder.customerName);
         mTelephone.setText(mOrder.phoneNum);
         mRemainTime.setText(mOrder.remainTime);

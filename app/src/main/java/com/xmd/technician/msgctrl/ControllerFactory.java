@@ -1,6 +1,7 @@
 package com.xmd.technician.msgctrl;
 
 
+import com.xmd.technician.chat.ChatController;
 import com.xmd.technician.common.UpgradeController;
 import com.xmd.technician.http.RequestController;
 
@@ -11,6 +12,7 @@ public class ControllerFactory {
 
     private static UpgradeController sUpgradeController;
     private static RequestController sRequestController;
+    private static ChatController sChatController;
 
     public static AbstractController createController(int controllerId) {
         switch (controllerId) {
@@ -24,6 +26,11 @@ public class ControllerFactory {
                     sRequestController = new RequestController();
                 }
                 return sRequestController;
+            case ControllerId.CHAT_CONTROLLER:
+                if (sChatController == null) {
+                    sChatController = new ChatController();
+                }
+                return sChatController;
         }
         return null;
     }

@@ -9,6 +9,7 @@ public class ControllerRegister {
         initUpgradeController();
         initRequestController();
         initShareController();
+        initChatController();
     }
 
     private static void initUpgradeController() {
@@ -66,6 +67,14 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_SHARE_TO_FRIEND,
                 MsgDef.MSG_DEF_SHARE_TO_TIMELINE,
                 MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM
+        };
+        MsgDispatcher.register(controllerId, msgIds);
+    }
+
+    private static void initChatController() {
+        int controllerId = ControllerId.CHAT_CONTROLLER;
+        int[] msgIds = {
+                MsgDef.MSG_DEF_START_CHAT,
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

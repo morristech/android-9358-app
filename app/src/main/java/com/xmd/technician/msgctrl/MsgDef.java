@@ -80,4 +80,10 @@ public class MsgDef {
     public static final int MSG_DEF_UPDATE_TECH_INFO = 0x0024;
 
     public static final int MSG_DEF_UPDATE_SERVICE_ITEM_LIST = 0x0025;
+
+
+    /**
+     * ChatController, start to chat with someone
+     */
+    public static final int MSG_DEF_START_CHAT = 0x0026;
 }

@@ -16,6 +16,11 @@ public class Order implements Serializable {
 
     public String customerName;
 
+    /**
+     * 环信聊天id
+     */
+    public String emchatId;
+
     public String formatCreateTime;
 
     public String formatAppointTime;

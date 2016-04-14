@@ -20,4 +20,9 @@ public class ControllerId {
      */
     public static final int SHARE_CONTROLLER = 0x0002;
 
+    /**
+     * Controller for chat
+     */
+    public static final int CHAT_CONTROLLER = 0x0003;
+
 }

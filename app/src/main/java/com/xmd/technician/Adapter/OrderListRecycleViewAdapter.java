@@ -15,6 +15,8 @@ import com.xmd.technician.R;
 import com.xmd.technician.beans.Order;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.CircleImageView;
 
 import java.util.List;
@@ -97,6 +99,7 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
             OrderListViewHolder itemHolder = (OrderListViewHolder) holder;
 
             Glide.with(mContext).load(order.headImgUrl).into(itemHolder.mUserHeadUrl);
+            itemHolder.mUserHeadUrl.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, order.emchatId));
             itemHolder.mUserName.setText(order.customerName);
             itemHolder.mOrderTime.setText(order.formatAppointTime);
             itemHolder.mOrderAmount.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), order.downPayment));
