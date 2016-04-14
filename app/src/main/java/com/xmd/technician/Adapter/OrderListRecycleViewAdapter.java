@@ -51,17 +51,20 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private OnManageButtonClickedListener mOnManageButtonClickedListener;
     private Context mContext;
     private RecyclerView mRecyclerView;
+    private ItemSlideHelper mHelper;
 
     public OrderListRecycleViewAdapter(Context context, List<Order> data, OnManageButtonClickedListener onManageButtonClickedListener) {
         mContext = context;
         mData = data;
         mOnManageButtonClickedListener = onManageButtonClickedListener;
+        mHelper = new ItemSlideHelper(mContext, this);
     }
 
     public void setData(List<Order> data) {
         mData = data;
         mIsEmpty = data.isEmpty();
         notifyDataSetChanged();
+        mHelper.clearTargetView();
     }
 
     /**
@@ -95,14 +98,13 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        Logger.v("On Bind View Holder : " + position);
-        if (holder instanceof OrderListViewHolder) {
 
-            // Force the ItemView Back to origin place when reload the data
-            holder.itemView.scrollTo(0, 0);
+        if (holder instanceof OrderListViewHolder) {
 
             Order order = mData.get(position);
             OrderListViewHolder itemHolder = (OrderListViewHolder) holder;
+
+            holder.itemView.scrollTo(0, 0);
 
             Glide.with(mContext).load(order.headImgUrl).into(itemHolder.mUserHeadUrl);
             itemHolder.mUserHeadUrl.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, order.emchatId));
@@ -170,7 +172,8 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Override
-    public int getHorizontalRange(RecyclerView.ViewHolder holder) {
+    public int getSlideOutRange(View targetView) {
+        RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(targetView);
         int range = 0;
         if(holder instanceof OrderListViewHolder){
             OrderListViewHolder curHolder = (OrderListViewHolder) holder;
@@ -185,13 +188,9 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Override
-    public boolean isViewSlideable(RecyclerView.ViewHolder holder) {
+    public boolean isViewSlideable(View targetView) {
+        RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(targetView);
         return ((OrderListViewHolder) holder).isOperationVisible;
-    }
-
-    @Override
-    public RecyclerView.ViewHolder getChildViewHolder(View childView) {
-        return mRecyclerView.getChildViewHolder(childView);
     }
 
     @Override
@@ -202,9 +201,8 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        Logger.v("On Attached To Recycler View");
         mRecyclerView = recyclerView;
-        mRecyclerView.addOnItemTouchListener(new ItemSlideHelper(mContext, this));
+        mRecyclerView.addOnItemTouchListener(mHelper);
     }
 
     static class OrderListFooterHolder extends RecyclerView.ViewHolder {
@@ -238,6 +236,4 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
             ButterKnife.bind(this, itemView);
         }
     }
-
-
 }

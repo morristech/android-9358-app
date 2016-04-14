@@ -1,6 +1,5 @@
 package com.xmd.technician.common;
 
-
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -18,7 +17,6 @@ import android.view.ViewConfiguration;
  */
 public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, GestureDetector.OnGestureListener {
 
-
     private static final String TAG = "ItemSlideHelper";
 
     private final int DEFAULT_DURATION = 200;
@@ -31,7 +29,6 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
     private int mLastX;
     private int mLastY;
 
-
     private boolean mIsDragging;
 
     private Animator mExpandAndCollapseAnim;
@@ -39,7 +36,6 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
     private GestureDetectorCompat mGestureDetector;
 
     private Callback mCallback;
-
 
     public ItemSlideHelper(Context context, Callback callback) {
         this.mCallback = callback;
@@ -53,6 +49,9 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
         mMinVelocity = configuration.getScaledMinimumFlingVelocity();
     }
 
+    public void clearTargetView(){
+        mTargetView = null;
+    }
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
         Logger.v("onInterceptTouchEvent: " + e.getAction() + " | mTargetView != null: " + (mTargetView != null));
@@ -166,23 +165,19 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
 
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        Logger.v("onTouchEvent: " + e.getAction());
 
         if (mExpandAndCollapseAnim != null && mExpandAndCollapseAnim.isRunning() || mTargetView == null) {
             return;
         }
 
-        RecyclerView.ViewHolder viewHolder = mCallback.getChildViewHolder(mTargetView);
-        if (!mCallback.isViewSlideable(viewHolder)) {
+        if (!mCallback.isViewSlideable(mTargetView)) {
             mTargetView = null;
-            Logger.v("isViewSlideable false");
             return;
         }
 
         //如果要响应fling事件设置将mIsDragging设为false
         if (mGestureDetector.onTouchEvent(e)) {
             mIsDragging = false;
-            Logger.v("mIsDraging false");
             return;
         }
 
@@ -191,54 +186,44 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
         int action = MotionEventCompat.getActionMasked(e);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                //RecyclerView 不会转发这个Down事件
-
+                //skip this, cause RecyclerView will intercept this Action and decided the active OnItemTouchListener
                 break;
             case MotionEvent.ACTION_MOVE:
-                int deltaX = (int) (mLastX - e.getX());
+                int dx = (int) (mLastX - e.getX());
                 if (mIsDragging) {
-                    Logger.v("mIsDragging");
-                    horizontalDrag(deltaX);
+                    dragHorizontal(dx);
                 }
                 mLastX = x;
                 break;
 
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                Logger.v("mIsDragging:" + mIsDragging);
                 if (mIsDragging) {
                     if (!smoothHorizontalExpandOrCollapse(0) && isCollapsed()) {
                         mTargetView = null;
                     }
                     mIsDragging = false;
                 }
-                Logger.v("mIsDragging:" + mIsDragging);
-
                 break;
         }
-
-
     }
 
     @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-    }
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
 
     /**
-     * 根据touch事件来滚动View的scrollX
      *
-     * @param delta
+     * @param dx
      */
-    private void horizontalDrag(int delta) {
+    private void dragHorizontal(int dx) {
         int scrollX = mTargetView.getScrollX();
         int scrollY = mTargetView.getScrollY();
-        if ((scrollX + delta) <= 0) {
+        if ((scrollX + dx) <= 0) {
             mTargetView.scrollTo(0, scrollY);
             return;
         }
         int horRange = getHorizontalRange();
-        scrollX += delta;
+        scrollX += dx;
         if (Math.abs(scrollX) < horRange) {
             mTargetView.scrollTo(scrollX, scrollY);
         } else {
@@ -305,11 +290,9 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
     }
 
 
-    public int getHorizontalRange() {
-        RecyclerView.ViewHolder viewHolder = mCallback.getChildViewHolder(mTargetView);
-        return mCallback.getHorizontalRange(viewHolder);
+    private int getHorizontalRange() {
+        return mCallback.getSlideOutRange(mTargetView);
     }
-
 
     @Override
     public boolean onDown(MotionEvent e) {
@@ -352,12 +335,10 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
 
     public interface Callback {
 
-        int getHorizontalRange(RecyclerView.ViewHolder holder);
-
-        RecyclerView.ViewHolder getChildViewHolder(View childView);
+        int getSlideOutRange(View targetView);
 
         View findTargetView(float x, float y);
 
-        boolean isViewSlideable(RecyclerView.ViewHolder holder);
+        boolean isViewSlideable(View targetView);
     }
 }
