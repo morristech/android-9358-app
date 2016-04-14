@@ -196,8 +196,7 @@ public class OrderDetailActivity extends BaseActivity {
                 doMakeCall();
                 break;
             case R.id.action_chat:
-                //TODO
-                makeShortToast("To chat");
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, mOrder.emchatId);
                 break;
         }
     }

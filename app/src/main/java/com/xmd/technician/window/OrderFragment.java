@@ -213,6 +213,8 @@ public class OrderFragment extends BaseFragment implements OrderListRecycleViewA
             doManageOrder(Constant.ORDER_STATUS_ACCEPT, order, "");
         } else if (Constant.ORDER_STATUS_ACCEPT.equals(order.status)) {
             doManageOrder(Constant.ORDER_STATUS_COMPLETE, order, "");
+        } else {
+            doNegativeOrder(ResourceUtils.getString(R.string.order_detail_delete_order_confirm), Constant.ORDER_STATUS_DELETE, order, "");
         }
     }
 

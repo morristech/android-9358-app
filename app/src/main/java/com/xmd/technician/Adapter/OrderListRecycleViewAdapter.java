@@ -14,6 +14,7 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.beans.Order;
 import com.xmd.technician.common.ItemSlideHelper;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -94,7 +95,12 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        Logger.v("On Bind View Holder : " + position);
         if (holder instanceof OrderListViewHolder) {
+
+            // Force the ItemView Back to origin place when reload the data
+            holder.itemView.scrollTo(0, 0);
+
             Order order = mData.get(position);
             OrderListViewHolder itemHolder = (OrderListViewHolder) holder;
 
@@ -106,32 +112,38 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
             // 1) 提交状态能够进行拒绝或者接受
             // 2) 只有普通预约的订单才能由技师来实现完成跟失效，付费预约的必须在核销或者失效的时候更改状态
-            if (Constant.ORDER_STATUS_SUBMIT.equals(order.status) ||
-                    (Constant.ORDER_STATUS_ACCEPT.equals(order.status) && Constant.ORDER_TYPE_APPOINT.equals(order.orderType))) {
+            itemHolder.mNegative.setVisibility(View.VISIBLE);
+            if ((Constant.ORDER_STATUS_ACCEPT.equals(order.status) && Constant.ORDER_TYPE_PAID.equals(order.orderType))) {
+                itemHolder.mSubmitSection.setVisibility(View.GONE);
+                itemHolder.mOtherStatus.setVisibility(View.VISIBLE);
+                itemHolder.mOtherStatus.setText(order.statusName);
+                itemHolder.mOperation.setVisibility(View.GONE);
+                itemHolder.isOperationVisible = false;
+            } else {
                 if (Constant.ORDER_STATUS_SUBMIT.equals(order.status)) {
                     itemHolder.mNegative.setText(ResourceUtils.getString(R.string.order_status_operation_reject));
                     itemHolder.mPositive.setText(ResourceUtils.getString(R.string.order_status_operation_accept));
                     itemHolder.mSubmitSection.setVisibility(View.VISIBLE);
                     itemHolder.mRemainTime.setText(order.remainTime);
                     itemHolder.mOtherStatus.setVisibility(View.GONE);
-                } else {
+                } else if (Constant.ORDER_STATUS_ACCEPT.equals(order.status)) {
                     // 只有普通预约的订单才能由技师来实现完成跟失效，付费预约的必须在核销或者失效的时候更改状态
                     itemHolder.mSubmitSection.setVisibility(View.GONE);
                     itemHolder.mOtherStatus.setVisibility(View.VISIBLE);
                     itemHolder.mOtherStatus.setText(order.statusName);
                     itemHolder.mNegative.setText(ResourceUtils.getString(R.string.order_status_operation_expire));
                     itemHolder.mPositive.setText(ResourceUtils.getString(R.string.order_status_operation_complete));
+                } else {
+                    itemHolder.mSubmitSection.setVisibility(View.GONE);
+                    itemHolder.mOtherStatus.setVisibility(View.VISIBLE);
+                    itemHolder.mOtherStatus.setText(order.statusName);
+                    itemHolder.mNegative.setVisibility(View.GONE);
+                    itemHolder.mPositive.setText(ResourceUtils.getString(R.string.order_status_operation_delete));
                 }
                 itemHolder.mNegative.setOnClickListener(v -> mOnManageButtonClickedListener.onNegativeButtonClicked(order));
                 itemHolder.mPositive.setOnClickListener(v -> mOnManageButtonClickedListener.onPositiveButtonClicked(order));
                 itemHolder.isOperationVisible = true;
                 itemHolder.mOperation.setVisibility(View.VISIBLE);
-            } else {
-                itemHolder.mSubmitSection.setVisibility(View.GONE);
-                itemHolder.mOtherStatus.setVisibility(View.VISIBLE);
-                itemHolder.mOtherStatus.setText(order.statusName);
-                itemHolder.mOperation.setVisibility(View.GONE);
-                itemHolder.isOperationVisible = false;
             }
 
             itemHolder.itemView.setOnClickListener(v -> mOnManageButtonClickedListener.onItemClicked(order));
@@ -159,13 +171,17 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getHorizontalRange(RecyclerView.ViewHolder holder) {
-        if(holder.itemView instanceof LinearLayout){
-            ViewGroup viewGroup = (ViewGroup) holder.itemView;
-            if(viewGroup.getChildCount() == 2){
-                return viewGroup.getChildAt(1).getLayoutParams().width;
+        int range = 0;
+        if(holder instanceof OrderListViewHolder){
+            OrderListViewHolder curHolder = (OrderListViewHolder) holder;
+            if (curHolder.mNegative.getVisibility() == View.VISIBLE) {
+                range += curHolder.mNegative.getLayoutParams().width;
+            }
+            if (curHolder.mPositive.getVisibility() == View.VISIBLE) {
+                range += curHolder.mPositive.getLayoutParams().width;
             }
         }
-        return 0;
+        return range;
     }
 
     @Override
@@ -186,6 +202,7 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+        Logger.v("On Attached To Recycler View");
         mRecyclerView = recyclerView;
         mRecyclerView.addOnItemTouchListener(new ItemSlideHelper(mContext, this));
     }

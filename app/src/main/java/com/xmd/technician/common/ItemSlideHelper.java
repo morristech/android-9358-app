@@ -8,27 +8,22 @@ import android.graphics.Rect;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
 /**
- * Created by yjwfn on 15-11-26.
- * 帮助显示左滑菜单
+ * ItemSlideHelper: help to slide the action item
  */
 public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, GestureDetector.OnGestureListener {
 
 
-    private static final String TAG = "ItemSwipeHelper";
-
+    private static final String TAG = "ItemSlideHelper";
 
     private final int DEFAULT_DURATION = 200;
 
     private View mTargetView;
-
-    private int mActivePointerId;
 
     private int mTouchSlop;
     private int mMaxVelocity;
@@ -60,12 +55,11 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-        Log.d(TAG, "onInterceptTouchEvent: " + e.getAction());
+        Logger.v("onInterceptTouchEvent: " + e.getAction() + " | mTargetView != null: " + (mTargetView != null));
 
         int action = MotionEventCompat.getActionMasked(e);
         int x = (int) e.getX();
         int y = (int) e.getY();
-
 
         //如果RecyclerView滚动状态不是空闲targetView不是空
         if (rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
@@ -74,7 +68,6 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
                 smoothHorizontalExpandOrCollapse(DEFAULT_DURATION / 2);
                 mTargetView = null;
             }
-
             return false;
         }
 
@@ -86,31 +79,34 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
         boolean needIntercept = false;
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-
-
-                mActivePointerId = MotionEventCompat.getPointerId(e, 0);
                 mLastX = (int) e.getX();
                 mLastY = (int) e.getY();
 
                 /*
                 * 如果之前有一个已经打开的项目，当此次点击事件没有发生在右侧的菜单中则返回TRUE，
-                * 如果点击的是右侧菜单那么返回FALSE这样做的原因是因为菜单需要响应Onclick
+                * 如果点击的是右侧菜单那么返回FALSE, 这样做的原因是因为菜单需要响应Onclick
                 * */
                 if (mTargetView != null) {
-                    return !inView(x, y);
+                    return !inSlideOutRange(x, y);
                 }
 
                 //查找需要显示菜单的view;
                 mTargetView = mCallback.findTargetView(x, y);
-
                 break;
             case MotionEvent.ACTION_MOVE:
+
+                //
+                if (isExpanded()) {
+                    smoothHorizontalExpandOrCollapse(DEFAULT_DURATION / 2);
+                    return false;
+                }
 
                 int deltaX = (x - mLastX);
                 int deltaY = (y - mLastY);
 
-                if (Math.abs(deltaY) > Math.abs(deltaX))
+                if (Math.abs(deltaY) > Math.abs(deltaX)) {
                     return false;
+                }
 
                 //如果移动距离达到要求，则拦截
                 needIntercept = mIsDragging = mTargetView != null && Math.abs(deltaX) >= mTouchSlop;
@@ -122,15 +118,13 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
                 * 走这是因为没有发生过拦截事件
                 * */
                 if (isExpanded()) {
-
-                    if (inView(x, y)) {
+                    if (inSlideOutRange(x, y)) {
                         // 如果走这那行这个ACTION_UP的事件会发生在右侧的菜单中
-                        Log.d(TAG, "click item");
+                        Logger.v("click item");
                     } else {
                         //拦截事件,防止targetView执行onClick事件
                         needIntercept = true;
                     }
-
                     //折叠菜单
                     smoothHorizontalExpandOrCollapse(DEFAULT_DURATION / 2);
                 }
@@ -139,6 +133,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
                 break;
         }
 
+        Logger.v("Intercepted : " + needIntercept);
         return needIntercept;
     }
 
@@ -148,7 +143,6 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
     }
 
     private boolean isCollapsed() {
-
         return mTargetView != null && mTargetView.getScrollX() == 0;
     }
 
@@ -156,11 +150,10 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
     * 根据targetView的scrollX计算出targetView的偏移，这样能够知道这个point
     * 是在右侧的菜单中
     * */
-    private boolean inView(int x, int y) {
-
-        if (mTargetView == null)
+    private boolean inSlideOutRange(int x, int y) {
+        if (mTargetView == null) {
             return false;
-
+        }
         int scrollX = mTargetView.getScrollX();
         int left = mTargetView.getWidth() - scrollX;
         int top = mTargetView.getTop();
@@ -173,7 +166,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
 
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        Log.d(TAG, "onTouchEvent: " + e.getAction());
+        Logger.v("onTouchEvent: " + e.getAction());
 
         if (mExpandAndCollapseAnim != null && mExpandAndCollapseAnim.isRunning() || mTargetView == null) {
             return;
@@ -182,12 +175,14 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
         RecyclerView.ViewHolder viewHolder = mCallback.getChildViewHolder(mTargetView);
         if (!mCallback.isViewSlideable(viewHolder)) {
             mTargetView = null;
+            Logger.v("isViewSlideable false");
             return;
         }
 
         //如果要响应fling事件设置将mIsDragging设为false
         if (mGestureDetector.onTouchEvent(e)) {
             mIsDragging = false;
+            Logger.v("mIsDraging false");
             return;
         }
 
@@ -202,6 +197,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
             case MotionEvent.ACTION_MOVE:
                 int deltaX = (int) (mLastX - e.getX());
                 if (mIsDragging) {
+                    Logger.v("mIsDragging");
                     horizontalDrag(deltaX);
                 }
                 mLastX = x;
@@ -209,12 +205,14 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
 
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+                Logger.v("mIsDragging:" + mIsDragging);
                 if (mIsDragging) {
                     if (!smoothHorizontalExpandOrCollapse(0) && isCollapsed()) {
                         mTargetView = null;
                     }
                     mIsDragging = false;
                 }
+                Logger.v("mIsDragging:" + mIsDragging);
 
                 break;
         }
@@ -239,8 +237,6 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
             mTargetView.scrollTo(0, scrollY);
             return;
         }
-
-
         int horRange = getHorizontalRange();
         scrollX += delta;
         if (Math.abs(scrollX) < horRange) {
@@ -248,8 +244,6 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
         } else {
             mTargetView.scrollTo(horRange, scrollY);
         }
-
-
     }
 
 
@@ -263,26 +257,19 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
         int scrollX = mTargetView.getScrollX();
         int scrollRange = getHorizontalRange();
 
-        if (mExpandAndCollapseAnim != null)
+        if (mExpandAndCollapseAnim != null) {
             return false;
-
+        }
 
         int to = 0;
         int duration = DEFAULT_DURATION;
-
         if (velocityX == 0) {
             //如果已经展一半，平滑展开
             if (scrollX > scrollRange / 2) {
                 to = scrollRange;
             }
         } else {
-
-
-            if (velocityX > 0)
-                to = 0;
-            else
-                to = scrollRange;
-
+            to = velocityX > 0 ? 0 : scrollRange;
             duration = (int) ((1.f - Math.abs(velocityX) / mMaxVelocity) * DEFAULT_DURATION);
         }
 
@@ -293,25 +280,19 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
         mExpandAndCollapseAnim.setDuration(duration);
         mExpandAndCollapseAnim.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
+            public void onAnimationStart(Animator animation) {}
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 mExpandAndCollapseAnim = null;
-                if (isCollapsed())
+                if (isCollapsed()) {
                     mTargetView = null;
-
-                Log.d(TAG, "onAnimationEnd");
+                }
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                //onAnimationEnd(animation);
                 mExpandAndCollapseAnim = null;
-
-                Log.d(TAG, "onAnimationCancel");
             }
 
             @Override
@@ -320,7 +301,6 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
             }
         });
         mExpandAndCollapseAnim.start();
-
         return true;
     }
 
@@ -358,11 +338,11 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
         if (Math.abs(velocityX) > mMinVelocity && Math.abs(velocityX) < mMaxVelocity) {
             if (!smoothHorizontalExpandOrCollapse(velocityX)) {
-                if (isCollapsed())
+                if (isCollapsed()) {
                     mTargetView = null;
+                }
                 return true;
             }
         }
