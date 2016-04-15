@@ -9,13 +9,14 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 
 /**
  * ItemSlideHelper: help to slide the action item
  */
-public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, GestureDetector.OnGestureListener {
+public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
 
     private static final String TAG = "ItemSlideHelper";
 
@@ -37,11 +38,10 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
 
     private Callback mCallback;
 
+    private VelocityTracker mVelocityTracker;
+
     public ItemSlideHelper(Context context, Callback callback) {
         this.mCallback = callback;
-
-        //手势用于处理fling
-        mGestureDetector = new GestureDetectorCompat(context, this);
 
         ViewConfiguration configuration = ViewConfiguration.get(context);
         mTouchSlop = configuration.getScaledTouchSlop();
@@ -176,10 +176,10 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
         }
 
         //如果要响应fling事件设置将mIsDragging设为false
-        if (mGestureDetector.onTouchEvent(e)) {
-            mIsDragging = false;
-            return;
-        }
+//        if (mGestureDetector.onTouchEvent(e)) {
+//            mIsDragging = false;
+//            return;
+//        }
 
         int x = (int) e.getX();
         int y = (int) e.getY();
@@ -294,32 +294,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
         return mCallback.getSlideOutRange(mTargetView);
     }
 
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    @Override
+    /*
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         if (Math.abs(velocityX) > mMinVelocity && Math.abs(velocityX) < mMaxVelocity) {
             if (!smoothHorizontalExpandOrCollapse(velocityX)) {
@@ -331,6 +306,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener, Gestur
         }
         return false;
     }
+    */
 
 
     public interface Callback {

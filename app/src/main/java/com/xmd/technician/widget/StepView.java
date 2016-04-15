@@ -144,14 +144,14 @@ public class StepView extends View {
                 String firstStepDesc = mDescriptions[0];
                 int leftMargin = firstStepDesc.length() * mTextSize / 2;
                 leftMargin = leftMargin > mStepRadius ? leftMargin : 0;
-                Logger.v("firstStepDesc: " + firstStepDesc + "firstStepDescLength : " + firstStepDesc.length() * mTextSize);
+                Logger.v("firstStepDesc: " + firstStepDesc + " | firstStepDescLength : " + firstStepDesc.length() * mTextSize);
 
                 String lastStepDesc = mDescriptions[mTotolStep - 1];
                 int rightMargin = lastStepDesc.length() * mTextSize / 2;
-                Logger.v("lastStepDesc: " + lastStepDesc + "lastStepDescLength : " + lastStepDesc.length() * mTextSize);
+                Logger.v("lastStepDesc: " + lastStepDesc + " | lastStepDescLength : " + lastStepDesc.length() * mTextSize);
                 rightMargin = rightMargin > mStepRadius ? rightMargin : 0;
 
-                Logger.v("leftMargin: " + leftMargin + "rightMargin : " + rightMargin);
+                Logger.v("leftMargin: " + leftMargin + " | rightMargin : " + rightMargin);
 
                 float dotX = leftMargin + paddingLeft;
                 // we should draw the dot up in the center of the description
@@ -184,12 +184,6 @@ public class StepView extends View {
                     }
                 }
             }
-
-
-
-
-
-
         }
     }
 }
