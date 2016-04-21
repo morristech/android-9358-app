@@ -31,4 +31,16 @@ public class ChatConstant {
     public static final int MESSAGE_TYPE_RECV_PAID_COUPON = 0x8A;
     public static final int MESSAGE_TYPE_SENT_ORDINARY_COUPON = 0x8B;
     public static final int MESSAGE_TYPE_RECV_ORDINARY_COUPON = 0x8C;
+
+    public static final String KEY_CHAT_TYPE = "chatType";
+    public static final String KEY_MSG = "msg";
+    public static final String KEY_TO = "to";
+    public static final String KEY_IMAGE_PATH = "imagePath";
+    public static final String KEY_CUSTOM_TYPE = "msgType";
+    public static final String KEY_ACT_ID = "actId";
+    public static final String KEY_ORDER_ID = "orderId";
+    public static final String KEY_TECH_CODE = "techCode";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_HEADER = "header";
+    public static final String KEY_TIME = "time";
 }

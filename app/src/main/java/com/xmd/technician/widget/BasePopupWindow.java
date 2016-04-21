@@ -1,8 +1,10 @@
 package com.xmd.technician.widget;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 import com.xmd.technician.R;
@@ -23,11 +25,14 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     protected PopupWindow mPopupWindow;
     protected Activity mActivity;
     protected Map<String, String> mParams;
+    private int mScreenHeight;
 
     protected BasePopupWindow(View parentView, Map<String, String> params){
         mActivity = ActivityHelper.getInstance().getCurrentActivity();
         mParentView = parentView != null ? parentView : mActivity.getWindow().getDecorView();
         mParams = params;
+        WindowManager wm = (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
+        mScreenHeight = wm.getDefaultDisplay().getHeight();
     }
 
     protected void initPopupWidnow(View contentView, int width, int height) {
@@ -46,6 +51,7 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
 
     @Override
     public void onDismiss() {
+        mParentView.setSelected(false);
         dismissPopupWindow(mActivity, mPopupWindow);
     }
 
@@ -66,6 +72,16 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     public void showAsDropDown() {
         showPopupWindowAsDropDown(mActivity, mPopupWindow, mParentView, true);
     }
+
+    /**
+     * 显示在点击的View上方
+     */
+    public void showAsAbove(int offsetX, int offsetY) {
+        int[] location = new int[2];
+        mParentView.getLocationOnScreen(location);
+        showPopupWindow(mActivity, mPopupWindow, mParentView, Gravity.START | Gravity.BOTTOM, location[0] - mPopupWindow.getWidth()/2 + offsetX, mScreenHeight - location[1] + offsetY, true);
+    }
+
     /**
      * Show with mask in the specific location
      * @param gravity

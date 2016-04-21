@@ -3,7 +3,6 @@ package com.xmd.technician.window;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,7 +20,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.PopupWindow;
 import android.widget.SimpleAdapter;
@@ -30,7 +28,6 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMTextMessageBody;
 import com.xmd.technician.Adapter.ChatListAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -38,15 +35,24 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
+import com.xmd.technician.chat.MessageSentResult;
 import com.xmd.technician.chat.SmileUtils;
-import com.xmd.technician.chat.UserProfileProvider;
+import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
-import com.xmd.technician.widget.ConfirmDialog;
+import com.xmd.technician.http.gson.OrderManageResult;
+import com.xmd.technician.http.gson.RedpackResult;
+import com.xmd.technician.model.CouponInfo;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.ArrayPopupWindow;
 import com.xmd.technician.widget.RewardConfirmDialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +61,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscription;
 
 public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
     protected static final int REQUEST_CODE_LOCAL = 1;
@@ -62,7 +69,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mRefreshLayout;
     @Bind(R.id.et_sendmessage) EditText mSendMsgEd;
     @Bind(R.id.list_view) RecyclerView mMsgListView;
-    //@Bind(R.id.extend_menu_container) FrameLayout mChatExtendMenuContainer;
+    @Bind(R.id.btn_face) View mFaceBtn;
     @Bind(R.id.emojicon_menu_container) GridView mEmojiconMenuContainer;
 
     private String mToChatUsername;
@@ -75,6 +82,16 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private int mPageSize = 20;
     private EMConversation mConversation;
 
+    private Subscription mManagerOrderSubscription;
+    private Subscription mGetRedpacklistSubscription;
+    private List<CouponInfo> mPaidCouponList = new ArrayList<>();
+    private List<CouponInfo> mCouponList = new ArrayList<>();
+    private String mTechCode;
+
+    private ArrayPopupWindow mCommonMessageWindow;
+    private ArrayPopupWindow mPaidCouponWindow;
+    private ArrayPopupWindow mCouponWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +101,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         mToChatUsername = getIntent().getExtras().getString(ChatConstant.EXTRA_USER_ID);
 
-        //setTitle(UserProfileProvider.getInstance().getChatUserInfo(mToChatUsername).getNick());
+        UserUtils.setUserNick(mToChatUsername, mAppTitle);
+
         setBackVisible(true);
 
         mInputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -96,6 +114,14 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         onConversationInit();
         initChatList();
+
+        mGetRedpacklistSubscription = RxBus.getInstance().toObservable(RedpackResult.class).subscribe(
+                redpackResult -> getRedpackListResult(redpackResult));
+
+        mManagerOrderSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
+                result -> managerOrderResult(result));
+
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REDPACK_LIST);
     }
 
     @Override
@@ -110,6 +136,12 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     protected void onPause() {
         super.onPause();
         EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription);
     }
 
     @Override
@@ -214,6 +246,31 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mChatAdapter.refreshSelectLast();
     }
 
+    private void getRedpackListResult(RedpackResult result){
+        if(result.statusCode == 200){
+            mTechCode = result.respData.techCode;
+            if(result.respData.coupons != null){
+                mCouponList.clear();
+                mPaidCouponList.clear();
+                for(CouponInfo info : result.respData.coupons){
+                    if(info.couponType.equals("paid")) {
+                        mPaidCouponList.add(info);
+                    }else {
+                        mCouponList.add(info);
+                    }
+                }
+            }
+        }
+    }
+
+    private void managerOrderResult(OrderManageResult result){
+        String replyMessage = mChatAdapter.getOrderReplyMessage(result.orderId);
+        if(!TextUtils.isEmpty(replyMessage)){
+            sendOrderMessage(replyMessage, result.orderId);
+            mChatAdapter.refreshSelectLast();
+        }
+    }
+
     @OnClick(R.id.btn_send)
     public void onSendBtnClicked(){
         String s = mSendMsgEd.getText().toString();
@@ -238,15 +295,37 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     @OnClick(R.id.btn_face)
-    public void onToggleEmojiconClicked(){
-        toggleEmojicon();
+    public void onToggleEmojiconClicked(View view){
+        if (mEmojiconMenuContainer.getVisibility() == View.VISIBLE) {
+            view.setSelected(false);
+            mEmojiconMenuContainer.setVisibility(View.GONE);
+        } else {
+            hideKeyboard();
+            view.setSelected(true);
+            mEmojiconMenuContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.btn_common_msg)
-    public void showCommonMessage(){
+    public void showCommonMessage(View view){
         hideKeyboard();
         hideExtendMenuContainer();
-        showPopupWindow(findViewById(R.id.menu_layout));
+        view.setSelected(true);
+
+        if(mCommonMessageWindow == null){
+            mCommonMessageWindow = new ArrayPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_section_width));
+            mCommonMessageWindow.setDataSet(Arrays.asList(getResources().getStringArray(R.array.common_greeting_array)));
+            mCommonMessageWindow.setItemClickListener((parent, view1, position, id) -> {
+                sendTextMessage((String) parent.getAdapter().getItem(position));
+            });
+        }
+
+        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+            @Override
+            public void run() {
+                mCommonMessageWindow.showAsAboveLeft();
+            }
+        }, 50);
     }
 
     @OnClick(R.id.btn_common_reward)
@@ -260,6 +339,59 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 super.onConfirmClick();
             }
         }.show();
+    }
+
+    @OnClick(R.id.btn_common_clock)
+    public void showPaidCouponInfo(View view){
+        hideKeyboard();
+        hideExtendMenuContainer();
+        if(mPaidCouponList.isEmpty()){
+            makeShortToast(getString(R.string.no_paid_coupon));
+            return;
+        }
+        view.setSelected(true);
+        if(mPaidCouponWindow == null){
+            mPaidCouponWindow = new ArrayPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_item_width));
+            mPaidCouponWindow.setDataSet(mPaidCouponList);
+            mPaidCouponWindow.setItemClickListener((parent, view1, position, id) -> {
+                CouponInfo info = (CouponInfo) parent.getAdapter().getItem(position);
+                sendPaidCouponMessage(String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", info.actValue, info.couponPeriod), info.actId);
+            });
+        }
+
+        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+            @Override
+            public void run() {
+                mPaidCouponWindow.showAsAboveCenter();
+            }
+        }, 50);
+    }
+
+    @OnClick(R.id.btn_common_coupon)
+    public void showCouponInfo(View view){
+        hideKeyboard();
+        hideExtendMenuContainer();
+        if(mCouponList.isEmpty()){
+            makeShortToast(getString(R.string.no_coupon));
+            return;
+        }
+
+        view.setSelected(true);
+        if(mCouponWindow == null){
+            mCouponWindow = new ArrayPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_item_width));
+            mCouponWindow.setDataSet(mCouponList);
+            mCouponWindow.setItemClickListener((parent, view1, position, id) -> {
+                CouponInfo info = (CouponInfo) parent.getAdapter().getItem(position);
+                sendCouponMessage(String.format("<i>求点钟</i>立减<span>%d</span>元<b>%s</b>", info.actValue, info.couponPeriod), info.actId);
+            });
+        }
+
+        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+            @Override
+            public void run() {
+                mCouponWindow.showAsAboveCenter();
+            }
+        }, 50);
     }
 
     /**
@@ -276,9 +408,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
      * 隐藏整个扩展按钮栏(包括表情栏)
      */
     public void hideExtendMenuContainer() {
-        //chatExtendMenu.setVisibility(View.GONE);
+        mFaceBtn.setSelected(false);
         mEmojiconMenuContainer.setVisibility(View.GONE);
-        //mChatExtendMenuContainer.setVisibility(View.GONE);
     }
 
     private void toggleEmojicon() {
@@ -356,27 +487,30 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     protected void sendBegRewardMessage(String content) {
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
-        message.setAttribute("msgType", "begReward");
+        message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "begReward");
         sendMessage(message);
     }
 
-    protected void sendVoiceMessage(String filePath, int length) {
-        EMMessage message = EMMessage.createVoiceSendMessage(filePath, length, mToChatUsername);
+    private void sendCouponMessage(String content, String actId) {
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "ordinaryCoupon");
+        message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
+        message.setAttribute(ChatConstant.KEY_TECH_CODE, mTechCode);
         sendMessage(message);
     }
 
-    protected void sendLocationMessage(double latitude, double longitude, String locationAddress) {
-        EMMessage message = EMMessage.createLocationSendMessage(latitude, longitude, locationAddress, mToChatUsername);
+    private void sendOrderMessage(String content, String orderId) {
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "order");
+        message.setAttribute(ChatConstant.KEY_ORDER_ID, orderId);
         sendMessage(message);
     }
 
-    protected void sendVideoMessage(String videoPath, String thumbPath, int videoLength) {
-        EMMessage message = EMMessage.createVideoSendMessage(videoPath, thumbPath, videoLength, mToChatUsername);
-        sendMessage(message);
-    }
-
-    protected void sendFileMessage(String filePath) {
-        EMMessage message = EMMessage.createFileSendMessage(filePath, mToChatUsername);
+    private void sendPaidCouponMessage(String content, String actId) {
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "paidCoupon");
+        message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
+        message.setAttribute(ChatConstant.KEY_TECH_CODE, mTechCode);
         sendMessage(message);
     }
 
@@ -392,9 +526,9 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             message.setChatType(EMMessage.ChatType.ChatRoom);
         }
 
-        message.setAttribute("name", SharedPreferenceHelper.getUserName());
-        message.setAttribute("header", SharedPreferenceHelper.getUserAvatar());
-        message.setAttribute("time", String.valueOf(new Date()));
+        message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
+        message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
+        message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(new Date()));
         //发送消息
         EMClient.getInstance().chatManager().sendMessage(message);
         //刷新ui

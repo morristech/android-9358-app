@@ -56,7 +56,8 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO,
                 MsgDef.MSG_DEF_RESET_PASSWORD,
                 MsgDef.MSG_DEF_UPDATE_TECH_INFO,
-                MsgDef.MSG_DEF_UPDATE_SERVICE_ITEM_LIST
+                MsgDef.MSG_DEF_UPDATE_SERVICE_ITEM_LIST,
+                MsgDef.MSG_DEF_GET_REDPACK_LIST
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

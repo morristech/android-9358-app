@@ -47,7 +47,7 @@
             android:background="@drawable/login_button_main_selector"
             android:text="@string/button_send"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/fontTitle" />
+            android:textSize="@dimen/fontBody" />
 
         <EditText
             android:id="@+id/et_sendmessage"
@@ -59,7 +59,7 @@
             android:maxLines="3"
             android:paddingLeft="@dimen/search_margin"
             android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontTitle"
+            android:textSize="@dimen/fontBody"
             android:hint="@string/app_info_title"/>
 
         <LinearLayout

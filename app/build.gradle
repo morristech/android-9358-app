@@ -29,9 +29,9 @@ android {
 
         manifestPlaceholders = [
                 //Getui placeHolder
-                GETUI_APP_ID        : "Bt4zFr6HYB61JzGr2C37I3",
-                GETUI_APP_KEY       : "ox18zILavRANZiPpipa9J2",
-                GETUI_APP_SECRET    : "km9cV7pMg56y3EsQT3qhY8",
+                GETUI_APP_ID        : "WvUqksV0Ob6gUBKdGxOLk8",
+                GETUI_APP_KEY       : "OPclY7PiR37dSgU8NDtWC",
+                GETUI_APP_SECRET    : "nxA8wGbyYl5tCX6aDeH3i1",
                 PACKAGE_NAME        : "com.xmd.technician",
                 //UMENG_APPKEY for release
                 UMENG_APPKEY_VALUE  : "55b5d44167e58e899c003120",

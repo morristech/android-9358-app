@@ -81,6 +81,7 @@ public class MsgDef {
 
     public static final int MSG_DEF_UPDATE_SERVICE_ITEM_LIST = 0x0025;
 
+    public static final int MSG_DEF_GET_REDPACK_LIST = 0x0027;
 
     /**
      * ChatController, start to chat with someone

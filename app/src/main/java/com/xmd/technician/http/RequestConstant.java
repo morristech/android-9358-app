@@ -47,6 +47,8 @@ public class RequestConstant {
     public static final String URL_GET_ACCOUNT_MONEY = BASE_URL + "/v1/profile/tech/money";
     public static final String URL_CONSUME_DETAIL = BASE_URL + "/v2/tech/profile/account/details";
 
+    public static final String URL_GET_REDPACK_LIST = BASE_URL + "/v1/profile/redpack/list";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -61,7 +63,8 @@ public class RequestConstant {
     public static final String KEY_APP_TYPE = "appType";
     public static final String APP_TYPE_ANDROID = "android";
     public static final String KEY_SECRET = "secret";
-
+    public static final String KEY_TELEPHONE = "telephone";
+    public static final String KEY_REQ_DATE = "reqDate";
 
     public static final String KEY_SESSION_TYPE = "sessionType";
     public static final String KEY_TOKEN = "token";
