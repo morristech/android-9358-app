@@ -4,9 +4,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="@dimen/avatar_head"
-        android:layout_height="@dimen/avatar_head"
-        android:gravity="center"
-        android:text="nihao"/>
+    <ListView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="@dimen/line_divide_height"
+        android:divider="@color/colorMain"/>
 </LinearLayout>

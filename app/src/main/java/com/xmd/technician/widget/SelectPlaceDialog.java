@@ -95,7 +95,7 @@ public abstract class SelectPlaceDialog extends Dialog implements OnWheelChanged
         if (initProvince != null && !(TextUtils.isEmpty(initProvince))) {
             mProvinceWheel.setCurrentItem(Arrays.asList(mProvinceDatas).indexOf(initProvince));
         }
-        if (initCity != null && !(TextUtils.isEmpty(initCity))) {
+        if (cityDatas != null && !(TextUtils.isEmpty(initCity))) {
             mCityWheel.setCurrentItem(Arrays.asList(cityDatas).indexOf(initCity));
         }
         mConfirmButton = (Button) findViewById(R.id.select_confirm_button);

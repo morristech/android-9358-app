@@ -8,14 +8,25 @@ import android.view.ViewGroup;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.exceptions.HyphenateException;
+import com.xmd.technician.Constant;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.chatview.BaseChatView;
+import com.xmd.technician.chat.chatview.ChatViewCoupon;
 import com.xmd.technician.chat.chatview.ChatViewImage;
 import com.xmd.technician.chat.chatview.ChatViewOrder;
+import com.xmd.technician.chat.chatview.ChatViewPaidCoupon;
 import com.xmd.technician.chat.chatview.ChatViewReward;
 import com.xmd.technician.chat.chatview.ChatViewText;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sdcm on 16-3-21.
@@ -42,11 +53,14 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private Context mContext;
     private RecyclerView mListView;
+    private Map<String, String> mOrderReplyMessage;
 
     public ChatListAdapter(Context context, RecyclerView view , String username, int chatType){
         mContext = context;
         mListView = view;
         mConversation = EMClient.getInstance().chatManager().getConversation(username, CommonUtils.getConversationType(chatType), true);
+
+        mOrderReplyMessage = new HashMap<>();
     }
 
     public void refreshList(){
@@ -188,6 +202,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
             case ChatConstant.MESSAGE_TYPE_RECV_ORDER:
                 chatRow = new ChatViewOrder(context, EMMessage.Direct.RECEIVE);
+                ((ChatViewOrder)chatRow).setOrderManagerListener(mOrderManagerListener);
                 break;
             case ChatConstant.MESSAGE_TYPE_SENT_ORDER:
                 chatRow = new ChatViewOrder(context, EMMessage.Direct.SEND);
@@ -197,6 +212,12 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
             case ChatConstant.MESSAGE_TYPE_SENT_BEG_REWARD:
                 chatRow = new ChatViewReward(context, EMMessage.Direct.SEND);
+                break;
+            case ChatConstant.MESSAGE_TYPE_SENT_ORDINARY_COUPON:
+                chatRow = new ChatViewCoupon(context, EMMessage.Direct.SEND);
+                break;
+            case ChatConstant.MESSAGE_TYPE_SENT_PAID_COUPON:
+                chatRow = new ChatViewPaidCoupon(context, EMMessage.Direct.SEND);
                 break;
             /*case IMAGE:
                 chatRow = new ChatViewImage(context, message, position);
@@ -221,4 +242,44 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return chatRow;
     }
 
+    private ChatViewOrder.OrderManagerListener mOrderManagerListener = new ChatViewOrder.OrderManagerListener() {
+
+        @Override
+        public void onAccept(EMMessage message) {
+            try {
+                String orderId = message.getStringAttribute(ChatConstant.KEY_ORDER_ID);
+                String content = ((EMTextMessageBody)message.getBody()).getMessage();
+                content = content.replace("发起预约","接受预约");
+                mOrderReplyMessage.put(orderId, content);
+                doManageOrder(orderId, Constant.ORDER_STATUS_ACCEPT, "");
+            } catch (HyphenateException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onRefuse(EMMessage message) {
+            try {
+                String orderId = message.getStringAttribute(ChatConstant.KEY_ORDER_ID);
+                String content = ((EMTextMessageBody)message.getBody()).getMessage();
+                content = content.replace("发起预约","拒绝预约");
+                mOrderReplyMessage.put(orderId, content);
+                doManageOrder(orderId, Constant.ORDER_STATUS_REJECTED, "");
+            } catch (HyphenateException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private void doManageOrder(String orderId, String type, String reason){
+        Map<String,String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_PROCESS_TYPE, type);
+        params.put(RequestConstant.KEY_ID, orderId);
+        params.put(RequestConstant.KEY_REASON, reason);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MANAGE_ORDER, params);
+    }
+
+    public String getOrderReplyMessage(String orderId){
+        return  mOrderReplyMessage.get(orderId);
+    }
 }

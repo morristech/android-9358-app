@@ -2,10 +2,6 @@ package com.xmd.technician.chat;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
@@ -13,7 +9,6 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 import com.xmd.technician.R;
-import com.xmd.technician.chat.chatview.ChatUser;
 
 /**
  * Created by sdcm on 16-3-22.
@@ -79,11 +74,14 @@ public class CommonUtils {
                 digest = getString(context, R.string.video_call) + txtBody.getMessage();
             }else if(message.getBooleanAttribute(ChatConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)){
                 if(!TextUtils.isEmpty(txtBody.getMessage())){
+
                     digest = txtBody.getMessage();
                 }else{
                     digest = getString(context, R.string.dynamic_expression);
                 }
-            }else{
+            }else if(!TextUtils.isEmpty(message.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE,""))){
+                digest = txtBody.getMessage().replaceAll("<b>|</b>|</br>|<br>|<i>|</i>|<span>|</span>","");
+            }else {
                 digest = txtBody.getMessage();
             }
                 break;
@@ -95,25 +93,6 @@ public class CommonUtils {
         }
 
         return digest;
-    }
-
-    /**
-     * 设置用户头像
-     * @param username
-     */
-    public static void setUserAvatar(Context context, String username, ImageView imageView){
-        /*EaseUser user = getUserInfo(username);
-        if(user != null && user.getAvatar() != null){
-            try {
-                int avatarResId = Integer.parseInt(user.getAvatar());
-                Glide.with(context).load(avatarResId).into(imageView);
-            } catch (Exception e) {
-                //正常的string路径
-                Glide.with(context).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(imageView);
-            }
-        }else*/{
-            Glide.with(context).load(R.drawable.icon22).into(imageView);
-        }
     }
 
     public static String getThumbnailImagePath(String thumbRemoteUrl) {

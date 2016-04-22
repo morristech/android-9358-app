@@ -144,6 +144,10 @@
     <string name="send_request_user_reward">确认发送＂求打赏＂信息？</string>
     <string name="accept">接受</string>
     <string name="refuse">拒绝</string>
+    <string name="common_greeting_format">确认发送＂%1$s＂信息？</string>
+    <string name="no_paid_coupon">抱歉！暂无点钟券！</string>
+    <string name="no_coupon">抱歉！暂无优惠券！</string>
+    <string name="send_coupon_msg_format"><i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b></string>
 
     <string name="pending_order">待接受</string>
     <string name="accepted_order">已接受</string>

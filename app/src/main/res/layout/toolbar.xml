@@ -15,10 +15,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/personal_padding"
             android:clickable="true"
             android:scaleType="center"
             android:src="@drawable/icon_back"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/toolbar_title"
@@ -37,9 +38,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/personal_padding"
             android:gravity="center"
             android:clickable="true"
             android:text="right"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

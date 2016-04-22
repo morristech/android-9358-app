@@ -13,6 +13,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.UserProfileProvider;
+import com.xmd.technician.chat.UserUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -61,7 +62,6 @@ public abstract class BaseChatView extends LinearLayout {
      * 根据当前message和position设置控件属性等
      *
      * @param message
-     * @param position
      */
     public void setUpView(EMMessage message) {
         this.message = message;
@@ -79,11 +79,10 @@ public abstract class BaseChatView extends LinearLayout {
         }
         //设置头像和nick
         if(message.direct() == Direct.SEND){
-            Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).into(userAvatarView);
+            UserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
         }else{
-            Glide.with(context).load(UserProfileProvider.getInstance().getChatUserInfo(message.getFrom()).getAvatar()).into(userAvatarView);
+            UserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
         }
-
     }
 
 

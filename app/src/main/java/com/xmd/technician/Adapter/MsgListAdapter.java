@@ -27,6 +27,7 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserProfileProvider;
+import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.chat.chatview.BaseChatView;
 import com.xmd.technician.chat.chatview.ChatUser;
 
@@ -53,8 +54,6 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private Context mContext;
     private Filter mFilter;
 
-    private Map<String, ChatUser> mLocalUsers ;
-    private UserProfileProvider mUserProfileProvider;
 
     public MsgListAdapter(Context context, List<EMConversation> conversationList,onMsgItemClickListener onMsgItemClickListener){
         mContext = context;
@@ -62,8 +61,6 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mConversationList.addAll(conversationList);
         mCopyConversationList = new ArrayList<>();
         mCopyConversationList.addAll(conversationList);
-        mUserProfileProvider = UserProfileProvider.getInstance();
-        mLocalUsers = mUserProfileProvider.getContactList();
         mOnMsgItemClickListener = onMsgItemClickListener;
     }
 
@@ -110,17 +107,15 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 conversationHolder.mContent.setText(span, TextView.BufferType.SPANNABLE);
                 conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
                 try {
-                    ChatUser user;
-                    if (!mLocalUsers.containsKey(conversation.getUserName()) && lastMessage.direct() == EMMessage.Direct.RECEIVE) {
+                    if (lastMessage.direct() == EMMessage.Direct.RECEIVE) {
+                        ChatUser user;
                         user = new ChatUser(conversation.getUserName());
-                        user.setAvatar(lastMessage.getStringAttribute("header"));
-                        user.setNick(lastMessage.getStringAttribute("name"));
-                        mUserProfileProvider.saveContact(user);
-                    }else {
-                        user = mLocalUsers.get(conversation.getUserName());
+                        user.setAvatar(lastMessage.getStringAttribute(ChatConstant.KEY_HEADER));
+                        user.setNick(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
+                        UserUtils.saveUser(user);
                     }
-                    Glide.with(mContext).load(user.getAvatar()).into(conversationHolder.mAvatar);
-                    conversationHolder.mName.setText(user.getNick());
+                    UserUtils.setUserAvatar(mContext, conversation.getUserName(), conversationHolder.mAvatar);
+                    UserUtils.setUserNick(conversation.getUserName(), conversationHolder.mName);
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                 }catch (NullPointerException e){

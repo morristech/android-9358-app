@@ -28,6 +28,9 @@ public class UserProfileProvider {
     private DbOpenHelper dbHelper;
     private static UserProfileProvider userProvider;
 
+    private Map<String, ChatUser> mLocalUsers ;
+    private ChatUser mCurrentUser;
+
     public static UserProfileProvider getInstance(){
         if(userProvider == null){
             synchronized (UserProfileProvider.class){
@@ -42,17 +45,41 @@ public class UserProfileProvider {
     private UserProfileProvider(){
         dbHelper = DbOpenHelper.getInstance(TechApplication.getAppContext());
     }
-    
+
     public ChatUser getChatUserInfo(String username){
         if(username.equals(SharedPreferenceHelper.getEmchatId())){
-            ChatUser currentUser = new ChatUser(username);
-            String nick = SharedPreferenceHelper.getUserName();
-            currentUser.setNick((nick != null) ? nick : username);
-            currentUser.setAvatar(SharedPreferenceHelper.getUserAvatar());
-            return currentUser;
+            return getCurrentUserInfo();
         }
         ChatUser user = getContactList().get(username);
         return user;
+    }
+
+    public synchronized ChatUser getCurrentUserInfo() {
+        if (mCurrentUser == null) {
+            String username = SharedPreferenceHelper.getEmchatId();
+            mCurrentUser = new ChatUser(username);
+            String nick = SharedPreferenceHelper.getUserName();
+            mCurrentUser.setNick((nick != null) ? nick : username);
+            mCurrentUser.setAvatar(SharedPreferenceHelper.getUserAvatar());
+        }
+        return mCurrentUser;
+    }
+
+    public boolean userExisted(String username){
+        return getChatUserList().containsKey(username);
+    }
+
+    public Map<String, ChatUser> getChatUserList() {
+        if (EMClient.getInstance().isLoggedInBefore() && mLocalUsers == null) {
+            mLocalUsers = getContactList();
+        }
+
+        // return a empty non-null object to avoid app crash
+        if(mLocalUsers == null){
+            return new Hashtable<String, ChatUser>();
+        }
+
+        return mLocalUsers;
     }
 
     /**
@@ -60,6 +87,8 @@ public class UserProfileProvider {
      * @param user
      */
     synchronized public void saveContact(ChatUser user){
+        getChatUserList().put(user.getUsername(), user);
+
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_ID, user.getUsername());
@@ -77,7 +106,7 @@ public class UserProfileProvider {
      *
      * @return
      */
-    synchronized public Map<String, ChatUser> getContactList() {
+    synchronized private Map<String, ChatUser> getContactList() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Map<String, ChatUser> users = new Hashtable<String, ChatUser>();
         if (db.isOpen()) {
@@ -114,5 +143,14 @@ public class UserProfileProvider {
             cursor.close();
         }
         return users;
+    }
+
+    synchronized public void reset(){
+        mCurrentUser = null;
+
+        if(dbHelper != null){
+            dbHelper.closeDB();
+        }
+        userProvider = null;
     }
 }

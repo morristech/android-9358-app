@@ -48,14 +48,15 @@
 
     <TextView
         android:id="@+id/unread"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/personal_item_icon_height"
+        android:layout_height="@dimen/personal_item_icon_height"
         android:layout_marginLeft="@dimen/personal_description_height"
         android:layout_alignParentTop="true"
         android:layout_below="@+id/time"
         android:background="@drawable/unread_count_bg"
         android:gravity="center"
-        android:textSize="@dimen/fontRemark" />
+        android:textSize="@dimen/fontRemark"
+        android:textColor="@android:color/white" />
 
     <View
         android:layout_width="match_parent"

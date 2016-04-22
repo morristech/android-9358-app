@@ -4,8 +4,10 @@ import android.os.Message;
 import android.text.TextUtils;
 
 
+import com.hyphenate.chat.EMClient;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.http.gson.AccountMoneyResult;
@@ -22,6 +24,7 @@ import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.ModifyPasswordResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
+import com.xmd.technician.http.gson.RedpackResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
@@ -39,6 +42,8 @@ import com.xmd.technician.msgctrl.RxBus;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -146,6 +151,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_CONSUME_DETAIL:
                 getConsumeDetail((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_GET_REDPACK_LIST:
+                getRedpackList();
+                break;
         }
 
         return true;
@@ -188,6 +196,8 @@ public class RequestController extends AbstractController {
      * Logout Button Clicked in PopupMoreWindow
      */
     private void doLogout() {
+        UserProfileProvider.getInstance().reset();
+        EMClient.getInstance().logout(true);
         Call<LogoutResult> call = getSpaService().logout(SharedPreferenceHelper.getUserToken(),
                 RequestConstant.SESSION_TYPE);
         call.enqueue(new TokenCheckedCallback<LogoutResult>() {
@@ -203,7 +213,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    //不能正常工作
+    //不能正常工作me
     private void register(Map<String, String> params){
         Call<LoginResult> call = getSpaService().register(params.get(RequestConstant.KEY_MOBILE),
                 params.get(RequestConstant.KEY_PASSWORD), params.get(RequestConstant.KEY_ICODE),
@@ -336,7 +346,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {
-                RxBus.getInstance().post(new OrderManageResult());
+                RxBus.getInstance().post(new OrderManageResult(params.get(RequestConstant.KEY_ID)));
             }
 
             @Override
@@ -536,6 +546,17 @@ public class RequestController extends AbstractController {
         });
     }
 
+    private void getRedpackList(){
+        Call<RedpackResult> call = getSpaService().getRedpackList(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<RedpackResult>() {
+            @Override
+            protected void postResult(RedpackResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
     /**
      * submit feedback
      *
@@ -577,7 +598,7 @@ public class RequestController extends AbstractController {
         String userId = SharedPreferenceHelper.getUserId();
         Logger.v("start bind client id : " + AppConfig.sClientId + " with user Id : " + userId);
 
-        //String decryptPwd = appID + appSecret + userId + appKey + masterSecret + clientId;
+        //String decryptPwd = appID + appSecret + telephone + appKey + masterSecret + clientId;
         StringBuilder sb = new StringBuilder();
         sb.append(AppConfig.sGetuiAppId)
                 .append(AppConfig.sGetuiAppSecret)

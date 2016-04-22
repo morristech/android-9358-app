@@ -11,6 +11,7 @@ import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.OrderListResult;
+import com.xmd.technician.http.gson.RedpackResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
@@ -224,6 +225,12 @@ public interface SpaService {
                                                @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
                                                @Field(RequestConstant.KEY_TOKEN) String userToken,
                                                @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_REDPACK_LIST)
+    Call<RedpackResult> getRedpackList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                       @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
     /**************************** Push **************************/
     /**
      * @param userId
