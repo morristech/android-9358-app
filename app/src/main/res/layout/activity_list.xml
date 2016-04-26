@@ -6,45 +6,14 @@
 
     <include layout="@layout/toolbar" />
 
-    <RadioGroup
-        android:id="@+id/filter_order"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_widget"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/rb_pending_order"
-            style="@style/tab_radio_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/pending_order" />
-
-
-        <RadioButton
-            android:id="@+id/rb_accept_order"
-            style="@style/tab_radio_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/accepted_order" />
-
-        <RadioButton
-            android:id="@+id/rb_complete_order"
-            style="@style/tab_radio_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/completed_order" />
-
-    </RadioGroup>
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-
-        />
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

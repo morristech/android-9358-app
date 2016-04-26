@@ -10,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/personal_margin"
-        android:layout_marginRight="@dimen/personal_margin"
         android:textColor="@color/colorRemark"
         android:textSize="@dimen/fontBody"
         android:text="03-19"/>

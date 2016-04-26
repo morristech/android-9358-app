@@ -100,6 +100,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      * 刷新页面, 选择Position
      */
     public void refreshSeekTo(int position){
+        refreshList();
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
             @Override
             public void run() {
@@ -219,23 +220,15 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case ChatConstant.MESSAGE_TYPE_SENT_PAID_COUPON:
                 chatRow = new ChatViewPaidCoupon(context, EMMessage.Direct.SEND);
                 break;
-            /*case IMAGE:
-                chatRow = new ChatViewImage(context, message, position);
-                break;*/
-            /*case LOCATION:
-                chatRow = new EaseChatRowLocation(context, message, position, this);
+            case ChatConstant.MESSAGE_TYPE_RECV_PAID_COUPON_TIP:
+                chatRow = new ChatViewPaidCoupon(context, EMMessage.Direct.RECEIVE);
                 break;
-            case FILE:
-                chatRow = new EaseChatRowFile(context, message, position, this);
-                break;
-            case VOICE:
-                chatRow = new EaseChatRowVoice(context, message, position, this);
-                break;
-            case VIDEO:
-                chatRow = new EaseChatRowVideo(context, message, position, this);
-                break;*/
-            default:
+            case ChatConstant.MESSAGE_TYPE_SENT_PAID_COUPON_TIP:
+            case ChatConstant.MESSAGE_TYPE_SENT_REWARD:
                 chatRow = new ChatViewText(context, EMMessage.Direct.SEND);
+                break;
+            default:
+                chatRow = new ChatViewText(context, EMMessage.Direct.RECEIVE);
                 break;
         }
 
