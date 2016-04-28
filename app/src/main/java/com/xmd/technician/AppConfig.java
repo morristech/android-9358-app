@@ -6,15 +6,23 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.xmd.technician.common.FileUtils;
+import com.xmd.technician.common.Logger;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sdcm on 16-3-11.
  */
 public class AppConfig {
 
-    private static final String APP_FOLDER = "xmdtech";
+
+    private static final String APP_FOLDER = "sdspa";
     private static final String AVATAR_FOLDER = "avatar";
     private static final String SERVER_HOSTS = "serverhosts";
 
@@ -28,10 +36,10 @@ public class AppConfig {
     public static String sGetuiAppId = "";
     public static String sGetuiAppKey = "";
     public static String sGetuiAppSecret = "";
+    public static List<String> sServerHosts;
 
     private static String sAppVersionName = "";
     private static int sAppVersionCode = -1;
-
     private static String sSDCardPath;
 
     public static void initialize() {
@@ -47,11 +55,37 @@ public class AppConfig {
             e.printStackTrace();
         }
 
+        sServerHosts = new ArrayList<>();
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             sSDCardPath = Environment.getExternalStorageDirectory().getPath();
-            FileUtils.checkFolderExists(getAppFolder(), true);
+            if (FileUtils.checkFolderExists(getAppFolder(), true)) {
+                //Read the config Server Hosts from the /sdcard/sdspa/serverhosts
+                readServerHostFile();
+            }
+
         }
 
+    }
+
+    private static void readServerHostFile() {
+        File file = new File(getAppFolder() + File.separator + SERVER_HOSTS);
+        if(file.exists()){
+            try {
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String line;
+                while((line = br.readLine()) != null) {
+                    sServerHosts.add(line);
+                }
+            } catch (FileNotFoundException e) {
+                Logger.e(e.getLocalizedMessage());
+            } catch (IOException e) {
+                Logger.e(e.getLocalizedMessage());
+            }
+        }
+        if (sServerHosts.isEmpty()) {
+            sServerHosts.add(Constant.DEFAULT_SERVER_HOST);
+        }
     }
 
     /**

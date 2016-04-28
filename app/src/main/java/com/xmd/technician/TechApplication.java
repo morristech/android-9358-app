@@ -5,9 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.bugtags.library.Bugtags;
-import com.bugtags.library.BugtagsCallback;
-import com.bugtags.library.BugtagsOptions;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.igexin.sdk.PushManager;
@@ -15,6 +12,7 @@ import com.xmd.technician.common.AppUncaughtExceptionHandler;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.msgctrl.ControllerRegister;
+import com.xmd.technician.reactnative.ReactManager;
 
 import java.util.List;
 
@@ -45,6 +43,7 @@ public class TechApplication extends Application{
                 ThreadManager.initialize();
                 ControllerRegister.initialize();
                 SharedPreferenceHelper.initialize();
+                ReactManager.initialize(this);
 
                 PushManager.getInstance().initialize(this);
                 /*

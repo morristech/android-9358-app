@@ -189,4 +189,14 @@
 
     <string name="download_the_pictures">下载图片: 0%</string>
     <string name="download_the_pictures_new">下载图片:</string>
+    <!-- Weixin Share -->
+    <string name="wx_entry_activity_title">微信分享</string>
+    <string name="share_description">此券可在%s使用，分享给朋友获得更多优惠</string>
+    <string name="share_description_without_club_name">分享给朋友获得更多优惠</string>
+    <string name="share_to_friend">发送给朋友</string>
+    <string name="share_to_timeline">分享朋友圈</string>
+    <string name="wx_errcode_success">分享成功</string>
+    <string name="wx_errcode_cancel">分享已取消</string>
+    <string name="wx_errcode_deny">分享被拒绝</string>
+    <string name="wx_errcode_unknown">分享返回</string>
 </resources>

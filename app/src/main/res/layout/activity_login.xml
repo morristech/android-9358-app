@@ -104,4 +104,17 @@
         android:textSize="@dimen/fontNormal"
         android:text="@string/forget_password"/>
 
+    <Button
+        android:id="@+id/toggle_server_host"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent" />
+
+    <Spinner
+        android:id="@+id/server_host"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:visibility="gone" />
+
 </LinearLayout>

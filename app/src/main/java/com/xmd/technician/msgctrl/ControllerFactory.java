@@ -4,6 +4,7 @@ package com.xmd.technician.msgctrl;
 import com.xmd.technician.chat.ChatController;
 import com.xmd.technician.common.UpgradeController;
 import com.xmd.technician.http.RequestController;
+import com.xmd.technician.share.ShareController;
 
 /**
  * Created by sdcm on 15-10-22.
@@ -13,6 +14,7 @@ public class ControllerFactory {
     private static UpgradeController sUpgradeController;
     private static RequestController sRequestController;
     private static ChatController sChatController;
+    private static ShareController sShareController;
 
     public static AbstractController createController(int controllerId) {
         switch (controllerId) {
@@ -26,6 +28,11 @@ public class ControllerFactory {
                     sRequestController = new RequestController();
                 }
                 return sRequestController;
+            case ControllerId.SHARE_CONTROLLER:
+                if (sShareController == null) {
+                    sShareController = new ShareController();
+                }
+                return sShareController;
             case ControllerId.CHAT_CONTROLLER:
                 if (sChatController == null) {
                     sChatController = new ChatController();

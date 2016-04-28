@@ -1,6 +1,5 @@
 <resources>
 
-
     <style name="PopupAnimation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/slide_left_in</item>
         <item name="android:windowExitAnimation">@anim/slide_left_out</item>
@@ -123,6 +122,12 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/order_detail_section_item_value_text_color</item>
+    </style>
+
+    <!-- -->
+    <style name="default_spinner_style" parent="android:Widget.Spinner">
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textSize">@dimen/spinner_item_text_size</item>
     </style>
 
 </resources>

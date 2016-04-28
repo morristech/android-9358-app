@@ -1,34 +1,25 @@
 package com.xmd.technician.window;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.reactnative.ReactManager;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements BaseFragment.IFragmentCallback{
     private static final int TAB_INDEX_MESSAGE = 0;
     private static final int TAB_INDEX_ORDER = 1;
     private static final int TAB_INDEX_MARKETING = 2;
@@ -53,7 +44,7 @@ public class MainActivity extends BaseActivity {
 
         mFragmentList.add(new MessageFragment());
         mFragmentList.add(new OrderFragment());
-        mFragmentList.add(new MessageFragment());
+        mFragmentList.add(new MarketingFragmentContainer());
         mFragmentList.add(new PersonalFragment());
 
         switchFragment(0);
@@ -163,11 +154,35 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        // 进入聊天页面
-        Intent intent = new Intent(this, ChatActivity.class);
-        // it's single chat
-        intent.putExtra(ChatConstant.EXTRA_USER_ID, "d7ab1dc3b20882dd88b7cc7f18f894d6");
-        startActivity(intent);
+        //Marketing Fragment
+        if (mCurrentTabIndex == 2 && ReactManager.sReactInstanceManager != null) {
+            /*
+             * 这使得JavaScript代码可以控制当用户按下返回键的时候作何处理（譬如控制导航的切换等等）。
+             * 如果JavaScript端不处理相应的事件，你的invokeDefaultOnBackPressed 方法会被调用。默认情况下，这会直接结束你的Activity。
+             */
+            ReactManager.sReactInstanceManager.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /**
+     * 改动一下开发者菜单。默认情况下，开发者菜单可以通过摇晃设备来触发，不过这对模拟器不是很有用。所以我们让它在按下Menu键的时候也可以被显示：
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (mCurrentTabIndex == 2 && keyCode == KeyEvent.KEYCODE_MENU && ReactManager.sReactInstanceManager != null) {
+            ReactManager.sReactInstanceManager.showDevOptionsDialog();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    public void handleBackPressed() {
+        super.onBackPressed();
     }
 }

@@ -18,6 +18,8 @@
     <dimen name="dialog_button_row_padding">8dp</dimen>
     <dimen name="dialog_button_row_height">64dp</dimen>
 
+    <dimen name="spinner_item_text_size">8dp</dimen>
+
     <dimen name="fontBig">32sp</dimen>
     <dimen name="fontHead">20sp</dimen>
     <dimen name="fontTitle">16sp</dimen>

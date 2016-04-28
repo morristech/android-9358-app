@@ -10,7 +10,7 @@
     </style>
 
     <style name="AppTheme" parent="Theme.App.Base" >
-
+        <item name="android:spinnerStyle">@style/default_spinner_style</item>
     </style>
 
     <style name="edit_activity_text_style">
