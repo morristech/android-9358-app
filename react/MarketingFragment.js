@@ -7,6 +7,7 @@ import React, {
   TouchableOpacity,
   Platform,
   BackAndroid,
+  RefreshControl,
 } from 'react-native';
 
 import * as $$ from './Constant';
@@ -21,7 +22,7 @@ export default class MarketingFragment extends React.Component {
           couponList: new ListView.DataSource({
               rowHasChanged: (row1, row2) => row1 !== row2,
           }),
-          loaded: false,
+          isRefreshing:true,
         };
     }
 
@@ -58,7 +59,7 @@ export default class MarketingFragment extends React.Component {
                  .then((response) => {
                       this.setState({
                             couponList: this.state.couponList.cloneWithRows(response.respData.coupons),
-                            loaded: true,
+                            isRefreshing: false,
                        });
                  })
                  .done();
@@ -70,11 +71,6 @@ export default class MarketingFragment extends React.Component {
     }
 
     renderContentView() {
-
-        if(!this.state.loaded) {
-             return this.renderLoadingView();
-        }
-
         return (
            <View style={styles.container}>
                 <View style={styles.titleSection}>
@@ -83,25 +79,25 @@ export default class MarketingFragment extends React.Component {
                 <ListView
                     dataSource={this.state.couponList}
                     renderRow={this.renderCoupon.bind(this)}
-                    style={styles.listView}>
-                </ListView>
+                    style={styles.listView}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this._onRefresh}
+                            tintColor="#ff0000"
+                            title="Loading..."
+                            colors={['#ff0000', '#00ff00', '#0000ff']}
+                            progressBackgroundColor="#ffffff"
+                        />
+                    }/>
            </View>
         );
     }
 
-    // Rendering the Loading View
-    renderLoadingView() {
-        return (
-            <View style={styles.container}>
-                <View style={styles.titleSection}>
-                    <Text style={styles.title}>分享有礼</Text>
-                </View>
-                <Text>
-                    Loading Coupons, please wait...
-                </Text>
-            </View>
-        );
-    }
+    _onRefresh = () => {
+        this.setState({isRefreshing:true});
+        this.fetchData();
+    };
 
     _pressButton(actId) {
         const { navigator } = this.props;

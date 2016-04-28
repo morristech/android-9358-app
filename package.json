@@ -14,6 +14,7 @@
   "author": "linmiansheng",
   "license": "ISC",
   "dependencies": {
-    "react-native": "^0.20.0"
+    "react-native": "^0.20.0",
+    "react-native-web-container": "github:danrigsby/react-native-web-container"
   }
 }
