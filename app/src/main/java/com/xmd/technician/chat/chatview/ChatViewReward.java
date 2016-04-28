@@ -36,7 +36,8 @@ public class ChatViewReward extends BaseChatView{
     protected void onSetUpView() {
         EMTextMessageBody body = (EMTextMessageBody) message.getBody();
         String content = body.getMessage();
-        mReward.setText(content.replaceAll("<i>|</i>|<span>|</span>",""));
+        content = content.replaceAll("<i>|</i>|<span>|</span>","");
+        mReward.setText(content.replaceAll("<br/>","\n"));
 
         if(mRewardTip != null){
             mRewardTip.setVisibility(VISIBLE);

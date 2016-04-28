@@ -57,7 +57,7 @@ public class ChatUser extends EMContact {
 		if (o == null || !(o instanceof ChatUser)) {
 			return false;
 		}
-		return getUsername().equals(((ChatUser) o).getUsername());
+		return getUsername().equals(((ChatUser) o).getUsername()) && getAvatar().equals(((ChatUser) o).getAvatar()) && getNick().equals(((ChatUser) o).getNick());
 	}
 
 	@Override

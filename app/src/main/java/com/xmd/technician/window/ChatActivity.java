@@ -186,6 +186,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             }
 
             mIsLoading = false;
+        }else {
+            makeShortToast(getString(R.string.no_more_messages));
         }
 
         mRefreshLayout.setRefreshing(false);
@@ -335,7 +337,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         new RewardConfirmDialog(this, getString(R.string.beg_reward), getString(R.string.send_request_user_reward)) {
             @Override
             public void onConfirmClick() {
-                sendBegRewardMessage(getString(R.string.request_user_reward));
+                sendBegRewardMessage("<i></i>万水千山总是情<br/>打赏两个行不行~");
                 super.onConfirmClick();
             }
         }.show();

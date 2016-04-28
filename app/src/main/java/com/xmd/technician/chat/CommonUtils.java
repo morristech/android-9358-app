@@ -80,7 +80,7 @@ public class CommonUtils {
                     digest = getString(context, R.string.dynamic_expression);
                 }
             }else if(!TextUtils.isEmpty(message.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE,""))){
-                digest = txtBody.getMessage().replaceAll("<b>|</b>|</br>|<br>|<i>|</i>|<span>|</span>","");
+                digest = txtBody.getMessage().replaceAll("<b>|</b>|</br>|<br>|<i>|</i>|<span>|</span>|<br/>","");
             }else {
                 digest = txtBody.getMessage();
             }

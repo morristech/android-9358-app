@@ -55,7 +55,7 @@ public class UserProfileProvider {
     }
 
     public synchronized ChatUser getCurrentUserInfo() {
-        if (mCurrentUser == null) {
+        if (mCurrentUser == null || !mCurrentUser.getUsername().equals(SharedPreferenceHelper.getEmchatId())) {
             String username = SharedPreferenceHelper.getEmchatId();
             mCurrentUser = new ChatUser(username);
             String nick = SharedPreferenceHelper.getUserName();
@@ -86,7 +86,7 @@ public class UserProfileProvider {
      * 保存一个联系人
      * @param user
      */
-    synchronized public void saveContact(ChatUser user){
+    synchronized private void saveContact(ChatUser user){
         getChatUserList().put(user.getUsername(), user);
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -98,6 +98,17 @@ public class UserProfileProvider {
             values.put(COLUMN_NAME_AVATAR, user.getAvatar());
         if(db.isOpen()){
             db.replace(TABLE_NAME, null, values);
+        }
+    }
+
+    /**
+     * 保存一个联系人
+     * @param user
+     */
+    public void saveContactOrUpdate(ChatUser user){
+        ChatUser chatUser = getChatUserList().get(user.getUsername());
+        if(chatUser == null || !chatUser.equals(user)){
+            saveContact(user);
         }
     }
 

@@ -64,6 +64,6 @@ public class UserUtils {
     }
 
     public static void saveUser(ChatUser user){
-        userProvider.saveContact(user);
+        userProvider.saveContactOrUpdate(user);
     }
 }

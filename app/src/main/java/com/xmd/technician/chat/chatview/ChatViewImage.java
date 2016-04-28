@@ -1,7 +1,9 @@
 package com.xmd.technician.chat.chatview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +18,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.model.ImageCache;
+import com.xmd.technician.window.ShowBigImageActivity;
 
 import java.io.File;
 
@@ -42,6 +45,33 @@ public class ChatViewImage extends BaseChatView {
     protected void onFindViewById() {
         imageView = (ImageView) findViewById(R.id.image);
         imageView.setVisibility(VISIBLE);
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ShowBigImageActivity.class);
+                File file = new File(imgBody.getLocalUrl());
+                if (file.exists()) {
+                    Uri uri = Uri.fromFile(file);
+                    intent.putExtra("uri", uri);
+                } else {
+                    // The local full size pic does not exist yet.
+                    // ShowBigImage needs to download it from the server
+                    // first
+                    intent.putExtra("secret", imgBody.getSecret());
+                    intent.putExtra("remotepath", imgBody.getRemoteUrl());
+                    intent.putExtra("localUrl", imgBody.getLocalUrl());
+                }
+                if (message != null && message.direct() == EMMessage.Direct.RECEIVE && !message.isAcked()
+                        && message.getChatType() == EMMessage.ChatType.Chat) {
+                    try {
+                        EMClient.getInstance().chatManager().ackMessageRead(message.getFrom(), message.getMsgId());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -91,15 +121,16 @@ public class ChatViewImage extends BaseChatView {
                 protected Bitmap doInBackground(Object... args) {
                     File file = new File(thumbernailPath);
                     if (file.exists()) {
-                        return ImageUtils.decodeScaleImage(thumbernailPath, 160, 160);
+                        return ImageUtils.decodeScaleImage(thumbernailPath, 240, 240);
                     } else if (new File(imgBody.thumbnailLocalPath()).exists()) {
-                        return ImageUtils.decodeScaleImage(imgBody.thumbnailLocalPath(), 160, 160);
+                        return ImageUtils.decodeScaleImage(imgBody.thumbnailLocalPath(), 240, 240);
                     }
                     else {
                         if (message.direct() == EMMessage.Direct.SEND) {
                             if (localFullSizePath != null && new File(localFullSizePath).exists()) {
-                                return ImageUtils.decodeScaleImage(localFullSizePath, 160, 160);
+                                return ImageUtils.decodeScaleImage(localFullSizePath, 240, 240);
                             } else {
+
                                 return null;
                             }
                         } else {

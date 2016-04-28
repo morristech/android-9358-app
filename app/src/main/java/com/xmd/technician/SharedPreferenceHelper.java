@@ -59,6 +59,7 @@ public class SharedPreferenceHelper {
         setUserToken("");
         setUserName("");
         setUserId("");
+        setUserAvatar("");
     }
 
     /**
