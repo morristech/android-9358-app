@@ -14,6 +14,8 @@
     <string name="next_step">下一步</string>
     <string name="complete">完成</string>
 
+    <string name="amount_unit_yuan">元</string>
+
     <string name="list_item_loading">点击或者上拉，加载更多</string>
     <string name="list_item_no_more"> ^_^, 没有更多数据</string>
     <string name="list_item_empty">=_=!!, 还没有数据哦</string>
@@ -34,12 +36,12 @@
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
 
-    <string name="home_news">消息</string>
-    <string name="home_order">订单</string>
-    <string name="home_market">营销</string>
-    <string name="home_personal">个人中心</string>
+    <string name="main_chat">聊天</string>
+    <string name="main_order">订单</string>
+    <string name="main_market">营销</string>
+    <string name="main_personal">个人中心</string>
 
-    <!-- MessageFragment -->
+    <!-- ChatFragment -->
     <string name="message_fragment_title">我的消息</string>
     <string name="cant_chat_with_yourself">不能和自己聊天</string>
     <string name="button_send">发送</string>
@@ -48,6 +50,7 @@
 
     <!-- OrderFragment -->
     <string name="order_fragment_title">我的订单</string>
+    <string name="copuon_fragment_title">分享有礼</string>
 
     <!-- PersonalFragment -->
     <string name="personal_fragment_title">个人中心</string>
@@ -153,9 +156,9 @@
     <string name="pending_order">待接受</string>
     <string name="accepted_order">已接受</string>
     <string name="completed_order">已完成</string>
-    <string name="order_list_item_loading">点击或者上拉，加载更多订单</string>
-    <string name="order_list_item_no_more"> ^_^, 没有更多订单</string>
-    <string name="order_list_item_empty">=_=!!, 还没有订单哦</string>
+    <string name="order_list_item_loading">点击或者上拉，加载更多数据</string>
+    <string name="order_list_item_no_more"> ^_^, 没有更多数据</string>
+    <string name="order_list_item_empty">=_=!!, 还没有数据哦</string>
 
     <string name="order_status_operation_accept">接受</string>
     <string name="order_status_operation_reject">拒绝</string>
@@ -199,4 +202,35 @@
     <string name="wx_errcode_cancel">分享已取消</string>
     <string name="wx_errcode_deny">分享被拒绝</string>
     <string name="wx_errcode_unknown">分享返回</string>
+
+    <string name="coupon_fragment_share">分享</string>
+    <string name="coupon_fragment_coupon_reward">打赏金额:%1$d元</string>
+
+    <string name="paid_coupon_detail_activity_title">点钟详情</string>
+    <string name="paid_coupon_detail_coupon_period">有效时间：</string>
+    <string name="paid_coupon_detail_act_content">活动说明：</string>
+    <string name="paid_coupon_detail_user_detail">购买详情</string>
+    <string name="paid_coupon_detail_share">分享</string>
+    <string name="paid_coupon_detail_tips">注：</string>
+    <string name="paid_coupon_detail_tips_expire">客人的点钟券过期后，您将获得%1$d元打赏。</string>
+    <string name="paid_coupon_detail_tips_verified">客户的点钟券使用后，您将获得%1$d元打赏。</string>
+
+    <string name="paid_coupon_user_detail_activity_header_user">用户</string>
+    <string name="paid_coupon_user_detail_activity_header_status">全部状态</string>
+    <string name="paid_coupon_user_detail_activity_header_get_date">购买时间</string>
+    <string name="paid_coupon_user_detail_activity_title">购买详情</string>
+    <string name="paid_coupon_user_detail_activity_accept">未使用</string>
+    <string name="paid_coupon_user_detail_activity_complete">已使用</string>
+    <string name="paid_coupon_user_detail_activity_expire">已过期</string>
+
+    <string name="normal_coupon_detail_activity_title">邀请有礼</string>
+    <string name="normal_coupon_detail_activity_commission_desc">优惠金额</string>
+    <string name="normal_coupon_detail_activity_tips_project">项目限定</string>
+    <string name="normal_coupon_detail_activity_tips_time">使用时段</string>
+    <string name="normal_coupon_detail_activity_act_content_desc">使用规则</string>
+    <string name="normal_coupon_detail_activity_share_text_title">分享领红包</string>
+    <string name="normal_coupon_detail_activity_share_text">
+        分享优惠给您的客人，一旦这些客人使用了这个优惠，您也将获得%1$d元现金红包，您的客人以及客人的朋友使用这个优惠后，您也将获得%2$d元红包，红包会自动存入您的账户。</string>
+    <string name="normal_coupon_detail_activity_scan_code">用户扫描二维码即得优惠！</string>
+
 </resources>

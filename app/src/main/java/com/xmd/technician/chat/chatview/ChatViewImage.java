@@ -17,7 +17,7 @@ import com.hyphenate.util.ImageUtils;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.common.Util;
-import com.xmd.technician.model.ImageCache;
+import com.xmd.technician.bean.ImageCache;
 import com.xmd.technician.window.ShowBigImageActivity;
 
 import java.io.File;

@@ -1,26 +1,11 @@
 package com.xmd.technician.chat.chatview;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.TextView;
 
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
-import com.hyphenate.exceptions.HyphenateException;
-import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.beans.Order;
-import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.OrderManageResult;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
-import com.xmd.technician.msgctrl.RxBus;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import rx.Subscription;
 
 /**
  * Created by sdcm on 16-4-12.

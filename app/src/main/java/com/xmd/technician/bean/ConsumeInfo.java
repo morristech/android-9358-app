@@ -1,4 +1,4 @@
-package com.xmd.technician.model;
+package com.xmd.technician.bean;
 
 /**
  * Created by sdcm on 16-3-31.

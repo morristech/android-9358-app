@@ -72,7 +72,6 @@
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.xmd.technician.http.gson.** { *; }
 -keep class com.xmd.technician.beans.** { *; }
--keep class com.xmd.technician.model.** { *; }
 
 ##---------------End: proguard configuration for Gson  ----------
 

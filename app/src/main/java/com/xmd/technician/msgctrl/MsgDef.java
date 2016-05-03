@@ -81,7 +81,11 @@ public class MsgDef {
 
     public static final int MSG_DEF_UPDATE_SERVICE_ITEM_LIST = 0x0025;
 
-    public static final int MSG_DEF_GET_REDPACK_LIST = 0x0027;
+    public static final int MSG_DEF_GET_COUPON_LIST = 0x0027;
+
+    public static final int MSG_DEF_GET_COUPON_INFO = 0x0028;
+
+    public static final int MSG_DEF_GET_PAID_COUPON_USER_DETAIL = 0x0029;
 
     /**
      * ChatController, start to chat with someone

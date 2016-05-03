@@ -1,6 +1,6 @@
 package com.xmd.technician.http.gson;
 
-import com.xmd.technician.model.CommentInfo;
+import com.xmd.technician.bean.CommentInfo;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.xmd.technician.http.gson;
 
-import com.xmd.technician.model.AlbumInfo;
-import com.xmd.technician.model.NativePlaceInfo;
-import com.xmd.technician.model.TechDetailInfo;
+import com.xmd.technician.bean.AlbumInfo;
+import com.xmd.technician.bean.NativePlaceInfo;
+import com.xmd.technician.bean.TechDetailInfo;
 
 import java.util.List;
 

@@ -42,9 +42,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         mBottomBarButtonList.add(findViewById(R.id.main_button_marketing));
         mBottomBarButtonList.add(findViewById(R.id.main_button_personal));
 
-        mFragmentList.add(new MessageFragment());
+        mFragmentList.add(new ChatFragment());
         mFragmentList.add(new OrderFragment());
-        mFragmentList.add(new MarketingFragmentContainer());
+        mFragmentList.add(new CouponFragment());
         mFragmentList.add(new PersonalFragment());
 
         switchFragment(0);
@@ -125,8 +125,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
             }*/
             if(mCurrentTabIndex == TAB_INDEX_MESSAGE ) {
                 BaseFragment fragment = mFragmentList.get(mCurrentTabIndex);
-                if(fragment instanceof MessageFragment){
-                    ((MessageFragment)fragment).refreshMessage();
+                if(fragment instanceof ChatFragment){
+                    ((ChatFragment)fragment).refreshMessage();
                 }
             }
         }

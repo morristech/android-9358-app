@@ -1,23 +1,20 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.model.CommentInfo;
+import com.xmd.technician.bean.CommentInfo;
 import com.xmd.technician.widget.CircleImageView;
 
 import java.util.ArrayList;
@@ -62,7 +59,6 @@ public class CommentAdapter extends RecyclerView.Adapter{
         if(holder instanceof CommentViewHolder){
             CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
             CommentInfo commentInfo = getItem(position);
-
             commentViewHolder.mName.setText(commentInfo.userInfo.name);
             commentViewHolder.mRatings.setRating(commentInfo.rate/20);
             commentViewHolder.mComment.setText(commentInfo.comment);

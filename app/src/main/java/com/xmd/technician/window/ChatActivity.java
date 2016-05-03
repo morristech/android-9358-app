@@ -35,15 +35,14 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
-import com.xmd.technician.chat.MessageSentResult;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.http.gson.OrderManageResult;
-import com.xmd.technician.http.gson.RedpackResult;
-import com.xmd.technician.model.CouponInfo;
+import com.xmd.technician.http.gson.CouponListResult;
+import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -115,13 +114,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         onConversationInit();
         initChatList();
 
-        mGetRedpacklistSubscription = RxBus.getInstance().toObservable(RedpackResult.class).subscribe(
+        mGetRedpacklistSubscription = RxBus.getInstance().toObservable(CouponListResult.class).subscribe(
                 redpackResult -> getRedpackListResult(redpackResult));
 
         mManagerOrderSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
                 result -> managerOrderResult(result));
 
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REDPACK_LIST);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
     }
 
     @Override
@@ -248,7 +247,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mChatAdapter.refreshSelectLast();
     }
 
-    private void getRedpackListResult(RedpackResult result){
+    private void getRedpackListResult(CouponListResult result){
         if(result.statusCode == 200){
             mTechCode = result.respData.techCode;
             if(result.respData.coupons != null){

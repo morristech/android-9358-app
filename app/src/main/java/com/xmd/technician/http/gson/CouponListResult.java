@@ -1,13 +1,13 @@
 package com.xmd.technician.http.gson;
 
-import com.xmd.technician.model.CouponInfo;
+import com.xmd.technician.bean.CouponInfo;
 
 import java.util.List;
 
 /**
  * Created by sdcm on 16-4-14.
  */
-public class RedpackResult extends BaseResult{
+public class CouponListResult extends BaseResult{
 
     public Content respData;
 

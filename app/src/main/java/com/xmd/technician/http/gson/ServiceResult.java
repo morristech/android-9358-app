@@ -1,6 +1,6 @@
 package com.xmd.technician.http.gson;
 
-import com.xmd.technician.model.ServiceItemInfo;
+import com.xmd.technician.bean.ServiceItemInfo;
 
 import java.util.List;
 

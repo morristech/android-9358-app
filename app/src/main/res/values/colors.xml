@@ -10,6 +10,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="dialog_title_text_color">#333</color>
+    <color name="dialog_content_text_color">#666</color>
+
     <color name="colorMain">#ff6666</color>
     <color name="colorBackground">#f0f0f0</color>
     <color name="colorTitle">#333333</color>
@@ -28,11 +31,10 @@
     <color name="tab_bg">#FFF</color>
     <color name="tab_text_checked_color">#fb5549</color>
     <color name="tab_text_normal_color">#333</color>
-
     <color name="tab_bottom_line_color">#dadada</color>
 
     <color name="list_item_bg">#FFF</color>
-    <color name="list_item_line_color">#dadada</color>
+    <color name="list_item_line_color">#d9d9d9</color>
     <color name="list_item_label_color">#999</color>
     <color name="list_item_value_color">#333</color>
     <color name="list_item_number_color">#ff9d09</color>
@@ -80,4 +82,17 @@
     <color name="popup_window_button_pressed">#fb5549</color>
     <color name="popup_window_button_text_normal">#333</color>
     <color name="popup_window_button_text_pressed">#FFF</color>
+
+    <color name="coupon_fragment_top_text_color">#FFF</color>
+    <color name="coupon_fragment_bottom_text_color">#666</color>
+
+    <color name="paid_coupon_detail_activity_value_text_color">#333</color>
+    <color name="paid_coupon_user_detail_header_text_color">#666</color>
+    <color name="paid_coupon_user_detail_header_background_color">#f3f0eb</color>
+
+    <color name="normal_coupon_detail_activity_share_text_color">#666</color>
+    <color name="normal_coupon_detail_activity_share_title_text_color">#FF6565</color>
+    <color name="normal_coupon_detail_activity_background_color">#fff7e3</color>
+    <color name="normal_coupon_detail_activity_commission_color">#FF6565</color>
+
 </resources>

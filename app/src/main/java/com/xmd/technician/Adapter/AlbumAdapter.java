@@ -9,8 +9,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
-import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.model.AlbumInfo;
+import com.xmd.technician.bean.AlbumInfo;
 
 import java.util.ArrayList;
 import java.util.List;

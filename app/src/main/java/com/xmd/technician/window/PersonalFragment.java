@@ -1,9 +1,6 @@
 package com.xmd.technician.window;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -15,27 +12,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.common.ImageLoader;
-import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
-import com.xmd.technician.model.TechSummaryInfo;
+import com.xmd.technician.bean.TechSummaryInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.reactnative.ReactManager;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.InviteDialog;
 import com.xmd.technician.widget.QRDialog;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

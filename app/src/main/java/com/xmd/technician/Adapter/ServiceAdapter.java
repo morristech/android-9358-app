@@ -6,21 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.model.ServiceItemInfo;
+import com.xmd.technician.bean.ServiceItemInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 
 /**
  * Created by sdcm on 16-4-1.

@@ -1,23 +1,19 @@
 package com.xmd.technician.window;
 
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
-import com.xmd.technician.Adapter.AlbumAdapter;
 import com.xmd.technician.Adapter.ConsumeDetailAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
-import com.xmd.technician.model.ConsumeInfo;
+import com.xmd.technician.bean.ConsumeInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

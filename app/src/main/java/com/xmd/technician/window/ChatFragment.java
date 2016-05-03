@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Adapter.MsgListAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -38,7 +36,7 @@ import butterknife.ButterKnife;
 /**
  * Created by sdcm on 16-3-23.
  */
-public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,MsgListAdapter.onMsgItemClickListener {
+public class ChatFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,MsgListAdapter.onMsgItemClickListener {
 
     @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.message_list) RecyclerView mMsgListView;
@@ -50,14 +48,13 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_message, container, false);
+        return inflater.inflate(R.layout.fragment_chat, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ButterKnife.bind(this, getView());
-
         initView();
     }
 

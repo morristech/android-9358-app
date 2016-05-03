@@ -26,8 +26,8 @@ import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
-import com.xmd.technician.model.AlbumInfo;
-import com.xmd.technician.model.TechDetailInfo;
+import com.xmd.technician.bean.AlbumInfo;
+import com.xmd.technician.bean.TechDetailInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -35,8 +35,6 @@ import com.xmd.technician.widget.ConfirmDialog;
 import com.xmd.technician.widget.PhotoGridView;
 import com.xmd.technician.widget.RoundImageView;
 import com.xmd.technician.widget.SelectPlaceDialog;
-
-import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;

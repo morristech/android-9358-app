@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.xmd.technician.R;
-import com.xmd.technician.model.TimeInfo;
+import com.xmd.technician.bean.TimeInfo;
 import com.xmd.technician.wheel.OnWheelChangedListener;
 import com.xmd.technician.wheel.WheelView;
 import com.xmd.technician.wheel.adapters.ArrayWheelAdapter;

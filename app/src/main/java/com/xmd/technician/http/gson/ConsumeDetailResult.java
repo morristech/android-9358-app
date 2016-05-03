@@ -1,6 +1,6 @@
 package com.xmd.technician.http.gson;
 
-import com.xmd.technician.model.ConsumeInfo;
+import com.xmd.technician.bean.ConsumeInfo;
 
 import java.util.List;
 

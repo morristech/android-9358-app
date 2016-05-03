@@ -8,8 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.hyphenate.EMCallBack;
@@ -17,7 +15,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.ImageUtils;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.LoadLocalBigImgTask;
-import com.xmd.technician.model.ImageCache;
+import com.xmd.technician.bean.ImageCache;
 import com.xmd.technician.widget.scaleview.ScaleView;
 
 import java.io.File;

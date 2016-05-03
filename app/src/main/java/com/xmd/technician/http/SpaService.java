@@ -7,11 +7,13 @@ import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
+import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.OrderListResult;
-import com.xmd.technician.http.gson.RedpackResult;
+import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
+import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
@@ -162,7 +164,6 @@ public interface SpaService {
                                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                             @Field(RequestConstant.KEY_INVITE_CODE) String inviteCode);
 
-
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_WORKTIME)
     Call<WorkTimeResult> getWorkTime(@Field(RequestConstant.KEY_TOKEN) String userToken,
@@ -227,9 +228,37 @@ public interface SpaService {
                                                @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_REDPACK_LIST)
-    Call<RedpackResult> getRedpackList(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                       @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+    @POST(RequestConstant.URL_GET_COUPON_LIST)
+    Call<CouponListResult> getCouponList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                      @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
+    /**
+     *
+     * @param userToken
+     * @param sessionType
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_COUPON_INFO)
+    Call<CouponInfoResult> getCouponInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                         @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                         @Field(RequestConstant.KEY_ACT_ID) String actId);
+
+    /**
+     * 点钟券用户使用情况
+     * @param userToken
+     * @param sessionType
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_PAID_COUPON_USER_DETAIL)
+    Call<PaidCouponUserDetailResult> getPaidCouponUserDetail(
+                                             @Field(RequestConstant.KEY_COUPON_STATUS) String couponStatus,
+                                             @Field(RequestConstant.KEY_ACT_ID) String actId,
+                                             @Field(RequestConstant.KEY_PAGE) String page,
+                                             @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                             @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     /**************************** Push **************************/
     /**

@@ -9,9 +9,18 @@
     <dimen name="inter_space">12dp</dimen>
     <dimen name="small_space">5dp</dimen>
 
+    <dimen name="three_radius">3dp</dimen>
     <dimen name="small_radius">5dp</dimen>
+
+    <dimen name="popup_window_button_height">48dp</dimen>
+    <dimen name="popup_window_button_min_width">100dp</dimen>
+
+    <dimen name="dialog_min_width">280dp</dimen>
+    <dimen name="dialog_title_height">48dp</dimen>
     <dimen name="dialog_content_height">96dp</dimen>
-    <dimen name="dialog_content_text_size">16sp</dimen>
+    <dimen name="dialog_content_item_height">24dp</dimen>
+    <dimen name="dialog_content_title_size">18sp</dimen>
+    <dimen name="dialog_content_text_size">14sp</dimen>
 
     <dimen name="dialog_button_height">48dp</dimen>
     <dimen name="dialog_button_text_size">14sp</dimen>
@@ -85,7 +94,22 @@
 
     <dimen name="order_detail_contact_item_width">64dp</dimen>
 
-
     <dimen name="call_popup_window_phone_view_height">64dp</dimen>
     <dimen name="send_msg_btn_width">67dp</dimen>
+
+    <dimen name="paid_coupon_detail_activity_qrcode_size">200dp</dimen>
+    <dimen name="paid_coupon_detail_activity_consume_description_text_size">16sp</dimen>
+
+    <dimen name="paid_coupon_user_detail_activity_header_height">48dp</dimen>
+    <dimen name="paid_coupon_user_detail_list_item_height">64dp</dimen>
+    <dimen name="paid_coupon_user_detail_list_item_avatar_size">32dp</dimen>
+    <dimen name="paid_coupon_user_detail_list_item_user_name_text_size">14sp</dimen>
+    <dimen name="paid_coupon_user_detail_list_item_telephone_text_size">12sp</dimen>
+
+    <dimen name="normal_coupon_detail_activity_share_title_text_size">20sp</dimen>
+    <dimen name="normal_coupon_detail_activity_share_text_text_size">16sp</dimen>
+    <dimen name="normal_coupon_detail_activity_share_button_text_size">20sp</dimen>
+    <dimen name="normal_coupon_detail_activity_commission_amount_text_size">32sp</dimen>
+    <dimen name="normal_coupon_detail_activity_commission_text_size">20sp</dimen>
+
 </resources>

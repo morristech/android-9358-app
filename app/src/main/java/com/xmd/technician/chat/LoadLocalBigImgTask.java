@@ -23,8 +23,7 @@ import android.widget.ProgressBar;
 
 import com.hyphenate.util.ImageUtils;
 import com.xmd.technician.R;
-import com.xmd.technician.model.ImageCache;
-import com.xmd.technician.widget.scaleview.ScaleView;
+import com.xmd.technician.bean.ImageCache;
 
 public class LoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
 

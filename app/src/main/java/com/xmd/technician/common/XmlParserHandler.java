@@ -1,7 +1,7 @@
 package com.xmd.technician.common;
 
-import com.xmd.technician.model.CityInfo;
-import com.xmd.technician.model.ProvinceInfo;
+import com.xmd.technician.bean.CityInfo;
+import com.xmd.technician.bean.ProvinceInfo;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

@@ -14,6 +14,16 @@ public class AlertDialogBuilder {
         mBuilder = new CustomAlertDialog.Builder(context);
     }
 
+    public AlertDialogBuilder setTitle(String title) {
+        mBuilder.setTitle(title);
+        return this;
+    }
+
+    public AlertDialogBuilder setCustomView(View customView) {
+        mBuilder.setCustomView(customView);
+        return this;
+    }
+
     public AlertDialogBuilder setMessage(String message) {
         mBuilder.setMessage(message);
         return this;

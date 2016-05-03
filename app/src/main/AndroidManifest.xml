@@ -139,7 +139,10 @@
             android:name=".window.OrderDetailActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".window.ShowBigImageActivity"></activity>
+        <activity android:name=".window.ShowBigImageActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".window.PaidCouponDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".window.PaidCouponUserDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".window.NormalCouponDetailActivity" android:screenOrientation="portrait"/>
 
         <activity
             android:name=".wxapi.WXEntryActivity"

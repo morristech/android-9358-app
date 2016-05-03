@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.Utils;
 
 import butterknife.Bind;
@@ -26,13 +28,17 @@ public class CustomAlertDialog extends Dialog {
     public static class Builder {
 
         private Context mContext;
-        @Bind(R.id.dialog_content) TextView mContent;
+        @Bind(R.id.dialog_title) TextView mTvTitle;
+        @Bind(R.id.flContentContainer) FrameLayout mFlContentContainer;
+        @Bind(R.id.dialog_content) TextView mTvContent;
         @Bind(R.id.dialog_negative) Button mBtnNegative;
         @Bind(R.id.dialog_positive) Button mBtnPositive;
 
+        private String mTitle;
         private String mMessage;
         private String mNegativeText;
         private String mPositiveText;
+        private View mCustomerView;
 
         private View.OnClickListener mPositiveClickListener;
         private View.OnClickListener mNegativeClickListener;
@@ -43,8 +49,18 @@ public class CustomAlertDialog extends Dialog {
             mContext = context;
         }
 
+        public Builder setTitle(String title) {
+            mTitle = title;
+            return  this;
+        }
+
         public Builder setMessage(String message) {
             mMessage = message;
+            return this;
+        }
+
+        public Builder setCustomView(View customerView) {
+            mCustomerView = customerView;
             return this;
         }
 
@@ -75,8 +91,17 @@ public class CustomAlertDialog extends Dialog {
 
             ButterKnife.bind(this, view);
 
-            if(Utils.isNotEmpty(mMessage)) {
-                mContent.setText(mMessage);
+            if (Utils.isEmpty(mTitle)) {
+                mTvTitle.setVisibility(View.GONE);
+            } else {
+                mTvTitle.setText(mTitle);
+            }
+
+            if (mCustomerView != null) {
+                mFlContentContainer.addView(mCustomerView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT));
+                mTvContent.setVisibility(View.GONE);
+            } else if(Utils.isNotEmpty(mMessage)) {
+                mTvContent.setText(mMessage);
             }
 
             if(Utils.isNotEmpty(mNegativeText)) {

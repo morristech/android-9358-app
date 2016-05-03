@@ -1,7 +1,7 @@
 package com.xmd.technician.http.gson;
 
-import com.xmd.technician.model.DayInfo;
-import com.xmd.technician.model.TimeInfo;
+import com.xmd.technician.bean.DayInfo;
+import com.xmd.technician.bean.TimeInfo;
 
 import java.util.List;
 

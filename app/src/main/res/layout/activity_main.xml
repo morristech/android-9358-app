@@ -135,7 +135,7 @@
                 android:gravity="center"
                 android:textColor="@color/home_button_text_bg"
                 android:textSize="@dimen/fontRemark"
-                android:text="@string/home_news"/>
+                android:text="@string/main_chat"/>
         </LinearLayout>
 
         <LinearLayout
@@ -158,7 +158,7 @@
                 android:gravity="center"
                 android:textColor="@color/home_button_text_bg"
                 android:textSize="@dimen/fontRemark"
-                android:text="@string/home_order"/>
+                android:text="@string/main_order"/>
         </LinearLayout>
 
         <LinearLayout
@@ -181,7 +181,7 @@
                 android:gravity="center"
                 android:textColor="@color/home_button_text_bg"
                 android:textSize="@dimen/fontRemark"
-                android:text="@string/home_market"/>
+                android:text="@string/main_market"/>
         </LinearLayout>
 
         <LinearLayout
@@ -204,7 +204,7 @@
                 android:gravity="center"
                 android:textColor="@color/home_button_text_bg"
                 android:textSize="@dimen/fontRemark"
-                android:text="@string/home_personal"/>
+                android:text="@string/main_personal"/>
         </LinearLayout>
     </LinearLayout>
 

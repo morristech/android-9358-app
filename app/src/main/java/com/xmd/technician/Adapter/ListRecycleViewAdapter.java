@@ -12,13 +12,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.beans.Order;
+import com.xmd.technician.bean.CouponInfo;
+import com.xmd.technician.bean.Order;
+import com.xmd.technician.bean.PaidCouponUserDetail;
 import com.xmd.technician.common.ItemSlideHelper;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.CircleImageView;
+import com.xmd.technician.window.PaidCouponDetailActivity;
 
 import java.util.List;
 
@@ -28,39 +30,45 @@ import butterknife.ButterKnife;
 /**
  * Created by sdcm on 15-11-24.
  */
-public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemSlideHelper.Callback {
+public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemSlideHelper.Callback {
 
-    public interface OnManageButtonClickedListener {
+    public interface OnManageButtonClickedListener<T> {
 
-        void onItemClicked(Order order);
+        void onItemClicked(T bean);
 
-        void onNegativeButtonClicked(Order order);
+        void onNegativeButtonClicked(T bean);
 
-        void onPositiveButtonClicked(Order order);
+        void onPositiveButtonClicked(T bean);
 
         void onLoadMoreButtonClicked();
     }
 
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_FOOTER = 1;
+    private static final int TYPE_ORDER_ITEM = 0;
+    private static final int TYPE_COUPON_INFO_ITEM = 1;
+    private static final int TYPE_PAID_COUPON_USER_DETAIL = 2;
+    private static final int TYPE_OTHER_ITEM = 98;
+    private static final int TYPE_FOOTER = 99;
+
 
     private boolean mIsNoMore = false;
     private boolean mIsEmpty = false;
 
-    private List<Order> mData;
+    private List<T> mData;
     private OnManageButtonClickedListener mOnManageButtonClickedListener;
     private Context mContext;
     private RecyclerView mRecyclerView;
     private ItemSlideHelper mHelper;
+    private boolean mIsSlideable;
 
-    public OrderListRecycleViewAdapter(Context context, List<Order> data, OnManageButtonClickedListener onManageButtonClickedListener) {
+    public ListRecycleViewAdapter(Context context, List<T> data, OnManageButtonClickedListener onManageButtonClickedListener, boolean isSlideable) {
         mContext = context;
         mData = data;
         mOnManageButtonClickedListener = onManageButtonClickedListener;
         mHelper = new ItemSlideHelper(mContext, this);
+        mIsSlideable = isSlideable;
     }
 
-    public void setData(List<Order> data) {
+    public void setData(List<T> data) {
         mData = data;
         mIsEmpty = data.isEmpty();
         notifyDataSetChanged();
@@ -81,29 +89,47 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
         if (position + 1 == getItemCount()) {
             return TYPE_FOOTER;
         } else {
-            return TYPE_ITEM;
+            if (mData.get(position) instanceof Order) {
+                // Order
+                return TYPE_ORDER_ITEM;
+            } else if (mData.get(position) instanceof CouponInfo) {
+                return TYPE_COUPON_INFO_ITEM;
+            } else if (mData.get(position) instanceof PaidCouponUserDetail) {
+                return TYPE_PAID_COUPON_USER_DETAIL;
+            } else {
+                return TYPE_OTHER_ITEM;
+            }
         }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (TYPE_ITEM == viewType) {
+        if (TYPE_ORDER_ITEM == viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_item, parent, false);
-            return new OrderListViewHolder(view);
+            return new OrderListItemViewHolder(view);
+        } else if (TYPE_COUPON_INFO_ITEM == viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_item, parent, false);
+            return new CouponListItemViewHolder((view));
+        } else if (TYPE_PAID_COUPON_USER_DETAIL == viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.paid_coupon_user_detail_list_item, parent, false);
+            return new PaidCouponUserDetailItemViewHolder((view));
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
-            return new OrderListFooterHolder(view);
+            return new ListFooterHolder(view);
         }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        if (holder instanceof OrderListViewHolder) {
+        if (holder instanceof OrderListItemViewHolder) {
+            Object obj = mData.get(position);
+            if (!(obj instanceof Order)) {
+                return;
+            }
 
-            Order order = mData.get(position);
-            OrderListViewHolder itemHolder = (OrderListViewHolder) holder;
-
+            final Order order = (Order) obj;
+            OrderListItemViewHolder itemHolder = (OrderListItemViewHolder) holder;
             holder.itemView.scrollTo(0, 0);
 
             Glide.with(mContext).load(order.headImgUrl).into(itemHolder.mUserHeadUrl);
@@ -149,9 +175,41 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
             }
 
             itemHolder.itemView.setOnClickListener(v -> mOnManageButtonClickedListener.onItemClicked(order));
+        } else if (holder instanceof CouponListItemViewHolder) {
+            Object obj = mData.get(position);
+            if (!(obj instanceof CouponInfo)) {
+                return;
+            }
 
-        } else if (holder instanceof OrderListFooterHolder) {
-            OrderListFooterHolder footerHolder = (OrderListFooterHolder) holder;
+            final CouponInfo couponInfo = (CouponInfo) obj;
+            CouponListItemViewHolder couponListItemViewHolder = (CouponListItemViewHolder) holder;
+            couponListItemViewHolder.mTvCouponTitle.setText(couponInfo.actTitle);
+            couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
+            couponListItemViewHolder.mCouponPeriod.setText(couponInfo.couponPeriod);
+            if (couponInfo.commission > 0) {
+                couponListItemViewHolder.mTvCouponReward.setText(String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), couponInfo.commission));
+            }
+
+            couponListItemViewHolder.itemView.setOnClickListener(v -> mOnManageButtonClickedListener.onItemClicked(couponInfo));
+        } else if (holder instanceof PaidCouponUserDetailItemViewHolder) {
+
+            Object obj = mData.get(position);
+            if (!(obj instanceof PaidCouponUserDetail)) {
+                return;
+            }
+
+            final PaidCouponUserDetail paidCouponUserDetail = (PaidCouponUserDetail) obj;
+            PaidCouponUserDetailItemViewHolder itemHolder = (PaidCouponUserDetailItemViewHolder) holder;
+
+            Glide.with(mContext).load(paidCouponUserDetail.headImgUrl).into(itemHolder.mAvatar);
+            itemHolder.mAvatar.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, paidCouponUserDetail.emchatId));
+            itemHolder.mTvCustomerName.setText(paidCouponUserDetail.userName);
+            itemHolder.mTvGetDate.setText(paidCouponUserDetail.getDate);
+            itemHolder.mTvTelephone.setText(paidCouponUserDetail.telephone);
+            itemHolder.mTvCouponStatusDescription.setText(paidCouponUserDetail.couponStatusDescription);
+
+        } else if (holder instanceof ListFooterHolder) {
+            ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);
             if (mIsEmpty) {
                 desc = ResourceUtils.getString(R.string.order_list_item_empty);
@@ -175,8 +233,8 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public int getSlideOutRange(View targetView) {
         RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(targetView);
         int range = 0;
-        if(holder instanceof OrderListViewHolder){
-            OrderListViewHolder curHolder = (OrderListViewHolder) holder;
+        if(holder instanceof OrderListItemViewHolder){
+            OrderListItemViewHolder curHolder = (OrderListItemViewHolder) holder;
             if (curHolder.mNegative.getVisibility() == View.VISIBLE) {
                 range += curHolder.mNegative.getLayoutParams().width;
             }
@@ -190,7 +248,11 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public boolean isViewSlideable(View targetView) {
         RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(targetView);
-        return ((OrderListViewHolder) holder).isOperationVisible;
+        if(holder instanceof OrderListItemViewHolder) {
+            return ((OrderListItemViewHolder) holder).isOperationVisible;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -202,21 +264,23 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         mRecyclerView = recyclerView;
-        mRecyclerView.addOnItemTouchListener(mHelper);
+        if (mIsSlideable) {
+            mRecyclerView.addOnItemTouchListener(mHelper);
+        }
     }
 
-    static class OrderListFooterHolder extends RecyclerView.ViewHolder {
+    static class ListFooterHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.item_footer)
         TextView itemFooter;
 
-        public OrderListFooterHolder(View itemView) {
+        public ListFooterHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
 
-    static class OrderListViewHolder extends RecyclerView.ViewHolder {
+    static class OrderListItemViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.user_head_url)CircleImageView mUserHeadUrl;
         @Bind(R.id.username) TextView mUserName;
@@ -231,9 +295,38 @@ public class OrderListRecycleViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         public boolean isOperationVisible;
 
-        public OrderListViewHolder(View itemView) {
+        public OrderListItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
+
+    static class CouponListItemViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.tv_consume_money_description) TextView mTvConsumeMoneyDescription;
+        @Bind(R.id.tv_coupon_title) TextView mTvCouponTitle;
+        @Bind(R.id.tv_coupon_reward) TextView mTvCouponReward;
+        @Bind(R.id.tv_coupon_period) TextView mCouponPeriod;
+
+        public CouponListItemViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    static class PaidCouponUserDetailItemViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.avatar) CircleImageView mAvatar;
+        @Bind(R.id.tv_customer_name) TextView mTvCustomerName;
+        @Bind(R.id.tv_telephone) TextView mTvTelephone;
+        @Bind(R.id.tv_coupon_status_description) TextView mTvCouponStatusDescription;
+        @Bind(R.id.tv_get_date) TextView mTvGetDate;
+
+
+        public PaidCouponUserDetailItemViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
 }

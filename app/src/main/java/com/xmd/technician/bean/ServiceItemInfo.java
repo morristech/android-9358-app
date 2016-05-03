@@ -1,4 +1,4 @@
-package com.xmd.technician.model;
+package com.xmd.technician.bean;
 
 import java.util.List;
 

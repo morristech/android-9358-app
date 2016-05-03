@@ -1,7 +1,6 @@
 package com.xmd.technician.Adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
-import com.xmd.technician.model.AlbumInfo;
+import com.xmd.technician.bean.AlbumInfo;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -45,7 +45,10 @@ public class RequestConstant {
     public static final String URL_GET_ACCOUNT_MONEY = BASE_URL + "/v1/profile/tech/money";
     public static final String URL_CONSUME_DETAIL = BASE_URL + "/v2/tech/profile/account/details";
 
-    public static final String URL_GET_REDPACK_LIST = BASE_URL + "/v1/profile/redpack/list";
+    public static final String URL_GET_COUPON_LIST = BASE_URL + "/v1/profile/redpack/list";
+    public static final String URL_GET_COUPON_INFO = BASE_URL + "/v1/profile/club/redpacketinfo";
+    public static final String URL_COUPON_SHARE_QR_CODE = BASE_URL + "/v1/profile/redpacket/useqrcode";
+    public static final String URL_PAID_COUPON_USER_DETAIL = BASE_URL + "/v1/profile/tech/coupon/userdetails";
 
     /*********************************************************************************************/
     /*                                           keys                                            */
@@ -116,6 +119,7 @@ public class RequestConstant {
 
 
     public static final String KEY_FILTER_ORDER = "filterOrder";
+    public static final String KEY_COUPON_STATUS = "couponStatus";
 
 
 

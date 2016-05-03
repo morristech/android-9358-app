@@ -60,6 +60,8 @@ public class Constant {
      */
     public static final String ORDER_TYPE_PAID = "paid";
 
+    public static final String COUPON_TYPE_PAID = "paid";
+
     public static final String USE_TYPE_MONEY = "money";
     public static final String USE_TYPE_COUPON = "coupon";
 
@@ -119,6 +121,11 @@ public class Constant {
     public static final String APP_BROWSER_USER_AGENT = "9358.manager.browser";
 
     public static final String FORMAT_DATE_TIME = "yyyyMMddHHmmss";
+
+    public static final int COUPON_STATUS_ALL = 0;
+    public static final int COUPON_STATUS_ACCEPT = 1;
+    public static final int COUPON_STATUS_COMPLETE = 2;
+    public static final int COUPON_STATUS_EXPIRE = 3;
 
     /**
      * ******************************* Request Code for activities ***************

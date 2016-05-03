@@ -1,6 +1,6 @@
 package com.xmd.technician.http.gson;
 
-import com.xmd.technician.beans.Order;
+import com.xmd.technician.bean.Order;
 
 import java.util.List;
 

@@ -17,6 +17,7 @@ import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
+import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.FeedbackResult;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.LoginResult;
@@ -24,7 +25,8 @@ import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.ModifyPasswordResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
-import com.xmd.technician.http.gson.RedpackResult;
+import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
+import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
@@ -39,11 +41,7 @@ import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.RxBus;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -151,8 +149,14 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_CONSUME_DETAIL:
                 getConsumeDetail((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_GET_REDPACK_LIST:
-                getRedpackList();
+            case MsgDef.MSG_DEF_GET_COUPON_LIST:
+                getCouponList();
+                break;
+            case MsgDef.MSG_DEF_GET_COUPON_INFO:
+                doGetCouponInfo(msg.obj.toString());
+                break;
+            case MsgDef.MSG_DEF_GET_PAID_COUPON_USER_DETAIL:
+                doGetPaidCouponUserDetail((Map<String,String>)msg.obj);
                 break;
         }
 
@@ -217,7 +221,7 @@ public class RequestController extends AbstractController {
     private void register(Map<String, String> params){
         Call<LoginResult> call = getSpaService().register(params.get(RequestConstant.KEY_MOBILE),
                 params.get(RequestConstant.KEY_PASSWORD), params.get(RequestConstant.KEY_ICODE),
-                params.get(RequestConstant.KEY_CLUB_CODE),params.get(RequestConstant.KEY_LOGIN_CHANEL),
+                params.get(RequestConstant.KEY_CLUB_CODE), params.get(RequestConstant.KEY_LOGIN_CHANEL),
                 RequestConstant.SESSION_TYPE, RequestConstant.SESSION_TYPE);
 
         call.enqueue(new Callback<LoginResult>() {
@@ -417,7 +421,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getWorkTime(){
-        Call<WorkTimeResult> call = getSpaService().getWorkTime(SharedPreferenceHelper.getUserToken(),RequestConstant.SESSION_TYPE);
+        Call<WorkTimeResult> call = getSpaService().getWorkTime(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<WorkTimeResult>() {
             @Override
@@ -546,12 +550,43 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getRedpackList(){
-        Call<RedpackResult> call = getSpaService().getRedpackList(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+    private void getCouponList(){
+        Call<CouponListResult> call = getSpaService().getCouponList(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
-        call.enqueue(new TokenCheckedCallback<RedpackResult>() {
+        call.enqueue(new TokenCheckedCallback<CouponListResult>() {
             @Override
-            protected void postResult(RedpackResult result) {
+            protected void postResult(CouponListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    private void doGetCouponInfo(String actId) {
+        Call<CouponInfoResult> call = getSpaService().getCouponInfo(
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE, actId);
+
+        call.enqueue(new TokenCheckedCallback<CouponInfoResult>() {
+            @Override
+            protected void postResult(CouponInfoResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                Logger.v("doGetCouponInfo: " + errorMsg);
+            }
+        });
+    }
+
+    private void doGetPaidCouponUserDetail(Map<String, String> params) {
+        Call<PaidCouponUserDetailResult> call = getSpaService().getPaidCouponUserDetail(
+                params.get(RequestConstant.KEY_COUPON_STATUS), params.get(RequestConstant.KEY_ACT_ID),
+                params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<PaidCouponUserDetailResult>() {
+            @Override
+            protected void postResult(PaidCouponUserDetailResult result) {
                 RxBus.getInstance().post(result);
             }
         });

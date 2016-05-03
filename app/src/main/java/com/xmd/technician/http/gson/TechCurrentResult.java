@@ -1,6 +1,6 @@
 package com.xmd.technician.http.gson;
 
-import com.xmd.technician.model.TechSummaryInfo;
+import com.xmd.technician.bean.TechSummaryInfo;
 
 /**
  * Created by sdcm on 16-3-14.

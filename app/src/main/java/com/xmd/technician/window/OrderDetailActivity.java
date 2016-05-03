@@ -15,13 +15,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.beans.Order;
+import com.xmd.technician.bean.Order;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
-import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.StepView;
@@ -32,7 +30,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Subscription;
 
 /**
  * Created by sdcm on 16-4-12.

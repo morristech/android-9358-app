@@ -124,10 +124,27 @@
         <item name="android:textColor">@color/order_detail_section_item_value_text_color</item>
     </style>
 
+    <style name="paid_coupon_user_detail_header_text_view_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/inter_space</item>
+        <item name="android:textColor">@color/paid_coupon_user_detail_header_text_color</item>
+    </style>
+
     <!-- -->
     <style name="default_spinner_style" parent="android:Widget.Spinner">
         <item name="android:background">@color/transparent</item>
         <item name="android:textSize">@dimen/spinner_item_text_size</item>
+    </style>
+
+    <style name="popup_window_button_style" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">@dimen/popup_window_button_min_width</item>
+        <item name="android:background">@drawable/selector_popup_window_button_bg</item>
+        <item name="android:textColor">@color/selector_popup_window_button_text</item>
     </style>
 
 </resources>

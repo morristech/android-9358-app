@@ -3,7 +3,6 @@ package com.xmd.technician.window;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -12,8 +11,8 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.http.gson.UpdateWorkTimeResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
-import com.xmd.technician.model.DayInfo;
-import com.xmd.technician.model.TimeInfo;
+import com.xmd.technician.bean.DayInfo;
+import com.xmd.technician.bean.TimeInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
