@@ -1,7 +1,9 @@
 package com.xmd.technician.share;
 
+import android.graphics.Bitmap;
 import android.os.Message;
 
+import com.xmd.technician.Constant;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.window.SharePlatformPopupWindow;
@@ -26,6 +28,9 @@ public class ShareController extends AbstractController {
             case MsgDef.MSG_DEF_SHARE_TO_FRIEND:
                 shareToFriends((Map<String, Object>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_SHARE_TO_OTHER:
+                shareToOther((Map<String, Object>) msg.obj);
+                break;
         }
 
         return true;
@@ -34,6 +39,14 @@ public class ShareController extends AbstractController {
     private void showPlatfromWindow(Map<String, String> params) {
         SharePlatformPopupWindow popupWindow = new SharePlatformPopupWindow(params);
         popupWindow.showAtBottom();
+    }
+
+    /**
+     *
+     * @param params
+     */
+    private void shareToOther(Map<String, Object> params) {
+        OtherShareUtil.getInstance().share(params);
     }
 
     /**

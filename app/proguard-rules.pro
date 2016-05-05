@@ -71,7 +71,7 @@
 
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.xmd.technician.http.gson.** { *; }
--keep class com.xmd.technician.beans.** { *; }
+-keep class com.xmd.technician.bean.** { *; }
 
 ##---------------End: proguard configuration for Gson  ----------
 
@@ -81,6 +81,7 @@
 -keep class u.upd.** {*;}
 
 -keep class android.support.annotation.** { *;}
+-keep class javax.annotation.** { *; }
 
 
 # Weixin
@@ -111,11 +112,3 @@
 
 #RxJava
 -dontwarn rx.internal.util.**
-
-#React Native
--dontwarn com.facebook.**
--keep class com.facebook.** { *; }
--keep class com.fasterxml.** { *; }
--keep class javax.annotation.** { *; }
--keep class com.xmd.technician.reactnative.** {*;}
--keep class com.xmd.technician.window.MarketingFragmentContainer {*;}

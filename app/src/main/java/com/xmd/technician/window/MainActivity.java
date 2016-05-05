@@ -2,14 +2,12 @@ package com.xmd.technician.window;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.view.KeyEvent;
 import android.view.View;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
-import com.xmd.technician.reactnative.ReactManager;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -151,38 +149,4 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
         }
     };
-
-    @Override
-    public void onBackPressed() {
-        //Marketing Fragment
-        if (mCurrentTabIndex == 2 && ReactManager.sReactInstanceManager != null) {
-            /*
-             * 这使得JavaScript代码可以控制当用户按下返回键的时候作何处理（譬如控制导航的切换等等）。
-             * 如果JavaScript端不处理相应的事件，你的invokeDefaultOnBackPressed 方法会被调用。默认情况下，这会直接结束你的Activity。
-             */
-            ReactManager.sReactInstanceManager.onBackPressed();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    /**
-     * 改动一下开发者菜单。默认情况下，开发者菜单可以通过摇晃设备来触发，不过这对模拟器不是很有用。所以我们让它在按下Menu键的时候也可以被显示：
-     * @param keyCode
-     * @param event
-     * @return
-     */
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (mCurrentTabIndex == 2 && keyCode == KeyEvent.KEYCODE_MENU && ReactManager.sReactInstanceManager != null) {
-            ReactManager.sReactInstanceManager.showDevOptionsDialog();
-            return true;
-        }
-        return super.onKeyUp(keyCode, event);
-    }
-
-    @Override
-    public void handleBackPressed() {
-        super.onBackPressed();
-    }
 }

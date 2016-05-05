@@ -69,7 +69,8 @@ public class ControllerRegister {
         int[] msgIds = {
                 MsgDef.MSG_DEF_SHARE_TO_FRIEND,
                 MsgDef.MSG_DEF_SHARE_TO_TIMELINE,
-                MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM
+                MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM,
+                MsgDef.MSG_DEF_SHARE_TO_OTHER,
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

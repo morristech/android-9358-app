@@ -87,6 +87,7 @@ public class MsgDef {
 
     public static final int MSG_DEF_GET_PAID_COUPON_USER_DETAIL = 0x0029;
 
+    public static final int MSG_DEF_SHARE_TO_OTHER = 0x0030;
     /**
      * ChatController, start to chat with someone
      */

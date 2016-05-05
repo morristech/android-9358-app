@@ -17,13 +17,9 @@ import java.util.Map;
 /**
  * Created by sdcm on 15-12-11.
  */
-public class WXShareUtil {
+public class WXShareUtil extends BaseShareUtil {
 
     private IWXAPI mWxApi;
-    private String mShareUrl;
-    private String mShareTitle;
-    private String mShareDescription;
-    private Bitmap mShareThumbnail;
 
     private static class InstanceHolder {
         private static WXShareUtil sInstance = new WXShareUtil();
@@ -44,29 +40,6 @@ public class WXShareUtil {
 
     public void shareToFriends(Map<String, Object> params) {
         shareToWeiXin(params, ShareConstant.SHARE_TO_FRIEND);
-    }
-
-    private void explainParams(Map<String, Object> params) {
-        Object url = params.get(Constant.PARAM_SHARE_URL);
-        if (url != null) {
-            mShareUrl = url.toString();
-        }
-
-        Object title = params.get(Constant.PARAM_SHARE_TITLE);
-        if (title != null) {
-            mShareTitle = title.toString();
-        }
-
-        Object description = params.get(Constant.PARAM_SHARE_DESCRIPTION);
-        if (description != null) {
-            mShareDescription = description.toString();
-        }
-
-        Object thumbnail = params.get(Constant.PARAM_SHARE_THUMBNAIL);
-        if (thumbnail != null) {
-            mShareThumbnail = (Bitmap) thumbnail;
-        }
-
     }
 
     private void shareToWeiXin(Map<String, Object> params, int flag) {

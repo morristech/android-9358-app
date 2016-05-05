@@ -34,7 +34,7 @@ public class BaseFragment extends Fragment {
 
     /**                         Interface                           **/
     public interface IFragmentCallback {
-        void handleBackPressed();
+        //void handleBackPressed();
     }
 
 
