@@ -35,11 +35,9 @@ public class ChatViewImage extends BaseChatView {
         super(context, direct);
     }
 
-    @Override
+    /*@Override
     protected void onInflateView() {
-        inflater.inflate(mDirect == EMMessage.Direct.RECEIVE ?
-                R.layout.chat_received_item : R.layout.chat_sent_item, this);
-    }
+    }*/
 
     @Override
     protected void onFindViewById() {

@@ -62,7 +62,7 @@ public class CommentAdapter extends RecyclerView.Adapter{
             commentViewHolder.mName.setText(commentInfo.userInfo.name);
             commentViewHolder.mRatings.setRating(commentInfo.rate/20);
             commentViewHolder.mComment.setText(commentInfo.comment);
-            commentViewHolder.mTime.setText(commentInfo.createAt);
+            commentViewHolder.mTime.setText(commentInfo.createdAt);
             if(commentInfo.rewardAmount > 0){
                 String s = String.format(mContext.getString(R.string.reward_amount),commentInfo.rewardAmount);
                 SpannableString spanString = new SpannableString(s);

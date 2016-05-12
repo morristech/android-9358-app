@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/personal_margin">
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/personal_margin"
+        android:textColor="@color/colorRemark"
+        android:textSize="@dimen/fontBody"
+        android:text="03-19" />
+
+    <com.xmd.technician.widget.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/avatar_head"
+        android:layout_height="@dimen/avatar_head"
+        android:layout_below="@+id/time"
+        android:layout_marginLeft="@dimen/search_margin"
+        android:layout_marginRight="@dimen/search_margin"
+        android:background="@drawable/icon22" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/paid_coupon_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorLineDivide"
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/time"
+            android:paddingTop="@dimen/search_margin"
+            android:paddingBottom="@dimen/search_margin"
+            android:paddingLeft="@dimen/personal_padding"
+            android:paddingRight="@dimen/personal_padding"
+            android:drawablePadding="@dimen/personal_padding"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontRemark"
+            android:text="dhsdhsdhishishffdfdfdfdf" />
+    </FrameLayout>
+
+</RelativeLayout>

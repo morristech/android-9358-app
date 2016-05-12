@@ -70,7 +70,8 @@
         <activity
             android:name=".window.LoginActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".window.MainActivity" />
+        <activity android:name=".window.MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
 
         <receiver
             android:name=".push.GetuiReceiver"

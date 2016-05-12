@@ -9,6 +9,7 @@ public class CouponInfo {
     public String actContent;
     public String couponPeriod;
     public String couponType;
+    public String useTypeName;
     public int actValue;
     public int baseCommission;
     public int commission;

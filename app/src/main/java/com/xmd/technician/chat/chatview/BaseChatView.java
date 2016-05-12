@@ -45,13 +45,12 @@ public abstract class BaseChatView extends LinearLayout {
         this.activity = (Activity) context;
         this.mDirect = direct;
         inflater = LayoutInflater.from(context);
-        LayoutInflater.from(context).inflate(direct == EMMessage.Direct.RECEIVE ?
-                R.layout.chat_received_item : R.layout.chat_sent_item, this);
+
         initView();
     }
 
     private void initView() {
-//        onInflateView();
+        onInflateView();
         timeStampView = (TextView) findViewById(R.id.time);
         userAvatarView = (ImageView) findViewById(R.id.avatar);
 
@@ -89,7 +88,10 @@ public abstract class BaseChatView extends LinearLayout {
     /**
      * 填充layout
      */
-    protected abstract void onInflateView();
+    protected void onInflateView(){
+        LayoutInflater.from(context).inflate(mDirect == EMMessage.Direct.RECEIVE ?
+                R.layout.chat_received_item : R.layout.chat_sent_item, this);
+    }
 
     /**
      * 查找chatrow里的控件
