@@ -15,6 +15,8 @@ public class ChatConstant {
     public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
     public static final String MESSAGE_ATTR_IS_VIDEO_CALL = "is_video_call";
 
+    public static final String MESSAGE_SYSTEM_NOTICE = "notice_msg";
+
     public static final String MESSAGE_ATTR_IS_BIG_EXPRESSION = "em_is_big_expression";
     public static final String MESSAGE_ATTR_EXPRESSION_ID = "em_expression_id";
 
@@ -43,4 +45,8 @@ public class ChatConstant {
     public static final String KEY_NAME = "name";
     public static final String KEY_HEADER = "header";
     public static final String KEY_TIME = "time";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_SUMMARY = "summary";
+    public static final String KEY_IMAGE_URL = "imageUrl";
+    public static final String KEY_LINK_URL = "linkUrl";
 }

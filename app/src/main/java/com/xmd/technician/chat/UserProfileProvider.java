@@ -9,7 +9,6 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.HanziToPinyin;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
-import com.xmd.technician.chat.chatview.ChatUser;
 import com.xmd.technician.common.DbOpenHelper;
 
 import java.util.Hashtable;

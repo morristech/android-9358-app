@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import com.xmd.technician.R;
-import com.xmd.technician.chat.chatview.ChatUser;
 
 public class UserUtils {
     

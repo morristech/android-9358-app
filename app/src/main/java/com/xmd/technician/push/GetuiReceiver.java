@@ -6,13 +6,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.igexin.sdk.PushConsts;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by sdcm on 15-11-30.
@@ -39,24 +47,55 @@ public class GetuiReceiver extends BroadcastReceiver {
                                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
                 }
                 break;
-            /*case PushConsts.GET_MSG_DATA:
-                *//**
+            case PushConsts.GET_MSG_DATA:
+               /* *
                  * {"msgType":"notice_msg","businessType":"new_order",
                  *  "msgContent":"您有新的订单，预约人22，15813724945，请尽快处理。",
                  *  "msgTargetId":"刘德华","msgDate":"2015-12-07 10:17:01","appType":"android","pushTemplateType":"transmission_template,notification_template",
                  *  "noticeTitle":"新订单","logo":"push.png","noticeUrl":"http://www.baidu.com",
-                 *  "logoUrl":null,"transmissionType":2,"ring":true,"1vibrate":true,"clearable":true}
-                 *//*
+                 *  "logoUrl":null,"transmissionType":2,"ring":true,"1vibrate":true,"clearable":true}*/
+
                 // 获取透传数据
                 // String appid = bundle.getString("appid");
                 byte[] payload = bundle.getByteArray("payload");
                 if (payload != null) {
                     String data = new String(payload);
-                    WrapperMsg wrapperMsg = GsonUtils.toBean(data, WrapperMsg.class);
-                    WrapperNotificationManager.getInstance().postOrderNotification(wrapperMsg);
+                    WrapperMsg wrapperMsg = new Gson().fromJson(data, WrapperMsg.class);
+
+                    EMMessage msg = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
+                    msg.setChatType(EMMessage.ChatType.Chat);
+                    msg.setTo(SharedPreferenceHelper.getEmchatId());
+                    msg.setFrom(ChatConstant.MESSAGE_SYSTEM_NOTICE);
+                    msg.addBody(new EMTextMessageBody(wrapperMsg.msgContent));
+                    msg.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, wrapperMsg.msgType);
+                    msg.setAttribute(ChatConstant.KEY_TITLE, wrapperMsg.noticeTitle);
+                    msg.setAttribute(ChatConstant.KEY_SUMMARY, wrapperMsg.msgContent);
+                    msg.setAttribute(ChatConstant.KEY_IMAGE_URL, wrapperMsg.logoUrl);
+                    msg.setAttribute(ChatConstant.KEY_LINK_URL, wrapperMsg.noticeUrl);
+
+                    EMClient.getInstance().chatManager().saveMessage(msg);
                 }
-                break;*/
+                break;
         }
+
+    }
+
+    public class WrapperMsg {
+        public String msgType;
+        public String businessType;
+        public String msgContent;
+        public String msgTargetId;
+        public String msgDate;
+        public String appType;
+        public String pushTemplateType;
+        public String noticeTitle;
+        public String logo;
+        public String logoUrl;
+        public String noticeUrl;
+        public String transmissionType;
+        public boolean ring;
+        public boolean clearable;
+        public boolean vibrate;
 
     }
 }

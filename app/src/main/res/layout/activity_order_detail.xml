@@ -261,13 +261,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/inter_space">
+        android:layout_marginTop="@dimen/inter_space"
+        android:layout_marginLeft="@dimen/search_margin"
+        android:layout_marginRight="@dimen/search_margin">
 
         <Button
             android:id="@+id/negative"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_marginRight="@dimen/search_margin"
             android:background="@drawable/selector_operation_negative_button_bg"
             android:text="negative"
             android:textColor="@color/selector_operation_negative_button_text" />
