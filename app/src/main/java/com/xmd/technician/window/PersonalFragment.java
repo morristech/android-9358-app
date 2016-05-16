@@ -188,7 +188,7 @@ public class PersonalFragment extends BaseFragment{
         }
 
         if (mQRDialog == null) {
-            mQRDialog = new QRDialog(getActivity(), mTechInfo.qrCodeUrl);
+            mQRDialog = new QRDialog(getActivity(), mTechInfo.qrCodeUrl, true);
         } else {
             mQRDialog.updateQR(mTechInfo.qrCodeUrl);
         }

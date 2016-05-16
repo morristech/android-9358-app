@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -26,9 +27,11 @@ public class QRDialog extends Dialog {
     private String mShowText;
     private ImageView mQRImageView;
     private Bitmap mQRBitmap;
-    public QRDialog(Context context, String showText) {
+    private boolean mShowAsUrl = true;
+    public QRDialog(Context context, String showText, boolean showAsUrl) {
         super(context, R.style.dialog_qr);
         mShowText=showText;
+        mShowAsUrl = showAsUrl;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,30 +47,39 @@ public class QRDialog extends Dialog {
         });
         setCancelable(false);
         mQRImageView=(ImageView)findViewById(R.id.home_fragment_qr_code_image);
-        mQRImageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                if(mQRBitmap==null) {
-                    try {
-                        mQRBitmap=encodeAsBitmap(0, mShowText, mQRImageView.getWidth());
-                        mQRImageView.setImageBitmap(mQRBitmap);
-                    } catch (WriterException e) {
-                        e.printStackTrace();
+        if(mShowAsUrl){
+            Glide.with(getContext()).load(mShowText).into(mQRImageView);
+        }else {
+            mQRImageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    if(mQRBitmap==null) {
+                        try {
+                            mQRBitmap=encodeAsBitmap(0, mShowText, mQRImageView.getWidth());
+                            mQRImageView.setImageBitmap(mQRBitmap);
+                        } catch (WriterException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
     }
 
     public void updateQR(String txt){
         if(!mShowText.equals(txt)){
-            try {
-                mQRBitmap=encodeAsBitmap(0, txt, mQRImageView.getWidth());
-                mQRImageView.setImageBitmap(mQRBitmap);
+            if(mShowAsUrl){
+                Glide.with(getContext()).load(mShowText).into(mQRImageView);
                 mShowText = txt;
-            } catch (WriterException e) {
-                e.printStackTrace();
+            }else {
+                try {
+                    mQRBitmap=encodeAsBitmap(0, txt, mQRImageView.getWidth());
+                    mQRImageView.setImageBitmap(mQRBitmap);
+                    mShowText = txt;
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
