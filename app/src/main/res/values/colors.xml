@@ -13,7 +13,7 @@
     <color name="dialog_title_text_color">#333</color>
     <color name="dialog_content_text_color">#666</color>
 
-    <color name="colorMain">#ff6666</color>
+    <color name="colorMain">#fb5549</color>
     <color name="colorBackground">#f0f0f0</color>
     <color name="colorTitle">#333333</color>
     <color name="colorBody">#666666</color>
@@ -78,7 +78,7 @@
     <color name="primary_button_color_pressed">#70fb5549</color>
     <color name="primary_button_text_color">#FFF</color>
 
-    <color name="popup_window_button_normal">#FFF</color>
+    <color name="popup_window_button_normal">@color/transparent</color>
     <color name="popup_window_button_pressed">#fb5549</color>
     <color name="popup_window_button_text_normal">#333</color>
     <color name="popup_window_button_text_pressed">#FFF</color>

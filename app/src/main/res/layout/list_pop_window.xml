@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:id="@+id/recycler_view"
+        android:id="@+id/popup_window_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="@dimen/line_divide_height"

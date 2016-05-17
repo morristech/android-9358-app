@@ -19,6 +19,7 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
+import com.xmd.technician.widget.DividerItemDecoration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +59,7 @@ public class OrderFragment extends BaseListFragment<Order> {
                     break;
             }
         });
+        mListView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         mGetOrderListSubscription = RxBus.getInstance().toObservable(OrderListResult.class).subscribe(
                 orderListResult -> handleGetOrderListResult(orderListResult)

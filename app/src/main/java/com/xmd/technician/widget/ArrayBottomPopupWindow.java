@@ -18,14 +18,14 @@ import butterknife.Bind;
 /**
  * Created by sdcm on 16-4-15.
  */
-public class ArrayPopupWindow<T> extends BasePopupWindow{
+public class ArrayBottomPopupWindow<T> extends BasePopupWindow {
 
-    @Bind(R.id.recycler_view) ListView mView;
+    @Bind(R.id.popup_window_list) ListView mView;
 
     private ArrayAdapter mArrayAdapter;
     private AdapterView.OnItemClickListener mItemClickListener;
 
-    public ArrayPopupWindow(View parentView, Map<String, String> params, int windowWidth) {
+    public ArrayBottomPopupWindow(View parentView, Map<String, String> params, int windowWidth) {
         super(parentView, params);
         View popupView = LayoutInflater.from(mActivity).inflate(R.layout.list_pop_window, null);
         initPopupWidnow(popupView, windowWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -33,7 +33,7 @@ public class ArrayPopupWindow<T> extends BasePopupWindow{
 
         mPopupWindow.setBackgroundDrawable(ResourceUtils.getDrawable(R.drawable.common_bg));
 
-        mArrayAdapter = new ArrayAdapter(mActivity,R.layout.common_greeting_view, R.id.greeting);
+        mArrayAdapter = new ArrayAdapter(mActivity,R.layout.array_popup_window_item, R.id.tv_item);
         mView.setAdapter(mArrayAdapter);
         mView.setOnItemClickListener((parent, view, position, id) -> {
             dismiss();

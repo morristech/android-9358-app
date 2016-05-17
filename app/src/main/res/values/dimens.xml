@@ -12,8 +12,10 @@
     <dimen name="three_radius">3dp</dimen>
     <dimen name="small_radius">5dp</dimen>
 
-    <dimen name="popup_window_button_height">48dp</dimen>
+    <dimen name="array_popup_window_width">200dp</dimen>
+    <dimen name="array_popup_window_item_height">48dp</dimen>
     <dimen name="popup_window_button_min_width">100dp</dimen>
+    <dimen name="popup_window_button_text_size">14sp</dimen>
 
     <dimen name="dialog_min_width">280dp</dimen>
     <dimen name="dialog_title_height">48dp</dimen>
@@ -44,6 +46,7 @@
     <dimen name="search_pic_height">16dp</dimen>
 
     <dimen name="message_item_height">64dp</dimen>
+    <dimen name="feedback_edit_text_height">300dp</dimen>
 
     <dimen name="personal_info_height">83dp</dimen>
     <dimen name="personal_item_height">44dp</dimen>
@@ -69,7 +72,6 @@
     <dimen name="default_dialog_width">280dp</dimen>
     <dimen name="button_radius">4dp</dimen>
     <dimen name="coupon_item_height">58dp</dimen>
-
 
     <dimen name="order_list_item_height">84dp</dimen>
     <dimen name="order_list_item_circle_image">48dp</dimen>
@@ -105,11 +107,18 @@
     <dimen name="paid_coupon_user_detail_list_item_avatar_size">32dp</dimen>
     <dimen name="paid_coupon_user_detail_list_item_user_name_text_size">14sp</dimen>
     <dimen name="paid_coupon_user_detail_list_item_telephone_text_size">12sp</dimen>
+    <dimen name="paid_coupon_user_detail_popup_window_width">100dp</dimen>
 
     <dimen name="normal_coupon_detail_activity_share_title_text_size">20sp</dimen>
     <dimen name="normal_coupon_detail_activity_share_text_text_size">16sp</dimen>
     <dimen name="normal_coupon_detail_activity_share_button_text_size">20sp</dimen>
     <dimen name="normal_coupon_detail_activity_commission_amount_text_size">32sp</dimen>
     <dimen name="normal_coupon_detail_activity_commission_text_size">20sp</dimen>
+
+    <dimen name="coupon_list_item_title_text_size">20dp</dimen>
+    <dimen name="coupon_list_item_share_width">48dp</dimen>
+    <dimen name="coupon_list_item_share_text_size">10dp</dimen>
+
+
 
 </resources>

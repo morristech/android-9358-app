@@ -5,13 +5,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
-import com.xmd.technician.Adapter.MsgListAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.http.gson.ModifyPasswordResult;
 
 public class WelcomeActivity extends BaseActivity {
 
@@ -37,7 +34,7 @@ public class WelcomeActivity extends BaseActivity {
             // Switch to MainActivity
             Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
             // it's single chat
-            intent.putExtra(ChatConstant.EXTRA_USER_ID, "琵琶");
+            intent.putExtra(ChatConstant.EMCHAT_ID, "琵琶");
             startActivity(intent);
             finish();
         }

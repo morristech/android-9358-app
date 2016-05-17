@@ -74,7 +74,12 @@ public class CouponFragment extends BaseListFragment<CouponInfo> {
     }
 
     @Override
-    protected boolean isSlideable() {
+    public boolean isSlideable() {
+        return false;
+    }
+
+    @Override
+    public boolean isPaged() {
         return false;
     }
 }

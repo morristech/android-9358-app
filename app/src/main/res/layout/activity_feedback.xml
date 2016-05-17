@@ -10,7 +10,7 @@
     <EditText
         android:id="@+id/feedback_content"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/personal_info_height"
+        android:layout_height="@dimen/feedback_edit_text_height"
         android:layout_below="@+id/toolbar"
         android:background="@drawable/edittext_stroke"
         android:gravity="left"

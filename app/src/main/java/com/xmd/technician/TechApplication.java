@@ -11,6 +11,7 @@ import com.igexin.sdk.PushManager;
 import com.xmd.technician.common.AppUncaughtExceptionHandler;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.ControllerRegister;
 
 import java.util.List;
@@ -26,14 +27,13 @@ public class TechApplication extends Application{
         super.onCreate();
         String processName = getProcessName(this, android.os.Process.myPid());
         Logger.v("Process Name : " + processName);
-        if (!TextUtils.isEmpty(processName)) {
+        if (Utils.isNotEmpty(processName)) {
             if (processName.contains(":pushservice")) {
                 // for getui push service, do nothing;
                 Logger.v("getui process Start !");
             } else {
                 Logger.v("Technician initialize !");
                 appContext = getApplicationContext();
-
                 Thread.setDefaultUncaughtExceptionHandler(new AppUncaughtExceptionHandler(appContext));
 
                 long start = System.currentTimeMillis();
@@ -54,7 +54,8 @@ public class TechApplication extends Application{
                 */
                 EMOptions emOptions = new EMOptions();
                 EMClient.getInstance().init(this, emOptions);
-
+                //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+                EMClient.getInstance().setDebugMode(true);
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");
             }

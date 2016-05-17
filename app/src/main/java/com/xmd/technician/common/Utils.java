@@ -18,7 +18,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.xmd.technician.TechApplication;
+import com.xmd.technician.chat.ChatConstant;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -52,6 +54,21 @@ public class Utils {
         progressDialog.setMessage(msg);
         progressDialog.setCancelable(true);
         return progressDialog;
+    }
+
+    /**
+     *
+     * @param emchatId
+     * @param nickname
+     * @param avatar
+     * @return
+     */
+    public static Map<String, String> wrapChatParams(String emchatId, String nickname, String avatar) {
+        Map<String, String> params = new HashMap<>();
+        params.put(ChatConstant.EMCHAT_ID, emchatId);
+        params.put(ChatConstant.EMCHAT_NICKNAME, nickname);
+        params.put(ChatConstant.EMCHAT_AVATAR, avatar);
+        return params;
     }
 
     /**

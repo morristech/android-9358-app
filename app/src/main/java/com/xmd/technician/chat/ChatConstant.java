@@ -9,8 +9,9 @@ public class ChatConstant {
     public static final int CHATTYPE_CHATROOM = 3;
 
     public static final String EXTRA_CHAT_TYPE = "chatType";
-    public static final String EXTRA_USER_ID = "userId";
-    public static final String EXTRA_USER_AVATAR = "userAvatar";
+    public static final String EMCHAT_ID = "emchatId";
+    public static final String EMCHAT_NICKNAME = "emchatNickname";
+    public static final String EMCHAT_AVATAR = "emchatAvatar";
 
     public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
     public static final String MESSAGE_ATTR_IS_VIDEO_CALL = "is_video_call";

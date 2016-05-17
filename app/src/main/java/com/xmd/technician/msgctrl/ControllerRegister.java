@@ -79,6 +79,8 @@ public class ControllerRegister {
         int controllerId = ControllerId.CHAT_CONTROLLER;
         int[] msgIds = {
                 MsgDef.MSG_DEF_START_CHAT,
+                MsgDef.MSG_DEF_SAVE_CHAT_USER,
+                MsgDef.MSG_DEF_GET_CONVERSATION_LIST
         };
         MsgDispatcher.register(controllerId, msgIds);
     }
