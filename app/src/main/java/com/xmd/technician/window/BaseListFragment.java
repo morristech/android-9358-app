@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by linms@xiaomodo.com on 16-4-29.
  */
-public abstract class BaseListFragment<T> extends BaseFragment implements ListRecycleViewAdapter.OnManageButtonClickedListener<T>, SwipeRefreshLayout.OnRefreshListener{
+public abstract class BaseListFragment<T> extends BaseFragment implements ListRecycleViewAdapter.Callback<T>, SwipeRefreshLayout.OnRefreshListener{
 
     protected static final int PAGE_START = 0;
     protected static final int PAGE_SIZE = 20;
@@ -30,7 +30,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     @Bind(R.id.list) RecyclerView mListView;
 
     protected LinearLayoutManager mLayoutManager;
-    protected ListRecycleViewAdapter mOrderListAdapter;
+    protected ListRecycleViewAdapter mListAdapter;
 
     protected int mPages = PAGE_START;
     protected boolean mIsLoadingMore = false;
@@ -53,22 +53,21 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
 
     protected void initListLayout() {
 
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMain);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mListView.setHasFixedSize(true);
         mListView.setLayoutManager(mLayoutManager);
-        mOrderListAdapter = new ListRecycleViewAdapter(getActivity(), mData, this, isSlideable());
-        mListView.setAdapter(mOrderListAdapter);
+        mListAdapter = new ListRecycleViewAdapter(getActivity(), mData, this);
+        mListView.setAdapter(mListAdapter);
         mListView.setItemAnimator(new DefaultItemAnimator());
-        mListView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         mListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && mLastVisibleItem + 1 == mOrderListAdapter.getItemCount()) {
+                        && mLastVisibleItem + 1 == mListAdapter.getItemCount()) {
                     loadMore();
                 }
             }
@@ -115,8 +114,8 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
                 mData.clear();
             }
             mData.addAll(list);
-            mOrderListAdapter.setIsNoMore(mPages == mPageCount);
-            mOrderListAdapter.setData(mData);
+            mListAdapter.setIsNoMore(mPages == mPageCount);
+            mListAdapter.setData(mData);
         }
     }
 
@@ -156,10 +155,15 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
         getListSafe();
     }
 
-    protected boolean isSlideable(){
+    @Override
+    public boolean isSlideable(){
         return true;
     }
 
+    @Override
+    public boolean isPaged() {
+        return true;
+    }
 
     /****  Abstract function , implemented by sub class ***/
 

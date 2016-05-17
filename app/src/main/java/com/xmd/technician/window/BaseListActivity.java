@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.xmd.technician.Adapter.ListRecycleViewAdapter;
 import com.xmd.technician.R;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ import butterknife.ButterKnife;
 /**
  * Created by linms@xiaomodo.com on 16-4-29.
  */
-public abstract class BaseListActivity<T> extends BaseActivity implements ListRecycleViewAdapter.OnManageButtonClickedListener<T>, SwipeRefreshLayout.OnRefreshListener{
+public abstract class BaseListActivity<T> extends BaseActivity implements ListRecycleViewAdapter.Callback<T>, SwipeRefreshLayout.OnRefreshListener{
 
     protected static final int PAGE_START = 0;
     protected static final int PAGE_SIZE = 20;
@@ -60,7 +59,7 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
         mLayoutManager = new LinearLayoutManager(this);
         mListView.setHasFixedSize(true);
         mListView.setLayoutManager(mLayoutManager);
-        mOrderListAdapter = new ListRecycleViewAdapter(this, mData, this, isSlideable());
+        mOrderListAdapter = new ListRecycleViewAdapter(this, mData, this);
         mListView.setAdapter(mOrderListAdapter);
         mListView.setItemAnimator(new DefaultItemAnimator());
         mListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
@@ -157,10 +156,15 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
         getListSafe();
     }
 
-    protected boolean isSlideable(){
+    @Override
+    public boolean isSlideable(){
         return true;
     }
 
+    @Override
+    public boolean isPaged() {
+        return true;
+    }
 
     /****  Abstract function , implemented by sub class ***/
 

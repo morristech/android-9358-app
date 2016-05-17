@@ -2,26 +2,38 @@ package com.xmd.technician.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.exceptions.HyphenateException;
+import com.hyphenate.util.DateUtils;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.PaidCouponUserDetail;
+import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.CommonUtils;
+import com.xmd.technician.chat.SmileUtils;
+import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.CircleImageView;
-import com.xmd.technician.window.PaidCouponDetailActivity;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,7 +44,7 @@ import butterknife.ButterKnife;
  */
 public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemSlideHelper.Callback {
 
-    public interface OnManageButtonClickedListener<T> {
+    public interface Callback<T> {
 
         void onItemClicked(T bean);
 
@@ -41,11 +53,23 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         void onPositiveButtonClicked(T bean);
 
         void onLoadMoreButtonClicked();
+
+        /**
+         * @return whether the item is slideable
+         */
+        boolean isSlideable();
+
+        /**
+         * whether is paged
+         * @return
+         */
+        boolean isPaged();
     }
 
     private static final int TYPE_ORDER_ITEM = 0;
     private static final int TYPE_COUPON_INFO_ITEM = 1;
     private static final int TYPE_PAID_COUPON_USER_DETAIL = 2;
+    private static final int TYPE_CONVERSATION = 3;
     private static final int TYPE_OTHER_ITEM = 98;
     private static final int TYPE_FOOTER = 99;
 
@@ -54,18 +78,16 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private boolean mIsEmpty = false;
 
     private List<T> mData;
-    private OnManageButtonClickedListener mOnManageButtonClickedListener;
+    private Callback mCallback;
     private Context mContext;
     private RecyclerView mRecyclerView;
     private ItemSlideHelper mHelper;
-    private boolean mIsSlideable;
 
-    public ListRecycleViewAdapter(Context context, List<T> data, OnManageButtonClickedListener onManageButtonClickedListener, boolean isSlideable) {
+    public ListRecycleViewAdapter(Context context, List<T> data, Callback callback) {
         mContext = context;
         mData = data;
-        mOnManageButtonClickedListener = onManageButtonClickedListener;
+        mCallback = callback;
         mHelper = new ItemSlideHelper(mContext, this);
-        mIsSlideable = isSlideable;
     }
 
     public void setData(List<T> data) {
@@ -86,16 +108,17 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemViewType(int position) {
-        if (position + 1 == getItemCount()) {
+        if (mCallback.isPaged() && position + 1 == getItemCount()) {
             return TYPE_FOOTER;
         } else {
             if (mData.get(position) instanceof Order) {
-                // Order
                 return TYPE_ORDER_ITEM;
             } else if (mData.get(position) instanceof CouponInfo) {
                 return TYPE_COUPON_INFO_ITEM;
             } else if (mData.get(position) instanceof PaidCouponUserDetail) {
                 return TYPE_PAID_COUPON_USER_DETAIL;
+            } else if (mData.get(position) instanceof EMConversation) {
+                return TYPE_CONVERSATION;
             } else {
                 return TYPE_OTHER_ITEM;
             }
@@ -113,6 +136,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         } else if (TYPE_PAID_COUPON_USER_DETAIL == viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.paid_coupon_user_detail_list_item, parent, false);
             return new PaidCouponUserDetailItemViewHolder((view));
+        } else if (TYPE_CONVERSATION == viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
+            return new ConversationViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
             return new ListFooterHolder(view);
@@ -133,7 +159,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             holder.itemView.scrollTo(0, 0);
 
             Glide.with(mContext).load(order.headImgUrl).into(itemHolder.mUserHeadUrl);
-            itemHolder.mUserHeadUrl.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, order.emchatId));
+            itemHolder.mUserHeadUrl.setOnClickListener(
+                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.customerName, order.headImgUrl)));
             itemHolder.mUserName.setText(order.customerName);
             itemHolder.mOrderTime.setText(order.formatAppointTime);
             itemHolder.mOrderAmount.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), order.downPayment));
@@ -168,13 +195,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     itemHolder.mNegative.setVisibility(View.GONE);
                     itemHolder.mPositive.setText(ResourceUtils.getString(R.string.order_status_operation_delete));
                 }
-                itemHolder.mNegative.setOnClickListener(v -> mOnManageButtonClickedListener.onNegativeButtonClicked(order));
-                itemHolder.mPositive.setOnClickListener(v -> mOnManageButtonClickedListener.onPositiveButtonClicked(order));
+                itemHolder.mNegative.setOnClickListener(v -> mCallback.onNegativeButtonClicked(order));
+                itemHolder.mPositive.setOnClickListener(v -> mCallback.onPositiveButtonClicked(order));
                 itemHolder.isOperationVisible = true;
                 itemHolder.mOperation.setVisibility(View.VISIBLE);
             }
 
-            itemHolder.itemView.setOnClickListener(v -> mOnManageButtonClickedListener.onItemClicked(order));
+            itemHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(order));
         } else if (holder instanceof CouponListItemViewHolder) {
             Object obj = mData.get(position);
             if (!(obj instanceof CouponInfo)) {
@@ -190,7 +217,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 couponListItemViewHolder.mTvCouponReward.setText(String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), couponInfo.commission));
             }
 
-            couponListItemViewHolder.itemView.setOnClickListener(v -> mOnManageButtonClickedListener.onItemClicked(couponInfo));
+            couponListItemViewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(couponInfo));
         } else if (holder instanceof PaidCouponUserDetailItemViewHolder) {
 
             Object obj = mData.get(position);
@@ -202,11 +229,56 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             PaidCouponUserDetailItemViewHolder itemHolder = (PaidCouponUserDetailItemViewHolder) holder;
 
             Glide.with(mContext).load(paidCouponUserDetail.headImgUrl).into(itemHolder.mAvatar);
-            itemHolder.mAvatar.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, paidCouponUserDetail.emchatId));
+            itemHolder.mAvatar.setOnClickListener(
+                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
+                            Utils.wrapChatParams(paidCouponUserDetail.emchatId, paidCouponUserDetail.userName, paidCouponUserDetail.headImgUrl)));
             itemHolder.mTvCustomerName.setText(paidCouponUserDetail.userName);
             itemHolder.mTvGetDate.setText(paidCouponUserDetail.getDate);
             itemHolder.mTvTelephone.setText(paidCouponUserDetail.telephone);
             itemHolder.mTvCouponStatusDescription.setText(paidCouponUserDetail.couponStatusDescription);
+
+        } else if(holder instanceof ConversationViewHolder){
+
+            Object obj = mData.get(position);
+            if (!(obj instanceof EMConversation)) {
+                return;
+            }
+
+            final EMConversation conversation = (EMConversation) obj;
+            ConversationViewHolder conversationHolder = (ConversationViewHolder) holder;
+
+            conversationHolder.mName.setText(conversation.getUserName());
+            if(conversation.getUnreadMsgCount() > 0){
+                conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
+                conversationHolder.mUnread.setVisibility(View.VISIBLE);
+            }else {
+                conversationHolder.mUnread.setVisibility(View.INVISIBLE);
+            }
+
+            if(conversation.getAllMsgCount() != 0){
+                // 把最后一条消息的内容作为item的message内容
+                EMMessage lastMessage = conversation.getLastMessage();
+                Spannable span = SmileUtils.getSmiledText(mContext, CommonUtils.getMessageDigest(lastMessage, mContext));
+                conversationHolder.mContent.setText(span, TextView.BufferType.SPANNABLE);
+                conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
+                try {
+                    if (lastMessage.direct() == EMMessage.Direct.RECEIVE) {
+                        ChatUser user;
+                        user = new ChatUser(conversation.getUserName());
+                        user.setAvatar(lastMessage.getStringAttribute(ChatConstant.KEY_HEADER));
+                        user.setNick(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
+                        UserUtils.saveUser(user);
+                    }
+                    UserUtils.setUserAvatar(mContext, conversation.getUserName(), conversationHolder.mAvatar);
+                    UserUtils.setUserNick(conversation.getUserName(), conversationHolder.mName);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }catch (NullPointerException e){
+
+                }
+            }
+
+            holder.itemView.setOnClickListener(v -> mCallback.onItemClicked(conversation));
 
         } else if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
@@ -218,7 +290,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 desc = ResourceUtils.getString(R.string.order_list_item_no_more);
                 footerHolder.itemFooter.setOnClickListener(null);
             } else {
-                footerHolder.itemFooter.setOnClickListener(v -> mOnManageButtonClickedListener.onLoadMoreButtonClicked());
+                footerHolder.itemFooter.setOnClickListener(v -> mCallback.onLoadMoreButtonClicked());
             }
             footerHolder.itemFooter.setText(desc);
         }
@@ -226,7 +298,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return mData.size() + 1;
+        if (mCallback.isPaged()) {
+            return mData.size() + 1;
+        } else {
+            return mData.size();
+        }
     }
 
     @Override
@@ -264,7 +340,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         mRecyclerView = recyclerView;
-        if (mIsSlideable) {
+        if (mCallback.isSlideable()) {
             mRecyclerView.addOnItemTouchListener(mHelper);
         }
     }
@@ -324,6 +400,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
 
         public PaidCouponUserDetailItemViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    static class ConversationViewHolder extends RecyclerView.ViewHolder{
+
+        @Bind(R.id.avatar) ImageView mAvatar;
+        @Bind(R.id.name) TextView mName;
+        @Bind(R.id.content) TextView mContent;
+        @Bind(R.id.time) TextView mTime;
+        @Bind(R.id.unread) TextView mUnread;
+        public ConversationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

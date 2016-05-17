@@ -31,12 +31,6 @@ public class SharedPreferenceHelper {
 
     public static void initialize() {
         mSettingPreference = TechApplication.getAppContext().getSharedPreferences(SETTING_PREFERENCE, Activity.MODE_PRIVATE);
-        // In 2.3.0, doesn't encrypt the keys
-        mSettingPreference.edit().remove("userAccount")
-                .remove("userToken")
-                .remove("userName")
-                .remove("serverHost")
-                .remove("lastAutoCheckUpgrade").apply();
     }
 
     public static void setUserAccount(String userAccount) {
@@ -60,6 +54,7 @@ public class SharedPreferenceHelper {
         setUserName("");
         setUserId("");
         setUserAvatar("");
+        setEmchatId("");
     }
 
     /**

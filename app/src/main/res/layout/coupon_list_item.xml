@@ -16,7 +16,7 @@
             android:id="@+id/tv_coupon_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"
+            android:textSize="@dimen/coupon_list_item_title_text_size"
             android:textColor="@color/coupon_fragment_top_text_color" />
 
         <RelativeLayout
@@ -41,7 +41,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/shape_coupon_item_share_bg"
                 android:gravity="center"
                 android:padding="@dimen/small_space"
                 android:textColor="@color/coupon_fragment_top_text_color" />
@@ -64,10 +63,13 @@
             android:textColor="@color/coupon_fragment_bottom_text_color" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/coupon_list_item_share_width"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
+            android:gravity="center"
+            android:padding="@dimen/small_space"
+            android:background="@drawable/shape_coupon_item_share_bg"
+            android:textSize="@dimen/coupon_list_item_share_text_size"
             android:text="@string/coupon_fragment_share" />
 
     </RelativeLayout>

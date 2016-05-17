@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/greeting"
+    android:id="@+id/tv_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/search_margin"
+    android:layout_height="@dimen/array_popup_window_item_height"
+    android:padding="@dimen/inter_space"
+    android:gravity="center"
     android:singleLine="true"
     android:textColor="@color/colorBody"
     android:textSize="@dimen/fontNormal">
-
 </TextView>

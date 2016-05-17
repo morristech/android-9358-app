@@ -1,7 +1,12 @@
 package com.xmd.technician;
 
 
+import com.xmd.technician.bean.Entry;
+import com.xmd.technician.common.ResourceUtils;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +18,7 @@ public class Constant {
     public static final String MIME_TYPE_HTML = "text/html";
     public static final int WEBVIEW_TEXT_ZOOM = 80;
 
-    public static final Map<String, String> LABELS = new HashMap<>();
+
 
     public static final String ORDER_STATUS_ALL = "";
     /**
@@ -84,16 +89,27 @@ public class Constant {
     /**
      * status:submit 未接受，accept 同意，reject 拒绝，cancel 取消，complete 完成，failure 失效，sysReject 超时。 不传默认查全部订单
      */
-    static {
-        LABELS.put(ORDER_STATUS_SUBMIT, "未接受");
-        LABELS.put(ORDER_STATUS_ACCEPT, "已接受");
-        LABELS.put(ORDER_STATUS_REJECTED, "已拒绝");
-        LABELS.put(ORDER_STATUS_COMPLETE, "已完成");
-        LABELS.put(ORDER_STATUS_FAILURE, "失效");
-        LABELS.put(ORDER_STATUS_OVERTIME, "超时");
-        LABELS.put(ORDER_STATUS_CANCEL, "取消");
+    public static final Map<String, String> LABELS = new HashMap<String, String>(){{
+        put(ORDER_STATUS_SUBMIT, "未接受");
+        put(ORDER_STATUS_ACCEPT, "已接受");
+        put(ORDER_STATUS_REJECTED, "已拒绝");
+        put(ORDER_STATUS_COMPLETE, "已完成");
+        put(ORDER_STATUS_FAILURE, "失效");
+        put(ORDER_STATUS_OVERTIME, "超时");
+        put(ORDER_STATUS_CANCEL, "取消");
+    }};
 
-    }
+    public static final String COUPON_STATUS_ALL = "0";
+    public static final String COUPON_STATUS_ACCEPT = "1";
+    public static final String COUPON_STATUS_COMPLETE = "2";
+    public static final String COUPON_STATUS_EXPIRE = "3";
+
+    public static final List<Entry> COUPON_STATUS_DATA = new ArrayList<Entry>(){{
+        add(new Entry(Constant.COUPON_STATUS_ALL, ResourceUtils.getString(R.string.paid_coupon_user_detail_activity_header_status)));
+        add(new Entry(Constant.COUPON_STATUS_ACCEPT, ResourceUtils.getString(R.string.paid_coupon_user_detail_activity_accept)));
+        add(new Entry(Constant.COUPON_STATUS_COMPLETE, ResourceUtils.getString(R.string.paid_coupon_user_detail_activity_complete)));
+        add(new Entry(Constant.COUPON_STATUS_EXPIRE, ResourceUtils.getString(R.string.paid_coupon_user_detail_activity_expire)));
+    }};
 
     /**
      * interval to refresh the new order account, meanwhile act as the HearBeat
@@ -122,10 +138,7 @@ public class Constant {
 
     public static final String FORMAT_DATE_TIME = "yyyyMMddHHmmss";
 
-    public static final int COUPON_STATUS_ALL = 0;
-    public static final int COUPON_STATUS_ACCEPT = 1;
-    public static final int COUPON_STATUS_COMPLETE = 2;
-    public static final int COUPON_STATUS_EXPIRE = 3;
+
 
     /**
      * ******************************* Request Code for activities ***************

@@ -8,6 +8,8 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -52,25 +54,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     protected void onResume() {
         super.onResume();
         EMClient.getInstance().chatManager().addMessageListener(mMessageListener);
-        Map<String, String> params = new HashMap<>();
-        /*params.put(RequestConstant.KEY_PAGE_NUMBER,"1");
-        params.put(RequestConstant.KEY_PAGE_SIZE,"10");
-        params.put(RequestConstant.KEY_SORT_TYPE,"createdAt");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COMMENT_LIST);*/
-
-        /*params.put(RequestConstant.KEY_MOBILE,"13265684479");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ICODE,params);*/
-
-        /*params.put(RequestConstant.KEY_INVITE_CODE,"787714");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SUBMIT_INVITE_CODE,params);*/
-
-        //不正常
-        /*params.put(RequestConstant.KEY_MOBILE,"13265684478");
-        params.put(RequestConstant.KEY_PASSWORD,"123456");
-        params.put(RequestConstant.KEY_ICODE,"471857");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_REGISTER, params);*/
-
-        /*MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_WORK_TIME);*/
     }
 
     @Override
@@ -121,12 +104,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
             for (EMMessage message : messages) {
                 DemoHelper.getInstance().getNotifier().onNewMsg(message);
             }*/
-            if(mCurrentTabIndex == TAB_INDEX_MESSAGE ) {
-                BaseFragment fragment = mFragmentList.get(mCurrentTabIndex);
-                if(fragment instanceof ChatFragment){
-                    ((ChatFragment)fragment).refreshMessage();
-                }
-            }
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
         }
 
         @Override

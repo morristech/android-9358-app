@@ -17,6 +17,7 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -111,7 +112,8 @@ public class OrderDetailActivity extends BaseActivity {
 
         //Avatar
         Glide.with(this).load(mOrder.headImgUrl).into(mAvatar);
-        mAvatar.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, mOrder.emchatId));
+        mAvatar.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
+                Utils.wrapChatParams(mOrder.emchatId, mOrder.customerName, mOrder.headImgUrl)));
         mCustomerName.setText(mOrder.customerName);
         mTelephone.setText(mOrder.phoneNum);
         mRemainTime.setText(mOrder.remainTime);
@@ -193,7 +195,7 @@ public class OrderDetailActivity extends BaseActivity {
                 doMakeCall();
                 break;
             case R.id.action_chat:
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, mOrder.emchatId);
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(mOrder.emchatId, mOrder.customerName, mOrder.headImgUrl));
                 break;
         }
     }
@@ -243,7 +245,7 @@ public class OrderDetailActivity extends BaseActivity {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CALL_PHONE}, Constant.REQUEST_CODE_FOR_ORDER_DETAIL_ACTIVITY);
             return;
         } else {
-            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mTelephone)));
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mOrder.phoneNum)));
         }
     }
 

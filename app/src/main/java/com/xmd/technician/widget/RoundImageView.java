@@ -19,6 +19,7 @@ import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.xmd.technician.R;
+import com.xmd.technician.common.Logger;
 
 
 /**
@@ -142,7 +143,6 @@ public class RoundImageView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.e("TAG", "onDraw");
         if (getDrawable() == null) {
             return;
         }
@@ -153,7 +153,6 @@ public class RoundImageView extends ImageView {
                     mBitmapPaint);
         } else {
             canvas.drawCircle(mRadius, mRadius, mRadius, mBitmapPaint);
-            // drawSomeThing(canvas);
         }
     }
 

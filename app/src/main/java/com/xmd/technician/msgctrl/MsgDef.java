@@ -92,4 +92,10 @@ public class MsgDef {
      * ChatController, start to chat with someone
      */
     public static final int MSG_DEF_START_CHAT = 0x0026;
+
+    /**
+     *
+     */
+    public static final int MSG_DEF_SAVE_CHAT_USER = 0x0031;
+    public static final int MSG_DEF_GET_CONVERSATION_LIST = 0x0032;
 }

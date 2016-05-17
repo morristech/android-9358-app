@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
@@ -92,7 +93,6 @@ public class PersonalFragment extends BaseFragment{
         if(!mTechInfo.status.equals("uncert")){
             mClubName.setText(mTechInfo.clubName);
         }
-
         Glide.with(this).load(mTechInfo.imageUrl).into(mAvatar);
     }
 

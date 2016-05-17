@@ -11,17 +11,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.PopupWindow;
 import android.widget.SimpleAdapter;
 
 import com.hyphenate.EMMessageListener;
@@ -46,7 +41,7 @@ import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.ArrayPopupWindow;
+import com.xmd.technician.widget.ArrayBottomPopupWindow;
 import com.xmd.technician.widget.RewardConfirmDialog;
 
 import java.io.File;
@@ -87,9 +82,9 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private List<CouponInfo> mCouponList = new ArrayList<>();
     private String mTechCode;
 
-    private ArrayPopupWindow mCommonMessageWindow;
-    private ArrayPopupWindow mPaidCouponWindow;
-    private ArrayPopupWindow mCouponWindow;
+    private ArrayBottomPopupWindow mCommonMessageWindow;
+    private ArrayBottomPopupWindow mPaidCouponWindow;
+    private ArrayBottomPopupWindow mCouponWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +93,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         ButterKnife.bind(this);
 
-        mToChatUsername = getIntent().getExtras().getString(ChatConstant.EXTRA_USER_ID);
+        mToChatUsername = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
 
         UserUtils.setUserNick(mToChatUsername, mAppTitle);
 
@@ -126,8 +121,9 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     protected void onResume() {
         super.onResume();
-        if(mIsMessageListInited)
+        if(mIsMessageListInited) {
             mChatAdapter.refreshList();
+        }
         EMClient.getInstance().chatManager().addMessageListener(mEMMessageListener);
     }
 
@@ -314,7 +310,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         view.setSelected(true);
 
         if(mCommonMessageWindow == null){
-            mCommonMessageWindow = new ArrayPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_section_width));
+            mCommonMessageWindow = new ArrayBottomPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_section_width));
             mCommonMessageWindow.setDataSet(Arrays.asList(getResources().getStringArray(R.array.common_greeting_array)));
             mCommonMessageWindow.setItemClickListener((parent, view1, position, id) -> {
                 sendTextMessage((String) parent.getAdapter().getItem(position));
@@ -352,7 +348,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
         view.setSelected(true);
         if(mPaidCouponWindow == null){
-            mPaidCouponWindow = new ArrayPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_item_width));
+            mPaidCouponWindow = new ArrayBottomPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_item_width));
             mPaidCouponWindow.setDataSet(mPaidCouponList);
             mPaidCouponWindow.setItemClickListener((parent, view1, position, id) -> {
                 CouponInfo info = (CouponInfo) parent.getAdapter().getItem(position);
@@ -379,7 +375,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         view.setSelected(true);
         if(mCouponWindow == null){
-            mCouponWindow = new ArrayPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_item_width));
+            mCouponWindow = new ArrayBottomPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_item_width));
             mCouponWindow.setDataSet(mCouponList);
             mCouponWindow.setItemClickListener((parent, view1, position, id) -> {
                 CouponInfo info = (CouponInfo) parent.getAdapter().getItem(position);
@@ -597,41 +593,4 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             }
         }
     };
-
-    private void showPopupWindow(View view) {
-
-        // 一个自定义的布局，作为显示的内容
-        View contentView = LayoutInflater.from(this).inflate(
-                R.layout.list_pop_window, null);
-
-        final PopupWindow popupWindow = new PopupWindow(contentView,
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-
-        popupWindow.setTouchable(true);
-
-        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                Log.i("mengdd", "onTouch : ");
-
-                return false;
-                // 这里如果返回true的话，touch事件将被拦截
-                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
-            }
-        });
-
-        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
-        // 我觉得这里是API的一个bug
-        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.coupon_bg));
-
-        int[] location = new int[2];
-        view.getLocationOnScreen(location);
-        int h = popupWindow.getHeight();
-        // 设置好参数之后再show
-//        popupWindow.showAsDropDown(view, 100, 100);
-        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,location[0], location[1] - 96);
-
-    }
 }

@@ -39,7 +39,7 @@ public class SysNoticeListActivity extends BaseActivity{
         setTitle(R.string.system_notice_activity_title);
         setBackVisible(true);
 
-        mToChatUsername = getIntent().getExtras().getString(ChatConstant.EXTRA_USER_ID);
+        mToChatUsername = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
 
         onConversationInit();
         initView();

@@ -5,17 +5,15 @@ import android.widget.TextView;
 
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.bean.CouponStatusFilter;
-import com.xmd.technician.bean.Order;
+import com.xmd.technician.bean.Entry;
 import com.xmd.technician.bean.PaidCouponUserDetail;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.AlertDialogBuilder;
+import com.xmd.technician.widget.ListPopupWindow;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +25,8 @@ import rx.Subscription;
 /**
  * Created by linms@xiaomodo.com on 16-5-3.
  */
-public class PaidCouponUserDetailActivity extends BaseListActivity<PaidCouponUserDetail> {
+public class PaidCouponUserDetailActivity extends BaseListActivity<PaidCouponUserDetail> implements ListPopupWindow.Callback<Entry> {
 
-    private int mCouponStatus = Constant.COUPON_STATUS_ALL;
     private String mActId;
     private Map<String, String> mParams = new HashMap<>();
     @Bind(R.id.tv_filter_status)
@@ -41,10 +38,9 @@ public class PaidCouponUserDetailActivity extends BaseListActivity<PaidCouponUse
     }
 
     private Subscription mGetPaidCouponUserDetailSubscription;
-    private Subscription mGetFilterCouponStatusDescriptionSubscription;
 
     @Override
-    protected void initView(){
+    protected void initView() {
         Intent intent = getIntent();
         if (intent == null) {
             finish();
@@ -54,21 +50,18 @@ public class PaidCouponUserDetailActivity extends BaseListActivity<PaidCouponUse
         setBackVisible(true);
 
         mParams.put(RequestConstant.KEY_ACT_ID, mActId);
-        mParams.put(RequestConstant.KEY_COUPON_STATUS, String.valueOf(mCouponStatus));
+        mParams.put(RequestConstant.KEY_COUPON_STATUS, Constant.COUPON_STATUS_ALL);
         mParams.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         mParams.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
         mGetPaidCouponUserDetailSubscription = RxBus.getInstance().toObservable(PaidCouponUserDetailResult.class).subscribe(
                 paidCouponUserDetailResult -> handleGetPaidCouponUserDetailResult(paidCouponUserDetailResult)
-        );
-        mGetFilterCouponStatusDescriptionSubscription = RxBus.getInstance().toObservable(CouponStatusFilter.class).subscribe(
-                couponStatusFilter -> mTvFilterStatus.setText(couponStatusFilter.couponStatus)
         );
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGetPaidCouponUserDetailSubscription, mGetFilterCouponStatusDescriptionSubscription);
+        RxBus.getInstance().unsubscribe(mGetPaidCouponUserDetailSubscription);
     }
 
     private void handleGetPaidCouponUserDetailResult(PaidCouponUserDetailResult result) {
@@ -81,8 +74,9 @@ public class PaidCouponUserDetailActivity extends BaseListActivity<PaidCouponUse
 
     @OnClick(R.id.tv_filter_status)
     public void onFilterStatus() {
-        PaidCouponUserDetailStatusPopupWindow paidCouponUserDetailStatusPopupWindow = new PaidCouponUserDetailStatusPopupWindow(mTvFilterStatus, mParams);
-        paidCouponUserDetailStatusPopupWindow.showAsDropDown();
+        ListPopupWindow<Entry> statusPopupWindow = new ListPopupWindow<>(mTvFilterStatus, Constant.COUPON_STATUS_DATA, this);
+        statusPopupWindow.showAsDropDown();
+
     }
 
     @Override
@@ -91,7 +85,14 @@ public class PaidCouponUserDetailActivity extends BaseListActivity<PaidCouponUse
     }
 
     @Override
-    protected boolean isSlideable() {
+    public boolean isSlideable() {
         return false;
+    }
+
+    @Override
+    public void onPopupWindowItemClicked(Entry entry) {
+        mParams.put(RequestConstant.KEY_COUPON_STATUS, entry.key);
+        dispatchRequest();
+        mTvFilterStatus.setText(entry.value);
     }
 }
