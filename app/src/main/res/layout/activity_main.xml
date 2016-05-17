@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
 
-        <!--<RelativeLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -24,19 +24,23 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:drawableTop="@drawable/home_new_bg"
-                android:drawablePadding="300dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerInside"
                 android:textColor="@color/home_button_text_bg"
                 android:textSize="@dimen/fontRemark"
-                android:text="@string/home_news" />
+                android:text="@string/main_chat" />
 
             <TextView
                 android:id="@+id/main_unread_message"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/main_button_message"
+                android:layout_height="@dimen/search_pic_height"
+                android:minWidth="@dimen/search_pic_height"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/personal_margin"
+                android:background="@drawable/unread_count_bg"
                 android:gravity="center"
-                android:text="1"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/fontRemark"
+                tools:text="11"
                 android:visibility="invisible"/>
         </RelativeLayout>
 
@@ -53,15 +57,20 @@
                 android:scaleType="centerInside"
                 android:textColor="@color/home_button_text_bg"
                 android:textSize="@dimen/fontRemark"
-                android:text="@string/home_order"/>
+                android:text="@string/main_order"/>
 
             <TextView
                 android:id="@+id/main_unread_order"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/main_button_order"
+                android:layout_height="@dimen/search_pic_height"
+                android:minWidth="@dimen/search_pic_height"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/personal_margin"
+                android:background="@drawable/unread_count_bg"
                 android:gravity="center"
-                android:text="1"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/fontRemark"
+                tools:text="11"
                 android:visibility="invisible"/>
         </RelativeLayout>
 
@@ -78,15 +87,20 @@
                 android:scaleType="centerInside"
                 android:textColor="@color/home_button_text_bg"
                 android:textSize="@dimen/fontRemark"
-                android:text="@string/home_market"/>
+                android:text="@string/main_market"/>
 
             <TextView
                 android:id="@+id/main_unread_marketing"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/main_button_marketing"
+                android:layout_height="@dimen/search_pic_height"
+                android:minWidth="@dimen/search_pic_height"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/personal_margin"
+                android:background="@drawable/unread_count_bg"
                 android:gravity="center"
-                android:text="1"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/fontRemark"
+                tools:text="11"
                 android:visibility="invisible"/>
         </RelativeLayout>
 
@@ -103,19 +117,24 @@
                 android:scaleType="centerInside"
                 android:textColor="@color/home_button_text_bg"
                 android:textSize="@dimen/fontRemark"
-                android:text="@string/home_personal"/>
+                android:text="@string/main_personal"/>
 
             <TextView
                 android:id="@+id/main_unread_personal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/main_button_personal"
+                android:layout_height="@dimen/search_pic_height"
+                android:minWidth="@dimen/search_pic_height"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/personal_margin"
+                android:background="@drawable/unread_count_bg"
                 android:gravity="center"
-                android:text="1"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/fontRemark"
+                tools:text="11"
                 android:visibility="invisible"/>
-        </RelativeLayout>-->
+        </RelativeLayout>
 
-        <LinearLayout
+        <!--<LinearLayout
             android:id="@+id/main_button_message"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -205,7 +224,7 @@
                 android:textColor="@color/home_button_text_bg"
                 android:textSize="@dimen/fontRemark"
                 android:text="@string/main_personal"/>
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 
     <View

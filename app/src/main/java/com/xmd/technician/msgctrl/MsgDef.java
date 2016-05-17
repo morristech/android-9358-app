@@ -98,4 +98,5 @@ public class MsgDef {
      */
     public static final int MSG_DEF_SAVE_CHAT_USER = 0x0031;
     public static final int MSG_DEF_GET_CONVERSATION_LIST = 0x0032;
+    public static final int MSG_DEF_SYSYTEM_NOTICE_NOTIFY = 0x0033;
 }

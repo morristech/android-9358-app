@@ -80,7 +80,8 @@ public class ControllerRegister {
         int[] msgIds = {
                 MsgDef.MSG_DEF_START_CHAT,
                 MsgDef.MSG_DEF_SAVE_CHAT_USER,
-                MsgDef.MSG_DEF_GET_CONVERSATION_LIST
+                MsgDef.MSG_DEF_GET_CONVERSATION_LIST,
+                MsgDef.MSG_DEF_SYSYTEM_NOTICE_NOTIFY
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

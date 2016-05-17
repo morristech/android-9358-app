@@ -23,7 +23,7 @@ public class SysNoticeListActivity extends BaseActivity{
 
     private boolean mIsLoading;
     private boolean mHaveMoreData = true;
-    private int mPageSize = 4;
+    private int mPageSize = 10;
     private String mToChatUsername;
     private SysNoticeAdapter mNoticeAdapter;
     private EMConversation mConversation;

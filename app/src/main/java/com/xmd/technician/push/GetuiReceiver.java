@@ -74,6 +74,9 @@ public class GetuiReceiver extends BroadcastReceiver {
                     msg.setAttribute(ChatConstant.KEY_LINK_URL, wrapperMsg.noticeUrl);
 
                     EMClient.getInstance().chatManager().saveMessage(msg);
+
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SYSYTEM_NOTICE_NOTIFY);
                 }
                 break;
         }

@@ -81,6 +81,13 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
                 mLastX = (int) e.getX();
                 mLastY = (int) e.getY();
 
+                View targetView = mCallback.findTargetView(x, y);
+                //当前需要显示菜单的view和上一次显示菜单的view不是同一个;
+                if(mTargetView != null && !targetView.equals(mTargetView)){
+                    //隐藏已经打开
+                    smoothHorizontalExpandOrCollapse(DEFAULT_DURATION / 2);
+                    mTargetView = null;
+                }
                 /*
                 * 如果之前有一个已经打开的项目，当此次点击事件没有发生在右侧的菜单中则返回TRUE，
                 * 如果点击的是右侧菜单那么返回FALSE, 这样做的原因是因为菜单需要响应Onclick
@@ -90,15 +97,15 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
                 }
 
                 //查找需要显示菜单的view;
-                mTargetView = mCallback.findTargetView(x, y);
+                mTargetView = targetView;
                 break;
             case MotionEvent.ACTION_MOVE:
 
                 //
-                if (isExpanded()) {
+                /*if (isExpanded()) {
                     smoothHorizontalExpandOrCollapse(DEFAULT_DURATION / 2);
                     return false;
-                }
+                }*/
 
                 int deltaX = (x - mLastX);
                 int deltaY = (y - mLastY);
@@ -249,8 +256,8 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
         int to = 0;
         int duration = DEFAULT_DURATION;
         if (velocityX == 0) {
-            //如果已经展一半，平滑展开
-            if (scrollX > scrollRange / 2) {
+            //如果已经展1/3，平滑展开
+            if (scrollX > scrollRange / 3) {
                 to = scrollRange;
             }
         } else {

@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Message;
 
 import com.xmd.technician.bean.ConversationListResult;
-import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.common.ActivityHelper;
+import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.RxBus;
@@ -31,7 +31,9 @@ public class ChatController extends AbstractController {
             case MsgDef.MSG_DEF_GET_CONVERSATION_LIST:
                 doGetConversationList();
                 break;
-
+            case MsgDef.MSG_DEF_SYSYTEM_NOTICE_NOTIFY:
+                systemNoticeNotify();
+                break;
         }
 
         return true;
@@ -65,5 +67,7 @@ public class ChatController extends AbstractController {
         RxBus.getInstance().post(new ConversationListResult(EmchatManager.getInstance().loadConversationList()));
     }
 
-
+    private void systemNoticeNotify() {
+        RxBus.getInstance().post(new SystemNoticeResult());
+    }
 }

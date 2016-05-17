@@ -3,21 +3,25 @@ package com.xmd.technician.window;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.TextView;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
+import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.msgctrl.RxBus;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscription;
 
 public class MainActivity extends BaseActivity implements BaseFragment.IFragmentCallback{
     private static final int TAB_INDEX_MESSAGE = 0;
@@ -29,6 +33,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     private List<View> mBottomBarButtonList = new LinkedList<View>();
 
     private int mCurrentTabIndex = 1;
+
+    private Subscription mSysNoticeNotifySubscription;
+
+    @Bind(R.id.main_unread_message) TextView mUnreadMsgLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +55,15 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         mFragmentList.add(new CouponFragment());
         mFragmentList.add(new PersonalFragment());
 
+        mSysNoticeNotifySubscription = RxBus.getInstance().toObservable(SystemNoticeResult.class).subscribe(
+                result -> updateUnreadMsgLabel());
         switchFragment(0);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        updateUnreadMsgLabel();
         EMClient.getInstance().chatManager().addMessageListener(mMessageListener);
     }
 
@@ -60,6 +71,12 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     protected void onPause() {
         super.onPause();
         EMClient.getInstance().chatManager().removeMessageListener(mMessageListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.getInstance().unsubscribe(mSysNoticeNotifySubscription);
     }
 
     @OnClick(R.id.main_button_message)
@@ -105,6 +122,12 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                 DemoHelper.getInstance().getNotifier().onNewMsg(message);
             }*/
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateUnreadMsgLabel();
+                }
+            });
         }
 
         @Override
@@ -127,4 +150,33 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
         }
     };
+
+    /**
+     * 获取未读消息数
+     *
+     * @return
+     */
+    public int getUnreadMsgCountTotal() {
+        int unreadMsgCountTotal = 0;
+        int chatroomUnreadMsgCount = 0;
+        unreadMsgCountTotal = EMClient.getInstance().chatManager().getUnreadMsgsCount();
+        for(EMConversation conversation:EMClient.getInstance().chatManager().getAllConversations().values()){
+            if(conversation.getType() == EMConversation.EMConversationType.ChatRoom)
+                chatroomUnreadMsgCount=chatroomUnreadMsgCount+conversation.getUnreadMsgCount();
+        }
+        return unreadMsgCountTotal-chatroomUnreadMsgCount;
+    }
+
+    /**
+     * 刷新未读消息数
+     */
+    public void updateUnreadMsgLabel() {
+        int count = getUnreadMsgCountTotal();
+        if (count > 0) {
+            mUnreadMsgLabel.setText(String.valueOf(count));
+            mUnreadMsgLabel.setVisibility(View.VISIBLE);
+        } else {
+            mUnreadMsgLabel.setVisibility(View.INVISIBLE);
+        }
+    }
 }

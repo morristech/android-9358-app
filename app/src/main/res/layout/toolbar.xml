@@ -3,19 +3,21 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/inter_space"
+    android:paddingRight="@dimen/inter_space"
     android:background="@color/colorMain">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/home_button_height">
 
         <ImageView
             android:id="@+id/toolbar_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/search_view_height"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/personal_padding"
+            android:layout_marginRight="@dimen/search_margin"
             android:clickable="true"
             android:scaleType="center"
             android:src="@drawable/icon_back"
