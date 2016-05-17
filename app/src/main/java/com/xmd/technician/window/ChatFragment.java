@@ -110,24 +110,28 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Override
     public void onItemClicked(EMConversation conversation) {
         String username = conversation.getUserName();
-        String a = EMClient.getInstance().getCurrentUser();
         if (username.equals(SharedPreferenceHelper.getEmchatId()))
             ((BaseActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
-        else {
-            // 进入聊天页面
-            Intent intent = new Intent(getContext(), ChatActivity.class);
-            if(conversation.isGroup()){
-                if(conversation.getType() == EMConversation.EMConversationType.ChatRoom){
-                    // it's group chat
-                    intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_CHATROOM);
-                }else{
-                    intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
-                }
-
-            }
+        else if(username.equals(ChatConstant.MESSAGE_SYSTEM_NOTICE)) {
+            Intent intent = new Intent(getContext(), SysNoticeListActivity.class);
             // it's single chat
             intent.putExtra(ChatConstant.EMCHAT_ID, username);
             startActivity(intent);
+        }else{
+                // 进入聊天页面
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                if(conversation.isGroup()){
+                    if(conversation.getType() == EMConversation.EMConversationType.ChatRoom){
+                        // it's group chat
+                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_CHATROOM);
+                    }else{
+                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
+                    }
+
+                }
+                // it's single chat
+                intent.putExtra(ChatConstant.EMCHAT_ID, username);
+                startActivity(intent);
         }
     }
 

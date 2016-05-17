@@ -379,7 +379,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             mCouponWindow.setDataSet(mCouponList);
             mCouponWindow.setItemClickListener((parent, view1, position, id) -> {
                 CouponInfo info = (CouponInfo) parent.getAdapter().getItem(position);
-                sendCouponMessage(String.format("<i>求点钟</i>立减<span>%d</span>元<b>%s</b>", info.actValue, info.couponPeriod), info.actId);
+                sendCouponMessage(String.format("<i>%s</i><span>%d</span>元<b>%s</b>", info.useTypeName, info.actValue, info.couponPeriod), info.actId);
             });
         }
 

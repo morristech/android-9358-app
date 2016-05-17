@@ -72,15 +72,9 @@ public class ServiceAdapter extends RecyclerView.Adapter {
         if (holder instanceof ServiceItemViewHolder) {
             ServiceItemViewHolder viewHolder = (ServiceItemViewHolder) holder;
             ServiceItemInfo itemInfo = mServiceInfoList.get(position);
-            ItemAdapter adapter = new ItemAdapter(itemInfo.serviceItems);
+            ItemAdapter adapter = new ItemAdapter(itemInfo.serviceItems, viewHolder) ;
             viewHolder.mServiceName.setText(itemInfo.name);
             viewHolder.mItemListView.setAdapter(adapter);
-            viewHolder.mServiceName.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                for (ServiceItemInfo.ItemInfo item : itemInfo.serviceItems) {
-                    item.isSelected = isChecked ? 1 : 0;
-                }
-                adapter.notifyDataSetChanged();
-            });
         }
     }
 
@@ -89,7 +83,7 @@ public class ServiceAdapter extends RecyclerView.Adapter {
         return mServiceInfoList.size();
     }
 
-    public class ServiceItemViewHolder extends RecyclerView.ViewHolder {
+    public class ServiceItemViewHolder extends RecyclerView.ViewHolder implements LinkedSelectedInterface{
 
         @Bind(R.id.service_name) CheckBox mServiceName;
         @Bind(R.id.item_list) ListView mItemListView;
@@ -97,14 +91,39 @@ public class ServiceAdapter extends RecyclerView.Adapter {
         public ServiceItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            mServiceName.setOnClickListener(v -> {
+                if(mServiceName.isChecked()){
+                    ((ItemAdapter) mItemListView.getAdapter()).onSelectedAll();
+                }else {
+                    ((ItemAdapter) mItemListView.getAdapter()).onSelectedNone();
+                }});
+        }
+
+        @Override
+        public void onSelectedAll() {
+            mServiceName.setChecked(true);
+        }
+
+        @Override
+        public void onUnSelectedAll() {
+            mServiceName.setChecked(false);
+        }
+
+        @Override
+        public void onSelectedNone() {
+
         }
     }
 
-    public class ItemAdapter extends BaseAdapter {
+    public class ItemAdapter extends BaseAdapter implements LinkedSelectedInterface{
         private List<ServiceItemInfo.ItemInfo> mmData;
+        private int mSelectedCount = 0;
+        private LinkedSelectedInterface mServiceNameSelectedInterface;
 
-        public ItemAdapter(List<ServiceItemInfo.ItemInfo> data) {
+        public ItemAdapter(List<ServiceItemInfo.ItemInfo> data, LinkedSelectedInterface selectedInterface) {
             mmData = data;
+            mServiceNameSelectedInterface = selectedInterface;
+            initSelectedCount();
         }
 
         @Override
@@ -144,15 +163,36 @@ public class ServiceAdapter extends RecyclerView.Adapter {
                 holder.mName.setChecked(itemInfo.isSelected == 1 ? true : false);
                 holder.mPrice.setText(itemInfo.price);
                 holder.mTime.setText(String.valueOf(itemInfo.duration));
-                /*holder.mName.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    itemInfo.isSelected = isChecked ? 1 : 0;
-                });*/
                 holder.mName.setOnClickListener(v -> {
                     itemInfo.isSelected = itemInfo.isSelected == 0 ? 1 : 0;
+                    onSelectedChange(itemInfo.isSelected == 1 ? 1: -1);
                 });
             }
 
             return convertView;
+        }
+
+        @Override
+        public void onSelectedAll() {
+            for (ServiceItemInfo.ItemInfo item : mmData) {
+                item.isSelected = 1;
+            }
+            mSelectedCount = mmData.size();
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onUnSelectedAll() {
+
+        }
+
+        @Override
+        public void onSelectedNone() {
+            for (ServiceItemInfo.ItemInfo item : mmData) {
+                item.isSelected = 0;
+            }
+            mSelectedCount = 0;
+            notifyDataSetChanged();
         }
 
         public class Holder {
@@ -171,5 +211,30 @@ public class ServiceAdapter extends RecyclerView.Adapter {
                 mItemInfo = itemInfo;
             }
         }
+
+        private void onSelectedChange(int increment ){
+            mSelectedCount += increment;
+            if(mSelectedCount == mmData.size()){
+                mServiceNameSelectedInterface.onSelectedAll();
+            }else {
+                mServiceNameSelectedInterface.onUnSelectedAll();
+            }
+        }
+
+        private void initSelectedCount(){
+            mSelectedCount = 0;
+            for (ServiceItemInfo.ItemInfo itemInfo : mmData){
+                mSelectedCount += itemInfo.isSelected;
+            }
+            if(mSelectedCount == mmData.size()){
+                mServiceNameSelectedInterface.onSelectedAll();
+            }
+        }
+    }
+
+    protected interface LinkedSelectedInterface{
+        void onSelectedAll();
+        void onUnSelectedAll();
+        void onSelectedNone();
     }
 }

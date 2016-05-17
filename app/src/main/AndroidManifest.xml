@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<!--    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /> -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -68,7 +68,9 @@
         <activity
             android:name=".window.LoginActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".window.MainActivity" />
+        <activity
+            android:name=".window.MainActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <receiver
             android:name=".push.GetuiReceiver"
@@ -136,12 +138,18 @@
         <activity
             android:name=".window.OrderDetailActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".window.ShowBigImageActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".window.PaidCouponDetailActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".window.PaidCouponUserDetailActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".window.NormalCouponDetailActivity" android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".window.ShowBigImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.PaidCouponDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.PaidCouponUserDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.NormalCouponDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -149,7 +157,7 @@
             android:screenOrientation="portrait" />
         <!-- React Native -->
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-
+        <activity android:name=".window.SysNoticeListActivity"></activity>
     </application>
 
 </manifest>

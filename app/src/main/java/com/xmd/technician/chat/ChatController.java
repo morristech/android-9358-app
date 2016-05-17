@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Message;
 
 import com.xmd.technician.bean.ConversationListResult;
-import com.xmd.technician.chat.chatview.ChatUser;
+import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;

@@ -25,7 +25,7 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
-import com.xmd.technician.chat.chatview.ChatUser;
+import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;

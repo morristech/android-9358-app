@@ -19,10 +19,10 @@ public class ChatViewCoupon extends BaseChatView{
         super(context, direct);
     }
 
-    @Override
+/*    @Override
     protected void onInflateView() {
 
-    }
+    }*/
 
     @Override
     protected void onFindViewById() {

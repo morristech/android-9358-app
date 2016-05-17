@@ -8,7 +8,7 @@ public class CommentInfo {
     public String comment;
     public int rate;
     public int likes;
-    public String createAt;
+    public String createdAt;
     public int rewardAmount;
     public  UserInfo userInfo;
 }

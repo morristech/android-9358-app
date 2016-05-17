@@ -19,13 +19,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/colorServiceDivide" />
 
     <com.xmd.technician.widget.HeightListView
         android:id="@+id/item_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/colorLineDivide"
+        android:divider="@color/colorServiceDivide"
         android:dividerHeight="@dimen/line_divide_height"
         android:scrollbars="none"/>
 
@@ -47,5 +47,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:background="@color/colorServiceDivide" />
 </LinearLayout>

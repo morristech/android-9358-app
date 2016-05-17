@@ -12,10 +12,4 @@ public class DatabaseTableColumns {
     public static final String CHAT_USER_COLUMN_EMCHAT_ID = "emchatId";
     public static final String CHAT_USER_COLUMN_NICKNAME = "nickname";
     public static final String CHAT_USER_COLUMN_AVATAR_URL = "avatarUrl";
-
-    public static final String SQL_CHAT_USER_CREATE = "CREATE TABLE "
-            + CHAT_USER_TABLE_NAME + " ("
-            + CHAT_USER_COLUMN_NAME_NICK + " TEXT, "
-            + CHAT_USER_COLUMN_NAME_AVATAR + " TEXT, "
-            + CHAT_USER_COLUMN_NAME_ID + " TEXT PRIMARY KEY);";
 }

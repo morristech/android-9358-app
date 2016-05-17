@@ -10,30 +10,31 @@ import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
 
 /**
- * Created by sdcm on 16-4-12.
+ * Created by sdcm on 16-5-11.
  */
-public class ChatViewReward extends BaseChatView{
-
-    private TextView mRewardTip;
-    public ChatViewReward(Context context, EMMessage.Direct direct) {
+public class ChatViewPaidCouponTip extends BaseChatView{
+    private TextView mCouponTip;
+    public ChatViewPaidCouponTip(Context context, EMMessage.Direct direct) {
         super(context, direct);
     }
 
     @Override
     protected void onInflateView() {
         LayoutInflater.from(context).inflate(
-                R.layout.chat_received_reward , this);
+                R.layout.chat_received_paid_coupon_tip , this);
     }
 
     @Override
     protected void onFindViewById() {
-        mRewardTip = (TextView) findViewById(R.id.reward_tip);
+        mCouponTip = (TextView) findViewById(R.id.paid_coupon_tip);
     }
 
     @Override
     protected void onSetUpView() {
         userAvatarView.setVisibility(GONE);
         timeStampView.setVisibility(GONE);
-        mRewardTip.setText(String.format("%s的打赏已存入您的账户", message.getStringAttribute(ChatConstant.KEY_NAME,"")));
+        EMTextMessageBody body = (EMTextMessageBody) message.getBody();
+        String content = body.getMessage();
+        mCouponTip.setText(String.format("%s购买了您\"%s\"", message.getStringAttribute(ChatConstant.KEY_NAME, ""), content.substring(0, content.indexOf("&"))));
     }
 }

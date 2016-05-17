@@ -14,10 +14,12 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.chatview.BaseChatView;
+import com.xmd.technician.chat.chatview.ChatViewBegReward;
 import com.xmd.technician.chat.chatview.ChatViewCoupon;
 import com.xmd.technician.chat.chatview.ChatViewImage;
 import com.xmd.technician.chat.chatview.ChatViewOrder;
 import com.xmd.technician.chat.chatview.ChatViewPaidCoupon;
+import com.xmd.technician.chat.chatview.ChatViewPaidCouponTip;
 import com.xmd.technician.chat.chatview.ChatViewReward;
 import com.xmd.technician.chat.chatview.ChatViewText;
 import com.xmd.technician.common.ThreadManager;
@@ -212,7 +214,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 chatRow = new ChatViewReward(context, EMMessage.Direct.RECEIVE);
                 break;
             case ChatConstant.MESSAGE_TYPE_SENT_BEG_REWARD:
-                chatRow = new ChatViewReward(context, EMMessage.Direct.SEND);
+                chatRow = new ChatViewBegReward(context, EMMessage.Direct.SEND);
                 break;
             case ChatConstant.MESSAGE_TYPE_SENT_ORDINARY_COUPON:
                 chatRow = new ChatViewCoupon(context, EMMessage.Direct.SEND);
@@ -221,9 +223,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 chatRow = new ChatViewPaidCoupon(context, EMMessage.Direct.SEND);
                 break;
             case ChatConstant.MESSAGE_TYPE_RECV_PAID_COUPON_TIP:
-                chatRow = new ChatViewPaidCoupon(context, EMMessage.Direct.RECEIVE);
-                break;
             case ChatConstant.MESSAGE_TYPE_SENT_PAID_COUPON_TIP:
+                chatRow = new ChatViewPaidCouponTip(context, EMMessage.Direct.RECEIVE);
+                break;
             case ChatConstant.MESSAGE_TYPE_SENT_REWARD:
                 chatRow = new ChatViewText(context, EMMessage.Direct.SEND);
                 break;

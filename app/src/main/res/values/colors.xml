@@ -15,6 +15,7 @@
 
     <color name="colorMain">#fb5549</color>
     <color name="colorBackground">#f0f0f0</color>
+    <color name="colorServiceDivide">#00e0e0e0</color>
     <color name="colorTitle">#333333</color>
     <color name="colorBody">#666666</color>
     <color name="colorRemark">#999999</color>

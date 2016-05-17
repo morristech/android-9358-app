@@ -6,4 +6,5 @@ package com.xmd.technician.bean;
 public class UserInfo {
     public String imageUrl;
     public String name;
+    public String loginName;
 }
