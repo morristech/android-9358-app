@@ -1,6 +1,7 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.window.BrowserActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,7 +33,6 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
     private EMMessage[] mChatMessages = null;
 
     private Context mContext;
-    private RecyclerView mListView;
 
     private View.OnClickListener mFooterClickListener;
 
@@ -93,7 +94,10 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
             Glide.with(mContext).load(message.getStringAttribute(ChatConstant.KEY_IMAGE_URL, "")).into(viewHolder.mImage);
 
             viewHolder.itemView.setOnClickListener(v -> {
-
+                Intent intent = new Intent(mContext, BrowserActivity.class);
+                intent.putExtra(BrowserActivity.EXTRA_SHOW_MENU, false);
+                intent.putExtra(BrowserActivity.EXTRA_URL, message.getStringAttribute(ChatConstant.KEY_LINK_URL,""));
+                mContext.startActivity(intent);
             });
         } else if(holder instanceof FooterViewHolder){
             FooterViewHolder footerHolder = (FooterViewHolder) holder;

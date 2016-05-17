@@ -118,7 +118,7 @@ public class Constant {
     public static final String PARAM_SHARE_URL = "p_share_url";
     public static final String PARAM_SHARE_DESCRIPTION = "p_share_desc";
 
-    public static final String APP_BROWSER_USER_AGENT = "9358.manager.browser";
+    public static final String APP_BROWSER_USER_AGENT = "9358.tech.browser";
 
     public static final String FORMAT_DATE_TIME = "yyyyMMddHHmmss";
 
