@@ -12,7 +12,8 @@
         android:layout_height="@dimen/personal_description_height"
         android:layout_below="@+id/toolbar"
         android:background="@color/colorServiceHead"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:visibility="invisible">
 
         <TextView
             android:layout_width="0dp"
@@ -64,7 +65,8 @@
         android:background="@drawable/login_button_main_selector"
         android:textColor="@android:color/white"
         android:textSize="@dimen/fontTitle"
-        android:text="@string/confirm_select"/>
+        android:text="@string/confirm_select"
+        android:visibility="invisible"/>
 
     <com.xmd.technician.widget.EmptyView
         android:id="@+id/empty_view_widget"

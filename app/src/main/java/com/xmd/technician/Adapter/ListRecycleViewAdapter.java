@@ -267,7 +267,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                         user = new ChatUser(conversation.getUserName());
                         user.setAvatar(lastMessage.getStringAttribute(ChatConstant.KEY_HEADER));
                         user.setNick(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
-                        UserUtils.saveUser(user);
+                        UserUtils.updateUser(user);
                     }
                     UserUtils.setUserAvatar(mContext, conversation.getUserName(), conversationHolder.mAvatar);
                     UserUtils.setUserNick(conversation.getUserName(), conversationHolder.mName);

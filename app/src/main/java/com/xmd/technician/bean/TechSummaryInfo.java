@@ -12,6 +12,7 @@ public class TechSummaryInfo {
     public String description;
     public String qrCodeUrl;
     public String userName;
+    public String serialNo;
     public String clubName;
     public String status;
 }

@@ -21,7 +21,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 
+import com.hyphenate.util.ImageUtils;
 import com.xmd.technician.R;
+import com.xmd.technician.common.Util;
 import com.xmd.technician.widget.ClipView;
 
 import java.io.FileNotFoundException;
@@ -84,8 +86,11 @@ public class ClipPictureActivity extends BaseActivity implements OnTouchListener
         if (bundle != null) {
             try {
                 Uri uri = Uri.parse(bundle.getString(EXTRA_INPUT));
-                mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                mBitmap = ThumbnailUtils.extractThumbnail(mBitmap, height / 2, height / 2);
+                mBitmap = ImageUtils.decodeScaleImage(Util.uriToRealPath(this, uri), metrics.widthPixels, height);
+                if(mBitmap == null){
+                    mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    mBitmap = ThumbnailUtils.extractThumbnail(mBitmap, height / 2, height / 2);
+                }
                 srcPic.setImageBitmap(mBitmap);
                 center();
             } catch (FileNotFoundException e) {

@@ -23,6 +23,7 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.util.DateUtils;
 import com.xmd.technician.Adapter.ChatListAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -45,6 +46,8 @@ import com.xmd.technician.widget.ArrayBottomPopupWindow;
 import com.xmd.technician.widget.RewardConfirmDialog;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -525,7 +528,9 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
         message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
-        message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(new Date()));
+        message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
+        message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
+        message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
         //发送消息
         EMClient.getInstance().chatManager().sendMessage(message);
         //刷新ui

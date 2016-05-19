@@ -4,10 +4,13 @@ package com.xmd.technician.common;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
 
@@ -96,5 +99,16 @@ public class Util {
         }
 
         return false;
+    }
+
+    public static String uriToRealPath(Activity activity,Uri uri) {
+        Cursor cursor = activity.managedQuery(uri,
+                new String[] {MediaStore.Images.Media.DATA},
+                null,
+                null,
+                null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+        return path;
     }
 }

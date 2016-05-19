@@ -52,8 +52,25 @@ public class ChatUser extends EMContact {
 		return 17 * getUsername().hashCode();
 	}
 
+	/**
+	 * 用户名相同即为同一用户
+	 * @param o
+	 * @return
+     */
 	@Override
 	public boolean equals(Object o) {
+		if (o == null || !(o instanceof ChatUser)) {
+			return false;
+		}
+		return getUsername().equals(((ChatUser) o).getUsername()) ;
+	}
+
+	/**
+	 * 用户所有信息都一致才为同一用户
+	 * @param o
+	 * @return
+     */
+	public boolean exactlyEquals(Object o) {
 		if (o == null || !(o instanceof ChatUser)) {
 			return false;
 		}

@@ -10,20 +10,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xmd.technician.R;
 
 public class UserUtils {
-    
-    static UserProfileProvider userProvider;
-    
-    static {
-        userProvider = UserProfileProvider.getInstance();
-    }
-    
+
     /**
      * 根据username获取相应user
      * @param username
      * @return
      */
     public static ChatUser getUserInfo(String username){
-        return userProvider.getChatUserInfo(username);
+        return UserProfileProvider.getInstance().getChatUserInfo(username);
     }
     
     /**
@@ -59,10 +53,14 @@ public class UserUtils {
     }
 
     public static boolean userExisted(String username){
-        return userProvider.userExisted(username);
+        return UserProfileProvider.getInstance().userExisted(username);
     }
 
     public static void saveUser(ChatUser user){
-        userProvider.saveContactOrUpdate(user);
+        UserProfileProvider.getInstance().saveContactInfo(user);
+    }
+
+    public static void updateUser(ChatUser user){
+        UserProfileProvider.getInstance().updateContactInfo(user);
     }
 }

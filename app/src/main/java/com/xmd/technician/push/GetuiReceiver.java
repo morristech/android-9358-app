@@ -76,7 +76,7 @@ public class GetuiReceiver extends BroadcastReceiver {
                     EMClient.getInstance().chatManager().saveMessage(msg);
 
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
-                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SYSYTEM_NOTICE_NOTIFY);
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY);
                 }
                 break;
         }

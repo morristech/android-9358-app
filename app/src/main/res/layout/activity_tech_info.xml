@@ -32,17 +32,16 @@
                 android:padding="@dimen/app_default_padding"
                 android:scrollbars="none"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="@dimen/app_default_padding" />
+                android:verticalSpacing="@dimen/app_default_padding"
+                android:visibility="gone"/>
 
-            <com.xmd.technician.widget.AlbumRecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/album_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/app_default_padding"
-                android:paddingRight="@dimen/button_radius"
-                android:paddingBottom="@dimen/app_default_padding"
                 android:background="@android:color/white"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -290,19 +289,28 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/home_button_height"
-                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
                         style="@style/edit_activity_text_style"
+                        android:layout_marginTop="@dimen/search_margin"
                         android:text="@string/edit_activity_text_view_introduce" />
 
                     <EditText
                         android:id="@+id/introduce"
-                        style="@style/edit_activity_edit_text_style"
-                        android:hint="@string/edit_activity_text_view_introduce_desc"
-                        android:maxLines="3" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/personal_margin"
+                        android:layout_marginTop="@dimen/search_margin"
+                        android:layout_marginBottom="@dimen/search_margin"
+                        android:lineSpacingExtra="@dimen/search_margin"
+                        android:gravity="left"
+                        android:background="@null"
+                        android:textSize="@dimen/fontBody"
+                        android:textColor="@color/colorBody"
+                        android:textColorHint="@color/colorRemark"
+                        android:hint="@string/edit_activity_text_view_introduce_desc" />
                 </LinearLayout>
 
                 <View

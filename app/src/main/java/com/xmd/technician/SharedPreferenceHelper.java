@@ -19,8 +19,9 @@ public class SharedPreferenceHelper {
     private static final String KEY_USER_NAME = "435E0648D634175C46BD40AC366545A8";//userName
     private static final String KEY_SERVER_HOST = "1867ABFF59547D665AA22BDC2AB31BBD";//serverHost
     private static final String KEY_USER_ID = "8E44F0089B076E18A718EB9CA3D94674"; //userId
-    private static final String KEY_EMCHAT_ID = "435E0648D634175C46BD40AC366545A1";//emchatId
-    private static final String KEY_USER_AVATAR = "435E0648D634175C46BD40AC366545A2";//avatar
+    private static final String KEY_EMCHAT_ID = "F211BBAA010D00B863BE64B3F5EFD983";//emchatId
+    private static final String KEY_USER_AVATAR = "DC03806303F221B804777E64B24B654C";//avatarUrl
+    private static final String KEY_SERIAL_NO = "492B6C37356A803DCB43795618DB5DCA";//serialNo
     /**
      * Last time to check the upgrade automatically
      */
@@ -55,6 +56,7 @@ public class SharedPreferenceHelper {
         setUserId("");
         setUserAvatar("");
         setEmchatId("");
+        setSerialNo("");
     }
 
     /**
@@ -95,6 +97,14 @@ public class SharedPreferenceHelper {
 
     public static String getUserId() {
         return mSettingPreference.getString(KEY_USER_ID, "");
+    }
+
+    public static void setSerialNo(String serialNo) {
+        mSettingPreference.edit().putString(KEY_SERIAL_NO, serialNo).apply();
+    }
+
+    public static String getSerialNo() {
+        return mSettingPreference.getString(KEY_SERIAL_NO, "");
     }
 
     public static void setServerHost(String serverHost) {

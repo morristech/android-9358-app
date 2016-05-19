@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RadioButton;
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.xmd.technician.Adapter.AlbumAdapter;
 import com.xmd.technician.Adapter.PhotoGridAdapter;
 import com.xmd.technician.R;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AlbumResult;
@@ -32,9 +34,12 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.ConfirmDialog;
+import com.xmd.technician.widget.CustomAlertDialog;
+import com.xmd.technician.widget.PhotoGridLayoutManager;
 import com.xmd.technician.widget.PhotoGridView;
 import com.xmd.technician.widget.RoundImageView;
 import com.xmd.technician.widget.SelectPlaceDialog;
+import com.xmd.technician.widget.SpaceItemDecoration;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -89,10 +94,48 @@ public class TechInfoActivity extends BaseActivity {
         setBackVisible(true);
         setRightVisible(true, R.string.save);
 
-        mAdapter = new AlbumAdapter(this);
+        mAdapter = new AlbumAdapter(this, new AlbumAdapter.OnItemClickListener() {
+            @Override
+            public void onAddAlbum() {
+                Util.selectPicFromLocal(TechInfoActivity.this, TechInfoActivity.REQUEST_CODE_LOCAL_PICTURE_ALBUM);
+            }
+
+            @Override
+            public void onDeleteAlbum(int position) {
+                new ConfirmDialog(TechInfoActivity.this, getString(R.string.edit_activity_delete_album)) {
+                    @Override
+                    public void onConfirmClick() {
+                        AlbumInfo albumInfo = mAdapter.getItem(position);
+                        if(albumInfo != null){
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put(RequestConstant.KEY_ID, albumInfo.id);
+                            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DELETE_ALBUM, params);
+                        }
+                    }
+                }.show();
+            }
+        });
         mAlbumListView.setHasFixedSize(true);
-        mAlbumListView.setLayoutManager(new GridLayoutManager(this, 4));
-//        mAlbumListView.setAdapter(mAdapter);
+        mAlbumListView.setLayoutManager(new PhotoGridLayoutManager(this, 4));
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.app_default_padding);
+        mAlbumListView.addItemDecoration(new SpaceItemDecoration(spacingInPixels,SpaceItemDecoration.GRID_LAYOUT));
+        mAlbumListView.setAdapter(mAdapter);
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,0) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                int fromPos = viewHolder.getAdapterPosition();
+                int toPos = target.getAdapterPosition();
+                mAdapter.onItemSwap(fromPos, toPos);
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+        });
+        helper.attachToRecyclerView(mAlbumListView);
+
         mPhotoAdapter = new PhotoGridAdapter(this);
         mAlbumContainer.setAdapter(mPhotoAdapter);
         mAlbumContainer.setOnItemClickListener((parent, view, position, id) -> {

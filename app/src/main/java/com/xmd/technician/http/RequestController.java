@@ -128,6 +128,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_UPLOAD_ALBUM:
                 uploadAlbum((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_SORT_ALBUM:
+                sortAlbum((Map<String, String>) msg.obj);
+                break;
             case MsgDef.MSG_DEF_SUBMIT_FEEDBACK:
                 doSubmitFeedback((Map<String, String>) msg.obj);
                 break;
@@ -488,6 +491,18 @@ public class RequestController extends AbstractController {
             @Override
             protected void postResult(AlbumResult result) {
                 RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    private void sortAlbum(Map<String, String> params){
+        Call<AlbumResult> call = getSpaService().sortAlbum(params.get(RequestConstant.KEY_IDS),
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<AlbumResult>() {
+            @Override
+            protected void postResult(AlbumResult result) {
+                RxBus.getInstance().post(new AlbumResult());
             }
         });
     }

@@ -75,7 +75,7 @@
 
     <!-- TechInfoActivity-->
     <string name="title_activity_data_edit">资料编辑</string>
-    <string name="edit_activity_text_view_tip">最多可以添加8张图片，长按可以删除图片。</string>
+    <string name="edit_activity_text_view_tip">最多可以添加8张图片，单击可以删除图片。</string>
     <string name="edit_activity_text_view_desc">基本资料</string>
     <string name="edit_activity_text_view_head">头像</string>
     <string name="edit_activity_text_view_change_head">更改头像</string>
@@ -87,7 +87,7 @@
     <string name="edit_activity_text_view_phone">手机</string>
     <string name="edit_activity_text_view_introduce">介绍</string>
     <string name="edit_activity_text_view_introduce_desc">请自我介绍(介绍自己来自哪里,介绍自己的姓名,介绍姓名时一定要吸引人,你的姓和名字...)</string>
-    <string name="edit_activity_delete_album">删除此照片？</string>
+    <string name="edit_activity_delete_album">您确认要删除这张图片？</string>
 
     <string name="only_number_and_char">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 
@@ -129,6 +129,7 @@
     <string name="service_price">价格（元）</string>
     <string name="service_time">时间（分钟）</string>
     <string name="confirm_select">确认选择</string>
+    <string name="no_service_item">暂无服务项目</string>
 
     <string name="title_activity_clip_picture">裁剪照片</string>
 

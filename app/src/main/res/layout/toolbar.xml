@@ -3,8 +3,6 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/inter_space"
-    android:paddingRight="@dimen/inter_space"
     android:background="@color/colorMain">
 
     <RelativeLayout

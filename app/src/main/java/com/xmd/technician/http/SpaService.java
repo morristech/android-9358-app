@@ -198,6 +198,12 @@ public interface SpaService {
                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
+    @POST(RequestConstant.URL_SORT_ALBUM)
+    Call<AlbumResult> sortAlbum(@Field(RequestConstant.KEY_IDS) String ids,
+                                  @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                  @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
+    @FormUrlEncoded
     @POST(RequestConstant.URL_UPDATE_WORKSTATUS)
     Call<BaseResult> updateWorkStatus(@Field(RequestConstant.KEY_STATUS) String status,
                                       @Field(RequestConstant.KEY_TOKEN) String userToken,

@@ -4,6 +4,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import com.xmd.technician.Adapter.ServiceAdapter;
 import com.xmd.technician.R;
@@ -13,6 +15,7 @@ import com.xmd.technician.http.gson.UpdateServiceResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.EmptyView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +28,9 @@ import rx.Subscription;
 public class ServiceItemActivity extends BaseActivity {
 
     @Bind(R.id.list_view) RecyclerView mListView;
+    @Bind(R.id.confirm) Button mConfirmBtn;
+    @Bind(R.id.header_container) View mHearContainer;
+    @Bind(R.id.empty_view_widget) EmptyView mEmptyView;
 
     private ServiceAdapter mAdapter;
 
@@ -47,6 +53,8 @@ public class ServiceItemActivity extends BaseActivity {
         mAdapter = new ServiceAdapter();
         mListView.setAdapter(mAdapter);
 
+        mEmptyView.setEmptyTip(getString(R.string.no_service_item));
+
         mSubscription = RxBus.getInstance().toObservable(ServiceResult.class).subscribe(
                 serviceResult -> initData(serviceResult));
 
@@ -63,7 +71,16 @@ public class ServiceItemActivity extends BaseActivity {
     }
 
     private void initData(ServiceResult result){
-        mAdapter.refreshDataSet(result.respData);
+        if(result.respData == null || result.respData.isEmpty()){
+            mEmptyView.setStatus(EmptyView.Status.Empty);
+            mConfirmBtn.setVisibility(View.INVISIBLE);
+            mHearContainer.setVisibility(View.INVISIBLE);
+        }else {
+            mEmptyView.setStatus(EmptyView.Status.Gone);
+            mConfirmBtn.setVisibility(View.VISIBLE);
+            mHearContainer.setVisibility(View.VISIBLE);
+            mAdapter.refreshDataSet(result.respData);
+        }
     }
 
     @OnClick(R.id.confirm)

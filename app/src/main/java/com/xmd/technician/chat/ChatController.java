@@ -31,7 +31,7 @@ public class ChatController extends AbstractController {
             case MsgDef.MSG_DEF_GET_CONVERSATION_LIST:
                 doGetConversationList();
                 break;
-            case MsgDef.MSG_DEF_SYSYTEM_NOTICE_NOTIFY:
+            case MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY:
                 systemNoticeNotify();
                 break;
         }
@@ -51,7 +51,7 @@ public class ChatController extends AbstractController {
         ChatUser chatUser = new ChatUser(emchatId);
         chatUser.setNick(emchatNickname);
         chatUser.setAvatar(emchatAvatar);
-        UserProfileProvider.getInstance().saveContactOrUpdate(chatUser);
+        UserUtils.saveUser(chatUser);
 
         Activity activity = ActivityHelper.getInstance().getCurrentActivity();
         Intent intent = new Intent(activity, ChatActivity.class);

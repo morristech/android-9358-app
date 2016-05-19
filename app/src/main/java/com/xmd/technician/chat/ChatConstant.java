@@ -50,4 +50,6 @@ public class ChatConstant {
     public static final String KEY_SUMMARY = "summary";
     public static final String KEY_IMAGE_URL = "imageUrl";
     public static final String KEY_LINK_URL = "linkUrl";
+    public static final String KEY_TECH_ID = "techId";
+    public static final String KEY_SERIAL_NO = "no";
 }

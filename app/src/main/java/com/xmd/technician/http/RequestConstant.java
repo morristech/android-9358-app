@@ -37,6 +37,7 @@ public class RequestConstant {
     public static final String URL_UPDATE_WORKTIME = BASE_URL + "/v1/profile/tech/calendar/update";
     public static final String URL_DELETE_ALBUM = BASE_URL + "/v1/profile/tech/album/delete";
     public static final String URL_UPLOAD_ALBUM = BASE_URL + "/v1/profile/tech/album/base64/upload";
+    public static final String URL_SORT_ALBUM = BASE_URL + "/v1/profile/tech/album/sort";
     public static final String URL_UPLOAD_AVATAR = BASE_URL + "/v1/profile/tech/avatar/base64/upload";
     public static final String URL_UPDATE_WORKSTATUS = BASE_URL + "/v1/profile/tech/status/update";
 

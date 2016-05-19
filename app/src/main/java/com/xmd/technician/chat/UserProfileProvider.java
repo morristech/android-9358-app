@@ -49,7 +49,7 @@ public class UserProfileProvider {
         if(username.equals(SharedPreferenceHelper.getEmchatId())){
             return getCurrentUserInfo();
         }
-        ChatUser user = getContactList().get(username);
+        ChatUser user = getChatUserList().get(username);
         return user;
     }
 
@@ -104,9 +104,20 @@ public class UserProfileProvider {
      * 保存一个联系人
      * @param user
      */
-    public void saveContactOrUpdate(ChatUser user){
+    public void saveContactInfo(ChatUser user){
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if(chatUser == null || !chatUser.equals(user)){
+            saveContact(user);
+        }
+    }
+
+    /**
+     * 更新联系人信息
+     * @param user
+     */
+    public void updateContactInfo(ChatUser user){
+        ChatUser chatUser = getChatUserList().get(user.getUsername());
+        if(chatUser == null || !chatUser.exactlyEquals(user)){
             saveContact(user);
         }
     }

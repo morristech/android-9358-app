@@ -101,6 +101,7 @@ public class PersonalFragment extends BaseFragment{
             mTechInfo = result.respData;
             SharedPreferenceHelper.setUserName(mTechInfo.userName);
             SharedPreferenceHelper.setUserAvatar(mTechInfo.imageUrl);
+            SharedPreferenceHelper.setSerialNo(mTechInfo.serialNo);
             initView();
         }
     }

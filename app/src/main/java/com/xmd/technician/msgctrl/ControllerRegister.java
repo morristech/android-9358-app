@@ -50,6 +50,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_UPDATE_WORK_TIME,
                 MsgDef.MSG_DEF_UPLOAD_AVATAR,
                 MsgDef.MSG_DEF_DELETE_ALBUM,
+                MsgDef.MSG_DEF_SORT_ALBUM,
                 MsgDef.MSG_DEF_UPLOAD_ALBUM,
                 MsgDef.MSG_DEF_MODIFY_PASSWORD,
                 MsgDef.MSG_DEF_UPDATE_WORK_STATUS,
@@ -81,7 +82,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_START_CHAT,
                 MsgDef.MSG_DEF_SAVE_CHAT_USER,
                 MsgDef.MSG_DEF_GET_CONVERSATION_LIST,
-                MsgDef.MSG_DEF_SYSYTEM_NOTICE_NOTIFY
+                MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY
         };
         MsgDispatcher.register(controllerId, msgIds);
     }
