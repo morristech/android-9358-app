@@ -62,7 +62,7 @@
             android:textSize="@dimen/fontBody"
             android:hint="@string/app_info_title"/>
 
-        <LinearLayout
+        <!--<LinearLayout
             android:id="@+id/menu_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/personal_item_icon_height"
@@ -121,6 +121,91 @@
                 android:layout_marginRight="@dimen/personal_padding"
                 android:scaleType="fitCenter"
                 android:background="@drawable/menu_coupon_selector" />
+        </LinearLayout>-->
+
+        <LinearLayout
+            android:id="@+id/menu_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/personal_item_icon_height"
+            android:layout_below="@+id/et_sendmessage"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/btn_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/personal_padding"
+                android:paddingRight="@dimen/personal_padding">
+                <ImageView
+                    android:layout_width="@dimen/personal_item_icon_height"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/menu_picture_selector" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_face"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/personal_padding"
+                android:paddingRight="@dimen/personal_padding">
+                <ImageView
+                    android:layout_width="@dimen/personal_item_icon_height"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/menu_face_selector" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_common_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/personal_padding"
+                android:paddingRight="@dimen/personal_padding">
+                <ImageView
+                    android:layout_width="@dimen/personal_item_icon_height"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/menu_common_selector" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_common_reward"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/personal_padding"
+                android:paddingRight="@dimen/personal_padding">
+                <ImageView
+                    android:layout_width="@dimen/personal_item_icon_height"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/menu_reward_selector" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_common_clock"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/personal_padding"
+                android:paddingRight="@dimen/personal_padding">
+                <ImageView
+                    android:layout_width="@dimen/personal_item_icon_height"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/menu_clock_selector" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_common_coupon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/personal_padding"
+                android:paddingRight="@dimen/personal_padding">
+                <ImageView
+                    android:layout_width="@dimen/personal_item_icon_height"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/menu_coupon_selector" />
+            </LinearLayout>
         </LinearLayout>
 
         <GridView

@@ -8,6 +8,7 @@ import com.hyphenate.chat.EMClient;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ThreadManager;
 
 public class WelcomeActivity extends BaseActivity {
@@ -31,6 +32,7 @@ public class WelcomeActivity extends BaseActivity {
         } else {
             EMClient.getInstance().groupManager().loadAllGroups();
             EMClient.getInstance().chatManager().loadAllConversations();
+            UserProfileProvider.getInstance().initContactList();
             // Switch to MainActivity
             Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
             // it's single chat

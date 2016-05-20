@@ -20,6 +20,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_SERVER_HOST = "1867ABFF59547D665AA22BDC2AB31BBD";//serverHost
     private static final String KEY_USER_ID = "8E44F0089B076E18A718EB9CA3D94674"; //userId
     private static final String KEY_EMCHAT_ID = "F211BBAA010D00B863BE64B3F5EFD983";//emchatId
+    private static final String KEY_EMCHAT_PASSWORD = "7660E9BC2D136134F0FBC2856ABFDDAD";//emchatPassword
     private static final String KEY_USER_AVATAR = "DC03806303F221B804777E64B24B654C";//avatarUrl
     private static final String KEY_SERIAL_NO = "492B6C37356A803DCB43795618DB5DCA";//serialNo
     /**
@@ -55,8 +56,9 @@ public class SharedPreferenceHelper {
         setUserName("");
         setUserId("");
         setUserAvatar("");
-        setEmchatId("");
         setSerialNo("");
+        setEmchatId("");
+        setEMchatPassword("");
     }
 
     /**
@@ -81,6 +83,14 @@ public class SharedPreferenceHelper {
 
     public static String getEmchatId() {
         return mSettingPreference.getString(KEY_EMCHAT_ID, "");
+    }
+
+    public static void setEMchatPassword(String emchatPassword) {
+        mSettingPreference.edit().putString(KEY_EMCHAT_PASSWORD, emchatPassword).apply();
+    }
+
+    public static String getEMchatPassword() {
+        return mSettingPreference.getString(KEY_EMCHAT_PASSWORD, "");
     }
 
     public static void setUserAvatar(String avatar) {

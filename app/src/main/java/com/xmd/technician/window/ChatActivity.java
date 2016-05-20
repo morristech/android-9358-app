@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
 
+import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -119,6 +120,23 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 result -> managerOrderResult(result));
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
+
+        EMClient.getInstance().login(SharedPreferenceHelper.getEmchatId(), SharedPreferenceHelper.getEMchatPassword(), new EMCallBack() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+                finish();
+            }
+        });
     }
 
     @Override

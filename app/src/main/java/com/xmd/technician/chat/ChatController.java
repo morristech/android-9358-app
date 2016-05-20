@@ -3,6 +3,7 @@ package com.xmd.technician.chat;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.xmd.technician.bean.ConversationListResult;
 import com.xmd.technician.common.ActivityHelper;
@@ -48,6 +49,11 @@ public class ChatController extends AbstractController {
         String emchatId = params.get(ChatConstant.EMCHAT_ID);
         String emchatNickname = params.get(ChatConstant.EMCHAT_NICKNAME);
         String emchatAvatar = params.get(ChatConstant.EMCHAT_AVATAR);
+
+        if(TextUtils.isEmpty(emchatId)){
+            return;
+        }
+
         ChatUser chatUser = new ChatUser(emchatId);
         chatUser.setNick(emchatNickname);
         chatUser.setAvatar(emchatAvatar);

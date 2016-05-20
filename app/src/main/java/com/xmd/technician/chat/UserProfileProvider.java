@@ -10,6 +10,7 @@ import com.hyphenate.util.HanziToPinyin;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.DbOpenHelper;
+import com.xmd.technician.common.ThreadManager;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -45,6 +46,17 @@ public class UserProfileProvider {
         dbHelper = DbOpenHelper.getInstance(TechApplication.getAppContext());
     }
 
+    public void initContactList(){
+        if(mLocalUsers == null){
+            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+                @Override
+                public void run() {
+                    mLocalUsers = getContactList();
+                }
+            });
+        }
+    }
+
     public ChatUser getChatUserInfo(String username){
         if(username.equals(SharedPreferenceHelper.getEmchatId())){
             return getCurrentUserInfo();
@@ -70,7 +82,12 @@ public class UserProfileProvider {
 
     public Map<String, ChatUser> getChatUserList() {
         if (EMClient.getInstance().isLoggedInBefore() && mLocalUsers == null) {
-            mLocalUsers = getContactList();
+            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+                @Override
+                public void run() {
+                    mLocalUsers = getContactList();
+                }
+            });
         }
 
         // return a empty non-null object to avoid app crash
@@ -107,7 +124,12 @@ public class UserProfileProvider {
     public void saveContactInfo(ChatUser user){
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if(chatUser == null || !chatUser.equals(user)){
-            saveContact(user);
+            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+                @Override
+                public void run() {
+                    saveContact(user);
+                }
+            });
         }
     }
 
@@ -118,7 +140,12 @@ public class UserProfileProvider {
     public void updateContactInfo(ChatUser user){
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if(chatUser == null || !chatUser.exactlyEquals(user)){
-            saveContact(user);
+            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+                @Override
+                public void run() {
+                    saveContact(user);
+                }
+            });
         }
     }
 

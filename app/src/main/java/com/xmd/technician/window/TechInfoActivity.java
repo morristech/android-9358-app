@@ -37,6 +37,7 @@ import com.xmd.technician.widget.ConfirmDialog;
 import com.xmd.technician.widget.CustomAlertDialog;
 import com.xmd.technician.widget.PhotoGridLayoutManager;
 import com.xmd.technician.widget.PhotoGridView;
+import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.RoundImageView;
 import com.xmd.technician.widget.SelectPlaceDialog;
 import com.xmd.technician.widget.SpaceItemDecoration;
@@ -102,7 +103,7 @@ public class TechInfoActivity extends BaseActivity {
 
             @Override
             public void onDeleteAlbum(int position) {
-                new ConfirmDialog(TechInfoActivity.this, getString(R.string.edit_activity_delete_album)) {
+                new RewardConfirmDialog(TechInfoActivity.this, "",getString(R.string.edit_activity_delete_album)) {
                     @Override
                     public void onConfirmClick() {
                         AlbumInfo albumInfo = mAdapter.getItem(position);
@@ -111,6 +112,7 @@ public class TechInfoActivity extends BaseActivity {
                             params.put(RequestConstant.KEY_ID, albumInfo.id);
                             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DELETE_ALBUM, params);
                         }
+                        dismiss();
                     }
                 }.show();
             }

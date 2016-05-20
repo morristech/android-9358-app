@@ -19,6 +19,7 @@ import com.hyphenate.chat.EMGroupManager;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Util;
@@ -170,6 +171,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
             SharedPreferenceHelper.setUserName(loginResult.name);
             SharedPreferenceHelper.setUserId(loginResult.userId);
             SharedPreferenceHelper.setEmchatId(loginResult.emchatId);
+            SharedPreferenceHelper.setEMchatPassword(loginResult.emchatPassword);
             SharedPreferenceHelper.setUserAvatar(loginResult.avatarUrl);
             EMClient.getInstance().login(loginResult.emchatId, loginResult.emchatPassword, new EMCallBack() {
                 @Override
@@ -177,6 +179,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
                     dismissProgressDialogIfShowing();
                     EMClient.getInstance().groupManager().loadAllGroups();
                     EMClient.getInstance().chatManager().loadAllConversations();
+                    UserProfileProvider.getInstance().initContactList();
                     // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
                     if (!EMClient.getInstance().updateCurrentUserNick(loginResult.name)) {
                         Logger.e("LoginActivity", "update current user nick fail");

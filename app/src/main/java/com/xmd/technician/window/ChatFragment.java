@@ -19,6 +19,8 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ConversationListResult;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatUser;
+import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -104,6 +106,12 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             onGetListFailed(result.msg);
         } else {
             onGetListSucceeded(0, result.respData);
+            if(result.respData != null){
+                if(!mIsLoadingMore) {
+                    mConversationList.clear();
+                }
+                mConversationList.addAll(result.respData);
+            }
         }
     }
 
@@ -137,7 +145,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
 
     public Filter getFilter(){
         if(mFilter == null){
-            mFilter = new ConversationFilter(mConversationList);
+            mFilter = new ConversationFilter(mData);
         }
         return mFilter;
     }
@@ -168,9 +176,15 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     final EMConversation value = mOriginalValues.get(i);
                     String username = value.getUserName();
 
+
                     EMGroup group = EMClient.getInstance().groupManager().getGroup(username);
                     if(group != null){
                         username = group.getGroupName();
+                    }else {
+                        ChatUser  chatUser = UserUtils.getUserInfo(value.getUserName());
+                        if(chatUser != null){
+                            username = chatUser.getNick();
+                        }
                     }
 
                     // First match against the whole ,non-splitted value
