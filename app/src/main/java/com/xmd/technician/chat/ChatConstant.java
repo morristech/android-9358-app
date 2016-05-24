@@ -17,6 +17,7 @@ public class ChatConstant {
     public static final String MESSAGE_ATTR_IS_VIDEO_CALL = "is_video_call";
 
     public static final String MESSAGE_SYSTEM_NOTICE = "notice_msg";
+    public static final String MESSAGE_START_CHAT = "start_chat";
 
     public static final String MESSAGE_ATTR_IS_BIG_EXPRESSION = "em_is_big_expression";
     public static final String MESSAGE_ATTR_EXPRESSION_ID = "em_expression_id";

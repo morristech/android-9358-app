@@ -3,6 +3,7 @@ package com.xmd.technician.Adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -210,7 +211,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             final CouponInfo couponInfo = (CouponInfo) obj;
             CouponListItemViewHolder couponListItemViewHolder = (CouponListItemViewHolder) holder;
-            couponListItemViewHolder.mTvCouponTitle.setText(couponInfo.actTitle);
+            couponListItemViewHolder.mTvCouponTitle.setText("money".equals(couponInfo.useType) ? TextUtils.concat(String.valueOf(couponInfo.actValue),"元",couponInfo.useTypeName) : couponInfo.actTitle);
             couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
             couponListItemViewHolder.mCouponPeriod.setText(couponInfo.couponPeriod);
             if (couponInfo.commission > 0) {

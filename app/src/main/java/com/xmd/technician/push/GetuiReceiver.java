@@ -16,6 +16,8 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.Util;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 
@@ -62,21 +64,25 @@ public class GetuiReceiver extends BroadcastReceiver {
                     String data = new String(payload);
                     WrapperMsg wrapperMsg = new Gson().fromJson(data, WrapperMsg.class);
 
-                    EMMessage msg = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
-                    msg.setChatType(EMMessage.ChatType.Chat);
-                    msg.setTo(SharedPreferenceHelper.getEmchatId());
-                    msg.setFrom(ChatConstant.MESSAGE_SYSTEM_NOTICE);
-                    msg.addBody(new EMTextMessageBody(wrapperMsg.msgContent));
-                    msg.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, wrapperMsg.msgType);
-                    msg.setAttribute(ChatConstant.KEY_TITLE, wrapperMsg.noticeTitle);
-                    msg.setAttribute(ChatConstant.KEY_SUMMARY, wrapperMsg.msgContent);
-                    msg.setAttribute(ChatConstant.KEY_IMAGE_URL, wrapperMsg.logoUrl);
-                    msg.setAttribute(ChatConstant.KEY_LINK_URL, wrapperMsg.noticeUrl);
+                    if(ChatConstant.MESSAGE_SYSTEM_NOTICE.equals(wrapperMsg.msgType)){
+                        EMMessage msg = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
+                        msg.setChatType(EMMessage.ChatType.Chat);
+                        msg.setTo(SharedPreferenceHelper.getEmchatId());
+                        msg.setFrom(ChatConstant.MESSAGE_SYSTEM_NOTICE);
+                        msg.addBody(new EMTextMessageBody(wrapperMsg.msgContent));
+                        msg.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, wrapperMsg.msgType);
+                        msg.setAttribute(ChatConstant.KEY_TITLE, wrapperMsg.noticeTitle);
+                        msg.setAttribute(ChatConstant.KEY_SUMMARY, wrapperMsg.msgContent);
+                        msg.setAttribute(ChatConstant.KEY_IMAGE_URL, wrapperMsg.logoUrl);
+                        msg.setAttribute(ChatConstant.KEY_LINK_URL, wrapperMsg.noticeUrl);
 
-                    EMClient.getInstance().chatManager().saveMessage(msg);
+                        EMClient.getInstance().chatManager().saveMessage(msg);
 
-                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
-                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY);
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY);
+                    }else if(ChatConstant.MESSAGE_START_CHAT.equals(wrapperMsg.msgType)){
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(wrapperMsg.msgContent, wrapperMsg.noticeTitle, wrapperMsg.noticeUrl));
+                    }
                 }
                 break;
         }

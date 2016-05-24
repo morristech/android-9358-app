@@ -588,6 +588,13 @@ public class RequestController extends AbstractController {
 
             @Override
             protected void postError(String errorMsg) {
+                if("红包已过期".equals(errorMsg)){
+                    CouponInfoResult result = new CouponInfoResult();
+                    result.statusCode = RequestConstant.RESP_ERROR_CODE_FOR_LOCAL;
+                    result.msg = errorMsg;
+                    RxBus.getInstance().post(result);
+                }
+
                 Logger.v("doGetCouponInfo: " + errorMsg);
             }
         });

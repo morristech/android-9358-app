@@ -70,7 +70,8 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".window.MainActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTask"/>
 
         <receiver
             android:name=".push.GetuiReceiver"
@@ -155,8 +156,7 @@
             android:exported="true"
             android:label="@string/wx_entry_activity_title"
             android:screenOrientation="portrait" />
-        <!-- React Native -->
-        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
         <activity android:name=".window.SysNoticeListActivity"></activity>
     </application>
 

@@ -15,6 +15,7 @@ public class CouponInfo {
     public int commission;
     public String consumeMoneyDescription;
     public String time;
+    public String useType;
 
     @Override
     public String toString() {
