@@ -161,7 +161,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             Glide.with(mContext).load(order.headImgUrl).into(itemHolder.mUserHeadUrl);
             itemHolder.mUserHeadUrl.setOnClickListener(
-                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.customerName, order.headImgUrl)));
+                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.userName, order.headImgUrl)));
             itemHolder.mUserName.setText(order.customerName);
             itemHolder.mOrderTime.setText(order.formatAppointTime);
             itemHolder.mOrderAmount.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), order.downPayment));
@@ -180,7 +180,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     itemHolder.mNegative.setText(ResourceUtils.getString(R.string.order_status_operation_reject));
                     itemHolder.mPositive.setText(ResourceUtils.getString(R.string.order_status_operation_accept));
                     itemHolder.mSubmitSection.setVisibility(View.VISIBLE);
-                    itemHolder.mRemainTime.setText(order.remainTime);
+                    itemHolder.mRemainTime.setText(order.remainTime.contains("-") ? "0" : order.remainTime);
                     itemHolder.mOtherStatus.setVisibility(View.GONE);
                 } else if (Constant.ORDER_STATUS_ACCEPT.equals(order.status)) {
                     // 只有普通预约的订单才能由技师来实现完成跟失效，付费预约的必须在核销或者失效的时候更改状态

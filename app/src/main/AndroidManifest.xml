@@ -89,7 +89,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".window.ChatActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="com.xmd.technician.action.START_CHAT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".window.BrowserActivity"
             android:screenOrientation="portrait" />

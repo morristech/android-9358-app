@@ -27,6 +27,9 @@ public class ChatUser extends EMContact {
 	private String avatar;
 
 	public ChatUser(String username){
+		if(username == null){
+			throw new RuntimeException("username is null");
+		}
 	    this.username = username;
 	}
 
@@ -71,10 +74,22 @@ public class ChatUser extends EMContact {
 	 * @return
      */
 	public boolean exactlyEquals(Object o) {
+		boolean result = false;
 		if (o == null || !(o instanceof ChatUser)) {
 			return false;
 		}
-		return getUsername().equals(((ChatUser) o).getUsername()) && getAvatar().equals(((ChatUser) o).getAvatar()) && getNick().equals(((ChatUser) o).getNick());
+
+		if(getAvatar() == null ){
+			if(((ChatUser) o).getAvatar()!= null){
+				return false;
+			}else {
+				result = getUsername().equals(((ChatUser) o).getUsername()) && getNick().equals(((ChatUser) o).getNick());
+			}
+		}else {
+			result = getUsername().equals(((ChatUser) o).getUsername()) && getNick().equals(((ChatUser) o).getNick()) && getAvatar().equals(((ChatUser) o).getAvatar());
+		}
+
+		return result;
 	}
 
 	@Override

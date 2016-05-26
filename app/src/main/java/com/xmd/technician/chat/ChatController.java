@@ -1,17 +1,15 @@
 package com.xmd.technician.chat;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.ConversationListResult;
-import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.window.ChatActivity;
 
 import java.util.Map;
 
@@ -59,10 +57,10 @@ public class ChatController extends AbstractController {
         chatUser.setAvatar(emchatAvatar);
         UserUtils.saveUser(chatUser);
 
-        Activity activity = ActivityHelper.getInstance().getCurrentActivity();
-        Intent intent = new Intent(activity, ChatActivity.class);
+        Intent intent = new Intent("com.xmd.technician.action.START_CHAT");
         intent.putExtra(ChatConstant.EMCHAT_ID, emchatId);
-        activity.startActivity(intent);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        TechApplication.getAppContext().startActivity(intent);
     }
 
     private void doSaveChatUser(Map<String, String> params) {

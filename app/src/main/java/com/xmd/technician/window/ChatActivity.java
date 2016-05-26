@@ -140,6 +140,18 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        // 点击notification bar进入聊天页面，保证只有一个聊天页面
+        String username = intent.getStringExtra(ChatConstant.EMCHAT_ID);
+        if (mToChatUsername.equals(username))
+            super.onNewIntent(intent);
+        else {
+            finish();
+            startActivity(intent);
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if(mIsMessageListInited) {

@@ -76,8 +76,8 @@
 
         <View
             style="@style/list_item_vertical_line"
-            android:layout_marginBottom="@dimen/small_space"
-            android:layout_marginTop="@dimen/small_space" />
+            android:layout_marginBottom="@dimen/personal_margin"
+            android:layout_marginTop="@dimen/personal_margin" />
 
         <FrameLayout
             android:layout_width="@dimen/order_list_item_status_section"

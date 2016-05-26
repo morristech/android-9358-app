@@ -99,21 +99,22 @@
     <style name="order_detail_section_layout" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/inter_space</item>
+        <item name="android:layout_marginTop">@dimen/search_margin</item>
         <item name="android:background">@color/order_detail_section_bg_color</item>
-        <item name="android:padding">@dimen/small_space</item>
     </style>
 
     <style name="order_detail_section_item_layout" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/order_detail_section_item_height</item>
+        <item name="android:layout_marginLeft">@dimen/personal_margin</item>
     </style>
 
     <style name="order_detail_section_item_description_text_view" >
         <item name="android:layout_width">@dimen/order_detail_descriptoin_width</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/order_detail_section_item_descrption_text_color</item>
+        <item name="android:textSize">@dimen/fontTitle</item>
+        <item name="android:textColor">@color/colorBody</item>
         <item name="android:layout_marginRight">@dimen/large_space</item>
     </style>
 
@@ -121,7 +122,8 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/order_detail_section_item_value_text_color</item>
+        <item name="android:textSize">@dimen/fontTitle</item>
+        <item name="android:textColor">@color/colorTitle</item>
     </style>
 
     <style name="paid_coupon_user_detail_header_text_view_style">

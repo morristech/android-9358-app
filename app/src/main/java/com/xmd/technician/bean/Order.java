@@ -16,6 +16,8 @@ public class Order implements Serializable {
 
     public String customerName;
 
+    public String userName;
+
     /**
      * 环信聊天id
      */
