@@ -8,6 +8,7 @@ import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.widget.RewardConfirmDialog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,6 +48,12 @@ public class SettingActivity extends BaseActivity {
 
     @OnClick(R.id.settings_activity_logout)
     public void logout(){
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT);
+        new RewardConfirmDialog(SettingActivity.this,"",getString(R.string.logout_tips)){
+            @Override
+            public void onConfirmClick() {
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT);
+                super.onConfirmClick();
+            }
+        }.show();
     }
 }

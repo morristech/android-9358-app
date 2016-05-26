@@ -69,6 +69,7 @@
     <string name="settings_activity_modify_password">修改密码</string>
     <string name="settings_activity_suggest">意见反馈</string>
     <string name="setting_activity_layout_exit">退出登录</string>
+    <string name="logout_tips">退出后无法及时接收到相关消息，是否确认退出？</string>
 
     <string name="feedback_hint">点击输入反馈...</string>
     <string name="feedback_result">已成功提交，感谢您的反馈！</string>
