@@ -19,14 +19,15 @@
         android:id="@+id/settings_activity_about_us"
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_item_height"
-        android:padding="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector"
-        android:gravity="center_vertical">
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:src="@drawable/icon37"/>
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon37"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -66,14 +67,15 @@
         android:id="@+id/settings_activity_suggest"
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_item_height"
-        android:padding="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector"
-        android:gravity="center_vertical">
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:src="@drawable/icon38"/>
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon38"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -107,14 +109,15 @@
         android:id="@+id/settings_activity_modify_pw"
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_item_height"
-        android:padding="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector"
-        android:gravity="center_vertical">
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:src="@drawable/icon39"/>
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon39"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -148,14 +151,15 @@
         android:id="@+id/settings_activity_logout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_item_height"
-        android:padding="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector"
-        android:gravity="center_vertical">
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:src="@drawable/icon36"/>
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon36"/>
 
         <TextView
             android:layout_width="wrap_content"

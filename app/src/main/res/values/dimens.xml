@@ -51,7 +51,7 @@
     <dimen name="personal_info_height">83dp</dimen>
     <dimen name="personal_item_height">44dp</dimen>
     <dimen name="personal_description_height">40dp</dimen>
-    <dimen name="personal_item_icon_height">20dp</dimen>
+    <dimen name="personal_item_icon_height">24dp</dimen>
     <dimen name="personal_padding">12dp</dimen>
     <dimen name="personal_info_margin_top">21dp</dimen>
     <dimen name="personal_margin">16dp</dimen>

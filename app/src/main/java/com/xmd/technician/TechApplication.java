@@ -10,6 +10,7 @@ import com.hyphenate.chat.EMOptions;
 import com.igexin.sdk.PushManager;
 import com.xmd.technician.common.AppUncaughtExceptionHandler;
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.common.TechNotifier;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.ControllerRegister;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 public class TechApplication extends Application{
     private static Context appContext;
+    private static TechNotifier mNotifier;
 
     @Override
     public void onCreate() {
@@ -56,6 +58,8 @@ public class TechApplication extends Application{
                 EMClient.getInstance().init(this, emOptions);
                 //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
                 EMClient.getInstance().setDebugMode(true);
+
+                initNotifier();
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");
             }
@@ -78,5 +82,14 @@ public class TechApplication extends Application{
             }
         }
         return null;
+    }
+
+    void initNotifier(){
+        mNotifier = new TechNotifier();
+        mNotifier.init(appContext);
+    }
+
+    public static TechNotifier getNotifier(){
+        return mNotifier;
     }
 }

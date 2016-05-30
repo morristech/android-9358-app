@@ -16,6 +16,7 @@ import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.chatview.BaseChatView;
 import com.xmd.technician.chat.chatview.ChatViewBegReward;
 import com.xmd.technician.chat.chatview.ChatViewCoupon;
+import com.xmd.technician.chat.chatview.ChatViewCouponTip;
 import com.xmd.technician.chat.chatview.ChatViewImage;
 import com.xmd.technician.chat.chatview.ChatViewOrder;
 import com.xmd.technician.chat.chatview.ChatViewPaidCoupon;
@@ -225,6 +226,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case ChatConstant.MESSAGE_TYPE_RECV_PAID_COUPON_TIP:
             case ChatConstant.MESSAGE_TYPE_SENT_PAID_COUPON_TIP:
                 chatRow = new ChatViewPaidCouponTip(context, EMMessage.Direct.RECEIVE);
+                break;
+            case ChatConstant.MESSAGE_TYPE_RECV_COUPON_TIP:
+            case ChatConstant.MESSAGE_TYPE_SENT_COUPON_TIP:
+                chatRow = new ChatViewCouponTip(context, EMMessage.Direct.RECEIVE);
                 break;
             case ChatConstant.MESSAGE_TYPE_SENT_REWARD:
                 chatRow = new ChatViewText(context, EMMessage.Direct.SEND);

@@ -17,7 +17,10 @@ public class ChatConstant {
     public static final String MESSAGE_ATTR_IS_VIDEO_CALL = "is_video_call";
 
     public static final String MESSAGE_SYSTEM_NOTICE = "notice_msg";
-    public static final String MESSAGE_START_CHAT = "start_chat";
+    public static final String MESSAGE_CHAT_TEXT = "chat_text";
+    public static final String MESSAGE_CHAT_ORDER = "chat_order";
+    public static final String MESSAGE_CHAT_REWARD = "chat_reward";
+    public static final String MESSAGE_CHAT_PAID_COUPON = "chat_paid_coupon";
 
     public static final String MESSAGE_ATTR_IS_BIG_EXPRESSION = "em_is_big_expression";
     public static final String MESSAGE_ATTR_EXPRESSION_ID = "em_expression_id";
@@ -35,6 +38,8 @@ public class ChatConstant {
     public static final int MESSAGE_TYPE_RECV_PAID_COUPON = 0x8A;
     public static final int MESSAGE_TYPE_SENT_ORDINARY_COUPON = 0x8B;
     public static final int MESSAGE_TYPE_RECV_ORDINARY_COUPON = 0x8C;
+    public static final int MESSAGE_TYPE_SENT_COUPON_TIP = 0x8E;
+    public static final int MESSAGE_TYPE_RECV_COUPON_TIP = 0x8F;
 
     public static final String KEY_CHAT_TYPE = "chatType";
     public static final String KEY_MSG = "msg";

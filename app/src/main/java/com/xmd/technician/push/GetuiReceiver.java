@@ -13,8 +13,14 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.igexin.sdk.PushConsts;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.TechApplication;
+import com.xmd.technician.bean.GetuiPayload;
+import com.xmd.technician.bean.SystemNotice;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatUser;
+import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.common.TechNotifier;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
@@ -59,29 +65,59 @@ public class GetuiReceiver extends BroadcastReceiver {
 
                 // 获取透传数据
                 // String appid = bundle.getString("appid");
+
                 byte[] payload = bundle.getByteArray("payload");
                 if (payload != null) {
                     String data = new String(payload);
-                    WrapperMsg wrapperMsg = new Gson().fromJson(data, WrapperMsg.class);
+                    GetuiPayload wrapperMsg = new Gson().fromJson(data, GetuiPayload.class);
+                    if(!TextUtils.isEmpty(wrapperMsg.msgTargetId) && !wrapperMsg.msgTargetId.equals(SharedPreferenceHelper.getUserId())){
+                        Logger.d("Message is not pushed to the current Technician");
+                        return;
+                    }
 
-                    if(ChatConstant.MESSAGE_SYSTEM_NOTICE.equals(wrapperMsg.msgType)){
+                    if(!TextUtils.isEmpty(wrapperMsg.appType)&& !wrapperMsg.appType.contains("android")){
+                        Logger.d("Message is not pushed to android app");
+                        return;
+                    }
+
+                    if(ChatConstant.MESSAGE_SYSTEM_NOTICE.equals(wrapperMsg.businessType)){
+                        SystemNotice notice = new Gson().fromJson(wrapperMsg.msgContent, SystemNotice.class);
                         EMMessage msg = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
                         msg.setChatType(EMMessage.ChatType.Chat);
                         msg.setTo(SharedPreferenceHelper.getEmchatId());
                         msg.setFrom(ChatConstant.MESSAGE_SYSTEM_NOTICE);
                         msg.addBody(new EMTextMessageBody(wrapperMsg.msgContent));
                         msg.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, wrapperMsg.msgType);
-                        msg.setAttribute(ChatConstant.KEY_TITLE, wrapperMsg.noticeTitle);
-                        msg.setAttribute(ChatConstant.KEY_SUMMARY, wrapperMsg.msgContent);
-                        msg.setAttribute(ChatConstant.KEY_IMAGE_URL, wrapperMsg.logoUrl);
-                        msg.setAttribute(ChatConstant.KEY_LINK_URL, wrapperMsg.noticeUrl);
+                        msg.setAttribute(ChatConstant.KEY_TITLE, notice.title);
+                        msg.setAttribute(ChatConstant.KEY_SUMMARY, notice.content);
+                        msg.setAttribute(ChatConstant.KEY_IMAGE_URL, notice.imageUrl);
+                        msg.setAttribute(ChatConstant.KEY_LINK_URL, notice.linkUrl);
 
                         EMClient.getInstance().chatManager().saveMessage(msg);
 
                         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
                         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY);
-                    }else if(ChatConstant.MESSAGE_START_CHAT.equals(wrapperMsg.msgType)){
-                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(wrapperMsg.msgContent, wrapperMsg.noticeTitle, wrapperMsg.noticeUrl));
+
+                    }else if(ChatConstant.MESSAGE_CHAT_TEXT.equals(wrapperMsg.businessType)){
+                        ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
+                        UserUtils.saveUser(user);
+                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_TEXT, user.getUsername());
+
+                    }else if(ChatConstant.MESSAGE_CHAT_ORDER.equals(wrapperMsg.businessType)){
+                        ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
+                        UserUtils.saveUser(user);
+                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_ORDER, user.getUsername());
+
+                    }else if(ChatConstant.MESSAGE_CHAT_REWARD.equals(wrapperMsg.businessType)){
+                        ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
+                        UserUtils.saveUser(user);
+                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_REWARD, user.getUsername());
+
+                    }else if(ChatConstant.MESSAGE_CHAT_PAID_COUPON.equals(wrapperMsg.businessType)){
+                        ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
+                        UserUtils.saveUser(user);
+                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_PAID_COUPON, user.getUsername());
+
                     }
                 }
                 break;
@@ -89,22 +125,4 @@ public class GetuiReceiver extends BroadcastReceiver {
 
     }
 
-    public class WrapperMsg {
-        public String msgType;
-        public String businessType;
-        public String msgContent;
-        public String msgTargetId;
-        public String msgDate;
-        public String appType;
-        public String pushTemplateType;
-        public String noticeTitle;
-        public String logo;
-        public String logoUrl;
-        public String noticeUrl;
-        public String transmissionType;
-        public boolean ring;
-        public boolean clearable;
-        public boolean vibrate;
-
-    }
 }

@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/avatar"
-            android:layout_marginTop="@dimen/personal_info_margin_top"
+            android:layout_alignTop="@+id/avatar"
             android:textColor="@color/colorTitle"
             android:textSize="@dimen/fontHead" />
 
@@ -35,9 +35,11 @@
             android:id="@+id/invite_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="0dp"
             android:layout_below="@+id/user_name"
             android:layout_toRightOf="@+id/avatar"
-            android:layout_marginBottom="@dimen/search_margin"
+            android:layout_marginTop="@dimen/small_space"
+            android:padding="@dimen/three_radius"
             android:background="@drawable/login_button_main_selector"
             android:textColor="@android:color/white"
             android:textSize="@dimen/fontNormal"
@@ -50,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_name"
             android:layout_toRightOf="@+id/avatar"
-            android:layout_marginTop="@dimen/search_margin"
+            android:layout_marginTop="@dimen/small_space"
             android:singleLine="true"
             android:maxLength="10"
             android:ellipsize="marquee"
@@ -88,7 +90,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_description_height"
         android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
         android:gravity="center_vertical"
+        android:singleLine="true"
         android:background="@drawable/personal_item_selector"
         android:textColor="@color/colorBody"
         android:textSize="@dimen/fontBody" />
@@ -108,13 +112,14 @@
         android:id="@+id/account_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_item_height"
-        android:padding="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector"
-        android:gravity="center_vertical">
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
+            android:layout_centerVertical="true"
             android:background="@drawable/icon24"/>
 
         <TextView
@@ -153,14 +158,15 @@
         android:id="@+id/time_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_item_height"
-        android:padding="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector"
-        android:gravity="center_vertical">
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:src="@drawable/icon25"/>
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon25"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -182,6 +188,7 @@
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/personal_item_margin_right"
             android:src="@drawable/icon_free" />
@@ -202,14 +209,15 @@
         android:id="@+id/service_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_item_height"
-        android:padding="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector"
-        android:gravity="center_vertical">
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:src="@drawable/icon26"/>
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon26"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -219,13 +227,6 @@
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontTitle"
             android:text="@string/personal_fragment_layout_service_items"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/personal_item_margin_right"
-            android:layout_centerVertical="true" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -244,14 +245,15 @@
         android:id="@+id/comment_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_item_height"
-        android:padding="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector"
-        android:gravity="center_vertical">
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:src="@drawable/icon27"/>
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon27"/>
 
         <TextView
             android:id="@+id/comment_title"
@@ -306,14 +308,15 @@
         android:id="@+id/setting_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_item_height"
-        android:padding="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector"
-        android:gravity="center_vertical">
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+        android:background="@drawable/personal_item_selector">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
-            android:src="@drawable/icon28"/>
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon28"/>
 
         <TextView
             android:layout_width="wrap_content"

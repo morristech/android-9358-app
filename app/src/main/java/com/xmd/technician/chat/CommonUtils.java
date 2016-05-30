@@ -119,6 +119,8 @@ public class CommonUtils {
                     type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_PAID_COUPON : ChatConstant.MESSAGE_TYPE_SENT_PAID_COUPON);
                 }else if(msgType.equals("ordinaryCoupon")){
                     type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_ORDINARY_COUPON : ChatConstant.MESSAGE_TYPE_SENT_ORDINARY_COUPON);
+                }else if(msgType.equals("couponTip")){
+                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_COUPON_TIP : ChatConstant.MESSAGE_TYPE_SENT_COUPON_TIP);
                 }
             } catch (HyphenateException e) {
                 e.printStackTrace();
