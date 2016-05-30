@@ -10,6 +10,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
+import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -58,6 +59,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         mSysNoticeNotifySubscription = RxBus.getInstance().toObservable(SystemNoticeResult.class).subscribe(
                 result -> updateUnreadMsgLabel());
         switchFragment(0);
+
+        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
+                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
     }
 
     @Override

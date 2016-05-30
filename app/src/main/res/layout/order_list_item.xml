@@ -30,6 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mrs. Text"
+                android:textColor="@color/colorTitle"
                 android:textSize="@dimen/order_list_item_user_name_size" />
 
             <LinearLayout
@@ -43,12 +44,15 @@
                     android:layout_height="wrap_content"
                     android:text="@string/order_detail_order_time"
                     android:layout_marginRight="@dimen/inter_space"
+                    android:textColor="@color/colorRemark"
                     android:textSize="@dimen/order_list_item_text_size" />
 
                 <TextView
                     android:id="@+id/order_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/colorBody"
                     android:textSize="@dimen/order_list_item_text_size" />
             </LinearLayout>
 
@@ -63,12 +67,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/inter_space"
                     android:text="@string/order_detail_down_payment"
+                    android:textColor="@color/colorRemark"
                     android:textSize="@dimen/order_list_item_text_size" />
 
                 <TextView
                     android:id="@+id/order_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorBody"
                     android:textSize="@dimen/order_list_item_text_size" />
             </LinearLayout>
 
@@ -81,8 +87,7 @@
 
         <FrameLayout
             android:layout_width="@dimen/order_list_item_status_section"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/small_space">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/submit_section"
@@ -96,7 +101,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/order_remain_time_label"
+                    android:singleLine="true"
+                    android:text="@string/order_item_remain_time_label"
                     android:textColor="@color/order_list_item_status_label_color"
                     android:textSize="@dimen/order_list_item_text_size" />
 

@@ -326,7 +326,9 @@
                         <TextView
                             android:id="@+id/order_comment"
                             android:layout_width="match_parent"
-                            android:layout_height="32dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/search_margin"
+                            android:layout_marginBottom="@dimen/personal_padding"
                             android:gravity="center_vertical"
                             android:textColor="@color/colorTitle"
                             android:textSize="@dimen/fontTitle"

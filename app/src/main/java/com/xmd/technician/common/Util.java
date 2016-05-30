@@ -36,7 +36,7 @@ public class Util {
             return false;
         }
 
-        return Pattern.matches("^\\d{6}$", text);
+        return Pattern.matches("^\\d{1,6}$", text);
     }
 
     public static boolean matchPassWordFormat(String password) {

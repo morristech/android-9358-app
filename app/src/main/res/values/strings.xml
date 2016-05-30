@@ -169,6 +169,7 @@
     <string name="order_status_operation_delete">删除订单</string>
 
     <string name="order_remain_time_label">剩余接单时间：</string>
+    <string name="order_item_remain_time_label">剩余接单时间</string>
     <string name="order_remain_time_minutes">分钟</string>
     <string name="amount_unit_format">%1$d元</string>
 
