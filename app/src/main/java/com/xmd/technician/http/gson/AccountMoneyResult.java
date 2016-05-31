@@ -11,6 +11,7 @@ public class AccountMoneyResult extends BaseResult {
         public int rewardMoney;
         public int redPack;
         public int paidMoney;
+        public int orderMoney;
         public String withdrawal;
     }
 }

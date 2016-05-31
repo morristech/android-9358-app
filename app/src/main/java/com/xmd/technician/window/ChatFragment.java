@@ -26,6 +26,7 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ import rx.Subscription;
  */
 public class ChatFragment extends BaseListFragment<EMConversation> {
 
+    @Bind(R.id.empty_view_widget) EmptyView mEmptyView;
     @Bind(R.id.header_container) FrameLayout mHeadContainer;
     protected List<EMConversation> mConversationList = new ArrayList<>();
     private Filter mFilter;
@@ -70,6 +72,10 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
 
             }
         });
+
+        mEmptyView.setStatus(EmptyView.Status.Gone);
+        mEmptyView.setEmptyPic(R.drawable.empty);
+        mEmptyView.setEmptyTip("");
 
         mGetConversationListSubscription = RxBus.getInstance().toObservable(ConversationListResult.class).subscribe(
                 conversationListResult -> handleGetConversationListResult(conversationListResult)
@@ -104,6 +110,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private void handleGetConversationListResult(ConversationListResult result) {
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             onGetListFailed(result.msg);
+            mEmptyView.setStatus(EmptyView.Status.Failed);
         } else {
             onGetListSucceeded(0, result.respData);
             if(result.respData != null){
@@ -111,6 +118,11 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     mConversationList.clear();
                 }
                 mConversationList.addAll(result.respData);
+            }
+            if(result.respData.isEmpty()){
+                mEmptyView.setStatus(EmptyView.Status.Empty);
+            }else {
+                mEmptyView.setStatus(EmptyView.Status.Gone);
             }
         }
     }

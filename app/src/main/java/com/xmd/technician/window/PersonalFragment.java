@@ -82,6 +82,14 @@ public class PersonalFragment extends BaseFragment{
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mTechInfoSubscription,mCommentOrderSubscription,mSubmitInviteSubscription);

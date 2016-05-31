@@ -23,10 +23,12 @@ public class MyAccountActivity extends BaseActivity {
     private static final int TYPE_USER_REWARD = 0;
     private static final int TYPE_COUPON_REWARD = 1;
     private static final int TYPE_PAID_COUPON = 2;
+    private static final int TYPE_PAID_ORDER = 3;
 
     @Bind(R.id.customer_reward_amount) TextView mCustomerAmount;
     @Bind(R.id.coupon_commission_amount) TextView mCouponAmount;
     @Bind(R.id.clock_commission_amount) TextView mClockAmount;
+    @Bind(R.id.order_commission_amount) TextView mPaidOrderAmount;
     @Bind(R.id.clock_consume) Button mClockConsumeBtn;
     @Bind(R.id.coupon_consume) Button mCouponConsumeBtn;
 
@@ -59,12 +61,13 @@ public class MyAccountActivity extends BaseActivity {
             mCustomerAmount.setText(String.valueOf(result.respData.rewardMoney));
             mCouponAmount.setText(String.valueOf(result.respData.redPack));
             mClockAmount.setText(String.valueOf(result.respData.paidMoney));
+            mPaidOrderAmount.setText(String.valueOf(result.respData.orderMoney));
 
             if(result.respData.withdrawal.equals("Y")){
-                mClockConsumeBtn.setEnabled(true);
+                //mClockConsumeBtn.setEnabled(true);
                 mCouponConsumeBtn.setEnabled(true);
             }else {
-                mClockConsumeBtn.setEnabled(false);
+                //mClockConsumeBtn.setEnabled(false);
                 mCouponConsumeBtn.setEnabled(false);
             }
         }
@@ -82,6 +85,11 @@ public class MyAccountActivity extends BaseActivity {
 
     @OnClick(R.id.clock_consume)
     public void clockCommissionConsume(){
+        showConfirmDialog();
+    }
+
+    @OnClick(R.id.order_consume)
+    public void orderCommissionConsume(){
         showConfirmDialog();
     }
 
@@ -107,6 +115,11 @@ public class MyAccountActivity extends BaseActivity {
     @OnClick(R.id.clock_commission_layout)
     public void showClockRewardDetail(){
         gotoDetailActivity(TYPE_PAID_COUPON);
+    }
+
+    @OnClick(R.id.order_commission_layout)
+    public void showPaidOrderRewardDetail(){
+        gotoDetailActivity(TYPE_PAID_ORDER);
     }
 
     private void gotoDetailActivity(int type){

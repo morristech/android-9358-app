@@ -216,6 +216,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             couponListItemViewHolder.mCouponPeriod.setText(couponInfo.couponPeriod);
             if (couponInfo.commission > 0) {
                 couponListItemViewHolder.mTvCouponReward.setText(String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), couponInfo.commission));
+            }else {
+                couponListItemViewHolder.mTvCouponReward.setText("");
             }
 
             couponListItemViewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(couponInfo));

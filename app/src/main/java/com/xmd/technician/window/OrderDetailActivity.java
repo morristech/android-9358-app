@@ -166,6 +166,10 @@ public class OrderDetailActivity extends BaseActivity {
         } else if (Constant.ORDER_STATUS_ACCEPT.equals(mOrder.status)) {
             mNegative.setText(ResourceUtils.getString(R.string.order_status_operation_expire));
             mPositive.setText(ResourceUtils.getString(R.string.order_status_operation_complete));
+            if(Constant.ORDER_TYPE_PAID.equals(mOrder.orderType)){
+                mNegative.setVisibility(View.GONE);
+                mPositive.setVisibility(View.GONE);
+            }
         } else {
             mNegative.setVisibility(View.GONE);
             mPositive.setText(ResourceUtils.getString(R.string.order_status_operation_delete));

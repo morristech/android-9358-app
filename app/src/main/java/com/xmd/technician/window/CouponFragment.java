@@ -56,6 +56,9 @@ public class CouponFragment extends BaseListFragment<CouponInfo> {
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             onGetListFailed(result.msg);
         } else {
+            if(result.respData.coupons == null || result.respData.coupons.isEmpty()){
+                ((BaseActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.coupon_fragment_coupon_empty_reason));
+            }
             onGetListSucceeded(result.pageCount, result.respData.coupons);
         }
     }

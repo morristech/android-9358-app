@@ -115,10 +115,12 @@
     <string name="customer_reward">用户打赏</string>
     <string name="coupon_commission">优惠券提成</string>
     <string name="clock_commission">点钟券提成</string>
-    <string name="consume_tip">关注9358服务公众号，登录提现</string>
+    <string name="order_commission">付费预约提成</string>
+    <string name="consume_tip">关注＂9358服务＂公众号，登录提现</string>
     <string name="user_reward_detail">客户打赏明细</string>
     <string name="coupon_reward_detail">优惠券提成明细</string>
     <string name="paid_coupon_detail">点钟券提成明细</string>
+    <string name="paid_order_detail">付费预约提成明细</string>
 
     <string name="modify_password_old_hint">输入现在密码</string>
     <string name="modify_password_new_hint">请输入6-20位新密码，仅限字母和数字</string>
@@ -209,6 +211,7 @@
 
     <string name="coupon_fragment_share">分享</string>
     <string name="coupon_fragment_coupon_reward">打赏金额:%1$d元</string>
+    <string name="coupon_fragment_coupon_empty_reason">会所暂无优惠活动或您还没有加入会所</string>
 
     <string name="paid_coupon_detail_activity_title">点钟详情</string>
     <string name="paid_coupon_detail_coupon_period">有效时间：</string>

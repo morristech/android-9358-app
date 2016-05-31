@@ -28,8 +28,8 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
 
     public static final String EXTRA_CONSUME_TYPE = "consumeType";
 
-    private static final int mActivityTitles[] = {R.string.user_reward_detail, R.string.coupon_reward_detail,R.string.paid_coupon_detail};
-    public static final String[] mConsumeTypes ={"user_reward","coupon_reward","paid_coupon","withdrawal"};
+    private static final int mActivityTitles[] = {R.string.user_reward_detail, R.string.coupon_reward_detail,R.string.paid_coupon_detail,R.string.paid_order_detail};
+    public static final String[] mConsumeTypes ={"user_reward","coupon_reward","paid_coupon","paid_order","withdrawal"};
 
     @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.list_view) RecyclerView mListView;
