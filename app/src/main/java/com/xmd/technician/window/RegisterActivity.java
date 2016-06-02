@@ -25,6 +25,7 @@ import com.xmd.technician.common.Util;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.LoginResult;
+import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -78,7 +79,7 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
 
         ButterKnife.bind(this);
 
-        setTitle(R.string.login);
+        setTitle(R.string.register);
         setBackVisible(true);
 
         mUserName = getIntent().getExtras().getString(EXTRA_USERNAME);
@@ -87,8 +88,8 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
         mSecurityCodeEdt.addTextChangedListener(this);
         mClubInviteEdt.addTextChangedListener(this);
 
-        mRegisterSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
-                loginResult -> handleRegisterResult(loginResult)
+        mRegisterSubscription = RxBus.getInstance().toObservable(RegisterResult.class).subscribe(
+                result -> handleRegisterResult(result)
         );
 
     }
@@ -183,28 +184,28 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ICODE, params);
     }
 
-    private void handleRegisterResult(LoginResult loginResult) {
-        if (loginResult.status.equals("fail")) {
+    private void handleRegisterResult(RegisterResult result) {
+        if (result.status.equals("fail")) {
             dismissProgressDialogIfShowing();
-            makeShortToast(loginResult.message);
+            makeShortToast(result.message);
         } else {
-            SharedPreferenceHelper.setUserToken(loginResult.token);
-            SharedPreferenceHelper.setUserName(loginResult.name);
-            SharedPreferenceHelper.setUserId(loginResult.userId);
-            SharedPreferenceHelper.setEmchatId(loginResult.emchatId);
-            SharedPreferenceHelper.setEMchatPassword(loginResult.emchatPassword);
-            EMClient.getInstance().login(loginResult.emchatId, loginResult.emchatPassword, new EMCallBack() {
+            SharedPreferenceHelper.setUserToken(result.token);
+            SharedPreferenceHelper.setUserName(result.name);
+            SharedPreferenceHelper.setUserId(result.userId);
+            SharedPreferenceHelper.setEmchatId(result.emchatId);
+            SharedPreferenceHelper.setEMchatPassword(result.emchatPassword);
+            EMClient.getInstance().login(result.emchatId, result.emchatPassword, new EMCallBack() {
                 @Override
                 public void onSuccess() {
                     dismissProgressDialogIfShowing();
                     EMClient.getInstance().groupManager().loadAllGroups();
                     EMClient.getInstance().chatManager().loadAllConversations();
                     // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
-                    if (!EMClient.getInstance().updateCurrentUserNick(loginResult.name)) {
+                    if (!EMClient.getInstance().updateCurrentUserNick(result.name)) {
                         Logger.e("LoginActivity", "update current user nick fail");
                     }
                     Intent intent = new Intent(RegisterActivity.this, InfoInputActivity.class);
-                    intent.putExtra(InfoInputActivity.EXTRA_PHONE_NUM, loginResult.phoneNum);
+                    intent.putExtra(InfoInputActivity.EXTRA_PHONE_NUM, result.phoneNum);
                     startActivity(intent);
                     finish();
                 }

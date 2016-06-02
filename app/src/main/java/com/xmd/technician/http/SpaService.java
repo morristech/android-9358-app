@@ -14,6 +14,7 @@ import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
 import com.xmd.technician.http.gson.CouponListResult;
+import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
@@ -71,13 +72,13 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_REGISTER)
-    Call<LoginResult> register(@Field(RequestConstant.KEY_MOBILE) String mobile,
-                               @Field(RequestConstant.KEY_PASSWORD) String passWord,
-                               @Field(RequestConstant.KEY_ICODE) String iCode,
-                               @Field(RequestConstant.KEY_CLUB_CODE) String clubCode,
-                               @Field(RequestConstant.KEY_LOGIN_CHANEL) String loginChannel,
-                               @Field(RequestConstant.KEY_CHANEL) String channel,
-                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+    Call<RegisterResult> register(@Field(RequestConstant.KEY_MOBILE) String mobile,
+                                  @Field(RequestConstant.KEY_PASSWORD) String passWord,
+                                  @Field(RequestConstant.KEY_ICODE) String iCode,
+                                  @Field(RequestConstant.KEY_CLUB_CODE) String clubCode,
+                                  @Field(RequestConstant.KEY_LOGIN_CHANEL) String loginChannel,
+                                  @Field(RequestConstant.KEY_CHANEL) String channel,
+                                  @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @GET(RequestConstant.URL_EDIT_INFO)
     Call<TechEditResult> getTechEditInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,

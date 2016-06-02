@@ -43,6 +43,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
     @Bind(R.id.tv_service_item) TextView mTvServiceItem;
     @Bind(R.id.iv_share_qr_code) ImageView mIvShareQrCode;
     @Bind(R.id.wv_act_content) WebView mWvActContent;
+    @Bind(R.id.btn_share) Button mShareBtn;
 
     private Subscription mGetCouponInfoSubscription;
     private String mActId;
@@ -127,6 +128,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
         mWvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);
         mWvActContent.loadDataWithBaseURL(null, couponInfo.actContent, Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
 
+        mShareBtn.setEnabled(true);
     }
 
     private String generateQrCodeUrl(){

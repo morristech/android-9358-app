@@ -27,6 +27,7 @@ import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
 import com.xmd.technician.http.gson.CouponListResult;
+import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
@@ -222,15 +223,15 @@ public class RequestController extends AbstractController {
 
     //不能正常工作me
     private void register(Map<String, String> params){
-        Call<LoginResult> call = getSpaService().register(params.get(RequestConstant.KEY_MOBILE),
+        Call<RegisterResult> call = getSpaService().register(params.get(RequestConstant.KEY_MOBILE),
                 params.get(RequestConstant.KEY_PASSWORD), params.get(RequestConstant.KEY_ICODE),
                 params.get(RequestConstant.KEY_CLUB_CODE), params.get(RequestConstant.KEY_LOGIN_CHANEL),
                 RequestConstant.SESSION_TYPE, RequestConstant.SESSION_TYPE);
 
-        call.enqueue(new Callback<LoginResult>() {
+        call.enqueue(new Callback<RegisterResult>() {
             @Override
-            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
-                LoginResult result = response.body();
+            public void onResponse(Call<RegisterResult> call, Response<RegisterResult> response) {
+                RegisterResult result = response.body();
                 if (result != null) {
                     RxBus.getInstance().post(result);
                 } else {
@@ -243,7 +244,7 @@ public class RequestController extends AbstractController {
             }
 
             @Override
-            public void onFailure(Call<LoginResult> call, Throwable t) {
+            public void onFailure(Call<RegisterResult> call, Throwable t) {
                 RxBus.getInstance().post(t);
             }
         });
@@ -371,6 +372,11 @@ public class RequestController extends AbstractController {
             @Override
             protected void postResult(BaseResult result) {
                 RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                Logger.v("getICode: " + errorMsg);
             }
         });
 

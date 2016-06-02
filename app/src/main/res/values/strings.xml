@@ -62,6 +62,8 @@
     <string name="personal_fragment_layout_setting">设置</string>
     <string name="qr_code_body">扫我关注＂9358＂</string>
     <string name="qr_code_remark">点技师，约项目，就上9358</string>
+    <string name="personal_fragment_join_club">请先加入会所</string>
+    <string name="personal_fragment_wait_check">请等待会所审核</string>
 
     <!-- SettingActivity -->
     <string name="title_activity_settings">设置</string>
@@ -73,6 +75,7 @@
 
     <string name="feedback_hint">点击输入反馈...</string>
     <string name="feedback_result">已成功提交，感谢您的反馈！</string>
+    <string name="feedback_empty_tips">反馈信息不能为空，请输入您的意见！</string>
 
     <!-- TechInfoActivity-->
     <string name="title_activity_data_edit">资料编辑</string>
@@ -89,11 +92,13 @@
     <string name="edit_activity_text_view_introduce">介绍</string>
     <string name="edit_activity_text_view_introduce_desc">请自我介绍(介绍自己来自哪里,介绍自己的姓名,介绍姓名时一定要吸引人,你的姓和名字...)</string>
     <string name="edit_activity_delete_album">您确认要删除这张图片？</string>
+    <string name="edit_activity_select_native_place">请选择</string>
 
     <string name="only_number_and_char">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 
     <string name="app_info_title">关于小摩豆</string>
     <string name="check_update">检查更新</string>
+    <string name="app_info_name">9358技师版</string>
 
     <string name="reward_amount">打赏:%1$d元</string>
 
@@ -122,10 +127,10 @@
     <string name="paid_coupon_detail">点钟券提成明细</string>
     <string name="paid_order_detail">付费预约提成明细</string>
 
-    <string name="modify_password_old_hint">输入现在密码</string>
+    <string name="modify_password_old_hint">输入原密码</string>
     <string name="modify_password_new_hint">请输入6-20位新密码，仅限字母和数字</string>
     <string name="modify_password_confirm_hint">重新输入密码</string>
-    <string name="modify_password_change_confirm_err">新密码不统一</string>
+    <string name="modify_password_change_confirm_err">两次输入的新密码不统一</string>
     <string name="modify_password_failed">修改密码失败</string>
 
     <string name="service_item">项目</string>

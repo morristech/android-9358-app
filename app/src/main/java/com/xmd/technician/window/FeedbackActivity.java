@@ -48,6 +48,7 @@ public class FeedbackActivity extends BaseActivity {
     public void submitFeeedback(){
         String content = mContent.getText().toString().trim();
         if(TextUtils.isEmpty(content)){
+            makeShortToast(getString(R.string.feedback_empty_tips));
             return;
         }
 

@@ -55,9 +55,6 @@ public class ModifyPasswordActivity extends BaseActivity implements TextWatcher,
         mModifyPasswordSubscription = RxBus.getInstance().toObservable(ModifyPasswordResult.class).subscribe(
                 result -> finish());
 
-        mLoginSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
-                loginResult -> handleLoginResult(loginResult));
-
         mOldPassWordEdt.setFilters(new InputFilter[]{this, new InputFilter.LengthFilter(PASSWORD_MAX_LEN)});
         mOldPassWordEdt.addTextChangedListener(this);
         mNewPassWordEdt.setFilters(new InputFilter[]{this, new InputFilter.LengthFilter(PASSWORD_MAX_LEN)});
@@ -70,7 +67,6 @@ public class ModifyPasswordActivity extends BaseActivity implements TextWatcher,
     protected void onDestroy() {
         super.onDestroy();
         RxBus.getInstance().unsubscribe(mModifyPasswordSubscription);
-        RxBus.getInstance().unsubscribe(mLoginSubscription);
     }
 
     @OnClick(R.id.confirm)

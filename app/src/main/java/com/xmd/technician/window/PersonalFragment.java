@@ -45,6 +45,7 @@ public class PersonalFragment extends BaseFragment{
     @Bind(R.id.account_balance) TextView mAccountMoney;
     @Bind(R.id.unread_count) TextView mUnreadCommentCount;
     @Bind(R.id.comment_count) TextView mCommentCount;
+    @Bind(R.id.description_line) View mDesLine;
 
     private Subscription mTechInfoSubscription;
     private Subscription mCommentOrderSubscription;
@@ -96,7 +97,15 @@ public class PersonalFragment extends BaseFragment{
     }
 
     private void initView(){
-        mDescription.setText(mTechInfo.description);
+        if(TextUtils.isEmpty(mTechInfo.description)){
+            mDescription.setVisibility(View.GONE);
+            mDesLine.setVisibility(View.INVISIBLE);
+        }else {
+            mDescription.setVisibility(View.VISIBLE);
+            mDesLine.setVisibility(View.VISIBLE);
+            mDescription.setText(mTechInfo.description);
+        }
+
         mTechName.setText(mTechInfo.userName);
         if(!mTechInfo.status.equals("uncert")){
             mClubName.setText(mTechInfo.clubName);
@@ -146,6 +155,8 @@ public class PersonalFragment extends BaseFragment{
                 }
             }
 
+            if(mTechInfo != null) mTechInfo.status = result.respData.techStatus;
+
             if(result.respData.techStatus.equals("busy")){
                 mWorkStatus.setImageResource(R.drawable.icon_busy);
             }else {
@@ -168,6 +179,15 @@ public class PersonalFragment extends BaseFragment{
 
     @OnClick(R.id.time_item)
     public void onWorkTimeItemClick(){
+        if(mTechInfo == null) return;
+        if(mTechInfo.status.equals("valid")||mTechInfo.status.equals("reject")){
+            ((BaseActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
+            return;
+        }else if(mTechInfo.status.equals("uncert")){
+            ((BaseActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_wait_check));
+            return;
+        }
+
         Intent intent = new Intent(getActivity(), WorkTimeActivity.class);
         startActivity(intent);
     }

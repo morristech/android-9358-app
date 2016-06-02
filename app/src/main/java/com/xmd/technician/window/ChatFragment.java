@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     protected List<EMConversation> mConversationList = new ArrayList<>();
     private Filter mFilter;
     private Subscription mGetConversationListSubscription;
+    private TextView mSearchView;
 
     @Nullable
     @Override
@@ -56,6 +58,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         initTitleView(ResourceUtils.getString(R.string.message_fragment_title));
         View searchView = getActivity().getLayoutInflater().inflate(R.layout.search_bar, mHeadContainer, false);
         mHeadContainer.addView(searchView);
+        mSearchView = (TextView) searchView.findViewById(R.id.search_word);
         ((TextView)searchView.findViewById(R.id.search_word)).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -96,6 +99,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Override
     public void onResume() {
         super.onResume();
+        if(mSearchView != null && !TextUtils.isEmpty(mSearchView.getText())) mSearchView.setText("");
         onRefresh();
     }
 
@@ -103,6 +107,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if(!hidden){
+            if(mSearchView != null && !TextUtils.isEmpty(mSearchView.getText())) mSearchView.setText("");
             onRefresh();
         }
     }
@@ -157,7 +162,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
 
     public Filter getFilter(){
         if(mFilter == null){
-            mFilter = new ConversationFilter(mData);
+            mFilter = new ConversationFilter(mConversationList);
         }
         return mFilter;
     }
@@ -176,10 +181,10 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             if (mOriginalValues == null) {
                 mOriginalValues = new ArrayList<EMConversation>();
             }
-            if (prefix == null || prefix.length() == 0) {
+            /*if (prefix == null || prefix.length() == 0) {
                 results.values = mConversationList;
                 results.count = mConversationList.size();
-            } else {
+            } else*/ {
                 String prefixString = prefix.toString();
                 final int count = mOriginalValues.size();
                 final ArrayList<EMConversation> newValues = new ArrayList<EMConversation>();

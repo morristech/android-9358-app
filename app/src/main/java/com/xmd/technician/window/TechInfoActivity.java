@@ -26,6 +26,7 @@ import com.xmd.technician.common.Util;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
+import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.bean.AlbumInfo;
@@ -73,16 +74,15 @@ public class TechInfoActivity extends BaseActivity {
     private Subscription mUpdateTechInfoSubscription;
     private Subscription mUploadAvatarSubscription;
     private Subscription mUploadAlbumSubscription;
-    private Subscription mDeleteAlbumSubscription;
+//    private Subscription mDeleteAlbumSubscription;
 
     private List<AlbumInfo> mAlbums;
     private TechDetailInfo mTechInfo;
-    private String mPhoneNum;
 
     // 籍贯
     private AlbumAdapter mAdapter;
     private PhotoGridAdapter mPhotoAdapter;
-
+    private boolean mViewInitialized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,11 +176,7 @@ public class TechInfoActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGetTechInfoSubscription);
-        RxBus.getInstance().unsubscribe(mUpdateTechInfoSubscription);
-        RxBus.getInstance().unsubscribe(mUploadAlbumSubscription);
-        //RxBus.getInstance().unsubscribe(mDeleteAlbumSubscription);
-        RxBus.getInstance().unsubscribe(mUploadAvatarSubscription);
+        RxBus.getInstance().unsubscribe(mGetTechInfoSubscription,mUpdateTechInfoSubscription, mUploadAlbumSubscription, mUploadAvatarSubscription);
     }
 
     private class MyLayoutManager extends GridLayoutManager{
@@ -205,7 +201,6 @@ public class TechInfoActivity extends BaseActivity {
         if(result.respData != null){
             mAlbums = result.respData.albums;
             mTechInfo = result.respData.info;
-            mPhoneNum = result.respData.phoneNum;
 
             mAdapter.refreshDataSet(mAlbums);
             mPhotoAdapter.refreshDataSet(mAlbums);
@@ -214,16 +209,23 @@ public class TechInfoActivity extends BaseActivity {
     }
 
     private void initView(){
-        mUserName.setText(mTechInfo.name);
-        mSerialNo.setText(mTechInfo.serialNo);
-        mPhoneNumber.setText(mPhoneNum);
-        mDescription.setText(mTechInfo.description);
-        mNativePlace.setText(mTechInfo.province + " "+ mTechInfo.city);
+        if(!mViewInitialized){
+            mViewInitialized = true;
+            mUserName.setText(mTechInfo.name);
+            mSerialNo.setText(mTechInfo.serialNo);
+            mPhoneNumber.setText(mTechInfo.phoneNum);
+            mDescription.setText(mTechInfo.description);
+            if(TextUtils.isEmpty(mTechInfo.province) || mTechInfo.equals("null")){
+                mNativePlace.setText(getString(R.string.edit_activity_select_native_place));
+            }else {
+                mNativePlace.setText(mTechInfo.province + " "+ mTechInfo.city);
+            }
 
-        if (mTechInfo.gender.equals("male")){
-            mMale.setChecked(true);
-        }else {
-            mFemale.setChecked(true);
+            if (mTechInfo.gender.equals("male")){
+                mMale.setChecked(true);
+            }else {
+                mFemale.setChecked(true);
+            }
         }
 
         Glide.with(this).load(mTechInfo.avatarUrl).into(mAvatar);

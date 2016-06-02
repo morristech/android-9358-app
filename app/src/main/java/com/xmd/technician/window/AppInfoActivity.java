@@ -27,7 +27,7 @@ public class AppInfoActivity extends BaseActivity {
         setTitle(R.string.app_info_title);
         setBackVisible(true);
 
-        mAppVersion.setText(getResources().getString(R.string.app_name) + AppConfig.getAppVersionCode());
+        mAppVersion.setText(getResources().getString(R.string.app_info_name) + AppConfig.getAppVersionNameAndCode());
     }
 
     @OnClick(R.id.check_update)

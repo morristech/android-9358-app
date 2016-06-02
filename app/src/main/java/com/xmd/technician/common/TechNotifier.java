@@ -104,7 +104,7 @@ public class TechNotifier {
     
     void cancelNotificaton() {
         if (notificationManager != null)
-            notificationManager.cancel(notifyID);
+            notificationManager.cancelAll();
     }
 
     /**

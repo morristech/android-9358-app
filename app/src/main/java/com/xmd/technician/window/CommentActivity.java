@@ -12,6 +12,7 @@ import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Bind(R.id.comment_list) RecyclerView mListView;
     @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.empty_view_widget) EmptyView mEmptyView;
 
     private CommentAdapter mAdapter;
     private Subscription mCommentSubscription;
@@ -46,6 +48,9 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
         mListView.setAdapter(mAdapter);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMain);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        mEmptyView.setEmptyPic(R.drawable.empty);
+        mEmptyView.setEmptyTip("");
 
         mCommentSubscription = RxBus.getInstance().toObservable(CommentResult.class).subscribe(
                 commentResult -> handleCommentResult(commentResult)
@@ -76,5 +81,10 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
     private void handleCommentResult(CommentResult result){
         mSwipeRefreshLayout.setRefreshing(false);
         mAdapter.setData(result.respData);
+        if(result.respData == null || result.respData.isEmpty()){
+            mEmptyView.setStatus(EmptyView.Status.Empty);
+        }else {
+            mEmptyView.setStatus(EmptyView.Status.Gone);
+        }
     }
 }

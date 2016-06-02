@@ -44,7 +44,7 @@ public class UploadAvatarActivity extends BaseActivity {
         setContentView(R.layout.activity_upload_avatar);
 
         ButterKnife.bind(this);
-        setTitle(R.string.login);
+        setTitle(R.string.register);
         setBackVisible(true);
 
         mSubscription = RxBus.getInstance().toObservable(AvatarResult.class).subscribe(

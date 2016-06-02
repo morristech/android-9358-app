@@ -28,7 +28,7 @@ public class SettingActivity extends BaseActivity {
         setTitle(R.string.personal_fragment_layout_setting);
         setBackVisible(true);
 
-        mAppVersion.setText("v"+AppConfig.getAppVersionCode());
+        mAppVersion.setText("v"+AppConfig.getAppVersionNameAndCode());
     }
 
     @OnClick(R.id.settings_activity_about_us)

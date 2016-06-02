@@ -158,6 +158,7 @@ public class WorkTimeActivity extends BaseActivity {
         params.put(RequestConstant.KEY_BEGIN_TIME, mBeginTime);
         params.put(RequestConstant.KEY_END_TIME, mEndTime);
         params.put(RequestConstant.KEY_ID, mCalendarId);
+        params.put(RequestConstant.KEY_END_DAY, mEndDay);
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPDATE_WORK_TIME, params);
     }

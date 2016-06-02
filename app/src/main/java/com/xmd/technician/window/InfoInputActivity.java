@@ -42,7 +42,7 @@ public class InfoInputActivity extends BaseActivity implements TextWatcher{
         setContentView(R.layout.activity_info_input);
 
         ButterKnife.bind(this);
-        setTitle(R.string.login);
+        setTitle(R.string.register);
         setBackVisible(true);
 
         mPhoneNum = getIntent().getExtras().getString(EXTRA_PHONE_NUM);

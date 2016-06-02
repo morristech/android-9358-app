@@ -108,6 +108,7 @@ public class PaidCouponDetailActivity extends BaseActivity {
 
         mTvTipsExpire.setText(String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_expire), couponInfo.baseCommission));
         mTvTipsVerified.setText(String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_verified), couponInfo.commission));
+        mShare.setEnabled(true);
     }
 
     private String generateQrCodeUrl(){

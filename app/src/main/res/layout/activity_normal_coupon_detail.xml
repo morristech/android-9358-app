@@ -52,6 +52,7 @@
                 android:layout_marginLeft="@dimen/inter_space"
                 android:layout_marginRight="@dimen/inter_space"
                 android:layout_marginTop="@dimen/inter_space"
+                android:enabled="false"
                 android:textSize="@dimen/normal_coupon_detail_activity_share_button_text_size"
                 android:background="@drawable/selector_operation_positive_button_bg"
                 android:text="@string/paid_coupon_detail_share"

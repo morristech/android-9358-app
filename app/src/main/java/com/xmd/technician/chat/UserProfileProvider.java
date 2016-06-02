@@ -103,8 +103,6 @@ public class UserProfileProvider {
      * @param user
      */
     synchronized private void saveContact(ChatUser user){
-        getChatUserList().put(user.getUsername(), user);
-
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_ID, user.getUsername());
@@ -124,6 +122,7 @@ public class UserProfileProvider {
     public void saveContactInfo(ChatUser user){
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if(chatUser == null || !chatUser.equals(user)){
+            getChatUserList().put(user.getUsername(), user);
             ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
                 @Override
                 public void run() {
@@ -140,6 +139,7 @@ public class UserProfileProvider {
     public void updateContactInfo(ChatUser user){
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if(chatUser == null || !chatUser.exactlyEquals(user)){
+            getChatUserList().put(user.getUsername(), user);
             ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
                 @Override
                 public void run() {
