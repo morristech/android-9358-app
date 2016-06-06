@@ -83,7 +83,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
 
                 View targetView = mCallback.findTargetView(x, y);
                 //当前需要显示菜单的view和上一次显示菜单的view不是同一个;
-                if(mTargetView != null && !targetView.equals(mTargetView)){
+                if(mTargetView != null && !mTargetView.equals(targetView)){
                     //隐藏已经打开
                     smoothHorizontalExpandOrCollapse(DEFAULT_DURATION / 2);
                     mTargetView = null;

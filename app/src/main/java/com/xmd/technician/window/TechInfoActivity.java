@@ -215,7 +215,7 @@ public class TechInfoActivity extends BaseActivity {
             mSerialNo.setText(mTechInfo.serialNo);
             mPhoneNumber.setText(mTechInfo.phoneNum);
             mDescription.setText(mTechInfo.description);
-            if(TextUtils.isEmpty(mTechInfo.province) || mTechInfo.equals("null")){
+            if(TextUtils.isEmpty(mTechInfo.province) || mTechInfo.province.equals("null")){
                 mNativePlace.setText(getString(R.string.edit_activity_select_native_place));
             }else {
                 mNativePlace.setText(mTechInfo.province + " "+ mTechInfo.city);

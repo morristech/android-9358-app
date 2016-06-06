@@ -357,10 +357,10 @@ public class RequestController extends AbstractController {
                 RxBus.getInstance().post(new OrderManageResult(params.get(RequestConstant.KEY_ID)));
             }
 
-            @Override
+            /*@Override
             protected void postError(String errorMsg) {
                 Logger.v("manageOrder: " + errorMsg);
-            }
+            }*/
         });
 
     }

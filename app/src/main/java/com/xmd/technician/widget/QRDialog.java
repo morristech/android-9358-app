@@ -45,7 +45,7 @@ public class QRDialog extends Dialog {
                 dismiss();
             }
         });
-        setCancelable(false);
+        setCancelable(true);
         mQRImageView=(ImageView)findViewById(R.id.home_fragment_qr_code_image);
         if(mShowAsUrl){
             Glide.with(getContext()).load(mShowText).into(mQRImageView);

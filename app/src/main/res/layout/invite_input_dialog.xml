@@ -24,6 +24,8 @@
         android:id="@+id/invite_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_button_height"
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
         android:background="@android:color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -33,7 +35,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginLeft="@dimen/personal_padding"
             android:background="@android:drawable/editbox_background_normal"
             android:gravity="center"
             android:inputType="number"
@@ -48,14 +49,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="@dimen/personal_margin"
-            android:layout_marginRight="@dimen/personal_padding"
             android:background="@android:drawable/editbox_background_normal"
             android:gravity="center"
             android:inputType="number"
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontBody"
             android:textColorHint="@color/colorRemark"
-            android:hint="@string/invite_tech"/>
+            android:hint="@string/invite_tech"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <View

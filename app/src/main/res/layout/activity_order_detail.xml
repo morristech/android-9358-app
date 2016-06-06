@@ -180,7 +180,9 @@
                     android:layout_height="@dimen/line_divide_height"
                     android:background="@color/colorLineDivide" />
 
-                <LinearLayout style="@style/order_detail_section_item_layout">
+                <LinearLayout
+                    android:id="@+id/paid_order_amount_container"
+                    style="@style/order_detail_section_item_layout">
 
                     <TextView
                         style="@style/order_detail_section_item_description_text_view"
@@ -194,6 +196,7 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/paid_amount_line"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/line_divide_height"
                     android:layout_marginLeft="@dimen/personal_margin"

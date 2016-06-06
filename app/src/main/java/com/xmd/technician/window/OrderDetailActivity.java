@@ -73,6 +73,8 @@ public class OrderDetailActivity extends BaseActivity {
     LinearLayout mOperationLayout;
     @Bind(R.id.comment_section) LinearLayout mCommentSection;
     @Bind(R.id.remain_time_section) LinearLayout mRemainTimeSection;
+    @Bind(R.id.paid_order_amount_container) View mPaidAmountContainer;
+    @Bind(R.id.paid_amount_line) View mPaidAmountLine;
 
     @Bind(R.id.negative)     Button mNegative;
     @Bind(R.id.positive) Button mPositive;
@@ -133,6 +135,10 @@ public class OrderDetailActivity extends BaseActivity {
             mCommentSection.setVisibility(View.GONE);
         }
 
+        if(!Constant.ORDER_TYPE_PAID.equals(mOrder.orderType)){
+            mPaidAmountContainer.setVisibility(View.GONE);
+            mPaidAmountLine.setVisibility(View.GONE);
+        }
     }
 
     private void setupStepView() {

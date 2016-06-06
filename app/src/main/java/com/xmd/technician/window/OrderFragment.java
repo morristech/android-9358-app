@@ -66,7 +66,7 @@ public class OrderFragment extends BaseListFragment<Order> {
         );
 
         mOrderManageSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
-                orderManageResult -> onRefresh()
+                orderManageResult -> refreshData()
         );
     }
 
@@ -135,10 +135,30 @@ public class OrderFragment extends BaseListFragment<Order> {
 
     @Override
     protected void dispatchRequest() {
+        if(mPages != 1){
+            mPages = mListAdapter.getItemCount()/PAGE_SIZE + 1;
+            if(mListAdapter.getItemCount()%PAGE_SIZE > 1){
+                mPages++;
+            }
+        }
+
         Map<String,String> params = new HashMap<>();
         params.put(RequestConstant.KEY_FILTER_ORDER, mFilterOrder);
         params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ORDER_LIST, params);
+    }
+
+    protected void refreshData() {
+        mIsLoadingMore = false;
+        mPages = PAGE_START + 1;
+
+        Map<String,String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_FILTER_ORDER, mFilterOrder);
+        params.put(RequestConstant.KEY_PAGE, "1");
+        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(mListAdapter.getItemCount() - 1));
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ORDER_LIST, params);
+
+
     }
 }

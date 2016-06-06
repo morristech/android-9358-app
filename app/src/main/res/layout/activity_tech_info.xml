@@ -277,7 +277,7 @@
                     <EditText
                         android:id="@+id/phone_number"
                         style="@style/edit_activity_edit_text_style"
-                        android:inputType="phone"
+                        android:inputType="number"
                         android:maxLength="11"/>
 
                 </LinearLayout>
@@ -306,6 +306,7 @@
                         android:layout_marginBottom="@dimen/search_margin"
                         android:lineSpacingExtra="@dimen/search_margin"
                         android:gravity="left"
+                        android:maxLength="200"
                         android:background="@null"
                         android:textSize="@dimen/fontBody"
                         android:textColor="@color/colorBody"

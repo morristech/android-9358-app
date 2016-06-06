@@ -202,6 +202,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 itemHolder.mOperation.setVisibility(View.VISIBLE);
             }
 
+            if(Constant.ORDER_TYPE_PAID.equals(order.orderType)){
+                itemHolder.mPaidOrderAmountContainer.setVisibility(View.VISIBLE);
+            }else {
+                itemHolder.mPaidOrderAmountContainer.setVisibility(View.INVISIBLE);
+            }
+
             itemHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(order));
         } else if (holder instanceof CouponListItemViewHolder) {
             Object obj = mData.get(position);
@@ -371,6 +377,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         @Bind(R.id.operation) LinearLayout mOperation;
         @Bind(R.id.negative) Button mNegative;
         @Bind(R.id.positive) Button mPositive;
+        @Bind(R.id.paid_order_container) View mPaidOrderAmountContainer;
 
         public boolean isOperationVisible;
 
