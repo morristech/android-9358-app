@@ -181,16 +181,17 @@ public class WorkTimeActivity extends BaseActivity {
             if (mBeginTime == null || mEndTime == null) {
                 mWorkTime.setText(workTimeResult.respData.workTimeRange);
             } else {
-                if ("1".equals(mEndDay)) {
+                if (mBeginTime.equals(mEndTime)) {
                     mDay = "次日";
-                    if (mBeginTime.equals(mEndTime)) {
-                        mWorkTime.setText("24小时");
-                    } else {
-                        mWorkTime.setText(mBeginTime + "-次日" + mEndTime);
-                    }
+                    mWorkTime.setText("24小时");
                 } else {
-                    mDay = "当日";
-                    mWorkTime.setText(mBeginTime + "-" + mEndTime);
+                    if ("1".equals(mEndDay)) {
+                        mDay = "次日";
+                        mWorkTime.setText(mBeginTime + "-次日" + mEndTime);
+                    } else {
+                        mDay = "当日";
+                        mWorkTime.setText(mBeginTime + "-" + mEndTime);
+                    }
                 }
             }
 

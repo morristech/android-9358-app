@@ -187,6 +187,7 @@
     <string name="order_detail_create_time">下单时间</string>
     <string name="order_detail_order_comment">客户评价</string>
     <string name="order_detail_order_reward">打赏金额</string>
+    <string name="order_detail_service_price_pending">待定</string>
     <string name="order_detail_delete_order_confirm">确认删除订单</string>
     <string name="order_detail_reject_order_confirm">确认拒绝订单</string>
     <string name="order_detail_failure_order_confirm">确认失效订单</string>

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.bean.CommentInfo;
 import com.xmd.technician.widget.CircleImageView;
@@ -27,12 +28,26 @@ import butterknife.ButterKnife;
  * Created by sdcm on 16-3-28.
  */
 public class CommentAdapter extends RecyclerView.Adapter{
+    private static final int TYPE_COMMENT_ITEM = 0;
+    private static final int TYPE_FOOTER = 99;
 
     List<CommentInfo> mCommentList = new ArrayList<>();
     private Context mContext;
+    private boolean mIsNoMore = false;
+
+    private View.OnClickListener mFooterClickListener;
 
     public CommentAdapter(Context context){
         mContext = context;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position < mCommentList.size()){
+            return TYPE_COMMENT_ITEM;
+        }else {
+            return TYPE_FOOTER;
+        }
     }
 
     public void setData(List<CommentInfo> list){
@@ -48,10 +63,23 @@ public class CommentAdapter extends RecyclerView.Adapter{
         }
     }
 
+    public void setIsNoMore(boolean isNoMore) {
+        mIsNoMore = isNoMore;
+    }
+
+    public void setOnFooterClickListener(View.OnClickListener listener){
+        mFooterClickListener = listener;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent,false);
-        return new CommentViewHolder(view);
+        if(TYPE_COMMENT_ITEM == viewType){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent,false);
+            return new CommentViewHolder(view);
+        }else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
+            return new ListFooterHolder(view);
+        }
     }
 
     @Override
@@ -70,15 +98,34 @@ public class CommentAdapter extends RecyclerView.Adapter{
                 ForegroundColorSpan span = new ForegroundColorSpan(mContext.getResources().getColor(R.color.colorMain));
                 spanString.setSpan(span, index, index + String.valueOf(commentInfo.rewardAmount).length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
                 commentViewHolder.mRewardAmount.setText(spanString);
+            }else {
+                commentViewHolder.mRewardAmount.setText("");
             }
 
             Glide.with(mContext).load(commentInfo.userInfo.imageUrl).into(commentViewHolder.mAvatar);
+        } else if (holder instanceof ListFooterHolder) {
+            ListFooterHolder footerHolder = (ListFooterHolder) holder;
+            String desc = ResourceUtils.getString(R.string.order_list_item_loading);
+            if (mCommentList == null || mCommentList.isEmpty()) {
+                desc = ResourceUtils.getString(R.string.order_list_item_empty);
+                footerHolder.itemFooter.setOnClickListener(null);
+            } else if (mIsNoMore) {
+                desc = ResourceUtils.getString(R.string.order_list_item_no_more);
+                footerHolder.itemFooter.setOnClickListener(null);
+            } else {
+                footerHolder.itemFooter.setOnClickListener(v -> {
+                    if(mFooterClickListener != null){
+                        mFooterClickListener.onClick(v);
+                    }
+                });
+            }
+            footerHolder.itemFooter.setText(desc);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mCommentList.size();
+        return mCommentList.size() + 1;
     }
 
     public CommentInfo getItem(int position){
@@ -99,6 +146,17 @@ public class CommentAdapter extends RecyclerView.Adapter{
         @Bind(R.id.reward_amount) TextView mRewardAmount;
 
         public CommentViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    public class ListFooterHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.item_footer)
+        TextView itemFooter;
+
+        public ListFooterHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

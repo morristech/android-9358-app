@@ -9,7 +9,7 @@ public class CommentOrderRedPkResutlt extends BaseResult{
     public class Content{
         public int unreadCommentCount;
         public int allCommentCount;
-        public int accountAmount;
+        public float accountAmount;
         public int orderCount;
         public String techStatus;
         public String techStatusDesc;

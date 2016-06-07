@@ -101,4 +101,6 @@ public class MsgDef {
     public static final int MSG_DEF_SYSTEM_NOTICE_NOTIFY = 0x0033;
 
     public static final int MSG_DEF_SORT_ALBUM = 0x0034;
+
+    public static final int MSG_DEF_HIDE_ORDER = 0x0035;
 }

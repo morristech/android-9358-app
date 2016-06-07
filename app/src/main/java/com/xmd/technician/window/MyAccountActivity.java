@@ -58,10 +58,10 @@ public class MyAccountActivity extends BaseActivity {
 
     private void initView(AccountMoneyResult result){
         if(result.respData != null){
-            mCustomerAmount.setText(String.valueOf(result.respData.rewardMoney));
-            mCouponAmount.setText(String.valueOf(result.respData.redPack));
-            mClockAmount.setText(String.valueOf(result.respData.paidMoney));
-            mPaidOrderAmount.setText(String.valueOf(result.respData.orderMoney));
+            mCustomerAmount.setText(String.format("%1.2f",result.respData.rewardMoney));
+            mCouponAmount.setText(String.format("%1.2f",result.respData.redPack));
+            mClockAmount.setText(String.format("%1.2f",result.respData.paidMoney));
+            mPaidOrderAmount.setText(String.format("%1.2f",result.respData.orderMoney));
 
             if(result.respData.withdrawal.equals("Y")){
                 //mClockConsumeBtn.setEnabled(true);

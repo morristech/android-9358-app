@@ -8,10 +8,10 @@ public class AccountMoneyResult extends BaseResult {
     public Content respData;
 
     public class Content{
-        public int rewardMoney;
-        public int redPack;
-        public int paidMoney;
-        public int orderMoney;
+        public float rewardMoney;
+        public float redPack;
+        public float paidMoney;
+        public float orderMoney;
         public String withdrawal;
     }
 }

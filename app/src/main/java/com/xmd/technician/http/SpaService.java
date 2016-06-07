@@ -96,7 +96,7 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_COMMENT_LIST)
-    Call<CommentResult> getCommentList(@Field(RequestConstant.KEY_PAGE_NUMBER) String pageNumber,
+    Call<CommentResult> getCommentList(@Field(RequestConstant.KEY_PAGE) String pageNumber,
                                        @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
                                        @Field(RequestConstant.KEY_SORT_TYPE) String sortType,
                                        @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
@@ -154,6 +154,12 @@ public interface SpaService {
                                  @Field(RequestConstant.KEY_PROCESS_TYPE) String processType,
                                  @Field(RequestConstant.KEY_ID) String id,
                                  @Field(RequestConstant.KEY_REASON) String reason);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_HIDE_ORDER)
+    Call<BaseResult> hideOrder(@Field(RequestConstant.KEY_ORDER_ID) String orderId,
+                               @Field(RequestConstant.KEY_TOKEN) String userToken,
+                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_ICODE)

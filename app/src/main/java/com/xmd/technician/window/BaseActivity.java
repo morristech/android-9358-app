@@ -35,6 +35,7 @@ public class BaseActivity extends AppCompatActivity {
     protected TextView mToolbarRight;
     protected Toolbar mToolbar;
     private ProgressDialog mProgressDialog;
+    private Toast mToast;
 
     private Subscription mLogoutSubscription;
     private Subscription mTokenExpiredSubscription;
@@ -149,7 +150,13 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void makeShortToast(String str){
-        Toast.makeText(TechApplication.getAppContext(), str, Toast.LENGTH_SHORT).show();
+        if(mToast == null){
+            mToast = Toast.makeText(TechApplication.getAppContext(), str, Toast.LENGTH_SHORT);
+        }else {
+            mToast.setText(str);
+            mToast.setDuration(Toast.LENGTH_SHORT);
+        }
+        mToast.show();
     }
 
     protected void showProgressDialog(String message){

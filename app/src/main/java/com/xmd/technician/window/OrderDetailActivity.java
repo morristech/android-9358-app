@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -124,7 +125,7 @@ public class OrderDetailActivity extends BaseActivity {
         mOrderTime.setText(mOrder.formatAppointTime);
 
         mOrderService.setText(mOrder.serviceName);
-        mServicePrice.setText(mOrder.servicePrice);
+        mServicePrice.setText(TextUtils.isEmpty(mOrder.servicePrice)?getString(R.string.order_detail_service_price_pending) : mOrder.servicePrice);
         mCreateTime.setText(mOrder.formatCreateTime);
 
         if (Constant.ORDER_STATUS_COMPLETE.equals(mOrder.status)) {

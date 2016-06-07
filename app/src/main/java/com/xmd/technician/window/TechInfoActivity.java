@@ -83,6 +83,7 @@ public class TechInfoActivity extends BaseActivity {
     private AlbumAdapter mAdapter;
     private PhotoGridAdapter mPhotoAdapter;
     private boolean mViewInitialized = false;
+    private SelectPlaceDialog mSelectPlaceDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,23 +243,26 @@ public class TechInfoActivity extends BaseActivity {
             return;
         }
 
-        Dialog dialog = new SelectPlaceDialog(this, R.style.default_dialog_style, mTechInfo.province, mTechInfo.city) {
-            @Override
-            public void onSelectConfirmMethod() {
-                dismiss();
-                mTechInfo.provinceCode = mCurrentProvinceCode;
-                mTechInfo.province = mCurrentProvinceName;
-                mTechInfo.cityCode = mCurrentCityCode;
-                mTechInfo.city = mCurrentCityName;
-                mNativePlace.setText(mTechInfo.province + " "+ mTechInfo.city);
-            }
-        };
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+        if(mSelectPlaceDialog == null){
+            mSelectPlaceDialog = new SelectPlaceDialog(this, R.style.default_dialog_style, mTechInfo.province, mTechInfo.city) {
+                @Override
+                public void onSelectConfirmMethod() {
+                    dismiss();
+                    mNativePlace.setText(mCurrentProvinceName + " "+ mCurrentCityName);
+                }
+            };
+            mSelectPlaceDialog.setCanceledOnTouchOutside(false);
+        }
+
+        mSelectPlaceDialog.show();
     }
 
     @OnClick(R.id.toolbar_right)
     public void updateTechInfo(){
+        if(mTechInfo == null){
+            return;
+        }
+
         String cacheName = mUserName.getText().toString();
         if (TextUtils.isEmpty(cacheName)) {
             makeShortToast("姓名不能为空...");
@@ -269,7 +273,13 @@ public class TechInfoActivity extends BaseActivity {
         mTechInfo.serialNo = mSerialNo.getText().toString();
         mTechInfo.description = mDescription.getText().toString();
         mTechInfo.gender = mFemale.isChecked()? "female" : "male";
-        mTechInfo.phoneNum = mPhoneNumber.getText().toString();
+        //mTechInfo.phoneNum = mPhoneNumber.getText().toString();
+        if(mSelectPlaceDialog != null){
+            mTechInfo.provinceCode = mSelectPlaceDialog.mCurrentProvinceCode;
+            mTechInfo.province = mSelectPlaceDialog.mCurrentProvinceName;
+            mTechInfo.cityCode = mSelectPlaceDialog.mCurrentCityCode;
+            mTechInfo.city = mSelectPlaceDialog.mCurrentCityName;
+        }
 
         showProgressDialog("正在更新技师信息...");
         Map<String, String> params = new HashMap<>();

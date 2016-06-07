@@ -126,7 +126,7 @@ public class PersonalFragment extends BaseFragment{
     private void handleCommentOrderRedPk(CommentOrderRedPkResutlt result){
         if(result.respData != null){
             if(result.respData.accountAmount > 0){
-                mAccountMoney.setText(String.format("%d元", result.respData.accountAmount));
+                mAccountMoney.setText(String.format("%1.2f元", result.respData.accountAmount));
             }else {
                 mAccountMoney.setText("");
             }

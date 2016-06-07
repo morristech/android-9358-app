@@ -28,6 +28,7 @@ public class RequestConstant {
     public static final String URL_FEEDBACK_CREATE = BASE_URL + "/v2/tech/feedback/create";
     public static final String URL_GET_ORDER_LIST = BASE_URL + "/v2/tech/profile/orders";
     public static final String URL_MANAGE_ORDER = BASE_URL + "/v2/tech/profile/order/manage";
+    public static final String URL_HIDE_ORDER = BASE_URL + "/v2/tech/hide/order";
 
     public static final String URL_GETUI_BIND_CLIENT_ID = BASE_URL + "/v2/push/clientid";
     public static final String URL_GETUI_UNBIND_CLIENT_ID = BASE_URL + "/v2/push/unbind/clientid";
@@ -97,6 +98,7 @@ public class RequestConstant {
     public static final String KEY_ID = "id";
     public static final String KEY_IDS = "ids";
     public static final String KEY_REASON = "reason";
+    public static final String KEY_ORDER_ID = "orderId";
 
     public static final String KEY_COMMENTS = "comments";
     public static final String KEY_DAY_RANGE = "dayRange";

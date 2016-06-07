@@ -81,6 +81,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_MANAGE_ORDER:
                 doManageOrder((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_HIDE_ORDER:
+                hideOrder(msg.obj.toString());
+                break;
             case MsgDef.MSG_DEF_GET_ORDER_LIST:
                 doGetOrderList((Map<String, String>) msg.obj);
                 break;
@@ -296,7 +299,7 @@ public class RequestController extends AbstractController {
     private void getCommentList(Map<String, String> params){
         Call<CommentResult> call;
         if(params != null){
-            call = getSpaService().getCommentList(params.get(RequestConstant.KEY_PAGE_NUMBER),
+            call = getSpaService().getCommentList(params.get(RequestConstant.KEY_PAGE),
                     params.get(RequestConstant.KEY_PAGE_SIZE),
                     params.get(RequestConstant.KEY_SORT_TYPE),
                     RequestConstant.SESSION_TYPE,
@@ -363,6 +366,18 @@ public class RequestController extends AbstractController {
             }*/
         });
 
+    }
+
+    private void hideOrder(String orderId){
+        Call<BaseResult> call = getSpaService().hideOrder(orderId,
+                SharedPreferenceHelper.getUserToken(),RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+                RxBus.getInstance().post(new OrderManageResult(orderId));
+            }
+        });
     }
 
     private void getICode(Map<String, String> params){
