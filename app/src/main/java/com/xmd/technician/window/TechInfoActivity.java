@@ -59,7 +59,7 @@ public class TechInfoActivity extends BaseActivity {
     public static final int REQUEST_CODE_CROP_AVATAR = 3;
     public static final int REQUEST_CODE_CROP_ALBUM = 4;
 
-    @Bind(R.id.grid_view_container) PhotoGridView mAlbumContainer;
+    //@Bind(R.id.grid_view_container) PhotoGridView mAlbumContainer;
     @Bind(R.id.avatar) RoundImageView mAvatar;
     @Bind(R.id.user_name) TextView mUserName;
     @Bind(R.id.tech_number) TextView mSerialNo;
@@ -81,7 +81,7 @@ public class TechInfoActivity extends BaseActivity {
 
     // 籍贯
     private AlbumAdapter mAdapter;
-    private PhotoGridAdapter mPhotoAdapter;
+    //private PhotoGridAdapter mPhotoAdapter;
     private boolean mViewInitialized = false;
     private SelectPlaceDialog mSelectPlaceDialog;
 
@@ -139,7 +139,7 @@ public class TechInfoActivity extends BaseActivity {
         });
         helper.attachToRecyclerView(mAlbumListView);
 
-        mPhotoAdapter = new PhotoGridAdapter(this);
+        /*mPhotoAdapter = new PhotoGridAdapter(this);
         mAlbumContainer.setAdapter(mPhotoAdapter);
         mAlbumContainer.setOnItemClickListener((parent, view, position, id) -> {
             if(mPhotoAdapter.getItemViewType(position) == PhotoGridAdapter.TYPE_ADD){
@@ -157,7 +157,7 @@ public class TechInfoActivity extends BaseActivity {
                     }
                 }.show();
             }
-        });
+        });*/
 
         mGetTechInfoSubscription = RxBus.getInstance().toObservable(TechEditResult.class).subscribe(
                 techEditResult -> getTechInfoResult(techEditResult));
@@ -204,7 +204,7 @@ public class TechInfoActivity extends BaseActivity {
             mTechInfo = result.respData.info;
 
             mAdapter.refreshDataSet(mAlbums);
-            mPhotoAdapter.refreshDataSet(mAlbums);
+            //mPhotoAdapter.refreshDataSet(mAlbums);
             initView();
         }
     }

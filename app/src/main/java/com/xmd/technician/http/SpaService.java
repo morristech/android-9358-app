@@ -14,6 +14,7 @@ import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
 import com.xmd.technician.http.gson.CouponListResult;
+import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
@@ -170,6 +171,11 @@ public interface SpaService {
     Call<InviteCodeResult> submitInviteCode(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                             @Field(RequestConstant.KEY_INVITE_CODE) String inviteCode);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_QUIT_CLUB)
+    Call<QuitClubResult> quitClub(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                  @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_WORKTIME)

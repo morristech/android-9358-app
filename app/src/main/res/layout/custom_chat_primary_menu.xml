@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.xmd.technician.window.BrowserActivity">
 
     <include layout="@layout/toolbar" />
@@ -208,15 +209,13 @@
             </LinearLayout>
         </LinearLayout>
 
-        <GridView
+        <com.xmd.technician.widget.EmojiconMenu
             android:id="@+id/emojicon_menu_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/menu_layout"
             android:layout_marginTop="@dimen/search_margin"
-            android:visibility="gone"
-            android:numColumns="7"
-            android:stretchMode="columnWidth"
-            android:gravity="center_vertical"/>
+            android:layout_below="@+id/menu_layout"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 </RelativeLayout>

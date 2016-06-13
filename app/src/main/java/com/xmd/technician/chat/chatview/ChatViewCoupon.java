@@ -14,6 +14,7 @@ public class ChatViewCoupon extends BaseChatView{
 
     private TextView mCouponValue;
     private TextView mCouponPeriod;
+    private TextView mCouponType;
 
     public ChatViewCoupon(Context context, EMMessage.Direct direct) {
         super(context, direct);
@@ -29,6 +30,7 @@ public class ChatViewCoupon extends BaseChatView{
         findViewById(R.id.coupon_container).setVisibility(VISIBLE);
         mCouponValue = (TextView) findViewById(R.id.coupon_amount);
         mCouponPeriod = (TextView) findViewById(R.id.coupon_period);
+        mCouponType = (TextView) findViewById(R.id.coupon_type);
     }
 
     @Override
@@ -38,6 +40,7 @@ public class ChatViewCoupon extends BaseChatView{
         String[] str = content.split("<b>|</b>|<span>|</span>|<i>|</i>");
 
         try {
+            mCouponType.setText(str[1]);
             mCouponValue.setText(str[3]+str[4]);
             mCouponPeriod.setText(str[5]);
         }catch (IndexOutOfBoundsException e){

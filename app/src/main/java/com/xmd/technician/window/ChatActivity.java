@@ -16,15 +16,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.SimpleAdapter;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
-import com.hyphenate.util.DateUtils;
 import com.hyphenate.util.EasyUtils;
 import com.xmd.technician.Adapter.ChatListAdapter;
 import com.xmd.technician.R;
@@ -45,17 +42,13 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.ArrayBottomPopupWindow;
+import com.xmd.technician.widget.EmojiconMenu;
 import com.xmd.technician.widget.RewardConfirmDialog;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,7 +62,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Bind(R.id.et_sendmessage) EditText mSendMsgEd;
     @Bind(R.id.list_view) RecyclerView mMsgListView;
     @Bind(R.id.btn_face) View mFaceBtn;
-    @Bind(R.id.emojicon_menu_container) GridView mEmojiconMenuContainer;
+    @Bind(R.id.emojicon_menu_container) EmojiconMenu mEmojiconMenuContainer;
 
     private String mToChatUsername;
     private int mChatType = ChatConstant.CHATTYPE_SINGLE;
@@ -144,9 +137,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     protected void onNewIntent(Intent intent) {
         // 点击notification bar进入聊天页面，保证只有一个聊天页面
         String username = intent.getStringExtra(ChatConstant.EMCHAT_ID);
-        if (mToChatUsername.equals(username))
+        if (mToChatUsername.equals(username)) {
+            //刷新ui
+            if(mIsMessageListInited) {
+                mChatAdapter.refreshSelectLast();
+            }
             super.onNewIntent(intent);
-        else {
+        } else {
             finish();
             startActivity(intent);
         }
@@ -232,21 +229,15 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     private void initEmojicon(){
-        List<Map<String,Object>> list = new ArrayList<>();
-        Emojicon[] emojicons = DefaultEmojiconDatas.getData();
-        for(int i = 0;i < emojicons.length;i++){
-            Map<String,Object> item = new HashMap<>();
-            item.put("icon",emojicons[i].getIcon());
-            item.put("item",emojicons[i]);
-            list.add(item);
-        }
-        mEmojiconMenuContainer.setAdapter(new SimpleAdapter(this, list,android.R.layout.activity_list_item,new String[]{"icon"},new int[]{android.R.id.icon}));
-        mEmojiconMenuContainer.setOnItemClickListener((parent, view, position, id) -> {
-            Map<String, Object> item = (Map<String, Object>) parent.getAdapter().getItem(position);
-            int index = mSendMsgEd.getSelectionStart();
-            Editable edit = mSendMsgEd.getEditableText();
-            edit.insert(index,SmileUtils.getSmiledText(ChatActivity.this,((Emojicon)item.get("item")).getEmojiText()));
+        mEmojiconMenuContainer.setEmojiconMenuListener(new EmojiconMenu.EmojiconMenuListener() {
+            @Override
+            public void onEmojiconClicked(Emojicon emojicon) {
+                int index = mSendMsgEd.getSelectionStart();
+                Editable edit = mSendMsgEd.getEditableText();
+                edit.insert(index, SmileUtils.getSmiledText(ChatActivity.this,emojicon.getEmojiText()));
+            }
         });
+        mEmojiconMenuContainer.init(Arrays.asList(DefaultEmojiconDatas.getData()));
     }
 
     private void onConversationInit(){
@@ -316,7 +307,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         String s = mSendMsgEd.getText().toString();
         mSendMsgEd.setText("");
         if(TextUtils.isEmpty(s)){
-            makeShortToast("");
+            makeShortToast(getString(R.string.messages_cannot_be_empty));
         }else{
             sendTextMessage(s);
         }
@@ -450,34 +441,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     public void hideExtendMenuContainer() {
         mFaceBtn.setSelected(false);
         mEmojiconMenuContainer.setVisibility(View.GONE);
-    }
-
-    private void toggleEmojicon() {
-        if (mEmojiconMenuContainer.getVisibility() == View.VISIBLE) {
-            mEmojiconMenuContainer.setVisibility(View.GONE);
-        } else {
-            hideKeyboard();
-            mEmojiconMenuContainer.setVisibility(View.VISIBLE);
-        }
-        /*if (mChatExtendMenuContainer.getVisibility() == View.GONE) {
-            hideKeyboard();
-            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-                public void run() {
-                    mChatExtendMenuContainer.setVisibility(View.VISIBLE);
-                    //chatExtendMenu.setVisibility(View.GONE);
-                    mEmojiconMenuContainer.setVisibility(View.VISIBLE);
-                }
-            }, 50);
-        } else {
-            if (mEmojiconMenuContainer.getVisibility() == View.VISIBLE) {
-                mChatExtendMenuContainer.setVisibility(View.GONE);
-                mEmojiconMenuContainer.setVisibility(View.GONE);
-            } else {
-                //chatExtendMenu.setVisibility(View.GONE);
-                mEmojiconMenuContainer.setVisibility(View.VISIBLE);
-            }
-
-        }*/
     }
 
     //发送消息方法

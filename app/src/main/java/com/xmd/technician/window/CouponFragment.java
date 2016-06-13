@@ -53,6 +53,9 @@ public class CouponFragment extends BaseListFragment<CouponInfo> {
     }
 
     private void handleGetCopuonListResult(CouponListResult result) {
+        if(!isVisible()){
+            return;
+        }
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             onGetListFailed(result.msg);
         } else {

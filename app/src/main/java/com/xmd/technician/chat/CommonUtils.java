@@ -1,6 +1,7 @@
 package com.xmd.technician.chat;
 
 import android.content.Context;
+import android.text.Html;
 import android.text.TextUtils;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
@@ -79,10 +80,11 @@ public class CommonUtils {
                 }else{
                     digest = getString(context, R.string.dynamic_expression);
                 }
-            }else if(!TextUtils.isEmpty(message.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE,""))){
+            }/*else if(!TextUtils.isEmpty(message.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE,""))){
                 digest = txtBody.getMessage().replaceAll("<b>|</b>|</br>|<br>|<i>|</i>|<span>|</span>|<br/>","");
-            }else {
+            }*/else {
                 digest = txtBody.getMessage();
+                digest = Html.fromHtml(digest).toString();
             }
                 break;
             case FILE: //普通文件消息

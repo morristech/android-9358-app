@@ -52,6 +52,9 @@ public class WXShareUtil extends BaseShareUtil {
         WXMediaMessage wxMediaMessage = new WXMediaMessage(webpageObject);
         if (mShareThumbnail != null) {
             wxMediaMessage.setThumbImage(mShareThumbnail);
+            if(wxMediaMessage.thumbData.length > 1024*32){
+                wxMediaMessage.thumbData = null;
+            }
         }
         wxMediaMessage.title = mShareTitle;
         wxMediaMessage.description = mShareDescription;

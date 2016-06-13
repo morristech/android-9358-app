@@ -62,6 +62,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_COUPON_LIST,
                 MsgDef.MSG_DEF_GET_COUPON_INFO,
                 MsgDef.MSG_DEF_GET_PAID_COUPON_USER_DETAIL,
+                MsgDef.MSG_DEF_QUIT_CLUB
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

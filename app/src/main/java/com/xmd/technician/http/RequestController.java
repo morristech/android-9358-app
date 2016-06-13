@@ -27,6 +27,7 @@ import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
 import com.xmd.technician.http.gson.CouponListResult;
+import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.ServiceResult;
@@ -164,6 +165,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_GET_PAID_COUPON_USER_DETAIL:
                 doGetPaidCouponUserDetail((Map<String,String>)msg.obj);
+                break;
+            case MsgDef.MSG_DEF_QUIT_CLUB:
+                quitClub();
                 break;
         }
 
@@ -648,6 +652,17 @@ public class RequestController extends AbstractController {
             @Override
             protected void postResult(BaseResult result) {
                 RxBus.getInstance().post(new FeedbackResult());
+            }
+        });
+    }
+
+    private void quitClub(){
+        Call<QuitClubResult> call = getSpaService().quitClub(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<QuitClubResult>() {
+            @Override
+            protected void postResult(QuitClubResult result) {
+                RxBus.getInstance().post(result);
             }
         });
     }

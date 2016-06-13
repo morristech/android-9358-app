@@ -103,4 +103,6 @@ public class MsgDef {
     public static final int MSG_DEF_SORT_ALBUM = 0x0034;
 
     public static final int MSG_DEF_HIDE_ORDER = 0x0035;
+
+    public static final int MSG_DEF_QUIT_CLUB = 0x0036;
 }

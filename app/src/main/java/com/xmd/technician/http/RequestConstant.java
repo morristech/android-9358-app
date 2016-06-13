@@ -42,6 +42,8 @@ public class RequestConstant {
     public static final String URL_UPLOAD_AVATAR = BASE_URL + "/v1/profile/tech/avatar/base64/upload";
     public static final String URL_UPDATE_WORKSTATUS = BASE_URL + "/v1/profile/tech/status/update";
 
+    public static final String URL_QUIT_CLUB = BASE_URL + "/v2/tech/quit/club";
+
     public static final String URL_GET_SERVICE_LIST = BASE_URL + "/v2/tech/profile/service";
     public static final String URL_UPDATE_SERVICE_LIST = BASE_URL + "/v1/profile/tech/service/update";
     public static final String URL_GET_ACCOUNT_MONEY = BASE_URL + "/v1/profile/tech/money";

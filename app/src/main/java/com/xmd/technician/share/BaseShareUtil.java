@@ -11,6 +11,7 @@ import java.util.Map;
  */
 public class BaseShareUtil {
 
+    private static final int THUMB_SIZE = 181;
     protected String mShareUrl;
     protected String mShareTitle;
     protected String mShareDescription;
@@ -34,7 +35,10 @@ public class BaseShareUtil {
 
         Object thumbnail = params.get(Constant.PARAM_SHARE_THUMBNAIL);
         if (thumbnail != null) {
-            mShareThumbnail = (Bitmap) thumbnail;
+            Bitmap bmp = (Bitmap) thumbnail;
+            mShareThumbnail = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
+            bmp.recycle();
+            //mShareThumbnail = (Bitmap) thumbnail;
         }
     }
 }

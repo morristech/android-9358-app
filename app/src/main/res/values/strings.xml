@@ -47,6 +47,7 @@
     <string name="button_send">发送</string>
     <string name="search_hint">搜索</string>
     <string name="no_more_messages">没有更多的消息了</string>
+    <string name="messages_cannot_be_empty">发送内容不能为空，请重新输入</string>
 
     <!-- OrderFragment -->
     <string name="order_fragment_title">我的订单</string>
@@ -71,7 +72,11 @@
     <string name="settings_activity_modify_password">修改密码</string>
     <string name="settings_activity_suggest">意见反馈</string>
     <string name="setting_activity_layout_exit">退出登录</string>
+    <string name="setting_activity_quit_club">退出会所</string>
     <string name="logout_tips">退出后无法及时接收到相关消息，是否确认退出？</string>
+    <string name="quit_club_title">确认退出会所？</string>
+    <string name="quit_club_tips">退出会所后，将清空你的打赏、评论、订单和联系人信息。</string>
+    <string name="quit_club_success_tips">你已成功退出会所</string>
 
     <string name="feedback_hint">点击输入反馈...</string>
     <string name="feedback_result">已成功提交，感谢您的反馈！</string>
