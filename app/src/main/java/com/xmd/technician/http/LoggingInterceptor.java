@@ -1,5 +1,6 @@
 package com.xmd.technician.http;
 
+import com.xmd.technician.AppConfig;
 import com.xmd.technician.common.Logger;
 
 import java.io.IOException;
@@ -18,6 +19,9 @@ public class LoggingInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
 
         Request request = chain.request();
+        String hear = request.header("User-Agent");
+        request = request.newBuilder().header("User-Agent",hear + "-android"+ AppConfig.getAppVersionNameAndCode()).build();
+        //request.newBuilder().addHeader("User-Agent","android"+ AppConfig.getAppVersionNameAndCode()).build();
 
         long t1 = System.nanoTime();
        /* Logger.v("request:" + request.toString());

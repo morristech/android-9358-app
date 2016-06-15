@@ -199,7 +199,8 @@ public class OrderDetailActivity extends BaseActivity {
                 } else if (Constant.ORDER_STATUS_ACCEPT.equals(mOrder.status)) {
                     doManageOrder(Constant.ORDER_STATUS_COMPLETE, mOrder, "");
                 } else {
-                    doNegativeOrder(ResourceUtils.getString(R.string.order_detail_delete_order_confirm), Constant.ORDER_STATUS_DELETE, mOrder, "");
+                    //doNegativeOrder(ResourceUtils.getString(R.string.order_detail_delete_order_confirm), Constant.ORDER_STATUS_DELETE, mOrder, "");
+                    doHideOrder(ResourceUtils.getString(R.string.order_detail_delete_order_confirm), mOrder);
                 }
                 break;
             case R.id.action_telephone:
@@ -221,6 +222,17 @@ public class OrderDetailActivity extends BaseActivity {
         new AlertDialogBuilder(this)
                 .setMessage(description)
                 .setPositiveButton(ResourceUtils.getString(R.string.confirm), v -> doManageOrder(type, order,reason))
+                .setNegativeButton(ResourceUtils.getString(R.string.cancel), null)
+                .show();
+    }
+
+    private void doHideOrder(String description, Order order) {
+        new AlertDialogBuilder(this)
+                .setMessage(description)
+                .setPositiveButton(ResourceUtils.getString(R.string.confirm), v -> {
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_HIDE_ORDER, order.orderId);
+                    finish();
+                })
                 .setNegativeButton(ResourceUtils.getString(R.string.cancel), null)
                 .show();
     }
