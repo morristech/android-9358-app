@@ -304,7 +304,8 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_GETUI_UNBIND_CLIENT_ID)
-    Call<BaseResult> unbindGetuiClientId(@Field(RequestConstant.KEY_TOKEN) String userToken,
+    Call<BaseResult> unbindGetuiClientId(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                         @Field(RequestConstant.KEY_TOKEN) String userToken,
                                          @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                          @Field(RequestConstant.KEY_CLIENT_ID) String clientId);
 }

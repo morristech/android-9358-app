@@ -151,7 +151,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void makeShortToast(String str){
         if(mToast == null){
-            mToast = Toast.makeText(TechApplication.getAppContext(), str, Toast.LENGTH_SHORT);
+            mToast = Toast.makeText(TechApplication.getAppContext(), TextUtils.isEmpty(str)?getString(R.string.default_tips):str, Toast.LENGTH_SHORT);
         }else {
             mToast.setText(str);
             mToast.setDuration(Toast.LENGTH_SHORT);

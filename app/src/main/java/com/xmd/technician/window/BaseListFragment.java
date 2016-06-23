@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.xmd.technician.Adapter.ListRecycleViewAdapter;
 import com.xmd.technician.R;
-import com.xmd.technician.common.Utils;
-import com.xmd.technician.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +119,8 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
 
     protected void onGetListFailed(String errorMsg) {
         mSwipeRefreshLayout.setRefreshing(false);
-        Utils.makeShortToast(getActivity(), errorMsg);
+        //Utils.makeShortToast(getActivity(), errorMsg);
+        ((BaseActivity)getActivity()).makeShortToast(errorMsg);
     }
 
     @Override

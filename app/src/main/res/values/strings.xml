@@ -13,6 +13,8 @@
     <string name="login_signing">正在登录...</string>
     <string name="next_step">下一步</string>
     <string name="complete">完成</string>
+    <string name="default_tips">异常</string>
+    <string name="default_user_name">匿名用户</string>
 
     <string name="amount_unit_yuan">元</string>
 

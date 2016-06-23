@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,7 +88,7 @@ public class CommentAdapter extends RecyclerView.Adapter{
         if(holder instanceof CommentViewHolder){
             CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
             CommentInfo commentInfo = getItem(position);
-            commentViewHolder.mName.setText(commentInfo.userInfo.name);
+            commentViewHolder.mName.setText(TextUtils.isEmpty(commentInfo.userInfo.name)?ResourceUtils.getString(R.string.default_user_name):commentInfo.userInfo.name);
             commentViewHolder.mRatings.setRating(commentInfo.rate/20);
             commentViewHolder.mComment.setText(commentInfo.comment);
             commentViewHolder.mTime.setText(commentInfo.createdAt);

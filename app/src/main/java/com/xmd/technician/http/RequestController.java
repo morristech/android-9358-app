@@ -725,7 +725,8 @@ public class RequestController extends AbstractController {
      */
     private void doUnbindGetuiClientId() {
         Logger.v("start unbind client id");
-        Call<BaseResult> call = getSpaService().unbindGetuiClientId(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE, AppConfig.sClientId);
+        Call<BaseResult> call = getSpaService().unbindGetuiClientId(RequestConstant.USER_TYPE_TECH,
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE, AppConfig.sClientId);
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {

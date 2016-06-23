@@ -65,6 +65,7 @@ public class SettingActivity extends BaseActivity {
         new RewardConfirmDialog(SettingActivity.this,"",getString(R.string.logout_tips)){
             @Override
             public void onConfirmClick() {
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT);
                 super.onConfirmClick();
             }

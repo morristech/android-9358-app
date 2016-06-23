@@ -101,22 +101,30 @@ public class GetuiReceiver extends BroadcastReceiver {
                     }else if(ChatConstant.MESSAGE_CHAT_TEXT.equals(wrapperMsg.businessType)){
                         ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                         UserUtils.saveUser(user);
-                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_TEXT, user.getUsername());
+
+                        if(EMClient.getInstance().isConnected())
+                            TechApplication.getNotifier().showNotification(TechNotifier.CHAT_TEXT, user.getUsername());
 
                     }else if(ChatConstant.MESSAGE_CHAT_ORDER.equals(wrapperMsg.businessType)){
                         ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                         UserUtils.saveUser(user);
-                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_ORDER, user.getUsername());
+
+                        if(EMClient.getInstance().isConnected())
+                            TechApplication.getNotifier().showNotification(TechNotifier.CHAT_ORDER, user.getUsername());
 
                     }else if(ChatConstant.MESSAGE_CHAT_REWARD.equals(wrapperMsg.businessType)){
                         ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                         UserUtils.saveUser(user);
-                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_REWARD, user.getUsername());
+
+                        if(EMClient.getInstance().isConnected())
+                            TechApplication.getNotifier().showNotification(TechNotifier.CHAT_REWARD, user.getUsername());
 
                     }else if(ChatConstant.MESSAGE_CHAT_PAID_COUPON.equals(wrapperMsg.businessType)){
                         ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                         UserUtils.saveUser(user);
-                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_PAID_COUPON, user.getUsername());
+
+                        if(EMClient.getInstance().isConnected())
+                            TechApplication.getNotifier().showNotification(TechNotifier.CHAT_PAID_COUPON, user.getUsername());
 
                     }
                 }
