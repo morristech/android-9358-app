@@ -115,7 +115,7 @@ public class TechNotifier {
      * 
      * @param
      */
-    public synchronized void showNotification(int msgType, String emchatId) {
+    public synchronized void showNotification(int msgType, String emchatId, String nick) {
 
         /*EaseSettingsProvider settingsProvider = EaseUI.getInstance().getSettingsProvider();
         if(!settingsProvider.isMsgNotifyAllowed(message)){
@@ -124,7 +124,7 @@ public class TechNotifier {
         
         // 判断app是否在后台
         if (!EasyUtils.isAppRunningForeground(appContext)) {
-            sendNotification(msgType, emchatId);
+            sendNotification(msgType, emchatId, nick);
         }
         viberateAndPlayTone();
     }
@@ -134,13 +134,14 @@ public class TechNotifier {
      * This can be override by subclass to provide customer implementation
      * @param
      */
-    protected void sendNotification(int msgType, String emchatId) {
+    protected void sendNotification(int msgType, String emchatId, String nick) {
         try {
-            String username = emchatId;
-            ChatUser user = UserUtils.getUserInfo(emchatId);
+            String username = nick;
+            if(TextUtils.isEmpty(nick)) username = UserUtils.getUserNick(emchatId);
+            /*ChatUser user = UserUtils.getUserInfo(emchatId);
             if(user != null){
                 username = user.getNick();
-            }
+            }*/
             CharSequence notifyText = TextUtils.concat(username, " ", msgs[msgType % msgs.length]);
             
             PackageManager packageManager = appContext.getPackageManager();

@@ -89,7 +89,7 @@ public class CommentAdapter extends RecyclerView.Adapter{
             CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
             CommentInfo commentInfo = getItem(position);
             commentViewHolder.mName.setText(TextUtils.isEmpty(commentInfo.userInfo.name)?ResourceUtils.getString(R.string.default_user_name):commentInfo.userInfo.name);
-            commentViewHolder.mRatings.setRating(commentInfo.rate/20);
+            commentViewHolder.mRatings.setRating(commentInfo.rate/20f);
             commentViewHolder.mComment.setText(commentInfo.comment);
             commentViewHolder.mTime.setText(commentInfo.createdAt);
             if(commentInfo.rewardAmount > 0){

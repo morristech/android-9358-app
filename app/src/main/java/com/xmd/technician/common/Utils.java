@@ -12,11 +12,13 @@ import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
 
@@ -101,7 +103,7 @@ public class Utils {
     }
 
     public static void makeToast(Context context, String str, int duration) {
-        Toast.makeText(context, str, duration).show();
+        Toast.makeText(context, TextUtils.isEmpty(str)?ResourceUtils.getString(R.string.default_tips):str, duration).show();
     }
 
     /**

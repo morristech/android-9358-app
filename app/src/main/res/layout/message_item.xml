@@ -32,6 +32,7 @@
         android:layout_marginRight="@dimen/personal_padding"
         android:layout_marginTop="@dimen/button_radius"
         android:singleLine="true"
+        android:maxLength="40"
         android:textColor="@color/colorRemark"
         android:textSize="@dimen/fontBody"
         android:text="hello"/>

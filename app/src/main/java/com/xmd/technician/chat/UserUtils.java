@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import com.xmd.technician.R;
+import com.xmd.technician.common.ResourceUtils;
 
 public class UserUtils {
 
@@ -43,12 +44,13 @@ public class UserUtils {
      */
     public static void setUserNick(String username,TextView textView){
         if(textView != null){
-        	ChatUser user = getUserInfo(username);
+            textView.setText(getUserNick(username));
+        	/*ChatUser user = getUserInfo(username);
         	if(user != null && user.getNick() != null){
         		textView.setText(user.getNick());
         	}else{
         		textView.setText(username);
-        	}
+        	}*/
         }
     }
 
@@ -62,5 +64,15 @@ public class UserUtils {
 
     public static void updateUser(ChatUser user){
         UserProfileProvider.getInstance().updateContactInfo(user);
+    }
+
+    public static String getUserNick(String username){
+        ChatUser user = UserProfileProvider.getInstance().getChatUserInfo(username);
+
+        if(user != null){
+            return user.getNick();
+        }
+
+        return ResourceUtils.getString(R.string.default_user_name);
     }
 }

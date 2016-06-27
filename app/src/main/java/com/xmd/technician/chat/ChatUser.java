@@ -14,6 +14,8 @@
 package com.xmd.technician.chat;
 
 import com.hyphenate.chat.EMContact;
+import com.xmd.technician.R;
+import com.xmd.technician.common.ResourceUtils;
 
 public class ChatUser extends EMContact {
 
@@ -50,7 +52,12 @@ public class ChatUser extends EMContact {
         this.avatar = avatar;
     }
 
-    @Override
+	@Override
+	public String getNick() {
+		return this.nick == null? ResourceUtils.getString(R.string.default_user_name):this.nick;
+	}
+
+	@Override
 	public int hashCode() {
 		return 17 * getUsername().hashCode();
 	}
@@ -65,7 +72,7 @@ public class ChatUser extends EMContact {
 		if (o == null || !(o instanceof ChatUser)) {
 			return false;
 		}
-		return getUsername().equals(((ChatUser) o).getUsername()) ;
+		return username.equals(((ChatUser) o).getUsername()) ;
 	}
 
 	/**
@@ -79,14 +86,14 @@ public class ChatUser extends EMContact {
 			return false;
 		}
 
-		if(getAvatar() == null ){
+		if(avatar == null ){
 			if(((ChatUser) o).getAvatar()!= null){
 				return false;
 			}else {
-				result = getUsername().equals(((ChatUser) o).getUsername()) && getNick().equals(((ChatUser) o).getNick());
+				result = username.equals(((ChatUser) o).getUsername()) &&  ((ChatUser) o).getNick().equals(nick);
 			}
 		}else {
-			result = getUsername().equals(((ChatUser) o).getUsername()) && getNick().equals(((ChatUser) o).getNick()) && getAvatar().equals(((ChatUser) o).getAvatar());
+			result = username.equals(((ChatUser) o).getUsername()) && ((ChatUser) o).getNick().equals(nick) && avatar.equals(((ChatUser) o).getAvatar());
 		}
 
 		return result;

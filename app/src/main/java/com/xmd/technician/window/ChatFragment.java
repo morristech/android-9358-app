@@ -198,10 +198,11 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     if(group != null){
                         username = group.getGroupName();
                     }else {
-                        ChatUser  chatUser = UserUtils.getUserInfo(value.getUserName());
+                        username = UserUtils.getUserNick(value.getUserName());
+                        /*ChatUser  chatUser = UserUtils.getUserInfo(value.getUserName());
                         if(chatUser != null){
                             username = chatUser.getNick();
-                        }
+                        }*/
                     }
 
                     // First match against the whole ,non-splitted value
