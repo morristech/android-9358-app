@@ -168,11 +168,12 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
             }
         } else {
             SharedPreferenceHelper.setUserToken(loginResult.token);
-            SharedPreferenceHelper.setUserName(loginResult.name);
             SharedPreferenceHelper.setUserId(loginResult.userId);
             SharedPreferenceHelper.setEmchatId(loginResult.emchatId);
             SharedPreferenceHelper.setEMchatPassword(loginResult.emchatPassword);
-            SharedPreferenceHelper.setUserAvatar(loginResult.avatarUrl);
+            /*SharedPreferenceHelper.setUserName(loginResult.name);
+            SharedPreferenceHelper.setUserAvatar(loginResult.avatarUrl);*/
+            UserProfileProvider.getInstance().updateCurrentUserInfo(loginResult.name, loginResult.avatarUrl);
             EMClient.getInstance().login(loginResult.emchatId, loginResult.emchatPassword, new EMCallBack() {
                 @Override
                 public void onSuccess() {

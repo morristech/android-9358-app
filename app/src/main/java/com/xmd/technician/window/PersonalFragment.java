@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
 import com.xmd.technician.http.gson.InviteCodeResult;
@@ -116,8 +117,9 @@ public class PersonalFragment extends BaseFragment{
     private void handleTechCurrentResult(TechCurrentResult result){
         if(result.respData != null){
             mTechInfo = result.respData;
-            SharedPreferenceHelper.setUserName(mTechInfo.userName);
-            SharedPreferenceHelper.setUserAvatar(mTechInfo.imageUrl);
+            /*SharedPreferenceHelper.setUserName(mTechInfo.userName);
+            SharedPreferenceHelper.setUserAvatar(mTechInfo.imageUrl);*/
+            UserProfileProvider.getInstance().updateCurrentUserInfo(mTechInfo.userName, mTechInfo.imageUrl);
             SharedPreferenceHelper.setSerialNo(mTechInfo.serialNo);
             initView();
         }

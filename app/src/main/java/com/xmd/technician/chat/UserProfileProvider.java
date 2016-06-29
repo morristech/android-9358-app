@@ -76,6 +76,15 @@ public class UserProfileProvider {
         return mCurrentUser;
     }
 
+    public synchronized void updateCurrentUserInfo(String nick, String avatarUrl) {
+        SharedPreferenceHelper.setUserName(nick);
+        SharedPreferenceHelper.setUserAvatar(avatarUrl);
+        if (mCurrentUser != null && mCurrentUser.getUsername().equals(SharedPreferenceHelper.getEmchatId())) {
+            mCurrentUser.setNick(nick);
+            mCurrentUser.setAvatar(avatarUrl);
+        }
+    }
+
     public boolean userExisted(String username){
         return getChatUserList().containsKey(username);
     }
