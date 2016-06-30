@@ -18,6 +18,8 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
+import java.util.ArrayList;
+
 import rx.Subscription;
 
 /**
@@ -57,7 +59,9 @@ public class CouponFragment extends BaseListFragment<CouponInfo> {
             return;
         }
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
-            onGetListFailed(result.msg);
+            //onGetListFailed(result.msg);
+            ((BaseActivity)getActivity()).makeShortToast(result.msg);
+            onGetListSucceeded(0, new ArrayList<CouponInfo>());
         } else {
             if(result.respData.coupons == null || result.respData.coupons.isEmpty()){
                 ((BaseActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.coupon_fragment_coupon_empty_reason));
