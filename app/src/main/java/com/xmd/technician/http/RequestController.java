@@ -598,6 +598,15 @@ public class RequestController extends AbstractController {
             protected void postResult(CouponListResult result) {
                 RxBus.getInstance().post(result);
             }
+
+            @Override
+            protected void postError(String errorMsg) {
+                Logger.v("getCouponList: " + errorMsg);
+                CouponListResult result = new CouponListResult();
+                result.statusCode = RequestConstant.RESP_ERROR_CODE_FOR_LOCAL;
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
+            }
         });
     }
 
