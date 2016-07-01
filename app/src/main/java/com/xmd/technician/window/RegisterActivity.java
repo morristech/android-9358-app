@@ -194,34 +194,14 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
             SharedPreferenceHelper.setUserId(result.userId);
             SharedPreferenceHelper.setEmchatId(result.emchatId);
             SharedPreferenceHelper.setEMchatPassword(result.emchatPassword);
-            EMClient.getInstance().login(result.emchatId, result.emchatPassword, new EMCallBack() {
-                @Override
-                public void onSuccess() {
-                    dismissProgressDialogIfShowing();
-                    EMClient.getInstance().groupManager().loadAllGroups();
-                    EMClient.getInstance().chatManager().loadAllConversations();
-                    // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
-                    if (!EMClient.getInstance().updateCurrentUserNick(result.name)) {
-                        Logger.e("LoginActivity", "update current user nick fail");
-                    }
-                    Intent intent = new Intent(RegisterActivity.this, InfoInputActivity.class);
-                    intent.putExtra(InfoInputActivity.EXTRA_PHONE_NUM, result.phoneNum);
-                    startActivity(intent);
-                    finish();
-                }
 
-                @Override
-                public void onError(int i, String s) {
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
 
-                }
-
-                @Override
-                public void onProgress(int i, String s) {
-                    dismissProgressDialogIfShowing();
-                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                    finish();
-                }
-            });
+            dismissProgressDialogIfShowing();
+            Intent intent = new Intent(RegisterActivity.this, InfoInputActivity.class);
+            intent.putExtra(InfoInputActivity.EXTRA_PHONE_NUM, result.phoneNum);
+            startActivity(intent);
+            finish();
         }
     }
 }

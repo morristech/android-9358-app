@@ -256,7 +256,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final EMConversation conversation = (EMConversation) obj;
             ConversationViewHolder conversationHolder = (ConversationViewHolder) holder;
 
-            conversationHolder.mName.setText(conversation.getUserName());
+            //conversationHolder.mName.setText(conversation.getUserName());
             if(conversation.getUnreadMsgCount() > 0){
                 conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
                 conversationHolder.mUnread.setVisibility(View.VISIBLE);

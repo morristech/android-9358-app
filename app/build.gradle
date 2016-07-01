@@ -40,8 +40,6 @@ android {
                 //UMENG_APPKEY for release
                 UMENG_APPKEY_VALUE  : "57440ed167e58e9e110014bd",
                 UMENG_CHANNEL_VALUE : "xiaomodo-tech",
-                //ease
-                EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
         ]
     }
 
@@ -60,6 +58,12 @@ android {
 
     buildTypes {
 
+        debug {
+            manifestPlaceholders = [
+                    EASEMOB_APPKEY_VALUE: "xiaomodo#spatest"
+            ]
+        }
+
         release {
             minifyEnabled true
             zipAlignEnabled true
@@ -69,12 +73,30 @@ android {
         }
     }
 
+    productFlavors {
+        emtest {
+            manifestPlaceholders = [
+                    EASEMOB_APPKEY_VALUE: "xiaomodo#spatest"
+            ]
+        }
+
+        em {
+            manifestPlaceholders = [
+                    EASEMOB_APPKEY_VALUE: "xiaomodo#spa"
+            ]
+        }
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith("release.apk")) {
                 // output
-                def fileName = "9358tech_v${defaultConfig.versionName}.${defaultConfig.versionCode}_xiaomodo_${releaseTime()}.apk"
+                def flavorName = variant.productFlavors[0].name + "_";
+                if (flavorName == "em_") {
+                    flavorName = "";
+                }
+                def fileName = "9358tech_v${defaultConfig.versionName}.${defaultConfig.versionCode}_${flavorName}xiaomodo_${releaseTime()}.apk"
                 output.outputFile = new File(outputFile.parent, fileName)
             }
         }

@@ -84,7 +84,8 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_START_CHAT,
                 MsgDef.MSG_DEF_SAVE_CHAT_USER,
                 MsgDef.MSG_DEF_GET_CONVERSATION_LIST,
-                MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY
+                MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY,
+                MsgDef.MSG_DEF_LOGIN_EMCHAT
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

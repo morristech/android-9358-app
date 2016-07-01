@@ -174,33 +174,12 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
             /*SharedPreferenceHelper.setUserName(loginResult.name);
             SharedPreferenceHelper.setUserAvatar(loginResult.avatarUrl);*/
             UserProfileProvider.getInstance().updateCurrentUserInfo(loginResult.name, loginResult.avatarUrl);
-            EMClient.getInstance().login(loginResult.emchatId, loginResult.emchatPassword, new EMCallBack() {
-                @Override
-                public void onSuccess() {
-                    dismissProgressDialogIfShowing();
-                    EMClient.getInstance().groupManager().loadAllGroups();
-                    EMClient.getInstance().chatManager().loadAllConversations();
-                    UserProfileProvider.getInstance().initContactList();
-                    // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
-                    if (!EMClient.getInstance().updateCurrentUserNick(loginResult.name)) {
-                        Logger.e("LoginActivity", "update current user nick fail");
-                    }
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
-                }
 
-                @Override
-                public void onError(int i, String s) {
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
 
-                }
-
-                @Override
-                public void onProgress(int i, String s) {
-                    dismissProgressDialogIfShowing();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
-                }
-            });
+            dismissProgressDialogIfShowing();
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
         }
     }
 

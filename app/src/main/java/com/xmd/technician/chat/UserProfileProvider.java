@@ -101,7 +101,7 @@ public class UserProfileProvider {
 
         // return a empty non-null object to avoid app crash
         if(mLocalUsers == null){
-            return new Hashtable<String, ChatUser>();
+            mLocalUsers = new Hashtable<String, ChatUser>();
         }
 
         return mLocalUsers;

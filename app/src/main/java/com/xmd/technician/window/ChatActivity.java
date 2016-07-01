@@ -115,22 +115,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
 
-        EMClient.getInstance().login(SharedPreferenceHelper.getEmchatId(), SharedPreferenceHelper.getEMchatPassword(), new EMCallBack() {
-            @Override
-            public void onSuccess() {
-
-            }
-
-            @Override
-            public void onError(int i, String s) {
-
-            }
-
-            @Override
-            public void onProgress(int i, String s) {
-                finish();
-            }
-        });
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
     }
 
     @Override
