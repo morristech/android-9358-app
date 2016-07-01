@@ -232,8 +232,8 @@
     <string name="paid_coupon_detail_user_detail">购买详情</string>
     <string name="paid_coupon_detail_share">分享</string>
     <string name="paid_coupon_detail_tips">注：</string>
-    <string name="paid_coupon_detail_tips_expire">客人的点钟券过期后，您将获得%1$d元打赏。</string>
-    <string name="paid_coupon_detail_tips_verified">客户的点钟券使用后，您将获得%1$d元打赏。</string>
+    <string name="paid_coupon_detail_tips_expire">客人的点钟券过期后，您将获得%1$s元打赏。</string>
+    <string name="paid_coupon_detail_tips_verified">客户的点钟券使用后，您将获得%1$s元打赏。</string>
 
     <string name="paid_coupon_user_detail_activity_header_user">用户</string>
     <string name="paid_coupon_user_detail_activity_header_status">全部状态</string>

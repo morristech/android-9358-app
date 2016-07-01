@@ -108,21 +108,21 @@ public class NormalCouponDetailActivity extends BaseActivity {
             serviceItem="使用不限";
         }
 
-        if(Utils.isEmpty(couponInfo.time)) {
-            couponInfo.time="使用不限";
+        if(Utils.isEmpty(couponInfo.useTimePeriod)) {
+            couponInfo.useTimePeriod="使用不限";
         }
 
         if(Utils.isEmpty(couponInfo.actContent)) {
             couponInfo.actContent="无";
         }
 
-        mTvShareText.setText(String.format(ResourceUtils.getString(R.string.normal_coupon_detail_activity_share_text), couponInfo.commission, couponInfo.commission));
+        mTvShareText.setText(String.format(ResourceUtils.getString(R.string.normal_coupon_detail_activity_share_text), couponInfo.sysCommission, couponInfo.sysCommission));
 
         Glide.with(this).load(generateQrCodeUrl()).into(mIvShareQrCode);
         mTvCommission.setText(String.valueOf(couponInfo.actValue));
 
         mTvServiceItem.setText(serviceItem);
-        mTvCouponDuration.setText(couponInfo.time);
+        mTvCouponDuration.setText(couponInfo.useTimePeriod);
 
         mWvActContent.getSettings().setJavaScriptEnabled(false);
         mWvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);

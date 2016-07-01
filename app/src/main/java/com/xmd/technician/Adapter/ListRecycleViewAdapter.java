@@ -220,8 +220,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             couponListItemViewHolder.mTvCouponTitle.setText("money".equals(couponInfo.useType) ? TextUtils.concat(String.valueOf(couponInfo.actValue),"元",couponInfo.useTypeName) : couponInfo.actTitle);
             couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
             couponListItemViewHolder.mCouponPeriod.setText(couponInfo.couponPeriod);
-            if (couponInfo.commission > 0) {
-                couponListItemViewHolder.mTvCouponReward.setText(String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), couponInfo.commission));
+            if (couponInfo.sysCommission > 0) {
+                couponListItemViewHolder.mTvCouponReward.setText(String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), couponInfo.sysCommission));
             }else {
                 couponListItemViewHolder.mTvCouponReward.setText("");
             }

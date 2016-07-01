@@ -19,6 +19,8 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import rx.Subscription;
 
@@ -65,7 +67,14 @@ public class CouponFragment extends BaseListFragment<CouponInfo> {
         } else {
             if(result.respData.coupons == null || result.respData.coupons.isEmpty()){
                 ((BaseActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.coupon_fragment_coupon_empty_reason));
+            }else {
+                Collections.sort(result.respData.coupons, (lhs, rhs) -> {
+                    if(Constant.COUPON_TYPE_PAID.equals(rhs.couponType)) return 1;
+                    else if(Constant.COUPON_TYPE_PAID.equals(lhs.couponType)) return -1;
+                    return 0;
+                });
             }
+
             onGetListSucceeded(result.pageCount, result.respData.coupons);
         }
     }

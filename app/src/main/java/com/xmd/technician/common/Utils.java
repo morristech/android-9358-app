@@ -375,5 +375,23 @@ public class Utils {
             System.out.println(addParams(url, "test", "b"));
         }
     }
+
+    /**
+     * 根据浮点数实际有效位数输出，如2.0输出2；2.33输出2.33
+     * @param f
+     * @return
+     */
+    public static String getFloat2Str(float f) {
+        String fStr = String.valueOf(f);
+        while ((fStr.length() > 1) && fStr.endsWith("0")){
+            fStr = fStr.substring(0, fStr.length() - 1);
+        }
+
+        if(fStr.endsWith(".")){
+            fStr = fStr.substring(0, fStr.length() - 1);
+        }
+
+        return fStr;
+    }
 }
 

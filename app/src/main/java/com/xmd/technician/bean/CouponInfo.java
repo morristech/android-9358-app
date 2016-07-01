@@ -13,8 +13,12 @@ public class CouponInfo {
     public int actValue;
     public int baseCommission;
     public int commission;
+    public int sysCommission;
+    public float techBaseCommission;
+    public float techCommission;
     public String consumeMoneyDescription;
     public String time;
+    public String useTimePeriod;
     public String useType;
 
     @Override

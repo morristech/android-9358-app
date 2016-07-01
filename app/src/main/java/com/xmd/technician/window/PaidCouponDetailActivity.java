@@ -106,8 +106,8 @@ public class PaidCouponDetailActivity extends BaseActivity {
         mWvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);
         mWvActContent.loadDataWithBaseURL(null, couponInfo.actContent, Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
 
-        mTvTipsExpire.setText(String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_expire), couponInfo.baseCommission));
-        mTvTipsVerified.setText(String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_verified), couponInfo.commission));
+        mTvTipsExpire.setText(String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_expire), Utils.getFloat2Str(couponInfo.techBaseCommission)));
+        mTvTipsVerified.setText(String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_verified), Utils.getFloat2Str(couponInfo.techCommission)));
         mShare.setEnabled(true);
     }
 
