@@ -152,8 +152,8 @@ public class QRDialog extends Dialog {
                 Map<String, Object> params = new HashMap<>();
                 params.put(Constant.PARAM_SHARE_THUMBNAIL, thumbnail);
                 params.put(Constant.PARAM_SHARE_URL, mShareUrl);
-                params.put(Constant.PARAM_SHARE_TITLE,"技师欢迎您");
-                params.put(Constant.PARAM_SHARE_DESCRIPTION, "点我聊了，更多优惠，更好服务！");
+                params.put(Constant.PARAM_SHARE_TITLE,SharedPreferenceHelper.getUserName() + "欢迎您");
+                params.put(Constant.PARAM_SHARE_DESCRIPTION, "点我聊聊，更多优惠，更好服务！");
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM, params);
             });
         });
