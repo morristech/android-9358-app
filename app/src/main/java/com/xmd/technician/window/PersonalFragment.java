@@ -223,6 +223,15 @@ public class PersonalFragment extends BaseFragment{
         } else {
             mQRDialog.updateQR(mTechInfo.qrCodeUrl);
         }
+
+        boolean canShare = true;
+        if(mTechInfo.status.equals("valid")||mTechInfo.status.equals("reject") || mTechInfo.status.equals("uncert")){
+            canShare = false;
+        }
+        StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+        url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s", mTechInfo.clubId, mTechInfo.id));
+        mQRDialog.updateShareInfo(url.toString(), canShare);
+
         mQRDialog.show();
     }
 

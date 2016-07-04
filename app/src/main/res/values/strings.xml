@@ -65,6 +65,7 @@
     <string name="personal_fragment_layout_setting">设置</string>
     <string name="qr_code_body">扫我关注＂9358＂</string>
     <string name="qr_code_remark">点技师，约项目，就上9358</string>
+    <string name="qr_code_share">分享名片</string>
     <string name="personal_fragment_join_club">请先加入会所</string>
     <string name="personal_fragment_wait_check">请等待会所审核</string>
 

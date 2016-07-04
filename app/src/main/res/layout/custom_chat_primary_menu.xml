@@ -60,8 +60,7 @@
             android:maxLines="3"
             android:paddingLeft="@dimen/search_margin"
             android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontBody"
-            android:hint="@string/app_info_title"/>
+            android:textSize="@dimen/fontBody" />
 
         <!--<LinearLayout
             android:id="@+id/menu_layout"
