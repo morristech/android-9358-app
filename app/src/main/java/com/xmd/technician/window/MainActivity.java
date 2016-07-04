@@ -62,6 +62,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
+
+        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
+                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE));
     }
 
     @Override

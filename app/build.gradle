@@ -38,7 +38,7 @@ android {
                 GETUI_APP_SECRET    : "nxA8wGbyYl5tCX6aDeH3i1",
                 PACKAGE_NAME        : "com.xmd.technician",
                 //UMENG_APPKEY for release
-                UMENG_APPKEY_VALUE  : "57440ed167e58e9e110014bd",
+                UMENG_APPKEY_VALUE  : "568cf00e67e58eeba4000e38",
                 UMENG_CHANNEL_VALUE : "xiaomodo-tech",
         ]
     }
