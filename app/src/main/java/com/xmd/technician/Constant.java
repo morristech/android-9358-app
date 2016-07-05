@@ -133,12 +133,14 @@ public class Constant {
     public static final String PARAM_SHARE_TITLE = "p_share_title";
     public static final String PARAM_SHARE_URL = "p_share_url";
     public static final String PARAM_SHARE_DESCRIPTION = "p_share_desc";
+    public static final String PARAM_SHARE_TYPE = "p_share_type";
 
     public static final String APP_BROWSER_USER_AGENT = "9358.tech.browser";
 
     public static final String FORMAT_DATE_TIME = "yyyyMMddHHmmss";
 
-
+    public static final String SHARE_COUPON = "couponShare";
+    public static final String SHARE_BUSINESS_CARD = "businessCardShare";
 
     /**
      * ******************************* Request Code for activities ***************

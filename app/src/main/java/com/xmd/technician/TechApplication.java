@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.igexin.sdk.PushManager;
+import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.common.AppUncaughtExceptionHandler;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.TechNotifier;
@@ -44,6 +45,10 @@ public class TechApplication extends Application{
                 ThreadManager.initialize();
                 ControllerRegister.initialize();
                 SharedPreferenceHelper.initialize();
+
+                MobclickAgent.setCatchUncaughtExceptions(true);
+                // 应用入口，禁止默认的页面统计方式
+                MobclickAgent.openActivityDurationTrack(false);
 
                 PushManager.getInstance().initialize(this);
                 /*

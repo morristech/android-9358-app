@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
-public class MainActivity extends BaseActivity implements BaseFragment.IFragmentCallback{
+public class MainActivity extends BaseFragmentActivity implements BaseFragment.IFragmentCallback{
     private static final int TAB_INDEX_MESSAGE = 0;
     private static final int TAB_INDEX_ORDER = 1;
     private static final int TAB_INDEX_MARKETING = 2;

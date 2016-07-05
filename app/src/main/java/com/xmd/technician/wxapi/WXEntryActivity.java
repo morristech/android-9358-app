@@ -10,6 +10,7 @@ import com.tencent.mm.sdk.openapi.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
@@ -59,6 +60,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         switch (baseResp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 result = R.string.wx_errcode_success;
+                AppConfig.reportCouponShareEvent();
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 result = R.string.wx_errcode_cancel;

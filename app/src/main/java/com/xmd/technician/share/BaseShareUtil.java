@@ -2,6 +2,7 @@ package com.xmd.technician.share;
 
 import android.graphics.Bitmap;
 
+import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 
 import java.util.Map;
@@ -40,5 +41,7 @@ public class BaseShareUtil {
             bmp.recycle();
             //mShareThumbnail = (Bitmap) thumbnail;
         }
+
+        AppConfig.reportShareEvent(params);
     }
 }

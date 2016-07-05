@@ -107,4 +107,6 @@ public class MsgDef {
     public static final int MSG_DEF_QUIT_CLUB = 0x0036;
 
     public static final int MSG_DEF_LOGIN_EMCHAT = 0x0037;
+
+    public static final int MSG_DEF_COUPON_SHARE_EVENT_COUNT = 0x0038;
 }

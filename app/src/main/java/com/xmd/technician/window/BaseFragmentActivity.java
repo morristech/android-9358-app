@@ -29,21 +29,9 @@ import rx.Subscription;
 /**
  * Created by sdcm on 15-10-26.
  */
-public class BaseActivity extends BaseFragmentActivity {
+public class BaseFragmentActivity extends AppCompatActivity {
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart(getClass().getSimpleName());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd(getClass().getSimpleName());
-    }
-
-    /*protected TextView mAppTitle;
+    protected TextView mAppTitle;
     protected ImageView mBack;
     protected TextView mToolbarRight;
     protected Toolbar mToolbar;
@@ -78,12 +66,14 @@ public class BaseActivity extends BaseFragmentActivity {
         super.onResume();
         TechApplication.getNotifier().reset();
         Bugtags.onResume(this);
+        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Bugtags.onPause(this);
+        MobclickAgent.onPause(this);
     }
 
     @Override
@@ -194,10 +184,10 @@ public class BaseActivity extends BaseFragmentActivity {
         return progressDialog;
     }
 
-    *//**
+    /**
      *
      * @param message whether to alert the message before going to login activity
-     *//*
+     */
     protected void gotoLoginActivity(String message) {
 
         //Before go to login activity, alert the message if it exists
@@ -211,6 +201,6 @@ public class BaseActivity extends BaseFragmentActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }*/
+    }
 
 }

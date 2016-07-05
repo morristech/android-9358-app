@@ -279,6 +279,13 @@ public interface SpaService {
                                              @Field(RequestConstant.KEY_TOKEN) String userToken,
                                              @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_COUPON_SHARE_EVENT_COUNT)
+    Call<BaseResult> doCouponShareEventCount(@Field(RequestConstant.KEY_ACT_ID) String actId,
+                                             @Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                             @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
     /**************************** Push **************************/
     /**
      * @param userId

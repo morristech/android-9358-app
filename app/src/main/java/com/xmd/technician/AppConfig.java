@@ -5,8 +5,12 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.common.FileUtils;
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +19,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sdcm on 16-3-11.
@@ -41,6 +46,9 @@ public class AppConfig {
     private static String sAppVersionName = "";
     private static int sAppVersionCode = -1;
     private static String sSDCardPath;
+
+    private static String sShareType;
+    private static String sCouponId;
 
     public static void initialize() {
         String pkgName = TechApplication.getAppContext().getPackageName();
@@ -104,6 +112,22 @@ public class AppConfig {
         return getSDCardPath() + File.separator + APP_FOLDER;
     }
 
+    public static void reportShareEvent(Map<String, Object> params){
+        sShareType = (String) params.get(Constant.PARAM_SHARE_TYPE);
+        sCouponId = (String) params.get(Constant.PARAM_ACT_ID);
+        MobclickAgent.onEvent(TechApplication.getAppContext(), (String) params.get(Constant.PARAM_SHARE_TYPE));
+    }
+
+    public static void reportCouponShareEvent(){
+        if(Constant.SHARE_COUPON.equals(sShareType)){
+            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+                @Override
+                public void run() {
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_COUPON_SHARE_EVENT_COUNT, sCouponId);
+                }
+            });
+        }
+    }
 
     public static String getAppVersionNameAndCode() {
         return getAppVersionName() + "." + getAppVersionCode();

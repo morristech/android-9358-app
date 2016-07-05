@@ -131,6 +131,8 @@ public class PaidCouponDetailActivity extends BaseActivity {
                 params.put(Constant.PARAM_SHARE_URL, mCouponInfoResult.respData.shareUrl);
                 params.put(Constant.PARAM_SHARE_TITLE, mCouponInfoResult.respData.clubName + "-" + mCouponInfoResult.respData.activities.actTitle);
                 params.put(Constant.PARAM_SHARE_DESCRIPTION, mCouponInfoResult.respData.activities.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。");
+                params.put(Constant.PARAM_SHARE_TYPE,Constant.SHARE_COUPON);
+                params.put(Constant.PARAM_ACT_ID, mActId);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM, params);
             });
         });

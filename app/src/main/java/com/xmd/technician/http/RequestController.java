@@ -166,6 +166,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_PAID_COUPON_USER_DETAIL:
                 doGetPaidCouponUserDetail((Map<String,String>)msg.obj);
                 break;
+            case MsgDef.MSG_DEF_COUPON_SHARE_EVENT_COUNT:
+                doCouponShareEventCount(msg.obj.toString());
+                break;
             case MsgDef.MSG_DEF_QUIT_CLUB:
                 quitClub();
                 break;
@@ -671,6 +674,18 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<QuitClubResult>() {
             @Override
             protected void postResult(QuitClubResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    private void doCouponShareEventCount(String actId){
+        Call<BaseResult> call = getSpaService().doCouponShareEventCount(actId, RequestConstant.USER_TYPE_TECH,
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
                 RxBus.getInstance().post(result);
             }
         });

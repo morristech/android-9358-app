@@ -54,6 +54,8 @@ public class RequestConstant {
     public static final String URL_COUPON_SHARE_QR_CODE = BASE_URL + "/v1/profile/redpacket/useqrcode";
     public static final String URL_PAID_COUPON_USER_DETAIL = BASE_URL + "/v1/profile/tech/coupon/userdetails";
 
+    public static final String URL_COUPON_SHARE_EVENT_COUNT = BASE_URL + "/v1/profile/redpacket/share";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
