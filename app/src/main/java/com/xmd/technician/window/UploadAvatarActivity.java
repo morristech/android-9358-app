@@ -83,6 +83,7 @@ public class UploadAvatarActivity extends BaseActivity {
                     try {
                         Uri uri = Uri.parse(data.getStringExtra(ClipPictureActivity.EXTRA_OUTPUT));
                         mPhotoTake = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                        mAvatar.setImageBitmap(BitmapFactory.decodeStream(getContentResolver().openInputStream(uri)));
                         ContentResolver resolver = getContentResolver();
                         resolver.delete(uri, null, null);
                     } catch (NullPointerException e) {
@@ -92,7 +93,7 @@ public class UploadAvatarActivity extends BaseActivity {
                     }
                 }
                 if (mPhotoTake != null) {
-                    mAvatar.setImageBitmap(mPhotoTake);
+                    //mAvatar.setImageBitmap(mPhotoTake);
                     mImageFile = Util.bitmap2base64(mPhotoTake);
                     mConfirm.setEnabled(true);
                 }

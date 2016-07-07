@@ -162,9 +162,6 @@ public class ChatViewImage extends BaseChatView {
         }
     }
 
-    protected void updateView() {
-    }
-
     /**
      * 设置消息接收callback
      */

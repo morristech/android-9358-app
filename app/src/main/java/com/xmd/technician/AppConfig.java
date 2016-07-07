@@ -34,13 +34,14 @@ public class AppConfig {
     public static final String BUGTAGS_APP_KEY = "32ae23df06dfde970b3b8affdd3abd30";
     public static final String BUGTAGS_APP_SERECT = "b1264e122723187c9925c8799a8d90a6";
 
-    public static final String GETUI_MASTER_SECRET = "JEZC14IDw86NZIgxAn0et5";
+    //public static final String GETUI_MASTER_SECRET = "JEZC14IDw86NZIgxAn0et5";
 
     public static String sClientId = "";
     public static String sBindClientIdStatus = "";
     public static String sGetuiAppId = "";
     public static String sGetuiAppKey = "";
     public static String sGetuiAppSecret = "";
+    public static String sGetuiMasterSecret = "";
     public static List<String> sServerHosts;
 
     private static String sAppVersionName = "";
@@ -57,6 +58,7 @@ public class AppConfig {
             if (appInfo.metaData != null) {
                 sGetuiAppId = appInfo.metaData.getString("PUSH_APPID");
                 sGetuiAppSecret = appInfo.metaData.getString("PUSH_APPSECRET");
+                sGetuiMasterSecret = appInfo.metaData.getString("PUSH_MASTERSECRET");
                 sGetuiAppKey = (appInfo.metaData.get("PUSH_APPKEY") != null) ? appInfo.metaData.get("PUSH_APPKEY").toString() : null;
             }
         } catch (PackageManager.NameNotFoundException e) {

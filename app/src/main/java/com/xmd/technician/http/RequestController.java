@@ -721,7 +721,7 @@ public class RequestController extends AbstractController {
                 .append(AppConfig.sGetuiAppSecret)
                 .append(userId)
                 .append(AppConfig.sGetuiAppKey)
-                .append(AppConfig.GETUI_MASTER_SECRET)
+                .append(AppConfig.sGetuiMasterSecret)
                 .append(AppConfig.sClientId);
         String secretBefore = sb.toString();
         String secret = DESede.encrypt(secretBefore);

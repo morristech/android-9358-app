@@ -28,6 +28,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="PUSH_MASTERSECRET"
+            android:value="${GETUI_MASTER_SECRET}" />
+
         <!-- umeng sdk -->
         <meta-data
             android:name="UMENG_APPKEY"
