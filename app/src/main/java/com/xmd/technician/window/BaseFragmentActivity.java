@@ -156,7 +156,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
         if(mToast == null){
             mToast = Toast.makeText(TechApplication.getAppContext(), TextUtils.isEmpty(str)?getString(R.string.default_tips):str, Toast.LENGTH_SHORT);
         }else {
-            mToast.setText(str);
+            mToast.setText(TextUtils.isEmpty(str)?getString(R.string.default_tips):str);
             mToast.setDuration(Toast.LENGTH_SHORT);
         }
         mToast.show();
@@ -198,7 +198,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
         SharedPreferenceHelper.clearUserInfo();
 
         ActivityHelper.getInstance().removeAllActivities();
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, PreLoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

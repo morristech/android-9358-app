@@ -120,7 +120,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     protected void onGetListFailed(String errorMsg) {
         mSwipeRefreshLayout.setRefreshing(false);
         //Utils.makeShortToast(getActivity(), errorMsg);
-        ((BaseActivity)getActivity()).makeShortToast(errorMsg);
+        ((BaseFragmentActivity)getActivity()).makeShortToast(errorMsg);
     }
 
     @Override

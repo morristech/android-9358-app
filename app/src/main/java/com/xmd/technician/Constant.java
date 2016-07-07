@@ -139,8 +139,10 @@ public class Constant {
 
     public static final String FORMAT_DATE_TIME = "yyyyMMddHHmmss";
 
+    /*******************************自定义事件统计*****************************/
     public static final String SHARE_COUPON = "couponShare";
     public static final String SHARE_BUSINESS_CARD = "businessCardShare";
+    public static final String REGISTER_EVENT = "register";
 
     /**
      * ******************************* Request Code for activities ***************

@@ -96,7 +96,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/personal_margin"
-        android:layout_marginLeft="@dimen/personal_padding"
+        android:layout_marginRight="@dimen/personal_padding"
+        android:layout_gravity="right"
         android:background="@android:color/transparent"
         android:minHeight="0dp"
         android:minWidth="0dp"
@@ -104,7 +105,27 @@
         android:textSize="@dimen/fontNormal"
         android:text="@string/forget_password"/>
 
-    <Button
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/personal_margin"
+        android:layout_marginLeft="@dimen/personal_padding"
+        android:textColor="@color/colorTitle"
+        android:textSize="@dimen/fontBody"
+        android:text="@string/note"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/work_time_padding"
+        android:layout_marginRight="@dimen/work_time_padding"
+        android:layout_marginTop="@dimen/search_margin"
+        android:lineSpacingExtra="@dimen/search_margin"
+        android:textColor="@color/list_item_number_color"
+        android:textSize="@dimen/fontNormal"
+        android:text="@string/login_activity_login_tips"/>
+
+    <!--<Button
         android:id="@+id/toggle_server_host"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -115,6 +136,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:visibility="gone" />
+        android:visibility="gone" />-->
 
 </LinearLayout>

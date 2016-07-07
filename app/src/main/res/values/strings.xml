@@ -5,6 +5,7 @@
     <string name="login_activity_input_password">请输入密码</string>
     <string name="login_activity_hint_username_not_empty">用户名不能为空</string>
     <string name="login_activity_hint_password_not_empty">密码不能为空</string>
+    <string name="login_activity_login_tips">您的手机号已注册，请输入密码完成登录</string>
     <string name="login_account_hint">输入手机号</string>
     <string name="login">登录</string>
     <string name="find_password">找回密码</string>
@@ -13,6 +14,8 @@
     <string name="login_signing">正在登录...</string>
     <string name="next_step">下一步</string>
     <string name="complete">完成</string>
+    <string name="note">注：</string>
+    <string name="pre_login_tips">进行身份验证后系统会自动判断你是否为注册用户，并自动衔接后续的操作</string>
     <string name="default_tips">异常</string>
     <string name="default_user_name">匿名用户</string>
 
@@ -22,6 +25,8 @@
     <string name="list_item_no_more"> ^_^, 没有更多数据</string>
     <string name="list_item_empty">=_=!!, 还没有数据哦</string>
 
+    <string name="register_password_hint">请输入6-20位密码，仅限字母和数字</string>
+    <string name="register_tips">您的手机号未注册，请输入相关信息完成注册</string>
     <string name="register_security_code_hint">输入验证码</string>
     <string name="register_send_security_code">发送验证码</string>
     <string name="invite_club">会所邀请码(必填)</string>
@@ -80,6 +85,7 @@
     <string name="quit_club_title">确认退出会所？</string>
     <string name="quit_club_tips">退出会所后，将清空你的打赏、评论、订单和联系人信息。</string>
     <string name="quit_club_success_tips">你已成功退出会所</string>
+    <string name="join_club_success_tips">加入%1$s会所成功(审核中)</string>
 
     <string name="feedback_hint">点击输入反馈...</string>
     <string name="feedback_result">已成功提交，感谢您的反馈！</string>

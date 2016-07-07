@@ -82,7 +82,7 @@
                 android:button="@null"
                 android:drawableLeft="@drawable/radio_button_style_selector"
                 android:drawablePadding="@dimen/search_margin"
-                android:text="男"
+                android:text="先生"
                 android:textColor="@drawable/radio_button_text_color_selector"
                 android:textSize="@dimen/fontBody"/>
 
@@ -96,7 +96,7 @@
                 android:checked="true"
                 android:drawableLeft="@drawable/radio_button_style_selector"
                 android:drawablePadding="@dimen/search_margin"
-                android:text="女"
+                android:text="女士"
                 android:textColor="@drawable/radio_button_text_color_selector"
                 android:textSize="@dimen/fontBody"/>
 

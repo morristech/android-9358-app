@@ -3,8 +3,6 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -12,16 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMContact;
-import com.hyphenate.chat.EMGroupManager;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.common.ActivityHelper;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
@@ -42,57 +33,54 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import rx.Subscription;
 
-public class LoginActivity extends BaseActivity implements TextWatcher{
+public class PreLoginActivity extends BaseActivity implements TextWatcher{
 
     @Bind(R.id.login_username_txt) ClearableEditText mEtUsername;
-    @Bind(R.id.login_password_txt) ClearableEditText mEtPassword;
     @Bind(R.id.login_btn) Button mBtnLogin;
-    //@Bind(R.id.toggle_server_host) Button mBtnToggleServerHost;
-    //@Bind(R.id.server_host) Spinner mSpServerHost;
+    @Bind(R.id.server_host) Spinner mSpServerHost;
 
-    private Subscription mLoginSubscription;
     private String mUsername;
-    private String mPassword;
-    //private String mSelectedServerHost;
+    private String mSelectedServerHost;
+    private Subscription mLoginSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_pre_login);
 
         ButterKnife.bind(this);
 
         setTitle(R.string.login);
-        setBackVisible(true);
 
-        mEtUsername.setText(SharedPreferenceHelper.getUserAccount());
+        initContent();
 
+        mEtUsername.addTextChangedListener(this);
+
+        /*mLoginSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
+                loginResult -> handleLoginResult(loginResult));*/
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         mLoginSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
                 loginResult -> handleLoginResult(loginResult));
+        mEtUsername.setText(SharedPreferenceHelper.getUserAccount());
+    }
 
-        mEtPassword.setFilters(new InputFilter[]{new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                for (int i = start; i < end; i++) {
-                    if (!Character.isLetterOrDigit(source.charAt(i))) {
-                        return "";
-                    }
-                }
-                return null;
-            }
-        }, new InputFilter.LengthFilter(20)});
-        mEtPassword.addTextChangedListener(this);
-        mEtUsername.addTextChangedListener(this);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        RxBus.getInstance().unsubscribe(mLoginSubscription);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mLoginSubscription);
     }
 
-    /*public void initContent() {
-        mEtUsername.setText(SharedPreferenceHelper.getUserAccount());
+    public void initContent() {
+        //mEtUsername.setText(SharedPreferenceHelper.getUserAccount());
 
         ArrayAdapter<String> serverHosts = new ArrayAdapter<>(this, R.layout.spinner_item, AppConfig.sServerHosts);
         serverHosts.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -107,7 +95,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
             }
             mSpServerHost.setSelection(selection);
         }
-    }*/
+    }
 
     @OnClick(R.id.login_btn)
     public void login() {
@@ -118,32 +106,25 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
             return;
         }
 
-        mPassword = mEtPassword.getText().toString();
-        if(TextUtils.isEmpty(mPassword)) {
-            makeShortToast(ResourceUtils.getString(R.string.login_activity_hint_password_not_empty));
-            return;
-        }
+        mSelectedServerHost = mSpServerHost.getSelectedItem().toString();
 
         //Save the usernames
         SharedPreferenceHelper.setUserAccount(mUsername);
-
-        /*mSelectedServerHost = mSpServerHost.getSelectedItem().toString();
-
         //Save the server host
         SharedPreferenceHelper.setServerHost(mSelectedServerHost);
         // Recreate the retrofit service
-        RetrofitServiceFactory.recreateService();*/
+        RetrofitServiceFactory.recreateService();
 
         showProgressDialog(getString(R.string.login_signing));
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_USERNAME, mUsername);
-        params.put(RequestConstant.KEY_PASSWORD, mPassword);
+        params.put(RequestConstant.KEY_PASSWORD, "");
         params.put(RequestConstant.KEY_APP_VERSION, "android."+ AppConfig.getAppVersionNameAndCode());
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN, params);
     }
 
-    /*@OnLongClick(R.id.toggle_server_host)
+    @OnLongClick(R.id.toggle_server_host)
     public boolean toggleServerHostSpinner() {
         if(mSpServerHost.getVisibility() == View.GONE) {
             mSpServerHost.setVisibility(View.VISIBLE);
@@ -151,32 +132,14 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
             mSpServerHost.setVisibility(View.GONE);
         }
         return true;
-    }*/
-
-    @OnClick(R.id.find_password)
-    public void gotoFindPassword(){
-        startActivity(new Intent(this, ResetPasswordActivity.class));
     }
 
     private void handleLoginResult(LoginResult loginResult) {
-        if (loginResult.status.equals("fail")) {
-            dismissProgressDialogIfShowing();
-            makeShortToast(loginResult.message);
-        } else {
-            SharedPreferenceHelper.setUserToken(loginResult.token);
-            SharedPreferenceHelper.setUserId(loginResult.userId);
-            SharedPreferenceHelper.setEmchatId(loginResult.emchatId);
-            SharedPreferenceHelper.setEMchatPassword(loginResult.emchatPassword);
-            /*SharedPreferenceHelper.setUserName(loginResult.name);
-            SharedPreferenceHelper.setUserAvatar(loginResult.avatarUrl);*/
-            UserProfileProvider.getInstance().updateCurrentUserInfo(loginResult.name, loginResult.avatarUrl);
-
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
-
-            dismissProgressDialogIfShowing();
-            ActivityHelper.getInstance().removeAllActivities();
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
+        dismissProgressDialogIfShowing();
+        if (loginResult.statusCode == 2) {
+            startActivity(new Intent(this, RegisterActivity.class));
+        } else if (loginResult.statusCode == 1){
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 
@@ -192,9 +155,8 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
 
     @Override
     public void afterTextChanged(Editable s) {
-        String password = mEtPassword.getText().toString();
         String account = mEtUsername.getText().toString();
-        if (Util.matchPassWordFormat(password) && Util.matchPhoneNumFormat(account)) {
+        if (Util.matchPhoneNumFormat(account)) {
             mBtnLogin.setEnabled(true);
         } else {
             mBtnLogin.setEnabled(false);
