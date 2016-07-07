@@ -109,4 +109,6 @@ public class MsgDef {
     public static final int MSG_DEF_LOGIN_EMCHAT = 0x0037;
 
     public static final int MSG_DEF_COUPON_SHARE_EVENT_COUNT = 0x0038;
+
+    public static final int MSG_DEF_GET_APP_UPDATE_CONFIG = 0x0039;
 }

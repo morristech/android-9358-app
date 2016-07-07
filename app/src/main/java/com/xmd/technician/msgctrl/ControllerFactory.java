@@ -1,6 +1,7 @@
 package com.xmd.technician.msgctrl;
 
 
+import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatController;
 import com.xmd.technician.common.UpgradeController;
 import com.xmd.technician.http.RequestController;
@@ -21,6 +22,7 @@ public class ControllerFactory {
             case ControllerId.UPGRADE_CONTROLLER:
                 if (sUpgradeController == null) {
                     sUpgradeController = new UpgradeController();
+                    sUpgradeController.init(TechApplication.getAppContext());
                 }
                 return sUpgradeController;
             case ControllerId.REQUEST_CONTROLLER:

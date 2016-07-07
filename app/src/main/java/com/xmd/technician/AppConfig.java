@@ -66,7 +66,7 @@ public class AppConfig {
         }
 
         sServerHosts = new ArrayList<>();
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             sSDCardPath = Environment.getExternalStorageDirectory().getPath();
             if (FileUtils.checkFolderExists(getAppFolder(), true)) {
                 //Read the config Server Hosts from the /sdcard/sdspa/serverhosts
@@ -79,12 +79,12 @@ public class AppConfig {
 
     private static void readServerHostFile() {
         File file = new File(getAppFolder() + File.separator + SERVER_HOSTS);
-        if(file.exists()){
+        if (file.exists()) {
             try {
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
                 String line;
-                while((line = br.readLine()) != null) {
+                while ((line = br.readLine()) != null) {
                     sServerHosts.add(line);
                 }
             } catch (FileNotFoundException e) {
@@ -99,29 +99,27 @@ public class AppConfig {
     }
 
     /**
-     *
      * @return sdcard
      */
     public static String getSDCardPath() {
-        return sSDCardPath != null ? sSDCardPath : "" ;
+        return sSDCardPath != null ? sSDCardPath : "";
     }
 
     /**
-     *
      * @return sdcard/sdspa
      */
     public static String getAppFolder() {
         return getSDCardPath() + File.separator + APP_FOLDER;
     }
 
-    public static void reportShareEvent(Map<String, Object> params){
+    public static void reportShareEvent(Map<String, Object> params) {
         sShareType = (String) params.get(Constant.PARAM_SHARE_TYPE);
         sCouponId = (String) params.get(Constant.PARAM_ACT_ID);
         MobclickAgent.onEvent(TechApplication.getAppContext(), (String) params.get(Constant.PARAM_SHARE_TYPE));
     }
 
-    public static void reportCouponShareEvent(){
-        if(Constant.SHARE_COUPON.equals(sShareType)){
+    public static void reportCouponShareEvent() {
+        if (Constant.SHARE_COUPON.equals(sShareType)) {
             ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
                 @Override
                 public void run() {
@@ -150,7 +148,6 @@ public class AppConfig {
     }
 
     /**
-     *
      * @return VersionName
      */
     private static String getVersionName() {
@@ -158,8 +155,7 @@ public class AppConfig {
         String appVersion = "";
         try {
             appVersion = m.getPackageInfo(TechApplication.getAppContext().getPackageName(), 0).versionName;
-        }
-        catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException e) {
             // Exception won't be thrown as the current package name is
             // safe to exist on the system.
             throw new AssertionError();
@@ -169,7 +165,6 @@ public class AppConfig {
     }
 
     /**
-     *
      * @return
      */
     private static int getVersionCode() {

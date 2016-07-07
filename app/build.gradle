@@ -75,7 +75,7 @@ android {
     }
 
     productFlavors {
-        emtest {
+        dev {
             manifestPlaceholders = [
                     EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
                     //Getui placeHolder
@@ -86,7 +86,7 @@ android {
             ]
         }
 
-        em {
+        prd {
             manifestPlaceholders = [
                     EASEMOB_APPKEY_VALUE: "xiaomodo#spa",
                     //Getui placeHolder
@@ -104,7 +104,7 @@ android {
             if (outputFile != null && outputFile.name.endsWith("release.apk")) {
                 // output
                 def flavorName = variant.productFlavors[0].name + "_";
-                if (flavorName == "em_") {
+                if (flavorName == "prd_") {
                     flavorName = "";
                 }
                 def fileName = "9358tech_v${defaultConfig.versionName}.${defaultConfig.versionCode}_${flavorName}xiaomodo_${releaseTime()}.apk"
@@ -129,7 +129,7 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile(name: 'shidou.appgrade-release', ext: 'aar')
+    compile(name: 'shidou-updater-1.2', ext: 'aar')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
