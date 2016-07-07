@@ -18,6 +18,8 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
@@ -104,6 +106,12 @@ public class Utils {
 
     public static void makeToast(Context context, String str, int duration) {
         Toast.makeText(context, TextUtils.isEmpty(str)?ResourceUtils.getString(R.string.default_tips):str, duration).show();
+    }
+
+    public static void reportRegisterEvent(Context context, String step){
+        HashMap<String,String> map = new HashMap<String,String>();
+        map.put("step",step);
+        MobclickAgent.onEvent(context, Constant.REGISTER_EVENT, map);
     }
 
     /**

@@ -16,6 +16,8 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.common.Util;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
@@ -183,10 +185,10 @@ public class PersonalFragment extends BaseFragment{
     public void onWorkTimeItemClick(){
         if(mTechInfo == null) return;
         if(mTechInfo.status.equals("valid")||mTechInfo.status.equals("reject")){
-            ((BaseActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
+            ((BaseFragmentActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
             return;
         }else if(mTechInfo.status.equals("uncert")){
-            ((BaseActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_wait_check));
+            ((BaseFragmentActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_wait_check));
             return;
         }
 
@@ -209,6 +211,9 @@ public class PersonalFragment extends BaseFragment{
     @OnClick(R.id.setting_item)
     public void onSettingItemClick(){
         Intent intent = new Intent(getActivity(), SettingActivity.class);
+        if(mTechInfo != null){
+            intent.putExtra(SettingActivity.EXTRA_JIONED_CLUB, !mTechInfo.status.equals("valid")&&!mTechInfo.status.equals("reject"));
+        }
         startActivity(intent);
     }
 

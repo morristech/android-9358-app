@@ -136,7 +136,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     public void onItemClicked(EMConversation conversation) {
         String username = conversation.getUserName();
         if (username.equals(SharedPreferenceHelper.getEmchatId()))
-            ((BaseActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
+            ((BaseFragmentActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
         else if(username.equals(ChatConstant.MESSAGE_SYSTEM_NOTICE)) {
             Intent intent = new Intent(getContext(), SysNoticeListActivity.class);
             // it's single chat

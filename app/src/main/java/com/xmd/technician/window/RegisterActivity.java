@@ -16,12 +16,15 @@ import android.widget.EditText;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.AppConfig;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.LoginResult;
@@ -30,6 +33,7 @@ import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.ClearableEditText;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,9 +54,8 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
     @Bind(R.id.invite_club) EditText mClubInviteEdt;
     @Bind(R.id.send_icode) Button mSendMSMBtn;
     @Bind(R.id.register) Button mRegisterBtn;
-
-    private String mUserName;
-    private String mPassword;
+    @Bind(R.id.user_name) ClearableEditText mEtUsername;
+    @Bind(R.id.password) ClearableEditText mEtPassword;
 
     private long mCurrentTimeMillis = 0;
     private boolean mPhoneNumReady = true;
@@ -82,16 +85,16 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
         setTitle(R.string.register);
         setBackVisible(true);
 
-        mUserName = getIntent().getExtras().getString(EXTRA_USERNAME);
-        mPassword = getIntent().getExtras().getString(EXTRA_PASSWORD);
-
         mSecurityCodeEdt.addTextChangedListener(this);
         mClubInviteEdt.addTextChangedListener(this);
+        mEtPassword.addTextChangedListener(this);
+        mEtUsername.addTextChangedListener(this);
 
         mRegisterSubscription = RxBus.getInstance().toObservable(RegisterResult.class).subscribe(
                 result -> handleRegisterResult(result)
         );
 
+        mEtUsername.setText(SharedPreferenceHelper.getUserAccount());
     }
 
     @Override
@@ -126,8 +129,9 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
     public void afterTextChanged(Editable s) {
 
         String securityCode = mSecurityCodeEdt.getText().toString();
-
-        if (Util.matchSecurityCodeFormat(securityCode) && !TextUtils.isEmpty(mClubInviteEdt.getText())) {
+        String password = mEtPassword.getText().toString();
+        String account = mEtUsername.getText().toString();
+        if (Util.matchPassWordFormat(password) && Util.matchPhoneNumFormat(account)&&Util.matchSecurityCodeFormat(securityCode) && !TextUtils.isEmpty(mClubInviteEdt.getText())) {
             mRegisterBtn.setEnabled(true);
         } else {
             mRegisterBtn.setEnabled(false);
@@ -161,15 +165,20 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
     @OnClick(R.id.register)
     public void register(){
         Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_MOBILE, mUserName);
-        params.put(RequestConstant.KEY_PASSWORD, mPassword);
+        params.put(RequestConstant.KEY_MOBILE, mEtUsername.getText().toString());
+        params.put(RequestConstant.KEY_PASSWORD, mEtPassword.getText().toString());
         params.put(RequestConstant.KEY_ICODE, mSecurityCodeEdt.getText().toString());
         params.put(RequestConstant.KEY_CLUB_CODE, mClubInviteEdt.getText().toString());
         params.put(RequestConstant.KEY_LOGIN_CHANEL, "android"+AppConfig.getAppVersionCode());
 
+        //Save the usernames
+        SharedPreferenceHelper.setUserAccount(mEtUsername.getText().toString());
+
         showProgressDialog(getString(R.string.register));
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_REGISTER, params);
+
+        Utils.reportRegisterEvent(this, "注册验证");
     }
 
     @OnClick(R.id.send_icode)
@@ -180,7 +189,7 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
         mHandler.post(mRefreshICodeTask);
 
         Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_MOBILE, mUserName.toString());
+        params.put(RequestConstant.KEY_MOBILE, mEtUsername.getText().toString());
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ICODE, params);
     }
 

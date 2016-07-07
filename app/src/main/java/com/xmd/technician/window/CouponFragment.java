@@ -62,11 +62,11 @@ public class CouponFragment extends BaseListFragment<CouponInfo> {
         }
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             //onGetListFailed(result.msg);
-            ((BaseActivity)getActivity()).makeShortToast(result.msg);
+            ((BaseFragmentActivity)getActivity()).makeShortToast(result.msg);
             onGetListSucceeded(0, new ArrayList<CouponInfo>());
         } else {
             if(result.respData.coupons == null || result.respData.coupons.isEmpty()){
-                ((BaseActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.coupon_fragment_coupon_empty_reason));
+                ((BaseFragmentActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.coupon_fragment_coupon_empty_reason));
             }else {
                 Collections.sort(result.respData.coupons, (lhs, rhs) -> {
                     if(Constant.COUPON_TYPE_PAID.equals(rhs.couponType)) return 1;

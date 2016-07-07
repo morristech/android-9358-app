@@ -16,7 +16,7 @@ public class WelcomeActivity extends BaseActivity {
     private Runnable mTask = new Runnable() {
         @Override
         public void run() {
-            Intent intent = new Intent(WelcomeActivity.this , LoginActivity.class);
+            Intent intent = new Intent(WelcomeActivity.this , PreLoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -35,8 +35,6 @@ public class WelcomeActivity extends BaseActivity {
             UserProfileProvider.getInstance().initContactList();
             // Switch to MainActivity
             Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-            // it's single chat
-            intent.putExtra(ChatConstant.EMCHAT_ID, "琵琶");
             startActivity(intent);
             finish();
         }

@@ -19,6 +19,52 @@
         android:orientation="vertical"
         android:background="@android:color/white">
 
+        <com.xmd.technician.widget.ClearableEditText
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_button_height"
+            android:layout_marginLeft="@dimen/personal_padding"
+            android:layout_marginRight="@dimen/personal_padding"
+            android:drawableLeft="@drawable/phone"
+            android:drawablePadding="@dimen/personal_padding"
+            android:background="@android:color/transparent"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody"
+            android:textColorHint="@color/colorRemark"
+            android:hint="@string/login_account_hint"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_divide_height"
+            android:layout_marginLeft="@dimen/personal_padding"
+            android:layout_marginRight="@dimen/personal_padding"
+            android:background="@color/colorLineDivide" />
+
+        <com.xmd.technician.widget.ClearableEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_button_height"
+            android:layout_marginLeft="@dimen/personal_padding"
+            android:layout_marginRight="@dimen/personal_padding"
+            android:drawableLeft="@drawable/password_c"
+            android:drawablePadding="@dimen/personal_padding"
+            android:background="@android:color/transparent"
+            android:inputType="textPassword"
+            android:maxLength="20"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody"
+            android:textColorHint="@color/colorRemark"
+            android:hint="@string/register_password_hint"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_divide_height"
+            android:layout_marginLeft="@dimen/personal_padding"
+            android:layout_marginRight="@dimen/personal_padding"
+            android:background="@color/colorLineDivide" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_button_height"
@@ -98,5 +144,25 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/fontTitle"
         android:text="@string/next_step"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/personal_margin"
+        android:layout_marginLeft="@dimen/personal_padding"
+        android:textColor="@color/colorTitle"
+        android:textSize="@dimen/fontBody"
+        android:text="@string/note"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/work_time_padding"
+        android:layout_marginRight="@dimen/work_time_padding"
+        android:layout_marginTop="@dimen/search_margin"
+        android:lineSpacingExtra="@dimen/search_margin"
+        android:textColor="@color/list_item_number_color"
+        android:textSize="@dimen/fontNormal"
+        android:text="@string/register_tips"/>
 
 </LinearLayout>

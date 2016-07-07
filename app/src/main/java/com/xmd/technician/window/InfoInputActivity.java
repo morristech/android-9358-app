@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.xmd.technician.R;
+import com.xmd.technician.common.ActivityHelper;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -58,6 +60,8 @@ public class InfoInputActivity extends BaseActivity implements TextWatcher{
 
     @Override
     protected void onDestroy() {
+        ActivityHelper.getInstance().removeAllActivities();
+        startActivity(new Intent(InfoInputActivity.this, MainActivity.class));
         super.onDestroy();
         RxBus.getInstance().unsubscribe(mSubscription);
     }
@@ -89,5 +93,7 @@ public class InfoInputActivity extends BaseActivity implements TextWatcher{
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_USER, user);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPDATE_TECH_INFO, params);
+
+        Utils.reportRegisterEvent(this, "基本信息");
     }
 }

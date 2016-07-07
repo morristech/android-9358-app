@@ -161,8 +161,10 @@
             android:exported="true"
             android:label="@string/wx_entry_activity_title"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".window.SysNoticeListActivity"></activity>
+        <activity android:name=".window.SysNoticeListActivity" />
+        <activity
+            android:name=".window.PreLoginActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

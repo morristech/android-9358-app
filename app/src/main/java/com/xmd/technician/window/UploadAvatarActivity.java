@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.xmd.technician.R;
+import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Util;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -25,7 +27,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import internal.org.apache.http.entity.mime.MinimalField;
 import rx.Subscription;
 
 public class UploadAvatarActivity extends BaseActivity {
@@ -47,8 +48,11 @@ public class UploadAvatarActivity extends BaseActivity {
         setTitle(R.string.register);
         setBackVisible(true);
 
-        mSubscription = RxBus.getInstance().toObservable(AvatarResult.class).subscribe(
-                result -> {startActivity(new Intent(UploadAvatarActivity.this, MainActivity.class)); finish();});
+        mSubscription = RxBus.getInstance().toObservable(AvatarResult.class).subscribe(result -> {
+            ActivityHelper.getInstance().removeAllActivities();
+            startActivity(new Intent(UploadAvatarActivity.this, MainActivity.class));
+            finish();
+        });
     }
 
     @Override
@@ -108,5 +112,7 @@ public class UploadAvatarActivity extends BaseActivity {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_IMG_FILE, mImageFile);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPLOAD_AVATAR,params);
+
+        Utils.reportRegisterEvent(this, "上传头像");
     }
 }
