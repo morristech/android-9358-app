@@ -18,7 +18,7 @@ public class Constant {
     public static final String MIME_TYPE_HTML = "text/html";
     public static final int WEBVIEW_TEXT_ZOOM = 80;
 
-
+    public static final int APP_ID = 1;
 
     public static final String ORDER_STATUS_ALL = "";
     /**
@@ -121,7 +121,7 @@ public class Constant {
     public static final long ONE_DAY = 1000 * 60 * 60 * 24;
 
     public static final String DEFAULT_SERVER_HOST = "http://spa.93wifi.com";
-
+    public static final String UPDATE_SERVER_HOST = "http://192.168.1.92:8989";
     public static final String PARAM_COUPON_DISPLAY_TYPE = "p_coupon_display_type";
 
     public static final String PARAM_ACT_ID = "p_act_id";

@@ -3,7 +3,6 @@ package com.xmd.technician.http;
 import android.os.Message;
 import android.text.TextUtils;
 
-
 import com.hyphenate.chat.EMClient;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -12,12 +11,14 @@ import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
+import com.xmd.technician.http.gson.AppUpdateConfigResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
+import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.LoginResult;
@@ -26,7 +27,6 @@ import com.xmd.technician.http.gson.ModifyPasswordResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
-import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
@@ -164,13 +164,16 @@ public class RequestController extends AbstractController {
                 doGetCouponInfo(msg.obj.toString());
                 break;
             case MsgDef.MSG_DEF_GET_PAID_COUPON_USER_DETAIL:
-                doGetPaidCouponUserDetail((Map<String,String>)msg.obj);
+                doGetPaidCouponUserDetail((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_COUPON_SHARE_EVENT_COUNT:
                 doCouponShareEventCount(msg.obj.toString());
                 break;
             case MsgDef.MSG_DEF_QUIT_CLUB:
                 quitClub();
+                break;
+            case MsgDef.MSG_DEF_GET_APP_UPDATE_CONFIG:
+                doGetAppUpdateConfig((Map<String, String>) msg.obj);
                 break;
         }
 
@@ -232,7 +235,7 @@ public class RequestController extends AbstractController {
     }
 
     //不能正常工作me
-    private void register(Map<String, String> params){
+    private void register(Map<String, String> params) {
         Call<RegisterResult> call = getSpaService().register(params.get(RequestConstant.KEY_MOBILE),
                 params.get(RequestConstant.KEY_PASSWORD), params.get(RequestConstant.KEY_ICODE),
                 params.get(RequestConstant.KEY_CLUB_CODE), params.get(RequestConstant.KEY_LOGIN_CHANEL),
@@ -260,7 +263,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void modifyPassWord(Map<String, String> params){
+    private void modifyPassWord(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().modifyPassword(params.get(RequestConstant.KEY_OLD_PASSWORD),
                 params.get(RequestConstant.KEY_NEW_PASSWORD),
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
@@ -274,7 +277,7 @@ public class RequestController extends AbstractController {
     }
 
     //不能正常工作
-    private void resetPassWord(Map<String, String> params){
+    private void resetPassWord(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().resetPassword(params.get(RequestConstant.KEY_USERNAME),
                 params.get(RequestConstant.KEY_PASSWORD),
                 params.get(RequestConstant.KEY_ICODE),
@@ -303,15 +306,15 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getCommentList(Map<String, String> params){
+    private void getCommentList(Map<String, String> params) {
         Call<CommentResult> call;
-        if(params != null){
+        if (params != null) {
             call = getSpaService().getCommentList(params.get(RequestConstant.KEY_PAGE),
                     params.get(RequestConstant.KEY_PAGE_SIZE),
                     params.get(RequestConstant.KEY_SORT_TYPE),
                     RequestConstant.SESSION_TYPE,
                     SharedPreferenceHelper.getUserToken());
-        }else {
+        } else {
             call = getSpaService().getCommentList(null, null, null,
                     RequestConstant.SESSION_TYPE,
                     SharedPreferenceHelper.getUserToken());
@@ -375,9 +378,9 @@ public class RequestController extends AbstractController {
 
     }
 
-    private void hideOrder(String orderId){
+    private void hideOrder(String orderId) {
         Call<BaseResult> call = getSpaService().hideOrder(orderId,
-                SharedPreferenceHelper.getUserToken(),RequestConstant.SESSION_TYPE);
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
@@ -387,7 +390,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getICode(Map<String, String> params){
+    private void getICode(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().getICode(params.get(RequestConstant.KEY_MOBILE));
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
@@ -404,7 +407,7 @@ public class RequestController extends AbstractController {
 
     }
 
-    private void submitInviteCode(Map<String, String> params){
+    private void submitInviteCode(Map<String, String> params) {
         Call<InviteCodeResult> call = getSpaService().submitInviteCode(SharedPreferenceHelper.getUserToken(),
                 RequestConstant.SESSION_TYPE,
                 params.get(RequestConstant.KEY_INVITE_CODE));
@@ -417,7 +420,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getTechEditInfo(){
+    private void getTechEditInfo() {
         Call<TechEditResult> call = getSpaService().getTechEditInfo(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<TechEditResult>() {
@@ -428,7 +431,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getTechCurrentInfo(){
+    private void getTechCurrentInfo() {
         Call<TechCurrentResult> call = getSpaService().getTechCurrentInfo(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<TechCurrentResult>() {
@@ -439,7 +442,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void updateTechInfo(Map<String, String> params){
+    private void updateTechInfo(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().updateTechInfo(params.get(RequestConstant.KEY_USER),
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
@@ -451,7 +454,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getWorkTime(){
+    private void getWorkTime() {
         Call<WorkTimeResult> call = getSpaService().getWorkTime(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<WorkTimeResult>() {
@@ -462,7 +465,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void updateWorkTime(Map<String, String> params){
+    private void updateWorkTime(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().updateWorkTime(params.get(RequestConstant.KEY_DAY_RANGE),
                 params.get(RequestConstant.KEY_BEGIN_TIME), params.get(RequestConstant.KEY_END_TIME),
                 params.get(RequestConstant.KEY_ID), params.get(RequestConstant.KEY_END_DAY),
@@ -476,7 +479,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void updateWorkStatus(Map<String, String> params){
+    private void updateWorkStatus(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().updateWorkStatus(params.get(RequestConstant.KEY_STATUS),
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
@@ -487,7 +490,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void uploadAvatar(Map<String, String> params){
+    private void uploadAvatar(Map<String, String> params) {
         Call<AvatarResult> call = getSpaService().uploadAvatar(params.get(RequestConstant.KEY_IMG_FILE),
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
@@ -499,7 +502,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void uploadAlbum(Map<String, String> params){
+    private void uploadAlbum(Map<String, String> params) {
         Call<AlbumResult> call = getSpaService().uploadAlbum(params.get(RequestConstant.KEY_IMG_FILE),
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
@@ -511,7 +514,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void deleteAlbum(Map<String, String> params){
+    private void deleteAlbum(Map<String, String> params) {
         Call<AlbumResult> call = getSpaService().deleteAlbum(params.get(RequestConstant.KEY_ID),
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
@@ -523,7 +526,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void sortAlbum(Map<String, String> params){
+    private void sortAlbum(Map<String, String> params) {
         Call<AlbumResult> call = getSpaService().sortAlbum(params.get(RequestConstant.KEY_IDS),
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
@@ -535,7 +538,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getServiceList(){
+    private void getServiceList() {
         Call<ServiceResult> call = getSpaService().getServiceList(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<ServiceResult>() {
@@ -546,7 +549,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void updateServiceList(Map<String, String> params){
+    private void updateServiceList(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().updateServiceList(params.get(RequestConstant.KEY_IDS),
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
@@ -558,7 +561,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getCommentOrderRedPkCount(){
+    private void getCommentOrderRedPkCount() {
         Call<CommentOrderRedPkResutlt> call = getSpaService().getCommentOrderRedPkCount(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<CommentOrderRedPkResutlt>() {
@@ -569,7 +572,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getAccountMoney(){
+    private void getAccountMoney() {
         Call<AccountMoneyResult> call = getSpaService().getAccountMoney(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<AccountMoneyResult>() {
@@ -580,7 +583,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getConsumeDetail(Map<String, String> params){
+    private void getConsumeDetail(Map<String, String> params) {
         Call<ConsumeDetailResult> call = getSpaService().getConsumeDetail(params.get(RequestConstant.KEY_CONSUME_TYPE),
                 params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
@@ -593,7 +596,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getCouponList(){
+    private void getCouponList() {
         Call<CouponListResult> call = getSpaService().getCouponList(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<CouponListResult>() {
@@ -625,7 +628,7 @@ public class RequestController extends AbstractController {
 
             @Override
             protected void postError(String errorMsg) {
-                if("红包已过期".equals(errorMsg)){
+                if ("红包已过期".equals(errorMsg)) {
                     CouponInfoResult result = new CouponInfoResult();
                     result.statusCode = RequestConstant.RESP_ERROR_CODE_FOR_LOCAL;
                     result.msg = errorMsg;
@@ -668,7 +671,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void quitClub(){
+    private void quitClub() {
         Call<QuitClubResult> call = getSpaService().quitClub(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<QuitClubResult>() {
@@ -679,7 +682,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void doCouponShareEventCount(String actId){
+    private void doCouponShareEventCount(String actId) {
         Call<BaseResult> call = getSpaService().doCouponShareEventCount(actId, RequestConstant.USER_TYPE_TECH,
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
@@ -767,5 +770,35 @@ public class RequestController extends AbstractController {
 
     private void doHandleTokenExpired(String errorMsg) {
         RxBus.getInstance().post(new TokenExpiredResult(errorMsg));
+    }
+
+
+    //获取升级配置
+    private void doGetAppUpdateConfig(Map<String, String> params) {
+        String version = params.get(RequestConstant.KEY_VERSION);
+        String clubCode = params.get(RequestConstant.KEY_CLUB_CODE);
+        String appId = params.get(RequestConstant.KEY_APP_ID);
+        final Call<AppUpdateConfigResult> call =
+                RetrofitServiceFactory.getAppUpdateService().getAppUpdateConfig(appId, clubCode, version);
+        call.enqueue(new Callback<AppUpdateConfigResult>() {
+            @Override
+            public void onResponse(Call<AppUpdateConfigResult> c, Response<AppUpdateConfigResult> response) {
+                AppUpdateConfigResult result = response.body();
+                if (result != null) {
+                    RxBus.getInstance().post(result);
+                } else {
+                    try {
+                        RxBus.getInstance().post(new Throwable(response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AppUpdateConfigResult> call, Throwable t) {
+                RxBus.getInstance().post(t);
+            }
+        });
     }
 }
