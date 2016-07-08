@@ -15,6 +15,8 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.common.Utils;
+import com.xmd.technician.window.BaseFragmentActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -76,7 +78,7 @@ public abstract class BaseChatView extends LinearLayout {
 
         setUpBaseView();
         onSetUpView();
-        setMessageStatusView();
+        setupMessageStatusView();
     }
 
     private void setUpBaseView() {
@@ -94,29 +96,31 @@ public abstract class BaseChatView extends LinearLayout {
         }
     }
 
-    private void setMessageStatusView() {
-        setMessageSendCallback();
-        switch (message.status()) {
-            case CREATE:
-                progressBar.setVisibility(View.GONE);
-                statusView.setVisibility(View.VISIBLE);
-                // 发送消息
+    private void setupMessageStatusView() {
+        if(message.direct() == Direct.SEND){
+            setMessageSendCallback();
+            switch (message.status()) {
+                case CREATE:
+                    progressBar.setVisibility(View.GONE);
+                    statusView.setVisibility(View.VISIBLE);
+                    // 发送消息
 //                sendMsgInBackground(message);
-                break;
-            case SUCCESS: // 发送成功
-                progressBar.setVisibility(View.GONE);
-                statusView.setVisibility(View.GONE);
-                break;
-            case FAIL: // 发送失败
-                progressBar.setVisibility(View.GONE);
-                statusView.setVisibility(View.VISIBLE);
-                break;
-            case INPROGRESS: // 发送中
-                progressBar.setVisibility(View.VISIBLE);
-                statusView.setVisibility(View.GONE);
-                break;
-            default:
-                break;
+                    break;
+                case SUCCESS: // 发送成功
+                    progressBar.setVisibility(View.GONE);
+                    statusView.setVisibility(View.GONE);
+                    break;
+                case FAIL: // 发送失败
+                    progressBar.setVisibility(View.GONE);
+                    statusView.setVisibility(View.VISIBLE);
+                    break;
+                case INPROGRESS: // 发送中
+                    progressBar.setVisibility(View.VISIBLE);
+                    statusView.setVisibility(View.GONE);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -148,7 +152,16 @@ public abstract class BaseChatView extends LinearLayout {
     protected void updateView() {
         activity.runOnUiThread(new Runnable() {
             public void run() {
-                setMessageStatusView();
+                if (message.status() == EMMessage.Status.FAIL) {
+                    if (message.getError() == EMError.MESSAGE_INCLUDE_ILLEGAL_CONTENT) {
+                        ((BaseFragmentActivity)activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.error_send_invalid_content));
+                    } else if (message.getError() == EMError.USER_NOT_LOGIN) {
+                        ((BaseFragmentActivity)activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.use_not_login));
+                    } else {
+                        ((BaseFragmentActivity)activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.connect_failuer_toast));
+                    }
+                }
+                setupMessageStatusView();
             }
         });
 
