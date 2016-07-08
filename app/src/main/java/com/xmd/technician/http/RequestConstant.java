@@ -56,7 +56,7 @@ public class RequestConstant {
 
     public static final String URL_COUPON_SHARE_EVENT_COUNT = BASE_URL + "/v1/profile/redpacket/share";
 
-    //http://192.168.1.92:8989/app-upgrade-system/appUpgrade?appId=?&version=?&clubCode=
+//    public static final String URL_APP_UPDATE_CONFIG = "mockjs/17/app-upgrade-system/appUpgrade";
     public static final String URL_APP_UPDATE_CONFIG = "app-upgrade-system/appUpgrade";
 
     /*********************************************************************************************/
@@ -131,8 +131,9 @@ public class RequestConstant {
     public static final String KEY_FILTER_ORDER = "filterOrder";
     public static final String KEY_COUPON_STATUS = "couponStatus";
 
-    public static final String KEY_APP_ID = "appId";
-    public static final String KEY_VERSION = "version";
+    public static final String KEY_UPDATE_APP_ID = "appId";
+    public static final String KEY_UPDATE_VERSION = "version";
+    public static final String KEY_UPDATE_USER_ID = "userId";
 
 
     /*********************************************************************************************/

@@ -775,11 +775,11 @@ public class RequestController extends AbstractController {
 
     //获取升级配置
     private void doGetAppUpdateConfig(Map<String, String> params) {
-        String version = params.get(RequestConstant.KEY_VERSION);
-        String clubCode = params.get(RequestConstant.KEY_CLUB_CODE);
-        String appId = params.get(RequestConstant.KEY_APP_ID);
+        String version = params.get(RequestConstant.KEY_UPDATE_VERSION);
+        String userId = params.get(RequestConstant.KEY_UPDATE_USER_ID);
+        String appId = params.get(RequestConstant.KEY_UPDATE_APP_ID);
         final Call<AppUpdateConfigResult> call =
-                RetrofitServiceFactory.getAppUpdateService().getAppUpdateConfig(appId, clubCode, version);
+                RetrofitServiceFactory.getAppUpdateService().getAppUpdateConfig(appId, userId, version);
         call.enqueue(new Callback<AppUpdateConfigResult>() {
             @Override
             public void onResponse(Call<AppUpdateConfigResult> c, Response<AppUpdateConfigResult> response) {

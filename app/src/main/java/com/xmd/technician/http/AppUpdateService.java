@@ -11,7 +11,7 @@ import retrofit2.http.Query;
  */
 public interface AppUpdateService {
     @GET(RequestConstant.URL_APP_UPDATE_CONFIG)
-    Call<AppUpdateConfigResult> getAppUpdateConfig(@Query(RequestConstant.KEY_APP_ID) String appId,
-                                                   @Query(RequestConstant.KEY_CLUB_CODE) String clubCode,
-                                                   @Query(RequestConstant.KEY_VERSION) String version);
+    Call<AppUpdateConfigResult> getAppUpdateConfig(@Query(RequestConstant.KEY_UPDATE_APP_ID) String appId,
+                                                   @Query(RequestConstant.KEY_UPDATE_USER_ID) String userId,
+                                                   @Query(RequestConstant.KEY_UPDATE_VERSION) String version);
 }

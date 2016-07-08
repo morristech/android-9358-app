@@ -7,26 +7,16 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMContact;
-import com.hyphenate.chat.EMGroupManager;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ActivityHelper;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Util;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.RetrofitServiceFactory;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -39,14 +29,16 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnLongClick;
 import rx.Subscription;
 
-public class LoginActivity extends BaseActivity implements TextWatcher{
+public class LoginActivity extends BaseActivity implements TextWatcher {
 
-    @Bind(R.id.login_username_txt) ClearableEditText mEtUsername;
-    @Bind(R.id.login_password_txt) ClearableEditText mEtPassword;
-    @Bind(R.id.login_btn) Button mBtnLogin;
+    @Bind(R.id.login_username_txt)
+    ClearableEditText mEtUsername;
+    @Bind(R.id.login_password_txt)
+    ClearableEditText mEtPassword;
+    @Bind(R.id.login_btn)
+    Button mBtnLogin;
     //@Bind(R.id.toggle_server_host) Button mBtnToggleServerHost;
     //@Bind(R.id.server_host) Spinner mSpServerHost;
 
@@ -113,13 +105,13 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
     public void login() {
 
         mUsername = mEtUsername.getText().toString();
-        if(TextUtils.isEmpty(mUsername)) {
+        if (TextUtils.isEmpty(mUsername)) {
             makeShortToast(ResourceUtils.getString(R.string.login_activity_hint_username_not_empty));
             return;
         }
 
         mPassword = mEtPassword.getText().toString();
-        if(TextUtils.isEmpty(mPassword)) {
+        if (TextUtils.isEmpty(mPassword)) {
             makeShortToast(ResourceUtils.getString(R.string.login_activity_hint_password_not_empty));
             return;
         }
@@ -138,7 +130,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_USERNAME, mUsername);
         params.put(RequestConstant.KEY_PASSWORD, mPassword);
-        params.put(RequestConstant.KEY_APP_VERSION, "android."+ AppConfig.getAppVersionNameAndCode());
+        params.put(RequestConstant.KEY_APP_VERSION, "android." + AppConfig.getAppVersionNameAndCode());
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN, params);
     }
@@ -154,7 +146,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher{
     }*/
 
     @OnClick(R.id.find_password)
-    public void gotoFindPassword(){
+    public void gotoFindPassword() {
         startActivity(new Intent(this, ResetPasswordActivity.class));
     }
 
