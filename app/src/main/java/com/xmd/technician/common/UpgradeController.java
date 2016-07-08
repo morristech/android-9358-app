@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.shidou.update.UpdateConstants;
 import com.shidou.update.UpdaterController;
 import com.xmd.technician.Constant;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AppUpdateConfigResult;
 import com.xmd.technician.msgctrl.AbstractController;
@@ -76,9 +77,9 @@ public class UpgradeController extends AbstractController {
 
     private void getConfig() {
         Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_CLUB_CODE, "unknown");
-        params.put(RequestConstant.KEY_VERSION, String.valueOf(Utils.getVersionCode()));
-        params.put(RequestConstant.KEY_APP_ID, String.valueOf(Constant.APP_ID));
+        params.put(RequestConstant.KEY_UPDATE_USER_ID, SharedPreferenceHelper.getUserId());
+        params.put(RequestConstant.KEY_UPDATE_VERSION, String.valueOf(Utils.getVersionCode()));
+        params.put(RequestConstant.KEY_UPDATE_APP_ID, String.valueOf(Constant.APP_ID));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_APP_UPDATE_CONFIG, params);
     }
 
