@@ -175,6 +175,10 @@
     <string name="no_paid_coupon">抱歉！暂无点钟券！</string>
     <string name="no_coupon">抱歉！暂无优惠券！</string>
     <string name="send_coupon_msg_format"><i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b></string>
+    <string name="send_fail">发送消息失败,</string>
+    <string name="error_send_invalid_content">你发送了不合法的消息内容</string>
+    <string name="connect_failuer_toast">请检查网络或稍候重试</string>
+    <string name="use_not_login">用户已下线</string>
 
     <string name="pending_order">待接受</string>
     <string name="accepted_order">已接受</string>
