@@ -112,3 +112,7 @@
 
 #RxJava
 -dontwarn rx.internal.util.**
+
+#升级
+-dontwarn com.shidou.update.**
+-keep class com.shidou.update.**{*;}
