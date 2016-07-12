@@ -74,6 +74,14 @@ public class Constant {
     public static final int COUPON_DISPLAY_TYPE_USER = 2;
 
     /**
+     * 技师状态
+     */
+    public static final String TECH_STATUS_VALID = "valid";
+    public static final String TECH_STATUS_REJECT = "reject";
+    public static final String TECH_STATUS_UNCERT = "uncert";
+    public static final String TECH_STATUS_BUSY = "busy";
+
+    /**
      * 订单界面的待接，已接受，已完成三种状态
      */
     public static final String FILTER_ORDER_SUBMIT = "submit";

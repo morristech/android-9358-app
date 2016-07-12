@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.UserProfileProvider;
@@ -110,7 +111,7 @@ public class PersonalFragment extends BaseFragment{
         }
 
         mTechName.setText(mTechInfo.userName);
-        if(!mTechInfo.status.equals("uncert")){
+        if(!Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)){
             mClubName.setText(mTechInfo.clubName);
         }
         Glide.with(this).load(mTechInfo.imageUrl).into(mAvatar);
@@ -147,21 +148,21 @@ public class PersonalFragment extends BaseFragment{
                 mCommentCount.setText("");
             }
 
-            if(result.respData.techStatus.equals("valid")||result.respData.techStatus.equals("reject")){
+            if(Constant.TECH_STATUS_VALID.equals(result.respData.techStatus)||Constant.TECH_STATUS_REJECT.equals(result.respData.techStatus)){
                 mClubName.setVisibility(View.GONE);
                 mInviteBtn.setVisibility(View.VISIBLE);
             }else{
                 mClubName.setVisibility(View.VISIBLE);
                 mInviteBtn.setVisibility(View.GONE);
 
-                if(result.respData.techStatus.equals("uncert")){
+                if(Constant.TECH_STATUS_UNCERT.equals(result.respData.techStatus)){
                     mClubName.setText(result.respData.techStatusDesc);
                 }
             }
 
             if(mTechInfo != null) mTechInfo.status = result.respData.techStatus;
 
-            if(result.respData.techStatus.equals("busy")){
+            if(Constant.TECH_STATUS_BUSY.equals(result.respData.techStatus)){
                 mWorkStatus.setImageResource(R.drawable.icon_busy);
             }else {
                 mWorkStatus.setImageResource(R.drawable.icon_free);
@@ -184,10 +185,10 @@ public class PersonalFragment extends BaseFragment{
     @OnClick(R.id.time_item)
     public void onWorkTimeItemClick(){
         if(mTechInfo == null) return;
-        if(mTechInfo.status.equals("valid")||mTechInfo.status.equals("reject")){
+        if(Constant.TECH_STATUS_VALID.equals(mTechInfo.status)||Constant.TECH_STATUS_REJECT.equals(mTechInfo.status)){
             ((BaseFragmentActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
             return;
-        }else if(mTechInfo.status.equals("uncert")){
+        }else if(Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)){
             ((BaseFragmentActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_wait_check));
             return;
         }
@@ -212,7 +213,7 @@ public class PersonalFragment extends BaseFragment{
     public void onSettingItemClick(){
         Intent intent = new Intent(getActivity(), SettingActivity.class);
         if(mTechInfo != null){
-            intent.putExtra(SettingActivity.EXTRA_JIONED_CLUB, !mTechInfo.status.equals("valid")&&!mTechInfo.status.equals("reject"));
+            intent.putExtra(SettingActivity.EXTRA_JIONED_CLUB, !Constant.TECH_STATUS_VALID.equals(mTechInfo.status)&&!Constant.TECH_STATUS_REJECT.equals(mTechInfo.status));
         }
         startActivity(intent);
     }
@@ -230,7 +231,7 @@ public class PersonalFragment extends BaseFragment{
         }
 
         boolean canShare = true;
-        if(mTechInfo.status.equals("valid")||mTechInfo.status.equals("reject") || mTechInfo.status.equals("uncert")){
+        if(Constant.TECH_STATUS_VALID.equals(mTechInfo.status)||Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)){
             canShare = false;
         }
         StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
