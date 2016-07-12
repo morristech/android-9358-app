@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -32,6 +31,7 @@ import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
@@ -260,6 +260,22 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         });
         mIsMessageListInited = true;
         mChatAdapter.refreshSelectLast();
+        setListItemClickListener();
+    }
+
+    private void setListItemClickListener(){
+        mChatAdapter.setListItemClickListener(new EMessageListItemClickListener() {
+            @Override
+            public void onResendClick(EMMessage message) {
+                new RewardConfirmDialog(ChatActivity.this, getString(R.string.resend), getString(R.string.confirm_resend)) {
+                    @Override
+                    public void onConfirmClick() {
+                        super.onConfirmClick();
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, (Runnable) () -> resendMessage(message));
+                    }
+                }.show();
+            }
+        });
     }
 
     private void getRedpackListResult(CouponListResult result){

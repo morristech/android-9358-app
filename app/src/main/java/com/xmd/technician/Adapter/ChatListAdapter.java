@@ -23,7 +23,9 @@ import com.xmd.technician.chat.chatview.ChatViewPaidCoupon;
 import com.xmd.technician.chat.chatview.ChatViewPaidCouponTip;
 import com.xmd.technician.chat.chatview.ChatViewReward;
 import com.xmd.technician.chat.chatview.ChatViewText;
+import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -58,12 +60,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private RecyclerView mListView;
     private Map<String, String> mOrderReplyMessage;
 
+    private EMessageListItemClickListener mItemClickListener ;
+
     public ChatListAdapter(Context context, RecyclerView view , String username, int chatType){
         mContext = context;
         mListView = view;
         mConversation = EMClient.getInstance().chatManager().getConversation(username, CommonUtils.getConversationType(chatType), true);
 
         mOrderReplyMessage = new HashMap<>();
+    }
+
+    public void setListItemClickListener(EMessageListItemClickListener listener){
+        mItemClickListener = listener;
     }
 
     public void refreshList(){
@@ -160,7 +168,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ChatViewHolder){
-            ((ChatViewHolder)holder).setUpView(getItem(position));
+            ((ChatViewHolder)holder).setUpView(getItem(position), mItemClickListener);
         }
     }
 
@@ -181,8 +189,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
         }
 
-        public void setUpView(EMMessage emMessage){
-            ((BaseChatView)itemView).setUpView(emMessage);
+        public void setUpView(EMMessage emMessage, EMessageListItemClickListener listener){
+            ((BaseChatView)itemView).setUpView(emMessage, listener);
         }
     }
 
