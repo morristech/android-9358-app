@@ -95,6 +95,7 @@ public class AppConfig {
         }
         if (sServerHosts.isEmpty()) {
             sServerHosts.add(Constant.DEFAULT_SERVER_HOST);
+            sServerHosts.add(Constant.DEFAULT_UPDATE_SERVER);
         }
     }
 

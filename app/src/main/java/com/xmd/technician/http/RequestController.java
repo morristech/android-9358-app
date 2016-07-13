@@ -797,7 +797,8 @@ public class RequestController extends AbstractController {
 
             @Override
             public void onFailure(Call<AppUpdateConfigResult> call, Throwable t) {
-                RxBus.getInstance().post(t);
+//                RxBus.getInstance().post(t);
+                Logger.e("get app update config failed:" + t.getMessage());
             }
         });
     }

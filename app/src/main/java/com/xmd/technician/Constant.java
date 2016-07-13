@@ -121,8 +121,8 @@ public class Constant {
     public static final long ONE_DAY = 1000 * 60 * 60 * 24;
 
     public static final String DEFAULT_SERVER_HOST = "http://spa.93wifi.com";
-    public static final String UPDATE_SERVER_HOST = "http://192.168.1.92:8989";
-//    public static final String UPDATE_SERVER_HOST = "http://192.168.1.100:12315";
+    public static final String DEFAULT_UPDATE_SERVER = "http://192.168.1.100:9883";
+
     public static final String PARAM_COUPON_DISPLAY_TYPE = "p_coupon_display_type";
 
     public static final String PARAM_ACT_ID = "p_act_id";

@@ -23,6 +23,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_EMCHAT_PASSWORD = "7660E9BC2D136134F0FBC2856ABFDDAD";//emchatPassword
     private static final String KEY_USER_AVATAR = "DC03806303F221B804777E64B24B654C";//avatarUrl
     private static final String KEY_SERIAL_NO = "492B6C37356A803DCB43795618DB5DCA";//serialNo
+    private static final String KEY_UPDATE_SERVER = "EB8329FF8AAC026D206E3C0A811D0D96";//updateServer
     /**
      * Last time to check the upgrade automatically
      */
@@ -157,4 +158,11 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(KEY_CLIENT_ID, AppConfig.sClientId);
     }
 
+    public static void setUpdateServer(String server){
+        mSettingPreference.edit().putString(KEY_UPDATE_SERVER,server).apply();
+    }
+
+    public static String getUpdateServer(){
+        return mSettingPreference.getString(KEY_UPDATE_SERVER,Constant.DEFAULT_UPDATE_SERVER);
+    }
 }

@@ -33,14 +33,16 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import rx.Subscription;
 
-public class PreLoginActivity extends BaseActivity implements TextWatcher{
+public class PreLoginActivity extends BaseActivity implements TextWatcher {
 
     @Bind(R.id.login_username_txt) ClearableEditText mEtUsername;
     @Bind(R.id.login_btn) Button mBtnLogin;
     @Bind(R.id.server_host) Spinner mSpServerHost;
+    @Bind(R.id.update_server_host) Spinner mSpUpdateServerHost;
 
     private String mUsername;
     private String mSelectedServerHost;
+    private String mSelectedUpdateServerHost;
     private Subscription mLoginSubscription;
 
     @Override
@@ -86,14 +88,27 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher{
         serverHosts.setDropDownViewResource(R.layout.spinner_dropdown_item);
         mSpServerHost.setAdapter(serverHosts);
 
+        ArrayAdapter<String> updateServerHosts = new ArrayAdapter<>(this, R.layout.spinner_item, AppConfig.sServerHosts);
+        updateServerHosts.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        mSpUpdateServerHost.setAdapter(updateServerHosts);
+
         mSelectedServerHost = SharedPreferenceHelper.getServerHost();
         int selection = 0;
         if (Utils.isNotEmpty(mSelectedServerHost)) {
             selection = AppConfig.sServerHosts.indexOf(mSelectedServerHost);
-            if(selection < 0) {
+            if (selection < 0) {
                 selection = 0;
             }
             mSpServerHost.setSelection(selection);
+        }
+
+        mSelectedUpdateServerHost = SharedPreferenceHelper.getUpdateServer();
+        if (Utils.isNotEmpty(mSelectedUpdateServerHost)) {
+            selection = AppConfig.sServerHosts.indexOf(mSelectedUpdateServerHost);
+            if (selection < 0) {
+                selection = 0;
+            }
+            mSpUpdateServerHost.setSelection(selection);
         }
     }
 
@@ -101,17 +116,20 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher{
     public void login() {
 
         mUsername = mEtUsername.getText().toString();
-        if(TextUtils.isEmpty(mUsername)) {
+        if (TextUtils.isEmpty(mUsername)) {
             makeShortToast(ResourceUtils.getString(R.string.login_activity_hint_username_not_empty));
             return;
         }
 
         mSelectedServerHost = mSpServerHost.getSelectedItem().toString();
+        mSelectedUpdateServerHost = mSpUpdateServerHost.getSelectedItem().toString();
 
         //Save the usernames
         SharedPreferenceHelper.setUserAccount(mUsername);
         //Save the server host
         SharedPreferenceHelper.setServerHost(mSelectedServerHost);
+        //Save the update server host
+        SharedPreferenceHelper.setUpdateServer(mSelectedUpdateServerHost);
         // Recreate the retrofit service
         RetrofitServiceFactory.recreateService();
 
@@ -119,17 +137,19 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher{
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_USERNAME, mUsername);
         params.put(RequestConstant.KEY_PASSWORD, "");
-        params.put(RequestConstant.KEY_APP_VERSION, "android."+ AppConfig.getAppVersionNameAndCode());
+        params.put(RequestConstant.KEY_APP_VERSION, "android." + AppConfig.getAppVersionNameAndCode());
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN, params);
     }
 
     @OnLongClick(R.id.toggle_server_host)
     public boolean toggleServerHostSpinner() {
-        if(mSpServerHost.getVisibility() == View.GONE) {
+        if (mSpServerHost.getVisibility() == View.GONE) {
             mSpServerHost.setVisibility(View.VISIBLE);
+            mSpUpdateServerHost.setVisibility(View.VISIBLE);
         } else {
             mSpServerHost.setVisibility(View.GONE);
+            mSpUpdateServerHost.setVisibility(View.GONE);
         }
         return true;
     }
@@ -138,7 +158,7 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher{
         dismissProgressDialogIfShowing();
         if (loginResult.statusCode == 2) {
             startActivity(new Intent(this, RegisterActivity.class));
-        } else if (loginResult.statusCode == 1){
+        } else if (loginResult.statusCode == 1) {
             startActivity(new Intent(this, LoginActivity.class));
         }
     }

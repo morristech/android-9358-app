@@ -1,6 +1,5 @@
 package com.xmd.technician.http;
 
-import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 
 import okhttp3.OkHttpClient;
@@ -30,7 +29,7 @@ public class RetrofitServiceFactory {
     public static synchronized AppUpdateService getAppUpdateService() {
         if (mAppUpdateService == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constant.UPDATE_SERVER_HOST)
+                    .baseUrl(SharedPreferenceHelper.getUpdateServer())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(buildClient())
                     .build();
@@ -49,8 +48,9 @@ public class RetrofitServiceFactory {
     /**
      * Recreate the spaservice, when configuration changed, such as baseUrl
      */
-    public static void recreateService() {
+    public static synchronized void recreateService() {
         mSpaService = null;
+        mAppUpdateService = null;
     }
 
 }
