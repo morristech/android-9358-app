@@ -47,6 +47,7 @@ public abstract class BaseChatView extends LinearLayout {
     protected Activity activity;
     private EMCallBack messageSendCallback;
 
+    protected EMessageListItemClickListener itemClickListener;
 
     public BaseChatView(Context context, EMMessage.Direct direct) {
         super(context);
@@ -79,6 +80,13 @@ public abstract class BaseChatView extends LinearLayout {
         setUpBaseView();
         onSetUpView();
         setupMessageStatusView();
+        setClickListener();
+    }
+
+    public void setUpView(EMMessage message, EMessageListItemClickListener listener) {
+        this.itemClickListener = listener;
+
+        setUpView(message);
     }
 
     private void setUpBaseView() {
@@ -149,14 +157,22 @@ public abstract class BaseChatView extends LinearLayout {
         message.setMessageStatusCallback(messageSendCallback);
     }
 
+    private void setClickListener(){
+        if (statusView != null) {
+            statusView.setOnClickListener(v -> {
+                if (itemClickListener != null) {
+                    itemClickListener.onResendClick(message);
+                }
+            });
+        }
+    }
+
     protected void updateView() {
         activity.runOnUiThread(new Runnable() {
             public void run() {
                 if (message.status() == EMMessage.Status.FAIL) {
                     if (message.getError() == EMError.MESSAGE_INCLUDE_ILLEGAL_CONTENT) {
                         ((BaseFragmentActivity)activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.error_send_invalid_content));
-                    } else if (message.getError() == EMError.USER_NOT_LOGIN) {
-                        ((BaseFragmentActivity)activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.use_not_login));
                     } else {
                         ((BaseFragmentActivity)activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.connect_failuer_toast));
                     }
