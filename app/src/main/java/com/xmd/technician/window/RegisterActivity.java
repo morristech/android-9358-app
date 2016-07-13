@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.Button;
@@ -77,6 +79,21 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
         mEtPassword.addTextChangedListener(this);
         mEtUsername.addTextChangedListener(this);
 
+        mEtPassword.setFilters(new InputFilter[]{
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                        for (int i = start; i < end; i++) {
+                            if (!Character.isLetterOrDigit(source.charAt(i))) {
+                                return "";
+                            }
+                        }
+                        return null;
+                    }
+                },
+                new InputFilter.LengthFilter(20)
+        });
+
         mRegisterSubscription = RxBus.getInstance().toObservable(RegisterResult.class).subscribe(
                 result -> handleRegisterResult(result)
         );
@@ -122,6 +139,12 @@ public class RegisterActivity extends BaseActivity implements TextWatcher{
             mRegisterBtn.setEnabled(true);
         } else {
             mRegisterBtn.setEnabled(false);
+        }
+
+        if(Util.matchPhoneNumFormat(account)){
+            mSendMSMBtn.setEnabled(true);
+        }else {
+            mSendMSMBtn.setEnabled(false);
         }
     }
 
