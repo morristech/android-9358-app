@@ -28,7 +28,9 @@ android {
         applicationId "com.xmd.technician"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 3
+        //TODO: release version :
+        //1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
+        versionCode 2
         versionName "1.0.1"
 
         manifestPlaceholders = [
