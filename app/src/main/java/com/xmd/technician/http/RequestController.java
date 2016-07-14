@@ -788,7 +788,8 @@ public class RequestController extends AbstractController {
                     RxBus.getInstance().post(result);
                 } else {
                     try {
-                        RxBus.getInstance().post(new Throwable(response.errorBody().string()));
+                        //RxBus.getInstance().post(new Throwable(response.errorBody().string()));
+                        Logger.e("get app update config failed:" + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

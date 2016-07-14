@@ -64,6 +64,7 @@ android {
                     GETUI_APP_KEY       : "n45kk01jfP8EV64z6k1JB7",
                     GETUI_APP_SECRET    : "ZzasGwsuQS6rYT3WlowwD5",
                     GETUI_MASTER_SECRET : "dK97cOa5xX9jiEmTH2kqh5",
+                    DEF_UPDATE_SERVER   : "http://192.168.1.100:9883",
             ]
         }
 
@@ -85,6 +86,7 @@ android {
                     GETUI_APP_KEY       : "n45kk01jfP8EV64z6k1JB7",
                     GETUI_APP_SECRET    : "ZzasGwsuQS6rYT3WlowwD5",
                     GETUI_MASTER_SECRET : "dK97cOa5xX9jiEmTH2kqh5",
+                    DEF_UPDATE_SERVER   : "http://192.168.1.100:9883",
             ]
         }
 
@@ -96,6 +98,7 @@ android {
                     GETUI_APP_KEY       : "0AOTuy05B56krNV8mSxObA",
                     GETUI_APP_SECRET    : "5gE0zPRO0d9NvViMIkGN51",
                     GETUI_MASTER_SECRET : "NhG6hDnw7NAEf28PLim5K9",
+                    DEF_UPDATE_SERVER   : "http://service.xiaomodo.com/upgrade",
             ]
         }
     }

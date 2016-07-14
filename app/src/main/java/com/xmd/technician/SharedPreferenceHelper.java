@@ -163,6 +163,6 @@ public class SharedPreferenceHelper {
     }
 
     public static String getUpdateServer(){
-        return mSettingPreference.getString(KEY_UPDATE_SERVER,Constant.DEFAULT_UPDATE_SERVER);
+        return mSettingPreference.getString(KEY_UPDATE_SERVER,AppConfig.sDefUpdateServer);
     }
 }

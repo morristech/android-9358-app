@@ -29,6 +29,9 @@
         android:theme="@style/AppTheme">
 
         <meta-data
+            android:name="DEF_UPDATE_SERVER"
+            android:value="${DEF_UPDATE_SERVER}" />
+        <meta-data
             android:name="PUSH_MASTERSECRET"
             android:value="${GETUI_MASTER_SECRET}" />
 
@@ -74,6 +77,7 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".window.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan"
             android:launchMode="singleTask"/>
 

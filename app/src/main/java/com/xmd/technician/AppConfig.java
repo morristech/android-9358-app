@@ -48,6 +48,8 @@ public class AppConfig {
     private static int sAppVersionCode = -1;
     private static String sSDCardPath;
 
+    public static String sDefUpdateServer = "";
+
     private static String sShareType;
     private static String sCouponId;
 
@@ -60,6 +62,8 @@ public class AppConfig {
                 sGetuiAppSecret = appInfo.metaData.getString("PUSH_APPSECRET");
                 sGetuiMasterSecret = appInfo.metaData.getString("PUSH_MASTERSECRET");
                 sGetuiAppKey = (appInfo.metaData.get("PUSH_APPKEY") != null) ? appInfo.metaData.get("PUSH_APPKEY").toString() : null;
+
+                sDefUpdateServer = appInfo.metaData.getString("DEF_UPDATE_SERVER");
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -95,7 +99,7 @@ public class AppConfig {
         }
         if (sServerHosts.isEmpty()) {
             sServerHosts.add(Constant.DEFAULT_SERVER_HOST);
-            sServerHosts.add(Constant.DEFAULT_UPDATE_SERVER);
+            sServerHosts.add(sDefUpdateServer);
         }
     }
 
