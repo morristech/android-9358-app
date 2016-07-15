@@ -161,7 +161,7 @@
         android:layout_marginRight="@dimen/work_time_padding"
         android:layout_marginTop="@dimen/search_margin"
         android:lineSpacingExtra="@dimen/search_margin"
-        android:textColor="@color/list_item_number_color"
+        android:textColor="@color/colorBody"
         android:textSize="@dimen/fontNormal"
         android:text="@string/register_tips"/>
 
