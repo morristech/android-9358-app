@@ -13,18 +13,20 @@
     <color name="dialog_title_text_color">#333</color>
     <color name="dialog_content_text_color">#666</color>
 
-    <color name="colorMain">#fb5549</color>
+    <color name="colorMain">#f5f5f5</color>
+    <color name = "colorMainBtn">#ff6666</color>
     <color name="colorBackground">#f0f0f0</color>
     <color name="colorServiceDivide">#00e0e0e0</color>
     <color name="colorTitle">#333333</color>
     <color name="colorBody">#666666</color>
-    <color name="colorRemark">#999999</color>
-    <color name="colorHead">#ffffff</color>
+    <color name="colorRemark">#E0E0E0</color>
+    <color name="colorHead">#212121</color>
 
     <color name="colorLineDivide">#d9d9d9</color>
     <color name="colorStatusNormal">#d8d8d8</color>
     <color name="colorBtnNormal">#333333</color>
-    <color name="colorBtnSelector">#ff6666</color>
+    <color name="colorBtnSelector">#ff5549</color>
+    <color name="colorBtnChat">#33ff6666</color>
     <color name="colorBtnChecked">#fb5549</color>
     <color name="border_line_color">@color/colorMain</color>
     <color name="dialog_line_gray">#DDD</color>
@@ -95,5 +97,32 @@
     <color name="normal_coupon_detail_activity_share_title_text_color">#FF6565</color>
     <color name="normal_coupon_detail_activity_background_color">#fff7e3</color>
     <color name="normal_coupon_detail_activity_commission_color">#FF6565</color>
+    <color name="title_Radio_button">#FFAABB</color>
+    <color name="side_bar_text">#666666</color>
+    <color name="sideBarcolor">#303F9F</color>
+    <color name="shadow_bg">#66000000</color>
+    <color name="edit_bg">#EFEFF4</color>
+    <color name="darker_gray">#9b9b9b</color>
+    <color name="divider_thin_color">#66bdbdbd</color>
+    <color name="button_border">#cfcfcf</color>
+    <color name="stroke_color">#E0E0E2</color>
+    <color name="btn_save_normal">#666666</color>
+    <color name="btn_save_clickedable">#fb5549</color>
+    <color name="btn_search_telephone">#FFF</color>
+    <color name="black">#000</color>
+    <color name="title_bg">#fafafa</color>
+    <color name="title_bar_text_color">#505050</color>
+    <color name="color_white">#FFF</color>
+    <color name="title_text">#333333</color>
+    <color name="radio_btn_normal">#fb6257</color>
+    <color name="text_index">#4d4d4d</color>
+    <color name="main_bg">#EFEFF4</color>
+    <color name="contact_item_number_text_color">#ff9d09</color>
+    <color name="contact_item_name_text_color">#222222</color>
+    <color name="phone_number_text_color">#818181</color>
+    <color name="contact_remark_text_color">#404040</color>
+    <color name="contact_info_order">#4d4d4d</color>
+    <color name="contact_info_unit">#999999</color>
+    <color name="order_state">#66cc66</color>
 
 </resources>

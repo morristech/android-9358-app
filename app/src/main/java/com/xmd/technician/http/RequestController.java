@@ -3,9 +3,17 @@ package com.xmd.technician.http;
 import android.os.Message;
 import android.text.TextUtils;
 
+
 import com.hyphenate.chat.EMClient;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.AddOrEditResult;
+import com.xmd.technician.bean.ClubContactResult;
+import com.xmd.technician.bean.CustomerDetailResult;
+import com.xmd.technician.bean.CustomerListResult;
+import com.xmd.technician.bean.DeleteContactResult;
+import com.xmd.technician.bean.ManagerDetailResult;
+import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
@@ -175,6 +183,29 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_APP_UPDATE_CONFIG:
                 doGetAppUpdateConfig((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_GET_CUSTOMER_LIST:
+                doGetCustomerList();
+                break;
+            case MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL:
+                doGetCustomerInfoDetail((Map<String,String>)msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL:
+                doGetTechInfoDetail((Map<String,String>)msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL:
+                doGetManagerInfoDetail((Map<String,String>)msg.obj);
+                break;
+            case MsgDef.MSG_DEF_ADD_OR_EDIT_CUSTOMER:
+             doAddOrEditCustomer((Map<String,String>)msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_CLUB_LIST:
+                doGetClubList();
+                break;
+            case MsgDef.MSG_DEF_DELETE_CONTACT:
+               doDeleteContact((Map<String,String>)msg.obj);
+               break;
+
+
         }
 
         return true;
@@ -768,10 +799,118 @@ public class RequestController extends AbstractController {
         });
     }
 
+    /**
+     * 添加联系人
+     * @param params
+     */
+    private void doAddOrEditCustomer(Map<String,String> params){
+        if(TextUtils.isEmpty(params.get(RequestConstant.KEY_ID))){
+            Call<BaseResult> call = getSpaService().addCustomer(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),
+                    params.get(RequestConstant.KEY_PHONE_NUMBER),params.get(RequestConstant.KEY_REMARK),params.get(RequestConstant.KEY_NOTE_NAME));
+            call.enqueue(new TokenCheckedCallback<BaseResult>() {
+                @Override
+                protected void postResult(BaseResult result) {
+                    RxBus.getInstance().post(new AddOrEditResult(result.msg,result.statusCode));
+                }
+            });
+        } else{
+            Call<BaseResult> call = getSpaService().editCustomer(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_ID),
+                    params.get(RequestConstant.KEY_PHONE_NUMBER),params.get(RequestConstant.KEY_REMARK),params.get(RequestConstant.KEY_NOTE_NAME));
+            call.enqueue(new TokenCheckedCallback<BaseResult>() {
+                @Override
+                protected void postResult(BaseResult result) {
+                    RxBus.getInstance().post(new AddOrEditResult(result.msg,result.statusCode));
+                }
+            });
+
+        }
+    }
+    /**
+     *  获取联系人列表
+     * @param
+     */
+    private void  doGetCustomerList(){
+        Call<CustomerListResult> call = getSpaService().getCustomerList(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<CustomerListResult>() {
+            @Override
+            protected void postResult(CustomerListResult result) {
+              RxBus.getInstance().post(result);
+            }
+        });
+    }
+    /**
+     *  获取联系人详情
+     * @param
+     */
+    private void  doGetCustomerInfoDetail(Map<String,String> params){
+        Call<CustomerDetailResult> call = getSpaService().getCustomerInfoDetail(RequestConstant.SESSION_TYPE,params.get(RequestConstant.KEY_ID),SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<CustomerDetailResult>() {
+            @Override
+            protected void postResult(CustomerDetailResult result) {
+
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+    /**
+     *  获取技师联系人详情
+     * @param
+     */
+    private void  doGetTechInfoDetail(Map<String,String> params){
+        Call<TechDetailResult> call = getSpaService().getTechInfoDetail(RequestConstant.SESSION_TYPE,params.get(RequestConstant.KEY_ID),SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<TechDetailResult>() {
+            @Override
+            protected void postResult(TechDetailResult result) {
+
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     *  获取管理者联系人详情
+     * @param
+     */
+    private void  doGetManagerInfoDetail(Map<String,String> params){
+        Call<ManagerDetailResult> call = getSpaService().getManagerInfoDetail(RequestConstant.SESSION_TYPE,params.get(RequestConstant.KEY_ID),SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<ManagerDetailResult>() {
+            @Override
+            protected void postResult(ManagerDetailResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     *  获取俱乐部联系人列表
+     * @param
+     */
+    private void  doGetClubList(){
+        Call<ClubContactResult> call = getSpaService().getClubList(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<ClubContactResult>() {
+            @Override
+            protected void postResult(ClubContactResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+    /**
+     *  删除联系人
+     * @param
+     */
+    private void  doDeleteContact(Map<String,String> params){
+        Call<BaseResult> call = getSpaService().doDeleteContact(RequestConstant.SESSION_TYPE,params.get(RequestConstant.KEY_ID),SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+                RxBus.getInstance().post(new DeleteContactResult(result.msg,result.statusCode));
+            }
+        });
+    }
+
     private void doHandleTokenExpired(String errorMsg) {
         RxBus.getInstance().post(new TokenExpiredResult(errorMsg));
     }
-
 
     //获取升级配置
     private void doGetAppUpdateConfig(Map<String, String> params) {
@@ -803,4 +942,5 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
 }

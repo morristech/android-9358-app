@@ -47,8 +47,8 @@
             android:layout_weight="1"
             android:minHeight="0dp"
             android:minWidth="0dp"
-            android:background="@color/colorHead"
-            android:textColor="@color/colorMain"
+            android:background="@color/side_bar_text"
+            android:textColor="@color/colorRemark"
             android:textSize="@dimen/fontBody"
             android:text="@string/cancel"/>
         <Button
@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:minHeight="0dp"
             android:minWidth="0dp"
-            android:background="@color/colorMain"
+            android:background="@color/colorMainBtn"
             android:textColor="@color/colorHead"
             android:textSize="@dimen/fontBody"
             android:text="@string/confirm"/>

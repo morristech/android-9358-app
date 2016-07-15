@@ -9,8 +9,8 @@ public class RequestConstant {
     /*                                           urls                                            */
     /*********************************************************************************************/
 
-    public static final String SERVER_HOST = "http://spa.93wifi.com";
-
+   // public static final String SERVER_HOST = "http://spa.93wifi.com";
+   public static final String SERVER_HOST = "http://192.168.1.210:9880";
     public static final String BASE_URL = "/spa-manager/api";
 
     public static final String URL_LOGIN = BASE_URL + "/v1/tech/login";
@@ -24,12 +24,10 @@ public class RequestConstant {
     public static final String URL_COMMENT_ORDER_REDPK_COUNT = BASE_URL + "/v2/tech/profile/notice";
     public static final String URL_MODIFY_PASSWORD = BASE_URL + "/v1/profile/tech/modifyPassword";
     public static final String URL_RESET_PASSWORD = BASE_URL + "/v1/tech/resetPassword";
-
     public static final String URL_FEEDBACK_CREATE = BASE_URL + "/v2/tech/feedback/create";
     public static final String URL_GET_ORDER_LIST = BASE_URL + "/v2/tech/profile/orders";
     public static final String URL_MANAGE_ORDER = BASE_URL + "/v2/tech/profile/order/manage";
     public static final String URL_HIDE_ORDER = BASE_URL + "/v2/tech/hide/order";
-
     public static final String URL_GETUI_BIND_CLIENT_ID = BASE_URL + "/v2/push/clientid";
     public static final String URL_GETUI_UNBIND_CLIENT_ID = BASE_URL + "/v2/push/unbind/clientid";
     public static final String URL_GET_ICODE = BASE_URL + "/v1/icode";
@@ -53,6 +51,15 @@ public class RequestConstant {
     public static final String URL_GET_COUPON_INFO = BASE_URL + "/v1/profile/club/redpacketinfo";
     public static final String URL_COUPON_SHARE_QR_CODE = BASE_URL + "/v1/profile/redpacket/useqrcode";
     public static final String URL_PAID_COUPON_USER_DETAIL = BASE_URL + "/v1/profile/tech/coupon/userdetails";
+    public static final String URL_ADD_CUSTOMER = BASE_URL +"/v2/tech/customer/edit";
+    public static final String URL_GET_CUSTOMER_LIST = BASE_URL+"/v2/tech/customer/user/list";
+    public static final String URL_GET_CUSTOMER_INFO_DETAIL = BASE_URL+"/v2/tech/customer/user/view";
+    public static final String URL_GET_CLUB_LIST = BASE_URL+"/v2/tech/customer/tech/list";
+    public static final String URL_GET_TECH_INFO_DETAIL=BASE_URL+"/v2/tech/customer/tech/view";
+    public static final String URL_GET_MANAGER_INFO_DETAIL=BASE_URL+"/v2/tech/customer/manager/view";
+    public static final String URL_DELETE_CONTACT = BASE_URL+"/v2/tech/customer/delete";
+
+
 
     public static final String URL_COUPON_SHARE_EVENT_COUNT = BASE_URL + "/v1/profile/redpacket/share";
 
@@ -126,10 +133,16 @@ public class RequestConstant {
     public static final String KEY_APP_MODEL = "appModel";
     public static final String KEY_APP_BRAND = "appBrand";
     public static final String KEY_APP_IMEI = "appImei";
+    public static final String KEY_NOTE_NAME="noteName";
+    public static final String KEY_REMARK = "remark";
+    public static final String KEY_CUSTOMER_ID = "contactId";
+    public static final String KEY_CONTACT_TYPE = "contactType";
+
 
 
     public static final String KEY_FILTER_ORDER = "filterOrder";
     public static final String KEY_COUPON_STATUS = "couponStatus";
+    public static final String KEY_IS_EMPTY = "isEmpty";
 
     public static final String KEY_UPDATE_APP_ID = "appId";
     public static final String KEY_UPDATE_VERSION = "version";

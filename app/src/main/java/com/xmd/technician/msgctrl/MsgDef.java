@@ -88,6 +88,18 @@ public class MsgDef {
     public static final int MSG_DEF_GET_PAID_COUPON_USER_DETAIL = 0x0029;
 
     public static final int MSG_DEF_SHARE_TO_OTHER = 0x0030;
+
+
+    public static final int MSG_DEF_GET_CLUB_LIST = 0x0040;
+    public static final int MSG_DEF_ADD_OR_EDIT_CUSTOMER =0x0041;
+    public static final int MSG_DEF_GET_CUSTOMER_INFO_DETAIL = 0x0042;
+    public static final int MSG_DEF_GET_CUSTOMER_LIST = 0x0043;
+    public static final int MSG_DEF_GET_TECH_INFO_DETAIL = 0x0044;
+    public static final int MSG_DEF_GET_MANAGER_INFO_DETAIL = 0x0045;
+    public static final int MSG_DEF_DELETE_CONTACT = 0x0046;
+
+
+
     /**
      * ChatController, start to chat with someone
      */

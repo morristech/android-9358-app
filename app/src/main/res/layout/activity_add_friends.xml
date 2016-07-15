@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    >
+    <include layout="@layout/toolbar"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_15"
+        android:background="@color/color_white"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/customer_name"
+            android:textColor="@color/colorRemark"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/fontTitle"
+            android:padding="@dimen/padding_5"
+
+            />
+        <EditText
+            android:id="@+id/et_customer_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/personal_item_height"
+            android:layout_marginTop="@dimen/margin_5"
+            android:background="@drawable/rect_bg"
+            android:hint="@string/toast_useful_name"
+            android:textColor="@color/contact_item_name_text_color"
+            android:padding="@dimen/padding_5"
+            android:textSize="@dimen/fontHead"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_15"
+        android:background="@color/color_white"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/customer_telephone"
+            android:padding="@dimen/padding_5"
+            android:textColor="@color/colorRemark"
+            android:textSize="@dimen/fontTitle"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_view_height"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:id="@+id/et_customer_telephone"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:background="@drawable/rect_bg"
+                android:hint="@string/contact_hint_phone"
+                android:padding="@dimen/padding_5"
+                />
+            <Button
+                android:id="@+id/btn_search_telephone"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@drawable/login_button_main_selector"
+                android:text="@string/main_conversion"
+                android:layout_marginLeft="1dp"
+                android:textColor="@color/btn_search_telephone"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_15"
+        android:background="@color/color_white"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/customer_remark"
+            android:padding="@dimen/padding_5"
+            android:textColor="@color/colorRemark"
+            android:textSize="@dimen/fontTitle"
+            />
+        <EditText
+            android:id="@+id/et_customer_remark"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/message_item_height"
+            android:layout_marginTop="@dimen/margin_5"
+            android:background="@drawable/rect_bg"
+            android:hint="@string/contact_hint_remark"
+            android:padding="@dimen/padding_5"
+            android:textSize="@dimen/fontHead"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_15"
+        >
+        <Button
+            android:id="@+id/btn_save_customer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_button_height"
+            android:text="@string/save"
+            android:enabled="false"
+            android:background="@drawable/login_button_main_selector"
+            android:textColor="@color/btn_search_telephone"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

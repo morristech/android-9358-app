@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    >
+    <include layout="@layout/toolbar"></include>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_remark"
+            android:background="@color/main_bg"
+            android:textSize="@dimen/fontHead"
+            android:padding="@dimen/padding_15"
+            />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_15"
+        android:background="@color/color_white"
+
+        >
+        <EditText
+            android:id="@+id/et_remark_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:hint="@string/add_or_edit_name"
+            android:textColorHint="@color/darker_gray"
+            android:maxEms="15"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_marginTop="@dimen/margin_15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_remark_message"
+        android:textSize="@dimen/fontHead"
+        android:padding="@dimen/padding_15"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="vertical"
+        android:background="@color/color_white"
+        android:paddingLeft="@dimen/padding_15"
+        >
+
+        <EditText
+            android:id="@+id/ed_remark_message"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/add_or_edit_remark"
+            android:textColorHint="@color/darker_gray"
+            android:maxEms="30"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:text="@string/max_text_length"
+            android:layout_marginRight="@dimen/margin_5"
+            android:layout_marginBottom="@dimen/margin_5"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_save_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="@string/save"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="@dimen/margin_15"
+        android:layout_marginRight="@dimen/margin_15"
+        android:background="@drawable/btn_chat_selector"
+        android:textColor="@color/color_white"
+        />
+
+</LinearLayout>

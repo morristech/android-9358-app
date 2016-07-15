@@ -114,7 +114,7 @@ public class OrderDetailActivity extends BaseActivity {
         setupButtons();
 
         //Avatar
-        Glide.with(this).load(mOrder.headImgUrl).into(mAvatar);
+        Glide.with(this).load(mOrder.headImgUrl).placeholder(R.drawable.icon22).error(R.drawable.icon22).into(mAvatar);
         mAvatar.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
                 Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl)));
         mCustomerName.setText(mOrder.customerName);

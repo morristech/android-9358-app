@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/toolbar"></include>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/contactor_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/app_bg"/>
+        <TextView
+            android:id="@+id/content_dialog"
+            android:layout_width="@dimen/personal_info_height"
+            android:layout_height="@dimen/personal_info_height"
+            android:layout_gravity="center"
+            android:background="@color/colorRemark"
+            android:gravity="center"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/alert_dialog_text_size"
+            android:visibility="invisible"
+            />
+        <com.xmd.technician.widget.SideBar
+            android:id="@+id/contact_sidebar"
+            android:layout_width="@dimen/margin_15"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center"
+            android:layout_marginRight="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_5"
+            />
+    </FrameLayout>
+</LinearLayout>

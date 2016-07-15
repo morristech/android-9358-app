@@ -148,5 +148,28 @@
         <item name="android:background">@drawable/selector_popup_window_button_bg</item>
         <item name="android:textColor">@color/selector_popup_window_button_text</item>
     </style>
+    <style name="top_menu_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/home_button_height</item>
+        <item name="android:background">@color/title_Radio_button</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="horizontal_divider_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/divider_thin_color</item>
+    </style>
+    <style name="vertical_divider_line">
+        <item name="android:layout_width">0.5dip</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/divider_thin_color</item>
+    </style>
+
+    <style name="horizontal_divider_line_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/divider_thin_color</item>
+    </style>
 
 </resources>

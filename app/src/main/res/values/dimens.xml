@@ -32,7 +32,7 @@
     <dimen name="spinner_item_text_size">8dp</dimen>
 
     <dimen name="fontBig">32sp</dimen>
-    <dimen name="fontHead">20sp</dimen>
+    <dimen name="fontHead">18sp</dimen>
     <dimen name="fontTitle">16sp</dimen>
     <dimen name="fontBody">14sp</dimen>
     <dimen name="fontNormal">12sp</dimen>
@@ -63,7 +63,8 @@
     <dimen name="photo_head">48dp</dimen>
 
     <dimen name="avatar_head">48dp</dimen>
-
+    <dimen name="wrap_big_head_height">88dp</dimen>
+    <dimen name="photo_head_big">68dp</dimen>
     <dimen name="feedback_btn_height">32dp</dimen>
     <dimen name="feedback_btn_width">90dp</dimen>
     <dimen name="comment_item_height">96dp</dimen>
@@ -72,6 +73,8 @@
     <dimen name="default_dialog_width">280dp</dimen>
     <dimen name="button_radius">4dp</dimen>
     <dimen name="coupon_item_height">58dp</dimen>
+    <dimen name="title_item_height">48dp</dimen>
+
 
     <dimen name="order_list_item_height">84dp</dimen>
     <dimen name="order_list_item_circle_image">48dp</dimen>
@@ -87,7 +90,7 @@
     <dimen name="order_detail_step_view_step_raidus">14dp</dimen>
     <dimen name="order_detail_step_view_height">72dp</dimen>
 
-    <dimen name="order_detail_avatar_section_height">80dp</dimen>
+    <dimen name="order_detail_avatar_section_height">76dp</dimen>
     <dimen name="order_detail_section_item_height">40dp</dimen>
     <dimen name="order_detail_avatar_view_height">48dp</dimen>
     <dimen name="order_detail_customer_name_textsize">16sp</dimen>
@@ -118,6 +121,29 @@
     <dimen name="coupon_list_item_title_text_size">20dp</dimen>
     <dimen name="coupon_list_item_share_width">48dp</dimen>
     <dimen name="coupon_list_item_share_text_size">10dp</dimen>
+    <dimen name="side_bar_text_size">5dp</dimen>
+
+
+    <dimen name="contact_list_padding_left">10dp</dimen>
+    <dimen name="contact_list_item_height">28dp</dimen>
+    <dimen name="contact_list_item_btn_height">30dp</dimen>
+    <dimen name="contact_list_item_btn_width">50dp</dimen>
+
+    <dimen name="radio_btn_corner">6dp</dimen>
+    <dimen name="stroke_width">1dp</dimen>
+    <dimen name="stroke_width_narrow">0.5dp</dimen>
+    <dimen name="contact_item_hight">54dp</dimen>
+    <dimen name="margin_right_10">10dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_15">15dp</dimen>
+    <dimen name="padding_5">5dp</dimen>
+    <dimen name="padding_15">15dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="slid_bar_width">15dp</dimen>
+    <dimen name="alert_dialog_text_size">26sp</dimen>
+    <dimen name="add_friend_width">30dp</dimen>
+    <dimen name="order_detail_section_btn_height">40dp</dimen>
+
 
 
 </resources>

@@ -1,5 +1,10 @@
 package com.xmd.technician.http;
 
+import com.xmd.technician.bean.ClubContactResult;
+import com.xmd.technician.bean.CustomerDetailResult;
+import com.xmd.technician.bean.CustomerListResult;
+import com.xmd.technician.bean.ManagerDetailResult;
+import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
@@ -315,4 +320,59 @@ public interface SpaService {
                                          @Field(RequestConstant.KEY_TOKEN) String userToken,
                                          @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                          @Field(RequestConstant.KEY_CLIENT_ID) String clientId);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CUSTOMER_LIST)
+    Call<CustomerListResult> getCustomerList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                         @Field(RequestConstant.KEY_TOKEN) String userToken);
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CUSTOMER_INFO_DETAIL)
+    Call<CustomerDetailResult> getCustomerInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                     @Field(RequestConstant.KEY_ID) String id,
+                                                     @Field(RequestConstant.KEY_TOKEN) String userToken);
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TECH_INFO_DETAIL)
+    Call<TechDetailResult> getTechInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                 @Field(RequestConstant.KEY_ID) String id,
+                                                 @Field(RequestConstant.KEY_TOKEN) String userToken);
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_MANAGER_INFO_DETAIL)
+    Call<ManagerDetailResult> getManagerInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                    @Field(RequestConstant.KEY_ID) String id,
+                                                    @Field(RequestConstant.KEY_TOKEN) String userToken);
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_DELETE_CONTACT)
+    Call<BaseResult> doDeleteContact(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                   @Field(RequestConstant.KEY_ID) String id,
+                                                   @Field(RequestConstant.KEY_TOKEN) String userToken);
+
+
+    /**
+     * @param userToken
+     * @param userType
+     * @param phoneNum
+     * @param remark
+     * @param noteName
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_ADD_CUSTOMER)
+    Call<BaseResult> addCustomer(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                         @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                         @Field(RequestConstant.KEY_PHONE_NUMBER)String phoneNum,
+                                         @Field(RequestConstant.KEY_REMARK)String remark,
+                                         @Field(RequestConstant.KEY_NOTE_NAME) String noteName);
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_ADD_CUSTOMER)
+    Call<BaseResult> editCustomer(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                 @Field(RequestConstant.KEY_ID) String custtomerId,
+                                 @Field(RequestConstant.KEY_PHONE_NUMBER)String phoneNum,
+                                 @Field(RequestConstant.KEY_REMARK)String remark,
+                                 @Field(RequestConstant.KEY_NOTE_NAME) String noteName);
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CLUB_LIST)
+    Call<ClubContactResult> getClubList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                        @Field(RequestConstant.KEY_TOKEN) String userToken);
+
 }

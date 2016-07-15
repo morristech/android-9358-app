@@ -44,6 +44,7 @@
     <string name="cancel">取消</string>
 
     <string name="main_chat">聊天</string>
+    <string name="main_conversion">联系人</string>
     <string name="main_order">订单</string>
     <string name="main_market">营销</string>
     <string name="main_personal">个人中心</string>
@@ -267,5 +268,56 @@
     <string name="normal_coupon_detail_activity_scan_code">用户扫描二维码即得优惠！</string>
 
     <string name="system_notice_activity_title">系统通知</string>
+    <string name="message_add_friend">添加</string>
+    <string name="search_contact">搜索</string>
+    <string name="add_contact">添加客户</string>
+    <string name="customer_name">客户姓名</string>
+    <string name="customer_telephone">手机号码</string>
+    <string name="customer_remark">备注 </string>
+    <string name="customer_telephone_contacts">手机联系人</string>
+    <string name="customer_telephone_list">联系人列表</string>
+    <string name="failed_get_customer_list">获取联系人失败</string>
+    <string name="edit_usable_name_or_phone">姓名或手机号不能为空</string>
+    <string name="customer_information_deatail">资料详情</string>
+    <string name="customer_information_more">更多</string>
+    <string name="contact_name">姓名：</string>
+    <string name="contact_telephone">手机号：</string>
+    <string name="contact_hint_remark">可添加描述信息</string>
+    <string name="customer_order_item">到店自选</string>
+    <string name="customer_order_empty">当前用户尚未与你发生业务来往</string>
+    <string name="customer_remark_empty">您尚未为此好友添加备注信息...</string>
+    <string name="contact_description_remark">个人简介：</string>
+    <string name="contact_description_remark_empty">该用户尚未添加个人简介信息...</string>
+    <string name="contact_customer">客户</string>
+    <string name="contact_club">本店</string>
+    <string name="contact_manager">店长</string>
+    <string name="add_ontact_successed">添加联系人成功</string>
+    <string name="toast_useful_telephone">请输入正确的手机号</string>
+    <string name="contact_hint_phone">请输入手机号</string>
+    <string name="toast_useful_name">请输入姓名</string>
+    <string name="delete_contact">删除好友</string>
+    <string name="add_remark">添加备注</string>
+    <string name="alert_delete_contact">确认删除好友？</string>
+    <string name="alert_delete_contact_message">删除好友后您的好友列表不再显示该好友信息。</string>
+    <string name="delete_contact_success">删除好友成功</string>
+    <string name="edit_remark">备注名: </string>
+    <string name="edit_remark_message">备注信息: </string>
+    <string name="change_remark_message"> 修改备注</string>
+    <string name="edit_remark_success">修改备注信息成功</string>
+    <string name="text_can_chat">[可聊]</string>
+    <string name="order_info">预约</string>
+    <string name="reward_info">打赏</string>
+    <string name="order_info_unit_yuan">（元）</string>
+    <string name="order_info_unit_time">（次）</string>
+    <string name="nearly_order">最近订单</string>
+    <string name="send_message">发短信</string>
+    <string name="conatact_make_call">打电话</string>
+    <string name="add_or_edit_name">为联系添加备注名</string>
+    <string name="add_or_edit_remark">此处可为联系人添加备注信息</string>
+    <string name="max_text_length">30</string>
+    <string name="toast_message">查询信息不能为空</string>
+    <string name="toast_search_null">未查询到该联系人</string>
+    <string name="not_have_authority_or_contact_is_empty">未开启联系人权限或联系人列表为空</string>
+    <string name="limit_input_text">备注信息不可超过30个字符</string>
 
 </resources>

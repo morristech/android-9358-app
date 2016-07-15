@@ -26,10 +26,10 @@ import rx.Subscription;
 
 public class MainActivity extends BaseFragmentActivity implements BaseFragment.IFragmentCallback{
     private static final int TAB_INDEX_MESSAGE = 0;
-    private static final int TAB_INDEX_ORDER = 1;
-    private static final int TAB_INDEX_MARKETING = 2;
-    private static final int TAB_INDEX_PERSONAL = 3;
-
+    private static final int TAB_INDEX_CONTACTS = 1;
+    private static final int TAB_INDEX_ORDER = 2;
+    private static final int TAB_INDEX_MARKETING = 3;
+    private static final int TAB_INDEX_PERSONAL = 4;
     private List<BaseFragment> mFragmentList = new LinkedList<BaseFragment>();
     private List<View> mBottomBarButtonList = new LinkedList<View>();
 
@@ -47,11 +47,13 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         ButterKnife.bind(this);
 
         mBottomBarButtonList.add(findViewById(R.id.main_button_message));
+        mBottomBarButtonList.add(findViewById(R.id.main_button_contacts));
         mBottomBarButtonList.add(findViewById(R.id.main_button_order));
         mBottomBarButtonList.add(findViewById(R.id.main_button_marketing));
         mBottomBarButtonList.add(findViewById(R.id.main_button_personal));
 
         mFragmentList.add(new ChatFragment());
+        mFragmentList.add(new ContactsFragment());
         mFragmentList.add(new OrderFragment());
         mFragmentList.add(new CouponFragment());
         mFragmentList.add(new PersonalFragment());
@@ -90,6 +92,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     public void gotoMessageFragment(){
         switchFragment(TAB_INDEX_MESSAGE);
     }
+    @OnClick(R.id.main_button_contacts)
+    public void gotoConversionFragment(){switchFragment(TAB_INDEX_CONTACTS);}
 
     @OnClick(R.id.main_button_order)
     public void gotoOrderFragment(){
@@ -110,6 +114,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         if (mCurrentTabIndex != index) {
             FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
             trx.hide(mFragmentList.get(mCurrentTabIndex));
+
             if (!mFragmentList.get(index).isAdded()) {
                 trx.add(R.id.fragment_container, mFragmentList.get(index));
             }

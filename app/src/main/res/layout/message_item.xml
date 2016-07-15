@@ -1,70 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/message_item_height"
-    android:background="@android:color/white"
-    android:paddingTop="@dimen/search_margin">
-
-    <com.xmd.technician.widget.CircleImageView
-        android:id="@+id/avatar"
-        android:layout_width="@dimen/avatar_head"
-        android:layout_height="@dimen/avatar_head"
-        android:layout_marginLeft="@dimen/search_margin"
-        android:layout_marginRight="@dimen/search_padding_left"
-        android:layout_marginBottom="@dimen/search_margin"
-        android:background="@drawable/icon22"/>
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/avatar"
-        android:textColor="@color/colorTitle"
-        android:textSize="@dimen/fontTitle"
-        android:text="@string/default_user_name"/>
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/avatar"
-        android:layout_below="@+id/name"
-        android:layout_marginRight="@dimen/personal_padding"
-        android:layout_marginTop="@dimen/button_radius"
-        android:singleLine="true"
-        android:maxLength="40"
-        android:textColor="@color/colorRemark"
-        android:textSize="@dimen/fontBody"
-        tools:text="hello"/>
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/personal_margin"
-        android:textColor="@color/colorRemark"
-        android:textSize="@dimen/fontNormal"
-        tools:text="03-19"/>
-
-    <TextView
-        android:id="@+id/unread"
-        android:layout_width="@dimen/personal_item_icon_height"
-        android:layout_height="@dimen/personal_item_icon_height"
-        android:layout_marginLeft="@dimen/personal_description_height"
-        android:layout_alignParentTop="true"
-        android:layout_below="@+id/time"
-        android:background="@drawable/unread_count_bg"
-        android:gravity="center"
-        android:textSize="@dimen/fontRemark"
-        android:textColor="@android:color/white" />
-
-    <View
+    android:orientation="horizontal"
+    >
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <FrameLayout
+                android:id="@+id/fl_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/small_space">
+
+                <com.xmd.technician.widget.CircleImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="@dimen/avatar_head"
+                    android:layout_height="@dimen/avatar_head"
+                    android:background="@drawable/icon22" />
+
+                <TextView
+                    android:id="@+id/unread"
+                    android:layout_width="@dimen/large_space"
+                    android:layout_height="@dimen/large_space"
+                    android:layout_gravity="right|top"
+                    android:background="@drawable/unread_count_bg"
+                    android:gravity="center"
+                    android:textSize="@dimen/fontRemark"
+                    android:text="11"
+                    android:textColor="@android:color/white" />
+
+            </FrameLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/small_space"
+                >
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorTitle"
+                    android:text="匿名用户"/>
+
+                <TextView
+                    android:id="@+id/content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:maxLength="30"
+                    android:textColor="@color/colorRemark" />
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                />
+
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:text="ssss"
+                android:padding="@dimen/inter_space"
+                android:textColor="@color/colorRemark"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/operation_conversion"
+        android:layout_width="84dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:text="删除"
+            android:gravity="center"
+            android:background="#FF0000"
+
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
         android:layout_height="@dimen/line_divide_height"
         android:background="@color/colorLineDivide"
         android:layout_alignParentBottom="true"/>
-
-</RelativeLayout>
+</LinearLayout>

@@ -27,6 +27,7 @@ import com.xmd.technician.chat.ChatConstant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -186,7 +187,12 @@ public class Utils {
         if (isEmpty(text)) {
             return false;
         }
-        return Pattern.matches("^1\\d{10}$", text);
+        Pattern p = Pattern
+                .compile("^((13[0-9])|(14[0-9])|(17[0-9])|(15[0-9])|(18[0-9]))\\d{8}$");
+
+        Matcher m = p.matcher(text);
+
+        return m.matches();
     }
 
     /**
@@ -400,6 +406,10 @@ public class Utils {
         }
 
         return fStr;
+    }
+    public static int dip2px(Context context,float dpValue){
+        final  float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue*scale +0.5f);
     }
 }
 

@@ -11,7 +11,6 @@ public class ControllerRegister {
         initShareController();
         initChatController();
     }
-
     private static void initUpgradeController() {
         int controllerId = ControllerId.UPGRADE_CONTROLLER;
         int[] msgIds = {
@@ -20,7 +19,6 @@ public class ControllerRegister {
         };
         MsgDispatcher.register(controllerId, msgIds);
     }
-
     private static void initRequestController() {
         int controllerId = ControllerId.REQUEST_CONTROLLER;
         int[] msgIds = {
@@ -64,7 +62,15 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_PAID_COUPON_USER_DETAIL,
                 MsgDef.MSG_DEF_COUPON_SHARE_EVENT_COUNT,
                 MsgDef.MSG_DEF_QUIT_CLUB,
-                MsgDef.MSG_DEF_GET_APP_UPDATE_CONFIG
+                MsgDef.MSG_DEF_ADD_OR_EDIT_CUSTOMER,
+                MsgDef.MSG_DEF_GET_CUSTOMER_LIST,
+                MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL,
+                MsgDef.MSG_DEF_GET_CLUB_LIST,
+                MsgDef.MSG_DEF_QUIT_CLUB,
+                MsgDef.MSG_DEF_GET_APP_UPDATE_CONFIG,
+                MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL,
+                MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL,
+                MsgDef.MSG_DEF_DELETE_CONTACT
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

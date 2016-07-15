@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.xmd.technician.Adapter.ListRecycleViewAdapter;
 import com.xmd.technician.R;
+import com.xmd.technician.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,6 @@ import butterknife.ButterKnife;
  * Created by linms@xiaomodo.com on 16-4-29.
  */
 public abstract class BaseListFragment<T> extends BaseFragment implements ListRecycleViewAdapter.Callback<T>, SwipeRefreshLayout.OnRefreshListener{
-
     protected static final int PAGE_START = 0;
     protected static final int PAGE_SIZE = 20;
 
@@ -58,6 +58,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
         mListView.setHasFixedSize(true);
         mListView.setLayoutManager(mLayoutManager);
         mListAdapter = new ListRecycleViewAdapter(getActivity(), mData, this);
+        mListView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mListView.setAdapter(mListAdapter);
         mListView.setItemAnimator(new DefaultItemAnimator());
         mListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -93,7 +94,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     private boolean getListSafe(){
         if(mPageCount < 0 || mPages + 1 <= mPageCount) {
             mPages ++;
-            dispatchRequest();
+          dispatchRequest();
             return true;
         }
         return false;
