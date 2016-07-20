@@ -309,7 +309,7 @@
                         android:background="@null"
                         android:textSize="@dimen/fontBody"
                         android:textColor="@color/colorBody"
-                        android:textColorHint="@color/colorRemark"
+                        android:textColorHint="@color/colorRemarkText"
                         android:hint="@string/edit_activity_text_view_introduce_desc" />
                 </LinearLayout>
 

@@ -3,342 +3,284 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <include layout="@layout/toolbar" />
-
-    <RelativeLayout
-        android:id="@+id/info_item"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/personal_info_height"
-        android:paddingLeft="@dimen/personal_padding"
-        android:paddingRight="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector">
-
-        <com.xmd.technician.widget.CircleImageView
-            android:id="@+id/avatar"
-            android:layout_width="@dimen/photo_head"
-            android:layout_height="@dimen/photo_head"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/search_margin"
-            android:background="@drawable/icon22"/>
-
-        <TextView
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/avatar"
-            android:layout_alignTop="@+id/avatar"
-            android:textColor="@color/colorTitle"
-            android:textSize="@dimen/fontHead" />
-
-        <Button
-            android:id="@+id/invite_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="0dp"
-            android:layout_below="@+id/user_name"
-            android:layout_toRightOf="@+id/avatar"
-            android:layout_marginTop="@dimen/small_space"
-            android:padding="@dimen/three_radius"
-            android:background="@drawable/login_button_main_selector"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/fontNormal"
-            android:text="@string/personal_fragment_button_invite"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/club_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/user_name"
-            android:layout_toRightOf="@+id/avatar"
-            android:layout_marginTop="@dimen/small_space"
-            android:singleLine="true"
-            android:maxLength="10"
-            android:ellipsize="marquee"
-            android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontBody" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/right_arrow"/>
-
-        <ImageButton
-            android:id="@+id/qrcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/personal_margin"
-            android:layout_marginBottom="@dimen/personal_margin"
-            android:layout_marginRight="@dimen/personal_item_margin_right"
-            android:background="@null"
-            android:src="@drawable/icon23"
-            android:scaleType="centerInside"/>
-
-        <View
-            android:id="@+id/description_line"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/line_divide_height"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorLineDivide" />
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <RelativeLayout
+                android:id="@+id/info_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/personal_info_height"
+                android:paddingLeft="@dimen/personal_padding"
+                android:paddingRight="@dimen/personal_padding"
+                android:background="@drawable/personal_item_selector">
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/personal_description_height"
-        android:paddingLeft="@dimen/personal_padding"
-        android:paddingRight="@dimen/personal_padding"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:background="@drawable/personal_item_selector"
-        android:textColor="@color/colorBody"
-        android:textSize="@dimen/fontBody" />
+                <com.xmd.technician.widget.CircleImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="@dimen/photo_head_big"
+                    android:layout_height="@dimen/photo_head_big"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/search_margin"
+                    android:background="@drawable/icon22"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/avatar"
+                    android:layout_alignTop="@+id/avatar"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/fontHead" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:layout_marginTop="@dimen/search_margin"
-        android:background="@color/colorLineDivide" />
+                <Button
+                    android:id="@+id/invite_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:layout_below="@+id/user_name"
+                    android:layout_toRightOf="@+id/avatar"
+                    android:layout_marginTop="@dimen/small_space"
+                    android:padding="@dimen/three_radius"
+                    android:background="@drawable/login_button_main_selector"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/fontNormal"
+                    android:text="@string/personal_fragment_button_invite"
+                    android:visibility="gone"/>
 
-    <RelativeLayout
-        android:id="@+id/account_item"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/personal_item_height"
-        android:paddingLeft="@dimen/personal_padding"
-        android:paddingRight="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector">
+                <TextView
+                    android:id="@+id/club_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_name"
+                    android:layout_toRightOf="@+id/avatar"
+                    android:layout_marginTop="@dimen/small_space"
+                    android:singleLine="true"
+                    android:maxLength="10"
+                    android:ellipsize="marquee"
+                    android:textColor="@color/colorBody"
+                    android:textSize="@dimen/fontBody" />
 
-        <ImageView
-            android:layout_width="@dimen/personal_item_icon_height"
-            android:layout_height="@dimen/personal_item_icon_height"
-            android:layout_centerVertical="true"
-            android:background="@drawable/icon24"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow"/>
+                <!--  <ImageButton
+                    android:id="@+id/qrcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/personal_margin"
+                    android:layout_marginBottom="@dimen/personal_margin"
+                    android:layout_marginRight="@dimen/personal_item_margin_right"
+                    android:background="@null"
+                    android:src="@drawable/icon23"
+                    android:scaleType="centerInside"/> -->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/search_view_height"
-            android:layout_centerVertical="true"
-            android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontTitle"
-            android:text="@string/personal_fragment_layout_account"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/right_arrow"/>
 
-        <TextView
-            android:id="@+id/account_balance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/personal_item_margin_right"
-            android:layout_centerVertical="true"
-            android:textColor="@color/colorBtnSelector"
-            android:textSize="@dimen/fontBody" />
-    </RelativeLayout>
+                <View
+                    android:id="@+id/description_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_divide_height"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorLineDivide" />
+            </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/personal_description_height"
+                android:paddingLeft="@dimen/personal_padding"
+                android:paddingRight="@dimen/personal_padding"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:background="@drawable/personal_item_selector"
+                android:textColor="@color/colorBody"
+                android:textSize="@dimen/fontBody" />
 
-    <RelativeLayout
-        android:id="@+id/time_item"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/personal_item_height"
-        android:paddingLeft="@dimen/personal_padding"
-        android:paddingRight="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector">
 
-        <ImageView
-            android:layout_width="@dimen/personal_item_icon_height"
-            android:layout_height="@dimen/personal_item_icon_height"
-            android:layout_centerVertical="true"
-            android:background="@drawable/icon25"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/search_view_height"
-            android:layout_centerVertical="true"
-            android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontTitle"
-            android:text="@string/personal_fragment_layout_work_time"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/right_arrow"/>
+            <RelativeLayout
+                android:id="@+id/user_card_share"
+                android:layout_marginTop="@dimen/margin_right_10"
+                style="@style/user_center_rlayout"
+                >
+                <ImageView
+                    style="@style/user_center_imLeft"
+                    android:background="@drawable/icon_user_card"/>
+                <TextView
+                    style="@style/user_center_tvName"
+                    android:text="@string/personal_fragment_layout_user_card"/>
+                <TextView
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_share"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/margin_15"
+                    android:layout_marginTop="7dp"
+                    android:text="立即分享"
+                    android:textColor="@color/color_white"
 
-        <ImageView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/personal_item_margin_right"
-            android:src="@drawable/icon_free" />
-    </RelativeLayout>
+                    />
+                <ImageView
+                    style="@style/user_center_ivRight"
+                    />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/account_item"
+                style="@style/user_center_rlayout"
+                android:layout_marginTop="@dimen/margin_15"
+                >
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:layout_marginTop="@dimen/search_margin"
-        android:background="@color/colorLineDivide" />
+                <ImageView
+                    style="@style/user_center_imLeft"
+                    android:background="@drawable/icon24"/>
 
-    <RelativeLayout
-        android:id="@+id/service_item"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/personal_item_height"
-        android:paddingLeft="@dimen/personal_padding"
-        android:paddingRight="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector">
+                <TextView
+                    style="@style/user_center_tvName"
+                    android:text="@string/personal_fragment_layout_account"/>
 
-        <ImageView
-            android:layout_width="@dimen/personal_item_icon_height"
-            android:layout_height="@dimen/personal_item_icon_height"
-            android:layout_centerVertical="true"
-            android:background="@drawable/icon26"/>
+                <ImageView
+                    style="@style/user_center_ivRight"/>
+                <TextView
+                    android:id="@+id/account_balance"
+                    style="@style/user_center_tvRight"
+                    />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/search_view_height"
-            android:layout_centerVertical="true"
-            android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontTitle"
-            android:text="@string/personal_fragment_layout_service_items"/>
+            </RelativeLayout>
+            <View
+                style="@style/horizontal_divider_line"
+                />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/right_arrow"/>
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/user_center_ranking"
+                style="@style/user_center_rlayout">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+                <ImageView
+                    style="@style/user_center_imLeft"
+                    android:background="@drawable/icon_leaderboard"/>
+                <TextView
+                    style="@style/user_center_tvName"
+                    android:text="@string/personal_fragment_ranging"/>
 
-    <RelativeLayout
-        android:id="@+id/comment_item"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/personal_item_height"
-        android:paddingLeft="@dimen/personal_padding"
-        android:paddingRight="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector">
+                <ImageView
+                    style="@style/user_center_ivRight"/>
 
-        <ImageView
-            android:layout_width="@dimen/personal_item_icon_height"
-            android:layout_height="@dimen/personal_item_icon_height"
-            android:layout_centerVertical="true"
-            android:background="@drawable/icon27"/>
 
-        <TextView
-            android:id="@+id/comment_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/search_view_height"
-            android:layout_centerVertical="true"
-            android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontTitle"
-            android:text="@string/personal_fragment_layout_my_comment"/>
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/comment_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/comment_title"
-            android:layout_marginLeft="@dimen/personal_padding"
-            android:layout_centerVertical="true"
-            android:textColor="@color/colorRemark"
-            android:textSize="@dimen/fontTitle" />
+            <RelativeLayout
+                android:id="@+id/comment_item"
+                style="@style/user_center_rlayout"
+                android:layout_marginTop="@dimen/margin_15"
+                >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/right_arrow"/>
+                <ImageView
+                    style="@style/user_center_imLeft"
+                    android:background="@drawable/icon27"/>
 
-        <TextView
-            android:id="@+id/unread_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/personal_item_margin_right"
-            android:layout_centerVertical="true"
-            android:textColor="@color/colorBtnSelector"
-            android:textSize="@dimen/fontBody" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/comment_title"
+                    style="@style/user_center_tvName"
+                    android:text="@string/personal_fragment_layout_my_comment"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+                <TextView
+                    android:id="@+id/comment_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/comment_title"
+                    android:layout_marginLeft="@dimen/personal_padding"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/colorRemark"
+                    android:textSize="@dimen/fontTitle" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:layout_marginTop="@dimen/personal_margin"
-        android:background="@color/colorLineDivide" />
+                <ImageView
+                    style="@style/user_center_ivRight"/>
 
-    <RelativeLayout
-        android:id="@+id/setting_item"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/personal_item_height"
-        android:paddingLeft="@dimen/personal_padding"
-        android:paddingRight="@dimen/personal_padding"
-        android:background="@drawable/personal_item_selector">
+                <TextView
+                    android:id="@+id/unread_count"
+                    style="@style/user_center_tvRight"
+                    />
+            </RelativeLayout>
 
-        <ImageView
-            android:layout_width="@dimen/personal_item_icon_height"
-            android:layout_height="@dimen/personal_item_icon_height"
-            android:layout_centerVertical="true"
-            android:background="@drawable/icon28"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/search_view_height"
-            android:layout_centerVertical="true"
-            android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontTitle"
-            android:text="@string/personal_fragment_layout_setting"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/right_arrow"/>
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/time_item"
+                android:layout_marginTop="@dimen/margin_15"
+                style="@style/user_center_rlayout">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+                <ImageView
+                    style="@style/user_center_imLeft"
+                    android:background="@drawable/icon25"/>
+
+                <TextView
+                    style="@style/user_center_tvName"
+                    android:text="@string/personal_fragment_layout_work_time"/>
+
+                <ImageView
+                    style="@style/user_center_ivRight"/>
+
+                <ImageView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/personal_item_margin_right"
+                    android:src="@drawable/icon_free" />
+            </RelativeLayout>
+            <View
+                style="@style/horizontal_divider_line"
+                />
+            <RelativeLayout
+                android:id="@+id/service_item"
+                style="@style/user_center_rlayout">
+
+                <ImageView
+                    style="@style/user_center_imLeft"
+                    android:background="@drawable/icon26"/>
+
+                <TextView
+                    style="@style/user_center_tvName"
+                    android:text="@string/personal_fragment_layout_service_items"/>
+
+                <ImageView
+                    style="@style/user_center_ivRight"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setting_item"
+                style="@style/user_center_rlayout"
+                android:layout_marginTop="@dimen/margin_15"
+                >
+
+                <ImageView
+                    style="@style/user_center_imLeft"
+                    android:background="@drawable/icon28"/>
+
+                <TextView
+                    style="@style/user_center_tvName"
+                    android:text="@string/personal_fragment_layout_setting"/>
+
+                <ImageView
+                    style="@style/user_center_ivRight"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
 
 </LinearLayout>

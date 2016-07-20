@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -177,12 +181,16 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
                 ws.setBlockNetworkImage(false);
                 super.onPageFinished(view, url);
             }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+            }
         });
 
         if (!mShowMenu) {
             mMenuBar.setVisibility(View.GONE);
         }
-
         mainWebView.loadUrl(mCurrentUrl);
         mainWebView.addJavascriptInterface(new JsOperator(this), "browser");
     }

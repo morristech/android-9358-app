@@ -1,5 +1,6 @@
 package com.xmd.technician.window;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -75,6 +76,12 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     private List<CLubMember> mClubList = new ArrayList<CLubMember>();
     private PinyinClubUtil pinyinComparator;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_LIST);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,7 +92,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     }
 
     protected void initView(View view) {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_LIST);
+
         characterParser = CharacterParser.getInstance();
         search.setOnClickListener(this);
         mGetCustomerListSubscription = RxBus.getInstance().toObservable(ClubContactResult.class).subscribe(customer -> {

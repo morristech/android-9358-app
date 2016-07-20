@@ -5,106 +5,87 @@
     android:background="@color/main_bg"
     >
     <include layout="@layout/toolbar"></include>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/margin_15"
-        android:background="@color/color_white"
-
-        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/customer_name"
-            android:textColor="@color/colorRemark"
+            android:textColor="@color/contact_info_unit"
             android:gravity="center_vertical"
             android:textSize="@dimen/fontTitle"
-            android:padding="@dimen/padding_5"
-
+            android:padding="@dimen/padding_10"
             />
         <EditText
             android:id="@+id/et_customer_name"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/personal_item_height"
+            android:layout_height="@dimen/coupon_item_height"
             android:layout_marginTop="@dimen/margin_5"
-            android:background="@drawable/rect_bg"
             android:hint="@string/toast_useful_name"
+            android:textColorHint="@color/colorRemarkText"
             android:textColor="@color/contact_item_name_text_color"
-            android:padding="@dimen/padding_5"
+            android:padding="@dimen/padding_10"
             android:textSize="@dimen/fontHead"
+            android:background="@color/color_white"
             />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/margin_15"
-        android:background="@color/color_white"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/customer_telephone"
-            android:padding="@dimen/padding_5"
-            android:textColor="@color/colorRemark"
-            android:textSize="@dimen/fontTitle"
-            />
+        android:text="@string/customer_telephone"
+        android:textColor="@color/contact_info_unit"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/fontTitle"
+        android:padding="@dimen/padding_10"
+        />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/search_view_height"
+            android:layout_height="@dimen/coupon_item_height"
             android:orientation="horizontal"
+            android:background="@color/color_white"
             >
             <EditText
                 android:id="@+id/et_customer_telephone"
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:background="@drawable/rect_bg"
+                android:background="@null"
+                android:textColorHint="@color/colorRemarkText"
                 android:hint="@string/contact_hint_phone"
-                android:padding="@dimen/padding_5"
+                android:padding="@dimen/padding_10"
                 />
             <Button
                 android:id="@+id/btn_search_telephone"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="@drawable/login_button_main_selector"
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:background="@drawable/contact_phone_bg"
                 android:text="@string/main_conversion"
-                android:layout_marginLeft="1dp"
-                android:textColor="@color/btn_search_telephone"
+                android:gravity="center"
+                android:textColor="@color/colorMainBtn"
                 />
 
         </LinearLayout>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/margin_15"
-        android:background="@color/color_white"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/customer_remark"
-            android:padding="@dimen/padding_5"
-            android:textColor="@color/colorRemark"
-            android:textSize="@dimen/fontTitle"
-            />
+        android:text="@string/customer_remark"
+        android:textColor="@color/contact_info_unit"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/fontTitle"
+        android:padding="@dimen/padding_10"
+        />
         <EditText
             android:id="@+id/et_customer_remark"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/message_item_height"
+            android:layout_height="@dimen/edit_remark_height"
             android:layout_marginTop="@dimen/margin_5"
-            android:background="@drawable/rect_bg"
             android:hint="@string/contact_hint_remark"
-            android:padding="@dimen/padding_5"
+            android:textColorHint="@color/colorRemarkText"
+            android:padding="@dimen/padding_10"
             android:textSize="@dimen/fontHead"
+            android:background="@color/color_white"
             />
-    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

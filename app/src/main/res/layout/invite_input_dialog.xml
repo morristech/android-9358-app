@@ -40,7 +40,7 @@
             android:inputType="number"
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontBody"
-            android:textColorHint="@color/colorRemark"
+            android:textColorHint="@color/colorRemarkText"
             android:hint="@string/invite_club"/>
 
         <EditText
@@ -54,7 +54,7 @@
             android:inputType="number"
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontBody"
-            android:textColorHint="@color/colorRemark"
+            android:textColorHint="@color/colorRemarkText"
             android:hint="@string/invite_tech"
             android:visibility="gone"/>
     </LinearLayout>

@@ -19,10 +19,11 @@
     <color name="colorServiceDivide">#00e0e0e0</color>
     <color name="colorTitle">#333333</color>
     <color name="colorBody">#666666</color>
-    <color name="colorRemark">#E0E0E0</color>
+    <color name="colorRemark">#999999</color>
+    <color name="colorRemarkText">#E0E0E0</color>
     <color name="colorHead">#212121</color>
 
-    <color name="colorLineDivide">#d9d9d9</color>
+    <color name="colorLineDivide">#66d9d9d9</color>
     <color name="colorStatusNormal">#d8d8d8</color>
     <color name="colorBtnNormal">#333333</color>
     <color name="colorBtnSelector">#ff5549</color>
@@ -124,5 +125,9 @@
     <color name="contact_info_order">#4d4d4d</color>
     <color name="contact_info_unit">#999999</color>
     <color name="order_state">#66cc66</color>
+    <color name="text_color_can_chat">#777777</color>
+    <color name="top_horizontal_line">#66bdbdbd</color>
+    <color name="alert_text_color">#616161</color>
+    <color name="tech_share_bg">#DDc2c2be</color>
 
 </resources>

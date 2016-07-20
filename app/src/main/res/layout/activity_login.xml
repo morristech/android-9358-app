@@ -43,7 +43,7 @@
                 android:maxLength="11"
                 android:textColor="@color/colorBody"
                 android:textSize="@dimen/fontBody"
-                android:textColorHint="@color/colorRemark"
+                android:textColorHint="@color/colorRemarkText"
                 android:hint="@string/login_account_hint"/>
         </LinearLayout>
 
@@ -67,7 +67,7 @@
             android:maxLength="20"
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontBody"
-            android:textColorHint="@color/colorRemark"
+            android:textColorHint="@color/colorRemarkText"
             android:hint="@string/modify_password_new_hint"/>
     </LinearLayout>
 

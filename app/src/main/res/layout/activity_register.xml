@@ -32,7 +32,7 @@
             android:maxLength="11"
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontBody"
-            android:textColorHint="@color/colorRemark"
+            android:textColorHint="@color/colorRemarkText"
             android:hint="@string/login_account_hint"/>
 
         <View
@@ -55,7 +55,7 @@
             android:maxLength="20"
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontBody"
-            android:textColorHint="@color/colorRemark"
+            android:textColorHint="@color/colorRemarkText"
             android:hint="@string/register_password_hint"/>
 
         <View
@@ -83,7 +83,7 @@
                 android:maxLength="6"
                 android:textColor="@color/colorBody"
                 android:textSize="@dimen/fontBody"
-                android:textColorHint="@color/colorRemark"
+                android:textColorHint="@color/colorRemarkText"
                 android:hint="@string/register_security_code_hint"/>
 
             <Button
@@ -122,7 +122,7 @@
             android:maxLength="6"
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontBody"
-            android:textColorHint="@color/colorRemark"
+            android:textColorHint="@color/colorRemarkText"
             android:hint="@string/personal_fragment_button_invite"/>
 
     </LinearLayout>

@@ -105,21 +105,23 @@ public class ContactsFragment extends BaseFragment implements RadioGroup.OnCheck
     }
     public void showCustomerListFragmentFrag() {
         mCustomer.setChecked(true);
-        boolean isAdd = true;
+        boolean isAdd = false;
         String tag = "customerListFragmentFrag";
         currentFragment = getChildFragmentManager().findFragmentByTag(tag);
         if (currentFragment == null) {
             currentFragment = CustomerListFragment.getInstance();
+
         }
         replaceFragment(tag, currentFragment, isAdd);
     }
     public void showMyClubListFragmentFrag() {
         myStore.setChecked(true);
-        boolean isAdd = true;
-        String tag = "myStoreListFragment";
+        boolean isAdd = false;
+        String tag = "myClubListFragment";
         currentFragment = getChildFragmentManager().findFragmentByTag(tag);
         if (currentFragment == null) {
             currentFragment = MyClubListFragment.getInstance();
+
         }
         replaceFragment(tag, currentFragment, isAdd);
     }

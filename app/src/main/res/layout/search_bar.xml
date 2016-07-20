@@ -16,7 +16,7 @@
         android:maxLength="50"
         android:textColor="@color/colorBody"
         android:textSize="@dimen/fontRemark"
-        android:textColorHint="@color/colorRemark"
+        android:textColorHint="@color/colorRemarkText"
         android:hint="@string/search_hint"/>
 
     <ImageButton

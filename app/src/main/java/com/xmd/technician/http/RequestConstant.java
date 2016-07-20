@@ -62,6 +62,7 @@ public class RequestConstant {
 
 
     public static final String URL_COUPON_SHARE_EVENT_COUNT = BASE_URL + "/v1/profile/redpacket/share";
+    public static final String URL_RANKING = "/spa-manager/manager/index.html?userType=%s&sessionType=%s&token=%s";
 
 //    public static final String URL_APP_UPDATE_CONFIG = "mockjs/17/app-upgrade-system/appUpgrade";
     public static final String URL_APP_UPDATE_CONFIG = "/app-upgrade-system/appUpgrade";

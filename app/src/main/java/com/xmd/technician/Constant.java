@@ -93,7 +93,16 @@ public class Constant {
      * 订单界面的待接，已接受，已完成三种状态
      */
     public static final String FILTER_ORDER_COMPLETE = "complete";
-
+    /**
+     *
+     */
+        public static final String TECH_SHARE_URL = "shareUrl";
+        public static final String TECH_CAN_SHARE = "canShare";
+        public static final String TECH_USER_HEAD_URL= "userHead";
+        public static final String TECH_USER_NAME ="userName";
+        public static final String TECH_USER_TECH_NUM = "userNum";
+        public static final String TECH_USER_CLUB_NAME = "userClubName";
+        public static final String TECH_ShARE_CODE_IMG ="userShareCodeImg";
     /**
      * status:submit 未接受，accept 同意，reject 拒绝，cancel 取消，complete 完成，failure 失效，sysReject 超时。 不传默认查全部订单
      */
@@ -144,7 +153,7 @@ public class Constant {
     public static final String PARAM_SHARE_DESCRIPTION = "p_share_desc";
     public static final String PARAM_SHARE_TYPE = "p_share_type";
 
-    public static final String APP_BROWSER_USER_AGENT = "9358.tech.browser";
+    public static final String APP_BROWSER_USER_AGENT = "9358.tech.android.browser";
 
     public static final String FORMAT_DATE_TIME = "yyyyMMddHHmmss";
 

@@ -15,4 +15,5 @@ public class TechSummaryInfo {
     public String serialNo;
     public String clubName;
     public String status;
+    public String techCode;
 }

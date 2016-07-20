@@ -182,6 +182,8 @@
 
        <activity android:name=".window.EditContactInformation"
            android:screenOrientation="portrait"/>
+        <activity android:name=".window.ShareCardActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".window.PreLoginActivity"
             android:launchMode="singleTask"/>

@@ -64,7 +64,7 @@ public class SortClubAdapter extends BaseAdapter implements SectionIndexer {
         final CLubMember mMember = list.get(position);
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.customer_list_item, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.club_contact_list_item, null);
             viewHolder.tvPinyin = (TextView) convertView.findViewById(R.id.tv_pinyin);
             viewHolder.customerHead = (CircleImageView) convertView.findViewById(R.id.customer_head);
             viewHolder.customerName  = (TextView) convertView.findViewById(R.id.customer_name);

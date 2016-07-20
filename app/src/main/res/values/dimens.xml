@@ -57,14 +57,15 @@
     <dimen name="personal_margin">16dp</dimen>
     <dimen name="personal_item_margin_right">30dp</dimen>
 
-    <dimen name="line_divide_height">1dp</dimen>
+    <dimen name="line_divide_height">0.5dp</dimen>
     <dimen name="app_default_padding">12dp</dimen>
 
     <dimen name="photo_head">48dp</dimen>
 
+
     <dimen name="avatar_head">48dp</dimen>
     <dimen name="wrap_big_head_height">88dp</dimen>
-    <dimen name="photo_head_big">68dp</dimen>
+    <dimen name="photo_head_big">72dp</dimen>
     <dimen name="feedback_btn_height">32dp</dimen>
     <dimen name="feedback_btn_width">90dp</dimen>
     <dimen name="comment_item_height">96dp</dimen>
@@ -134,15 +135,24 @@
     <dimen name="stroke_width_narrow">0.5dp</dimen>
     <dimen name="contact_item_hight">54dp</dimen>
     <dimen name="margin_right_10">10dp</dimen>
+    <dimen name="margin_2">2dp</dimen>
     <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
     <dimen name="margin_15">15dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_25">25dp</dimen>
     <dimen name="padding_5">5dp</dimen>
     <dimen name="padding_15">15dp</dimen>
     <dimen name="padding_10">10dp</dimen>
-    <dimen name="slid_bar_width">15dp</dimen>
+
+    <dimen name="slid_bar_width">25dp</dimen>
     <dimen name="alert_dialog_text_size">26sp</dimen>
     <dimen name="add_friend_width">30dp</dimen>
     <dimen name="order_detail_section_btn_height">40dp</dimen>
+    <dimen name="edit_remark_height">165dp</dimen>
+    <dimen name="user_card_margin">30dp</dimen>
+    <dimen name="user_card_margin_bottom">80dp</dimen>
+    <dimen name="code_height">200dp</dimen>
 
 
 

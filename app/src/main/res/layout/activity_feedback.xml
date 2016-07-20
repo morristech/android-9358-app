@@ -18,7 +18,7 @@
         android:layout_margin="@dimen/search_margin"
         android:textColor="@color/colorTitle"
         android:textSize="@dimen/fontTitle"
-        android:textColorHint="@color/colorRemark"
+        android:textColorHint="@color/colorRemarkText"
         android:hint="@string/feedback_hint"/>
     
     <Button

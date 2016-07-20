@@ -55,16 +55,30 @@
                 android:layout_marginTop="@dimen/margin_5"
                 android:visibility="gone"
                 >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="["
+                    android:textSize="@dimen/fontTitle"
+                    android:textColor="@color/text_color_can_chat"
+                    />
 
                 <TextView
                     android:id="@+id/customer_serialNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_can_chat"
+                    android:textColor="@color/contact_item_number_text_color"
                     android:layout_marginRight="@dimen/margin_5"
                     android:layout_marginLeft="@dimen/margin_5"
                     android:textSize="@dimen/fontTitle"
                     android:text="@string/text_can_chat"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="]"
+                    android:textSize="@dimen/fontTitle"
+                    android:textColor="@color/text_color_can_chat"
                     />
 
             </LinearLayout>

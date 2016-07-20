@@ -69,6 +69,8 @@
     <string name="personal_fragment_layout_account">我的账户</string>
     <string name="personal_fragment_layout_my_comment">我的评论</string>
     <string name="personal_fragment_layout_setting">设置</string>
+    <string name="personal_fragment_layout_user_card">我的微名片</string>
+    <string name="personal_fragment_ranging">排行榜</string>
     <string name="qr_code_body">扫我关注＂9358＂</string>
     <string name="qr_code_remark">点技师，约项目，就上9358</string>
     <string name="qr_code_share">分享名片</string>
@@ -319,5 +321,6 @@
     <string name="toast_search_null">未查询到该联系人</string>
     <string name="not_have_authority_or_contact_is_empty">未开启联系人权限或联系人列表为空</string>
     <string name="limit_input_text">备注信息不可超过30个字符</string>
+    <string name="user_code_message">扫码关注[9358]\n点技师，约项目，就上9358</string>
 
 </resources>

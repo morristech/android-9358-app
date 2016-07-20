@@ -10,15 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
@@ -218,27 +218,63 @@ public class PersonalFragment extends BaseFragment{
         startActivity(intent);
     }
 
-    @OnClick(R.id.qrcode)
-    public void showQR(){
+//    @OnClick(R.id.qrcode)
+//    public void showQR(){
+//        if(mTechInfo == null || TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
+//            return;
+//        }
+//
+//        if (mQRDialog == null) {
+//            mQRDialog = new QRDialog(getActivity(), mTechInfo.qrCodeUrl, true);
+//        } else {
+//            mQRDialog.updateQR(mTechInfo.qrCodeUrl);
+//        }
+//
+//        boolean canShare = true;
+//        if(Constant.TECH_STATUS_VALID.equals(mTechInfo.status)||Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)){
+//            canShare = false;
+//        }
+//        StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+//        url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id,mTechInfo.techCode));
+//        mQRDialog.updateShareInfo(url.toString(), canShare);
+//        mQRDialog.show();
+//    }
+    @OnClick(R.id.user_card_share)
+        public void shareUserCard(){
         if(mTechInfo == null || TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
             return;
         }
-
-        if (mQRDialog == null) {
-            mQRDialog = new QRDialog(getActivity(), mTechInfo.qrCodeUrl, true);
-        } else {
-            mQRDialog.updateQR(mTechInfo.qrCodeUrl);
-        }
-
         boolean canShare = true;
         if(Constant.TECH_STATUS_VALID.equals(mTechInfo.status)||Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)){
             canShare = false;
         }
-        StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-        url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s", mTechInfo.clubId, mTechInfo.id));
-        mQRDialog.updateShareInfo(url.toString(), canShare);
+        if(Utils.isNotEmpty(mTechInfo.clubId)){
+            Intent intent = new Intent(getActivity(),ShareCardActivity.class);
+            StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+            url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id,mTechInfo.techCode));
+            intent.putExtra(Constant.TECH_USER_HEAD_URL,mTechInfo.imageUrl);
+            intent.putExtra(Constant.TECH_USER_NAME,mTechInfo.userName);
+            intent.putExtra(Constant.TECH_USER_TECH_NUM,mTechInfo.serialNo);
+            intent.putExtra(Constant.TECH_USER_CLUB_NAME,mTechInfo.clubName);
+            intent.putExtra(Constant.TECH_SHARE_URL,url.toString());
+            intent.putExtra(Constant.TECH_ShARE_CODE_IMG,mTechInfo.qrCodeUrl);
+            intent.putExtra(Constant.TECH_CAN_SHARE,canShare);
+            startActivity(intent);
+        }else {
+            ((BaseFragmentActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
+        }
 
-        mQRDialog.show();
+    }
+
+    @OnClick(R.id.user_center_ranking)
+    public void showRankingView(){
+        String url = SharedPreferenceHelper.getServerHost()+String.format(RequestConstant.URL_RANKING,RequestConstant.USER_TYPE_TECH,
+                RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken()
+        );
+        Intent intent = new Intent(getActivity(),BrowserActivity.class);
+        intent.putExtra(BrowserActivity.EXTRA_SHOW_MENU,false);
+        intent.putExtra(BrowserActivity.EXTRA_URL,url);
+        startActivity(intent);
     }
 
     @OnClick(R.id.invite_btn)
