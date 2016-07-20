@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
@@ -249,7 +248,7 @@ public class PersonalFragment extends BaseFragment{
             canShare = false;
         }
         if(Utils.isNotEmpty(mTechInfo.clubId)){
-            Intent intent = new Intent(getActivity(),ShareCardActivity.class);
+            Intent intent = new Intent(getActivity(),shareCardActivity.class);
             StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
             url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id,mTechInfo.techCode));
             intent.putExtra(Constant.TECH_USER_HEAD_URL,mTechInfo.imageUrl);

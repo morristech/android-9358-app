@@ -182,7 +182,7 @@
 
        <activity android:name=".window.EditContactInformation"
            android:screenOrientation="portrait"/>
-        <activity android:name=".window.ShareCardActivity"
+        <activity android:name=".window.shareCardActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".window.PreLoginActivity"
