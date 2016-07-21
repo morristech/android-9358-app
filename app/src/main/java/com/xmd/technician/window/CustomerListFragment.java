@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,7 +143,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         });
         pinyinComparator = new PinyinCompartorUtil();
         Collections.sort(mCustomerList, pinyinComparator);
-        if (mCustomerList.size() < 0) {
+        if (mCustomerList.size() <=0) {
             return;
         }
         adapter = new SortCustomerAdapter(getActivity(), mCustomerList);
@@ -152,7 +151,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         alertMessage.setVisibility(View.GONE);
         if (mCustomerList.size() == 1) {
             title.setVisibility(View.GONE);
-        } else if(mCustomerList.size()>1){
+        }
             listView.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -191,7 +190,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
                     lastFisrstVisibleItem = firstVisibleItem;
                 }
             });
-        }
+
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -252,12 +251,17 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         } else {
             titleLayout.setVisibility(View.GONE);
             alertMessage.setVisibility(View.VISIBLE);
-            Log.i("TAG", "为查询到...");
         }
     }
 
     public int getSectionForPosition(int position) {
-        return mCustomerList.get(position).sortLetters.charAt(0);
+
+        if(position<mCustomerList.size()){
+            return mCustomerList.get(position).sortLetters.charAt(0);
+        }else{
+            return -1;
+        }
+
     }
 
     public int getPositonForSection(int section) {

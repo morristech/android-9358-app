@@ -26,7 +26,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import rx.Subscription;
 
 
@@ -155,4 +154,11 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(getEditResultSubscription!=null){
+            RxBus.getInstance().unsubscribe(getEditResultSubscription);
+        }
+    }
 }

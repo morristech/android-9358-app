@@ -41,9 +41,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:textColor="@color/colorMain"
+        android:textColor="@color/colorMainBtn"
         android:textSize="@dimen/fontTitle"
-        android:text="1111"/>
+       />
 
     <TextView
         android:id="@+id/time"

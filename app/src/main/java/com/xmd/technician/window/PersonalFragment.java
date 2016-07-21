@@ -217,27 +217,6 @@ public class PersonalFragment extends BaseFragment{
         startActivity(intent);
     }
 
-//    @OnClick(R.id.qrcode)
-//    public void showQR(){
-//        if(mTechInfo == null || TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
-//            return;
-//        }
-//
-//        if (mQRDialog == null) {
-//            mQRDialog = new QRDialog(getActivity(), mTechInfo.qrCodeUrl, true);
-//        } else {
-//            mQRDialog.updateQR(mTechInfo.qrCodeUrl);
-//        }
-//
-//        boolean canShare = true;
-//        if(Constant.TECH_STATUS_VALID.equals(mTechInfo.status)||Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)){
-//            canShare = false;
-//        }
-//        StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-//        url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id,mTechInfo.techCode));
-//        mQRDialog.updateShareInfo(url.toString(), canShare);
-//        mQRDialog.show();
-//    }
     @OnClick(R.id.user_card_share)
         public void shareUserCard(){
         if(mTechInfo == null || TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
@@ -250,7 +229,7 @@ public class PersonalFragment extends BaseFragment{
         if(Utils.isNotEmpty(mTechInfo.clubId)){
             Intent intent = new Intent(getActivity(),shareCardActivity.class);
             StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-            url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id,mTechInfo.techCode));
+            url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id,mTechInfo.inviteCode));
             intent.putExtra(Constant.TECH_USER_HEAD_URL,mTechInfo.imageUrl);
             intent.putExtra(Constant.TECH_USER_NAME,mTechInfo.userName);
             intent.putExtra(Constant.TECH_USER_TECH_NUM,mTechInfo.serialNo);

@@ -40,9 +40,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:textColor="@color/colorRemark"
+        android:textColor="@color/colorMainBtn"
         android:textSize="@dimen/fontTitle"
-        android:text="yua"/>
+        />
 
     <TextView
         android:id="@+id/time"

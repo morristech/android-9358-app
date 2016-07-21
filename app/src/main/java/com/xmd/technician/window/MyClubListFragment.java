@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -246,9 +245,6 @@ private void searchContact() {
         mAlterMessge.setVisibility(View.GONE);
     } else {
         customerInfos.clear();
-//        for (int i = 0; i < mManagerList.size(); i++) {
-//            mClubList.remove(0);
-//        }
         for (CLubMember sortCustomer : mClubList) {
             String name = sortCustomer.name;
             if (name.indexOf(editStr.toString()) != -1 || characterParser.getSelling(name)
@@ -269,7 +265,12 @@ private void searchContact() {
 }
 
     public int getSectionForPosition(int position) {
-        return mClubList.get(position).getSortLetters() == null ? -1 : mClubList.get(position).getSortLetters().charAt(0);
+        if(position<mClubList.size()){
+            return mClubList.get(position).getSortLetters() == null ? -1 : mClubList.get(position).getSortLetters().charAt(0);
+        }else{
+            return -1;
+        }
+
     }
 
     public int getPositonForSection(int section) {

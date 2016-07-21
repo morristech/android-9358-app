@@ -188,9 +188,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     @OnClick(R.id.btn_chat)
     public void sendMessageToCustomer() {
-        Uri uri = Uri.parse("smsto://" + contactPhone);
+        Uri uri = Uri.parse("smsto:" + contactPhone);
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-        intent.putExtra("sms_body", "send detail");
+        intent.putExtra("sms_body", "");
         startActivity(intent);
     }
 
@@ -250,10 +250,16 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if(getTechInformationSubscription!=null){
             RxBus.getInstance().unsubscribe(getTechInformationSubscription);
         }
+        if(doDeleteContactSubscription!=null){
+            RxBus.getInstance().unsubscribe(doDeleteContactSubscription);
+        }
 
     }
 
     private void handlerCustomer(CustomerDetailResult customer) {
+        if(customer==null){
+          return;
+        }
         isEmptyCustomer = TextUtils.isEmpty(customer.respData.techCustomer.emchatId) ? true : false;
         Glide.with(mContext).load(customer.respData.techCustomer.avatarUrl).placeholder(R.drawable.icon22)
                 .error(R.drawable.icon22).into(mContactHead);
@@ -351,7 +357,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if (TextUtils.isEmpty(tech.respData.serialNo)) {
             mContactName.setText(tech.respData.name);
         } else {
-         //   mContactName.setText(tech.respData.name + "[" + tech.respData.serialNo + "]");
             mContactName.setText(tech.respData.name);
             llTechNum.setVisibility(View.VISIBLE);
             techNum.setText(tech.respData.serialNo);
