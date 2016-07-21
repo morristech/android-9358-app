@@ -53,7 +53,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
         this.type = type;
         switch (type) {
             case TYPE_DOWN:
-                super.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                super.setBackgroundDrawable(new ColorDrawable(ResourceUtils.getColor(R.color.side_bar_text)));
                 initViews();
                 break;
             case TYPE_UP:
@@ -95,7 +95,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
         }
     }
     public void show(View view) {
-        showAsDropDown(view, 0, 40);
+        showAsDropDown(view, 0, 20);
     }
 
     public void showPopUp(View v) {

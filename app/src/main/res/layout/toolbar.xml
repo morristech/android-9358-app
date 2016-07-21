@@ -49,13 +49,24 @@
                 android:clickable="true"
                 android:text="right"
                 android:visibility="gone"/>
-            <ImageView
+            <LinearLayout
                 android:id="@+id/contact_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/contact_icon_more"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:gravity="center"
                 android:visibility="gone"
-                />
+
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/contact_icon_more"
+                    />
+
+            </LinearLayout>
+
+
         </FrameLayout>
 
         <View

@@ -47,7 +47,7 @@
     <string name="main_conversion">联系人</string>
     <string name="main_order">订单</string>
     <string name="main_market">营销</string>
-    <string name="main_personal">个人中心</string>
+    <string name="main_personal">我</string>
 
     <!-- ChatFragment -->
     <string name="message_fragment_title">我的消息</string>
@@ -283,7 +283,7 @@
     <string name="customer_information_deatail">资料详情</string>
     <string name="customer_information_more">更多</string>
     <string name="contact_name">姓名：</string>
-    <string name="contact_telephone">手机号：</string>
+    <string name="contact_telephone">电话：</string>
     <string name="contact_hint_remark">可添加描述信息</string>
     <string name="customer_order_item">到店自选</string>
     <string name="customer_order_empty">当前用户尚未与你发生业务来往</string>
@@ -302,8 +302,8 @@
     <string name="alert_delete_contact">确认删除好友？</string>
     <string name="alert_delete_contact_message">删除好友后您的好友列表不再显示该好友信息。</string>
     <string name="delete_contact_success">删除好友成功</string>
-    <string name="edit_remark">备注名: </string>
-    <string name="edit_remark_message">备注信息: </string>
+    <string name="edit_remark">备注名 </string>
+    <string name="edit_remark_message">备注信息 </string>
     <string name="change_remark_message"> 修改备注</string>
     <string name="edit_remark_success">修改备注信息成功</string>
     <string name="text_can_chat">[可聊]</string>
@@ -321,6 +321,7 @@
     <string name="toast_search_null">未查询到该联系人</string>
     <string name="not_have_authority_or_contact_is_empty">未开启联系人权限或联系人列表为空</string>
     <string name="limit_input_text">备注信息不可超过30个字符</string>
+    <string name="limit_input_text_remark">备注名不可超过8个字符</string>
     <string name="user_code_message">扫码关注[9358]\n点技师，约项目，就上9358</string>
 
 </resources>

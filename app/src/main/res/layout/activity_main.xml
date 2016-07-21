@@ -10,9 +10,11 @@
         android:id="@+id/main_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_button_height"
-
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:paddingTop="@dimen/margin_5"
+        android:background="#DDF8F8F8"
+        >
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -259,8 +261,8 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide"
+        android:layout_height="@dimen/stroke_width"
+        android:background="@color/colorLineDivideTable"
         android:layout_above="@+id/main_bottom_bar"/>
 
     <FrameLayout

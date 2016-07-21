@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.xmd.technician.R;
 import com.xmd.technician.bean.AddOrEditResult;
@@ -40,6 +41,8 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
     EditText mRemarkMessage;
     @Bind(R.id.btn_save_edit)
     Button mSaveEdit;
+    @Bind(R.id.text_remark_num)
+    TextView remarkNum;
     private String remarkName;
     private String remarkMessage;
     private String remarkId;
@@ -63,7 +66,33 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
         remarkId = intent.getStringExtra(RequestConstant.KEY_ID);
         remarkPhone = intent.getStringExtra(RequestConstant.KEY_PHONE_NUMBER);
         nickName = intent.getStringExtra(RequestConstant.KEY_USERNAME);
-        mRemarkName.addTextChangedListener(this);
+
+        mRemarkName.setText(remarkName);
+        if(!TextUtils.isEmpty(remarkName)){
+            mSaveEdit.setEnabled(true);
+        }
+        if(!remarkMessage.equals(ResourceUtils.getString(R.string.customer_remark_empty))){
+            mRemarkMessage.setText(remarkMessage);
+        }
+
+        mRemarkName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>8){
+                    makeShortToast(ResourceUtils.getString(R.string.limit_input_text_remark));
+                }
+            }
+        });
         mRemarkMessage.addTextChangedListener(this);
         getEditResultSubscription = RxBus.getInstance().toObservable(AddOrEditResult.class).subscribe(result ->{
             handlerEditResult(result);
@@ -73,6 +102,7 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
    public   void saveEdit(){
         remarkName = mRemarkName.getText().toString();
         remarkMessage = mRemarkMessage.getText().toString();
+
         Map<String,String> params = new HashMap<>();
         params.put(RequestConstant.KEY_ID,remarkId);
         params.put(RequestConstant.KEY_NOTE_NAME,remarkName);
@@ -96,7 +126,10 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
             makeShortToast(ResourceUtils.getString(R.string.limit_input_text));
             mSaveEdit.setEnabled(false);
         }else{
-            if(Utils.isNotEmpty(mRemarkName.getText().toString())||Utils.isNotEmpty(mRemarkMessage.getText().toString())){
+            if((30-s.length())>0){
+                remarkNum.setText(30-s.length()+"");
+            }
+            if(Utils.isNotEmpty(mRemarkName.getText().toString())){
                 mSaveEdit.setEnabled(true);
             }
         }

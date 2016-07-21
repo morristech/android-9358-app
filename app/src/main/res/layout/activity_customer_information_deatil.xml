@@ -28,13 +28,53 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-            <TextView
-                android:id="@+id/tv_customer_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/fontHead"
-                android:textColor="@color/contact_item_name_text_color"
-                />
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:id="@+id/tv_customer_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontHead"
+                    android:textColor="@color/contact_item_name_text_color"
+                    />
+                <LinearLayout
+                    android:id="@+id/ll_tech_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/fontTitle"
+
+                        android:text="["
+                        />
+                    <TextView
+                        android:id="@+id/tech_number"
+                        android:layout_width="wrap_content"
+                        android:textSize="@dimen/fontTitle"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/contact_item_number_text_color"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/fontTitle"
+                        android:text="]"
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_customer_telephoe"
                 android:layout_width="wrap_content"
@@ -52,19 +92,40 @@
                 />
         </LinearLayout>
     </LinearLayout>
-    <TextView
-        android:id="@+id/tv_customer_remark"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/line_divide_height"
-        android:paddingRight="@dimen/padding_15"
-        android:paddingLeft="@dimen/padding_15"
-        android:paddingTop="@dimen/padding_10"
-        android:paddingBottom="@dimen/padding_10"
+        android:orientation="horizontal"
         android:background="@color/color_white"
-        android:textSize="@dimen/fontTitle"
-        android:textColor="@color/contact_remark_text_color"
-        />
+        android:paddingLeft="@dimen/inter_space"
+        >
+        <TextView
+            android:id="@+id/remark_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="备注："
+            android:textSize="@dimen/fontTitle"
+            android:layout_gravity="center"
+            android:textColor="@color/phone_number_text_color"
+            android:visibility="gone"
+            />
+        <TextView
+            android:id="@+id/tv_customer_remark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/padding_15"
+            android:paddingLeft="@dimen/padding_5"
+            android:paddingTop="@dimen/padding_10"
+            android:paddingBottom="@dimen/padding_10"
+            android:textSize="@dimen/fontTitle"
+            android:textColor="@color/contact_remark_text_color"
+            />
+
+
+    </LinearLayout>
+    <View
+        style="@style/horizontal_divider_line"></View>
     <LinearLayout
         android:id="@+id/ll_customer_order"
         android:layout_width="match_parent"
@@ -166,7 +227,10 @@
                     android:gravity="center"
                     />
             </LinearLayout>
+
     </LinearLayout>
+        <View
+            style="@style/horizontal_divider_line"></View>
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_15"
@@ -185,14 +249,13 @@
             />
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:background="@color/main_bg"
            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginBottom="@dimen/margin_15"
             android:orientation="vertical"
             >
             <RelativeLayout
@@ -200,8 +263,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_15"
-                android:paddingTop="@dimen/padding_5"
+                android:layout_marginTop="@dimen/margin_right_10"
                 android:paddingBottom="@dimen/padding_5"
+                android:layout_marginBottom="@dimen/margin_5"
                 >
                 <TextView
                     android:id="@+id/order"
@@ -216,6 +280,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/order"
                     android:layout_marginLeft="10dp"
+                    android:textSize="@dimen/fontTitle"
                     android:textColor="@color/contact_item_name_text_color"
                     />
                 <TextView
@@ -235,6 +300,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/order_detail_order_service"
                     android:textSize="@dimen/fontTitle"
+
                     />
                 <TextView
                     android:id="@+id/order_item_detail"
@@ -244,13 +310,16 @@
                     android:layout_below="@+id/order"
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
+                    android:textSize="@dimen/fontTitle"
                     android:textColor="@color/contact_item_name_text_color"
                     />
             </RelativeLayout>
             <View
+                android:id="@+id/view_div"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
                 android:background="@color/main_bg"
+                android:visibility="gone"
                 />
             <RelativeLayout
                 android:id="@+id/rl_order2"
@@ -258,8 +327,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_15"
                 android:layout_marginTop="@dimen/margin_right_10"
-                android:paddingTop="@dimen/padding_5"
                 android:paddingBottom="@dimen/padding_5"
+                android:layout_marginBottom="@dimen/margin_5"
                 >
                 <TextView
                     android:id="@+id/order2"
@@ -274,6 +343,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/order2"
                     android:layout_marginLeft="@dimen/margin_right_10"
+                    android:textSize="@dimen/fontTitle"
                     android:textColor="@color/contact_item_name_text_color"
                     />
                 <TextView
@@ -317,8 +387,10 @@
                 android:visibility="gone"
                 />
 
-        </LinearLayout>
 
+        </LinearLayout>
+        <View
+            style="@style/horizontal_divider_line"></View>
     </LinearLayout>
     <View
         android:layout_width="wrap_content"
@@ -347,7 +419,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/order_detail_section_btn_height"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_5"
+        android:layout_marginTop="@dimen/margin_15"
         android:layout_marginLeft="@dimen/margin_15"
         android:layout_marginRight="@dimen/margin_15"
         >

@@ -87,7 +87,15 @@ public class ContactInformationDetailActivity extends BaseActivity {
     @Bind(R.id.order_empty_alter)
     TextView orderEmpty;
     @Bind(R.id.contact_more)
-    ImageView contactMore;
+    LinearLayout contactMore;
+    @Bind(R.id.remark_alert)
+    TextView textRemarkAlert;
+    @Bind(R.id.ll_tech_number)
+    LinearLayout llTechNum;
+    @Bind(R.id.tech_number)
+    TextView techNum;
+    @Bind(R.id.view_div)
+    View divView;
 
 
     private static final int CONTACT_TYPE = 0x001;
@@ -106,6 +114,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private String customerChatId;
     private String contactType;
     private Context mContext;
+    private boolean remarkIsNotEmpty;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -214,7 +223,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     intent.putExtra(RequestConstant.KEY_ID,contactId);
                     intent.putExtra(RequestConstant.KEY_NOTE_NAME,mContactName.getText().toString());
                     intent.putExtra(RequestConstant.KEY_USERNAME,mContactNickName.getText().toString());
-                    intent.putExtra(RequestConstant.KEY_REMARK,mContactRemark.getText().toString().substring(3));
+                    if(!remarkIsNotEmpty&&mContactRemark.getText().toString().equals(ResourceUtils.getString(R.string.customer_remark_empty))){
+                        textRemarkAlert.setVisibility(View.VISIBLE);
+                        intent.putExtra(RequestConstant.KEY_REMARK,mContactRemark.getText().toString());
+                    }else{
+                        intent.putExtra(RequestConstant.KEY_REMARK,"");
+                    }
+
                     intent.putExtra(RequestConstant.KEY_PHONE_NUMBER,contactPhone);
                     startActivityForResult(intent,RESULT_ADD_REMARK);
                     break;
@@ -251,8 +266,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
             mContactNickName.setVisibility(View.GONE);
             if(TextUtils.isEmpty(customer.respData.techCustomer.remark)){
                 mContactRemark.setText(ResourceUtils.getString(R.string.customer_remark_empty));
+                textRemarkAlert.setVisibility(View.GONE);
+
             }else{
-                mContactRemark.setText(ResourceUtils.getString(R.string.customer_remark)+customer.respData.techCustomer.remark);
+                remarkIsNotEmpty = true;
+                mContactRemark.setText(customer.respData.techCustomer.remark);
+                textRemarkAlert.setVisibility(View.VISIBLE);
             }
         } else {
             btnEmChat.setEnabled(true);
@@ -261,20 +280,22 @@ public class ContactInformationDetailActivity extends BaseActivity {
             customerChatId = customer.respData.techCustomer.emchatId;
             if (!TextUtils.isEmpty(customer.respData.techCustomer.userNoteName)) {
                 mContactName.setText(customer.respData.techCustomer.userNoteName);
-            } else {
+            } else if(!TextUtils.isEmpty(customer.respData.techCustomer.userName)){
+                mContactName.setText(customer.respData.techCustomer.userName);
+            }else {
                 mContactName.setText(ResourceUtils.getString(R.string.default_user_name));
             }
             if (!TextUtils.isEmpty(customer.respData.techCustomer.userName)) {
-                mContactNickName.setText(customer.respData.techCustomer.userName);
-            } else {
-                mContactNickName.setText(ResourceUtils.getString(R.string.nick_name) + ": " + customer.respData.techCustomer.userName);
+                mContactNickName.setText("昵称："+ customer.respData.techCustomer.userName);
             }
             if (!TextUtils.isEmpty(customer.respData.techCustomer.userLoginName)) {
-                mContactTelephone.setText(customer.respData.techCustomer.userLoginName);
+                mContactTelephone.setText("电话："+customer.respData.techCustomer.userLoginName);
             }
             if (!TextUtils.isEmpty(customer.respData.techCustomer.remark)) {
-                mContactRemark.setText(ResourceUtils.getString(R.string.customer_remark) + ": " + customer.respData.techCustomer.remark);
+                textRemarkAlert.setVisibility(View.VISIBLE);
+                mContactRemark.setText(customer.respData.techCustomer.remark);
             } else {
+                textRemarkAlert.setVisibility(View.GONE);
                 mContactRemark.setText(ResourceUtils.getString(R.string.customer_remark_empty));
             }
             if (!TextUtils.isEmpty(String.valueOf(customer.respData.techCustomer.orderCount))) {
@@ -293,6 +314,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 initOrder1(customer);
             }
             if (customer.respData.orders.size() == 2) {
+                divView.setVisibility(View.VISIBLE);
                 initOrder1(customer);
                 initOrder2(customer);
             }
@@ -329,13 +351,19 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if (TextUtils.isEmpty(tech.respData.serialNo)) {
             mContactName.setText(tech.respData.name);
         } else {
-            mContactName.setText(tech.respData.name + "[" + tech.respData.serialNo + "]");
+         //   mContactName.setText(tech.respData.name + "[" + tech.respData.serialNo + "]");
+            mContactName.setText(tech.respData.name);
+            llTechNum.setVisibility(View.VISIBLE);
+            techNum.setText(tech.respData.serialNo);
+
         }
         mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + tech.respData.phoneNum);
         if(TextUtils.isEmpty(tech.respData.description)){
             mContactRemark.setText(ResourceUtils.getString(R.string.contact_description_remark_empty));
         }else{
-            mContactRemark.setText(ResourceUtils.getString(R.string.contact_description_remark) + tech.respData.description);
+            textRemarkAlert.setText(ResourceUtils.getString(R.string.contact_description_remark));
+            textRemarkAlert.setVisibility(View.VISIBLE);
+            mContactRemark.setText(tech.respData.description);
         }
 
         mContactOrderLayout.setVisibility(View.GONE);

@@ -71,6 +71,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     private CharacterParser characterParser;
     private List<CustomerInfo> mCustomerList = new ArrayList<CustomerInfo>();
     private PinyinCompartorUtil pinyinComparator;
+    private List<CustomerInfo> customerInfos;
 
     @Nullable
     @Override
@@ -132,7 +133,11 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-                intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mCustomerList.get(position).id);
+                if(customerInfos!=null&&customerInfos.size()>0){
+                    intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
+                }else{
+                    intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mCustomerList.get(position).id);
+                }
                 intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, "customer");
                 startActivity(intent);
             }
@@ -147,7 +152,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         alertMessage.setVisibility(View.GONE);
         if (mCustomerList.size() == 1) {
             title.setVisibility(View.GONE);
-        } else {
+        } else if(mCustomerList.size()>1){
             listView.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -201,7 +206,12 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
             @Override
             public void afterTextChanged(Editable s) {
-                searchCustomer();
+                if(s.length()>0){
+                    searchCustomer();
+                }else{
+                    closeSearch();
+                }
+
             }
         });
 
@@ -216,19 +226,16 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (!TextUtils.isEmpty(editText.getText().toString())) {
-            editText.setText("");
-        }
-        alertMessage.setVisibility(View.GONE);
-        adapter.updateListView(mCustomerList);
+        closeSearch();
 
     }
 
     private void searchCustomer() {
         String editStr = editText.getText().toString();
-        List<CustomerInfo> customerInfos = new ArrayList<>();
+        customerInfos = new ArrayList<>();
         if (TextUtils.isEmpty(editStr)) {
             alertMessage.setVisibility(View.VISIBLE);
+            alertMessage.setVisibility(View.GONE);
         } else {
             customerInfos.clear();
             for (CustomerInfo sortCustomer : mCustomerList) {
@@ -262,6 +269,15 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
             }
         }
         return -1;
+    }
+
+    private void closeSearch(){
+        if (!TextUtils.isEmpty(editText.getText().toString())) {
+            editText.setText("");
+        }
+        customerInfos =null;
+        alertMessage.setVisibility(View.GONE);
+        adapter.updateListView(mCustomerList);
     }
 
 }

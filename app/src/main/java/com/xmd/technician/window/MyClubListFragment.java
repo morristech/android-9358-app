@@ -24,6 +24,7 @@ import com.xmd.technician.Adapter.SortClubAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CLubMember;
 import com.xmd.technician.bean.ClubContactResult;
+import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.bean.Manager;
 import com.xmd.technician.bean.Tech;
 import com.xmd.technician.common.CharacterParser;
@@ -75,6 +76,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     private List<Tech> mTechList = new ArrayList<Tech>();
     private List<CLubMember> mClubList = new ArrayList<CLubMember>();
     private PinyinClubUtil pinyinComparator;
+    List<CLubMember> customerInfos;
 
     @Override
     public void onAttach(Context context) {
@@ -100,7 +102,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
         });
     }
 
-    private List<CLubMember> handlerClubInfoList(ClubContactResult clubResult) {
+    private void handlerClubInfoList(ClubContactResult clubResult) {
         CLubMember clubMember;
         mClubList.clear();
         mManagerList.clear();
@@ -133,8 +135,15 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-                intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mClubList.get(position).id);
-                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, mClubList.get(position).userType.equals("manager") ? "manager" : "tech");
+                if(customerInfos!=null&&customerInfos.size()>0){
+                    intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
+                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, customerInfos.get(position).userType.equals("manager") ? "manager" : "tech");
+                }else {
+                    intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mClubList.get(position).id);
+                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, mClubList.get(position).userType.equals("manager") ? "manager" : "tech");
+                }
+
+
                 startActivity(intent);
             }
         });
@@ -163,7 +172,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
                             params.topMargin = 0;
                             mTitleLayout.setLayoutParams(params);
 
-                                mTitle.setText(mClubList.get(getPositonForSection(section)).sortLetters);
+                            mTitle.setText(mClubList.get(getPositonForSection(section)).sortLetters);
 
 
                         }
@@ -205,12 +214,16 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    searchCustomer();
+                    if(s.length()>0){
+                        searchContact();
+                    }else{
+                     closeSearch();
+                    }
+
                 }
             });
         }
 
-        return mClubList;
     }
 
     @Override
@@ -222,38 +235,38 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if (!TextUtils.isEmpty(editText.getText().toString())) {
-            editText.setText("");
-        }
-        mAlterMessge.setVisibility(View.GONE);
-        adapter.updateListView(mClubList);
+     closeSearch();
 
     }
 
-    private void searchCustomer() {
-        String editStr = editText.getText().toString();
-        List<CLubMember> customerSearch = new ArrayList<>();
-        if (TextUtils.isEmpty(editStr)) {
-            mTitleLayout.setVisibility(View.VISIBLE);
-            mAlterMessge.setVisibility(View.GONE);
-        } else {
-            mClubList.clear();
-            for (CLubMember sortCustomer : mClubList) {
-                String name = sortCustomer.name;
-                if (name.indexOf(editStr.toString()) != -1 || characterParser.getSelling(name)
-                        .startsWith(editStr.toString())) {
-                    customerSearch.add(sortCustomer);
-                }
+private void searchContact() {
+    String editStr = editText.getText().toString();
+    customerInfos = new ArrayList<>();
+    if (TextUtils.isEmpty(editStr)) {
+        mAlterMessge.setVisibility(View.GONE);
+    } else {
+        customerInfos.clear();
+//        for (int i = 0; i < mManagerList.size(); i++) {
+//            mClubList.remove(0);
+//        }
+        for (CLubMember sortCustomer : mClubList) {
+            String name = sortCustomer.name;
+            if (name.indexOf(editStr.toString()) != -1 || characterParser.getSelling(name)
+                    .startsWith(editStr.toString())) {
+                customerInfos.add(sortCustomer);
             }
         }
-        Collections.sort(customerSearch, pinyinComparator);
-        if (customerSearch.size() > 0) {
-            adapter.updateListView(mClubList);
-        } else if (editStr.length() > 0) {
-            mAlterMessge.setVisibility(View.VISIBLE);
-            mTitle.setVisibility(View.GONE);
-        }
     }
+    Collections.sort(customerInfos, pinyinComparator);
+    if (customerInfos.size() > 0) {
+
+        adapter.updateListView(customerInfos);
+    } else {
+        mTitleLayout.setVisibility(View.GONE);
+        mAlterMessge.setVisibility(View.VISIBLE);
+
+    }
+}
 
     public int getSectionForPosition(int position) {
         return mClubList.get(position).getSortLetters() == null ? -1 : mClubList.get(position).getSortLetters().charAt(0);
@@ -268,6 +281,14 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
             }
         }
         return -1;
+    }
+    private  void closeSearch(){
+        customerInfos = null;
+        if (!TextUtils.isEmpty(editText.getText().toString())) {
+            editText.setText("");
+        }
+        mAlterMessge.setVisibility(View.GONE);
+        adapter.updateListView(mClubList);
     }
 
 }

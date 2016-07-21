@@ -12,6 +12,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.bean.ConsumeInfo;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.widget.CircleImageView;
 
 import java.util.ArrayList;
@@ -126,11 +127,11 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter{
             int viewType = getItemViewType(position);
             if(viewType == WITHDRAWAL){
                 viewHolder.mAmount.setTextColor(mContext.getResources().getColor(R.color.colorTitle));
-                viewHolder.mAmount.setText(String.format(mContext.getString(R.string.consume_record), info.amount));
+                viewHolder.mAmount.setText(Utils.getFloat2Str(info.amount)+"元");
                 viewHolder.mTitle.setText(ResourceUtils.getString(R.string.consume));
                 viewHolder.mAvatar.setImageResource(R.drawable.icon35);
             }else {
-                viewHolder.mAmount.setText(String.format(mContext.getString(R.string.reward_record), info.amount));
+                viewHolder.mAmount.setText(Utils.getFloat2Str(info.amount)+"元");
                 if(viewType == COUPON_REWARD){
                     viewHolder.mAvatar.setVisibility(View.GONE);
                 }else {

@@ -21,9 +21,11 @@
     <color name="colorBody">#666666</color>
     <color name="colorRemark">#999999</color>
     <color name="colorRemarkText">#E0E0E0</color>
+    <color name="colorRemarkText_dialog">#88E0E0E0</color>
     <color name="colorHead">#212121</color>
 
     <color name="colorLineDivide">#66d9d9d9</color>
+    <color name="colorLineDivideTable">#66bdbdbd</color>
     <color name="colorStatusNormal">#d8d8d8</color>
     <color name="colorBtnNormal">#333333</color>
     <color name="colorBtnSelector">#ff5549</color>

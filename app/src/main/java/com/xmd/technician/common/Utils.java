@@ -407,6 +407,18 @@ public class Utils {
 
         return fStr;
     }
+    public static String getFloat2Str(String f) {
+        String fStr = String.valueOf(f);
+        while ((fStr.length() > 1) && fStr.endsWith("0")){
+            fStr = fStr.substring(0, fStr.length() - 1);
+        }
+
+        if(fStr.endsWith(".")){
+            fStr = fStr.substring(0, fStr.length() - 1);
+        }
+
+        return fStr;
+    }
     public static int dip2px(Context context,float dpValue){
         final  float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue*scale +0.5f);

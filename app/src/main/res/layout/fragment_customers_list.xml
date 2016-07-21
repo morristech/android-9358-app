@@ -22,8 +22,9 @@
             android:singleLine="true"
             android:maxLength="10"
             android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontRemark"
+            android:textSize="@dimen/fontTitle"
             android:textColorHint="@color/colorRemarkText"
+
             android:hint="@string/search_hint"/>
         <TextView
             style="@style/vertical_divider_line"

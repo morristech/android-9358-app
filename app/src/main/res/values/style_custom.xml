@@ -158,7 +158,12 @@
     <style name="horizontal_divider_line">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
-        <item name="android:background">@color/divider_thin_color</item>
+        <item name="android:background">@color/colorRemarkText</item>
+    </style>
+    <style name="horizontal_divider_line_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/colorRemarkText_dialog</item>
     </style>
     <style name="horizontal_divider_line_e0">
         <item name="android:layout_width">match_parent</item>
