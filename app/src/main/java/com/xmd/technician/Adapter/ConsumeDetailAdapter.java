@@ -30,6 +30,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter{
     private static final byte COUPON_REWARD = 2;
     private static final byte PAID_COUPON = 3;
     private static final byte WITHDRAWAL = 4;
+    private static final byte OUT_CLUB = 5;
     private static final byte TYPE_FOOTER = 0;
 
     private List<ConsumeInfo> mConsumeList;
@@ -85,7 +86,9 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter{
             return COUPON_REWARD;
         } else if(consumeInfo.consumeChannel.equals("commission")){
             return PAID_COUPON;
-        }else {
+        }else if(consumeInfo.consumeChannel.equals("out_club")){
+            return OUT_CLUB;
+        } else{
             return WITHDRAWAL;
         }
     }
@@ -106,6 +109,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter{
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.consume_record_item, parent,false);
                 break;
             case PAID_COUPON:
+            case OUT_CLUB:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.clock_commission_item, parent,false);
                 break;
             default:
@@ -130,6 +134,10 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter{
                 viewHolder.mAmount.setText(Utils.getFloat2Str(info.amount)+"元");
                 viewHolder.mTitle.setText(ResourceUtils.getString(R.string.consume));
                 viewHolder.mAvatar.setImageResource(R.drawable.icon35);
+            }else if(viewType == OUT_CLUB){
+                viewHolder.mAmount.setTextColor(mContext.getResources().getColor(R.color.colorTitle));
+                viewHolder.mAmount.setText(Utils.getFloat2Str(info.amount)+"元");
+                Glide.with(mContext).load(info.headImgUrl).into(viewHolder.mAvatar);
             }else {
                 viewHolder.mAmount.setText(Utils.getFloat2Str(info.amount)+"元");
                 if(viewType == COUPON_REWARD){

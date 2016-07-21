@@ -37,8 +37,7 @@ public class LoggingInterceptor implements Interceptor {
         }*/
 
 
-
-            OkHttpClient client = new OkHttpClient();
+           /* OkHttpClient client = new OkHttpClient();
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -50,7 +49,7 @@ public class LoggingInterceptor implements Interceptor {
                     Log.i("Json","json=="+response.body().string());
                 }
 
-            });
+            });*/
 
         Response response = chain.proceed(request);
         long t2 = System.nanoTime();
