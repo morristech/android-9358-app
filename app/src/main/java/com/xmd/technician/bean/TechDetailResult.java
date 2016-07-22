@@ -12,7 +12,7 @@ public class TechDetailResult extends BaseResult {
         public String serialNo;
         public String phoneNum;
         public String description;
-        public Object avatarUrl;
+        public String avatarUrl;
         public String name;
         public String emchatId;
         public String loginName;

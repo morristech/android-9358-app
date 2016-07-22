@@ -116,6 +116,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private Context mContext;
     private boolean remarkIsNotEmpty;
 
+    private String chatEmId;
+    private String chatName;
+    private String chatHeadUrl;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,10 +200,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     @OnClick(R.id.btn_EmChat)
     public void chatToCustomer() {
-        Intent intent = new Intent(this, ChatActivity.class);
-        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
-        intent.putExtra(ChatConstant.EMCHAT_ID, customerChatId);
-        startActivity(intent);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(chatEmId, chatName, chatHeadUrl));
     }
 
     @OnClick(R.id.contact_more)
@@ -257,6 +258,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
 
     private void handlerCustomer(CustomerDetailResult customer) {
+        chatEmId = customer.respData.techCustomer.emchatId;
+        chatHeadUrl = customer.respData.techCustomer.avatarUrl;
+        chatName = customer.respData.techCustomer.userName;
+
         if(customer==null){
           return;
         }
@@ -349,6 +354,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
 
     private void handlerTech(TechDetailResult tech) {
+        chatName = tech.respData.name;
+        chatEmId = tech.respData.emchatId;
+        chatHeadUrl = tech.respData.avatarUrl;
+
         btnEmChat.setEnabled(true);
         contactPhone = tech.respData.phoneNum;
         customerChatId = tech.respData.emchatId;
@@ -376,6 +385,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
 
     private void handlerManager(ManagerDetailResult manager) {
+        chatName = manager.respData.emchatId;
+        chatHeadUrl = manager.respData.avatarUrl;
+        chatEmId = manager.respData.emchatId;
+
+
+
         contactPhone = manager.respData.phoneNum;
         customerChatId = manager.respData.emchatId;
         Glide.with(mContext).load(manager.respData.avatarUrl).placeholder(R.drawable.icon22)

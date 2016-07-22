@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.igexin.getuiext.activity.GetuiExtActivity;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -56,6 +58,7 @@ public class PersonalFragment extends BaseFragment{
 
     private TechSummaryInfo mTechInfo;
     private QRDialog mQRDialog;
+    private  String mClubId;
 
     @Nullable
     @Override
@@ -113,6 +116,7 @@ public class PersonalFragment extends BaseFragment{
         if(!Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)){
             mClubName.setText(mTechInfo.clubName);
         }
+        mClubId = mTechInfo.clubId;
         Glide.with(this).load(mTechInfo.imageUrl).into(mAvatar);
     }
 
@@ -237,6 +241,7 @@ public class PersonalFragment extends BaseFragment{
             intent.putExtra(Constant.TECH_SHARE_URL,url.toString());
             intent.putExtra(Constant.TECH_ShARE_CODE_IMG,mTechInfo.qrCodeUrl);
             intent.putExtra(Constant.TECH_CAN_SHARE,canShare);
+
             startActivity(intent);
         }else {
             ((BaseFragmentActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
@@ -246,13 +251,20 @@ public class PersonalFragment extends BaseFragment{
 
     @OnClick(R.id.user_center_ranking)
     public void showRankingView(){
-        String url = SharedPreferenceHelper.getServerHost()+String.format(RequestConstant.URL_RANKING,RequestConstant.USER_TYPE_TECH,
-                RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken()
-        );
-        Intent intent = new Intent(getActivity(),BrowserActivity.class);
-        intent.putExtra(BrowserActivity.EXTRA_SHOW_MENU,false);
-        intent.putExtra(BrowserActivity.EXTRA_URL,url);
-        startActivity(intent);
+        if(TextUtils.isEmpty(mClubId)){
+            ((BaseFragmentActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
+            return;
+        }else{
+            String url = SharedPreferenceHelper.getServerHost()+String.format(RequestConstant.URL_RANKING,RequestConstant.USER_TYPE_TECH,
+                    RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken()
+            );
+            Intent intent = new Intent(getActivity(),BrowserActivity.class);
+            intent.putExtra(BrowserActivity.EXTRA_SHOW_MENU,false);
+            intent.putExtra(BrowserActivity.EXTRA_URL,url);
+            startActivity(intent);
+        }
+
+
     }
 
     @OnClick(R.id.invite_btn)

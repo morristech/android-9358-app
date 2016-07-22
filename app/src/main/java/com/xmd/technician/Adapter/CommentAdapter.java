@@ -96,7 +96,7 @@ public class CommentAdapter extends RecyclerView.Adapter{
                 String s = String.format(mContext.getString(R.string.reward_amount),commentInfo.rewardAmount);
                 SpannableString spanString = new SpannableString(s);
                 int index = s.indexOf(":") + 1;
-                ForegroundColorSpan span = new ForegroundColorSpan(mContext.getResources().getColor(R.color.colorMain));
+                ForegroundColorSpan span = new ForegroundColorSpan(mContext.getResources().getColor(R.color.colorMainBtn));
                 spanString.setSpan(span, index, index + String.valueOf(commentInfo.rewardAmount).length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
                 commentViewHolder.mRewardAmount.setText(spanString);
             }else {

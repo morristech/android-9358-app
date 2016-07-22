@@ -11,7 +11,7 @@ public class ManagerDetailResult extends BaseResult {
     public class RespDataBean {
         public String id;
         public String phoneNum;
-        public Object avatarUrl;
+        public String avatarUrl;
         public String name;
         public String emchatId;
         public String loginName;

@@ -1,5 +1,7 @@
 package com.xmd.technician.http;
 
+import com.xmd.technician.TechApplication;
+
 /**
  * Created by sdcm on 15-10-23.
  */
@@ -8,9 +10,7 @@ public class RequestConstant {
     /*********************************************************************************************/
     /*                                           urls                                            */
     /*********************************************************************************************/
-
     public static final String SERVER_HOST = "http://spa.93wifi.com";
-   //public static final String SERVER_HOST = "http://192.168.1.210:9880";
     public static final String BASE_URL = "/spa-manager/api";
 
     public static final String URL_LOGIN = BASE_URL + "/v1/tech/login";
@@ -18,7 +18,6 @@ public class RequestConstant {
     public static final String URL_REGISTER = BASE_URL + "/v1/tech/register";
     public static final String URL_EDIT_INFO = BASE_URL + "/v1/profile/tech/editInfo";
     public static final String URL_UPDATE_TECH_INFO = BASE_URL + "/v1/profile/tech";
-
     public static final String URL_CURRENT_INFO = BASE_URL + "/v1/profile/tech/current";
     public static final String URL_COMMENT_LIST = BASE_URL + "/v1/profile/tech/comments";
     public static final String URL_COMMENT_ORDER_REDPK_COUNT = BASE_URL + "/v2/tech/profile/notice";

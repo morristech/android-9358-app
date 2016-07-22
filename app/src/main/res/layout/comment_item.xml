@@ -22,7 +22,7 @@
         android:layout_toRightOf="@+id/avatar"
         android:textColor="@color/colorTitle"
         android:textSize="@dimen/fontTitle"
-        android:text="null"/>
+        />
 
     <RatingBar
         android:id="@+id/ratings"
@@ -45,7 +45,7 @@
         android:paddingBottom="@dimen/personal_padding"
         android:textColor="@color/colorBody"
         android:textSize="@dimen/fontBody"
-        tools:text="12131"/>
+        />
 
     <TextView
         android:id="@+id/reward_amount"
@@ -64,7 +64,7 @@
         android:layout_alignBottom="@+id/ratings"
         android:textColor="@color/colorRemark"
         android:textSize="@dimen/fontRemark"
-        android:text="10:00"/>
+       />
 
     <View
         android:layout_width="match_parent"

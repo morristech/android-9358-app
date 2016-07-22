@@ -21,6 +21,7 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.ClearableEditText;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
     @Bind(R.id.et_customer_name)
     EditText mCustomerName;
     @Bind(R.id.et_customer_telephone)
-    EditText mCustomerTelephone;
+    ClearableEditText mCustomerTelephone;
     @Bind(R.id.btn_search_telephone)
     Button mSearchTelephone;
     @Bind(R.id.et_customer_remark)
