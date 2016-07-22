@@ -33,7 +33,7 @@
 
         <meta-data
             android:name="DEF_UPDATE_SERVER"
-            android:value="${NEW_DEF_UPDATE_SERVER}" />
+            android:value="${DEF_UPDATE_SERVER}" />
         <meta-data
             android:name="PUSH_MASTERSECRET"
             android:value="${GETUI_MASTER_SECRET}" />
