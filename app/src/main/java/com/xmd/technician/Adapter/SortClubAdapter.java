@@ -95,7 +95,7 @@ public class SortClubAdapter extends BaseAdapter implements SectionIndexer {
 
         }
 
-        Glide.with(mContext).load(mMember.avatarUrl).placeholder(R.drawable.icon22).error(R.drawable.icon22).into(viewHolder.customerHead);
+        Glide.with(mContext).load(mMember.avatarUrl).into(viewHolder.customerHead);
 
         if(TextUtils.isEmpty(mMember.name)){
             viewHolder.customerName.setText("匿名");

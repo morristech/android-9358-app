@@ -119,6 +119,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private String chatEmId;
     private String chatName;
     private String chatHeadUrl;
+    private String managerHeadUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,6 +131,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         contactId = intent.getStringExtra(RequestConstant.KEY_CUSTOMER_ID);
         contactType = intent.getStringExtra(RequestConstant.KEY_CONTACT_TYPE);
         isEmptyCustomer = intent.getBooleanExtra(RequestConstant.KEY_IS_EMPTY, false);
+        managerHeadUrl = intent.getStringExtra(RequestConstant.KEY_MANAGER_URL);
         initView();
     }
 
@@ -266,8 +268,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
           return;
         }
         isEmptyCustomer = TextUtils.isEmpty(customer.respData.techCustomer.emchatId) ? true : false;
-        Glide.with(mContext).load(customer.respData.techCustomer.avatarUrl).placeholder(R.drawable.icon22)
-                .error(R.drawable.icon22).into(mContactHead);
+        Glide.with(mContext).load(customer.respData.techCustomer.avatarUrl).into(mContactHead);
         if (isEmptyCustomer) {
             btnEmChat.setEnabled(false);
             contactPhone = customer.respData.techCustomer.userLoginName;
@@ -361,8 +362,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         btnEmChat.setEnabled(true);
         contactPhone = tech.respData.phoneNum;
         customerChatId = tech.respData.emchatId;
-        Glide.with(mContext).load(tech.respData.avatarUrl).placeholder(R.drawable.icon22)
-                .error(R.drawable.icon22).into(mContactHead);
+        Glide.with(mContext).load(tech.respData.avatarUrl).into(mContactHead);
         if (TextUtils.isEmpty(tech.respData.serialNo)) {
             mContactName.setText(tech.respData.name);
         } else {
@@ -393,9 +393,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
         contactPhone = manager.respData.phoneNum;
         customerChatId = manager.respData.emchatId;
-        Glide.with(mContext).load(manager.respData.avatarUrl).placeholder(R.drawable.icon22)
-                .error(R.drawable.icon22).into(mContactHead);
-       mContactName.setText(ResourceUtils.getString(R.string.contact_manager));
+        if(!TextUtils.isEmpty(managerHeadUrl)){
+            Glide.with(mContext).load(managerHeadUrl).into(mContactHead);
+        }
+        mContactName.setText(ResourceUtils.getString(R.string.contact_manager));
         mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + manager.respData.phoneNum);
 
         mContactOrderLayout.setVisibility(View.GONE);

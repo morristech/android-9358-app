@@ -84,7 +84,7 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
 
             }
         }
-        Glide.with(mContext).load(mCustomer.avatarUrl).placeholder(R.drawable.icon22).error(R.drawable.icon22).into(viewHolder.customerHead);
+        Glide.with(mContext).load(mCustomer.avatarUrl).into(viewHolder.customerHead);
 
         if(TextUtils.isEmpty(mCustomer.userNoteName)){
             viewHolder.customerName.setText(mCustomer.userName);

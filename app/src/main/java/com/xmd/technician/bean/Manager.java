@@ -7,7 +7,6 @@ import java.util.Comparator;
  */
 public class Manager {
 
-   
     public String id;
     public String phoneNum;
     public String description;

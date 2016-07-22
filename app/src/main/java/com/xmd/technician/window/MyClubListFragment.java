@@ -117,7 +117,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
         pinyinComparator = new PinyinClubUtil();
         Collections.sort(mClubList, pinyinComparator);
         for (int i = 0; i < mManagerList.size(); i++) {
-            clubMember = new CLubMember(mManagerList.get(i).id, mManagerList.get(i).userType, "", mManagerList.get(i).name, "", mManagerList.get(i).phoneNum);
+            clubMember = new CLubMember(mManagerList.get(i).id, mManagerList.get(i).userType, mManagerList.get(i).avatarUrl, mManagerList.get(i).name, "", mManagerList.get(i).phoneNum);
             mClubList.add(0, clubMember);
         }
         silebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
@@ -137,10 +137,18 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
                 if(customerInfos!=null&&customerInfos.size()>0){
                     intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
                     intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, customerInfos.get(position).userType.equals("manager") ? "manager" : "tech");
+                    if(customerInfos.get(position).userType.equals("manager")){
+                        intent.putExtra(RequestConstant.KEY_MANAGER_URL,customerInfos.get(position).avatarUrl);
+                    }
+
                 }else {
                     intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mClubList.get(position).id);
                     intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, mClubList.get(position).userType.equals("manager") ? "manager" : "tech");
+                    if(mClubList.get(position).userType.equals("manager")){
+                        intent.putExtra(RequestConstant.KEY_MANAGER_URL,mClubList.get(position).avatarUrl);
+                    }
                 }
+
 
 
                 startActivity(intent);

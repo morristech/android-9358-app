@@ -256,4 +256,14 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
         android:background="@color/colorLineDivide" />
+
+    <RelativeLayout
+        android:id="@+id/config_message"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingLeft="@dimen/personal_padding"
+        android:paddingRight="@dimen/personal_padding"
+       >
+
+    </RelativeLayout>
 </LinearLayout>

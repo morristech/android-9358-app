@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -422,6 +424,20 @@ public class Utils {
     public static int dip2px(Context context,float dpValue){
         final  float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue*scale +0.5f);
+    }
+    public static String getStringMetaData(String metaDataName) {
+        PackageManager pm = TechApplication.getAppContext().getPackageManager();
+        ApplicationInfo appinfo;
+        String metaDataValue = "";
+        try {
+            appinfo = pm.getApplicationInfo(TechApplication.getAppContext().getPackageName(),PackageManager.GET_META_DATA);
+            Bundle metaData = appinfo.metaData;
+            metaDataValue = metaData.getString(metaDataName);
+            return metaDataValue;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return metaDataValue;
     }
 }
 

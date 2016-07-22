@@ -187,6 +187,10 @@
         <activity
             android:name=".window.PreLoginActivity"
             android:launchMode="singleTask"/>
+
+        <activity android:name=".window.ConfigurationMonitorActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

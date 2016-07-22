@@ -137,6 +137,7 @@ public class RequestConstant {
     public static final String KEY_REMARK = "remark";
     public static final String KEY_CUSTOMER_ID = "contactId";
     public static final String KEY_CONTACT_TYPE = "contactType";
+    public static final String KEY_MANAGER_URL = "managerHeadUrl";
 
 
 

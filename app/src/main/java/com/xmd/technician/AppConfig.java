@@ -6,9 +6,11 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.technician.bean.Entry;
 import com.xmd.technician.common.FileUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 
@@ -185,4 +187,18 @@ public class AppConfig {
 
         return versionCode;
     }
+    public static List<Entry> generateEntryList() {
+        List<Entry> list = new ArrayList<>();
+
+        list.add(new Entry("client id", sClientId));
+        list.add(new Entry("bind client", sBindClientIdStatus));
+        list.add(new Entry("server host", SharedPreferenceHelper.getServerHost()));
+        list.add(new Entry("emchat id", SharedPreferenceHelper.getEmchatId()));
+        list.add(new Entry("avatar", SharedPreferenceHelper.getUserAvatar()));
+        list.add(new Entry("EASEMOB", Utils.getStringMetaData("EASEMOB_APPKEY")));
+
+        return list;
+    }
+
+
 }
