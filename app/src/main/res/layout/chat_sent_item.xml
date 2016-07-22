@@ -168,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/personal_padding"
                 android:layout_marginLeft="@dimen/personal_padding"
-                android:textColor="@color/colorMain"
+                android:textColor="@color/contact_info_unit"
                 android:textSize="@dimen/fontTitle"
                 android:text="@string/app_info_title"/>
 
@@ -251,7 +251,7 @@
                     android:drawableLeft="@drawable/ic_hongseguanbi"
                     android:paddingLeft="@dimen/search_margin"
                     android:gravity="center"
-                    android:textColor="@color/colorMain"
+                    android:textColor="@color/colorMainBtn"
                     android:textSize="@dimen/fontBody"
                     android:text="@string/refuse"/>
             </LinearLayout>
