@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -103,13 +104,15 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
         }
 
         mSelectedUpdateServerHost = SharedPreferenceHelper.getUpdateServer();
-        if (Utils.isNotEmpty(mSelectedUpdateServerHost)) {
-            selection = AppConfig.sServerHosts.indexOf(mSelectedUpdateServerHost);
-            if (selection < 0) {
-                selection = 0;
-            }
-            mSpUpdateServerHost.setSelection(selection);
-        }
+//        if (Utils.isNotEmpty(mSelectedUpdateServerHost)) {
+//            selection = AppConfig.sServerHosts.indexOf(mSelectedUpdateServerHost);
+//            if (selection < 0) {
+//                selection = 0;
+//            }
+//            mSpUpdateServerHost.setSelection(selection);
+//        }
+        Log.i("TAGG","ServerHost"+mSelectedServerHost);
+
     }
 
     @OnClick(R.id.login_btn)
@@ -122,7 +125,8 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
         }
 
         mSelectedServerHost = mSpServerHost.getSelectedItem().toString();
-        mSelectedUpdateServerHost = mSpUpdateServerHost.getSelectedItem().toString();
+      //  mSelectedUpdateServerHost = mSpUpdateServerHost.getSelectedItem().toString();
+       // mSelectedUpdateServerHost = "http://service.xiaomodo.com";
 
         //Save the usernames
         SharedPreferenceHelper.setUserAccount(mUsername);
