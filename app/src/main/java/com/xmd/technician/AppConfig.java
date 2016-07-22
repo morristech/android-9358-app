@@ -4,6 +4,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.text.style.LineHeightSpan;
 import android.util.Log;
 
 import com.umeng.analytics.MobclickAgent;
@@ -23,6 +24,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by sdcm on 16-3-11.
@@ -46,6 +49,7 @@ public class AppConfig {
     public static String sGetuiAppSecret = "";
     public static String sGetuiMasterSecret = "";
     public static List<String> sServerHosts;
+    public static List<String>sServerUpDateHosts;
 
     private static String sAppVersionName = "";
     private static int sAppVersionCode = -1;
@@ -80,6 +84,14 @@ public class AppConfig {
             }
 
         }
+        sServerUpDateHosts = new ArrayList<>();
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            sSDCardPath = Environment.getExternalStorageDirectory().getPath();
+            if (FileUtils.checkFolderExists(getAppFolder(), true)) {
+                //Read the config Server Hosts from the /sdcard/sdspa/serverhosts
+                readServerUpDateHostFile();
+            }
+        }
 
     }
 
@@ -101,8 +113,28 @@ public class AppConfig {
         }
         if (sServerHosts.isEmpty()) {
             sServerHosts.add(Constant.DEFAULT_SERVER_HOST);
-            sServerHosts.add(sDefUpdateServer);
         }
+    }
+    private static void readServerUpDateHostFile(){
+        File file = new File(getAppFolder()+File.separator+SERVER_HOSTS);
+        if(file.exists()){
+            try {
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sServerUpDateHosts.add(line);
+                }
+            }catch (FileNotFoundException e){
+                Logger.e(e.getLocalizedMessage());
+            }catch (IOException e) {
+                Logger.e(e.getLocalizedMessage());
+            }
+        }
+        if(sServerUpDateHosts.isEmpty()){
+            sServerUpDateHosts.add(sDefUpdateServer);
+        }
+
     }
 
     /**

@@ -37,7 +37,7 @@
                 android:layout_height="@dimen/search_pic_height"
                 android:minWidth="@dimen/search_pic_height"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/personal_margin"
+                android:layout_marginRight="@dimen/personal_margin_table"
                 android:background="@drawable/unread_count_bg"
                 android:gravity="center"
                 android:textColor="@android:color/white"

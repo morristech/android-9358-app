@@ -4,7 +4,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@color/colorMainBtn"
+        >
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/message_fragment_title"
+           android:gravity="center"
+           android:layout_centerInParent="true"
+           android:textSize="@dimen/fontHead"
+           android:textColor="@color/color_white"
+           />
+
+    </RelativeLayout>
+    <View
+        style="@style/horizontal_divider_line_title"
+        />
 
     <FrameLayout
         android:id="@+id/header_container"

@@ -185,7 +185,11 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     public void updateUnreadMsgLabel() {
         int count = getUnreadMsgCountTotal();
         if (count > 0) {
-            mUnreadMsgLabel.setText(String.valueOf(count));
+            if(count>99){
+                mUnreadMsgLabel.setText("99+");
+            }else{
+                mUnreadMsgLabel.setText(String.valueOf(count));
+            }
             mUnreadMsgLabel.setVisibility(View.VISIBLE);
         } else {
             mUnreadMsgLabel.setVisibility(View.INVISIBLE);

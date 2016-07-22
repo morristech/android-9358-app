@@ -89,7 +89,7 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
         serverHosts.setDropDownViewResource(R.layout.spinner_dropdown_item);
         mSpServerHost.setAdapter(serverHosts);
 
-        ArrayAdapter<String> updateServerHosts = new ArrayAdapter<>(this, R.layout.spinner_item, AppConfig.sServerHosts);
+        ArrayAdapter<String> updateServerHosts = new ArrayAdapter<>(this, R.layout.spinner_item, AppConfig.sServerUpDateHosts);
         updateServerHosts.setDropDownViewResource(R.layout.spinner_dropdown_item);
         mSpUpdateServerHost.setAdapter(updateServerHosts);
 
@@ -104,15 +104,13 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
         }
 
         mSelectedUpdateServerHost = SharedPreferenceHelper.getUpdateServer();
-//        if (Utils.isNotEmpty(mSelectedUpdateServerHost)) {
-//            selection = AppConfig.sServerHosts.indexOf(mSelectedUpdateServerHost);
-//            if (selection < 0) {
-//                selection = 0;
-//            }
-//            mSpUpdateServerHost.setSelection(selection);
-//        }
-        Log.i("TAGG","ServerHost"+mSelectedServerHost);
-
+        if (Utils.isNotEmpty(mSelectedUpdateServerHost)) {
+            selection = AppConfig.sServerHosts.indexOf(mSelectedUpdateServerHost);
+            if (selection < 0) {
+                selection = 0;
+            }
+            mSpUpdateServerHost.setSelection(selection);
+        }
     }
 
     @OnClick(R.id.login_btn)

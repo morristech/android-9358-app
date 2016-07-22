@@ -55,6 +55,7 @@
     <dimen name="personal_padding">12dp</dimen>
     <dimen name="personal_info_margin_top">21dp</dimen>
     <dimen name="personal_margin">16dp</dimen>
+    <dimen name="personal_margin_table">14dp</dimen>
     <dimen name="personal_item_margin_right">30dp</dimen>
 
     <dimen name="line_divide_height">0.5dp</dimen>
