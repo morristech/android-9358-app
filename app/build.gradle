@@ -30,8 +30,8 @@ android {
         targetSdkVersion 23
         //TODO: release version :
         //1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
-        versionCode 3
-        versionName "1.1.0"
+        versionCode 1
+        versionName "1.0.1"
 
         manifestPlaceholders = [
                 PACKAGE_NAME        : "com.xmd.technician",
@@ -86,7 +86,7 @@ android {
                     GETUI_APP_KEY       : "n45kk01jfP8EV64z6k1JB7",
                     GETUI_APP_SECRET    : "ZzasGwsuQS6rYT3WlowwD5",
                     GETUI_MASTER_SECRET : "dK97cOa5xX9jiEmTH2kqh5",
-                    DEF_UPDATE_SERVER   : "http://192.168.1.100:9883",
+                    DEF_UPDATE_SERVER   : "http://service.xiaomodo.com",
             ]
         }
 
