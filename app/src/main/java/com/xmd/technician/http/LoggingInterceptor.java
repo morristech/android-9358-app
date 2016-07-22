@@ -3,6 +3,7 @@ package com.xmd.technician.http;
 import android.util.Log;
 
 import com.xmd.technician.AppConfig;
+import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.Logger;
 
 import java.io.IOException;
@@ -36,20 +37,21 @@ public class LoggingInterceptor implements Interceptor {
             Logger.v(formBody.name(i) + ":" + formBody.value(i));
         }*/
 
+            if(TechApplication.isTest ){
+                OkHttpClient client = new OkHttpClient();
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
 
-           /* OkHttpClient client = new OkHttpClient();
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
+                    }
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        Log.i("Json","json=="+response.body().string());
+                    }
 
-                }
+                });
+            }
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    Log.i("Json","json=="+response.body().string());
-                }
-
-            });*/
 
         Response response = chain.proceed(request);
         long t2 = System.nanoTime();

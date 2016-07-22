@@ -4,6 +4,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.bean.Entry;
@@ -64,7 +65,6 @@ public class AppConfig {
                 sGetuiAppSecret = appInfo.metaData.getString("PUSH_APPSECRET");
                 sGetuiMasterSecret = appInfo.metaData.getString("PUSH_MASTERSECRET");
                 sGetuiAppKey = (appInfo.metaData.get("PUSH_APPKEY") != null) ? appInfo.metaData.get("PUSH_APPKEY").toString() : null;
-
                 sDefUpdateServer = appInfo.metaData.getString("DEF_UPDATE_SERVER");
             }
         } catch (PackageManager.NameNotFoundException e) {
@@ -195,7 +195,9 @@ public class AppConfig {
         list.add(new Entry("server host", SharedPreferenceHelper.getServerHost()));
         list.add(new Entry("emchat id", SharedPreferenceHelper.getEmchatId()));
         list.add(new Entry("avatar", SharedPreferenceHelper.getUserAvatar()));
-        list.add(new Entry("EASEMOB", Utils.getStringMetaData("EASEMOB_APPKEY")));
+        list.add(new Entry("easemob", Utils.getStringMetaData("EASEMOB_APPKEY")));
+        list.add(new Entry("update server", SharedPreferenceHelper.getUpdateServer()));
+        list.add(new Entry("getui", Utils.getStringMetaData("GETUI_APP_ID")));
 
         return list;
     }

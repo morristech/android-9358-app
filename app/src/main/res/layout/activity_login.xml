@@ -122,6 +122,27 @@
         android:textColor="@color/colorBody"
         android:textSize="@dimen/fontNormal"
         android:text="@string/login_activity_login_tips"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_company"
+        android:gravity="center"
+        android:textSize="@dimen/fontTitle"
+        android:text="@string/app_version_code"/>
+
+    <TextView
+        android:id="@+id/tv_company"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/small_space"
+        android:text="@string/company_name"/>
 
     <!--<Button
         android:id="@+id/toggle_server_host"
