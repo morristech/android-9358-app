@@ -13,7 +13,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:paddingTop="@dimen/margin_5"
-        android:background="#DDF8F8F8"
+        android:background="@color/appColorTable"
         >
 
         <RelativeLayout

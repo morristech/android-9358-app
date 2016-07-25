@@ -58,7 +58,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
         mListView.setHasFixedSize(true);
         mListView.setLayoutManager(mLayoutManager);
         mListAdapter = new ListRecycleViewAdapter(getActivity(), mData, this);
-        mListView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
+      //  mListView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mListView.setAdapter(mListAdapter);
         mListView.setItemAnimator(new DefaultItemAnimator());
         mListView.addOnScrollListener(new RecyclerView.OnScrollListener() {

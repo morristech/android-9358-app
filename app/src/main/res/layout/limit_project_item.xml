@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/limit"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:text=""
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:textSize="@dimen/fontBody"
+        android:gravity="center"
+        android:minWidth="80dp"
+        android:maxEms="6"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/alert_text_color"
+        android:background="@drawable/limit_project_item_bg"
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_marginBottom="@dimen/margin_5"
+        />
+
+</LinearLayout>

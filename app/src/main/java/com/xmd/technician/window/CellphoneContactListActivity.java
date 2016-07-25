@@ -98,7 +98,6 @@ public class CellphoneContactListActivity extends BaseActivity {
                 for (int i = 0; i <contactList.size() ; i++) {
                     PhoneContactor contactor = contactList.get(i);
               String firstLetter =   characterParser.getSelling(contactor.name).substring(0,1).toUpperCase();
-                    Log.i("TAGG","letter>>"+firstLetter);
                     if(TextUtils.equals(firstLetter,s)){
                         mSelectPosition = i;
                         mLayoutManager.scrollToPositionWithOffset(i>0?i:0,0);

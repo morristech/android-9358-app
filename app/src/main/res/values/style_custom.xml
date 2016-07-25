@@ -217,7 +217,23 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textColor">@color/colorBtnSelector</item>
         <item name="android:textSize">@dimen/fontBody</item>
+    </style>
+    <style name="text_bold">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/fontHead</item>
+    </style>
+    <style name="text_normal">
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">@dimen/fontBody</item>
+        <item name="android:gravity">center</item>
 
+
+    </style>
+    <style name="text_marked">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/fontTitle</item>
+        <item name="android:textColor">@color/colorMainBtn</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>

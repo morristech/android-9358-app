@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,9 @@ public class ContactsFragment extends BaseFragment implements RadioGroup.OnCheck
     boolean isConflict;
     boolean isMyStore = false;
 
+    private CustomerListFragment customerListFragment;
+    private MyClubListFragment myClubListFragment;
+
     private ContactsFragment getInstance() {
         if (instance == null) {
             instance = new ContactsFragment();
@@ -70,9 +74,9 @@ public class ContactsFragment extends BaseFragment implements RadioGroup.OnCheck
         mCustomer.setChecked(true);
         mRadioGroup.setOnCheckedChangeListener(this);
         if (isConflict) {
-            showMyClubListFragmentFrag();
+            select(1);
         } else {
-            showCustomerListFragmentFrag();
+            select(0);
         }
     }
     @OnClick(R.id.iv_add_friend)
@@ -89,10 +93,10 @@ public class ContactsFragment extends BaseFragment implements RadioGroup.OnCheck
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.customer:
-                showCustomerListFragmentFrag();
+                select(0);
                 break;
             case R.id.mine_store:
-                showMyClubListFragmentFrag();
+                select(1);
                 break;
         }
     }
@@ -103,36 +107,42 @@ public class ContactsFragment extends BaseFragment implements RadioGroup.OnCheck
             outState.putBoolean("isConflict", true);
         }
     }
-    public void showCustomerListFragmentFrag() {
-        mCustomer.setChecked(true);
-        boolean isAdd = false;
-        String tag = "customerListFragmentFrag";
-        currentFragment = getChildFragmentManager().findFragmentByTag(tag);
-        if (currentFragment == null) {
-            currentFragment = CustomerListFragment.getInstance();
+
+
+    private void select(int i){
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        hidetFragment(ft);
+
+        switch (i){
+            case 0:
+                if(customerListFragment==null){
+                    customerListFragment = CustomerListFragment.getInstance();
+                    ft.add(R.id.framelayout,customerListFragment);
+                }else{
+                    ft.show(customerListFragment);
+                }
+                break;
+            case 1:
+                if(myClubListFragment==null){
+                    myClubListFragment = MyClubListFragment.getInstance();
+                    ft.add(R.id.framelayout,myClubListFragment);
+                }else{
+                    ft.show(myClubListFragment);
+                }
+                break;
 
         }
-        replaceFragment(tag, currentFragment, isAdd);
+        ft.commit();
     }
-    public void showMyClubListFragmentFrag() {
-        myStore.setChecked(true);
-        boolean isAdd = false;
-        String tag = "myClubListFragment";
-        currentFragment = getChildFragmentManager().findFragmentByTag(tag);
-        if (currentFragment == null) {
-            currentFragment = MyClubListFragment.getInstance();
+    private void hidetFragment(FragmentTransaction fragmentTransaction){
+        if(customerListFragment!=null){
+            fragmentTransaction.hide(customerListFragment);
+        }
+        if(myClubListFragment!=null){
+            fragmentTransaction.hide(myClubListFragment);
 
         }
-        replaceFragment(tag, currentFragment, isAdd);
+
     }
-    public void replaceFragment(String tag, Fragment tempFragment, boolean isAdd) {
-        currentFragment = tempFragment;
-        FragmentTransaction tran = getChildFragmentManager().beginTransaction();
-        tran.replace(R.id.framelayout, tempFragment, tag);
-        if (isAdd) {
-            tran.addToBackStack(tag);
-        }
-        tran.commit();
-        }
-
-        }
+}

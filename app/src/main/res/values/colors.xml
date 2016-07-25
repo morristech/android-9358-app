@@ -24,8 +24,8 @@
     <color name="colorRemarkText_dialog">#88E0E0E0</color>
     <color name="colorHead">#212121</color>
 
-    <color name="colorLineDivide">#66d9d9d9</color>
-    <color name="colorLineDivideTable">#66bdbdbd</color>
+    <color name="colorLineDivide">#d9d9d9</color>
+    <color name="colorLineDivideTable">#CCCCCC</color>
     <color name="colorStatusNormal">#d8d8d8</color>
     <color name="colorBtnNormal">#333333</color>
     <color name="colorBtnSelector">#ff5549</color>
@@ -60,6 +60,7 @@
     <color name="operation_button_bg_pressed">#c9443a</color>
 
     <color name="colorServiceName">#f9f9f9</color>
+    <color name="appColorTable">#F9F9F9</color>
     <color name="colorServiceHead">#f0eff5</color>
 
     <color name="order_detail_section_bg_color">#fff</color>
@@ -131,5 +132,13 @@
     <color name="top_horizontal_line">#66bdbdbd</color>
     <color name="alert_text_color">#616161</color>
     <color name="tech_share_bg">#DDc2c2be</color>
+    <color name="coupon_delivery_bottom_color">#d75c63</color>
+    <color name="coupon_cash_bottom_color">#68aad5</color>
+    <color name="coupon_favorable_bottom_color">#edba50</color>
+    <color name="coupon_delivery_text_color">#9e4543</color>
+    <color name="coupon_cash_text_color">#375d6c</color>
+    <color name="coupon_favorable_text_color">#ad7710</color>
+    <color name="coupon_detail_text_color">#424242</color>
+    <color name="coupon_code_text_color">#4c4c4c</color>
 
 </resources>

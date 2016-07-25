@@ -20,6 +20,8 @@ public class CouponInfo {
     public String time;
     public String useTimePeriod;
     public String useType;
+    public String consumeMoney;
+    public String couponTypeName;
 
     @Override
     public String toString() {

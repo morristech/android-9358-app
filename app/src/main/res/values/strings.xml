@@ -137,7 +137,7 @@
     <string name="consume_record">%1$d元</string>
     <string name="reward_record">+%1$d元</string>
     <string name="customer_reward">用户打赏</string>
-    <string name="coupon_commission">优惠券提成</string>
+    <string name="coupon_commission">co提成</string>
     <string name="clock_commission">点钟券提成</string>
     <string name="order_commission">付费预约提成</string>
     <string name="consume_tip">关注＂9358服务＂公众号，登录提现</string>
@@ -241,7 +241,7 @@
     <string name="wx_errcode_unknown">分享返回</string>
 
     <string name="coupon_fragment_share">分享</string>
-    <string name="coupon_fragment_coupon_reward">打赏金额:%1$d元</string>
+    <string name="coupon_fragment_coupon_reward">打赏 %1$d元</string>
     <string name="coupon_fragment_coupon_empty_reason">会所暂无优惠活动或您还没有加入会所</string>
 
     <string name="paid_coupon_detail_activity_title">点钟详情</string>
@@ -250,8 +250,8 @@
     <string name="paid_coupon_detail_user_detail">购买详情</string>
     <string name="paid_coupon_detail_share">分享</string>
     <string name="paid_coupon_detail_tips">注：</string>
-    <string name="paid_coupon_detail_tips_expire">客人的点钟券过期后，您将获得%1$s元打赏。</string>
-    <string name="paid_coupon_detail_tips_verified">客户的点钟券使用后，您将获得%1$s元打赏。</string>
+    <string name="paid_coupon_detail_tips_expire">客户的点钟券过期后，您将获得 %1$s 元打赏。</string>
+    <string name="paid_coupon_detail_tips_verified">客户的点钟券使用后，您将获得 %1$s 元打赏。</string>
 
     <string name="paid_coupon_user_detail_activity_header_user">用户</string>
     <string name="paid_coupon_user_detail_activity_header_status">全部状态</string>
@@ -268,7 +268,7 @@
     <string name="normal_coupon_detail_activity_act_content_desc">使用规则</string>
     <string name="normal_coupon_detail_activity_share_text_title">分享领红包</string>
     <string name="normal_coupon_detail_activity_share_text">
-        分享优惠给您的客人，一旦这些客人使用了这个优惠，您也将获得%1$d元现金红包，您的客人以及客人的朋友使用这个优惠后，您也将获得%2$d元红包，红包会自动存入您的账户。</string>
+        分享优惠给您的客人，任何客户使用您分享的优惠券后，您即可获得 %1$d 元现金红包，红包会自动存入您的账户。</string>
     <string name="normal_coupon_detail_activity_scan_code">用户扫描二维码即得优惠！</string>
 
     <string name="system_notice_activity_title">系统通知</string>
@@ -326,5 +326,14 @@
     <string name="limit_input_text_remark">备注名不可超过8个字符</string>
     <string name="user_code_message">扫码关注[9358]公众号\n点技师，约项目，就上9358</string>
     <string name="abnormal_message">服务器异常了</string>
+    <string name="money_sign">￥</string>
+    <string name="share_with_red_packet">分享领取红包</string>
+    <string name="share_now">立即分享</string>
+    <string name="coupon_code">优惠券</string>
+    <string name="coupon_alert_message">客户扫码即得优惠</string>
+    <string name="coupon_alert_message_buy">客户扫码购券</string>
+    <string name="coupon_cash">（现金券）</string>
+    <string name="coupon_code_item">(优惠券)</string>
+    <string name="user_time">使用时间时段</string>
 
 </resources>

@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:background="@color/colorMain"
+        android:background="@color/appColorTable"
         >
         <RadioGroup
             android:id="@+id/radio_group"

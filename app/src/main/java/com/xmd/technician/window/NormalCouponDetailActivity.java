@@ -3,12 +3,18 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.xmd.technician.Adapter.LimitProjectAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -24,7 +30,9 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -40,14 +48,22 @@ public class NormalCouponDetailActivity extends BaseActivity {
     @Bind(R.id.tv_share_text) TextView mTvShareText;
     @Bind(R.id.tv_coupon_duration) TextView mTvCouponDuration;
     @Bind(R.id.tv_commission) TextView mTvCommission;
-    @Bind(R.id.tv_service_item) TextView mTvServiceItem;
+  //  @Bind(R.id.tv_service_item) TextView mTvServiceItem;
     @Bind(R.id.iv_share_qr_code) ImageView mIvShareQrCode;
     @Bind(R.id.wv_act_content) WebView mWvActContent;
     @Bind(R.id.btn_share) Button mShareBtn;
+    @Bind(R.id.limit_project_list) RecyclerView limitProjectRecycler;
 
     private Subscription mGetCouponInfoSubscription;
     private String mActId;
     private CouponInfoResult mCouponInfoResult;
+    private LimitProjectAdapter adapter;
+
+
+
+
+
+    private List<String> limitList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +94,13 @@ public class NormalCouponDetailActivity extends BaseActivity {
         setTitle(ResourceUtils.getString(R.string.normal_coupon_detail_activity_title));
         setBackVisible(true);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_INFO, mActId);
+
+        final FullyGridLayoutManager manager = new FullyGridLayoutManager(NormalCouponDetailActivity.this,3);
+        manager.setOrientation(GridLayoutManager.VERTICAL);
+        limitProjectRecycler.setLayoutManager(manager);
+        limitProjectRecycler.setItemAnimator(new DefaultItemAnimator());
+        limitProjectRecycler.setHasFixedSize(true);
+
     }
 
     private void handleCouponInfoResult(CouponInfoResult result) {
@@ -96,17 +119,18 @@ public class NormalCouponDetailActivity extends BaseActivity {
 
     private void onGetCouponInfoSucceeded(CouponInfo couponInfo){
 
-        String serviceItem="";
-        int len = mCouponInfoResult.respData.items.size();
-        for (int i = 0; i < len; i++) {
-            serviceItem += "," + mCouponInfoResult.respData.items.get(i).name;
-        }
 
-        if(Utils.isNotEmpty(serviceItem)) {
-            serviceItem = serviceItem.substring(1);
-        } else {
-            serviceItem="使用不限";
+        int len = mCouponInfoResult.respData.items.size();
+        for (int i = 0; i <len ; i++) {
+            limitList.add(mCouponInfoResult.respData.items.get(i).name);
         }
+        if(limitList.size()==0){
+            limitList.add("使用不限");
+        }
+        adapter = new LimitProjectAdapter(NormalCouponDetailActivity.this,limitList);
+        limitProjectRecycler.setAdapter(adapter);
+
+
 
         if(Utils.isEmpty(couponInfo.useTimePeriod)) {
             couponInfo.useTimePeriod="使用不限";
@@ -115,13 +139,13 @@ public class NormalCouponDetailActivity extends BaseActivity {
         if(Utils.isEmpty(couponInfo.actContent)) {
             couponInfo.actContent="无";
         }
-
-        mTvShareText.setText(String.format(ResourceUtils.getString(R.string.normal_coupon_detail_activity_share_text), couponInfo.sysCommission, couponInfo.sysCommission));
+        String shareText = String.format(ResourceUtils.getString(R.string.normal_coupon_detail_activity_share_text), couponInfo.sysCommission);
+        SpannableString spannableString = new SpannableString(shareText);
+        spannableString.setSpan(new TextAppearanceSpan(this,R.style.text_marked),30,shareText.lastIndexOf("元"),SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mTvShareText.setText(spannableString);
 
         Glide.with(this).load(generateQrCodeUrl()).into(mIvShareQrCode);
         mTvCommission.setText(String.valueOf(couponInfo.actValue));
-
-        mTvServiceItem.setText(serviceItem);
         mTvCouponDuration.setText(couponInfo.useTimePeriod);
 
         mWvActContent.getSettings().setJavaScriptEnabled(false);

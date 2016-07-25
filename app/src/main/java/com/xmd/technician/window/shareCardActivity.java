@@ -56,6 +56,8 @@ public class shareCardActivity extends BaseActivity {
     ImageView mUserShareCode;
     @Bind(R.id.ll_tech_code)
     LinearLayout mTechCode;
+    @Bind(R.id.img_bg)
+    ImageView imgBg;
 
 
     private String userHead;
@@ -168,4 +170,8 @@ public class shareCardActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

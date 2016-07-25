@@ -3,7 +3,10 @@ package com.xmd.technician.Adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,9 +71,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     private static final int TYPE_ORDER_ITEM = 0;
-    private static final int TYPE_COUPON_INFO_ITEM = 1;
+    private static final int TYPE_COUPON_INFO_ITEM_CUSH = 11;
     private static final int TYPE_PAID_COUPON_USER_DETAIL = 2;
     private static final int TYPE_CONVERSATION = 3;
+    private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
+    private static final int TYPE_COUPON_INFO_ITEM_FAVORUABLE = 13;
+
     private static final int TYPE_OTHER_ITEM = 98;
     private static final int TYPE_FOOTER = 99;
 
@@ -115,7 +121,14 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (mData.get(position) instanceof Order) {
                 return TYPE_ORDER_ITEM;
             } else if (mData.get(position) instanceof CouponInfo) {
-                return TYPE_COUPON_INFO_ITEM;
+                if(((CouponInfo) mData.get(position)).useTypeName.equals("现金券")){
+                    return TYPE_COUPON_INFO_ITEM_CUSH;
+                }else if(((CouponInfo) mData.get(position)).useTypeName.equals("点钟券")){
+                    return TYPE_COUPON_INFO_ITEM_DELIVERY;
+                }else{
+                    return TYPE_COUPON_INFO_ITEM_FAVORUABLE;
+                }
+
             } else if (mData.get(position) instanceof PaidCouponUserDetail) {
                 return TYPE_PAID_COUPON_USER_DETAIL;
             } else if (mData.get(position) instanceof EMConversation) {
@@ -131,8 +144,14 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         if (TYPE_ORDER_ITEM == viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_item, parent, false);
             return new OrderListItemViewHolder(view);
-        } else if (TYPE_COUPON_INFO_ITEM == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_item, parent, false);
+        } else if (TYPE_COUPON_INFO_ITEM_CUSH == viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_cush_item, parent, false);
+            return new CouponListItemViewHolder((view));
+        }else if(TYPE_COUPON_INFO_ITEM_DELIVERY==viewType){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_delivery_item, parent, false);
+            return new CouponListItemViewHolder((view));
+        }else if(TYPE_COUPON_INFO_ITEM_FAVORUABLE ==viewType){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_favorable_item, parent, false);
             return new CouponListItemViewHolder((view));
         } else if (TYPE_PAID_COUPON_USER_DETAIL == viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.paid_coupon_user_detail_list_item, parent, false);
@@ -221,11 +240,20 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
             couponListItemViewHolder.mCouponPeriod.setText(couponInfo.couponPeriod);
             if (couponInfo.sysCommission > 0) {
-                couponListItemViewHolder.mTvCouponReward.setText(String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), couponInfo.sysCommission));
+                String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), couponInfo.sysCommission);
+                SpannableString spannableString = new SpannableString(text);
+                spannableString.setSpan(new TextAppearanceSpan(mContext,R.style.text_bold),3,text.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                couponListItemViewHolder.mTvCouponReward.setText(spannableString);
             }else {
-                couponListItemViewHolder.mTvCouponReward.setText("");
+                couponListItemViewHolder.mTvCouponReward.setVisibility(View.GONE);
             }
-
+            if(Utils.isNotEmpty(couponInfo.consumeMoney)){
+                couponListItemViewHolder.mCouponAmount.setText(couponInfo.consumeMoney);
+            }
+            if(Utils.isNotEmpty(couponInfo.couponTypeName)){
+                couponListItemViewHolder.mCouponType.setVisibility(View.VISIBLE);
+                couponListItemViewHolder.mCouponType.setText("("+couponInfo.couponTypeName+")");
+            }
             couponListItemViewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(couponInfo));
         } else if (holder instanceof PaidCouponUserDetailItemViewHolder) {
 
@@ -388,11 +416,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class CouponListItemViewHolder extends RecyclerView.ViewHolder {
-
         @Bind(R.id.tv_consume_money_description) TextView mTvConsumeMoneyDescription;
         @Bind(R.id.tv_coupon_title) TextView mTvCouponTitle;
         @Bind(R.id.tv_coupon_reward) TextView mTvCouponReward;
         @Bind(R.id.tv_coupon_period) TextView mCouponPeriod;
+        @Bind(R.id.coupon_amount)TextView mCouponAmount;
+        @Bind(R.id.coupon_type)TextView mCouponType;
+
 
         public CouponListItemViewHolder(View itemView) {
             super(itemView);

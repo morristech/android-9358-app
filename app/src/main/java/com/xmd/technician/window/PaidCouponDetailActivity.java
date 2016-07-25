@@ -3,6 +3,9 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.TextAppearanceSpan;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -105,9 +108,14 @@ public class PaidCouponDetailActivity extends BaseActivity {
         mWvActContent.getSettings().setJavaScriptEnabled(false);
         mWvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);
         mWvActContent.loadDataWithBaseURL(null, couponInfo.actContent, Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
-
-        mTvTipsExpire.setText(String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_expire), Utils.getFloat2Str(couponInfo.techBaseCommission)));
-        mTvTipsVerified.setText(String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_verified), Utils.getFloat2Str(couponInfo.techCommission)));
+        String expire = String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_expire), Utils.getFloat2Str(couponInfo.techBaseCommission));
+        SpannableString spannableExpire =new SpannableString(expire);
+        spannableExpire.setSpan(new TextAppearanceSpan(this,R.style.text_marked),14,expire.lastIndexOf("元"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mTvTipsExpire.setText(spannableExpire);
+        String verified = String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_verified), Utils.getFloat2Str(couponInfo.techCommission));
+        SpannableString spannableVerified =new SpannableString(verified);
+        spannableVerified.setSpan(new TextAppearanceSpan(this,R.style.text_marked),14,verified.lastIndexOf("元"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mTvTipsVerified.setText(spannableVerified);
         mShare.setEnabled(true);
     }
 

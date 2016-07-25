@@ -3,7 +3,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/home_button_height"
-    android:background="@color/colorMain"
+    android:background="@color/appColorTable"
     android:orientation="vertical"
     >
     <RelativeLayout
