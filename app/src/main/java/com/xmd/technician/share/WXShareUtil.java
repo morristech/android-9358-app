@@ -3,6 +3,7 @@ package com.xmd.technician.share;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
@@ -67,4 +68,12 @@ public class WXShareUtil extends BaseShareUtil {
         mWxApi.sendReq(req);
 
     }
+    public void loginWX(){
+        SendAuth.Req req = new SendAuth.Req();
+            req.scope = "snsapi_userinfo";
+            req.state = "wechat_sdk_demo";
+            mWxApi.sendReq(req);
+    }
+
+
 }

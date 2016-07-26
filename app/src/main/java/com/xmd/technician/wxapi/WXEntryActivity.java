@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -86,10 +87,13 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     public void onResp(BaseResp baseResp) {
 
         int result = 0;
+        SendAuth.Resp re = (SendAuth.Resp) baseResp;
+        String code = re.code;
         switch (baseResp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 result = R.string.wx_errcode_success;
              //   AppConfig.reportCouponShareEvent();
+               getOpenID(code);
                 Log.i("TAGG","baleable>>>");
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:

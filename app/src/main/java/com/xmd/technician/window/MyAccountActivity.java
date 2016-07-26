@@ -18,6 +18,7 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareConstant;
+import com.xmd.technician.share.WXShareUtil;
 import com.xmd.technician.widget.ConfirmDialog;
 import com.xmd.technician.wxapi.WXEntryActivity;
 
@@ -151,22 +152,7 @@ public class MyAccountActivity extends BaseActivity {
     }
 
     public void wxLogin(){
-       Log.i("TAGG",">>>>wxLogin()");
-       mWXapi = WXAPIFactory.createWXAPI(MyAccountActivity.this, ShareConstant.WX_APP_ID,true);
-        if(!mWXapi.isWXAppInstalled()){
-            Log.i("TAGG","weixin no install");
-            return;
-        }
-//        WXEntryActivity.mHaveCode =false;
-        mWXapi.registerApp(ShareConstant.WX_APP_ID);
-//        SendAuth.Req req = new SendAuth.Req();
-//        req.scope = "snsapi_userinfo";
-//        req.state = "wechat_skd_demo";
-//        mWXapi.sendReq(req);
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope ="snsapi_userinfo";
-        req.state="wechat_sdk_demo";
-        mWXapi.sendReq(req);
+        WXShareUtil.getInstance().loginWX();
     }
 
 }
