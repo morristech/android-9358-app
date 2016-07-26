@@ -2,16 +2,29 @@ package com.xmd.technician.window;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.share.ShareConstant;
 import com.xmd.technician.widget.ConfirmDialog;
+import com.xmd.technician.wxapi.WXEntryActivity;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,6 +37,7 @@ public class MyAccountActivity extends BaseActivity {
     private static final int TYPE_COUPON_REWARD = 1;
     private static final int TYPE_PAID_COUPON = 2;
     private static final int TYPE_PAID_ORDER = 3;
+    private IWXAPI mWXapi;
 
     @Bind(R.id.customer_reward_amount) TextView mCustomerAmount;
     @Bind(R.id.coupon_commission_amount) TextView mCouponAmount;
@@ -75,7 +89,13 @@ public class MyAccountActivity extends BaseActivity {
 
     @OnClick(R.id.customer_consume)
     public void customerRewardConsume(){
-        showConfirmDialog();
+        if(SharedPreferenceHelper.getBindSuccess()){
+            //已绑定微信 去提现
+
+        }else{
+            //未绑定微信 去绑定
+            showConfirmDialog();
+        }
     }
 
     @OnClick(R.id.coupon_consume)
@@ -97,8 +117,10 @@ public class MyAccountActivity extends BaseActivity {
         new ConfirmDialog(this, getString(R.string.consume_tip)) {
             @Override
             public void onConfirmClick() {
-
+               //绑定微信
+                wxLogin();
             }
+
         }.show();
     }
 
@@ -127,4 +149,20 @@ public class MyAccountActivity extends BaseActivity {
         intent.putExtra(ConsumeDetailActivity.EXTRA_CONSUME_TYPE, type);
         startActivity(intent);
     }
+
+    public void wxLogin(){
+        Log.i("TAGG",">>>>wxLogin()");
+        mWXapi = WXAPIFactory.createWXAPI(MyAccountActivity.this, ShareConstant.WX_APP_ID,true);
+        if(!mWXapi.isWXAppInstalled()){
+            Log.i("TAGG","weixin no install");
+            return;
+        }
+        WXEntryActivity.mHaveCode =false;
+        mWXapi.registerApp(ShareConstant.WX_APP_ID);
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_skd_demo";
+        mWXapi.sendReq(req);
+    }
+
 }

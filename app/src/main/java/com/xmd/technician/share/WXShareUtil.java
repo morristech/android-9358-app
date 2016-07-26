@@ -3,11 +3,11 @@ package com.xmd.technician.share;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.tencent.mm.sdk.openapi.WXMediaMessage;
-import com.tencent.mm.sdk.openapi.WXWebpageObject;
 import com.xmd.technician.Constant;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.Utils;
@@ -47,6 +47,7 @@ public class WXShareUtil extends BaseShareUtil {
         explainParams(params);
 
         WXWebpageObject webpageObject = new WXWebpageObject();
+
         webpageObject.webpageUrl = mShareUrl;
 
         WXMediaMessage wxMediaMessage = new WXMediaMessage(webpageObject);

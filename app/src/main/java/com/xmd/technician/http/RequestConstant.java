@@ -149,6 +149,8 @@ public class RequestConstant {
     public static final String KEY_UPDATE_VERSION = "version";
     public static final String KEY_UPDATE_USER_ID = "userId";
 
+    public static final String KEY_BIND_WX_SUCCESS = "bindSuccess";
+
 
     /*********************************************************************************************/
     /*                                        configs                                            */

@@ -165,4 +165,10 @@ public class SharedPreferenceHelper {
     public static String getUpdateServer(){
         return mSettingPreference.getString(KEY_UPDATE_SERVER,AppConfig.sDefUpdateServer);
     }
+    public static void setBindSuccess(Boolean successed){
+       mSettingPreference.edit().putBoolean(RequestConstant.KEY_BIND_WX_SUCCESS,successed).apply();
+    }
+    public static boolean getBindSuccess(){
+        return  mSettingPreference.getBoolean(RequestConstant.KEY_BIND_WX_SUCCESS,false);
+    }
 }
