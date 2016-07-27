@@ -70,8 +70,8 @@ public class WXShareUtil extends BaseShareUtil {
     }
     public void loginWX(){
         SendAuth.Req req = new SendAuth.Req();
-            req.scope = "snsapi_base";
-            req.state = "wechat_sdk_demo";
+            req.scope = "snsapi_userinfo";
+            req.state = "wechat_sdk_demo_test";
             mWxApi.sendReq(req);
     }
 
