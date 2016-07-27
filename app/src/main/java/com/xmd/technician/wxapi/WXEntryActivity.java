@@ -25,6 +25,7 @@ import com.xmd.technician.window.BaseActivity;
 import org.apache.http.params.HttpParams;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -122,23 +123,6 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 //                "&code="+code+"&grant_type=authorization_code";
           String urlStr= "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+ShareConstant.WX_APP_ID+"&secret="+ShareConstant.WX_APP_SECRET+
                   "&code="+code+"&grant_type=authorization_code";
-//        OkHttpClient mOkHttpClient = new OkHttpClient();
-//        final Request request = new Request.Builder().url(urlStr).build();
-//        okhttp3.Call call  = mOkHttpClient.newCall(request);
-//        call.enqueue(new Callback() {
-//            @Override
-//            public void onResponse(okhttp3.Call call, Response response) throws IOException {
-//                Log.i("JSON","json==>>>"+response.body().string());
-//                s = response.body().string();
-//            }
-//            @Override
-//            public void onFailure(okhttp3.Call call, IOException e) {
-//                s = "失败了...";
-//            }
-//
-//        });
-
-
 
         OkHttpClient mOkHttpClient = new OkHttpClient();
         final Request request = new Request.Builder().url(urlStr).build();
@@ -147,14 +131,17 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 s = "失败了...";
+                call.cancel();
             }
 
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 s ="成功了"+ response.body().string();
             }
+
         });
-        mShareResult2.setText("》》》"+s);
+        mShareResult2.setText("》》》"+urlStr);
+
 
 
     }
