@@ -165,7 +165,7 @@
 
     <dimen name="coupon_margin_17">17dp</dimen>
     <dimen name="coupon_margin_20">20dp</dimen>
-    <dimen name="code_width">125dp</dimen>
+    <dimen name="code_width">135dp</dimen>
     <dimen name="coupon_amount_margin">8dp</dimen>
     <dimen name="share_btn_width">60dp</dimen>
 

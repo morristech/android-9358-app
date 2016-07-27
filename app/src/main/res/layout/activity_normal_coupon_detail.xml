@@ -4,14 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar"></include>
-
-    <ScrollView
+    <include layout="@layout/toolbar"/>
+     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:scrollbars="none"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_5"
-       >
+        >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -205,28 +206,22 @@
                         android:textSize="@dimen/fontTitle"
                         android:textColor="@color/colorHead"
                         />
-                    <!--  <TextView
-                     android:id="@+id/tv_service_item"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_below="@+id/limit_project"
-                     android:text="balabalbla"
-                     android:layout_alignLeft="@+id/limit_project"
-                     />-->
-                    <android.support.v7.widget.RecyclerView
+
+                    <com.xmd.technician.widget.FlowLayout
                         android:id="@+id/limit_project_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_25"
-                        android:paddingRight="@dimen/coupon_margin_20"
+                        android:layout_marginRight="@dimen/coupon_margin_20"
                         android:layout_below="@id/limit_project"
                         />
                 </RelativeLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="@dimen/margin_25"
-                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginTop="@dimen/padding_5"
                     android:background="@color/colorLineDivide"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -276,6 +271,7 @@
                         android:textSize="@dimen/fontTitle"
                         android:textColor="@color/colorHead"
                         />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -287,8 +283,11 @@
                             android:layout_height="wrap_content"
                             />
                     </LinearLayout>
+
                 </RelativeLayout>
+
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+ </ScrollView>
+
 </LinearLayout>

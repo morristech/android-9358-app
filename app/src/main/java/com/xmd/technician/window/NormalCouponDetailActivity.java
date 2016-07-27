@@ -3,18 +3,16 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.xmd.technician.Adapter.LimitProjectAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -29,6 +27,7 @@ import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,20 +47,14 @@ public class NormalCouponDetailActivity extends BaseActivity {
     @Bind(R.id.tv_share_text) TextView mTvShareText;
     @Bind(R.id.tv_coupon_duration) TextView mTvCouponDuration;
     @Bind(R.id.tv_commission) TextView mTvCommission;
-  //  @Bind(R.id.tv_service_item) TextView mTvServiceItem;
     @Bind(R.id.iv_share_qr_code) ImageView mIvShareQrCode;
     @Bind(R.id.wv_act_content) WebView mWvActContent;
     @Bind(R.id.btn_share) Button mShareBtn;
-    @Bind(R.id.limit_project_list) RecyclerView limitProjectRecycler;
-
     private Subscription mGetCouponInfoSubscription;
     private String mActId;
     private CouponInfoResult mCouponInfoResult;
-    private LimitProjectAdapter adapter;
-
-
-
-
+    private FlowLayout mFlowLayout;
+    private ScrollView mScrollView;
 
     private List<String> limitList = new ArrayList<>();
 
@@ -69,6 +62,10 @@ public class NormalCouponDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_coupon_detail);
+        mFlowLayout = (FlowLayout) findViewById(R.id.limit_project_list);
+        mScrollView = (ScrollView) findViewById(R.id.scroll_view);
+        mScrollView.setFillViewport(true);
+
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -94,12 +91,8 @@ public class NormalCouponDetailActivity extends BaseActivity {
         setTitle(ResourceUtils.getString(R.string.normal_coupon_detail_activity_title));
         setBackVisible(true);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_INFO, mActId);
-
-        final FullyGridLayoutManager manager = new FullyGridLayoutManager(NormalCouponDetailActivity.this,3);
-        manager.setOrientation(GridLayoutManager.VERTICAL);
-        limitProjectRecycler.setLayoutManager(manager);
-        limitProjectRecycler.setItemAnimator(new DefaultItemAnimator());
-        limitProjectRecycler.setHasFixedSize(true);
+//        final FullyGridLayoutManager manager = new FullyGridLayoutManager(NormalCouponDetailActivity.this,3);
+//        manager.setOrientation(GridLayoutManager.VERTICAL);
 
     }
 
@@ -127,11 +120,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
         if(limitList.size()==0){
             limitList.add("使用不限");
         }
-        adapter = new LimitProjectAdapter(NormalCouponDetailActivity.this,limitList);
-        limitProjectRecycler.setAdapter(adapter);
-
-
-
+        initChildViews();
         if(Utils.isEmpty(couponInfo.useTimePeriod)) {
             couponInfo.useTimePeriod="使用不限";
         }
@@ -181,4 +170,21 @@ public class NormalCouponDetailActivity extends BaseActivity {
             });
         });
     }
-}
+    private void initChildViews(){
+        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.leftMargin = 5;
+        lp.rightMargin = 5;
+        lp.topMargin = 10;
+        lp.bottomMargin =10;
+
+        for(int i = 0; i < limitList.size(); i ++){
+            TextView view = new TextView(this);
+            view.setPadding(15,5,15,5);
+            view.setText(limitList.get(i));
+            view.setTextColor(ResourceUtils.getColor(R.color.alert_text_color));
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.limit_project_item_bg));
+            mFlowLayout.addView(view,lp);
+        }
+    }
+ }
