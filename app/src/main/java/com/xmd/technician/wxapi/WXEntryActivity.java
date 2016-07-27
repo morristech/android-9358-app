@@ -62,8 +62,13 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     @Override
     public void onReq(BaseReq baseReq) {
-        Log.d("TAGG",baseReq.toString());
-        finish();
+
+        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 1200);
     }
 
     private void getWXCode(BaseResp resp){
@@ -101,30 +106,46 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
        // mShareResult.setText(ResourceUtils.getString(result));
         mShareResult.setText(code+">>>>"+s);
-        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        }, 1200);
+//        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+//            @Override
+//            public void run() {
+//                finish();
+//            }
+//        }, 1200);
     }
     private void getOpenID(String code){
-        String urlStr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+ShareConstant.WX_APP_ID+"&secret="+ShareConstant.WX_APP_SECRET+
-                "&code="+code+"&grant_type=authorization_code";
+//        String urlStr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+ShareConstant.WX_APP_ID+"&secret="+ShareConstant.WX_APP_SECRET+
+//                "&code="+code+"&grant_type=authorization_code";
+          String urlStr= "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+ShareConstant.WX_APP_ID+"&secret="+ShareConstant.WX_APP_SECRET+
+                  "&code="+code+"&grant_type=authorization_code";
+//        OkHttpClient mOkHttpClient = new OkHttpClient();
+//        final Request request = new Request.Builder().url(urlStr).build();
+//        okhttp3.Call call  = mOkHttpClient.newCall(request);
+//        call.enqueue(new Callback() {
+//            @Override
+//            public void onResponse(okhttp3.Call call, Response response) throws IOException {
+//                Log.i("JSON","json==>>>"+response.body().string());
+//                s = response.body().string();
+//            }
+//            @Override
+//            public void onFailure(okhttp3.Call call, IOException e) {
+//                s = "失败了...";
+//            }
+//
+//        });
         OkHttpClient mOkHttpClient = new OkHttpClient();
         final Request request = new Request.Builder().url(urlStr).build();
-        okhttp3.Call call  = mOkHttpClient.newCall(request);
+        okhttp3.Call call = mOkHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onResponse(okhttp3.Call call, Response response) throws IOException {
-                Log.i("JSON","json==>>>"+response.body().string());
-                s = response.body().string();
-            }
-            @Override
             public void onFailure(okhttp3.Call call, IOException e) {
-
+                s = "失败了...";
             }
 
+            @Override
+            public void onResponse(okhttp3.Call call, Response response) throws IOException {
+                s ="成功了"+ response.body().string();
+            }
         });
 
 
