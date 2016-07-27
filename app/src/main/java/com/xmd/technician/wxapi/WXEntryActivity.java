@@ -109,7 +109,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         }
 
        // mShareResult.setText(ResourceUtils.getString(result));
-        mShareResult.setText(code+">>>>"+result+">>>>"+s);
+        mShareResult.setText(code+">>>>"+ResourceUtils.getString(result)+">>>>"+s);
 //        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
 //            @Override
 //            public void run() {
