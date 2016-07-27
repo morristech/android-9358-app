@@ -40,6 +40,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     @Bind(R.id.wx_share_result) TextView mShareResult;
     private IWXAPI api;
     public static boolean mHaveCode = true;
+    private String s;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,15 +66,6 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         finish();
     }
 
-    //    @Override
-//    public void onResp(BaseResp baseResp) {
-//        Log.i("TAGG",baseResp.toString());
-//        String result = "";
-//
-//        if(baseResp!=null && !mHaveCode && ((SendAuth.Resp) baseResp).token != null){
-//
-//        }
-//    }
     private void getWXCode(BaseResp resp){
         if(resp !=null && resp.getType()== ConstantsAPI.COMMAND_SENDAUTH){
 
@@ -92,7 +84,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         switch (baseResp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 result = R.string.wx_errcode_success;
-             //   AppConfig.reportCouponShareEvent();
+           //    AppConfig.reportCouponShareEvent();
                getOpenID(code);
                 Log.i("TAGG","baleable>>>");
                 break;
@@ -107,13 +99,14 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                 break;
         }
 
-        mShareResult.setText(ResourceUtils.getString(result));
+       // mShareResult.setText(ResourceUtils.getString(result));
+        mShareResult.setText(code+">>>>"+s);
         ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
             @Override
             public void run() {
                 finish();
             }
-        }, 300);
+        }, 1200);
     }
     private void getOpenID(String code){
         String urlStr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+ShareConstant.WX_APP_ID+"&secret="+ShareConstant.WX_APP_SECRET+
@@ -125,6 +118,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 Log.i("JSON","json==>>>"+response.body().string());
+                s = response.body().string();
             }
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
