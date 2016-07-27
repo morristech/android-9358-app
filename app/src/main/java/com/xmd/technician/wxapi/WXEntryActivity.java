@@ -22,6 +22,8 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.share.ShareConstant;
 import com.xmd.technician.window.BaseActivity;
 
+import org.apache.http.params.HttpParams;
+
 import java.io.IOException;
 
 import butterknife.Bind;
@@ -38,9 +40,11 @@ import retrofit2.Call;
 public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler {
 
     @Bind(R.id.wx_share_result) TextView mShareResult;
+    @Bind(R.id.wx_share_result2) TextView mShareResult2;
     private IWXAPI api;
     public static boolean mHaveCode = true;
     private String s;
+    private String urlStr;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +109,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         }
 
        // mShareResult.setText(ResourceUtils.getString(result));
-        mShareResult.setText(code+">>>>"+s);
+        mShareResult.setText(code+">>>>"+result+">>>>"+s);
 //        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
 //            @Override
 //            public void run() {
@@ -133,6 +137,9 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 //            }
 //
 //        });
+
+
+
         OkHttpClient mOkHttpClient = new OkHttpClient();
         final Request request = new Request.Builder().url(urlStr).build();
         okhttp3.Call call = mOkHttpClient.newCall(request);
@@ -147,7 +154,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                 s ="成功了"+ response.body().string();
             }
         });
-
+        mShareResult2.setText("》》》"+s);
 
 
     }
