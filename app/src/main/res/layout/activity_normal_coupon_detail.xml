@@ -69,6 +69,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/alert_text_color"
                     android:textSize="@dimen/fontTitle"
+                    android:lineSpacingExtra="@dimen/margin_10"
+
                     />
                 <Button
                     android:id="@+id/btn_share"
@@ -131,7 +133,7 @@
                     android:layout_height="@dimen/coupon_share_code_height"
                     android:background="@drawable/qr_code_bg"
                     android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/coupon_margin_17"
+                    android:layout_marginTop="@dimen/margin_15"
                     android:layout_marginBottom="@dimen/coupon_margin_17"
                     >
                     <RelativeLayout
@@ -157,7 +159,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@+id/money_sign"
-                            android:layout_marginLeft="@dimen/inter_space"
                             android:textColor="@color/colorHead"
                             android:textSize="@dimen/font_biggest"
                             />
@@ -193,7 +194,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/coupon_margin_17"
+                    android:layout_marginTop="@dimen/margin_15"
                     >
 
                     <TextView
@@ -213,6 +214,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_25"
                         android:layout_marginRight="@dimen/coupon_margin_20"
+                        android:layout_marginTop="@dimen/padding_5"
+                        android:layout_marginBottom="@dimen/padding_5"
                         android:layout_below="@id/limit_project"
                         />
                 </RelativeLayout>

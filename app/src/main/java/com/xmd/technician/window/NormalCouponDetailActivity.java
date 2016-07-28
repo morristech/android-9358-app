@@ -156,7 +156,6 @@ public class NormalCouponDetailActivity extends BaseActivity {
             if (Utils.isEmpty(imgUrl)) {
                 imgUrl = UserProfileProvider.getInstance().getCurrentUserInfo().getAvatar();
             }
-
             final Bitmap thumbnail = ImageLoader.readBitmapFromImgUrl(imgUrl);
             ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> {
                 Map<String, Object> params = new HashMap<>();
@@ -173,14 +172,14 @@ public class NormalCouponDetailActivity extends BaseActivity {
     private void initChildViews(){
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.leftMargin = 5;
-        lp.rightMargin = 5;
+        lp.leftMargin = 10;
+        lp.rightMargin = 10;
         lp.topMargin = 10;
         lp.bottomMargin =10;
 
         for(int i = 0; i < limitList.size(); i ++){
             TextView view = new TextView(this);
-            view.setPadding(15,5,15,5);
+            view.setPadding(30,5,30,5);
             view.setText(limitList.get(i));
             view.setTextColor(ResourceUtils.getColor(R.color.alert_text_color));
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.limit_project_item_bg));
