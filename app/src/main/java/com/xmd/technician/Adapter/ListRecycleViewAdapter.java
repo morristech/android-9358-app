@@ -238,9 +238,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             CouponListItemViewHolder couponListItemViewHolder = (CouponListItemViewHolder) holder;
             couponListItemViewHolder.mTvCouponTitle.setText("money".equals(couponInfo.useType) ? TextUtils.concat(String.valueOf(couponInfo.actValue),"元",couponInfo.useTypeName) : couponInfo.actTitle);
             couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
-            couponListItemViewHolder.mCouponPeriod.setText(couponInfo.couponPeriod);
-            if (couponInfo.sysCommission > 0) {
-                String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), couponInfo.sysCommission);
+            couponListItemViewHolder.mCouponPeriod.setText("有效时间："+couponInfo.couponPeriod);
+            if (couponInfo.techCommission > 0||couponInfo.techBaseCommission>0) {
+                String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), String.valueOf(couponInfo.techCommission>couponInfo.techBaseCommission?couponInfo.techCommission:couponInfo.techBaseCommission));
                 SpannableString spannableString = new SpannableString(text);
                 spannableString.setSpan(new TextAppearanceSpan(mContext,R.style.text_bold),3,text.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 couponListItemViewHolder.mTvCouponReward.setText(spannableString);
@@ -248,7 +248,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 couponListItemViewHolder.mTvCouponReward.setVisibility(View.GONE);
             }
             if(Utils.isNotEmpty(couponInfo.consumeMoney)){
-                couponListItemViewHolder.mCouponAmount.setText(couponInfo.consumeMoney);
+                couponListItemViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
             }
             if(Utils.isNotEmpty(couponInfo.couponTypeName)){
                 couponListItemViewHolder.mCouponType.setVisibility(View.VISIBLE);
