@@ -1,12 +1,13 @@
 package com.xmd.technician.wxapi;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 
 
+import com.google.gson.Gson;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -16,24 +17,30 @@ import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.WXShareResult;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.share.ShareConstant;
 import com.xmd.technician.window.BaseActivity;
 
-import org.apache.http.params.HttpParams;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import retrofit2.Call;
+
 
 /**
  * Created by sdcm on 15-12-11.
@@ -44,8 +51,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     @Bind(R.id.wx_share_result2) TextView mShareResult2;
     private IWXAPI api;
     public static boolean mHaveCode = true;
-    private String s;
-    private String urlStr;
+    private boolean bindSuccess;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +66,6 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
         setIntent(intent);
         api.handleIntent(intent, this);
     }
@@ -73,30 +78,20 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
             public void run() {
                 finish();
             }
-        }, 1200);
+        }, 800);
     }
-
-    private void getWXCode(BaseResp resp){
-        if(resp !=null && resp.getType()== ConstantsAPI.COMMAND_SENDAUTH){
-
-
-        }
-
-    }
-
-
     @Override
     public void onResp(BaseResp baseResp) {
 
         int result = 0;
         SendAuth.Resp re = (SendAuth.Resp) baseResp;
         String code = re.code;
+      //  doGetWXCode(code);
         switch (baseResp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 result = R.string.wx_errcode_success;
-           //    AppConfig.reportCouponShareEvent();
-               getOpenID(code);
-                Log.i("TAGG","baleable>>>");
+              AppConfig.reportCouponShareEvent();
+              //   getOpenID(code);
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 result = R.string.wx_errcode_cancel;
@@ -108,42 +103,64 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                 result = R.string.wx_errcode_unknown;
                 break;
         }
-
-       // mShareResult.setText(ResourceUtils.getString(result));
-        mShareResult.setText(code+">>>>"+ResourceUtils.getString(result)+">>>>"+s);
-//        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-//            @Override
-//            public void run() {
-//                finish();
-//            }
-//        }, 1200);
-    }
-    private void getOpenID(String code){
-//        String urlStr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+ShareConstant.WX_APP_ID+"&secret="+ShareConstant.WX_APP_SECRET+
-//                "&code="+code+"&grant_type=authorization_code";
-          String urlStr= "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+ShareConstant.WX_APP_ID+"&secret="+ShareConstant.WX_APP_SECRET+
-                  "&code="+code+"&grant_type=authorization_code";
-
-        OkHttpClient mOkHttpClient = new OkHttpClient();
-        final Request request = new Request.Builder().url(urlStr).build();
-        okhttp3.Call call = mOkHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                s = "失败了...";
-                call.cancel();
-            }
-
-            @Override
-            public void onResponse(okhttp3.Call call, Response response) throws IOException {
-                s ="成功了"+ response.body().string();
-            }
-
-        });
-        mShareResult2.setText("》》》"+urlStr);
-
+                    ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 400);
 
 
     }
+//    private void getOpenID(String code) {
+//          String urlStr= "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+ShareConstant.WX_APP_ID+"&secret="+ShareConstant.WX_APP_SECRET+
+//                  "&code="+code+"&grant_type=authorization_code";
+//
+//        OkHttpClient client = new OkHttpClient();
+//            Request request = new Request.Builder()
+//                    .url(urlStr)
+//                    .build();
+//            client.newCall(request).enqueue(new Callback() {
+//                @Override
+//                public void onFailure(Call call, IOException e) {
+//                        bindSuccess= false;
+//                }
+//
+//                @Override
+//                public void onResponse(Call call, Response response) throws IOException {
+//                    Gson gson = new Gson();
+//                    WXShareResult result = gson.fromJson(response.body().string(),WXShareResult.class);
+//                    if(!TextUtils.isEmpty(result.openid)){
+//                     //   SharedPreferenceHelper.setBindSuccess(true);
+//                        SharedPreferenceHelper.setUserWXOpenId(result.openid);
+//                        SharedPreferenceHelper.setUserWXUnionid(result.unionid);
+//                        bindSuccess = true;
+//                    }else{
+//                        makeShortToast(ResourceUtils.getString(R.string.wx_bind_failed_alert));
+//                    }
+//
+//                }
+//
+//            });
+//        if(bindSuccess){
+//            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+//                @Override
+//                public void run() {
+//                    finish();
+//                }
+//            }, 400);
+//        }
+//        }
+//    private void doGetWXCode(String urlStr){
+//        Map<String, String> params = new HashMap<>();
+//    //    params.put(RequestConstant.KEY_USER_WX_CODE,code);
+//        params.put(RequestConstant.KEY_USER_WX_PAGE_URL,urlStr);
+//        params.put(RequestConstant.KEY_USER_WX_SCOPE, "snsapi_base");
+//        params.put(RequestConstant.KEY_USER_WX_STATE, "");
+//        params.put(RequestConstant.KEY_USER_WX_WXMP, "9358_fw");
+//        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_BIND_WX, params);
+//    }
+
+
 
 }
