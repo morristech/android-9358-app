@@ -2,13 +2,8 @@ package com.xmd.technician.wxapi;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.widget.TextView;
 
-
-import com.google.gson.Gson;
-import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
@@ -17,29 +12,12 @@ import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.bean.WXShareResult;
-import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.share.ShareConstant;
 import com.xmd.technician.window.BaseActivity;
 
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 
 /**
