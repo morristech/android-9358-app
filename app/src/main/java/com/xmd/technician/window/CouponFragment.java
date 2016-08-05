@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CouponInfo;
-import com.xmd.technician.bean.PaidCouponUserDetail;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CouponListResult;
@@ -20,8 +19,6 @@ import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-
 import rx.Subscription;
 
 /**

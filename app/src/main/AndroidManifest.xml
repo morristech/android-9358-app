@@ -169,6 +169,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
+            android:launchMode="singleTask"
             android:exported="true"
             android:label="@string/wx_entry_activity_title"
             android:screenOrientation="portrait" />
@@ -189,6 +190,9 @@
             android:launchMode="singleTask"/>
 
         <activity android:name=".window.ConfigurationMonitorActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".window.AvailableCouponListActivity"
             android:screenOrientation="portrait"
             />
     </application>

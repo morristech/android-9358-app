@@ -97,8 +97,9 @@ public class MsgDef {
     public static final int MSG_DEF_GET_TECH_INFO_DETAIL = 0x0044;
     public static final int MSG_DEF_GET_MANAGER_INFO_DETAIL = 0x0045;
     public static final int MSG_DEF_DELETE_CONTACT = 0x0046;
-
-
+    public static final int MSG_DEF_DO_DRAW_MONEY = 0x0047;
+    public static final int MSG_DEF_BIND_WX = 0x0048;
+    public static final int MSG_DEF_IS_BIND_WX = 0x0049;
 
     /**
      * ChatController, start to chat with someone

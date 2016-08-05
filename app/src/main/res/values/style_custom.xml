@@ -219,7 +219,6 @@
         <item name="android:textSize">@dimen/fontBody</item>
     </style>
     <style name="text_bold">
-        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/fontHead</item>
     </style>
     <style name="text_normal">
@@ -231,9 +230,33 @@
     </style>
     <style name="text_marked">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/fontTitle</item>
+        <item name="android:textSize">@dimen/fontSize</item>
         <item name="android:textColor">@color/colorMainBtn</item>
         <item name="android:gravity">center</item>
+    </style>
+    <style name="comment_message_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/comment_message_height</item>
+        <item name="android:paddingRight">@dimen/padding_12</item>
+        <item name="android:paddingLeft">@dimen/padding_12</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/colorHead</item>
+        <item name="android:background">@color/color_white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/fontBody</item>
+    </style>
+    <style name="popup_window_style">
+        <item name="android:windowEnterAnimation">@anim/popup_anim_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_anim_out</item>
+    </style>
+    <style name="search_contact_popup_text_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/comment_message_height</item>
+        <item name="android:textColor">@color/colorHead</item>
+        <item name="android:background">@color/color_white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/fontBody</item>
     </style>
 
 </resources>

@@ -70,7 +70,10 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_APP_UPDATE_CONFIG,
                 MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL,
                 MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL,
-                MsgDef.MSG_DEF_DELETE_CONTACT
+                MsgDef.MSG_DEF_DELETE_CONTACT,
+                MsgDef.MSG_DEF_DO_DRAW_MONEY,
+//                MsgDef.MSG_DEF_BIND_WX,
+//                MsgDef.MSG_DEF_IS_BIND_WX
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

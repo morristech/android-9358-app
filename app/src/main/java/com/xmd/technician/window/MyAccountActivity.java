@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.http.RequestConstant;
@@ -26,6 +27,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,6 +51,7 @@ public class MyAccountActivity extends BaseActivity {
     @Bind(R.id.coupon_consume) Button mCouponConsumeBtn;
 
     private Subscription mInitSubscription;
+    private Subscription mDrawMoneySubscrition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,38 +94,32 @@ public class MyAccountActivity extends BaseActivity {
 
     @OnClick(R.id.customer_consume)
     public void customerRewardConsume(){
-        if(SharedPreferenceHelper.getBindSuccess()){
-            //已绑定微信 去提现
-
-        }else{
-            //未绑定微信 去绑定
-            showConfirmDialog();
-        }
+        showConfirmDialog();
     }
-
     @OnClick(R.id.coupon_consume)
     public void couponCommissionConsume(){
         showConfirmDialog();
+
     }
 
     @OnClick(R.id.clock_consume)
-    public void clockCommissionConsume(){
+    public void clockCommissionConsume()
+    {
         showConfirmDialog();
     }
 
     @OnClick(R.id.order_consume)
     public void orderCommissionConsume(){
         showConfirmDialog();
+
     }
 
     private void showConfirmDialog(){
         new ConfirmDialog(this, getString(R.string.consume_tip)) {
             @Override
             public void onConfirmClick() {
-               //绑定微信
-                wxLogin();
-            }
 
+            }
         }.show();
     }
 
@@ -153,6 +151,22 @@ public class MyAccountActivity extends BaseActivity {
 
     public void wxLogin(){
         WXShareUtil.getInstance().loginWX();
+    }
+
+    public void DrawCash(){
+        if(SharedPreferenceHelper.getBindSuccess()){
+            //已绑定微信 去提现
+          //      doDrawMoney();
+        }else{
+            //未绑定微信 去绑定
+         //   showConfirmDialog();
+        }
+
+    }
+    private void doDrawMoney(){
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_TRADE_AMOUNT, "1");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_DRAW_MONEY, params);
     }
 
 }

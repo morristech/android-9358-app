@@ -31,32 +31,33 @@
                     android:background="@color/color_white"
                     android:paddingLeft="@dimen/fontTitle"
                     android:paddingRight="20dp"
+                    android:gravity="center"
                     android:paddingTop="17dp"
                     >
                     <View
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="1dp"
+                        android:layout_height="0.5dp"
                         android:layout_gravity="center"
-                        android:background="@color/colorLineDivide"
+                        android:background="@color/colorRemarkText"
                         />
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_height="wrap_content"
                         android:text="@string/share_with_red_packet"
                         android:textColor="@color/colorMainBtn"
-                        android:textSize="@dimen/fontHead"
-                        android:layout_gravity="center"
+                        android:textSize="@dimen/fontSize"
+                        android:layout_gravity="center_horizontal"
                         android:gravity="center"
-
                         />
                     <View
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="1dp"
+                        android:layout_height="0.5dp"
                         android:layout_gravity="center"
-                        android:background="@color/colorLineDivide"
+                        android:background="@color/colorRemarkText"
                         />
 
                 </LinearLayout>
@@ -68,7 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/alert_text_color"
-                    android:textSize="@dimen/fontTitle"
+                    android:textSize="@dimen/fontTitle_small"
                     android:lineSpacingExtra="@dimen/margin_10"
 
                     />
@@ -77,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/order_detail_section_btn_height"
                     android:background="@drawable/rect_bg"
-                    android:layout_marginTop="@dimen/coupon_margin_20"
+                    android:layout_marginTop="19dp"
                     android:layout_marginRight="@dimen/coupon_margin_20"
                     android:layout_marginLeft="@dimen/coupon_margin_20"
                     android:layout_marginBottom="@dimen/coupon_margin_17"
@@ -105,17 +106,18 @@
                     <View
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="1dp"
+                        android:layout_height="0.5dp"
                         android:layout_gravity="center"
-                        android:background="@color/colorLineDivide"
+                        android:background="@color/colorRemarkText"
                         />
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/coupon_code"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
                         android:textColor="@color/colorMainBtn"
-                        android:textSize="@dimen/fontHead"
+                        android:textSize="@dimen/fontSize"
                         android:layout_gravity="center"
                         android:gravity="center"
 
@@ -123,9 +125,9 @@
                     <View
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="1dp"
+                        android:layout_height="0.5dp"
                         android:layout_gravity="center"
-                        android:background="@color/colorLineDivide"
+                        android:background="@color/colorRemarkText"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -194,7 +196,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_15"
+                    android:layout_marginTop="@dimen/coupon_margin_17"
                     >
 
                     <TextView
@@ -214,9 +216,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_25"
                         android:layout_marginRight="@dimen/coupon_margin_20"
-                        android:layout_marginTop="@dimen/padding_5"
-                        android:layout_marginBottom="@dimen/padding_5"
                         android:layout_below="@id/limit_project"
+
                         />
                 </RelativeLayout>
 
@@ -229,7 +230,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginTop="@dimen/coupon_margin_17"
                     >
                     <TextView
                         android:id="@+id/limit_time"
@@ -240,29 +241,31 @@
                         android:text="@string/user_time"
                         android:textSize="@dimen/fontTitle"
                         android:textColor="@color/colorHead"
+
                         />
                     <TextView
                         android:id="@+id/tv_coupon_duration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/limit_time"
-                        android:layout_marginLeft="@dimen/margin_25"
-                        android:paddingTop="@dimen/padding_5"
-                        android:paddingBottom="@dimen/padding_5"
+                        android:layout_marginLeft="27dp"
                         android:paddingRight="@dimen/coupon_margin_20"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="@dimen/coupon_margin_17"
+
+
                         />
                 </RelativeLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="@dimen/margin_25"
-                    android:layout_marginTop="@dimen/margin_5"
                     android:background="@color/colorLineDivide"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginTop="@dimen/coupon_margin_17"
                     >
                     <TextView
                         android:id="@+id/limit_rule"

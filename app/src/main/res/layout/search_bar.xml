@@ -3,28 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
-<!--    <EditText
-        android:id="@+id/search_word"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/search_view_height"
-        android:paddingLeft="@dimen/search_padding_left"
-        android:background="@android:drawable/editbox_background_normal"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:singleLine="true"
-        android:maxLength="50"
-        android:textColor="@color/colorBody"
-        android:textSize="@dimen/fontRemark"
-        android:textColorHint="@color/colorRemarkText"
-        android:hint="@string/search_hint"/>
-
-    <ImageButton
-        android:layout_width="@dimen/search_pic_height"
-        android:layout_height="@dimen/search_pic_height"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/search_margin"
-        android:background="@drawable/icon_sech" /> -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

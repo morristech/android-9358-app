@@ -140,5 +140,7 @@
     <color name="coupon_favorable_text_color">#ad7710</color>
     <color name="coupon_detail_text_color">#424242</color>
     <color name="coupon_code_text_color">#4c4c4c</color>
+    <color name="indicator_selected_color">#9e9e9e</color>
+    <color name="indicator_normal_color">#e0e0e0</color>
 
 </resources>

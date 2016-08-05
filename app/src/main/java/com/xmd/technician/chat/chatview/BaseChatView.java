@@ -1,35 +1,25 @@
 package com.xmd.technician.chat.chatview;
 
-import java.util.Date;
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessage.Direct;
-import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.chat.CommonUtils;
-import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.chat.UserUtils;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.window.BaseFragmentActivity;
 
-import android.app.Activity;
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewStub;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.Date;
 
 public abstract class BaseChatView extends LinearLayout {
 

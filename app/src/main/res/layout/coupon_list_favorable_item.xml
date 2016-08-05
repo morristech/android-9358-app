@@ -46,10 +46,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/padding_5"
+                android:layout_marginTop="@dimen/padding_10"
                 android:background="@drawable/favorable_coupon"
                 android:gravity="center"
-                android:layout_marginRight="@dimen/padding_10"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontBody"
                 />
@@ -125,8 +124,16 @@
                 />
         </RelativeLayout>
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/coupon_favorable_bottom_bg"></View>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/coupon_item_bottom_corner_bg"
+        android:background="@drawable/coupon_bottom_bg"
+        >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/coupon_item_bottom_corner"
+            android:background="@drawable/coupon_favorable_bottom_bg"></View>
+    </FrameLayout>
+
+
 </LinearLayout>

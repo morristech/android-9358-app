@@ -2,6 +2,7 @@ package com.xmd.technician.window;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,6 +11,8 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -36,6 +39,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     private int mCurrentTabIndex = 1;
 
     private Subscription mSysNoticeNotifySubscription;
+    private Subscription mGetUserIsBindWXSubscription;
 
     @Bind(R.id.main_unread_message) TextView mUnreadMsgLabel;
 
@@ -60,6 +64,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
         mSysNoticeNotifySubscription = RxBus.getInstance().toObservable(SystemNoticeResult.class).subscribe(
                 result -> updateUnreadMsgLabel());
+        mGetUserIsBindWXSubscription = RxBus.getInstance().toObservable(IsBindResult.class).subscribe(
+            result ->handlerIsBindResult(result)
+        );
         switchFragment(0);
 
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
@@ -67,6 +74,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE));
+//        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
+//                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_IS_BIND_WX));
     }
 
     @Override
@@ -85,7 +94,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mSysNoticeNotifySubscription);
+        RxBus.getInstance().unsubscribe(mSysNoticeNotifySubscription,mGetUserIsBindWXSubscription);
     }
 
     @OnClick(R.id.main_button_message)
@@ -194,5 +203,13 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         } else {
             mUnreadMsgLabel.setVisibility(View.INVISIBLE);
         }
+    }
+    public void handlerIsBindResult(IsBindResult result){
+        if("Y".equals(result.respData)){
+            SharedPreferenceHelper.setBindSuccess(true);
+        }else{
+            SharedPreferenceHelper.setBindSuccess(false);
+        }
+        Log.i("TAG","result>>>"+result.respData);
     }
 }

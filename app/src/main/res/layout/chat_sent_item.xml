@@ -69,9 +69,10 @@
             android:background="@drawable/sent_reward"
             android:gravity="center_vertical"
             android:minHeight="@dimen/avatar_head"
-            android:textColor="@color/colorHead"
+            android:textColor="@color/color_white"
             android:textSize="@dimen/fontBody"
             android:text="@string/request_user_reward"
+
             android:visibility="gone"/>
 
         <LinearLayout
@@ -96,28 +97,30 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/coupon_type_bg"
                     android:textColor="@color/rating_progress_color"
-                    android:textSize="@dimen/fontRemark" />
+                    android:textSize="@dimen/fontRemark"
+
+                    />
 
                 <TextView
                     android:id="@+id/coupon_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/search_margin"
-                    android:textColor="@color/colorHead"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/color_white"
                     android:textSize="@dimen/fontTitle"
                     android:text="@string/app_info_title"/>
             </LinearLayout>
-
             <TextView
-                android:id="@+id/coupon_period"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg"
-                android:gravity="right"
-                android:padding="@dimen/search_margin"
-                android:textColor="@color/colorRemark"
-                android:textSize="@dimen/fontRemark"
-                android:text="2106.3"/>
+            android:id="@+id/coupon_period"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right|bottom"
+            android:layout_gravity="right|bottom"
+            android:textColor="@color/colorRemark"
+            android:textSize="@dimen/fontRemark"
+            android:paddingTop="@dimen/margin_5"
+                android:layout_marginTop="@dimen/margin_right_10"
+            android:text="2106.3"/>
         </LinearLayout>
 
         <LinearLayout
@@ -136,7 +139,7 @@
                 android:padding="@dimen/personal_padding"
                 android:drawableLeft="@drawable/qdz"
                 android:drawablePadding="@dimen/search_margin"
-                android:textColor="@color/colorHead"
+                android:textColor="@color/color_white"
                 android:textSize="@dimen/fontTitle"
                 android:text="@string/app_info_title"/>
 
@@ -144,12 +147,14 @@
                 android:id="@+id/paid_coupon_period"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg"
-                android:gravity="right"
-                android:padding="@dimen/search_margin"
+                android:gravity="right|bottom"
+                android:layout_gravity="right|bottom"
                 android:textColor="@color/colorRemark"
                 android:textSize="@dimen/fontRemark"
+                android:paddingTop="@dimen/margin_5"
+                android:layout_marginTop="@dimen/margin_right_10"
                 android:text="2106.3"/>
+
         </LinearLayout>
 
         <LinearLayout

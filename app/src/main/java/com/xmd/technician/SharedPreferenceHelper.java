@@ -165,6 +165,18 @@ public class SharedPreferenceHelper {
     public static String getUpdateServer(){
         return mSettingPreference.getString(KEY_UPDATE_SERVER,AppConfig.sDefUpdateServer);
     }
+    public static void setUserWXUnionid(String unionId){
+        mSettingPreference.edit().putString(RequestConstant.KEY_USER_WX_UNION_ID,unionId).apply();
+    }
+    public static String  getUserWXUnionid(){
+        return mSettingPreference.getString(RequestConstant.KEY_USER_WX_UNION_ID,"");
+    }
+    public static void setUserWXOpenId(String openId){
+        mSettingPreference.edit().putString(RequestConstant.KEY_USER_WX_OPEN_ID,openId).apply();
+    }
+    public static String getUserWXOpenid(){
+        return mSettingPreference.getString(RequestConstant.KEY_USER_WX_OPEN_ID,"");
+    }
     public static void setBindSuccess(Boolean successed){
        mSettingPreference.edit().putBoolean(RequestConstant.KEY_BIND_WX_SUCCESS,successed).apply();
     }

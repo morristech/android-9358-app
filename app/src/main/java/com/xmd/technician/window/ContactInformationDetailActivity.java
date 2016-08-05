@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -262,7 +263,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void handlerCustomer(CustomerDetailResult customer) {
         chatEmId = customer.respData.techCustomer.emchatId;
         chatHeadUrl = customer.respData.techCustomer.avatarUrl;
-        chatName = customer.respData.techCustomer.userName;
+        if(Utils.isNotEmpty(customer.respData.techCustomer.userNoteName)){
+            chatName = customer.respData.techCustomer.userNoteName;
+        }else {
+            chatName = customer.respData.techCustomer.userName;
+        }
+
 
         if(customer==null){
           return;
@@ -297,8 +303,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
             }else {
                 mContactName.setText(ResourceUtils.getString(R.string.default_user_name));
             }
-            if (!TextUtils.isEmpty(customer.respData.techCustomer.userName)) {
+            if (!TextUtils.isEmpty(customer.respData.techCustomer.userName)&&Utils.isNotEmpty(customer.respData.techCustomer.userNoteName)
+                    &&!customer.respData.techCustomer.userName.equals(ResourceUtils.getString(R.string.default_user_name))
+                    ) {
                 mContactNickName.setText("昵称："+ customer.respData.techCustomer.userName);
+            }else{
+                mContactNickName.setVisibility(View.GONE);
             }
             if (!TextUtils.isEmpty(customer.respData.techCustomer.userLoginName)) {
                 mContactTelephone.setText("电话："+customer.respData.techCustomer.userLoginName);
@@ -385,20 +395,19 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
 
     private void handlerManager(ManagerDetailResult manager) {
-        chatName = manager.respData.emchatId;
+        chatName = "店长";
         chatHeadUrl = manager.respData.avatarUrl;
         chatEmId = manager.respData.emchatId;
-
-
-
         contactPhone = manager.respData.phoneNum;
         customerChatId = manager.respData.emchatId;
+        if(Utils.isNotEmpty(customerChatId)){
+            btnEmChat.setEnabled(true);
+        }
         if(!TextUtils.isEmpty(managerHeadUrl)){
             Glide.with(mContext).load(managerHeadUrl).into(mContactHead);
         }
         mContactName.setText(ResourceUtils.getString(R.string.contact_manager));
         mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + manager.respData.phoneNum);
-
         mContactOrderLayout.setVisibility(View.GONE);
         mContactNickName.setVisibility(View.GONE);
         mContactRemark.setVisibility(View.GONE);

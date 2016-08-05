@@ -3,6 +3,7 @@ package com.xmd.technician.http;
 import com.xmd.technician.bean.ClubContactResult;
 import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
+import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.http.gson.AccountMoneyResult;
@@ -218,8 +219,8 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_SORT_ALBUM)
     Call<AlbumResult> sortAlbum(@Field(RequestConstant.KEY_IDS) String ids,
-                                  @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                  @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+                                @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_UPDATE_WORKSTATUS)
@@ -254,10 +255,9 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_COUPON_LIST)
     Call<CouponListResult> getCouponList(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                      @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+                                         @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     /**
-     *
      * @param userToken
      * @param sessionType
      * @return
@@ -270,6 +270,7 @@ public interface SpaService {
 
     /**
      * 点钟券用户使用情况
+     *
      * @param userToken
      * @param sessionType
      * @return
@@ -277,12 +278,12 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_PAID_COUPON_USER_DETAIL)
     Call<PaidCouponUserDetailResult> getPaidCouponUserDetail(
-                                             @Field(RequestConstant.KEY_COUPON_STATUS) String couponStatus,
-                                             @Field(RequestConstant.KEY_ACT_ID) String actId,
-                                             @Field(RequestConstant.KEY_PAGE) String page,
-                                             @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
-                                             @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+            @Field(RequestConstant.KEY_COUPON_STATUS) String couponStatus,
+            @Field(RequestConstant.KEY_ACT_ID) String actId,
+            @Field(RequestConstant.KEY_PAGE) String page,
+            @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+            @Field(RequestConstant.KEY_TOKEN) String userToken,
+            @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_COUPON_SHARE_EVENT_COUNT)
@@ -324,27 +325,48 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CUSTOMER_LIST)
     Call<CustomerListResult> getCustomerList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                         @Field(RequestConstant.KEY_TOKEN) String userToken);
+                                             @Field(RequestConstant.KEY_TOKEN) String userToken);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CUSTOMER_INFO_DETAIL)
     Call<CustomerDetailResult> getCustomerInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                      @Field(RequestConstant.KEY_ID) String id,
                                                      @Field(RequestConstant.KEY_TOKEN) String userToken);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_TECH_INFO_DETAIL)
     Call<TechDetailResult> getTechInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                                 @Field(RequestConstant.KEY_ID) String id,
-                                                 @Field(RequestConstant.KEY_TOKEN) String userToken);
+                                             @Field(RequestConstant.KEY_ID) String id,
+                                             @Field(RequestConstant.KEY_TOKEN) String userToken);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_MANAGER_INFO_DETAIL)
     Call<ManagerDetailResult> getManagerInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                                    @Field(RequestConstant.KEY_ID) String id,
-                                                    @Field(RequestConstant.KEY_TOKEN) String userToken);
+                                                   @Field(RequestConstant.KEY_ID) String id,
+                                                   @Field(RequestConstant.KEY_TOKEN) String userToken);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_DELETE_CONTACT)
     Call<BaseResult> doDeleteContact(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                                   @Field(RequestConstant.KEY_ID) String id,
-                                                   @Field(RequestConstant.KEY_TOKEN) String userToken);
+                                     @Field(RequestConstant.KEY_ID) String id,
+                                     @Field(RequestConstant.KEY_TOKEN) String userToken);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_DO_DRAW_MONEY)
+    Call<BaseResult> doDrawMoney(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                 @Field(RequestConstant.KEY_TRADE_AMOUNT) String tradeAmount
+                                );
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_USER_WX_OPEN_ID)
+    Call<BaseResult> doBindWX(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                 @Field(RequestConstant.KEY_USER_WX_PAGE_URL) String pageUrl,
+                                 @Field(RequestConstant.KEY_USER_WX_SCOPE) String scope,
+                                 @Field(RequestConstant.KEY_USER_WX_STATE) String state,
+                                 @Field(RequestConstant.KEY_USER_WX_WXMP) String wxmp);
+            ;
 
 
     /**
@@ -358,21 +380,27 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_ADD_CUSTOMER)
     Call<BaseResult> addCustomer(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                         @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                         @Field(RequestConstant.KEY_PHONE_NUMBER)String phoneNum,
-                                         @Field(RequestConstant.KEY_REMARK)String remark,
-                                         @Field(RequestConstant.KEY_NOTE_NAME) String noteName);
+                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                 @Field(RequestConstant.KEY_PHONE_NUMBER) String phoneNum,
+                                 @Field(RequestConstant.KEY_REMARK) String remark,
+                                 @Field(RequestConstant.KEY_NOTE_NAME) String noteName);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_ADD_CUSTOMER)
     Call<BaseResult> editCustomer(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                 @Field(RequestConstant.KEY_ID) String custtomerId,
-                                 @Field(RequestConstant.KEY_PHONE_NUMBER)String phoneNum,
-                                 @Field(RequestConstant.KEY_REMARK)String remark,
-                                 @Field(RequestConstant.KEY_NOTE_NAME) String noteName);
+                                  @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                  @Field(RequestConstant.KEY_ID) String custtomerId,
+                                  @Field(RequestConstant.KEY_PHONE_NUMBER) String phoneNum,
+                                  @Field(RequestConstant.KEY_REMARK) String remark,
+                                  @Field(RequestConstant.KEY_NOTE_NAME) String noteName);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CLUB_LIST)
     Call<ClubContactResult> getClubList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                         @Field(RequestConstant.KEY_TOKEN) String userToken);
 
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_USER_IS_BIND_WX)
+    Call<IsBindResult> getIsBindWXResult(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                         @Field(RequestConstant.KEY_TOKEN) String userToken);
 }

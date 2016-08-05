@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/message_item_height"
-    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/color_white"
     >
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:textColor="@color/colorTitle"
-                    android:text="匿名用户"/>
+                    />
 
                 <TextView
                     android:id="@+id/content"
@@ -67,39 +68,37 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 />
-
-
             <TextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:text="ssss"
                 android:padding="@dimen/inter_space"
                 android:textColor="@color/colorRemark"
                 />
         </LinearLayout>
-
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/operation_conversion"
-        android:layout_width="84dp"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        >
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="84dp"
-            android:layout_height="match_parent"
-            android:text="删除"
-            android:gravity="center"
-            android:background="#FF0000"
 
-            />
-    </LinearLayout>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide"
-        android:layout_alignParentBottom="true"/>
+<View
+    android:layout_width="match_parent"
+    android:layout_height="0.5dp"
+    android:layout_marginTop="@dimen/margin_5"
+    android:background="@color/divider_thin_color"
+    />
+    <!--<LinearLayout-->
+        <!--android:id="@+id/operation_conversion"-->
+        <!--android:layout_width="84dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="horizontal"-->
+        <!--&gt;-->
+        <!--<Button-->
+            <!--android:id="@+id/btnDelete"-->
+            <!--android:layout_width="84dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="删除"-->
+            <!--android:gravity="center"-->
+            <!--android:background="#FF0000"-->
+            <!--/>-->
+    <!--</LinearLayout>-->
+
 </LinearLayout>

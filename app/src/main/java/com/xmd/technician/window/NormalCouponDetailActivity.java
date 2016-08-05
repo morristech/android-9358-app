@@ -91,9 +91,6 @@ public class NormalCouponDetailActivity extends BaseActivity {
         setTitle(ResourceUtils.getString(R.string.normal_coupon_detail_activity_title));
         setBackVisible(true);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_INFO, mActId);
-//        final FullyGridLayoutManager manager = new FullyGridLayoutManager(NormalCouponDetailActivity.this,3);
-//        manager.setOrientation(GridLayoutManager.VERTICAL);
-
     }
 
     private void handleCouponInfoResult(CouponInfoResult result) {
@@ -130,7 +127,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
         }
         String shareText = String.format(ResourceUtils.getString(R.string.normal_coupon_detail_activity_share_text), couponInfo.sysCommission);
         SpannableString spannableString = new SpannableString(shareText);
-        spannableString.setSpan(new TextAppearanceSpan(this,R.style.text_marked),30,shareText.lastIndexOf("元"),SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new TextAppearanceSpan(this,R.style.text_marked),16,shareText.lastIndexOf("元"),SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
         mTvShareText.setText(spannableString);
 
         Glide.with(this).load(generateQrCodeUrl()).into(mIvShareQrCode);
@@ -139,7 +136,10 @@ public class NormalCouponDetailActivity extends BaseActivity {
 
         mWvActContent.getSettings().setJavaScriptEnabled(false);
         mWvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);
-        mWvActContent.loadDataWithBaseURL(null, couponInfo.actContent, Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
+       // String ss = "<style type=\"text/css\">#coupon-explain{font-size:10px;color:#616161;padding-left:6px;}#coupon-explain>li{line-height:1;margin-bottom:8px;}#coupon-explain>li>span{font-size:15px;}#coupon-explain>li:last-child{margin-bottom:0;}</style><p><ul id=\"coupon-explain\"><li><span>使用时，请出示手机号码或者优惠码。</span></li><li><span>每张券仅限一人使用，仅能使用一张。</span></li><li><span>使用此券，不可享受本店其他优惠。</span></li><li><span>提供免费WiFi。</span></li><li><span>提供免费停车位。</span></li><li><span>欢迎提前预约。</span></li></ul></p>";
+        //couponInfo.actContent
+        //String mm = "<style type=\"text/css\">#coupon-explain{font-size:10px;color:#616161;padding-left:6px;}#coupon-explain>li{line-height:1;margin-bottom:8px;}#coupon-explain>li>span{font-size:15px;}#coupon-explain>li:last-child{margin-bottom:0;}</style><p><ul id=\"coupon-explain\"><li>使用时，请出示手机号码或者优惠码。</li><li>每张券仅限一人使用，仅能使用一张。</li><li>使用此券，不可享受本店其他优惠。</li><li>提供免费WiFi。</li><li>提供免费停车位。</li><li>欢迎提前预约。</li></ul></p>";
+        mWvActContent.loadDataWithBaseURL(null,couponInfo.actContent , Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
 
         mShareBtn.setEnabled(true);
     }
@@ -159,6 +159,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
             final Bitmap thumbnail = ImageLoader.readBitmapFromImgUrl(imgUrl);
             ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> {
                 Map<String, Object> params = new HashMap<>();
+
                 params.put(Constant.PARAM_SHARE_THUMBNAIL, thumbnail);
                 params.put(Constant.PARAM_SHARE_URL, mCouponInfoResult.respData.shareUrl);
                 params.put(Constant.PARAM_SHARE_TITLE, mCouponInfoResult.respData.clubName + "-" + mCouponInfoResult.respData.activities.actTitle);
@@ -174,12 +175,11 @@ public class NormalCouponDetailActivity extends BaseActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.leftMargin = 10;
         lp.rightMargin = 10;
-        lp.topMargin = 10;
-        lp.bottomMargin =10;
-
+        lp.topMargin = 36;
+        lp.bottomMargin =40;
         for(int i = 0; i < limitList.size(); i ++){
             TextView view = new TextView(this);
-            view.setPadding(30,5,30,5);
+            view.setPadding(36,5,36,5);
             view.setText(limitList.get(i));
             view.setTextColor(ResourceUtils.getColor(R.color.alert_text_color));
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.limit_project_item_bg));

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CustomerInfo;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.widget.CircleImageView;
 
@@ -88,8 +89,10 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
 
         if(TextUtils.isEmpty(mCustomer.userNoteName)){
             viewHolder.customerName.setText(mCustomer.userName);
-        }else{
+        }else  if(Utils.isNotEmpty(mCustomer.userNoteName)){
             viewHolder.customerName.setText(mCustomer.userNoteName);
+        }else{
+            viewHolder.customerName.setText(ResourceUtils.getString(R.string.default_user_name));
         }
         if(Utils.isNotEmpty(mCustomer.userId)){
             viewHolder.lineChat.setVisibility(View.VISIBLE);

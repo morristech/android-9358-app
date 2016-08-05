@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    >
+    <View android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLineDivide"
+        />
+    <TextView
+        android:id="@+id/text1"
+        android:text="很高兴能为您解决问题，客官给个好评哦，么么哒"
+        android:layout_marginTop="4dp"
+        style="@style/comment_message_style"
+        />
+    <View
+        style="@style/horizontal_divider_line"/>
+    <TextView
+        android:id="@+id/text2"
+        android:text="不好意西，现在暂时回答不了您的问题，稍后回复您"
+        style="@style/comment_message_style"
+        />
+    <View
+        style="@style/horizontal_divider_line"/>
+    <TextView
+        android:id="@+id/text3"
+        android:text="店里搞活动啦！送您个优惠券，记得过来啊！"
+        style="@style/comment_message_style"
+        />
+    <View
+        style="@style/horizontal_divider_line"/>
+    <TextView
+        android:id="@+id/text4"
+        android:text="好久不见了，有空过来玩玩啊！"
+        style="@style/comment_message_style"
+        />
+    <View
+        style="@style/horizontal_divider_line"/>
+    <TextView
+        android:id="@+id/text5"
+        android:text="约定了，记得准时来，不见不散"
+        style="@style/comment_message_style"
+        />
+    <View
+        style="@style/horizontal_divider_line"/>
+
+</LinearLayout>

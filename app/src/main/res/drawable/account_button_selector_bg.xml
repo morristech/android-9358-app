@@ -7,7 +7,7 @@
             <corners android:radius="@dimen/button_radius" />
             <stroke
                 android:width="@dimen/line_divide_height"
-                android:color="@color/colorBtnChecked"/>
+                android:color="@color/primary_button_color_pressed"/>
         </shape>
     </item>
 

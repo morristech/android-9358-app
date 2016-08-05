@@ -33,7 +33,6 @@ public class TechApplication extends Application{
         Logger.v("Process Name : " + processName);
         if (Utils.isNotEmpty(processName)) {
             if (processName.contains(":pushservice")) {
-                // for getui push service, do nothing;
                 Logger.v("getui process Start !");
             } else {
                 Logger.v("Technician initialize !");

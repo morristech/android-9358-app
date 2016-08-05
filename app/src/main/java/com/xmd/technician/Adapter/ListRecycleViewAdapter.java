@@ -32,6 +32,7 @@ import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -128,7 +129,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 }else{
                     return TYPE_COUPON_INFO_ITEM_FAVORUABLE;
                 }
-
             } else if (mData.get(position) instanceof PaidCouponUserDetail) {
                 return TYPE_PAID_COUPON_USER_DETAIL;
             } else if (mData.get(position) instanceof EMConversation) {
@@ -236,11 +236,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             final CouponInfo couponInfo = (CouponInfo) obj;
             CouponListItemViewHolder couponListItemViewHolder = (CouponListItemViewHolder) holder;
-            couponListItemViewHolder.mTvCouponTitle.setText("money".equals(couponInfo.useType) ? TextUtils.concat(String.valueOf(couponInfo.actValue),"元",couponInfo.useTypeName) : couponInfo.actTitle);
+            couponListItemViewHolder.mTvCouponTitle.setText(couponInfo.actTitle);
+            if(couponInfo.useTypeName.equals("点钟券")){
+                couponListItemViewHolder.mTvCouponTitle.setText("点钟券");
+                couponListItemViewHolder.mCouponType.setVisibility(View.GONE);
+            }else{
+                couponListItemViewHolder.mTvCouponTitle.setText(couponInfo.actTitle);
+                couponListItemViewHolder.mCouponType.setVisibility(View.VISIBLE);
+            }
             couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
             couponListItemViewHolder.mCouponPeriod.setText("有效时间："+couponInfo.couponPeriod);
             if (couponInfo.techCommission > 0||couponInfo.techBaseCommission>0) {
-                String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), String.valueOf(couponInfo.techCommission>couponInfo.techBaseCommission?couponInfo.techCommission:couponInfo.techBaseCommission));
+                String money = Utils.getFloat2Str(String.valueOf(couponInfo.techCommission>couponInfo.techBaseCommission?couponInfo.techCommission:couponInfo.techBaseCommission));
+                String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), money);
                 SpannableString spannableString = new SpannableString(text);
                 spannableString.setSpan(new TextAppearanceSpan(mContext,R.style.text_bold),3,text.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 couponListItemViewHolder.mTvCouponReward.setText(spannableString);
@@ -249,10 +257,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             if(Utils.isNotEmpty(couponInfo.consumeMoney)){
                 couponListItemViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
-            }
-            if(Utils.isNotEmpty(couponInfo.couponTypeName)){
-                couponListItemViewHolder.mCouponType.setVisibility(View.VISIBLE);
-                couponListItemViewHolder.mCouponType.setText("("+couponInfo.couponTypeName+")");
             }
             couponListItemViewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(couponInfo));
         } else if (holder instanceof PaidCouponUserDetailItemViewHolder) {

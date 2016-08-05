@@ -3,8 +3,12 @@ package com.xmd.technician.window;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +20,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
@@ -25,6 +31,7 @@ import com.hyphenate.util.EasyUtils;
 import com.xmd.technician.Adapter.ChatListAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.CheckedCoupon;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
@@ -32,7 +39,7 @@ import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
-import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.CommonMsgOnClickInterface;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.http.gson.OrderManageResult;
@@ -41,7 +48,6 @@ import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.ArrayBottomPopupWindow;
 import com.xmd.technician.widget.EmojiconMenu;
 import com.xmd.technician.widget.RewardConfirmDialog;
 
@@ -63,6 +69,11 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Bind(R.id.list_view) RecyclerView mMsgListView;
     @Bind(R.id.btn_face) View mFaceBtn;
     @Bind(R.id.emojicon_menu_container) EmojiconMenu mEmojiconMenuContainer;
+    @Bind(R.id.common_msg_layout)LinearLayout mCommonMsgLayout;
+    @Bind(R.id.btn_common_msg)View mCommonBtn;
+    @Bind(R.id.round_indicator_left) ImageView indicatorLeft;
+    @Bind(R.id.round_indicator_right)ImageView indicatorRight;
+    ViewPager mCommentMsgView;
 
     private String mToChatUsername;
     private int mChatType = ChatConstant.CHATTYPE_SINGLE;
@@ -76,13 +87,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private Subscription mManagerOrderSubscription;
     private Subscription mGetRedpacklistSubscription;
-    private List<CouponInfo> mPaidCouponList = new ArrayList<>();
+    private Subscription mSendMessageSubscription;
     private List<CouponInfo> mCouponList = new ArrayList<>();
     private String mTechCode;
+    private ArrayList<Fragment> fragmentsViewPagerList;
+    private CommonMsgFragmentOne fragmentOne;
+    private CommonMsgFragmentTwo fragmentTwo;
 
-    private ArrayBottomPopupWindow mCommonMessageWindow;
-    private ArrayBottomPopupWindow mPaidCouponWindow;
-    private ArrayBottomPopupWindow mCouponWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +123,9 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         mManagerOrderSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
                 result -> managerOrderResult(result));
+        mSendMessageSubscription = RxBus.getInstance().toObservable(CheckedCoupon.class).subscribe(
+                  checkedCoupon -> handlerCheckedCoupon(checkedCoupon)
+        );
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
 
@@ -152,7 +166,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription);
+        RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription,mSendMessageSubscription);
     }
 
     @Override
@@ -281,15 +295,11 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private void getRedpackListResult(CouponListResult result){
         if(result.statusCode == 200){
             mTechCode = result.respData.techCode;
+
             if(result.respData.coupons != null){
                 mCouponList.clear();
-                mPaidCouponList.clear();
-                for(CouponInfo info : result.respData.coupons){
-                    if(info.couponType.equals("paid")) {
-                        mPaidCouponList.add(info);
-                    }else {
-                        mCouponList.add(info);
-                    }
+                for(CouponInfo info :result.respData.coupons){
+                    mCouponList.add(info);
                 }
             }
         }
@@ -328,6 +338,10 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @OnClick(R.id.btn_face)
     public void onToggleEmojiconClicked(View view){
+        if(mCommonMsgLayout.getVisibility() ==View.VISIBLE){
+            mCommonBtn.setSelected(false);
+            mCommonMsgLayout.setVisibility(View.GONE);
+        }
         if (mEmojiconMenuContainer.getVisibility() == View.VISIBLE) {
             view.setSelected(false);
             mEmojiconMenuContainer.setVisibility(View.GONE);
@@ -335,29 +349,23 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             hideKeyboard();
             view.setSelected(true);
             mEmojiconMenuContainer.setVisibility(View.VISIBLE);
+
         }
     }
 
     @OnClick(R.id.btn_common_msg)
     public void showCommonMessage(View view){
         hideKeyboard();
-        hideExtendMenuContainer();
-        view.setSelected(true);
-
-        if(mCommonMessageWindow == null){
-            mCommonMessageWindow = new ArrayBottomPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_section_width));
-            mCommonMessageWindow.setDataSet(Arrays.asList(getResources().getStringArray(R.array.common_greeting_array)));
-            mCommonMessageWindow.setItemClickListener((parent, view1, position, id) -> {
-                sendTextMessage((String) parent.getAdapter().getItem(position));
-            });
+        if(mCommonMsgLayout.getVisibility()==View.VISIBLE){
+            mCommonMsgLayout.setVisibility(View.GONE);
+            view.setSelected(false);
+        }else{
+            initCommentViewPager( view);
+            mCommonMsgLayout.setVisibility(View.VISIBLE);
+            view.setSelected(true);
+            mFaceBtn.setSelected(false);
+            mEmojiconMenuContainer.setVisibility(View.GONE);
         }
-
-        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-            @Override
-            public void run() {
-                mCommonMessageWindow.showAsAboveLeft();
-            }
-        }, 50);
     }
 
     @OnClick(R.id.btn_common_reward)
@@ -372,60 +380,27 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             }
         }.show();
     }
-
-    @OnClick(R.id.btn_common_clock)
-    public void showPaidCouponInfo(View view){
-        hideKeyboard();
-        hideExtendMenuContainer();
-        if(mPaidCouponList.isEmpty()){
-            makeShortToast(getString(R.string.no_paid_coupon));
-            return;
-        }
-        view.setSelected(true);
-        if(mPaidCouponWindow == null){
-            mPaidCouponWindow = new ArrayBottomPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_item_width));
-            mPaidCouponWindow.setDataSet(mPaidCouponList);
-            mPaidCouponWindow.setItemClickListener((parent, view1, position, id) -> {
-                CouponInfo info = (CouponInfo) parent.getAdapter().getItem(position);
-                sendPaidCouponMessage(String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", info.actValue, info.couponPeriod), info.actId);
-            });
-        }
-
-        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-            @Override
-            public void run() {
-                mPaidCouponWindow.showAsAboveCenter();
-            }
-        }, 50);
-    }
-
     @OnClick(R.id.btn_common_coupon)
-    public void showCouponInfo(View view){
+    public void showCouponInfo(View view) {
         hideKeyboard();
         hideExtendMenuContainer();
-        if(mCouponList.isEmpty()){
+        if (mCouponList.isEmpty()) {
             makeShortToast(getString(R.string.no_coupon));
             return;
         }
-
         view.setSelected(true);
-        if(mCouponWindow == null){
-            mCouponWindow = new ArrayBottomPopupWindow(view, null, ResourceUtils.getDimenInt(R.dimen.order_list_item_operation_item_width));
-            mCouponWindow.setDataSet(mCouponList);
-            mCouponWindow.setItemClickListener((parent, view1, position, id) -> {
-                CouponInfo info = (CouponInfo) parent.getAdapter().getItem(position);
-                sendCouponMessage(String.format("<i>%s</i><span>%d</span>元<b>%s</b>", info.useTypeName, info.actValue, info.couponPeriod), info.actId);
-            });
-        }
-
-        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-            @Override
-            public void run() {
-                mCouponWindow.showAsAboveCenter();
-            }
-        }, 50);
+        AvailableCouponListActivity.setData(mCouponList);
+        Intent intent = new Intent(ChatActivity.this,AvailableCouponListActivity.class);
+        startActivity(intent);
+        view.setSelected(false);
     }
-
+    private void   handlerCheckedCoupon(CheckedCoupon result){
+            if(!("paid").equals(result.couponType)){
+                sendCouponMessage(String.format("<i>%s</i><span>%d</span>元<b>%s</b>", result.useTypeName, result.actValue, result.couponPeriod), result.actId);
+            }else{
+                sendPaidCouponMessage(String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", result.actValue, result.couponPeriod), result.actId);
+            }
+    }
     /**
      * 隐藏软键盘
      */
@@ -442,6 +417,11 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     public void hideExtendMenuContainer() {
         mFaceBtn.setSelected(false);
         mEmojiconMenuContainer.setVisibility(View.GONE);
+        if(mCommonMsgLayout.getVisibility()==View.VISIBLE) {
+            mCommonMsgLayout.setVisibility(View.GONE);
+            //    viewDiv.setVisibility(View.GONE);
+            mCommonBtn.setSelected(false);
+        }
     }
 
     //发送消息方法
@@ -602,4 +582,81 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             }
         }
     };
+
+    private void initCommentViewPager(View view){
+        indicatorLeft.setEnabled(true);
+        indicatorRight.setEnabled(false);
+
+        fragmentOne = CommonMsgFragmentOne.getInstance(new CommonMsgOnClickInterface() {
+            @Override
+            public void onMsgClickListener(String s) {
+                view.setSelected(false);
+                sendTextMessage(s);
+                ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mCommonMsgLayout.getVisibility() == View.VISIBLE){
+                            mCommonMsgLayout.setVisibility(View.GONE);
+                        }
+                    }
+                }, 50);
+            }
+        });
+        fragmentTwo = CommonMsgFragmentTwo.getInstance(new CommonMsgOnClickInterface() {
+            @Override
+            public void onMsgClickListener(String s) {
+                view.setSelected(false);
+                sendTextMessage(s);
+                ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mCommonMsgLayout.getVisibility() == View.VISIBLE){
+                            mCommonMsgLayout.setVisibility(View.GONE);
+                        }
+                    }
+                }, 50);
+            }
+        });
+        fragmentsViewPagerList = new ArrayList<>();
+        fragmentsViewPagerList.add(fragmentOne);
+        fragmentsViewPagerList.add(fragmentTwo);
+        mCommentMsgView = (ViewPager) findViewById(R.id.comment_msg_view);
+        mCommentMsgView.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+
+            @Override
+            public Fragment getItem(int position) {
+                return fragmentsViewPagerList.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return fragmentsViewPagerList.size();
+            }
+        });
+        mCommentMsgView.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position==0){
+                    indicatorLeft.setEnabled(true);
+                    indicatorRight.setEnabled(false);
+                }else{
+                    indicatorLeft.setEnabled(false);
+                    indicatorRight.setEnabled(true);
+                }
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+    }
+
+
+
 }

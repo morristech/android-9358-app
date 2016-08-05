@@ -40,7 +40,7 @@ public class EmojiconMenu extends RelativeLayout{
 
     private Bitmap mSelectedBitmap;
     private Bitmap mUnselectedBitmap;
-    private int mDotPadding = 10;
+    private int mDotPadding = 16;
     private int mEmojiconRows = 2;
     private int mEmojiconColumns = 7;
 
@@ -69,7 +69,6 @@ public class EmojiconMenu extends RelativeLayout{
     private void initView(Context context, AttributeSet attrs) {
         LayoutInflater.from(context).inflate(R.layout.emojicon_menu_view, this);
         ButterKnife.bind(this);
-
         mSelectedBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.dot_emojicon_selected);
         mUnselectedBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.dot_emojicon_unselected);
     }

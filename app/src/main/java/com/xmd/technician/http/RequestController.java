@@ -1,7 +1,9 @@
 package com.xmd.technician.http;
 
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 
 
 import com.hyphenate.chat.EMClient;
@@ -12,6 +14,7 @@ import com.xmd.technician.bean.ClubContactResult;
 import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.DeleteContactResult;
+import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.chat.UserProfileProvider;
@@ -204,6 +207,16 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_DELETE_CONTACT:
                doDeleteContact((Map<String,String>)msg.obj);
                break;
+//            case MsgDef.MSG_DEF_DO_DRAW_MONEY:
+//                doDrawMoney((Map<String,String>)msg.obj);
+//                break;
+//            case MsgDef.MSG_DEF_BIND_WX:
+//                doBindWX((Map<String,String>)msg.obj);
+//                break;
+//            case MsgDef.MSG_DEF_IS_BIND_WX:
+//                getIsBindWXR();
+//                break;
+
 
 
         }
@@ -907,9 +920,44 @@ public class RequestController extends AbstractController {
             }
         });
     }
+    private void doDrawMoney(Map<String,String> params){
+        Call<BaseResult> call = getSpaService().doDrawMoney(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),
+               params.get(RequestConstant.KEY_TRADE_AMOUNT));
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+                Log.i("TAGG","result>>"+result.toString());
+            }
+        });
+
+
+
+    }
+    private void doBindWX(Map<String,String> params){
+//        Call<BaseResult> call = getSpaService().doBindWX(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_USER_WX_CODE),
+//                params.get(RequestConstant.KEY_USER_WX_SCOPE), params.get(RequestConstant.KEY_USER_WX_STATE),params.get(RequestConstant.KEY_USER_WX_WXMP));
+        Call<BaseResult> call = getSpaService().doBindWX(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_USER_WX_PAGE_URL),
+                params.get(RequestConstant.KEY_USER_WX_SCOPE), params.get(RequestConstant.KEY_USER_WX_STATE),params.get(RequestConstant.KEY_USER_WX_WXMP));
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+                result.toString();
+            }
+        });
+    }
 
     private void doHandleTokenExpired(String errorMsg) {
         RxBus.getInstance().post(new TokenExpiredResult(errorMsg));
+    }
+
+    private void  getIsBindWXR(){
+        Call<IsBindResult> call = getSpaService().getIsBindWXResult(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<IsBindResult>() {
+            @Override
+            protected void postResult(IsBindResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
     }
 
     //获取升级配置

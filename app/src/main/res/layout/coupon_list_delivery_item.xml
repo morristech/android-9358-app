@@ -7,20 +7,16 @@
     android:layout_marginRight="@dimen/margin_15"
     android:layout_marginTop="@dimen/margin_15"
     >
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/coupon_item_detail_height"
         android:background="@drawable/coupon_item_bg"
         android:orientation="vertical">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.2"
             >
-
-
             <TextView
                 android:id="@+id/tv_coupon_title"
                 android:layout_width="wrap_content"
@@ -37,7 +33,6 @@
                 android:layout_toRightOf="@+id/tv_coupon_title"
                 android:layout_alignBottom="@+id/tv_coupon_title"
                 android:layout_marginLeft="@dimen/margin_5"
-                android:text="@string/coupon_cash"
                 android:textSize="@dimen/fontNormal"
                 android:visibility="gone"
 
@@ -48,10 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/padding_5"
+                android:layout_marginTop="@dimen/padding_10"
                 android:background="@drawable/delivery_coupon"
                 android:gravity="center"
-                android:layout_marginRight="@dimen/padding_10"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontBody"
                 />
@@ -127,8 +121,15 @@
                 />
         </RelativeLayout>
     </LinearLayout>
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/coupon_delivery_bottom_bg"></View>
+        android:layout_height="@dimen/coupon_item_bottom_corner_bg"
+        android:background="@drawable/coupon_bottom_bg"
+        >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/coupon_item_bottom_corner"
+            android:background="@drawable/coupon_delivery_bottom_bg"></View>
+        </FrameLayout>>
+
 </LinearLayout>

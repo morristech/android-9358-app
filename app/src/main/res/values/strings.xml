@@ -140,7 +140,7 @@
     <string name="coupon_commission">co提成</string>
     <string name="clock_commission">点钟券提成</string>
     <string name="order_commission">付费预约提成</string>
-    <string name="consume_tip">需要绑定微信才能体现，是否绑定微信</string>
+    <string name="consume_tip">关注＂9358服务＂公众号，登录提现</string>
     <string name="user_reward_detail">客户打赏明细</string>
     <string name="coupon_reward_detail">优惠券提成明细</string>
     <string name="paid_coupon_detail">点钟券提成明细</string>
@@ -178,7 +178,7 @@
     <string name="refuse">拒绝</string>
     <string name="common_greeting_format">确认发送＂%1$s＂信息？</string>
     <string name="no_paid_coupon">抱歉！暂无点钟券！</string>
-    <string name="no_coupon">抱歉！暂无优惠券！</string>
+    <string name="no_coupon">抱歉！暂无可用优惠券！</string>
     <string name="send_coupon_msg_format"><i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b></string>
     <string name="send_fail">发送消息失败,</string>
     <string name="error_send_invalid_content">你发送了不合法的消息内容</string>
@@ -241,7 +241,7 @@
     <string name="wx_errcode_unknown">分享返回</string>
 
     <string name="coupon_fragment_share">分享</string>
-    <string name="coupon_fragment_coupon_reward">打赏 %1$d元</string>
+    <string name="coupon_fragment_coupon_reward">打赏 %s元</string>
     <string name="coupon_fragment_coupon_empty_reason">会所暂无优惠活动或您还没有加入会所</string>
 
     <string name="paid_coupon_detail_activity_title">点钟详情</string>
@@ -268,7 +268,7 @@
     <string name="normal_coupon_detail_activity_act_content_desc">使用规则</string>
     <string name="normal_coupon_detail_activity_share_text_title">分享领红包</string>
     <string name="normal_coupon_detail_activity_share_text">
-        分享优惠给您的客人，任何客户使用您分享的优惠券后，您即可获得 %1$d 元现金红包，红包会自动存入您的账户。</string>
+        分享后，客户每一次使用您都会获得 %1$d 元。</string>
     <string name="normal_coupon_detail_activity_scan_code">用户扫描二维码即得优惠！</string>
 
     <string name="system_notice_activity_title">系统通知</string>
@@ -334,6 +334,8 @@
     <string name="coupon_alert_message_buy">客户扫码购券</string>
     <string name="coupon_cash">（现金券）</string>
     <string name="coupon_code_item">(优惠券)</string>
-    <string name="user_time">使用时间时段</string>
+    <string name="user_time">使用时间段</string>
+    <string name="wx_bind_failed_alert">绑定微信失败，请重新绑定</string>
+    <string name="check_coupon">券</string>
 
 </resources>

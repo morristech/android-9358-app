@@ -48,6 +48,8 @@
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:text="right"
+
+                android:background="@drawable/toolbar_text_bg"
                 android:visibility="gone"/>
             <LinearLayout
                 android:id="@+id/contact_more"

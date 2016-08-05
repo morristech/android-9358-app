@@ -1,21 +1,28 @@
 package com.xmd.technician.window;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.xmd.technician.Adapter.SortCustomerAdapter;
@@ -61,6 +68,10 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     SideBar silebar;
     private Subscription mGetCustomerListSubscription;
     private SortCustomerAdapter adapter;
+    private LayoutInflater layoutInflater;
+    private View  viewM;
+    private View view;
+    private PopupWindow window = null;
 
     public static CustomerListFragment getInstance() {
         return new CustomerListFragment();
@@ -75,7 +86,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_customers_list, container, false);
+        view = inflater.inflate(R.layout.fragment_customers_list, container, false);
         initView(view);
         ButterKnife.bind(this, view);
         return view;
@@ -225,7 +236,8 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        closeSearch();
+        showOutMenu();
+     //   closeSearch();
 
     }
 
@@ -284,4 +296,76 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         adapter.updateListView(mCustomerList);
     }
 
+    public void showOutMenu(){
+        layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        viewM = layoutInflater.inflate(R.layout.search_contacts_layout,null);
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = 0.5f;
+        lp.dimAmount = 0.5f;
+        getActivity().getWindow().setAttributes(lp);
+        if(window ==null){
+            window = new PopupWindow(viewM, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,true);
+            window.setAnimationStyle(R.style.popup_window_style);
+            ColorDrawable dw = new ColorDrawable(Color.parseColor("#FF0000"));
+            window.setBackgroundDrawable(dw);
+            window.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+                @Override
+                public void onDismiss() {
+                    WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                    lp.alpha = 1.0f;
+                    lp.dimAmount = 1.0f;
+                    getActivity().getWindow().setAttributes(lp);
+                }
+            });
+            TextView allContact = (TextView) viewM.findViewById(R.id.all_contact);
+            TextView phoneContact = (TextView) viewM.findViewById(R.id.phone_contact);
+            TextView fansContact = (TextView) viewM.findViewById(R.id.fans_contact);
+            TextView wxContact = (TextView) viewM.findViewById(R.id.wx_contact);
+            TextView ticketContact = (TextView) viewM.findViewById(R.id.ticket_contact);
+            TextView cancel = (TextView) viewM.findViewById(R.id.cancel_contact);
+
+            allContact.setOnClickListener((v)->{
+                 window.dismiss();
+            });
+            phoneContact.setOnClickListener((v)->{
+                window.dismiss();
+            });
+            fansContact.setOnClickListener((v)->{
+                window.dismiss();
+            });
+            wxContact.setOnClickListener((v)->{
+                window.dismiss();
+            });
+            ticketContact.setOnClickListener((v)->{
+                window.dismiss();
+            });
+            cancel.setOnClickListener((v)->{
+              if(window!=null){
+                  window.dismiss();
+              }
+
+            });
+
+        }
+        try {
+            if(window != null){
+
+                window.showAtLocation(view.findViewById(R.id.search_contact), Gravity.BOTTOM,0,0);
+            }else{
+            }
+        }catch (Exception e){
+
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(window!=null){
+            window.dismiss();
+        }
+    }
 }

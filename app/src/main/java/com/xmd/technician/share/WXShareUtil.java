@@ -1,17 +1,12 @@
 package com.xmd.technician.share;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.xmd.technician.Constant;
 import com.xmd.technician.TechApplication;
-import com.xmd.technician.common.Utils;
 
 import java.util.Map;
 

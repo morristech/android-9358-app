@@ -75,6 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginRight="20dp"
                     android:background="@color/colorLineDivide"/>
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -95,7 +96,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/attention"
-                        android:textSize="@dimen/fontTitle"
+                        android:textSize="@dimen/fontTitle_small"
                         android:textColor="@color/alert_text_color"
                         />
                     <TextView
@@ -104,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_tips_expire"
                         android:layout_alignLeft="@+id/tv_tips_expire"
-                        android:textSize="@dimen/fontTitle"
+                        android:textSize="@dimen/fontTitle_small"
                         android:textColor="@color/alert_text_color"
                         android:layout_marginTop="@dimen/margin_5"
                         />
@@ -150,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/color_white"
                 android:paddingLeft="@dimen/margin_20"
-                android:paddingBottom="@dimen/margin_20"
+                android:paddingBottom="@dimen/coupon_margin_17"
                 android:paddingTop="@dimen/coupon_margin_17"
                 >
                 <RelativeLayout
@@ -197,17 +198,17 @@
                         android:textSize="@dimen/fontTitle"
                         android:textColor="@color/colorHead"
                         android:text="@string/paid_coupon_detail_act_content" />
-
-                    <WebView
+                <WebView
+                        android:layout_marginLeft="28dp"
                     android:id="@+id/wv_act_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     />
+
                 </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
-
 
     </ScrollView>
 </LinearLayout>
