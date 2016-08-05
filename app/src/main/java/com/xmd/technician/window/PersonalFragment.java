@@ -255,7 +255,7 @@ public class PersonalFragment extends BaseFragment{
             ((BaseFragmentActivity)getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
             return;
         }else{
-            String url = SharedPreferenceHelper.getServerHost()+String.format(RequestConstant.URL_RANKING,RequestConstant.USER_TYPE_TECH,
+            String url = SharedPreferenceHelper.getServerHost()+String.format(RequestConstant.URL_RANKING,System.currentTimeMillis(), RequestConstant.USER_TYPE_TECH,
                     RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken()
             );
             Intent intent = new Intent(getActivity(),BrowserActivity.class);
