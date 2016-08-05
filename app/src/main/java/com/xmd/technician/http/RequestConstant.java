@@ -54,14 +54,19 @@ public class RequestConstant {
     public static final String URL_GET_CUSTOMER_LIST = BASE_URL+"/v2/tech/customer/user/list";
     public static final String URL_GET_CUSTOMER_INFO_DETAIL = BASE_URL+"/v2/tech/customer/user/view";
     public static final String URL_GET_CLUB_LIST = BASE_URL+"/v2/tech/customer/tech/list";
-    public static final String URL_GET_TECH_INFO_DETAIL=BASE_URL+"/v2/tech/customer/tech/view";
-    public static final String URL_GET_MANAGER_INFO_DETAIL=BASE_URL+"/v2/tech/customer/manager/view";
+    public static final String URL_GET_TECH_INFO_DETAIL =BASE_URL+"/v2/tech/customer/tech/view";
+    public static final String URL_GET_MANAGER_INFO_DETAIL =BASE_URL+"/v2/tech/customer/manager/view";
     public static final String URL_DELETE_CONTACT = BASE_URL+"/v2/tech/customer/delete";
+    public static final String URL_DO_DRAW_MONEY = BASE_URL+"/v2/wx/pay/user_reward_redpack";
+    public static final String URL_GET_USER_WX_OPEN_ID = BASE_URL+"/v2/wx/oauth2/openid";
+    public static final String URL_GET_USER_WX_CODE = BASE_URL+"/v2/wx/oauth2/code";
+    public static final String URL_GET_USER_IS_BIND_WX = BASE_URL+"/v2/tech/is_bind_wx";
+
 
 
 
     public static final String URL_COUPON_SHARE_EVENT_COUNT = BASE_URL + "/v1/profile/redpacket/share";
-    public static final String URL_RANKING = "/spa-manager/manager/index.html?userType=%s&sessionType=%s&token=%s";
+    public static final String URL_RANKING = "/spa-manager/manager/index.html?v=%s&userType=%s&sessionType=%s&token=%s";
 
 //    public static final String URL_APP_UPDATE_CONFIG = "mockjs/17/app-upgrade-system/appUpgrade";
     public static final String URL_APP_UPDATE_CONFIG = "/app-upgrade-system/appUpgrade";
@@ -126,6 +131,7 @@ public class RequestConstant {
     public static final String KEY_TIME_STAMP = "timestamp";
 
     public static final String SESSION_TYPE = "app";
+    public static  final String KEY_DRAW_MONEY_TYPE = "type";
 
     public static final String KEY_APP_VERSION = "appVersion";
     public static final String KEY_STAT_CATEGORY = "statCate";
@@ -150,6 +156,16 @@ public class RequestConstant {
     public static final String KEY_UPDATE_USER_ID = "userId";
 
     public static final String KEY_BIND_WX_SUCCESS = "bindSuccess";
+
+    public static final String KEY_USER_WX_OPEN_ID = "openId";
+    public static final String KEY_USER_WX_UNION_ID ="userWXUnionId";
+    public static final String KEY_TRADE_AMOUNT = "tradeAmount";
+
+    public static final String KEY_USER_WX_CODE = "code";
+    public static final String KEY_USER_WX_SCOPE = "scope";
+    public static final String KEY_USER_WX_STATE = "state";
+    public static final String KEY_USER_WX_WXMP ="wxmp";
+    public static final String KEY_USER_WX_PAGE_URL ="pageUrl";
 
 
     /*********************************************************************************************/
