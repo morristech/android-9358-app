@@ -152,7 +152,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     protected void onResume() {
         super.onResume();
         if(mIsMessageListInited) {
-            mChatAdapter.refreshList();
+           mChatAdapter.refreshList();
         }
         EMClient.getInstance().chatManager().addMessageListener(mEMMessageListener);
     }
@@ -161,12 +161,18 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     protected void onPause() {
         super.onPause();
         EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListener);
+        if(mGetRedpacklistSubscription!=null){
+            RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription,mSendMessageSubscription);
+        if(null!=mSendMessageSubscription){
+            RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription,mSendMessageSubscription);
+        }
+
     }
 
     @Override
@@ -295,7 +301,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private void getRedpackListResult(CouponListResult result){
         if(result.statusCode == 200){
             mTechCode = result.respData.techCode;
-
             if(result.respData.coupons != null){
                 mCouponList.clear();
                 for(CouponInfo info :result.respData.coupons){

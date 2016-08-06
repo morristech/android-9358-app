@@ -2,65 +2,68 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/default_dialog_width"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:orientation="vertical">
-
+    android:background="@drawable/round_rect_white_bg"
+    android:orientation="vertical"
+    >
     <TextView
         android:id="@+id/dialog_alert_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/personal_margin"
-        android:paddingLeft="@dimen/personal_margin"
-        android:paddingRight="@dimen/personal_margin"
-        android:textColor="@color/colorTitle"
+        android:textColor="@color/colorHead"
         android:textSize="@dimen/fontHead"
-        android:gravity="center_horizontal"
-        android:text="@string/confirm" />
+        android:gravity="bottom|center_horizontal"
+        android:text="@string/confirm"
+        android:layout_marginTop="@dimen/inter_space"
+        />
 
     <TextView
         android:id="@+id/dialog_alert_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/personal_margin"
+        android:gravity="left|top"
         android:paddingLeft="@dimen/personal_margin"
-        android:paddingRight="@dimen/personal_margin"
-        android:gravity="center_horizontal"
-        android:textColor="@color/colorBody"
-        android:textSize="@dimen/fontBody"
+        android:textColor="@color/colorTitle"
+        android:textSize="@dimen/fontTitle"
+        android:layout_marginTop="@dimen/large_space"
         android:text="11"/>
 
     <View
         android:id="@+id/reset_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:layout_marginTop="@dimen/personal_margin"
-        android:background="@color/colorMainBtn"/>
+        android:layout_marginTop="@dimen/dialog_content_item_height"
+        android:background="@color/colorRemarkText"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
         <Button
             android:id="@+id/dialog_alert_cancel_btn"
             android:layout_width="0dp"
-            android:layout_height="@dimen/search_view_height"
+            android:layout_height="@dimen/personal_item_height"
             android:layout_weight="1"
             android:minHeight="0dp"
             android:minWidth="0dp"
-            android:background="@color/color_white"
-            android:textColor="@color/colorRemark"
-            android:textSize="@dimen/fontBody"
+            android:textColor="@color/coupon_detail_text_color"
+            android:textSize="@dimen/fontTitle"
+            android:background="@null"
             android:text="@string/cancel"/>
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorRemarkText"/>
         <Button
             android:id="@+id/dialog_alert_ok_btn"
             android:layout_width="0dp"
-            android:layout_height="@dimen/search_view_height"
+            android:layout_height="@dimen/personal_item_height"
             android:layout_weight="1"
             android:minHeight="0dp"
             android:minWidth="0dp"
-            android:background="@color/colorMainBtn"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/fontBody"
+            android:textColor="@color/colorBtnChecked"
+            android:textSize="@dimen/fontTitle"
+            android:background="@null"
             android:text="@string/confirm"/>
     </LinearLayout>
 

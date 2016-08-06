@@ -3,6 +3,7 @@ package com.xmd.technician;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.http.RequestConstant;
 
 /**
@@ -182,5 +183,11 @@ public class SharedPreferenceHelper {
     }
     public static boolean getBindSuccess(){
         return  mSettingPreference.getBoolean(RequestConstant.KEY_BIND_WX_SUCCESS,false);
+    }
+    public static void setUserType(String userType){
+        mSettingPreference.edit().putString(ChatConstant.EMCHAT_USER_TYPE,userType);
+    }
+    public static String getUserType(){
+        return  mSettingPreference.getString(ChatConstant.EMCHAT_USER_TYPE,"");
     }
 }

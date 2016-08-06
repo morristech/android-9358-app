@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/avatar"
             android:layout_below="@+id/time"
-            android:background="@drawable/recv_text"
+            android:background="@drawable/recv_order_bg"
             android:minHeight="@dimen/avatar_head"
             android:autoLink="all"
             android:gravity="center_vertical"
@@ -193,7 +193,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/avatar"
             android:layout_below="@+id/time"
-            android:background="@drawable/recv_order_bg"
+            android:background="@drawable/receive_order_bg"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -256,7 +256,7 @@
 
             <LinearLayout
                 android:id="@+id/order_menu_container"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/order_service"
                 android:paddingLeft="@dimen/personal_padding"

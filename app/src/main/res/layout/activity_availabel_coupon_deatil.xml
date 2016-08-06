@@ -4,13 +4,19 @@
     android:layout_height="match_parent">
     <include layout="@layout/toolbar" />
 
-        <ListView
-            android:choiceMode="singleChoice"
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
+            android:background="@color/app_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/inter_space"
             android:scrollbars="none"
+            android:paddingLeft="@dimen/inter_space"
             />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

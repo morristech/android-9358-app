@@ -78,6 +78,7 @@
         <LinearLayout
             android:id="@+id/coupon_container"
             android:layout_width="wrap_content"
+            android:minWidth="200dp"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/avatar"
             android:layout_below="@+id/time"
@@ -127,6 +128,7 @@
             android:id="@+id/paid_coupon_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="200dp"
             android:layout_toLeftOf="@+id/avatar"
             android:layout_below="@+id/time"
             android:background="@drawable/sent_coupon_bg"

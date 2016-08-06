@@ -100,6 +100,10 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
     @OnClick(R.id.btn_save_edit)
    public   void saveEdit(){
         remarkName = mRemarkName.getText().toString();
+        if(remarkName.length()>8){
+            makeShortToast(ResourceUtils.getString(R.string.limit_input_text_remark));
+            return;
+        }
         remarkMessage = mRemarkMessage.getText().toString();
 
         Map<String,String> params = new HashMap<>();

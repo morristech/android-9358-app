@@ -27,7 +27,6 @@ public class UserProfileProvider {
     
     private DbOpenHelper dbHelper;
     private static UserProfileProvider userProvider;
-
     private Map<String, ChatUser> mLocalUsers ;
     private ChatUser mCurrentUser;
 

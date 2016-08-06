@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -46,7 +47,7 @@ import rx.Subscription;
 /**
  * Created by Administrator on 2016/7/5.
  */
-public class MyClubListFragment extends Fragment implements View.OnClickListener {
+public class MyClubListFragment extends Fragment implements View.OnClickListener ,SwipeRefreshLayout.OnRefreshListener{
 
     @Bind(R.id.list_customer)
     ListView mListView;
@@ -64,6 +65,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     TextView contentDialog;
     @Bind(R.id.contact_sidebar)
     SideBar silebar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private Subscription mGetCustomerListSubscription;
     private SortClubAdapter adapter;
     public static MyClubListFragment getInstance() {
@@ -99,6 +101,9 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
         mGetCustomerListSubscription = RxBus.getInstance().toObservable(ClubContactResult.class).subscribe(customer -> {
             handlerClubInfoList(customer);
         });
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_widget);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void handlerClubInfoList(ClubContactResult clubResult) {
@@ -130,6 +135,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
                 }
             }
         });
+        mSwipeRefreshLayout.setRefreshing(false);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -300,4 +306,14 @@ private void searchContact() {
         adapter.updateListView(mClubList);
     }
 
+    @Override
+    public void onRefresh() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_LIST);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 }

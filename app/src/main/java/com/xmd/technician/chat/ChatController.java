@@ -54,6 +54,7 @@ public class ChatController extends AbstractController {
         String emchatId = params.get(ChatConstant.EMCHAT_ID);
         String emchatNickname = params.get(ChatConstant.EMCHAT_NICKNAME);
         String emchatAvatar = params.get(ChatConstant.EMCHAT_AVATAR);
+        String emchatUserType = params.get(ChatConstant.EMCHAT_USER_TYPE);
 
         if(TextUtils.isEmpty(emchatId)){
             return;
@@ -62,6 +63,7 @@ public class ChatController extends AbstractController {
         ChatUser chatUser = new ChatUser(emchatId);
         chatUser.setNick(emchatNickname);
         chatUser.setAvatar(emchatAvatar);
+        chatUser.setUserType(emchatUserType);
         UserUtils.saveUser(chatUser);
 
         Intent intent = new Intent("com.xmd.technician.action.START_CHAT");

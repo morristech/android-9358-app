@@ -22,6 +22,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.PaidCouponUserDetail;
@@ -66,6 +67,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
         /**
          * whether is paged
+         *
          * @return
          */
         boolean isPaged();
@@ -122,11 +124,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (mData.get(position) instanceof Order) {
                 return TYPE_ORDER_ITEM;
             } else if (mData.get(position) instanceof CouponInfo) {
-                if(((CouponInfo) mData.get(position)).useTypeName.equals("现金券")){
+                if (((CouponInfo) mData.get(position)).useTypeName.equals("现金券")) {
                     return TYPE_COUPON_INFO_ITEM_CUSH;
-                }else if(((CouponInfo) mData.get(position)).useTypeName.equals("点钟券")){
+                } else if (((CouponInfo) mData.get(position)).useTypeName.equals("点钟券")) {
                     return TYPE_COUPON_INFO_ITEM_DELIVERY;
-                }else{
+                } else {
                     return TYPE_COUPON_INFO_ITEM_FAVORUABLE;
                 }
             } else if (mData.get(position) instanceof PaidCouponUserDetail) {
@@ -147,10 +149,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         } else if (TYPE_COUPON_INFO_ITEM_CUSH == viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_cush_item, parent, false);
             return new CouponListItemViewHolder((view));
-        }else if(TYPE_COUPON_INFO_ITEM_DELIVERY==viewType){
+        } else if (TYPE_COUPON_INFO_ITEM_DELIVERY == viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_delivery_item, parent, false);
             return new CouponListItemViewHolder((view));
-        }else if(TYPE_COUPON_INFO_ITEM_FAVORUABLE ==viewType){
+        } else if (TYPE_COUPON_INFO_ITEM_FAVORUABLE == viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_favorable_item, parent, false);
             return new CouponListItemViewHolder((view));
         } else if (TYPE_PAID_COUPON_USER_DETAIL == viewType) {
@@ -221,9 +223,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 itemHolder.mOperation.setVisibility(View.VISIBLE);
             }
 
-            if(Constant.ORDER_TYPE_PAID.equals(order.orderType)){
+            if (Constant.ORDER_TYPE_PAID.equals(order.orderType)) {
                 itemHolder.mPaidOrderAmountContainer.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 itemHolder.mPaidOrderAmountContainer.setVisibility(View.INVISIBLE);
             }
 
@@ -237,25 +239,25 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final CouponInfo couponInfo = (CouponInfo) obj;
             CouponListItemViewHolder couponListItemViewHolder = (CouponListItemViewHolder) holder;
             couponListItemViewHolder.mTvCouponTitle.setText(couponInfo.actTitle);
-            if(couponInfo.useTypeName.equals("点钟券")){
+            if (couponInfo.useTypeName.equals("点钟券")) {
                 couponListItemViewHolder.mTvCouponTitle.setText("点钟券");
                 couponListItemViewHolder.mCouponType.setVisibility(View.GONE);
-            }else{
+            } else {
                 couponListItemViewHolder.mTvCouponTitle.setText(couponInfo.actTitle);
                 couponListItemViewHolder.mCouponType.setVisibility(View.VISIBLE);
             }
             couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
-            couponListItemViewHolder.mCouponPeriod.setText("有效时间："+couponInfo.couponPeriod);
-            if (couponInfo.techCommission > 0||couponInfo.techBaseCommission>0) {
-                String money = Utils.getFloat2Str(String.valueOf(couponInfo.techCommission>couponInfo.techBaseCommission?couponInfo.techCommission:couponInfo.techBaseCommission));
+            couponListItemViewHolder.mCouponPeriod.setText("有效时间：" + couponInfo.couponPeriod);
+            if (couponInfo.techCommission > 0 || couponInfo.techBaseCommission > 0) {
+                String money = Utils.getFloat2Str(String.valueOf(couponInfo.techCommission > couponInfo.techBaseCommission ? couponInfo.techCommission : couponInfo.techBaseCommission));
                 String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), money);
                 SpannableString spannableString = new SpannableString(text);
-                spannableString.setSpan(new TextAppearanceSpan(mContext,R.style.text_bold),3,text.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new TextAppearanceSpan(mContext, R.style.text_bold), 3, text.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 couponListItemViewHolder.mTvCouponReward.setText(spannableString);
-            }else {
+            } else {
                 couponListItemViewHolder.mTvCouponReward.setVisibility(View.GONE);
             }
-            if(Utils.isNotEmpty(couponInfo.consumeMoney)){
+            if (Utils.isNotEmpty(couponInfo.consumeMoney)) {
                 couponListItemViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
             }
             couponListItemViewHolder.itemView.setOnClickListener(v -> mCallback.onItemClicked(couponInfo));
@@ -278,7 +280,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             itemHolder.mTvTelephone.setText(paidCouponUserDetail.telephone);
             itemHolder.mTvCouponStatusDescription.setText(paidCouponUserDetail.couponStatusDescription);
 
-        } else if(holder instanceof ConversationViewHolder){
+        } else if (holder instanceof ConversationViewHolder) {
 
             Object obj = mData.get(position);
             if (!(obj instanceof EMConversation)) {
@@ -289,14 +291,14 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             ConversationViewHolder conversationHolder = (ConversationViewHolder) holder;
 
             //conversationHolder.mName.setText(conversation.getUserName());
-            if(conversation.getUnreadMsgCount() > 0){
+            if (conversation.getUnreadMsgCount() > 0) {
                 conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
                 conversationHolder.mUnread.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 conversationHolder.mUnread.setVisibility(View.INVISIBLE);
             }
 
-            if(conversation.getAllMsgCount() != 0){
+            if (conversation.getAllMsgCount() != 0) {
                 // 把最后一条消息的内容作为item的message内容
                 EMMessage lastMessage = conversation.getLastMessage();
                 Spannable span = SmileUtils.getSmiledText(mContext, CommonUtils.getMessageDigest(lastMessage, mContext));
@@ -314,7 +316,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     UserUtils.setUserNick(conversation.getUserName(), conversationHolder.mName);
                 } catch (HyphenateException e) {
                     e.printStackTrace();
-                }catch (NullPointerException e){
+                } catch (NullPointerException e) {
 
                 }
             }
@@ -350,7 +352,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     public int getSlideOutRange(View targetView) {
         RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(targetView);
         int range = 0;
-        if(holder instanceof OrderListItemViewHolder){
+        if (holder instanceof OrderListItemViewHolder) {
             OrderListItemViewHolder curHolder = (OrderListItemViewHolder) holder;
             if (curHolder.mNegative.getVisibility() == View.VISIBLE) {
                 range += curHolder.mNegative.getLayoutParams().width;
@@ -365,7 +367,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     @Override
     public boolean isViewSlideable(View targetView) {
         RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(targetView);
-        if(holder instanceof OrderListItemViewHolder) {
+        if (holder instanceof OrderListItemViewHolder) {
             return ((OrderListItemViewHolder) holder).isOperationVisible;
         } else {
             return false;
@@ -399,17 +401,28 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class OrderListItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.user_head_url)CircleImageView mUserHeadUrl;
-        @Bind(R.id.username) TextView mUserName;
-        @Bind(R.id.order_time) TextView mOrderTime;
-        @Bind(R.id.order_amount) TextView mOrderAmount;
-        @Bind(R.id.submit_section) LinearLayout mSubmitSection;
-        @Bind(R.id.remain_time) TextView mRemainTime;
-        @Bind(R.id.other_status) TextView mOtherStatus;
-        @Bind(R.id.operation) LinearLayout mOperation;
-        @Bind(R.id.negative) Button mNegative;
-        @Bind(R.id.positive) Button mPositive;
-        @Bind(R.id.paid_order_container) View mPaidOrderAmountContainer;
+        @Bind(R.id.user_head_url)
+        CircleImageView mUserHeadUrl;
+        @Bind(R.id.username)
+        TextView mUserName;
+        @Bind(R.id.order_time)
+        TextView mOrderTime;
+        @Bind(R.id.order_amount)
+        TextView mOrderAmount;
+        @Bind(R.id.submit_section)
+        LinearLayout mSubmitSection;
+        @Bind(R.id.remain_time)
+        TextView mRemainTime;
+        @Bind(R.id.other_status)
+        TextView mOtherStatus;
+        @Bind(R.id.operation)
+        LinearLayout mOperation;
+        @Bind(R.id.negative)
+        Button mNegative;
+        @Bind(R.id.positive)
+        Button mPositive;
+        @Bind(R.id.paid_order_container)
+        View mPaidOrderAmountContainer;
 
         public boolean isOperationVisible;
 
@@ -420,12 +433,18 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class CouponListItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_consume_money_description) TextView mTvConsumeMoneyDescription;
-        @Bind(R.id.tv_coupon_title) TextView mTvCouponTitle;
-        @Bind(R.id.tv_coupon_reward) TextView mTvCouponReward;
-        @Bind(R.id.tv_coupon_period) TextView mCouponPeriod;
-        @Bind(R.id.coupon_amount)TextView mCouponAmount;
-        @Bind(R.id.coupon_type)TextView mCouponType;
+        @Bind(R.id.tv_consume_money_description)
+        TextView mTvConsumeMoneyDescription;
+        @Bind(R.id.tv_coupon_title)
+        TextView mTvCouponTitle;
+        @Bind(R.id.tv_coupon_reward)
+        TextView mTvCouponReward;
+        @Bind(R.id.tv_coupon_period)
+        TextView mCouponPeriod;
+        @Bind(R.id.coupon_amount)
+        TextView mCouponAmount;
+        @Bind(R.id.coupon_type)
+        TextView mCouponType;
 
 
         public CouponListItemViewHolder(View itemView) {
@@ -436,11 +455,16 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class PaidCouponUserDetailItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.avatar) CircleImageView mAvatar;
-        @Bind(R.id.tv_customer_name) TextView mTvCustomerName;
-        @Bind(R.id.tv_telephone) TextView mTvTelephone;
-        @Bind(R.id.tv_coupon_status_description) TextView mTvCouponStatusDescription;
-        @Bind(R.id.tv_get_date) TextView mTvGetDate;
+        @Bind(R.id.avatar)
+        CircleImageView mAvatar;
+        @Bind(R.id.tv_customer_name)
+        TextView mTvCustomerName;
+        @Bind(R.id.tv_telephone)
+        TextView mTvTelephone;
+        @Bind(R.id.tv_coupon_status_description)
+        TextView mTvCouponStatusDescription;
+        @Bind(R.id.tv_get_date)
+        TextView mTvGetDate;
 
 
         public PaidCouponUserDetailItemViewHolder(View itemView) {
@@ -449,13 +473,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    static class ConversationViewHolder extends RecyclerView.ViewHolder{
+    static class ConversationViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.avatar) ImageView mAvatar;
-        @Bind(R.id.name) TextView mName;
-        @Bind(R.id.content) TextView mContent;
-        @Bind(R.id.time) TextView mTime;
-        @Bind(R.id.unread) TextView mUnread;
+        @Bind(R.id.avatar)
+        ImageView mAvatar;
+        @Bind(R.id.name)
+        TextView mName;
+        @Bind(R.id.content)
+        TextView mContent;
+        @Bind(R.id.time)
+        TextView mTime;
+        @Bind(R.id.unread)
+        TextView mUnread;
+
         public ConversationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

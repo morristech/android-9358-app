@@ -9,6 +9,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.http.gson.UpdateServiceResult;
 
 public class UserUtils {
 
@@ -72,7 +73,7 @@ public class UserUtils {
         if(user != null){
             return user.getNick();
         }
-
         return ResourceUtils.getString(R.string.default_user_name);
     }
+
 }

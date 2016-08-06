@@ -122,6 +122,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private String chatHeadUrl;
     private String managerHeadUrl;
 
+    private String userType;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,6 +205,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     @OnClick(R.id.btn_EmChat)
     public void chatToCustomer() {
+        Log.i("TAG","chatName>>"+chatName);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(chatEmId, chatName, chatHeadUrl));
     }
 
@@ -268,7 +271,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
         }else {
             chatName = customer.respData.techCustomer.userName;
         }
-
 
         if(customer==null){
           return;

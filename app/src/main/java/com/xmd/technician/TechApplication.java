@@ -24,7 +24,7 @@ import java.util.List;
 public class TechApplication extends Application{
     private static Context appContext;
     private static TechNotifier mNotifier;
-   public static Boolean isTest = false;
+   public static Boolean isTest = true;
 
     @Override
     public void onCreate() {

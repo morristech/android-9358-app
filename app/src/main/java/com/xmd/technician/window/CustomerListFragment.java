@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -49,7 +50,7 @@ import rx.Subscription;
 /**
  * Created by Administrator on 2016/7/4.
  */
-public class CustomerListFragment extends Fragment implements View.OnClickListener {
+public class CustomerListFragment extends Fragment implements View.OnClickListener ,SwipeRefreshLayout.OnRefreshListener{
     @Bind(R.id.search_contact)
     EditText editText;
     @Bind(R.id.btn_search)
@@ -66,6 +67,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     TextView contentDialog;
     @Bind(R.id.contact_sidebar)
     SideBar silebar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private Subscription mGetCustomerListSubscription;
     private SortCustomerAdapter adapter;
     private LayoutInflater layoutInflater;
@@ -103,6 +105,10 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         mGetCustomerListSubscription = RxBus.getInstance().toObservable(CustomerListResult.class).subscribe(customer -> {
             handlerCustomerInfoList(customer);
         });
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_widget);
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void handlerCustomerInfoList(CustomerListResult customerResult) {
@@ -127,6 +133,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
                 }
             }
         }
+        mSwipeRefreshLayout.setRefreshing(false);
         search.setOnClickListener(this);
         silebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
@@ -367,5 +374,11 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         if(window!=null){
             window.dismiss();
         }
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onRefresh() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST);
     }
 }

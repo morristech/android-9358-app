@@ -28,6 +28,12 @@ public class ChatUser extends EMContact {
 	 */
 	private String avatar;
 
+	/**
+	 * private 用户类型
+	 * @param username
+     */
+	private String userType;
+
 	public ChatUser(String username){
 		if(username == null){
 			throw new RuntimeException("username is null");
@@ -51,6 +57,12 @@ public class ChatUser extends EMContact {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+	public String getUserType(){
+		return userType;
+	}
+	public void setUserType(String userType){
+		this.userType = userType;
+	}
 
 	@Override
 	public String getNick() {

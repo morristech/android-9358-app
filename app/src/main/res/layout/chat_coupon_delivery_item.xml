@@ -43,7 +43,7 @@
                     android:layout_marginLeft="@dimen/margin_5"
                     android:text="@string/coupon_cash"
                     android:textSize="@dimen/fontNormal"
-                    android:visibility="gone"
+
 
                     />
 
