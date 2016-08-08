@@ -2,15 +2,12 @@
 <resources>
 
     <color name="transparent">#00000000</color>
-    <color name="app_bg">#efeff4</color>
-
-    <color name="rating_progress_color">#ff9d09</color>
-
+    <color name="app_bg">#EFEFF4</color>
+    <color name="text_color_yellow">#ff9d09</color>
+    <color name="sideBarcolor">#303F9F</color>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
-    <color name="dialog_title_text_color">#333</color>
+    <color name="tab_text_normal_color">#333</color>
     <color name="dialog_content_text_color">#666</color>
 
     <color name="colorMain">#f5f5f5</color>
@@ -36,14 +33,12 @@
 
     <color name="tab_bg">#FFF</color>
     <color name="tab_text_checked_color">#fb5549</color>
-    <color name="tab_text_normal_color">#333</color>
     <color name="tab_bottom_line_color">#dadada</color>
 
     <color name="list_item_bg">#FFF</color>
     <color name="list_item_line_color">#d9d9d9</color>
     <color name="list_item_label_color">#999</color>
-    <color name="list_item_value_color">#333</color>
-    <color name="list_item_number_color">#ff9d09</color>
+
 
     <color name="order_list_item_status_label_color">#14bfad</color>
     <color name="order_list_item_remain_time_color">#fE6765</color>
@@ -67,8 +62,6 @@
     <color name="order_detail_step_view_done_color">#14bfad</color>
     <color name="order_detail_step_view_todo_color">#d9d9d9</color>
     <color name="order_detail_step_view_text_color">#666666</color>
-    <color name="order_detail_section_item_descrption_text_color">#666</color>
-    <color name="order_detail_section_item_value_text_color">#333</color>
 
     <!-- Custom Dialog-->
     <color name="dialog_button_negative_bg_normal">#CAC7CB</color>
@@ -87,25 +80,20 @@
 
     <color name="popup_window_button_normal">@color/transparent</color>
     <color name="popup_window_button_pressed">#fb5549</color>
-    <color name="popup_window_button_text_normal">#333</color>
     <color name="popup_window_button_text_pressed">#FFF</color>
 
     <color name="coupon_fragment_top_text_color">#FFF</color>
-    <color name="coupon_fragment_bottom_text_color">#666</color>
 
-    <color name="paid_coupon_detail_activity_value_text_color">#333</color>
-    <color name="paid_coupon_user_detail_header_text_color">#666</color>
     <color name="paid_coupon_user_detail_header_background_color">#f3f0eb</color>
 
-    <color name="normal_coupon_detail_activity_share_text_color">#666</color>
     <color name="normal_coupon_detail_activity_share_title_text_color">#FF6565</color>
     <color name="normal_coupon_detail_activity_background_color">#fff7e3</color>
     <color name="normal_coupon_detail_activity_commission_color">#FF6565</color>
     <color name="title_Radio_button">#FFAABB</color>
     <color name="side_bar_text">#666666</color>
-    <color name="sideBarcolor">#303F9F</color>
+
     <color name="shadow_bg">#66000000</color>
-    <color name="edit_bg">#EFEFF4</color>
+
     <color name="darker_gray">#9b9b9b</color>
     <color name="divider_thin_color">#66bdbdbd</color>
     <color name="button_border">#cfcfcf</color>
@@ -120,8 +108,7 @@
     <color name="title_text">#333333</color>
     <color name="radio_btn_normal">#fb6257</color>
     <color name="text_index">#4d4d4d</color>
-    <color name="main_bg">#EFEFF4</color>
-    <color name="contact_item_number_text_color">#ff9d09</color>
+
     <color name="contact_item_name_text_color">#222222</color>
     <color name="phone_number_text_color">#818181</color>
     <color name="contact_remark_text_color">#404040</color>

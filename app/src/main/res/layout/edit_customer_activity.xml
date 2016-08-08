@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_bg"
+    android:background="@color/app_bg"
     >
     <include layout="@layout/toolbar"></include>
 
@@ -10,7 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/edit_remark"
-            android:background="@color/main_bg"
+            android:background="@color/app_bg"
             android:textSize="@dimen/fontBody"
             android:padding="@dimen/padding_12"
             />
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/edit_remark_message"
-        android:background="@color/main_bg"
+        android:background="@color/app_bg"
         android:textSize="@dimen/fontBody"
         android:padding="@dimen/padding_12"
         />

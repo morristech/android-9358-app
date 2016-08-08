@@ -300,7 +300,7 @@
     <string name="contact_hint_phone">请输入手机号</string>
     <string name="toast_useful_name">请输入姓名</string>
     <string name="delete_contact">删除好友</string>
-    <string name="add_remark">添加备注</string>
+    <string name="add_remark">修改备注</string>
     <string name="alert_delete_contact">确认删除好友？</string>
     <string name="alert_delete_contact_message">删除好友后您的好友列表不再显示该好友信息。</string>
     <string name="delete_contact_success">删除好友成功</string>

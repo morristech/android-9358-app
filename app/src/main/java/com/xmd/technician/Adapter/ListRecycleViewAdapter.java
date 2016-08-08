@@ -243,13 +243,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 couponListItemViewHolder.mTvCouponTitle.setText("点钟券");
                 couponListItemViewHolder.mCouponType.setVisibility(View.GONE);
             } else {
-                couponListItemViewHolder.mTvCouponTitle.setText(couponInfo.actTitle);
+                couponListItemViewHolder.mTvCouponTitle.setText(Utils.StrSubstring(8,couponInfo.actTitle));
                 couponListItemViewHolder.mCouponType.setVisibility(View.VISIBLE);
             }
             couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
-            couponListItemViewHolder.mCouponPeriod.setText("有效时间：" + couponInfo.couponPeriod);
-            if (couponInfo.techCommission > 0 || couponInfo.techBaseCommission > 0) {
-                String money = Utils.getFloat2Str(String.valueOf(couponInfo.techCommission > couponInfo.techBaseCommission ? couponInfo.techCommission : couponInfo.techBaseCommission));
+            couponListItemViewHolder.mCouponPeriod.setText("有效时间：" + Utils.StrSubstring(19,couponInfo.couponPeriod));
+                if (couponInfo.techCommission > 0 ) {
+                String money = Utils.getFloat2Str(String.valueOf(couponInfo.techCommission));
                 String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), money);
                 SpannableString spannableString = new SpannableString(text);
                 spannableString.setSpan(new TextAppearanceSpan(mContext, R.style.text_bold), 3, text.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

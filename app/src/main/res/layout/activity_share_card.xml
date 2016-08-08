@@ -95,7 +95,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="@dimen/margin_2"
                                     android:layout_marginRight="@dimen/margin_2"
-                                    android:textColor="@color/list_item_number_color" />
+                                    android:textColor="@color/text_color_yellow" />
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

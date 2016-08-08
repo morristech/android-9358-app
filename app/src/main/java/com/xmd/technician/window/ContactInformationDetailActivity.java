@@ -205,7 +205,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     @OnClick(R.id.btn_EmChat)
     public void chatToCustomer() {
-        Log.i("TAG","chatName>>"+chatName);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(chatEmId, chatName, chatHeadUrl));
     }
 
@@ -434,6 +433,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if(resultCode == RESULT_OK){
             if(Utils.isNotEmpty(data.getStringExtra(RequestConstant.KEY_NOTE_NAME))){
                 mContactName.setText(data.getStringExtra(RequestConstant.KEY_NOTE_NAME));
+                chatName = data.getStringExtra(RequestConstant.KEY_NOTE_NAME);
             }
            if(Utils.isNotEmpty(data.getStringExtra(RequestConstant.KEY_REMARK))){
                 mContactRemark.setText(data.getStringExtra(RequestConstant.KEY_REMARK));

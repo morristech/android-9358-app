@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:gravity="center_vertical"
-            android:textColor="@color/coupon_fragment_bottom_text_color" />
+            android:textColor="@color/dialog_content_text_color" />
 
         <TextView
             android:layout_width="@dimen/coupon_list_item_share_width"

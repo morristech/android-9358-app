@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:padding="@dimen/inter_space"
         android:gravity="center"
-        android:textColor="@color/dialog_title_text_color"
+        android:textColor="@color/tab_text_normal_color"
         android:textSize="@dimen/dialog_content_title_size"
         android:layout_height="@dimen/dialog_title_height"
         android:text="Title"/>

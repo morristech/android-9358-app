@@ -54,7 +54,14 @@ public class CouponFragment extends BaseListFragment<CouponInfo> {
     }
 
     private void handleGetCopuonListResult(CouponListResult result) {
+
         if(!isVisible()){
+            return;
+        }
+        if(result.respData==null){
+
+            ((BaseFragmentActivity)getActivity()).makeShortToast(result.msg);
+            onGetListSucceeded(0, new ArrayList<CouponInfo>());
             return;
         }
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
@@ -62,7 +69,7 @@ public class CouponFragment extends BaseListFragment<CouponInfo> {
             ((BaseFragmentActivity)getActivity()).makeShortToast(result.msg);
             onGetListSucceeded(0, new ArrayList<CouponInfo>());
         } else {
-            if(result.respData.coupons == null || result.respData.coupons.isEmpty()){
+            if(null == result.respData.coupons || result.respData.coupons.isEmpty()){
                 ((BaseFragmentActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.coupon_fragment_coupon_empty_reason));
             }else {
                 Collections.sort(result.respData.coupons, (lhs, rhs) -> {

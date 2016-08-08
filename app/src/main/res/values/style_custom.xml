@@ -132,7 +132,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">@dimen/inter_space</item>
-        <item name="android:textColor">@color/paid_coupon_user_detail_header_text_color</item>
+        <item name="android:textColor">@color/dialog_content_text_color</item>
     </style>
 
     <!-- -->

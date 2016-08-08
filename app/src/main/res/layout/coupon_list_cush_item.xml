@@ -26,6 +26,8 @@
                 android:gravity="center"
                 android:paddingLeft="@dimen/padding_10"
                 android:paddingTop="@dimen/padding_10"
+                android:ellipsize="middle"
+                android:singleLine="true"
                 android:textColor="@color/colorHead"
                 android:textSize="@dimen/fontTitle" />
             <TextView

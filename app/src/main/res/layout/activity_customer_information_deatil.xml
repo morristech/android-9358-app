@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_bg"
+    android:background="@color/app_bg"
     >
     <include layout="@layout/toolbar"></include>
     <ScrollView
@@ -71,7 +71,7 @@
                                 android:layout_width="wrap_content"
                                 android:textSize="@dimen/fontTitle"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/contact_item_number_text_color"
+                                android:textColor="@color/text_color_yellow"
                                 />
                             <TextView
                                 android:layout_width="wrap_content"
@@ -244,7 +244,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_15"
-                    android:background="@color/main_bg"
+                    android:background="@color/app_bg"
                     />
                 <TextView
                     android:layout_width="match_parent"
@@ -260,7 +260,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/main_bg"
+                    android:background="@color/app_bg"
                     />
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -328,7 +328,7 @@
                         android:id="@+id/view_div"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
-                        android:background="@color/main_bg"
+                        android:background="@color/app_bg"
                         android:visibility="gone"
                         />
                     <RelativeLayout

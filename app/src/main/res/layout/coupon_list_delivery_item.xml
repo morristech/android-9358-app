@@ -25,6 +25,8 @@
                 android:paddingLeft="@dimen/padding_10"
                 android:paddingTop="@dimen/padding_10"
                 android:textColor="@color/colorHead"
+                android:singleLine="true"
+                android:ellipsize="middle"
                 android:textSize="@dimen/fontTitle" />
             <TextView
                 android:id="@+id/coupon_type"

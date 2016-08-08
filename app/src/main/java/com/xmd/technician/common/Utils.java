@@ -439,5 +439,12 @@ public class Utils {
         }
         return metaDataValue;
     }
+    public static String StrSubstring(int length,String s){
+        if(s.length()>length){
+            return s.substring(0,length)+"...";
+        }else {
+            return s;
+        }
+    }
 }
 
