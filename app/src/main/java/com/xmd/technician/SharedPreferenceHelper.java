@@ -25,6 +25,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_USER_AVATAR = "DC03806303F221B804777E64B24B654C";//avatarUrl
     private static final String KEY_SERIAL_NO = "492B6C37356A803DCB43795618DB5DCA";//serialNo
     private static final String KEY_UPDATE_SERVER = "EB8329FF8AAC026D206E3C0A811D0D96";//updateServer
+    private static final String KEY_USER_CLUB_ID ="7660E9BC2D136134F0FBC2856A803DC";//clubID
     /**
      * Last time to check the upgrade automatically
      */
@@ -77,6 +78,13 @@ public class SharedPreferenceHelper {
 
     public static String getUserName() {
         return mSettingPreference.getString(KEY_USER_NAME, "");
+    }
+    public static void setUserClubId(String clubId) {
+        mSettingPreference.edit().putString(KEY_USER_CLUB_ID, clubId).apply();
+    }
+
+    public static String getUserClubId() {
+        return mSettingPreference.getString(KEY_USER_CLUB_ID, "");
     }
 
     public static void setEmchatId(String emchatId) {
@@ -184,10 +192,17 @@ public class SharedPreferenceHelper {
     public static boolean getBindSuccess(){
         return  mSettingPreference.getBoolean(RequestConstant.KEY_BIND_WX_SUCCESS,false);
     }
-    public static void setUserType(String userType){
-        mSettingPreference.edit().putString(ChatConstant.EMCHAT_USER_TYPE,userType);
+//    public static void setUserType(String userType){
+//        mSettingPreference.edit().putString(ChatConstant.EMCHAT_USER_TYPE,userType);
+//    }
+//    public static String getUserType(){
+//        return  mSettingPreference.getString(ChatConstant.EMCHAT_USER_TYPE,"");
+//    }
+    public static void setUserRemarkName(String userChatId,String remark){
+        mSettingPreference.edit().putString(userChatId,remark).apply();
     }
-    public static String getUserType(){
-        return  mSettingPreference.getString(ChatConstant.EMCHAT_USER_TYPE,"");
+    public static String getUserRemark(String userChatId){
+        return  mSettingPreference.getString(userChatId,"");
     }
+
 }

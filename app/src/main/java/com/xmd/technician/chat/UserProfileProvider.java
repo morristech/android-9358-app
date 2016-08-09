@@ -76,6 +76,7 @@ public class UserProfileProvider {
     }
 
     public synchronized void updateCurrentUserInfo(String nick, String avatarUrl) {
+
         SharedPreferenceHelper.setUserName(nick);
         SharedPreferenceHelper.setUserAvatar(avatarUrl);
         if (mCurrentUser != null && mCurrentUser.getUsername().equals(SharedPreferenceHelper.getEmchatId())) {
@@ -137,6 +138,8 @@ public class UserProfileProvider {
                     saveContact(user);
                 }
             });
+        }else{
+            updateContactInfo(user);
         }
     }
 
@@ -155,6 +158,7 @@ public class UserProfileProvider {
                 }
             });
         }
+
     }
 
     /**

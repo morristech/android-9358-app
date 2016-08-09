@@ -15,6 +15,7 @@ import com.xmd.technician.bean.CheckedCoupon;
 import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -100,17 +101,20 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.toolbar_right) {
-            for (int i = 0; i < checkedCouponList.size(); i++) {
-                RxBus.getInstance().post(checkedCouponList.get(i));
-            }
-            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-                @Override
-                public void run() {
-                    finish();
+        if(Utils.isNotFastClick()){
+            if (v.getId() == R.id.toolbar_right) {
+                for (int i = 0; i < checkedCouponList.size(); i++) {
+                    RxBus.getInstance().post(checkedCouponList.get(i));
                 }
-            }, 800);
+                ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 600);
+            }
         }
+
     }
 
     @Override

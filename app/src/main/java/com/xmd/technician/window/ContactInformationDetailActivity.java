@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.DeleteContactResult;
 import com.xmd.technician.bean.ManagerDetailResult;
@@ -434,6 +435,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             if(Utils.isNotEmpty(data.getStringExtra(RequestConstant.KEY_NOTE_NAME))){
                 mContactName.setText(data.getStringExtra(RequestConstant.KEY_NOTE_NAME));
                 chatName = data.getStringExtra(RequestConstant.KEY_NOTE_NAME);
+                SharedPreferenceHelper.setUserRemarkName(chatEmId,chatName);
             }
            if(Utils.isNotEmpty(data.getStringExtra(RequestConstant.KEY_REMARK))){
                 mContactRemark.setText(data.getStringExtra(RequestConstant.KEY_REMARK));

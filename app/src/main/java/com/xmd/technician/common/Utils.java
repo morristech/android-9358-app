@@ -17,6 +17,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.window.SysNoticeListActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +38,7 @@ import java.util.regex.Pattern;
  * Created by sdcm on 15-10-26.
  */
 public class Utils {
-
+    private static long lastClickTime;
     public static String getProcessName(Context cxt, int pid) {
         ActivityManager am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
@@ -445,6 +447,15 @@ public class Utils {
         }else {
             return s;
         }
+    }
+    public synchronized static boolean isNotFastClick() {
+
+        long time = System.currentTimeMillis();
+        if ( time - lastClickTime < 2000) {
+            return false;
+        }
+        lastClickTime = time;
+        return true;
     }
 }
 

@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,9 +75,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     private static final int TYPE_ORDER_ITEM = 0;
-    private static final int TYPE_COUPON_INFO_ITEM_CUSH = 11;
     private static final int TYPE_PAID_COUPON_USER_DETAIL = 2;
     private static final int TYPE_CONVERSATION = 3;
+    private static final int TYPE_COUPON_INFO_ITEM_CUSH = 11;
     private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
     private static final int TYPE_COUPON_INFO_ITEM_FAVORUABLE = 13;
 
@@ -124,9 +125,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (mData.get(position) instanceof Order) {
                 return TYPE_ORDER_ITEM;
             } else if (mData.get(position) instanceof CouponInfo) {
-                if (((CouponInfo) mData.get(position)).useTypeName.equals("现金券")) {
+                if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.cash_coupon))) {
                     return TYPE_COUPON_INFO_ITEM_CUSH;
-                } else if (((CouponInfo) mData.get(position)).useTypeName.equals("点钟券")) {
+                } else if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
                     return TYPE_COUPON_INFO_ITEM_DELIVERY;
                 } else {
                     return TYPE_COUPON_INFO_ITEM_FAVORUABLE;
@@ -286,7 +287,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (!(obj instanceof EMConversation)) {
                 return;
             }
-
             final EMConversation conversation = (EMConversation) obj;
             ConversationViewHolder conversationHolder = (ConversationViewHolder) holder;
 
@@ -309,7 +309,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                         ChatUser user;
                         user = new ChatUser(conversation.getUserName());
                         user.setAvatar(lastMessage.getStringAttribute(ChatConstant.KEY_HEADER));
-                        user.setNick(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
+                        if(Utils.isNotEmpty(SharedPreferenceHelper.getUserRemark(lastMessage.getFrom()))){
+                           user.setNick(SharedPreferenceHelper.getUserRemark(lastMessage.getFrom()));
+                        }else{
+                            user.setNick(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
+                        }
                         UserUtils.updateUser(user);
                     }
                     UserUtils.setUserAvatar(mContext, conversation.getUserName(), conversationHolder.mAvatar);

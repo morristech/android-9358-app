@@ -51,7 +51,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
 
     protected void initListLayout() {
 
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMain);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mLayoutManager = new LinearLayoutManager(getActivity());

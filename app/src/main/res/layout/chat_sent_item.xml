@@ -72,45 +72,74 @@
             android:textColor="@color/color_white"
             android:textSize="@dimen/fontBody"
             android:text="@string/request_user_reward"
-
             android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/coupon_container"
-            android:layout_width="wrap_content"
-            android:minWidth="200dp"
-            android:layout_height="wrap_content"
+            android:layout_width="180dp"
+            android:layout_height="80dp"
             android:layout_toLeftOf="@+id/avatar"
             android:layout_below="@+id/time"
             android:background="@drawable/sent_coupon_bg"
             android:orientation="vertical"
             android:visibility="gone">
-
-            <LinearLayout
+            <RelativeLayout
+               android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                android:id="@+id/coupon_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/personal_padding"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal">
+                android:background="@drawable/coupon_type_bg"
+                android:textColor="@color/text_color_yellow"
+                android:textSize="@dimen/fontRemark"
+                />
                 <TextView
-                    android:id="@+id/coupon_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/coupon_type_bg"
-                    android:textColor="@color/text_color_yellow"
-                    android:textSize="@dimen/fontRemark"
+                android:id="@+id/coupon_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/fontTitle"
+                android:text="@string/app_info_title"
+                    android:paddingRight="@dimen/margin_15"
+                    android:gravity="end"
+                    android:layout_alignParentRight="true"
 
                     />
 
-                <TextView
-                    android:id="@+id/coupon_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/fontTitle"
-                    android:text="@string/app_info_title"/>
-            </LinearLayout>
+
+            </RelativeLayout>
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="@dimen/personal_padding"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:orientation="horizontal">-->
+                <!---->
+                <!--<TextView-->
+                    <!--android:id="@+id/coupon_type"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@drawable/coupon_type_bg"-->
+                    <!--android:textColor="@color/text_color_yellow"-->
+                    <!--android:textSize="@dimen/fontRemark"-->
+
+                    <!--/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/coupon_amount"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="16dp"-->
+                    <!--android:textColor="@color/color_white"-->
+                    <!--android:textSize="@dimen/fontTitle"-->
+                    <!--android:text="@string/app_info_title"/>-->
+            <!--</LinearLayout>-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
             <TextView
             android:id="@+id/coupon_period"
             android:layout_width="match_parent"
@@ -121,30 +150,47 @@
             android:textSize="@dimen/fontRemark"
             android:paddingTop="@dimen/margin_5"
                 android:layout_marginTop="@dimen/margin_right_10"
+                android:singleLine="true"
+                android:ellipsize="end"
             android:text="2106.3"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/paid_coupon_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="200dp"
+            android:layout_width="180dp"
+            android:layout_height="80dp"
             android:layout_toLeftOf="@+id/avatar"
             android:layout_below="@+id/time"
             android:background="@drawable/sent_coupon_bg"
             android:orientation="vertical"
             android:visibility="gone">
-            <TextView
-                android:id="@+id/paid_coupon_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/personal_padding"
-                android:drawableLeft="@drawable/qdz"
-                android:drawablePadding="@dimen/search_margin"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/fontTitle"
-                android:text="@string/app_info_title"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+          <RelativeLayout
+              android:layout_width="160dp"
+              android:layout_height="wrap_content">
+              <ImageView
+                  android:id="@+id/qdz"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:src="@drawable/qdz"
+                  />
+              <TextView
+                  android:id="@+id/paid_coupon_amount"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_toRightOf="@id/qdz"
+                  android:gravity="end"
+                  android:layout_alignParentRight="true"
+                  android:textColor="@color/color_white"
+                  android:textSize="@dimen/fontTitle"
+                  android:text="@string/app_info_title"
 
+                  />
+
+          </RelativeLayout>
             <TextView
                 android:id="@+id/paid_coupon_period"
                 android:layout_width="match_parent"
