@@ -10,18 +10,21 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xmd.technician.Adapter.ChatCouponAdapter;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CheckedCoupon;
 import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,7 +104,7 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
 
     @Override
     public void onClick(View v) {
-        if(Utils.isNotFastClick()){
+        if (Utils.isNotFastClick()) {
             if (v.getId() == R.id.toolbar_right) {
                 for (int i = 0; i < checkedCouponList.size(); i++) {
                     RxBus.getInstance().post(checkedCouponList.get(i));
@@ -121,17 +124,22 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
     public void onRefresh() {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
     }
-    private void getRedpackListResult(CouponListResult result){
-        if(result.statusCode == 200){
-            if(result.respData.coupons != null){
-                couponInfoList.clear();
-                for(CouponInfo info :result.respData.coupons){
-                    couponInfoList.add(info);
-                }
+
+    private void getRedpackListResult(CouponListResult result) {
+
+        Collections.sort(result.respData.coupons, (lhs, rhs) -> {
+            if (Constant.COUPON_TYPE_PAID.equals(rhs.couponType)) return 1;
+            else if (Constant.COUPON_TYPE_PAID.equals(lhs.couponType)) return -1;
+            return 0;
+        });
+        if (result.respData.coupons != null) {
+            couponInfoList.clear();
+            for (CouponInfo info : result.respData.coupons) {
+                couponInfoList.add(info);
             }
-            adapter.notifyDataSetChanged();
         }
-            mSwipeRefreshWidget.setRefreshing(false);
+        adapter.notifyDataSetChanged();
+        mSwipeRefreshWidget.setRefreshing(false);
 
     }
 

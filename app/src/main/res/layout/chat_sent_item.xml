@@ -169,7 +169,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
           <RelativeLayout
-              android:layout_width="160dp"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content">
               <ImageView
                   android:id="@+id/qdz"
@@ -187,7 +187,7 @@
                   android:textColor="@color/color_white"
                   android:textSize="@dimen/fontTitle"
                   android:text="@string/app_info_title"
-
+                 android:singleLine="true"
                   />
 
           </RelativeLayout>
