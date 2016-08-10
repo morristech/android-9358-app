@@ -171,6 +171,7 @@
     <dimen name="coupon_amount_margin">8dp</dimen>
     <dimen name="share_btn_width">60dp</dimen>
     <dimen name="comment_message_height">36dp</dimen>
+    <dimen name="credit_button_height">48dp</dimen>
 
 
 
