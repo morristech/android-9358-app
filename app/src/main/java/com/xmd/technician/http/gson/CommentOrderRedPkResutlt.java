@@ -11,7 +11,9 @@ public class CommentOrderRedPkResutlt extends BaseResult{
         public int allCommentCount;
         public float accountAmount;
         public int orderCount;
+        public int credits;
         public String techStatus;
         public String techStatusDesc;
+
     }
 }
