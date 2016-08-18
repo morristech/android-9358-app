@@ -39,7 +39,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/7/19.
  */
-public class ShareCardActivity extends BaseActivity {
+public class shareCardActivity extends BaseActivity {
 
 
     @Bind(R.id.user_card_head)
@@ -106,7 +106,7 @@ public class ShareCardActivity extends BaseActivity {
             mTechCode.setVisibility(View.GONE);
         }
         if(!TextUtils.isEmpty(codeUrl)){
-            Glide.with(ShareCardActivity.this).load(codeUrl).into(mUserShareCode);
+            Glide.with(shareCardActivity.this).load(codeUrl).into(mUserShareCode);
         }else {
             mUserShareCode.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
