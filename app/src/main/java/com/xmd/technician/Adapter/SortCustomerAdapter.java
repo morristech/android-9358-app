@@ -1,7 +1,6 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +21,7 @@ import com.xmd.technician.widget.CircleImageView;
 
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 
 /**
  * Created by Administrator on 2016/7/13.

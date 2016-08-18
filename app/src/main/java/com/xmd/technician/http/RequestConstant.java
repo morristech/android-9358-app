@@ -161,6 +161,7 @@ public class RequestConstant {
     public static final String KEY_CUSTOMER_TYPE = "customerType";
     public static final String TECH_ADD = "tech_add";
     public static final String FANS_USER = "fans_user";
+    public static final String CONTACT_TYPE = "type";
     public static final String WX_USER = "wx_user";
 
 

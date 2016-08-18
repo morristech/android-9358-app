@@ -119,62 +119,65 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     private void handlerCustomerInfoList(CustomerListResult customerResult) {
         mCustomerList.clear();
         mCustomerList.addAll(customerResult.respData);
-        String name;
-        for (int i = 0; i < mCustomerList.size(); i++) {
-            if (Utils.isNotEmpty(mCustomerList.get(i).userNoteName)) {
-                name = mCustomerList.get(i).userNoteName;
-            } else if (Utils.isNotEmpty(mCustomerList.get(i).userName)) {
-                name = mCustomerList.get(i).userName;
-            } else {
-                name = "匿名";
-            }
-            String pinyin = characterParser.getSelling(name);
-            if (pinyin.length() > 0) {
-                String sortString = pinyin.substring(0, 1).toUpperCase();
-                if (sortString.matches("[A-Z]")) {
-                    mCustomerList.get(i).sortLetters = sortString;
+        if(mCustomerList.size()>0){
+                       titleLayout.setVisibility(View.VISIBLE);
+            String name;
+            for (int i = 0; i < mCustomerList.size(); i++) {
+                if (Utils.isNotEmpty(mCustomerList.get(i).userNoteName)) {
+                    name = mCustomerList.get(i).userNoteName;
+                } else if (Utils.isNotEmpty(mCustomerList.get(i).userName)) {
+                    name = mCustomerList.get(i).userName;
                 } else {
-                    mCustomerList.get(i).sortLetters = "#";
+                    name = "匿名";
+                }
+                String pinyin = characterParser.getSelling(name);
+                if (pinyin.length() > 0) {
+                    String sortString = pinyin.substring(0, 1).toUpperCase();
+                    if (sortString.matches("[A-Z]")) {
+                        mCustomerList.get(i).sortLetters = sortString;
+                    } else {
+                        mCustomerList.get(i).sortLetters = "#";
+                    }
                 }
             }
-        }
-        mSwipeRefreshLayout.setRefreshing(false);
-        search.setOnClickListener(this);
-        silebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
-            @Override
-            public void onTouchingLetterChanged(String s) {
-                silebar.setTextView(contentDialog);
-                int position = adapter.getPositionForSection(s.charAt(0));
-                if (position != -1) {
-                    listView.setSelection(position);
+            mSwipeRefreshLayout.setRefreshing(false);
+            search.setOnClickListener(this);
+            silebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+                @Override
+                public void onTouchingLetterChanged(String s) {
+                    silebar.setTextView(contentDialog);
+                    int position = adapter.getPositionForSection(s.charAt(0));
+                    if (position != -1) {
+                        listView.setSelection(position);
+                    }
                 }
-            }
-        });
+            });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-                if(customerInfos!=null&&customerInfos.size()>0){
-                    intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
-                }else{
-                    intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mCustomerList.get(position).id);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
+                    if(customerInfos!=null&&customerInfos.size()>0){
+                        intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
+                    }else{
+                        intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mCustomerList.get(position).id);
+                    }
+                    intent.putExtra(RequestConstant.CONTACT_TYPE,mCustomerList.get(position).customerType);
+                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, "customer");
+                    startActivity(intent);
                 }
-                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, "customer");
-                startActivity(intent);
+            });
+            pinyinComparator = new PinyinCompartorUtil();
+            Collections.sort(mCustomerList, pinyinComparator);
+            if (mCustomerList.size() <=0) {
+                return;
             }
-        });
-        pinyinComparator = new PinyinCompartorUtil();
-        Collections.sort(mCustomerList, pinyinComparator);
-        if (mCustomerList.size() <=0) {
-            return;
-        }
-        adapter = new SortCustomerAdapter(getActivity(), mCustomerList);
-        listView.setAdapter(adapter);
-        alertMessage.setVisibility(View.GONE);
-        if (mCustomerList.size() == 1) {
-            title.setVisibility(View.GONE);
-        }
+            adapter = new SortCustomerAdapter(getActivity(), mCustomerList);
+            listView.setAdapter(adapter);
+            alertMessage.setVisibility(View.GONE);
+            if (mCustomerList.size() == 1) {
+                title.setVisibility(View.GONE);
+            }
             listView.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -215,27 +218,33 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
             });
 
 
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.length()>0){
-                    searchCustomer();
-                }else{
-                    closeSearch();
                 }
 
-            }
-        });
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if(s.length()>0){
+                        searchCustomer();
+                    }else{
+                        closeSearch();
+                    }
+
+                }
+            });
+
+        }else{
+                      titleLayout.setVisibility(View.GONE);
+            adapter = new SortCustomerAdapter(getActivity(), new ArrayList<>());
+            listView.setAdapter(adapter);
+        }
 
     }
 

@@ -64,13 +64,12 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     private int screenWidth;
     private Activity ac;
     private Map<String,String> params = new HashMap<>();
-
-
     private View  viewM;
     private View view;
     private PopupWindow window = null;
     private LayoutInflater layoutInflater;
     private ImageView imgRight;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -140,9 +139,11 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 switch (position){
                     case 0:
                         mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                        mImageDown.setClickable(true);
                         break;
                     case 1:
                         mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                        mImageDown.setClickable(false);
                         break;
                 }
                 currentIndex = position;
@@ -169,12 +170,14 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 mViewpagerContact.setCurrentItem(0);
                 currentIndex = 0;
                 mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                mImageDown.setClickable(true);
                 break;
             case R.id.table_club:
                 resetTextView();
                 mViewpagerContact.setCurrentItem(1);
                 currentIndex = 1;
                 mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                mImageDown.setClickable(false);
                 break;
             case R.id.image_down:
                 showOutMenu();
@@ -211,7 +214,6 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
             LinearLayout phoneContact = (LinearLayout) viewM.findViewById(R.id.phone_contact);
             LinearLayout fansContact = (LinearLayout) viewM.findViewById(R.id.fans_contact);
             LinearLayout wxContact = (LinearLayout) viewM.findViewById(R.id.wx_contact);
-   //         TextView ticketContact = (TextView) viewM.findViewById(R.id.ticket_contact);
             TextView cancel = (TextView) viewM.findViewById(R.id.cancel_contact);
 
             allContact.setOnClickListener((v)->{
@@ -230,16 +232,11 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 requestContactList(RequestConstant.WX_USER);
                 window.dismiss();
             });
-//            ticketContact.setOnClickListener((v)->{
-//                window.dismiss();
-//            });
             cancel.setOnClickListener((v)->{
                 if(window!=null){
                     window.dismiss();
                 }
-
             });
-
         }
         try {
             if(window != null){

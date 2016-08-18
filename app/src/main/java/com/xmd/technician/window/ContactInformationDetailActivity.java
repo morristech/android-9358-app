@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -53,7 +54,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     RoundImageView mContactHead;
     @Bind(R.id.tv_customer_name)
     TextView mContactName;
-    @Bind(R.id.tv_customer_telephoe)
+    @Bind(R.id.tv_customer_telephone)
     TextView mContactTelephone;
     @Bind(R.id.tv_customer_nick_name)
     TextView mContactNickName;
@@ -145,6 +146,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
         contactType = intent.getStringExtra(RequestConstant.KEY_CONTACT_TYPE);
         isEmptyCustomer = intent.getBooleanExtra(RequestConstant.KEY_IS_EMPTY, false);
         managerHeadUrl = intent.getStringExtra(RequestConstant.KEY_MANAGER_URL);
+        userType = intent.getStringExtra(RequestConstant.CONTACT_TYPE);
+
         initView();
     }
 
@@ -306,6 +309,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
         }
         isEmptyCustomer = TextUtils.isEmpty(customer.respData.techCustomer.emchatId) ? true : false;
         Glide.with(mContext).load(customer.respData.techCustomer.avatarUrl).error(R.drawable.icon22).into(mContactHead);
+
+
         if (isEmptyCustomer) {
             btnEmChat.setEnabled(false);
             registerAlert.setVisibility(View.VISIBLE);
@@ -372,6 +377,16 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 initOrder1(customer);
                 initOrder2(customer);
             }
+        }
+       if(userType.equals(RequestConstant.WX_USER)){
+            mContactTelephone.setVisibility(View.GONE);
+            btnCallPhone.setEnabled(false);
+            btnCallPhone.setClickable(false);
+            btnCallPhone.setTextColor(ResourceUtils.getColor(R.color.colorBtnChat));
+
+            btnChat.setEnabled(false);
+            btnChat.setClickable(false);
+            btnChat.setTextColor(ResourceUtils.getColor(R.color.colorBtnChat));
         }
     }
     private void initOrder1(CustomerDetailResult customer) {

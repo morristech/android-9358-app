@@ -33,7 +33,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import rx.schedulers.NewThreadScheduler;
 
 /**
  * Created by Administrator on 2016/8/17.
@@ -49,6 +48,7 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
     private View viewM;
     private View view;
     private PopupWindow window = null;
+    private LinearLayout ll_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +59,14 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
     }
 
     private void initWebView() {
+        ll_layout = (LinearLayout) findViewById(R.id.ll_layout);
         mCustomWebView = new CustomWebView(this, this);
         mIntruduceUrl = SharedPreferenceHelper.getServerHost() + RequestConstant.URL_INTRODUCE_BIND;
         mCustomWebView.loadUrl(mIntruduceUrl);//加载页面
         mCustomWebView.setFocusable(true);
         mCustomWebView.setFocusableInTouchMode(true);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        addContentView(mCustomWebView, lp);
+        ll_layout.addView(mCustomWebView, lp);
     }
 
     @Override

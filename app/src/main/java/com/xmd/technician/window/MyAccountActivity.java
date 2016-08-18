@@ -104,13 +104,8 @@ public class MyAccountActivity extends BaseActivity {
     }
 
     private void showConfirmDialog(){
-        new ConfirmDialog(this, getString(R.string.consume_tip)) {
-            @Override
-            public void onConfirmClick() {
             Intent intent = new Intent(MyAccountActivity.this,IntroduceAccountActivity.class);
                 startActivity(intent);
-            }
-        }.show();
     }
 
     @OnClick(R.id.customer_reward_layout)

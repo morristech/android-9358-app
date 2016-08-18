@@ -102,20 +102,5 @@
         android:textSize="@dimen/fontTitle"
 
         />
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:gravity="center"-->
-    <!--&gt;-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/cancel_contact"-->
-    <!--android:layout_marginTop="@dimen/margin_10"-->
-    <!--style="@style/search_contact_popup_text_style"-->
-    <!--android:text="取消"-->
-    <!--android:background="@drawable/round_rect_white_bg"-->
-    <!--/>-->
-    <!--</RelativeLayout>-->
-
 
 </LinearLayout>
