@@ -35,6 +35,7 @@ import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.DropDownMenuDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
+import com.xmd.technician.widget.RoundImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +50,7 @@ import rx.Subscription;
  */
 public class ContactInformationDetailActivity extends BaseActivity {
     @Bind(R.id.customer_head)
-    CircleImageView mContactHead;
+    RoundImageView mContactHead;
     @Bind(R.id.tv_customer_name)
     TextView mContactName;
     @Bind(R.id.tv_customer_telephoe)
@@ -98,13 +99,18 @@ public class ContactInformationDetailActivity extends BaseActivity {
     TextView techNum;
     @Bind(R.id.view_div)
     View divView;
-
+    @Bind(R.id.register_alert)
+    TextView registerAlert;
+    @Bind(R.id.ll_marker_message)
+    LinearLayout markMessageLayout;
+    @Bind(R.id.text_contact_marker)
+    TextView contactMark;
 
     private static final int CONTACT_TYPE = 0x001;
     private static final int TECH_TYPE = 0x002;
     private static final int MANAGER_TYPE = 0x003;
     private static final int RESULT_ADD_REMARK = 0x010;
-    private int currenContactType;
+    private int currentContactType;
 
     private Subscription getCustomerInformationSubscription;
     private Subscription getManagerInformationSubscription;
@@ -122,8 +128,11 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private String chatName;
     private String chatHeadUrl;
     private String managerHeadUrl;
+    private String impression;
 
     private String userType;
+    private Boolean isTech;
+    private Map<String,String> params = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,18 +155,19 @@ public class ContactInformationDetailActivity extends BaseActivity {
             handlerDeleteCustomer(result);
         });
         if (contactType.equals("manager")) {
-            currenContactType = MANAGER_TYPE;
+            currentContactType = MANAGER_TYPE;
         } else if (contactType.equals("tech")) {
-            currenContactType = TECH_TYPE;
+            currentContactType = TECH_TYPE;
         } else {
-            currenContactType = CONTACT_TYPE;
+            currentContactType = CONTACT_TYPE;
         }
-        getViewFromType(currenContactType);
+        getViewFromType(currentContactType);
     }
 
     private void getViewFromType(int type) {
         switch (type) {
             case CONTACT_TYPE:
+                isTech = false;
                 contactMore.setVisibility(View.VISIBLE);
                 getCustomerInformationSubscription = RxBus.getInstance().toObservable(CustomerDetailResult.class).subscribe(
                         customer -> handlerCustomer(customer)
@@ -167,6 +177,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL, params);
                 break;
             case TECH_TYPE:
+                isTech = true;
                 getTechInformationSubscription = RxBus.getInstance().toObservable(TechDetailResult.class).subscribe(
                         tech -> handlerTech(tech)
                 );
@@ -175,6 +186,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL, paramTech);
                 break;
             case MANAGER_TYPE:
+                isTech = true;
                 getManagerInformationSubscription = RxBus.getInstance().toObservable(ManagerDetailResult.class).subscribe(
                         manager -> handlerManager(manager)
                 );
@@ -206,7 +218,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     @OnClick(R.id.btn_EmChat)
     public void chatToCustomer() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(chatEmId, chatName, chatHeadUrl));
+        if (chatEmId.equals(SharedPreferenceHelper.getEmchatId())){
+            this.makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
+            return;
+        }else{
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(chatEmId, chatName, chatHeadUrl,isTech));
+        }
+
     }
 
     @OnClick(R.id.contact_more)
@@ -230,6 +248,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     intent.putExtra(RequestConstant.KEY_ID,contactId);
                     intent.putExtra(RequestConstant.KEY_NOTE_NAME,mContactName.getText().toString());
                     intent.putExtra(RequestConstant.KEY_USERNAME,mContactNickName.getText().toString());
+                    intent.putExtra(RequestConstant.KEY_MARK_IMPRESSION,contactMark.getText().toString());
                     if(!remarkIsNotEmpty&&mContactRemark.getText().toString().equals(ResourceUtils.getString(R.string.customer_remark_empty))){
                         textRemarkAlert.setVisibility(View.VISIBLE);
                         intent.putExtra(RequestConstant.KEY_REMARK,mContactRemark.getText().toString());
@@ -264,8 +283,18 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
 
     private void handlerCustomer(CustomerDetailResult customer) {
-        chatEmId = customer.respData.techCustomer.emchatId;
-        chatHeadUrl = customer.respData.techCustomer.avatarUrl;
+        if(customer.respData!=null){
+            chatEmId = customer.respData.techCustomer.emchatId;
+            chatHeadUrl = customer.respData.techCustomer.avatarUrl;
+            impression = customer.respData.techCustomer.impression;
+        }
+        if(Utils.isNotEmpty(impression)){
+            markMessageLayout.setVisibility(View.VISIBLE);
+            contactMark.setText(impression);
+        }else{
+            markMessageLayout.setVisibility(View.GONE);
+        }
+
         if(Utils.isNotEmpty(customer.respData.techCustomer.userNoteName)){
             chatName = customer.respData.techCustomer.userNoteName;
         }else {
@@ -276,9 +305,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
           return;
         }
         isEmptyCustomer = TextUtils.isEmpty(customer.respData.techCustomer.emchatId) ? true : false;
-        Glide.with(mContext).load(customer.respData.techCustomer.avatarUrl).into(mContactHead);
+        Glide.with(mContext).load(customer.respData.techCustomer.avatarUrl).error(R.drawable.icon22).into(mContactHead);
         if (isEmptyCustomer) {
             btnEmChat.setEnabled(false);
+            registerAlert.setVisibility(View.VISIBLE);
             contactPhone = customer.respData.techCustomer.userLoginName;
             customerChatId = "";
             mContactName.setText(customer.respData.techCustomer.userNoteName);
@@ -416,7 +446,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
     private void handlerDeleteCustomer(DeleteContactResult result){
         if(result.resultcode==200){
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST);
+            params.put(RequestConstant.KEY_CONTACT_TYPE,"");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
             makeShortToast(ResourceUtils.getString(R.string.delete_contact_success));
             ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                 @Override
@@ -435,6 +466,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
             if(Utils.isNotEmpty(data.getStringExtra(RequestConstant.KEY_NOTE_NAME))){
                 mContactName.setText(data.getStringExtra(RequestConstant.KEY_NOTE_NAME));
                 chatName = data.getStringExtra(RequestConstant.KEY_NOTE_NAME);
+                impression = data.getStringExtra(RequestConstant.KEY_MARK_IMPRESSION);
+                if(Utils.isNotEmpty(impression)){
+                    markMessageLayout.setVisibility(View.VISIBLE);
+                    contactMark.setText(impression);
+                }else{
+                    markMessageLayout.setVisibility(View.GONE);
+                }
                 SharedPreferenceHelper.setUserRemarkName(chatEmId,chatName);
             }
            if(Utils.isNotEmpty(data.getStringExtra(RequestConstant.KEY_REMARK))){

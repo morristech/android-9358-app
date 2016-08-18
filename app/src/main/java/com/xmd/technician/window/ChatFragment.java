@@ -147,15 +147,23 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 Intent intent = new Intent(getContext(), ChatActivity.class);
                 if(conversation.isGroup()){
                     if(conversation.getType() == EMConversation.EMConversationType.ChatRoom){
-                        // it's group chat
                         intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_CHATROOM);
                     }else{
                         intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
                     }
-
                 }
+            for (int i = 0; i < conversation.getAllMessages().size(); i++) {
+//                if(conversation.getLastMessage().getFrom()){
+//
+//                }
+            }
+
+                        conversation.getAllMessages();
+
                 // it's single chat
                 intent.putExtra(ChatConstant.EMCHAT_ID, username);
+
+             //   intent.putExtra(ChatConstant.EMCHAT_IS_TECH,true);
                 startActivity(intent);
         }
     }

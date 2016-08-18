@@ -19,8 +19,6 @@ import android.widget.SimpleAdapter;
 
 import com.xmd.technician.R;
 import com.xmd.technician.chat.Emojicon;
-import com.xmd.technician.chat.SmileUtils;
-import com.xmd.technician.window.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

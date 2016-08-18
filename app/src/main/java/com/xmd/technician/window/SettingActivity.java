@@ -59,8 +59,8 @@ public class SettingActivity extends BaseActivity {
         configMessage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Intent intent = new Intent(SettingActivity.this,ConfigurationMonitorActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(SettingActivity.this,ConfigurationMonitorActivity.class);
+//                startActivity(intent);
                 return false;
             }
         });

@@ -67,13 +67,13 @@ public class ChatCouponAdapter extends RecyclerView.Adapter{
                chatCouponViewHolder.mTvCouponTitle.setText("点钟券");
                 chatCouponViewHolder.mCouponType.setVisibility(View.GONE);
             }else{
-               chatCouponViewHolder.mTvCouponTitle.setText(Utils.StrSubstring(6,couponInfo.actTitle));
+               chatCouponViewHolder.mTvCouponTitle.setText(Utils.StrSubstring(6,couponInfo.actTitle,true));
                chatCouponViewHolder.mCouponType.setVisibility(View.VISIBLE);
             }
            chatCouponViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
-           chatCouponViewHolder.mCouponPeriod.setText("有效时间："+Utils.StrSubstring(18,couponInfo.couponPeriod));
-            if (couponInfo.techCommission > 0||couponInfo.techBaseCommission>0) {
-                String money = Utils.getFloat2Str(String.valueOf(couponInfo.techCommission>couponInfo.techBaseCommission?couponInfo.techCommission:couponInfo.techBaseCommission));
+           chatCouponViewHolder.mCouponPeriod.setText("有效时间："+Utils.StrSubstring(18,couponInfo.couponPeriod,true));
+            if (couponInfo.techCommission > 0) {
+                String money = Utils.getFloat2Str(String.valueOf(couponInfo.techCommission));
                 String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), money);
                 SpannableString spannableString = new SpannableString(text);
                 spannableString.setSpan(new TextAppearanceSpan(mContext,R.style.text_bold),3,text.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

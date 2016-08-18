@@ -181,9 +181,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".window.SysNoticeListActivity"></activity>
 
-       <activity android:name=".window.EditContactInformation"
-           android:screenOrientation="portrait"/>
-        <activity android:name=".window.shareCardActivity"
+        <activity android:name=".window.EditContactInformation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".window.ShareCardActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".window.PreLoginActivity"
@@ -194,6 +194,20 @@
             />
         <activity android:name=".window.AvailableCouponListActivity"
             android:screenOrientation="portrait"
+            />
+        <activity android:name=".window.UserCreditCenterActivity">
+            android:screenOrientation="portrait"
+        </activity>
+        <activity android:name=".window.CreditExchangeActivity">
+            android:screenOrientation="portrait"
+        </activity>
+        <activity android:name=".window.CreditRuleExplainActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            />
+        <activity android:name=".window.IntroduceAccountActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             />
     </application>
 

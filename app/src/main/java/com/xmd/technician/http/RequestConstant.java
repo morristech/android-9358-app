@@ -62,13 +62,23 @@ public class RequestConstant {
     public static final String URL_GET_USER_WX_CODE = BASE_URL+"/v2/wx/oauth2/code";
     public static final String URL_GET_USER_IS_BIND_WX = BASE_URL+"/v2/tech/is_bind_wx";
 
+    public static final String URL_GET_CREDIT_SWITCH_STATUS = BASE_URL +"/v2/credit/switch/status";
+    public static final String URL_GET_CREDIT_EXCHANGE_APPLY = BASE_URL +"/v2/credit/exchange/apply";
+    public static final String URL_GET_CREDIT_USER_RECORDS = BASE_URL +"/v2/credit/user/records";
+    public static final String URL_GET_CREDIT_USER_ACCOUNT = BASE_URL +"/v2/credit/user/account";
+    public static final String URL_GET_CONTACT_MARK = BASE_URL +"/v2/club/impression/list";
+    public static final String URL_INTRODUCE_BIND ="/spa-manager/follow9358/index.html";
+
+
+
+
 
 
 
     public static final String URL_COUPON_SHARE_EVENT_COUNT = BASE_URL + "/v1/profile/redpacket/share";
     public static final String URL_RANKING = "/spa-manager/manager/index.html?v=%s&userType=%s&sessionType=%s&token=%s";
 
-//    public static final String URL_APP_UPDATE_CONFIG = "mockjs/17/app-upgrade-system/appUpgrade";
+    //    public static final String URL_APP_UPDATE_CONFIG = "mockjs/17/app-upgrade-system/appUpgrade";
     public static final String URL_APP_UPDATE_CONFIG = "/app-upgrade-system/appUpgrade";
 
     /*********************************************************************************************/
@@ -85,6 +95,7 @@ public class RequestConstant {
     public static final String KEY_APP_TYPE = "appType";
     public static final String APP_TYPE_ANDROID = "android";
     public static final String KEY_SECRET = "secret";
+    public static final String userTypeKEY_SECRET = "secret";
     public static final String KEY_TELEPHONE = "telephone";
     public static final String KEY_REQ_DATE = "reqDate";
 
@@ -144,6 +155,15 @@ public class RequestConstant {
     public static final String KEY_CUSTOMER_ID = "contactId";
     public static final String KEY_CONTACT_TYPE = "contactType";
     public static final String KEY_MANAGER_URL = "managerHeadUrl";
+    public static final String KEY_TAG_TYPE = "tagType";
+    public static final String TECH_CUSTOMER = "tech_customer";
+    public static final String KEY_MARK_IMPRESSION = "impression";
+    public static final String KEY_CUSTOMER_TYPE = "customerType";
+    public static final String TECH_ADD = "tech_add";
+    public static final String FANS_USER = "fans_user";
+    public static final String WX_USER = "wx_user";
+
+
 
 
 
@@ -166,6 +186,9 @@ public class RequestConstant {
     public static final String KEY_USER_WX_STATE = "state";
     public static final String KEY_USER_WX_WXMP ="wxmp";
     public static final String KEY_USER_WX_PAGE_URL ="pageUrl";
+
+    public static final String KEY_UER_CREDIT_AMOUNT = "amount";
+    public static final String KEY_USER_CLUB_ID = "clubId";
 
 
     /*********************************************************************************************/

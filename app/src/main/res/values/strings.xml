@@ -79,6 +79,7 @@
     <string name="qr_code_share">分享名片</string>
     <string name="personal_fragment_join_club">请先加入会所</string>
     <string name="personal_fragment_wait_check">请等待会所审核</string>
+    <string name="personal_fragment_status_check">所在会所未开放该功能</string>
 
     <!-- SettingActivity -->
     <string name="title_activity_settings">设置</string>
@@ -270,6 +271,8 @@
     <string name="normal_coupon_detail_activity_share_text_title">分享领红包</string>
     <string name="normal_coupon_detail_activity_share_text">
         分享后，客户每一次使用您都会获得 %1$d 元。</string>
+    <string name="credit_exchange_max">
+        最大兑换金额 %s 元。</string>
     <string name="normal_coupon_detail_activity_scan_code">用户扫描二维码即得优惠！</string>
 
     <string name="system_notice_activity_title">系统通知</string>
@@ -277,6 +280,7 @@
     <string name="search_contact">搜索</string>
     <string name="add_contact">添加客户</string>
     <string name="customer_name">客户姓名</string>
+    <string name="customer_contact">联系人</string>
     <string name="customer_telephone">手机号码</string>
     <string name="customer_remark">备注 </string>
     <string name="customer_telephone_contacts">手机联系人</string>
@@ -324,7 +328,7 @@
     <string name="toast_search_null">未查询到该联系人</string>
     <string name="not_have_authority_or_contact_is_empty">未开启联系人权限或联系人列表为空</string>
     <string name="limit_input_text">备注信息不可超过30个字符</string>
-    <string name="limit_input_text_remark">备注名不可超过8个字符</string>
+    <string name="limit_input_text_remark">备注名不可超过16个字符</string>
     <string name="user_code_message">扫码关注[9358]公众号\n点技师，约项目，就上9358</string>
     <string name="abnormal_message">服务器异常了</string>
     <string name="money_sign">￥</string>
@@ -349,5 +353,11 @@
     <string name="credit_alert">提示：</string>
     <string name="credit_alert_text1">1、确认兑换后，请与会所管理者联系。</string>
     <string name="credit_alert_text2">2、如果管理者未进行确认，7天后默认拒绝，退款积分</string>
+    <string name="credit_alert_shortage">您最多可兑换</string>
+    <string name="all_contact">全部客户</string>
+    <string name="register_alert">提示：客人尚未注册，提醒用户注册。</string>
+    <string name="introduce_bind">提现</string>
+    <string name="introduce_url"></string>
+
 
 </resources>

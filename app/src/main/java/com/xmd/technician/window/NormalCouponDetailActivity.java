@@ -136,9 +136,6 @@ public class NormalCouponDetailActivity extends BaseActivity {
 
         mWvActContent.getSettings().setJavaScriptEnabled(false);
         mWvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);
-       // String ss = "<style type=\"text/css\">#coupon-explain{font-size:10px;color:#616161;padding-left:6px;}#coupon-explain>li{line-height:1;margin-bottom:8px;}#coupon-explain>li>span{font-size:15px;}#coupon-explain>li:last-child{margin-bottom:0;}</style><p><ul id=\"coupon-explain\"><li><span>使用时，请出示手机号码或者优惠码。</span></li><li><span>每张券仅限一人使用，仅能使用一张。</span></li><li><span>使用此券，不可享受本店其他优惠。</span></li><li><span>提供免费WiFi。</span></li><li><span>提供免费停车位。</span></li><li><span>欢迎提前预约。</span></li></ul></p>";
-        //couponInfo.actContent
-        //String mm = "<style type=\"text/css\">#coupon-explain{font-size:10px;color:#616161;padding-left:6px;}#coupon-explain>li{line-height:1;margin-bottom:8px;}#coupon-explain>li>span{font-size:15px;}#coupon-explain>li:last-child{margin-bottom:0;}</style><p><ul id=\"coupon-explain\"><li>使用时，请出示手机号码或者优惠码。</li><li>每张券仅限一人使用，仅能使用一张。</li><li>使用此券，不可享受本店其他优惠。</li><li>提供免费WiFi。</li><li>提供免费停车位。</li><li>欢迎提前预约。</li></ul></p>";
         mWvActContent.loadDataWithBaseURL(null,couponInfo.actContent , Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
 
         mShareBtn.setEnabled(true);

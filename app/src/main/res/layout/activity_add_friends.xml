@@ -5,88 +5,64 @@
     android:background="@color/app_bg"
     >
     <include layout="@layout/toolbar"></include>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/customer_name"
+        android:text="@string/customer_contact"
         android:textColor="@color/contact_info_unit"
         android:gravity="center_vertical"
         android:textSize="@dimen/fontTitle"
         android:padding="@dimen/padding_10"
         />
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <EditText
             android:id="@+id/et_customer_name"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/coupon_item_height"
+            android:layout_height="wrap_content"
             android:hint="@string/toast_useful_name"
             android:textColorHint="@color/colorRemarkText"
             android:textColor="@color/contact_item_name_text_color"
-            android:padding="@dimen/padding_10"
             android:textSize="@dimen/fontHead"
             android:background="@color/color_white"
+            android:padding="10dp"
+            android:maxLength="16"
+            />
+        <com.xmd.technician.widget.ClearableEditText
+            android:id="@+id/et_customer_telephone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_customer_name"
+            android:background="@color/color_white"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:textColorHint="@color/colorRemarkText"
+            android:hint="@string/contact_hint_phone"
+            android:padding="@dimen/padding_10"/>
+        <Button
+            android:id="@+id/btn_search_telephone"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="@drawable/contact_phone_bg"
+            android:text="@string/main_conversion"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/inter_space"
+            android:textColor="@color/colorMainBtn"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/et_customer_name"
+            android:layout_marginTop="10dp"
             />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/customer_telephone"
-        android:textColor="@color/contact_info_unit"
-        android:gravity="center_vertical"
-        android:textSize="@dimen/fontTitle"
-        android:padding="@dimen/padding_10"
-        />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/coupon_item_height"
-            android:orientation="horizontal"
-            android:background="@color/color_white"
-            >
-            <!--   <EditText
-                android:id="@+id/et_customer_telephone"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:textColorHint="@color/colorRemarkText"
-                android:hint="@string/contact_hint_phone"
-                android:padding="@dimen/padding_10"
-                android:inputType="phone"
-                /> -->
+    </RelativeLayout>
 
-            <com.xmd.technician.widget.ClearableEditText
-                android:id="@+id/et_customer_telephone"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:inputType="phone"
-                android:maxLength="12"
-                android:textColorHint="@color/colorRemarkText"
-                android:hint="@string/contact_hint_phone"
-                android:padding="@dimen/padding_10"/>
-
-            <TextView
-                android:layout_gravity="center"
-                android:layout_width="1dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="@dimen/inter_space"
-                android:background="@color/colorRemarkText"
-                android:gravity="center"
-                android:layout_marginTop="1dp"
-                />
-            <Button
-                android:id="@+id/btn_search_telephone"
-                android:layout_width="90dp"
-                android:layout_height="30dp"
-                android:background="@drawable/contact_phone_bg"
-                android:text="@string/main_conversion"
-                android:gravity="center"
-                android:layout_marginRight="@dimen/inter_space"
-                android:textColor="@color/colorMainBtn"
-                />
-
-        </LinearLayout>
 
 
     <TextView
@@ -98,38 +74,48 @@
         android:textSize="@dimen/fontTitle"
         android:padding="@dimen/padding_10"
         />
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/color_white"
+        android:paddingTop="@dimen/margin_15"
+        >
+        <com.xmd.technician.widget.FlowLayout
+            android:id="@+id/limit_project_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            />
+        <View
+            style="@style/horizontal_divider_line"
+            android:layout_marginTop="6dp"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            />
+        <EditText
+            android:id="@+id/et_customer_remark"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_remark_height"
-            android:orientation="vertical"
-            android:background="@color/color_white"
-            >
-            <EditText
-                android:id="@+id/et_customer_remark"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:hint="@string/contact_hint_remark"
-                android:textColorHint="@color/colorRemarkText"
-                android:padding="@dimen/padding_10"
-                android:textSize="@dimen/fontHead"
-                android:gravity="top"
-                android:background="@null"
-                />
-            <TextView
-                android:id="@+id/text_remark_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:text="@string/max_text_length"
-                android:layout_marginRight="@dimen/inter_space"
-                android:layout_marginBottom="@dimen/margin_5"
-                />
+            android:hint="@string/contact_hint_remark"
+            android:textColorHint="@color/colorRemarkText"
+            android:padding="@dimen/padding_10"
+            android:textSize="@dimen/fontHead"
+            android:gravity="top"
+            android:background="@null"
+            android:maxLength="30"
+            />
+        <TextView
+            android:id="@+id/text_remark_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:text="@string/max_text_length"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginBottom="@dimen/margin_5"
+            />
 
-        </LinearLayout>
-
-
-
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -148,6 +134,9 @@
             />
 
     </LinearLayout>
+
+</LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

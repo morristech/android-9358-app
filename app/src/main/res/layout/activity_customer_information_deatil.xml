@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <include layout="@layout/toolbar"></include>
     <ScrollView
@@ -26,13 +27,15 @@
                 android:paddingTop="@dimen/padding_10"
                 android:background="@color/color_white"
                 >
-                <com.xmd.technician.widget.CircleImageView
+                <com.xmd.technician.widget.RoundImageView
                     android:id="@+id/customer_head"
                     android:layout_width="@dimen/photo_head_big"
                     android:layout_height="@dimen/photo_head_big"
-                    android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/search_margin"
-                    android:background="@drawable/icon22"/>
+                    app:type="round"
+                    app:borderRadius="@dimen/search_margin"
+                    app:src="@drawable/icon22"
+                    />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,6 +52,8 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/fontSize"
                             android:textColor="@color/contact_item_name_text_color"
+                            android:maxLength="16"
+                            android:ellipsize="end"
                             />
                         <LinearLayout
                             android:id="@+id/ll_tech_number"
@@ -102,6 +107,34 @@
                         />
                 </LinearLayout>
             </LinearLayout>
+            <View
+           style="@style/horizontal_divider_line"/>
+            <LinearLayout
+                android:id="@+id/ll_marker_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/color_white"
+                android:paddingLeft="@dimen/inter_space"
+                android:paddingTop="@dimen/padding_15"
+                android:paddingBottom="@dimen/personal_margin_table"
+                android:visibility="gone"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/contact_remark"
+                    />
+                <TextView
+                    android:id="@+id/text_contact_marker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/contact_marker"
+                    android:textSize="@dimen/fontTitle"
+                    android:layout_marginLeft="@dimen/inter_space"
+
+                    />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,7 +164,6 @@
                     android:textSize="@dimen/fontTitle"
                     android:textColor="@color/contact_remark_text_color"
                     />
-
 
             </LinearLayout>
             <View
@@ -458,6 +490,17 @@
                     android:background="@drawable/call_or_send_message_bg"
                     />
             </LinearLayout>
+            <TextView
+                android:id="@+id/register_alert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_alert"
+                android:layout_marginLeft="@dimen/margin_15"
+                android:layout_marginTop="@dimen/margin_5"
+                android:textColor="@color/phone_number_text_color"
+                android:textSize="@dimen/fontTitle"
+                android:visibility="gone"
+                />
 
         </LinearLayout>
 

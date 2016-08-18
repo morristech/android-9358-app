@@ -41,7 +41,9 @@ import com.xmd.technician.widget.SideBar;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,6 +77,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     private View view;
     private PopupWindow window = null;
 
+
     public static CustomerListFragment getInstance() {
         return new CustomerListFragment();
     }
@@ -84,6 +87,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     private List<CustomerInfo> mCustomerList = new ArrayList<CustomerInfo>();
     private PinyinCompartorUtil pinyinComparator;
     private List<CustomerInfo> customerInfos;
+    private Map<String,String> params = new HashMap<>();
 
     @Nullable
     @Override
@@ -100,7 +104,8 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     }
 
     protected void initView(View view) {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST);
+        params.put(RequestConstant.KEY_CONTACT_TYPE,"");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
         characterParser = CharacterParser.getInstance();
         mGetCustomerListSubscription = RxBus.getInstance().toObservable(CustomerListResult.class).subscribe(customer -> {
             handlerCustomerInfoList(customer);
@@ -243,8 +248,8 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        showOutMenu();
-     //   closeSearch();
+    //    showOutMenu();
+      closeSearch();
 
     }
 
@@ -303,70 +308,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         adapter.updateListView(mCustomerList);
     }
 
-    public void showOutMenu(){
-        layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        viewM = layoutInflater.inflate(R.layout.search_contacts_layout,null);
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        lp.alpha = 0.5f;
-        lp.dimAmount = 0.5f;
-        getActivity().getWindow().setAttributes(lp);
-        if(window ==null){
-            window = new PopupWindow(viewM, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,true);
-            window.setAnimationStyle(R.style.popup_window_style);
-            ColorDrawable dw = new ColorDrawable(Color.parseColor("#FF0000"));
-            window.setBackgroundDrawable(dw);
-            window.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
-                @Override
-                public void onDismiss() {
-                    WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-                    lp.alpha = 1.0f;
-                    lp.dimAmount = 1.0f;
-                    getActivity().getWindow().setAttributes(lp);
-                }
-            });
-            TextView allContact = (TextView) viewM.findViewById(R.id.all_contact);
-            TextView phoneContact = (TextView) viewM.findViewById(R.id.phone_contact);
-            TextView fansContact = (TextView) viewM.findViewById(R.id.fans_contact);
-            TextView wxContact = (TextView) viewM.findViewById(R.id.wx_contact);
-            TextView ticketContact = (TextView) viewM.findViewById(R.id.ticket_contact);
-            TextView cancel = (TextView) viewM.findViewById(R.id.cancel_contact);
-
-            allContact.setOnClickListener((v)->{
-                 window.dismiss();
-            });
-            phoneContact.setOnClickListener((v)->{
-                window.dismiss();
-            });
-            fansContact.setOnClickListener((v)->{
-                window.dismiss();
-            });
-            wxContact.setOnClickListener((v)->{
-                window.dismiss();
-            });
-            ticketContact.setOnClickListener((v)->{
-                window.dismiss();
-            });
-            cancel.setOnClickListener((v)->{
-              if(window!=null){
-                  window.dismiss();
-              }
-
-            });
-
-        }
-        try {
-            if(window != null){
-
-                window.showAtLocation(view.findViewById(R.id.search_contact), Gravity.BOTTOM,0,0);
-            }else{
-            }
-        }catch (Exception e){
-
-            e.printStackTrace();
-        }
-
-    }
 
     @Override
     public void onPause() {
@@ -379,6 +321,6 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onRefresh() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
     }
 }

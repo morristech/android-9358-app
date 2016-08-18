@@ -51,6 +51,7 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
     protected LinearLayoutManager mLayoutManager;
     private Subscription mGetRedpacklistSubscription;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

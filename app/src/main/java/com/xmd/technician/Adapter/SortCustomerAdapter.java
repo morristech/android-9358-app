@@ -1,11 +1,13 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.widget.CircleImageView;
 
 import java.util.List;
@@ -63,6 +66,7 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
             viewHolder.customerHead = (CircleImageView) convertView.findViewById(R.id.customer_head);
             viewHolder.customerName  = (TextView) convertView.findViewById(R.id.customer_name);
             viewHolder.lineChat = (LinearLayout) convertView.findViewById(R.id.line_chat);
+            viewHolder.contactType = (ImageView) convertView.findViewById(R.id.contact_type);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -94,6 +98,18 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
         }else{
             viewHolder.customerName.setText(ResourceUtils.getString(R.string.default_user_name));
         }
+        if(null!=mCustomer.customerType){
+            if(mCustomer.customerType.equals(RequestConstant.TECH_ADD)){
+                viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_contacts));
+            }
+            else if(mCustomer.customerType.equals(RequestConstant.FANS_USER)){
+                viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
+            }else {
+                viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
+            }
+        }
+
+
         if(Utils.isNotEmpty(mCustomer.userId)){
             viewHolder.lineChat.setVisibility(View.VISIBLE);
         }else{
@@ -150,9 +166,11 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
         CircleImageView customerHead;
         TextView customerName;
         TextView bracketLeft;
+        ImageView contactType;
         LinearLayout lineChat;
 
     }
+
 
 
 }

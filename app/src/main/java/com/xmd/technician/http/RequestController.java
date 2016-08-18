@@ -11,11 +11,15 @@ import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.AddOrEditResult;
 import com.xmd.technician.bean.ClubContactResult;
+import com.xmd.technician.bean.CreditAccountDetailResult;
+import com.xmd.technician.bean.CreditAccountResult;
+import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.DeleteContactResult;
 import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.ManagerDetailResult;
+import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.DESede;
@@ -53,6 +57,7 @@ import com.xmd.technician.http.gson.WorkTimeResult;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.window.BaseActivity;
 
 import java.io.IOException;
 import java.util.Map;
@@ -187,7 +192,7 @@ public class RequestController extends AbstractController {
                 doGetAppUpdateConfig((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_CUSTOMER_LIST:
-                doGetCustomerList();
+                doGetCustomerList((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL:
                 doGetCustomerInfoDetail((Map<String,String>)msg.obj);
@@ -199,24 +204,39 @@ public class RequestController extends AbstractController {
                 doGetManagerInfoDetail((Map<String,String>)msg.obj);
                 break;
             case MsgDef.MSG_DEF_ADD_OR_EDIT_CUSTOMER:
-             doAddOrEditCustomer((Map<String,String>)msg.obj);
+                doAddOrEditCustomer((Map<String,String>)msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_CLUB_LIST:
                 doGetClubList();
                 break;
             case MsgDef.MSG_DEF_DELETE_CONTACT:
-               doDeleteContact((Map<String,String>)msg.obj);
-               break;
-//            case MsgDef.MSG_DEF_DO_DRAW_MONEY:
-//                doDrawMoney((Map<String,String>)msg.obj);
-//                break;
-//            case MsgDef.MSG_DEF_BIND_WX:
-//                doBindWX((Map<String,String>)msg.obj);
-//                break;
-//            case MsgDef.MSG_DEF_IS_BIND_WX:
-//                getIsBindWXR();
-//                break;
-
+                doDeleteContact((Map<String,String>)msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_USER_RECORDE:
+                doGetUserRecords();
+                break;
+            case MsgDef.MSG_DEF_GET_SWITCH_STATUS:
+                doGetUserCreditSwitchStatus((Map<String,String>)msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT:
+                doGetUserCreditAccount();
+                break;
+            case MsgDef.MSG_DEF_DO_CREDIT_EXCHANGE:
+                doExchangeCredit((Map<String,String>)msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_CONTACT_MARK:
+                doGetContactMark();
+                break;
+   /*         case MsgDef.MSG_DEF_DO_DRAW_MONEY:
+                doDrawMoney((Map<String,String>)msg.obj);
+                break;
+            case MsgDef.MSG_DEF_BIND_WX:
+                doBindWX((Map<String,String>)msg.obj);
+                break;
+            case MsgDef.MSG_DEF_IS_BIND_WX:
+                getIsBindWXR();
+                break;
+*/
 
 
         }
@@ -606,7 +626,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getCommentOrderRedPkCount() {
-        Call<CommentOrderRedPkResutlt> call = getSpaService().getCommentOrderRedPkCount(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+        Call<CommentOrderRedPkResutlt> call = getSpaService().getCommentOrderRedPkCount(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE,RequestConstant.USER_TYPE_TECH);
 
         call.enqueue(new TokenCheckedCallback<CommentOrderRedPkResutlt>() {
             @Override
@@ -819,7 +839,7 @@ public class RequestController extends AbstractController {
     private void doAddOrEditCustomer(Map<String,String> params){
         if(TextUtils.isEmpty(params.get(RequestConstant.KEY_ID))){
             Call<BaseResult> call = getSpaService().addCustomer(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),
-                    params.get(RequestConstant.KEY_PHONE_NUMBER),params.get(RequestConstant.KEY_REMARK),params.get(RequestConstant.KEY_NOTE_NAME));
+                    params.get(RequestConstant.KEY_PHONE_NUMBER),params.get(RequestConstant.KEY_REMARK),params.get(RequestConstant.KEY_NOTE_NAME),params.get(RequestConstant.KEY_MARK_IMPRESSION));
             call.enqueue(new TokenCheckedCallback<BaseResult>() {
                 @Override
                 protected void postResult(BaseResult result) {
@@ -828,7 +848,7 @@ public class RequestController extends AbstractController {
             });
         } else{
             Call<BaseResult> call = getSpaService().editCustomer(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_ID),
-                    params.get(RequestConstant.KEY_PHONE_NUMBER),params.get(RequestConstant.KEY_REMARK),params.get(RequestConstant.KEY_NOTE_NAME));
+                    params.get(RequestConstant.KEY_PHONE_NUMBER),params.get(RequestConstant.KEY_REMARK),params.get(RequestConstant.KEY_NOTE_NAME),params.get(RequestConstant.KEY_MARK_IMPRESSION));
             call.enqueue(new TokenCheckedCallback<BaseResult>() {
                 @Override
                 protected void postResult(BaseResult result) {
@@ -842,12 +862,12 @@ public class RequestController extends AbstractController {
      *  获取联系人列表
      * @param
      */
-    private void  doGetCustomerList(){
-        Call<CustomerListResult> call = getSpaService().getCustomerList(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken());
+    private void  doGetCustomerList(Map<String,String> params){
+        Call<CustomerListResult> call = getSpaService().getCustomerList(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_CUSTOMER_TYPE));
         call.enqueue(new TokenCheckedCallback<CustomerListResult>() {
             @Override
             protected void postResult(CustomerListResult result) {
-              RxBus.getInstance().post(result);
+                RxBus.getInstance().post(result);
             }
         });
     }
@@ -920,7 +940,63 @@ public class RequestController extends AbstractController {
             }
         });
     }
-    private void doDrawMoney(Map<String,String> params){
+    private void doGetUserRecords(){
+        Call<CreditAccountDetailResult> call = getSpaService().doGetUserRecordDetail(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserClubId(),SharedPreferenceHelper.getUserToken(),RequestConstant.USER_TYPE_TECH);
+        call.enqueue(new TokenCheckedCallback<CreditAccountDetailResult>() {
+            @Override
+            protected void postResult(CreditAccountDetailResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+
+    }
+    private void doGetUserCreditSwitchStatus(Map<String,String> params){
+        Call<CreditStatusResult> call = getSpaService().doGetCreditStatus(RequestConstant.SESSION_TYPE,params.get(RequestConstant.KEY_USER_CLUB_ID),SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<CreditStatusResult>() {
+            @Override
+            protected void postResult(CreditStatusResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+
+    }
+
+    private void doGetUserCreditAccount(){
+        Call<CreditAccountResult> call = getSpaService().doGetCreditAccount(RequestConstant.USER_TYPE_TECH,SharedPreferenceHelper.getUserClubId(),SharedPreferenceHelper.getUserToken(),
+                RequestConstant.SESSION_TYPE
+        );
+        call.enqueue(new TokenCheckedCallback<CreditAccountResult>() {
+            @Override
+            protected void postResult(CreditAccountResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+
+    }
+    private void doExchangeCredit(Map<String,String> params){
+        Call<BaseResult> call = getSpaService().doExchangeCredit(RequestConstant.USER_TYPE_TECH,params.get(RequestConstant.KEY_UER_CREDIT_AMOUNT),
+                SharedPreferenceHelper.getUserToken(),RequestConstant.SESSION_TYPE);
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+
+    }
+    private void doGetContactMark(){
+        Call< MarkResult> call = getSpaService().getContactMark(RequestConstant.USER_TYPE_TECH,RequestConstant.TECH_CUSTOMER,
+                SharedPreferenceHelper.getUserToken(),RequestConstant.SESSION_TYPE);
+        call.enqueue(new TokenCheckedCallback<MarkResult>() {
+            @Override
+            protected void postResult( MarkResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+
+    /*   private void doDrawMoney(Map<String,String> params){
         Call<BaseResult> call = getSpaService().doDrawMoney(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),
                params.get(RequestConstant.KEY_TRADE_AMOUNT));
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
@@ -945,11 +1021,6 @@ public class RequestController extends AbstractController {
             }
         });
     }
-
-    private void doHandleTokenExpired(String errorMsg) {
-        RxBus.getInstance().post(new TokenExpiredResult(errorMsg));
-    }
-
     private void  getIsBindWXR(){
         Call<IsBindResult> call = getSpaService().getIsBindWXResult(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken());
         call.enqueue(new TokenCheckedCallback<IsBindResult>() {
@@ -959,7 +1030,10 @@ public class RequestController extends AbstractController {
             }
         });
     }
-
+*/
+    private void doHandleTokenExpired(String errorMsg) {
+        RxBus.getInstance().post(new TokenExpiredResult(errorMsg));
+    }
     //获取升级配置
     private void doGetAppUpdateConfig(Map<String, String> params) {
         String version = params.get(RequestConstant.KEY_UPDATE_VERSION);

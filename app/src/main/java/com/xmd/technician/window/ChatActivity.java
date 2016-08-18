@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -73,6 +74,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Bind(R.id.btn_common_msg)View mCommonBtn;
     @Bind(R.id.round_indicator_left) ImageView indicatorLeft;
     @Bind(R.id.round_indicator_right)ImageView indicatorRight;
+    @Bind(R.id.btn_common_coupon)LinearLayout btnCommonCoupor;
     ViewPager mCommentMsgView;
 
     private String mToChatUsername;
@@ -94,6 +96,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private CommonMsgFragmentOne fragmentOne;
     private CommonMsgFragmentTwo fragmentTwo;
 
+    private Boolean isTechOrManger;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,10 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         ButterKnife.bind(this);
 
         mToChatUsername = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
+        isTechOrManger = getIntent().getExtras().getBoolean(ChatConstant.EMCHAT_IS_TECH);
+       if(isTechOrManger){
+           btnCommonCoupor.setVisibility(View.GONE);
+       }
 
         UserUtils.setUserNick(mToChatUsername, mAppTitle);
 

@@ -1,19 +1,21 @@
 package com.xmd.technician.window;
 
-import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.AddOrEditResult;
+import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
@@ -22,8 +24,10 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.ClearableEditText;
-
+import com.xmd.technician.widget.FlowLayout;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -45,13 +49,26 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
     EditText mCustomerRemark;
     @Bind(R.id.btn_save_customer)
     Button mSaveCustomer;
+    @Bind(R.id.limit_project_list)
+    FlowLayout mFlowLayout;
+    @Bind(R.id.text_remark_num)
+    TextView textRemark;
+
     private String customerName;
     private String customerPhone;
     private String customerRemark;
+    private String impression;
+    private Map<String ,String> params = new HashMap<>();
+
+    private Subscription ContactMarkSubscriotion;
+    private List<String> markList = new ArrayList<>();
+    private List<String> markSelectList = new ArrayList<>();
+    private String   text;
 
     private Subscription getAddresultSubscription;
     private static final String[] PHONES_PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
+    private Map<String,String> map = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +86,8 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
         getAddresultSubscription = RxBus.getInstance().toObservable(AddOrEditResult.class).subscribe(
               result ->{
                   if(result.resultcode==200){
-                      MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST);
+                      params.put(RequestConstant.KEY_CONTACT_TYPE,"");
+                      MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
                       makeShortToast(ResourceUtils.getString(R.string.add_ontact_successed));
                       ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                           @Override
@@ -81,7 +99,12 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
                       makeShortToast(result.msg.toString());
                   }
               }
+
         );
+        ContactMarkSubscriotion = RxBus.getInstance().toObservable(MarkResult.class).subscribe(
+                markResult -> handlerMarkResult(markResult)
+        );
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_MARK);
     }
     @OnClick(R.id.btn_search_telephone)
     public void getCustomerFromAddressBook() {
@@ -91,8 +114,6 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
         }else{
             makeShortToast(ResourceUtils.getString(R.string.not_have_authority_or_contact_is_empty));
         }
-
-
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -101,9 +122,7 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
             String name = data.getStringExtra("name");
             String phone = data.getStringExtra("phone");
             mCustomerTelephone.setText(getPhone(phone));
-            if(TextUtils.isEmpty(mCustomerName.getText().toString())){
-                mCustomerName.setText(name);
-            }
+            mCustomerName.setText(name);
         }
     }
     @Override
@@ -124,6 +143,12 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
         } else {
             mSaveCustomer.setEnabled(false);
         }
+        if(customerRemark.length()==30){
+            this.makeShortToast(ResourceUtils.getString(R.string.limit_input_text));
+        }
+        if(customerRemark.length()<=30){
+            textRemark.setText(String.valueOf(30-customerRemark.length()));
+        }
     }
    @OnClick(R.id.btn_save_customer)
     public void saveCustomer() {
@@ -135,17 +160,31 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
         }else if(!Utils.matchPhoneNumFormat(customerPhone)){
             makeShortToast(ResourceUtils.getString(R.string.toast_useful_telephone));
         } else {
+            if(markSelectList.size()==1){
+                impression = markSelectList.get(0);
+            }else if(markSelectList.size()>1){
+                for (int i = 0; i <markSelectList.size()-1 ; i++) {
+                    if(i==0){
+                        impression=markSelectList.get(0)+"、";
+                    }else if(i<markSelectList.size()-1){
+                        impression =impression+markSelectList.get(i)+"、";
+                    }
+                }
+                impression = impression+markSelectList.get(markSelectList.size()-1);
+            }
+
             Map<String, String> params = new HashMap<>();
             params.put(RequestConstant.KEY_NOTE_NAME, customerName);
             params.put(RequestConstant.KEY_PHONE_NUMBER, customerPhone);
             params.put(RequestConstant.KEY_REMARK, customerRemark);
+            params.put(RequestConstant.KEY_MARK_IMPRESSION,impression);
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_OR_EDIT_CUSTOMER,params);
         }
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(getAddresultSubscription);
+        RxBus.getInstance().unsubscribe(getAddresultSubscription,ContactMarkSubscriotion);
     }
     private String getPhone(String s){
         //1 31-2414-5614
@@ -171,5 +210,47 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
         }
       return false;
     }
+    private void handlerMarkResult(MarkResult result){
+        for (int i = 0; i <result.respData.size() ; i++) {
+            markList.add(result.respData.get(i).tag);
+        }
+        initChildViews(markList);
+    }
+    private void initChildViews(List<String> Mark){
+        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.rightMargin = 18;
+        lp.bottomMargin = 18;
+
+        for(int i = 0; i < Mark.size(); i ++){
+            TextView view = new TextView(this);
+            view.setPadding(36,5,36,5);
+            view.setText(Mark.get(i));
+            view.setTextColor(ResourceUtils.getColor(R.color.alert_text_color));
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.limit_project_item_bg));
+            mFlowLayout.addView(view,lp);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    text = view.getText().toString();
+                    if(map.containsKey(text)){
+                        view.setBackground(getResources().getDrawable(R.drawable.limit_project_item_bg));
+                        view.setTextColor(ResourceUtils.getColor(R.color.alert_text_color));
+                        map.remove(text);
+                        markSelectList.remove(text);
+                    }else{
+                        view.setBackground(getResources().getDrawable(R.drawable.limit_project_item_select_bg));
+                        view.setTextColor(ResourceUtils.getColor(R.color.contact_marker));
+                        map.put(text,text);
+                        markSelectList.add(text);
+                    }
+                }
+
+            });
+
+        }
+    }
+
+
 
 }

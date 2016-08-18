@@ -1,10 +1,14 @@
 package com.xmd.technician.http;
 
 import com.xmd.technician.bean.ClubContactResult;
+import com.xmd.technician.bean.CreditAccountDetailResult;
+import com.xmd.technician.bean.CreditAccountResult;
+import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.ManagerDetailResult;
+import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
@@ -112,7 +116,8 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_COMMENT_ORDER_REDPK_COUNT)
     Call<CommentOrderRedPkResutlt> getCommentOrderRedPkCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+                                                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                                             @Field(RequestConstant.KEY_USER_TYPE) String userType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_MODIFY_PASSWORD)
@@ -325,7 +330,9 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CUSTOMER_LIST)
     Call<CustomerListResult> getCustomerList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                             @Field(RequestConstant.KEY_TOKEN) String userToken);
+                                             @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                             @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType
+    );
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CUSTOMER_INFO_DETAIL)
@@ -350,8 +357,42 @@ public interface SpaService {
     Call<BaseResult> doDeleteContact(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                      @Field(RequestConstant.KEY_ID) String id,
                                      @Field(RequestConstant.KEY_TOKEN) String userToken);
-
     @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CREDIT_USER_RECORDS)
+    Call<CreditAccountDetailResult> doGetUserRecordDetail(@Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                                          @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                                          @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                          @Field(RequestConstant.KEY_USER_TYPE) String userType
+    );
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CREDIT_SWITCH_STATUS)
+    Call<CreditStatusResult> doGetCreditStatus(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                               @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                               @Field(RequestConstant.KEY_TOKEN) String userToken);
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CREDIT_USER_ACCOUNT)
+    Call<CreditAccountResult> doGetCreditAccount(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                 @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                 @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType
+    );
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CREDIT_EXCHANGE_APPLY)
+    Call<BaseResult> doExchangeCredit(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                      @Field(RequestConstant.KEY_UER_CREDIT_AMOUNT) String amount,
+                                      @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                      @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType
+    );
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CONTACT_MARK)
+    Call<MarkResult> getContactMark(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                    @Field(RequestConstant.KEY_TAG_TYPE) String tagType,
+                                    @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                    @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType
+    );
+
+
+  /*  @FormUrlEncoded
     @POST(RequestConstant.URL_DO_DRAW_MONEY)
     Call<BaseResult> doDrawMoney(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                  @Field(RequestConstant.KEY_TOKEN) String userToken,
@@ -366,7 +407,7 @@ public interface SpaService {
                                  @Field(RequestConstant.KEY_USER_WX_SCOPE) String scope,
                                  @Field(RequestConstant.KEY_USER_WX_STATE) String state,
                                  @Field(RequestConstant.KEY_USER_WX_WXMP) String wxmp);
-            ;
+      */      ;
 
 
     /**
@@ -383,7 +424,9 @@ public interface SpaService {
                                  @Field(RequestConstant.KEY_TOKEN) String userToken,
                                  @Field(RequestConstant.KEY_PHONE_NUMBER) String phoneNum,
                                  @Field(RequestConstant.KEY_REMARK) String remark,
-                                 @Field(RequestConstant.KEY_NOTE_NAME) String noteName);
+                                 @Field(RequestConstant.KEY_NOTE_NAME) String noteName,
+                                 @Field(RequestConstant.KEY_MARK_IMPRESSION) String impression
+    );
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_ADD_CUSTOMER)
@@ -392,7 +435,8 @@ public interface SpaService {
                                   @Field(RequestConstant.KEY_ID) String custtomerId,
                                   @Field(RequestConstant.KEY_PHONE_NUMBER) String phoneNum,
                                   @Field(RequestConstant.KEY_REMARK) String remark,
-                                  @Field(RequestConstant.KEY_NOTE_NAME) String noteName);
+                                  @Field(RequestConstant.KEY_NOTE_NAME) String noteName,
+                                  @Field(RequestConstant.KEY_MARK_IMPRESSION) String impression);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CLUB_LIST)

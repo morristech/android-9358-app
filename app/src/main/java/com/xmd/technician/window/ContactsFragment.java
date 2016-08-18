@@ -1,148 +1,258 @@
 package com.xmd.technician.window;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.xmd.technician.Adapter.PageFragmentPagerAdapter;
 import com.xmd.technician.R;
-import com.xmd.technician.widget.SideBar;
+import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/7/1.
  */
-public class ContactsFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
-    @Bind(R.id.customer)
-    RadioButton mCustomer;
-    @Bind(R.id.mine_store)
-    RadioButton myStore;
-    @Bind(R.id.radio_group)
-    RadioGroup mRadioGroup;
-    @Bind(R.id.framelayout)
-    FrameLayout framelayout;
-    @Bind(R.id.iv_add_friend)
-    ImageView btnAddFriend;
-    private Fragment currentFragment;
+public class ContactsFragment extends BaseFragment implements View.OnClickListener{
+    @Bind(R.id.table_contact)
+    TextView mTableContact;
+    @Bind(R.id.image_down)
+    RelativeLayout mImageDown;
+    @Bind(R.id.contact_left)
+    RelativeLayout mContactLeft;
+    @Bind(R.id.table_club)
+    TextView mTableClub;
+    @Bind(R.id.contact_right)
+    RelativeLayout mContactRight;
+    @Bind(R.id.contact)
+    LinearLayout mContact;
+    @Bind(R.id.iv_tab_bottom_img)
+    ImageView mTabBottomImg;
+    @Bind(R.id.vp_contact)
+    ViewPager mViewpagerContact;
+    private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
+    private List<Fragment> mlistViews;
+    private CustomerListFragment mCustomerListFragment;
+    private MyClubListFragment  mMyClubListFragment;
+    private int currentIndex;
+    private int screenWidth;
     private Activity ac;
-    private ContactsFragment instance;
-    boolean isConflict;
-    boolean isMyStore = false;
+    private Map<String,String> params = new HashMap<>();
 
-    private CustomerListFragment customerListFragment;
-    private MyClubListFragment myClubListFragment;
 
-    private ContactsFragment getInstance() {
-        if (instance == null) {
-            instance = new ContactsFragment();
-        }
-        return instance;
-    }
-
+    private View  viewM;
+    private View view;
+    private PopupWindow window = null;
+    private LayoutInflater layoutInflater;
+    private ImageView imgRight;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ButterKnife.bind(this, getView());
+        ac = getActivity();
         initView();
+        initImageView();
+        initViewPager();
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_constacts, container, false);
-        ac = getActivity();
+         view = inflater.inflate(R.layout.fragment_constacts, container, false);
+        ButterKnife.bind(this, view);
+        ((TextView)view.findViewById(R.id.toolbar_title)).setText(R.string.main_conversion);
+        view.findViewById(R.id.contact_more).setVisibility(View.VISIBLE);
+        imgRight =((ImageView)view.findViewById(R.id.toolbar_right_img));
+        imgRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.contact_add));
+        imgRight.setOnClickListener(this);
+        mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
         return view;
     }
-
     private void initView() {
-        isMyStore = (getActivity().getIntent().hasExtra("isConflict")) ? getActivity().getIntent().getBooleanExtra("isConflict", false) : false;
-        mCustomer.setChecked(true);
-        mRadioGroup.setOnCheckedChangeListener(this);
-        if (isConflict) {
-            select(1);
-        } else {
-            select(0);
-        }
+        mTableContact.setOnClickListener(this);
+        mTableClub.setOnClickListener(this);
+        mImageDown.setOnClickListener(this);
+
     }
-    @OnClick(R.id.iv_add_friend)
-    public void addFriend() {
-        Intent intent = new Intent(ac, AddFriendActivity.class);
-        ac.startActivity(intent);
+   private void initImageView(){
+       DisplayMetrics dpMetrics = new DisplayMetrics();
+       getActivity().getWindow().getWindowManager().getDefaultDisplay().getMetrics(dpMetrics);
+       screenWidth = dpMetrics.widthPixels;
+       LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabBottomImg.getLayoutParams();
+       lp.width = screenWidth / 2;
+       mTabBottomImg.setLayoutParams(lp);
+   }
+    private void resetTextView(){
+        mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorHead));
+        mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorHead));
     }
+    private void initViewPager(){
+        mlistViews = new ArrayList<>();
+        mPageFragmentPagerAdapter = new PageFragmentPagerAdapter(getChildFragmentManager(), getActivity());
+        mPageFragmentPagerAdapter.addFragment(new CustomerListFragment());
+        mPageFragmentPagerAdapter.addFragment(new MyClubListFragment());
+        mViewpagerContact.setAdapter(mPageFragmentPagerAdapter);
+        mViewpagerContact.setCurrentItem(0);
+        mViewpagerContact.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float offset, int positionOffsetPixels) {
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabBottomImg.getLayoutParams();
+                if(currentIndex ==0 &&position==0){
+                    lp.leftMargin = (int) (offset * (screenWidth * 1.0 / 2) + currentIndex
+                            * (screenWidth / 2));
+
+                } else if (currentIndex == 1 && position == 0)
+                {
+                    lp.leftMargin = (int) (-(1 - offset)
+                            * (screenWidth * 1.0 / 2) + currentIndex
+                            * (screenWidth / 2));
+                }
+                mTabBottomImg.setLayoutParams(lp);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                    resetTextView();
+                switch (position){
+                    case 0:
+                        mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                        break;
+                    case 1:
+                        mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                        break;
+                }
+                currentIndex = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
     @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.customer:
-                select(0);
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.table_contact:
+                resetTextView();
+                mViewpagerContact.setCurrentItem(0);
+                currentIndex = 0;
+                mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
                 break;
-            case R.id.mine_store:
-                select(1);
+            case R.id.table_club:
+                resetTextView();
+                mViewpagerContact.setCurrentItem(1);
+                currentIndex = 1;
+                mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                break;
+            case R.id.image_down:
+                showOutMenu();
+                break;
+            case R.id.toolbar_right_img:
+                Intent intent = new Intent(ac, AddFriendActivity.class);
+                ac.startActivity(intent);
                 break;
         }
     }
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (isConflict) {
-            outState.putBoolean("isConflict", true);
-        }
-    }
+    public void showOutMenu(){
+        layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        viewM = layoutInflater.inflate(R.layout.search_contacts_layout,null);
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = 0.5f;
+        lp.dimAmount = 0.5f;
+        getActivity().getWindow().setAttributes(lp);
+        if(window ==null){
+            window = new PopupWindow(viewM, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,true);
+            window.setAnimationStyle(R.style.popup_window_style);
+            ColorDrawable dw = new ColorDrawable(Color.parseColor("#00FF0000"));
+            window.setBackgroundDrawable(dw);
+            window.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
-
-    private void select(int i){
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        hidetFragment(ft);
-
-        switch (i){
-            case 0:
-                if(customerListFragment==null){
-                    customerListFragment = CustomerListFragment.getInstance();
-                    ft.add(R.id.framelayout,customerListFragment);
-                }else{
-                    ft.show(customerListFragment);
+                @Override
+                public void onDismiss() {
+                    WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                    lp.alpha = 1.0f;
+                    lp.dimAmount = 1.0f;
+                    getActivity().getWindow().setAttributes(lp);
                 }
-                break;
-            case 1:
-                if(myClubListFragment==null){
-                    myClubListFragment = MyClubListFragment.getInstance();
-                    ft.add(R.id.framelayout,myClubListFragment);
-                }else{
-                    ft.show(myClubListFragment);
+            });
+            LinearLayout allContact = (LinearLayout) viewM.findViewById(R.id.all_contact);
+            LinearLayout phoneContact = (LinearLayout) viewM.findViewById(R.id.phone_contact);
+            LinearLayout fansContact = (LinearLayout) viewM.findViewById(R.id.fans_contact);
+            LinearLayout wxContact = (LinearLayout) viewM.findViewById(R.id.wx_contact);
+   //         TextView ticketContact = (TextView) viewM.findViewById(R.id.ticket_contact);
+            TextView cancel = (TextView) viewM.findViewById(R.id.cancel_contact);
+
+            allContact.setOnClickListener((v)->{
+                requestContactList("");
+                window.dismiss();
+            });
+            phoneContact.setOnClickListener((v)->{
+                requestContactList(RequestConstant.TECH_ADD);
+                window.dismiss();
+            });
+            fansContact.setOnClickListener((v)->{
+                requestContactList(RequestConstant.FANS_USER);
+                window.dismiss();
+            });
+            wxContact.setOnClickListener((v)->{
+                requestContactList(RequestConstant.WX_USER);
+                window.dismiss();
+            });
+//            ticketContact.setOnClickListener((v)->{
+//                window.dismiss();
+//            });
+            cancel.setOnClickListener((v)->{
+                if(window!=null){
+                    window.dismiss();
                 }
-                break;
+
+            });
 
         }
-        ft.commit();
+        try {
+            if(window != null){
+                window.showAtLocation(view.findViewById(R.id.search_contact), Gravity.BOTTOM,0,0);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
-    private void hidetFragment(FragmentTransaction fragmentTransaction){
-        if(customerListFragment!=null){
-            fragmentTransaction.hide(customerListFragment);
-        }
-        if(myClubListFragment!=null){
-            fragmentTransaction.hide(myClubListFragment);
-
-        }
-
+    private void requestContactList(String type){
+        params.clear();
+        params.put(RequestConstant.KEY_CUSTOMER_TYPE,type);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
     }
 }

@@ -2,31 +2,20 @@ package com.xmd.technician.window;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AccountMoneyResult;
-import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.share.ShareConstant;
 import com.xmd.technician.share.WXShareUtil;
 import com.xmd.technician.widget.ConfirmDialog;
-import com.xmd.technician.wxapi.WXEntryActivity;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -118,7 +107,8 @@ public class MyAccountActivity extends BaseActivity {
         new ConfirmDialog(this, getString(R.string.consume_tip)) {
             @Override
             public void onConfirmClick() {
-
+            Intent intent = new Intent(MyAccountActivity.this,IntroduceAccountActivity.class);
+                startActivity(intent);
             }
         }.show();
     }
@@ -149,7 +139,7 @@ public class MyAccountActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    public void wxLogin(){
+    /*public void wxLogin(){
         WXShareUtil.getInstance().loginWX();
     }
 
@@ -167,6 +157,6 @@ public class MyAccountActivity extends BaseActivity {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_TRADE_AMOUNT, "1");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_DRAW_MONEY, params);
-    }
+    }*/
 
 }

@@ -100,6 +100,11 @@ public class MsgDef {
     public static final int MSG_DEF_DO_DRAW_MONEY = 0x0047;
     public static final int MSG_DEF_BIND_WX = 0x0048;
     public static final int MSG_DEF_IS_BIND_WX = 0x0049;
+    public static final int MSG_DEF_GET_USER_RECORDE = 0x0050;
+    public static final int MSG_DEF_GET_SWITCH_STATUS = 0x0051;
+    public static final int MSG_DEF_GET_CREDIT_ACCOUNT = 0x0052;
+    public static final int MSG_DEF_DO_CREDIT_EXCHANGE = 0x0053;
+    public static final int MSG_DEF_GET_CONTACT_MARK = 0x0054;
 
     /**
      * ChatController, start to chat with someone

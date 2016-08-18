@@ -72,11 +72,12 @@ public class Utils {
      * @param avatar
      * @return
      */
-    public static Map<String, String> wrapChatParams(String emchatId, String nickname, String avatar) {
-        Map<String, String> params = new HashMap<>();
+    public static Map<String, Object> wrapChatParams(String emchatId, String nickname, String avatar,Boolean isTech) {
+        Map<String, Object> params = new HashMap<>();
         params.put(ChatConstant.EMCHAT_ID, emchatId);
         params.put(ChatConstant.EMCHAT_NICKNAME, nickname);
         params.put(ChatConstant.EMCHAT_AVATAR, avatar);
+        params.put(ChatConstant.EMCHAT_IS_TECH,isTech);
         return params;
     }
 
@@ -441,9 +442,14 @@ public class Utils {
         }
         return metaDataValue;
     }
-    public static String StrSubstring(int length,String s){
+    public static String StrSubstring(int length,String s,Boolean end){
         if(s.length()>length){
-            return s.substring(0,length)+"...";
+            if(end){
+                return s.substring(0,length)+"...";
+            }else{
+                return s.substring(0,length);
+            }
+
         }else {
             return s;
         }

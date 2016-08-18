@@ -1,49 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="10dp"
+
     >
-    <TextView
-        android:id="@+id/all_contact"
-        style="@style/search_contact_popup_text_style"
-        android:text="全部用户"
-        />
-    <View
-        style="@style/horizontal_divider_line"/>
-    <TextView
-        android:id="@+id/phone_contact"
-        style="@style/search_contact_popup_text_style"
-        android:text="通讯录客户"
-        />
-    <View
-        style="@style/horizontal_divider_line"/>
-    <TextView
-        android:id="@+id/fans_contact"
-        style="@style/search_contact_popup_text_style"
-        android:text="粉丝客户"
-        />
-    <View
-        style="@style/horizontal_divider_line"/> <TextView
-    android:id="@+id/wx_contact"
-    style="@style/search_contact_popup_text_style"
-    android:text="微信客户"
-    />
-    <View
-        style="@style/horizontal_divider_line"/>
-    <TextView
-        android:id="@+id/ticket_contact"
-        style="@style/search_contact_popup_text_style"
-        android:text="领券客户"
-        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/round_rect_white_bg"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/all_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/search_contact_popup_text_style"
+                android:text="全部用户" />
+        </LinearLayout>
+
+        <View style="@style/horizontal_divider_line" />
+
+        <LinearLayout
+            android:id="@+id/phone_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/search_contact_popup_text_style"
+                android:drawableLeft="@drawable/icon_contacts"
+                android:drawablePadding="@dimen/margin_10"
+                android:text="通讯录客户" />
+        </LinearLayout>
+
+
+        <View style="@style/horizontal_divider_line" />
+
+        <LinearLayout
+            android:id="@+id/fans_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+
+                style="@style/search_contact_popup_text_style"
+                android:drawableLeft="@drawable/icon_fans"
+                android:drawablePadding="@dimen/margin_10"
+                android:text="粉丝客户"
+
+                />
+        </LinearLayout>
+
+        <View style="@style/horizontal_divider_line" />
+
+        <LinearLayout
+            android:id="@+id/wx_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+
+                style="@style/search_contact_popup_text_style"
+                android:drawableLeft="@drawable/icon_weixin"
+                android:drawablePadding="@dimen/margin_10"
+                android:text="微信客户" />
+        </LinearLayout>
+
+        <View style="@style/horizontal_divider_line" />
+        <!--<TextView-->
+        <!--android:id="@+id/ticket_contact"-->
+        <!--style="@style/search_contact_popup_text_style"-->
+        <!--android:text="领券客户"-->
+        <!--android:drawableLeft="@drawable/icon_quan"-->
+        <!--android:drawablePadding="@dimen/margin_10"-->
+        <!--/>-->
+    </LinearLayout>
+
     <TextView
         android:id="@+id/cancel_contact"
-        android:layout_marginTop="20dp"
-        style="@style/search_contact_popup_text_style"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/credit_button_height"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@drawable/round_rect_white_bg"
+        android:gravity="center"
         android:text="取消"
+        android:textColor="@color/primary_color"
+        android:textSize="@dimen/fontTitle"
+
         />
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center"-->
+    <!--&gt;-->
 
-
+    <!--<TextView-->
+    <!--android:id="@+id/cancel_contact"-->
+    <!--android:layout_marginTop="@dimen/margin_10"-->
+    <!--style="@style/search_contact_popup_text_style"-->
+    <!--android:text="取消"-->
+    <!--android:background="@drawable/round_rect_white_bg"-->
+    <!--/>-->
+    <!--</RelativeLayout>-->
 
 
 </LinearLayout>

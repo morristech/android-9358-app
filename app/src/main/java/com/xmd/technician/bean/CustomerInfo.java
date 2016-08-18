@@ -17,12 +17,16 @@ public class CustomerInfo extends BaseResult{
     public String techId;
     public String techLoginName;
     public String clubId;
-    public String createdAt;
     public String emchatId;
     public int orderCount;
     public int rewardAmount;
     public String avatarUrl;
     public String mPinyin;
     public String sortLetters;
+    public String createdAt;
+    public String customerType;
+    public String impression;
+
+
 
 }

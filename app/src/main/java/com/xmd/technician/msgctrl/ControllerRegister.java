@@ -14,8 +14,8 @@ public class ControllerRegister {
     private static void initUpgradeController() {
         int controllerId = ControllerId.UPGRADE_CONTROLLER;
         int[] msgIds = {
-            MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE,
-            MsgDef.MSG_DEF_MANUALLY_CHECK_UPGRADE
+                MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE,
+                MsgDef.MSG_DEF_MANUALLY_CHECK_UPGRADE
         };
         MsgDispatcher.register(controllerId, msgIds);
     }
@@ -72,6 +72,11 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL,
                 MsgDef.MSG_DEF_DELETE_CONTACT,
                 MsgDef.MSG_DEF_DO_DRAW_MONEY,
+                MsgDef.MSG_DEF_GET_USER_RECORDE,
+                MsgDef.MSG_DEF_GET_SWITCH_STATUS,
+                MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT,
+                MsgDef.MSG_DEF_DO_CREDIT_EXCHANGE,
+                MsgDef.MSG_DEF_GET_CONTACT_MARK,
 //                MsgDef.MSG_DEF_BIND_WX,
 //                MsgDef.MSG_DEF_IS_BIND_WX
         };

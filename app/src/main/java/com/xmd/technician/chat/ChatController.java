@@ -29,7 +29,7 @@ public class ChatController extends AbstractController {
                 doLoginEmchat(msg.obj);
                 break;
             case MsgDef.MSG_DEF_START_CHAT:
-                doStartChatActivity((Map<String, String>)msg.obj);
+                doStartChatActivity((Map<String, Object>)msg.obj);
                 break;
             case MsgDef.MSG_DEF_SAVE_CHAT_USER:
                 doSaveChatUser((Map<String, String>)msg.obj);
@@ -49,12 +49,13 @@ public class ChatController extends AbstractController {
      *
      * @param params
      */
-    private void doStartChatActivity(Map<String, String> params) {
+    private void doStartChatActivity(Map<String, Object> params) {
 
-        String emchatId = params.get(ChatConstant.EMCHAT_ID);
-        String emchatNickname = params.get(ChatConstant.EMCHAT_NICKNAME);
-        String emchatAvatar = params.get(ChatConstant.EMCHAT_AVATAR);
-        String emchatUserType = params.get(ChatConstant.EMCHAT_USER_TYPE);
+        String emchatId = (String) params.get(ChatConstant.EMCHAT_ID);
+        String emchatNickname = (String) params.get(ChatConstant.EMCHAT_NICKNAME);
+        String emchatAvatar = (String) params.get(ChatConstant.EMCHAT_AVATAR);
+        String emchatUserType = (String) params.get(ChatConstant.EMCHAT_USER_TYPE);
+        Boolean emchatIsTech = (Boolean) params.get(ChatConstant.EMCHAT_IS_TECH);
 
         if(TextUtils.isEmpty(emchatId)){
             return;
@@ -68,6 +69,7 @@ public class ChatController extends AbstractController {
 
         Intent intent = new Intent("com.xmd.technician.action.START_CHAT");
         intent.putExtra(ChatConstant.EMCHAT_ID, emchatId);
+        intent.putExtra(ChatConstant.EMCHAT_IS_TECH,emchatIsTech);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         TechApplication.getAppContext().startActivity(intent);
     }

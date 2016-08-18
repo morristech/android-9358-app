@@ -217,7 +217,6 @@
                         android:layout_marginLeft="@dimen/margin_25"
                         android:layout_marginRight="@dimen/coupon_margin_20"
                         android:layout_below="@id/limit_project"
-
                         />
                 </RelativeLayout>
 

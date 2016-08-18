@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/toolbar"></include>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="20dp"
+        android:paddingTop="15dp"
+        >
+        <TextView
+            android:id="@+id/quest1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1、积分是什么？"
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/credit_title_text_size"
+            />
+        <TextView
+            android:id="@+id/quest_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/quest1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/dialog_content_text_size"
+            android:paddingLeft="22dp"
+            android:lineSpacingExtra="5dp"
+            android:layout_marginTop="5dp"
+            android:text="这里的积分指的是，您在会所进行消费以及进行其它的会所指定活动时，会所给您赠送的会所虚拟货币。您可以使用会所积分，参与会所的运营活动，或其它互动游戏。"
+            android:textColor="@color/alert_text_color"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="20dp"
+        android:paddingTop="18dp"
+        >
+        <TextView
+            android:id="@+id/quest2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2、您可以通过以下方法获得积分："
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/credit_title_text_size"
+            />
+        <TextView
+            android:id="@+id/quest_content2"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/quest2"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/dialog_content_text_size"
+            android:paddingLeft="22dp"
+            android:layout_marginTop="5dp"
+            android:lineSpacingExtra="5dp"
+            android:text="办理并充值会所的会员卡\n去会所消费；\n跟技师互动赚积分；\n会所特殊活动赠送积分；"
+            android:textColor="@color/alert_text_color"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="20dp"
+        android:paddingTop="18dp"
+        >
+        <TextView
+            android:id="@+id/quest3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3、积分有什么作用？"
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/credit_title_text_size"
+            />
+        <TextView
+            android:id="@+id/quest_content3"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/quest3"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/dialog_content_text_size"
+            android:paddingLeft="22dp"
+            android:text="使用积分可以参与会所指定优惠活动，特价兑换项目或实物；\n可以兑换礼物送给技师；\n可以与技师互动小游戏；\n更多福利持续开发中……"
+            android:textColor="@color/alert_text_color"
+            android:layout_marginTop="5dp"
+            android:lineSpacingExtra="5dp"
+            />
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>

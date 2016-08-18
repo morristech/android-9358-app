@@ -6,12 +6,16 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
 import com.xmd.technician.bean.AddOrEditResult;
+import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
@@ -19,8 +23,11 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.FlowLayout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -42,12 +49,24 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
     Button mSaveEdit;
     @Bind(R.id.text_remark_num)
     TextView remarkNum;
+    @Bind(R.id.limit_project_list)
+    FlowLayout mFlowLayout;
+
     private String remarkName;
     private String remarkMessage;
     private String remarkId;
     private String remarkPhone;
     private Subscription getEditResultSubscription;
     private String nickName;
+
+    private Subscription ContactMarkSubscriotion;
+    private List<String> markList = new ArrayList<>();
+    private List<String> markSelectList = new ArrayList<>();
+    private String   text;
+    private Map<String,String> map = new HashMap<>();
+    private String impression;
+    private String getImpression;
+    private String[] oldImpression;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +84,10 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
         remarkId = intent.getStringExtra(RequestConstant.KEY_ID);
         remarkPhone = intent.getStringExtra(RequestConstant.KEY_PHONE_NUMBER);
         nickName = intent.getStringExtra(RequestConstant.KEY_USERNAME);
-
+        getImpression = intent.getStringExtra(RequestConstant.KEY_MARK_IMPRESSION);
+        if(Utils.isNotEmpty(getImpression)){
+            oldImpression = SplitSentence(getImpression);
+        }
         mRemarkName.setText(remarkName);
         if(!TextUtils.isEmpty(remarkName)){
             mSaveEdit.setEnabled(true);
@@ -87,7 +109,7 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length()>8){
+                if(s.length()>16){
                     makeShortToast(ResourceUtils.getString(R.string.limit_input_text_remark));
                 }
             }
@@ -96,21 +118,38 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
         getEditResultSubscription = RxBus.getInstance().toObservable(AddOrEditResult.class).subscribe(result ->{
             handlerEditResult(result);
         });
+        ContactMarkSubscriotion = RxBus.getInstance().toObservable(MarkResult.class).subscribe(
+                markResult -> handlerMarkResult(markResult)
+        );
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_MARK);
     }
     @OnClick(R.id.btn_save_edit)
    public   void saveEdit(){
         remarkName = mRemarkName.getText().toString();
-        if(remarkName.length()>8){
+        if(remarkName.length()>16){
             makeShortToast(ResourceUtils.getString(R.string.limit_input_text_remark));
             return;
         }
         remarkMessage = mRemarkMessage.getText().toString();
-
+        if(markSelectList.size()==1){
+            impression = markSelectList.get(0);
+        }else if(markSelectList.size()>1){
+            for (int i = 0; i <markSelectList.size()-1 ; i++) {
+                if(i==0){
+                    impression=markSelectList.get(0)+"、";
+                }else if(i<markList.size()-1){
+                    impression =impression+markSelectList.get(i)+"、";
+                }
+            }
+            impression = impression+markSelectList.get(markSelectList.size()-1);
+        }
+        Log.i("TAG",">>>"+markSelectList.size());
         Map<String,String> params = new HashMap<>();
         params.put(RequestConstant.KEY_ID,remarkId);
         params.put(RequestConstant.KEY_NOTE_NAME,remarkName);
         params.put(RequestConstant.KEY_REMARK,remarkMessage);
         params.put(RequestConstant.KEY_PHONE_NUMBER,remarkPhone);
+        params.put(RequestConstant.KEY_MARK_IMPRESSION,impression);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_OR_EDIT_CUSTOMER,params);
     }
     @Override
@@ -149,6 +188,7 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
                     Intent intent = new Intent();
                     intent.putExtra(RequestConstant.KEY_NOTE_NAME,mRemarkName.getText().toString());
                     intent.putExtra(RequestConstant.KEY_REMARK,mRemarkMessage.getText().toString());
+                    intent.putExtra(RequestConstant.KEY_MARK_IMPRESSION,impression);
                     setResult(RESULT_OK,intent);
                     EditContactInformation.this.finish();
                 }
@@ -165,4 +205,65 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
             RxBus.getInstance().unsubscribe(getEditResultSubscription);
         }
     }
+    private void handlerMarkResult(MarkResult result){
+        for (int i = 0; i <result.respData.size() ; i++) {
+            markList.add(result.respData.get(i).tag);
+        }
+        initChildViews(markList);
+    }
+    private void initChildViews(List<String> Mark){
+        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.rightMargin = 18;
+        lp.bottomMargin = 18;
+        if(oldImpression!=null){
+            for (int i = 0; i <oldImpression.length ; i++) {
+                map.put(oldImpression[i],oldImpression[i]);
+                markSelectList.add(oldImpression[i]);
+            }
+        }
+
+        for(int i = 0; i < Mark.size(); i ++){
+            TextView view = new TextView(this);
+            view.setPadding(36,5,36,5);
+            view.setText(Mark.get(i));
+            view.setTextColor(ResourceUtils.getColor(R.color.alert_text_color));
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.limit_project_item_bg));
+            mFlowLayout.addView(view,lp);
+            text = view.getText().toString();
+            if(map.containsKey(text)){
+                view.setBackground(getResources().getDrawable(R.drawable.limit_project_item_select_bg));
+                view.setTextColor(ResourceUtils.getColor(R.color.contact_marker));
+            }else{
+                view.setBackground(getResources().getDrawable(R.drawable.limit_project_item_bg));
+                view.setTextColor(ResourceUtils.getColor(R.color.alert_text_color));
+            }
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    text =view.getText().toString();
+                    if(map.containsKey(text)){
+                        view.setBackground(getResources().getDrawable(R.drawable.limit_project_item_bg));
+                        view.setTextColor(ResourceUtils.getColor(R.color.alert_text_color));
+                        map.remove(text);
+                        markSelectList.remove(text);
+                    }else{
+                        view.setBackground(getResources().getDrawable(R.drawable.limit_project_item_select_bg));
+                        view.setTextColor(ResourceUtils.getColor(R.color.contact_marker));
+                        map.put(text,text);
+                        markSelectList.add(text);
+                    }
+                }
+
+            });
+
+
+        }
+    }
+    public String[] SplitSentence(String paragraph) {
+        String[] result = null;
+        result = paragraph.split("、");
+        return result;
+    }
+
 }

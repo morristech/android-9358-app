@@ -12,7 +12,9 @@ public class ChatConstant {
     public static final String EMCHAT_ID = "emchatId";
     public static final String EMCHAT_NICKNAME = "emchatNickname";
     public static final String EMCHAT_AVATAR = "emchatAvatar";
-    public static final String EMCHAT_USER_TYPE="userType";
+    public static final String EMCHAT_USER_TYPE ="userType";
+    public static final String EMCHAT_IS_TECH = "isTech";
+    public static final String EMCHAT_CLUB_ID= "clubId";
 
     public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
     public static final String MESSAGE_ATTR_IS_VIDEO_CALL = "is_video_call";

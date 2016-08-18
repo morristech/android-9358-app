@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.FloatMath;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -110,23 +111,23 @@ public class ClipPictureActivity extends BaseActivity implements OnTouchListener
             case MotionEvent.ACTION_DOWN:
                 savedMatrix.set(matrix);
                 start.set(event.getX(), event.getY());
-//                Log.d(TAG, "mode=DRAG");
+                Log.d(TAG, "mode=DRAG");
                 mode = DRAG;
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 oldDist = spacing(event);
-//                Log.d(TAG, "oldDist=" + oldDist);
+               Log.d(TAG, "oldDist=" + oldDist);
                 if (oldDist > 10f) {
                     savedMatrix.set(matrix);
                     midPoint(mid, event);
                     mode = ZOOM;
-//                    Log.d(TAG, "mode=ZOOM");
+                   Log.d(TAG, "mode=ZOOM");
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
                 mode = NONE;
-//                Log.d(TAG, "mode=NONE");
+                Log.d(TAG, "mode=NONE");
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mode == DRAG) {
@@ -136,7 +137,7 @@ public class ClipPictureActivity extends BaseActivity implements OnTouchListener
                             - start.y);
                 } else if (mode == ZOOM) {
                     float newDist = spacing(event);
-//                    Log.d(TAG, "newDist=" + newDist);
+                    Log.d(TAG, "newDist=" + newDist);
                     if (newDist > 10f) {
                         matrix.set(savedMatrix);
                         float scale = newDist / oldDist;

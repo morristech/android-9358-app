@@ -3,65 +3,89 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorMain"
     >
-    <RelativeLayout
+    <include layout="@layout/toolbar" />
+    <LinearLayout
+        android:id="@+id/contact"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:background="@color/appColorTable"
+        android:layout_height="44dp"
+        android:orientation="horizontal"
+        android:background="@color/color_white"
         >
-        <RadioGroup
-            android:id="@+id/radio_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal"
+       <RelativeLayout
+           android:id="@+id/contact_left"
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center_vertical"
+           android:gravity="center"
+           >
+           <RelativeLayout
+               android:id="@+id/rl_text"
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:gravity="center"
+               >
+               <TextView
+                   android:id="@+id/table_contact"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="全部客户"
+                   android:gravity="center"
+                   android:textColor="@color/colorHead"
+                   />
+           </RelativeLayout>
+           <RelativeLayout
+               android:id="@+id/image_down"
+               android:layout_width="wrap_content"
+               android:layout_height="40dp"
+               android:layout_toRightOf="@id/rl_text"
+               android:paddingLeft="@dimen/margin_10"
+               android:gravity="center_horizontal|center_vertical"
+               android:paddingRight="40dp"
+
+               >
+               <ImageView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/icon_down"
+                   android:background="@null"
+                   android:layout_marginTop="@dimen/margin_5"
+
+                   />
+           </RelativeLayout>
+
+
+       </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/contact_right"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
             >
-            <RadioButton
-                android:id="@+id/customer"
+            <TextView
+                android:id="@+id/table_club"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/icon_client"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/contact_customer"
-                android:textColor="@drawable/selector_left_bg"
-                android:checked="true"
-                android:textSize="@dimen/fontTitle" />
-
-            <RadioButton
-                android:id="@+id/mine_store"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/icon_right"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/contact_club"
-                android:textSize="@dimen/fontTitle"
-                android:textColor="@color/selector_right_bg"
+                android:text="本店"
+                android:textColor="@color/colorHead"
                 />
+        </RelativeLayout>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/iv_tab_bottom_img"
+        android:layout_width="300dp"
+        android:layout_height="2dp"
+        android:scaleType="matrix"
+        android:contentDescription="tab"
+        android:background="@drawable/table_select_line"
 
-        </RadioGroup>
-        <ImageView
-            android:id="@+id/iv_add_friend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/personal_margin"
-            android:src="@drawable/icon_add"
-
-             />
-    </RelativeLayout>
-    <View
-        style="@style/horizontal_divider_line_title"
         />
-    <FrameLayout
-        android:id="@+id/framelayout"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_contact"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
-
-
-
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>
