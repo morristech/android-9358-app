@@ -106,8 +106,6 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
                 viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
             }
         }
-
-
         if(Utils.isNotEmpty(mCustomer.userId)){
             viewHolder.lineChat.setVisibility(View.VISIBLE);
         }else{

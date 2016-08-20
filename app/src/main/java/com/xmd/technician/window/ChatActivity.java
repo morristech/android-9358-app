@@ -74,7 +74,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Bind(R.id.btn_common_msg)View mCommonBtn;
     @Bind(R.id.round_indicator_left) ImageView indicatorLeft;
     @Bind(R.id.round_indicator_right)ImageView indicatorRight;
-    @Bind(R.id.btn_common_coupon)LinearLayout btnCommonCoupor;
+    @Bind(R.id.btn_common_coupon)LinearLayout btnCommonCoupon;
+    @Bind(R.id.btn_common_reward)View mRewardBtn;
     ViewPager mCommentMsgView;
 
     private String mToChatUsername;
@@ -109,7 +110,9 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mToChatUsername = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
         isTechOrManger = getIntent().getExtras().getBoolean(ChatConstant.EMCHAT_IS_TECH);
        if(isTechOrManger){
-           btnCommonCoupor.setVisibility(View.GONE);
+          btnCommonCoupon.setVisibility(View.GONE);
+           mCommonBtn.setVisibility(View.GONE);
+           mRewardBtn.setVisibility(View.GONE);
        }
 
         UserUtils.setUserNick(mToChatUsername, mAppTitle);

@@ -226,6 +226,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             return;
         }else{
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(chatEmId, chatName, chatHeadUrl,isTech));
+            SharedPreferenceHelper.setUserIsTech(chatEmId,isTech);
         }
 
     }

@@ -18,6 +18,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.chat.UserProfileProvider;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
@@ -49,7 +50,7 @@ public class PersonalFragment extends BaseFragment{
     @Bind(R.id.user_name) TextView mTechName;
     @Bind(R.id.club_name) TextView mClubName;
     @Bind(R.id.invite_btn) Button mInviteBtn;
-    @Bind(R.id.status) ImageView mWorkStatus;
+    @Bind(R.id.status) TextView mWorkStatus;
     @Bind(R.id.account_balance) TextView mAccountMoney;
     @Bind(R.id.unread_count) TextView mUnreadCommentCount;
     @Bind(R.id.comment_count) TextView mCommentCount;
@@ -200,9 +201,12 @@ public class PersonalFragment extends BaseFragment{
             if(mTechInfo != null) mTechInfo.status = result.respData.techStatus;
 
             if(Constant.TECH_STATUS_BUSY.equals(result.respData.techStatus)){
-                mWorkStatus.setImageResource(R.drawable.icon_busy);
+                mWorkStatus.setEnabled(false);
+                mWorkStatus.setText("忙");
+                mWorkStatus.setTextColor(ResourceUtils.getColor(R.color.color_white));
             }else {
-                mWorkStatus.setImageResource(R.drawable.icon_free);
+                mWorkStatus.setText("闲");
+                mWorkStatus.setEnabled(true);
             }
         }
     }

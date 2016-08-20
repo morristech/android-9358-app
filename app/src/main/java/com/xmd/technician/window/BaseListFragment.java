@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Adapter.ListRecycleViewAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.widget.DividerItemDecoration;
@@ -125,7 +126,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     }
 
     @Override
-    public void onItemClicked(T bean) {
+    public void onItemClicked(T bean) throws HyphenateException {
         //implemented by sub class
     }
 

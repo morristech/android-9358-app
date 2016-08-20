@@ -1,6 +1,7 @@
 package com.xmd.technician.chat;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -8,7 +9,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.UpdateServiceResult;
 
 public class UserUtils {
@@ -45,13 +48,11 @@ public class UserUtils {
      */
     public static void setUserNick(String username,TextView textView){
         if(textView != null){
-            textView.setText(getUserNick(username));
-        	/*ChatUser user = getUserInfo(username);
-        	if(user != null && user.getNick() != null){
-        		textView.setText(user.getNick());
-        	}else{
-        		textView.setText(username);
-        	}*/
+            if(Utils.isNotEmpty(SharedPreferenceHelper.getUserRemark(username))){
+                textView.setText(SharedPreferenceHelper.getUserRemark(username));
+            }else{
+                textView.setText(getUserNick(username));
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.xmd.technician.chat.chatview;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.hyphenate.chat.EMMessage;
@@ -43,7 +44,7 @@ public class ChatViewPaidCoupon extends BaseChatView{
             mCouponValue.setText(str[2]+"￥"+str[3]);
             mCouponPeriod.setText(str[5]);
         }catch (IndexOutOfBoundsException e){
-
+                e.printStackTrace();
         }
         if(mCouponTip != null){
             mCouponTip.setVisibility(VISIBLE);

@@ -20,13 +20,10 @@
     <string name="default_tips">异常</string>
     <string name="default_user_name">匿名用户</string>
     <string name="company_name">深圳市小摩豆网络科技有限公司</string>
-
     <string name="amount_unit_yuan">元</string>
-
     <string name="list_item_loading">点击或者上拉，加载更多</string>
     <string name="list_item_no_more"> ^_^, 没有更多数据</string>
     <string name="list_item_empty">=_=!!, 还没有数据哦</string>
-
     <string name="register_password_hint">请输入6-20位密码，仅限字母和数字</string>
     <string name="register_tips">您的手机号未注册，请输入相关信息完成注册</string>
     <string name="register_security_code_hint">输入验证码</string>
@@ -37,14 +34,11 @@
     <string name="input_serial_no">输入店内编号</string>
     <string name="nick_name">昵称</string>
     <string name="select_gender">选择性别</string>
-
     <string name="empty_view_loading">加载中...</string>
     <string name="empty_view_empty">暂无数据</string>
     <string name="empty_view_failed">数据加载失败，点击刷新</string>
-
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
-
     <string name="main_chat">聊天</string>
     <string name="main_conversion">联系人</string>
     <string name="main_order">订单</string>
@@ -358,6 +352,5 @@
     <string name="register_alert">提示：客人尚未注册，提醒用户注册。</string>
     <string name="introduce_bind">提现</string>
     <string name="introduce_url"></string>
-
 
 </resources>

@@ -126,11 +126,11 @@ public class SmileUtils {
 	                    }
 	                    spannable.setSpan(new ImageSpan(context, Uri.fromFile(file)),
 	                            matcher.start(), matcher.end(),
-	                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	                            Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 	                }else{
 	                    spannable.setSpan(new ImageSpan(context, (Integer)value),
 	                            matcher.start(), matcher.end(),
-	                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	                            Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 	                }
 	            }
 	        }

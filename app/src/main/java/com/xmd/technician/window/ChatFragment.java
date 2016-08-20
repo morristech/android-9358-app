@@ -16,13 +16,14 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
+import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ConversationListResult;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -46,6 +47,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private Filter mFilter;
     private Subscription mGetConversationListSubscription;
     private TextView mSearchView;
+    private Boolean  mMessageFromTech;
 
     @Nullable
     @Override
@@ -79,7 +81,6 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         mEmptyView.setStatus(EmptyView.Status.Gone);
         mEmptyView.setEmptyPic(R.drawable.empty);
         mEmptyView.setEmptyTip("");
-
         mGetConversationListSubscription = RxBus.getInstance().toObservable(ConversationListResult.class).subscribe(
                 conversationListResult -> handleGetConversationListResult(conversationListResult)
         );
@@ -152,18 +153,28 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                         intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
                     }
                 }
-            for (int i = 0; i < conversation.getAllMessages().size(); i++) {
-//                if(conversation.getLastMessage().getFrom()){
-//
-//                }
+            if(conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())){
+                   if(SharedPreferenceHelper.getUserIsTech(username)){
+                       mMessageFromTech =true;
+                   } else{
+                       mMessageFromTech =false;
+                   }
+
+            }else{
+                try {
+                    if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID))){
+                        mMessageFromTech =true;
+                    }else{
+                        mMessageFromTech = false;
+                    }
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
             }
-
                         conversation.getAllMessages();
-
                 // it's single chat
                 intent.putExtra(ChatConstant.EMCHAT_ID, username);
-
-             //   intent.putExtra(ChatConstant.EMCHAT_IS_TECH,true);
+                intent.putExtra(ChatConstant.EMCHAT_IS_TECH,mMessageFromTech);
                 startActivity(intent);
         }
     }
@@ -252,4 +263,6 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     public boolean isPaged() {
         return false;
     }
+
+
 }

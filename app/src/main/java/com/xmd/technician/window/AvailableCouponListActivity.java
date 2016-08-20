@@ -50,13 +50,12 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
     private Map<String, String> map = new HashMap<>();
     protected LinearLayoutManager mLayoutManager;
     private Subscription mGetRedpacklistSubscription;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_availabel_coupon_deatil);
         ButterKnife.bind(this);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
         sent = (TextView) findViewById(R.id.toolbar_right);
         sent.setOnClickListener(this);
         initView();
@@ -118,7 +117,6 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
                 }, 600);
             }
         }
-
     }
 
     @Override
@@ -129,8 +127,8 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
     private void getRedpackListResult(CouponListResult result) {
 
         Collections.sort(result.respData.coupons, (lhs, rhs) -> {
-            if (Constant.COUPON_TYPE_PAID.equals(rhs.couponType)) return 1;
-            else if (Constant.COUPON_TYPE_PAID.equals(lhs.couponType)) return -1;
+            if(Constant.COUPON_TYPE_PAID.equals(rhs.couponType)) return 1;
+            else if(Constant.COUPON_TYPE_PAID.equals(lhs.couponType)) return -1;
             return 0;
         });
         if (result.respData.coupons != null) {

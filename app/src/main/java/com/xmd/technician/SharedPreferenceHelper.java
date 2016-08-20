@@ -192,17 +192,20 @@ public class SharedPreferenceHelper {
     public static boolean getBindSuccess(){
         return  mSettingPreference.getBoolean(RequestConstant.KEY_BIND_WX_SUCCESS,false);
     }
-//    public static void setUserType(String userType){
-//        mSettingPreference.edit().putString(ChatConstant.EMCHAT_USER_TYPE,userType);
-//    }
-//    public static String getUserType(){
-//        return  mSettingPreference.getString(ChatConstant.EMCHAT_USER_TYPE,"");
-//    }
+    public static void setUserIsTech(String userChatId,boolean isTech){
+
+        mSettingPreference.edit().putBoolean(userChatId+"1",isTech).apply();
+    }
+    public static boolean getUserIsTech(String userChatId){
+        return  mSettingPreference.getBoolean(userChatId+"1",false);
+    }
     public static void setUserRemarkName(String userChatId,String remark){
         mSettingPreference.edit().putString(userChatId,remark).apply();
     }
     public static String getUserRemark(String userChatId){
         return  mSettingPreference.getString(userChatId,"");
     }
+
+
 
 }

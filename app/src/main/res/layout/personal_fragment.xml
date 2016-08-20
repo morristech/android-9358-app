@@ -125,14 +125,13 @@
                     android:layout_width="75dp"
                     android:layout_height="23dp"
                     android:gravity="center"
-
                     android:background="@drawable/bg_share"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/margin_15"
                     android:layout_marginTop="11dp"
                     android:text="立即分享"
                     android:textColor="@color/color_white"
-
+                    android:textSize="@dimen/fontBody"
                     />
                 <ImageView
                     style="@style/user_center_ivRight"
@@ -260,14 +259,21 @@
                 <ImageView
                     style="@style/user_center_ivRight"/>
 
-                <ImageView
+
+                <TextView
                     android:id="@+id/status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
+                    android:enabled="true"
                     android:layout_marginRight="@dimen/personal_item_margin_right"
-                    android:src="@drawable/icon_free" />
+                    android:background="@drawable/tech_time_state"
+                    android:gravity="center"
+                    android:text="闲"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/fontBody"
+                    />
             </RelativeLayout>
             <View
                 style="@style/horizontal_divider_line"
