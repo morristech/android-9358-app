@@ -49,14 +49,14 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.EmojiconMenu;
-import com.xmd.technician.widget.GameSettingDialog;
+//import com.xmd.technician.widget.GameSettingDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+//import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -404,30 +404,30 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         startActivity(intent);
         view.setSelected(false);
     }
-  @OnClick(R.id.btn_common_game)
-  public void sendGameMsg(){
-      //发送游戏邀请
-      hideKeyboard();
-      hideExtendMenuContainer();
-      mGameIntegral = 10;
-      new GameSettingDialog(this, new GameSettingDialog.GetGameIntegralInterFace() {
-          @Override
-          public void getIngefral(int num) {
-              mGameIntegral = num;
-          }
-      }){
-          @Override
-          public void onConfirmClick() {
-              super.onConfirmClick();
-              Map<String,String> params = new HashMap<String, String>();
-              params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID,mToChatUsername);
-              params.put(RequestConstant.KEY_UER_CREDIT_AMOUNT,String.valueOf(mGameIntegral));
-              params.put(RequestConstant.KEY_USER_CLUB_ID,SharedPreferenceHelper.getUserClubId());
-              MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_INITIATE_GAME ,params);
-          }
-
-      }.show();
-  }
+//  @OnClick(R.id.btn_common_game)
+//  public void sendGameMsg(){
+//      //发送游戏邀请
+//      hideKeyboard();
+//      hideExtendMenuContainer();
+//      mGameIntegral = 10;
+//      new GameSettingDialog(this, new GameSettingDialog.GetGameIntegralInterFace() {
+//          @Override
+//          public void getIngefral(int num) {
+//              mGameIntegral = num;
+//          }
+//      }){
+//          @Override
+//          public void onConfirmClick() {
+//              super.onConfirmClick();
+//              Map<String,String> params = new HashMap<String, String>();
+//              params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID,mToChatUsername);
+//              params.put(RequestConstant.KEY_UER_CREDIT_AMOUNT,String.valueOf(mGameIntegral));
+//              params.put(RequestConstant.KEY_USER_CLUB_ID,SharedPreferenceHelper.getUserClubId());
+//              MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_INITIATE_GAME ,params);
+//          }
+//
+//      }.show();
+//  }
 
     private void   handlerCheckedCoupon(CheckedCoupon result){
             if(!("paid").equals(result.couponType)){
