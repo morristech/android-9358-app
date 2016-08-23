@@ -22,22 +22,55 @@
         android:layout_marginLeft="@dimen/search_margin"
         android:layout_marginRight="@dimen/search_margin"
         android:background="@drawable/icon22" />
-
-    <TextView
-        android:id="@+id/user_reward"
+    <RelativeLayout
+        android:id="@+id/user_reward_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/avatar"
         android:layout_below="@+id/time"
         android:background="@drawable/recv_reward"
-        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="打赏:"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontBody"
+            />
+       <TextView
+        android:id="@+id/text_sign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  ￥"
+           android:layout_alignTop="@id/text"
+           android:layout_marginTop="-2dp"
+        android:layout_toRightOf="@id/text"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/fontBody" />
+        android:textSize="@dimen/fontBody"
+        />
+        <TextView
+            android:id="@+id/user_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_white"
+            android:layout_toRightOf="@id/text_sign"
+            android:layout_marginRight="@dimen/margin_2"
+            android:textSize="@dimen/fontHead"
+            android:text="1"
+            android:layout_marginTop="-4dp"
+            android:layout_marginLeft="@dimen/margin_2"
+            android:textStyle="bold"
+            />
+
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/user_reward"
+        android:layout_below="@+id/user_reward_detail"
         android:layout_marginTop="@dimen/personal_padding">
         <TextView
             android:id="@+id/reward_tip"

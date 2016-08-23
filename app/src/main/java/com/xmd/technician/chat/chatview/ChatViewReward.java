@@ -43,7 +43,9 @@ public class ChatViewReward extends BaseChatView{
         //txt:"<i></i>打赏：<span>1</span>元"
         Spannable span = SmileUtils.getSmiledText(context, CommonUtils.getMessageDigest(message, context));
         // 设置内容
-        mRewardValue.setText(span, TextView.BufferType.SPANNABLE);
+        String newSpan = span.toString();
+       // mRewardValue.setText(span, TextView.BufferType.SPANNABLE);
+        mRewardValue.setText(newSpan.substring(3,newSpan.length()-1));
         mRewardTip.setText(String.format("%s的打赏已存入您的账户", message.getStringAttribute(ChatConstant.KEY_NAME,"")));
 
     }
