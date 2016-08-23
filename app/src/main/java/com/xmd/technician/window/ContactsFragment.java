@@ -218,18 +218,22 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
             allContact.setOnClickListener((v)->{
                 requestContactList("");
+                mTableContact.setText(ResourceUtils.getString(R.string.all_contact));
                 window.dismiss();
             });
             phoneContact.setOnClickListener((v)->{
                 requestContactList(RequestConstant.TECH_ADD);
+                mTableContact.setText(ResourceUtils.getString(R.string.phone_contact));
                 window.dismiss();
             });
             fansContact.setOnClickListener((v)->{
                 requestContactList(RequestConstant.FANS_USER);
+                mTableContact.setText(ResourceUtils.getString(R.string.fans_contact));
                 window.dismiss();
             });
             wxContact.setOnClickListener((v)->{
                 requestContactList(RequestConstant.WX_USER);
+                mTableContact.setText(ResourceUtils.getString(R.string.wx_contact));
                 window.dismiss();
             });
             cancel.setOnClickListener((v)->{

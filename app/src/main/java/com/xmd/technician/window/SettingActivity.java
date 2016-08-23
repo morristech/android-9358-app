@@ -108,7 +108,7 @@ public class SettingActivity extends BaseActivity {
 
     @OnClick(R.id.settings_activity_logout)
     public void logout() {
-        new RewardConfirmDialog(SettingActivity.this, "", getString(R.string.logout_tips)) {
+        new RewardConfirmDialog(SettingActivity.this, "", getString(R.string.logout_tips),"") {
             @Override
             public void onConfirmClick() {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID);
@@ -120,7 +120,7 @@ public class SettingActivity extends BaseActivity {
 
     @OnClick(R.id.settings_activity_quit_club)
     public void quitClub() {
-        new RewardConfirmDialog(SettingActivity.this, getString(R.string.quit_club_title), getString(R.string.quit_club_tips)) {
+        new RewardConfirmDialog(SettingActivity.this, getString(R.string.quit_club_title), getString(R.string.quit_club_tips),"") {
             @Override
             public void onConfirmClick() {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_QUIT_CLUB);

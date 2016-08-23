@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/default_dialog_width"
     android:layout_height="wrap_content"
-    android:background="@android:color/white">
+    android:background="@drawable/round_rect_white_bg">
 
     <TextView
         android:id="@+id/dialog_alert_title"
@@ -65,7 +65,7 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:background="@drawable/personal_item_selector"
-            android:textColor="@color/colorBody"
+            android:textColor="@color/colorBtnChecked"
             android:textSize="@dimen/fontTitle"
             android:text="@string/confirm"/>
     </LinearLayout>

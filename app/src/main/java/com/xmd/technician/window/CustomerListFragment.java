@@ -32,6 +32,7 @@ import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.common.CharacterParser;
 import com.xmd.technician.common.PinyinCompartorUtil;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -330,6 +331,8 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onRefresh() {
+        TextView tv = (TextView) getActivity().findViewById(R.id.table_contact);
+        tv.setText(ResourceUtils.getString(R.string.all_contact));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
     }
 }

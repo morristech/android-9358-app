@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 /**
- * Created by Administrator on 2016/7/4.
+ * Created by LHJ on 2016/7/4.
  */
 public class AddFriendActivity extends BaseActivity implements TextWatcher {
     private static final int REQUEST_CONTANT_CODE = 0x001;
@@ -82,7 +82,7 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
         setBackVisible(true);
         mCustomerName.addTextChangedListener(this);
         mCustomerRemark.addTextChangedListener(this);
-        mSearchTelephone.addTextChangedListener(this);
+        mCustomerTelephone.addTextChangedListener(this);
         getAddresultSubscription = RxBus.getInstance().toObservable(AddOrEditResult.class).subscribe(
               result ->{
                   if(result.resultcode==200){
@@ -138,11 +138,13 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
         customerName = mCustomerName.getText().toString();
         customerPhone = mCustomerTelephone.getText().toString();
         customerRemark = mCustomerRemark.getText().toString();
-        if (!TextUtils.isEmpty(customerPhone) && !TextUtils.isEmpty(customerName) && !TextUtils.isEmpty(customerRemark)) {
+
+        if(Utils.isNotEmpty(customerName)&&Utils.isNotEmpty(customerPhone)){
             mSaveCustomer.setEnabled(true);
-        } else {
+        }else{
             mSaveCustomer.setEnabled(false);
         }
+
         if(customerRemark.length()==30){
             this.makeShortToast(ResourceUtils.getString(R.string.limit_input_text));
         }

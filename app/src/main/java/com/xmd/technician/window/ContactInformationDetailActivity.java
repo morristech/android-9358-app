@@ -237,7 +237,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         DropDownMenuDialog.getDropDownMenuDialog(ContactInformationDetailActivity.this,items,(index -> {
             switch (index){
                 case 0:
-                    new RewardConfirmDialog(ContactInformationDetailActivity.this,getString(R.string.alert_delete_contact), getString(R.string.alert_delete_contact_message)){
+                   new RewardConfirmDialog(ContactInformationDetailActivity.this,getString(R.string.alert_delete_contact), getString(R.string.alert_delete_contact_message),""){
                         @Override
                         public void onConfirmClick() {
                             Map<String, String> param = new HashMap<>();
@@ -266,7 +266,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
             }
         })).show(contactMore);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -310,8 +309,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
         }
         isEmptyCustomer = TextUtils.isEmpty(customer.respData.techCustomer.emchatId) ? true : false;
         Glide.with(mContext).load(customer.respData.techCustomer.avatarUrl).error(R.drawable.icon22).into(mContactHead);
-
-
         if (isEmptyCustomer) {
             btnEmChat.setEnabled(false);
             registerAlert.setVisibility(View.VISIBLE);

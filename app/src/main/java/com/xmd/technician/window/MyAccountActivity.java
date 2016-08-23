@@ -7,8 +7,7 @@ import android.widget.TextView;
 
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -40,18 +39,15 @@ public class MyAccountActivity extends BaseActivity {
     @Bind(R.id.coupon_consume) Button mCouponConsumeBtn;
 
     private Subscription mInitSubscription;
-    private Subscription mDrawMoneySubscrition;
+    private Boolean isCanDrawMoney;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
-
         ButterKnife.bind(this);
-
         setTitle(R.string.personal_fragment_layout_account);
         setBackVisible(true);
-
         mInitSubscription = RxBus.getInstance().toObservable(AccountMoneyResult.class).subscribe(
                 result -> initView(result));
 
@@ -70,13 +66,15 @@ public class MyAccountActivity extends BaseActivity {
             mCouponAmount.setText(String.format("%1.2f",result.respData.redPack));
             mClockAmount.setText(String.format("%1.2f",result.respData.paidMoney));
             mPaidOrderAmount.setText(String.format("%1.2f",result.respData.orderMoney));
-
+            mCouponConsumeBtn.setEnabled(true);
             if(result.respData.withdrawal.equals("Y")){
-                //mClockConsumeBtn.setEnabled(true);
-                mCouponConsumeBtn.setEnabled(true);
+                isCanDrawMoney = true;
+
             }else {
-                //mClockConsumeBtn.setEnabled(false);
-                mCouponConsumeBtn.setEnabled(false);
+                isCanDrawMoney = false;
+                mCouponConsumeBtn.setBackground(ResourceUtils.getDrawable(R.drawable.account_button));
+                mCouponConsumeBtn.setTextColor(ResourceUtils.getColor(R.color.colorBody));
+
             }
         }
     }
@@ -87,8 +85,11 @@ public class MyAccountActivity extends BaseActivity {
     }
     @OnClick(R.id.coupon_consume)
     public void couponCommissionConsume(){
-        showConfirmDialog();
-
+        if(isCanDrawMoney){
+            showConfirmDialog();
+        }else{
+            showFailureDialog();
+        }
     }
 
     @OnClick(R.id.clock_consume)
@@ -105,7 +106,7 @@ public class MyAccountActivity extends BaseActivity {
 
     private void showConfirmDialog(){
             Intent intent = new Intent(MyAccountActivity.this,IntroduceAccountActivity.class);
-                startActivity(intent);
+            startActivity(intent);
     }
 
     @OnClick(R.id.customer_reward_layout)
@@ -133,7 +134,14 @@ public class MyAccountActivity extends BaseActivity {
         intent.putExtra(ConsumeDetailActivity.EXTRA_CONSUME_TYPE, type);
         startActivity(intent);
     }
+    private void showFailureDialog() {
+        new ConfirmDialog(this, getString(R.string.draw_money_failure)) {
+            @Override
+            public void onConfirmClick() {
 
+            }
+        }.show();
+    }
     /*public void wxLogin(){
         WXShareUtil.getInstance().loginWX();
     }

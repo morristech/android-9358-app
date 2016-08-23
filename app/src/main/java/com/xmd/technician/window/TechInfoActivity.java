@@ -104,7 +104,7 @@ public class TechInfoActivity extends BaseActivity {
 
             @Override
             public void onDeleteAlbum(int position) {
-                new RewardConfirmDialog(TechInfoActivity.this, "",getString(R.string.edit_activity_delete_album)) {
+                new RewardConfirmDialog(TechInfoActivity.this, "",getString(R.string.edit_activity_delete_album),"") {
                     @Override
                     public void onConfirmClick() {
                         AlbumInfo albumInfo = mAdapter.getItem(position);
