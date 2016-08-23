@@ -132,6 +132,8 @@
     <color name="credit_amount_color">#0abe07</color>
     <color name="divider_color">#ddd</color>
     <color name="primary_color">#ff6666</color>
-    <color name="contact_marker">#ff9a0C</color>
+    <color name="contact_marker">#ff9a0c</color>
+    <color name="send_dice_top">#7CD1D0</color>
+    <color name="dice_game_name_color">#154F67</color>
 
 </resources>

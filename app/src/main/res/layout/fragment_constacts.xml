@@ -34,27 +34,29 @@
                    android:text="@string/all_contact"
                    android:gravity="center"
                    android:textColor="@color/colorHead"
+                   android:drawableRight="@drawable/icon_down"
+                   android:drawablePadding="@dimen/margin_10"
                    />
            </RelativeLayout>
-           <RelativeLayout
-               android:id="@+id/image_down"
-               android:layout_width="wrap_content"
-               android:layout_height="40dp"
-               android:layout_toRightOf="@id/rl_text"
-               android:paddingLeft="@dimen/margin_10"
-               android:gravity="center_horizontal|center_vertical"
-               android:paddingRight="40dp"
+           <!--<RelativeLayout-->
+               <!--android:id="@+id/image_down"-->
+               <!--android:layout_width="wrap_content"-->
+               <!--android:layout_height="wrap_content"-->
+               <!--android:layout_toRightOf="@id/rl_text"-->
+               <!--android:paddingLeft="@dimen/margin_10"-->
+               <!--android:gravity="center"-->
+             <!--g-->
 
-               >
-               <ImageView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:src="@drawable/icon_down"
-                   android:background="@null"
-                   android:layout_marginTop="@dimen/margin_5"
-
-                   />
-           </RelativeLayout>
+               <!--&gt;-->
+               <!--<ImageView-->
+                   <!--android:layout_width="wrap_content"-->
+                   <!--android:layout_height="wrap_content"-->
+                   <!--android:src="@drawable/icon_down"-->
+                   <!--android:background="@null"-->
+                   <!--android:layout_marginTop="@dimen/margin_5"-->
+                   <!---->
+                   <!--/>-->
+           <!--</RelativeLayout>-->
 
 
        </RelativeLayout>

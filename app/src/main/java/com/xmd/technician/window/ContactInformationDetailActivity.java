@@ -255,10 +255,11 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     intent.putExtra(RequestConstant.KEY_MARK_IMPRESSION,contactMark.getText().toString());
                     if(!remarkIsNotEmpty&&mContactRemark.getText().toString().equals(ResourceUtils.getString(R.string.customer_remark_empty))){
                         textRemarkAlert.setVisibility(View.VISIBLE);
-                        intent.putExtra(RequestConstant.KEY_REMARK,mContactRemark.getText().toString());
-                    }else{
                         intent.putExtra(RequestConstant.KEY_REMARK,"");
+                    }else{
+                        intent.putExtra(RequestConstant.KEY_REMARK,mContactRemark.getText().toString());
                     }
+
 
                     intent.putExtra(RequestConstant.KEY_PHONE_NUMBER,contactPhone);
                     startActivityForResult(intent,RESULT_ADD_REMARK);
@@ -320,7 +321,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
             if(TextUtils.isEmpty(customer.respData.techCustomer.remark)){
                 mContactRemark.setText(ResourceUtils.getString(R.string.customer_remark_empty));
                 textRemarkAlert.setVisibility(View.GONE);
-
             }else{
                 remarkIsNotEmpty = true;
                 mContactRemark.setText(customer.respData.techCustomer.remark);
@@ -419,9 +419,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
         customerChatId = tech.respData.emchatId;
         Glide.with(mContext).load(tech.respData.avatarUrl).into(mContactHead);
         if (TextUtils.isEmpty(tech.respData.serialNo)) {
-            mContactName.setText(tech.respData.name);
+            mContactName.setText(Utils.StrSubstring(12,tech.respData.name,true));
         } else {
-            mContactName.setText(tech.respData.name);
+            mContactName.setText(Utils.StrSubstring(12,tech.respData.name,true));
             llTechNum.setVisibility(View.VISIBLE);
             techNum.setText(tech.respData.serialNo);
 
@@ -477,7 +477,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(Utils.isNotEmpty(data.getStringExtra(RequestConstant.KEY_NOTE_NAME))){
-                mContactName.setText(data.getStringExtra(RequestConstant.KEY_NOTE_NAME));
+                mContactName.setText(Utils.StrSubstring(12,data.getStringExtra(RequestConstant.KEY_NOTE_NAME),true));
                 chatName = data.getStringExtra(RequestConstant.KEY_NOTE_NAME);
                 impression = data.getStringExtra(RequestConstant.KEY_MARK_IMPRESSION);
                 if(Utils.isNotEmpty(impression)){

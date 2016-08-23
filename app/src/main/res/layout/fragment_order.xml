@@ -9,7 +9,7 @@
     <RadioGroup
         android:id="@+id/filter_order"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="50.5dp"
         android:orientation="horizontal">
 
         <RadioButton

@@ -292,6 +292,71 @@
                     android:text="@string/refuse"/>
             </LinearLayout>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/game_container"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/avatar"
+            android:layout_below="@+id/time"
+            android:background="@drawable/comment_game_rect_bg"
+            android:visibility="gone"
+            android:paddingTop="19dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="对方邀请你玩一局游戏"
+                android:textSize="15sp"
+                android:textColor="@color/colorTitle"
+                android:paddingLeft="15dp"
+                android:paddingRight="15sp"
+                />
+            <TextView
+                android:id="@+id/game_need_integral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="比大小，每局胜方将获得负方10积分"
+                android:textSize="@dimen/fontNormal"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15sp"
+                />
+            <View
+                android:layout_marginTop="@dimen/margin_20"
+                style="@style/horizontal_divider_line"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <Button
+                    android:id="@+id/game_refuse"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/personal_item_height"
+                    android:layout_weight="1"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:textColor="@color/coupon_detail_text_color"
+                    android:textSize="@dimen/fontTitle_small"
+                    android:background="@null"
+                    android:text="@string/refuse"/>
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorRemarkText"/>
+                <Button
+                    android:id="@+id/game_accept"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/personal_item_height"
+                    android:textColor="@color/colorBtnChecked"
+                    android:textSize="@dimen/fontTitle_small"
+                    android:background="@null"
+                    android:text="@string/accept"/>
+            </LinearLayout>
+
+        </LinearLayout>
     </FrameLayout>
 
     <ImageView

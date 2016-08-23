@@ -31,7 +31,7 @@
         android:layout_below="@+id/time"
         android:background="@drawable/recv_reward"
         android:gravity="center_vertical"
-        android:textColor="@color/colorHead"
+        android:textColor="@color/color_white"
         android:textSize="@dimen/fontBody" />
 
     <FrameLayout
@@ -43,7 +43,7 @@
             android:id="@+id/reward_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorLineDivide"
+            android:background="@drawable/reward_tip_bg"
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical"
             android:drawableLeft="@drawable/hb"
@@ -52,9 +52,9 @@
             android:paddingLeft="@dimen/personal_padding"
             android:paddingRight="@dimen/personal_padding"
             android:drawablePadding="@dimen/personal_padding"
-            android:textColor="@color/colorBody"
+            android:textColor="@color/color_white"
             android:textSize="@dimen/fontRemark"
-            android:text="dhsdhsdhishishffdfdfdfdf" />
+             />
     </FrameLayout>
 
 </RelativeLayout>

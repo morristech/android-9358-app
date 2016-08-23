@@ -26,6 +26,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_SERIAL_NO = "492B6C37356A803DCB43795618DB5DCA";//serialNo
     private static final String KEY_UPDATE_SERVER = "EB8329FF8AAC026D206E3C0A811D0D96";//updateServer
     private static final String KEY_USER_CLUB_ID ="7660E9BC2D136134F0FBC2856A803DC";//clubID
+    private static final String KEY_USER_CLUB_NAME ="7660E9BC2D136134F25XD7F56A803DC";//clubID
     /**
      * Last time to check the upgrade automatically
      */
@@ -86,6 +87,13 @@ public class SharedPreferenceHelper {
     public static String getUserClubId() {
         return mSettingPreference.getString(KEY_USER_CLUB_ID, "");
     }
+    public static void setUserClubName(String clubName){
+        mSettingPreference.edit().putString(KEY_USER_CLUB_NAME,clubName).apply();
+    }
+    public static String getUserClubName(){
+        return  mSettingPreference.getString(KEY_USER_CLUB_NAME,"");
+    }
+
 
     public static void setEmchatId(String emchatId) {
         mSettingPreference.edit().putString(KEY_EMCHAT_ID, emchatId).apply();

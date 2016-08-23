@@ -291,6 +291,115 @@
                     android:textSize="@dimen/fontBody" />
             </LinearLayout>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/dice_game_sent"
+            android:layout_width="match_parent"
+            android:layout_height="138dp"
+            android:layout_below="@+id/time"
+            android:layout_toLeftOf="@+id/avatar"
+            android:background="@drawable/round_rect_white_bg"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:orientation="horizontal"
+                android:background="@drawable/send_dice_game_top_bg"
+                >
+                <TextView
+                    android:id="@+id/invite_game_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_white"
+                    android:text="邀请王先生玩骰子游戏"
+                    android:textSize="@dimen/fontTitle_small"
+                    android:paddingLeft="@dimen/padding_15"
+                    android:paddingTop="@dimen/margin_5"
+                    />
+                <TextView
+                    android:id="@+id/dice_game_amount"
+                    android:layout_width="40dp"
+                    android:layout_height="15dp"
+                    android:text="10积分"
+                    android:textSize="10sp"
+                    android:textColor="@color/contact_marker"
+                    android:background="@drawable/send_game_amount_bg"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/margin_10"
+                   android:layout_marginRight="@dimen/margin_25"
+                    />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                >
+                <TextView
+                    android:id="@+id/adverse_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dice_game_name_color"
+                    android:textSize="@dimen/fontTitle"
+                    android:text="王先生"
+                    android:textStyle="bold"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="34dp"
+                    />
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dice_game_name_color"
+                    android:textSize="@dimen/fontTitle"
+                    android:text="张小花"
+                    android:textStyle="bold"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="34dp"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                >
+            <TextView
+                android:id="@+id/wait_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="等待接收..."
+                android:paddingLeft="25dp"
+               android:gravity="center"
+                android:visibility="invisible"
+                />
+                <ImageView
+                    android:id="@+id/adverse_head"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/icon22"
+                    android:layout_marginLeft="34dp"
+                    android:visibility="visible"
+                    />
+                .<ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_dice"
+                    android:layout_centerInParent="true"
+                    />
+                <ImageView
+                    android:id="@+id/user_head"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/icon22"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="34dp"
+                    />
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
 
     </FrameLayout>
 

@@ -186,6 +186,7 @@
     <dimen name="tab_indicator_indicator_height">2dp</dimen>
     <dimen name="game_setting_integral_corner">6dp</dimen>
     <dimen name="game_text_item_height">33sp</dimen>
+    <dimen name="game_amount_radius">7dp</dimen>
 
 
 

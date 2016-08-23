@@ -65,6 +65,8 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
             viewHolder.customerName  = (TextView) convertView.findViewById(R.id.customer_name);
             viewHolder.lineChat = (LinearLayout) convertView.findViewById(R.id.line_chat);
             viewHolder.contactType = (ImageView) convertView.findViewById(R.id.contact_type);
+            viewHolder.contactOtherType = (ImageView) convertView.findViewById(R.id.contact_other_type);
+
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -90,7 +92,7 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
         Glide.with(mContext).load(mCustomer.avatarUrl).into(viewHolder.customerHead);
 
         if(TextUtils.isEmpty(mCustomer.userNoteName)){
-            viewHolder.customerName.setText(mCustomer.userName);
+            viewHolder.customerName.setText(Utils.StrSubstring(12,mCustomer.userLoginName,true));
         }else  if(Utils.isNotEmpty(mCustomer.userNoteName)){
             viewHolder.customerName.setText(mCustomer.userNoteName);
         }else{
@@ -102,7 +104,12 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
             }
             else if(mCustomer.customerType.equals(RequestConstant.FANS_USER)){
                 viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
-            }else {
+            }else if(mCustomer.customerType.equals(RequestConstant.FANS_WX_USER)){
+                viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
+                viewHolder.contactOtherType.setVisibility(View.VISIBLE);
+                viewHolder.contactOtherType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
+            }
+            else {
                 viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
             }
         }
@@ -163,6 +170,7 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
         TextView customerName;
         TextView bracketLeft;
         ImageView contactType;
+        ImageView contactOtherType;
         LinearLayout lineChat;
 
     }

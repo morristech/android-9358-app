@@ -35,6 +35,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/7/1.
@@ -42,8 +43,6 @@ import butterknife.ButterKnife;
 public class ContactsFragment extends BaseFragment implements View.OnClickListener{
     @Bind(R.id.table_contact)
     TextView mTableContact;
-    @Bind(R.id.image_down)
-    RelativeLayout mImageDown;
     @Bind(R.id.contact_left)
     RelativeLayout mContactLeft;
     @Bind(R.id.table_club)
@@ -69,6 +68,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     private PopupWindow window = null;
     private LayoutInflater layoutInflater;
     private ImageView imgRight;
+    private boolean currentFragmentIsContact;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -92,9 +92,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         return view;
     }
     private void initView() {
-        mTableContact.setOnClickListener(this);
         mTableClub.setOnClickListener(this);
-        mImageDown.setOnClickListener(this);
+        mContactLeft.setOnClickListener(this);
 
     }
    private void initImageView(){
@@ -139,11 +138,13 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 switch (position){
                     case 0:
                         mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-                        mImageDown.setClickable(true);
+
+                        currentFragmentIsContact = true;
                         break;
                     case 1:
                         mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-                        mImageDown.setClickable(false);
+
+                        currentFragmentIsContact = false;
                         break;
                 }
                 currentIndex = position;
@@ -165,22 +166,24 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.table_contact:
+            case R.id.contact_left:
+        if(currentFragmentIsContact){
+            showOutMenu();
+        }else{
                 resetTextView();
                 mViewpagerContact.setCurrentItem(0);
                 currentIndex = 0;
                 mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-                mImageDown.setClickable(true);
+
+                currentFragmentIsContact = true;
+        }
                 break;
             case R.id.table_club:
                 resetTextView();
                 mViewpagerContact.setCurrentItem(1);
                 currentIndex = 1;
                 mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-                mImageDown.setClickable(false);
-                break;
-            case R.id.image_down:
-                showOutMenu();
+
                 break;
             case R.id.toolbar_right_img:
                 Intent intent = new Intent(ac, AddFriendActivity.class);

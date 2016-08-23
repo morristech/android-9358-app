@@ -17,7 +17,7 @@
     <string name="complete">完成</string>
     <string name="note">注：</string>
     <string name="pre_login_tips">进行身份验证后系统会自动判断你是否为注册用户，并自动衔接后续的操作</string>
-    <string name="default_tips">异常</string>
+    <string name="default_tips">服务器异常</string>
     <string name="default_user_name">匿名用户</string>
     <string name="company_name">深圳市小摩豆网络科技有限公司</string>
     <string name="amount_unit_yuan">元</string>

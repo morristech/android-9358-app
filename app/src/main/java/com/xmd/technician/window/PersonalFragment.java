@@ -149,13 +149,14 @@ public class PersonalFragment extends BaseFragment{
     private void handleTechCurrentResult(TechCurrentResult result){
         if(result.respData != null){
             mTechInfo = result.respData;
-            /*SharedPreferenceHelper.setUserName(mTechInfo.userName);
-            SharedPreferenceHelper.setUserAvatar(mTechInfo.imageUrl);*/
             UserProfileProvider.getInstance().updateCurrentUserInfo(mTechInfo.userName, mTechInfo.imageUrl);
             if(Utils.isNotEmpty(result.respData.clubId)){
                 SharedPreferenceHelper.setUserClubId(result.respData.clubId);
                 param.put(RequestConstant.KEY_USER_CLUB_ID,result.respData.clubId);
                 //      MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS,param);
+            }
+            if (Utils.isNotEmpty(result.respData.clubName)){
+                SharedPreferenceHelper.setUserClubName(result.respData.clubName);
             }
             initView();
         }

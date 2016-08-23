@@ -49,7 +49,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/contact_item_name_text_color"
                     android:textSize="@dimen/fontHead"
-                    android:maxLength="8"
+                    android:maxLength="12"
+                    android:singleLine="true"
                     android:ellipsize="end"
                     />
                 <ImageView
@@ -58,6 +59,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_5"
                     />
+                <ImageView
+                    android:id="@+id/contact_other_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:visibility="gone"
+                    />
+
             </LinearLayout>
 
 
@@ -79,7 +88,7 @@
                     android:textColor="@color/text_color_can_chat"
                     android:layout_marginRight="@dimen/margin_5"
                     android:layout_marginLeft="@dimen/margin_2"
-                    android:textSize="@dimen/fontTitle"
+                    android:textSize="@dimen/fontBody"
                     android:text="@string/text_can_chat"
                     />
 

@@ -61,6 +61,9 @@ public class RequestConstant {
     public static final String URL_GET_USER_WX_OPEN_ID = BASE_URL+"/v2/wx/oauth2/openid";
     public static final String URL_GET_USER_WX_CODE = BASE_URL+"/v2/wx/oauth2/code";
     public static final String URL_GET_USER_IS_BIND_WX = BASE_URL+"/v2/tech/is_bind_wx";
+    public static final String URL_GAME_DICE_SUBMIT =BASE_URL+ "/v2/credit/game/dice/submit";
+    public static final String URL_GAME_DICE_ACCEPT_OR_REJECT = BASE_URL+"/v2/credit/game/dice/accept";
+
 
     public static final String URL_GET_CREDIT_SWITCH_STATUS = BASE_URL +"/v2/credit/switch/status";
     public static final String URL_GET_CREDIT_EXCHANGE_APPLY = BASE_URL +"/v2/credit/exchange/apply";
@@ -68,6 +71,7 @@ public class RequestConstant {
     public static final String URL_GET_CREDIT_USER_ACCOUNT = BASE_URL +"/v2/credit/user/account";
     public static final String URL_GET_CONTACT_MARK = BASE_URL +"/v2/club/impression/list";
     public static final String URL_INTRODUCE_BIND ="/spa-manager/follow9358/index.html";
+
 
 
 
@@ -163,6 +167,9 @@ public class RequestConstant {
     public static final String FANS_USER = "fans_user";
     public static final String CONTACT_TYPE = "type";
     public static final String WX_USER = "wx_user";
+    public static final String FANS_WX_USER = "fans_wx_user";
+
+
 
 
 
@@ -190,6 +197,10 @@ public class RequestConstant {
 
     public static final String KEY_UER_CREDIT_AMOUNT = "amount";
     public static final String KEY_USER_CLUB_ID = "clubId";
+    public static final String KEY_GAME_USER_EMCHAT_ID = "emchatId";
+    public static final String KEY_DICE_GAME_STATUS = "status";
+    public static final String KEY_DICE_GAME_ID = "gameId";
+    public static final String KEY_DICE_GAME_TIME = "timestamp";
 
 
     /*********************************************************************************************/

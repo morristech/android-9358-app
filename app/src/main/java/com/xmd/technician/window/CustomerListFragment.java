@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xmd.technician.Adapter.SortCustomerAdapter;
 import com.xmd.technician.R;
@@ -242,9 +243,12 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
             });
 
         }else{
-                      titleLayout.setVisibility(View.GONE);
+            titleLayout.setVisibility(View.GONE);
             adapter = new SortCustomerAdapter(getActivity(), new ArrayList<>());
             listView.setAdapter(adapter);
+            mSwipeRefreshLayout.setRefreshing(false);
+            Utils.makeShortToast(getActivity(),"未查询到相关联系人");
+
         }
 
     }
@@ -332,7 +336,21 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     @Override
     public void onRefresh() {
         TextView tv = (TextView) getActivity().findViewById(R.id.table_contact);
-        tv.setText(ResourceUtils.getString(R.string.all_contact));
+        if(tv.getText().equals(ResourceUtils.getString(R.string.phone_contact))){
+            requestContactList(RequestConstant.TECH_ADD);
+        }else if(tv.getText().equals(ResourceUtils.getString(R.string.fans_contact))){
+            requestContactList(RequestConstant.FANS_USER);
+        }else if(tv.getText().equals(ResourceUtils.getString(R.string.wx_contact))){
+            requestContactList(RequestConstant.WX_USER);
+        }else{
+            params.put(RequestConstant.KEY_CUSTOMER_TYPE,"");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
+        }
+
+    }
+    private void requestContactList(String type){
+        params.clear();
+        params.put(RequestConstant.KEY_CUSTOMER_TYPE,type);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
     }
 }
