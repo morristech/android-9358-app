@@ -164,12 +164,12 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"
                     + file)));
             makeShortToast("保存成功");
-            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-                @Override
-                public void run() {
-                   IntroduceAccountActivity.this.finish();
-                }
-            },1500);
+//            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+//                @Override
+//                public void run() {
+//                   IntroduceAccountActivity.this.finish();
+//                }
+//            },1500);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
