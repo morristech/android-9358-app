@@ -123,18 +123,6 @@
                     android:background="@drawable/menu_reward_selector" />
             </LinearLayout>
 
-            <!--<LinearLayout-->
-                <!--android:id="@+id/btn_common_clock"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:paddingLeft="@dimen/personal_padding"-->
-                <!--android:paddingRight="@dimen/personal_padding">-->
-                <!--<ImageView-->
-                    <!--android:layout_width="@dimen/personal_item_icon_height"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:scaleType="fitCenter"-->
-                    <!--android:background="@drawable/menu_clock_selector" />-->
-            <!--</LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/btn_common_coupon"
@@ -147,6 +135,20 @@
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
                     android:background="@drawable/menu_coupon_selector" />
+            </LinearLayout>
+            <LinearLayout
+            android:id="@+id/btn_common_game"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/personal_padding"
+            android:paddingRight="@dimen/personal_padding"
+            android:visibility="gone"
+                >
+            <ImageView
+            android:layout_width="@dimen/personal_item_icon_height"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:background="@drawable/menu_coupon_game" />
             </LinearLayout>
 
         </LinearLayout>

@@ -3,7 +3,6 @@ package com.xmd.technician.window;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -23,7 +22,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -43,6 +41,7 @@ import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.bean.CouponInfo;
@@ -50,12 +49,14 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.EmojiconMenu;
+import com.xmd.technician.widget.GameSettingDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -76,6 +77,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Bind(R.id.round_indicator_right)ImageView indicatorRight;
     @Bind(R.id.btn_common_coupon)LinearLayout btnCommonCoupon;
     @Bind(R.id.btn_common_reward)View mRewardBtn;
+    @Bind(R.id.btn_common_game)LinearLayout mBtnCommonGame;
     ViewPager mCommentMsgView;
 
     private String mToChatUsername;
@@ -87,7 +89,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private boolean mHaveMoreData = true;
     private int mPageSize = 20;
     private EMConversation mConversation;
-
     private Subscription mManagerOrderSubscription;
     private Subscription mGetRedpacklistSubscription;
     private Subscription mSendMessageSubscription;
@@ -96,17 +97,15 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private ArrayList<Fragment> fragmentsViewPagerList;
     private CommonMsgFragmentOne fragmentOne;
     private CommonMsgFragmentTwo fragmentTwo;
-
     private Boolean isTechOrManger;
+    private int mGameIntegral ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_chat_primary_menu);
-
         ButterKnife.bind(this);
-
         mToChatUsername = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
         isTechOrManger = getIntent().getExtras().getBoolean(ChatConstant.EMCHAT_IS_TECH);
        if(isTechOrManger){
@@ -158,7 +157,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             startActivity(intent);
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -167,7 +165,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
         EMClient.getInstance().chatManager().addMessageListener(mEMMessageListener);
     }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -176,16 +173,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription);
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if(null!=mSendMessageSubscription){
             RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription,mSendMessageSubscription);
         }
-
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -298,7 +292,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mChatAdapter.setListItemClickListener(new EMessageListItemClickListener() {
             @Override
             public void onResendClick(EMMessage message) {
-                new RewardConfirmDialog(ChatActivity.this, getString(R.string.resend), getString(R.string.confirm_resend)) {
+                new RewardConfirmDialog(ChatActivity.this, getString(R.string.resend), getString(R.string.confirm_resend),"") {
                     @Override
                     public void onConfirmClick() {
                         super.onConfirmClick();
@@ -388,7 +382,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     public void requestReward(){
         hideKeyboard();
         hideExtendMenuContainer();
-        new RewardConfirmDialog(this, getString(R.string.beg_reward), getString(R.string.send_request_user_reward)) {
+        new RewardConfirmDialog(this, getString(R.string.beg_reward), getString(R.string.send_request_user_reward),"") {
             @Override
             public void onConfirmClick() {
                 sendBegRewardMessage("<i></i>万水千山总是情<br/>打赏两个行不行~");
@@ -410,6 +404,31 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         startActivity(intent);
         view.setSelected(false);
     }
+  @OnClick(R.id.btn_common_game)
+  public void sendGameMsg(){
+      //发送游戏邀请
+      hideKeyboard();
+      hideExtendMenuContainer();
+      mGameIntegral = 10;
+      new GameSettingDialog(this, new GameSettingDialog.GetGameIntegralInterFace() {
+          @Override
+          public void getIngefral(int num) {
+              mGameIntegral = num;
+          }
+      }){
+          @Override
+          public void onConfirmClick() {
+              super.onConfirmClick();
+              Map<String,String> params = new HashMap<String, String>();
+              params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID,mToChatUsername);
+              params.put(RequestConstant.KEY_UER_CREDIT_AMOUNT,String.valueOf(mGameIntegral));
+              params.put(RequestConstant.KEY_USER_CLUB_ID,SharedPreferenceHelper.getUserClubId());
+              MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_INITIATE_GAME ,params);
+          }
+
+      }.show();
+  }
+
     private void   handlerCheckedCoupon(CheckedCoupon result){
             if(!("paid").equals(result.couponType)){
                 sendCouponMessage(String.format("<i>%s</i><span>%d</span>元<b>%s</b>", result.useTypeName, result.actValue, result.couponPeriod), result.actId);
@@ -512,6 +531,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
         message.setAttribute(ChatConstant.KEY_TECH_CODE, mTechCode);
         sendMessage(message);
+    }
+    private void sendGameInviteMessage(String content,String actId){
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE,"diceGame");
+
+
+
     }
 
     protected void sendMessage(EMMessage message){
