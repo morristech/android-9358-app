@@ -74,7 +74,7 @@ public class SortClubAdapter extends BaseAdapter implements SectionIndexer {
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
-       if(position ==0){
+       if(position ==0 &&mMember.userType.equals("manager")){
            viewHolder.tvPinyin.setVisibility(View.VISIBLE);
            viewHolder.tvPinyin.setText(ResourceUtils.getString(R.string.contact_manager));
        }else if(position<mangerTotal){
