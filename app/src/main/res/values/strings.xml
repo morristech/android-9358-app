@@ -239,7 +239,7 @@
     <string name="wx_errcode_unknown">分享返回</string>
 
     <string name="coupon_fragment_share">分享</string>
-    <string name="coupon_fragment_coupon_reward">打赏￥ %s元</string>
+    <string name="coupon_fragment_coupon_reward">打赏 %s元</string>
     <string name="coupon_fragment_coupon_empty_reason">会所暂无优惠活动或您还没有加入会所</string>
 
     <string name="paid_coupon_detail_activity_title">点钟详情</string>

@@ -57,6 +57,7 @@
                     android:gravity="center"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/fontBody"
+                    android:paddingRight="@dimen/padding_5"
                     />
 
             </RelativeLayout>

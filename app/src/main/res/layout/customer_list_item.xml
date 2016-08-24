@@ -66,10 +66,7 @@
                     android:layout_marginLeft="@dimen/margin_5"
                     android:visibility="gone"
                     />
-
             </LinearLayout>
-
-
             <LinearLayout
                 android:id="@+id/line_chat"
                 android:layout_width="match_parent"
@@ -80,7 +77,6 @@
                 android:layout_marginTop="@dimen/margin_5"
                 android:visibility="gone"
                 >
-
                 <TextView
                     android:id="@+id/customer_serialNo"
                     android:layout_width="wrap_content"

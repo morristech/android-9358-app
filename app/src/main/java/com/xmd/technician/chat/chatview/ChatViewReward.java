@@ -2,7 +2,6 @@ package com.xmd.technician.chat.chatview;
 
 import android.content.Context;
 import android.text.Spannable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
@@ -40,13 +39,9 @@ public class ChatViewReward extends BaseChatView{
     protected void onSetUpView() {
         /*userAvatarView.setVisibility(GONE);
         timeStampView.setVisibility(GONE);*/
-        //txt:"<i></i>打赏：<span>1</span>元"
         Spannable span = SmileUtils.getSmiledText(context, CommonUtils.getMessageDigest(message, context));
         // 设置内容
-        String newSpan = span.toString();
-       // mRewardValue.setText(span, TextView.BufferType.SPANNABLE);
-        mRewardValue.setText(newSpan.substring(3,newSpan.length()-1));
+        mRewardValue.setText(span, TextView.BufferType.SPANNABLE);
         mRewardTip.setText(String.format("%s的打赏已存入您的账户", message.getStringAttribute(ChatConstant.KEY_NAME,"")));
-
     }
 }

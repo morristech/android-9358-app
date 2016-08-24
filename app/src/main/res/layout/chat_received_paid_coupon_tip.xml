@@ -30,7 +30,7 @@
             android:id="@+id/paid_coupon_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorLineDivide"
+            android:background="@drawable/reward_tip_bg"
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical"
             android:drawableLeft="@drawable/time"
@@ -39,7 +39,7 @@
             android:paddingLeft="@dimen/personal_padding"
             android:paddingRight="@dimen/personal_padding"
             android:drawablePadding="@dimen/personal_padding"
-            android:textColor="@color/colorBody"
+            android:textColor="@color/color_white"
             android:textSize="@dimen/fontRemark"
             android:text="dhsdhsdhishishffdfdfdfdf" />
     </FrameLayout>

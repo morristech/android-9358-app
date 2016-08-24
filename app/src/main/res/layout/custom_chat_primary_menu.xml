@@ -142,7 +142,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/personal_padding"
             android:paddingRight="@dimen/personal_padding"
-android:visibility="gone"
+            android:visibility="gone"
                 >
             <ImageView
             android:layout_width="@dimen/personal_item_icon_height"

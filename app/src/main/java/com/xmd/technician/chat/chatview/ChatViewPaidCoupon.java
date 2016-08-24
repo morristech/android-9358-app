@@ -41,7 +41,7 @@ public class ChatViewPaidCoupon extends BaseChatView{
         String[] str = content.split("<b>|</b>|<span>|</span>|<i>|</i>");
 
         try {
-            mCouponValue.setText(str[2]+"￥"+str[3]);
+            mCouponValue.setText(str[2]+str[3]+str[4]);
             mCouponPeriod.setText(str[5]);
         }catch (IndexOutOfBoundsException e){
                 e.printStackTrace();

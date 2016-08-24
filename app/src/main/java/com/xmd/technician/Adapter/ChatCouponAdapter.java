@@ -28,7 +28,8 @@ public class ChatCouponAdapter extends RecyclerView.Adapter{
     private List<CouponInfo> mData;
     private Context mContext;
     private static final int DELIVERY_COUPON_TYPE = 0;
-    private static final int Other_COUPON_TYPE = 1;
+    private static final int CASH_COUPON_TYPE = 1;
+    private static final int FAVORABLE_COUPON_TYPE = 2;
     private OnItemClickListener mOnItemClick;
 
     public ChatCouponAdapter(Context context , List<CouponInfo> data,OnItemClickListener itemClickListener){
@@ -38,15 +39,24 @@ public class ChatCouponAdapter extends RecyclerView.Adapter{
     }
     @Override
     public int getItemViewType(int position) {
-        return mData.get(position).useTypeName.equals("点钟券")?DELIVERY_COUPON_TYPE:Other_COUPON_TYPE;
+        if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.cash_coupon))) {
+            return CASH_COUPON_TYPE;
+        } else if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
+            return DELIVERY_COUPON_TYPE;
+        } else {
+            return FAVORABLE_COUPON_TYPE;
+        }
+
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(DELIVERY_COUPON_TYPE==viewType){
-            View view = LayoutInflater.from(mContext).inflate(R.layout.chat_coupon_other_item,parent,false);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.chat_coupon_cash_item,parent,false);
             return new ChatCouponViewHolder(view);
-
+        }else if(FAVORABLE_COUPON_TYPE == viewType){
+            View view = LayoutInflater.from(mContext).inflate(R.layout.chat_coupon_favorable_item,parent,false);
+            return new ChatCouponViewHolder(view);
         }else {
             View view = LayoutInflater.from(mContext).inflate(R.layout.chat_coupon_delivery_item,parent,false);
             return new ChatCouponViewHolder(view);

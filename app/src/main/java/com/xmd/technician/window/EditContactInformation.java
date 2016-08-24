@@ -143,7 +143,6 @@ public class EditContactInformation extends BaseActivity implements TextWatcher{
             }
             impression = impression+markSelectList.get(markSelectList.size()-1);
         }
-        Log.i("TAG",">>>"+markSelectList.size());
         Map<String,String> params = new HashMap<>();
         params.put(RequestConstant.KEY_ID,remarkId);
         params.put(RequestConstant.KEY_NOTE_NAME,remarkName);
