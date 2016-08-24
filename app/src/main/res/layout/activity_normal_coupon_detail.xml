@@ -145,16 +145,14 @@
                         android:orientation="horizontal"
                         android:layout_gravity="center"
                         >
-                        <TextView
+                        <ImageView
                             android:id="@+id/money_sign"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/money_sign"
-                            android:textColor="@color/colorHead"
+                            android:paddingLeft="@dimen/coupon_margin_17"
+                            android:src="@drawable/black_money"
                             android:layout_marginLeft="@dimen/order_detail_section_item_height"
-                            android:layout_alignBottom="@+id/tv_commission"
-                            android:layout_marginBottom="@dimen/margin_10"
-                            android:textSize="@dimen/fontHead"
+                            android:layout_marginTop="@dimen/margin_10"
                             />
                         <TextView
                             android:id="@+id/tv_commission"

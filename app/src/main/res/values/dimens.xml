@@ -169,7 +169,7 @@
     <dimen name="coupon_margin_17">17dp</dimen>
     <dimen name="coupon_margin_20">20dp</dimen>
     <dimen name="code_width">135dp</dimen>
-    <dimen name="coupon_amount_margin">8dp</dimen>
+    <dimen name="coupon_amount_margin">4dp</dimen>
     <dimen name="share_btn_width">60dp</dimen>
     <dimen name="comment_message_height">36dp</dimen>
     <dimen name="credit_button_height">48dp</dimen>
@@ -187,6 +187,7 @@
     <dimen name="game_setting_integral_corner">6dp</dimen>
     <dimen name="game_text_item_height">33sp</dimen>
     <dimen name="game_amount_radius">7dp</dimen>
+    <dimen name="icon_money_margin">10dp</dimen>
 
 
 

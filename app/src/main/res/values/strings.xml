@@ -358,6 +358,7 @@
     <string name="phone_contact">通讯录客户</string>
     <string name="fans_contact">粉丝客户</string>
     <string name="wx_contact">微信客户</string>
+    <string name="invite_game_format">邀请%s玩骰子游戏</string>
 
 
 </resources>

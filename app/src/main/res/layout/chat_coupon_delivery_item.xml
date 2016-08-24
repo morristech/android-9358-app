@@ -68,12 +68,13 @@
                 android:layout_marginTop="@dimen/margin_5"
                 android:orientation="horizontal">
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/coupon_margin_17"
-                    android:text="@string/money_sign"
-                    android:textColor="@color/coupon_cash_text_color" />
+                    android:src="@drawable/icon_cash"
+                    android:layout_marginTop="@dimen/icon_money_margin"
+                    />
 
                 <TextView
                     android:id="@+id/coupon_amount"
