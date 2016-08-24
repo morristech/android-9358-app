@@ -107,6 +107,9 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     }
 
     private void handlerClubInfoList(ClubContactResult clubResult) {
+        if(mTitleLayout.getVisibility() == View.GONE){
+            mTitleLayout.setVisibility(View.VISIBLE);
+        }
         CLubMember clubMember;
         mClubList.clear();
         mManagerList.clear();
@@ -186,8 +189,6 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
                             mTitleLayout.setLayoutParams(params);
 
                             mTitle.setText(mClubList.get(getPositonForSection(section)).sortLetters);
-
-
                         }
                         if (nextSecPositon == firstVisibleItem + 1) {
                             View childView = view.getChildAt(0);
@@ -228,8 +229,10 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
                 @Override
                 public void afterTextChanged(Editable s) {
                     if(s.length()>0){
+                        mTitleLayout.setVisibility(View.GONE);
                         searchContact();
                     }else{
+                        mTitleLayout.setVisibility(View.VISIBLE);
                      closeSearch();
                     }
 
@@ -308,6 +311,7 @@ private void searchContact() {
 
     @Override
     public void onRefresh() {
+
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_LIST);
     }
 
