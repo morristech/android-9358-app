@@ -169,7 +169,8 @@ public class AppConfig {
     }
 
     public static String getAppVersionNameAndCode() {
-        return getAppVersionName() + "." + getAppVersionCode();
+        return getAppVersionName();
+        //return getAppVersionName() + "." + getAppVersionCode();
     }
 
     public static String getAppVersionName() {
