@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.widget.CircleImageView;
@@ -68,7 +69,6 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
             viewHolder.lineChat = (LinearLayout) convertView.findViewById(R.id.line_chat);
             viewHolder.contactType = (ImageView) convertView.findViewById(R.id.contact_type);
             viewHolder.contactOtherType = (ImageView) convertView.findViewById(R.id.contact_other_type);
-
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -103,14 +103,16 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
         }
 
         Glide.with(mContext).load(mCustomer.avatarUrl).into(viewHolder.customerHead);
-
-        if(TextUtils.isEmpty(mCustomer.userNoteName)){
-            viewHolder.customerName.setText(Utils.StrSubstring(12,mCustomer.userLoginName,true));
-        }else  if(Utils.isNotEmpty(mCustomer.userNoteName)){
+        if(Utils.isNotEmpty(mCustomer.userNoteName)){
             viewHolder.customerName.setText(mCustomer.userNoteName);
-        }else{
-            viewHolder.customerName.setText(ResourceUtils.getString(R.string.default_user_name));
+        }else if(TextUtils.isEmpty(mCustomer.userNoteName)){
+            if(Utils.isNotEmpty(mCustomer.userName)){
+                viewHolder.customerName.setText(mCustomer.userName);
+            }else{
+                viewHolder.customerName.setText(ResourceUtils.getString(R.string.default_user_name));
+            }
         }
+
         if(null!=mCustomer.customerType){
             if(mCustomer.customerType.equals(RequestConstant.TECH_ADD)){
                 viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_contacts));
