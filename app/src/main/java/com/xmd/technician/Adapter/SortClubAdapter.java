@@ -155,9 +155,6 @@ public class SortClubAdapter extends BaseAdapter implements SectionIndexer {
         }
     }
 
-
-
-
     final static class ViewHolder {
 
         TextView tvPinyin;
