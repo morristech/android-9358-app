@@ -52,7 +52,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     @Bind(R.id.list_customer)
     ListView mListView;
     @Bind(R.id.title_layout_no_friends)
-    TextView mAlterMessge;
+    TextView mAlterMessage;
     @Bind(R.id.title_layout_catalog)
     TextView mTitle;
     @Bind(R.id.title_layout)
@@ -259,7 +259,7 @@ private void searchContact() {
     String editStr = editText.getText().toString();
     customerInfos = new ArrayList<>();
     if (TextUtils.isEmpty(editStr)) {
-        mAlterMessge.setVisibility(View.GONE);
+        mAlterMessage.setVisibility(View.GONE);
     } else {
         customerInfos.clear();
         for (CLubMember sortCustomer : mClubList) {
@@ -272,11 +272,10 @@ private void searchContact() {
     }
     Collections.sort(customerInfos, pinyinComparator);
     if (customerInfos.size() > 0) {
-
-        adapter.updateListView(customerInfos);
+        adapter.updateListView(customerInfos ,true);
     } else {
         mTitleLayout.setVisibility(View.GONE);
-        mAlterMessge.setVisibility(View.VISIBLE);
+        mAlterMessage.setVisibility(View.VISIBLE);
 
     }
 }
@@ -305,8 +304,8 @@ private void searchContact() {
         if (!TextUtils.isEmpty(editText.getText().toString())) {
             editText.setText("");
         }
-        mAlterMessge.setVisibility(View.GONE);
-        adapter.updateListView(mClubList);
+        mAlterMessage.setVisibility(View.GONE);
+        adapter.updateListView(mClubList,false);
     }
 
     @Override

@@ -29,12 +29,14 @@ import java.util.List;
 public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
     private List<CustomerInfo> list = null;
     private Context mContext;
+    private boolean mIsSearch;
     public SortCustomerAdapter(Context context, List<CustomerInfo> list) {
         this.mContext = context;
         this.list = list;
     }
-    public void updateListView(List<CustomerInfo> list) {
+    public void updateListView(List<CustomerInfo> list,boolean mIsSearch) {
         this.list = list;
+        this.mIsSearch = mIsSearch;
         notifyDataSetChanged();
     }
 
@@ -71,24 +73,35 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        if(list.size()==1){
-            viewHolder.tvPinyin.setVisibility(View.VISIBLE);
-            viewHolder.tvPinyin.setText(mCustomer.sortLetters);
+        if(mIsSearch){
+            if(position==0){
+                viewHolder.tvPinyin.setVisibility(View.VISIBLE);
+                viewHolder.tvPinyin.setText(mCustomer.sortLetters);
+            }else {
+                viewHolder.tvPinyin.setVisibility(View.GONE);
+            }
+
         }else{
-            int section = getSectionForPosition(position);
-            if(position==getPositionForSection(section)){
+            if(list.size()==1){
                 viewHolder.tvPinyin.setVisibility(View.VISIBLE);
                 viewHolder.tvPinyin.setText(mCustomer.sortLetters);
             }else{
-                if(position==0){
+                int section = getSectionForPosition(position);
+                if(position==getPositionForSection(section)){
                     viewHolder.tvPinyin.setVisibility(View.VISIBLE);
                     viewHolder.tvPinyin.setText(mCustomer.sortLetters);
-                }else {
-                    viewHolder.tvPinyin.setVisibility(View.GONE);
-                }
+                }else{
+                    if(position==0){
+                        viewHolder.tvPinyin.setVisibility(View.VISIBLE);
+                        viewHolder.tvPinyin.setText(mCustomer.sortLetters);
+                    }else {
+                        viewHolder.tvPinyin.setVisibility(View.GONE);
+                    }
 
+                }
             }
         }
+
         Glide.with(mContext).load(mCustomer.avatarUrl).into(viewHolder.customerHead);
 
         if(TextUtils.isEmpty(mCustomer.userNoteName)){

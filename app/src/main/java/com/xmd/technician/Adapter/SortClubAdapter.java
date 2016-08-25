@@ -30,19 +30,20 @@ public class SortClubAdapter extends BaseAdapter implements SectionIndexer {
     private List<CLubMember> list = null;
     private Context mContext;
     private int mangerTotal;
+    private boolean mIsSearch;
 
-    public SortClubAdapter(Context context, List<CLubMember> list,int total) {
+    public SortClubAdapter(Context context, List<CLubMember> list,int total ) {
         this.mContext = context;
         this.list = list;
         this.mangerTotal = total;
+
     }
 
-    public void updateListView(List<CLubMember> list) {
+    public void updateListView(List<CLubMember> list ,boolean isSearch) {
         this.list = list;
+        this.mIsSearch = isSearch;
         notifyDataSetChanged();
     }
-
-
     @Override
     public int getCount() {
         return this.list.size();
@@ -74,29 +75,41 @@ public class SortClubAdapter extends BaseAdapter implements SectionIndexer {
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
-       if(position ==0 &&mMember.userType.equals("manager")){
-           viewHolder.tvPinyin.setVisibility(View.VISIBLE);
-           viewHolder.tvPinyin.setText(ResourceUtils.getString(R.string.contact_manager));
-       }else if(position<mangerTotal){
-           viewHolder.tvPinyin.setVisibility(View.GONE);
-       }else{
-           if(position==mangerTotal){
-               viewHolder.tvPinyin.setVisibility(View.VISIBLE);
-               viewHolder.tvPinyin.setText(mMember.sortLetters);
-           }else{
-               int section = getSectionForPosition(position);
-               if(position==getPositionForSection(section)){
-                   viewHolder.tvPinyin.setVisibility(View.VISIBLE);
-                   viewHolder.tvPinyin.setText(mMember.sortLetters);
-               }else{
-                   viewHolder.tvPinyin.setVisibility(View.GONE);
-               }
-           }
-
+        if(mIsSearch){
+            if(position==0){
+                viewHolder.tvPinyin.setVisibility(View.VISIBLE);
+                viewHolder.tvPinyin.setText(mMember.sortLetters);
+            }else{
+                viewHolder.tvPinyin.setVisibility(View.GONE);
+            }
+        }else {
+            if(position ==0 ){
+                if(mMember.userType.equals("manager")){
+                    viewHolder.tvPinyin.setVisibility(View.VISIBLE);
+                    viewHolder.tvPinyin.setText(ResourceUtils.getString(R.string.contact_manager));
+                }else{
+                    viewHolder.tvPinyin.setVisibility(View.VISIBLE);
+                    viewHolder.tvPinyin.setText(mMember.sortLetters);
+                }
+            }else if(position<mangerTotal){
+                viewHolder.tvPinyin.setVisibility(View.GONE);
+            }else{
+                if(position==mangerTotal){
+                    viewHolder.tvPinyin.setVisibility(View.VISIBLE);
+                    viewHolder.tvPinyin.setText(mMember.sortLetters);
+                }else{
+                    int section = getSectionForPosition(position);
+                    if(position==getPositionForSection(section)){
+                        viewHolder.tvPinyin.setVisibility(View.VISIBLE);
+                        viewHolder.tvPinyin.setText(mMember.sortLetters);
+                    }else{
+                        viewHolder.tvPinyin.setVisibility(View.GONE);
+                    }
+                }
+            }
         }
 
         Glide.with(mContext).load(mMember.avatarUrl).into(viewHolder.customerHead);
-
         if(TextUtils.isEmpty(mMember.name)){
             viewHolder.customerName.setText("匿名");
         }else{

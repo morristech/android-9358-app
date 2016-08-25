@@ -234,8 +234,10 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
                 @Override
                 public void afterTextChanged(Editable s) {
                     if(s.length()>0){
+                        titleLayout.setVisibility(View.GONE);
                         searchCustomer();
                     }else{
+                        titleLayout.setVisibility(View.VISIBLE);
                         closeSearch();
                     }
 
@@ -262,16 +264,13 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-    //    showOutMenu();
       closeSearch();
-
     }
 
     private void searchCustomer() {
         String editStr = editText.getText().toString();
         customerInfos = new ArrayList<>();
         if (TextUtils.isEmpty(editStr)) {
-            alertMessage.setVisibility(View.VISIBLE);
             alertMessage.setVisibility(View.GONE);
         } else {
             customerInfos.clear();
@@ -285,7 +284,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         }
         Collections.sort(customerInfos, pinyinComparator);
         if (customerInfos.size() > 0) {
-            adapter.updateListView(customerInfos);
+            adapter.updateListView(customerInfos,true);
         } else {
             titleLayout.setVisibility(View.GONE);
             alertMessage.setVisibility(View.VISIBLE);
@@ -319,7 +318,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         }
         customerInfos =null;
         alertMessage.setVisibility(View.GONE);
-        adapter.updateListView(mCustomerList);
+        adapter.updateListView(mCustomerList ,false);
     }
 
 
