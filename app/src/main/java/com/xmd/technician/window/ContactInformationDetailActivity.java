@@ -417,7 +417,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         btnEmChat.setEnabled(true);
         contactPhone = tech.respData.phoneNum;
         customerChatId = tech.respData.emchatId;
-        Glide.with(mContext).load(tech.respData.avatarUrl).into(mContactHead);
+        Glide.with(mContext).load(tech.respData.avatarUrl).error(R.drawable.icon22).into(mContactHead);
         if (TextUtils.isEmpty(tech.respData.serialNo)) {
             mContactName.setText(Utils.StrSubstring(12,tech.respData.name,true));
         } else {
@@ -440,7 +440,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
 
     private void handlerManager(ManagerDetailResult manager) {
-        chatName = "店长";
+       // chatName = "店长";
         chatHeadUrl = manager.respData.avatarUrl;
         chatEmId = manager.respData.emchatId;
         contactPhone = manager.respData.phoneNum;
@@ -449,9 +449,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
             btnEmChat.setEnabled(true);
         }
         if(!TextUtils.isEmpty(managerHeadUrl)){
-            Glide.with(mContext).load(managerHeadUrl).into(mContactHead);
+            Glide.with(mContext).load(managerHeadUrl).error(R.drawable.icon22).into(mContactHead);
         }
-        mContactName.setText(ResourceUtils.getString(R.string.contact_manager));
+        mContactName.setText(manager.respData.name);
         mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + manager.respData.phoneNum);
         mContactOrderLayout.setVisibility(View.GONE);
         mContactNickName.setVisibility(View.GONE);
