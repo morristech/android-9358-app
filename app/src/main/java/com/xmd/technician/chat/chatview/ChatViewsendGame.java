@@ -1,8 +1,13 @@
 package com.xmd.technician.chat.chatview;
 
+/**
+ * Created by Administrator on 2016/9/1.
+ */
+
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.chat.EMConversation;
@@ -19,13 +24,12 @@ import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.widget.RoundImageView;
 
-
 import java.util.Date;
 
 /**
  * Created by Administrator on 2016/8/22.
  */
-public class ChatViewSendGame extends BaseChatView {
+public class ChatViewsendGame extends BaseChatView {
     private TextView mGameAmount, mAdverseName, mUserName, mWaitGame, mGameIntroduce, mRefuseGame,mCancel;
     private RoundImageView mAdverseHead, mUserHead;
     private String mDiceGameAmount, mDiceAdverseName, mDiceUserName, mDiceWaitGame;
@@ -33,7 +37,7 @@ public class ChatViewSendGame extends BaseChatView {
     private GameCancelListener mGameCancelListener;
     long gameStartTime,currentTime;
 
-    public ChatViewSendGame(Context context, EMMessage.Direct direct, EMConversation emConversation) {
+    public ChatViewsendGame(Context context, EMMessage.Direct direct, EMConversation emConversation) {
         super(context, direct);
         this.emConversation = emConversation;
     }
@@ -59,7 +63,7 @@ public class ChatViewSendGame extends BaseChatView {
             currentTime = System.currentTimeMillis();
             String headUrl = UserProfileProvider.getInstance().getChatUserInfo(message.getTo()).getAvatar();
             if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_REQUEST_GAME)) {
-                if(currentTime-gameStartTime>SharedPreferenceHelper.getGameTimeout()){
+                if(currentTime-gameStartTime> SharedPreferenceHelper.getGameTimeout()){
                     SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), message.getMsgId());
                     initView();
                     EMTextMessageBody body = (EMTextMessageBody) message.getBody();
@@ -200,3 +204,4 @@ public class ChatViewSendGame extends BaseChatView {
 
     }
 }
+
