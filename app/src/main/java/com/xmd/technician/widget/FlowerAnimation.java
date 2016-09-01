@@ -21,7 +21,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 
 import com.xmd.technician.R;
-import com.xmd.technician.bean.Flower;
+import com.xmd.technician.bean.Fllower;
 
 /**
  * 撒花 用到的知识点： 1、android属性动画 2、Path路径绘制 3、贝塞尔曲线
@@ -38,9 +38,9 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     /**
      * 小球集合
      */
-    private List<Flower> flowers1 = new ArrayList<Flower>();
-    private List<Flower> flowers2 = new ArrayList<Flower>();
-    private List<Flower> flowers3 = new ArrayList<Flower>();
+    private List<Fllower> flowers1 = new ArrayList<Fllower>();
+    private List<Fllower> flowers2 = new ArrayList<Fllower>();
+    private List<Fllower> flowers3 = new ArrayList<Fllower>();
 
     /**
      * 动画播放的时间
@@ -110,7 +110,7 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     /**
      * 创建花
      */
-    private void builderFollower(int count, List<Flower> fllowers) {
+    private void builderFollower(int count, List<Fllower> fllowers) {
 
         int max = (int) (width * 3 / 4f);
         int min = (int) (width / 4f);
@@ -121,7 +121,7 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
             CPoint CPoint = new CPoint(s, ylocations[random.nextInt(3)]);
             List<CPoint> points = builderPath(CPoint);
             drawFllowerPath(path, points);
-            Flower fllower = new Flower();
+            Fllower fllower = new Fllower();
             fllower.setPath(path);
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
                     R.drawable.icon_gold);
@@ -233,8 +233,8 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
      * @param canvas
      * @param fllowers
      */
-    private void drawFllower(Canvas canvas, List<Flower> fllowers) {
-        for (Flower fllower : fllowers) {
+    private void drawFllower(Canvas canvas, List<Fllower> fllowers) {
+        for (Fllower fllower : fllowers) {
             float[] pos = new float[2];
             // canvas.drawPath(fllower.getPath(),mPaint);
             pathMeasure.setPath(fllower.getPath(), false);
@@ -286,8 +286,8 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
      * @param value
      * @param fllowers
      */
-    private void updateValue(float value, List<Flower> fllowers) {
-        for (Flower fllower : fllowers) {
+    private void updateValue(float value, List<Fllower> fllowers) {
+        for (Fllower fllower : fllowers) {
             fllower.setValue(value);
         }
     }
