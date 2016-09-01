@@ -27,13 +27,10 @@ public abstract class BaseChatView extends LinearLayout {
     protected Context context;
     protected EMMessage message;
     protected EMMessage.Direct mDirect;
-
     protected TextView timeStampView;
     protected ImageView userAvatarView;
-
     private ProgressBar progressBar;
     private ImageView statusView;
-
     protected Activity activity;
     private EMCallBack messageSendCallback;
 
@@ -79,7 +76,8 @@ public abstract class BaseChatView extends LinearLayout {
         setUpView(message);
     }
 
-    private void setUpBaseView() {
+
+    public void setUpBaseView() {
         // 设置用户昵称头像，bubble背景等
         TextView timestamp = (TextView) findViewById(R.id.time);
         if (timestamp != null) {
@@ -87,15 +85,15 @@ public abstract class BaseChatView extends LinearLayout {
             timestamp.setVisibility(View.VISIBLE);
         }
         //设置头像和nick
-        if(message.direct() == Direct.SEND){
+        if (message.direct() == Direct.SEND) {
             UserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
-        }else{
+        } else {
             UserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
         }
     }
 
     private void setupMessageStatusView() {
-        if(message.direct() == Direct.SEND){
+        if (message.direct() == Direct.SEND) {
             setMessageSendCallback();
             switch (message.status()) {
                 case CREATE:
@@ -125,8 +123,8 @@ public abstract class BaseChatView extends LinearLayout {
     /**
      * 设置消息发送callback
      */
-    protected void setMessageSendCallback(){
-        if(messageSendCallback == null){
+    protected void setMessageSendCallback() {
+        if (messageSendCallback == null) {
             messageSendCallback = new EMCallBack() {
 
                 @Override
@@ -147,7 +145,7 @@ public abstract class BaseChatView extends LinearLayout {
         message.setMessageStatusCallback(messageSendCallback);
     }
 
-    private void setClickListener(){
+    private void setClickListener() {
         if (statusView != null) {
             statusView.setOnClickListener(v -> {
                 if (itemClickListener != null) {
@@ -162,9 +160,9 @@ public abstract class BaseChatView extends LinearLayout {
             public void run() {
                 if (message.status() == EMMessage.Status.FAIL) {
                     if (message.getError() == EMError.MESSAGE_INCLUDE_ILLEGAL_CONTENT) {
-                        ((BaseFragmentActivity)activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.error_send_invalid_content));
+                        ((BaseFragmentActivity) activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.error_send_invalid_content));
                     } else {
-                        ((BaseFragmentActivity)activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.connect_failuer_toast));
+                        ((BaseFragmentActivity) activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.connect_failuer_toast));
                     }
                 }
                 setupMessageStatusView();
@@ -176,9 +174,9 @@ public abstract class BaseChatView extends LinearLayout {
     /**
      * 填充layout
      */
-    protected void onInflateView(){
+    protected void onInflateView() {
         LayoutInflater.from(context).inflate(mDirect == EMMessage.Direct.RECEIVE ?
-                R.layout.chat_received_item : R.layout.chat_sent_item, this);
+                R.layout.chat_received_item : R.layout.chat_send_item, this);
     }
 
     /**

@@ -91,7 +91,7 @@ public class MsgDef {
 
 
     public static final int MSG_DEF_GET_CLUB_LIST = 0x0040;
-    public static final int MSG_DEF_ADD_OR_EDIT_CUSTOMER =0x0041;
+    public static final int MSG_DEF_ADD_OR_EDIT_CUSTOMER = 0x0041;
     public static final int MSG_DEF_GET_CUSTOMER_INFO_DETAIL = 0x0042;
     public static final int MSG_DEF_GET_CUSTOMER_LIST = 0x0043;
     public static final int MSG_DEF_GET_TECH_INFO_DETAIL = 0x0044;
@@ -105,7 +105,9 @@ public class MsgDef {
     public static final int MSG_DEF_GET_CREDIT_ACCOUNT = 0x0052;
     public static final int MSG_DEF_DO_CREDIT_EXCHANGE = 0x0053;
     public static final int MSG_DEF_GET_CONTACT_MARK = 0x0054;
-
+    public static final int MSG_DEF_DO_INITIATE_GAME = 0x0055;
+    public static final int MSG_DEF_DO_GAME_ACCEPT_OR_REJECT = 0x0056;
+    public static final int MSG_DEF_GET_CREDIT_APPLICATIONS = 0x0057;
     /**
      * ChatController, start to chat with someone
      */

@@ -13,8 +13,12 @@ import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
+import com.xmd.technician.bean.TechSummaryInfo;
+import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.SystemNoticeResult;
+import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -27,7 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
-public class MainActivity extends BaseFragmentActivity implements BaseFragment.IFragmentCallback{
+public class MainActivity extends BaseFragmentActivity implements BaseFragment.IFragmentCallback {
     private static final int TAB_INDEX_MESSAGE = 0;
     private static final int TAB_INDEX_CONTACTS = 1;
     private static final int TAB_INDEX_ORDER = 2;
@@ -37,11 +41,14 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     private List<View> mBottomBarButtonList = new LinkedList<View>();
 
     private int mCurrentTabIndex = 1;
+    private TechSummaryInfo mTechInfo;
 
     private Subscription mSysNoticeNotifySubscription;
     private Subscription mGetUserIsBindWXSubscription;
+    private Subscription mGetUserInformationSubscription;
 
-    @Bind(R.id.main_unread_message) TextView mUnreadMsgLabel;
+    @Bind(R.id.main_unread_message)
+    TextView mUnreadMsgLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +72,20 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mSysNoticeNotifySubscription = RxBus.getInstance().toObservable(SystemNoticeResult.class).subscribe(
                 result -> updateUnreadMsgLabel());
         mGetUserIsBindWXSubscription = RxBus.getInstance().toObservable(IsBindResult.class).subscribe(
-            result ->handlerIsBindResult(result)
+                result -> handlerIsBindResult(result)
+        );
+        mGetUserInformationSubscription = RxBus.getInstance().toObservable(TechCurrentResult.class).subscribe(
+                result -> handleTechCurrentResult(result)
         );
         switchFragment(0);
 
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
-
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE));
-//        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
-//                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_IS_BIND_WX));
+        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
+                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO));
+
     }
 
     @Override
@@ -94,32 +104,35 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mSysNoticeNotifySubscription,mGetUserIsBindWXSubscription);
+        RxBus.getInstance().unsubscribe(mSysNoticeNotifySubscription, mGetUserIsBindWXSubscription, mGetUserInformationSubscription);
     }
 
     @OnClick(R.id.main_button_message)
-    public void gotoMessageFragment(){
+    public void gotoMessageFragment() {
         switchFragment(TAB_INDEX_MESSAGE);
     }
+
     @OnClick(R.id.main_button_contacts)
-    public void gotoConversionFragment(){switchFragment(TAB_INDEX_CONTACTS);}
+    public void gotoConversionFragment() {
+        switchFragment(TAB_INDEX_CONTACTS);
+    }
 
     @OnClick(R.id.main_button_order)
-    public void gotoOrderFragment(){
+    public void gotoOrderFragment() {
         switchFragment(TAB_INDEX_ORDER);
     }
 
     @OnClick(R.id.main_button_marketing)
-    public void gotoMarketingFragment(){
+    public void gotoMarketingFragment() {
         switchFragment(TAB_INDEX_MARKETING);
     }
 
     @OnClick(R.id.main_button_personal)
-    public void gotoPersonFragment(){
+    public void gotoPersonFragment() {
         switchFragment(TAB_INDEX_PERSONAL);
     }
 
-    private void switchFragment(int index){
+    private void switchFragment(int index) {
         if (mCurrentTabIndex != index) {
             FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
             trx.hide(mFragmentList.get(mCurrentTabIndex));
@@ -181,11 +194,11 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         int unreadMsgCountTotal = 0;
         int chatroomUnreadMsgCount = 0;
         unreadMsgCountTotal = EMClient.getInstance().chatManager().getUnreadMsgsCount();
-        for(EMConversation conversation:EMClient.getInstance().chatManager().getAllConversations().values()){
-            if(conversation.getType() == EMConversation.EMConversationType.ChatRoom)
-                chatroomUnreadMsgCount=chatroomUnreadMsgCount+conversation.getUnreadMsgCount();
+        for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
+            if (conversation.getType() == EMConversation.EMConversationType.ChatRoom)
+                chatroomUnreadMsgCount = chatroomUnreadMsgCount + conversation.getUnreadMsgCount();
         }
-        return unreadMsgCountTotal-chatroomUnreadMsgCount;
+        return unreadMsgCountTotal - chatroomUnreadMsgCount;
     }
 
     /**
@@ -194,9 +207,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     public void updateUnreadMsgLabel() {
         int count = getUnreadMsgCountTotal();
         if (count > 0) {
-            if(count>99){
+            if (count > 99) {
                 mUnreadMsgLabel.setText("99+");
-            }else{
+            } else {
                 mUnreadMsgLabel.setText(String.valueOf(count));
             }
             mUnreadMsgLabel.setVisibility(View.VISIBLE);
@@ -204,12 +217,27 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
             mUnreadMsgLabel.setVisibility(View.INVISIBLE);
         }
     }
-    public void handlerIsBindResult(IsBindResult result){
-        if("Y".equals(result.respData)){
+
+    public void handlerIsBindResult(IsBindResult result) {
+        if ("Y".equals(result.respData)) {
             SharedPreferenceHelper.setBindSuccess(true);
-        }else{
+        } else {
             SharedPreferenceHelper.setBindSuccess(false);
         }
-        Log.i("TAG","result>>>"+result.respData);
+
     }
+
+    private void handleTechCurrentResult(TechCurrentResult result) {
+        if (result.respData != null) {
+            mTechInfo = result.respData;
+            UserProfileProvider.getInstance().updateCurrentUserInfo(mTechInfo.userName, mTechInfo.imageUrl);
+            if (Utils.isNotEmpty(result.respData.clubId)) {
+                SharedPreferenceHelper.setUserClubId(result.respData.clubId);
+            }
+            if (Utils.isNotEmpty(result.respData.clubName)) {
+                SharedPreferenceHelper.setUserClubName(result.respData.clubName);
+            }
+        }
+    }
+
 }

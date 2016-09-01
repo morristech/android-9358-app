@@ -135,5 +135,8 @@
     <color name="contact_marker">#ff9a0c</color>
     <color name="send_dice_top">#7CD1D0</color>
     <color name="dice_game_name_color">#154F67</color>
+    <color name="dice_game_result_name_color">#0c4157</color>
+    <color name="get_credit_color">#00aaee</color>
+    <color name="play_game_again">#7BA1CE</color>
 
 </resources>

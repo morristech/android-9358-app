@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/coupon_item_height"
+    android:layout_marginTop="@dimen/personal_margin"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/personal_margin"
+        android:layout_marginRight="@dimen/personal_margin"
+        android:textColor="@color/colorRemark"
+        android:textSize="@dimen/fontBody" />
+
+    <com.xmd.technician.widget.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/avatar_head"
+        android:layout_height="@dimen/avatar_head"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/time"
+        android:layout_marginLeft="@dimen/search_margin"
+        android:layout_marginRight="@dimen/search_margin"
+        android:background="@drawable/icon22" />
+
+    <LinearLayout
+        android:id="@+id/dice_game_sent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time"
+        android:layout_toLeftOf="@+id/avatar"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dice_game_view_height"
+            android:background="@drawable/dice_game_bg"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/adverse_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin_10"
+                android:paddingTop="@dimen/margin_10"
+                android:textColor="@color/dice_game_result_name_color"
+                android:textSize="@dimen/fontBody"
+
+                />
+
+            <ImageView
+                android:id="@+id/adverse_dice"
+                android:layout_width="@dimen/dice_icon_width"
+                android:layout_height="@dimen/dice_icon_width"
+                android:layout_marginLeft="@dimen/dice_icon_margin_left"
+                android:layout_marginTop="@dimen/dice_icon_margin"
+
+                />
+
+            <ImageView
+                android:id="@+id/user_dice"
+                android:layout_width="@dimen/dice_icon_width"
+                android:layout_height="@dimen/dice_icon_width"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dice_icon_margin_right"
+                android:layout_marginTop="@dimen/dice_icon_margin" />
+
+            <ImageView
+                android:id="@+id/img_adverse_win"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginTop="@dimen/win_icon_margin_top"
+                android:src="@drawable/dice_game_medals"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/img_user_win"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_25"
+                android:layout_marginTop="@dimen/win_icon_margin_top"
+                android:src="@drawable/dice_game_medals"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dice_name_padding"
+                android:paddingTop="@dimen/margin_10"
+                android:textColor="@color/dice_game_result_name_color"
+                android:textSize="@dimen/fontBody" />
+
+            <ImageView
+                android:id="@+id/user_win_or_lose"
+                android:layout_width="@dimen/edit_remark_height"
+                android:layout_height="@dimen/margin_15"
+                android:layout_below="@id/user_name"
+                android:layout_centerHorizontal="true"
+                android:paddingLeft="@dimen/margin_25"
+                android:src="@drawable/dice_win"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/dice_game_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:layout_marginRight="@dimen/margin_5"
+                android:background="@drawable/game_result_bg"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dice_amount_padding"
+                android:paddingRight="@dimen/dice_amount_padding"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/tab_notice_text_size"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/dice_game_result"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_content_item_height"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_15"
+            android:background="@drawable/reward_tip_bg"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/margin_25"
+            android:paddingRight="@dimen/margin_25"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/dice_game_again"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/fontNormal" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/status_failed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/content_container"
+        android:src="@drawable/chat_sent_failed"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/status_progressbar"
+        android:layout_width="@dimen/search_view_height"
+        android:layout_height="@dimen/search_view_height"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/dice_game_sent"
+        android:visibility="visible" />
+
+</RelativeLayout>

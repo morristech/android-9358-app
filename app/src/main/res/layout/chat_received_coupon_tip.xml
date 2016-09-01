@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/personal_margin">
+    android:layout_marginTop="@dimen/personal_margin"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/time"
@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/personal_margin"
         android:textColor="@color/colorRemark"
-        android:textSize="@dimen/fontBody"
-        android:text="03-19" />
+        android:textSize="@dimen/fontBody" />
 
     <com.xmd.technician.widget.CircleImageView
         android:id="@+id/avatar"
@@ -26,22 +25,39 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/paid_coupon_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/reward_tip_bg"
             android:layout_gravity="center_horizontal"
-            android:gravity="center_vertical"
+            android:background="@drawable/reward_tip_bg"
             android:drawableLeft="@drawable/icon07"
+            android:drawablePadding="@dimen/personal_padding"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/margin_5"
             android:paddingLeft="@dimen/personal_padding"
             android:paddingRight="@dimen/personal_padding"
             android:paddingTop="@dimen/margin_5"
-            android:paddingBottom="@dimen/margin_5"
-            android:drawablePadding="@dimen/personal_padding"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/fontRemark"
-            />
+            android:textSize="@dimen/fontRemark" />
     </FrameLayout>
+
+    <ImageView
+        android:id="@+id/status_failed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/content_container"
+        android:src="@drawable/chat_sent_failed"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/status_progressbar"
+        android:layout_width="@dimen/search_view_height"
+        android:layout_height="@dimen/search_view_height"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/content_container"
+        android:visibility="gone" />
 
 </RelativeLayout>

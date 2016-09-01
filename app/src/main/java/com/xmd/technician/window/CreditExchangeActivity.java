@@ -15,9 +15,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
+import com.xmd.technician.bean.CreditAccountResult;
+import com.xmd.technician.bean.CreditExchangeResult;
+import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -33,7 +35,7 @@ import rx.Subscription;
 /**
  * Created by Administrator on 2016/8/8.
  */
-public class CreditExchangeActivity extends BaseActivity implements TextWatcher{
+public class CreditExchangeActivity extends BaseActivity implements TextWatcher {
     @Bind(R.id.credit_total)
     TextView mCreditTotal;
     @Bind(R.id.max_exchange)
@@ -47,9 +49,14 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher{
     @Bind(R.id.btn_sent)
     Button mBtnSent;
     private int mTotalCredit;
-    private String exchange;
+    private int mExchangeRatio;
+    private int mExchangeLimitation;
+    private String editExchange;
+    private String clubSwitch;
 
     private Subscription mExchangeCreditResultSubscription;
+    private Subscription mTotalCreditResultSubscription;
+    private Subscription mCreditStatusSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,24 +66,47 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher{
         setTitle(ResourceUtils.getString(R.string.credit_exchange));
         setBackVisible(true);
         Intent intent = getIntent();
-        mTotalCredit = intent.getIntExtra(RequestConstant.KEY_UER_CREDIT_AMOUNT,-1);
+        mTotalCredit = intent.getIntExtra(RequestConstant.KEY_UER_CREDIT_AMOUNT, -1);
         initView();
     }
-    private void initView(){
-        mCreditTotal.setText(String.valueOf(mTotalCredit));
-        mExchangeConvert.setText(String.valueOf(mTotalCredit/10f));
-        String exchange = String.format(ResourceUtils.getString(R.string.credit_exchange_max), String.valueOf(mTotalCredit/100));
-        SpannableString spannableString = new SpannableString(exchange);
-        spannableString.setSpan(new TextAppearanceSpan(this,R.style.text_credit),8,exchange.lastIndexOf("元"),SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mMaxExchange.setText(exchange);
+
+    private void initView() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
         mMoneyExchange.addTextChangedListener(this);
-        mExchangeCreditResultSubscription = RxBus.getInstance().toObservable(BaseResult.class).subscribe(
-          result ->{
-              if(result.statusCode==200){
-                  makeShortToast(result.msg);
-              }
-          }
+        mExchangeCreditResultSubscription = RxBus.getInstance().toObservable(CreditExchangeResult.class).subscribe(
+                result -> {
+                    if (result.statusCode == 200) {
+                        makeShortToast(ResourceUtils.getString(R.string.credit_exchange_game));
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
+                    } else {
+                        makeShortToast(result.msg);
+                    }
+                }
         );
+        mCreditStatusSubscription = RxBus.getInstance().toObservable(CreditStatusResult.class).subscribe(
+                statusResult -> handlerCreditStatus(statusResult)
+        );
+        mTotalCreditResultSubscription = RxBus.getInstance().toObservable(CreditAccountResult.class).subscribe(
+                result -> handlerCreditAmount(result)
+        );
+    }
+
+    private void handlerCreditStatus(CreditStatusResult result) {
+        mExchangeRatio = result.respData.exchangeRatio;
+        mExchangeLimitation = result.respData.exchangeLimitation;
+        clubSwitch = result.respData.clubSwitch;
+        mCreditTotal.setText(String.valueOf(result.respData.exchangeRatio));
+    }
+
+    private void handlerCreditAmount(CreditAccountResult result) {
+        mTotalCredit = result.respData.get(0).amount;
+        if (mExchangeRatio > 0) {
+            String exchange = String.format(ResourceUtils.getString(R.string.credit_exchange_max), String.valueOf((int) (mTotalCredit - mExchangeLimitation) / mExchangeRatio));
+            SpannableString spannableString = new SpannableString(exchange);
+            spannableString.setSpan(new TextAppearanceSpan(this, R.style.text_credit), 6, exchange.lastIndexOf("元"), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mMaxExchange.setText(exchange);
+        }
     }
 
     @Override
@@ -91,33 +121,38 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher{
 
     @Override
     public void afterTextChanged(Editable s) {
-       exchange =  mMoneyExchange.getText().toString();
-        if(exchange.length()>0){
+        editExchange = mMoneyExchange.getText().toString();
+        if (editExchange.length() > 0) {
             mImgClose.setVisibility(View.VISIBLE);
             mBtnSent.setEnabled(true);
-        }else{
+        } else {
             mImgClose.setVisibility(View.GONE);
             mBtnSent.setEnabled(false);
         }
 
     }
-    @OnClick(R.id.btn_sent)
-    public void sentExchange(){
-        if(Integer.parseInt(exchange)<0){
-            return;
-        }
-        if(Integer.parseInt(exchange)>mTotalCredit){
-            makeShortToast(ResourceUtils.getString(R.string.credit_alert_shortage)+(mTotalCredit/10));
-            return;
-        }
-            Map<String,String> mParams = new HashMap<>();
-            mParams.put(RequestConstant.KEY_UER_CREDIT_AMOUNT,exchange);
-             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_CREDIT_EXCHANGE,mParams);
-            mMoneyExchange.setText("");
 
+    @OnClick(R.id.btn_sent)
+    public void sentExchange() {
+        if (Integer.parseInt(editExchange) <= 0) {
+            return;
+        }
+        if (!clubSwitch.equals("on")) {
+            makeShortToast(ResourceUtils.getString(R.string.club_status_off));
+            return;
+        }
+        if (Integer.parseInt(editExchange) > (mTotalCredit - mExchangeLimitation) / mExchangeRatio) {
+            makeShortToast(ResourceUtils.getString(R.string.credit_alert_shortage) + ((mTotalCredit - mExchangeLimitation) / mExchangeRatio));
+            return;
+        }
+        Map<String, String> mParams = new HashMap<>();
+        mParams.put(RequestConstant.KEY_UER_CREDIT_AMOUNT, editExchange);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_CREDIT_EXCHANGE, mParams);
+        mMoneyExchange.setText("");
     }
+
     @OnClick(R.id.img_close)
-    public void cleadEditText(){
+    public void cleadEditText() {
         mMoneyExchange.setText("");
         mBtnSent.setEnabled(false);
     }
@@ -125,6 +160,6 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mExchangeCreditResultSubscription);
+        RxBus.getInstance().unsubscribe(mExchangeCreditResultSubscription, mTotalCreditResultSubscription, mCreditStatusSubscription);
     }
 }

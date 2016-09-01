@@ -5,9 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,18 +22,20 @@ import com.hyphenate.util.DateUtils;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.ApplicationBean;
 import com.xmd.technician.bean.CouponInfo;
+import com.xmd.technician.bean.CreditDetailBean;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.PaidCouponUserDetail;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
-import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.CircleImageView;
@@ -50,6 +50,7 @@ import butterknife.ButterKnife;
  * Created by sdcm on 15-11-24.
  */
 public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemSlideHelper.Callback {
+
 
     public interface Callback<T> {
 
@@ -80,6 +81,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_COUPON_INFO_ITEM_CUSH = 11;
     private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
     private static final int TYPE_COUPON_INFO_ITEM_FAVORUABLE = 13;
+    private static final int TYPE_CREDIT_RECORD_ITEM = 4;
+    private static final int TYPE_CREDIT_APPLICATION_ITEM = 5;
 
     private static final int TYPE_OTHER_ITEM = 98;
     private static final int TYPE_FOOTER = 99;
@@ -136,10 +139,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_PAID_COUPON_USER_DETAIL;
             } else if (mData.get(position) instanceof EMConversation) {
                 return TYPE_CONVERSATION;
+            } else if (mData.get(position) instanceof CreditDetailBean) {
+                return TYPE_CREDIT_RECORD_ITEM;
+            } else if (mData.get(position) instanceof ApplicationBean) {
+                return TYPE_CREDIT_APPLICATION_ITEM;
             } else {
                 return TYPE_OTHER_ITEM;
             }
         }
+
     }
 
     @Override
@@ -162,6 +170,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         } else if (TYPE_CONVERSATION == viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
             return new ConversationViewHolder(view);
+        } else if (TYPE_CREDIT_RECORD_ITEM == viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_record_item, parent, false);
+            return new CreditRecordViewHolder(view);
+        } else if (TYPE_CREDIT_APPLICATION_ITEM == viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_application_item, parent, false);
+            return new CreditApplicationViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
             return new ListFooterHolder(view);
@@ -183,7 +197,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             Glide.with(mContext).load(order.headImgUrl).into(itemHolder.mUserHeadUrl);
             itemHolder.mUserHeadUrl.setOnClickListener(
-                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.userName, order.headImgUrl,false)));
+                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.userName, order.headImgUrl, false)));
             itemHolder.mUserName.setText(order.customerName);
             itemHolder.mOrderTime.setText(order.formatAppointTime);
             itemHolder.mOrderAmount.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), order.downPayment));
@@ -250,12 +264,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 couponListItemViewHolder.mTvCouponTitle.setText("点钟券");
                 couponListItemViewHolder.mCouponType.setVisibility(View.GONE);
             } else {
-                couponListItemViewHolder.mTvCouponTitle.setText(Utils.StrSubstring(8,couponInfo.actTitle,true));
+                couponListItemViewHolder.mTvCouponTitle.setText(Utils.StrSubstring(8, couponInfo.actTitle, true));
                 couponListItemViewHolder.mCouponType.setVisibility(View.VISIBLE);
             }
             couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
-            couponListItemViewHolder.mCouponPeriod.setText("有效时间：" + Utils.StrSubstring(19,couponInfo.couponPeriod,true));
-            if (couponInfo.techCommission > 0 ) {
+            couponListItemViewHolder.mCouponPeriod.setText("有效时间：" + Utils.StrSubstring(19, couponInfo.couponPeriod, true));
+            if (couponInfo.techCommission > 0) {
                 String money = Utils.getFloat2Str(String.valueOf(couponInfo.techCommission));
                 String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), money);
                 SpannableString spannableString = new SpannableString(text);
@@ -287,7 +301,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             Glide.with(mContext).load(paidCouponUserDetail.headImgUrl).into(itemHolder.mAvatar);
             itemHolder.mAvatar.setOnClickListener(
                     v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
-                            Utils.wrapChatParams(paidCouponUserDetail.emchatId, paidCouponUserDetail.userName, paidCouponUserDetail.headImgUrl,false)));
+                            Utils.wrapChatParams(paidCouponUserDetail.emchatId, paidCouponUserDetail.userName, paidCouponUserDetail.headImgUrl, false)));
             itemHolder.mTvCustomerName.setText(paidCouponUserDetail.userName);
             itemHolder.mTvGetDate.setText(paidCouponUserDetail.getDate);
             itemHolder.mTvTelephone.setText(paidCouponUserDetail.telephone);
@@ -314,16 +328,23 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 // 把最后一条消息的内容作为item的message内容
                 EMMessage lastMessage = conversation.getLastMessage();
                 Spannable span = SmileUtils.getSmiledText(mContext, CommonUtils.getMessageDigest(lastMessage, mContext));
-                conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
+                try {
+                    if (lastMessage.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE).equals(ChatConstant.KEY_MSG_GAME_TYPE)) {
+                        conversationHolder.mContent.setText(ResourceUtils.getString(R.string.dice_game));
+                    }
+                } catch (HyphenateException e) {
+                    conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
+                }
+
                 conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
                 try {
                     if (lastMessage.direct() == EMMessage.Direct.RECEIVE) {
                         ChatUser user;
                         user = new ChatUser(conversation.getUserName());
                         user.setAvatar(lastMessage.getStringAttribute(ChatConstant.KEY_HEADER));
-                        if(Utils.isNotEmpty(SharedPreferenceHelper.getUserRemark(lastMessage.getFrom()))){
+                        if (Utils.isNotEmpty(SharedPreferenceHelper.getUserRemark(lastMessage.getFrom()))) {
                             user.setNick(SharedPreferenceHelper.getUserRemark(lastMessage.getFrom()));
-                        }else{
+                        } else {
                             user.setNick(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
                         }
                         UserUtils.updateUser(user);
@@ -345,6 +366,57 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 }
             });
 
+        } else if (holder instanceof CreditRecordViewHolder) {
+            Object obj = mData.get(position);
+            if (!(obj instanceof CreditDetailBean)) {
+                return;
+            }
+            final CreditDetailBean creditDetailBean = (CreditDetailBean) obj;
+            CreditRecordViewHolder creditRecordViewHolder = (CreditRecordViewHolder) holder;
+            if (Utils.isNotEmpty(creditDetailBean.createDatetime)) {
+                creditRecordViewHolder.mCreditTime.setText(Utils.StrSubstring(10, creditDetailBean.createDatetime, false));
+            }
+
+            if (Utils.isNotEmpty(creditDetailBean.businessCategoryDesc)) {
+                creditRecordViewHolder.mCreditFrom.setText(creditDetailBean.businessCategoryDesc);
+            }
+            if (Utils.isNotEmpty(creditDetailBean.peerAvatar)) {
+                Glide.with(mContext).load(creditDetailBean.peerAvatar).error(R.drawable.icon22).into(creditRecordViewHolder.mAvatar);
+            } else {
+                creditRecordViewHolder.mAvatar.setVisibility(View.INVISIBLE);
+            }
+            if (Utils.isNotEmpty(creditDetailBean.peerName)) {
+                creditRecordViewHolder.mAdverseName.setText(Utils.StrSubstring(6, creditDetailBean.peerName, true));
+            } else {
+                creditRecordViewHolder.mAdverseName.setVisibility(View.INVISIBLE);
+            }
+            if (creditDetailBean.amount > 0) {
+                creditRecordViewHolder.mCreditAmount.setText(String.format("+%s", String.valueOf(creditDetailBean.amount)));
+                creditRecordViewHolder.mCreditAmount.setTextColor(ResourceUtils.getColor(R.color.credit_amount_color));
+            } else {
+                creditRecordViewHolder.mCreditAmount.setText(String.valueOf(creditDetailBean.amount));
+                creditRecordViewHolder.mCreditAmount.setTextColor(ResourceUtils.getColor(R.color.colorHead));
+            }
+
+
+        } else if (holder instanceof CreditApplicationViewHolder) {
+            Object obj = mData.get(position);
+            if (!(obj instanceof ApplicationBean)) {
+                return;
+            }
+            final ApplicationBean applicationBean = (ApplicationBean) obj;
+            CreditApplicationViewHolder creditApplicationViewHolder = (CreditApplicationViewHolder) holder;
+            if (applicationBean.status.equals(RequestConstant.KEY_APPROVE)) {
+                creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_accept), String.valueOf(applicationBean.amount)));
+            } else if (applicationBean.status.equals(RequestConstant.KEY_TIMEOUT)) {
+                creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_overtime), String.valueOf(applicationBean.amount)));
+            } else if (applicationBean.status.equals(RequestConstant.KEY_REJECT)) {
+                creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_reject), String.valueOf(applicationBean.amount)));
+            } else {
+                creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_undo), String.valueOf(applicationBean.amount)));
+            }
+            creditApplicationViewHolder.mCreditAmount.setText(String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
+            creditApplicationViewHolder.mCreditTime.setText(DateUtils.getTimestampString(new Date(applicationBean.createDatetime)));
         } else if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);
@@ -509,6 +581,43 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mUnread;
 
         public ConversationViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    static class CreditRecordViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.credit_from)
+        TextView mCreditFrom;
+        @Bind(R.id.avatar)
+        CircleImageView mAvatar;
+        @Bind(R.id.avatar_name)
+        TextView mAdverseName;
+        @Bind(R.id.credit_time)
+        TextView mCreditTime;
+        @Bind(R.id.credit_amount)
+        TextView mCreditAmount;
+
+        public CreditRecordViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    static class CreditApplicationViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.credit_from)
+        TextView mCreditFrom;
+        @Bind(R.id.avatar)
+        CircleImageView mAvatar;
+        @Bind(R.id.avatar_name)
+        TextView mAdverseName;
+        @Bind(R.id.credit_time)
+        TextView mCreditTime;
+        @Bind(R.id.credit_amount)
+        TextView mCreditAmount;
+
+        public CreditApplicationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

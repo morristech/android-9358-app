@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/coupon_item_height"
@@ -111,6 +112,7 @@
 
 
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -291,116 +293,149 @@
                     android:textSize="@dimen/fontBody" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/dice_game_sent"
             android:layout_width="match_parent"
-            android:layout_height="138dp"
+            android:layout_height="@dimen/dice_game_view_height"
             android:layout_below="@+id/time"
             android:layout_toLeftOf="@+id/avatar"
             android:background="@drawable/round_rect_white_bg"
             android:orientation="vertical"
             android:visibility="gone">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:orientation="horizontal"
+                android:layout_height="@dimen/search_view_height"
                 android:background="@drawable/send_dice_game_top_bg"
-                >
+                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/invite_game_top"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_white"
-                    android:text="邀请王先生玩骰子游戏"
-                    android:textSize="@dimen/fontTitle_small"
                     android:paddingLeft="@dimen/padding_15"
                     android:paddingTop="@dimen/margin_5"
-                    />
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/fontTitle_small" />
+
                 <TextView
                     android:id="@+id/dice_game_amount"
-                    android:layout_width="40dp"
-                    android:layout_height="15dp"
-                    android:text="10积分"
-                    android:textSize="10sp"
-                    android:textColor="@color/contact_marker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/margin_15"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_5"
                     android:background="@drawable/send_game_amount_bg"
                     android:gravity="center"
-                    android:layout_marginLeft="@dimen/margin_10"
-                   android:layout_marginRight="@dimen/margin_25"
+                    android:paddingLeft="@dimen/game_amount_radius"
+                    android:paddingRight="@dimen/game_amount_radius"
+                    android:textColor="@color/contact_marker"
+                    android:textSize="@dimen/fontRemark"
+
                     />
             </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_20"
-                >
+                android:layout_marginTop="@dimen/margin_20">
+
                 <TextView
                     android:id="@+id/adverse_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/dialog_multi_check_default_height"
                     android:textColor="@color/dice_game_name_color"
                     android:textSize="@dimen/fontTitle"
-                    android:text="王先生"
-                    android:textStyle="bold"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="34dp"
-                    />
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dialog_multi_check_default_height"
                     android:textColor="@color/dice_game_name_color"
                     android:textSize="@dimen/fontTitle"
-                    android:text="张小花"
-                    android:textStyle="bold"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="34dp"
-                    />
+                    android:textStyle="bold" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                >
-            <TextView
-                android:id="@+id/wait_game"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="等待接收..."
-                android:paddingLeft="25dp"
-               android:gravity="center"
-                android:visibility="invisible"
-                />
-                <ImageView
-                    android:id="@+id/adverse_head"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:src="@drawable/icon22"
-                    android:layout_marginLeft="34dp"
-                    android:visibility="visible"
-                    />
-                .<ImageView
+                android:layout_height="@dimen/share_btn_width"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_10">
+
+                <TextView
+                    android:id="@+id/wait_game"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_dice"
-                    android:layout_centerInParent="true"
-                    />
-                <ImageView
+                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/margin_25"
+                    android:text="@string/dice_game_wait"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/game_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/wait_game"
+                    android:layout_below="@id/wait_game"
+                    android:layout_marginBottom="@dimen/margin_2"
+                    android:layout_marginLeft="@dimen/margin_25"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:background="@drawable/send_dice_game_cancel_bg"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/margin_5"
+                    android:paddingRight="@dimen/margin_5"
+                    android:text="@string/cancel"
+                    android:visibility="invisible" />
+
+                <com.xmd.technician.widget.RoundImageView
                     android:id="@+id/user_head"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:src="@drawable/icon22"
+                    src="@drawable/icon22"
+                    android:layout_width="@dimen/personal_item_height"
+                    android:layout_height="@dimen/personal_item_height"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="34dp"
-                    />
+                    android:layout_marginRight="@dimen/dialog_multi_check_default_height"
+                    android:visibility="gone"
+                    app:borderRadius="@dimen/search_margin"
+                    app:type="round" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_dice" />
+
+                <com.xmd.technician.widget.RoundImageView
+                    android:id="@+id/adverse_head"
+                    android:layout_width="@dimen/personal_item_height"
+                    android:layout_height="@dimen/personal_item_height"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/dialog_multi_check_default_height"
+                    android:visibility="gone"
+                    app:borderRadius="@dimen/search_margin"
+                    app:src="@drawable/icon22"
+                    app:type="round" />
+
+                <TextView
+                    android:id="@+id/refuse_game"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dialog_multi_check_default_height"
+                    android:gravity="center"
+                    android:text="@string/dice_game_reject"
+                    android:visibility="gone" />
 
             </RelativeLayout>
-
-
-
         </LinearLayout>
-
-
     </FrameLayout>
 
     <ImageView

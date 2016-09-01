@@ -22,6 +22,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -30,17 +32,28 @@ import com.hyphenate.util.EasyUtils;
 import com.xmd.technician.Adapter.ChatListAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.TechApplication;
+import com.xmd.technician.bean.AcceptOrRejectGame;
 import com.xmd.technician.bean.CheckedCoupon;
+import com.xmd.technician.bean.CreditAccountResult;
+import com.xmd.technician.bean.CreditStatusResult;
+import com.xmd.technician.bean.GameResult;
+import com.xmd.technician.bean.PlayDiceGame;
+import com.xmd.technician.bean.SendGameResult;
+import com.xmd.technician.bean.UserWin;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.chat.bean.CancelGame;
+import com.xmd.technician.chat.bean.RefreshView;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.CouponListResult;
@@ -49,35 +62,51 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.EmojiconMenu;
-//import com.xmd.technician.widget.GameSettingDialog;
+import com.xmd.technician.widget.FlowerAnimation;
+import com.xmd.technician.widget.GameSettingDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-//import java.util.HashMap;
+import java.util.HashMap;
 import java.util.List;
-//import java.util.Map;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
-public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
     protected static final int REQUEST_CODE_LOCAL = 1;
 
-    @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mRefreshLayout;
-    @Bind(R.id.et_sendmessage) EditText mSendMsgEd;
-    @Bind(R.id.list_view) RecyclerView mMsgListView;
-    @Bind(R.id.btn_face) View mFaceBtn;
-    @Bind(R.id.emojicon_menu_container) EmojiconMenu mEmojiconMenuContainer;
-    @Bind(R.id.common_msg_layout)LinearLayout mCommonMsgLayout;
-    @Bind(R.id.btn_common_msg)View mCommonBtn;
-    @Bind(R.id.round_indicator_left) ImageView indicatorLeft;
-    @Bind(R.id.round_indicator_right)ImageView indicatorRight;
-    @Bind(R.id.btn_common_coupon)LinearLayout btnCommonCoupon;
-    @Bind(R.id.btn_common_reward)View mRewardBtn;
-    @Bind(R.id.btn_common_game)LinearLayout mBtnCommonGame;
+    @Bind(R.id.swipe_refresh_widget)
+    SwipeRefreshLayout mRefreshLayout;
+    @Bind(R.id.et_sendmessage)
+    EditText mSendMsgEd;
+    @Bind(R.id.list_view)
+    RecyclerView mMsgListView;
+    @Bind(R.id.btn_face)
+    View mFaceBtn;
+    @Bind(R.id.emojicon_menu_container)
+    EmojiconMenu mEmojiconMenuContainer;
+    @Bind(R.id.common_msg_layout)
+    LinearLayout mCommonMsgLayout;
+    @Bind(R.id.btn_common_msg)
+    View mCommonBtn;
+    @Bind(R.id.round_indicator_left)
+    ImageView indicatorLeft;
+    @Bind(R.id.round_indicator_right)
+    ImageView indicatorRight;
+    @Bind(R.id.btn_common_coupon)
+    LinearLayout btnCommonCoupon;
+    @Bind(R.id.btn_common_reward)
+    View mRewardBtn;
+    @Bind(R.id.btn_common_game)
+    LinearLayout mBtnCommonGame;
+    @Bind(R.id.relative_chat)
+    RelativeLayout relative;
     ViewPager mCommentMsgView;
 
     private String mToChatUsername;
@@ -89,16 +118,29 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private boolean mHaveMoreData = true;
     private int mPageSize = 20;
     private EMConversation mConversation;
-    private Subscription mManagerOrderSubscription;
-    private Subscription mGetRedpacklistSubscription;
-    private Subscription mSendMessageSubscription;
     private List<CouponInfo> mCouponList = new ArrayList<>();
     private String mTechCode;
     private ArrayList<Fragment> fragmentsViewPagerList;
     private CommonMsgFragmentOne fragmentOne;
     private CommonMsgFragmentTwo fragmentTwo;
     private Boolean isTechOrManger;
-    private int mGameIntegral ;
+    private int mGameIntegral;
+    private String adverseName;
+    private int mAvailableCredit;
+    private FlowerAnimation animation;
+
+    private Subscription mManagerOrderSubscription;
+    private Subscription mGetRedpacklistSubscription;
+    private Subscription mSendMessageSubscription;
+    private Subscription mSendDiceGameSubscription;
+    private Subscription mAcceptOrRejectGameSubscription;
+    private Subscription mUserAvailableCreditSubscription;
+    private Subscription mUserWinSubscription;
+    private Subscription mGameResultSubscription;
+    private Subscription mPlayGameAgainSubscription;
+    private Subscription mCancelGameSubscription;
+    private Subscription mCreditStatusSubscription;
+    private Subscription mRefreshViewSubscription;
 
 
     @Override
@@ -108,25 +150,23 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         ButterKnife.bind(this);
         mToChatUsername = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
         isTechOrManger = getIntent().getExtras().getBoolean(ChatConstant.EMCHAT_IS_TECH);
-       if(isTechOrManger){
-          btnCommonCoupon.setVisibility(View.GONE);
-           mCommonBtn.setVisibility(View.GONE);
-           mRewardBtn.setVisibility(View.GONE);
-       }
-
+        if (isTechOrManger) {
+            btnCommonCoupon.setVisibility(View.GONE);
+            mCommonBtn.setVisibility(View.GONE);
+            mRewardBtn.setVisibility(View.GONE);
+        }
         UserUtils.setUserNick(mToChatUsername, mAppTitle);
-
         setBackVisible(true);
-
         mInputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
         mRefreshLayout.setColorSchemeResources(R.color.colorMain);
         mRefreshLayout.setOnRefreshListener(this);
-
         initEmojicon();
-
         onConversationInit();
         initChatList();
+        initGoldAnimationView();
+        mCreditStatusSubscription = RxBus.getInstance().toObservable(CreditStatusResult.class).subscribe(
+                statusResult -> handlerCreditStatusResult(statusResult)
+        );
 
         mGetRedpacklistSubscription = RxBus.getInstance().toObservable(CouponListResult.class).subscribe(
                 redpackResult -> getRedpackListResult(redpackResult));
@@ -134,12 +174,88 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mManagerOrderSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
                 result -> managerOrderResult(result));
         mSendMessageSubscription = RxBus.getInstance().toObservable(CheckedCoupon.class).subscribe(
-                  checkedCoupon -> handlerCheckedCoupon(checkedCoupon)
+                checkedCoupon -> handlerCheckedCoupon(checkedCoupon)
+        );
+        mSendDiceGameSubscription = RxBus.getInstance().toObservable(SendGameResult.class).subscribe(
+                sendGameResult -> {
+                    if (sendGameResult.statusCode == 200 && Utils.isNotEmpty(sendGameResult.respData.gameId)) {
+                        sendDiceGameMessage(String.valueOf(mGameIntegral), sendGameResult.respData.gameId, ChatConstant.KEY_REQUEST_GAME, "0:0", SharedPreferenceHelper.getEmchatId());
+                    }
+                }
+        );
+        mGameResultSubscription = RxBus.getInstance().toObservable(GameResult.class).subscribe(
+                gameResult -> handlerGameInvite(gameResult)
+        );
+        mAcceptOrRejectGameSubscription = RxBus.getInstance().toObservable(AcceptOrRejectGame.class).subscribe(
+                acceptOrRejectGame -> {
+                    if (mAvailableCredit > Integer.parseInt(acceptOrRejectGame.gameContent)) {
+                        sendDiceGameMessage(acceptOrRejectGame.gameContent, acceptOrRejectGame.gameId, acceptOrRejectGame.gameStatus, "0:0", acceptOrRejectGame.chatId);
+                        SharedPreferenceHelper.setGameStatus(acceptOrRejectGame.gameId, ChatConstant.KEY_ACCEPT_GAME);
+                        Map<String, String> params = new HashMap<>();
+                        String gameId = acceptOrRejectGame.gameId.substring((5));
+                        params.put(RequestConstant.KEY_DICE_GAME_ID, gameId);
+                        params.put(RequestConstant.KEY_STATUS, ChatConstant.KEY_GAME_ACCEPT);
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT, params);
+                    } else {
+                        showCreditInsufficientDialog(acceptOrRejectGame.gameContent);
+                    }
+                }
+        );
+        mRefreshViewSubscription = RxBus.getInstance().toObservable(RefreshView.class).subscribe(
+                refreshView ->{
+                    if (mIsMessageListInited) {
+                        mChatAdapter.refreshList();
+                    }
+                }
+
+        );
+        mUserAvailableCreditSubscription = RxBus.getInstance().toObservable(CreditAccountResult.class).subscribe(
+                result -> {
+                    if (result.statusCode == 200) {
+                        if (result.respData.size() > 0) {
+                            mAvailableCredit = result.respData.get(0).amount;
+                        }
+
+                    }
+                }
+        );
+        mUserWinSubscription = RxBus.getInstance().toObservable(UserWin.class).subscribe(
+                result -> {
+                    if (!SharedPreferenceHelper.getGameStatus(result.gameId).equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
+                        animation.startAnimation();
+                        SharedPreferenceHelper.setGameStatus(result.gameId, ChatConstant.KEY_OVER_GAME_TYPE);
+                    }
+                }
+        );
+        mPlayGameAgainSubscription = RxBus.getInstance().toObservable(PlayDiceGame.class).subscribe(
+                result -> {
+                    if (mAvailableCredit > Integer.parseInt(result.content)) {
+                        playGameAgain(result.content);
+                        mGameIntegral = Integer.parseInt(result.content);
+                    } else {
+                        showCreditInsufficientDialog(result.content);
+                    }
+
+                }
+
+        );
+        mCancelGameSubscription = RxBus.getInstance().toObservable(CancelGame.class).subscribe(
+                result -> {
+                    //  result.message.setAttribute(ChatConstant.KEY_GAME_STATUS, ChatConstant.KEY_CANCEL_GAME_TYPE);
+                    // sendMessage(result.message);
+                    EMMessage message = result.message;
+                    message.setAttribute(ChatConstant.KEY_GAME_STATUS, ChatConstant.KEY_CANCEL_GAME_TYPE);
+                    sendMessage(result.message);
+                }
         );
 
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
-
+        adverseName = mAppTitle.getText().toString();
+       MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
+//        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
+//                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
     }
 
     @Override
@@ -148,7 +264,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         String username = intent.getStringExtra(ChatConstant.EMCHAT_ID);
         if (mToChatUsername.equals(username)) {
             //刷新ui
-            if(mIsMessageListInited) {
+            if (mIsMessageListInited) {
                 mChatAdapter.refreshSelectLast();
             }
             super.onNewIntent(intent);
@@ -157,29 +273,35 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             startActivity(intent);
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(mIsMessageListInited) {
-           mChatAdapter.refreshList();
+        if (mIsMessageListInited) {
+            mChatAdapter.refreshList();
         }
         EMClient.getInstance().chatManager().addMessageListener(mEMMessageListener);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListener);
-        if(mGetRedpacklistSubscription!=null){
+        if (mGetRedpacklistSubscription != null) {
             RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription);
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(null!=mSendMessageSubscription){
-            RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription,mSendMessageSubscription);
+        if (null != mSendMessageSubscription) {
+            RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription, mSendMessageSubscription,
+                    mSendDiceGameSubscription, mGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription,
+                    mUserAvailableCreditSubscription, mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription);
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -206,7 +328,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        if(!mIsLoading && mHaveMoreData){
+        if (!mIsLoading && mHaveMoreData) {
             List<EMMessage> messages;
             try {
                 if (mChatType == ChatConstant.CHATTYPE_SINGLE) {
@@ -216,41 +338,41 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     messages = mConversation.loadMoreMsgFromDB(mChatAdapter.getItem(0).getMsgId(),
                             mPageSize);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 mRefreshLayout.setRefreshing(false);
                 return;
             }
 
-            if(messages.size() > 0){
+            if (messages.size() > 0) {
                 mChatAdapter.refreshSeekTo(messages.size() - 1);
-                if(messages.size() != mPageSize){
+                if (messages.size() != mPageSize) {
                     mHaveMoreData = false;
                 }
-            }else {
+            } else {
                 mHaveMoreData = false;
             }
 
             mIsLoading = false;
-        }else {
+        } else {
             makeShortToast(getString(R.string.no_more_messages));
         }
 
         mRefreshLayout.setRefreshing(false);
     }
 
-    private void initEmojicon(){
+    private void initEmojicon() {
         mEmojiconMenuContainer.setEmojiconMenuListener(new EmojiconMenu.EmojiconMenuListener() {
             @Override
             public void onEmojiconClicked(Emojicon emojicon) {
                 int index = mSendMsgEd.getSelectionStart();
                 Editable edit = mSendMsgEd.getEditableText();
-                edit.insert(index, SmileUtils.getSmiledText(ChatActivity.this,emojicon.getEmojiText()));
+                edit.insert(index, SmileUtils.getSmiledText(ChatActivity.this, emojicon.getEmojiText()));
             }
         });
         mEmojiconMenuContainer.init(Arrays.asList(DefaultEmojiconDatas.getData()));
     }
 
-    private void onConversationInit(){
+    private void onConversationInit() {
         // 获取当前conversation对象
 
         mConversation = EMClient.getInstance().chatManager().getConversation(mToChatUsername, CommonUtils.getConversationType(mChatType), true);
@@ -270,8 +392,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     }
 
-    private void initChatList(){
-        mChatAdapter = new ChatListAdapter(this,mMsgListView,mToChatUsername,mChatType);
+    private void initChatList() {
+        mChatAdapter = new ChatListAdapter(this, mMsgListView, mToChatUsername, mChatType);
         mMsgListView.setHasFixedSize(true);
         mMsgListView.setLayoutManager(new LinearLayoutManager(this));
         mMsgListView.setAdapter(mChatAdapter);
@@ -288,11 +410,11 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         setListItemClickListener();
     }
 
-    private void setListItemClickListener(){
+    private void setListItemClickListener() {
         mChatAdapter.setListItemClickListener(new EMessageListItemClickListener() {
             @Override
             public void onResendClick(EMMessage message) {
-                new RewardConfirmDialog(ChatActivity.this, getString(R.string.resend), getString(R.string.confirm_resend),"") {
+                new RewardConfirmDialog(TechApplication.getAppContext(), getString(R.string.resend), getString(R.string.confirm_resend), "") {
                     @Override
                     public void onConfirmClick() {
                         super.onConfirmClick();
@@ -303,52 +425,78 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         });
     }
 
-    private void getRedpackListResult(CouponListResult result){
-        if(result.statusCode == 200){
+    private void getRedpackListResult(CouponListResult result) {
+        if (result.statusCode == 200) {
             mTechCode = result.respData.techCode;
-            if(result.respData.coupons != null){
+            if (result.respData.coupons != null) {
                 mCouponList.clear();
-                for(CouponInfo info :result.respData.coupons){
+                for (CouponInfo info : result.respData.coupons) {
                     mCouponList.add(info);
                 }
             }
         }
     }
 
-    private void managerOrderResult(OrderManageResult result){
+    private void managerOrderResult(OrderManageResult result) {
         String replyMessage = mChatAdapter.getOrderReplyMessage(result.orderId);
-        if(!TextUtils.isEmpty(replyMessage)){
+        if (!TextUtils.isEmpty(replyMessage)) {
             sendOrderMessage(replyMessage, result.orderId);
             mChatAdapter.refreshSelectLast();
         }
     }
 
+    private void handlerGameInvite(GameResult result) {
+        if (result.statusCode == 200) {
+            if (result.respData.status.equals(ChatConstant.KEY_ACCEPT_GAME)) {
+                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVER_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
+            } else if (result.respData.status.equals(ChatConstant.KEY_GAME_REJECT)) {
+                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_GAME_REJECT, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
+            } else {
+                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVERTIME_GAME, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
+            }
+        }
+    }
+
+    private void handlerCreditStatusResult(CreditStatusResult result) {
+        if (result.statusCode == 200) {
+            if (result.respData.systemSwitch.equals("on") && result.respData.clubSwitch.equals("on") && result.respData.diceGameSwitch.equals("on")) {
+                mBtnCommonGame.setVisibility(View.VISIBLE);
+            } else {
+                mBtnCommonGame.setVisibility(View.GONE);
+            }
+            SharedPreferenceHelper.setGameTimeout(result.respData.gameTimeoutSeconds);
+        } else {
+            mBtnCommonGame.setVisibility(View.GONE);
+        }
+
+    }
+
     @OnClick(R.id.btn_send)
-    public void onSendBtnClicked(){
+    public void onSendBtnClicked() {
         String s = mSendMsgEd.getText().toString();
         mSendMsgEd.setText("");
-        if(TextUtils.isEmpty(s)){
+        if (TextUtils.isEmpty(s)) {
             makeShortToast(getString(R.string.messages_cannot_be_empty));
-        }else{
+        } else {
             sendTextMessage(s);
         }
     }
 
     @OnClick(R.id.btn_photo)
-    public void onToggleExtendClicked(){
+    public void onToggleExtendClicked() {
         hideKeyboard();
         hideExtendMenuContainer();
         Util.selectPicFromLocal(this, REQUEST_CODE_LOCAL);
     }
 
     @OnClick(R.id.et_sendmessage)
-    public void onEditTextClicked(){
+    public void onEditTextClicked() {
         hideExtendMenuContainer();
     }
 
     @OnClick(R.id.btn_face)
-    public void onToggleEmojiconClicked(View view){
-        if(mCommonMsgLayout.getVisibility() ==View.VISIBLE){
+    public void onToggleEmojiconClicked(View view) {
+        if (mCommonMsgLayout.getVisibility() == View.VISIBLE) {
             mCommonBtn.setSelected(false);
             mCommonMsgLayout.setVisibility(View.GONE);
         }
@@ -364,13 +512,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     @OnClick(R.id.btn_common_msg)
-    public void showCommonMessage(View view){
+    public void showCommonMessage(View view) {
         hideKeyboard();
-        if(mCommonMsgLayout.getVisibility()==View.VISIBLE){
+        if (mCommonMsgLayout.getVisibility() == View.VISIBLE) {
             mCommonMsgLayout.setVisibility(View.GONE);
             view.setSelected(false);
-        }else{
-            initCommentViewPager( view);
+        } else {
+            initCommentViewPager(view);
             mCommonMsgLayout.setVisibility(View.VISIBLE);
             view.setSelected(true);
             mFaceBtn.setSelected(false);
@@ -379,10 +527,10 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     @OnClick(R.id.btn_common_reward)
-    public void requestReward(){
+    public void requestReward() {
         hideKeyboard();
         hideExtendMenuContainer();
-        new RewardConfirmDialog(this, getString(R.string.beg_reward), getString(R.string.send_request_user_reward),"") {
+        new RewardConfirmDialog(this, getString(R.string.beg_reward), getString(R.string.send_request_user_reward), "") {
             @Override
             public void onConfirmClick() {
                 sendBegRewardMessage("<i></i>万水千山总是情<br/>打赏两个行不行~");
@@ -390,6 +538,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             }
         }.show();
     }
+
     @OnClick(R.id.btn_common_coupon)
     public void showCouponInfo(View view) {
         hideKeyboard();
@@ -400,42 +549,61 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
         view.setSelected(true);
         AvailableCouponListActivity.setData(mCouponList);
-        Intent intent = new Intent(ChatActivity.this,AvailableCouponListActivity.class);
+        Intent intent = new Intent(ChatActivity.this, AvailableCouponListActivity.class);
         startActivity(intent);
         view.setSelected(false);
     }
-//  @OnClick(R.id.btn_common_game)
-//  public void sendGameMsg(){
-//      //发送游戏邀请
-//      hideKeyboard();
-//      hideExtendMenuContainer();
-//      mGameIntegral = 10;
-//      new GameSettingDialog(this, new GameSettingDialog.GetGameIntegralInterFace() {
-//          @Override
-//          public void getIngefral(int num) {
-//              mGameIntegral = num;
-//          }
-//      }){
-//          @Override
-//          public void onConfirmClick() {
-//              super.onConfirmClick();
-//              Map<String,String> params = new HashMap<String, String>();
-//              params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID,mToChatUsername);
-//              params.put(RequestConstant.KEY_UER_CREDIT_AMOUNT,String.valueOf(mGameIntegral));
-//              params.put(RequestConstant.KEY_USER_CLUB_ID,SharedPreferenceHelper.getUserClubId());
-//              MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_INITIATE_GAME ,params);
-//          }
-//
-//      }.show();
-//  }
 
-    private void   handlerCheckedCoupon(CheckedCoupon result){
-            if(!("paid").equals(result.couponType)){
-                sendCouponMessage(String.format("<i>%s</i><span>%d</span>元<b>%s</b>", result.useTypeName, result.actValue, result.couponPeriod), result.actId);
-            }else{
-                sendPaidCouponMessage(String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", result.actValue, result.couponPeriod), result.actId);
+    @OnClick(R.id.btn_common_game)
+    public void sendGameSetting() {
+        //发送游戏邀请
+        hideKeyboard();
+        hideExtendMenuContainer();
+        mGameIntegral = 10;
+        new GameSettingDialog(this, new GameSettingDialog.GetGameIntegralInterFace() {
+            @Override
+            public void getIngefral(int num) {
+                mGameIntegral = num;
             }
+        }) {
+            @Override
+            public void onConfirmClick() {
+                super.onConfirmClick();
+                if (mAvailableCredit > mGameIntegral) {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put(RequestConstant.KEY_USER_CLUB_ID, SharedPreferenceHelper.getUserClubId());
+                    params.put(RequestConstant.KEY_UER_CREDIT_AMOUNT, String.valueOf(mGameIntegral));
+                    params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, mToChatUsername);
+                    params.put(RequestConstant.KEY_DICE_GAME_TIME, String.valueOf(System.currentTimeMillis()));
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_INITIATE_GAME, params);
+                } else {
+                    showCreditInsufficientDialog(String.valueOf(mGameIntegral));
+                }
+            }
+
+        }.show();
     }
+
+    private void showCreditInsufficientDialog(String content) {
+        new RewardConfirmDialog(ChatActivity.this, getString(R.string.credit_insufficient), String.format(getString(R.string.credit_insufficient_alert), content),
+                getString(R.string.how_to_get_credit)) {
+            @Override
+            public void onConfirmClick() {
+                Intent intent = new Intent(ChatActivity.this, CreditRuleExplainActivity.class);
+                startActivity(intent);
+                super.onConfirmClick();
+            }
+        }.show();
+    }
+
+    private void handlerCheckedCoupon(CheckedCoupon result) {
+        if (!("paid").equals(result.couponType)) {
+            sendCouponMessage(String.format("<i>%s</i><span>%d</span>元<b>%s</b>", result.useTypeName, result.actValue, result.couponPeriod), result.actId);
+        } else {
+            sendPaidCouponMessage(String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", result.actValue, result.couponPeriod), result.actId);
+        }
+    }
+
     /**
      * 隐藏软键盘
      */
@@ -452,7 +620,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     public void hideExtendMenuContainer() {
         mFaceBtn.setSelected(false);
         mEmojiconMenuContainer.setVisibility(View.GONE);
-        if(mCommonMsgLayout.getVisibility()==View.VISIBLE) {
+        if (mCommonMsgLayout.getVisibility() == View.VISIBLE) {
             mCommonMsgLayout.setVisibility(View.GONE);
             //    viewDiv.setVisibility(View.GONE);
             mCommonBtn.setSelected(false);
@@ -468,7 +636,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
      * @param selectedImage
      */
     protected void sendPicByUri(Uri selectedImage) {
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -532,40 +700,47 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         message.setAttribute(ChatConstant.KEY_TECH_CODE, mTechCode);
         sendMessage(message);
     }
-    private void sendGameInviteMessage(String content,String actId){
+
+    private void sendDiceGameMessage(String content, String gameId, String gameState, String gameResult, String gameInvite) {
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
-        message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE,"diceGame");
-
-
-
+        message.setAttribute(ChatConstant.KEY_GAME_CLUB_ID, SharedPreferenceHelper.getUserClubId());
+        message.setAttribute(ChatConstant.KEY_GAME_CLUB_NAME, SharedPreferenceHelper.getUserClubName());
+        message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, ChatConstant.KEY_MSG_GAME_TYPE);
+        message.setAttribute(ChatConstant.KEY_GAME_STATUS, gameState);
+        message.setAttribute(ChatConstant.KEY_GAME_INVITE, gameInvite);
+        message.setAttribute(ChatConstant.KEY_GAME_ID, "dice_" + gameId);
+        message.setAttribute(ChatConstant.KEY_GAME_RESULT, gameResult);
+        message.setAttribute(ChatConstant.KEY_ADVERSE_NAME, adverseName);
+        sendMessage(message);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
     }
 
-    protected void sendMessage(EMMessage message){
+    protected void sendMessage(EMMessage message) {
 //        if(chatFragmentListener != null){
 //            //设置扩展属性
 //            chatFragmentListener.onSetMessageAttributes(message);
 //        }
         // 如果是群聊，设置chattype,默认是单聊
-        if (mChatType == ChatConstant.CHATTYPE_GROUP){
+        if (mChatType == ChatConstant.CHATTYPE_GROUP) {
             message.setChatType(EMMessage.ChatType.GroupChat);
-        }else if(mChatType == ChatConstant.CHATTYPE_CHATROOM){
+        } else if (mChatType == ChatConstant.CHATTYPE_CHATROOM) {
             message.setChatType(EMMessage.ChatType.ChatRoom);
         }
-
+        message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
         message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
         message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
-        message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
-        message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
         message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
+        message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
+
         //发送消息
         EMClient.getInstance().chatManager().sendMessage(message);
         //刷新ui
-        if(mIsMessageListInited) {
+        if (mIsMessageListInited) {
             mChatAdapter.refreshSelectLast();
         }
     }
 
-    public void resendMessage(EMMessage message){
+    public void resendMessage(EMMessage message) {
         message.setStatus(EMMessage.Status.CREATE);
         EMClient.getInstance().chatManager().sendMessage(message);
         mChatAdapter.refreshList();
@@ -605,27 +780,27 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         @Override
         public void onMessageReadAckReceived(List<EMMessage> messages) {
-            if(mIsMessageListInited) {
+            if (mIsMessageListInited) {
                 mChatAdapter.refreshList();
             }
         }
 
         @Override
         public void onMessageDeliveryAckReceived(List<EMMessage> message) {
-            if(mIsMessageListInited) {
+            if (mIsMessageListInited) {
                 mChatAdapter.refreshList();
             }
         }
 
         @Override
         public void onMessageChanged(EMMessage message, Object change) {
-            if(mIsMessageListInited) {
+            if (mIsMessageListInited) {
                 mChatAdapter.refreshList();
             }
         }
     };
 
-    private void initCommentViewPager(View view){
+    private void initCommentViewPager(View view) {
         indicatorLeft.setEnabled(true);
         indicatorRight.setEnabled(false);
 
@@ -637,7 +812,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                     @Override
                     public void run() {
-                        if(mCommonMsgLayout.getVisibility() == View.VISIBLE){
+                        if (mCommonMsgLayout.getVisibility() == View.VISIBLE) {
                             mCommonMsgLayout.setVisibility(View.GONE);
                         }
                     }
@@ -652,7 +827,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                     @Override
                     public void run() {
-                        if(mCommonMsgLayout.getVisibility() == View.VISIBLE){
+                        if (mCommonMsgLayout.getVisibility() == View.VISIBLE) {
                             mCommonMsgLayout.setVisibility(View.GONE);
                         }
                     }
@@ -683,14 +858,15 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
             @Override
             public void onPageSelected(int position) {
-                if(position==0){
+                if (position == 0) {
                     indicatorLeft.setEnabled(true);
                     indicatorRight.setEnabled(false);
-                }else{
+                } else {
                     indicatorLeft.setEnabled(false);
                     indicatorRight.setEnabled(true);
                 }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
 
@@ -699,6 +875,23 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     }
 
+    private void initGoldAnimationView() {
+        animation = new FlowerAnimation(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        animation.setLayoutParams(params);
+        relative.addView(animation);
+    }
+
+    private void playGameAgain(String content) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(RequestConstant.KEY_USER_CLUB_ID, SharedPreferenceHelper.getUserClubId());
+        params.put(RequestConstant.KEY_UER_CREDIT_AMOUNT, content);
+        params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, mToChatUsername);
+        params.put(RequestConstant.KEY_DICE_GAME_TIME, String.valueOf(System.currentTimeMillis()));
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_INITIATE_GAME, params);
+
+    }
 
 
 }

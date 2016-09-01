@@ -50,33 +50,28 @@ public class RequestConstant {
     public static final String URL_GET_COUPON_INFO = BASE_URL + "/v1/profile/club/redpacketinfo";
     public static final String URL_COUPON_SHARE_QR_CODE = BASE_URL + "/v1/profile/redpacket/useqrcode";
     public static final String URL_PAID_COUPON_USER_DETAIL = BASE_URL + "/v1/profile/tech/coupon/userdetails";
-    public static final String URL_ADD_CUSTOMER = BASE_URL +"/v2/tech/customer/edit";
-    public static final String URL_GET_CUSTOMER_LIST = BASE_URL+"/v2/tech/customer/user/list";
-    public static final String URL_GET_CUSTOMER_INFO_DETAIL = BASE_URL+"/v2/tech/customer/user/view";
-    public static final String URL_GET_CLUB_LIST = BASE_URL+"/v2/tech/customer/tech/list";
-    public static final String URL_GET_TECH_INFO_DETAIL =BASE_URL+"/v2/tech/customer/tech/view";
-    public static final String URL_GET_MANAGER_INFO_DETAIL =BASE_URL+"/v2/tech/customer/manager/view";
-    public static final String URL_DELETE_CONTACT = BASE_URL+"/v2/tech/customer/delete";
-    public static final String URL_DO_DRAW_MONEY = BASE_URL+"/v2/wx/pay/user_reward_redpack";
-    public static final String URL_GET_USER_WX_OPEN_ID = BASE_URL+"/v2/wx/oauth2/openid";
-    public static final String URL_GET_USER_WX_CODE = BASE_URL+"/v2/wx/oauth2/code";
-    public static final String URL_GET_USER_IS_BIND_WX = BASE_URL+"/v2/tech/is_bind_wx";
-    public static final String URL_GAME_DICE_SUBMIT =BASE_URL+ "/v2/credit/game/dice/submit";
-    public static final String URL_GAME_DICE_ACCEPT_OR_REJECT = BASE_URL+"/v2/credit/game/dice/accept";
+    public static final String URL_ADD_CUSTOMER = BASE_URL + "/v2/tech/customer/edit";
+    public static final String URL_GET_CUSTOMER_LIST = BASE_URL + "/v2/tech/customer/user/list";
+    public static final String URL_GET_CUSTOMER_INFO_DETAIL = BASE_URL + "/v2/tech/customer/user/view";
+    public static final String URL_GET_CLUB_LIST = BASE_URL + "/v2/tech/customer/tech/list";
+    public static final String URL_GET_TECH_INFO_DETAIL = BASE_URL + "/v2/tech/customer/tech/view";
+    public static final String URL_GET_MANAGER_INFO_DETAIL = BASE_URL + "/v2/tech/customer/manager/view";
+    public static final String URL_DELETE_CONTACT = BASE_URL + "/v2/tech/customer/delete";
+    public static final String URL_DO_DRAW_MONEY = BASE_URL + "/v2/wx/pay/user_reward_redpack";
+    public static final String URL_GET_USER_WX_OPEN_ID = BASE_URL + "/v2/wx/oauth2/openid";
+    public static final String URL_GET_USER_WX_CODE = BASE_URL + "/v2/wx/oauth2/code";
+    public static final String URL_GET_USER_IS_BIND_WX = BASE_URL + "/v2/tech/is_bind_wx";
+    public static final String URL_GAME_DICE_SUBMIT = BASE_URL + "/v2/credit/game/dice/submit";
+    public static final String URL_GAME_DICE_ACCEPT_OR_REJECT = BASE_URL + "/v2/credit/game/dice/accept";
 
 
-    public static final String URL_GET_CREDIT_SWITCH_STATUS = BASE_URL +"/v2/credit/switch/status";
-    public static final String URL_GET_CREDIT_EXCHANGE_APPLY = BASE_URL +"/v2/credit/exchange/apply";
-    public static final String URL_GET_CREDIT_USER_RECORDS = BASE_URL +"/v2/credit/user/records";
-    public static final String URL_GET_CREDIT_USER_ACCOUNT = BASE_URL +"/v2/credit/user/account";
-    public static final String URL_GET_CONTACT_MARK = BASE_URL +"/v2/club/impression/list";
-    public static final String URL_INTRODUCE_BIND ="/spa-manager/follow9358/index.html";
-
-
-
-
-
-
+    public static final String URL_GET_CREDIT_SWITCH_STATUS = BASE_URL + "/v2/credit/switch/status";
+    public static final String URL_GET_CREDIT_EXCHANGE_APPLY = BASE_URL + "/v2/credit/exchange/apply";
+    public static final String URL_GET_CREDIT_USER_RECORDS = BASE_URL + "/v2/credit/user/records";
+    public static final String URL_GET_CREDIT_USER_ACCOUNT = BASE_URL + "/v2/credit/user/account";
+    public static final String URL_GET_CREDIT_USER_EXCHANGE_APPLICATIONS = BASE_URL + "/v2/credit/user/exchange/applications";
+    public static final String URL_GET_CONTACT_MARK = BASE_URL + "/v2/club/impression/list";
+    public static final String URL_INTRODUCE_BIND = "/spa-manager/follow9358/index.html";
 
 
     public static final String URL_COUPON_SHARE_EVENT_COUNT = BASE_URL + "/v1/profile/redpacket/share";
@@ -146,7 +141,7 @@ public class RequestConstant {
     public static final String KEY_TIME_STAMP = "timestamp";
 
     public static final String SESSION_TYPE = "app";
-    public static  final String KEY_DRAW_MONEY_TYPE = "type";
+    public static final String KEY_DRAW_MONEY_TYPE = "type";
 
     public static final String KEY_APP_VERSION = "appVersion";
     public static final String KEY_STAT_CATEGORY = "statCate";
@@ -154,7 +149,7 @@ public class RequestConstant {
     public static final String KEY_APP_MODEL = "appModel";
     public static final String KEY_APP_BRAND = "appBrand";
     public static final String KEY_APP_IMEI = "appImei";
-    public static final String KEY_NOTE_NAME="noteName";
+    public static final String KEY_NOTE_NAME = "noteName";
     public static final String KEY_REMARK = "remark";
     public static final String KEY_CUSTOMER_ID = "contactId";
     public static final String KEY_CONTACT_TYPE = "contactType";
@@ -168,11 +163,10 @@ public class RequestConstant {
     public static final String CONTACT_TYPE = "type";
     public static final String WX_USER = "wx_user";
     public static final String FANS_WX_USER = "fans_wx_user";
-
-
-
-
-
+    public static final String KEY_APPROVE = "approve";
+    public static final String KEY_TIMEOUT = "timeout";
+    public static final String KEY_REJECT = "reject";
+    public static final String KEY_SUBMIT = "submit";
 
 
     public static final String KEY_FILTER_ORDER = "filterOrder";
@@ -186,17 +180,18 @@ public class RequestConstant {
     public static final String KEY_BIND_WX_SUCCESS = "bindSuccess";
 
     public static final String KEY_USER_WX_OPEN_ID = "openId";
-    public static final String KEY_USER_WX_UNION_ID ="userWXUnionId";
+    public static final String KEY_USER_WX_UNION_ID = "userWXUnionId";
     public static final String KEY_TRADE_AMOUNT = "tradeAmount";
 
     public static final String KEY_USER_WX_CODE = "code";
     public static final String KEY_USER_WX_SCOPE = "scope";
     public static final String KEY_USER_WX_STATE = "state";
-    public static final String KEY_USER_WX_WXMP ="wxmp";
-    public static final String KEY_USER_WX_PAGE_URL ="pageUrl";
+    public static final String KEY_USER_WX_WXMP = "wxmp";
+    public static final String KEY_USER_WX_PAGE_URL = "pageUrl";
 
     public static final String KEY_UER_CREDIT_AMOUNT = "amount";
     public static final String KEY_USER_CLUB_ID = "clubId";
+
     public static final String KEY_GAME_USER_EMCHAT_ID = "emchatId";
     public static final String KEY_DICE_GAME_STATUS = "status";
     public static final String KEY_DICE_GAME_ID = "gameId";

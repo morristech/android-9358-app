@@ -220,6 +220,8 @@
     <string name="order_status_description_complete">已完成</string>
     <string name="order_status_description_failure">已失效</string>
     <string name="order_status_description_overtime">已超时</string>
+    <string name="order_status_description_cancel">已取消</string>
+    <string name="order_status_description_waite">等待接收</string>
 
     <string name="make_call">打电话</string>
 
@@ -341,9 +343,11 @@
     <string name="cash_coupon">现金券</string>
     <string name="delivery_coupon">点钟券</string>
     <string name="credit_now">现有积分</string>
+    <string name="credit_freeze">现有积分</string>
     <string name="credit_rule">积分规则</string>
     <string name="credit_exchange">积分兑换</string>
     <string name="credit_record">积分记录</string>
+    <string name="credit_exchange_record">兑换申请记录</string>
     <string name="exchange_credit">确认兑换</string>
     <string name="edit_credit">请输入兑换金额</string>
     <string name="credit_alert">提示：</string>
@@ -358,7 +362,24 @@
     <string name="phone_contact">通讯录客户</string>
     <string name="fans_contact">粉丝客户</string>
     <string name="wx_contact">微信客户</string>
-    <string name="invite_game_format">邀请%s玩骰子游戏</string>
-
+    <string name="invite_game_format">邀请%s玩骰子</string>
+    <string name="invite_game_accept_or_refuse">%s邀请你玩骰子</string>
+    <string name="credit_insufficient">积分不足</string>
+    <string name="credit_insufficient_alert">玩骰子需要%s积分，客户赠送的礼物可以兑换积分。</string>
+    <string name="how_to_get_credit">如何获取积分</string>
+    <string name="credit_exchange_accept">兑换%s元（已同意）</string>
+    <string name="credit_exchange_overtime">兑换%s元（已超时）</string>
+    <string name="credit_exchange_reject">兑换%s元（已拒绝）</string>
+    <string name="credit_exchange_undo">兑换%s元（未确认）</string>
+    <string name="dice_game">骰子游戏</string>
+    <string name="credit_exchange_game">兑换成功</string>
+    <string name="club_status_off">所在会所未开放积分兑换权限</string>
+    <string name="win_and_play_again">获得%s积分，再来一局</string>
+    <string name="failed_and_play_again">消费%s积分，再来一局</string>
+    <string name="exchange_credit_text">积分</string>
+    <string name="invite_text">对方邀请你玩一局游戏</string>
+    <string name="dice_game_wait">等待接收</string>
+    <string name="dice_game_reject">已拒绝</string>
+    <string name="game_setting_title">每局筹码</string>
 
 </resources>

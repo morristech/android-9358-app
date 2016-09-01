@@ -2,6 +2,7 @@ package com.xmd.technician.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,24 +12,30 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
+import com.xmd.technician.bean.AcceptOrRejectGame;
+import com.xmd.technician.bean.PlayDiceGame;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
+import com.xmd.technician.chat.bean.CancelGame;
 import com.xmd.technician.chat.chatview.BaseChatView;
 import com.xmd.technician.chat.chatview.ChatViewBegReward;
 import com.xmd.technician.chat.chatview.ChatViewCoupon;
 import com.xmd.technician.chat.chatview.ChatViewCouponTip;
+import com.xmd.technician.chat.chatview.ChatViewPlayDiceGame;
+import com.xmd.technician.chat.chatview.ChatViewReceiveDiceGame;
 import com.xmd.technician.chat.chatview.ChatViewImage;
 import com.xmd.technician.chat.chatview.ChatViewOrder;
 import com.xmd.technician.chat.chatview.ChatViewPaidCoupon;
 import com.xmd.technician.chat.chatview.ChatViewPaidCouponTip;
 import com.xmd.technician.chat.chatview.ChatViewReward;
+import com.xmd.technician.chat.chatview.ChatViewSendGame;
 import com.xmd.technician.chat.chatview.ChatViewText;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +43,7 @@ import java.util.Map;
 /**
  * Created by sdcm on 16-3-21.
  */
-public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int MESSAGE_TYPE_SENT_TXT = 1;
     private static final int MESSAGE_TYPE_RECV_TXT = 2;
@@ -60,21 +67,20 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private RecyclerView mListView;
     private Map<String, String> mOrderReplyMessage;
 
-    private EMessageListItemClickListener mItemClickListener ;
+    private EMessageListItemClickListener mItemClickListener;
 
-    public ChatListAdapter(Context context, RecyclerView view , String username, int chatType){
+    public ChatListAdapter(Context context, RecyclerView view, String username, int chatType) {
         mContext = context;
         mListView = view;
         mConversation = EMClient.getInstance().chatManager().getConversation(username, CommonUtils.getConversationType(chatType), true);
-
         mOrderReplyMessage = new HashMap<>();
     }
 
-    public void setListItemClickListener(EMessageListItemClickListener listener){
+    public void setListItemClickListener(EMessageListItemClickListener listener) {
         mItemClickListener = listener;
     }
 
-    public void refreshList(){
+    public void refreshList() {
         mChatMessages = mConversation.getAllMessages().toArray(new EMMessage[0]);
         mConversation.markAllMessagesAsRead();
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
@@ -85,11 +91,11 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         });
     }
 
-    public void setSelectLast(){
+    public void setSelectLast() {
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
             @Override
             public void run() {
-                if(mChatMessages.length > 0){
+                if (mChatMessages.length > 0) {
                     mListView.scrollToPosition(mChatMessages.length - 1);
                 }
             }
@@ -103,19 +109,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         // avoid refresh too frequently when receiving large amount offline messages
         final int TIME_DELAY_REFRESH_SELECT_LAST = 100;
         refreshList();
-
         setSelectLast();
     }
 
     /**
      * 刷新页面, 选择Position
      */
-    public void refreshSeekTo(int position){
+    public void refreshSeekTo(int position) {
         refreshList();
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
             @Override
             public void run() {
-                if(mChatMessages.length > position){
+                if (mChatMessages.length > position) {
                     mListView.scrollToPosition(position);
                 }
             }
@@ -129,19 +134,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return -1;
         }
 
-        if(CommonUtils.getCustomChatType(message) > 0){
+        if (CommonUtils.getCustomChatType(message) > 0) {
             return CommonUtils.getCustomChatType(message);
         }
 
         if (message.getType() == EMMessage.Type.TXT) {
-            if(message.getBooleanAttribute(ChatConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)){
+            if (message.getBooleanAttribute(ChatConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)) {
                 return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_EXPRESSION : MESSAGE_TYPE_SENT_EXPRESSION;
             }
             return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_TXT : MESSAGE_TYPE_SENT_TXT;
         }
         if (message.getType() == EMMessage.Type.IMAGE) {
             return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_IMAGE : MESSAGE_TYPE_SENT_IMAGE;
-
         }
         if (message.getType() == EMMessage.Type.LOCATION) {
             return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_LOCATION : MESSAGE_TYPE_SENT_LOCATION;
@@ -167,14 +171,14 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof ChatViewHolder){
-            ((ChatViewHolder)holder).setUpView(getItem(position), mItemClickListener);
+        if (holder instanceof ChatViewHolder) {
+            ((ChatViewHolder) holder).setUpView(getItem(position), mItemClickListener);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mChatMessages != null ? mChatMessages.length: 0;
+        return mChatMessages != null ? mChatMessages.length : 0;
     }
 
     public EMMessage getItem(int position) {
@@ -184,13 +188,13 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return null;
     }
 
-    public class ChatViewHolder extends RecyclerView.ViewHolder{
+    public class ChatViewHolder extends RecyclerView.ViewHolder {
         public ChatViewHolder(View itemView) {
             super(itemView);
         }
 
-        public void setUpView(EMMessage emMessage, EMessageListItemClickListener listener){
-            ((BaseChatView)itemView).setUpView(emMessage, listener);
+        public void setUpView(EMMessage emMessage, EMessageListItemClickListener listener) {
+            ((BaseChatView) itemView).setUpView(emMessage, listener);
         }
     }
 
@@ -214,10 +218,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
             case ChatConstant.MESSAGE_TYPE_RECV_ORDER:
                 chatRow = new ChatViewOrder(context, EMMessage.Direct.RECEIVE);
-                ((ChatViewOrder)chatRow).setOrderManagerListener(mOrderManagerListener);
+                ((ChatViewOrder) chatRow).setOrderManagerListener(mOrderManagerListener);
                 break;
             case ChatConstant.MESSAGE_TYPE_SENT_ORDER:
                 chatRow = new ChatViewOrder(context, EMMessage.Direct.SEND);
+                break;
+            case ChatConstant.MESSAGE_TYPE_RECV_GAME_INVITE:
+                chatRow = new ChatViewReceiveDiceGame(context, EMMessage.Direct.RECEIVE, mConversation);
+                ((ChatViewReceiveDiceGame) chatRow).setGameManagerListener(mGameManagerListener);
+                break;
+            case ChatConstant.MESSAGE_TYPE_SEND_GAME_INVITE:
+                chatRow = new ChatViewSendGame(context, EMMessage.Direct.SEND, mConversation);
+                ((ChatViewSendGame) chatRow).setGameCancelListener(mGameCancelListener);
                 break;
             case ChatConstant.MESSAGE_TYPE_RECV_REWARD:
                 chatRow = new ChatViewReward(context, EMMessage.Direct.RECEIVE);
@@ -242,6 +254,19 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case ChatConstant.MESSAGE_TYPE_SENT_REWARD:
                 chatRow = new ChatViewText(context, EMMessage.Direct.SEND);
                 break;
+            case ChatConstant.MESSAGE_TYPE_SEND_GAME_REJECT:
+            case ChatConstant.MESSAGE_TYPE_RECV_GAME_REJECT:
+                chatRow = new ChatViewSendGame(context, EMMessage.Direct.SEND, mConversation);
+                break;
+            case ChatConstant.MESSAGE_TYPE_RECV_GAME_ACCEPT:
+            case ChatConstant.MESSAGE_TYPE_SEND_GAME_ACCEPT:
+                chatRow = new ChatViewSendGame(context, EMMessage.Direct.SEND, mConversation);
+                break;
+            case ChatConstant.MESSAGE_TYPE_RECV_GAME_OVER:
+            case ChatConstant.MESSAGE_TYPE_SEND_GAME_OVER:
+                chatRow = new ChatViewPlayDiceGame(context, EMMessage.Direct.SEND, mConversation);
+                ((ChatViewPlayDiceGame) chatRow).setGameManagerListener(gameManagerListener);
+                break;
             default:
                 chatRow = new ChatViewText(context, EMMessage.Direct.RECEIVE);
                 break;
@@ -250,14 +275,45 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return chatRow;
     }
 
-    private ChatViewOrder.OrderManagerListener mOrderManagerListener = new ChatViewOrder.OrderManagerListener() {
+    private ChatViewSendGame.GameCancelListener mGameCancelListener = new ChatViewSendGame.GameCancelListener() {
+        @Override
+        public void onCancel(EMMessage message) {
+            RxBus.getInstance().post(new CancelGame(message));
+        }
+    };
+    private ChatViewReceiveDiceGame.GameManagerListener mGameManagerListener = new ChatViewReceiveDiceGame.GameManagerListener() {
+        @Override
+        public void onAccept(EMMessage message) {
+            EMTextMessageBody body = (EMTextMessageBody) message.getBody();
+            try {
+                RxBus.getInstance().post(new AcceptOrRejectGame(body.getMessage(), message.getStringAttribute(ChatConstant.KEY_GAME_ID), ChatConstant.KEY_ACCEPT_GAME, message.getFrom()));
+            } catch (HyphenateException e) {
+                e.printStackTrace();
+            }
 
+        }
+
+        @Override
+        public void onRefuse(EMMessage message) {
+            Map<String, String> params = new HashMap<>();
+            try {
+                String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
+                params.put(RequestConstant.KEY_DICE_GAME_ID, message.getStringAttribute(RequestConstant.KEY_DICE_GAME_ID).substring(5));
+                params.put(RequestConstant.KEY_DICE_GAME_STATUS, ChatConstant.KEY_GAME_REJECT);
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT, params);
+            } catch (HyphenateException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private ChatViewOrder.OrderManagerListener mOrderManagerListener = new ChatViewOrder.OrderManagerListener() {
         @Override
         public void onAccept(EMMessage message) {
             try {
                 String orderId = message.getStringAttribute(ChatConstant.KEY_ORDER_ID);
-                String content = ((EMTextMessageBody)message.getBody()).getMessage();
-                content = content.replace("发起预约","接受预约");
+                String content = ((EMTextMessageBody) message.getBody()).getMessage();
+                content = content.replace("发起预约", "接受预约");
                 mOrderReplyMessage.put(orderId, content);
                 doManageOrder(orderId, Constant.ORDER_STATUS_ACCEPT, "");
             } catch (HyphenateException e) {
@@ -269,8 +325,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onRefuse(EMMessage message) {
             try {
                 String orderId = message.getStringAttribute(ChatConstant.KEY_ORDER_ID);
-                String content = ((EMTextMessageBody)message.getBody()).getMessage();
-                content = content.replace("发起预约","拒绝预约");
+                String content = ((EMTextMessageBody) message.getBody()).getMessage();
+                content = content.replace("发起预约", "拒绝预约");
                 mOrderReplyMessage.put(orderId, content);
                 doManageOrder(orderId, Constant.ORDER_STATUS_REJECTED, "");
             } catch (HyphenateException e) {
@@ -278,16 +334,25 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         }
     };
+    private ChatViewPlayDiceGame.GameManagerListener gameManagerListener = new ChatViewPlayDiceGame.GameManagerListener() {
+        @Override
+        public void playAgain(EMMessage message) {
+            EMTextMessageBody body = (EMTextMessageBody) message.getBody();
+            String content = body.getMessage();
+            RxBus.getInstance().post(new PlayDiceGame(content));
+        }
+    };
 
-    private void doManageOrder(String orderId, String type, String reason){
-        Map<String,String> params = new HashMap<>();
+    private void doManageOrder(String orderId, String type, String reason) {
+        Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PROCESS_TYPE, type);
         params.put(RequestConstant.KEY_ID, orderId);
         params.put(RequestConstant.KEY_REASON, reason);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MANAGE_ORDER, params);
     }
 
-    public String getOrderReplyMessage(String orderId){
-        return  mOrderReplyMessage.get(orderId);
+    public String getOrderReplyMessage(String orderId) {
+        return mOrderReplyMessage.get(orderId);
     }
+
 }

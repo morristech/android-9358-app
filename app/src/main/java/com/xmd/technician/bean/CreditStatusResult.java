@@ -21,5 +21,7 @@ public class CreditStatusResult extends BaseResult {
         public int exchangeLimitation;
         public int exchangeRatio;
         public String systemSwitch;
+        public String diceGameSwitch;
+        public int gameTimeoutSeconds;
     }
 }

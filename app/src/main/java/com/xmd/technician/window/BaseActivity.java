@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bugtags.library.Bugtags;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;

@@ -3,12 +3,16 @@ package com.xmd.technician.http;
 import com.xmd.technician.bean.ClubContactResult;
 import com.xmd.technician.bean.CreditAccountDetailResult;
 import com.xmd.technician.bean.CreditAccountResult;
+import com.xmd.technician.bean.CreditApplicationsResult;
+import com.xmd.technician.bean.CreditExchangeResult;
 import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
+import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
+import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
@@ -357,18 +361,23 @@ public interface SpaService {
     Call<BaseResult> doDeleteContact(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                      @Field(RequestConstant.KEY_ID) String id,
                                      @Field(RequestConstant.KEY_TOKEN) String userToken);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CREDIT_USER_RECORDS)
     Call<CreditAccountDetailResult> doGetUserRecordDetail(@Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                                           @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                                           @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                          @Field(RequestConstant.KEY_USER_TYPE) String userType
+                                                          @Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                          @Field(RequestConstant.KEY_PAGE) String page,
+                                                          @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize
     );
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CREDIT_SWITCH_STATUS)
     Call<CreditStatusResult> doGetCreditStatus(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                                @Field(RequestConstant.KEY_TOKEN) String userToken);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CREDIT_USER_ACCOUNT)
     Call<CreditAccountResult> doGetCreditAccount(@Field(RequestConstant.KEY_USER_TYPE) String userType,
@@ -376,13 +385,24 @@ public interface SpaService {
                                                  @Field(RequestConstant.KEY_TOKEN) String userToken,
                                                  @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType
     );
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CREDIT_EXCHANGE_APPLY)
-    Call<BaseResult> doExchangeCredit(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                      @Field(RequestConstant.KEY_UER_CREDIT_AMOUNT) String amount,
-                                      @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                      @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType
+    Call<CreditExchangeResult> doExchangeCredit(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                @Field(RequestConstant.KEY_UER_CREDIT_AMOUNT) String amount,
+                                                @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType
     );
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CREDIT_USER_EXCHANGE_APPLICATIONS)
+    Call<CreditApplicationsResult> getExchangeApplications(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                           @Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                           @Field(RequestConstant.KEY_STATUS) String status,
+                                                           @Field(RequestConstant.KEY_PAGE) String page,
+                                                           @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize
+    );
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CONTACT_MARK)
     Call<MarkResult> getContactMark(@Field(RequestConstant.KEY_USER_TYPE) String userType,
@@ -390,6 +410,26 @@ public interface SpaService {
                                     @Field(RequestConstant.KEY_TOKEN) String userToken,
                                     @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType
     );
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GAME_DICE_SUBMIT)
+    Call<SendGameResult> doDiceGameSubmit(@Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                          @Field(RequestConstant.KEY_UER_CREDIT_AMOUNT) String amount,
+                                          @Field(RequestConstant.KEY_GAME_USER_EMCHAT_ID) String emchatId,
+                                          @Field(RequestConstant.KEY_DICE_GAME_TIME) String timestamp,
+                                          @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                          @Field(RequestConstant.KEY_TOKEN) String userToken
+    );
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GAME_DICE_ACCEPT_OR_REJECT)
+    Call<GameResult> doDiceGameAcceptOrReject(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                              @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                              @Field(RequestConstant.KEY_DICE_GAME_ID) String gameId,
+                                              @Field(RequestConstant.KEY_DICE_GAME_STATUS) String status
+    );
+
 
 
   /*  @FormUrlEncoded
@@ -407,7 +447,7 @@ public interface SpaService {
                                  @Field(RequestConstant.KEY_USER_WX_SCOPE) String scope,
                                  @Field(RequestConstant.KEY_USER_WX_STATE) String state,
                                  @Field(RequestConstant.KEY_USER_WX_WXMP) String wxmp);
-      */      ;
+      */;
 
 
     /**

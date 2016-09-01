@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginRight="@dimen/coupon_item_height"
     android:layout_marginTop="@dimen/personal_margin"
-    android:layout_marginRight="@dimen/coupon_item_height">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/personal_margin"
+        android:text="03-19"
         android:textColor="@color/colorRemark"
-        android:textSize="@dimen/fontBody"
-        android:text="03-19"/>
+        android:textSize="@dimen/fontBody" />
 
     <com.xmd.technician.widget.CircleImageView
         android:id="@+id/avatar"
@@ -21,79 +22,80 @@
         android:layout_below="@+id/time"
         android:layout_marginLeft="@dimen/search_margin"
         android:layout_marginRight="@dimen/search_margin"
-        android:background="@drawable/icon22"/>
+        android:background="@drawable/icon22" />
 
     <FrameLayout
         android:id="@+id/content_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/avatar"
         android:layout_below="@+id/time"
-        android:layout_marginLeft="@dimen/search_margin">
+        android:layout_marginLeft="@dimen/search_margin"
+        android:layout_toRightOf="@+id/avatar">
+
         <TextView
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/avatar"
             android:layout_below="@+id/time"
-            android:background="@drawable/recv_order_bg"
-            android:minHeight="@dimen/avatar_head"
+            android:layout_toRightOf="@+id/avatar"
             android:autoLink="all"
+            android:background="@drawable/recv_order_bg"
             android:gravity="center_vertical"
+            android:minHeight="@dimen/avatar_head"
+            android:text="hello"
             android:textColor="@color/colorHead"
             android:textSize="@dimen/fontBody"
-            android:text="hello"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/avatar"
             android:layout_below="@+id/time"
-            android:src="@drawable/icon08"
+            android:layout_toRightOf="@+id/avatar"
             android:minHeight="@dimen/avatar_head"
-            android:visibility="gone"/>
+            android:src="@drawable/icon08"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/user_reward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/avatar"
             android:layout_below="@+id/time"
+            android:layout_toRightOf="@+id/avatar"
             android:background="@drawable/recv_reward"
             android:gravity="center_vertical"
             android:minHeight="@dimen/avatar_head"
+            android:text="@string/app_info_title"
             android:textColor="@color/colorHead"
             android:textSize="@dimen/fontBody"
-            android:text="@string/app_info_title"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/reward_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_reward"
-            android:layout_marginTop="@dimen/personal_padding"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/personal_padding"
             android:background="@color/colorLineDivide"
             android:drawableLeft="@drawable/hb"
-            android:paddingTop="@dimen/search_margin"
+            android:drawablePadding="@dimen/personal_padding"
             android:paddingBottom="@dimen/search_margin"
             android:paddingLeft="@dimen/personal_padding"
             android:paddingRight="@dimen/personal_padding"
-            android:drawablePadding="@dimen/personal_padding"
+            android:paddingTop="@dimen/search_margin"
+            android:text="sll"
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontRemark"
-            android:text="sll"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/coupon_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/avatar"
             android:layout_below="@+id/time"
+            android:layout_toRightOf="@+id/avatar"
             android:background="@drawable/recv_coupon"
             android:orientation="vertical"
             android:visibility="gone">
@@ -101,61 +103,62 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/personal_padding"
                 android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/personal_padding"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/coupon_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/coupon_type_bg"
                     android:textColor="@color/text_color_yellow"
-                    android:textSize="@dimen/fontRemark"
-                    />
+                    android:textSize="@dimen/fontRemark" />
 
                 <TextView
                     android:id="@+id/coupon_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/search_margin"
+                    android:text="@string/app_info_title"
                     android:textColor="@color/colorHead"
-                    android:textSize="@dimen/fontTitle"
-                    android:text="@string/app_info_title"/>
+                    android:textSize="@dimen/fontTitle" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/coupon_period"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/bg"
                 android:gravity="left"
                 android:padding="@dimen/search_margin"
+                android:text="2106.3"
                 android:textColor="@color/colorRemark"
-                android:textSize="@dimen/fontRemark"
-                android:text="2106.3"/>
+                android:textSize="@dimen/fontRemark" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/paid_coupon_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/avatar"
             android:layout_below="@+id/time"
+            android:layout_toRightOf="@+id/avatar"
             android:background="@drawable/recv_coupon"
             android:orientation="vertical"
             android:visibility="gone">
+
             <TextView
                 android:id="@+id/paid_coupon_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/personal_padding"
                 android:drawableLeft="@drawable/qdz"
                 android:drawablePadding="@dimen/search_margin"
+                android:padding="@dimen/personal_padding"
+                android:text="@string/app_info_title"
                 android:textColor="@color/colorHead"
-                android:textSize="@dimen/fontTitle"
-                android:text="@string/app_info_title"/>
+                android:textSize="@dimen/fontTitle" />
 
             <TextView
                 android:id="@+id/paid_coupon_period"
@@ -164,9 +167,9 @@
                 android:background="@drawable/bg"
                 android:gravity="left"
                 android:padding="@dimen/search_margin"
+                android:text="2106.3"
                 android:textColor="@color/colorRemark"
-                android:textSize="@dimen/fontRemark"
-                android:text="2106.3"/>
+                android:textSize="@dimen/fontRemark" />
         </LinearLayout>
 
         <TextView
@@ -174,26 +177,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/paid_coupon_container"
-            android:layout_marginTop="@dimen/personal_padding"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/personal_padding"
             android:background="@color/colorLineDivide"
             android:drawableLeft="@drawable/time"
-            android:paddingTop="@dimen/search_margin"
+            android:drawablePadding="@dimen/personal_padding"
             android:paddingBottom="@dimen/search_margin"
             android:paddingLeft="@dimen/personal_padding"
             android:paddingRight="@dimen/personal_padding"
-            android:drawablePadding="@dimen/personal_padding"
+            android:paddingTop="@dimen/search_margin"
+            android:text="sll"
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontRemark"
-            android:text="sll"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/order_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/avatar"
             android:layout_below="@+id/time"
+            android:layout_toRightOf="@+id/avatar"
             android:background="@drawable/receive_order_bg"
             android:orientation="vertical"
             android:visibility="gone">
@@ -202,57 +205,59 @@
                 android:id="@+id/order_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/personal_padding"
                 android:layout_marginLeft="@dimen/personal_padding"
+                android:layout_marginTop="@dimen/personal_padding"
+                android:text="@string/app_info_title"
                 android:textColor="@color/colorBody"
-                android:textSize="@dimen/fontTitle"
-                android:text="@string/app_info_title"/>
+                android:textSize="@dimen/fontTitle" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/personal_padding">
+
                 <TextView
                     android:id="@+id/order_time_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/personal_padding"
+                    android:text="@string/app_info_title"
                     android:textColor="@color/colorBody"
-                    android:textSize="@dimen/fontBody"
-                    android:text="@string/app_info_title"/>
+                    android:textSize="@dimen/fontBody" />
 
                 <TextView
                     android:id="@+id/order_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/personal_padding"
+                    android:text="@string/app_info_title"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/fontBody"
-                    android:text="@string/app_info_title"/>
+                    android:textSize="@dimen/fontBody" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/personal_padding"
-                android:layout_marginBottom="@dimen/personal_padding">
+                android:layout_marginBottom="@dimen/personal_padding"
+                android:layout_marginTop="@dimen/personal_padding">
+
                 <TextView
                     android:id="@+id/order_service_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/personal_padding"
+                    android:text="@string/app_info_title"
                     android:textColor="@color/colorBody"
-                    android:textSize="@dimen/fontBody"
-                    android:text="@string/app_info_title"/>
+                    android:textSize="@dimen/fontBody" />
 
                 <TextView
                     android:id="@+id/order_service"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/personal_padding"
+                    android:text="@string/app_info_title"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/fontBody"
-                    android:text="@string/app_info_title"/>
+                    android:textSize="@dimen/fontBody" />
             </LinearLayout>
 
             <LinearLayout
@@ -260,11 +265,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/order_service"
-                android:paddingLeft="@dimen/personal_padding"
-                android:paddingRight="@dimen/personal_padding"
                 android:background="@drawable/bg"
                 android:orientation="horizontal"
+                android:paddingLeft="@dimen/personal_padding"
+                android:paddingRight="@dimen/personal_padding"
                 android:visibility="visible">
+
                 <Button
                     android:id="@+id/order_accept"
                     android:layout_width="0dp"
@@ -273,87 +279,105 @@
                     android:background="@drawable/login_button_main_selector"
                     android:drawableLeft="@drawable/ic_baisegouxuan"
                     android:paddingLeft="@dimen/search_margin"
+                    android:text="@string/accept"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/fontBody"
-                    android:text="@string/accept"/>
+                    android:textSize="@dimen/fontBody" />
 
                 <Button
                     android:id="@+id/order_refuse"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/work_time_padding"
-                    android:layout_weight="1"
                     android:layout_marginLeft="@dimen/personal_margin"
+                    android:layout_weight="1"
                     android:background="@drawable/account_button_selector_bg"
                     android:drawableLeft="@drawable/ic_hongseguanbi"
-                    android:paddingLeft="@dimen/search_margin"
                     android:gravity="center"
+                    android:paddingLeft="@dimen/search_margin"
+                    android:text="@string/refuse"
                     android:textColor="@color/colorBody"
-                    android:textSize="@dimen/fontBody"
-                    android:text="@string/refuse"/>
+                    android:textSize="@dimen/fontBody" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/game_container"
-            android:layout_width="220dp"
+            android:layout_width="@dimen/game_content_height"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_toRightOf="@+id/avatar"
             android:layout_below="@+id/time"
+            android:layout_toRightOf="@+id/avatar"
             android:background="@drawable/comment_game_rect_bg"
-            android:visibility="gone"
-            android:paddingTop="19dp"
-            >
-            <TextView
-                android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/game_content_padding_top"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="对方邀请你玩一局游戏"
-                android:textSize="15sp"
-                android:textColor="@color/colorTitle"
-                android:paddingLeft="15dp"
-                android:paddingRight="15sp"
-                />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/margin_15"
+                    android:paddingRight="@dimen/margin_5"
+                    android:text="@string/invite_text"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/fontTitle_small" />
+
+                <TextView
+                    android:id="@+id/accept_or_refuse_invite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fontRemark"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+
             <TextView
                 android:id="@+id/game_need_integral"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:paddingLeft="@dimen/margin_15"
+                android:paddingRight="@dimen/margin_15"
                 android:text="比大小，每局胜方将获得负方10积分"
-                android:textSize="@dimen/fontNormal"
-                android:layout_marginTop="15dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15sp"
-                />
+                android:textSize="@dimen/fontNormal" />
+
             <View
-                android:layout_marginTop="@dimen/margin_20"
-                style="@style/horizontal_divider_line"/>
+                style="@style/horizontal_divider_line"
+                android:layout_marginTop="@dimen/margin_20" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/game_refuse"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/personal_item_height"
                     android:layout_weight="1"
+                    android:background="@null"
                     android:minHeight="0dp"
                     android:minWidth="0dp"
+                    android:text="@string/refuse"
                     android:textColor="@color/coupon_detail_text_color"
-                    android:textSize="@dimen/fontTitle_small"
-                    android:background="@null"
-                    android:text="@string/refuse"/>
+                    android:textSize="@dimen/fontTitle_small" />
+
                 <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorRemarkText"/>
+                    android:background="@color/colorRemarkText" />
+
                 <Button
                     android:id="@+id/game_accept"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="@dimen/personal_item_height"
-                    android:textColor="@color/colorBtnChecked"
-                    android:textSize="@dimen/fontTitle_small"
+                    android:layout_weight="1"
                     android:background="@null"
-                    android:text="@string/accept"/>
+                    android:text="@string/accept"
+                    android:textColor="@color/colorBtnChecked"
+                    android:textSize="@dimen/fontTitle_small" />
             </LinearLayout>
 
         </LinearLayout>
@@ -366,7 +390,7 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/content_container"
         android:src="@drawable/chat_sent_failed"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/status_progressbar"
@@ -374,6 +398,6 @@
         android:layout_height="@dimen/search_view_height"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/content_container"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

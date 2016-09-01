@@ -17,6 +17,7 @@ import com.xmd.technician.R;
 public class CommonUtils {
     /**
      * 将应用的会话类型转化为SDK的会话类型
+     *
      * @param chatType
      * @return
      */
@@ -30,7 +31,7 @@ public class CommonUtils {
         }
     }
 
-    static String getString(Context context, int resId){
+    static String getString(Context context, int resId) {
         return context.getResources().getString(resId);
     }
 
@@ -69,23 +70,24 @@ public class CommonUtils {
                 EMTextMessageBody txtBody = (EMTextMessageBody) message.getBody();
             /*if(((DemoHXSDKHelper)HXSDKHelper.getInstance()).isRobotMenuMessage(message)){
                 digest = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getRobotMenuMessageDigest(message);
-            }else */if(message.getBooleanAttribute(ChatConstant.MESSAGE_ATTR_IS_VOICE_CALL, false)){
-                digest = getString(context, R.string.voice_call) + txtBody.getMessage();
-            }else if(message.getBooleanAttribute(ChatConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false)){
-                digest = getString(context, R.string.video_call) + txtBody.getMessage();
-            }else if(message.getBooleanAttribute(ChatConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)){
-                if(!TextUtils.isEmpty(txtBody.getMessage())){
+            }else */
+                if (message.getBooleanAttribute(ChatConstant.MESSAGE_ATTR_IS_VOICE_CALL, false)) {
+                    digest = getString(context, R.string.voice_call) + txtBody.getMessage();
+                } else if (message.getBooleanAttribute(ChatConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false)) {
+                    digest = getString(context, R.string.video_call) + txtBody.getMessage();
+                } else if (message.getBooleanAttribute(ChatConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)) {
+                    if (!TextUtils.isEmpty(txtBody.getMessage())) {
 
-                    digest = txtBody.getMessage();
-                }else{
-                    digest = getString(context, R.string.dynamic_expression);
-                }
-            }/*else if(!TextUtils.isEmpty(message.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE,""))){
+                        digest = txtBody.getMessage();
+                    } else {
+                        digest = getString(context, R.string.dynamic_expression);
+                    }
+                }/*else if(!TextUtils.isEmpty(message.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE,""))){
                 digest = txtBody.getMessage().replaceAll("<b>|</b>|</br>|<br>|<i>|</i>|<span>|</span>|<br/>","");
-            }*/else {
-                digest = txtBody.getMessage();
-                digest = Html.fromHtml(digest).toString();
-            }
+            }*/ else {
+                    digest = txtBody.getMessage();
+                    digest = Html.fromHtml(digest).toString();
+                }
                 break;
             case FILE: //普通文件消息
                 digest = getString(context, R.string.file);
@@ -98,31 +100,47 @@ public class CommonUtils {
     }
 
     public static String getThumbnailImagePath(String thumbRemoteUrl) {
-        String thumbImageName= thumbRemoteUrl.substring(thumbRemoteUrl.lastIndexOf("/") + 1, thumbRemoteUrl.length());
-        String path = PathUtil.getInstance().getImagePath()+"/"+ "th"+thumbImageName;
+        String thumbImageName = thumbRemoteUrl.substring(thumbRemoteUrl.lastIndexOf("/") + 1, thumbRemoteUrl.length());
+        String path = PathUtil.getInstance().getImagePath() + "/" + "th" + thumbImageName;
         EMLog.d("msg", "thum image path:" + path);
         return path;
     }
 
-    public static int getCustomChatType(EMMessage message){
+    public static int getCustomChatType(EMMessage message) {
         int type = 0;
-        if(message.getType() == EMMessage.Type.TXT){
+        if (message.getType() == EMMessage.Type.TXT) {
             try {
                 String msgType = message.getStringAttribute("msgType");
-                if(msgType.equals("reward")){
+
+                if (msgType.equals("reward")) {
                     type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_REWARD : ChatConstant.MESSAGE_TYPE_SENT_REWARD);
-                }else if(msgType.equals("order")){
+                } else if (msgType.equals("order")) {
                     type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_ORDER : ChatConstant.MESSAGE_TYPE_SENT_ORDER);
-                }else if(msgType.equals("paidCouponTip")){
+                } else if (msgType.equals("paidCouponTip")) {
                     type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_PAID_COUPON_TIP : ChatConstant.MESSAGE_TYPE_SENT_PAID_COUPON_TIP);
-                }else if(msgType.equals("begReward")){
+                } else if (msgType.equals("begReward")) {
                     type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_BEG_REWARD : ChatConstant.MESSAGE_TYPE_SENT_BEG_REWARD);
-                }else if(msgType.equals("paidCoupon")){
+                } else if (msgType.equals("paidCoupon")) {
                     type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_PAID_COUPON : ChatConstant.MESSAGE_TYPE_SENT_PAID_COUPON);
-                }else if(msgType.equals("ordinaryCoupon")){
+                } else if (msgType.equals("ordinaryCoupon")) {
                     type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_ORDINARY_COUPON : ChatConstant.MESSAGE_TYPE_SENT_ORDINARY_COUPON);
-                }else if(msgType.equals("couponTip")){
+                } else if (msgType.equals("couponTip")) {
                     type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_COUPON_TIP : ChatConstant.MESSAGE_TYPE_SENT_COUPON_TIP);
+                } else if (msgType.equals("diceGame")) {
+                    String gameStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
+                    if (gameStatus.equals(ChatConstant.KEY_REQUEST_GAME)) {
+                        type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_GAME_INVITE : ChatConstant.MESSAGE_TYPE_SEND_GAME_INVITE);
+                    } else if (gameStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)) {
+                        type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_GAME_INVITE : ChatConstant.MESSAGE_TYPE_SEND_GAME_INVITE);
+                    } else if (gameStatus.equals(ChatConstant.KEY_ACCEPT_GAME)) {
+                        type = ChatConstant.MESSAGE_TYPE_SEND_GAME_REJECT;
+                    } else if (gameStatus.equals(ChatConstant.KEY_GAME_REJECT) || gameStatus.equals(ChatConstant.KEY_REFUSED_GAME)) {
+                        type = ChatConstant.MESSAGE_TYPE_SEND_GAME_REJECT;
+                    } else if (gameStatus.equals(ChatConstant.KEY_OVERTIME_GAME)) {
+                        type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_GAME_OVERTIME : ChatConstant.MESSAGE_TYPE_SEND_GAME_OVERTIME);
+                    } else if (gameStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
+                        type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_GAME_OVER : ChatConstant.MESSAGE_TYPE_SEND_GAME_OVER);
+                    }
                 }
             } catch (HyphenateException e) {
                 e.printStackTrace();

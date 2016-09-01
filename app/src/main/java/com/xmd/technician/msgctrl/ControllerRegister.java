@@ -5,12 +5,13 @@ package com.xmd.technician.msgctrl;
  */
 public class ControllerRegister {
 
-    public static void initialize(){
+    public static void initialize() {
         initUpgradeController();
         initRequestController();
         initShareController();
         initChatController();
     }
+
     private static void initUpgradeController() {
         int controllerId = ControllerId.UPGRADE_CONTROLLER;
         int[] msgIds = {
@@ -19,6 +20,7 @@ public class ControllerRegister {
         };
         MsgDispatcher.register(controllerId, msgIds);
     }
+
     private static void initRequestController() {
         int controllerId = ControllerId.REQUEST_CONTROLLER;
         int[] msgIds = {
@@ -77,8 +79,9 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT,
                 MsgDef.MSG_DEF_DO_CREDIT_EXCHANGE,
                 MsgDef.MSG_DEF_GET_CONTACT_MARK,
-//                MsgDef.MSG_DEF_BIND_WX,
-//                MsgDef.MSG_DEF_IS_BIND_WX
+                MsgDef.MSG_DEF_DO_INITIATE_GAME,
+                MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT,
+                MsgDef.MSG_DEF_GET_CREDIT_APPLICATIONS,
         };
         MsgDispatcher.register(controllerId, msgIds);
     }
