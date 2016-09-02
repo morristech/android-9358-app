@@ -21,10 +21,10 @@ import java.util.List;
 /**
  * Created by sdcm on 16-3-10.
  */
-public class TechApplication extends Application{
+public class TechApplication extends Application {
     private static Context appContext;
     private static TechNotifier mNotifier;
-   public static Boolean isTest = false;
+    public static Boolean isTest = true;
 
     @Override
     public void onCreate() {
@@ -89,12 +89,12 @@ public class TechApplication extends Application{
         return null;
     }
 
-    void initNotifier(){
+    void initNotifier() {
         mNotifier = new TechNotifier();
         mNotifier.init(appContext);
     }
 
-    public static TechNotifier getNotifier(){
+    public static TechNotifier getNotifier() {
         return mNotifier;
     }
 }

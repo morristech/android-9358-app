@@ -117,7 +117,7 @@ public class OrderDetailActivity extends BaseActivity {
         //Avatar
         Glide.with(this).load(mOrder.headImgUrl).placeholder(R.drawable.icon22).error(R.drawable.icon22).into(mAvatar);
         mAvatar.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
-                Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl,false)));
+                Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl,"")));
         mCustomerName.setText(mOrder.customerName);
         mTelephone.setText(mOrder.phoneNum);
         mRemainTime.setText(mOrder.remainTime.contains("-") ? "0" : mOrder.remainTime);
@@ -208,7 +208,7 @@ public class OrderDetailActivity extends BaseActivity {
                 doMakeCall();
                 break;
             case R.id.action_chat:
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl,false));
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl,""));
                 break;
         }
     }

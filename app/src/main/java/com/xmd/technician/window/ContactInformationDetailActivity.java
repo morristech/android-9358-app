@@ -132,7 +132,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private String impression;
 
     private String userType;
-    private Boolean isTech;
+    private String isTech;
     private Map<String,String> params = new HashMap<>();
 
     @Override
@@ -170,7 +170,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void getViewFromType(int type) {
         switch (type) {
             case CONTACT_TYPE:
-                isTech = false;
+                isTech = "";
                 contactMore.setVisibility(View.VISIBLE);
                 getCustomerInformationSubscription = RxBus.getInstance().toObservable(CustomerDetailResult.class).subscribe(
                         customer -> handlerCustomer(customer)
@@ -180,7 +180,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL, params);
                 break;
             case TECH_TYPE:
-                isTech = true;
+                isTech = "tech";
                 getTechInformationSubscription = RxBus.getInstance().toObservable(TechDetailResult.class).subscribe(
                         tech -> handlerTech(tech)
                 );
@@ -189,7 +189,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL, paramTech);
                 break;
             case MANAGER_TYPE:
-                isTech = true;
+                isTech = "manager";
                 getManagerInformationSubscription = RxBus.getInstance().toObservable(ManagerDetailResult.class).subscribe(
                         manager -> handlerManager(manager)
                 );
@@ -440,7 +440,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
 
     private void handlerManager(ManagerDetailResult manager) {
-       // chatName = "店长";
+
+        chatName = manager.respData.name;
         chatHeadUrl = manager.respData.avatarUrl;
         chatEmId = manager.respData.emchatId;
         contactPhone = manager.respData.phoneNum;

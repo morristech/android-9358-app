@@ -47,7 +47,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private Filter mFilter;
     private Subscription mGetConversationListSubscription;
     private TextView mSearchView;
-    private Boolean  mMessageFromTech;
+    private String  mMessageFrom;
 
     @Nullable
     @Override
@@ -154,18 +154,25 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     }
                 }
             if(conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())){
-                   if(SharedPreferenceHelper.getUserIsTech(username)){
-                       mMessageFromTech =true;
-                   } else{
-                       mMessageFromTech =false;
+                   if(SharedPreferenceHelper.getUserIsTech(username).equals("tech")){
+                       mMessageFrom ="tech";
+                   } else if(SharedPreferenceHelper.getUserIsTech(username).equals("manager")){
+                       mMessageFrom ="manager";
+                   }else{
+                       mMessageFrom ="";
                    }
 
             }else{
+                mMessageFrom = "";
                 try {
-                    if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID))){
-                        mMessageFromTech =true;
-                    }else{
-                        mMessageFromTech = false;
+                    if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID)));
+                    mMessageFrom = "tech";
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_GAME_CLUB_ID))){
+                        mMessageFrom = "manager";
                     }
                 } catch (HyphenateException e) {
                     e.printStackTrace();
@@ -174,7 +181,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                         conversation.getAllMessages();
                 // it's single chat
                 intent.putExtra(ChatConstant.EMCHAT_ID, username);
-                intent.putExtra(ChatConstant.EMCHAT_IS_TECH,mMessageFromTech);
+                intent.putExtra(ChatConstant.EMCHAT_IS_TECH,mMessageFrom);
                 startActivity(intent);
         }
     }

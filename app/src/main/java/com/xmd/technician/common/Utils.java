@@ -66,18 +66,17 @@ public class Utils {
     }
 
     /**
-     *
      * @param emchatId
      * @param nickname
      * @param avatar
      * @return
      */
-    public static Map<String, Object> wrapChatParams(String emchatId, String nickname, String avatar,Boolean isTech) {
+    public static Map<String, Object> wrapChatParams(String emchatId, String nickname, String avatar, String userType) {
         Map<String, Object> params = new HashMap<>();
         params.put(ChatConstant.EMCHAT_ID, emchatId);
         params.put(ChatConstant.EMCHAT_NICKNAME, nickname);
         params.put(ChatConstant.EMCHAT_AVATAR, avatar);
-        params.put(ChatConstant.EMCHAT_IS_TECH,isTech);
+        params.put(ChatConstant.EMCHAT_IS_TECH, userType);
         return params;
     }
 
@@ -111,12 +110,12 @@ public class Utils {
     }
 
     public static void makeToast(Context context, String str, int duration) {
-        Toast.makeText(context, TextUtils.isEmpty(str)?ResourceUtils.getString(R.string.default_tips):str, duration).show();
+        Toast.makeText(context, TextUtils.isEmpty(str) ? ResourceUtils.getString(R.string.default_tips) : str, duration).show();
     }
 
-    public static void reportRegisterEvent(Context context, String step){
-        HashMap<String,String> map = new HashMap<String,String>();
-        map.put("step",step);
+    public static void reportRegisterEvent(Context context, String step) {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("step", step);
         MobclickAgent.onEvent(context, Constant.REGISTER_EVENT, map);
     }
 
@@ -397,43 +396,47 @@ public class Utils {
 
     /**
      * 根据浮点数实际有效位数输出，如2.0输出2；2.33输出2.33
+     *
      * @param f
      * @return
      */
     public static String getFloat2Str(float f) {
         String fStr = String.valueOf(f);
-        while ((fStr.length() > 1) && fStr.endsWith("0")){
+        while ((fStr.length() > 1) && fStr.endsWith("0")) {
             fStr = fStr.substring(0, fStr.length() - 1);
         }
 
-        if(fStr.endsWith(".")){
+        if (fStr.endsWith(".")) {
             fStr = fStr.substring(0, fStr.length() - 1);
         }
 
         return fStr;
     }
+
     public static String getFloat2Str(String f) {
         String fStr = String.valueOf(f);
-        while ((fStr.length() > 1) && fStr.endsWith("0")){
+        while ((fStr.length() > 1) && fStr.endsWith("0")) {
             fStr = fStr.substring(0, fStr.length() - 1);
         }
 
-        if(fStr.endsWith(".")){
+        if (fStr.endsWith(".")) {
             fStr = fStr.substring(0, fStr.length() - 1);
         }
 
         return fStr;
     }
-    public static int dip2px(Context context,float dpValue){
-        final  float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue*scale +0.5f);
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
+
     public static String getStringMetaData(String metaDataName) {
         PackageManager pm = TechApplication.getAppContext().getPackageManager();
         ApplicationInfo appinfo;
         String metaDataValue = "";
         try {
-            appinfo = pm.getApplicationInfo(TechApplication.getAppContext().getPackageName(),PackageManager.GET_META_DATA);
+            appinfo = pm.getApplicationInfo(TechApplication.getAppContext().getPackageName(), PackageManager.GET_META_DATA);
             Bundle metaData = appinfo.metaData;
             metaDataValue = metaData.getString(metaDataName);
             return metaDataValue;
@@ -442,22 +445,38 @@ public class Utils {
         }
         return metaDataValue;
     }
-    public static String StrSubstring(int length,String s,Boolean end){
-        if(s.length()>length){
-            if(end){
-                return s.substring(0,length)+"...";
-            }else{
-                return s.substring(0,length);
-            }
 
-        }else {
-            return s;
+    public static String StrSubstring(int length, String s, Boolean end) {
+        if (TextUtils.isEmpty(s) || length <= 0) {
+            return "";
         }
+        StringBuffer stringBuffer = new StringBuffer();
+        int sum = 0;
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (sum >= (length * 3)) {
+                if (end) {
+                    stringBuffer.append("...");
+                }
+                break;
+            }
+            char bt = chars[i];
+            if (bt > 64 && bt < 123) {
+                stringBuffer.append(String.valueOf(bt));
+                sum += 2;
+            } else {
+                stringBuffer.append(String.valueOf(bt));
+                sum += 3;
+            }
+        }
+
+        return stringBuffer.toString();
     }
+
     public synchronized static boolean isNotFastClick() {
 
         long time = System.currentTimeMillis();
-        if ( time - lastClickTime < 2000) {
+        if (time - lastClickTime < 2000) {
             return false;
         }
         lastClickTime = time;

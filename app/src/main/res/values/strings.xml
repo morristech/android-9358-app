@@ -381,5 +381,6 @@
     <string name="dice_game_wait">等待接收</string>
     <string name="dice_game_reject">已拒绝</string>
     <string name="game_setting_title">每局筹码</string>
+    <string name="dice_amount">"%s积分"</string>
 
 </resources>

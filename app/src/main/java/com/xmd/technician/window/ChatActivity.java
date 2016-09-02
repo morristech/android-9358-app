@@ -28,6 +28,7 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EasyUtils;
 import com.xmd.technician.Adapter.ChatListAdapter;
 import com.xmd.technician.R;
@@ -123,7 +124,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private ArrayList<Fragment> fragmentsViewPagerList;
     private CommonMsgFragmentOne fragmentOne;
     private CommonMsgFragmentTwo fragmentTwo;
-    private Boolean isTechOrManger;
+    private String isTechOrManger = "";
     private int mGameIntegral;
     private String adverseName;
     private int mAvailableCredit;
@@ -136,11 +137,10 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private Subscription mAcceptOrRejectGameSubscription;
     private Subscription mUserAvailableCreditSubscription;
     private Subscription mUserWinSubscription;
-    private Subscription mGameResultSubscription;
+    private Subscription mAcceptGameResultSubscription;
     private Subscription mPlayGameAgainSubscription;
     private Subscription mCancelGameSubscription;
     private Subscription mCreditStatusSubscription;
-    private Subscription mRefreshViewSubscription;
 
 
     @Override
@@ -149,8 +149,16 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         setContentView(R.layout.custom_chat_primary_menu);
         ButterKnife.bind(this);
         mToChatUsername = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
-        isTechOrManger = getIntent().getExtras().getBoolean(ChatConstant.EMCHAT_IS_TECH);
-        if (isTechOrManger) {
+        isTechOrManger = getIntent().getExtras().getString(ChatConstant.EMCHAT_IS_TECH);
+        if (TextUtils.isEmpty(isTechOrManger)) {
+            isTechOrManger = "";
+        }
+        if (Utils.isNotEmpty(isTechOrManger) && isTechOrManger.equals("manager")) {
+            btnCommonCoupon.setVisibility(View.GONE);
+            mCommonBtn.setVisibility(View.GONE);
+            mRewardBtn.setVisibility(View.GONE);
+            mBtnCommonGame.setVisibility(View.GONE);
+        } else if (Utils.isNotEmpty(isTechOrManger) && isTechOrManger.equals("tech")) {
             btnCommonCoupon.setVisibility(View.GONE);
             mCommonBtn.setVisibility(View.GONE);
             mRewardBtn.setVisibility(View.GONE);
@@ -164,6 +172,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         onConversationInit();
         initChatList();
         initGoldAnimationView();
+
         mCreditStatusSubscription = RxBus.getInstance().toObservable(CreditStatusResult.class).subscribe(
                 statusResult -> handlerCreditStatusResult(statusResult)
         );
@@ -183,32 +192,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     }
                 }
         );
-        mGameResultSubscription = RxBus.getInstance().toObservable(GameResult.class).subscribe(
+        mAcceptGameResultSubscription = RxBus.getInstance().toObservable(GameResult.class).subscribe(
                 gameResult -> handlerGameInvite(gameResult)
         );
         mAcceptOrRejectGameSubscription = RxBus.getInstance().toObservable(AcceptOrRejectGame.class).subscribe(
-                acceptOrRejectGame -> {
-                    if (mAvailableCredit > Integer.parseInt(acceptOrRejectGame.gameContent)) {
-                        sendDiceGameMessage(acceptOrRejectGame.gameContent, acceptOrRejectGame.gameId, acceptOrRejectGame.gameStatus, "0:0", acceptOrRejectGame.chatId);
-                        SharedPreferenceHelper.setGameStatus(acceptOrRejectGame.gameId, ChatConstant.KEY_ACCEPT_GAME);
-                        Map<String, String> params = new HashMap<>();
-                        String gameId = acceptOrRejectGame.gameId.substring((5));
-                        params.put(RequestConstant.KEY_DICE_GAME_ID, gameId);
-                        params.put(RequestConstant.KEY_STATUS, ChatConstant.KEY_GAME_ACCEPT);
-                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT, params);
-                    } else {
-                        showCreditInsufficientDialog(acceptOrRejectGame.gameContent);
-                    }
-                }
+                acceptOrRejectGame -> handlerAcceptOrRejectGame(acceptOrRejectGame)
         );
-        mRefreshViewSubscription = RxBus.getInstance().toObservable(RefreshView.class).subscribe(
-                refreshView ->{
-                    if (mIsMessageListInited) {
-                        mChatAdapter.refreshList();
-                    }
-                }
 
-        );
         mUserAvailableCreditSubscription = RxBus.getInstance().toObservable(CreditAccountResult.class).subscribe(
                 result -> {
                     if (result.statusCode == 200) {
@@ -241,8 +231,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         );
         mCancelGameSubscription = RxBus.getInstance().toObservable(CancelGame.class).subscribe(
                 result -> {
-                    //  result.message.setAttribute(ChatConstant.KEY_GAME_STATUS, ChatConstant.KEY_CANCEL_GAME_TYPE);
-                    // sendMessage(result.message);
                     EMMessage message = result.message;
                     message.setAttribute(ChatConstant.KEY_GAME_STATUS, ChatConstant.KEY_CANCEL_GAME_TYPE);
                     sendMessage(result.message);
@@ -250,9 +238,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         );
 
         adverseName = mAppTitle.getText().toString();
-       MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
-//        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
-//                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
@@ -297,8 +283,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         super.onDestroy();
         if (null != mSendMessageSubscription) {
             RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription, mSendMessageSubscription,
-                    mSendDiceGameSubscription, mGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription,
-                    mUserAvailableCreditSubscription, mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription);
+                    mSendDiceGameSubscription, mAcceptGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription,
+                    mUserAvailableCreditSubscription, mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription, mCreditStatusSubscription);
         }
     }
 
@@ -457,9 +443,23 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
     }
 
+    private void handlerAcceptOrRejectGame(AcceptOrRejectGame acceptOrRejectGame) {
+        if (mAvailableCredit > Integer.parseInt(acceptOrRejectGame.gameContent)) {
+            sendDiceGameMessage(acceptOrRejectGame.gameContent, acceptOrRejectGame.gameId, acceptOrRejectGame.gameStatus, "0:0", acceptOrRejectGame.chatId);
+            SharedPreferenceHelper.setGameStatus(acceptOrRejectGame.gameId, ChatConstant.KEY_ACCEPT_GAME);
+            Map<String, String> params = new HashMap<>();
+            String gameId = acceptOrRejectGame.gameId.substring((5));
+            params.put(RequestConstant.KEY_DICE_GAME_ID, gameId);
+            params.put(RequestConstant.KEY_STATUS, ChatConstant.KEY_GAME_ACCEPT);
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT, params);
+        } else {
+            showCreditInsufficientDialog(acceptOrRejectGame.gameContent);
+        }
+    }
+
     private void handlerCreditStatusResult(CreditStatusResult result) {
         if (result.statusCode == 200) {
-            if (result.respData.systemSwitch.equals("on") && result.respData.clubSwitch.equals("on") && result.respData.diceGameSwitch.equals("on")) {
+            if (result.respData.systemSwitch.equals("on") && result.respData.clubSwitch.equals("on") && result.respData.diceGameSwitch.equals("on") && !isTechOrManger.equals("manager")) {
                 mBtnCommonGame.setVisibility(View.VISIBLE);
             } else {
                 mBtnCommonGame.setVisibility(View.GONE);
@@ -732,6 +732,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
         message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
 
+
         //发送消息
         EMClient.getInstance().chatManager().sendMessage(message);
         //刷新ui
@@ -764,6 +765,14 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 // 如果是当前会话的消息，刷新聊天页面
                 if (username.equals(mToChatUsername)) {
                     mChatAdapter.refreshSelectLast();
+                    //用于刷新页面
+                    ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                        @Override
+                        public void run() {
+                            mChatAdapter.refreshList();
+                        }
+                    }, 100);
+
                     // 声音和震动提示有新消息
                     //EaseUI.getInstance().getNotifier().viberateAndPlayTone(message);
                 } else {
@@ -771,6 +780,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     //EaseUI.getInstance().getNotifier().onNewMsg(message);
                 }
             }
+
         }
 
         @Override
@@ -872,7 +882,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
             }
         });
-
     }
 
     private void initGoldAnimationView() {

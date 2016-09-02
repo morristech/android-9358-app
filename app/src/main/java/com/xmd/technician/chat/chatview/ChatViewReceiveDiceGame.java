@@ -96,18 +96,36 @@ public class ChatViewReceiveDiceGame extends BaseChatView {
 
         mBtnAccept.setOnClickListener(v -> {
             if (mGameManagerListener != null) {
-                mGameManagerListener.onAccept(message);
+                currentTime = System.currentTimeMillis();
+                if((currentTime - gameStartTime > SharedPreferenceHelper.getGameTimeout())){
+                    acceptOrRefuse.setText(String.format("(%s)", "已超时"));
+                    acceptOrRefuse.setVisibility(View.VISIBLE);
+                    mBtnRefuse.setEnabled(false);
+                    mBtnAccept.setEnabled(false);
+                }else{
+                    mGameManagerListener.onAccept(message);
+                }
+
             }
         });
         mBtnRefuse.setOnClickListener(v -> {
-            if (mGameManagerListener != null) {
-                mGameManagerListener.onRefuse(message);
-                acceptOrRefuse.setText(String.format("(%s)", "已拒绝"));
+            currentTime = System.currentTimeMillis();
+            if((currentTime - gameStartTime > SharedPreferenceHelper.getGameTimeout())){
+                acceptOrRefuse.setText(String.format("(%s)", "已超时"));
                 acceptOrRefuse.setVisibility(View.VISIBLE);
                 mBtnRefuse.setEnabled(false);
                 mBtnAccept.setEnabled(false);
-                SharedPreferenceHelper.setGameStatus(gameId, ChatConstant.KEY_GAME_REJECT);
+            }else{
+                if (mGameManagerListener != null) {
+                    mGameManagerListener.onRefuse(message);
+                    acceptOrRefuse.setText(String.format("(%s)", "已拒绝"));
+                    acceptOrRefuse.setVisibility(View.VISIBLE);
+                    mBtnRefuse.setEnabled(false);
+                    mBtnAccept.setEnabled(false);
+                    SharedPreferenceHelper.setGameStatus(gameId, ChatConstant.KEY_GAME_REJECT);
+                }
             }
+
         });
     }
 

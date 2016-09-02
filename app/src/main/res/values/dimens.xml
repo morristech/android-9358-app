@@ -43,18 +43,14 @@
     <dimen name="fontNormal">12sp</dimen>
     <dimen name="fontRemark">10sp</dimen>
     <dimen name="font_biggest">40sp</dimen>
-    <dimen name ="fontCouponTitle">24sp</dimen>
-
+    <dimen name="fontCouponTitle">24sp</dimen>
     <dimen name="home_button_height">50dp</dimen>
-
     <dimen name="search_padding_left">12dp</dimen>
     <dimen name="search_view_height">32dp</dimen>
     <dimen name="search_margin">8dp</dimen>
     <dimen name="search_pic_height">16dp</dimen>
-
     <dimen name="message_item_height">64dp</dimen>
     <dimen name="feedback_edit_text_height">300dp</dimen>
-
     <dimen name="personal_info_height">83dp</dimen>
     <dimen name="personal_item_height">44dp</dimen>
     <dimen name="personal_description_height">40dp</dimen>
@@ -206,10 +202,6 @@
     <dimen name="game_setting_margin_top">18dp</dimen>
     <dimen name="game_setting_image_margin">27dp</dimen>
     <dimen name="game_setting_image_bottom">23dp</dimen>
-
-
-
-
 
 
 </resources>

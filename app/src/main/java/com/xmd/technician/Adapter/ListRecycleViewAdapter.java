@@ -197,7 +197,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             Glide.with(mContext).load(order.headImgUrl).into(itemHolder.mUserHeadUrl);
             itemHolder.mUserHeadUrl.setOnClickListener(
-                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.userName, order.headImgUrl, false)));
+                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.userName, order.headImgUrl, "")));
             itemHolder.mUserName.setText(order.customerName);
             itemHolder.mOrderTime.setText(order.formatAppointTime);
             itemHolder.mOrderAmount.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), order.downPayment));
@@ -301,7 +301,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             Glide.with(mContext).load(paidCouponUserDetail.headImgUrl).into(itemHolder.mAvatar);
             itemHolder.mAvatar.setOnClickListener(
                     v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
-                            Utils.wrapChatParams(paidCouponUserDetail.emchatId, paidCouponUserDetail.userName, paidCouponUserDetail.headImgUrl, false)));
+                            Utils.wrapChatParams(paidCouponUserDetail.emchatId, paidCouponUserDetail.userName, paidCouponUserDetail.headImgUrl, "")));
             itemHolder.mTvCustomerName.setText(paidCouponUserDetail.userName);
             itemHolder.mTvGetDate.setText(paidCouponUserDetail.getDate);
             itemHolder.mTvTelephone.setText(paidCouponUserDetail.telephone);

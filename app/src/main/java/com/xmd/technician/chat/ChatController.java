@@ -55,7 +55,7 @@ public class ChatController extends AbstractController {
         String emchatNickname = (String) params.get(ChatConstant.EMCHAT_NICKNAME);
         String emchatAvatar = (String) params.get(ChatConstant.EMCHAT_AVATAR);
         String emchatUserType = (String) params.get(ChatConstant.EMCHAT_USER_TYPE);
-        Boolean emchatIsTech = (Boolean) params.get(ChatConstant.EMCHAT_IS_TECH);
+        String emchatIsTech = (String) params.get(ChatConstant.EMCHAT_IS_TECH);
 
         if(TextUtils.isEmpty(emchatId)){
             return;

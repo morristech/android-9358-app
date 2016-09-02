@@ -217,13 +217,13 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getBoolean(RequestConstant.KEY_BIND_WX_SUCCESS, false);
     }
 
-    public static void setUserIsTech(String userChatId, boolean isTech) {
+    public static void setUserIsTech(String userChatId, String isTech) {
 
-        mSettingPreference.edit().putBoolean(userChatId + "1", isTech).apply();
+        mSettingPreference.edit().putString(userChatId + "1", isTech).apply();
     }
 
-    public static boolean getUserIsTech(String userChatId) {
-        return mSettingPreference.getBoolean(userChatId + "1", false);
+    public static String getUserIsTech(String userChatId) {
+        return mSettingPreference.getString(userChatId + "1", "");
     }
 
     public static void setUserRemarkName(String userChatId, String remark) {

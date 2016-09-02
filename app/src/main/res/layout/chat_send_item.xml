@@ -393,7 +393,10 @@
                     android:paddingLeft="@dimen/margin_5"
                     android:paddingRight="@dimen/margin_5"
                     android:text="@string/cancel"
-                    android:visibility="invisible" />
+                    android:visibility="invisible"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/fontNormal"
+                    />
 
                 <com.xmd.technician.widget.RoundImageView
                     android:id="@+id/user_head"

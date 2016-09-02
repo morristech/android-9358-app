@@ -68,7 +68,7 @@ public class ChatViewsendGame extends BaseChatView {
                     initView();
                     EMTextMessageBody body = (EMTextMessageBody) message.getBody();
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
-                    mGameAmount.setText(String.format("%s积分", body.getMessage()));
+                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                     mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
                     mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
                     mWaitGame.setVisibility(View.VISIBLE);
@@ -82,7 +82,7 @@ public class ChatViewsendGame extends BaseChatView {
                     initView();
                     EMTextMessageBody body = (EMTextMessageBody) message.getBody();
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
-                    mGameAmount.setText(String.format("%s积分", body.getMessage()));
+                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                     mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
                     mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
                     mWaitGame.setVisibility(View.VISIBLE);
@@ -97,7 +97,7 @@ public class ChatViewsendGame extends BaseChatView {
                 initView();
                 EMTextMessageBody body = (EMTextMessageBody) message.getBody();
                 mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
-                mGameAmount.setText(String.format("%s积分", body.getMessage()));
+                mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                 mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
                 mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
                 mWaitGame.setVisibility(View.VISIBLE);
@@ -106,12 +106,12 @@ public class ChatViewsendGame extends BaseChatView {
                 mCancel.setVisibility(View.INVISIBLE);
                 mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_cancel));
 
-            }else if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_GAME_REJECT) || message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals("refused")) {
+            }else if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_GAME_REJECT)) {
                 initView();
                 EMTextMessageBody body = (EMTextMessageBody) message.getBody();
                 if (message.direct() == EMMessage.Direct.RECEIVE) {
-                    mGameAmount.setText(String.format("%s积分", body.getMessage()));
-                    mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true)));
+                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
+                    mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true)));
                     mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
                     mUserName.setText(Utils.StrSubstring(3, SharedPreferenceHelper.getUserName(), true));
                     Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
@@ -122,7 +122,7 @@ public class ChatViewsendGame extends BaseChatView {
                     mCancel.setVisibility(View.INVISIBLE);
 
                 } else {
-                    mGameAmount.setText(String.format("%s积分", body.getMessage()));
+                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
                     mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
                     mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
@@ -137,7 +137,7 @@ public class ChatViewsendGame extends BaseChatView {
                 initView();
                 EMTextMessageBody body = (EMTextMessageBody) message.getBody();
                 if (message.direct() == EMMessage.Direct.RECEIVE) {
-                    mGameAmount.setText(String.format("%s积分", body.getMessage()));
+                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                     if (message.getStringAttribute(ChatConstant.KEY_GAME_INVITE).equals(SharedPreferenceHelper.getEmchatId())) {
                         mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true)));
                     } else {
@@ -151,10 +151,10 @@ public class ChatViewsendGame extends BaseChatView {
                     mWaitGame.setText(ResourceUtils.getString(R.string.accepted_order));
                     mCancel.setVisibility(View.INVISIBLE);
                     emConversation.removeMessage(SharedPreferenceHelper.getGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
-                    SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), message.getMsgId());
+                   // SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), message.getMsgId());
 
                 } else {
-                    mGameAmount.setText(String.format("%s积分", body.getMessage()));
+                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
                     mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
                     mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
@@ -166,11 +166,20 @@ public class ChatViewsendGame extends BaseChatView {
                 }
             }
             mCancel.setOnClickListener(v ->{
-                if(mGameCancelListener !=null){
-                    mGameCancelListener.onCancel(message);
-                    mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_cancel));
-                    mCancel.setVisibility(View.INVISIBLE);
+                currentTime = System.currentTimeMillis();
+                if(currentTime-gameStartTime>SharedPreferenceHelper.getGameTimeout()){
+                    mWaitGame.setVisibility(View.VISIBLE);
+                    mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_overtime));
+                    mCancel.setVisibility(View.GONE);
+                }else{
+                    if(mGameCancelListener !=null){
+
+                        mGameCancelListener.onCancel(message);
+                        mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_cancel));
+                        mCancel.setVisibility(View.INVISIBLE);
+                    }
                 }
+
             });
 
         } catch (HyphenateException e) {

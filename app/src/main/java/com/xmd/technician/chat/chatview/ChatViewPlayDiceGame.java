@@ -86,7 +86,7 @@ public class ChatViewPlayDiceGame extends BaseChatView {
                 adverseDice = getSendDiceResult(result);
                 mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
             }
-            emConversation.removeMessage(SharedPreferenceHelper.getGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
+      //      emConversation.removeMessage(SharedPreferenceHelper.getGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
             if (Utils.isNotEmpty(SharedPreferenceHelper.getGameStatus(messageId))) {
                 initResultView(content);
             } else {
@@ -97,11 +97,11 @@ public class ChatViewPlayDiceGame extends BaseChatView {
                 mAdverseWin.setVisibility(View.GONE);
                 Glide.with(context).load(R.drawable.dice_gif).asGif().into(mUserDice);
                 Glide.with(context).load(R.drawable.dice_gif).asGif().into(mAdverseDice);
+                SharedPreferenceHelper.setGameStatus(messageId, ChatConstant.KEY_OVER_GAME_TYPE);
                 ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                     @Override
                     public void run() {
                         initResultView(content);
-                        SharedPreferenceHelper.setGameStatus(messageId, ChatConstant.KEY_OVER_GAME_TYPE);
                     }
                 }, 2000);
             }
@@ -172,12 +172,18 @@ public class ChatViewPlayDiceGame extends BaseChatView {
             mGameResult.setText(String.format("+%s", content));
             msp = new SpannableString(String.format(ResourceUtils.getString(R.string.win_and_play_again), content));
             mUserWin.setVisibility(View.VISIBLE);
-            RxBus.getInstance().post(new UserWin(message.getStringAttribute(ChatConstant.KEY_GAME_ID, "-1")));
+            mAdverseWin.setVisibility(View.GONE);
+            try {
+                RxBus.getInstance().post(new UserWin(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
+            } catch (HyphenateException e) {
+                e.printStackTrace();
+            }
         } else {
             Glide.with(context).load(R.drawable.dice_lose).asBitmap().into(mUserResult);
             mGameResult.setText(String.format("-%s", content));
             msp = new SpannableString(String.format(ResourceUtils.getString(R.string.failed_and_play_again), content));
             mAdverseWin.setVisibility(View.VISIBLE);
+            mUserWin.setVisibility(View.GONE);
         }
         msp.setSpan(new UnderlineSpan(), msp.length() - 4, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         msp.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.play_game_again)), msp.length() - 4, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
