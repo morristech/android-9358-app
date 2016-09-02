@@ -430,6 +430,13 @@ public interface SpaService {
                                               @Field(RequestConstant.KEY_DICE_GAME_STATUS) String status
     );
 
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_USER_SWITCHES)
+    Call<BaseResult> doGetUserSwitches(@Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                          @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                          @Field(RequestConstant.KEY_TOKEN) String userToken
+    );
+
 
 
   /*  @FormUrlEncoded

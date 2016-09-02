@@ -69,7 +69,7 @@ public class ChatViewReceiveDiceGame extends BaseChatView {
                 acceptOrRefuse.setVisibility(View.VISIBLE);
                 mBtnRefuse.setEnabled(false);
                 mBtnAccept.setEnabled(false);
-                mEmConversation.removeMessage(SharedPreferenceHelper.getGameStatus(gameId));
+           //     mEmConversation.removeMessage(SharedPreferenceHelper.getGameStatus(gameId));
 
             } else if (Utils.isNotEmpty(SharedPreferenceHelper.getGameStatus(gameId)) && SharedPreferenceHelper.getGameStatus(gameId).equals(ChatConstant.KEY_GAME_REJECT)) {
                 acceptOrRefuse.setText(String.format("(%s)", "已拒绝"));

@@ -90,6 +90,7 @@ public class ChatViewsendGame extends BaseChatView {
                     Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
                     mUserHead.setVisibility(View.VISIBLE);
                     mCancel.setVisibility(View.VISIBLE);
+
                 }
 
             } else if(message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_CANCEL_GAME_TYPE)){
@@ -118,7 +119,6 @@ public class ChatViewsendGame extends BaseChatView {
                     mUserHead.setVisibility(View.VISIBLE);
                     mWaitGame.setVisibility(View.VISIBLE);
                     mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_reject));
-                    emConversation.removeMessage(SharedPreferenceHelper.getGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
                     mCancel.setVisibility(View.INVISIBLE);
 
                 } else {
@@ -151,7 +151,6 @@ public class ChatViewsendGame extends BaseChatView {
                     mWaitGame.setText(ResourceUtils.getString(R.string.accepted_order));
                     mCancel.setVisibility(View.INVISIBLE);
                     emConversation.removeMessage(SharedPreferenceHelper.getGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
-                   // SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), message.getMsgId());
 
                 } else {
                     mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));

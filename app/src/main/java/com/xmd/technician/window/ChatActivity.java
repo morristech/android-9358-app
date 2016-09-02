@@ -130,6 +130,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private int mAvailableCredit;
     private FlowerAnimation animation;
 
+
     private Subscription mManagerOrderSubscription;
     private Subscription mGetRedpacklistSubscription;
     private Subscription mSendMessageSubscription;
@@ -764,14 +765,23 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
                 // 如果是当前会话的消息，刷新聊天页面
                 if (username.equals(mToChatUsername)) {
+                    try {
+                    String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
+                        String messageStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
+                        if(messageStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)||messageStatus.equals(ChatConstant.KEY_ACCEPT_GAME)){
+                            mConversation.removeMessage(SharedPreferenceHelper.getGameStatus(gameId));
+                        }
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                    }
                     mChatAdapter.refreshSelectLast();
                     //用于刷新页面
-                    ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-                        @Override
-                        public void run() {
-                            mChatAdapter.refreshList();
-                        }
-                    }, 100);
+//                    ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            mChatAdapter.refreshList();
+//                        }
+//                    }, 1000);
 
                     // 声音和震动提示有新消息
                     //EaseUI.getInstance().getNotifier().viberateAndPlayTone(message);

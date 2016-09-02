@@ -34,6 +34,8 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     private float phase1 = 0f;
     private float phase2 = 0f;
     private float phase3 = 0f;
+    private float phase4 = 0f;
+    private float phase5 = 0f;
 
     /**
      * 小球集合
@@ -41,6 +43,8 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     private List<Fllower> flowers1 = new ArrayList<Fllower>();
     private List<Fllower> flowers2 = new ArrayList<Fllower>();
     private List<Fllower> flowers3 = new ArrayList<Fllower>();
+    private List<Fllower> flowers4 = new ArrayList<Fllower>();
+    private List<Fllower> flowers5 = new ArrayList<Fllower>();
 
     /**
      * 动画播放的时间
@@ -81,6 +85,9 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
         builderFollower(fllowerCount, flowers1);
         builderFollower(fllowerCount, flowers2);
         builderFollower(fllowerCount, flowers3);
+        builderFollower(fllowerCount, flowers4);
+        builderFollower(fllowerCount, flowers5);
+
 
     }
 
@@ -105,7 +112,7 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     /**
      * 第一批个数
      */
-    private int fllowerCount = 4;
+    private int fllowerCount = 6;
 
     /**
      * 创建花
@@ -125,7 +132,14 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
             fllower.setPath(path);
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
                     R.drawable.icon_gold);
-            fllower.setResId(bitmap);
+            Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.icon_gold2);
+            if(i/2==0){
+                fllower.setResId(bitmap);
+            }else{
+                fllower.setResId(bitmap2);
+            }
+
             fllowers.add(fllower);
         }
 
@@ -220,6 +234,9 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
         drawFllower(canvas, flowers1);
         drawFllower(canvas, flowers2);
         drawFllower(canvas, flowers3);
+        drawFllower(canvas, flowers4);
+        drawFllower(canvas, flowers5);
+
 
     }
 
@@ -247,6 +264,8 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     ObjectAnimator mAnimator1;
     ObjectAnimator mAnimator2;
     ObjectAnimator mAnimator3;
+    ObjectAnimator mAnimator4;
+    ObjectAnimator mAnimator5;
 
     public void startAnimation() {
         if (mAnimator1 != null && mAnimator1.isRunning()) {
@@ -278,6 +297,26 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
         mAnimator3.start();
         mAnimator3.setInterpolator(new AccelerateInterpolator(1f));
         mAnimator3.setStartDelay(delay * 2);
+
+        if (mAnimator4 != null && mAnimator4.isRunning()) {
+            mAnimator4.cancel();
+        }
+        mAnimator4 = ObjectAnimator.ofFloat(this, "phase4", 0f, 1f);
+        mAnimator4.setDuration(time);
+        mAnimator4.addUpdateListener(this);
+        mAnimator4.start();
+        mAnimator4.setInterpolator(new AccelerateInterpolator(1f));
+        mAnimator4.setStartDelay(delay * 3);
+
+        if (mAnimator5 != null && mAnimator5.isRunning()) {
+            mAnimator5.cancel();
+        }
+        mAnimator5 = ObjectAnimator.ofFloat(this, "phase5", 0f, 1f);
+        mAnimator5.setDuration(time);
+        mAnimator5.addUpdateListener(this);
+        mAnimator5.start();
+        mAnimator5.setInterpolator(new AccelerateInterpolator(1f));
+        mAnimator5.setStartDelay(delay * 4);
     }
 
     /**
@@ -301,6 +340,8 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
         updateValue(getPhase1(), flowers1);
         updateValue(getPhase2(), flowers2);
         updateValue(getPhase3(), flowers3);
+        updateValue(getPhase4(), flowers4);
+        updateValue(getPhase5(), flowers5);
         Log.i(tag, getPhase1() + "");
         invalidate();
     }
@@ -321,12 +362,22 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
         this.phase2 = phase2;
     }
 
-    public float getPhase3() {
-        return phase3;
-    }
+    public float getPhase3() {return phase3;}
 
     public void setPhase3(float phase3) {
         this.phase3 = phase3;
+    }
+
+    public float getPhase4() {return phase4;}
+
+    public void setPhase4(float phase4) {
+        this.phase4 = phase4;
+    }
+
+    public float getPhase5() {return phase5;}
+
+    public void setPhase5(float phase5) {
+        this.phase5 = phase5;
     }
 
     private String tag = this.getClass().getSimpleName();

@@ -239,6 +239,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT:
                 doDiceGameAcceptOrReject((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES:
+                doGetClubUserSwitches();
+                break;
    /*         case MsgDef.MSG_DEF_DO_DRAW_MONEY:
                 doDrawMoney((Map<String,String>)msg.obj);
                 break;
@@ -1082,6 +1085,15 @@ public class RequestController extends AbstractController {
             }
         });
 
+    }
+    private void doGetClubUserSwitches(){
+        Call<BaseResult> call = getSpaService().doGetUserSwitches(SharedPreferenceHelper.getUserClubId(),RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+
+            }
+        });
     }
 
 

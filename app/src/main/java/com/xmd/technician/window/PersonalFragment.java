@@ -84,6 +84,7 @@ public class PersonalFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+      //  MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
         return inflater.inflate(R.layout.personal_fragment, container, false);
     }
 

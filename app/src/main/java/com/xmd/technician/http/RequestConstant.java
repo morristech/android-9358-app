@@ -74,6 +74,7 @@ public class RequestConstant {
     public static final String URL_INTRODUCE_BIND = "/spa-manager/follow9358/index.html";
 
 
+    public static final String URL_GET_USER_SWITCHES = "/v2/user/switches";
     public static final String URL_COUPON_SHARE_EVENT_COUNT = BASE_URL + "/v1/profile/redpacket/share";
     public static final String URL_RANKING = "/spa-manager/manager/index.html?v=%s&userType=%s&sessionType=%s&token=%s";
 
