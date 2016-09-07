@@ -560,7 +560,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         //发送游戏邀请
         hideKeyboard();
         hideExtendMenuContainer();
-        mGameIntegral = 10;
+        mGameIntegral = 1;
         new GameSettingDialog(this, new GameSettingDialog.GetGameIntegralInterFace() {
             @Override
             public void getIngefral(int num) {
@@ -768,20 +768,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     try {
                     String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
                         String messageStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
-                        if(messageStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)||messageStatus.equals(ChatConstant.KEY_ACCEPT_GAME)){
+                        if(messageStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)||messageStatus.equals(ChatConstant.KEY_ACCEPT_GAME)||messageStatus.equals(ChatConstant.KEY_GAME_REJECT)){
                             mConversation.removeMessage(SharedPreferenceHelper.getGameStatus(gameId));
                         }
                     } catch (HyphenateException e) {
                         e.printStackTrace();
                     }
                     mChatAdapter.refreshSelectLast();
-                    //用于刷新页面
-//                    ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            mChatAdapter.refreshList();
-//                        }
-//                    }, 1000);
 
                     // 声音和震动提示有新消息
                     //EaseUI.getInstance().getNotifier().viberateAndPlayTone(message);

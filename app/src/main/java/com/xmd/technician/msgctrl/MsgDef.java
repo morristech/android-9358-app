@@ -109,6 +109,7 @@ public class MsgDef {
     public static final int MSG_DEF_DO_GAME_ACCEPT_OR_REJECT = 0x0056;
     public static final int MSG_DEF_GET_CREDIT_APPLICATIONS = 0x0057;
     public static final int MSG_DEF_GET_USER_CLUB_SWITCHES = 0x0058;
+    public static final int MSG_DEF_GET_RECENTLY_VISITOR = 0x0059;
     /**
      * ChatController, start to chat with someone
      */

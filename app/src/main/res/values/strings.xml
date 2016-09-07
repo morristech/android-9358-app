@@ -382,5 +382,9 @@
     <string name="dice_game_reject">已拒绝</string>
     <string name="game_setting_title">每局筹码</string>
     <string name="dice_amount">"%s积分"</string>
+    <string name="visitor_type">游客</string>
+    <string name="belong_tech">所属技师</string>
+    <string name="nearly_visit">最近访问我</string>
+
 
 </resources>

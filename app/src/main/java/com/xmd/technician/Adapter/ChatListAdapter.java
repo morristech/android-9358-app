@@ -2,7 +2,6 @@ package com.xmd.technician.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,7 +27,7 @@ import com.xmd.technician.chat.chatview.ChatViewOrder;
 import com.xmd.technician.chat.chatview.ChatViewPaidCoupon;
 import com.xmd.technician.chat.chatview.ChatViewPaidCouponTip;
 import com.xmd.technician.chat.chatview.ChatViewReward;
-import com.xmd.technician.chat.chatview.ChatViewsendGame;
+import com.xmd.technician.chat.chatview.ChatViewSendGame;
 import com.xmd.technician.chat.chatview.ChatViewText;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.common.ThreadManager;
@@ -228,8 +227,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ((ChatViewReceiveDiceGame) chatRow).setGameManagerListener(mGameManagerListener);
                 break;
             case ChatConstant.MESSAGE_TYPE_SEND_GAME_INVITE:
-                chatRow = new ChatViewsendGame(context, EMMessage.Direct.SEND, mConversation);
-                ((ChatViewsendGame) chatRow).setGameCancelListener(mGameCancelListener);
+                chatRow = new ChatViewSendGame(context, EMMessage.Direct.SEND, mConversation);
+                ((ChatViewSendGame) chatRow).setGameCancelListener(mGameCancelListener);
                 break;
             case ChatConstant.MESSAGE_TYPE_RECV_REWARD:
                 chatRow = new ChatViewReward(context, EMMessage.Direct.RECEIVE);
@@ -256,11 +255,11 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
             case ChatConstant.MESSAGE_TYPE_SEND_GAME_REJECT:
             case ChatConstant.MESSAGE_TYPE_RECV_GAME_REJECT:
-                chatRow = new ChatViewsendGame(context, EMMessage.Direct.SEND, mConversation);
+                chatRow = new ChatViewSendGame(context, EMMessage.Direct.SEND, mConversation);
                 break;
             case ChatConstant.MESSAGE_TYPE_RECV_GAME_ACCEPT:
             case ChatConstant.MESSAGE_TYPE_SEND_GAME_ACCEPT:
-                chatRow = new ChatViewsendGame(context, EMMessage.Direct.SEND, mConversation);
+                chatRow = new ChatViewSendGame(context, EMMessage.Direct.SEND, mConversation);
                 break;
             case ChatConstant.MESSAGE_TYPE_RECV_GAME_OVER:
             case ChatConstant.MESSAGE_TYPE_SEND_GAME_OVER:
@@ -275,7 +274,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return chatRow;
     }
 
-    private ChatViewsendGame.GameCancelListener mGameCancelListener = new ChatViewsendGame.GameCancelListener() {
+    private ChatViewSendGame.GameCancelListener mGameCancelListener = new ChatViewSendGame.GameCancelListener() {
         @Override
         public void onCancel(EMMessage message) {
             RxBus.getInstance().post(new CancelGame(message));

@@ -29,15 +29,17 @@ import java.util.Date;
 /**
  * Created by Administrator on 2016/8/22.
  */
-public class ChatViewsendGame extends BaseChatView {
-    private TextView mGameAmount, mAdverseName, mUserName, mWaitGame, mGameIntroduce, mRefuseGame,mCancel;
+public class ChatViewSendGame extends BaseChatView {
+    private TextView mGameAmount, mAdverseName, mUserName, mWaitGame, mGameIntroduce, mRefuseGame,mCancel,mCancelOrReject;
     private RoundImageView mAdverseHead, mUserHead;
     private String mDiceGameAmount, mDiceAdverseName, mDiceUserName, mDiceWaitGame;
     private EMConversation emConversation;
     private GameCancelListener mGameCancelListener;
     long gameStartTime,currentTime;
+    private EMTextMessageBody body;
 
-    public ChatViewsendGame(Context context, EMMessage.Direct direct, EMConversation emConversation) {
+
+    public ChatViewSendGame(Context context, EMMessage.Direct direct, EMConversation emConversation) {
         super(context, direct);
         this.emConversation = emConversation;
     }
@@ -54,10 +56,13 @@ public class ChatViewsendGame extends BaseChatView {
         mUserHead = (RoundImageView) findViewById(R.id.user_head);
         mRefuseGame = (TextView) findViewById(R.id.refuse_game);
         mCancel = (TextView) findViewById(R.id.game_cancel);
+        mCancelOrReject = (TextView) findViewById(R.id.cancel_or_reject_alert);
+
     }
 
     @Override
     protected void onSetUpView() {
+       body = (EMTextMessageBody) message.getBody();
         try {
             gameStartTime = message.getMsgTime();
             currentTime = System.currentTimeMillis();
@@ -66,7 +71,7 @@ public class ChatViewsendGame extends BaseChatView {
                 if(currentTime-gameStartTime> SharedPreferenceHelper.getGameTimeout()){
                     SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), message.getMsgId());
                     initView();
-                    EMTextMessageBody body = (EMTextMessageBody) message.getBody();
+
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
                     mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                     mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
@@ -106,7 +111,8 @@ public class ChatViewsendGame extends BaseChatView {
                 mUserHead.setVisibility(View.VISIBLE);
                 mCancel.setVisibility(View.INVISIBLE);
                 mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_cancel));
-
+                mCancelOrReject.setVisibility(View.VISIBLE);
+                mCancelOrReject.setText(String.format("取消游戏，返还%s积分",body.getMessage()));
             }else if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_GAME_REJECT)) {
                 initView();
                 EMTextMessageBody body = (EMTextMessageBody) message.getBody();
@@ -120,7 +126,8 @@ public class ChatViewsendGame extends BaseChatView {
                     mWaitGame.setVisibility(View.VISIBLE);
                     mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_reject));
                     mCancel.setVisibility(View.INVISIBLE);
-
+                    mCancelOrReject.setVisibility(View.VISIBLE);
+                    mCancelOrReject.setText(String.format("对方拒绝游戏，返还%s积分",body.getMessage()));
                 } else {
                     mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
@@ -172,10 +179,11 @@ public class ChatViewsendGame extends BaseChatView {
                     mCancel.setVisibility(View.GONE);
                 }else{
                     if(mGameCancelListener !=null){
-
                         mGameCancelListener.onCancel(message);
                         mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_cancel));
                         mCancel.setVisibility(View.INVISIBLE);
+                        mCancelOrReject.setVisibility(View.VISIBLE);
+                        mCancelOrReject.setText(String.format("取消游戏，返还%s积分",body.getMessage()));
                     }
                 }
 
@@ -202,6 +210,7 @@ public class ChatViewsendGame extends BaseChatView {
         mAdverseHead.setVisibility(View.GONE);
         mUserHead.setVisibility(View.GONE);
         mRefuseGame.setVisibility(View.GONE);
+        mCancelOrReject.setVisibility(View.GONE);
 
     }
     public void setGameCancelListener(GameCancelListener listener){

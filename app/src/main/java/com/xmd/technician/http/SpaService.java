@@ -12,13 +12,15 @@ import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
+import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
+import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
-import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
+import com.xmd.technician.http.gson.CommentOrderRedPkResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
@@ -119,9 +121,9 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_COMMENT_ORDER_REDPK_COUNT)
-    Call<CommentOrderRedPkResutlt> getCommentOrderRedPkCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                                             @Field(RequestConstant.KEY_USER_TYPE) String userType);
+    Call<CommentOrderRedPkResult> getCommentOrderRedPkCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                            @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                                            @Field(RequestConstant.KEY_USER_TYPE) String userType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_MODIFY_PASSWORD)
@@ -432,9 +434,15 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_USER_SWITCHES)
-    Call<BaseResult> doGetUserSwitches(@Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
-                                          @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                          @Field(RequestConstant.KEY_TOKEN) String userToken
+    Call<UserSwitchesResult> doGetUserSwitches(@Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                               @Field(RequestConstant.KEY_TOKEN) String userToken
+    );
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_RECENTLY_VISITOR_LIST)
+    Call<RecentlyVisitorResult> getRecentlyVisitorList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                       @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                       @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType
     );
 
 

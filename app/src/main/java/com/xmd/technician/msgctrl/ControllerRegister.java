@@ -83,6 +83,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT,
                 MsgDef.MSG_DEF_GET_CREDIT_APPLICATIONS,
                 MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES,
+                MsgDef.MSG_DEF_GET_RECENTLY_VISITOR,
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

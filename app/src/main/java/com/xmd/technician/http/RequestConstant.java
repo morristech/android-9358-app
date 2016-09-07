@@ -56,6 +56,7 @@ public class RequestConstant {
     public static final String URL_GET_CLUB_LIST = BASE_URL + "/v2/tech/customer/tech/list";
     public static final String URL_GET_TECH_INFO_DETAIL = BASE_URL + "/v2/tech/customer/tech/view";
     public static final String URL_GET_MANAGER_INFO_DETAIL = BASE_URL + "/v2/tech/customer/manager/view";
+    public static final String URL_GET_RECENTLY_VISITOR_LIST = BASE_URL + "/v2/tech/customer/user/list";
     public static final String URL_DELETE_CONTACT = BASE_URL + "/v2/tech/customer/delete";
     public static final String URL_DO_DRAW_MONEY = BASE_URL + "/v2/wx/pay/user_reward_redpack";
     public static final String URL_GET_USER_WX_OPEN_ID = BASE_URL + "/v2/wx/oauth2/openid";
@@ -74,7 +75,7 @@ public class RequestConstant {
     public static final String URL_INTRODUCE_BIND = "/spa-manager/follow9358/index.html";
 
 
-    public static final String URL_GET_USER_SWITCHES = "/v2/user/switches";
+    public static final String URL_GET_USER_SWITCHES = BASE_URL +"/v2/user/switches";
     public static final String URL_COUPON_SHARE_EVENT_COUNT = BASE_URL + "/v1/profile/redpacket/share";
     public static final String URL_RANKING = "/spa-manager/manager/index.html?v=%s&userType=%s&sessionType=%s&token=%s";
 
@@ -168,6 +169,8 @@ public class RequestConstant {
     public static final String KEY_TIMEOUT = "timeout";
     public static final String KEY_REJECT = "reject";
     public static final String KEY_SUBMIT = "submit";
+    public static final String KEY_SWITCH_OFF = "off";
+    public static final String KEY_SWITCH_ON = "on";
 
 
     public static final String KEY_FILTER_ORDER = "filterOrder";

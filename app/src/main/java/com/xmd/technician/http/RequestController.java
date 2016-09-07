@@ -1,9 +1,7 @@
 package com.xmd.technician.http;
 
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 
 
 import com.hyphenate.chat.EMClient;
@@ -22,8 +20,10 @@ import com.xmd.technician.bean.DeleteContactResult;
 import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
+import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
+import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
@@ -32,7 +32,7 @@ import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AppUpdateConfigResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
-import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
+import com.xmd.technician.http.gson.CommentOrderRedPkResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
@@ -60,7 +60,6 @@ import com.xmd.technician.http.gson.WorkTimeResult;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.window.BaseActivity;
 
 import java.io.IOException;
 import java.util.Map;
@@ -241,6 +240,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES:
                 doGetClubUserSwitches();
+                break;
+            case MsgDef.MSG_DEF_GET_RECENTLY_VISITOR:
+                doGetRecentlyVisitorList((Map<String, String>) msg.obj);
                 break;
    /*         case MsgDef.MSG_DEF_DO_DRAW_MONEY:
                 doDrawMoney((Map<String,String>)msg.obj);
@@ -641,11 +643,11 @@ public class RequestController extends AbstractController {
     }
 
     private void getCommentOrderRedPkCount() {
-        Call<CommentOrderRedPkResutlt> call = getSpaService().getCommentOrderRedPkCount(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE, RequestConstant.USER_TYPE_TECH);
+        Call<CommentOrderRedPkResult> call = getSpaService().getCommentOrderRedPkCount(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE, RequestConstant.USER_TYPE_TECH);
 
-        call.enqueue(new TokenCheckedCallback<CommentOrderRedPkResutlt>() {
+        call.enqueue(new TokenCheckedCallback<CommentOrderRedPkResult>() {
             @Override
-            protected void postResult(CommentOrderRedPkResutlt result) {
+            protected void postResult(CommentOrderRedPkResult result) {
                 RxBus.getInstance().post(result);
             }
         });
@@ -1038,6 +1040,11 @@ public class RequestController extends AbstractController {
             });
         }
      */
+
+    /**
+     * 兑换积分
+     * @param params
+     */
     private void getExchangeApplications(Map<String, String> params) {
         Call<CreditApplicationsResult> call = getSpaService().getExchangeApplications(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_STATUS),
                 params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
@@ -1051,6 +1058,9 @@ public class RequestController extends AbstractController {
 
     }
 
+    /**
+     * 获取联系人备注
+     */
     private void doGetContactMark() {
         Call<MarkResult> call = getSpaService().getContactMark(RequestConstant.USER_TYPE_TECH, RequestConstant.TECH_CUSTOMER,
                 SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
@@ -1062,6 +1072,10 @@ public class RequestController extends AbstractController {
         });
     }
 
+    /**
+     * 发起游戏
+     * @param params
+     */
     private void doDiceGameSubmit(Map<String, String> params) {
 
         Call<SendGameResult> call = getSpaService().doDiceGameSubmit(params.get(RequestConstant.KEY_USER_CLUB_ID), params.get(RequestConstant.KEY_UER_CREDIT_AMOUNT),
@@ -1075,6 +1089,9 @@ public class RequestController extends AbstractController {
         });
     }
 
+    /**
+       游戏开始或拒绝
+     */
     private void doDiceGameAcceptOrReject(Map<String, String> params) {
         Call<GameResult> call = getSpaService().doDiceGameAcceptOrReject(RequestConstant.USER_TYPE_TECH, SharedPreferenceHelper.getUserToken(),
                 RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_DICE_GAME_ID), params.get(RequestConstant.KEY_DICE_GAME_STATUS));
@@ -1086,12 +1103,31 @@ public class RequestController extends AbstractController {
         });
 
     }
-    private void doGetClubUserSwitches(){
-        Call<BaseResult> call = getSpaService().doGetUserSwitches(SharedPreferenceHelper.getUserClubId(),RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken());
-        call.enqueue(new TokenCheckedCallback<BaseResult>() {
-            @Override
-            protected void postResult(BaseResult result) {
 
+    /**
+     * 获取俱乐部开关
+     */
+    private void doGetClubUserSwitches() {
+        Call<UserSwitchesResult> call = getSpaService().doGetUserSwitches(SharedPreferenceHelper.getUserClubId(), RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<UserSwitchesResult>() {
+            @Override
+            protected void postResult(UserSwitchesResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 最近访客
+     * @param params
+     */
+
+    private void doGetRecentlyVisitorList(Map<String, String> params) {
+        Call<RecentlyVisitorResult> call = getSpaService().getRecentlyVisitorList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE));
+        call.enqueue(new TokenCheckedCallback<RecentlyVisitorResult>() {
+            @Override
+            protected void postResult(RecentlyVisitorResult result) {
+                RxBus.getInstance().post(result);
             }
         });
     }

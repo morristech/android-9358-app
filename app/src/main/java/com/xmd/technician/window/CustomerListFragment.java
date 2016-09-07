@@ -9,14 +9,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Gravity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -70,7 +71,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     @Bind(R.id.content_dialog)
     TextView contentDialog;
     @Bind(R.id.contact_sidebar)
-    SideBar silebar;
+    SideBar sildebar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Subscription mGetCustomerListSubscription;
     private SortCustomerAdapter adapter;
@@ -144,10 +145,10 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
             }
             mSwipeRefreshLayout.setRefreshing(false);
             search.setOnClickListener(this);
-            silebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+            sildebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
                 @Override
                 public void onTouchingLetterChanged(String s) {
-                    silebar.setTextView(contentDialog);
+                    sildebar.setTextView(contentDialog);
                     int position = adapter.getPositionForSection(s.charAt(0));
                     if (position != -1) {
                         listView.setSelection(position);
@@ -218,7 +219,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
                     lastFisrstVisibleItem = firstVisibleItem;
                 }
             });
-
+            editText.setFilters(new InputFilter[]{filter});
 
             editText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -233,6 +234,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
                 @Override
                 public void afterTextChanged(Editable s) {
+
                     if(s.length()>0){
                         titleLayout.setVisibility(View.GONE);
                         searchCustomer();
@@ -273,6 +275,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         if (TextUtils.isEmpty(editStr)) {
             alertMessage.setVisibility(View.GONE);
         } else {
+            alertMessage.setVisibility(View.GONE);
             customerInfos.clear();
             for (CustomerInfo sortCustomer : mCustomerList) {
                 String name = sortCustomer.userNoteName;
@@ -352,4 +355,11 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         params.put(RequestConstant.KEY_CUSTOMER_TYPE,type);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
     }
+    private InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
+            else return null;
+        }
+    };
 }

@@ -94,6 +94,7 @@ public class CouponFragment extends BaseListFragment<CouponInfo> {
             intent.putExtra(Constant.PARAM_ACT_ID, couponInfo.actId);
             startActivity(intent);
         }
+
     }
 
     @Override

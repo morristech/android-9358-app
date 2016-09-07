@@ -7,8 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,14 +67,14 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     @Bind(R.id.content_dialog)
     TextView contentDialog;
     @Bind(R.id.contact_sidebar)
-    SideBar silebar;
+    SideBar sildebar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Subscription mGetCustomerListSubscription;
     private SortClubAdapter adapter;
     public static MyClubListFragment getInstance() {
         return new MyClubListFragment();
     }
-    private int lastFisrstVisibleItem = -1;
+    private int lastFirstVisibleItem = -1;
     private CharacterParser characterParser;
     private List<Manager> mManagerList = new ArrayList<Manager>();
     private List<Tech> mTechList = new ArrayList<Tech>();
@@ -82,7 +85,6 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_LIST);
     }
 
     @Nullable
@@ -95,7 +97,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     }
 
     protected void initView(View view) {
-
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_LIST);
         characterParser = CharacterParser.getInstance();
         search.setOnClickListener(this);
         mGetCustomerListSubscription = RxBus.getInstance().toObservable(ClubContactResult.class).subscribe(customer -> {
@@ -128,10 +130,10 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
             clubMember = new CLubMember(mManagerList.get(i).id, mManagerList.get(i).userType, mManagerList.get(i).avatarUrl, mManagerList.get(i).name, "", mManagerList.get(i).phoneNum);
             mClubList.add(0, clubMember);
         }
-        silebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+        sildebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String s) {
-                silebar.setTextView(contentDialog);
+                sildebar.setTextView(contentDialog);
                 int position = adapter.getPositionForSection(s.charAt(0));
                 if (position != -1) {
                     mListView.setSelection(position);
@@ -183,7 +185,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
                         int section = getSectionForPosition(firstVisibleItem);
                         int nextSection = getSectionForPosition(firstVisibleItem + 1);
                         int nextSecPositon = getPositonForSection(+nextSection);
-                        if (firstVisibleItem != lastFisrstVisibleItem) {
+                        if (firstVisibleItem != lastFirstVisibleItem) {
                             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mTitleLayout.getLayoutParams();
                             params.topMargin = 0;
                             mTitleLayout.setLayoutParams(params);
@@ -212,9 +214,11 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
                         mTitle.setText("店长");
                     }
 
-                    lastFisrstVisibleItem = firstVisibleItem;
+                    lastFirstVisibleItem = firstVisibleItem;
                 }
             });
+            editText.setFilters(new InputFilter[]{filter});
+
             editText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -228,12 +232,13 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
 
                 @Override
                 public void afterTextChanged(Editable s) {
+
                     if(s.length()>0){
                         mTitleLayout.setVisibility(View.GONE);
                         searchContact();
                     }else{
                         mTitleLayout.setVisibility(View.VISIBLE);
-                     closeSearch();
+                         closeSearch();
                     }
 
                 }
@@ -261,6 +266,7 @@ private void searchContact() {
     if (TextUtils.isEmpty(editStr)) {
         mAlterMessage.setVisibility(View.GONE);
     } else {
+        mAlterMessage.setVisibility(View.GONE);
         customerInfos.clear();
         for (CLubMember sortCustomer : mClubList) {
             String name = sortCustomer.name;
@@ -319,4 +325,11 @@ private void searchContact() {
         super.onPause();
         mSwipeRefreshLayout.setRefreshing(false);
     }
+    private InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
+            else return null;
+        }
+    };
 }

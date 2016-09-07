@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
@@ -45,6 +44,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
 
 /**
  * Created by sdcm on 15-11-24.
@@ -78,12 +78,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_ORDER_ITEM = 0;
     private static final int TYPE_PAID_COUPON_USER_DETAIL = 2;
     private static final int TYPE_CONVERSATION = 3;
-    private static final int TYPE_COUPON_INFO_ITEM_CUSH = 11;
-    private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
-    private static final int TYPE_COUPON_INFO_ITEM_FAVORUABLE = 13;
     private static final int TYPE_CREDIT_RECORD_ITEM = 4;
     private static final int TYPE_CREDIT_APPLICATION_ITEM = 5;
-
+    private static final int TYPE_COUPON_INFO_ITEM_CASH = 11;
+    private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
+    private static final int TYPE_COUPON_INFO_ITEM_FAVORABLE = 13;
     private static final int TYPE_OTHER_ITEM = 98;
     private static final int TYPE_FOOTER = 99;
 
@@ -129,11 +128,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_ORDER_ITEM;
             } else if (mData.get(position) instanceof CouponInfo) {
                 if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.cash_coupon))) {
-                    return TYPE_COUPON_INFO_ITEM_CUSH;
+                    return TYPE_COUPON_INFO_ITEM_CASH;
                 } else if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
                     return TYPE_COUPON_INFO_ITEM_DELIVERY;
                 } else {
-                    return TYPE_COUPON_INFO_ITEM_FAVORUABLE;
+                    return TYPE_COUPON_INFO_ITEM_FAVORABLE;
                 }
             } else if (mData.get(position) instanceof PaidCouponUserDetail) {
                 return TYPE_PAID_COUPON_USER_DETAIL;
@@ -152,34 +151,36 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (TYPE_ORDER_ITEM == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_item, parent, false);
-            return new OrderListItemViewHolder(view);
-        } else if (TYPE_COUPON_INFO_ITEM_CUSH == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_cush_item, parent, false);
-            return new CouponListItemViewHolder((view));
-        } else if (TYPE_COUPON_INFO_ITEM_DELIVERY == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_delivery_item, parent, false);
-            return new CouponListItemViewHolder((view));
-        } else if (TYPE_COUPON_INFO_ITEM_FAVORUABLE == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_favorable_item, parent, false);
-            return new CouponListItemViewHolder((view));
-        } else if (TYPE_PAID_COUPON_USER_DETAIL == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.paid_coupon_user_detail_list_item, parent, false);
-            return new PaidCouponUserDetailItemViewHolder((view));
-        } else if (TYPE_CONVERSATION == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
-            return new ConversationViewHolder(view);
-        } else if (TYPE_CREDIT_RECORD_ITEM == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_record_item, parent, false);
-            return new CreditRecordViewHolder(view);
-        } else if (TYPE_CREDIT_APPLICATION_ITEM == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_application_item, parent, false);
-            return new CreditApplicationViewHolder(view);
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
-            return new ListFooterHolder(view);
+        switch (viewType) {
+            case TYPE_ORDER_ITEM:
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_item, parent, false);
+                return new OrderListItemViewHolder(view);
+            case TYPE_COUPON_INFO_ITEM_CASH:
+                View viewCash = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_cush_item, parent, false);
+                return new CouponListItemViewHolder((viewCash));
+            case TYPE_COUPON_INFO_ITEM_DELIVERY:
+                View viewDelivery = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_delivery_item, parent, false);
+                return new CouponListItemViewHolder((viewDelivery));
+            case TYPE_COUPON_INFO_ITEM_FAVORABLE:
+                View viewFavorable = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_favorable_item, parent, false);
+                return new CouponListItemViewHolder((viewFavorable));
+            case TYPE_PAID_COUPON_USER_DETAIL:
+                View viewDetail = LayoutInflater.from(parent.getContext()).inflate(R.layout.paid_coupon_user_detail_list_item, parent, false);
+                return new PaidCouponUserDetailItemViewHolder((viewDetail));
+            case TYPE_CONVERSATION:
+                View viewConversion = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
+                return new ConversationViewHolder(viewConversion);
+            case TYPE_CREDIT_RECORD_ITEM:
+                View viewRecord = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_record_item, parent, false);
+                return new CreditRecordViewHolder(viewRecord);
+            case TYPE_CREDIT_APPLICATION_ITEM:
+                View viewApplication = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_application_item, parent, false);
+                return new CreditApplicationViewHolder(viewApplication);
+            default:
+                View viewDefault = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
+                return new ListFooterHolder(viewDefault);
         }
+
     }
 
     @Override
@@ -251,12 +252,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     e.printStackTrace();
                 }
             });
-        } else if (holder instanceof CouponListItemViewHolder) {
+            return;
+        }
+        if (holder instanceof CouponListItemViewHolder) {
             Object obj = mData.get(position);
             if (!(obj instanceof CouponInfo)) {
                 return;
             }
-
             final CouponInfo couponInfo = (CouponInfo) obj;
             CouponListItemViewHolder couponListItemViewHolder = (CouponListItemViewHolder) holder;
             couponListItemViewHolder.mTvCouponTitle.setText(couponInfo.actTitle);
@@ -288,7 +290,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     e.printStackTrace();
                 }
             });
-        } else if (holder instanceof PaidCouponUserDetailItemViewHolder) {
+            return;
+        }
+        if (holder instanceof PaidCouponUserDetailItemViewHolder) {
 
             Object obj = mData.get(position);
             if (!(obj instanceof PaidCouponUserDetail)) {
@@ -306,8 +310,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             itemHolder.mTvGetDate.setText(paidCouponUserDetail.getDate);
             itemHolder.mTvTelephone.setText(paidCouponUserDetail.telephone);
             itemHolder.mTvCouponStatusDescription.setText(paidCouponUserDetail.couponStatusDescription);
-
-        } else if (holder instanceof ConversationViewHolder) {
+            return;
+        }
+        if (holder instanceof ConversationViewHolder) {
 
             Object obj = mData.get(position);
             if (!(obj instanceof EMConversation)) {
@@ -316,7 +321,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final EMConversation conversation = (EMConversation) obj;
             ConversationViewHolder conversationHolder = (ConversationViewHolder) holder;
 
-            //conversationHolder.mName.setText(conversation.getUserName());
             if (conversation.getUnreadMsgCount() > 0) {
                 conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
                 conversationHolder.mUnread.setVisibility(View.VISIBLE);
@@ -354,7 +358,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                 } catch (NullPointerException e) {
-
+                    e.printStackTrace();
                 }
             }
 
@@ -365,8 +369,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     e.printStackTrace();
                 }
             });
-
-        } else if (holder instanceof CreditRecordViewHolder) {
+            return;
+        }
+        if (holder instanceof CreditRecordViewHolder) {
             Object obj = mData.get(position);
             if (!(obj instanceof CreditDetailBean)) {
                 return;
@@ -398,8 +403,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 creditRecordViewHolder.mCreditAmount.setTextColor(ResourceUtils.getColor(R.color.colorHead));
             }
 
+            return;
 
-        } else if (holder instanceof CreditApplicationViewHolder) {
+        }
+        if (holder instanceof CreditApplicationViewHolder) {
             Object obj = mData.get(position);
             if (!(obj instanceof ApplicationBean)) {
                 return;
@@ -417,7 +424,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             creditApplicationViewHolder.mCreditAmount.setText(String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             creditApplicationViewHolder.mCreditTime.setText(DateUtils.getTimestampString(new Date(applicationBean.createDatetime)));
-        } else if (holder instanceof ListFooterHolder) {
+            return;
+        }
+        if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);
             if (mIsEmpty) {
@@ -430,6 +439,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 footerHolder.itemFooter.setOnClickListener(v -> mCallback.onLoadMoreButtonClicked());
             }
             footerHolder.itemFooter.setText(desc);
+            return;
         }
     }
 
@@ -616,11 +626,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mCreditTime;
         @Bind(R.id.credit_amount)
         TextView mCreditAmount;
-
         public CreditApplicationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
+
 
 }

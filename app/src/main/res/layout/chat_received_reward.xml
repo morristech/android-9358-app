@@ -54,7 +54,7 @@
             android:drawablePadding="@dimen/personal_padding"
             android:textColor="@color/color_white"
             android:textSize="@dimen/fontRemark"
-            android:text="dhsdhsdhishishffdfdfdfdf" />
+             />
     </FrameLayout>
 
 </RelativeLayout>

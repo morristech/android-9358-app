@@ -469,7 +469,6 @@ public class Utils {
                 sum += 3;
             }
         }
-
         return stringBuffer.toString();
     }
 

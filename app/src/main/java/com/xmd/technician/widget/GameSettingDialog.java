@@ -72,7 +72,7 @@ public class GameSettingDialog extends Dialog {
         mText.add(mCommentGameOneHundred);
         mText.add(mCommentGameFiveHundred);
         mText.add(mCommentGameTenHundred);
-        mCommentGameTen.setSelected(true);
+        mCommentGameOne.setSelected(true);
     }
 
     @OnClick(R.id.dialog_alert_cancel_btn)

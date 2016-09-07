@@ -20,14 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.xmd.technician.Adapter.PageFragmentPagerAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,12 +33,11 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/7/1.
  */
-public class ContactsFragment extends BaseFragment implements View.OnClickListener{
+public class ContactsFragment extends BaseFragment implements View.OnClickListener {
     @Bind(R.id.table_contact)
     TextView mTableContact;
     @Bind(R.id.contact_left)
@@ -55,15 +52,17 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     ImageView mTabBottomImg;
     @Bind(R.id.vp_contact)
     ViewPager mViewpagerContact;
+    @Bind(R.id.contact_visitor)
+    RelativeLayout mContactVisitor;
+    @Bind(R.id.recently_visitor)
+    TextView mRecentlyVisitor;
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
     private List<Fragment> mlistViews;
-    private CustomerListFragment mCustomerListFragment;
-    private MyClubListFragment  mMyClubListFragment;
-    private int currentIndex;
+    private int mCurrentPage;
     private int screenWidth;
     private Activity ac;
-    private Map<String,String> params = new HashMap<>();
-    private View  viewM;
+    private Map<String, String> params = new HashMap<>();
+    private View viewM;
     private View view;
     private PopupWindow window = null;
     private LayoutInflater layoutInflater;
@@ -78,39 +77,47 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         initImageView();
         initViewPager();
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         view = inflater.inflate(R.layout.fragment_constacts, container, false);
+        view = inflater.inflate(R.layout.fragment_constacts, container, false);
         ButterKnife.bind(this, view);
-        ((TextView)view.findViewById(R.id.toolbar_title)).setText(R.string.main_conversion);
+        ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_conversion);
         view.findViewById(R.id.contact_more).setVisibility(View.VISIBLE);
-        imgRight =((ImageView)view.findViewById(R.id.toolbar_right_img));
+        imgRight = ((ImageView) view.findViewById(R.id.toolbar_right_img));
         imgRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.contact_add));
         imgRight.setOnClickListener(this);
-        mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+        mRecentlyVisitor.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
         return view;
     }
+
     private void initView() {
         mTableClub.setOnClickListener(this);
         mContactLeft.setOnClickListener(this);
+        mContactVisitor.setOnClickListener(this);
 
     }
-   private void initImageView(){
-       DisplayMetrics dpMetrics = new DisplayMetrics();
-       getActivity().getWindow().getWindowManager().getDefaultDisplay().getMetrics(dpMetrics);
-       screenWidth = dpMetrics.widthPixels;
-       LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabBottomImg.getLayoutParams();
-       lp.width = screenWidth / 2;
-       mTabBottomImg.setLayoutParams(lp);
-   }
-    private void resetTextView(){
+
+    private void initImageView() {
+        DisplayMetrics dpMetrics = new DisplayMetrics();
+        getActivity().getWindow().getWindowManager().getDefaultDisplay().getMetrics(dpMetrics);
+        screenWidth = dpMetrics.widthPixels;
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabBottomImg.getLayoutParams();
+        lp.width = screenWidth / 3;
+        mTabBottomImg.setLayoutParams(lp);
+    }
+
+    private void resetTextView() {
+        mRecentlyVisitor.setTextColor(ResourceUtils.getColor(R.color.colorHead));
         mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorHead));
         mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorHead));
     }
-    private void initViewPager(){
+
+    private void initViewPager() {
         mlistViews = new ArrayList<>();
         mPageFragmentPagerAdapter = new PageFragmentPagerAdapter(getChildFragmentManager(), getActivity());
+        mPageFragmentPagerAdapter.addFragment(new RecentLyVisitorFragment());
         mPageFragmentPagerAdapter.addFragment(new CustomerListFragment());
         mPageFragmentPagerAdapter.addFragment(new MyClubListFragment());
         mViewpagerContact.setAdapter(mPageFragmentPagerAdapter);
@@ -119,35 +126,34 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onPageScrolled(int position, float offset, int positionOffsetPixels) {
                 LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabBottomImg.getLayoutParams();
-                if(currentIndex ==0 &&position==0){
-                    lp.leftMargin = (int) (offset * (screenWidth * 1.0 / 2) + currentIndex
-                            * (screenWidth / 2));
-
-                } else if (currentIndex == 1 && position == 0)
-                {
-                    lp.leftMargin = (int) (-(1 - offset)
-                            * (screenWidth * 1.0 / 2) + currentIndex
-                            * (screenWidth / 2));
+                if(mCurrentPage ==0 &&position==0){
+                    lp.leftMargin = mCurrentPage *(screenWidth / 3);
+                } else if(mCurrentPage ==1 && position ==1){
+                    lp.leftMargin =  mCurrentPage * (screenWidth / 3);
+                }else if(mCurrentPage ==2 && position ==2){
+                    lp.leftMargin =  mCurrentPage * (screenWidth / 3);
                 }
                 mTabBottomImg.setLayoutParams(lp);
             }
 
             @Override
             public void onPageSelected(int position) {
-                    resetTextView();
-                switch (position){
+                resetTextView();
+                switch (position) {
                     case 0:
-                        mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-
-                        currentFragmentIsContact = true;
+                        mRecentlyVisitor.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                        currentFragmentIsContact = false;
                         break;
                     case 1:
+                        mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                        currentFragmentIsContact = true;
+                        break;
+                    case 2:
                         mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-
                         currentFragmentIsContact = false;
                         break;
                 }
-                currentIndex = position;
+                mCurrentPage = position;
             }
 
             @Override
@@ -165,23 +171,30 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.contact_left:
-        if(currentFragmentIsContact){
-            showOutMenu();
-        }else{
+        switch (v.getId()) {
+            case R.id.contact_visitor:
                 resetTextView();
                 mViewpagerContact.setCurrentItem(0);
-                currentIndex = 0;
-                mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                mCurrentPage = 0;
+                mRecentlyVisitor.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                currentFragmentIsContact = false;
 
-                currentFragmentIsContact = true;
-        }
+                break;
+            case R.id.contact_left:
+                if (currentFragmentIsContact) {
+                    showOutMenu();
+                } else {
+                    resetTextView();
+                    mViewpagerContact.setCurrentItem(1);
+                    mCurrentPage = 1;
+                    mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                    currentFragmentIsContact = true;
+                }
                 break;
             case R.id.table_club:
                 resetTextView();
-                mViewpagerContact.setCurrentItem(1);
-                currentIndex = 1;
+                mViewpagerContact.setCurrentItem(2);
+                mCurrentPage = 2;
                 mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
 
                 break;
@@ -191,15 +204,16 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 break;
         }
     }
-    public void showOutMenu(){
+
+    public void showOutMenu() {
         layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        viewM = layoutInflater.inflate(R.layout.search_contacts_layout,null);
+        viewM = layoutInflater.inflate(R.layout.search_contacts_layout, null);
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
         lp.alpha = 0.5f;
         lp.dimAmount = 0.5f;
         getActivity().getWindow().setAttributes(lp);
-        if(window ==null){
-            window = new PopupWindow(viewM, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,true);
+        if (window == null) {
+            window = new PopupWindow(viewM, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
             window.setAnimationStyle(R.style.popup_window_style);
             ColorDrawable dw = new ColorDrawable(Color.parseColor("#00FF0000"));
             window.setBackgroundDrawable(dw);
@@ -219,44 +233,45 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
             LinearLayout wxContact = (LinearLayout) viewM.findViewById(R.id.wx_contact);
             TextView cancel = (TextView) viewM.findViewById(R.id.cancel_contact);
 
-            allContact.setOnClickListener((v)->{
+            allContact.setOnClickListener((v) -> {
                 requestContactList("");
                 mTableContact.setText(ResourceUtils.getString(R.string.all_contact));
                 window.dismiss();
             });
-            phoneContact.setOnClickListener((v)->{
+            phoneContact.setOnClickListener((v) -> {
                 requestContactList(RequestConstant.TECH_ADD);
                 mTableContact.setText(ResourceUtils.getString(R.string.phone_contact));
                 window.dismiss();
             });
-            fansContact.setOnClickListener((v)->{
+            fansContact.setOnClickListener((v) -> {
                 requestContactList(RequestConstant.FANS_USER);
                 mTableContact.setText(ResourceUtils.getString(R.string.fans_contact));
                 window.dismiss();
             });
-            wxContact.setOnClickListener((v)->{
+            wxContact.setOnClickListener((v) -> {
                 requestContactList(RequestConstant.WX_USER);
                 mTableContact.setText(ResourceUtils.getString(R.string.wx_contact));
                 window.dismiss();
             });
-            cancel.setOnClickListener((v)->{
-                if(window!=null){
+            cancel.setOnClickListener((v) -> {
+                if (window != null) {
                     window.dismiss();
                 }
             });
         }
         try {
-            if(window != null){
-                window.showAtLocation(view.findViewById(R.id.search_contact), Gravity.BOTTOM,0,0);
+            if (window != null) {
+                window.showAtLocation(view.findViewById(R.id.search_contact), Gravity.BOTTOM, 0, 0);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-    private void requestContactList(String type){
+
+    private void requestContactList(String type) {
         params.clear();
-        params.put(RequestConstant.KEY_CUSTOMER_TYPE,type);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
+        params.put(RequestConstant.KEY_CUSTOMER_TYPE, type);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST, params);
     }
 }

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,11 +16,12 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.CreditStatusResult;
+import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.CommentOrderRedPkResutlt;
+import com.xmd.technician.http.gson.CommentOrderRedPkResult;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.bean.TechSummaryInfo;
@@ -69,11 +69,15 @@ public class PersonalFragment extends BaseFragment {
     TextView mCredit;
     @Bind(R.id.credit_center)
     RelativeLayout mCreditCenter;
+    @Bind(R.id.account_item)
+    RelativeLayout mAccountItem;
+
 
     private Subscription mTechInfoSubscription;
     private Subscription mCommentOrderSubscription;
     private Subscription mSubmitInviteSubscription;
     private Subscription mCreditStatusSubscription;
+    private Subscription mUserSwitchesSubscription;
 
     private TechSummaryInfo mTechInfo;
     private QRDialog mQRDialog;
@@ -84,7 +88,7 @@ public class PersonalFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-      //  MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
+
         return inflater.inflate(R.layout.personal_fragment, container, false);
     }
 
@@ -97,10 +101,14 @@ public class PersonalFragment extends BaseFragment {
         mTechInfoSubscription = RxBus.getInstance().toObservable(TechCurrentResult.class).subscribe(
                 techCurrentResult -> handleTechCurrentResult(techCurrentResult));
 
-        mCommentOrderSubscription = RxBus.getInstance().toObservable(CommentOrderRedPkResutlt.class).subscribe(
+        mCommentOrderSubscription = RxBus.getInstance().toObservable(CommentOrderRedPkResult.class).subscribe(
                 commentOrderRedPkResult -> handleCommentOrderRedPk(commentOrderRedPkResult));
 
         mSubmitInviteSubscription = RxBus.getInstance().toObservable(InviteCodeResult.class).subscribe(inviteCodeResult -> submitInviteResult(inviteCodeResult));
+
+        mUserSwitchesSubscription = RxBus.getInstance().toObservable(UserSwitchesResult.class).subscribe(
+                switchesResult -> handleUserSwitchResult(switchesResult)
+        );
 
     }
 
@@ -109,6 +117,7 @@ public class PersonalFragment extends BaseFragment {
         super.onResume();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
     }
 
     @Override
@@ -122,7 +131,7 @@ public class PersonalFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroyView();
-        RxBus.getInstance().unsubscribe(mTechInfoSubscription, mCommentOrderSubscription, mSubmitInviteSubscription, mCreditStatusSubscription);
+        RxBus.getInstance().unsubscribe(mTechInfoSubscription, mCommentOrderSubscription, mSubmitInviteSubscription, mCreditStatusSubscription,mUserSwitchesSubscription);
     }
 
     private void initView() {
@@ -144,9 +153,9 @@ public class PersonalFragment extends BaseFragment {
         mCreditStatusSubscription = RxBus.getInstance().toObservable(CreditStatusResult.class).subscribe(
                 result -> {
                     if (result.statusCode == 200) {
-                        if (Utils.isNotEmpty(result.respData.systemSwitch) && result.respData.systemSwitch.equals("on")) {
+                        if (Utils.isNotEmpty(result.respData.systemSwitch) && result.respData.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)) {
                             mCreditCenter.setVisibility(View.VISIBLE);
-                            if (result.respData.clubSwitch.equals("on")) {
+                            if (result.respData.clubSwitch.equals(RequestConstant.KEY_SWITCH_ON)) {
                                 isCreditCanExchange = true;
                             }
                         } else {
@@ -174,8 +183,17 @@ public class PersonalFragment extends BaseFragment {
             initView();
         }
     }
+    private void handleUserSwitchResult(UserSwitchesResult switchResult) {
+        if (switchResult.statusCode == 200){
+             if(switchResult.respData.account.switchX.equals(RequestConstant.KEY_SWITCH_OFF)){
+                mAccountItem.setVisibility(View.GONE);
+            }else{
+                mAccountItem.setVisibility(View.VISIBLE);
+        }
+    }
+    }
 
-    private void handleCommentOrderRedPk(CommentOrderRedPkResutlt result) {
+    private void handleCommentOrderRedPk(CommentOrderRedPkResult result) {
         if (result.respData != null) {
             if (result.respData.accountAmount > 0) {
                 mAccountMoney.setText(String.format("%1.2f元", result.respData.accountAmount));
@@ -223,10 +241,6 @@ public class PersonalFragment extends BaseFragment {
                 mWorkStatus.setEnabled(true);
             }
         }
-    }
-
-    private void handlerCreditStatus(CreditStatusResult result) {
-
     }
 
     @OnClick(R.id.info_item)
@@ -346,4 +360,5 @@ public class PersonalFragment extends BaseFragment {
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
         }
     }
+
 }
