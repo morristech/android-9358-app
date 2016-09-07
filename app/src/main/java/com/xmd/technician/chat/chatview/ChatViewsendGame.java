@@ -29,7 +29,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2016/8/22.
  */
-public class ChatViewSendGame extends BaseChatView {
+public class ChatViewsendGame extends BaseChatView {
     private TextView mGameAmount, mAdverseName, mUserName, mWaitGame, mGameIntroduce, mRefuseGame,mCancel,mCancelOrReject;
     private RoundImageView mAdverseHead, mUserHead;
     private String mDiceGameAmount, mDiceAdverseName, mDiceUserName, mDiceWaitGame;
@@ -39,7 +39,7 @@ public class ChatViewSendGame extends BaseChatView {
     private EMTextMessageBody body;
 
 
-    public ChatViewSendGame(Context context, EMMessage.Direct direct, EMConversation emConversation) {
+    public ChatViewsendGame(Context context, EMMessage.Direct direct, EMConversation emConversation) {
         super(context, direct);
         this.emConversation = emConversation;
     }
