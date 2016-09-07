@@ -219,11 +219,11 @@ public class SharedPreferenceHelper {
 
     public static void setUserIsTech(String userChatId, String isTech) {
 
-        mSettingPreference.edit().putString(userChatId + "1", isTech).apply();
+        mSettingPreference.edit().putString(userChatId + "11", isTech).apply();
     }
 
     public static String getUserIsTech(String userChatId) {
-        return mSettingPreference.getString(userChatId + "1", "");
+        return mSettingPreference.getString(userChatId + "11", "");
     }
 
     public static void setUserRemarkName(String userChatId, String remark) {
@@ -249,6 +249,11 @@ public class SharedPreferenceHelper {
     public static Integer getGameTimeout() {
         return mSettingPreference.getInt(KEY_CLUB_GAME_TIMEOUT, 86400 * 1000);
     }
-
+    public static void setTechNo(String techId,String techNo){
+        mSettingPreference.edit().putString(techId+"techNo",techNo).apply();
+    }
+    public static String  getTechNo(String techId){
+        return mSettingPreference.getString(techId+"techNo","");
+    }
 
 }

@@ -343,7 +343,7 @@
     <string name="cash_coupon">现金券</string>
     <string name="delivery_coupon">点钟券</string>
     <string name="credit_now">现有积分</string>
-    <string name="credit_freeze">现有积分</string>
+    <string name="credit_freeze">冻结积分</string>
     <string name="credit_rule">积分规则</string>
     <string name="credit_exchange">积分兑换</string>
     <string name="credit_record">积分记录</string>
@@ -352,7 +352,7 @@
     <string name="edit_credit">请输入兑换金额</string>
     <string name="credit_alert">提示：</string>
     <string name="credit_alert_text1">1、确认兑换后，请与会所管理者联系。</string>
-    <string name="credit_alert_text2">2、如果管理者未进行确认，7天后默认拒绝，退款积分</string>
+    <string name="credit_alert_text2">2、如果管理者未进行确认，7天后默认拒绝，返回积分</string>
     <string name="credit_alert_shortage">您最多可兑换</string>
     <string name="all_contact">全部客户</string>
     <string name="register_alert">提示：客人尚未注册，提醒用户注册。</string>

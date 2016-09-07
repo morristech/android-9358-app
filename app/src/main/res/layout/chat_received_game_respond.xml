@@ -29,7 +29,7 @@
     <LinearLayout
         android:id="@+id/dice_game_sent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="173dp"
         android:layout_below="@+id/time"
         android:layout_toLeftOf="@+id/avatar"
         android:orientation="vertical">
@@ -132,14 +132,13 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dialog_content_item_height"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_15"
+            android:layout_marginTop="@dimen/margin_10"
             android:background="@drawable/reward_tip_bg"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/margin_25"
             android:paddingRight="@dimen/margin_25"
             android:visibility="gone">
-
             <TextView
                 android:id="@+id/dice_game_again"
                 android:layout_width="wrap_content"

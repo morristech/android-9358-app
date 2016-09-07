@@ -126,11 +126,16 @@
                 <ImageView style="@style/user_center_ivRight" />
 
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_15"
+                android:background="@color/colorMain"/>
 
             <RelativeLayout
                 android:id="@+id/account_item"
                 style="@style/user_center_layout"
-                android:layout_marginTop="@dimen/margin_15">
+                android:visibility="gone"
+                >
 
                 <ImageView
                     style="@style/user_center_imLeft"

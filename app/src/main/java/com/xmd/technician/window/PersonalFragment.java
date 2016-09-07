@@ -76,7 +76,7 @@ public class PersonalFragment extends BaseFragment {
     private Subscription mTechInfoSubscription;
     private Subscription mCommentOrderSubscription;
     private Subscription mSubmitInviteSubscription;
-    private Subscription mCreditStatusSubscription;
+
     private Subscription mUserSwitchesSubscription;
 
     private TechSummaryInfo mTechInfo;
@@ -131,7 +131,7 @@ public class PersonalFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroyView();
-        RxBus.getInstance().unsubscribe(mTechInfoSubscription, mCommentOrderSubscription, mSubmitInviteSubscription, mCreditStatusSubscription,mUserSwitchesSubscription);
+        RxBus.getInstance().unsubscribe(mTechInfoSubscription, mCommentOrderSubscription, mSubmitInviteSubscription, mUserSwitchesSubscription);
     }
 
     private void initView() {
@@ -150,23 +150,6 @@ public class PersonalFragment extends BaseFragment {
         }
         mClubId = mTechInfo.clubId;
         Glide.with(this).load(mTechInfo.imageUrl).into(mAvatar);
-        mCreditStatusSubscription = RxBus.getInstance().toObservable(CreditStatusResult.class).subscribe(
-                result -> {
-                    if (result.statusCode == 200) {
-                        if (Utils.isNotEmpty(result.respData.systemSwitch) && result.respData.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)) {
-                            mCreditCenter.setVisibility(View.VISIBLE);
-                            if (result.respData.clubSwitch.equals(RequestConstant.KEY_SWITCH_ON)) {
-                                isCreditCanExchange = true;
-                            }
-                        } else {
-                            mCreditCenter.setVisibility(View.GONE);
-                        }
-
-                    }
-                }
-
-        );
-
     }
 
     private void handleTechCurrentResult(TechCurrentResult result) {
@@ -185,11 +168,17 @@ public class PersonalFragment extends BaseFragment {
     }
     private void handleUserSwitchResult(UserSwitchesResult switchResult) {
         if (switchResult.statusCode == 200){
-             if(switchResult.respData.account.switchX.equals(RequestConstant.KEY_SWITCH_OFF)){
-                mAccountItem.setVisibility(View.GONE);
-            }else{
+            if(switchResult.respData.account.switchX.equals(RequestConstant.KEY_SWITCH_ON)&&switchResult.respData.credit.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)){
                 mAccountItem.setVisibility(View.VISIBLE);
-        }
+            }else{
+                mAccountItem.setVisibility(View.GONE);
+            }
+            if(switchResult.respData.credit.clubSwitch.equals(RequestConstant.KEY_SWITCH_ON)&&switchResult.respData.credit.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)){
+                mCreditCenter.setVisibility(View.VISIBLE);
+                isCreditCanExchange = true;
+            }else{
+                mCreditCenter.setVisibility(View.GONE);
+            }
     }
     }
 

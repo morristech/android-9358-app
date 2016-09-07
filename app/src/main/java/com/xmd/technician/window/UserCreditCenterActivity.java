@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.xmd.technician.Adapter.PageFragmentPagerAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CreditAccountResult;
+import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -65,15 +66,16 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
     ViewPager mViewpagerContact;
     @Bind(R.id.ll_detail)
     LinearLayout llDetail;
-    private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
-
 
     private Subscription getCreditUserAccountSubscription;
+    private Subscription mCreditStatusSubscription;
+
     private int mTechCreditTotal, mFreezeCredit;
     private int currentIndex;
     private int screenWidth;
+    private int exChangeLimitation;
     private List<Fragment> mFragmentViews;
-
+    private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,9 +89,18 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
+    }
+
     protected void initView() {
         getCreditUserAccountSubscription = RxBus.getInstance().toObservable(CreditAccountResult.class).subscribe(
                 result -> handlerCreditAmount(result)
+        );
+        mCreditStatusSubscription = RxBus.getInstance().toObservable(CreditStatusResult.class).subscribe(
+                statusResult -> exChangeLimitation = statusResult.respData.exchangeLimitation
         );
         initImageView();
         initViewPager();
@@ -171,12 +182,12 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
                 break;
             case R.id.credit_exchange:
                 //兑换积分
-                if (mTechCreditTotal > 0) {
+                if (mTechCreditTotal > exChangeLimitation) {
                     Intent intent = new Intent(UserCreditCenterActivity.this, CreditExchangeActivity.class);
                     intent.putExtra(RequestConstant.KEY_UER_CREDIT_AMOUNT, mTechCreditTotal);
                     startActivity(intent);
                 } else {
-                    makeShortToast("暂无可兑换的积分");
+                    makeShortToast(String.format("会所限制大于%s积分才能进行兑换",String.valueOf(exChangeLimitation)));
                 }
                 break;
             case R.id.credit_get:
@@ -201,10 +212,23 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(getCreditUserAccountSubscription);
+        RxBus.getInstance().unsubscribe(getCreditUserAccountSubscription,mCreditStatusSubscription);
     }
 
     private void handlerCreditAmount(CreditAccountResult result) {
+        if(result.respData.size()<=0){
+            llDetail.setVisibility(View.GONE);
+            mCreditIsEmpty.setVisibility(View.VISIBLE);
+            SpannableString msp = new SpannableString("你没有积分了，如何获取积分");
+            msp.setSpan(new UnderlineSpan(), 7, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            msp.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.get_credit_color)), 7, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mGetCredit.setText(msp);
+            mGetCredit.setMovementMethod(LinkMovementMethod.getInstance());
+            mGetCredit.setClickable(true);
+            mCreditAmount.setText("0");
+            mCreditFreeze.setText("0");
+            return;
+        }
         if (result.respData.size() > 0) {
             mTechCreditTotal = result.respData.get(0).amount;
             mFreezeCredit = result.respData.get(0).freezeAmount;

@@ -19,6 +19,7 @@ import com.xmd.technician.bean.CreditAccountResult;
 import com.xmd.technician.bean.CreditExchangeResult;
 import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -79,6 +80,12 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher 
                     if (result.statusCode == 200) {
                         makeShortToast(ResourceUtils.getString(R.string.credit_exchange_game));
                         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
+                        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                            @Override
+                            public void run() {
+                                CreditExchangeActivity.this.finish();
+                            }
+                        },1500);
                     } else {
                         makeShortToast(result.msg);
                     }

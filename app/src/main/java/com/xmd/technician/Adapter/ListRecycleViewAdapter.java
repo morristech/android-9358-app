@@ -313,7 +313,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             return;
         }
         if (holder instanceof ConversationViewHolder) {
-
             Object obj = mData.get(position);
             if (!(obj instanceof EMConversation)) {
                 return;
@@ -331,6 +330,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (conversation.getAllMsgCount() != 0) {
                 // 把最后一条消息的内容作为item的message内容
                 EMMessage lastMessage = conversation.getLastMessage();
+                String fromId = lastMessage.getFrom();
+                String toId = lastMessage.getTo();
                 Spannable span = SmileUtils.getSmiledText(mContext, CommonUtils.getMessageDigest(lastMessage, mContext));
                 try {
                     if (lastMessage.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE).equals(ChatConstant.KEY_MSG_GAME_TYPE)) {
@@ -359,6 +360,44 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     e.printStackTrace();
                 } catch (NullPointerException e) {
                     e.printStackTrace();
+                }
+                conversationHolder.mUserManagerType.setVisibility(View.GONE);
+                conversationHolder.mUserTechType.setVisibility(View.GONE);
+                if(conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())){
+                    if(SharedPreferenceHelper.getUserIsTech(toId).equals("tech")){
+                        try {
+                            if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO))){
+                                String last = conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO);
+                              //  conversationHolder.mUserTechType.setVisibility(View.VISIBLE);
+                              //  conversationHolder.mUserTechType.setText(Utils.changeColor(last,ResourceUtils.getColor(R.color.contact_marker),1,last.length()));
+                            }
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                        }
+                    } else if(SharedPreferenceHelper.getUserIsTech(toId).equals("manager")){
+                      //  conversationHolder.mUserManagerType.setVisibility(View.VISIBLE);
+                    }
+
+                }else{
+                    try {
+
+                        if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID)));
+                        if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO))){
+                            String last = conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO);
+                          //  conversationHolder.mUserTechType.setVisibility(View.VISIBLE);
+                           // conversationHolder.mUserTechType.setText(Utils.changeColor(last,ResourceUtils.getColor(R.color.contact_marker),1,last.length()));
+                        }
+
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_GAME_CLUB_ID))){
+                            conversationHolder.mUserManagerType.setVisibility(View.VISIBLE);
+                        }
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -415,14 +454,17 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             CreditApplicationViewHolder creditApplicationViewHolder = (CreditApplicationViewHolder) holder;
             if (applicationBean.status.equals(RequestConstant.KEY_APPROVE)) {
                 creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_accept), String.valueOf(applicationBean.amount)));
+                creditApplicationViewHolder.mCreditAmount.setText("-"+String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             } else if (applicationBean.status.equals(RequestConstant.KEY_TIMEOUT)) {
                 creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_overtime), String.valueOf(applicationBean.amount)));
+                creditApplicationViewHolder.mCreditAmount.setText("(解冻)"+String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             } else if (applicationBean.status.equals(RequestConstant.KEY_REJECT)) {
                 creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_reject), String.valueOf(applicationBean.amount)));
+                creditApplicationViewHolder.mCreditAmount.setText("(解冻)"+String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             } else {
                 creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_undo), String.valueOf(applicationBean.amount)));
+                creditApplicationViewHolder.mCreditAmount.setText("(冻结)"+String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             }
-            creditApplicationViewHolder.mCreditAmount.setText(String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             creditApplicationViewHolder.mCreditTime.setText(DateUtils.getTimestampString(new Date(applicationBean.createDatetime)));
             return;
         }
@@ -589,6 +631,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mTime;
         @Bind(R.id.unread)
         TextView mUnread;
+        @Bind(R.id.user_manager_type)
+        TextView mUserManagerType;
+        @Bind(R.id.user_tech_type)
+        TextView mUserTechType;
 
         public ConversationViewHolder(View itemView) {
             super(itemView);

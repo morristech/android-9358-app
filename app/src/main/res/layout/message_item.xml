@@ -56,6 +56,36 @@
                      android:textColor="@color/colorTitle"
                      />
                  <TextView
+                     android:id="@+id/user_manager_type"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_toRightOf="@id/name"
+                     android:layout_marginLeft="@dimen/margin_5"
+                     android:text="@string/contact_manager"
+                     android:textColor="@color/color_white"
+                     android:background="@drawable/chat_manager_type_bg"
+                     android:textSize="@dimen/fontRemark"
+                     android:paddingBottom="@dimen/margin_2"
+                     android:paddingTop="@dimen/margin_2"
+                     android:paddingLeft="@dimen/margin_5"
+                     android:paddingRight="@dimen/margin_5"
+                     android:visibility="gone"
+                     />
+                 <TextView
+                     android:id="@+id/user_tech_type"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_toRightOf="@id/name"
+                     android:layout_marginLeft="@dimen/margin_5"
+                     android:textColor="@color/colorTitle"
+                     android:textSize="@dimen/fontRemark"
+                     android:paddingBottom="@dimen/margin_2"
+                     android:paddingTop="@dimen/margin_2"
+                     android:paddingLeft="@dimen/margin_5"
+                     android:paddingRight="@dimen/margin_5"
+                     android:visibility="gone"
+                     />
+                 <TextView
                      android:id="@+id/time"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"

@@ -235,6 +235,15 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     EMMessage message = result.message;
                     message.setAttribute(ChatConstant.KEY_GAME_STATUS, ChatConstant.KEY_CANCEL_GAME_TYPE);
                     sendMessage(result.message);
+                    try {
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put(RequestConstant.KEY_DICE_GAME_STATUS, ChatConstant.KEY_CANCEL_GAME_TYPE);
+                        params.put(RequestConstant.KEY_DICE_GAME_ID, message.getStringAttribute(RequestConstant.KEY_DICE_GAME_ID).substring(5));
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT,params);
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                    }
+
                 }
         );
 
@@ -401,7 +410,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mChatAdapter.setListItemClickListener(new EMessageListItemClickListener() {
             @Override
             public void onResendClick(EMMessage message) {
-                new RewardConfirmDialog(TechApplication.getAppContext(), getString(R.string.resend), getString(R.string.confirm_resend), "") {
+                new RewardConfirmDialog(ChatActivity.this, getString(R.string.resend), getString(R.string.confirm_resend), "") {
                     @Override
                     public void onConfirmClick() {
                         super.onConfirmClick();
@@ -438,7 +447,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVER_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
             } else if (result.respData.status.equals(ChatConstant.KEY_GAME_REJECT)) {
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_GAME_REJECT, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
-            } else {
+            } else if (result.respData.status.equals(ChatConstant.KEY_OVERTIME_GAME)){
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVERTIME_GAME, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
             }
         }
