@@ -43,7 +43,6 @@ public class InviteDialog extends Dialog implements TextWatcher{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.invite_input_dialog);
-
         ButterKnife.bind(this);
         mClubInviteEdt.addTextChangedListener(this);
     }

@@ -34,6 +34,7 @@ public class ApplicationBean {
     public String rejectReason;
     public long createDatetime;
     public long updateDatetime;
+    public String createDate;
 
    
 }

@@ -351,17 +351,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="@dimen/dialog_multi_check_default_height"
+                        android:layout_marginLeft="@dimen/margin_20"
                         android:textColor="@color/dice_game_name_color"
                         android:textSize="@dimen/fontTitle"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        />
 
                     <TextView
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dialog_multi_check_default_height"
+                        android:layout_marginRight="@dimen/margin_20"
                         android:textColor="@color/dice_game_name_color"
                         android:textSize="@dimen/fontTitle"
                         android:textStyle="bold" />

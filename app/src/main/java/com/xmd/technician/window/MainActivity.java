@@ -130,6 +130,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @OnClick(R.id.main_button_personal)
     public void gotoPersonFragment() {
         switchFragment(TAB_INDEX_PERSONAL);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
     }
 
     private void switchFragment(int index) {

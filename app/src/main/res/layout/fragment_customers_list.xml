@@ -44,6 +44,7 @@
       android:layout_height="match_parent"
       android:background="@color/colorMain"
       >
+
       <android.support.v4.widget.SwipeRefreshLayout
           android:id="@+id/swipe_refresh_widget"
           android:layout_width="match_parent"
@@ -53,7 +54,9 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:layout_gravity="center"
-              android:divider="@null" />
+              android:divider="@null"
+              android:visibility="gone"
+              />
           </android.support.v4.widget.SwipeRefreshLayout>
       <TextView
           android:id="@+id/title_layout_no_friends"
@@ -106,6 +109,14 @@
           android:layout_marginRight="@dimen/margin_5"
           android:layout_marginTop="@dimen/margin_5"
           />
+      <ProgressBar
+          android:id="@+id/status_progressbar"
+          android:layout_width="@dimen/search_view_height"
+          android:layout_height="@dimen/search_view_height"
+            android:layout_gravity="center"
+          android:layout_toLeftOf="@+id/content_container"
+           />
+
 
   </FrameLayout>
 

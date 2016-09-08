@@ -10,12 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ResourceUtils;
@@ -31,10 +29,8 @@ import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.InviteDialog;
 import com.xmd.technician.widget.QRDialog;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -76,7 +72,6 @@ public class PersonalFragment extends BaseFragment {
     private Subscription mTechInfoSubscription;
     private Subscription mCommentOrderSubscription;
     private Subscription mSubmitInviteSubscription;
-
     private Subscription mUserSwitchesSubscription;
 
     private TechSummaryInfo mTechInfo;
@@ -119,6 +114,8 @@ public class PersonalFragment extends BaseFragment {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
     }
+
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -173,12 +170,18 @@ public class PersonalFragment extends BaseFragment {
             }else{
                 mAccountItem.setVisibility(View.GONE);
             }
-            if(switchResult.respData.credit.clubSwitch.equals(RequestConstant.KEY_SWITCH_ON)&&switchResult.respData.credit.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)){
-                mCreditCenter.setVisibility(View.VISIBLE);
-                isCreditCanExchange = true;
-            }else{
-                mCreditCenter.setVisibility(View.GONE);
+            if(switchResult.respData.credit.clubSwitch!=null &&switchResult.respData.credit.systemSwitch!=null ){
+                if(switchResult.respData.credit.clubSwitch.equals(RequestConstant.KEY_SWITCH_ON)&&switchResult.respData.credit.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)){
+                    mCreditCenter.setVisibility(View.VISIBLE);
+                    isCreditCanExchange = true;
+                }else{
+                    mCreditCenter.setVisibility(View.GONE);
+                }
             }
+
+
+
+
     }
     }
 

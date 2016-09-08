@@ -187,7 +187,7 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
                     intent.putExtra(RequestConstant.KEY_UER_CREDIT_AMOUNT, mTechCreditTotal);
                     startActivity(intent);
                 } else {
-                    makeShortToast(String.format("会所限制大于%s积分才能进行兑换",String.valueOf(exChangeLimitation)));
+                    makeShortToast(String.format(ResourceUtils.getString(R.string.exchange_credit_limit),String.valueOf(exChangeLimitation)));
                 }
                 break;
             case R.id.credit_get:
@@ -219,7 +219,7 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
         if(result.respData.size()<=0){
             llDetail.setVisibility(View.GONE);
             mCreditIsEmpty.setVisibility(View.VISIBLE);
-            SpannableString msp = new SpannableString("你没有积分了，如何获取积分");
+            SpannableString msp = new SpannableString(ResourceUtils.getString(R.string.credit_is_shortage));
             msp.setSpan(new UnderlineSpan(), 7, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             msp.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.get_credit_color)), 7, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mGetCredit.setText(msp);
@@ -241,7 +241,7 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
         } else {
             llDetail.setVisibility(View.GONE);
             mCreditIsEmpty.setVisibility(View.VISIBLE);
-            SpannableString msp = new SpannableString("你没有积分了，如何获取积分");
+            SpannableString msp = new SpannableString(ResourceUtils.getString(R.string.credit_is_shortage));
             msp.setSpan(new UnderlineSpan(), 7, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             msp.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.get_credit_color)), 7, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mGetCredit.setText(msp);

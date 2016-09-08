@@ -301,7 +301,7 @@
 
         <LinearLayout
             android:id="@+id/game_container"
-            android:layout_width="@dimen/game_content_height"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/time"
             android:layout_toRightOf="@+id/avatar"
@@ -319,7 +319,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/margin_15"
-                    android:paddingRight="@dimen/margin_5"
                     android:text="@string/invite_text"
                     android:textColor="@color/colorTitle"
                     android:textSize="@dimen/fontTitle_small" />
@@ -339,8 +338,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:paddingLeft="@dimen/margin_15"
-                android:paddingRight="@dimen/margin_15"
                 android:text="比大小，每局胜方将获得负方10积分"
+                android:paddingRight="@dimen/margin_5"
                 android:textSize="@dimen/fontNormal" />
 
             <View
@@ -399,5 +398,6 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/content_container"
         android:visibility="gone" />
+
 
 </RelativeLayout>

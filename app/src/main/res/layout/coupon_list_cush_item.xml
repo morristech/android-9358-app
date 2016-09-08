@@ -125,8 +125,9 @@
                 android:gravity="center"
                 android:layout_centerVertical="true"
                 android:text="@string/coupon_fragment_share"
-                android:layout_marginRight="@dimen/padding_10"
+                android:layout_marginRight="@dimen/padding_5"
                 android:textColor="@color/coupon_cash_text_color"
+                android:textSize="@dimen/fontNormal"
                 android:layout_marginTop="@dimen/margin_2"
                 />
         </RelativeLayout>

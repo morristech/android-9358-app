@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +73,8 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     TextView contentDialog;
     @Bind(R.id.contact_sidebar)
     SideBar sildebar;
+    @Bind(R.id.status_progressbar)
+    ProgressBar statusBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Subscription mGetCustomerListSubscription;
     private SortCustomerAdapter adapter;
@@ -122,6 +125,8 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     private void handlerCustomerInfoList(CustomerListResult customerResult) {
         mCustomerList.clear();
         mCustomerList.addAll(customerResult.respData);
+        statusBar.setVisibility(View.GONE);
+        listView.setVisibility(View.VISIBLE);
         if(mCustomerList.size()>0){
                        titleLayout.setVisibility(View.VISIBLE);
             String name;

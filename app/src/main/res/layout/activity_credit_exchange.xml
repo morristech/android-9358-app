@@ -12,7 +12,6 @@
         android:layout_height="@dimen/exchange_height"
         android:gravity="center"
         android:orientation="horizontal"
-
         >
 
         <TextView
@@ -157,6 +156,22 @@
         android:paddingLeft="@dimen/inter_space"
         android:paddingTop="@dimen/margin_5"
         android:text="@string/credit_alert_text2"
+        android:textColor="@color/alert_text_color"
+        android:textSize="@dimen/fontNormal" />
+    <TextView
+        android:id="@+id/credit_exchange_limit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingTop="@dimen/margin_5"
+        android:textColor="@color/alert_text_color"
+        android:textSize="@dimen/fontNormal" />
+    <TextView
+        android:id="@+id/credit_exchange_ratio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingTop="@dimen/margin_5"
         android:textColor="@color/alert_text_color"
         android:textSize="@dimen/fontNormal" />
 

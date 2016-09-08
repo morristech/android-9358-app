@@ -86,7 +86,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_OTHER_ITEM = 98;
     private static final int TYPE_FOOTER = 99;
 
-
     private boolean mIsNoMore = false;
     private boolean mIsEmpty = false;
 
@@ -418,7 +417,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final CreditDetailBean creditDetailBean = (CreditDetailBean) obj;
             CreditRecordViewHolder creditRecordViewHolder = (CreditRecordViewHolder) holder;
             if (Utils.isNotEmpty(creditDetailBean.createDatetime)) {
-                creditRecordViewHolder.mCreditTime.setText(Utils.StrSubstring(10, creditDetailBean.createDatetime, false));
+                creditRecordViewHolder.mCreditTime.setText(creditDetailBean.createDatetime);
             }
 
             if (Utils.isNotEmpty(creditDetailBean.businessCategoryDesc)) {
@@ -430,7 +429,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 creditRecordViewHolder.mAvatar.setVisibility(View.INVISIBLE);
             }
             if (Utils.isNotEmpty(creditDetailBean.peerName)) {
-                creditRecordViewHolder.mAdverseName.setText(Utils.StrSubstring(6, creditDetailBean.peerName, true));
+                creditRecordViewHolder.mAdverseName.setText(creditDetailBean.peerName);
             } else {
                 creditRecordViewHolder.mAdverseName.setVisibility(View.INVISIBLE);
             }
@@ -465,7 +464,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_undo), String.valueOf(applicationBean.amount)));
                 creditApplicationViewHolder.mCreditAmount.setText("(冻结)"+String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             }
-            creditApplicationViewHolder.mCreditTime.setText(DateUtils.getTimestampString(new Date(applicationBean.createDatetime)));
+            creditApplicationViewHolder.mCreditTime.setText(applicationBean.createDate);
             return;
         }
         if (holder instanceof ListFooterHolder) {

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">9358技师</string>
-    <string name="app_version_code">v1.2.0</string>
+    <string name="app_version_code">v1.2.1</string>
     <string name="token_expired_error_msg">账号在其他的地方登录，请重新登录</string>
     <string name="login_activity_input_username">请输入账号</string>
     <string name="login_activity_input_password">请输入密码</string>
@@ -221,7 +221,7 @@
     <string name="order_status_description_failure">已失效</string>
     <string name="order_status_description_overtime">已超时</string>
     <string name="order_status_description_cancel">已取消</string>
-    <string name="order_status_description_waite">等待接收</string>
+    <string name="order_status_description_waite">等待接受</string>
 
     <string name="make_call">打电话</string>
 
@@ -269,10 +269,8 @@
     <string name="normal_coupon_detail_activity_share_text_title">分享领红包</string>
     <string name="normal_coupon_detail_activity_share_text">
         分享后，客户每一次使用您都会获得 %1$d 元。</string>
-    <string name="credit_exchange_max">
-        最大兑换金额 %s 元。</string>
+    <string name="credit_exchange_max">最大兑换金额 %s 元。</string>
     <string name="normal_coupon_detail_activity_scan_code">用户扫描二维码即得优惠！</string>
-
     <string name="system_notice_activity_title">系统通知</string>
     <string name="message_add_friend">添加</string>
     <string name="search_contact">搜索</string>
@@ -352,8 +350,9 @@
     <string name="edit_credit">请输入兑换金额</string>
     <string name="credit_alert">提示：</string>
     <string name="credit_alert_text1">1、确认兑换后，请与会所管理者联系。</string>
-    <string name="credit_alert_text2">2、如果管理者未进行确认，7天后默认拒绝，返回积分</string>
-    <string name="credit_alert_shortage">您最多可兑换</string>
+    <string name="credit_alert_text2">2、如果管理者未进行确认，7天后默认拒绝，退还积分。</string>
+
+    <string name="credit_alert_shortage">您最多可兑换%s元</string>
     <string name="all_contact">全部客户</string>
     <string name="register_alert">提示：客人尚未注册，提醒用户注册。</string>
     <string name="introduce_bind">提现</string>
@@ -378,13 +377,15 @@
     <string name="failed_and_play_again">消费%s积分，再来一局</string>
     <string name="exchange_credit_text">积分</string>
     <string name="invite_text">对方邀请你玩一局游戏</string>
-    <string name="dice_game_wait">等待接收</string>
+    <string name="dice_game_wait">等待接受</string>
     <string name="dice_game_reject">已拒绝</string>
     <string name="game_setting_title">每局筹码</string>
     <string name="dice_amount">"%s积分"</string>
     <string name="visitor_type">游客</string>
     <string name="belong_tech">所属技师</string>
     <string name="nearly_visit">最近访问我</string>
+    <string name="exchange_credit_limit">会所限制大于%s积分才能进行兑换"</string>
+    <string name="credit_is_shortage">您没有积分了，如何获取积分</string>
 
 
 </resources>

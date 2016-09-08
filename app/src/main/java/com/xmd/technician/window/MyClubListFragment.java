@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xmd.technician.Adapter.SortClubAdapter;
@@ -68,6 +69,8 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     TextView contentDialog;
     @Bind(R.id.contact_sidebar)
     SideBar sildebar;
+    @Bind(R.id.status_progressbar)
+    ProgressBar statusBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Subscription mGetCustomerListSubscription;
     private SortClubAdapter adapter;
@@ -112,6 +115,8 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
         if(mTitleLayout.getVisibility() == View.GONE){
             mTitleLayout.setVisibility(View.VISIBLE);
         }
+        statusBar.setVisibility(View.GONE);
+        mListView.setVisibility(View.VISIBLE);
         CLubMember clubMember;
         mClubList.clear();
         mManagerList.clear();

@@ -2,10 +2,8 @@ package com.xmd.technician.window;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.TextAppearanceSpan;
 import android.view.View;
@@ -13,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CreditAccountResult;
 import com.xmd.technician.bean.CreditExchangeResult;
@@ -24,10 +21,9 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-
+import com.xmd.technician.widget.SuccessDialog;
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,17 +43,24 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher 
     ImageButton mImgClose;
     @Bind(R.id.exchange_convert)
     TextView mExchangeConvert;
+    @Bind(R.id.credit_exchange_limit)
+    TextView mCreditExchangeLimit;
+    @Bind(R.id.credit_exchange_ratio)
+    TextView mCreditExchangeRatio;
     @Bind(R.id.btn_sent)
     Button mBtnSent;
     private int mTotalCredit;
     private int mExchangeRatio;
     private int mExchangeLimitation;
+    private int availableExchange;
+    private float mExchange ;
     private String editExchange;
     private String clubSwitch;
 
     private Subscription mExchangeCreditResultSubscription;
     private Subscription mTotalCreditResultSubscription;
     private Subscription mCreditStatusSubscription;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,21 +74,23 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher 
         initView();
     }
 
+
     private void initView() {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
         mMoneyExchange.addTextChangedListener(this);
         mExchangeCreditResultSubscription = RxBus.getInstance().toObservable(CreditExchangeResult.class).subscribe(
                 result -> {
                     if (result.statusCode == 200) {
-                        makeShortToast(ResourceUtils.getString(R.string.credit_exchange_game));
+                        SuccessDialog successDialog = new SuccessDialog(this, "", false);
+                        successDialog.show();
+                        successDialog.setCancelable(false);
                         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
                         ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                             @Override
                             public void run() {
                                 CreditExchangeActivity.this.finish();
                             }
-                        },1500);
+                        }, 3500);
                     } else {
                         makeShortToast(result.msg);
                     }
@@ -97,23 +102,35 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher 
         mTotalCreditResultSubscription = RxBus.getInstance().toObservable(CreditAccountResult.class).subscribe(
                 result -> handlerCreditAmount(result)
         );
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
+    }
     private void handlerCreditStatus(CreditStatusResult result) {
         mExchangeRatio = result.respData.exchangeRatio;
         mExchangeLimitation = result.respData.exchangeLimitation;
+        availableExchange =  mTotalCredit - mExchangeLimitation;
         clubSwitch = result.respData.clubSwitch;
-        mCreditTotal.setText(String.valueOf(result.respData.exchangeRatio));
-    }
-
-    private void handlerCreditAmount(CreditAccountResult result) {
-        mTotalCredit = result.respData.get(0).amount;
+        mCreditTotal.setText(String.valueOf(availableExchange));
+        mExchange = (float) (availableExchange/mExchangeRatio*1.0);
+        mExchangeConvert.setText(mExchange+"");
+        mCreditExchangeRatio.setText(String.format("3、大于%s的积分才能兑换。", String.valueOf(mExchangeLimitation)));
+        mCreditExchangeLimit.setText(String.format("4、兑换比例：%s积分=1元。", String.valueOf(mExchangeRatio)));
         if (mExchangeRatio > 0) {
-            String exchange = String.format(ResourceUtils.getString(R.string.credit_exchange_max), String.valueOf((int) (mTotalCredit - mExchangeLimitation) / mExchangeRatio));
+            String exchange = String.format(ResourceUtils.getString(R.string.credit_exchange_max), String.valueOf((mTotalCredit - mExchangeLimitation) / mExchangeRatio));
             SpannableString spannableString = new SpannableString(exchange);
             spannableString.setSpan(new TextAppearanceSpan(this, R.style.text_credit), 6, exchange.lastIndexOf("元"), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
             mMaxExchange.setText(exchange);
         }
+    }
+
+    private void handlerCreditAmount(CreditAccountResult result) {
+        mTotalCredit = result.respData.get(0).amount;
+
     }
 
     @Override
@@ -149,7 +166,7 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher 
             return;
         }
         if (Integer.parseInt(editExchange) > (mTotalCredit - mExchangeLimitation) / mExchangeRatio) {
-            makeShortToast(ResourceUtils.getString(R.string.credit_alert_shortage) + ((mTotalCredit - mExchangeLimitation) / mExchangeRatio));
+            makeShortToast(String.format(ResourceUtils.getString(R.string.credit_alert_shortage), ((mTotalCredit - mExchangeLimitation) / mExchangeRatio)));
             return;
         }
         Map<String, String> mParams = new HashMap<>();
