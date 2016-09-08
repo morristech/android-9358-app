@@ -45,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/tab_indicator_text_padding"
             android:includeFontPadding="false"
-            android:text="1"
             android:textColor="@color/colorMainBtn"
             android:textSize="@dimen/fontBig" />
 
@@ -159,14 +158,6 @@
         android:textColor="@color/alert_text_color"
         android:textSize="@dimen/fontNormal" />
     <TextView
-        android:id="@+id/credit_exchange_limit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/inter_space"
-        android:paddingTop="@dimen/margin_5"
-        android:textColor="@color/alert_text_color"
-        android:textSize="@dimen/fontNormal" />
-    <TextView
         android:id="@+id/credit_exchange_ratio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -174,6 +165,15 @@
         android:paddingTop="@dimen/margin_5"
         android:textColor="@color/alert_text_color"
         android:textSize="@dimen/fontNormal" />
+    <TextView
+        android:id="@+id/credit_exchange_limit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingTop="@dimen/margin_5"
+        android:textColor="@color/alert_text_color"
+        android:textSize="@dimen/fontNormal" />
+
 
 
 </LinearLayout>
