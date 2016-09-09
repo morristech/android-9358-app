@@ -21,12 +21,15 @@ import android.widget.TextView;
 import com.xmd.technician.Adapter.PageFragmentPagerAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CreditAccountResult;
+import com.xmd.technician.bean.CreditExchangeResult;
 import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.SuccessDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +72,7 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
 
     private Subscription getCreditUserAccountSubscription;
     private Subscription mCreditStatusSubscription;
+    private Subscription mExchangeCreditResultSubscription;
 
     private int mTechCreditTotal, mFreezeCredit;
     private int currentIndex;
@@ -93,6 +97,24 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
     protected void onResume() {
         super.onResume();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
+        mExchangeCreditResultSubscription = RxBus.getInstance().toObservable(CreditExchangeResult.class).subscribe(
+                result -> {
+                    if (result.statusCode == 200) {
+                        SuccessDialog successDialog = new SuccessDialog(this, "", false);
+                        successDialog.show();
+                        successDialog.setCancelable(false);
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
+                        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                            @Override
+                            public void run() {
+                                successDialog.dismiss();
+                            }
+                        }, 2500);
+                    } else {
+                        makeShortToast(result.msg);
+                    }
+                }
+        );
     }
 
     protected void initView() {
@@ -212,7 +234,7 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(getCreditUserAccountSubscription,mCreditStatusSubscription);
+        RxBus.getInstance().unsubscribe(getCreditUserAccountSubscription,mCreditStatusSubscription,mExchangeCreditResultSubscription);
     }
 
     private void handlerCreditAmount(CreditAccountResult result) {

@@ -443,6 +443,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private void handlerGameInvite(GameResult result) {
         if (result.statusCode == 200) {
+            mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_dice_"+result.respData.id));
             if (result.respData.status.equals(ChatConstant.KEY_ACCEPT_GAME)) {
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVER_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
             } else if (result.respData.status.equals(ChatConstant.KEY_GAME_REJECT)) {
@@ -450,6 +451,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             } else if (result.respData.status.equals(ChatConstant.KEY_OVERTIME_GAME)){
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVERTIME_GAME, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
             }
+
+
         }
     }
 
@@ -780,6 +783,10 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                         if(messageStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)||messageStatus.equals(ChatConstant.KEY_ACCEPT_GAME)||messageStatus.equals(ChatConstant.KEY_GAME_REJECT)){
                             mConversation.removeMessage(SharedPreferenceHelper.getGameStatus(gameId));
                         }
+                        if(messageStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE)){
+                            mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
+                        }
+
                     } catch (HyphenateException e) {
                         e.printStackTrace();
                     }

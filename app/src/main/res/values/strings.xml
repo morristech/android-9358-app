@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">9358技师</string>
-    <string name="app_version_code">v1.2.1</string>
+    <string name="app_version_code">v1.2.2</string>
     <string name="token_expired_error_msg">账号在其他的地方登录，请重新登录</string>
     <string name="login_activity_input_username">请输入账号</string>
     <string name="login_activity_input_password">请输入密码</string>
@@ -386,6 +386,7 @@
     <string name="nearly_visit">最近访问我</string>
     <string name="exchange_credit_limit">会所限制大于%s积分才能进行兑换"</string>
     <string name="credit_is_shortage">您没有积分了，如何获取积分</string>
+    <string name="greeting_text" formatted="false">客观您好，我是%s[%s]技师，希望能够为您服务，约我哟</string>
 
 
 </resources>

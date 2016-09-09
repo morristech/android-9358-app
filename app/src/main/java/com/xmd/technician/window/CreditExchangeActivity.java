@@ -84,16 +84,13 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher 
         mExchangeCreditResultSubscription = RxBus.getInstance().toObservable(CreditExchangeResult.class).subscribe(
                 result -> {
                     if (result.statusCode == 200) {
-                        SuccessDialog successDialog = new SuccessDialog(this, "", false);
-                        successDialog.show();
-                        successDialog.setCancelable(false);
                         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
                         ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                             @Override
                             public void run() {
                                 CreditExchangeActivity.this.finish();
                             }
-                        }, 3500);
+                        }, 200);
                     } else {
                         makeShortToast(result.msg);
                     }

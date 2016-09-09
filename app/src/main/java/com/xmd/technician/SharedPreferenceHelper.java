@@ -12,9 +12,7 @@ import com.xmd.technician.http.RequestConstant;
 public class SharedPreferenceHelper {
 
     private static final String SETTING_PREFERENCE = "00DF60D934C0D482F0C950B6D3605F50"; //setting_preference
-
     private static SharedPreferences mSettingPreference;
-
     private static final String KEY_USER_ACCOUNT = "4E6EF539AAF119D82AC4C2BC84FBA21F";//userAccount
     private static final String KEY_USER_TOKEN = "CE4A0B029C785BFAA2B398C06E1D94C0"; //userToken
     private static final String KEY_USER_NAME = "435E0648D634175C46BD40AC366545A8";//userName
@@ -245,6 +243,13 @@ public class SharedPreferenceHelper {
     public static void setGameTimeout(int timeoutSecond) {
         mSettingPreference.edit().putInt(KEY_CLUB_GAME_TIMEOUT, timeoutSecond * 1000).apply();
     }
+    public static void setGameMessageId(String gameId, String gameStatus) {
+        mSettingPreference.edit().putString(gameId+"dice", gameStatus).apply();
+    }
+    public static String getGameMessageId(String gameId) {
+        return mSettingPreference.getString(gameId+"dice", "");
+    }
+
 
     public static Integer getGameTimeout() {
         return mSettingPreference.getInt(KEY_CLUB_GAME_TIMEOUT, 86400 * 1000);

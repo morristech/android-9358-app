@@ -31,7 +31,7 @@ android {
         //TODO: release version :
         //1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
         versionCode 7
-        versionName "1.2.1"
+        versionName "1.2.2"
 
         manifestPlaceholders = [
                 PACKAGE_NAME        : "com.xmd.technician",

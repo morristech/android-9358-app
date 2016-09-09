@@ -28,7 +28,7 @@ public class EmptyView extends RelativeLayout {
     private Status mCurrentStatus;
 
     public interface OnRefreshListener{
-        public void onRefresh();
+        void onRefresh();
     }
 
     public EmptyView(Context context) {

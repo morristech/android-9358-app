@@ -165,7 +165,7 @@ public class PersonalFragment extends BaseFragment {
     }
     private void handleUserSwitchResult(UserSwitchesResult switchResult) {
         if (switchResult.statusCode == 200){
-            if(switchResult.respData.account.switchX.equals(RequestConstant.KEY_SWITCH_ON)&&switchResult.respData.credit.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)){
+            if(switchResult.respData.account.switchX.equals(RequestConstant.KEY_SWITCH_ON)){
                 mAccountItem.setVisibility(View.VISIBLE);
             }else{
                 mAccountItem.setVisibility(View.GONE);
@@ -177,11 +177,9 @@ public class PersonalFragment extends BaseFragment {
                 }else{
                     mCreditCenter.setVisibility(View.GONE);
                 }
+            }else{
+                mCreditCenter.setVisibility(View.GONE);
             }
-
-
-
-
     }
     }
 

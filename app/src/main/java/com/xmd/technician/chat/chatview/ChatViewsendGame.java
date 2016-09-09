@@ -71,7 +71,6 @@ public class ChatViewsendGame extends BaseChatView {
                 if(currentTime-gameStartTime> SharedPreferenceHelper.getGameTimeout()){
                     SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), message.getMsgId());
                     initView();
-
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
                     mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                     mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
@@ -158,6 +157,7 @@ public class ChatViewsendGame extends BaseChatView {
                     mWaitGame.setText(ResourceUtils.getString(R.string.accepted_order));
                     mCancel.setVisibility(View.INVISIBLE);
                     emConversation.removeMessage(SharedPreferenceHelper.getGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
+                    SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
 
                 } else {
                     mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
@@ -169,6 +169,7 @@ public class ChatViewsendGame extends BaseChatView {
                     mRefuseGame.setVisibility(View.VISIBLE);
                     mRefuseGame.setText(ResourceUtils.getString(R.string.accepted_order));
                     mCancel.setVisibility(View.INVISIBLE);
+                    SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
                 }
             }
             mCancel.setOnClickListener(v ->{
