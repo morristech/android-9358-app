@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,8 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.SuccessDialog;
+
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import butterknife.Bind;
@@ -116,8 +119,10 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher 
         availableExchange =  mTotalCredit - mExchangeLimitation;
         clubSwitch = result.respData.clubSwitch;
         mCreditTotal.setText(String.valueOf(availableExchange));
-        mExchange = (float) (availableExchange/mExchangeRatio*1.0);
-        mExchangeConvert.setText(mExchange+"");
+        mExchange = (float)(availableExchange*1.0/mExchangeRatio);
+        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+        String s = df.format(mExchange);
+        mExchangeConvert.setText(s);
         mCreditExchangeRatio.setText(String.format("3、大于%s的积分才能兑换。", String.valueOf(mExchangeLimitation)));
         mCreditExchangeLimit.setText(String.format("4、兑换比例：%s积分=1元。", String.valueOf(mExchangeRatio)));
         if (mExchangeRatio > 0) {
