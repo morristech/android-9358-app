@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/fontSize"
             android:textColor="@color/colorTitle"
-            android:text="兑换申请成功，请等待管理处理"
+            android:text="兑换申请成功，请等待管理者处理"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/icon_success"
             android:layout_marginTop="@dimen/margin_25"
