@@ -360,8 +360,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
-                conversationHolder.mUserManagerType.setVisibility(View.GONE);
-                conversationHolder.mUserTechType.setVisibility(View.GONE);
+//                conversationHolder.mUserManagerType.setVisibility(View.GONE);
+//                conversationHolder.mUserTechType.setVisibility(View.GONE);
                 if(conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())){
                     if(SharedPreferenceHelper.getUserIsTech(toId).equals("tech")){
                         try {
@@ -390,13 +390,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     } catch (HyphenateException e) {
                         e.printStackTrace();
                     }
-                    try {
-                        if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_GAME_CLUB_ID))){
-                            conversationHolder.mUserManagerType.setVisibility(View.VISIBLE);
-                        }
-                    } catch (HyphenateException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_GAME_CLUB_ID))){
+//                            conversationHolder.mUserManagerType.setVisibility(View.VISIBLE);
+//                        }
+//                    } catch (HyphenateException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
 
@@ -630,10 +630,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mTime;
         @Bind(R.id.unread)
         TextView mUnread;
-        @Bind(R.id.user_manager_type)
-        TextView mUserManagerType;
-        @Bind(R.id.user_tech_type)
-        TextView mUserTechType;
+ //     @Bind(R.id.user_manager_type)
+//        TextView mUserManagerType;
+//        @Bind(R.id.user_tech_type)
+//        TextView mUserTechType;
 
         public ConversationViewHolder(View itemView) {
             super(itemView);
