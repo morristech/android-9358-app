@@ -214,7 +214,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     if (!SharedPreferenceHelper.getGameStatus(result.messageId).equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
                         animation.startAnimation();
                         SharedPreferenceHelper.setGameStatus(result.messageId, ChatConstant.KEY_OVER_GAME_TYPE);
-
                     }
                 }
         );
