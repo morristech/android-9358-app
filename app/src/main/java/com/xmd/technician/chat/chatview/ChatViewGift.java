@@ -53,7 +53,7 @@ public class ChatViewGift extends BaseChatView {
             String giftId = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_ID);
             for (int i = 0; i <giftList.size() ; i++) {
                 if(giftList.get(i).id.equals(giftId)){
-                    Glide.with(context).load(giftList.get(i).iconUrl).error(R.drawable.icon08).into(mGifeView);
+                    Glide.with(context).load(giftList.get(i).iconUrl).error(R.drawable.gift_default).into(mGifeView);
                 }
             }
         } catch (HyphenateException e) {
