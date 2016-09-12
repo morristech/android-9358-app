@@ -49,11 +49,11 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     /**
      * 动画播放的时间
      */
-    private int time = 4000;
+    private int time = 1500;
     /**
      * 动画间隔
      */
-    private int delay = 400;
+    private int delay = 200;
 
     int[] ylocations = {-100, -50, -25, 0};
 
@@ -206,9 +206,11 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
             } else {
                 CPoint tmp = new CPoint(0, 0);
                 if (random.nextInt(100) % 2 == 0) {
-                    tmp.x = point.x + random.nextInt(range);
+                   // tmp.x = point.x + random.nextInt(range);
+                    tmp.x = point.x;
                 } else {
-                    tmp.x = point.x - random.nextInt(range);
+                   // tmp.x = point.x - random.nextInt(range);
+                    tmp.x = point.x ;
                 }
                 tmp.y = (int) (height / (float) quadCount * i);
                 points.add(tmp);

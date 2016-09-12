@@ -64,6 +64,8 @@ public class RequestConstant {
     public static final String URL_GET_USER_IS_BIND_WX = BASE_URL + "/v2/tech/is_bind_wx";
     public static final String URL_GAME_DICE_SUBMIT = BASE_URL + "/v2/credit/game/dice/submit";
     public static final String URL_GAME_DICE_ACCEPT_OR_REJECT = BASE_URL + "/v2/credit/game/dice/accept";
+    public static final String URL_GET_CREDIT_GIFT_LIST = BASE_URL + "/v2/credit/gift/list";
+
 
 
     public static final String URL_GET_CREDIT_SWITCH_STATUS = BASE_URL + "/v2/credit/switch/status";

@@ -72,10 +72,12 @@ public class ChatViewPlayDiceGame extends BaseChatView {
         String messageId = message.getMsgId();
         EMTextMessageBody body = (EMTextMessageBody) message.getBody();
         String content = body.getMessage();
+
         try {
             String result = message.getStringAttribute(ChatConstant.KEY_GAME_RESULT);
             String status = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
             String adverseName = message.getStringAttribute(ChatConstant.KEY_NAME);
+            String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
             mUserName.setText(Utils.StrSubstring(3, SharedPreferenceHelper.getUserName(), true));
             if (message.direct() == EMMessage.Direct.RECEIVE) {
                 userDice = getSendDiceResult(result);
@@ -86,9 +88,9 @@ public class ChatViewPlayDiceGame extends BaseChatView {
                 adverseDice = getSendDiceResult(result);
                 mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
             }
-      //      emConversation.removeMessage(SharedPreferenceHelper.getGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
-            if (Utils.isNotEmpty(SharedPreferenceHelper.getGameStatus(messageId))) {
-                initResultView(content);
+            emConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
+            if (Utils.isNotEmpty(SharedPreferenceHelper.getGameStatus(messageId))&&SharedPreferenceHelper.getGameStatus(messageId).equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
+                initResultView(content,messageId);
             } else {
                 mUserResult.setVisibility(View.GONE);
                 diceResult.setVisibility(View.GONE);
@@ -101,7 +103,7 @@ public class ChatViewPlayDiceGame extends BaseChatView {
                 ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                     @Override
                     public void run() {
-                        initResultView(content);
+                        initResultView(content,messageId);
                     }
                 }, 2000);
             }
@@ -160,14 +162,14 @@ public class ChatViewPlayDiceGame extends BaseChatView {
         }
     }
 
-    private void initResultView(String content) {
+    private void initResultView(String content,String gameId) {
         initImageDice(userDice, mUserDice);
         initImageDice(adverseDice, mAdverseDice);
         mUserResult.setVisibility(View.VISIBLE);
         diceResult.setVisibility(View.VISIBLE);
         mGameResult.setVisibility(View.VISIBLE);
         SpannableString msp = null;
-        if (userDice > adverseDice) {
+        if (userDice > adverseDice && SharedPreferenceHelper.getGameStatus(gameId).equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
             Glide.with(context).load(R.drawable.dice_win).asBitmap().into(mUserResult);
             mGameResult.setText(String.format("+%s", content));
             msp = new SpannableString(String.format(ResourceUtils.getString(R.string.win_and_play_again), content));

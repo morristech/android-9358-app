@@ -9,6 +9,7 @@ import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.GameResult;
+import com.xmd.technician.bean.GiftListResult;
 import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
@@ -444,6 +445,14 @@ public interface SpaService {
                                                        @Field(RequestConstant.KEY_TOKEN) String userToken,
                                                        @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType
     );
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CREDIT_GIFT_LIST)
+    Call<GiftListResult> getCreditGiftList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                @Field(RequestConstant.KEY_TOKEN) String userToken
+    );
+
+
+
 
 
 

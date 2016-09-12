@@ -55,6 +55,7 @@ public class ChatConstant {
     public static final int MESSAGE_TYPE_RECV_GAME_OVER = 0x100;
     public static final int MESSAGE_TYPE_RECV_GAME_CANCEL = 0x101;
     public static final int MESSAGE_TYPE_SEND_GAME_CANCEL = 0x102;
+    public static final int MESSAGE_TYPE_RECV_CREDIT_GIFT = 0x102;
 
     public static final String KEY_CHAT_TYPE = "chatType";
     public static final String KEY_MSG = "msg";
@@ -89,5 +90,9 @@ public class ChatConstant {
     public static final String KEY_MSG_GAME_TYPE = "diceGame";
     public static final String KEY_OVER_GAME_TYPE = "over";
     public static final String KEY_CANCEL_GAME_TYPE = "cancel";
+    public static final String KEY_GIFT_TYPE = "gift";
+    public static final String KEY_CREDIT_GIFT_VALUE = "giftValue";
+    public static final String KEY_CREDIT_GIFT_NAME = "giftName";
+    public static final String KEY_CREDIT_GIFT_ID = "giftId";
 
 }

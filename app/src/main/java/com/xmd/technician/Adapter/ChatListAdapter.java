@@ -11,6 +11,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.AcceptOrRejectGame;
 import com.xmd.technician.bean.PlayDiceGame;
 import com.xmd.technician.chat.ChatConstant;
@@ -20,6 +21,7 @@ import com.xmd.technician.chat.chatview.BaseChatView;
 import com.xmd.technician.chat.chatview.ChatViewBegReward;
 import com.xmd.technician.chat.chatview.ChatViewCoupon;
 import com.xmd.technician.chat.chatview.ChatViewCouponTip;
+import com.xmd.technician.chat.chatview.ChatViewGift;
 import com.xmd.technician.chat.chatview.ChatViewPlayDiceGame;
 import com.xmd.technician.chat.chatview.ChatViewReceiveDiceGame;
 import com.xmd.technician.chat.chatview.ChatViewImage;
@@ -266,6 +268,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 chatRow = new ChatViewPlayDiceGame(context, EMMessage.Direct.SEND, mConversation);
                 ((ChatViewPlayDiceGame) chatRow).setGameManagerListener(gameManagerListener);
                 break;
+            case ChatConstant.MESSAGE_TYPE_RECV_CREDIT_GIFT:
+                chatRow = new ChatViewGift(context, EMMessage.Direct.RECEIVE);
+                break;
             default:
                 chatRow = new ChatViewText(context, EMMessage.Direct.RECEIVE);
                 break;
@@ -285,6 +290,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onAccept(EMMessage message) {
             EMTextMessageBody body = (EMTextMessageBody) message.getBody();
             try {
+                SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID),ChatConstant.KEY_ACCEPT_GAME);
                 RxBus.getInstance().post(new AcceptOrRejectGame(body.getMessage(), message.getStringAttribute(ChatConstant.KEY_GAME_ID), ChatConstant.KEY_ACCEPT_GAME, message.getFrom()));
             } catch (HyphenateException e) {
                 e.printStackTrace();
@@ -297,6 +303,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             Map<String, String> params = new HashMap<>();
             try {
                 String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
+                SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID),ChatConstant.KEY_GAME_REJECT);
                 params.put(RequestConstant.KEY_DICE_GAME_ID, message.getStringAttribute(RequestConstant.KEY_DICE_GAME_ID).substring(5));
                 params.put(RequestConstant.KEY_DICE_GAME_STATUS, ChatConstant.KEY_GAME_REJECT);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT, params);

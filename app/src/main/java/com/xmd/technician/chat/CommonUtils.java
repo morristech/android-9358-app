@@ -84,7 +84,10 @@ public class CommonUtils {
                     }
                 }/*else if(!TextUtils.isEmpty(message.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE,""))){
                 digest = txtBody.getMessage().replaceAll("<b>|</b>|</br>|<br>|<i>|</i>|<span>|</span>|<br/>","");
-            }*/ else {
+            }*/
+                else if(txtBody.getMessage().startsWith("[")&&txtBody.getMessage().endsWith("]")){
+                    digest = txtBody.getMessage();
+                }else {
                     digest = txtBody.getMessage();
                     digest = Html.fromHtml(digest).toString();
                 }
@@ -111,7 +114,6 @@ public class CommonUtils {
         if (message.getType() == EMMessage.Type.TXT) {
             try {
                 String msgType = message.getStringAttribute("msgType");
-
                 if (msgType.equals("reward")) {
                     type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_REWARD : ChatConstant.MESSAGE_TYPE_SENT_REWARD);
                 } else if (msgType.equals("order")) {
@@ -141,6 +143,12 @@ public class CommonUtils {
                     } else if (gameStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
                         type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_GAME_OVER : ChatConstant.MESSAGE_TYPE_SEND_GAME_OVER);
                     }
+                }else if(msgType.equals("gift")){
+              //      String giftValue = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_VALUE);
+                    String giftName = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_NAME);
+                    String giftId = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_ID);
+                    type = ChatConstant.MESSAGE_TYPE_RECV_CREDIT_GIFT;
+
                 }
             } catch (HyphenateException e) {
                 e.printStackTrace();

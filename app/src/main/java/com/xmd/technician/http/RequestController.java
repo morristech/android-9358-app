@@ -18,6 +18,7 @@ import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.DeleteContactResult;
 import com.xmd.technician.bean.GameResult;
+import com.xmd.technician.bean.GiftListResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.RecentlyVisitorResult;
@@ -244,6 +245,8 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_RECENTLY_VISITOR:
                 doGetRecentlyVisitorList((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST:
+                doGetCreditGiftList();
    /*         case MsgDef.MSG_DEF_DO_DRAW_MONEY:
                 doDrawMoney((Map<String,String>)msg.obj);
                 break;
@@ -1127,6 +1130,20 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<RecentlyVisitorResult>() {
             @Override
             protected void postResult(RecentlyVisitorResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 礼物列表
+     * @param
+     */
+    private void doGetCreditGiftList(){
+        Call<GiftListResult> call = getSpaService().getCreditGiftList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<GiftListResult>() {
+            @Override
+            protected void postResult(GiftListResult result) {
                 RxBus.getInstance().post(result);
             }
         });

@@ -5,6 +5,7 @@ package com.xmd.technician.chat.chatview;
  */
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -69,7 +70,8 @@ public class ChatViewsendGame extends BaseChatView {
             String headUrl = UserProfileProvider.getInstance().getChatUserInfo(message.getTo()).getAvatar();
             if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_REQUEST_GAME)) {
                 if(currentTime-gameStartTime> SharedPreferenceHelper.getGameTimeout()){
-                    SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), message.getMsgId());
+                   SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), ChatConstant.KEY_OVERTIME_GAME);
+                    SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
                     initView();
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
                     mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
@@ -82,7 +84,8 @@ public class ChatViewsendGame extends BaseChatView {
                     mCancel.setVisibility(View.GONE);
                     return;
                 }else{
-                    SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), message.getMsgId());
+                    SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), ChatConstant.KEY_REQUEST_GAME);
+                    SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
                     initView();
                     EMTextMessageBody body = (EMTextMessageBody) message.getBody();
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
@@ -98,7 +101,6 @@ public class ChatViewsendGame extends BaseChatView {
                 }
 
             } else if(message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_CANCEL_GAME_TYPE)){
-                SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), message.getMsgId());
                 initView();
                 EMTextMessageBody body = (EMTextMessageBody) message.getBody();
                 mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
@@ -126,13 +128,14 @@ public class ChatViewsendGame extends BaseChatView {
                     mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_reject));
                     mCancel.setVisibility(View.INVISIBLE);
                     mCancelOrReject.setVisibility(View.VISIBLE);
+                    emConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
                     mCancelOrReject.setText(String.format("对方拒绝游戏，返还%s积分",body.getMessage()));
                 } else {
                     mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
                     mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
                     mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
-                    Glide.with(context).load(headUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mAdverseHead);
+                   Glide.with(context).load(headUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mAdverseHead);
                     mAdverseHead.setVisibility(View.VISIBLE);
                     mRefuseGame.setVisibility(View.VISIBLE);
                     mRefuseGame.setText(ResourceUtils.getString(R.string.order_status_description_reject));
@@ -156,7 +159,6 @@ public class ChatViewsendGame extends BaseChatView {
                     mWaitGame.setVisibility(View.VISIBLE);
                     mWaitGame.setText(ResourceUtils.getString(R.string.accepted_order));
                     mCancel.setVisibility(View.INVISIBLE);
-                    emConversation.removeMessage(SharedPreferenceHelper.getGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
                     SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
 
                 } else {

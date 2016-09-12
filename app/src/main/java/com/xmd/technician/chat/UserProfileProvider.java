@@ -61,7 +61,8 @@ public class UserProfileProvider {
             return getCurrentUserInfo();
         }
         ChatUser user = getChatUserList().get(username);
-        return user;
+
+            return user;
     }
 
     public synchronized ChatUser getCurrentUserInfo() {

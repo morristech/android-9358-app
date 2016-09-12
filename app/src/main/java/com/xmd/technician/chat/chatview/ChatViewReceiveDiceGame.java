@@ -51,14 +51,13 @@ public class ChatViewReceiveDiceGame extends BaseChatView {
     protected void onSetUpView() {
         EMTextMessageBody body = (EMTextMessageBody) message.getBody();
         String content = body.getMessage();
-        String messageId = message.getMsgId();
         mGameDetail.setText(String.format(ResourceUtils.getString(R.string.dice_game_integral), content));
         try {
             gameStartTime = message.getMsgTime();
             currentTime = System.currentTimeMillis();
             gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
             gameStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
-            if ((currentTime - gameStartTime > SharedPreferenceHelper.getGameTimeout())) {
+            if ((currentTime - gameStartTime > SharedPreferenceHelper.getGameTimeout())&&SharedPreferenceHelper.getGameStatus(gameId).equals(ChatConstant.KEY_REQUEST_GAME)) {
                 acceptOrRefuse.setText(String.format("(%s)", "已超时"));
                 acceptOrRefuse.setVisibility(View.VISIBLE);
                 mBtnRefuse.setEnabled(false);
@@ -69,8 +68,6 @@ public class ChatViewReceiveDiceGame extends BaseChatView {
                 acceptOrRefuse.setVisibility(View.VISIBLE);
                 mBtnRefuse.setEnabled(false);
                 mBtnAccept.setEnabled(false);
-           //     mEmConversation.removeMessage(SharedPreferenceHelper.getGameStatus(gameId));
-
             } else if (Utils.isNotEmpty(SharedPreferenceHelper.getGameStatus(gameId)) && SharedPreferenceHelper.getGameStatus(gameId).equals(ChatConstant.KEY_GAME_REJECT)) {
                 acceptOrRefuse.setText(String.format("(%s)", "已拒绝"));
                 acceptOrRefuse.setVisibility(View.VISIBLE);
@@ -80,6 +77,7 @@ public class ChatViewReceiveDiceGame extends BaseChatView {
             } else if (Utils.isNotEmpty(SharedPreferenceHelper.getGameStatus(gameId)) && (SharedPreferenceHelper.getGameStatus(gameId).equals(ChatConstant.KEY_OVER_GAME_TYPE)
                     || SharedPreferenceHelper.getGameStatus(gameId).equals(ChatConstant.KEY_ACCEPT_GAME))) {
                 acceptOrRefuse.setText(String.format("(%s)", "已接受"));
+                 SharedPreferenceHelper.setGameStatus(gameId,ChatConstant.KEY_ACCEPT_GAME);
                 acceptOrRefuse.setVisibility(View.VISIBLE);
                 mBtnRefuse.setEnabled(false);
                 mBtnAccept.setEnabled(false);
@@ -87,7 +85,8 @@ public class ChatViewReceiveDiceGame extends BaseChatView {
                 acceptOrRefuse.setVisibility(View.GONE);
                 mBtnRefuse.setEnabled(true);
                 mBtnAccept.setEnabled(true);
-                SharedPreferenceHelper.setGameStatus(gameId,messageId);
+                SharedPreferenceHelper.setGameStatus(gameId,ChatConstant.KEY_REQUEST_GAME);
+                SharedPreferenceHelper.setGameMessageId(gameId,message.getMsgId());
             }
 
         } catch (HyphenateException e) {
@@ -123,6 +122,7 @@ public class ChatViewReceiveDiceGame extends BaseChatView {
                     mBtnRefuse.setEnabled(false);
                     mBtnAccept.setEnabled(false);
                     SharedPreferenceHelper.setGameStatus(gameId, ChatConstant.KEY_GAME_REJECT);
+                    SharedPreferenceHelper.setGameMessageId(gameId,message.getMsgId());
                 }
             }
 

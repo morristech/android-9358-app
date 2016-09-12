@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginRight="@dimen/coupon_item_height"
+    android:layout_marginRight="@dimen/title_item_height"
     android:layout_marginTop="@dimen/personal_margin"
     android:orientation="vertical">
 
@@ -378,8 +378,15 @@
                     android:textColor="@color/colorBtnChecked"
                     android:textSize="@dimen/fontTitle_small" />
             </LinearLayout>
-
         </LinearLayout>
+        <ImageView
+            android:id="@+id/content_gift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon08"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            />
     </FrameLayout>
 
     <ImageView

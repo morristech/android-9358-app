@@ -57,6 +57,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
         ButterKnife.bind(this);
 
+
         mBottomBarButtonList.add(findViewById(R.id.main_button_message));
         mBottomBarButtonList.add(findViewById(R.id.main_button_contacts));
         mBottomBarButtonList.add(findViewById(R.id.main_button_order));
@@ -68,6 +69,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mFragmentList.add(new OrderFragment());
         mFragmentList.add(new CouponFragment());
         mFragmentList.add(new PersonalFragment());
+        EMClient.getInstance().groupManager().loadAllGroups();
+        EMClient.getInstance().chatManager().loadAllConversations();
+        UserProfileProvider.getInstance().initContactList();
 
         mSysNoticeNotifySubscription = RxBus.getInstance().toObservable(SystemNoticeResult.class).subscribe(
                 result -> updateUnreadMsgLabel());

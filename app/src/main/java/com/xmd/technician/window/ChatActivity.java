@@ -33,7 +33,6 @@ import com.hyphenate.util.EasyUtils;
 import com.xmd.technician.Adapter.ChatListAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.AcceptOrRejectGame;
 import com.xmd.technician.bean.CheckedCoupon;
 import com.xmd.technician.bean.CreditAccountResult;
@@ -252,6 +251,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
+  //      MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST);
     }
 
     @Override
@@ -284,7 +284,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         super.onPause();
         EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListener);
         if (mGetRedpacklistSubscription != null) {
-            RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription);
+            RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription,mUserWinSubscription);
         }
     }
 
@@ -443,23 +443,27 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private void handlerGameInvite(GameResult result) {
         if (result.statusCode == 200) {
-            mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_dice_"+result.respData.id));
+
             if (result.respData.status.equals(ChatConstant.KEY_ACCEPT_GAME)) {
-                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVER_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
+                ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                    @Override
+                    public void run() {
+                        mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_"+result.respData.id));
+                        sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVER_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
+                    }
+                },100);
             } else if (result.respData.status.equals(ChatConstant.KEY_GAME_REJECT)) {
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_GAME_REJECT, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
             } else if (result.respData.status.equals(ChatConstant.KEY_OVERTIME_GAME)){
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVERTIME_GAME, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
             }
-
-
         }
+        mChatAdapter.refreshList();
     }
 
     private void handlerAcceptOrRejectGame(AcceptOrRejectGame acceptOrRejectGame) {
         if (mAvailableCredit > Integer.parseInt(acceptOrRejectGame.gameContent)) {
-            sendDiceGameMessage(acceptOrRejectGame.gameContent, acceptOrRejectGame.gameId, acceptOrRejectGame.gameStatus, "0:0", acceptOrRejectGame.chatId);
-            SharedPreferenceHelper.setGameStatus(acceptOrRejectGame.gameId, ChatConstant.KEY_ACCEPT_GAME);
+            sendDiceGameMessage(acceptOrRejectGame.gameContent, acceptOrRejectGame.gameId.substring(5), acceptOrRejectGame.gameStatus, "0:0", acceptOrRejectGame.chatId);
             Map<String, String> params = new HashMap<>();
             String gameId = acceptOrRejectGame.gameId.substring((5));
             params.put(RequestConstant.KEY_DICE_GAME_ID, gameId);
@@ -781,14 +785,17 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
                         String messageStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
                         if(messageStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)||messageStatus.equals(ChatConstant.KEY_ACCEPT_GAME)||messageStatus.equals(ChatConstant.KEY_GAME_REJECT)){
-                            mConversation.removeMessage(SharedPreferenceHelper.getGameStatus(gameId));
+                           mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(gameId));
+                            mChatAdapter.refreshSelectLast();
                         }
                         if(messageStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE)){
-                            mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
+                           mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
+                            mChatAdapter.refreshSelectLast();
                         }
 
                     } catch (HyphenateException e) {
                         e.printStackTrace();
+                        mChatAdapter.refreshSelectLast();
                     }
                     mChatAdapter.refreshSelectLast();
 
