@@ -169,17 +169,13 @@ public class ChatViewPlayDiceGame extends BaseChatView {
         diceResult.setVisibility(View.VISIBLE);
         mGameResult.setVisibility(View.VISIBLE);
         SpannableString msp = null;
-        if (userDice > adverseDice && SharedPreferenceHelper.getGameStatus(gameId).equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
+        if (userDice > adverseDice ) {
             Glide.with(context).load(R.drawable.dice_win).asBitmap().into(mUserResult);
             mGameResult.setText(String.format("+%s", content));
             msp = new SpannableString(String.format(ResourceUtils.getString(R.string.win_and_play_again), content));
             mUserWin.setVisibility(View.VISIBLE);
             mAdverseWin.setVisibility(View.GONE);
-            try {
-                RxBus.getInstance().post(new UserWin(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
-            } catch (HyphenateException e) {
-                e.printStackTrace();
-            }
+            RxBus.getInstance().post(new UserWin(message.getMsgId()));
         } else {
             Glide.with(context).load(R.drawable.dice_lose).asBitmap().into(mUserResult);
             mGameResult.setText(String.format("-%s", content));

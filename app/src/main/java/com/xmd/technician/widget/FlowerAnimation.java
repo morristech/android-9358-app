@@ -103,7 +103,7 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     /**
      * 曲线高度个数分割
      */
-    private int quadCount = 10;
+    private int quadCount = 5;
     /**
      * 曲度
      */
@@ -206,11 +206,11 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
             } else {
                 CPoint tmp = new CPoint(0, 0);
                 if (random.nextInt(100) % 2 == 0) {
-                   // tmp.x = point.x + random.nextInt(range);
-                    tmp.x = point.x;
+                    tmp.x = point.x + i*10;
+                 //   tmp.x = point.x;
                 } else {
-                   // tmp.x = point.x - random.nextInt(range);
-                    tmp.x = point.x ;
+                   tmp.x = point.x - i*10;
+                  //  tmp.x = point.x ;
                 }
                 tmp.y = (int) (height / (float) quadCount * i);
                 points.add(tmp);

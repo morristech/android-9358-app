@@ -383,7 +383,7 @@
             android:id="@+id/content_gift"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon08"
+            android:src="@drawable/gift_default"
             android:layout_gravity="center_vertical"
             android:visibility="gone"
             />

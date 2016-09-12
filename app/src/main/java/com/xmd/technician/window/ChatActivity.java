@@ -211,9 +211,10 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         );
         mUserWinSubscription = RxBus.getInstance().toObservable(UserWin.class).subscribe(
                 result -> {
-                    if (!SharedPreferenceHelper.getGameStatus(result.gameId).equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
+                    if (!SharedPreferenceHelper.getGameStatus(result.messageId).equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
                         animation.startAnimation();
-                        SharedPreferenceHelper.setGameStatus(result.gameId, ChatConstant.KEY_OVER_GAME_TYPE);
+                        SharedPreferenceHelper.setGameStatus(result.messageId, ChatConstant.KEY_OVER_GAME_TYPE);
+
                     }
                 }
         );
@@ -786,11 +787,11 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                         String messageStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
                         if(messageStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)||messageStatus.equals(ChatConstant.KEY_ACCEPT_GAME)||messageStatus.equals(ChatConstant.KEY_GAME_REJECT)){
                            mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(gameId));
-                            mChatAdapter.refreshSelectLast();
+
                         }
                         if(messageStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE)){
                            mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
-                            mChatAdapter.refreshSelectLast();
+
                         }
 
                     } catch (HyphenateException e) {
