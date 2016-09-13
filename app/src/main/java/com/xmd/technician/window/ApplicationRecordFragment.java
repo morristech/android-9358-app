@@ -75,7 +75,8 @@ public class ApplicationRecordFragment extends BaseListFragment<ApplicationBean>
         mPages = PAGE_START + 1;
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PAGE, "1");
-        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(mListAdapter.getItemCount() - 1));
+        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+        params.put(RequestConstant.KEY_STATUS, "");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_APPLICATIONS, params);
     }
 

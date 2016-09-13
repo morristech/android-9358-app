@@ -27,7 +27,6 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.xmd.technician.Adapter.SortCustomerAdapter;
 import com.xmd.technician.R;
@@ -132,6 +131,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         statusBar.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
         if(mCustomerList.size()>0){
+            mEmptyView.setStatus(EmptyView.Status.Gone);
                        titleLayout.setVisibility(View.VISIBLE);
             String name;
             for (int i = 0; i < mCustomerList.size(); i++) {
@@ -254,7 +254,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
                 }
             });
-            mEmptyView.setStatus(EmptyView.Status.Gone);
+
         }else{
             mEmptyView.setStatus(EmptyView.Status.Gone);
             mEmptyView.setEmptyPic(R.drawable.empty);
