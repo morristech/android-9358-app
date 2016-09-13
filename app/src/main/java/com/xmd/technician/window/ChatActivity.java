@@ -284,7 +284,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         super.onPause();
         EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListener);
         if (mGetRedpacklistSubscription != null) {
-            RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription,mUserWinSubscription);
+            RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription);
         }
     }
 

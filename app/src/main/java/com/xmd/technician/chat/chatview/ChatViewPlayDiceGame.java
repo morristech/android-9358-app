@@ -90,7 +90,10 @@ public class ChatViewPlayDiceGame extends BaseChatView {
             }
             emConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
             if (Utils.isNotEmpty(SharedPreferenceHelper.getGameStatus(messageId))&&SharedPreferenceHelper.getGameStatus(messageId).equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
-                initResultView(content,messageId);
+                synchronized (this){
+                    initResultView(content,messageId);
+                }
+
             } else {
                 mUserResult.setVisibility(View.GONE);
                 diceResult.setVisibility(View.GONE);
@@ -104,7 +107,9 @@ public class ChatViewPlayDiceGame extends BaseChatView {
 
                     @Override
                     public void run() {
-                        initResultView(content,messageId);
+                        synchronized (this){
+                            initResultView(content,messageId);
+                        }
                     }
                 }, 2000);
             }
@@ -162,7 +167,6 @@ public class ChatViewPlayDiceGame extends BaseChatView {
                 break;
         }
     }
-
     private void initResultView(String content,String messageId) {
         initImageDice(userDice, mUserDice);
         initImageDice(adverseDice, mAdverseDice);
@@ -183,7 +187,7 @@ public class ChatViewPlayDiceGame extends BaseChatView {
             msp = new SpannableString(String.format(ResourceUtils.getString(R.string.failed_and_play_again), content));
             mAdverseWin.setVisibility(View.VISIBLE);
             mUserWin.setVisibility(View.GONE);
-            SharedPreferenceHelper.setGameStatus(messageId,ChatConstant.KEY_OVER_GAME_TYPE);
+         SharedPreferenceHelper.setGameStatus(messageId,ChatConstant.KEY_OVER_GAME_TYPE);
         }
         msp.setSpan(new UnderlineSpan(), msp.length() - 4, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         msp.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.play_game_again)), msp.length() - 4, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

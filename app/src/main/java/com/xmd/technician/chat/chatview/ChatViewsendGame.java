@@ -39,7 +39,6 @@ public class ChatViewsendGame extends BaseChatView {
     long gameStartTime,currentTime;
     private EMTextMessageBody body;
 
-
     public ChatViewsendGame(Context context, EMMessage.Direct direct, EMConversation emConversation) {
         super(context, direct);
         this.emConversation = emConversation;
@@ -68,24 +67,40 @@ public class ChatViewsendGame extends BaseChatView {
             gameStartTime = message.getMsgTime();
             currentTime = System.currentTimeMillis();
             String headUrl = UserProfileProvider.getInstance().getChatUserInfo(message.getTo()).getAvatar();
-            if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_REQUEST_GAME)) {
-                if(currentTime-gameStartTime> SharedPreferenceHelper.getGameTimeout()){
-                   SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), ChatConstant.KEY_OVERTIME_GAME);
-                    SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
-                    initView();
-                    mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
-                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
-                    mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
-                    mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
-                    mWaitGame.setVisibility(View.VISIBLE);
-                    Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
-                    mUserHead.setVisibility(View.VISIBLE);
-                    mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_overtime));
-                    mCancel.setVisibility(View.GONE);
-                    return;
-                }else{
-                    SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), ChatConstant.KEY_REQUEST_GAME);
-                    SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
+            synchronized (this){
+                if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_REQUEST_GAME)) {
+                    if(currentTime-gameStartTime> SharedPreferenceHelper.getGameTimeout()){
+                        SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), ChatConstant.KEY_OVERTIME_GAME);
+                        SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
+                        initView();
+                        mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
+                        mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
+                        mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
+                        mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
+                        mWaitGame.setVisibility(View.VISIBLE);
+                        Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
+                        mUserHead.setVisibility(View.VISIBLE);
+                        mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_overtime));
+                        mCancel.setVisibility(View.GONE);
+                        return;
+                    }else{
+                        SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID), ChatConstant.KEY_REQUEST_GAME);
+                        SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
+                        initView();
+                        EMTextMessageBody body = (EMTextMessageBody) message.getBody();
+                        mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
+                        mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
+                        mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
+                        mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
+                        mWaitGame.setVisibility(View.VISIBLE);
+                        mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_waite));
+                        Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
+                        mUserHead.setVisibility(View.VISIBLE);
+                        mCancel.setVisibility(View.VISIBLE);
+
+                    }
+
+                } else if(message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_CANCEL_GAME_TYPE)){
                     initView();
                     EMTextMessageBody body = (EMTextMessageBody) message.getBody();
                     mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
@@ -93,104 +108,91 @@ public class ChatViewsendGame extends BaseChatView {
                     mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
                     mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
                     mWaitGame.setVisibility(View.VISIBLE);
-                    mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_waite));
                     Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
                     mUserHead.setVisibility(View.VISIBLE);
-                    mCancel.setVisibility(View.VISIBLE);
-
-                }
-
-            } else if(message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_CANCEL_GAME_TYPE)){
-                initView();
-                EMTextMessageBody body = (EMTextMessageBody) message.getBody();
-                mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
-                mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
-                mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
-                mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
-                mWaitGame.setVisibility(View.VISIBLE);
-                Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
-                mUserHead.setVisibility(View.VISIBLE);
-                mCancel.setVisibility(View.INVISIBLE);
-                mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_cancel));
-                mCancelOrReject.setVisibility(View.VISIBLE);
-                mCancelOrReject.setText(String.format("取消游戏，返还%s积分",body.getMessage()));
-            }else if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_GAME_REJECT)) {
-                initView();
-                EMTextMessageBody body = (EMTextMessageBody) message.getBody();
-                if (message.direct() == EMMessage.Direct.RECEIVE) {
-                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
-                    mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true)));
-                    mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
-                    mUserName.setText(Utils.StrSubstring(3, SharedPreferenceHelper.getUserName(), true));
-                    Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
-                    mUserHead.setVisibility(View.VISIBLE);
-                    mWaitGame.setVisibility(View.VISIBLE);
-                    mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_reject));
                     mCancel.setVisibility(View.INVISIBLE);
+                    mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_cancel));
                     mCancelOrReject.setVisibility(View.VISIBLE);
-                    emConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
-                    mCancelOrReject.setText(String.format("对方拒绝游戏，返还%s积分",body.getMessage()));
-                } else {
-                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
-                    mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
-                    mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
-                    mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
-                   Glide.with(context).load(headUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mAdverseHead);
-                    mAdverseHead.setVisibility(View.VISIBLE);
-                    mRefuseGame.setVisibility(View.VISIBLE);
-                    mRefuseGame.setText(ResourceUtils.getString(R.string.order_status_description_reject));
-                    mCancel.setVisibility(View.INVISIBLE);
-                }
-
-            } else if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_GAME_ACCEPT)) {
-                initView();
-                EMTextMessageBody body = (EMTextMessageBody) message.getBody();
-                if (message.direct() == EMMessage.Direct.RECEIVE) {
-                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
-                    if (message.getStringAttribute(ChatConstant.KEY_GAME_INVITE).equals(SharedPreferenceHelper.getEmchatId())) {
+                    mCancelOrReject.setText(String.format("取消游戏，返还%s积分",body.getMessage()));
+                }else if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_GAME_REJECT)) {
+                    initView();
+                    EMTextMessageBody body = (EMTextMessageBody) message.getBody();
+                    if (message.direct() == EMMessage.Direct.RECEIVE) {
+                        mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
                         mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true)));
-                    } else {
-                        mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
-                    }
-                    mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
-                    mUserName.setText(Utils.StrSubstring(3, SharedPreferenceHelper.getUserName(), true));
-                    Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
-                    mUserHead.setVisibility(View.VISIBLE);
-                    mWaitGame.setVisibility(View.VISIBLE);
-                    mWaitGame.setText(ResourceUtils.getString(R.string.accepted_order));
-                    mCancel.setVisibility(View.INVISIBLE);
-                    SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
-
-                } else {
-                    mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
-                    mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
-                    mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
-                    mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
-                    Glide.with(context).load(headUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mAdverseHead);
-                    mAdverseHead.setVisibility(View.VISIBLE);
-                    mRefuseGame.setVisibility(View.VISIBLE);
-                    mRefuseGame.setText(ResourceUtils.getString(R.string.accepted_order));
-                    mCancel.setVisibility(View.INVISIBLE);
-                    SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
-                }
-            }
-            mCancel.setOnClickListener(v ->{
-                currentTime = System.currentTimeMillis();
-                if(currentTime-gameStartTime>SharedPreferenceHelper.getGameTimeout()){
-                    mWaitGame.setVisibility(View.VISIBLE);
-                    mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_overtime));
-                    mCancel.setVisibility(View.GONE);
-                }else{
-                    if(mGameCancelListener !=null){
-                        mGameCancelListener.onCancel(message);
-                        mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_cancel));
+                        mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
+                        mUserName.setText(Utils.StrSubstring(3, SharedPreferenceHelper.getUserName(), true));
+                        Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
+                        mUserHead.setVisibility(View.VISIBLE);
+                        mWaitGame.setVisibility(View.VISIBLE);
+                        mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_reject));
                         mCancel.setVisibility(View.INVISIBLE);
                         mCancelOrReject.setVisibility(View.VISIBLE);
-                        mCancelOrReject.setText(String.format("取消游戏，返还%s积分",body.getMessage()));
+                        emConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
+                        mCancelOrReject.setText(String.format("对方拒绝游戏，返还%s积分",body.getMessage()));
+                    } else {
+                        mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
+                        mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
+                        mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
+                        mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
+                        Glide.with(context).load(headUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mAdverseHead);
+                        mAdverseHead.setVisibility(View.VISIBLE);
+                        mRefuseGame.setVisibility(View.VISIBLE);
+                        mRefuseGame.setText(ResourceUtils.getString(R.string.order_status_description_reject));
+                        mCancel.setVisibility(View.INVISIBLE);
+                    }
+
+                } else if (message.getStringAttribute(ChatConstant.KEY_GAME_STATUS).equals(ChatConstant.KEY_GAME_ACCEPT)) {
+                    initView();
+                    EMTextMessageBody body = (EMTextMessageBody) message.getBody();
+                    if (message.direct() == EMMessage.Direct.RECEIVE) {
+                        mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
+                        if (message.getStringAttribute(ChatConstant.KEY_GAME_INVITE).equals(SharedPreferenceHelper.getEmchatId())) {
+                            mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_format), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true)));
+                        } else {
+                            mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
+                        }
+                        mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
+                        mUserName.setText(Utils.StrSubstring(3, SharedPreferenceHelper.getUserName(), true));
+                        Glide.with(context).load(SharedPreferenceHelper.getUserAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mUserHead);
+                        mUserHead.setVisibility(View.VISIBLE);
+                        mWaitGame.setVisibility(View.VISIBLE);
+                        mWaitGame.setText(ResourceUtils.getString(R.string.accepted_order));
+                        mCancel.setVisibility(View.INVISIBLE);
+                        SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
+
+                    } else {
+                        mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
+                        mGameIntroduce.setText(String.format(ResourceUtils.getString(R.string.invite_game_accept_or_refuse), Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true)));
+                        mAdverseName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_ADVERSE_NAME), true));
+                        mUserName.setText(Utils.StrSubstring(3, message.getStringAttribute(ChatConstant.KEY_NAME), true));
+                        Glide.with(context).load(headUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.icon22).into(mAdverseHead);
+                        mAdverseHead.setVisibility(View.VISIBLE);
+                        mRefuseGame.setVisibility(View.VISIBLE);
+                        mRefuseGame.setText(ResourceUtils.getString(R.string.accepted_order));
+                        mCancel.setVisibility(View.INVISIBLE);
+                        SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
                     }
                 }
+                mCancel.setOnClickListener(v ->{
+                    currentTime = System.currentTimeMillis();
+                    if(currentTime-gameStartTime>SharedPreferenceHelper.getGameTimeout()){
+                        mWaitGame.setVisibility(View.VISIBLE);
+                        mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_overtime));
+                        mCancel.setVisibility(View.GONE);
+                    }else{
+                        if(mGameCancelListener !=null){
+                            mGameCancelListener.onCancel(message);
+                            mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_cancel));
+                            mCancel.setVisibility(View.INVISIBLE);
+                            mCancelOrReject.setVisibility(View.VISIBLE);
+                            mCancelOrReject.setText(String.format("取消游戏，返还%s积分",body.getMessage()));
+                        }
+                    }
 
-            });
+                });
+
+            }
 
         } catch (HyphenateException e) {
             e.printStackTrace();

@@ -347,6 +347,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
             }
             if (!TextUtils.isEmpty(customer.respData.techCustomer.userLoginName)) {
                 mContactTelephone.setText("电话："+customer.respData.techCustomer.userLoginName);
+            }else{
+                callPhone();
             }
             if (!TextUtils.isEmpty(customer.respData.techCustomer.remark)) {
                 textRemarkAlert.setVisibility(View.VISIBLE);
@@ -378,13 +380,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         }
        if(userType.equals(RequestConstant.WX_USER)){
             mContactTelephone.setVisibility(View.GONE);
-            btnCallPhone.setEnabled(false);
-            btnCallPhone.setClickable(false);
-            btnCallPhone.setTextColor(ResourceUtils.getColor(R.color.colorBtnChat));
-
-            btnChat.setEnabled(false);
-            btnChat.setClickable(false);
-            btnChat.setTextColor(ResourceUtils.getColor(R.color.colorBtnChat));
+           callUnusable();
         }
     }
     private void initOrder1(CustomerDetailResult customer) {
@@ -426,7 +422,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
             techNum.setText(tech.respData.serialNo);
 
         }
-        mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + tech.respData.phoneNum);
+        if(Utils.isNotEmpty(tech.respData.phoneNum)){
+            mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + tech.respData.phoneNum);
+        }else{
+            callUnusable();
+        }
+
         if(TextUtils.isEmpty(tech.respData.description)){
             mContactRemark.setText(ResourceUtils.getString(R.string.contact_description_remark_empty));
         }else{
@@ -453,7 +454,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
             Glide.with(mContext).load(managerHeadUrl).error(R.drawable.icon22).into(mContactHead);
         }
         mContactName.setText(manager.respData.name);
-        mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + manager.respData.phoneNum);
+        if(Utils.isNotEmpty(manager.respData.phoneNum)){
+            mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + manager.respData.phoneNum);
+        }else {
+            callUnusable();
+        }
+
         mContactOrderLayout.setVisibility(View.GONE);
         mContactNickName.setVisibility(View.GONE);
         mContactRemark.setVisibility(View.GONE);
@@ -494,5 +500,14 @@ public class ContactInformationDetailActivity extends BaseActivity {
            }
 
         }
+    }
+    private void callUnusable(){
+        mContactTelephone.setText("电话："+"未知");
+        btnCallPhone.setEnabled(false);
+        btnCallPhone.setClickable(false);
+        btnCallPhone.setTextColor(ResourceUtils.getColor(R.color.colorBtnChat));
+        btnChat.setEnabled(false);
+        btnChat.setClickable(false);
+        btnChat.setTextColor(ResourceUtils.getColor(R.color.colorBtnChat));
     }
 }
