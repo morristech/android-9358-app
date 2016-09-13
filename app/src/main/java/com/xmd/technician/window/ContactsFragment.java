@@ -133,13 +133,13 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 switch (position){
                     case 0:
                         mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-
                         currentFragmentIsContact = true;
+                        imgRight.setVisibility(View.VISIBLE);
                         break;
                     case 1:
                         mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-
                         currentFragmentIsContact = false;
+                        imgRight.setVisibility(View.GONE);
                         break;
                 }
                 currentIndex = position;

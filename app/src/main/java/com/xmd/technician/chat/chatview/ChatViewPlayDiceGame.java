@@ -8,6 +8,7 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -72,7 +73,6 @@ public class ChatViewPlayDiceGame extends BaseChatView {
         String messageId = message.getMsgId();
         EMTextMessageBody body = (EMTextMessageBody) message.getBody();
         String content = body.getMessage();
-
         try {
             String result = message.getStringAttribute(ChatConstant.KEY_GAME_RESULT);
             String status = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
@@ -99,8 +99,9 @@ public class ChatViewPlayDiceGame extends BaseChatView {
                 mAdverseWin.setVisibility(View.GONE);
                 Glide.with(context).load(R.drawable.dice_gif).asGif().into(mUserDice);
                 Glide.with(context).load(R.drawable.dice_gif).asGif().into(mAdverseDice);
-                SharedPreferenceHelper.setGameStatus(messageId, ChatConstant.KEY_OVER_GAME_TYPE);
+
                 ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+
                     @Override
                     public void run() {
                         initResultView(content,messageId);
@@ -162,7 +163,7 @@ public class ChatViewPlayDiceGame extends BaseChatView {
         }
     }
 
-    private void initResultView(String content,String gameId) {
+    private void initResultView(String content,String messageId) {
         initImageDice(userDice, mUserDice);
         initImageDice(adverseDice, mAdverseDice);
         mUserResult.setVisibility(View.VISIBLE);
@@ -182,6 +183,7 @@ public class ChatViewPlayDiceGame extends BaseChatView {
             msp = new SpannableString(String.format(ResourceUtils.getString(R.string.failed_and_play_again), content));
             mAdverseWin.setVisibility(View.VISIBLE);
             mUserWin.setVisibility(View.GONE);
+            SharedPreferenceHelper.setGameStatus(messageId,ChatConstant.KEY_OVER_GAME_TYPE);
         }
         msp.setSpan(new UnderlineSpan(), msp.length() - 4, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         msp.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.play_game_again)), msp.length() - 4, msp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
