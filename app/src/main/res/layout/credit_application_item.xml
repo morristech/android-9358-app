@@ -24,7 +24,8 @@
             android:layout_below="@id/credit_from"
             android:layout_marginTop="@dimen/tab_indicator_text_padding"
             android:background="@drawable/icon22"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            />
 
         <TextView
             android:id="@+id/avatar_name"

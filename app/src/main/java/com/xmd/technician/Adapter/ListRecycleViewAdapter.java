@@ -6,6 +6,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
@@ -151,6 +153,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
+            case TYPE_CREDIT_RECORD_ITEM:
+                View viewRecord = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_record_item, parent, false);
+                return new CreditRecordViewHolder(viewRecord);
             case TYPE_ORDER_ITEM:
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_item, parent, false);
                 return new OrderListItemViewHolder(view);
@@ -169,9 +174,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_CONVERSATION:
                 View viewConversion = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
                 return new ConversationViewHolder(viewConversion);
-            case TYPE_CREDIT_RECORD_ITEM:
-                View viewRecord = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_record_item, parent, false);
-                return new CreditRecordViewHolder(viewRecord);
             case TYPE_CREDIT_APPLICATION_ITEM:
                 View viewApplication = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_application_item, parent, false);
                 return new CreditApplicationViewHolder(viewApplication);
@@ -424,11 +426,17 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 creditRecordViewHolder.mCreditFrom.setText(creditDetailBean.businessCategoryDesc);
             }
             if (Utils.isNotEmpty(creditDetailBean.peerAvatar)) {
-                Glide.with(mContext).load(creditDetailBean.peerAvatar).error(R.drawable.icon22).into(creditRecordViewHolder.mAvatar);
-            } else {
+                creditRecordViewHolder.mAvatar.setVisibility(View.VISIBLE);
+                 Glide.with(mContext).load(creditDetailBean.peerAvatar).error(R.drawable.icon22).diskCacheStrategy(DiskCacheStrategy.ALL).into(creditRecordViewHolder.mAvatar);
+            } else if(creditDetailBean.businessCategoryDesc.equals("游戏积分")){
+                creditRecordViewHolder.mAvatar.setVisibility(View.VISIBLE);
+                Glide.with(mContext).load(R.drawable.icon22).into(creditRecordViewHolder.mAvatar);
+            }else{
                 creditRecordViewHolder.mAvatar.setVisibility(View.INVISIBLE);
             }
+
             if (Utils.isNotEmpty(creditDetailBean.peerName)) {
+                creditRecordViewHolder.mAdverseName.setVisibility(View.VISIBLE);
                 creditRecordViewHolder.mAdverseName.setText(creditDetailBean.peerName);
             } else {
                 creditRecordViewHolder.mAdverseName.setVisibility(View.INVISIBLE);
