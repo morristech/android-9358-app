@@ -38,6 +38,7 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.EmptyView;
 import com.xmd.technician.widget.SideBar;
 
 import java.util.ArrayList;
@@ -71,6 +72,8 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     SideBar sildebar;
     @Bind(R.id.status_progressbar)
     ProgressBar statusBar;
+    @Bind(R.id.empty_view_widget)
+    EmptyView emptyView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Subscription mGetCustomerListSubscription;
     private SortClubAdapter adapter;
@@ -175,8 +178,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
         mTitle.setText(ResourceUtils.getString(R.string.contact_manager));
 
         if (mClubList.size() > 0) {
-
-
+            emptyView.setStatus(EmptyView.Status.Gone);
             mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -248,6 +250,10 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
 
                 }
             });
+        }else{
+            emptyView.setStatus(EmptyView.Status.Gone);
+            emptyView.setEmptyPic(R.drawable.empty);
+            emptyView.setEmptyTip("");
         }
 
     }

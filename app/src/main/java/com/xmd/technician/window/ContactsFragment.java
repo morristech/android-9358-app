@@ -87,7 +87,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         return view;
     }
     private void initView() {
-        mTableClub.setOnClickListener(this);
+        mContactRight.setOnClickListener(this);
         mContactLeft.setOnClickListener(this);
 
     }
@@ -173,7 +173,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                     currentFragmentIsContact = true;
                 }
                 break;
-            case R.id.table_club:
+            case R.id.contact_right:
                 resetTextView();
                 mViewpagerContact.setCurrentItem(1);
                 currentIndex = 1;

@@ -41,6 +41,7 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.EmptyView;
 import com.xmd.technician.widget.SideBar;
 
 import java.util.ArrayList;
@@ -75,6 +76,9 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     SideBar sildebar;
     @Bind(R.id.status_progressbar)
     ProgressBar statusBar;
+    @Bind(R.id.empty_view_widget)
+    EmptyView mEmptyView;
+
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Subscription mGetCustomerListSubscription;
     private SortCustomerAdapter adapter;
@@ -250,14 +254,17 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
                 }
             });
-
+            mEmptyView.setStatus(EmptyView.Status.Gone);
         }else{
+            mEmptyView.setStatus(EmptyView.Status.Gone);
+            mEmptyView.setEmptyPic(R.drawable.empty);
+            mEmptyView.setEmptyTip("");
             titleLayout.setVisibility(View.GONE);
             adapter = new SortCustomerAdapter(getActivity(), new ArrayList<>());
             listView.setAdapter(adapter);
             mSwipeRefreshLayout.setRefreshing(false);
             Utils.makeShortToast(getActivity(),"未查询到相关联系人");
-
+            mEmptyView.setStatus(EmptyView.Status.Empty);
         }
 
     }

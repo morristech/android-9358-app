@@ -101,7 +101,7 @@
             <RelativeLayout
                 android:id="@+id/user_card_share"
                 style="@style/user_center_layout"
-                android:layout_marginTop="@dimen/margin_right_10">
+                android:layout_marginTop="@dimen/margin_15">
 
                 <ImageView
                     style="@style/user_center_imLeft"

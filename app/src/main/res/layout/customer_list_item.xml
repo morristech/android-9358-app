@@ -3,12 +3,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorMain"
     >
     <TextView
         android:id="@+id/tv_pinyin"
         android:layout_width="match_parent"
         android:layout_height="@dimen/contact_list_item_height"
-        android:background="@color/app_bg"
+        android:background="@color/colorMain"
         android:textColor="@color/contact_item_name_text_color"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/contact_list_padding_left"
