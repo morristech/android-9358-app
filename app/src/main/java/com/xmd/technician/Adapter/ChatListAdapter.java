@@ -290,7 +290,6 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onAccept(EMMessage message) {
             EMTextMessageBody body = (EMTextMessageBody) message.getBody();
             try {
-                SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID),ChatConstant.KEY_ACCEPT_GAME);
                 RxBus.getInstance().post(new AcceptOrRejectGame(body.getMessage(), message.getStringAttribute(ChatConstant.KEY_GAME_ID), ChatConstant.KEY_ACCEPT_GAME, message.getFrom()));
             } catch (HyphenateException e) {
                 e.printStackTrace();

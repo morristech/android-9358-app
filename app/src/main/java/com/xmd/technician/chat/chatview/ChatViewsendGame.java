@@ -129,6 +129,8 @@ public class ChatViewsendGame extends BaseChatView {
                         mCancel.setVisibility(View.INVISIBLE);
                         mCancelOrReject.setVisibility(View.VISIBLE);
                         emConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
+                        SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
+                        SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID),ChatConstant.KEY_GAME_REJECT);
                         mCancelOrReject.setText(String.format("对方拒绝游戏，返还%s积分",body.getMessage()));
                     } else {
                         mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
@@ -183,10 +185,10 @@ public class ChatViewsendGame extends BaseChatView {
                     }else{
                         if(mGameCancelListener !=null){
                             mGameCancelListener.onCancel(message);
-                            mWaitGame.setText(ResourceUtils.getString(R.string.order_status_description_cancel));
+                           mWaitGame.setText(ResourceUtils.getString(R.string.game_status_description_over));
                             mCancel.setVisibility(View.INVISIBLE);
-                            mCancelOrReject.setVisibility(View.VISIBLE);
-                            mCancelOrReject.setText(String.format("取消游戏，返还%s积分",body.getMessage()));
+                       //    mCancelOrReject.setVisibility(View.VISIBLE);
+                     //       mCancelOrReject.setText(String.format("取消游戏，返还%s积分",body.getMessage()));
                         }
                     }
 

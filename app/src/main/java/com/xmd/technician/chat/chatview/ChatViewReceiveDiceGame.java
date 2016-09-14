@@ -64,6 +64,7 @@ public class ChatViewReceiveDiceGame extends BaseChatView {
                 mBtnAccept.setEnabled(false);
                 return;
             } else if (gameStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)) {
+                mEmConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(gameId));
                 acceptOrRefuse.setText(String.format("(%s)", "已取消"));
                 acceptOrRefuse.setVisibility(View.VISIBLE);
                 mBtnRefuse.setEnabled(false);
@@ -102,6 +103,8 @@ public class ChatViewReceiveDiceGame extends BaseChatView {
                     mBtnRefuse.setEnabled(false);
                     mBtnAccept.setEnabled(false);
                 }else{
+                    mBtnRefuse.setEnabled(false);
+                    mBtnAccept.setEnabled(false);
                     mGameManagerListener.onAccept(message);
                 }
 
@@ -117,8 +120,6 @@ public class ChatViewReceiveDiceGame extends BaseChatView {
             }else{
                 if (mGameManagerListener != null) {
                     mGameManagerListener.onRefuse(message);
-                    acceptOrRefuse.setText(String.format("(%s)", "已拒绝"));
-                    acceptOrRefuse.setVisibility(View.VISIBLE);
                     mBtnRefuse.setEnabled(false);
                     mBtnAccept.setEnabled(false);
                     SharedPreferenceHelper.setGameStatus(gameId, ChatConstant.KEY_GAME_REJECT);

@@ -221,6 +221,7 @@
     <string name="order_status_description_failure">已失效</string>
     <string name="order_status_description_overtime">已超时</string>
     <string name="order_status_description_cancel">已取消</string>
+    <string name="game_status_description_over">已结束</string>
     <string name="order_status_description_waite">等待接受</string>
 
     <string name="make_call">打电话</string>
