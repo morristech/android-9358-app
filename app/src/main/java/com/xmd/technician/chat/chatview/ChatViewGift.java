@@ -42,7 +42,7 @@ public class ChatViewGift extends BaseChatView {
                 int giftValue = message.getIntAttribute(ChatConstant.KEY_CREDIT_GIFT_VALUE);
                 mGiftAmount.setText(String.format("收到%s,获得%s积分", content.substring(4, content.length() - 1), String.valueOf(giftValue)));
                 String giftId = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_ID, "");
-                String giftUrl = SharedPreferenceHelper.getGiftImagById(giftId);
+                String giftUrl = SharedPreferenceHelper.getGiftImageById(giftId);
                 Glide.with(context).load(giftUrl).asGif().error(R.drawable.gift_default).diskCacheStrategy(DiskCacheStrategy.RESULT).into(mGifeView);
             } catch (HyphenateException e) {
                 e.printStackTrace();
