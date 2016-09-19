@@ -372,6 +372,7 @@
     <string name="credit_exchange_reject">兑换%s元（已拒绝）</string>
     <string name="credit_exchange_undo">兑换%s元（未确认）</string>
     <string name="dice_game">骰子游戏</string>
+    <string name="credit_gift">"[礼物]"</string>
     <string name="credit_exchange_game">兑换成功</string>
     <string name="club_status_off">所在会所未开放积分兑换权限</string>
     <string name="win_and_play_again">获得%s积分，再来一局</string>
@@ -388,6 +389,7 @@
     <string name="exchange_credit_limit">会所限制大于%s积分才能进行兑换"</string>
     <string name="credit_is_shortage">您没有积分了，如何获取积分</string>
     <string name="greeting_text" formatted="false">客观您好，我是%s[%s]技师，希望能够为您服务，约我哟</string>
+
 
 
 </resources>

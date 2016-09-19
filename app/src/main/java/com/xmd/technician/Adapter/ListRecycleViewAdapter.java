@@ -331,17 +331,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (conversation.getAllMsgCount() != 0) {
                 // 把最后一条消息的内容作为item的message内容
                 EMMessage lastMessage = conversation.getLastMessage();
-                String fromId = lastMessage.getFrom();
                 String toId = lastMessage.getTo();
                 Spannable span = SmileUtils.getSmiledText(mContext, CommonUtils.getMessageDigest(lastMessage, mContext));
-                try {
-                    if (lastMessage.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE).equals(ChatConstant.KEY_MSG_GAME_TYPE)) {
-                        conversationHolder.mContent.setText(ResourceUtils.getString(R.string.dice_game));
-                    }
-                } catch (HyphenateException e) {
-                    conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
-                }
-
+                conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
                 conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
                 try {
                     if (lastMessage.direct() == EMMessage.Direct.RECEIVE) {

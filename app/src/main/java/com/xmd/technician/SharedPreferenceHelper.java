@@ -260,5 +260,11 @@ public class SharedPreferenceHelper {
     public static String  getTechNo(String techId){
         return mSettingPreference.getString(techId+"techNo","");
     }
+    public static void setGiftImageById(String id,String url){
+        mSettingPreference.edit().putString(id,url).apply();
+    }
+    public static String getGiftImageById(String id){
+       return mSettingPreference.getString(id,"");
+    }
 
 }

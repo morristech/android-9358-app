@@ -161,6 +161,7 @@ public class ChatViewsendGame extends BaseChatView {
                         mWaitGame.setVisibility(View.VISIBLE);
                         mWaitGame.setText(ResourceUtils.getString(R.string.accepted_order));
                         mCancel.setVisibility(View.INVISIBLE);
+                        emConversation.removeMessage(message.getMsgId());
                         SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
 
                     } else {
@@ -173,6 +174,7 @@ public class ChatViewsendGame extends BaseChatView {
                         mRefuseGame.setVisibility(View.VISIBLE);
                         mRefuseGame.setText(ResourceUtils.getString(R.string.accepted_order));
                         mCancel.setVisibility(View.INVISIBLE);
+                        emConversation.removeMessage(message.getMsgId());
                         SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
                     }
                 }
@@ -187,8 +189,6 @@ public class ChatViewsendGame extends BaseChatView {
                             mGameCancelListener.onCancel(message);
                            mWaitGame.setText(ResourceUtils.getString(R.string.game_status_description_over));
                             mCancel.setVisibility(View.INVISIBLE);
-                       //    mCancelOrReject.setVisibility(View.VISIBLE);
-                     //       mCancelOrReject.setText(String.format("取消游戏，返还%s积分",body.getMessage()));
                         }
                     }
 

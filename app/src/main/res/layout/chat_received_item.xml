@@ -379,14 +379,36 @@
                     android:textSize="@dimen/fontTitle_small" />
             </LinearLayout>
         </LinearLayout>
-        <ImageView
-            android:id="@+id/content_gift"
+        <LinearLayout
+            android:id="@+id/credit_gift"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/gift_default"
-            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
             android:visibility="gone"
-            />
+            >
+            <ImageView
+                android:id="@+id/credit_img"
+                android:layout_width="@dimen/gift_width"
+                android:layout_height="@dimen/gift_width"
+                android:src="@drawable/gift_default"
+                android:layout_gravity="center_vertical"
+                />
+            <TextView
+                android:id="@+id/credit_gift_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="收到礼物，获得800积分"
+                android:background="@drawable/reward_tip_bg"
+                android:paddingTop="@dimen/margin_2"
+                android:paddingBottom="@dimen/margin_2"
+                android:gravity="center"
+                android:paddingLeft="@dimen/personal_padding"
+                android:paddingRight="@dimen/personal_padding"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/fontRemark"
+                />
+        </LinearLayout>
+
     </FrameLayout>
 
     <ImageView

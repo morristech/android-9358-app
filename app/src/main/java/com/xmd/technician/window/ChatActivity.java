@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -38,6 +37,7 @@ import com.xmd.technician.bean.CheckedCoupon;
 import com.xmd.technician.bean.CreditAccountResult;
 import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.bean.GameResult;
+import com.xmd.technician.bean.GiftListResult;
 import com.xmd.technician.bean.PlayDiceGame;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.UserWin;
@@ -48,7 +48,6 @@ import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.chat.bean.CancelGame;
-import com.xmd.technician.chat.bean.RefreshView;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
 import com.xmd.technician.common.ThreadManager;
@@ -72,7 +71,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -129,8 +127,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private int mAvailableCredit;
     private FlowerAnimation animation;
 
-
-
     private Subscription mManagerOrderSubscription;
     private Subscription mGetRedpacklistSubscription;
     private Subscription mSendMessageSubscription;
@@ -142,6 +138,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private Subscription mPlayGameAgainSubscription;
     private Subscription mCancelGameSubscription;
     private Subscription mCreditStatusSubscription;
+    private Subscription mGiftResultSubscription;
 
 
     @Override
@@ -245,13 +242,21 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
                 }
         );
+        mGiftResultSubscription = RxBus.getInstance().toObservable(GiftListResult.class).subscribe(
+                result -> {
+                    for (int i = 0; i <result.respData.size() ; i++) {
+                        SharedPreferenceHelper.setGiftImageById(result.respData.get(i).id,result.respData.get(i).gifUrl);
+                    }
+                }
+        );
+
 
         adverseName = mAppTitle.getText().toString();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
-  //      MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST);
     }
 
     @Override
@@ -302,8 +307,9 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         super.onDestroy();
         if (null != mSendMessageSubscription) {
             RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription, mSendMessageSubscription,
-                    mSendDiceGameSubscription, mAcceptGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription,
-                    mUserAvailableCreditSubscription, mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription, mCreditStatusSubscription);
+                    mSendDiceGameSubscription, mAcceptGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription
+                    , mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription, mCreditStatusSubscription,
+                    mGiftResultSubscription);
         }
     }
 
@@ -473,6 +479,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_CANCEL_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
             }
         }else if(result.statusCode == 400 && result.msg.equals("此游戏已结束！")){
+           // mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_"+result.respData.id));
             mConversation.removeMessage(result.respData.id);
         }
         mChatAdapter.refreshList();
@@ -504,6 +511,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
 
     }
+
 
     @OnClick(R.id.btn_send)
     public void onSendBtnClicked() {

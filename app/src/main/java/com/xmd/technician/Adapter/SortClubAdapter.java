@@ -14,13 +14,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CLubMember;
-import com.xmd.technician.bean.CustomerInfo;
-import com.xmd.technician.bean.Manager;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.widget.CircleImageView;
-
-import java.lang.reflect.Member;
 import java.util.List;
 
 /**

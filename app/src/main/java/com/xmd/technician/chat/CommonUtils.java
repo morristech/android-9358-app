@@ -10,6 +10,8 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 import com.xmd.technician.R;
+import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 
 /**
  * Created by sdcm on 16-3-22.
@@ -82,12 +84,12 @@ public class CommonUtils {
                     } else {
                         digest = getString(context, R.string.dynamic_expression);
                     }
-                }/*else if(!TextUtils.isEmpty(message.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE,""))){
-                digest = txtBody.getMessage().replaceAll("<b>|</b>|</br>|<br>|<i>|</i>|<span>|</span>|<br/>","");
-            }*/
-                else if(txtBody.getMessage().startsWith("[")&&txtBody.getMessage().endsWith("]")){
-                    digest = txtBody.getMessage();
-                }else {
+                }else try {
+                    if(Utils.isNotEmpty(message.getStringAttribute(ChatConstant.KEY_GAME_ID))){
+                     digest = ResourceUtils.getString(R.string.dice_game);
+                    }
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
                     digest = txtBody.getMessage();
                     digest = Html.fromHtml(digest).toString();
                 }
@@ -144,11 +146,10 @@ public class CommonUtils {
                         type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_GAME_OVER : ChatConstant.MESSAGE_TYPE_SEND_GAME_OVER);
                     }
                 }else if(msgType.equals("gift")){
-              //      String giftValue = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_VALUE);
-                    String giftName = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_NAME);
-                    String giftId = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_ID);
+              //    String giftValue = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_VALUE);
+              //      String giftName = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_NAME)
+              //    String giftId = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_ID);
                     type = ChatConstant.MESSAGE_TYPE_RECV_CREDIT_GIFT;
-
                 }
             } catch (HyphenateException e) {
                 e.printStackTrace();
