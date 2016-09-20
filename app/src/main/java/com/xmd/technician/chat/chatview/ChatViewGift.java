@@ -35,15 +35,17 @@ public class ChatViewGift extends BaseChatView {
 
     @Override
     protected void onSetUpView() {
-        synchronized (this) {
+        {
             EMTextMessageBody body = (EMTextMessageBody) message.getBody();
             String content = body.getMessage();
+
             try {
-                int giftValue = message.getIntAttribute(ChatConstant.KEY_CREDIT_GIFT_VALUE);
-                mGiftAmount.setText(String.format("收到%s,获得%s积分", content.substring(4, content.length() - 1), String.valueOf(giftValue)));
                 String giftId = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_ID, "");
                 String giftUrl = SharedPreferenceHelper.getGiftImageById(giftId);
+                //String newUrl = giftUrl.replace("sdcm210","192.168.1.210");
                 Glide.with(context).load(giftUrl).asGif().error(R.drawable.gift_default).diskCacheStrategy(DiskCacheStrategy.RESULT).into(mGifeView);
+                String giftValue = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_VALUE);
+                mGiftAmount.setText(String.format("收到%s,获得%s积分", content.substring(4, content.length() - 1), giftValue));
             } catch (HyphenateException e) {
                 e.printStackTrace();
             }
