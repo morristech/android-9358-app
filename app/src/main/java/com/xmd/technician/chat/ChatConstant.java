@@ -94,5 +94,6 @@ public class ChatConstant {
     public static final String KEY_CREDIT_GIFT_VALUE = "giftValue";
     public static final String KEY_CREDIT_GIFT_NAME = "giftName";
     public static final String KEY_CREDIT_GIFT_ID = "giftId";
+    public static final String KEY_GAME_DISABLE = "disable";
 
 }

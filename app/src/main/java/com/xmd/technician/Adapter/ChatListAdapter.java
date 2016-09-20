@@ -279,12 +279,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return chatRow;
     }
 
+    /**
+     * 取消游戏
+     */
     private ChatViewsendGame.GameCancelListener mGameCancelListener = new ChatViewsendGame.GameCancelListener() {
         @Override
         public void onCancel(EMMessage message) {
             RxBus.getInstance().post(new CancelGame(message));
         }
     };
+    /**
+     * 接受游戏
+     */
     private ChatViewReceiveDiceGame.GameManagerListener mGameManagerListener = new ChatViewReceiveDiceGame.GameManagerListener() {
         @Override
         public void onAccept(EMMessage message) {
@@ -296,13 +302,13 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
         }
-
+        /**
+         * 拒绝游戏
+         */
         @Override
         public void onRefuse(EMMessage message) {
             Map<String, String> params = new HashMap<>();
             try {
-                String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
-                SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID),ChatConstant.KEY_GAME_REJECT);
                 params.put(RequestConstant.KEY_DICE_GAME_ID, message.getStringAttribute(RequestConstant.KEY_DICE_GAME_ID).substring(5));
                 params.put(RequestConstant.KEY_DICE_GAME_STATUS, ChatConstant.KEY_GAME_REJECT);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT, params);

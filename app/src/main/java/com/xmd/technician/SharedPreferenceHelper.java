@@ -243,8 +243,8 @@ public class SharedPreferenceHelper {
     public static void setGameTimeout(int timeoutSecond) {
         mSettingPreference.edit().putInt(KEY_CLUB_GAME_TIMEOUT, timeoutSecond * 1000).apply();
     }
-    public static void setGameMessageId(String gameId, String gameStatus) {
-        mSettingPreference.edit().putString(gameId+"dice", gameStatus).apply();
+    public static void setGameMessageId(String gameId, String messageId) {
+        mSettingPreference.edit().putString(gameId+"dice", messageId).apply();
     }
     public static String getGameMessageId(String gameId) {
         return mSettingPreference.getString(gameId+"dice", "");

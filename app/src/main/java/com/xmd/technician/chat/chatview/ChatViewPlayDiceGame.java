@@ -75,9 +75,7 @@ public class ChatViewPlayDiceGame extends BaseChatView {
         String content = body.getMessage();
         try {
             String result = message.getStringAttribute(ChatConstant.KEY_GAME_RESULT);
-            String status = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
             String adverseName = message.getStringAttribute(ChatConstant.KEY_NAME);
-            String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
             mUserName.setText(Utils.StrSubstring(3, SharedPreferenceHelper.getUserName(), true));
             if (message.direct() == EMMessage.Direct.RECEIVE) {
                 userDice = getSendDiceResult(result);

@@ -129,8 +129,6 @@ public class ChatViewsendGame extends BaseChatView {
                         mCancel.setVisibility(View.INVISIBLE);
                         mCancelOrReject.setVisibility(View.VISIBLE);
                         emConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID)));
-                        SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
-                        SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID),ChatConstant.KEY_GAME_REJECT);
                         mCancelOrReject.setText(String.format("对方拒绝游戏，返还%s积分",body.getMessage()));
                     } else {
                         mGameAmount.setText(String.format(ResourceUtils.getString(R.string.dice_amount), body.getMessage()));
@@ -161,7 +159,6 @@ public class ChatViewsendGame extends BaseChatView {
                         mWaitGame.setVisibility(View.VISIBLE);
                         mWaitGame.setText(ResourceUtils.getString(R.string.accepted_order));
                         mCancel.setVisibility(View.INVISIBLE);
-                        emConversation.removeMessage(message.getMsgId());
                         SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
 
                     } else {
@@ -174,7 +171,7 @@ public class ChatViewsendGame extends BaseChatView {
                         mRefuseGame.setVisibility(View.VISIBLE);
                         mRefuseGame.setText(ResourceUtils.getString(R.string.accepted_order));
                         mCancel.setVisibility(View.INVISIBLE);
-                        emConversation.removeMessage(message.getMsgId());
+                        SharedPreferenceHelper.setGameStatus(message.getStringAttribute(ChatConstant.KEY_GAME_ID),ChatConstant.KEY_ACCEPT_GAME);
                         SharedPreferenceHelper.setGameMessageId(message.getStringAttribute(ChatConstant.KEY_GAME_ID),message.getMsgId());
                     }
                 }
