@@ -5,9 +5,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.xmd.technician.R;
-
 import com.xmd.technician.bean.CreditAccountDetailResult;
 import com.xmd.technician.bean.CreditDetailBean;
 import com.xmd.technician.http.RequestConstant;
@@ -18,6 +18,8 @@ import com.xmd.technician.msgctrl.RxBus;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Subscription;
 
 /**
@@ -25,12 +27,17 @@ import rx.Subscription;
  */
 public class CreditRecordFragment extends BaseListFragment<CreditDetailBean> {
 
+    @Bind(R.id.status_progressbar)
+    ProgressBar statusProgressbar;
     private Subscription getCreditUserRecordsSubscription;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_credit_record, container, false);
+        View view = inflater.inflate(R.layout.fragment_credit_record, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -49,6 +56,7 @@ public class CreditRecordFragment extends BaseListFragment<CreditDetailBean> {
 
     @Override
     protected void initView() {
+        statusProgressbar.setVisibility(View.VISIBLE);
         getCreditUserRecordsSubscription = RxBus.getInstance().toObservable(CreditAccountDetailResult.class).subscribe(
                 detailResult -> handlerDetailResult(detailResult)
         );
@@ -58,10 +66,12 @@ public class CreditRecordFragment extends BaseListFragment<CreditDetailBean> {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(getCreditUserRecordsSubscription);
+        ButterKnife.unbind(this);
     }
 
     private void handlerDetailResult(CreditAccountDetailResult result) {
-
+        statusProgressbar.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             onGetListFailed(result.msg);
         } else {
@@ -69,6 +79,7 @@ public class CreditRecordFragment extends BaseListFragment<CreditDetailBean> {
         }
 
     }
+
     @Override
     public void onRefresh() {
         mIsLoadingMore = false;
@@ -80,6 +91,6 @@ public class CreditRecordFragment extends BaseListFragment<CreditDetailBean> {
     }
 
 
-    }
+}
 
 

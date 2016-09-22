@@ -256,7 +256,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST);
+     //   MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST);
     }
 
     @Override

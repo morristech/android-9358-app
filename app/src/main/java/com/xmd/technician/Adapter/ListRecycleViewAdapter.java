@@ -415,7 +415,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
 
             if (Utils.isNotEmpty(creditDetailBean.businessCategoryDesc)) {
-                creditRecordViewHolder.mCreditFrom.setText(creditDetailBean.businessCategoryDesc);
+                creditRecordViewHolder.mCreditFrom.setText(creditDetailBean.description);
             }
             if (Utils.isNotEmpty(creditDetailBean.peerAvatar)) {
                 creditRecordViewHolder.mAvatar.setVisibility(View.VISIBLE);

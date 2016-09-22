@@ -170,16 +170,7 @@ public class PersonalFragment extends BaseFragment {
             }else{
                 mAccountItem.setVisibility(View.GONE);
             }
-            if(switchResult.respData.credit.clubSwitch!=null &&switchResult.respData.credit.systemSwitch!=null ){
-                if(switchResult.respData.credit.clubSwitch.equals(RequestConstant.KEY_SWITCH_ON)&&switchResult.respData.credit.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)){
-                    mCreditCenter.setVisibility(View.VISIBLE);
-                    isCreditCanExchange = true;
-                }else{
-                    mCreditCenter.setVisibility(View.GONE);
-                }
-            }else{
-                mCreditCenter.setVisibility(View.GONE);
-            }
+
     }
     }
 

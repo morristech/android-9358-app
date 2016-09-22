@@ -2,16 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_widget"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/status_progressbar"
+            android:layout_width="@dimen/search_view_height"
+            android:layout_height="@dimen/search_view_height"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_widget"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
+
 
 </LinearLayout>

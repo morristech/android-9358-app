@@ -158,7 +158,7 @@
             <RelativeLayout
                 android:id="@+id/credit_center"
                 style="@style/user_center_layout"
-                android:visibility="gone">
+               >
 
                 <ImageView
                     style="@style/user_center_imLeft"
