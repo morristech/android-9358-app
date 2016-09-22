@@ -165,10 +165,15 @@ public class PersonalFragment extends BaseFragment {
     }
     private void handleUserSwitchResult(UserSwitchesResult switchResult) {
         if (switchResult.statusCode == 200){
-            if(switchResult.respData.account.switchX.equals(RequestConstant.KEY_SWITCH_ON)){
-                mAccountItem.setVisibility(View.VISIBLE);
+            if(switchResult.respData.credit.clubSwitch!=null &&switchResult.respData.credit.systemSwitch!=null ){
+                if(switchResult.respData.credit.clubSwitch.equals(RequestConstant.KEY_SWITCH_ON)&&switchResult.respData.credit.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)){
+                    mCreditCenter.setVisibility(View.VISIBLE);
+                    isCreditCanExchange = true;
+                }else{
+                    mCreditCenter.setVisibility(View.GONE);
+                }
             }else{
-                mAccountItem.setVisibility(View.GONE);
+                mCreditCenter.setVisibility(View.GONE);
             }
 
     }

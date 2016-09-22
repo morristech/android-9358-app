@@ -134,7 +134,6 @@
             <RelativeLayout
                 android:id="@+id/account_item"
                 style="@style/user_center_layout"
-                android:visibility="gone"
                 >
 
                 <ImageView
@@ -158,6 +157,7 @@
             <RelativeLayout
                 android:id="@+id/credit_center"
                 style="@style/user_center_layout"
+                android:visibility="gone"
                >
 
                 <ImageView
