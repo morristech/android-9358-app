@@ -175,4 +175,8 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
 
     protected abstract void initView();
 
+    @Override
+    public void onSayHiButtonClicked(T bean) {
+
+    }
 }

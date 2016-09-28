@@ -56,6 +56,24 @@
                             android:maxLength="16"
                             android:ellipsize="end"
                             />
+                        <ImageView
+                            android:id="@+id/customer_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_weixin"
+                            android:layout_marginTop="@dimen/margin_2"
+                            android:layout_marginLeft="@dimen/margin_5"
+                            android:visibility="gone"
+                            />
+                        <ImageView
+                            android:id="@+id/customer_other_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_weixin"
+                            android:layout_marginTop="@dimen/margin_2"
+                            android:layout_marginLeft="@dimen/margin_5"
+                            android:visibility="gone"
+                            />
                         <LinearLayout
                             android:id="@+id/ll_tech_number"
                             android:layout_width="wrap_content"
@@ -169,6 +187,106 @@
             </LinearLayout>
             <View
                 style="@style/horizontal_divider_line"></View>
+            <LinearLayout
+                android:id="@+id/linear_belong_tech"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/margin_15"
+                android:visibility="gone"
+                >
+                <RelativeLayout
+
+                    android:id="@+id/rl_visit_tech_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                    android:paddingTop="@dimen/inter_space"
+                    android:background="@color/color_white"
+                    >
+                    <TextView
+                        android:id="@+id/belong_tech"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/padding_15"
+                        android:drawableLeft="@drawable/icon_tech"
+                        android:paddingLeft="@dimen/margin_15"
+                        android:textSize="@dimen/fontHead"
+                        android:textColor="@color/colorBody"
+                        android:text="@string/belong_tech"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="@dimen/inter_space"
+                        />
+                    <TextView
+                        android:id="@+id/belong_tech_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/belong_tech"
+                        android:layout_marginLeft="@dimen/margin_25"
+                        android:textColor="@color/text_index"
+                        android:textSize="@dimen/fontSize"
+                        />
+                    <TextView
+                        android:id="@+id/belong_tech_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/belong_tech_name"
+                        android:textColor="@color/contact_marker"
+                        android:textSize="@dimen/fontBody"
+                        android:layout_marginLeft="@dimen/margin_5"
+                        android:layout_marginTop="@dimen/margin_2"
+                        />
+                    <View style="@style/horizontal_divider_line"
+                      android:layout_alignParentBottom="true"
+                        ></View>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_recently_visit_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/margin_10"
+                    android:background="@color/color_white"
+
+                    >
+                    <TextView
+                        android:id="@+id/belong_tech_times"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="45dp"
+                        android:textSize="@dimen/fontHead"
+                        android:textColor="@color/colorBody"
+                        android:text="@string/nearly_visit"
+                        />
+                    <TextView
+                        android:id="@+id/belong_tech_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/belong_tech_times"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:textColor="@color/text_index"
+                        android:textSize="@dimen/fontSize"
+                        android:text="-"
+                        />
+                    <TextView
+                        android:id="@+id/belong_tech_visit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/belong_tech_day"
+                        android:layout_alignLeft="@id/belong_tech_day"
+                        android:textColor="@color/colorRemark"
+                        android:textSize="@dimen/fontNormal"
+                        android:text="共访问我 - 次，平均 - 天访问一次"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="bottom"
+                        android:paddingBottom="@dimen/margin_5"
+                        />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_customer_order"
                 android:layout_width="match_parent"

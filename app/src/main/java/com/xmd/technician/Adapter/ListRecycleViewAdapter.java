@@ -28,12 +28,14 @@ import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.bean.CreditDetailBean;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.PaidCouponUserDetail;
+import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ItemSlideHelper;
+import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -54,6 +56,8 @@ import butterknife.ButterKnife;
 public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemSlideHelper.Callback {
 
 
+
+
     public interface Callback<T> {
 
         void onItemClicked(T bean) throws HyphenateException;
@@ -63,6 +67,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         void onPositiveButtonClicked(T bean);
 
         void onLoadMoreButtonClicked();
+
+        void onSayHiButtonClicked(T bean);
 
         /**
          * @return whether the item is slideable
@@ -82,6 +88,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_CONVERSATION = 3;
     private static final int TYPE_CREDIT_RECORD_ITEM = 4;
     private static final int TYPE_CREDIT_APPLICATION_ITEM = 5;
+    private static final int TYPE_RECENTLY_VISIT_ITEM = 6;
     private static final int TYPE_COUPON_INFO_ITEM_CASH = 11;
     private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
     private static final int TYPE_COUPON_INFO_ITEM_FAVORABLE = 13;
@@ -143,6 +150,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_CREDIT_RECORD_ITEM;
             } else if (mData.get(position) instanceof ApplicationBean) {
                 return TYPE_CREDIT_APPLICATION_ITEM;
+            } else if (mData.get(position) instanceof RecentlyVisitorBean) {
+                return TYPE_RECENTLY_VISIT_ITEM;
             } else {
                 return TYPE_OTHER_ITEM;
             }
@@ -177,6 +186,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_CREDIT_APPLICATION_ITEM:
                 View viewApplication = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_application_item, parent, false);
                 return new CreditApplicationViewHolder(viewApplication);
+            case TYPE_RECENTLY_VISIT_ITEM:
+                View viewRecentlyVisit = LayoutInflater.from(parent.getContext()).inflate(R.layout.recently_visitor_item, parent, false);
+                return new RecentlyVisitViewHolder(viewRecentlyVisit);
             default:
                 View viewDefault = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
                 return new ListFooterHolder(viewDefault);
@@ -356,29 +368,30 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 }
 //                conversationHolder.mUserManagerType.setVisibility(View.GONE);
 //                conversationHolder.mUserTechType.setVisibility(View.GONE);
-                if(conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())){
-                    if(SharedPreferenceHelper.getUserIsTech(toId).equals("tech")){
+                if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
+                    if (SharedPreferenceHelper.getUserIsTech(toId).equals("tech")) {
                         try {
-                            if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO))){
+                            if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO))) {
                                 String last = conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO);
-                              //  conversationHolder.mUserTechType.setVisibility(View.VISIBLE);
-                              //  conversationHolder.mUserTechType.setText(Utils.changeColor(last,ResourceUtils.getColor(R.color.contact_marker),1,last.length()));
+                                //  conversationHolder.mUserTechType.setVisibility(View.VISIBLE);
+                                //  conversationHolder.mUserTechType.setText(Utils.changeColor(last,ResourceUtils.getColor(R.color.contact_marker),1,last.length()));
                             }
                         } catch (HyphenateException e) {
                             e.printStackTrace();
                         }
-                    } else if(SharedPreferenceHelper.getUserIsTech(toId).equals("manager")){
-                      //  conversationHolder.mUserManagerType.setVisibility(View.VISIBLE);
+                    } else if (SharedPreferenceHelper.getUserIsTech(toId).equals("manager")) {
+                        //  conversationHolder.mUserManagerType.setVisibility(View.VISIBLE);
                     }
 
-                }else{
+                } else {
                     try {
 
-                        if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID)));
-                        if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO))){
+                        if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID)))
+                            ;
+                        if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO))) {
                             String last = conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO);
-                          //  conversationHolder.mUserTechType.setVisibility(View.VISIBLE);
-                           // conversationHolder.mUserTechType.setText(Utils.changeColor(last,ResourceUtils.getColor(R.color.contact_marker),1,last.length()));
+                            //  conversationHolder.mUserTechType.setVisibility(View.VISIBLE);
+                            // conversationHolder.mUserTechType.setText(Utils.changeColor(last,ResourceUtils.getColor(R.color.contact_marker),1,last.length()));
                         }
 
                     } catch (HyphenateException e) {
@@ -419,11 +432,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             if (Utils.isNotEmpty(creditDetailBean.peerAvatar)) {
                 creditRecordViewHolder.mAvatar.setVisibility(View.VISIBLE);
-                 Glide.with(mContext).load(creditDetailBean.peerAvatar).error(R.drawable.icon22).diskCacheStrategy(DiskCacheStrategy.ALL).into(creditRecordViewHolder.mAvatar);
-            } else if(creditDetailBean.businessCategoryDesc.equals("游戏积分")){
+                Glide.with(mContext).load(creditDetailBean.peerAvatar).error(R.drawable.icon22).diskCacheStrategy(DiskCacheStrategy.ALL).into(creditRecordViewHolder.mAvatar);
+            } else if (creditDetailBean.businessCategoryDesc.equals("游戏积分")) {
                 creditRecordViewHolder.mAvatar.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(R.drawable.icon22).into(creditRecordViewHolder.mAvatar);
-            }else{
+            } else {
                 creditRecordViewHolder.mAvatar.setVisibility(View.INVISIBLE);
             }
 
@@ -453,19 +466,110 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             CreditApplicationViewHolder creditApplicationViewHolder = (CreditApplicationViewHolder) holder;
             if (applicationBean.status.equals(RequestConstant.KEY_APPROVE)) {
                 creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_accept), String.valueOf(applicationBean.amount)));
-                creditApplicationViewHolder.mCreditAmount.setText("-"+String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
+                creditApplicationViewHolder.mCreditAmount.setText("-" + String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             } else if (applicationBean.status.equals(RequestConstant.KEY_TIMEOUT)) {
                 creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_overtime), String.valueOf(applicationBean.amount)));
-                creditApplicationViewHolder.mCreditAmount.setText("(解冻)"+String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
+                creditApplicationViewHolder.mCreditAmount.setText("(解冻)" + String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             } else if (applicationBean.status.equals(RequestConstant.KEY_REJECT)) {
                 creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_reject), String.valueOf(applicationBean.amount)));
-                creditApplicationViewHolder.mCreditAmount.setText("(解冻)"+String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
+                creditApplicationViewHolder.mCreditAmount.setText("(解冻)" + String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             } else {
                 creditApplicationViewHolder.mCreditFrom.setText(String.format(ResourceUtils.getString(R.string.credit_exchange_undo), String.valueOf(applicationBean.amount)));
-                creditApplicationViewHolder.mCreditAmount.setText("(冻结)"+String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
+                creditApplicationViewHolder.mCreditAmount.setText("(冻结)" + String.valueOf(applicationBean.amount * applicationBean.exchangeRatio));
             }
             creditApplicationViewHolder.mCreditTime.setText(applicationBean.createDate);
             return;
+        }
+        if (holder instanceof RecentlyVisitViewHolder) {
+            Object obj = mData.get(position);
+            if(!(obj instanceof RecentlyVisitorBean)){
+                return;
+            }
+            final RecentlyVisitorBean recentlyVisitor = (RecentlyVisitorBean) obj;
+            RecentlyVisitViewHolder viewHolder = (RecentlyVisitViewHolder) holder;
+
+            if(Long.parseLong(recentlyVisitor.userId)>0){
+                if(Utils.isNotEmpty(recentlyVisitor.userNoteName)){
+                    viewHolder.mVisitorName.setText(recentlyVisitor.userNoteName);
+                }else if(Utils.isNotEmpty(recentlyVisitor.userName)){
+                    viewHolder.mVisitorName.setText(recentlyVisitor.userName);
+                }else {
+                    viewHolder.mVisitorName.setText(ResourceUtils.getString(R.string.default_user_name));
+                }
+            }else{
+                viewHolder.mVisitorName.setText(ResourceUtils.getString(R.string.visitor_type));
+            }
+            if(Utils.isNotEmpty(recentlyVisitor.emchatId)){
+                viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
+            }else {
+                viewHolder.mVisitorToChat.setVisibility(View.GONE);
+            }
+            if(Utils.isNotEmpty(recentlyVisitor.canSayHello)){
+                viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
+                if(recentlyVisitor.canSayHello.equals("0")){
+                    viewHolder.mVisitorToChat.setEnabled(false);
+                    viewHolder.mVisitorToChat.setText("已招呼");
+                    viewHolder.mVisitorToChat.setTextColor(ResourceUtils.getColor(R.color.color_white));
+                }else if(recentlyVisitor.canSayHello.equals("1")){
+                    viewHolder.mVisitorToChat.setEnabled(true);
+                }
+            }else{
+                viewHolder.mVisitorToChat.setVisibility(View.GONE);
+            }
+            if(Utils.isNotEmpty(recentlyVisitor.techName)&&Utils.isNotEmpty(recentlyVisitor.techSerialNo)){
+                viewHolder.mVisitorTech.setVisibility(View.VISIBLE);
+                viewHolder.mVisitorTechNum.setVisibility(View.VISIBLE);
+                viewHolder.mVisitorTech.setText(String.format("所属技师：%s",recentlyVisitor.techName));
+                String mun = String.format("[%s]",recentlyVisitor.techSerialNo);
+                viewHolder.mVisitorTechNum.setText(Utils.changeColor(mun,ResourceUtils.getColor(R.color.contact_marker),1,mun.lastIndexOf("]")));
+            }else if(Utils.isNotEmpty(recentlyVisitor.techName)){
+                viewHolder.mVisitorTech.setVisibility(View.VISIBLE);
+                viewHolder.mVisitorTech.setText(String.format("所属技师：%s",recentlyVisitor.techName));
+            }else{
+                viewHolder.mVisitorTech.setVisibility(View.GONE);
+                viewHolder.mVisitorTechNum.setVisibility(View.GONE);
+            }
+
+            if(null!=recentlyVisitor.customType){
+                if(recentlyVisitor.customType.equals(RequestConstant.FANS_USER)){
+                    viewHolder.mVisitorType.setVisibility(View.VISIBLE);
+                    viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
+                }else if(recentlyVisitor.customType.equals(RequestConstant.FANS_WX_USER)){
+                    viewHolder.mVisitorOtherType.setVisibility(View.VISIBLE);
+                    viewHolder.mVisitorType.setVisibility(View.VISIBLE);
+                    viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
+                    viewHolder.mVisitorOtherType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
+                } else {
+                    viewHolder.mVisitorType.setVisibility(View.VISIBLE);
+                    viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
+                }
+            }
+            viewHolder.mVisitorTime.setText(RelativeDateFormatUtil.format(recentlyVisitor.createdAt));
+            Glide.with(mContext).load(recentlyVisitor.avatarUrl).into(viewHolder.mVisitorHead);
+            viewHolder.mVisitorToChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        mCallback.onSayHiButtonClicked(recentlyVisitor);
+                        viewHolder.mVisitorToChat.setEnabled(false);
+                        viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.had_say_hi));
+                        viewHolder.mVisitorToChat.setTextColor(ResourceUtils.getColor(R.color.color_white));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            viewHolder.itemView.setOnClickListener(v -> {
+                try {
+                    mCallback.onItemClicked(recentlyVisitor);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            return;
+
         }
         if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
@@ -482,6 +586,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             footerHolder.itemFooter.setText(desc);
             return;
         }
+
     }
 
     @Override
@@ -630,7 +735,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mTime;
         @Bind(R.id.unread)
         TextView mUnread;
- //     @Bind(R.id.user_manager_type)
+        //     @Bind(R.id.user_manager_type)
 //        TextView mUserManagerType;
 //        @Bind(R.id.user_tech_type)
 //        TextView mUserTechType;
@@ -671,11 +776,36 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mCreditTime;
         @Bind(R.id.credit_amount)
         TextView mCreditAmount;
+
         public CreditApplicationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
 
+    static class RecentlyVisitViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.visitor_head)
+        CircleImageView mVisitorHead;
+        @Bind(R.id.visitor_name)
+        TextView mVisitorName;
+        @Bind(R.id.visitor_type)
+        ImageView mVisitorType;
+        @Bind(R.id.visitor_other_type)
+        ImageView mVisitorOtherType;
+        @Bind(R.id.visitor_to_chat)
+        TextView mVisitorToChat;
+        @Bind(R.id.visitor_tech)
+        TextView mVisitorTech;
+        @Bind(R.id.visitor_tech_num)
+        TextView mVisitorTechNum;
+        @Bind(R.id.visitor_time)
+        TextView mVisitorTime;
+
+        public RecentlyVisitViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
 
 }

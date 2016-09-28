@@ -26,6 +26,11 @@ public class CustomerInfo extends BaseResult{
     public String createdAt;
     public String customerType;
     public String impression;
+    public String techName;
+    public String serialNo;
+    public String belongsTechName;
+    public String belongsTechSerialNo;
+
 
 
 

@@ -242,6 +242,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
             if (Utils.isNotEmpty(result.respData.clubName)) {
                 SharedPreferenceHelper.setUserClubName(result.respData.clubName);
             }
+            if(Utils.isNotEmpty(result.respData.serialNo)){
+                SharedPreferenceHelper.setSerialNo(result.respData.serialNo);
+            }
         }
     }
 

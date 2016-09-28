@@ -197,6 +197,7 @@
     <dimen name="game_setting_image_bottom">23dp</dimen>
     <dimen name="visitor_item_height">62dp</dimen>
     <dimen name="gift_width">121dp</dimen>
+    <dimen name="visit_item_height">22dp</dimen>
 
 
 </resources>

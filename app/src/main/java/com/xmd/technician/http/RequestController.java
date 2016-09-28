@@ -25,6 +25,7 @@ import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.UserSwitchesResult;
+import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
@@ -247,6 +248,13 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST:
                 doGetCreditGiftList();
+                break;
+            case MsgDef.MSG_DEF_DO_SAY_HI:
+                doSayHi((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_VISIT_VIEW:
+                doGetVisitView((Map<String, String>) msg.obj);
+                break;
    /*         case MsgDef.MSG_DEF_DO_DRAW_MONEY:
                 doDrawMoney((Map<String,String>)msg.obj);
                 break;
@@ -790,7 +798,7 @@ public class RequestController extends AbstractController {
 
         String clientId = AppConfig.sClientId;
 
-        //由于之前获取过clientid，并将其存放在shared_preferences中了，而SDK在获取client_id的过程中可能存在延迟，
+        //并将其存由于之前获取过clientid，放在shared_preferences中了，而SDK在获取client_id的过程中可能存在延迟，
         // 此时可从shared_preferences中先获取，减少client_id为空的几率
         if (TextUtils.isEmpty(clientId)) {
             clientId = SharedPreferenceHelper.getClientId();
@@ -901,7 +909,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doGetCustomerInfoDetail(Map<String, String> params) {
-        Call<CustomerDetailResult> call = getSpaService().getCustomerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), SharedPreferenceHelper.getUserToken());
+        Call<CustomerDetailResult> call = getSpaService().getCustomerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_USER_ID),params.get(RequestConstant.KEY_ID), SharedPreferenceHelper.getUserToken());
         call.enqueue(new TokenCheckedCallback<CustomerDetailResult>() {
             @Override
             protected void postResult(CustomerDetailResult result) {
@@ -1021,31 +1029,9 @@ public class RequestController extends AbstractController {
 
     }
 
-    /*
-        private void doGetOrderList(Map<String, String> params) {
-            Call<OrderListResult> call = getSpaService().getOrderList(SharedPreferenceHelper.getUserToken(),
-                    RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_FILTER_ORDER),
-                    params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
-
-            call.enqueue(new TokenCheckedCallback<OrderListResult>() {
-                @Override
-                protected void postResult(OrderListResult result) {
-                    RxBus.getInstance().post(result);
-                }
-
-                @Override
-                protected void postError(String errorMsg) {
-                    OrderListResult result = new OrderListResult();
-                    result.statusCode = RequestConstant.RESP_ERROR_CODE_FOR_LOCAL;
-                    result.msg = errorMsg;
-                    RxBus.getInstance().post(result);
-                }
-            });
-        }
-     */
-
     /**
      * 兑换积分
+     *
      * @param params
      */
     private void getExchangeApplications(Map<String, String> params) {
@@ -1077,6 +1063,7 @@ public class RequestController extends AbstractController {
 
     /**
      * 发起游戏
+     *
      * @param params
      */
     private void doDiceGameSubmit(Map<String, String> params) {
@@ -1089,11 +1076,13 @@ public class RequestController extends AbstractController {
             protected void postResult(SendGameResult result) {
                 RxBus.getInstance().post(result);
             }
+
+
         });
     }
 
     /**
-       游戏开始或拒绝
+     * 游戏开始或拒绝
      */
     private void doDiceGameAcceptOrReject(Map<String, String> params) {
         Call<GameResult> call = getSpaService().doDiceGameAcceptOrReject(RequestConstant.USER_TYPE_TECH, SharedPreferenceHelper.getUserToken(),
@@ -1101,6 +1090,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<GameResult>() {
             @Override
             protected void postResult(GameResult result) {
+
                 RxBus.getInstance().post(result);
             }
         });
@@ -1122,11 +1112,12 @@ public class RequestController extends AbstractController {
 
     /**
      * 最近访客
+     *
      * @param params
      */
 
     private void doGetRecentlyVisitorList(Map<String, String> params) {
-        Call<RecentlyVisitorResult> call = getSpaService().getRecentlyVisitorList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE));
+        Call<RecentlyVisitorResult> call = getSpaService().getRecentlyVisitorList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE),params.get(RequestConstant.KEY_LAST_TIME));
         call.enqueue(new TokenCheckedCallback<RecentlyVisitorResult>() {
             @Override
             protected void postResult(RecentlyVisitorResult result) {
@@ -1137,9 +1128,10 @@ public class RequestController extends AbstractController {
 
     /**
      * 礼物列表
+     *
      * @param
      */
-    private void doGetCreditGiftList(){
+    private void doGetCreditGiftList() {
         Call<GiftListResult> call = getSpaService().getCreditGiftList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken());
         call.enqueue(new TokenCheckedCallback<GiftListResult>() {
             @Override
@@ -1148,6 +1140,31 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
+    /**
+     * 礼物列表
+     *
+     * @param
+     */
+    private void doSayHi(Map<String, String> params) {
+        Call<BaseResult> call = getSpaService().doSayHi(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_UPDATE_USER_ID));
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+    private void doGetVisitView(Map<String, String> params) {
+        Call<VisitBean> call = getSpaService().doGetVisitView(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_UPDATE_USER_ID));
+        call.enqueue(new TokenCheckedCallback<VisitBean>() {
+            @Override
+            protected void postResult(VisitBean result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
 
 
     /*   private void doDrawMoney(Map<String,String> params){

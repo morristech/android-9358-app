@@ -39,10 +39,10 @@
         <Button
             android:id="@+id/btn_send"
             android:layout_width="@dimen/send_msg_btn_width"
-            android:layout_height="@dimen/search_view_height"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/search_margin"
-            android:layout_marginTop="@dimen/margin_2"
+            android:layout_marginTop="3dp"
             android:background="@drawable/login_button_main_selector"
             android:drawableLeft="@drawable/fas"
             android:minHeight="0dp"
@@ -54,7 +54,7 @@
         <EditText
             android:id="@+id/et_sendmessage"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/search_view_height"
+            android:layout_height="36dp"
             android:layout_marginBottom="@dimen/search_margin"
             android:layout_marginLeft="@dimen/search_margin"
             android:layout_marginRight="@dimen/search_margin"
@@ -71,7 +71,8 @@
             android:layout_height="32dp"
             android:layout_below="@+id/et_sendmessage"
             android:orientation="horizontal"
-            android:paddingBottom="8dp">
+            android:paddingBottom="8dp"
+            >
 
             <LinearLayout
                 android:id="@+id/btn_photo"

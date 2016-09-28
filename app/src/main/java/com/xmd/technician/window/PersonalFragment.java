@@ -160,6 +160,10 @@ public class PersonalFragment extends BaseFragment {
             if (Utils.isNotEmpty(result.respData.clubName)) {
                 SharedPreferenceHelper.setUserClubName(result.respData.clubName);
             }
+            if(Utils.isNotEmpty(result.respData.serialNo)){
+                SharedPreferenceHelper.setSerialNo(result.respData.serialNo);
+            }
+
             initView();
         }
     }

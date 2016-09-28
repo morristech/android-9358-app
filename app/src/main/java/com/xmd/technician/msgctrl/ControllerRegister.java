@@ -84,7 +84,9 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CREDIT_APPLICATIONS,
                 MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES,
                 MsgDef.MSG_DEF_GET_RECENTLY_VISITOR,
-                MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST
+                MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST,
+                MsgDef.MSG_DEF_DO_SAY_HI,
+                MsgDef.MSG_DEF_GET_VISIT_VIEW
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

@@ -17,6 +17,7 @@ import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.UserSwitchesResult;
+import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
@@ -344,6 +345,7 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CUSTOMER_INFO_DETAIL)
     Call<CustomerDetailResult> getCustomerInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                     @Field(RequestConstant.KEY_USER_ID) String userId,
                                                      @Field(RequestConstant.KEY_ID) String id,
                                                      @Field(RequestConstant.KEY_TOKEN) String userToken);
 
@@ -443,12 +445,26 @@ public interface SpaService {
     @POST(RequestConstant.URL_GET_RECENTLY_VISITOR_LIST)
     Call<RecentlyVisitorResult> getRecentlyVisitorList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                        @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                       @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType
+                                                       @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
+                                                       @Field(RequestConstant.KEY_LAST_TIME) String lastTime
     );
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CREDIT_GIFT_LIST)
     Call<GiftListResult> getCreditGiftList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                 @Field(RequestConstant.KEY_TOKEN) String userToken
+    );
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CUSTOMER_SAY_HI)
+    Call<BaseResult> doSayHi(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                 @Field(RequestConstant.KEY_UPDATE_USER_ID) String userId
+    );
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CUSTOMER_VIEW_VISIT)
+    Call<VisitBean> doGetVisitView(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                            @Field(RequestConstant.KEY_TOKEN) String userToken,
+                            @Field(RequestConstant.KEY_UPDATE_USER_ID) String userId
     );
 
 

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_white"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="62dp">
+        <com.xmd.technician.widget.CircleImageView
+            android:id="@+id/visitor_head"
+            android:layout_width="@dimen/comment_message_height"
+            android:layout_height="@dimen/comment_message_height"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/game_setting_margin"
+            android:background="@drawable/icon22" />
+        <TextView
+            android:id="@+id/visitor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLength="12"
+            android:textColor="@color/contact_item_name_text_color"
+            android:layout_toRightOf="@id/visitor_head"
+            android:layout_alignTop="@id/visitor_head"
+            android:textSize="@dimen/fontTitle"
+            />
+        <ImageView
+            android:id="@+id/visitor_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/visitor_name"
+            android:layout_alignBottom="@id/visitor_name"
+            android:layout_marginBottom="@dimen/margin_2"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:src="@drawable/icon_weixin"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/visitor_other_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_weixin"
+            android:layout_toRightOf="@id/visitor_type"
+            android:layout_alignBottom="@id/visitor_type"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:visibility="gone" />
+        <TextView
+            android:id="@+id/visitor_to_chat"
+            android:layout_width="61dp"
+            android:layout_height="@dimen/visit_item_height"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/inter_space"
+            android:text="打招呼"
+            android:gravity="center"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontBody"
+            android:visibility="gone"
+            android:background="@drawable/visitor_chat_bg"
+            />
+        <TextView
+            android:id="@+id/visitor_tech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visitor_name"
+            android:layout_alignLeft="@id/visitor_name"
+            android:textColor="@color/text_color_can_chat"
+            android:textSize="@dimen/fontNormal"
+            />
+        <TextView
+            android:id="@+id/visitor_tech_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visitor_name"
+           android:layout_toRightOf="@id/visitor_tech"
+            android:textColor="@color/text_color_can_chat"
+            android:textSize="@dimen/fontNormal"
+            android:visibility="visible"
+            android:layout_marginLeft="@dimen/margin_2"
+            />
+
+        <TextView
+            android:id="@+id/visitor_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/margin_5"
+            android:textColor="@color/text_color_can_chat"
+            android:textSize="@dimen/fontNormal"
+            android:layout_alignParentBottom="true"
+            />
+    </RelativeLayout>
+
+
+    <View
+        style="@style/horizontal_divider_line"
+        android:layout_marginTop="@dimen/margin_10"
+        ></View>
+
+
+</LinearLayout>

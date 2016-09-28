@@ -1,12 +1,10 @@
 package com.xmd.technician.window;
 
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import com.xmd.technician.Adapter.ServiceAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.http.RequestConstant;

@@ -175,5 +175,10 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
 
     protected abstract void initView();
 
+    @Override
+    public void onSayHiButtonClicked(T bean) {
+
+    }
+
     protected abstract void setContentViewLayout();
 }

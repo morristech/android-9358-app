@@ -111,6 +111,8 @@ public class MsgDef {
     public static final int MSG_DEF_GET_USER_CLUB_SWITCHES = 0x0058;
     public static final int MSG_DEF_GET_RECENTLY_VISITOR = 0x0059;
     public static final int MSG_DEF_GET_CREDIT_GIFT_LIST = 0x0060;
+    public static final int MSG_DEF_DO_SAY_HI = 0x0062;
+    public static final int MSG_DEF_GET_VISIT_VIEW = 0x0063;
     /**
      * ChatController, start to chat with someone
      */

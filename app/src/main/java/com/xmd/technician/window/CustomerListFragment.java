@@ -171,8 +171,11 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
                     Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
                     if(customerInfos!=null&&customerInfos.size()>0){
                         intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
+                        intent.putExtra(RequestConstant.KEY_USER_ID,customerInfos.get(position).userId);
                     }else{
                         intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mCustomerList.get(position).id);
+                        intent.putExtra(RequestConstant.KEY_USER_ID,mCustomerList.get(position).userId);
+                        intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER,true);
                     }
                     intent.putExtra(RequestConstant.CONTACT_TYPE,mCustomerList.get(position).customerType);
                     intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, "customer");

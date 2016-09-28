@@ -40,7 +40,6 @@ public class RequestConstant {
     public static final String URL_UPDATE_WORKSTATUS = BASE_URL + "/v1/profile/tech/status/update";
 
     public static final String URL_QUIT_CLUB = BASE_URL + "/v2/tech/quit/club";
-
     public static final String URL_GET_SERVICE_LIST = BASE_URL + "/v2/tech/profile/service";
     public static final String URL_UPDATE_SERVICE_LIST = BASE_URL + "/v1/profile/tech/service/update";
     public static final String URL_GET_ACCOUNT_MONEY = BASE_URL + "/v1/profile/tech/money";
@@ -56,7 +55,7 @@ public class RequestConstant {
     public static final String URL_GET_CLUB_LIST = BASE_URL + "/v2/tech/customer/tech/list";
     public static final String URL_GET_TECH_INFO_DETAIL = BASE_URL + "/v2/tech/customer/tech/view";
     public static final String URL_GET_MANAGER_INFO_DETAIL = BASE_URL + "/v2/tech/customer/manager/view";
-    public static final String URL_GET_RECENTLY_VISITOR_LIST = BASE_URL + "/v2/tech/customer/user/list";
+    public static final String URL_GET_RECENTLY_VISITOR_LIST = BASE_URL + "/v2/tech/customer/recent/list";
     public static final String URL_DELETE_CONTACT = BASE_URL + "/v2/tech/customer/delete";
     public static final String URL_DO_DRAW_MONEY = BASE_URL + "/v2/wx/pay/user_reward_redpack";
     public static final String URL_GET_USER_WX_OPEN_ID = BASE_URL + "/v2/wx/oauth2/openid";
@@ -65,6 +64,10 @@ public class RequestConstant {
     public static final String URL_GAME_DICE_SUBMIT = BASE_URL + "/v2/credit/game/dice/submit";
     public static final String URL_GAME_DICE_ACCEPT_OR_REJECT = BASE_URL + "/v2/credit/game/dice/accept";
     public static final String URL_GET_CREDIT_GIFT_LIST = BASE_URL + "/v2/credit/gift/list";
+    public static final String URL_CUSTOMER_SAY_HI = BASE_URL + "/v2/tech/customer/sayhi";
+    public static final String URL_CUSTOMER_VIEW_VISIT = BASE_URL + "/v2/tech/customer/user/view/visit";
+
+
 
 
 
@@ -101,6 +104,8 @@ public class RequestConstant {
     public static final String userTypeKEY_SECRET = "secret";
     public static final String KEY_TELEPHONE = "telephone";
     public static final String KEY_REQ_DATE = "reqDate";
+    public static final String KEY_TECH_NAME = "techName";
+    public static final String KEY_TECH_NO = "techNO";
 
     public static final String KEY_SESSION_TYPE = "sessionType";
     public static final String KEY_TOKEN = "token";
@@ -173,6 +178,7 @@ public class RequestConstant {
     public static final String KEY_SUBMIT = "submit";
     public static final String KEY_SWITCH_OFF = "off";
     public static final String KEY_SWITCH_ON = "on";
+    public static final String KEY_LAST_TIME = "lastTime";
 
 
     public static final String KEY_FILTER_ORDER = "filterOrder";
@@ -202,6 +208,8 @@ public class RequestConstant {
     public static final String KEY_DICE_GAME_STATUS = "status";
     public static final String KEY_DICE_GAME_ID = "gameId";
     public static final String KEY_DICE_GAME_TIME = "timestamp";
+
+    public static final String KEY_IS_MY_CUSTOMER = "isMyCustomer";
 
 
     /*********************************************************************************************/

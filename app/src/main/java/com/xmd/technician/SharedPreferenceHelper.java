@@ -100,7 +100,6 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(KEY_USER_CLUB_NAME, "");
     }
 
-
     public static void setEmchatId(String emchatId) {
         mSettingPreference.edit().putString(KEY_EMCHAT_ID, emchatId).apply();
     }
