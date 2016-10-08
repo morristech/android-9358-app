@@ -508,10 +508,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
                 if(recentlyVisitor.canSayHello.equals("0")){
                     viewHolder.mVisitorToChat.setEnabled(false);
-                    viewHolder.mVisitorToChat.setText("已招呼");
+                    viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.had_say_hi));
                     viewHolder.mVisitorToChat.setTextColor(ResourceUtils.getColor(R.color.color_white));
                 }else if(recentlyVisitor.canSayHello.equals("1")){
                     viewHolder.mVisitorToChat.setEnabled(true);
+                    viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.to_say_hi));
                 }
             }else{
                 viewHolder.mVisitorToChat.setVisibility(View.GONE);
@@ -531,6 +532,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
 
             if(null!=recentlyVisitor.customType){
+                viewHolder.mVisitorType.setVisibility(View.GONE);
+                viewHolder.mVisitorOtherType.setVisibility(View.GONE);
                 if(recentlyVisitor.customType.equals(RequestConstant.FANS_USER)){
                     viewHolder.mVisitorType.setVisibility(View.VISIBLE);
                     viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
@@ -543,6 +546,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     viewHolder.mVisitorType.setVisibility(View.VISIBLE);
                     viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
                 }
+            }else{
+                viewHolder.mVisitorType.setVisibility(View.GONE);
+                viewHolder.mVisitorOtherType.setVisibility(View.GONE);
             }
             viewHolder.mVisitorTime.setText(RelativeDateFormatUtil.format(recentlyVisitor.createdAt));
             Glide.with(mContext).load(recentlyVisitor.avatarUrl).into(viewHolder.mVisitorHead);

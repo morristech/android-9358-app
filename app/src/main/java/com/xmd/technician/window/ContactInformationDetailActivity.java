@@ -44,7 +44,7 @@ import butterknife.OnClick;
 import rx.Subscription;
 
 /**
- * Created by Administrator on 2016/7/5.
+ * Created by lhj on 2016/7/5.
  */
 public class ContactInformationDetailActivity extends BaseActivity {
     @Bind(R.id.customer_head)
@@ -419,6 +419,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 customerType.setVisibility(View.VISIBLE);
                 customerOtherType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
             } else {
+                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + "未知");
+                btnCallPhone.setEnabled(false);
+                btnChat.setEnabled(false);
                 customerType.setVisibility(View.VISIBLE);
                 customerOtherType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
             }
@@ -429,8 +432,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
             } else {
                 mContactNickName.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(customer.respData.techCustomer.userLoginName)) {
+            if (!TextUtils.isEmpty(customer.respData.techCustomer.userLoginName)&& !customer.respData.techCustomer.customerType.equals(RequestConstant.WX_USER)) {
                 mContactTelephone.setText("电话：" + customer.respData.techCustomer.userLoginName);
+            }else{
+                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + "未知");
             }
             if (!TextUtils.isEmpty(customer.respData.techCustomer.remark)) {
                 textRemarkAlert.setVisibility(View.VISIBLE);

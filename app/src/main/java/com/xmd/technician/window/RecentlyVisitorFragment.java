@@ -93,7 +93,12 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         params.clear();
         params.put(RequestConstant.KEY_USER_ID,bean.userId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_SAY_HI,params);
-        sendGreetingTextMessage(String.format("客官您好，我是%s[%s]技师，希望能够为您服务，约我哟",bean.techName,bean.techSerialNo),bean.emchatId);
+        if(Utils.isNotEmpty(bean.techSerialNo)){
+            sendGreetingTextMessage(String.format("客官您好，我是%s[%s]技师，希望能够为您服务，约我哟～",bean.techName,bean.techSerialNo),bean.emchatId);
+        }else{
+            sendGreetingTextMessage(String.format("客官您好，我是%s技师，希望能够为您服务，约我哟～",bean.techName),bean.emchatId);
+        }
+
     }
 
     @Override
