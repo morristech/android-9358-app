@@ -263,7 +263,5 @@
         android:layout_height="80dp"
         android:paddingLeft="@dimen/personal_padding"
         android:paddingRight="@dimen/personal_padding"
-       >
-
-    </RelativeLayout>
+       />
 </LinearLayout>

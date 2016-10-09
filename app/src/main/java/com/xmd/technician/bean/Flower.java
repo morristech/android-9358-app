@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2016/9/1.
  */
-public class Fllower implements Serializable {
+public class Flower implements Serializable {
     private static final long serialVersionUID = 1L;
     private Bitmap image;
     private float x;
@@ -58,7 +58,7 @@ public class Fllower implements Serializable {
 
     @Override
     public String toString() {
-        return "Fllower [ x=" + x + ", y=" + y + ", path=" + path + ", value="
+        return "Flower [ x=" + x + ", y=" + y + ", path=" + path + ", value="
                 + value + "]";
     }
 

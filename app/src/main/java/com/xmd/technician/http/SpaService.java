@@ -402,7 +402,7 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CREDIT_USER_EXCHANGE_APPLICATIONS)
     Call<CreditApplicationsResult> getExchangeApplications(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                           @Field(RequestConstant.KEY_USER_TYPE) String userType,
+                                                           @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                                            @Field(RequestConstant.KEY_STATUS) String status,
                                                            @Field(RequestConstant.KEY_PAGE) String page,
                                                            @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize

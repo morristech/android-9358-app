@@ -18,15 +18,12 @@ import android.view.ViewConfiguration;
  */
 public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
 
-    private static final String TAG = "ItemSlideHelper";
-
     private final int DEFAULT_DURATION = 200;
 
     private View mTargetView;
 
     private int mTouchSlop;
     private int mMaxVelocity;
-    private int mMinVelocity;
     private int mLastX;
     private int mLastY;
 
@@ -34,11 +31,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
 
     private Animator mExpandAndCollapseAnim;
 
-    private GestureDetectorCompat mGestureDetector;
-
     private Callback mCallback;
-
-    private VelocityTracker mVelocityTracker;
 
     public ItemSlideHelper(Context context, Callback callback) {
         this.mCallback = callback;
@@ -46,7 +39,6 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
         ViewConfiguration configuration = ViewConfiguration.get(context);
         mTouchSlop = configuration.getScaledTouchSlop();
         mMaxVelocity = configuration.getScaledMaximumFlingVelocity();
-        mMinVelocity = configuration.getScaledMinimumFlingVelocity();
     }
 
     public void clearTargetView(){
@@ -100,12 +92,6 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
                 mTargetView = targetView;
                 break;
             case MotionEvent.ACTION_MOVE:
-
-                //
-                /*if (isExpanded()) {
-                    smoothHorizontalExpandOrCollapse(DEFAULT_DURATION / 2);
-                    return false;
-                }*/
 
                 int deltaX = (x - mLastX);
                 int deltaY = (y - mLastY);
@@ -181,12 +167,6 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
             mTargetView = null;
             return;
         }
-
-        //如果要响应fling事件设置将mIsDragging设为false
-//        if (mGestureDetector.onTouchEvent(e)) {
-//            mIsDragging = false;
-//            return;
-//        }
 
         int x = (int) e.getX();
         int y = (int) e.getY();

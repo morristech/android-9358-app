@@ -85,4 +85,9 @@ public class ApplicationRecordFragment extends BaseListFragment<ApplicationBean>
     public void onSayHiButtonClicked(ApplicationBean bean) {
 
     }
+
+    @Override
+    public boolean isSlideable(){
+        return false;
+    }
 }

@@ -55,9 +55,6 @@ import butterknife.ButterKnife;
  */
 public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemSlideHelper.Callback {
 
-
-
-
     public interface Callback<T> {
 
         void onItemClicked(T bean) throws HyphenateException;

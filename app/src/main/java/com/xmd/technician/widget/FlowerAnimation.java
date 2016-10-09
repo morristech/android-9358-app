@@ -21,7 +21,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 
 import com.xmd.technician.R;
-import com.xmd.technician.bean.Fllower;
+import com.xmd.technician.bean.Flower;
 
 /**
  * 撒花 用到的知识点： 1、android属性动画 2、Path路径绘制 3、贝塞尔曲线
@@ -40,20 +40,20 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     /**
      * 小球集合
      */
-    private List<Fllower> flowers1 = new ArrayList<Fllower>();
-    private List<Fllower> flowers2 = new ArrayList<Fllower>();
-    private List<Fllower> flowers3 = new ArrayList<Fllower>();
-    private List<Fllower> flowers4 = new ArrayList<Fllower>();
-    private List<Fllower> flowers5 = new ArrayList<Fllower>();
+    private List<Flower> flowers1 = new ArrayList<Flower>();
+    private List<Flower> flowers2 = new ArrayList<Flower>();
+    private List<Flower> flowers3 = new ArrayList<Flower>();
+    private List<Flower> flowers4 = new ArrayList<Flower>();
+    private List<Flower> flowers5 = new ArrayList<Flower>();
 
     /**
      * 动画播放的时间
      */
-    private int time = 1500;
+    private final int time = 1500;
     /**
      * 动画间隔
      */
-    private int delay = 200;
+    private final int delay = 200;
 
     int[] ylocations = {-100, -50, -25, 0};
 
@@ -69,8 +69,7 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
 
     @SuppressWarnings("deprecation")
     private void init(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         width = wm.getDefaultDisplay().getWidth();
         height = (int) (wm.getDefaultDisplay().getHeight() * 3 / 2f);
 
@@ -117,7 +116,7 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
     /**
      * 创建花
      */
-    private void builderFollower(int count, List<Fllower> fllowers) {
+    private void builderFollower(int count, List<Flower> flowers) {
 
         int max = (int) (width * 3 / 4f);
         int min = (int) (width / 4f);
@@ -128,19 +127,19 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
             CPoint CPoint = new CPoint(s, ylocations[random.nextInt(3)]);
             List<CPoint> points = builderPath(CPoint);
             drawFllowerPath(path, points);
-            Fllower fllower = new Fllower();
-            fllower.setPath(path);
+            Flower flower = new Flower();
+            flower.setPath(path);
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
                     R.drawable.icon_gold);
             Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(),
                     R.drawable.icon_gold2);
             if(i/2==0){
-                fllower.setResId(bitmap);
+                flower.setResId(bitmap);
             }else{
-                fllower.setResId(bitmap2);
+                flower.setResId(bitmap2);
             }
 
-            fllowers.add(fllower);
+            flowers.add(flower);
         }
 
     }
@@ -250,16 +249,16 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
 
     /**
      * @param canvas
-     * @param fllowers
+     * @param flowers
      */
-    private void drawFllower(Canvas canvas, List<Fllower> fllowers) {
-        for (Fllower fllower : fllowers) {
+    private void drawFllower(Canvas canvas, List<Flower> flowers) {
+        for (Flower flower : flowers) {
             float[] pos = new float[2];
-            // canvas.drawPath(fllower.getPath(),mPaint);
-            pathMeasure.setPath(fllower.getPath(), false);
-            pathMeasure.getPosTan(height * fllower.getValue(), pos, null);
+            // canvas.drawPath(flower.getPath(),mPaint);
+            pathMeasure.setPath(flower.getPath(), false);
+            pathMeasure.getPosTan(height * flower.getValue(), pos, null);
             // canvas.drawCircle(pos[0], pos[1], 10, mPaint);
-            canvas.drawBitmap(fllower.getResId(), pos[0], pos[1] - dy, null);
+            canvas.drawBitmap(flower.getResId(), pos[0], pos[1] - dy, null);
         }
     }
 
@@ -325,11 +324,11 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
      * 跟新小球的位置
      *
      * @param value
-     * @param fllowers
+     * @param flowers
      */
-    private void updateValue(float value, List<Fllower> fllowers) {
-        for (Fllower fllower : fllowers) {
-            fllower.setValue(value);
+    private void updateValue(float value, List<Flower> flowers) {
+        for (Flower flower : flowers) {
+            flower.setValue(value);
         }
     }
 
