@@ -15,6 +15,8 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatUser;
+import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -64,6 +66,16 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
                 lastTime = String.valueOf(result.respData.get(result.respData.size()).createdAt);
 
         } else {
+            for (int i = 0; i < result.respData.size(); i++) {
+                if(Utils.isNotEmpty(result.respData.get(i).emchatId)){
+                    ChatUser user;
+                    user = new ChatUser(result.respData.get(i).emchatId);
+                    user.setAvatar(result.respData.get(i).avatarUrl);
+                    user.setNick(result.respData.get(i).userName);
+                    UserUtils.saveUser(user);
+                }
+
+            }
             onGetListSucceeded(result.pageCount,result.respData);
         }
 
@@ -93,10 +105,11 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         params.clear();
         params.put(RequestConstant.KEY_USER_ID,bean.userId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_SAY_HI,params);
-        if(Utils.isNotEmpty(bean.techSerialNo)){
-            sendGreetingTextMessage(String.format("客官您好，我是%s[%s]技师，希望能够为您服务，约我哟～",bean.techName,bean.techSerialNo),bean.emchatId);
+
+        if(Utils.isNotEmpty(SharedPreferenceHelper.getSerialNo())){
+            sendGreetingTextMessage(String.format("客官您好，我是%s[%s]技师，希望能够为您服务，约我哟～",SharedPreferenceHelper.getUserName(),SharedPreferenceHelper.getSerialNo()),bean.emchatId);
         }else{
-            sendGreetingTextMessage(String.format("客官您好，我是%s技师，希望能够为您服务，约我哟～",bean.techName),bean.emchatId);
+            sendGreetingTextMessage(String.format("客官您好，我是%s技师，希望能够为您服务，约我哟～",SharedPreferenceHelper.getUserName()),bean.emchatId);
         }
 
     }
