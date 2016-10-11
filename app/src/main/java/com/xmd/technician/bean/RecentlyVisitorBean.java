@@ -24,7 +24,7 @@ public class RecentlyVisitorBean implements Serializable {
      */
 
     public String canSayHello;
-    public String customType;
+    public String customerType;
     public String userNoteName;
     public String techId;
     public String techSerialNo;

@@ -113,6 +113,8 @@ public class MsgDef {
     public static final int MSG_DEF_GET_CREDIT_GIFT_LIST = 0x0060;
     public static final int MSG_DEF_DO_SAY_HI = 0x0062;
     public static final int MSG_DEF_GET_VISIT_VIEW = 0x0063;
+    public static final int MSG_DEF_SAVE_CHAT_TO_CHONTACT = 0x0064;
+
     /**
      * ChatController, start to chat with someone
      */

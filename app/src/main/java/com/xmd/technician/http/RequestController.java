@@ -22,6 +22,8 @@ import com.xmd.technician.bean.GiftListResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.RecentlyVisitorResult;
+import com.xmd.technician.bean.SaveChatUserResult;
+import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.UserSwitchesResult;
@@ -255,6 +257,8 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_VISIT_VIEW:
                 doGetVisitView((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT:
+                doSaveToContact((Map<String, String>) msg.obj);
    /*         case MsgDef.MSG_DEF_DO_DRAW_MONEY:
                 doDrawMoney((Map<String,String>)msg.obj);
                 break;
@@ -1142,19 +1146,20 @@ public class RequestController extends AbstractController {
     }
 
     /**
-     * 礼物列表
+     * 打招呼
      *
      * @param
      */
     private void doSayHi(Map<String, String> params) {
-        Call<BaseResult> call = getSpaService().doSayHi(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_UPDATE_USER_ID));
-        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+        Call<SayHiResult> call = getSpaService().doSayHi(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_UPDATE_USER_ID));
+        call.enqueue(new TokenCheckedCallback<SayHiResult>() {
             @Override
-            protected void postResult(BaseResult result) {
+            protected void postResult(SayHiResult result) {
                 RxBus.getInstance().post(result);
             }
         });
     }
+
     private void doGetVisitView(Map<String, String> params) {
         Call<VisitBean> call = getSpaService().doGetVisitView(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_UPDATE_USER_ID));
         call.enqueue(new TokenCheckedCallback<VisitBean>() {
@@ -1165,6 +1170,24 @@ public class RequestController extends AbstractController {
         });
     }
 
+    /**
+     * 打招呼后保存
+     *
+     * @param
+     */
+    private void doSaveToContact(Map<String, String> params) {
+        Call<SaveChatUserResult> call = getSpaService().doSaveContact(SharedPreferenceHelper.getEmchatId(),
+                RequestConstant.USER_TYPE_TECH ,params.get(RequestConstant.KEY_FRIEND_CHAT_ID),RequestConstant.USER_TYPE_USER,RequestConstant.KEY_MSG_TYPE_TEXT);
+        call.enqueue(new TokenCheckedCallback<SaveChatUserResult>() {
+            @Override
+            protected void postResult(SaveChatUserResult result) {
+                RxBus.getInstance().post(result);
+                if(result.statusCode == 200){
+                    Logger.i(result.msg);
+                }
+            }
+        });
+    }
 
 
     /*   private void doDrawMoney(Map<String,String> params){

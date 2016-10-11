@@ -14,6 +14,8 @@ import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.RecentlyVisitorResult;
+import com.xmd.technician.bean.SaveChatUserResult;
+import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.UserSwitchesResult;
@@ -456,15 +458,26 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_CUSTOMER_SAY_HI)
-    Call<BaseResult> doSayHi(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                 @Field(RequestConstant.KEY_UPDATE_USER_ID) String userId
+    Call<SayHiResult> doSayHi(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+                              @Field(RequestConstant.KEY_TOKEN) String userToken,
+                              @Field(RequestConstant.KEY_UPDATE_USER_ID) String userId
     );
     @FormUrlEncoded
     @POST(RequestConstant.URL_CUSTOMER_VIEW_VISIT)
     Call<VisitBean> doGetVisitView(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                             @Field(RequestConstant.KEY_TOKEN) String userToken,
                             @Field(RequestConstant.KEY_UPDATE_USER_ID) String userId
+    );
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_SAVE_CONTACT_MARK_CHATTO_USER)
+    Call<SaveChatUserResult> doSaveContact(@Field(RequestConstant.KEY_CURRENT_CHAT_ID) String currentChatId,
+                                           @Field(RequestConstant.KEY_CURRENT_USER_TYPE) String currentUserType,
+                                           @Field(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
+                                           @Field(RequestConstant.KEY_FRIEND_USER_TYPE) String friendUserType,
+                                           @Field(RequestConstant.KEY_FRIEND_MESSAGE_TYPE) String msgType
+
+
     );
 
 

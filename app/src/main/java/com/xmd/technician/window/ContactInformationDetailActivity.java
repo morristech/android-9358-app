@@ -104,7 +104,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     @Bind(R.id.text_contact_marker)
     TextView contactMark;
     @Bind(R.id.linear_belong_tech)
-    LinearLayout linearBelongTech;
+      LinearLayout linearBelongTech;
     @Bind(R.id.belong_tech_name)
     TextView belongTechName;
     @Bind(R.id.belong_tech_num)
@@ -195,7 +195,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 if(isMyCustomer){
                     contactMore.setVisibility(View.VISIBLE);
                 }
-                linearBelongTech.setVisibility(View.VISIBLE);
+
 
                 getCustomerInformationSubscription = RxBus.getInstance().toObservable(CustomerDetailResult.class).subscribe(
                         customer -> handlerCustomer(customer)
@@ -398,6 +398,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         } else {
             btnEmChat.setEnabled(true);
             mContactOrderLayout.setVisibility(View.VISIBLE);
+            linearBelongTech.setVisibility(View.VISIBLE);
             contactPhone = customer.respData.techCustomer.userLoginName;
             customerChatId = customer.respData.techCustomer.emchatId;
             if (!TextUtils.isEmpty(customer.respData.techCustomer.userNoteName)) {
@@ -410,7 +411,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
             if (customer.respData.techCustomer.customerType.equals(RequestConstant.TECH_ADD)) {
                 customerType.setVisibility(View.VISIBLE);
                 customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_contacts));
-            } else if (customer.respData.techCustomer.customerType.equals(RequestConstant.FANS_USER)) {
+            } else if(customer.respData.techCustomer.customerType.equals(RequestConstant.TEMP_USER)){
+                customerType.setVisibility(View.VISIBLE);
+                customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.temporary_user));
+            }else if (customer.respData.techCustomer.customerType.equals(RequestConstant.FANS_USER)) {
                 customerType.setVisibility(View.VISIBLE);
                 customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
             } else if (customer.respData.techCustomer.customerType.equals(RequestConstant.FANS_WX_USER)) {
@@ -544,6 +548,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         }
 
         mContactOrderLayout.setVisibility(View.GONE);
+        linearBelongTech.setVisibility(View.GONE);
         mContactNickName.setVisibility(View.GONE);
     }
 
@@ -569,6 +574,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         }
 
         mContactOrderLayout.setVisibility(View.GONE);
+        linearBelongTech.setVisibility(View.GONE);
         mContactNickName.setVisibility(View.GONE);
         mContactRemark.setVisibility(View.GONE);
     }

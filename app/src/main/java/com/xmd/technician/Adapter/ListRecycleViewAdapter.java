@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.chat.EMConversation;
@@ -479,62 +480,65 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
         if (holder instanceof RecentlyVisitViewHolder) {
             Object obj = mData.get(position);
-            if(!(obj instanceof RecentlyVisitorBean)){
+            if (!(obj instanceof RecentlyVisitorBean)) {
                 return;
             }
             final RecentlyVisitorBean recentlyVisitor = (RecentlyVisitorBean) obj;
             RecentlyVisitViewHolder viewHolder = (RecentlyVisitViewHolder) holder;
 
-            if(Long.parseLong(recentlyVisitor.userId)>0){
-                if(Utils.isNotEmpty(recentlyVisitor.userNoteName)){
+            if (Long.parseLong(recentlyVisitor.userId) > 0) {
+                if (Utils.isNotEmpty(recentlyVisitor.userNoteName)) {
                     viewHolder.mVisitorName.setText(recentlyVisitor.userNoteName);
-                }else if(Utils.isNotEmpty(recentlyVisitor.userName)){
+                } else if (Utils.isNotEmpty(recentlyVisitor.userName)) {
                     viewHolder.mVisitorName.setText(recentlyVisitor.userName);
-                }else {
+                } else {
                     viewHolder.mVisitorName.setText(ResourceUtils.getString(R.string.default_user_name));
                 }
-            }else{
+            } else {
                 viewHolder.mVisitorName.setText(ResourceUtils.getString(R.string.visitor_type));
             }
-            if(Utils.isNotEmpty(recentlyVisitor.emchatId)){
+            if (Utils.isNotEmpty(recentlyVisitor.emchatId)) {
                 viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 viewHolder.mVisitorToChat.setVisibility(View.GONE);
             }
-            if(Utils.isNotEmpty(recentlyVisitor.canSayHello)){
+            if (Utils.isNotEmpty(recentlyVisitor.canSayHello)) {
                 viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
-                if(recentlyVisitor.canSayHello.equals("0")){
+                if (recentlyVisitor.canSayHello.equals("0")) {
                     viewHolder.mVisitorToChat.setEnabled(false);
                     viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.had_say_hi));
                     viewHolder.mVisitorToChat.setTextColor(ResourceUtils.getColor(R.color.color_white));
-                }else if(recentlyVisitor.canSayHello.equals("1")){
+                } else if (recentlyVisitor.canSayHello.equals("1")) {
                     viewHolder.mVisitorToChat.setEnabled(true);
                     viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.to_say_hi));
                 }
-            }else{
+            } else {
                 viewHolder.mVisitorToChat.setVisibility(View.GONE);
             }
-            if(Utils.isNotEmpty(recentlyVisitor.techName)&&Utils.isNotEmpty(recentlyVisitor.techSerialNo)){
+            if (Utils.isNotEmpty(recentlyVisitor.techName) && Utils.isNotEmpty(recentlyVisitor.techSerialNo)) {
                 viewHolder.mVisitorTech.setVisibility(View.VISIBLE);
                 viewHolder.mVisitorTechNum.setVisibility(View.VISIBLE);
-                viewHolder.mVisitorTech.setText(String.format("所属技师：%s",recentlyVisitor.techName));
-                String mun = String.format("[%s]",recentlyVisitor.techSerialNo);
-                viewHolder.mVisitorTechNum.setText(Utils.changeColor(mun,ResourceUtils.getColor(R.color.contact_marker),1,mun.lastIndexOf("]")));
-            }else if(Utils.isNotEmpty(recentlyVisitor.techName)){
+                viewHolder.mVisitorTech.setText(String.format("所属技师：%s", recentlyVisitor.techName));
+                String mun = String.format("[%s]", recentlyVisitor.techSerialNo);
+                viewHolder.mVisitorTechNum.setText(Utils.changeColor(mun, ResourceUtils.getColor(R.color.contact_marker), 1, mun.lastIndexOf("]")));
+            } else if (Utils.isNotEmpty(recentlyVisitor.techName)) {
                 viewHolder.mVisitorTech.setVisibility(View.VISIBLE);
-                viewHolder.mVisitorTech.setText(String.format("所属技师：%s",recentlyVisitor.techName));
-            }else{
+                viewHolder.mVisitorTech.setText(String.format("所属技师：%s", recentlyVisitor.techName));
+            } else {
                 viewHolder.mVisitorTech.setVisibility(View.GONE);
                 viewHolder.mVisitorTechNum.setVisibility(View.GONE);
             }
 
-            if(null!=recentlyVisitor.customType){
+            if (null != recentlyVisitor.customerType) {
                 viewHolder.mVisitorType.setVisibility(View.GONE);
                 viewHolder.mVisitorOtherType.setVisibility(View.GONE);
-                if(recentlyVisitor.customType.equals(RequestConstant.FANS_USER)){
+                if (recentlyVisitor.customerType.equals(RequestConstant.FANS_USER)) {
                     viewHolder.mVisitorType.setVisibility(View.VISIBLE);
                     viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
-                }else if(recentlyVisitor.customType.equals(RequestConstant.FANS_WX_USER)){
+                } else if (recentlyVisitor.customerType.equals(RequestConstant.TEMP_USER)) {
+                    viewHolder.mVisitorType.setVisibility(View.VISIBLE);
+                    viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.temporary_user));
+                } else if (recentlyVisitor.customerType.equals(RequestConstant.FANS_WX_USER)) {
                     viewHolder.mVisitorOtherType.setVisibility(View.VISIBLE);
                     viewHolder.mVisitorType.setVisibility(View.VISIBLE);
                     viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
@@ -543,7 +547,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     viewHolder.mVisitorType.setVisibility(View.VISIBLE);
                     viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
                 }
-            }else{
+            } else {
                 viewHolder.mVisitorType.setVisibility(View.GONE);
                 viewHolder.mVisitorOtherType.setVisibility(View.GONE);
             }

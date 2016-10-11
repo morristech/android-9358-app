@@ -86,7 +86,8 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_RECENTLY_VISITOR,
                 MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST,
                 MsgDef.MSG_DEF_DO_SAY_HI,
-                MsgDef.MSG_DEF_GET_VISIT_VIEW
+                MsgDef.MSG_DEF_GET_VISIT_VIEW,
+                MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

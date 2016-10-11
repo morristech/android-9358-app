@@ -14,6 +14,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
+import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
@@ -31,8 +32,10 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
 
     private Map<String,String> params = new HashMap<>();
     private Subscription mGetRecentlyVisitorSubscription;
+    private Subscription mSayHiResultSubscription;
 
     private String lastTime;
+    private String friendUserId;
 
     @Nullable
     @Override
@@ -57,6 +60,22 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
                 result -> handlerClubInfoList(result)
         );
+        mSayHiResultSubscription = RxBus.getInstance().toObservable(SayHiResult.class).subscribe(
+                result -> handlerSayHiResult(result)
+        );
+    }
+
+    private void handlerSayHiResult(SayHiResult result) {
+
+        if(result.statusCode == 200){
+            onRefresh();
+
+            Map<String , String> saveParams = new HashMap<>();
+            saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID,friendUserId);
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT,saveParams);
+
+        }
+
     }
 
     private void handlerClubInfoList(RecentlyVisitorResult result) {
@@ -86,7 +105,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         if(Long.parseLong(bean.userId)>0){
             Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
             intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-            intent.putExtra(RequestConstant.CONTACT_TYPE,bean.customType);
+            intent.putExtra(RequestConstant.CONTACT_TYPE,bean.customerType);
             intent.putExtra(RequestConstant.KEY_TECH_NAME,bean.techName);
             intent.putExtra(RequestConstant.KEY_TECH_NO,bean.techSerialNo);
             intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, "customer");
@@ -102,6 +121,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
     @Override
     public void onSayHiButtonClicked(RecentlyVisitorBean bean) {
         super.onSayHiButtonClicked(bean);
+        friendUserId = bean.emchatId;
         params.clear();
         params.put(RequestConstant.KEY_USER_ID,bean.userId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_SAY_HI,params);
@@ -131,6 +151,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
     public boolean isSlideable() {
         return false;
     }
+
     private void  sendGreetingTextMessage(String content,String mToChatUsername) {
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
         sendMessage(message);
@@ -149,7 +170,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe( mGetRecentlyVisitorSubscription);
+        RxBus.getInstance().unsubscribe( mGetRecentlyVisitorSubscription,mSayHiResultSubscription);
     }
 }
 

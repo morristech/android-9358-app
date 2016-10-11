@@ -70,7 +70,6 @@ public class RequestConstant {
 
 
 
-
     public static final String URL_GET_CREDIT_SWITCH_STATUS = BASE_URL + "/v2/credit/switch/status";
     public static final String URL_GET_CREDIT_EXCHANGE_APPLY = BASE_URL + "/v2/credit/exchange/apply";
     public static final String URL_GET_CREDIT_USER_RECORDS = BASE_URL + "/v2/credit/user/records";
@@ -78,6 +77,8 @@ public class RequestConstant {
     public static final String URL_GET_CREDIT_USER_EXCHANGE_APPLICATIONS = BASE_URL + "/v2/credit/user/exchange/applications";
     public static final String URL_GET_CONTACT_MARK = BASE_URL + "/v2/club/impression/list";
     public static final String URL_INTRODUCE_BIND = "/spa-manager/follow9358/index.html";
+
+    public static final String URL_SAVE_CONTACT_MARK_CHATTO_USER = BASE_URL + "/v1/emchat/markchattouser";
 
 
     public static final String URL_GET_USER_SWITCHES = BASE_URL +"/v2/user/switches";
@@ -92,6 +93,7 @@ public class RequestConstant {
     /*********************************************************************************************/
 
     public static final String USER_TYPE_TECH = "tech";
+    public static final String USER_TYPE_USER = "user";
 
     public static final String KEY_USER_TYPE = "userType";
 
@@ -169,9 +171,11 @@ public class RequestConstant {
     public static final String KEY_CUSTOMER_TYPE = "customerType";
     public static final String TECH_ADD = "tech_add";
     public static final String FANS_USER = "fans_user";
+    public static final String TEMP_USER = "temp_user";
     public static final String CONTACT_TYPE = "type";
     public static final String WX_USER = "wx_user";
     public static final String FANS_WX_USER = "fans_wx_user";
+    public static final String COUPON_USER = "coupon_user";
     public static final String KEY_APPROVE = "approve";
     public static final String KEY_TIMEOUT = "timeout";
     public static final String KEY_REJECT = "reject";
@@ -209,7 +213,16 @@ public class RequestConstant {
     public static final String KEY_DICE_GAME_ID = "gameId";
     public static final String KEY_DICE_GAME_TIME = "timestamp";
 
+
     public static final String KEY_IS_MY_CUSTOMER = "isMyCustomer";
+    public static final String KEY_CURRENT_CHAT_ID = "currentChatId";
+    public static final String KEY_CURRENT_USER_TYPE = "currentUserType";
+    public static final String KEY_FRIEND_CHAT_ID = "friendChatId";
+    public static final String KEY_FRIEND_USER_TYPE = "friendUserType";
+    public static final String KEY_FRIEND_MESSAGE_TYPE = "msgType";
+    public static final String KEY_MSG_TYPE_TEXT = "text";
+
+
 
 
     /*********************************************************************************************/
