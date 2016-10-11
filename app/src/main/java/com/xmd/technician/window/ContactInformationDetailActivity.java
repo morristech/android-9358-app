@@ -414,6 +414,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             } else if(customer.respData.techCustomer.customerType.equals(RequestConstant.TEMP_USER)){
                 customerType.setVisibility(View.VISIBLE);
                 customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.temporary_user));
+                btnEmChat.setEnabled(false);
             }else if (customer.respData.techCustomer.customerType.equals(RequestConstant.FANS_USER)) {
                 customerType.setVisibility(View.VISIBLE);
                 customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));

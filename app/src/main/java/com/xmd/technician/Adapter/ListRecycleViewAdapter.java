@@ -497,24 +497,29 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 viewHolder.mVisitorName.setText(ResourceUtils.getString(R.string.visitor_type));
             }
-            if (Utils.isNotEmpty(recentlyVisitor.emchatId)) {
-                viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.mVisitorToChat.setVisibility(View.GONE);
-            }
-            if (Utils.isNotEmpty(recentlyVisitor.canSayHello)) {
-                viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
-                if (recentlyVisitor.canSayHello.equals("0")) {
-                    viewHolder.mVisitorToChat.setEnabled(false);
-                    viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.had_say_hi));
-                    viewHolder.mVisitorToChat.setTextColor(ResourceUtils.getColor(R.color.color_white));
-                } else if (recentlyVisitor.canSayHello.equals("1")) {
-                    viewHolder.mVisitorToChat.setEnabled(true);
-                    viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.to_say_hi));
+            if(Utils.isNotEmpty(recentlyVisitor.customerType)){
+                if(Utils.isNotEmpty(recentlyVisitor.emchatId) && !recentlyVisitor.customerType.equals(RequestConstant.TEMP_USER)){
+                    viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
+                    if (Utils.isNotEmpty(recentlyVisitor.canSayHello )) {
+                        viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
+                        if (recentlyVisitor.canSayHello.equals("0")) {
+                            viewHolder.mVisitorToChat.setEnabled(false);
+                            viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.had_say_hi));
+                            viewHolder.mVisitorToChat.setTextColor(ResourceUtils.getColor(R.color.color_white));
+                        } else if (recentlyVisitor.canSayHello.equals("1")) {
+                            viewHolder.mVisitorToChat.setEnabled(true);
+                            viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.to_say_hi));
+                        }
+                    } else {
+                        viewHolder.mVisitorToChat.setVisibility(View.GONE);
+                    }
+                }else{
+                    viewHolder.mVisitorToChat.setVisibility(View.GONE);
                 }
-            } else {
+            }else {
                 viewHolder.mVisitorToChat.setVisibility(View.GONE);
             }
+
             if (Utils.isNotEmpty(recentlyVisitor.techName) && Utils.isNotEmpty(recentlyVisitor.techSerialNo)) {
                 viewHolder.mVisitorTech.setVisibility(View.VISIBLE);
                 viewHolder.mVisitorTechNum.setVisibility(View.VISIBLE);
