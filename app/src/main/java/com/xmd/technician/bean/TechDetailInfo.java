@@ -37,6 +37,7 @@ public class TechDetailInfo {
 
     @Override
     public String toString() {
-        return "{\"name\":\"" + name + "\",\"gender\":\"" + gender + "\",\"serialNo\":\"" + serialNo + "\",\"provinceCode\":\"" + provinceCode + "\",\"cityCode\":\"" + cityCode + "\",\"province\":\"" + province + "\",\"city\":\"" + city + "\",\"phoneNum\":\"" + phoneNum + "\",\"description\":\"" + description + "\"}";
+        return "{\"name\":\"" + name + "\",\"gender\":\"" + gender + "\",\"serialNo\":\"" + serialNo + "\",\"provinceCode\":\"" + provinceCode + "\",\"cityCode\":\"" + cityCode + "\"," +
+                "\"province\":\"" + province + "\",\"city\":\"" + city + "\",\"phoneNum\":\"" + phoneNum + "\",\"description\":\"" + description + "\"}";
     }
 }

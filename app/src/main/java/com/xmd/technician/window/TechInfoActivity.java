@@ -1,7 +1,6 @@
 package com.xmd.technician.window;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,14 +18,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.Adapter.AlbumAdapter;
-import com.xmd.technician.Adapter.PhotoGridAdapter;
 import com.xmd.technician.R;
-import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
-import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.bean.AlbumInfo;
@@ -34,10 +30,7 @@ import com.xmd.technician.bean.TechDetailInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.ConfirmDialog;
-import com.xmd.technician.widget.CustomAlertDialog;
 import com.xmd.technician.widget.PhotoGridLayoutManager;
-import com.xmd.technician.widget.PhotoGridView;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.RoundImageView;
 import com.xmd.technician.widget.SelectPlaceDialog;
@@ -163,7 +156,14 @@ public class TechInfoActivity extends BaseActivity {
                 techEditResult -> getTechInfoResult(techEditResult));
 
         mUpdateTechInfoSubscription = RxBus.getInstance().toObservable(UpdateTechInfoResult.class).subscribe(
-                updateTechInfoResult -> finish());
+                updateTechInfoResult -> {
+                    if(updateTechInfoResult.statusCode == 200){
+                        finish();
+                    } else{
+                        dismissProgressDialogIfShowing();
+                        makeShortToast(updateTechInfoResult.msg);
+                    }
+                });
 
         mUploadAlbumSubscription = RxBus.getInstance().toObservable(AlbumResult.class).subscribe(albumResult -> refresh());
 
@@ -306,7 +306,7 @@ public class TechInfoActivity extends BaseActivity {
                                 startActivityForResult(intent, REQUEST_CODE_CROP_AVATAR);
                             }
                         } catch (Exception e) {
-
+                            e.printStackTrace();
                         }
                     }
                     break;

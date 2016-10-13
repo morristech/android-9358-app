@@ -153,7 +153,7 @@
                         android:layout_toRightOf="@id/user_name_hint"
                         android:maxLength="10"
                         android:singleLine="true"
-                        android:text="李好美" />
+                         />
 
                 </RelativeLayout>
 

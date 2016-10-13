@@ -69,7 +69,11 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
 
         if(result.statusCode == 200){
             onRefresh();
-
+            if(Utils.isNotEmpty(SharedPreferenceHelper.getSerialNo())){
+                sendGreetingTextMessage(String.format("客官您好，我是%s[%s]技师，希望能够为您服务，约我哟～",SharedPreferenceHelper.getUserName(),SharedPreferenceHelper.getSerialNo()),friendUserId);
+            }else{
+                sendGreetingTextMessage(String.format("客官您好，我是%s技师，希望能够为您服务，约我哟～",SharedPreferenceHelper.getUserName()),friendUserId);
+            }
             Map<String , String> saveParams = new HashMap<>();
             saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID,friendUserId);
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT,saveParams);
@@ -126,11 +130,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         params.put(RequestConstant.KEY_USER_ID,bean.userId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_SAY_HI,params);
 
-        if(Utils.isNotEmpty(SharedPreferenceHelper.getSerialNo())){
-            sendGreetingTextMessage(String.format("客官您好，我是%s[%s]技师，希望能够为您服务，约我哟～",SharedPreferenceHelper.getUserName(),SharedPreferenceHelper.getSerialNo()),bean.emchatId);
-        }else{
-            sendGreetingTextMessage(String.format("客官您好，我是%s技师，希望能够为您服务，约我哟～",SharedPreferenceHelper.getUserName()),bean.emchatId);
-        }
+
 
     }
 

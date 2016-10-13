@@ -539,13 +539,12 @@ public class RequestController extends AbstractController {
     }
 
     private void updateTechInfo(Map<String, String> params) {
-        Call<BaseResult> call = getSpaService().updateTechInfo(params.get(RequestConstant.KEY_USER),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
-
-        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+        Call<UpdateTechInfoResult> call = getSpaService().updateTechInfo(params.get(RequestConstant.KEY_USER),
+               SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+        call.enqueue(new TokenCheckedCallback<UpdateTechInfoResult>() {
             @Override
-            protected void postResult(BaseResult result) {
-                RxBus.getInstance().post(new UpdateTechInfoResult());
+            protected void postResult(UpdateTechInfoResult result) {
+                RxBus.getInstance().post(result);
             }
         });
     }

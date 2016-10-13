@@ -39,6 +39,7 @@ import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
+import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
 
 import retrofit2.Call;
@@ -111,9 +112,9 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_UPDATE_TECH_INFO)
-    Call<BaseResult> updateTechInfo(@Field(RequestConstant.KEY_USER) String user,
-                                    @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                    @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+    Call<UpdateTechInfoResult> updateTechInfo(@Field(RequestConstant.KEY_USER) String user,
+                                              @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_COMMENT_LIST)
