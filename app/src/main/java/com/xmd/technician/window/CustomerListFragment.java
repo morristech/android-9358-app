@@ -293,8 +293,9 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
             alertMessage.setVisibility(View.GONE);
             customerInfos.clear();
             for (CustomerInfo sortCustomer : mCustomerList) {
-                String name = sortCustomer.userNoteName;
-                if (name.indexOf(editStr.toString()) != -1 || characterParser.getSelling(name)
+                String name = Utils.isNotEmpty(sortCustomer.userName)?sortCustomer.userName:"匿名用户";
+                String noteName = Utils.isNotEmpty(sortCustomer.userNoteName)?sortCustomer.userNoteName:name;
+                if (noteName.indexOf(editStr.toString()) != -1 || characterParser.getSelling(noteName)
                         .startsWith(editStr.toString())) {
                     customerInfos.add(sortCustomer);
                 }
