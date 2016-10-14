@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -40,6 +41,8 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,7 +61,8 @@ public class TechInfoActivity extends BaseActivity {
     @Bind(R.id.tech_number) TextView mSerialNo;
     @Bind(R.id.native_place) TextView mNativePlace;
     @Bind(R.id.phone_number) TextView mPhoneNumber;
-    @Bind(R.id.introduce) TextView mDescription;
+    @Bind(R.id.introduce)
+    EditText mDescription;
     @Bind(R.id.button_female) RadioButton mFemale;
     @Bind(R.id.button_male) RadioButton mMale;
     @Bind(R.id.album_container) RecyclerView mAlbumListView;
@@ -216,6 +220,7 @@ public class TechInfoActivity extends BaseActivity {
             mSerialNo.setText(mTechInfo.serialNo);
             mPhoneNumber.setText(mTechInfo.phoneNum);
             mDescription.setText(mTechInfo.description);
+
             if(TextUtils.isEmpty(mTechInfo.province) || mTechInfo.province.equals("null")){
                 mNativePlace.setText(getString(R.string.edit_activity_select_native_place));
             }else {
@@ -271,7 +276,7 @@ public class TechInfoActivity extends BaseActivity {
 
         mTechInfo.name = cacheName;
         mTechInfo.serialNo = mSerialNo.getText().toString();
-        mTechInfo.description = mDescription.getText().toString();
+        mTechInfo.description = replaceBlank(mDescription.getText().toString());
         mTechInfo.gender = mFemale.isChecked()? "female" : "male";
         //mTechInfo.phoneNum = mPhoneNumber.getText().toString();
         if(mSelectPlaceDialog != null){
@@ -346,4 +351,15 @@ public class TechInfoActivity extends BaseActivity {
         dismissProgressDialogIfShowing();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_EDIT_INFO);
     }
+
+    public static String replaceBlank(String str) {
+        String dest = "";
+        if (str!=null) {
+            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+            Matcher m = p.matcher(str);
+            dest = m.replaceAll("");
+        }
+        return dest;
+    }
+
 }
