@@ -30,7 +30,7 @@ android {
         targetSdkVersion 23
         //TODO: release version :
         //1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
-        versionCode 12
+        versionCode 14
         versionName "1.4.0"
 
         manifestPlaceholders = [
