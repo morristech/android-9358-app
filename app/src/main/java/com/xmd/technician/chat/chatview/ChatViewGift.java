@@ -43,16 +43,12 @@ public class ChatViewGift extends BaseChatView {
             try {
                 String giftId = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_ID, "");
                 String giftUrl = SharedPreferenceHelper.getGiftImageById(giftId);
-//                String newUrl = giftUrl.replace("sdcm210","spa.93wifi.com");
-//                Glide.with(context).load(newUrl).asGif().error(R.drawable.gift_default).diskCacheStrategy(DiskCacheStrategy.RESULT).into(mGifeView);
-        //        Log.i("TAGG",">>>"+giftUrl);
+                if(giftUrl.contains("gif")){
+                    Glide.with(context).load(giftUrl).asGif().error(R.drawable.gift_default).diskCacheStrategy(DiskCacheStrategy.RESULT).into(mGifeView);
+                }else{
+                    Glide.with(context).load(giftUrl).error(R.drawable.gift_default).diskCacheStrategy(DiskCacheStrategy.RESULT).into(mGifeView);
+            }
 
-//                if(giftUrl.contains("gif")){
-//                    Glide.with(context).load(giftUrl).asGif().error(R.drawable.gift_default).diskCacheStrategy(DiskCacheStrategy.RESULT).into(mGifeView);
-//                }else{
-//                    Glide.with(context).load(giftUrl).error(R.drawable.gift_default).diskCacheStrategy(DiskCacheStrategy.RESULT).into(mGifeView);
-//            }
-                Glide.with(context).load(giftUrl).error(R.drawable.gift_default).diskCacheStrategy(DiskCacheStrategy.RESULT).into(mGifeView);
                 String giftValue = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_VALUE);
                 mGiftAmount.setText(String.format("收到%s,获得%s积分", content.substring(4, content.length() - 1), giftValue));
             } catch (HyphenateException e) {
