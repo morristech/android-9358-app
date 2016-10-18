@@ -39,7 +39,6 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
     @Bind(R.id.login_username_txt) ClearableEditText mEtUsername;
     @Bind(R.id.login_btn) Button mBtnLogin;
     @Bind(R.id.server_host) Spinner mSpServerHost;
-    @Bind(R.id.update_server_host) Spinner mSpUpdateServerHost;
 
     private String mUsername;
     private String mSelectedServerHost;
@@ -58,9 +57,6 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
         initContent();
 
         mEtUsername.addTextChangedListener(this);
-
-        /*mLoginSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
-                loginResult -> handleLoginResult(loginResult));*/
     }
 
     @Override
@@ -89,9 +85,6 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
         serverHosts.setDropDownViewResource(R.layout.spinner_dropdown_item);
         mSpServerHost.setAdapter(serverHosts);
 
-        ArrayAdapter<String> updateServerHosts = new ArrayAdapter<>(this, R.layout.spinner_item, AppConfig.sServerUpDateHosts);
-        updateServerHosts.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        mSpUpdateServerHost.setAdapter(updateServerHosts);
 
         mSelectedServerHost = SharedPreferenceHelper.getServerHost();
         int selection = 0;
@@ -101,15 +94,6 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
                 selection = 0;
             }
             mSpServerHost.setSelection(selection);
-        }
-
-        mSelectedUpdateServerHost = SharedPreferenceHelper.getUpdateServer();
-        if (Utils.isNotEmpty(mSelectedUpdateServerHost)) {
-            selection = AppConfig.sServerHosts.indexOf(mSelectedUpdateServerHost);
-            if (selection < 0) {
-                selection = 0;
-            }
-            mSpUpdateServerHost.setSelection(selection);
         }
     }
 
@@ -130,8 +114,6 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
         SharedPreferenceHelper.setUserAccount(mUsername);
         //Save the server host
         SharedPreferenceHelper.setServerHost(mSelectedServerHost);
-        //Save the update server host
-        SharedPreferenceHelper.setUpdateServer(mSelectedUpdateServerHost);
         // Recreate the retrofit service
         RetrofitServiceFactory.recreateService();
 
@@ -148,10 +130,8 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
     public boolean toggleServerHostSpinner() {
         if (mSpServerHost.getVisibility() == View.GONE) {
             mSpServerHost.setVisibility(View.VISIBLE);
-            mSpUpdateServerHost.setVisibility(View.VISIBLE);
         } else {
             mSpServerHost.setVisibility(View.GONE);
-            mSpUpdateServerHost.setVisibility(View.GONE);
         }
         return true;
     }

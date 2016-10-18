@@ -28,8 +28,8 @@ android {
         applicationId "com.xmd.technician"
         minSdkVersion 16
         targetSdkVersion 23
-        //TODO: release version :
-        //1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
+        // 1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
+        // release version : 1.4.0.14
         versionCode 14
         versionName "1.4.0"
 
@@ -140,7 +140,6 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile 'com.bugtags.library:bugtags-lib:latest.integration'
     compile 'com.getui:sdk:2.7.0.0'
     compile 'com.getui:ext:2.0.3'
     compile 'com.android.support:support-v4:23.0.1'

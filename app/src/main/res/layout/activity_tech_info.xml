@@ -19,22 +19,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.xmd.technician.widget.PhotoGridView
-                android:id="@+id/grid_view_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnWidth="@dimen/coupon_item_height"
-                android:background="@android:color/white"
-                android:listSelector="@android:color/transparent"
-                android:gravity="center"
-                android:horizontalSpacing="@dimen/app_default_padding"
-                android:numColumns="4"
-                android:padding="@dimen/app_default_padding"
-                android:scrollbars="none"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="@dimen/app_default_padding"
-                android:visibility="gone"/>
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/album_container"
                 android:layout_width="match_parent"

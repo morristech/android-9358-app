@@ -55,14 +55,12 @@ public class TechInfoActivity extends BaseActivity {
     public static final int REQUEST_CODE_CROP_AVATAR = 3;
     public static final int REQUEST_CODE_CROP_ALBUM = 4;
 
-    //@Bind(R.id.grid_view_container) PhotoGridView mAlbumContainer;
     @Bind(R.id.avatar) RoundImageView mAvatar;
     @Bind(R.id.user_name) TextView mUserName;
     @Bind(R.id.tech_number) TextView mSerialNo;
     @Bind(R.id.native_place) TextView mNativePlace;
     @Bind(R.id.phone_number) TextView mPhoneNumber;
-    @Bind(R.id.introduce)
-    EditText mDescription;
+    @Bind(R.id.introduce) EditText mDescription;
     @Bind(R.id.button_female) RadioButton mFemale;
     @Bind(R.id.button_male) RadioButton mMale;
     @Bind(R.id.album_container) RecyclerView mAlbumListView;
@@ -71,14 +69,12 @@ public class TechInfoActivity extends BaseActivity {
     private Subscription mUpdateTechInfoSubscription;
     private Subscription mUploadAvatarSubscription;
     private Subscription mUploadAlbumSubscription;
-//    private Subscription mDeleteAlbumSubscription;
 
     private List<AlbumInfo> mAlbums;
     private TechDetailInfo mTechInfo;
 
     // 籍贯
     private AlbumAdapter mAdapter;
-    //private PhotoGridAdapter mPhotoAdapter;
     private boolean mViewInitialized = false;
     private SelectPlaceDialog mSelectPlaceDialog;
 
@@ -136,26 +132,6 @@ public class TechInfoActivity extends BaseActivity {
         });
         helper.attachToRecyclerView(mAlbumListView);
 
-        /*mPhotoAdapter = new PhotoGridAdapter(this);
-        mAlbumContainer.setAdapter(mPhotoAdapter);
-        mAlbumContainer.setOnItemClickListener((parent, view, position, id) -> {
-            if(mPhotoAdapter.getItemViewType(position) == PhotoGridAdapter.TYPE_ADD){
-                Util.selectPicFromLocal(TechInfoActivity.this, TechInfoActivity.REQUEST_CODE_LOCAL_PICTURE_ALBUM);
-            }else {
-                new ConfirmDialog(this, getString(R.string.edit_activity_delete_album)) {
-                    @Override
-                    public void onConfirmClick() {
-                        AlbumInfo albumInfo = mPhotoAdapter.getItem(position);
-                        if(albumInfo != null){
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put(RequestConstant.KEY_ID, albumInfo.id);
-                            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DELETE_ALBUM, params);
-                        }
-                    }
-                }.show();
-            }
-        });*/
-
         mGetTechInfoSubscription = RxBus.getInstance().toObservable(TechEditResult.class).subscribe(
                 techEditResult -> getTechInfoResult(techEditResult));
 
@@ -171,8 +147,6 @@ public class TechInfoActivity extends BaseActivity {
 
         mUploadAlbumSubscription = RxBus.getInstance().toObservable(AlbumResult.class).subscribe(albumResult -> refresh());
 
-        //mDeleteAlbumSubscription = RxBus.getInstance().toObservable(AlbumResult.class).subscribe(albumResult -> refresh());
-
         mUploadAvatarSubscription = RxBus.getInstance().toObservable(AvatarResult.class).subscribe(avatarResult -> refresh());
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_EDIT_INFO);
@@ -184,31 +158,11 @@ public class TechInfoActivity extends BaseActivity {
         RxBus.getInstance().unsubscribe(mGetTechInfoSubscription,mUpdateTechInfoSubscription, mUploadAlbumSubscription, mUploadAvatarSubscription);
     }
 
-    private class MyLayoutManager extends GridLayoutManager{
-
-        public MyLayoutManager(Context context, int spanCount) {
-            super(context, spanCount);
-        }
-
-        @Override
-        public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-            View view = recycler.getViewForPosition(0);
-            if(view != null){
-                measureChild(view, widthSpec, heightSpec);
-                int measuredWidth = View.MeasureSpec.getSize(widthSpec);
-                int measuredHeight = view.getMeasuredHeight();
-                setMeasuredDimension(measuredWidth, measuredHeight);
-            }
-        }
-    }
-
     private void getTechInfoResult(TechEditResult result){
         if(result.respData != null){
             mAlbums = result.respData.albums;
             mTechInfo = result.respData.info;
-
             mAdapter.refreshDataSet(mAlbums);
-            //mPhotoAdapter.refreshDataSet(mAlbums);
             initView();
         }
     }
