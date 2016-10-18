@@ -59,7 +59,6 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
         mListView.setHasFixedSize(true);
         mListView.setLayoutManager(mLayoutManager);
         mListAdapter = new ListRecycleViewAdapter(getActivity(), mData, this);
-      //  mListView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mListView.setAdapter(mListAdapter);
         mListView.setItemAnimator(new DefaultItemAnimator());
         mListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -81,6 +80,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     }
 
     private void loadMore() {
+
         if(getListSafe()){
             //上拉刷新，加载更多数据
             mSwipeRefreshLayout.setRefreshing(true);
@@ -110,7 +110,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
         mPageCount = pageCount;
         mSwipeRefreshLayout.setRefreshing(false);
         if (list != null) {
-            if(!mIsLoadingMore) {
+            if(!mIsLoadingMore || pageCount<-100) {
                 mData.clear();
             }
             mData.addAll(list);
@@ -121,7 +121,6 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
 
     protected void onGetListFailed(String errorMsg) {
         mSwipeRefreshLayout.setRefreshing(false);
-        //Utils.makeShortToast(getActivity(), errorMsg);
         ((BaseFragmentActivity)getActivity()).makeShortToast(errorMsg);
     }
 

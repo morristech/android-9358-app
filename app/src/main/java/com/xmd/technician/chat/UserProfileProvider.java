@@ -194,11 +194,7 @@ public class UserProfileProvider {
                 } else*/ if (Character.isDigit(headerName.charAt(0))) {
                     user.setInitialLetter("#");
                 } else {
-                 //   Log.i("TAGG","headName>>>"+headerName);
-//                    if(headerName.length()>0){
-//                        user.setInitialLetter(HanziToPinyin.getInstance().get(headerName.trim().substring(0, 1))
-//                                .get(0).target.substring(0, 1).toUpperCase());
-//                    }
+
                     user.setInitialLetter(HanziToPinyin.getInstance().get(headerName.trim().substring(0, 1))
                             .get(0).target.substring(0, 1).toUpperCase());
                     char header = user.getInitialLetter().toLowerCase().charAt(0);
