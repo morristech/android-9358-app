@@ -2,7 +2,6 @@ package com.xmd.technician.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,45 +24,19 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by sdcm on 16-3-31.
- */
-public class AlbumAdapter extends RecyclerView.Adapter{
+public class AlbumAdapter extends RecyclerView.Adapter {
 
-    private static final int TYPE_PHOTO = 0;
-    private static final int TYPE_ADD = TYPE_PHOTO + 1;
-
-    private List<AlbumInfo> mAlbums;
-    private Context mContext;
-
-    private OnItemClickListener mOnItemClickListener;
-
-    public void onItemSwap(int fromPosition, int toPosition) {
-        if(mAlbums != null && fromPosition < mAlbums.size() && toPosition < mAlbums.size()){
-            Collections.swap(mAlbums, fromPosition, toPosition);
-            notifyItemMoved(fromPosition, toPosition);
-
-            Map<String, String> params = new HashMap<>();
-            params.put(RequestConstant.KEY_IDS, (String) getAlbumIds());
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SORT_ALBUM, params);
-        }
-    }
-
-    private CharSequence getAlbumIds(){
-        CharSequence ids = "";
-        if(mAlbums != null && mAlbums.size() > 0){
-            ids = mAlbums.get(0).id;
-            for(int i = 1; i < mAlbums.size(); i++){
-                ids = TextUtils.concat(ids, ",", mAlbums.get(i).id);
-            }
-        }
-        return ids;
-    }
-
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onAddAlbum();
         void onDeleteAlbum(int position);
     }
+
+    private static final int TYPE_PHOTO = 0;
+    private static final int TYPE_ADD = 1;
+
+    private List<AlbumInfo> mAlbums;
+    private Context mContext;
+    private OnItemClickListener mOnItemClickListener;
 
     public AlbumAdapter(Context context, OnItemClickListener itemClickListener){
         mContext = context;
@@ -72,7 +45,7 @@ public class AlbumAdapter extends RecyclerView.Adapter{
     }
 
     public void refreshDataSet(List<AlbumInfo> albumInfos){
-        if(albumInfos != null){
+        if (albumInfos != null) {
             mAlbums.clear();
             mAlbums.addAll(albumInfos);
             notifyDataSetChanged();
@@ -112,7 +85,8 @@ public class AlbumAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return mAlbums != null ? (mAlbums.size() < 8 ? (mAlbums.size() + 1) : mAlbums.size() ) : 1;
+        int count = mAlbums != null ? (mAlbums.size() < 8 ? (mAlbums.size() + 1) : mAlbums.size() ) : 1;
+        return count;
     }
 
     @Override
@@ -131,10 +105,31 @@ public class AlbumAdapter extends RecyclerView.Adapter{
         return null;
     }
 
-    public class AlbumViewHolder extends RecyclerView.ViewHolder{
+    public void onItemSwap(int fromPosition, int toPosition) {
+        if(mAlbums != null && fromPosition < mAlbums.size() && toPosition < mAlbums.size()){
+            Collections.swap(mAlbums, fromPosition, toPosition);
+            notifyItemMoved(fromPosition, toPosition);
+
+            Map<String, String> params = new HashMap<>();
+            params.put(RequestConstant.KEY_IDS, (String) getAlbumIds());
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SORT_ALBUM, params);
+        }
+    }
+
+    private CharSequence getAlbumIds(){
+        CharSequence ids = "";
+        if(mAlbums != null && mAlbums.size() > 0){
+            ids = mAlbums.get(0).id;
+            for(int i = 1; i < mAlbums.size(); i++){
+                ids = TextUtils.concat(ids, ",", mAlbums.get(i).id);
+            }
+        }
+        return ids;
+    }
+
+    public class AlbumViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.item_image) ImageView mImageView;
-
         public AlbumViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

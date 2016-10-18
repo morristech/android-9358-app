@@ -229,7 +229,7 @@ public class AppConfig {
         list.add(new Entry("emchat id", SharedPreferenceHelper.getEmchatId()));
         list.add(new Entry("avatar", SharedPreferenceHelper.getUserAvatar()));
         list.add(new Entry("easemob", Utils.getStringMetaData("EASEMOB_APPKEY")));
-        list.add(new Entry("update server", SharedPreferenceHelper.getUpdateServer()));
+        list.add(new Entry("update server", sDefUpdateServer));
         list.add(new Entry("getui", Utils.getStringMetaData("GETUI_APP_ID")));
 
         return list;

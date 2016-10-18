@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bugtags.library.Bugtags;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -65,14 +64,12 @@ public class BaseFragmentActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         TechApplication.getNotifier().reset();
-        Bugtags.onResume(this);
         MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Bugtags.onPause(this);
         MobclickAgent.onPause(this);
     }
 
@@ -103,7 +100,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        Bugtags.onDispatchTouchEvent(this, ev);
         return super.dispatchTouchEvent(ev);
     }
 
