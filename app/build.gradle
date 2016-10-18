@@ -58,7 +58,7 @@ android {
 
         debug {
             manifestPlaceholders = [
-                    EASEMOB_APPKEY_VALUE: "xiaomodo#spa",
+                    EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
                     //Getui placeHolder
                     GETUI_APP_ID        : "vvWn2qLOH36MEuvokazrJ2",
                     GETUI_APP_KEY       : "n45kk01jfP8EV64z6k1JB7",
