@@ -33,7 +33,7 @@ public class UpgradeController extends AbstractController {
     public void init(Context context) {
         mContext = context;
         mUpdaterController = new UpdaterController(mContext);
-        mUpdaterController.setDownloadFilePath("9358-tech", "tech-app.apk");
+        mUpdaterController.setDownloadFileName("xiaomodo-9358-tech.apk");
         mUpdaterController.registerUpdateEventReceiver(mBroadcastReceiver);
         RxBus.getInstance().toObservable(AppUpdateConfigResult.class).subscribe(
                 configResult -> {
