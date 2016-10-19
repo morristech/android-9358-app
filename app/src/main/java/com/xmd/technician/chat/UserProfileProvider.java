@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.HanziToPinyin;
@@ -181,8 +182,10 @@ public class UserProfileProvider {
                 String headerName = null;
                 if (!TextUtils.isEmpty(user.getNick())) {
                     headerName = user.getNick();
-                } else {
+                } else if(TextUtils.isEmpty(user.getUsername())){
                     headerName = user.getUsername();
+                }else{
+                    headerName = "匿名用户";
                 }
 
                 /*if (username.equals(Constant.NEW_FRIENDS_USERNAME) || username.equals(Constant.GROUP_USERNAME)
@@ -191,7 +194,8 @@ public class UserProfileProvider {
                 } else*/ if (Character.isDigit(headerName.charAt(0))) {
                     user.setInitialLetter("#");
                 } else {
-                    user.setInitialLetter(HanziToPinyin.getInstance().get(headerName.substring(0, 1))
+
+                    user.setInitialLetter(HanziToPinyin.getInstance().get(headerName.trim().substring(0, 1))
                             .get(0).target.substring(0, 1).toUpperCase());
                     char header = user.getInitialLetter().toLowerCase().charAt(0);
                     if (header < 'a' || header > 'z') {

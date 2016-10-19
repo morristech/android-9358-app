@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
@@ -23,35 +22,38 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import rx.Subscription;
 
 
-public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBean>{
+public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBean> {
 
-    private Map<String,String> params = new HashMap<>();
+    private Map<String, String> params = new HashMap<>();
     private Subscription mGetRecentlyVisitorSubscription;
     private Subscription mSayHiResultSubscription;
 
     private String lastTime;
     private String friendUserId;
-
+    private boolean isRefresh;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_recently_visitor, container, false);
     }
+
     @Override
     protected void dispatchRequest() {
-
+        isRefresh = false;
         params.clear();
-        if(TextUtils.isEmpty(lastTime)){
+        if (TextUtils.isEmpty(lastTime)) {
             lastTime = "";
         }
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
-        params.put(RequestConstant.KEY_LAST_TIME,lastTime);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR,params);
+        params.put(RequestConstant.KEY_LAST_TIME, lastTime);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, params);
 
     }
 
@@ -67,16 +69,16 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
 
     private void handlerSayHiResult(SayHiResult result) {
 
-        if(result.statusCode == 200){
+        if (result.statusCode == 200) {
             onRefresh();
-            if(Utils.isNotEmpty(SharedPreferenceHelper.getSerialNo())){
-                sendGreetingTextMessage(String.format("客官您好，我是%s[%s]技师，希望能够为您服务，约我哟～",SharedPreferenceHelper.getUserName(),SharedPreferenceHelper.getSerialNo()),friendUserId);
-            }else{
-                sendGreetingTextMessage(String.format("客官您好，我是%s技师，希望能够为您服务，约我哟～",SharedPreferenceHelper.getUserName()),friendUserId);
+            if (Utils.isNotEmpty(SharedPreferenceHelper.getSerialNo())) {
+                sendGreetingTextMessage(String.format("客官您好，我是%s[%s]技师，希望能够为您服务，约我哟～", SharedPreferenceHelper.getUserName(), SharedPreferenceHelper.getSerialNo()), friendUserId);
+            } else {
+                sendGreetingTextMessage(String.format("客官您好，我是%s技师，希望能够为您服务，约我哟～", SharedPreferenceHelper.getUserName()), friendUserId);
             }
-            Map<String , String> saveParams = new HashMap<>();
-            saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID,friendUserId);
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT,saveParams);
+            Map<String, String> saveParams = new HashMap<>();
+            saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, friendUserId);
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
 
         }
 
@@ -86,11 +88,9 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             onGetListFailed(result.msg);
 
-                lastTime = String.valueOf(result.respData.get(result.respData.size()).createdAt);
-
         } else {
             for (int i = 0; i < result.respData.size(); i++) {
-                if(Utils.isNotEmpty(result.respData.get(i).emchatId)){
+                if (Utils.isNotEmpty(result.respData.get(i).emchatId)) {
                     ChatUser user;
                     user = new ChatUser(result.respData.get(i).emchatId);
                     user.setAvatar(result.respData.get(i).avatarUrl);
@@ -99,24 +99,34 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
                 }
 
             }
-            onGetListSucceeded(result.pageCount,result.respData);
+
+            if(result.respData.size()>0){
+                lastTime = String.valueOf(result.respData.get(result.respData.size() -1 ).createdAt);
+            }
+
+            if(isRefresh){
+                onGetListSucceeded(-101, result.respData);
+            }else{
+                onGetListSucceeded(result.pageCount+2, result.respData);
+            }
+
         }
 
     }
 
     @Override
-    public void onItemClicked(RecentlyVisitorBean bean)  {
-        if(Long.parseLong(bean.userId)>0){
+    public void onItemClicked(RecentlyVisitorBean bean) {
+        if (Long.parseLong(bean.userId) > 0) {
             Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
             intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-            intent.putExtra(RequestConstant.CONTACT_TYPE,bean.customerType);
-            intent.putExtra(RequestConstant.KEY_TECH_NAME,bean.techName);
-            intent.putExtra(RequestConstant.KEY_TECH_NO,bean.techSerialNo);
+            intent.putExtra(RequestConstant.CONTACT_TYPE, bean.customerType);
+            intent.putExtra(RequestConstant.KEY_TECH_NAME, bean.techName);
+            intent.putExtra(RequestConstant.KEY_TECH_NO, bean.techSerialNo);
             intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, "customer");
-            intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER,false);
+            intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
             startActivity(intent);
-        }else{
-            Utils.makeShortToast(getActivity(),"游客无详情信息");
+        } else {
+            Utils.makeShortToast(getActivity(), "游客无详情信息");
         }
 
 
@@ -127,10 +137,8 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         super.onSayHiButtonClicked(bean);
         friendUserId = bean.emchatId;
         params.clear();
-        params.put(RequestConstant.KEY_USER_ID,bean.userId);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_SAY_HI,params);
-
-
+        params.put(RequestConstant.KEY_USER_ID, bean.userId);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_SAY_HI, params);
 
     }
 
@@ -141,21 +149,27 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
 
     @Override
     public void onRefresh() {
+        isRefresh = true;
         params.clear();
-        lastTime = "";
+        if (!TextUtils.isEmpty(lastTime)) {
+            lastTime = "";
+        }
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR,params);
+        params.put(RequestConstant.KEY_LAST_TIME, lastTime);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, params);
 
     }
+
     @Override
     public boolean isSlideable() {
         return false;
     }
 
-    private void  sendGreetingTextMessage(String content,String mToChatUsername) {
+    private void sendGreetingTextMessage(String content, String mToChatUsername) {
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
         sendMessage(message);
     }
+
     protected void sendMessage(EMMessage message) {
         message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
         message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
@@ -170,7 +184,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe( mGetRecentlyVisitorSubscription,mSayHiResultSubscription);
+        RxBus.getInstance().unsubscribe(mGetRecentlyVisitorSubscription, mSayHiResultSubscription);
     }
 }
 
