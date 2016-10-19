@@ -17,6 +17,7 @@ import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -38,6 +39,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
     private String lastTime;
     private String friendUserId;
     private boolean isRefresh;
+    private int pageCount = 1;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, params);
 
     }
+
 
     @Override
     protected void initView() {
@@ -107,7 +110,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
             if(isRefresh){
                 onGetListSucceeded(-101, result.respData);
             }else{
-                onGetListSucceeded(result.pageCount+2, result.respData);
+                onGetListSucceeded(pageCount++, result.respData);
             }
 
         }
@@ -118,15 +121,16 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
     public void onItemClicked(RecentlyVisitorBean bean) {
         if (Long.parseLong(bean.userId) > 0) {
             Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
+
             intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
             intent.putExtra(RequestConstant.CONTACT_TYPE, bean.customerType);
             intent.putExtra(RequestConstant.KEY_TECH_NAME, bean.techName);
             intent.putExtra(RequestConstant.KEY_TECH_NO, bean.techSerialNo);
-            intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, "customer");
+            intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, RequestConstant.TYPE_CUSTOMER);
             intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
             startActivity(intent);
         } else {
-            Utils.makeShortToast(getActivity(), "游客无详情信息");
+            Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
         }
 
 
@@ -139,7 +143,6 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         params.clear();
         params.put(RequestConstant.KEY_USER_ID, bean.userId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_SAY_HI, params);
-
     }
 
     @Override

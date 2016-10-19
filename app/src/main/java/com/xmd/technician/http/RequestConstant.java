@@ -169,6 +169,7 @@ public class RequestConstant {
     public static final String TECH_CUSTOMER = "tech_customer";
     public static final String KEY_MARK_IMPRESSION = "impression";
     public static final String KEY_CUSTOMER_TYPE = "customerType";
+    public static final String TYPE_CUSTOMER = "customer";
     public static final String TECH_ADD = "tech_add";
     public static final String FANS_USER = "fans_user";
     public static final String TEMP_USER = "temp_user";

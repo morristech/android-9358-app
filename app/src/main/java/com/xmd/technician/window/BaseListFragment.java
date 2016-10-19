@@ -107,10 +107,12 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
      * @param list - The List with T
      */
     protected void onGetListSucceeded(int pageCount, List<T> list) {
+
         mPageCount = pageCount;
         mSwipeRefreshLayout.setRefreshing(false);
         if (list != null) {
             if(!mIsLoadingMore || pageCount<-100) {
+                mPages = PAGE_START;
                 mData.clear();
             }
             mData.addAll(list);
