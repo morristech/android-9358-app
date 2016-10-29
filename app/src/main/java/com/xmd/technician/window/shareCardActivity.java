@@ -3,7 +3,6 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -93,7 +92,7 @@ public class shareCardActivity extends BaseActivity {
         Glide.with(this).load(userHead).into(mCardHead);
         mCardName.setText(userName);
         mCardClub.setText(userClubName);
-       ;
+        ;
 
         if(userCanShare){
             mShareBtn.setEnabled(true);
@@ -105,8 +104,8 @@ public class shareCardActivity extends BaseActivity {
         }else{
             mTechCode.setVisibility(View.GONE);
         }
-        if(!TextUtils.isEmpty(codeUrl)){
-            Glide.with(shareCardActivity.this).load(codeUrl).into(mUserShareCode);
+        if(Utils.isNotEmpty(codeUrl)){
+            Glide.with(shareCardActivity.this).load(codeUrl).error(ResourceUtils.getDrawable(R.drawable.icon22)).into(mUserShareCode);
         }else {
             mUserShareCode.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
