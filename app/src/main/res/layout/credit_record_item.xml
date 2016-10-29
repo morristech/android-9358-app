@@ -14,6 +14,7 @@
             android:id="@+id/credit_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_25"
             android:textColor="@color/colorHead"
             android:textSize="@dimen/fontTitle" />
 

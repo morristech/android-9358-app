@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/main_page_margin_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/main_tech_dynamic_all"
+        style="@style/relative_layout_title_style">
+
+        <TextView
+            style="@style/main_fragment_layout_title_left_style"
+            android:drawableLeft="@drawable/icon_main_dynamic"
+            android:text="@string/main_new_recent_status" />
+
+        <TextView
+            style="@style/main_fragment_layout_title_right_style"
+            android:text="@string/main_tech_order_all" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/main_dynamic1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/margin_2"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space"
+        android:paddingTop="@dimen/margin_2"
+        android:visibility="gone">
+
+        <com.xmd.technician.widget.CircleImageView
+            android:id="@+id/main_dynamic_avatar1"
+            android:layout_width="@dimen/main_dynamic_width"
+            android:layout_height="@dimen/main_dynamic_width"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/search_margin"
+            android:background="@drawable/icon22" />
+
+        <TextView
+            android:id="@+id/main_dynamic_name1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/main_dynamic_avatar1"
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/fontBody" />
+
+        <TextView
+            android:id="@+id/main_dynamic_describe1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_toRightOf="@id/main_dynamic_name1"
+            android:singleLine="true"
+            android:textColor="@color/order_item_surplus_time_color"
+            android:textSize="@dimen/fontBiggerThanNormal" />
+
+        <TextView
+            android:id="@+id/main_dynamic_time1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/contact_info_unit"
+            android:textSize="@dimen/fontBiggerThanRemark" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/main_dynamic2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/margin_2"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space"
+        android:paddingTop="@dimen/margin_2"
+        android:visibility="gone">
+
+        <com.xmd.technician.widget.CircleImageView
+            android:id="@+id/main_dynamic_avatar2"
+            android:layout_width="@dimen/main_dynamic_width"
+            android:layout_height="@dimen/main_dynamic_width"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/search_margin"
+            android:background="@drawable/icon22" />
+
+        <TextView
+            android:id="@+id/main_dynamic_name2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/main_dynamic_avatar2"
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/fontBody" />
+
+        <TextView
+            android:id="@+id/main_dynamic_describe2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_toRightOf="@id/main_dynamic_name2"
+            android:textColor="@color/order_item_surplus_time_color"
+            android:textSize="@dimen/fontBiggerThanNormal" />
+
+        <TextView
+            android:id="@+id/main_dynamic_time2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/contact_info_unit"
+            android:textSize="@dimen/fontBiggerThanRemark"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/main_dynamic3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/margin_2"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space"
+        android:paddingTop="@dimen/margin_2"
+        android:visibility="gone">
+
+        <com.xmd.technician.widget.CircleImageView
+            android:id="@+id/main_dynamic_avatar"
+            android:layout_width="@dimen/main_dynamic_width"
+            android:layout_height="@dimen/main_dynamic_width"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/search_margin"
+            android:background="@drawable/icon22" />
+
+        <TextView
+            android:id="@+id/main_dynamic_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/main_dynamic_avatar"
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/fontBody" />
+
+        <TextView
+            android:id="@+id/main_dynamic_describe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_toRightOf="@id/main_dynamic_name"
+            android:textColor="@color/order_item_surplus_time_color"
+            android:textSize="@dimen/fontBiggerThanNormal"
+
+            />
+
+        <TextView
+            android:id="@+id/main_dynamic_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/contact_info_unit"
+            android:textSize="@dimen/fontBiggerThanRemark" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/margin_2"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space"
+        android:paddingTop="@dimen/margin_2"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/main_dynamic_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/main_new_recent_status_none"
+            android:textColor="@color/contact_info_unit"
+            android:textSize="@dimen/fontTitle" />
+    </RelativeLayout>
+</LinearLayout>

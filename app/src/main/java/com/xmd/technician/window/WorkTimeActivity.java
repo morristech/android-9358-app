@@ -3,7 +3,6 @@ package com.xmd.technician.window;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
@@ -32,8 +31,6 @@ public class WorkTimeActivity extends BaseActivity {
 
     @Bind(R.id.work_time) TextView mWorkTime;
     @Bind(R.id.work_day) TextView mWorkDay;
-    @Bind(R.id.status_free) RadioButton mFreeStatus;
-    @Bind(R.id.status_busy) RadioButton mBusyStatus;
 
     private Subscription mWorkTimeSubscription;
     private Subscription mUpdateWorkTimeSubscription;
@@ -59,8 +56,6 @@ public class WorkTimeActivity extends BaseActivity {
         setBackVisible(true);
         setRightVisible(true,R.string.save);
 
-        mFreeStatus.setChecked(true);
-
         mWorkTimeSubscription = RxBus.getInstance().toObservable(WorkTimeResult.class).subscribe(
                 workTimeResult -> getWorkTimeResult(workTimeResult));
 
@@ -68,8 +63,7 @@ public class WorkTimeActivity extends BaseActivity {
                 updateWorkTimeResult ->  updateWorkTimeResult());
 
         mUpdateWorkStatusSubscription = RxBus.getInstance().toObservable(UpdateWorkStatusResult.class).subscribe(
-                updateWorkStatusResult -> {dismissProgressDialogIfShowing(); finish();}
-        );
+                updateWorkStatusResult -> {dismissProgressDialogIfShowing(); finish();});
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_WORK_TIME);
     }
@@ -77,7 +71,7 @@ public class WorkTimeActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mWorkTimeSubscription);
+        RxBus.getInstance().unsubscribe(mWorkTimeSubscription,mUpdateWorkTimeSubscription,mUpdateWorkStatusSubscription);
     }
 
     @OnClick(R.id.work_time_layout)
@@ -147,11 +141,6 @@ public class WorkTimeActivity extends BaseActivity {
         }
 
         showProgressDialog(getString(R.string.save_waiting));
-        if(mFreeStatus.isChecked()){
-            mStatus = "free";
-        }else {
-            mStatus = "busy";
-        }
 
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_DAY_RANGE, mDayRange);
@@ -159,7 +148,6 @@ public class WorkTimeActivity extends BaseActivity {
         params.put(RequestConstant.KEY_END_TIME, mEndTime);
         params.put(RequestConstant.KEY_ID, mCalendarId);
         params.put(RequestConstant.KEY_END_DAY, mEndDay);
-
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPDATE_WORK_TIME, params);
     }
 
@@ -218,11 +206,6 @@ public class WorkTimeActivity extends BaseActivity {
             }
             mWorkDay.setText(result);
 
-            if(!TextUtils.isEmpty(mStatus) && mStatus.equals("busy")){
-                mBusyStatus.setChecked(true);
-            }else {
-                mFreeStatus.setChecked(true);
-            }
         }
     }
 

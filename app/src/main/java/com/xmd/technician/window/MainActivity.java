@@ -2,10 +2,8 @@ package com.xmd.technician.window;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -16,36 +14,29 @@ import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.TechSummaryInfo;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.SystemNoticeResult;
-import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-
 import java.util.LinkedList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
 public class MainActivity extends BaseFragmentActivity implements BaseFragment.IFragmentCallback {
-    private static final int TAB_INDEX_MESSAGE = 0;
-    private static final int TAB_INDEX_CONTACTS = 1;
-    private static final int TAB_INDEX_ORDER = 2;
+    private static final int TAB_INDEX_PERSONAL = 0;
+    private static final int TAB_INDEX_MESSAGE = 1;
+    private static final int TAB_INDEX_CONTACTS = 2;
     private static final int TAB_INDEX_MARKETING = 3;
-    private static final int TAB_INDEX_PERSONAL = 4;
+
     private List<BaseFragment> mFragmentList = new LinkedList<BaseFragment>();
     private List<View> mBottomBarButtonList = new LinkedList<View>();
 
     private int mCurrentTabIndex = 1;
-    private TechSummaryInfo mTechInfo;
-
     private Subscription mSysNoticeNotifySubscription;
     private Subscription mGetUserIsBindWXSubscription;
-    private Subscription mGetUserInformationSubscription;
 
     @Bind(R.id.main_unread_message)
     TextView mUnreadMsgLabel;
@@ -57,18 +48,16 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
         ButterKnife.bind(this);
 
-
+        mBottomBarButtonList.add(findViewById(R.id.main_button_personal));
         mBottomBarButtonList.add(findViewById(R.id.main_button_message));
         mBottomBarButtonList.add(findViewById(R.id.main_button_contacts));
-        mBottomBarButtonList.add(findViewById(R.id.main_button_order));
         mBottomBarButtonList.add(findViewById(R.id.main_button_marketing));
-        mBottomBarButtonList.add(findViewById(R.id.main_button_personal));
 
+        mFragmentList.add(new MainFragment());
         mFragmentList.add(new ChatFragment());
         mFragmentList.add(new ContactsFragment());
-        mFragmentList.add(new OrderFragment());
         mFragmentList.add(new CouponFragment());
-        mFragmentList.add(new PersonalFragment());
+
         EMClient.getInstance().groupManager().loadAllGroups();
         EMClient.getInstance().chatManager().loadAllConversations();
         UserProfileProvider.getInstance().initContactList();
@@ -78,17 +67,12 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mGetUserIsBindWXSubscription = RxBus.getInstance().toObservable(IsBindResult.class).subscribe(
                 result -> handlerIsBindResult(result)
         );
-        mGetUserInformationSubscription = RxBus.getInstance().toObservable(TechCurrentResult.class).subscribe(
-                result -> handleTechCurrentResult(result)
-        );
         switchFragment(0);
 
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE));
-        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
-                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_CURRENT_INFO));
 
     }
 
@@ -108,8 +92,12 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mSysNoticeNotifySubscription, mGetUserIsBindWXSubscription, mGetUserInformationSubscription);
+        RxBus.getInstance().unsubscribe(mSysNoticeNotifySubscription, mGetUserIsBindWXSubscription);
     }
+
+    @OnClick(R.id.main_button_personal)
+    public void gotoPersonFragment() {
+        switchFragment(TAB_INDEX_PERSONAL);}
 
     @OnClick(R.id.main_button_message)
     public void gotoMessageFragment() {
@@ -121,25 +109,15 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         switchFragment(TAB_INDEX_CONTACTS);
     }
 
-    @OnClick(R.id.main_button_order)
-    public void gotoOrderFragment() {
-        switchFragment(TAB_INDEX_ORDER);
-    }
-
     @OnClick(R.id.main_button_marketing)
     public void gotoMarketingFragment() {
         switchFragment(TAB_INDEX_MARKETING);
     }
 
-    @OnClick(R.id.main_button_personal)
-    public void gotoPersonFragment() {
-        switchFragment(TAB_INDEX_PERSONAL);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
-    }
-
-    private void switchFragment(int index) {
+    public void switchFragment(int index) {
         if (mCurrentTabIndex != index) {
             FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+
             trx.hide(mFragmentList.get(mCurrentTabIndex));
 
             if (!mFragmentList.get(index).isAdded()) {
@@ -230,22 +208,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
             SharedPreferenceHelper.setBindSuccess(false);
         }
 
-    }
-
-    private void handleTechCurrentResult(TechCurrentResult result) {
-        if (result.respData != null) {
-            mTechInfo = result.respData;
-            UserProfileProvider.getInstance().updateCurrentUserInfo(mTechInfo.userName, mTechInfo.imageUrl);
-            if (Utils.isNotEmpty(result.respData.clubId)) {
-                SharedPreferenceHelper.setUserClubId(result.respData.clubId);
-            }
-            if (Utils.isNotEmpty(result.respData.clubName)) {
-                SharedPreferenceHelper.setUserClubName(result.respData.clubName);
-            }
-            if(Utils.isNotEmpty(result.respData.serialNo)){
-                SharedPreferenceHelper.setSerialNo(result.respData.serialNo);
-            }
-        }
     }
 
 }

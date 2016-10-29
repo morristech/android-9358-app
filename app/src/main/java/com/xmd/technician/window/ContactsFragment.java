@@ -20,12 +20,16 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.xmd.technician.Adapter.PageFragmentPagerAdapter;
 import com.xmd.technician.R;
+import com.xmd.technician.bean.CurrentSelectPage;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.msgctrl.RxBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +37,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscription;
 
 /**
  * Created by Administrator on 2016/7/1.
@@ -69,14 +74,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     private ImageView imgRight;
     private boolean currentFragmentIsContact;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ac = getActivity();
-        initView();
-        initImageView();
-        initViewPager();
-    }
+
+    private Subscription getCurrentSelectedPageSubscription;
 
     @Nullable
     @Override
@@ -89,7 +88,26 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         imgRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.contact_add));
         imgRight.setOnClickListener(this);
         mRecentlyVisitor.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+        getCurrentSelectedPageSubscription = RxBus.getInstance().toObservable(CurrentSelectPage.class).subscribe(
+                selectedPage -> {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mViewpagerContact.setCurrentItem(selectedPage.selectType);
+                        }
+                    });
+                }
+        );
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ac = getActivity();
+        initView();
+        initImageView();
+        initViewPager();
     }
 
     private void initView() {
@@ -118,21 +136,19 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         mlistViews = new ArrayList<>();
         mPageFragmentPagerAdapter = new PageFragmentPagerAdapter(getChildFragmentManager(), getActivity());
         mPageFragmentPagerAdapter.addFragment(new RecentlyVisitorFragment());
-       //mPageFragmentPagerAdapter.addFragment(new CouponFragment());
         mPageFragmentPagerAdapter.addFragment(new CustomerListFragment());
         mPageFragmentPagerAdapter.addFragment(new MyClubListFragment());
         mViewpagerContact.setAdapter(mPageFragmentPagerAdapter);
-        mViewpagerContact.setCurrentItem(0);
         mViewpagerContact.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float offset, int positionOffsetPixels) {
                 LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabBottomImg.getLayoutParams();
-                if(mCurrentPage ==0 &&position==0){
-                    lp.leftMargin = mCurrentPage *(screenWidth / 3);
-                } else if(mCurrentPage ==1 && position ==1){
-                    lp.leftMargin =  mCurrentPage * (screenWidth / 3);
-                }else if(mCurrentPage ==2 && position ==2){
-                    lp.leftMargin =  mCurrentPage * (screenWidth / 3);
+                if (mCurrentPage == 0 && position == 0) {
+                    lp.leftMargin = mCurrentPage * (screenWidth / 3);
+                } else if (mCurrentPage == 1 && position == 1) {
+                    lp.leftMargin = mCurrentPage * (screenWidth / 3);
+                } else if (mCurrentPage == 2 && position == 2) {
+                    lp.leftMargin = mCurrentPage * (screenWidth / 3);
                 }
                 mTabBottomImg.setLayoutParams(lp);
             }
@@ -277,5 +293,11 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         params.clear();
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, type);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST, params);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RxBus.getInstance().unsubscribe(getCurrentSelectedPageSubscription);
     }
 }

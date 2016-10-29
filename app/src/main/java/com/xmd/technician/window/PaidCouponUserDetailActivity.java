@@ -84,10 +84,6 @@ public class PaidCouponUserDetailActivity extends BaseListActivity<PaidCouponUse
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PAID_COUPON_USER_DETAIL, mParams);
     }
 
-    @Override
-    public boolean isSlideable() {
-        return false;
-    }
 
     @Override
     public void onPopupWindowItemClicked(Entry entry) {

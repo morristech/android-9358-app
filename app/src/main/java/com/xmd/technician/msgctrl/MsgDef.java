@@ -98,8 +98,6 @@ public class MsgDef {
     public static final int MSG_DEF_GET_MANAGER_INFO_DETAIL = 0x0045;
     public static final int MSG_DEF_DELETE_CONTACT = 0x0046;
     public static final int MSG_DEF_DO_DRAW_MONEY = 0x0047;
-    public static final int MSG_DEF_BIND_WX = 0x0048;
-    public static final int MSG_DEF_IS_BIND_WX = 0x0049;
     public static final int MSG_DEF_GET_USER_RECORDE = 0x0050;
     public static final int MSG_DEF_GET_SWITCH_STATUS = 0x0051;
     public static final int MSG_DEF_GET_CREDIT_ACCOUNT = 0x0052;
@@ -114,6 +112,13 @@ public class MsgDef {
     public static final int MSG_DEF_DO_SAY_HI = 0x0062;
     public static final int MSG_DEF_GET_VISIT_VIEW = 0x0063;
     public static final int MSG_DEF_SAVE_CHAT_TO_CHONTACT = 0x0064;
+
+    public static final int MSF_DEF_GET_TECH_INFO = 0x0065 ;
+    public static final int MSF_DEF_GET_TECH_ORDER_LIST = 0x0066 ;
+    public static final int MSF_DEF_GET_TECH_STATISTICS_DATA = 0x0067 ;
+    public static final int MSF_DEF_GET_TECH_RANK_INDEX_DATA = 0x0068;
+    public static final int MSF_DEF_GET_TECH_DYNAMIC_LIST = 0x0069;
+    public static final int MSF_DEF_SET_PAGE_SELECTED = 0x0070;
 
     /**
      * ChatController, start to chat with someone

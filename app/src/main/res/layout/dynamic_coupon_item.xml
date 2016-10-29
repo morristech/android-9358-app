@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/inter_space"
+    android:layout_marginRight="@dimen/inter_space"
+    android:layout_marginTop="@dimen/margin_10"
+    app:elevation="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_dynamic_list_item"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_10">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.xmd.technician.widget.CircleImageView
+                android:id="@+id/dynamic_item_avatar"
+                android:layout_width="@dimen/main_order_btn_width"
+                android:layout_height="@dimen/main_order_btn_width"
+                android:background="@drawable/icon22" />
+
+            <ImageView
+                android:id="@+id/dynamic_item_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dynamic_item_type_margin"
+                android:src="@drawable/img_coupon" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/dynamic_item_comment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/margin_5"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/dynamic_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/alert_text_color"
+                android:textSize="@dimen/fontTitle" />
+
+            <TextView
+                android:id="@+id/dynamic_item_telephone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/dynamic_item_name"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:layout_toRightOf="@id/dynamic_item_name"
+                android:textColor="@color/colorRemark"
+                android:textSize="@dimen/fontBody"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/dynamic_item_comment_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dynamic_item_name"
+                android:layout_marginTop="@dimen/margin_5"
+                android:enabled="true"
+                android:maxLines="2"
+                android:textColor="@color/alert_text_color"
+                android:textSize="@dimen/fontHead" />
+
+            <TextView
+                android:id="@+id/dynamic_item_remark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dynamic_item_comment_detail"
+                android:layout_marginTop="@dimen/margin_5"
+                android:maxLines="2"
+                android:textColor="@color/contact_info_unit"
+                android:textSize="@dimen/fontBiggerThanNormal" />
+
+            <TextView
+                android:id="@+id/dynamic_item_comment_starts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dynamic_item_remark"
+                android:drawableLeft="@drawable/img_start"
+                android:drawablePadding="@dimen/margin_5"
+                android:maxLines="2"
+                android:text="4.5"
+                android:textColor="@color/order_item_surplus_time_color"
+                android:textSize="@dimen/fontBiggerThanNormal"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/dynamic_item_comment_reward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dynamic_item_remark"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@id/dynamic_item_comment_starts"
+                android:drawableLeft="@drawable/img_reward"
+                android:drawablePadding="@dimen/margin_5"
+                android:maxLines="2"
+                android:textColor="@color/recent_status_reward"
+                android:textSize="@dimen/fontBiggerThanNormal"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="@dimen/dynamic_item_rl_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right">
+
+            <TextView
+                android:id="@+id/dynamic_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/colorRemark"
+                android:textSize="@dimen/fontBiggerThanRemark" />
+
+            <TextView
+                android:id="@+id/btn_thanks"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_20"
+                android:layout_below="@id/dynamic_time"
+                android:layout_marginTop="@dimen/add_friend_width"
+                android:background="@drawable/btn_chat_selector"
+                android:gravity="center"
+                android:text="@string/recent_status_btn_text"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/fontTitle" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    style="@style/main_page_margin_style"
+    >
+    <RelativeLayout
+        android:id="@+id/main_tech_who_care_all"
+        style="@style/relative_layout_title_style">
+        <TextView
+            style="@style/main_fragment_layout_title_left_style"
+            android:drawableLeft="@drawable/icon_main_who_care"
+            android:text="@string/main_who_care_me" />
+        <TextView
+            style="@style/main_fragment_layout_title_right_style"
+            android:text="@string/main_tech_order_all" />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ll_horizontalList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space"
+        android:visibility="gone"
+        >
+        <com.xmd.technician.widget.HorizontalListView
+            android:id="@+id/main_who_care_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/contact_list_item_btn_width"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/main_who_care_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/small_space"
+        android:paddingBottom="@dimen/small_space"
+        android:layout_gravity="center_horizontal"
+        android:text="今天共有0人看了我～"
+        />
+</LinearLayout>

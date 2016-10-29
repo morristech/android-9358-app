@@ -3,6 +3,7 @@ package com.xmd.technician.bean;
 /**
  * Created by sdcm on 16-4-7.
  */
+
 import java.io.Serializable;
 
 /**
@@ -26,6 +27,9 @@ public class Order implements Serializable {
     public String formatCreateTime;
 
     public String formatAppointTime;
+
+    public String appointTime;
+    public String createAt;
 
     public String phoneNum;
 

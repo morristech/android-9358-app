@@ -112,7 +112,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
         mSwipeRefreshLayout.setRefreshing(false);
         if (list != null) {
             if(!mIsLoadingMore || pageCount<-100) {
-                mPages = PAGE_START;
+                if(pageCount <-100){
+                    mPages = PAGE_START;
+                }
                 mData.clear();
             }
             mData.addAll(list);
@@ -158,8 +160,8 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     }
 
     @Override
-    public boolean isSlideable(){
-        return true;
+    public boolean isHorizontalSliding(){
+        return false;
     }
 
     @Override

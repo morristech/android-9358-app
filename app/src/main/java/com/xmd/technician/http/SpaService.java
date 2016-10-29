@@ -29,6 +29,7 @@ import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
+import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
@@ -39,6 +40,9 @@ import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
+import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechRankDataResult;
+import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
 
@@ -149,22 +153,6 @@ public interface SpaService {
     /**
      * @param userToken
      * @param sessionType
-     * @param filterOrder
-     * @param page
-     * @param pageSize
-     * @return
-     */
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_ORDER_LIST)
-    Call<OrderListResult> getOrderList(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                       @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                       @Field(RequestConstant.KEY_FILTER_ORDER) String filterOrder,
-                                       @Field(RequestConstant.KEY_PAGE) String page,
-                                       @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
-
-    /**
-     * @param userToken
-     * @param sessionType
      * @param processType
      * @param id
      * @param reason
@@ -239,7 +227,7 @@ public interface SpaService {
                                 @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_UPDATE_WORKSTATUS)
+    @POST(RequestConstant.URL_UPDATE_WORK_STATUS)
     Call<BaseResult> updateWorkStatus(@Field(RequestConstant.KEY_STATUS) String status,
                                       @Field(RequestConstant.KEY_TOKEN) String userToken,
                                       @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
@@ -444,6 +432,7 @@ public interface SpaService {
                                                @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                                @Field(RequestConstant.KEY_TOKEN) String userToken
     );
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_RECENTLY_VISITOR_LIST)
     Call<RecentlyVisitorResult> getRecentlyVisitorList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
@@ -451,10 +440,11 @@ public interface SpaService {
                                                        @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
                                                        @Field(RequestConstant.KEY_LAST_TIME) String lastTime
     );
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CREDIT_GIFT_LIST)
     Call<GiftListResult> getCreditGiftList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                                @Field(RequestConstant.KEY_TOKEN) String userToken
+                                           @Field(RequestConstant.KEY_TOKEN) String userToken
     );
 
     @FormUrlEncoded
@@ -463,11 +453,12 @@ public interface SpaService {
                               @Field(RequestConstant.KEY_TOKEN) String userToken,
                               @Field(RequestConstant.KEY_UPDATE_USER_ID) String userId
     );
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_CUSTOMER_VIEW_VISIT)
     Call<VisitBean> doGetVisitView(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                            @Field(RequestConstant.KEY_TOKEN) String userToken,
-                            @Field(RequestConstant.KEY_UPDATE_USER_ID) String userId
+                                   @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                   @Field(RequestConstant.KEY_UPDATE_USER_ID) String userId
     );
 
     @FormUrlEncoded
@@ -480,29 +471,6 @@ public interface SpaService {
 
 
     );
-
-
-
-
-
-
-  /*  @FormUrlEncoded
-    @POST(RequestConstant.URL_DO_DRAW_MONEY)
-    Call<BaseResult> doDrawMoney(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                 @Field(RequestConstant.KEY_TRADE_AMOUNT) String tradeAmount
-                                );
-
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_USER_WX_OPEN_ID)
-    Call<BaseResult> doBindWX(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                 @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                 @Field(RequestConstant.KEY_USER_WX_PAGE_URL) String pageUrl,
-                                 @Field(RequestConstant.KEY_USER_WX_SCOPE) String scope,
-                                 @Field(RequestConstant.KEY_USER_WX_STATE) String state,
-                                 @Field(RequestConstant.KEY_USER_WX_WXMP) String wxmp);
-      */;
-
 
     /**
      * @param userToken
@@ -538,7 +506,37 @@ public interface SpaService {
                                         @Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_USER_IS_BIND_WX)
-    Call<IsBindResult> getIsBindWXResult(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                         @Field(RequestConstant.KEY_TOKEN) String userToken);
+    @POST(RequestConstant.URL_GET_TECH_INFO)
+    Call<TechInfoResult> getTechInfo(@Field(RequestConstant.KEY_TOKEN) String userToken);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TECH_STATISTICS_DATA)
+    Call<TechStatisticsDataResult> getTechStatisticData(@Field(RequestConstant.KEY_TOKEN) String userToken);
+
+    /**
+     * @param userToken
+     * @param sessionType
+     * @param orderStatus
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TECH_ORDER_LIST)
+    Call<OrderListResult> getTechOrderList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                           @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                           @Field(RequestConstant.KEY_ORDER_STATUS) String orderStatus,
+                                           @Field(RequestConstant.KEY_PAGE) String page,
+                                           @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TECH_RANK_INDEX)
+    Call<TechRankDataResult> getTechRankData(@Field(RequestConstant.KEY_TOKEN) String userToken);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_RECENT_DYNAMICS_LIST)
+    Call<DynamicListResult> getDynamicList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                           @Field(RequestConstant.KEY_TECH_DYNAMIC_TYPE) String bizType,
+                                           @Field(RequestConstant.KEY_PAGE) String page,
+                                           @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 }

@@ -3,11 +3,12 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
-
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.Order;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import rx.Subscription;
 
 /**
@@ -33,6 +35,7 @@ import rx.Subscription;
 public class OrderFragment extends BaseListFragment<Order> {
 
     @Bind(R.id.filter_order) RadioGroup mRgFilterOrder;
+    @Bind(R.id.toolbar_back) ImageView  mImgBack;
     private String mFilterOrder = Constant.FILTER_ORDER_SUBMIT;
     private Subscription mGetOrderListSubscription;
     private Subscription mOrderManageSubscription;
@@ -46,6 +49,8 @@ public class OrderFragment extends BaseListFragment<Order> {
     @Override
     protected void initView(){
         initTitleView(ResourceUtils.getString(R.string.order_fragment_title));
+        mImgBack.setVisibility(View.VISIBLE);
+
         mRgFilterOrder.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.rb_pending_order:
@@ -68,6 +73,12 @@ public class OrderFragment extends BaseListFragment<Order> {
         mOrderManageSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
                 orderManageResult -> refreshData()
         );
+    }
+
+    @Nullable
+    @OnClick(R.id.toolbar_back)
+    public void backClicked(){
+        getActivity().finish();
     }
 
 
@@ -150,24 +161,25 @@ public class OrderFragment extends BaseListFragment<Order> {
                 mPages++;
             }
         }
-
         Map<String,String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_FILTER_ORDER, mFilterOrder);
+        params.put(RequestConstant.KEY_ORDER_STATUS, mFilterOrder);
         params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ORDER_LIST, params);
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, params);
     }
 
     protected void refreshData() {
         mIsLoadingMore = false;
         mPages = PAGE_START + 1;
-
         Map<String,String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_FILTER_ORDER, mFilterOrder);
+        params.put(RequestConstant.KEY_ORDER_STATUS, mFilterOrder);
         params.put(RequestConstant.KEY_PAGE, "1");
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(mListAdapter.getItemCount() - 1));
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ORDER_LIST, params);
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, params);
+    }
 
-
+    @Override
+    public boolean isHorizontalSliding() {
+        return true;
     }
 }

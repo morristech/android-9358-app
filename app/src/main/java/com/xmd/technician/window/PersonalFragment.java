@@ -141,11 +141,11 @@ public class PersonalFragment extends BaseFragment {
             mDescription.setText(mTechInfo.description);
         }
 
-        mTechName.setText(mTechInfo.userName);
         if (!Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)) {
             mClubName.setText(mTechInfo.clubName);
         }
         mClubId = mTechInfo.clubId;
+        mTechName.setText(mTechInfo.userName);
         Glide.with(this).load(mTechInfo.imageUrl).into(mAvatar);
     }
 
@@ -310,7 +310,7 @@ public class PersonalFragment extends BaseFragment {
             intent.putExtra(Constant.TECH_USER_TECH_NUM, mTechInfo.serialNo);
             intent.putExtra(Constant.TECH_USER_CLUB_NAME, mTechInfo.clubName);
             intent.putExtra(Constant.TECH_SHARE_URL, url.toString());
-            intent.putExtra(Constant.TECH_ShARE_CODE_IMG, mTechInfo.qrCodeUrl);
+            intent.putExtra(Constant.TECH_SHARE_CODE_IMG, mTechInfo.qrCodeUrl);
             intent.putExtra(Constant.TECH_CAN_SHARE, canShare);
 
             startActivity(intent);

@@ -86,8 +86,4 @@ public class ApplicationRecordFragment extends BaseListFragment<ApplicationBean>
 
     }
 
-    @Override
-    public boolean isSlideable(){
-        return false;
-    }
 }

@@ -62,7 +62,7 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
         mOrderListAdapter = new ListRecycleViewAdapter(this, mData, this);
         mListView.setAdapter(mOrderListAdapter);
         mListView.setItemAnimator(new DefaultItemAnimator());
-        mListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+    //    mListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         mListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -157,8 +157,8 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
     }
 
     @Override
-    public boolean isSlideable(){
-        return true;
+    public boolean isHorizontalSliding(){
+        return false;
     }
 
     @Override

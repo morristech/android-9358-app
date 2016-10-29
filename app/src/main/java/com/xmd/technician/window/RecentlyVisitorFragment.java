@@ -163,11 +163,6 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
 
     }
 
-    @Override
-    public boolean isSlideable() {
-        return false;
-    }
-
     private void sendGreetingTextMessage(String content, String mToChatUsername) {
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
         sendMessage(message);

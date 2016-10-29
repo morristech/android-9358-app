@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">9358技师</string>
-    <string name="app_version_code">v1.4.0</string>
+    <string name="app_version_code">v1.4.3</string>
     <string name="token_expired_error_msg">账号在其他的地方登录，请重新登录</string>
     <string name="login_activity_input_username">请输入账号</string>
     <string name="login_activity_input_password">请输入密码</string>
@@ -39,11 +39,13 @@
     <string name="empty_view_failed">数据加载失败，点击刷新</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
-    <string name="main_chat">聊天</string>
+    <string name="main_chat">消息</string>
     <string name="main_conversion">联系人</string>
     <string name="main_order">订单</string>
     <string name="main_market">营销</string>
     <string name="main_personal">我</string>
+    <string name="main_page">首页</string>
+
 
     <!-- ChatFragment -->
     <string name="message_fragment_title">我的消息</string>
@@ -80,6 +82,8 @@
     <string name="settings_activity_about_us">关于我们</string>
     <string name="settings_activity_modify_password">修改密码</string>
     <string name="settings_activity_suggest">意见反馈</string>
+    <string name="settings_activity_work">上班时间</string>
+    <string name="settings_activity_project">服务项目</string>
     <string name="setting_activity_layout_exit">退出登录</string>
     <string name="setting_activity_quit_club">退出会所</string>
     <string name="logout_tips">退出后无法及时接收到相关消息，是否确认退出？</string>
@@ -166,12 +170,14 @@
     <string name="voice_prefix">[语音]</string>
     <string name="voice_call">[语音通话]</string>
     <string name="video_call">[视频通话]</string>
-    <string name="dynamic_expression">[动态表情]</string>
+    <string name="recent_status_expression">[动态表情]</string>
     <string name="cant_find_pictures">找不到图片</string>
     <string name="request_user_reward">"<i></i>万水千山总是情<br />打赏两个行不行~"</string>
     <string name="beg_reward">求打赏</string>
     <string name="send_request_user_reward">确认发送＂求打赏＂信息？</string>
     <string name="accept">接受</string>
+    <string name="finish">已完成</string>
+    <string name="order_cancel">已取消</string>
     <string name="refuse">拒绝</string>
     <string name="common_greeting_format">确认发送＂%1$s＂信息？</string>
     <string name="no_paid_coupon">抱歉！暂无点钟券！</string>
@@ -392,6 +398,53 @@
     <string name="had_say_hi">已招呼</string>
     <string name="to_say_hi">打招呼</string>
     <string name="visitor_has_no_message">游客无详情信息</string>
+
+    <!-- 首页-->
+    <string name="main_free">闲</string>
+    <string name="main_busy">忙</string>
+    <string name="main_holiday">休</string>
+    <string name="layout_technician_ranking_title">本周技师排行榜</string>
+    <string name="layout_technician_ranking_check_all">查看全部</string>
+    <string name="layout_technician_star_register_user">拓客之星</string>
+    <string name="layout_technician_star_sales">销售之星</string>
+    <string name="layout_technician_star_service">服务之星</string>
+    <string name="layout_technician_no_technician">暂无技师</string>
+    <string name="main_info_item_too_keen">拓客（人）</string>
+    <string name="main_info_item_send_coupon">发券（张）</string>
+    <string name="main_info_item_get_comment">好评（个）</string>
+    <string name="main_info_item_total_income">收入（元）</string>
+    <string name="main_tech_order">我的订单</string>
+    <string name="main_tech_order_all">全部</string>
+    <string name="main_tech_order_all_finish_text">订单都处理完啦，感觉自己棒棒哒～</string>
+    <string name="main_tech_order_phone">手机号码：</string>
+    <string name="main_tech_order_time">预约时间：</string>
+    <string name="main_tech_order_money">预付款：</string>
+    <string name="main_tech_order_surplus_time">待接单时间</string>
+    <string name="main_order_had_finished">已完成</string>
+    <string name="main_who_care_me">谁看了我</string>
+    <string name="main_new_recent_status">最近动态</string>
+    <string name="main_bottom_text">—您已到达页面底部—</string>
+    <string name="main_no_coupon_alert_message">暂无详细信息，敬请期待</string>
+    <string name="main_new_recent_status_none">最近没人来，分享名片拉客吧～</string>
+    <string name="recent_status_collect_card">收藏了我的名片</string>
+    <string name="all_recent_status_activity">全部动态</string>
+    <string name="filtrate_recent_status_all">全部</string>
+    <string name="filtrate_recent_status_comment">只看评价</string>
+    <string name="filtrate_recent_status_collect">只看收藏</string>
+    <string name="filtrate_recent_status_coupon">只看领券</string>
+    <string name="filtrate_recent_status_paid_coupon">只看点钟券</string>
+    <string name="filtrate_recent_status_reward">只看点打赏</string>
+    <string name="rank_null_text">暂无技师</string>
+    <string name="recent_status_type_comment">评价了我</string>
+    <string name="recent_status_type_collect">收藏了我</string>
+    <string name="recent_status_type_coupon">领取了我的优惠券</string>
+    <string name="recent_status_type_paid_coupon">购买了我的点钟券</string>
+    <string name="recent_status_type_paid">打赏了我</string>
+    <string name="recent_status_btn_text">感谢</string>
+
+
+
+
 
 
 

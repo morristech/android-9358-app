@@ -7,8 +7,10 @@
     android:orientation="vertical"
     >
     <RelativeLayout
+        android:id="@+id/rl_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/home_button_height">
+        android:layout_height="@dimen/home_button_height"
+        >
 
         <ImageView
             android:id="@+id/toolbar_back"
@@ -55,7 +57,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:orientation="horizontal"
-                android:gravity="center"
+                android:gravity="right|center"
+                android:paddingRight="@dimen/margin_5"
                 android:visibility="gone"
 
                 >
@@ -67,11 +70,10 @@
                     />
 
             </LinearLayout>
-
-
         </FrameLayout>
 
         <View
+            android:id="@+id/divide_line"
            style="@style/horizontal_divider_line_title"
             android:layout_alignParentBottom="true"
             />

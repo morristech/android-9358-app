@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white"
     android:paddingLeft="@dimen/personal_padding"
     android:paddingRight="@dimen/personal_padding"
@@ -13,7 +13,7 @@
         android:layout_width="@dimen/search_view_height"
         android:layout_height="@dimen/search_view_height"
         android:layout_marginRight="@dimen/personal_padding"
-        android:background="@drawable/icon22"/>
+        android:background="@drawable/icon22" />
 
     <TextView
         android:id="@+id/name"
@@ -21,38 +21,36 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/avatar"
         android:textColor="@color/colorTitle"
-        android:textSize="@dimen/fontTitle"
-        />
+        android:textSize="@dimen/fontTitle" />
 
     <RatingBar
         android:id="@+id/ratings"
         style="@style/commentRatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/avatar"
         android:layout_below="@id/name"
         android:layout_marginTop="@dimen/personal_padding"
+        android:layout_toRightOf="@+id/avatar"
         android:isIndicator="true"
-        android:numStars="5"/>
+        android:numStars="5" />
 
     <TextView
         android:id="@+id/comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ratings"
-        android:layout_toRightOf="@+id/avatar"
         android:layout_marginTop="@dimen/search_margin"
+        android:layout_toRightOf="@+id/avatar"
         android:paddingBottom="@dimen/personal_padding"
         android:textColor="@color/colorBody"
-        android:textSize="@dimen/fontBody"
-        />
+        android:textSize="@dimen/fontBody" />
 
     <TextView
         android:id="@+id/reward_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/name"
+        android:layout_alignParentRight="true"
         android:textColor="@color/colorTitle"
         android:textSize="@dimen/fontTitle" />
 
@@ -60,11 +58,10 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/ratings"
+        android:layout_alignParentRight="true"
         android:textColor="@color/colorRemark"
-        android:textSize="@dimen/fontRemark"
-       />
+        android:textSize="@dimen/fontRemark" />
 
     <View
         android:layout_width="match_parent"

@@ -51,7 +51,9 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_chat, container, false);
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.message_fragment_title);
+        return view;
     }
 
     @Override
@@ -260,10 +262,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
 
     }
 
-    @Override
-    public boolean isSlideable() {
-        return false;
-    }
+
 
     @Override
     public boolean isPaged() {

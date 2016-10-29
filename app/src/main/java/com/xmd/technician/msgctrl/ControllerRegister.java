@@ -87,7 +87,13 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST,
                 MsgDef.MSG_DEF_DO_SAY_HI,
                 MsgDef.MSG_DEF_GET_VISIT_VIEW,
-                MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT
+                MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT,
+                MsgDef.MSF_DEF_GET_TECH_INFO,
+                MsgDef.MSF_DEF_GET_TECH_ORDER_LIST,
+                MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA,
+                MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA,
+                MsgDef.MSF_DEF_GET_TECH_DYNAMIC_LIST,
+                MsgDef.MSF_DEF_SET_PAGE_SELECTED
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

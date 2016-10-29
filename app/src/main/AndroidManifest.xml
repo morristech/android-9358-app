@@ -19,8 +19,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:name=".TechApplication"
@@ -80,8 +80,8 @@
         <activity
             android:name=".window.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="adjustPan"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan" />
 
         <receiver
             android:name=".push.GetuiReceiver"
@@ -99,7 +99,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".window.ChatActivity"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="com.xmd.technician.action.START_CHAT" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -168,46 +168,59 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:launchMode="singleTask"
             android:exported="true"
             android:label="@string/wx_entry_activity_title"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".window.AddFriendActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".window.CellphoneContactListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".window.ContactInformationDetailActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.AddFriendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CellphoneContactListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.ContactInformationDetailActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".window.SysNoticeListActivity"></activity>
 
-        <activity android:name=".window.EditContactInformation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".window.shareCardActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.EditContactInformation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.shareCardActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".window.PreLoginActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
 
-        <activity android:name=".window.ConfigurationMonitorActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".window.AvailableCouponListActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".window.ConfigurationMonitorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.AvailableCouponListActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".window.UserCreditCenterActivity">
             android:screenOrientation="portrait"
         </activity>
         <activity android:name=".window.CreditExchangeActivity">
             android:screenOrientation="portrait"
         </activity>
-        <activity android:name=".window.CreditRuleExplainActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".window.CreditRuleExplainActivity"
             android:launchMode="singleTask"
-            />
-        <activity android:name=".window.IntroduceAccountActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.IntroduceAccountActivity"
             android:launchMode="singleTask"
-            />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.DynamicDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.OrderFragmentActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

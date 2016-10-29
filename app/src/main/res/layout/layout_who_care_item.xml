@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.xmd.technician.widget.CircleImageView
+        android:id="@+id/main_order_avatar"
+        android:layout_width="@dimen/dynamic_item_rl_width"
+        android:layout_height="@dimen/dynamic_item_rl_width"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/search_margin"
+        android:background="@drawable/icon22" />
+
+</LinearLayout>

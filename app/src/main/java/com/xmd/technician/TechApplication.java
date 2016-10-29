@@ -3,8 +3,6 @@ package com.xmd.technician;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.text.TextUtils;
-
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.igexin.sdk.PushManager;

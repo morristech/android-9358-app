@@ -6,13 +6,13 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.TextAppearanceSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +27,7 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ApplicationBean;
 import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.bean.CreditDetailBean;
+import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.PaidCouponUserDetail;
 import com.xmd.technician.bean.RecentlyVisitorBean;
@@ -71,7 +72,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         /**
          * @return whether the item is slideable
          */
-        boolean isSlideable();
+        boolean isHorizontalSliding();
 
         /**
          * whether is paged
@@ -87,6 +88,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_CREDIT_RECORD_ITEM = 4;
     private static final int TYPE_CREDIT_APPLICATION_ITEM = 5;
     private static final int TYPE_RECENTLY_VISIT_ITEM = 6;
+    private static final int TYPE_DYNAMIC_COMMENT_ITEM = 7;
+    private static final int TYPE_DYNAMIC_COLLECT_ITEM = 8;
+    private static final int TYPE_DYNAMIC_COUPON_ITEM = 9;
     private static final int TYPE_COUPON_INFO_ITEM_CASH = 11;
     private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
     private static final int TYPE_COUPON_INFO_ITEM_FAVORABLE = 13;
@@ -150,6 +154,14 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_CREDIT_APPLICATION_ITEM;
             } else if (mData.get(position) instanceof RecentlyVisitorBean) {
                 return TYPE_RECENTLY_VISIT_ITEM;
+            } else if (mData.get(position) instanceof DynamicDetail) {
+                if (((DynamicDetail) mData.get(position)).bizType == 1) {
+                    return TYPE_DYNAMIC_COMMENT_ITEM;
+                } else if (((DynamicDetail) mData.get(position)).bizType == 2 || ((DynamicDetail) mData.get(position)).bizType == 3) {
+                    return TYPE_DYNAMIC_COUPON_ITEM;
+                } else {
+                    return TYPE_DYNAMIC_COLLECT_ITEM;
+                }
             } else {
                 return TYPE_OTHER_ITEM;
             }
@@ -187,6 +199,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_RECENTLY_VISIT_ITEM:
                 View viewRecentlyVisit = LayoutInflater.from(parent.getContext()).inflate(R.layout.recently_visitor_item, parent, false);
                 return new RecentlyVisitViewHolder(viewRecentlyVisit);
+            case TYPE_DYNAMIC_COMMENT_ITEM:
+                View viewComment = LayoutInflater.from(parent.getContext()).inflate(R.layout.dynamic_comment_item, parent, false);
+                return new DynamicItemViewHolder(viewComment);
+            case TYPE_DYNAMIC_COUPON_ITEM:
+                View viewCoupon = LayoutInflater.from(parent.getContext()).inflate(R.layout.dynamic_coupon_item, parent, false);
+                return new DynamicItemViewHolder(viewCoupon);
+            case TYPE_DYNAMIC_COLLECT_ITEM:
+                View viewCollect = LayoutInflater.from(parent.getContext()).inflate(R.layout.dynamic_collect_item, parent, false);
+                return new DynamicItemViewHolder(viewCollect);
             default:
                 View viewDefault = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
                 return new ListFooterHolder(viewDefault);
@@ -273,8 +294,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final CouponInfo couponInfo = (CouponInfo) obj;
             CouponListItemViewHolder couponListItemViewHolder = (CouponListItemViewHolder) holder;
             couponListItemViewHolder.mTvCouponTitle.setText(couponInfo.actTitle);
-            if (couponInfo.useTypeName.equals("点钟券")) {
-                couponListItemViewHolder.mTvCouponTitle.setText("点钟券");
+            if (couponInfo.useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
+                couponListItemViewHolder.mTvCouponTitle.setText(ResourceUtils.getString(R.string.delivery_coupon));
                 couponListItemViewHolder.mCouponType.setVisibility(View.GONE);
             } else {
                 couponListItemViewHolder.mTvCouponTitle.setText(Utils.StrSubstring(8, couponInfo.actTitle, true));
@@ -395,13 +416,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     } catch (HyphenateException e) {
                         e.printStackTrace();
                     }
-//                    try {
-//                        if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_GAME_CLUB_ID))){
-//                            conversationHolder.mUserManagerType.setVisibility(View.VISIBLE);
-//                        }
-//                    } catch (HyphenateException e) {
-//                        e.printStackTrace();
-//                    }
                 }
             }
 
@@ -497,10 +511,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 viewHolder.mVisitorName.setText(ResourceUtils.getString(R.string.visitor_type));
             }
-            if(Utils.isNotEmpty(recentlyVisitor.customerType)){
-                if(Utils.isNotEmpty(recentlyVisitor.emchatId) && !recentlyVisitor.customerType.equals(RequestConstant.TEMP_USER)){
+            if (Utils.isNotEmpty(recentlyVisitor.customerType)) {
+                if (Utils.isNotEmpty(recentlyVisitor.emchatId) && !recentlyVisitor.customerType.equals(RequestConstant.TEMP_USER)) {
                     viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
-                    if (Utils.isNotEmpty(recentlyVisitor.canSayHello )) {
+                    if (Utils.isNotEmpty(recentlyVisitor.canSayHello)) {
                         viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
                         if (recentlyVisitor.canSayHello.equals("0")) {
                             viewHolder.mVisitorToChat.setEnabled(false);
@@ -513,10 +527,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     } else {
                         viewHolder.mVisitorToChat.setVisibility(View.GONE);
                     }
-                }else{
+                } else {
                     viewHolder.mVisitorToChat.setVisibility(View.GONE);
                 }
-            }else {
+            } else {
                 viewHolder.mVisitorToChat.setVisibility(View.GONE);
             }
 
@@ -583,6 +597,69 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             return;
 
         }
+
+        if (holder instanceof DynamicItemViewHolder) {
+            Object obj = mData.get(position);
+            if (!(obj instanceof DynamicDetail)) {
+                return;
+            }
+            final DynamicDetail dynamicDetail = (DynamicDetail) obj;
+            DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
+
+            Glide.with(mContext).load(dynamicDetail.imageUrl).error(R.drawable.icon22).into(viewHolder.dynamicItemAvatar);
+            viewHolder.dynamicItemName.setText(dynamicDetail.userName);
+            viewHolder.dynamicTime.setText(DateUtils.getTimestampString(new Date(dynamicDetail.createTime)));
+            String textDescription = dynamicDetail.description;
+            String textRemark = dynamicDetail.remark;
+            int commentScore = dynamicDetail.commentScore;
+            float rewardAmount = dynamicDetail.rewardAmount;
+
+            if (dynamicDetail.bizType == 1) {
+                if (Utils.isNotEmpty(dynamicDetail.phoneNum)) {
+                    viewHolder.dynamicItemTelephone.setText(dynamicDetail.phoneNum);
+                }
+                viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_comment));
+                if (Utils.isNotEmpty(textDescription)) {
+                    viewHolder.dynamicItemCommentDetail.setText(textDescription);
+                }
+                if (Utils.isNotEmpty(textRemark)) {
+                    viewHolder.dynamicItemRemark.setText("#" + textRemark.replaceAll("、", " #"));
+                }
+                if (commentScore > 0) {
+                    viewHolder.dynamicItemCommentStarts.setVisibility(View.VISIBLE);
+                    viewHolder.dynamicItemCommentStarts.setText(String.valueOf(commentScore / 20f));
+                } else {
+                    viewHolder.dynamicItemCommentStarts.setVisibility(View.GONE);
+                }
+                viewHolder.dynamicItemCommentReward.setText(String.valueOf(rewardAmount));
+//                if(rewardAmount>0){
+//                    viewHolder.dynamicItemCommentReward.setVisibility(View.VISIBLE);
+//                    viewHolder.dynamicItemCommentReward.setText(String.valueOf(rewardAmount));
+//                }else{
+//                    viewHolder.dynamicItemCommentReward.setVisibility(View.GONE);
+//                }
+
+            } else if (dynamicDetail.bizType == 2) {
+                viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_collect));
+                viewHolder.dynamicItemCommentDetail.setText(textDescription);
+                viewHolder.dynamicItemRemark.setVisibility(View.GONE);
+            } else if (dynamicDetail.bizType == 3) {
+                viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_coupon));
+                viewHolder.dynamicItemCommentDetail.setText(textDescription);
+                viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
+
+            } else if (dynamicDetail.bizType == 4) {
+                viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_paid));
+                viewHolder.dynamicItemCommentDetail.setText(textDescription);
+                viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
+            } else if (dynamicDetail.bizType == 5) {
+                viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_to_reward));
+                viewHolder.dynamicItemCommentDetail.setText(textDescription);
+            }
+            viewHolder.btnThanks.setClickable(true);
+            viewHolder.btnThanks.setOnClickListener(v -> mCallback.onSayHiButtonClicked(dynamicDetail));
+            return;
+        }
         if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);
@@ -598,6 +675,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             footerHolder.itemFooter.setText(desc);
             return;
         }
+
 
     }
 
@@ -645,7 +723,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         mRecyclerView = recyclerView;
-        if (mCallback.isSlideable()) {
+        if (mCallback.isHorizontalSliding()) {
             mRecyclerView.addOnItemTouchListener(mHelper);
         }
     }
@@ -820,4 +898,34 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
     }
 
+
+    static class DynamicItemViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.dynamic_item_avatar)
+        CircleImageView dynamicItemAvatar;
+        @Bind(R.id.dynamic_item_type)
+        ImageView dynamicItemType;
+        @Bind(R.id.dynamic_item_name)
+        TextView dynamicItemName;
+        @Bind(R.id.dynamic_item_telephone)
+        TextView dynamicItemTelephone;
+        @Bind(R.id.dynamic_item_comment_detail)
+        TextView dynamicItemCommentDetail;
+        @Bind(R.id.dynamic_item_remark)
+        TextView dynamicItemRemark;
+        @Bind(R.id.dynamic_item_comment_starts)
+        TextView dynamicItemCommentStarts;
+        @Bind(R.id.dynamic_item_comment_reward)
+        TextView dynamicItemCommentReward;
+        @Bind(R.id.dynamic_item_comment)
+        RelativeLayout dynamicItemComment;
+        @Bind(R.id.dynamic_time)
+        TextView dynamicTime;
+        @Bind(R.id.btn_thanks)
+        TextView btnThanks;
+
+        public DynamicItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
 }

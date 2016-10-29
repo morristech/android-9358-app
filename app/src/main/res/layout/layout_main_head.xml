@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_page_head"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/main_head_height"
+    android:background="@drawable/bg_main_head">
+
+    <RelativeLayout
+        android:id="@+id/rl_main_head_tech_rest"
+        android:layout_width="@dimen/main_head_rl_height"
+        android:layout_height="@dimen/main_head_rl_height"
+        android:layout_marginLeft="@dimen/margin_15"
+        android:layout_marginRight="@dimen/search_margin"
+        android:background="@drawable/bg_main_tech_state"
+        android:gravity="center"
+        android:padding="@dimen/margin_2">
+
+        <com.xmd.technician.widget.CircleImageView
+            android:id="@+id/main_head_avatar"
+            android:layout_width="@dimen/main_head_avatar_height"
+            android:layout_height="@dimen/main_head_avatar_height"
+            android:background="@drawable/icon22" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/main_head_tech_name"
+        android:layout_width="@dimen/coupon_item_detail_height"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/rl_main_head_tech_rest"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_toRightOf="@id/rl_main_head_tech_rest"
+        android:singleLine="true"
+        android:enabled="true"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/fontHead" />
+
+    <TextView
+        android:id="@+id/main_head_tech_serial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_head_tech_name"
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_toRightOf="@id/rl_main_head_tech_rest"
+        android:background="@drawable/bg_main_tech_serial"
+        android:paddingLeft="@dimen/coupon_item_bottom_corner_bg"
+        android:paddingRight="@dimen/coupon_item_bottom_corner_bg"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/fontRemark" />
+
+    <ImageView
+        android:id="@+id/btn_main_tech_rest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/main_head_tech_name"
+        android:layout_marginRight="@dimen/margin_15"
+        android:src="@drawable/btn_main_rest_default" />
+
+    <ImageView
+        android:id="@+id/btn_main_tech_busy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/btn_main_tech_rest"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_toLeftOf="@id/btn_main_tech_rest"
+        android:src="@drawable/btn_main_busy_default" />
+
+    <ImageView
+        android:id="@+id/btn_main_tech_free"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/btn_main_tech_rest"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_toLeftOf="@id/btn_main_tech_busy"
+        android:src="@drawable/btn_main_free_selected" />
+
+    <ImageView
+        android:id="@+id/btn_main_credit_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/btn_main_tech_rest"
+        android:layout_marginTop="@dimen/margin_20"
+        android:src="@drawable/image_main_integral" />
+
+</RelativeLayout>

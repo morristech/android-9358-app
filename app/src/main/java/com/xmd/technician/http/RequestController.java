@@ -1,5 +1,6 @@
 package com.xmd.technician.http;
 
+import android.content.Intent;
 import android.os.Message;
 import android.text.TextUtils;
 
@@ -14,6 +15,7 @@ import com.xmd.technician.bean.CreditAccountResult;
 import com.xmd.technician.bean.CreditApplicationsResult;
 import com.xmd.technician.bean.CreditExchangeResult;
 import com.xmd.technician.bean.CreditStatusResult;
+import com.xmd.technician.bean.CurrentSelectPage;
 import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.DeleteContactResult;
@@ -41,6 +43,7 @@ import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
+import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.LoginResult;
@@ -55,6 +58,10 @@ import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
+import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechOrderListResult;
+import com.xmd.technician.http.gson.TechRankDataResult;
+import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.http.gson.TokenExpiredResult;
 import com.xmd.technician.http.gson.UpdateServiceResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
@@ -259,16 +266,25 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT:
                 doSaveToContact((Map<String, String>) msg.obj);
-   /*         case MsgDef.MSG_DEF_DO_DRAW_MONEY:
-                doDrawMoney((Map<String,String>)msg.obj);
                 break;
-            case MsgDef.MSG_DEF_BIND_WX:
-                doBindWX((Map<String,String>)msg.obj);
+            case MsgDef.MSF_DEF_GET_TECH_INFO:
+                getTechInfo();
                 break;
-            case MsgDef.MSG_DEF_IS_BIND_WX:
-                getIsBindWXR();
+            case MsgDef.MSF_DEF_GET_TECH_ORDER_LIST:
+                getMainPageOrderList((Map<String, String>) msg.obj);
                 break;
-*/
+            case MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA:
+                getTechStatisticsData();
+                break;
+            case MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA:
+                getTechRankData();
+                break;
+            case MsgDef.MSF_DEF_GET_TECH_DYNAMIC_LIST:
+                getDynamicList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSF_DEF_SET_PAGE_SELECTED:
+                setPageSelected((int) msg.obj);
+                break;
 
 
         }
@@ -430,7 +446,7 @@ public class RequestController extends AbstractController {
      * @param params
      */
     private void doGetOrderList(Map<String, String> params) {
-        Call<OrderListResult> call = getSpaService().getOrderList(SharedPreferenceHelper.getUserToken(),
+        Call<OrderListResult> call = getSpaService().getTechOrderList(SharedPreferenceHelper.getUserToken(),
                 RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_FILTER_ORDER),
                 params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
 
@@ -540,7 +556,7 @@ public class RequestController extends AbstractController {
 
     private void updateTechInfo(Map<String, String> params) {
         Call<UpdateTechInfoResult> call = getSpaService().updateTechInfo(params.get(RequestConstant.KEY_USER),
-               SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
         call.enqueue(new TokenCheckedCallback<UpdateTechInfoResult>() {
             @Override
             protected void postResult(UpdateTechInfoResult result) {
@@ -912,7 +928,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doGetCustomerInfoDetail(Map<String, String> params) {
-        Call<CustomerDetailResult> call = getSpaService().getCustomerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_USER_ID),params.get(RequestConstant.KEY_ID), SharedPreferenceHelper.getUserToken());
+        Call<CustomerDetailResult> call = getSpaService().getCustomerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_USER_ID), params.get(RequestConstant.KEY_ID), SharedPreferenceHelper.getUserToken());
         call.enqueue(new TokenCheckedCallback<CustomerDetailResult>() {
             @Override
             protected void postResult(CustomerDetailResult result) {
@@ -1120,7 +1136,7 @@ public class RequestController extends AbstractController {
      */
 
     private void doGetRecentlyVisitorList(Map<String, String> params) {
-        Call<RecentlyVisitorResult> call = getSpaService().getRecentlyVisitorList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE),params.get(RequestConstant.KEY_LAST_TIME));
+        Call<RecentlyVisitorResult> call = getSpaService().getRecentlyVisitorList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_LAST_TIME));
         call.enqueue(new TokenCheckedCallback<RecentlyVisitorResult>() {
             @Override
             protected void postResult(RecentlyVisitorResult result) {
@@ -1150,7 +1166,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doSayHi(Map<String, String> params) {
-        Call<SayHiResult> call = getSpaService().doSayHi(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_UPDATE_USER_ID));
+        Call<SayHiResult> call = getSpaService().doSayHi(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_UPDATE_USER_ID));
         call.enqueue(new TokenCheckedCallback<SayHiResult>() {
             @Override
             protected void postResult(SayHiResult result) {
@@ -1160,7 +1176,7 @@ public class RequestController extends AbstractController {
     }
 
     private void doGetVisitView(Map<String, String> params) {
-        Call<VisitBean> call = getSpaService().doGetVisitView(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_UPDATE_USER_ID));
+        Call<VisitBean> call = getSpaService().doGetVisitView(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_UPDATE_USER_ID));
         call.enqueue(new TokenCheckedCallback<VisitBean>() {
             @Override
             protected void postResult(VisitBean result) {
@@ -1176,56 +1192,105 @@ public class RequestController extends AbstractController {
      */
     private void doSaveToContact(Map<String, String> params) {
         Call<SaveChatUserResult> call = getSpaService().doSaveContact(SharedPreferenceHelper.getEmchatId(),
-                RequestConstant.USER_TYPE_TECH ,params.get(RequestConstant.KEY_FRIEND_CHAT_ID),RequestConstant.USER_TYPE_USER,RequestConstant.KEY_MSG_TYPE_TEXT);
+                RequestConstant.USER_TYPE_TECH, params.get(RequestConstant.KEY_FRIEND_CHAT_ID), RequestConstant.USER_TYPE_USER, RequestConstant.KEY_MSG_TYPE_TEXT);
         call.enqueue(new TokenCheckedCallback<SaveChatUserResult>() {
             @Override
             protected void postResult(SaveChatUserResult result) {
                 RxBus.getInstance().post(result);
-                if(result.statusCode == 200){
+                if (result.statusCode == 200) {
                     Logger.i(result.msg);
                 }
             }
         });
     }
 
+    /**
+     * 首页技师信息
+     *
+     * @param
+     */
+    private void getTechInfo() {
+        Call<TechInfoResult> call = getSpaService().getTechInfo(SharedPreferenceHelper.getUserToken());
 
-    /*   private void doDrawMoney(Map<String,String> params){
-        Call<BaseResult> call = getSpaService().doDrawMoney(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),
-               params.get(RequestConstant.KEY_TRADE_AMOUNT));
-        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+        call.enqueue(new TokenCheckedCallback<TechInfoResult>() {
             @Override
-            protected void postResult(BaseResult result) {
-                Log.i("TAGG","result>>"+result.toString());
-            }
-        });
-
-
-
-    }
-    private void doBindWX(Map<String,String> params){
-//        Call<BaseResult> call = getSpaService().doBindWX(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_USER_WX_CODE),
-//                params.get(RequestConstant.KEY_USER_WX_SCOPE), params.get(RequestConstant.KEY_USER_WX_STATE),params.get(RequestConstant.KEY_USER_WX_WXMP));
-        Call<BaseResult> call = getSpaService().doBindWX(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_USER_WX_PAGE_URL),
-                params.get(RequestConstant.KEY_USER_WX_SCOPE), params.get(RequestConstant.KEY_USER_WX_STATE),params.get(RequestConstant.KEY_USER_WX_WXMP));
-        call.enqueue(new TokenCheckedCallback<BaseResult>() {
-            @Override
-            protected void postResult(BaseResult result) {
-                result.toString();
-            }
-        });
-    }
-    private void  getIsBindWXR(){
-        Call<IsBindResult> call = getSpaService().getIsBindWXResult(RequestConstant.SESSION_TYPE,SharedPreferenceHelper.getUserToken());
-        call.enqueue(new TokenCheckedCallback<IsBindResult>() {
-            @Override
-            protected void postResult(IsBindResult result) {
+            protected void postResult(TechInfoResult result) {
                 RxBus.getInstance().post(result);
             }
         });
     }
-*/
+
+    /**
+     * 首页订单
+     *
+     * @param
+     */
+    private void getMainPageOrderList(Map<String, String> params) {
+        Call<OrderListResult> call = getSpaService().getTechOrderList(SharedPreferenceHelper.getUserToken(),
+                RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ORDER_STATUS),
+                params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+        call.enqueue(new TokenCheckedCallback<OrderListResult>() {
+            @Override
+            protected void postResult(OrderListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 首页数据
+     *
+     * @param
+     */
+    private void getTechStatisticsData() {
+        Call<TechStatisticsDataResult> call = getSpaService().getTechStatisticData(SharedPreferenceHelper.getUserToken());
+
+        call.enqueue(new TokenCheckedCallback<TechStatisticsDataResult>() {
+            @Override
+            protected void postResult(TechStatisticsDataResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+
+    /**
+     * 技师排行榜
+     *
+     * @param
+     */
+    private void getTechRankData() {
+        Call<TechRankDataResult> call = getSpaService().getTechRankData(SharedPreferenceHelper.getUserToken());
+
+        call.enqueue(new TokenCheckedCallback<TechRankDataResult>() {
+            @Override
+            protected void postResult(TechRankDataResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+    /**
+     * 动态列表
+     *
+     * @param
+     */
+    private void getDynamicList(Map<String, String> params) {
+        Call<DynamicListResult> call = getSpaService().getDynamicList(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_TECH_DYNAMIC_TYPE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+        call.enqueue(new TokenCheckedCallback<DynamicListResult>() {
+            @Override
+            protected void postResult(DynamicListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
     private void doHandleTokenExpired(String errorMsg) {
         RxBus.getInstance().post(new TokenExpiredResult(errorMsg));
+    }
+
+    private void setPageSelected(int obj) {
+        RxBus.getInstance().post(new CurrentSelectPage(obj));
     }
 
     //获取升级配置

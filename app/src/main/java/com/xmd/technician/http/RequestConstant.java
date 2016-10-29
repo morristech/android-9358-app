@@ -1,7 +1,5 @@
 package com.xmd.technician.http;
 
-import com.xmd.technician.TechApplication;
-
 /**
  * Created by sdcm on 15-10-23.
  */
@@ -25,7 +23,6 @@ public class RequestConstant {
     public static final String URL_RESET_PASSWORD = BASE_URL + "/v1/tech/resetPassword";
     public static final String URL_FEEDBACK_CREATE = BASE_URL + "/v2/tech/feedback/create";
     public static final String URL_GET_ORDER_LIST = BASE_URL + "/v2/tech/profile/orders";
-    public static final String URL_MANAGE_ORDER = BASE_URL + "/v2/tech/profile/order/manage";
     public static final String URL_HIDE_ORDER = BASE_URL + "/v2/tech/hide/order";
     public static final String URL_GETUI_BIND_CLIENT_ID = BASE_URL + "/v2/push/clientid";
     public static final String URL_GETUI_UNBIND_CLIENT_ID = BASE_URL + "/v2/push/unbind/clientid";
@@ -37,7 +34,7 @@ public class RequestConstant {
     public static final String URL_UPLOAD_ALBUM = BASE_URL + "/v1/profile/tech/album/base64/upload";
     public static final String URL_SORT_ALBUM = BASE_URL + "/v1/profile/tech/album/sort";
     public static final String URL_UPLOAD_AVATAR = BASE_URL + "/v1/profile/tech/avatar/base64/upload";
-    public static final String URL_UPDATE_WORKSTATUS = BASE_URL + "/v1/profile/tech/status/update";
+
 
     public static final String URL_QUIT_CLUB = BASE_URL + "/v2/tech/quit/club";
     public static final String URL_GET_SERVICE_LIST = BASE_URL + "/v2/tech/profile/service";
@@ -57,17 +54,12 @@ public class RequestConstant {
     public static final String URL_GET_MANAGER_INFO_DETAIL = BASE_URL + "/v2/tech/customer/manager/view";
     public static final String URL_GET_RECENTLY_VISITOR_LIST = BASE_URL + "/v2/tech/customer/recent/list";
     public static final String URL_DELETE_CONTACT = BASE_URL + "/v2/tech/customer/delete";
-    public static final String URL_DO_DRAW_MONEY = BASE_URL + "/v2/wx/pay/user_reward_redpack";
-    public static final String URL_GET_USER_WX_OPEN_ID = BASE_URL + "/v2/wx/oauth2/openid";
-    public static final String URL_GET_USER_WX_CODE = BASE_URL + "/v2/wx/oauth2/code";
     public static final String URL_GET_USER_IS_BIND_WX = BASE_URL + "/v2/tech/is_bind_wx";
     public static final String URL_GAME_DICE_SUBMIT = BASE_URL + "/v2/credit/game/dice/submit";
     public static final String URL_GAME_DICE_ACCEPT_OR_REJECT = BASE_URL + "/v2/credit/game/dice/accept";
     public static final String URL_GET_CREDIT_GIFT_LIST = BASE_URL + "/v2/credit/gift/list";
     public static final String URL_CUSTOMER_SAY_HI = BASE_URL + "/v2/tech/customer/sayhi";
     public static final String URL_CUSTOMER_VIEW_VISIT = BASE_URL + "/v2/tech/customer/user/view/visit";
-
-
 
 
     public static final String URL_GET_CREDIT_SWITCH_STATUS = BASE_URL + "/v2/credit/switch/status";
@@ -81,12 +73,22 @@ public class RequestConstant {
     public static final String URL_SAVE_CONTACT_MARK_CHATTO_USER = BASE_URL + "/v1/emchat/markchattouser";
 
 
-    public static final String URL_GET_USER_SWITCHES = BASE_URL +"/v2/user/switches";
+    public static final String URL_GET_USER_SWITCHES = BASE_URL + "/v2/user/switches";
     public static final String URL_COUPON_SHARE_EVENT_COUNT = BASE_URL + "/v1/profile/redpacket/share";
     public static final String URL_RANKING = "/spa-manager/manager/index.html?v=%s&userType=%s&sessionType=%s&token=%s";
 
+    public static final String URL_GET_TECH_INFO = BASE_URL + "/v2/tech/current";
+    public static final String URL_GET_TECH_ORDER_LIST = BASE_URL + "/v2/tech/order/list";
+    public static final String URL_GET_TECH_STATISTICS_DATA = BASE_URL + "/v2/tech/statisticsData";
+    public static final String URL_UPDATE_WORK_STATUS = BASE_URL + "/v1/profile/tech/status/update";
+    public static final String URL_MANAGE_ORDER = BASE_URL + "/v2/tech/profile/order/manage";
+    public static final String URL_GET_TECH_RANK_INDEX = BASE_URL + "/v2/tech/tech_rank_index";
+    public static final String URL_GET_RECENT_DYNAMICS_LIST = BASE_URL + "/v2/tech/recent/dynamics/list";
+
+
     //    public static final String URL_APP_UPDATE_CONFIG = "mockjs/17/app-upgrade-system/appUpgrade";
     public static final String URL_APP_UPDATE_CONFIG = "/app-upgrade-system/appUpgrade";
+
 
     /*********************************************************************************************/
     /*                                           keys                                            */
@@ -222,8 +224,17 @@ public class RequestConstant {
     public static final String KEY_FRIEND_USER_TYPE = "friendUserType";
     public static final String KEY_FRIEND_MESSAGE_TYPE = "msgType";
     public static final String KEY_MSG_TYPE_TEXT = "text";
-
-
+    public static final String KEY_ORDER_STATUS = "orderStatus";
+    public static final String KEY_ORDER_STATUS_COMPLETE = "complete";
+    public static final String KEY_ORDER_STATUS_ACCEPT = "accept";
+    public static final String KEY_ORDER_STATUS_SUBMIT = "submit";
+    public static final String KEY_ORDER_STATUS_REJECT = "reject";
+    public static final String KEY_ORDER_STATUS_FAILURE = "failure";
+    public static final String KEY_ORDER_STATUS_SUBMIT_AND_ACCEPT = "accept,submit";
+    public static final String KEY_TECH_STATUS_FREE = "free";
+    public static final String KEY_TECH_STATUS_BUSY = "busy";
+    public static final String KEY_TECH_STATUS_REST = "rest";
+    public static final String KEY_TECH_DYNAMIC_TYPE = "bizType";
 
 
     /*********************************************************************************************/

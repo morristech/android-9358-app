@@ -7,8 +7,21 @@
     android:background="@color/colorBackground"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_button_height"
+        android:background="@color/app_bg">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="设 置"
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/fontHead" />
+
+    </RelativeLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
@@ -54,7 +67,7 @@
             android:layout_centerVertical="true"
             android:textColor="@color/colorRemark"
             android:textSize="@dimen/fontBody"
-            android:text="v1.2"/>
+            />
 
     </RelativeLayout>
 

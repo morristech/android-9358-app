@@ -33,12 +33,15 @@
 
     <dimen name="fontBig">32sp</dimen>
     <dimen name="fontCoupon">30sp</dimen>
+    <dimen name="fontOrderName">19sp</dimen>
     <dimen name="fontHead">18sp</dimen>
     <dimen name="fontSize">17sp</dimen>
     <dimen name="fontTitle">16sp</dimen>
     <dimen name="fontTitle_small">15sp</dimen>
     <dimen name="fontBody">14sp</dimen>
+    <dimen name="fontBiggerThanNormal">13sp</dimen>
     <dimen name="fontNormal">12sp</dimen>
+    <dimen name="fontBiggerThanRemark">11sp</dimen>
     <dimen name="fontRemark">10sp</dimen>
     <dimen name="font_biggest">40sp</dimen>
     <dimen name="fontCouponTitle">24sp</dimen>
@@ -166,7 +169,7 @@
     <dimen name="share_btn_width">50dp</dimen>
     <dimen name="comment_message_height">36dp</dimen>
     <dimen name="credit_button_height">48dp</dimen>
-
+    <dimen name="layout_ranking_section_height">130dp</dimen>
     <dimen name="tab_height">48dp</dimen>
     <dimen name="tab_indicator_text_padding">8dp</dimen>
     <dimen name="tab_indicator_text_padding_bottom">4dp</dimen>
@@ -200,6 +203,17 @@
     <dimen name="visitor_item_height">62dp</dimen>
     <dimen name="gift_width">121dp</dimen>
     <dimen name="visit_item_height">22dp</dimen>
+    <dimen name="main_page_margin">12dp</dimen>
+    <dimen name="main_order_btn_width">55dp</dimen>
+    <dimen name="main_order_btn_height">20dp</dimen>
+    <dimen name="main_dynamic_width">30dp</dimen>
+    <dimen name="dynamic_item_type_margin">-5dp</dimen>
+    <dimen name="dynamic_item_rl_width">60dp</dimen>
+    <dimen name="main_head_height">110dp</dimen>
+    <dimen name="main_head_rl_height">72dp</dimen>
+    <dimen name="main_head_avatar_height">70dp</dimen>
+    <dimen name="main_page_left_width">270dp</dimen>
+    <dimen name="main_page_right_width">320dp</dimen>
 
 
 </resources>

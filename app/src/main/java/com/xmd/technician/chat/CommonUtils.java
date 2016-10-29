@@ -82,7 +82,7 @@ public class CommonUtils {
 
                         digest = txtBody.getMessage();
                     } else {
-                        digest = getString(context, R.string.dynamic_expression);
+                        digest = getString(context, R.string.recent_status_expression);
                     }
                 }else try {
                     if(Utils.isNotEmpty(message.getStringAttribute(ChatConstant.KEY_GAME_ID))){
