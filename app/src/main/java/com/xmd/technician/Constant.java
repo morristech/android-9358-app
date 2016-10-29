@@ -102,6 +102,7 @@ public class Constant {
         public static final String TECH_USER_NAME ="userName";
         public static final String TECH_USER_TECH_NUM = "userNum";
         public static final String TECH_USER_CLUB_NAME = "userClubName";
+        public static final String TECH_ShARE_CODE_IMG ="userShareCodeImg";
         public static final String TECH_SHARE_CODE_IMG ="userShareCodeImg";
     /**
      * status:submit 未接受，accept 同意，reject 拒绝，cancel 取消，complete 完成，failure 失效，sysReject 超时。 不传默认查全部订单
