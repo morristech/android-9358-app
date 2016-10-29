@@ -547,7 +547,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                     intent.putExtra(Constant.TECH_USER_TECH_NUM, mTechInfo.serialNo);
                     intent.putExtra(Constant.TECH_USER_CLUB_NAME, mTechInfo.clubName);
                     intent.putExtra(Constant.TECH_SHARE_URL, url.toString());
-                    intent.putExtra(Constant.TECH_SHARE_CODE_IMG, mTechInfo.qrCodeUrl);
+                    intent.putExtra(Constant.TECH_ShARE_CODE_IMG, mTechInfo.qrCodeUrl);
                     intent.putExtra(Constant.TECH_CAN_SHARE, canShare);
                     startActivity(intent);
 
