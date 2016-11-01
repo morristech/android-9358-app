@@ -128,7 +128,7 @@
     <string name="work_day_text">重复天数</string>
     <string name="work_time_text">时间设置</string>
     <string name="time_activity_desc">注:客户只能预约您的上班时间.</string>
-    <string name="operation_invalid">无效操作...</string>
+    <string name="operation_invalid">您尚未设置时间或重复天数</string>
     <string name="save">保存</string>
     <string name="none_selected">未选择</string>
     <string name="save_waiting">正在保存，请稍后</string>
@@ -177,6 +177,7 @@
     <string name="send_request_user_reward">确认发送＂求打赏＂信息？</string>
     <string name="accept">接受</string>
     <string name="finish">已完成</string>
+    <string name="know">已完成</string>
     <string name="order_cancel">已取消</string>
     <string name="refuse">拒绝</string>
     <string name="common_greeting_format">确认发送＂%1$s＂信息？</string>

@@ -17,7 +17,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -26,8 +25,6 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.window.SysNoticeListActivity;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

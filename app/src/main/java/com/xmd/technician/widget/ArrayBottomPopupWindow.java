@@ -28,7 +28,7 @@ public class ArrayBottomPopupWindow<T> extends BasePopupWindow {
     public ArrayBottomPopupWindow(View parentView, Map<String, String> params, int windowWidth) {
         super(parentView, params);
         View popupView = LayoutInflater.from(mActivity).inflate(R.layout.list_pop_window, null);
-        initPopupWidnow(popupView, windowWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+        initPopupWindow(popupView, windowWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
         setAnimationStyle(R.style.anim_bottom_to_top_style);
 
         mPopupWindow.setBackgroundDrawable(ResourceUtils.getDrawable(R.drawable.common_bg));

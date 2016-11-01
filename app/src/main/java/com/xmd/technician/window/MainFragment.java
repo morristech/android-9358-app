@@ -149,13 +149,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mMainDynamicDescribe2;
     @Bind(R.id.main_dynamic_time2)
     TextView mMainDynamicTime2;
-    @Bind(R.id.main_dynamic_avatar)
+    @Bind(R.id.main_dynamic_avatar3)
     CircleImageView mMainDynamicAvatar3;
-    @Bind(R.id.main_dynamic_name)
+    @Bind(R.id.main_dynamic_name3)
     TextView mMainDynamicName3;
-    @Bind(R.id.main_dynamic_describe)
+    @Bind(R.id.main_dynamic_describe3)
     TextView mMainDynamicDescribe3;
-    @Bind(R.id.main_dynamic_time)
+    @Bind(R.id.main_dynamic_time3)
     TextView mMainDynamicTime3;
     @Bind(R.id.main_dynamic_none)
     TextView mMainDynamicNone;
@@ -196,11 +196,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Bind(R.id.main_page_head)
     RelativeLayout mMainPageHead;
     @Bind(R.id.main_dynamic1)
-    RelativeLayout mMainDynamic1;
+    LinearLayout mMainDynamic1;
     @Bind(R.id.main_dynamic2)
-    RelativeLayout mMainDynamic2;
+    LinearLayout mMainDynamic2;
     @Bind(R.id.main_dynamic3)
-    RelativeLayout mMainDynamic3;
+    LinearLayout mMainDynamic3;
 
     private ImageView imageLeft, imageRight;
     private Context mContext;
@@ -224,7 +224,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mOrderManageSubscription;
     private Subscription mGetDynamicListSubscription;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -247,6 +246,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
         visitParams.put(RequestConstant.KEY_LAST_TIME, "");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
+        HeartBeatTimer.getInstance().start(60, mTask);
     }
 
     @Override
@@ -270,9 +270,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         refreshOrderListData();
         getDynamicList();
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
-        HeartBeatTimer.getInstance().start(60, mTask);
+
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        HeartBeatTimer.getInstance().shutdown();
+    }
 
     private void initTitleView(View view) {
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_page);
@@ -312,6 +317,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void refreshOrderListData() {
         Map<String, String> param = new HashMap<>();
         param.put(RequestConstant.KEY_PAGE, "1");
+        param.put(RequestConstant.KEY_IS_INDEX_PAGE,"Y");
         param.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(5));
         param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT_AND_ACCEPT);
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, param);
@@ -629,6 +635,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 }
             });
 
+        }else{
+            mTechOrderList.clear();
+            setListViewHeightBasedOnChildren(mMainOrderList);
+            orderListAdapter = new MainPageTechOrderListAdapter(mContext, mTechOrderList);
+            mMainOrderList.setAdapter(orderListAdapter);
+            orderListAdapter.notifyDataSetChanged();
         }
     }
 
@@ -640,7 +652,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             if (mDynamicList.size() == 1) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
-                mMainDynamicName1.setText(mDynamicList.get(0).userName);
+                mMainDynamicName1.setText(Utils.StrSubstring(6,mDynamicList.get(0).userName,true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
                 mMainDynamic2.setVisibility(View.GONE);
@@ -648,29 +660,29 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             } else if (mDynamicList.size() == 2) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
-                mMainDynamicName1.setText(mDynamicList.get(0).userName);
+                mMainDynamicName1.setText(Utils.StrSubstring(6,mDynamicList.get(0).userName,true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
                 mMainDynamic2.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(1).imageUrl).into(mMainDynamicAvatar2);
-                mMainDynamicName2.setText(mDynamicList.get(1).userName);
+                mMainDynamicName2.setText(Utils.StrSubstring(6,mDynamicList.get(1).userName,true));
                 mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
                 mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
                 mMainDynamic3.setVisibility(View.GONE);
             } else if (mDynamicList.size() == 3) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
-                mMainDynamicName1.setText(mDynamicList.get(0).userName);
+                mMainDynamicName1.setText(Utils.StrSubstring(6,mDynamicList.get(0).userName,true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
                 mMainDynamic2.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(1).imageUrl).into(mMainDynamicAvatar2);
-                mMainDynamicName2.setText(mDynamicList.get(1).userName);
+                mMainDynamicName2.setText(Utils.StrSubstring(6,mDynamicList.get(1).userName,true));
                 mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
                 mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
                 mMainDynamic3.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(2).imageUrl).into(mMainDynamicAvatar3);
-                mMainDynamicName3.setText(mDynamicList.get(2).userName);
+                mMainDynamicName3.setText(Utils.StrSubstring(6,mDynamicList.get(2).userName,true));
                 mMainDynamicDescribe3.setText(getRecentStatusDes(mDynamicList.get(2).bizType));
                 mMainDynamicTime3.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(2).createTime)));
 

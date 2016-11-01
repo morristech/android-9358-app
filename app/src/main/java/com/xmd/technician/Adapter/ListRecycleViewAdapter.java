@@ -608,7 +608,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             Glide.with(mContext).load(dynamicDetail.imageUrl).error(R.drawable.icon22).into(viewHolder.dynamicItemAvatar);
             viewHolder.dynamicItemName.setText(dynamicDetail.userName);
-            viewHolder.dynamicTime.setText(DateUtils.getTimestampString(new Date(dynamicDetail.createTime)));
+            viewHolder.dynamicTime.setText(com.xmd.technician.common.DateUtils.getTimestampString(new Date(dynamicDetail.createTime)));
             String textDescription = dynamicDetail.description;
             String textRemark = dynamicDetail.remark;
             int commentScore = dynamicDetail.commentScore;
@@ -825,11 +825,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mTime;
         @Bind(R.id.unread)
         TextView mUnread;
-        //     @Bind(R.id.user_manager_type)
-//        TextView mUserManagerType;
-//        @Bind(R.id.user_tech_type)
-//        TextView mUserTechType;
-
         public ConversationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

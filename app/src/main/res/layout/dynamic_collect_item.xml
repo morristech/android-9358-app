@@ -110,7 +110,7 @@
 
         <RelativeLayout
             android:layout_width="@dimen/dynamic_item_rl_width"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="right">
 
             <TextView
@@ -123,17 +123,15 @@
 
             <TextView
                 android:id="@+id/btn_thanks"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/dynamic_item_rl_width"
                 android:layout_height="@dimen/margin_20"
-                android:layout_below="@id/dynamic_time"
-                android:layout_marginTop="@dimen/personal_item_margin_right"
                 android:background="@drawable/btn_chat_selector"
+                android:layout_alignParentBottom="true"
                 android:gravity="center"
                 android:text="@string/recent_status_btn_text"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontBody" />
         </RelativeLayout>
     </LinearLayout>
-
 
 </android.support.v7.widget.CardView>

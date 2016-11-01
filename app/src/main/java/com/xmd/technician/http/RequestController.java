@@ -1,10 +1,7 @@
 package com.xmd.technician.http;
 
-import android.content.Intent;
 import android.os.Message;
 import android.text.TextUtils;
-
-
 import com.hyphenate.chat.EMClient;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -59,7 +56,6 @@ import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
-import com.xmd.technician.http.gson.TechOrderListResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.http.gson.TokenExpiredResult;
@@ -113,9 +109,6 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_HIDE_ORDER:
                 hideOrder(msg.obj.toString());
-                break;
-            case MsgDef.MSG_DEF_GET_ORDER_LIST:
-                doGetOrderList((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_COMMENT_LIST:
                 getCommentList((Map<String, String>) msg.obj);
@@ -285,7 +278,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSF_DEF_SET_PAGE_SELECTED:
                 setPageSelected((int) msg.obj);
                 break;
-
+            case MsgDef.MSG_DEF_ORDER_INNER_READ:
+               setOrderInnerRead((Map<String, String>) msg.obj);
+                break;
 
         }
 
@@ -435,32 +430,6 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<CommentResult>() {
             @Override
             protected void postResult(CommentResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    /**
-     * Retrieve the order list from the backend services
-     *
-     * @param params
-     */
-    private void doGetOrderList(Map<String, String> params) {
-        Call<OrderListResult> call = getSpaService().getTechOrderList(SharedPreferenceHelper.getUserToken(),
-                RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_FILTER_ORDER),
-                params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
-
-        call.enqueue(new TokenCheckedCallback<OrderListResult>() {
-            @Override
-            protected void postResult(OrderListResult result) {
-                RxBus.getInstance().post(result);
-            }
-
-            @Override
-            protected void postError(String errorMsg) {
-                OrderListResult result = new OrderListResult();
-                result.statusCode = RequestConstant.RESP_ERROR_CODE_FOR_LOCAL;
-                result.msg = errorMsg;
                 RxBus.getInstance().post(result);
             }
         });
@@ -1227,7 +1196,7 @@ public class RequestController extends AbstractController {
      */
     private void getMainPageOrderList(Map<String, String> params) {
         Call<OrderListResult> call = getSpaService().getTechOrderList(SharedPreferenceHelper.getUserToken(),
-                RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ORDER_STATUS),
+                RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ORDER_STATUS),params.get(RequestConstant.KEY_IS_INDEX_PAGE),
                 params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<OrderListResult>() {
             @Override
@@ -1291,6 +1260,16 @@ public class RequestController extends AbstractController {
 
     private void setPageSelected(int obj) {
         RxBus.getInstance().post(new CurrentSelectPage(obj));
+    }
+
+    private void setOrderInnerRead(Map<String,String> params){
+        Call<BaseResult> call = getSpaService().setOrderInnerRead(SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_ORDER_ID));
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+                RxBus.getInstance().post(new OrderManageResult(params.get(RequestConstant.KEY_ORDER_ID)));
+            }
+        });
     }
 
     //获取升级配置

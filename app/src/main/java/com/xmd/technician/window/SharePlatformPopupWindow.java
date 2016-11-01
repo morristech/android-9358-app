@@ -33,7 +33,7 @@ public class SharePlatformPopupWindow extends BasePopupWindow {
         int screenWidth = sizes[0];
 
         View popupView = LayoutInflater.from(mActivity).inflate(R.layout.pw_share, null);
-        initPopupWidnow(popupView, screenWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+        initPopupWindow(popupView, screenWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     @OnClick({R.id.share_to_timeline, R.id.share_to_friend, R.id.share_to_others})

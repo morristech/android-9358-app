@@ -30,7 +30,7 @@ public class ListPopupWindow<T> extends BasePopupWindow {
     public ListPopupWindow(View parentView, List<T> data, Callback<T> callback) {
         super(parentView, null);
         View popupView = LayoutInflater.from(TechApplication.getAppContext()).inflate(R.layout.pw_list, null);
-        initPopupWidnow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        initPopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setBackgroundDrawable(ResourceUtils.getDrawable(R.drawable.pw_bg));
         setAnimationStyle(R.style.anim_top_to_bottom_style);
         createContent(data, callback);

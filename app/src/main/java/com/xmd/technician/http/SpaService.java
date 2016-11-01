@@ -526,6 +526,7 @@ public interface SpaService {
     Call<OrderListResult> getTechOrderList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                            @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
                                            @Field(RequestConstant.KEY_ORDER_STATUS) String orderStatus,
+                                           @Field(RequestConstant.KEY_IS_INDEX_PAGE) String isIndexPage,
                                            @Field(RequestConstant.KEY_PAGE) String page,
                                            @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
@@ -539,4 +540,9 @@ public interface SpaService {
                                            @Field(RequestConstant.KEY_TECH_DYNAMIC_TYPE) String bizType,
                                            @Field(RequestConstant.KEY_PAGE) String page,
                                            @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_ORDER_INNER_READ)
+    Call<BaseResult> setOrderInnerRead(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                             @Field(RequestConstant.KEY_ORDER_ID) String orderId);
 }

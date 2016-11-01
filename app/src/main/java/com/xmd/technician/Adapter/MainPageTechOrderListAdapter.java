@@ -71,33 +71,47 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
         viewHolder.orderName.setText(order.userName);
         viewHolder.orderPhoneDetail.setText(order.phoneNum);
         viewHolder.orderTimeDetail.setText(order.formatAppointTime);
-        viewHolder.orderMoneyDetail.setText(order.rewardAmount + "");
+        String orderMoney = order.rewardAmount+"元";
+        viewHolder.orderMoneyDetail.setText(Utils.changeColor(orderMoney,ResourceUtils.getColor(R.color.colorMainBtn),0,orderMoney.length()-1));
         viewHolder.mainTechOrderSurplusTimeDetail.setText(order.remainTime + "");
-        if (order.status.equals(RequestConstant.KEY_ORDER_STATUS_SUBMIT)) {
-            viewHolder.mainTechOrderBtnAccept.setText(ResourceUtils.getString(R.string.accept));
-            viewHolder.mainTechOrderBtnReject.setVisibility(View.GONE);
-            viewHolder.mainHandle.setVisibility(View.VISIBLE);
-            viewHolder.mainTechOrderBtnAccept.setOnClickListener(v1 -> {
-                doManageOrder(RequestConstant.KEY_ORDER_STATUS_ACCEPT, order.orderId, "");
-            });
-        } else if (order.status.equals(RequestConstant.KEY_ORDER_STATUS_ACCEPT)) {
-            viewHolder.mainTechOrderBtnAccept.setText(ResourceUtils.getString(R.string.finish));
-            viewHolder.mainTechOrderBtnReject.setText(ResourceUtils.getString(R.string.order_cancel));
-            viewHolder.mainTechOrderBtnReject.setVisibility(View.VISIBLE);
+        if(Utils.isEmpty(order.innerProvider)){
+            if (order.status.equals(RequestConstant.KEY_ORDER_STATUS_SUBMIT)) {
+                viewHolder.mainTechOrderBtnAccept.setText(ResourceUtils.getString(R.string.accept));
+                viewHolder.mainTechOrderBtnReject.setVisibility(View.GONE);
+                viewHolder.mainHandle.setVisibility(View.VISIBLE);
+                viewHolder.mainTechOrderBtnAccept.setOnClickListener(v1 -> {
+                    doManageOrder(RequestConstant.KEY_ORDER_STATUS_ACCEPT, order.orderId, "");
+                });
+            } else if (order.status.equals(RequestConstant.KEY_ORDER_STATUS_ACCEPT)) {
+                viewHolder.mainTechOrderBtnAccept.setText(ResourceUtils.getString(R.string.finish));
+                viewHolder.mainTechOrderBtnReject.setText(ResourceUtils.getString(R.string.order_cancel));
+                viewHolder.mainTechOrderBtnReject.setVisibility(View.VISIBLE);
+                viewHolder.mainHandle.setVisibility(View.GONE);
+                viewHolder.mainTechOrderBtnAccept.setOnClickListener(v1 -> {
+                    doManageOrder(RequestConstant.KEY_ORDER_STATUS_COMPLETE, order.orderId, "");
+                });
+                viewHolder.mainTechOrderBtnReject.setOnClickListener(v1 -> {
+                    doManageOrder(RequestConstant.KEY_ORDER_STATUS_FAILURE, order.orderId, "");
+                });
+            }
+        }else{
             viewHolder.mainHandle.setVisibility(View.GONE);
+            viewHolder.mainTechOrderBtnAccept.setText(ResourceUtils.getString(R.string.know));
             viewHolder.mainTechOrderBtnAccept.setOnClickListener(v1 -> {
-                doManageOrder(RequestConstant.KEY_ORDER_STATUS_COMPLETE, order.orderId, "");
+                doManageOrderDisappear(order.orderId);
             });
         }
-
-        viewHolder.mainTechOrderBtnReject.setOnClickListener(v1 -> {
-            doManageOrder(RequestConstant.KEY_ORDER_STATUS_FAILURE, order.orderId, "");
-        });
         viewHolder.mainOrderAvatar.setOnClickListener(v -> {
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, Utils.isEmpty(order.customerName) ? order.customerName : order.userName,
                     order.headImgUrl, ""));
         });
         return convertView;
+    }
+
+    private void doManageOrderDisappear(String orderId) {
+        Map<String,String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_ORDER_ID,orderId);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ORDER_INNER_READ,params);
     }
 
     private void doManageOrder(String type, String orderId, String reason) {

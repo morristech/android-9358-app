@@ -84,6 +84,7 @@ public class RequestConstant {
     public static final String URL_MANAGE_ORDER = BASE_URL + "/v2/tech/profile/order/manage";
     public static final String URL_GET_TECH_RANK_INDEX = BASE_URL + "/v2/tech/tech_rank_index";
     public static final String URL_GET_RECENT_DYNAMICS_LIST = BASE_URL + "/v2/tech/recent/dynamics/list";
+    public static final String URL_ORDER_INNER_READ = BASE_URL + "/v2/tech/order/inner/read";
 
 
     //    public static final String URL_APP_UPDATE_CONFIG = "mockjs/17/app-upgrade-system/appUpgrade";
@@ -235,6 +236,7 @@ public class RequestConstant {
     public static final String KEY_TECH_STATUS_BUSY = "busy";
     public static final String KEY_TECH_STATUS_REST = "rest";
     public static final String KEY_TECH_DYNAMIC_TYPE = "bizType";
+    public static final String KEY_IS_INDEX_PAGE = "isIndexPage";
 
 
     /*********************************************************************************************/

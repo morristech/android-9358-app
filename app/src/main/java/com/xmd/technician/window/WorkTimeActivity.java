@@ -2,10 +2,10 @@ package com.xmd.technician.window;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.http.gson.UpdateWorkTimeResult;
@@ -104,10 +104,6 @@ public class WorkTimeActivity extends BaseActivity {
 
     @OnClick(R.id.work_day_layout)
     public void daySetting(){
-        if(TextUtils.isEmpty(mDayRange)){
-            makeShortToast(getResources().getString(R.string.operation_invalid));
-            return;
-        }
 
         Dialog dialog = new MultiCheckDialog(WorkTimeActivity.this, R.style.default_dialog_style, mDayRange) {
             @Override
@@ -135,7 +131,7 @@ public class WorkTimeActivity extends BaseActivity {
 
     @OnClick(R.id.toolbar_right)
     public void updateWorkTime(){
-        if(mTimeInfo == null){
+        if(mWorkDay.getText().equals(ResourceUtils.getString(R.string.none_selected))){
             makeShortToast(getResources().getString(R.string.operation_invalid));
             return;
         }

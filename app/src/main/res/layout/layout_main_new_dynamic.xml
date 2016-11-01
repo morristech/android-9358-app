@@ -20,11 +20,11 @@
             android:text="@string/main_tech_order_all" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/main_dynamic1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingBottom="@dimen/margin_2"
         android:paddingLeft="@dimen/inter_space"
         android:paddingRight="@dimen/inter_space"
@@ -43,18 +43,18 @@
             android:id="@+id/main_dynamic_name1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/main_dynamic_avatar1"
+            android:layout_gravity="center_vertical"
             android:textColor="@color/colorHead"
             android:textSize="@dimen/fontBody" />
 
         <TextView
             android:id="@+id/main_dynamic_describe1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_10"
-            android:layout_toRightOf="@id/main_dynamic_name1"
+            android:layout_weight="1"
+            android:enabled="true"
             android:singleLine="true"
             android:textColor="@color/order_item_surplus_time_color"
             android:textSize="@dimen/fontBiggerThanNormal" />
@@ -63,17 +63,15 @@
             android:id="@+id/main_dynamic_time1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:textColor="@color/contact_info_unit"
             android:textSize="@dimen/fontBiggerThanRemark" />
-    </RelativeLayout>
-
-    <RelativeLayout
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/main_dynamic2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingBottom="@dimen/margin_2"
         android:paddingLeft="@dimen/inter_space"
         android:paddingRight="@dimen/inter_space"
@@ -92,18 +90,19 @@
             android:id="@+id/main_dynamic_name2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/main_dynamic_avatar2"
+            android:layout_gravity="center_vertical"
             android:textColor="@color/colorHead"
             android:textSize="@dimen/fontBody" />
 
         <TextView
             android:id="@+id/main_dynamic_describe2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_10"
-            android:layout_toRightOf="@id/main_dynamic_name2"
+            android:layout_weight="1"
+            android:enabled="true"
+            android:singleLine="true"
             android:textColor="@color/order_item_surplus_time_color"
             android:textSize="@dimen/fontBiggerThanNormal" />
 
@@ -111,17 +110,15 @@
             android:id="@+id/main_dynamic_time2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:textColor="@color/contact_info_unit"
-            android:textSize="@dimen/fontBiggerThanRemark"/>
-    </RelativeLayout>
-
-    <RelativeLayout
+            android:textSize="@dimen/fontBiggerThanRemark" />
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/main_dynamic3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingBottom="@dimen/margin_2"
         android:paddingLeft="@dimen/inter_space"
         android:paddingRight="@dimen/inter_space"
@@ -129,7 +126,7 @@
         android:visibility="gone">
 
         <com.xmd.technician.widget.CircleImageView
-            android:id="@+id/main_dynamic_avatar"
+            android:id="@+id/main_dynamic_avatar3"
             android:layout_width="@dimen/main_dynamic_width"
             android:layout_height="@dimen/main_dynamic_width"
             android:layout_centerVertical="true"
@@ -137,35 +134,33 @@
             android:background="@drawable/icon22" />
 
         <TextView
-            android:id="@+id/main_dynamic_name"
+            android:id="@+id/main_dynamic_name3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/main_dynamic_avatar"
+            android:layout_gravity="center_vertical"
             android:textColor="@color/colorHead"
             android:textSize="@dimen/fontBody" />
 
         <TextView
-            android:id="@+id/main_dynamic_describe"
-            android:layout_width="wrap_content"
+            android:id="@+id/main_dynamic_describe3"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_10"
-            android:layout_toRightOf="@id/main_dynamic_name"
+            android:layout_weight="1"
+            android:enabled="true"
+            android:singleLine="true"
             android:textColor="@color/order_item_surplus_time_color"
-            android:textSize="@dimen/fontBiggerThanNormal"
-
-            />
+            android:textSize="@dimen/fontBiggerThanNormal" />
 
         <TextView
-            android:id="@+id/main_dynamic_time"
+            android:id="@+id/main_dynamic_time3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:textColor="@color/contact_info_unit"
             android:textSize="@dimen/fontBiggerThanRemark" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

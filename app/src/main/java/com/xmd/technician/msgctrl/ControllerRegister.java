@@ -31,7 +31,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_TECH_EDIT_INFO,
                 MsgDef.MSG_DEF_GET_ACCOUNT_MONEY,
                 MsgDef.MSG_DEF_FILTER_ORDER_LIST,
-                MsgDef.MSG_DEF_GET_ORDER_LIST,
                 MsgDef.MSG_DEF_MANAGE_ORDER,
                 MsgDef.MSG_DEF_HIDE_ORDER,
                 MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT,
@@ -93,7 +92,8 @@ public class ControllerRegister {
                 MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA,
                 MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA,
                 MsgDef.MSF_DEF_GET_TECH_DYNAMIC_LIST,
-                MsgDef.MSF_DEF_SET_PAGE_SELECTED
+                MsgDef.MSF_DEF_SET_PAGE_SELECTED,
+                MsgDef.MSG_DEF_ORDER_INNER_READ
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

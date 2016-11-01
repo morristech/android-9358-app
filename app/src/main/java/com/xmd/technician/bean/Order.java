@@ -20,6 +20,11 @@ public class Order implements Serializable {
     public String userName;
 
     /**
+     * 不为空则是内网订单
+     */
+    public String innerProvider;
+
+    /**
      * 环信聊天id
      */
     public String emchatId;

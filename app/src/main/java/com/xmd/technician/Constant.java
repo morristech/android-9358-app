@@ -92,7 +92,7 @@ public class Constant {
     /**
      * 订单界面的待接，已接受，已完成三种状态
      */
-    public static final String FILTER_ORDER_COMPLETE = "complete,failure,reject,overtime";
+    public static final String FILTER_ORDER_COMPLETE = "complete,failure,reject,overtime,refund,refunded";
     /**
      *
      */

@@ -5,12 +5,6 @@ package com.xmd.technician.http.gson;
  */
 public class TechRankDataResult extends BaseResult {
 
-    /**
-     * commentRanking : {"id":"748081899301244928","name":"7777","avatar":"153296","serialNo":"","counts":"1","avatarUrl":null}
-     * userRanking : {"id":"748081899301244928","name":"7777","avatar":"153296","serialNo":"","counts":"1","avatarUrl":null}
-     * paidRanking : {"id":"748081899301244928","name":"7777","avatar":"153296","serialNo":"","counts":"1","avatarUrl":null}
-     */
-
     public RespDataBean respData;
 
     public static class RespDataBean {

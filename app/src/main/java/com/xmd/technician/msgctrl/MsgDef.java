@@ -33,8 +33,6 @@ public class MsgDef {
 
     public static final int MSG_DEF_FILTER_ORDER_LIST = 0x000C;
 
-    public static final int MSG_DEF_GET_ORDER_LIST = 0x000D;
-
     public static final int MSG_DEF_MANAGE_ORDER = 0x000E;
 
     public static final int MSG_DEF_SUBMIT_FEEDBACK = 0x000F;
@@ -119,6 +117,7 @@ public class MsgDef {
     public static final int MSF_DEF_GET_TECH_RANK_INDEX_DATA = 0x0068;
     public static final int MSF_DEF_GET_TECH_DYNAMIC_LIST = 0x0069;
     public static final int MSF_DEF_SET_PAGE_SELECTED = 0x0070;
+    public static final int MSG_DEF_ORDER_INNER_READ = 0x0071;
 
     /**
      * ChatController, start to chat with someone

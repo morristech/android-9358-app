@@ -97,7 +97,7 @@
             android:layerType="software"
             android:background="@drawable/coupon_line" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -106,10 +106,12 @@
 
             <TextView
                 android:id="@+id/tv_coupon_period"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_5"
                 android:gravity="center"
+                android:singleLine="true"
+                android:enabled="true"
                 android:textSize="@dimen/fontNormal" />
 
             <TextView
@@ -125,7 +127,7 @@
                 android:textSize="@dimen/fontNormal"
                 android:layout_marginTop="@dimen/margin_2"
                 />
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"
