@@ -1,5 +1,6 @@
 package com.xmd.technician.bean;
 
+
 /**
  * Created by Administrator on 2016/10/25.
  */
@@ -20,6 +21,7 @@ public class TechInfo {
      * inviteCode : jhgbwl
      * userName : 开发用户
      * clubName : 刘哥会所2
+     * innerProvider :所属会所对接内网提供商
      */
 
     public int validSeconds;
@@ -36,5 +38,6 @@ public class TechInfo {
     public String inviteCode;
     public String userName;
     public String clubName;
+    public String innerProvider;
 
 }

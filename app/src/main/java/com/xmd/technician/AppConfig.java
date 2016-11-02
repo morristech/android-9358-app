@@ -4,9 +4,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.text.style.LineHeightSpan;
-import android.util.Log;
-
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.bean.Entry;
 import com.xmd.technician.common.FileUtils;
@@ -24,8 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.ButterKnife;
 
 /**
  * Created by sdcm on 16-3-11.

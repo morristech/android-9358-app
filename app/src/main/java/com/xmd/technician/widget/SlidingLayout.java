@@ -142,15 +142,15 @@ public class SlidingLayout extends RelativeLayout implements OnTouchListener {
     /**
      * 将屏幕滚动到左侧布局界面，滚动速度设定为30.
      */
-    public void scrollToLeftLayout() {
-        new ScrollTask().execute(-30);
+    public void scrollToLeftLayout(int speedLeft) {
+        new ScrollTask().execute(speedLeft);
     }
 
     /**
      * 将屏幕滚动到右侧布局界面，滚动速度设定为-30.
      */
-    public void scrollToRightLayout() {
-        new ScrollTask().execute(30);
+    public void scrollToRightLayout(int speedRight) {
+        new ScrollTask().execute(speedRight);
     }
 
     /**
@@ -224,19 +224,19 @@ public class SlidingLayout extends RelativeLayout implements OnTouchListener {
                     // 手指抬起时，进行判断当前手势的意图，从而决定是滚动到左侧布局，还是滚动到右侧布局
                     if (wantToShowLeftLayout()) {
                         if (shouldScrollToLeftLayout()) {
-                            scrollToLeftLayout();
+                            scrollToLeftLayout(30);
                         } else {
-                            scrollToRightLayout();
+                            scrollToRightLayout(-30);
                         }
                     } else if (wantToShowRightLayout()) {
                         if (shouldScrollToRightLayout()) {
-                            scrollToRightLayout();
+                            scrollToRightLayout(30);
                         } else {
-                            scrollToLeftLayout();
+                            scrollToLeftLayout(-30);
                         }
                     }
                 } else if (upDistanceX < touchSlop && isLeftLayoutVisible) {
-                    scrollToRightLayout();
+                    scrollToRightLayout(-30);
                 }
                 recycleVelocityTracker();
                 break;

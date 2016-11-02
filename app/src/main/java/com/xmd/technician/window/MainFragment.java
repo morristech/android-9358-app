@@ -16,7 +16,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.Adapter.MainPageTechOrderListAdapter;
@@ -69,32 +68,15 @@ import rx.Subscription;
  */
 public class MainFragment extends BaseFragment implements View.OnClickListener, OnScrollChangedCallback {
 
-    @Bind(R.id.toolbar_back)
-    ImageView toolbarBack;
-    @Bind(R.id.toolbar_right_img)
-    ImageView toolbarRightImg;
+
     @Bind(R.id.rl_toolbar)
     RelativeLayout mRlToolBar;
-    @Bind(R.id.menu_work_time)
-    RelativeLayout mMenuWorkTime;
-    @Bind(R.id.menu_work_project)
-    RelativeLayout mMenuWorkProject;
     @Bind(R.id.app_version)
     TextView mAppVersion;
-    @Bind(R.id.menu_about_us)
-    RelativeLayout mMenuAboutUs;
-    @Bind(R.id.menu_suggest)
-    RelativeLayout mMenuSuggest;
-    @Bind(R.id.settings_activity_modify_pw)
-    RelativeLayout mMenuSettingsActivityModifyPw;
     @Bind(R.id.settings_activity_join_club)
     RelativeLayout mMenuSettingsActivityJoinClub;
     @Bind(R.id.menu_club_name)
     TextView mMenuClubName;
-    @Bind(R.id.settings_activity_quit_club)
-    RelativeLayout mSettingsActivityQuitClub;
-    @Bind(R.id.settings_activity_logout)
-    RelativeLayout mSettingsActivityLogout;
     @Bind(R.id.main_head_avatar)
     CircleImageView mMainHeadAvatar;
     @Bind(R.id.main_head_tech_name)
@@ -111,26 +93,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     ImageView mBtnMainCreditCenter;
     @Bind(R.id.main_info_too_keen_number)
     TextView mMainInfoTooKeenNumber;
-    @Bind(R.id.main_too_keen)
-    RelativeLayout mMainTooKeen;
     @Bind(R.id.main_send_coupon_number)
     TextView mMainSendCouponNumber;
-    @Bind(R.id.main_send_coupon)
-    RelativeLayout mMainSendCoupon;
     @Bind(R.id.main_get_comment_number)
     TextView mMainGetCommentNumber;
-    @Bind(R.id.main_get_comment)
-    RelativeLayout mMainGetComment;
     @Bind(R.id.main_total_income_number)
     TextView mMainTotalIncomeNumber;
-    @Bind(R.id.main_total_income)
-    RelativeLayout mMainTotalIncome;
-    @Bind(R.id.main_info_item)
-    LinearLayout mMainInfoItem;
-    @Bind(R.id.main_tech_dynamic_all)
-    RelativeLayout mMainTechDynamicAll;
-    @Bind(R.id.main_tech_who_care_all)
-    RelativeLayout mMainTechWhoCareAll;
     @Bind(R.id.main_order_list)
     ListView mMainOrderList;
     @Bind(R.id.main_dynamic_avatar1)
@@ -157,10 +125,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mMainDynamicDescribe3;
     @Bind(R.id.main_dynamic_time3)
     TextView mMainDynamicTime3;
-    @Bind(R.id.main_dynamic_none)
-    TextView mMainDynamicNone;
-    @Bind(R.id.main_tech_order_all)
-    RelativeLayout mMainTechOrderAll;
     @Bind(R.id.main_who_care_list)
     HorizontalListView mMainWhoCareList;
     @Bind(R.id.main_who_care_total)
@@ -185,16 +149,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mTvStarService;
     @Bind(R.id.tv_title_service)
     TextView mTvTitleService;
-    @Bind(R.id.layout_technician_ranking)
-    LinearLayout mLayoutTechnicianRanking;
     @Bind(R.id.main_scroll_view)
     ScrollChangeScrollView mMainScrollView;
-    @Bind(R.id.main_page)
-    LinearLayout mMainPage;
     @Bind(R.id.main_sliding_layout)
     SlidingLayout mMainSlidingLayout;
-    @Bind(R.id.main_page_head)
-    RelativeLayout mMainPageHead;
     @Bind(R.id.main_dynamic1)
     LinearLayout mMainDynamic1;
     @Bind(R.id.main_dynamic2)
@@ -214,6 +172,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private List<DynamicDetail> mDynamicList = new ArrayList<>();
     private MainPageTechOrderListAdapter orderListAdapter;
     private MainPageTechVisitListAdapter visitListAdapter;
+    private String innerProvider;
+    private String techStatus;
+    private int screenWidth;
+    private int screenSpeed;
 
     private Subscription mGetTechCurrentInfoSubscription;
     private Subscription mUserSwitchesSubscription;
@@ -247,6 +209,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         visitParams.put(RequestConstant.KEY_LAST_TIME, "");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
         HeartBeatTimer.getInstance().start(60, mTask);
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_INFO);
+        mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
+                visitResult -> initRecentlyViewView(visitResult));
     }
 
     @Override
@@ -257,6 +222,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void initView(View view) {
+         screenWidth =  Utils.getScreenWidthHeight(getActivity())[0];
+        screenSpeed = screenWidth/16;
         initTitleView(view);
         getData();
         handlerDataResult();
@@ -264,7 +231,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void getData() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_INFO);
+
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA);
         refreshOrderListData();
@@ -277,6 +244,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onPause() {
         super.onPause();
         HeartBeatTimer.getInstance().shutdown();
+        RxBus.getInstance().unsubscribe(mGetRecentlyVisitorSubscription);
     }
 
     private void initTitleView(View view) {
@@ -306,8 +274,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 orderListResult -> initOrderView(orderListResult));
         mGetTechRankIndexDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
                 techRankResult -> initTechRankingView(techRankResult));
-        mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
-                visitResult -> initRecentlyViewView(visitResult));
+
         mOrderManageSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
                 orderManageResult -> refreshOrderListData());
         mGetDynamicListSubscription = RxBus.getInstance().toObservable(DynamicListResult.class).subscribe(
@@ -317,7 +284,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void refreshOrderListData() {
         Map<String, String> param = new HashMap<>();
         param.put(RequestConstant.KEY_PAGE, "1");
-        param.put(RequestConstant.KEY_IS_INDEX_PAGE,"Y");
+        param.put(RequestConstant.KEY_IS_INDEX_PAGE, "Y");
         param.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(5));
         param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT_AND_ACCEPT);
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, param);
@@ -345,6 +312,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             if (Utils.isNotEmpty(result.respData.serialNo)) {
                 SharedPreferenceHelper.setSerialNo(result.respData.serialNo);
             }
+            if (Utils.isNotEmpty(result.respData.innerProvider)) {
+                innerProvider = result.respData.innerProvider;
+            }
+            techStatus = result.respData.status;
             initHeadView(mTechInfo);
         }
     }
@@ -370,13 +341,25 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onMainHeadClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_main_tech_free:
-                resetTechStatusView(R.id.btn_main_tech_free);
+                if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
+                } else {
+                    resetTechStatusView(R.id.btn_main_tech_free);
+                }
                 break;
             case R.id.btn_main_tech_busy:
-                resetTechStatusView(R.id.btn_main_tech_busy);
+                if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
+                } else {
+                    resetTechStatusView(R.id.btn_main_tech_busy);
+                }
                 break;
             case R.id.btn_main_tech_rest:
-                resetTechStatusView(R.id.btn_main_tech_rest);
+                if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
+                } else {
+                    resetTechStatusView(R.id.btn_main_tech_rest);
+                }
                 break;
             case R.id.btn_main_credit_center:
                 if (isCreditCanExchange) {
@@ -409,6 +392,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mBtnMainTechBusy.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_busy_default));
                 mBtnMainTechRest.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_rest_selected));
                 updateWorkTimeResult(RequestConstant.KEY_TECH_STATUS_REST);
+                break;
+            case -1:
+                mBtnMainTechFree.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_free_default));
+                mBtnMainTechBusy.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_busy_default));
+                mBtnMainTechRest.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_rest_default));
                 break;
         }
     }
@@ -529,9 +517,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.toolbar_back:
                 if (mMainSlidingLayout.isLeftLayoutVisible()) {
-                    mMainSlidingLayout.scrollToRightLayout();
+
+                    mMainSlidingLayout.scrollToRightLayout(screenSpeed);
                 } else {
-                    mMainSlidingLayout.scrollToLeftLayout();
+
+                    mMainSlidingLayout.scrollToLeftLayout(-screenSpeed);
                 }
 
                 break;
@@ -583,8 +573,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             resetTechStatusView(R.id.btn_main_tech_free);
         } else if (info.status.equals(RequestConstant.KEY_TECH_STATUS_BUSY)) {
             resetTechStatusView(R.id.btn_main_tech_busy);
-        } else {
+        } else if (info.status.equals(RequestConstant.KEY_TECH_STATUS_REST)) {
             resetTechStatusView(R.id.btn_main_tech_rest);
+        } else {
+            resetTechStatusView(-1);
         }
         if (Utils.isNotEmpty(info.clubName)) {
             mMenuClubName.setText(info.clubName);
@@ -603,7 +595,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMainGetCommentNumber.setText(result.respData.goodCommentCount);
         String textVisit = "今天共有" + result.respData.todayVisitCount + "人看了我～";
         mMainWhoCareTotal.setText(Utils.changeColor(textVisit, ResourceUtils.getColor(R.color.colorMainBtn), 4, textVisit.length() - 5));
+
     }
+
 
     private void initOrderView(OrderListResult orderList) {
         if (orderList.respData != null && orderList.respData.size() > 0) {
@@ -635,7 +629,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 }
             });
 
-        }else{
+        } else {
             mTechOrderList.clear();
             setListViewHeightBasedOnChildren(mMainOrderList);
             orderListAdapter = new MainPageTechOrderListAdapter(mContext, mTechOrderList);
@@ -652,7 +646,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             if (mDynamicList.size() == 1) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
-                mMainDynamicName1.setText(Utils.StrSubstring(6,mDynamicList.get(0).userName,true));
+                mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
                 mMainDynamic2.setVisibility(View.GONE);
@@ -660,29 +654,29 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             } else if (mDynamicList.size() == 2) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
-                mMainDynamicName1.setText(Utils.StrSubstring(6,mDynamicList.get(0).userName,true));
+                mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
                 mMainDynamic2.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(1).imageUrl).into(mMainDynamicAvatar2);
-                mMainDynamicName2.setText(Utils.StrSubstring(6,mDynamicList.get(1).userName,true));
+                mMainDynamicName2.setText(Utils.StrSubstring(6, mDynamicList.get(1).userName, true));
                 mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
                 mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
                 mMainDynamic3.setVisibility(View.GONE);
             } else if (mDynamicList.size() == 3) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
-                mMainDynamicName1.setText(Utils.StrSubstring(6,mDynamicList.get(0).userName,true));
+                mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
                 mMainDynamic2.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(1).imageUrl).into(mMainDynamicAvatar2);
-                mMainDynamicName2.setText(Utils.StrSubstring(6,mDynamicList.get(1).userName,true));
+                mMainDynamicName2.setText(Utils.StrSubstring(6, mDynamicList.get(1).userName, true));
                 mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
                 mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
                 mMainDynamic3.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mDynamicList.get(2).imageUrl).into(mMainDynamicAvatar3);
-                mMainDynamicName3.setText(Utils.StrSubstring(6,mDynamicList.get(2).userName,true));
+                mMainDynamicName3.setText(Utils.StrSubstring(6, mDynamicList.get(2).userName, true));
                 mMainDynamicDescribe3.setText(getRecentStatusDes(mDynamicList.get(2).bizType));
                 mMainDynamicTime3.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(2).createTime)));
 

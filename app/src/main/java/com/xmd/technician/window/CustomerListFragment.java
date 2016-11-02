@@ -1,9 +1,6 @@
 package com.xmd.technician.window;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -81,8 +78,6 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Subscription mGetCustomerListSubscription;
     private SortCustomerAdapter adapter;
-    private LayoutInflater layoutInflater;
-    private View  viewM;
     private View view;
     private PopupWindow window = null;
 
@@ -91,7 +86,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         return new CustomerListFragment();
     }
 
-    private int lastFisrstVisibleItem = -1;
+    private int lastFirstVisibleItem = -1;
     private CharacterParser characterParser;
     private List<CustomerInfo> mCustomerList = new ArrayList<CustomerInfo>();
     private PinyinCompartorUtil pinyinComparator;
@@ -203,14 +198,14 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                     int section = getSectionForPosition(firstVisibleItem);
                     int nextSection = getSectionForPosition(firstVisibleItem + 1);
-                    int nextSecPositon = getPositonForSection(+nextSection);
-                    if (firstVisibleItem != lastFisrstVisibleItem) {
+                    int nextSecPosition = getPositionForSection(+nextSection);
+                    if (firstVisibleItem != lastFirstVisibleItem) {
                         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) titleLayout.getLayoutParams();
                         params.topMargin = 0;
                         titleLayout.setLayoutParams(params);
-                        title.setText(mCustomerList.get(getPositonForSection(section)).sortLetters);
+                        title.setText(mCustomerList.get(getPositionForSection(section)).sortLetters);
                     }
-                    if (nextSecPositon == firstVisibleItem + 1) {
+                    if (nextSecPosition == firstVisibleItem + 1) {
                         View childView = view.getChildAt(0);
                         if (childView != null) {
                             int titleHeight = titleLayout.getHeight();
@@ -228,7 +223,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
                             }
                         }
                     }
-                    lastFisrstVisibleItem = firstVisibleItem;
+                    lastFirstVisibleItem = firstVisibleItem;
                 }
             });
             editText.setFilters(new InputFilter[]{filter});
@@ -320,7 +315,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
     }
 
-    public int getPositonForSection(int section) {
+    public int getPositionForSection(int section) {
         for (int i = 0; i < mCustomerList.size(); i++) {
             String sortStr = mCustomerList.get(i).sortLetters;
             char firstChar = sortStr.toUpperCase().charAt(0);

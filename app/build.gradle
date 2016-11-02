@@ -11,8 +11,8 @@ def releaseTime() {
 }
 
 bugtags {
-    appKey  "32ae23df06dfde970b3b8affdd3abd30"  //这里是你的 appKey
-    appSecret  "a6ddbd7c863004c90552a85c24776190"    //这里是你的 appSecret，管理员在设置页可以查看
+    appKey "32ae23df06dfde970b3b8affdd3abd30"  //这里是你的 appKey
+    appSecret "a6ddbd7c863004c90552a85c24776190"    //这里是你的 appSecret，管理员在设置页可以查看
 }
 
 android {
@@ -34,10 +34,10 @@ android {
         versionName "1.4.3"
 
         manifestPlaceholders = [
-                PACKAGE_NAME        : "com.xmd.technician",
+                PACKAGE_NAME       : "com.xmd.technician",
                 //UMENG_APPKEY for release
-                UMENG_APPKEY_VALUE  : "568cf00e67e58eeba4000e38",
-                UMENG_CHANNEL_VALUE : "xiaomodo-tech",
+                UMENG_APPKEY_VALUE : "568cf00e67e58eeba4000e38",
+                UMENG_CHANNEL_VALUE: "xiaomodo-tech",
         ]
     }
 
@@ -48,9 +48,9 @@ android {
     signingConfigs {
         release {
             storeFile file("tools/xmd_app_key.keystore")
-            storePassword  sign_password
+            storePassword sign_password
             keyAlias key_alias
-            keyPassword  sign_password
+            keyPassword sign_password
         }
     }
 

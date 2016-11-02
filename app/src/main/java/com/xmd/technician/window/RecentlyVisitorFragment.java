@@ -110,7 +110,10 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
             if(isRefresh){
                 onGetListSucceeded(-101, result.respData);
             }else{
-                onGetListSucceeded(pageCount++, result.respData);
+                if(result.respData.size()==20){
+                    pageCount++;
+                }
+                onGetListSucceeded(pageCount, result.respData);
             }
 
         }
@@ -132,7 +135,6 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         } else {
             Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
         }
-
 
     }
 
@@ -157,6 +159,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         if (!TextUtils.isEmpty(lastTime)) {
             lastTime = "";
         }
+        pageCount = 0;
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
         params.put(RequestConstant.KEY_LAST_TIME, lastTime);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, params);
