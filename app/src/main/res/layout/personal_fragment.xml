@@ -54,7 +54,7 @@
                     android:text="@string/personal_fragment_button_invite"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/fontNormal"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/club_name"

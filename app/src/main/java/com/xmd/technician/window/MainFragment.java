@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.Adapter.MainPageTechOrderListAdapter;
-import com.xmd.technician.Adapter.MainPageTechVisitListAdapter;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -38,6 +37,7 @@ import com.xmd.technician.common.OnScrollChangedCallback;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.http.gson.CommentOrderRedPkResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.OrderListResult;
@@ -176,6 +176,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.rl_visit_null)
     RelativeLayout mVisitNull;
+    @Bind(R.id.main_head_tech_status)
+    TextView mTechStatus;
+    @Bind(R.id.order_figure_out)
+    TextView mOrderFigureOut;
 
 
     private ImageView imageLeft, imageRight;
@@ -205,6 +209,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mGetDynamicListSubscription;
     private Subscription mQuitClubSubscription;
     private Subscription mSubmitInviteSubscription;
+    private Subscription mTechStatusSubscription;
 
     @Nullable
     @Override
@@ -216,10 +221,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 
     @Override
     public void onResume() {
@@ -239,8 +240,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         RxBus.getInstance().unsubscribe(mGetTechCurrentInfoSubscription, mUserSwitchesSubscription, mGetTechOrderListSubscription, mGetTechStatisticsDataSubscription,
-                mGetTechRankIndexDataSubscription, mGetRecentlyVisitorSubscription, mOrderManageSubscription, mGetDynamicListSubscription, mQuitClubSubscription, mSubmitInviteSubscription);
+                mGetTechRankIndexDataSubscription,mTechStatusSubscription, mOrderManageSubscription, mGetDynamicListSubscription, mQuitClubSubscription, mSubmitInviteSubscription);
     }
 
     private void initView(View view) {
@@ -313,7 +315,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
         mSubmitInviteSubscription = RxBus.getInstance().toObservable(InviteCodeResult.class).subscribe(
                 inviteCodeResult -> submitInviteResult(inviteCodeResult));
+
+        mTechStatusSubscription = RxBus.getInstance().toObservable(CommentOrderRedPkResult.class).subscribe(
+                commentOrderRedPkResult -> handleTechStatus(commentOrderRedPkResult));
     }
+
 
     public void refreshOrderListData() {
         Map<String, String> param = new HashMap<>();
@@ -341,10 +347,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 SharedPreferenceHelper.setUserClubId(result.respData.clubId);
                 mMenuSettingsActivityQuitClub.setVisibility(View.VISIBLE);
                 mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
             } else {
                 mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
                 mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
-
             }
             if (Utils.isNotEmpty(result.respData.clubName)) {
                 SharedPreferenceHelper.setUserClubName(result.respData.clubName);
@@ -359,6 +365,22 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             initHeadView(mTechInfo);
             mSwipeRefreshLayout.setRefreshing(false);
         }
+
+    }
+
+    private void handleTechStatus(CommentOrderRedPkResult result) {
+        if (Constant.TECH_STATUS_VALID.equals(result.respData.techStatus) || Constant.TECH_STATUS_REJECT.equals(result.respData.techStatus)) {
+            mMainHeadTechSerial.setVisibility(View.GONE);
+            mTechStatus.setVisibility(View.VISIBLE);
+        } else {
+            if (Constant.TECH_STATUS_UNCERT.equals(result.respData.techStatus)) {
+                mTechStatus.setText(result.respData.techStatusDesc);
+            } else {
+                mMainHeadTechSerial.setVisibility(View.VISIBLE);
+                mTechStatus.setVisibility(View.GONE);
+            }
+        }
+
     }
 
     private void handleUserSwitchResult(UserSwitchesResult switchResult) {
@@ -645,7 +667,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
-
     private void initOrderView(OrderListResult orderList) {
         if (orderList.respData != null && orderList.respData.size() > 0) {
             mAllTechOrderList.clear();
@@ -663,6 +684,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mTechOrderList.clear();
                 mTechOrderList.addAll(mAllTechOrderList);
             }
+            if(mTechOrderList.size()>0){
+                mOrderFigureOut.setVisibility(View.GONE);
+            }else{
+                mOrderFigureOut.setVisibility(View.VISIBLE);
+            }
             orderListAdapter = new MainPageTechOrderListAdapter(mContext, mTechOrderList);
             mMainOrderList.setAdapter(orderListAdapter);
             setListViewHeightBasedOnChildren(mMainOrderList);
@@ -677,6 +703,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             });
 
         } else {
+            mOrderFigureOut.setVisibility(View.VISIBLE);
             mTechOrderList.clear();
             setListViewHeightBasedOnChildren(mMainOrderList);
             orderListAdapter = new MainPageTechOrderListAdapter(mContext, mTechOrderList);
@@ -729,7 +756,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mMainDynamicTime3.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(2).createTime)));
 
             }
-        }else{
+        } else {
             mVisitNull.setVisibility(View.VISIBLE);
         }
 
@@ -909,5 +936,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
         visitParams.put(RequestConstant.KEY_LAST_TIME, "");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
+
     }
 }

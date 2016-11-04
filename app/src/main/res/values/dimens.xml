@@ -207,7 +207,7 @@
     <dimen name="main_page_margin">12dp</dimen>
     <dimen name="main_order_btn_width">55dp</dimen>
     <dimen name="main_order_btn_height">20dp</dimen>
-    <dimen name="main_dynamic_width">30dp</dimen>
+    <dimen name="main_dynamic_width">45dp</dimen>
     <dimen name="dynamic_item_type_margin">-5dp</dimen>
     <dimen name="dynamic_item_rl_width">60dp</dimen>
     <dimen name="main_head_height">110dp</dimen>
