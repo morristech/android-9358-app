@@ -237,6 +237,8 @@ public class RequestConstant {
     public static final String KEY_TECH_STATUS_REST = "rest";
     public static final String KEY_TECH_DYNAMIC_TYPE = "bizType";
     public static final String KEY_IS_INDEX_PAGE = "isIndexPage";
+    public static final String ORDER_TYPE_APPOINT = "appoint";
+    public static final String ORDER_TYPE_PAID = "paid";
 
 
     /*********************************************************************************************/

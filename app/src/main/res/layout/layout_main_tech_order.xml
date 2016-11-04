@@ -12,7 +12,7 @@
 
         <TextView
             style="@style/main_fragment_layout_title_left_style"
-            android:drawableLeft="@drawable/ic_ranking"
+            android:drawableLeft="@drawable/icon_mian_order"
             android:text="@string/main_tech_order" />
 
         <TextView
@@ -35,7 +35,8 @@
         android:layout_gravity="center_horizontal"
         android:paddingBottom="@dimen/small_space"
         android:paddingTop="@dimen/small_space"
-        android:text="@string/main_tech_order_all_finish_text"
         android:textColor="@color/colorBody"
-        android:textSize="@dimen/fontBody" />
+        android:textSize="@dimen/fontBody"
+        android:text="@string/main_tech_order_all_finish_text"
+        />
 </LinearLayout>

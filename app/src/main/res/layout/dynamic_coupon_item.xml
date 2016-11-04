@@ -48,8 +48,8 @@
                 android:id="@+id/dynamic_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/alert_text_color"
-                android:textSize="@dimen/fontTitle" />
+                android:textColor="@color/colorHead"
+                android:textSize="@dimen/fontSize" />
 
             <TextView
                 android:id="@+id/dynamic_item_telephone"
@@ -58,7 +58,7 @@
                 android:layout_alignBottom="@id/dynamic_item_name"
                 android:layout_marginLeft="@dimen/margin_5"
                 android:layout_toRightOf="@id/dynamic_item_name"
-                android:textColor="@color/colorRemark"
+                android:textColor="@color/text_color_can_chat"
                 android:textSize="@dimen/fontBody"
                 android:visibility="visible" />
 
@@ -70,7 +70,7 @@
                 android:layout_marginTop="@dimen/margin_5"
                 android:enabled="true"
                 android:maxLines="2"
-                android:textColor="@color/alert_text_color"
+                android:textColor="@color/text_color_can_chat"
                 android:textSize="@dimen/fontHead" />
 
             <TextView

@@ -606,7 +606,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
 
-            Glide.with(mContext).load(dynamicDetail.imageUrl).error(R.drawable.icon22).into(viewHolder.dynamicItemAvatar);
+            Glide.with(mContext).load(Utils.isNotEmpty(dynamicDetail.avatarUrl)?dynamicDetail.avatarUrl:dynamicDetail.imageUrl).error(R.drawable.icon22).into(viewHolder.dynamicItemAvatar);
             viewHolder.dynamicItemName.setText(dynamicDetail.userName);
             viewHolder.dynamicTime.setText(com.xmd.technician.common.DateUtils.getTimestampString(new Date(dynamicDetail.createTime)));
             String textDescription = dynamicDetail.description;

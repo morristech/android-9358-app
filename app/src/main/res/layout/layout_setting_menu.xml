@@ -117,51 +117,21 @@
 
 
     </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/settings_activity_join_club"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/personal_item_height"
-        android:background="@drawable/personal_item_selector"
-        android:paddingLeft="@dimen/personal_padding"
-        android:paddingRight="@dimen/personal_padding"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="@dimen/personal_item_icon_height"
-            android:layout_height="@dimen/personal_item_icon_height"
-            android:layout_centerVertical="true"
-            android:background="@drawable/icon46" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/search_view_height"
-            android:text="加入会所"
-            android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontTitle" />
-
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/app_bg" />
-
     <RelativeLayout
         android:id="@+id/settings_activity_quit_club"
-        style="@style/menu_setting_relative_style">
+        style="@style/menu_setting_relative_style"
+        android:layout_marginTop="@dimen/inter_space"
+        >
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_quit" />
+            android:background="@drawable/icon_quit"
+            />
 
         <TextView
+            android:id="@+id/join_or_quit_club"
             style="@style/menu_setting_text_style"
             android:text="@string/setting_activity_quit_club" />
 
@@ -174,22 +144,51 @@
             android:paddingRight="@dimen/margin_20"
             android:textColor="@color/colorBtnChecked"
             android:textSize="@dimen/fontTitle" />
-
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/settings_activity_logout"
+        android:id="@+id/settings_activity_join_club"
         style="@style/menu_setting_relative_style"
-        android:layout_marginTop="@dimen/inter_space">
+        android:layout_marginTop="@dimen/inter_space"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_login_out" />
+            android:background="@drawable/icon_join" />
 
         <TextView
             style="@style/menu_setting_text_style"
+            android:text="@string/setting_activity_join_club" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/app_bg" />
+
+
+
+    <RelativeLayout
+        android:id="@+id/settings_activity_logout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_quit_club"
+        android:layout_marginBottom="@dimen/dynamic_item_rl_width"
+        android:layout_marginLeft="@dimen/home_button_height"
+        android:layout_marginRight="@dimen/home_button_height"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontTitle"
             android:text="@string/setting_activity_layout_exit" />
 
     </RelativeLayout>

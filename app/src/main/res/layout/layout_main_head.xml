@@ -56,15 +56,17 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/main_head_tech_name"
         android:layout_marginRight="@dimen/margin_15"
-        android:src="@drawable/btn_main_rest_default" />
+        android:src="@drawable/btn_main_rest_default"
+        android:visibility="gone"
+        />
 
     <ImageView
         android:id="@+id/btn_main_tech_busy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignTop="@id/btn_main_tech_rest"
         android:layout_marginRight="@dimen/margin_10"
-        android:layout_toLeftOf="@id/btn_main_tech_rest"
         android:src="@drawable/btn_main_busy_default" />
 
     <ImageView
@@ -81,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/btn_main_tech_rest"
+        android:layout_below="@+id/btn_main_tech_busy"
         android:layout_marginTop="@dimen/margin_20"
         android:src="@drawable/image_main_integral" />
 

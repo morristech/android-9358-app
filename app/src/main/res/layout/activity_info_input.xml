@@ -42,6 +42,7 @@
         android:background="@android:color/transparent"
         android:textColor="@color/colorBody"
         android:textSize="@dimen/fontBody"
+        android:maxLength="5"
         android:textColorHint="@color/colorRemarkText"
         android:hint="@string/nick_name"/>
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.Adapter.MainPageTechOrderListAdapter;
@@ -37,8 +39,10 @@ import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.DynamicListResult;
+import com.xmd.technician.http.gson.InviteCodeResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
+import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
@@ -46,7 +50,6 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.CircleImageView;
-import com.xmd.technician.widget.HorizontalListView;
 import com.xmd.technician.widget.InviteDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.ScrollChangeScrollView;
@@ -66,7 +69,7 @@ import rx.Subscription;
 /**
  * Created by Administrator on 2016/10/19.
  */
-public class MainFragment extends BaseFragment implements View.OnClickListener, OnScrollChangedCallback {
+public class MainFragment extends BaseFragment implements View.OnClickListener, OnScrollChangedCallback, SwipeRefreshLayout.OnRefreshListener {
 
 
     @Bind(R.id.rl_toolbar)
@@ -75,6 +78,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mAppVersion;
     @Bind(R.id.settings_activity_join_club)
     RelativeLayout mMenuSettingsActivityJoinClub;
+    @Bind(R.id.settings_activity_quit_club)
+    RelativeLayout mMenuSettingsActivityQuitClub;
     @Bind(R.id.menu_club_name)
     TextView mMenuClubName;
     @Bind(R.id.main_head_avatar)
@@ -125,8 +130,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mMainDynamicDescribe3;
     @Bind(R.id.main_dynamic_time3)
     TextView mMainDynamicTime3;
-    @Bind(R.id.main_who_care_list)
-    HorizontalListView mMainWhoCareList;
     @Bind(R.id.main_who_care_total)
     TextView mMainWhoCareTotal;
     @Bind(R.id.ll_horizontalList)
@@ -159,6 +162,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     LinearLayout mMainDynamic2;
     @Bind(R.id.main_dynamic3)
     LinearLayout mMainDynamic3;
+    @Bind(R.id.main_visit_avatar1)
+    CircleImageView visitAvatar1;
+    @Bind(R.id.main_visit_avatar2)
+    CircleImageView visitAvatar2;
+    @Bind(R.id.main_visit_avatar3)
+    CircleImageView visitAvatar3;
+    @Bind(R.id.main_visit_avatar4)
+    CircleImageView visitAvatar4;
+    @Bind(R.id.main_visit_avatar5)
+    CircleImageView visitAvatar5;
+    @Bind(R.id.swipe_refresh_widget)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.rl_visit_null)
+    RelativeLayout mVisitNull;
+
 
     private ImageView imageLeft, imageRight;
     private Context mContext;
@@ -169,9 +187,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private List<Order> mTechOrderList = new ArrayList<>();
     private List<RecentlyVisitorBean> mTechVisitor = new ArrayList<>();
     private List<RecentlyVisitorBean> mAllTechVisitor = new ArrayList<>();
+    private List<View> visitViewList = new ArrayList<>();
     private List<DynamicDetail> mDynamicList = new ArrayList<>();
     private MainPageTechOrderListAdapter orderListAdapter;
-    private MainPageTechVisitListAdapter visitListAdapter;
     private String innerProvider;
     private String techStatus;
     private int screenWidth;
@@ -185,6 +203,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mGetRecentlyVisitorSubscription;
     private Subscription mOrderManageSubscription;
     private Subscription mGetDynamicListSubscription;
+    private Subscription mQuitClubSubscription;
+    private Subscription mSubmitInviteSubscription;
 
     @Nullable
     @Override
@@ -204,12 +224,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onResume() {
         super.onResume();
-        Map<String, String> visitParams = new HashMap<>();
-        visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
-        visitParams.put(RequestConstant.KEY_LAST_TIME, "");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
-        HeartBeatTimer.getInstance().start(60, mTask);
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_INFO);
+        if (Utils.isNotEmpty(SharedPreferenceHelper.getUserClubId())) {
+            Map<String, String> visitParams = new HashMap<>();
+            visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
+            visitParams.put(RequestConstant.KEY_LAST_TIME, "");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
+        }
+        HeartBeatTimer.getInstance().start(60, mTask);
         mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
                 visitResult -> initRecentlyViewView(visitResult));
     }
@@ -218,15 +240,22 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onDestroy() {
         super.onDestroy();
         RxBus.getInstance().unsubscribe(mGetTechCurrentInfoSubscription, mUserSwitchesSubscription, mGetTechOrderListSubscription, mGetTechStatisticsDataSubscription,
-                mGetTechRankIndexDataSubscription, mGetRecentlyVisitorSubscription, mOrderManageSubscription, mGetDynamicListSubscription);
+                mGetTechRankIndexDataSubscription, mGetRecentlyVisitorSubscription, mOrderManageSubscription, mGetDynamicListSubscription, mQuitClubSubscription, mSubmitInviteSubscription);
     }
 
     private void initView(View view) {
-         screenWidth =  Utils.getScreenWidthHeight(getActivity())[0];
-        screenSpeed = screenWidth/16;
+        screenWidth = Utils.getScreenWidthHeight(getActivity())[0];
+        screenSpeed = screenWidth / 16;
         initTitleView(view);
         getData();
         handlerDataResult();
+        visitViewList.add(visitAvatar1);
+        visitViewList.add(visitAvatar2);
+        visitViewList.add(visitAvatar3);
+        visitViewList.add(visitAvatar4);
+        visitViewList.add(visitAvatar5);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
         mMainScrollView.setOnScrollChangedCallback(this);
     }
 
@@ -279,6 +308,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 orderManageResult -> refreshOrderListData());
         mGetDynamicListSubscription = RxBus.getInstance().toObservable(DynamicListResult.class).subscribe(
                 dynamicListResult -> initDynamicView(dynamicListResult));
+        mQuitClubSubscription = RxBus.getInstance().toObservable(QuitClubResult.class).subscribe(
+                result -> doQuitClubResult());
+
+        mSubmitInviteSubscription = RxBus.getInstance().toObservable(InviteCodeResult.class).subscribe(
+                inviteCodeResult -> submitInviteResult(inviteCodeResult));
     }
 
     public void refreshOrderListData() {
@@ -286,7 +320,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         param.put(RequestConstant.KEY_PAGE, "1");
         param.put(RequestConstant.KEY_IS_INDEX_PAGE, "Y");
         param.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(5));
-        param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT_AND_ACCEPT);
+        param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT);
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, param);
     }
 
@@ -294,7 +328,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         Map<String, String> param = new HashMap<>();
         param.put(RequestConstant.KEY_PAGE, "1");
         param.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(3));
-        param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT_AND_ACCEPT);
+        param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT);
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_DYNAMIC_LIST, param);
     }
 
@@ -305,6 +339,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             if (Utils.isNotEmpty(result.respData.clubId)) {
                 mClubId = result.respData.clubId;
                 SharedPreferenceHelper.setUserClubId(result.respData.clubId);
+                mMenuSettingsActivityQuitClub.setVisibility(View.VISIBLE);
+                mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
+            } else {
+                mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
+                mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
+
             }
             if (Utils.isNotEmpty(result.respData.clubName)) {
                 SharedPreferenceHelper.setUserClubName(result.respData.clubName);
@@ -317,6 +357,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
             techStatus = result.respData.status;
             initHeadView(mTechInfo);
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -378,7 +419,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             case R.id.btn_main_tech_free:
                 mBtnMainTechFree.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_free_selected));
                 mBtnMainTechBusy.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_busy_default));
-                mBtnMainTechRest.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_busy_default));
+                mBtnMainTechRest.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_rest_default));
                 updateWorkTimeResult(RequestConstant.KEY_TECH_STATUS_FREE);
                 break;
             case R.id.btn_main_tech_busy:
@@ -433,6 +474,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 new InviteDialog(getActivity(), R.style.default_dialog_style).show();
                 break;
             case R.id.settings_activity_quit_club:
+
                 new RewardConfirmDialog(getActivity(), getString(R.string.quit_club_title), getString(R.string.quit_club_tips), "") {
                     @Override
                     public void onConfirmClick() {
@@ -517,11 +559,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.toolbar_back:
                 if (mMainSlidingLayout.isLeftLayoutVisible()) {
-
-                    mMainSlidingLayout.scrollToRightLayout(screenSpeed);
+                    mMainSlidingLayout.scrollToRightLayout(screenSpeed, 10);
                 } else {
-
-                    mMainSlidingLayout.scrollToLeftLayout(-screenSpeed);
+                    mMainSlidingLayout.scrollToLeftLayout(-screenSpeed, 10);
                 }
 
                 break;
@@ -591,7 +631,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void initTechWorkView(TechStatisticsDataResult result) {
         mMainInfoTooKeenNumber.setText(result.respData.userCount);
         mMainSendCouponNumber.setText(result.respData.getCouponCount);
-        mMainTotalIncomeNumber.setText(String.format("%1.2f", result.respData.incomeAmount));
+        int pay = (int) result.respData.incomeAmount;
+        if (pay > 10000) {
+            float payMoney = result.respData.incomeAmount / 10000;
+            mMainTotalIncomeNumber.setText(String.format("%1.2f", payMoney) + "万");
+        } else {
+            mMainTotalIncomeNumber.setText(String.format("%1.2f", result.respData.incomeAmount));
+        }
+
         mMainGetCommentNumber.setText(result.respData.goodCommentCount);
         String textVisit = "今天共有" + result.respData.todayVisitCount + "人看了我～";
         mMainWhoCareTotal.setText(Utils.changeColor(textVisit, ResourceUtils.getColor(R.color.colorMainBtn), 4, textVisit.length() - 5));
@@ -641,11 +688,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void initDynamicView(DynamicListResult result) {
 
         if (null != result.respData && result.respData.size() > 0) {
+            mVisitNull.setVisibility(View.GONE);
             mDynamicList.clear();
             mDynamicList.addAll(result.respData);
             if (mDynamicList.size() == 1) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
+                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
                 mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
@@ -653,34 +701,36 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mMainDynamic3.setVisibility(View.GONE);
             } else if (mDynamicList.size() == 2) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
+                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
                 mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
                 mMainDynamic2.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(mDynamicList.get(1).imageUrl).into(mMainDynamicAvatar2);
+                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(1).avatarUrl) ? mDynamicList.get(1).avatarUrl : mDynamicList.get(1).imageUrl).into(mMainDynamicAvatar2);
                 mMainDynamicName2.setText(Utils.StrSubstring(6, mDynamicList.get(1).userName, true));
                 mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
                 mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
                 mMainDynamic3.setVisibility(View.GONE);
             } else if (mDynamicList.size() == 3) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
+                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
                 mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
                 mMainDynamic2.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(mDynamicList.get(1).imageUrl).into(mMainDynamicAvatar2);
+                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(1).avatarUrl) ? mDynamicList.get(1).avatarUrl : mDynamicList.get(1).imageUrl).into(mMainDynamicAvatar2);
                 mMainDynamicName2.setText(Utils.StrSubstring(6, mDynamicList.get(1).userName, true));
                 mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
                 mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
                 mMainDynamic3.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(mDynamicList.get(2).imageUrl).into(mMainDynamicAvatar3);
+                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(2).avatarUrl) ? mDynamicList.get(2).avatarUrl : mDynamicList.get(2).imageUrl).into(mMainDynamicAvatar3);
                 mMainDynamicName3.setText(Utils.StrSubstring(6, mDynamicList.get(2).userName, true));
                 mMainDynamicDescribe3.setText(getRecentStatusDes(mDynamicList.get(2).bizType));
                 mMainDynamicTime3.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(2).createTime)));
 
             }
+        }else{
+            mVisitNull.setVisibility(View.VISIBLE);
         }
 
     }
@@ -709,7 +759,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     private void initRecentlyViewView(RecentlyVisitorResult result) {
         if (null != result.respData && result.respData.size() > 0) {
-            llHorizontalList.setVisibility(View.VISIBLE);
+
             mAllTechVisitor.clear();
             for (int i = 0; i < result.respData.size(); i++) {
                 if (null != result.respData.get(i).emchatId) {
@@ -725,28 +775,37 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mTechVisitor.clear();
                 mTechVisitor.addAll(mAllTechVisitor);
             }
-            visitListAdapter = new MainPageTechVisitListAdapter(mContext, mTechVisitor);
-            mMainWhoCareList.setAdapter(visitListAdapter);
-            visitListAdapter.notifyDataSetChanged();
-            mMainWhoCareList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(mTechVisitor.get(position).emchatId,
-                            Utils.isEmpty(mTechVisitor.get(position).userNoteName) ? mTechVisitor.get(position).userName : mTechVisitor.get(position).userNoteName, mTechVisitor.get(position).avatarUrl, ""));
-                }
-            });
+            if (mTechVisitor.size() > 0) {
+                llHorizontalList.setVisibility(View.VISIBLE);
+
+                initVisitAvatar(mTechVisitor);
+            }
 
         } else {
             llHorizontalList.setVisibility(View.GONE);
+            for (int i = 0; i < visitViewList.size(); i++) {
+                visitViewList.get(i).setVisibility(View.INVISIBLE);
+            }
         }
     }
 
+    private void initVisitAvatar(List<RecentlyVisitorBean> visitList) {
+        for (int i = 0; i < visitList.size(); i++) {
+            visitViewList.get(i).setVisibility(View.VISIBLE);
+            Glide.with(mContext).load(visitList.get(i).avatarUrl).into((CircleImageView) visitViewList.get(i));
+            final int finalI = i;
+            visitViewList.get(i).setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(visitList.get(finalI).emchatId,
+                    Utils.isEmpty(visitList.get(finalI).userNoteName) ? visitList.get(finalI).userName : visitList.get(finalI).userNoteName, visitList.get(finalI).avatarUrl, "")));
+        }
+    }
+
+
     private void initTechRankingView(TechRankDataResult result) {
-        if (null != result.respData.commentRanking) {
-            Glide.with(mContext).load(result.respData.commentRanking.avatarUrl).error(ResourceUtils.getDrawable(R.drawable.icon22)).into(mCvStarRegister);
-            mTvStarRegisterUser.setText(result.respData.commentRanking.name);
-            if (Utils.isNotEmpty(result.respData.commentRanking.serialNo)) {
-                mTvStarRegisterTechNo.setText(result.respData.commentRanking.serialNo);
+        if (null != result.respData.userRanking) {
+            Glide.with(mContext).load(result.respData.userRanking.avatarUrl).into(mCvStarRegister);
+            mTvStarRegisterUser.setText(result.respData.userRanking.name);
+            if (Utils.isNotEmpty(result.respData.userRanking.serialNo)) {
+                mTvStarRegisterTechNo.setText(result.respData.userRanking.serialNo);
             } else {
                 mTvStarRegisterTechNo.setVisibility(View.GONE);
             }
@@ -767,11 +826,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mTvStarSales.setText(ResourceUtils.getString(R.string.rank_null_text));
             mTvTitleSale.setVisibility(View.GONE);
         }
-        if (null != result.respData.userRanking) {
-            Glide.with(mContext).load(result.respData.userRanking.avatarUrl).into(mCvStarService);
-            mTvStarService.setText(result.respData.userRanking.name);
-            if (Utils.isNotEmpty(result.respData.userRanking.serialNo)) {
-                mTvTitleService.setText(result.respData.userRanking.serialNo);
+        if (null != result.respData.commentRanking) {
+            Glide.with(mContext).load(result.respData.commentRanking.avatarUrl).into(mCvStarService);
+            mTvStarService.setText(result.respData.commentRanking.name);
+            if (Utils.isNotEmpty(result.respData.commentRanking.serialNo)) {
+                mTvTitleService.setText(result.respData.commentRanking.serialNo);
             } else {
                 mTvTitleService.setVisibility(View.GONE);
             }
@@ -830,4 +889,25 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
+    private void submitInviteResult(InviteCodeResult inviteCodeResult) {
+        ((BaseFragmentActivity) getActivity()).makeShortToast(String.format(getString(R.string.join_club_success_tips), inviteCodeResult.name));
+        mMenuSettingsActivityQuitClub.setVisibility(View.VISIBLE);
+        mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
+    }
+
+    private void doQuitClubResult() {
+        ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.quit_club_success_tips));
+        mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
+        mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onRefresh() {
+        getData();
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_INFO);
+        Map<String, String> visitParams = new HashMap<>();
+        visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
+        visitParams.put(RequestConstant.KEY_LAST_TIME, "");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
+    }
 }

@@ -67,6 +67,7 @@
             android:textColor="@color/contact_info_unit"
             android:textSize="@dimen/fontBiggerThanRemark" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/main_dynamic2"
         android:layout_width="match_parent"
@@ -114,6 +115,7 @@
             android:textColor="@color/contact_info_unit"
             android:textSize="@dimen/fontBiggerThanRemark" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/main_dynamic3"
         android:layout_width="match_parent"
@@ -163,14 +165,14 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_visit_null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:paddingBottom="@dimen/margin_2"
         android:paddingLeft="@dimen/inter_space"
         android:paddingRight="@dimen/inter_space"
-        android:paddingTop="@dimen/margin_2"
-        android:visibility="gone">
+        android:paddingTop="@dimen/margin_2">
 
         <TextView
             android:id="@+id/main_dynamic_none"
@@ -178,8 +180,6 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/main_new_recent_status_none"
-            android:textColor="@color/contact_info_unit"
-            android:textSize="@dimen/fontTitle" />
+            android:text="@string/main_new_recent_status_none" />
     </RelativeLayout>
 </LinearLayout>

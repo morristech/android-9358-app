@@ -59,12 +59,23 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
 
     }
 
-
     @Override
-    protected void initView() {
+    public void onResume() {
+        super.onResume();
         mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
                 result -> handlerClubInfoList(result)
         );
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        RxBus.getInstance().unsubscribe(mGetRecentlyVisitorSubscription);
+    }
+
+    @Override
+    protected void initView() {
+
         mSayHiResultSubscription = RxBus.getInstance().toObservable(SayHiResult.class).subscribe(
                 result -> handlerSayHiResult(result)
         );
@@ -91,7 +102,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             onGetListFailed(result.msg);
 
-        } else {
+        } else if(result.statusCode == 200){
             for (int i = 0; i < result.respData.size(); i++) {
                 if (Utils.isNotEmpty(result.respData.get(i).emchatId)) {
                     ChatUser user;
@@ -116,6 +127,8 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
                 onGetListSucceeded(pageCount, result.respData);
             }
 
+        }else{
+            mSwipeRefreshLayout.setRefreshing(false);
         }
 
     }

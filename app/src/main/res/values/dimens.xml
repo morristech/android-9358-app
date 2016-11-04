@@ -34,6 +34,7 @@
     <dimen name="fontBig">32sp</dimen>
     <dimen name="fontCoupon">30sp</dimen>
     <dimen name="fontOrderName">19sp</dimen>
+    <dimen name="fontTechWork">22sp</dimen>
     <dimen name="fontHead">18sp</dimen>
     <dimen name="fontSize">17sp</dimen>
     <dimen name="fontTitle">16sp</dimen>

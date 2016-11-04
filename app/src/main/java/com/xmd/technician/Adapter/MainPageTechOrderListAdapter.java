@@ -71,27 +71,29 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
         viewHolder.orderName.setText(order.userName);
         viewHolder.orderPhoneDetail.setText(order.phoneNum);
         viewHolder.orderTimeDetail.setText(order.formatAppointTime);
-        String orderMoney = order.rewardAmount+"元";
-        viewHolder.orderMoneyDetail.setText(Utils.changeColor(orderMoney,ResourceUtils.getColor(R.color.colorMainBtn),0,orderMoney.length()-1));
+        if(order.orderType.equals(RequestConstant.ORDER_TYPE_APPOINT)){
+            viewHolder.orderMoney.setVisibility(View.GONE);
+            viewHolder.orderTimeDetail.setVisibility(View.GONE);
+        }else{
+            viewHolder.orderMoney.setVisibility(View.VISIBLE);
+            viewHolder.orderTimeDetail.setVisibility(View.VISIBLE);
+            String orderMoney = order.rewardAmount+"元";
+            viewHolder.orderMoneyDetail.setText(Utils.changeColor(orderMoney,ResourceUtils.getColor(R.color.colorMainBtn),0,orderMoney.length()-1));
+        }
+
         viewHolder.mainTechOrderSurplusTimeDetail.setText(order.remainTime + "");
         if(Utils.isEmpty(order.innerProvider)){
             if (order.status.equals(RequestConstant.KEY_ORDER_STATUS_SUBMIT)) {
                 viewHolder.mainTechOrderBtnAccept.setText(ResourceUtils.getString(R.string.accept));
-                viewHolder.mainTechOrderBtnReject.setVisibility(View.GONE);
                 viewHolder.mainHandle.setVisibility(View.VISIBLE);
                 viewHolder.mainTechOrderBtnAccept.setOnClickListener(v1 -> {
                     doManageOrder(RequestConstant.KEY_ORDER_STATUS_ACCEPT, order.orderId, "");
                 });
             } else if (order.status.equals(RequestConstant.KEY_ORDER_STATUS_ACCEPT)) {
                 viewHolder.mainTechOrderBtnAccept.setText(ResourceUtils.getString(R.string.finish));
-                viewHolder.mainTechOrderBtnReject.setText(ResourceUtils.getString(R.string.order_cancel));
-                viewHolder.mainTechOrderBtnReject.setVisibility(View.VISIBLE);
                 viewHolder.mainHandle.setVisibility(View.GONE);
                 viewHolder.mainTechOrderBtnAccept.setOnClickListener(v1 -> {
                     doManageOrder(RequestConstant.KEY_ORDER_STATUS_COMPLETE, order.orderId, "");
-                });
-                viewHolder.mainTechOrderBtnReject.setOnClickListener(v1 -> {
-                    doManageOrder(RequestConstant.KEY_ORDER_STATUS_FAILURE, order.orderId, "");
                 });
             }
         }else{
@@ -131,14 +133,14 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
         TextView orderPhoneDetail;
         @Bind(R.id.order_time_detail)
         TextView orderTimeDetail;
+        @Bind(R.id.order_money)
+        TextView orderMoney;
         @Bind(R.id.order_money_detail)
         TextView orderMoneyDetail;
         @Bind(R.id.main_tech_order_surplus_time_detail)
         TextView mainTechOrderSurplusTimeDetail;
         @Bind(R.id.main_tech_order_btn_accept)
         Button mainTechOrderBtnAccept;
-        @Bind(R.id.main_tech_order_btn_reject)
-        Button mainTechOrderBtnReject;
         @Bind(R.id.main_oder_to_handle)
         RelativeLayout mainHandle;
 

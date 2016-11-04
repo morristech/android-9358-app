@@ -108,7 +108,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
-        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -166,17 +166,6 @@
             android:text="@string/accept"
             android:textColor="@color/color_white" />
 
-        <Button
-            android:id="@+id/main_tech_order_btn_reject"
-            android:layout_width="@dimen/main_order_btn_width"
-            android:layout_height="@dimen/main_order_btn_height"
-            android:layout_below="@id/main_tech_order_btn_accept"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/small_space"
-            android:background="@drawable/btn_chat_selector"
-            android:text="@string/refuse"
-            android:textColor="@color/color_white"
-            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

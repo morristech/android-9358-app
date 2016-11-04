@@ -89,6 +89,7 @@ public class SlidingLayout extends RelativeLayout implements OnTouchListener {
      * 用于监听侧滑事件的View。
      */
     private View mBindView;
+    private int mSleepTime;
 
     /**
      * 左侧布局的参数，通过此参数来重新确定左侧布局的宽度，以及更改leftMargin的值。
@@ -142,15 +143,17 @@ public class SlidingLayout extends RelativeLayout implements OnTouchListener {
     /**
      * 将屏幕滚动到左侧布局界面，滚动速度设定为30.
      */
-    public void scrollToLeftLayout(int speedLeft) {
+    public void scrollToLeftLayout(int speedLeft,int sleepTime) {
+        this.mSleepTime = sleepTime;
         new ScrollTask().execute(speedLeft);
     }
 
     /**
      * 将屏幕滚动到右侧布局界面，滚动速度设定为-30.
      */
-    public void scrollToRightLayout(int speedRight) {
+    public void scrollToRightLayout(int speedRight,int sleepTime) {
         new ScrollTask().execute(speedRight);
+        this.mSleepTime = sleepTime;
     }
 
     /**
@@ -224,19 +227,19 @@ public class SlidingLayout extends RelativeLayout implements OnTouchListener {
                     // 手指抬起时，进行判断当前手势的意图，从而决定是滚动到左侧布局，还是滚动到右侧布局
                     if (wantToShowLeftLayout()) {
                         if (shouldScrollToLeftLayout()) {
-                            scrollToLeftLayout(30);
+                            scrollToLeftLayout(30,12);
                         } else {
-                            scrollToRightLayout(-30);
+                            scrollToRightLayout(-30,12);
                         }
                     } else if (wantToShowRightLayout()) {
                         if (shouldScrollToRightLayout()) {
-                            scrollToRightLayout(30);
+                            scrollToRightLayout(30,12);
                         } else {
-                            scrollToLeftLayout(-30);
+                            scrollToLeftLayout(-30,12);
                         }
                     }
                 } else if (upDistanceX < touchSlop && isLeftLayoutVisible) {
-                    scrollToRightLayout(-30);
+                    scrollToRightLayout(-30,12);
                 }
                 recycleVelocityTracker();
                 break;
@@ -352,9 +355,9 @@ public class SlidingLayout extends RelativeLayout implements OnTouchListener {
                 }
                 publishProgress(rightMargin);
                 // 为了要有滚动效果产生，每次循环使线程睡眠20毫秒，这样肉眼才能够看到滚动动画。
-                //   sleep(15);
+
                 try {
-                    Thread.sleep(15);
+                    Thread.sleep(2);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

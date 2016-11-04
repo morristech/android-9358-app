@@ -10,13 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Adapter.ListRecycleViewAdapter;
 import com.xmd.technician.R;
-import com.xmd.technician.widget.DividerItemDecoration;
+import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscription;
 
 /**
  * Created by linms@xiaomodo.com on 16-4-29.
@@ -36,11 +37,19 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     protected int mLastVisibleItem;
     protected int mPageCount = -1;
     protected List<T> mData = new ArrayList<>();
+    protected Subscription mThrowableSubscription;
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ButterKnife.bind(this, getView());
+        mThrowableSubscription = RxBus.getInstance().toObservable(Throwable.class).subscribe(
+                throwable -> {if(mSwipeRefreshLayout.isRefreshing()){
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }}
+        );
         initContent();
     }
 
