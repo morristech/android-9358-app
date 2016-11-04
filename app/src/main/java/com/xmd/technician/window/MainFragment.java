@@ -575,7 +575,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                     canShare = false;
                 }
                 if (Utils.isNotEmpty(mTechInfo.clubId)) {
-                    Intent intent = new Intent(getActivity(), shareCardActivity.class);
+                    Intent intent = new Intent(getActivity(), TechShareCardActivity.class);
                     StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
                     url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
                     intent.putExtra(Constant.TECH_USER_HEAD_URL, mTechInfo.imageUrl);
