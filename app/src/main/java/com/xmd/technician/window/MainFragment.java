@@ -196,8 +196,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private MainPageTechOrderListAdapter orderListAdapter;
     private String innerProvider;
     private String techStatus;
+    private String serialNo;
     private int screenWidth;
     private int screenSpeed;
+    private String techJoinClub;
 
     private Subscription mGetTechCurrentInfoSubscription;
     private Subscription mUserSwitchesSubscription;
@@ -242,7 +244,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         super.onDestroy();
 
         RxBus.getInstance().unsubscribe(mGetTechCurrentInfoSubscription, mUserSwitchesSubscription, mGetTechOrderListSubscription, mGetTechStatisticsDataSubscription,
-                mGetTechRankIndexDataSubscription,mTechStatusSubscription, mOrderManageSubscription, mGetDynamicListSubscription, mQuitClubSubscription, mSubmitInviteSubscription);
+                mGetTechRankIndexDataSubscription, mTechStatusSubscription, mOrderManageSubscription, mGetDynamicListSubscription, mQuitClubSubscription, mSubmitInviteSubscription);
     }
 
     private void initView(View view) {
@@ -325,8 +327,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         Map<String, String> param = new HashMap<>();
         param.put(RequestConstant.KEY_PAGE, "1");
         param.put(RequestConstant.KEY_IS_INDEX_PAGE, "Y");
-        param.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(5));
-        param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT);
+        param.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(20));
+        param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT_AND_ACCEPT);
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, param);
     }
 
@@ -361,7 +363,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             if (Utils.isNotEmpty(result.respData.innerProvider)) {
                 innerProvider = result.respData.innerProvider;
             }
-            techStatus = result.respData.status;
+            if (result.respData.status.equals("error")) {
+                techStatus = result.respData.status;
+            }
             initHeadView(mTechInfo);
             mSwipeRefreshLayout.setRefreshing(false);
         }
@@ -369,14 +373,24 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void handleTechStatus(CommentOrderRedPkResult result) {
+        if (null == result.respData) {
+            techJoinClub = "错误请求";
+            return;
+        }
         if (Constant.TECH_STATUS_VALID.equals(result.respData.techStatus) || Constant.TECH_STATUS_REJECT.equals(result.respData.techStatus)) {
             mMainHeadTechSerial.setVisibility(View.GONE);
             mTechStatus.setVisibility(View.VISIBLE);
+            techJoinClub = "未加入或被拒绝了";
         } else {
             if (Constant.TECH_STATUS_UNCERT.equals(result.respData.techStatus)) {
+                techJoinClub = Constant.TECH_STATUS_UNCERT;
                 mTechStatus.setText(result.respData.techStatusDesc);
+                techJoinClub = "未加入会所";
             } else {
-                mMainHeadTechSerial.setVisibility(View.VISIBLE);
+                techJoinClub = "";
+                if (Utils.isNotEmpty(serialNo)) {
+                    mMainHeadTechSerial.setVisibility(View.VISIBLE);
+                }
                 mTechStatus.setVisibility(View.GONE);
             }
         }
@@ -402,19 +416,29 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     @OnClick({R.id.btn_main_tech_free, R.id.btn_main_tech_busy, R.id.btn_main_tech_rest, R.id.btn_main_credit_center})
     public void onMainHeadClicked(View view) {
+
         switch (view.getId()) {
             case R.id.btn_main_tech_free:
-                if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
-                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
+                if (Utils.isEmpty(techJoinClub)) {
+                    if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
+                        ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
+                    } else {
+                        resetTechStatusView(R.id.btn_main_tech_free);
+                    }
                 } else {
-                    resetTechStatusView(R.id.btn_main_tech_free);
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_club));
                 }
+
                 break;
             case R.id.btn_main_tech_busy:
-                if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
-                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
+                if (Utils.isEmpty(techJoinClub)) {
+                    if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
+                        ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
+                    } else {
+                        resetTechStatusView(R.id.btn_main_tech_busy);
+                    }
                 } else {
-                    resetTechStatusView(R.id.btn_main_tech_busy);
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_club));
                 }
                 break;
             case R.id.btn_main_tech_rest:
@@ -425,14 +449,19 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 }
                 break;
             case R.id.btn_main_credit_center:
-                if (isCreditCanExchange) {
-                    Intent intentCredit = new Intent(getActivity(), UserCreditCenterActivity.class);
-                    startActivity(intentCredit);
+                if (Utils.isEmpty(techJoinClub)) {
+                    if (isCreditCanExchange) {
+                        Intent intentCredit = new Intent(getActivity(), UserCreditCenterActivity.class);
+                        startActivity(intentCredit);
+                    } else {
+                        ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.personal_fragment_status_check));
+                    }
                 } else {
-                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.personal_fragment_status_check));
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_club));
                 }
                 break;
         }
+
 
     }
 
@@ -476,12 +505,20 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onMainMenuSettingClicked(View view) {
         switch (view.getId()) {
             case R.id.menu_work_time:
-                Intent intent = new Intent(getActivity(), WorkTimeActivity.class);
-                startActivity(intent);
+                if (Utils.isEmpty(techJoinClub)) {
+                    Intent intent = new Intent(getActivity(), WorkTimeActivity.class);
+                    startActivity(intent);
+                } else {
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_club));
+                }
                 break;
             case R.id.menu_work_project:
-                Intent intentProject = new Intent(getActivity(), ServiceItemActivity.class);
-                startActivity(intentProject);
+                if (Utils.isEmpty(techJoinClub)) {
+                    Intent intentProject = new Intent(getActivity(), ServiceItemActivity.class);
+                    startActivity(intentProject);
+                } else {
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_club));
+                }
                 break;
             case R.id.menu_about_us:
                 startActivity(new Intent(getActivity(), AppInfoActivity.class));
@@ -523,19 +560,35 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onMainPagePieceClicked(View view) {
         switch (view.getId()) {
             case R.id.main_page_head:
-                Intent intent = new Intent(getActivity(), TechInfoActivity.class);
-                startActivity(intent);
+                if (Utils.isEmpty(techJoinClub)) {
+                    Intent intent = new Intent(getActivity(), TechInfoActivity.class);
+                    startActivity(intent);
+                } else {
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_club));
+                }
                 break;
             case R.id.main_tech_order_all:
-                startActivity(new Intent(getActivity(), OrderFragmentActivity.class));
+                if (Utils.isEmpty(techJoinClub)) {
+                    startActivity(new Intent(getActivity(), OrderFragmentActivity.class));
+                } else {
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_club));
+                }
                 break;
             case R.id.main_tech_dynamic_all:
-                startActivity(new Intent(getActivity(), DynamicDetailActivity.class));
+                if (Utils.isEmpty(techJoinClub)) {
+                    startActivity(new Intent(getActivity(), DynamicDetailActivity.class));
+                } else {
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_club));
+                }
                 break;
             case R.id.main_tech_who_care_all:
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.switchFragment(2);
-                MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 0);
+                if (Utils.isEmpty(techJoinClub)) {
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.switchFragment(2);
+                    MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 0);
+                } else {
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_club));
+                }
                 break;
             case R.id.layout_technician_ranking:
                 if (TextUtils.isEmpty(mClubId)) {
@@ -557,24 +610,31 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     @OnClick({R.id.main_too_keen, R.id.main_send_coupon, R.id.main_get_comment, R.id.main_total_income})
     public void onMainDetailClicked(View view) {
-        switch (view.getId()) {
-            case R.id.main_too_keen:
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.switchFragment(2);
-                MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 1);
-                break;
-            case R.id.main_send_coupon:
-                ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_no_coupon_alert_message));
-                break;
-            case R.id.main_get_comment:
-                startActivity(new Intent(getActivity(), CommentActivity.class));
-                break;
-            case R.id.main_total_income:
-                startActivity(new Intent(getActivity(), MyAccountActivity.class));
-                break;
-
+        if(Utils.isEmpty(techJoinClub)){
+            switch (view.getId()) {
+                case R.id.main_too_keen:
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.switchFragment(2);
+                    MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 1);
+                    break;
+                case R.id.main_send_coupon:
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_no_coupon_alert_message));
+                    break;
+                case R.id.main_get_comment:
+                    startActivity(new Intent(getActivity(), CommentActivity.class));
+                    break;
+                case R.id.main_total_income:
+                    startActivity(new Intent(getActivity(), MyAccountActivity.class));
+                    break;
+            }
+        }else{
+            ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_club));
         }
-    }
+
+ 
+   
+
+}
 
     @Override
     public void onClick(View v) {
@@ -627,6 +687,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMainHeadTechName.setText(info.userName);
         if (Utils.isNotEmpty(info.serialNo)) {
             mMainHeadTechSerial.setText(info.serialNo);
+            serialNo = info.serialNo;
         } else {
             mMainHeadTechSerial.setVisibility(View.GONE);
         }
@@ -672,7 +733,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mAllTechOrderList.clear();
             for (int i = 0; i < orderList.respData.size(); i++) {
                 if (!orderList.respData.get(i).remainTime.contains("-") && (orderList.respData.get(i).status.equals(RequestConstant.KEY_ORDER_STATUS_SUBMIT) || orderList.respData.get(i).status.equals(RequestConstant.KEY_ORDER_STATUS_ACCEPT))) {
-                    mAllTechOrderList.add(orderList.respData.get(i));
+                    if (!(orderList.respData.get(i).orderType.equals(Constant.ORDER_TYPE_PAID) && orderList.respData.get(i).status.equals(RequestConstant.KEY_ORDER_STATUS_ACCEPT))) {
+                        mAllTechOrderList.add(orderList.respData.get(i));
+                    }
+
                 }
             }
             if (mAllTechOrderList.size() > 5) {
@@ -684,9 +748,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mTechOrderList.clear();
                 mTechOrderList.addAll(mAllTechOrderList);
             }
-            if(mTechOrderList.size()>0){
+            if (mTechOrderList.size() > 0) {
                 mOrderFigureOut.setVisibility(View.GONE);
-            }else{
+            } else {
                 mOrderFigureOut.setVisibility(View.VISIBLE);
             }
             orderListAdapter = new MainPageTechOrderListAdapter(mContext, mTechOrderList);

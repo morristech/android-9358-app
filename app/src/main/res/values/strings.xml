@@ -77,6 +77,7 @@
     <string name="personal_fragment_wait_check">请等待会所审核</string>
     <string name="personal_fragment_status_check">所在会所未开放该功能</string>
     <string name="main_fragment_tech_status_select">状态不可更改</string>
+    <string name="main_fragment_tech_status_club">您还尚未成功加入会所</string>
 
     <!-- SettingActivity -->
     <string name="title_activity_settings">设置</string>

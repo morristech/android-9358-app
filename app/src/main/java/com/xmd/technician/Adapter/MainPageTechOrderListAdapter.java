@@ -73,11 +73,11 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
         viewHolder.orderTimeDetail.setText(order.formatAppointTime);
         if(order.orderType.equals(RequestConstant.ORDER_TYPE_APPOINT)){
             viewHolder.orderMoney.setVisibility(View.GONE);
-            viewHolder.orderTimeDetail.setVisibility(View.GONE);
+            viewHolder.orderMoneyDetail.setVisibility(View.GONE);
         }else{
             viewHolder.orderMoney.setVisibility(View.VISIBLE);
-            viewHolder.orderTimeDetail.setVisibility(View.VISIBLE);
-            String orderMoney = order.rewardAmount+"元";
+            viewHolder.orderMoneyDetail.setVisibility(View.VISIBLE);
+            String orderMoney = order.downPayment+"元";
             viewHolder.orderMoneyDetail.setText(Utils.changeColor(orderMoney,ResourceUtils.getColor(R.color.colorMainBtn),0,orderMoney.length()-1));
         }
 
