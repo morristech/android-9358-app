@@ -25,6 +25,7 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ import java.util.regex.Pattern;
  */
 public class Utils {
     private static long lastClickTime;
+
     public static String getProcessName(Context cxt, int pid) {
         ActivityManager am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
@@ -303,6 +305,16 @@ public class Utils {
         Spannable spannable = new SpannableString(source);
         spannable.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannable;
+    }
+
+    public static Spannable changeStringNumColor(String source, int color) {
+        int lastNum = 0;
+        for (int i = 0; i < source.length(); i++) {
+            if (source.charAt(i) >= 48 && source.charAt(i) <= 57) {
+                lastNum = i;
+            }
+        }
+        return changeColor(source, color, 4, lastNum+1);
     }
 
     /**

@@ -76,10 +76,11 @@ public class Constant {
     /**
      * 技师状态
      */
-    public static final String TECH_STATUS_VALID = "valid";
-    public static final String TECH_STATUS_REJECT = "reject";
-    public static final String TECH_STATUS_UNCERT = "uncert";
-    public static final String TECH_STATUS_BUSY = "busy";
+    public static final String TECH_STATUS_VALID = "valid"; //未加入会所
+    public static final String TECH_STATUS_REJECT = "reject";//加入会所后被会所拒绝
+    public static final String TECH_STATUS_UNCERT = "uncert";//等待会所审核
+    public static final String TECH_STATUS_BUSY = "busy";//已成功加入会所
+    public static final String TECH_STATUS = "status";
 
     /**
      * 订单界面的待接，已接受，已完成三种状态

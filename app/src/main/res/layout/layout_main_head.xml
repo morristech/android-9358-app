@@ -61,7 +61,7 @@
         android:paddingLeft="@dimen/coupon_item_bottom_corner_bg"
         android:paddingRight="@dimen/coupon_item_bottom_corner_bg"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/fontTitle"/>
+        android:textSize="@dimen/fontNormal"/>
 
     <ImageView
         android:id="@+id/btn_main_tech_rest"

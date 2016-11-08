@@ -445,6 +445,9 @@
     <string name="recent_status_type_paid_coupon">购买了我的点钟券</string>
     <string name="recent_status_type_paid">打赏了我</string>
     <string name="recent_status_btn_text">感谢</string>
+    <string name="wait_club_examine">请等待会所审核</string>
+    <string name="join_club_before">请先加入会所</string>
+    <string name="club_reject_apply">会所拒绝添加</string>
 
 
 </resources>

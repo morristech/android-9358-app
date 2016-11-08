@@ -654,8 +654,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
             } else if (dynamicDetail.bizType == 5) {
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_to_reward));
-                String des = "打赏了我"+textDescription+"元";
-                viewHolder.dynamicItemCommentDetail.setText(Utils.changeColor(des,ResourceUtils.getColor(R.color.colorMainBtn),4,des.length()-1));
+                viewHolder.dynamicItemCommentDetail.setText(Utils.changeStringNumColor(textDescription,ResourceUtils.getColor(R.color.colorMainBtn)));
             }
             viewHolder.btnThanks.setClickable(true);
             viewHolder.btnThanks.setOnClickListener(v -> mCallback.onSayHiButtonClicked(dynamicDetail));

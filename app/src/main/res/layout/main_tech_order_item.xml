@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/order_time"
             android:layout_marginTop="@dimen/margin_2"
-            android:paddingLeft="@dimen/margin_15"
+            android:paddingLeft="@dimen/fontNormal"
             android:text="@string/main_tech_order_money"
             android:textColor="@color/alert_text_color"
             android:textSize="@dimen/fontNormal" />

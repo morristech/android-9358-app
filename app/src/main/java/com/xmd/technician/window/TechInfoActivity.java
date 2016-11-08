@@ -19,8 +19,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.Adapter.AlbumAdapter;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.common.Util;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
@@ -72,6 +74,7 @@ public class TechInfoActivity extends BaseActivity {
 
     private List<AlbumInfo> mAlbums;
     private TechDetailInfo mTechInfo;
+    private String techJoinClub;
 
     // 籍贯
     private AlbumAdapter mAdapter;
@@ -88,7 +91,7 @@ public class TechInfoActivity extends BaseActivity {
         setTitle(R.string.title_activity_data_edit);
         setBackVisible(true);
         setRightVisible(true, R.string.save);
-
+        techJoinClub = getIntent().getStringExtra(Constant.TECH_STATUS);
         mAdapter = new AlbumAdapter(this, new AlbumAdapter.OnItemClickListener() {
             @Override
             public void onAddAlbum() {
@@ -150,6 +153,7 @@ public class TechInfoActivity extends BaseActivity {
         mUploadAvatarSubscription = RxBus.getInstance().toObservable(AvatarResult.class).subscribe(avatarResult -> refresh());
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_EDIT_INFO);
+
     }
 
     @Override
@@ -230,6 +234,14 @@ public class TechInfoActivity extends BaseActivity {
 
         mTechInfo.name = cacheName;
         mTechInfo.serialNo = mSerialNo.getText().toString();
+        if(Utils.isNotEmpty(mTechInfo.serialNo)&& Utils.isNotEmpty(techJoinClub)){
+            if(techJoinClub.equals(Constant.TECH_STATUS_UNCERT)) {
+                makeShortToast("会所审核通过后方能修改技师编号");
+            }else {
+                makeShortToast("未加入会所,不可修改编号");
+            }
+            return;
+        }
         mTechInfo.description = replaceBlank(mDescription.getText().toString());
         mTechInfo.gender = mFemale.isChecked()? "female" : "male";
         //mTechInfo.phoneNum = mPhoneNumber.getText().toString();
