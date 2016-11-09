@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/inter_space"
-    android:layout_marginRight="@dimen/inter_space"
+    android:layout_marginLeft="@dimen/margin_10"
+    android:layout_marginRight="@dimen/margin_10"
     android:layout_marginTop="@dimen/margin_10"
     app:elevation="1dp">
 
@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorHead"
-                android:textSize="@dimen/fontSize" />
+                android:textSize="@dimen/fontTitle" />
 
             <TextView
                 android:id="@+id/dynamic_item_telephone"
@@ -59,8 +59,7 @@
                 android:layout_marginLeft="@dimen/margin_5"
                 android:layout_toRightOf="@id/dynamic_item_name"
                 android:textColor="@color/text_color_can_chat"
-                android:textSize="@dimen/fontBody"
-                android:visibility="gone" />
+                android:textSize="@dimen/fontBiggerThanRemark" />
 
             <TextView
                 android:id="@+id/dynamic_item_comment_detail"
@@ -108,7 +107,7 @@
 
 
         <RelativeLayout
-            android:layout_width="@dimen/dynamic_item_rl_width"
+            android:layout_width="@dimen/main_order_btn_width"
             android:layout_height="match_parent"
             android:layout_gravity="right">
 
@@ -129,7 +128,7 @@
                 android:text="@string/recent_status_btn_text"
                 android:layout_alignParentBottom="true"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/fontTitle" />
+                android:textSize="@dimen/fontBody" />
         </RelativeLayout>
     </LinearLayout>
 

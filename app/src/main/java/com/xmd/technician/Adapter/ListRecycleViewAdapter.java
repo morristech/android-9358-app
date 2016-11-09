@@ -613,11 +613,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             String textRemark = dynamicDetail.remark;
             int commentScore = dynamicDetail.commentScore;
             float rewardAmount = dynamicDetail.rewardAmount;
-
+            if (Utils.isNotEmpty(dynamicDetail.phoneNum)) {
+                viewHolder.dynamicItemTelephone.setText(dynamicDetail.phoneNum);
+            }
             if (dynamicDetail.bizType == 1) {
-                if (Utils.isNotEmpty(dynamicDetail.phoneNum)) {
-                    viewHolder.dynamicItemTelephone.setText(dynamicDetail.phoneNum);
-                }
+
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_comment));
                 if (Utils.isNotEmpty(textDescription)) {
                     viewHolder.dynamicItemCommentDetail.setText(textDescription);
@@ -632,12 +632,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     viewHolder.dynamicItemCommentStarts.setVisibility(View.GONE);
                 }
                 viewHolder.dynamicItemCommentReward.setText(String.valueOf(rewardAmount));
-//                if(rewardAmount>0){
-//                    viewHolder.dynamicItemCommentReward.setVisibility(View.VISIBLE);
-//                    viewHolder.dynamicItemCommentReward.setText(String.valueOf(rewardAmount));
-//                }else{
-//                    viewHolder.dynamicItemCommentReward.setVisibility(View.GONE);
-//                }
+                if(rewardAmount>0){
+                    viewHolder.dynamicItemCommentReward.setVisibility(View.VISIBLE);
+                    viewHolder.dynamicItemCommentReward.setText(String.valueOf(rewardAmount));
+                }else{
+                    viewHolder.dynamicItemCommentReward.setVisibility(View.GONE);
+                }
 
             } else if (dynamicDetail.bizType == 2) {
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_collect));
