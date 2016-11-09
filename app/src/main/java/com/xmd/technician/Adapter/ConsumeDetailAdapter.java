@@ -137,7 +137,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter{
             }else if(viewType == OUT_CLUB){
                 viewHolder.mAmount.setTextColor(mContext.getResources().getColor(R.color.colorTitle));
                 viewHolder.mAmount.setText(Utils.getFloat2Str(info.amount)+"元");
-                Glide.with(mContext).load(info.headImgUrl).into(viewHolder.mAvatar);
+                viewHolder.mAvatar.setBackground(ResourceUtils.getDrawable(R.drawable.icon46));
             }else {
                 viewHolder.mAmount.setText(Utils.getFloat2Str(info.amount)+"元");
                 if(viewType == COUPON_REWARD){

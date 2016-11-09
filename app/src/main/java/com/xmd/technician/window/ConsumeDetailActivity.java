@@ -115,7 +115,6 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONSUME_DETAIL, params);
             return true;
         }
-
         return false;
     }
 

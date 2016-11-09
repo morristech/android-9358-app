@@ -365,6 +365,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
             if (Utils.isNotEmpty(result.respData.serialNo)) {
                 SharedPreferenceHelper.setSerialNo(result.respData.serialNo);
+
             }
             if (Utils.isNotEmpty(result.respData.innerProvider)) {
                 innerProvider = result.respData.innerProvider;
@@ -404,6 +405,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }else {
                 techJoinClub = "";
                 if (Utils.isNotEmpty(serialNo)) {
+                    mMainHeadTechSerial.setVisibility(View.VISIBLE);
                     mMainHeadTechSerial.setVisibility(View.VISIBLE);
                 }
                 mTechStatus.setVisibility(View.GONE);
@@ -463,7 +465,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
                     ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
                 } else {
-                    resetTechStatusView(R.id.btn_main_tech_rest);
+                    resetTechStatusView(-1);
                 }
                 break;
             case R.id.btn_main_credit_center:
@@ -504,10 +506,16 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 updateWorkTimeResult(RequestConstant.KEY_TECH_STATUS_REST);
                 break;
             case -1:
-                mBtnMainTechFree.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_free_default));
+                mBtnMainTechFree.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_free_selected));
                 mBtnMainTechBusy.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_busy_default));
                 mBtnMainTechRest.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_rest_default));
                 break;
+            default:
+                mBtnMainTechFree.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_free_selected));
+                mBtnMainTechBusy.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_busy_default));
+                mBtnMainTechRest.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_rest_default));
+                break;
+
         }
     }
 
@@ -703,6 +711,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
         mMainHeadTechName.setText(info.userName);
         if (Utils.isNotEmpty(info.serialNo)) {
+            mMainHeadTechSerial.setVisibility(View.VISIBLE);
             mMainHeadTechSerial.setText(info.serialNo);
             serialNo = info.serialNo;
         } else {
@@ -714,7 +723,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         } else if (info.status.equals(RequestConstant.KEY_TECH_STATUS_BUSY)) {
             resetTechStatusView(R.id.btn_main_tech_busy);
         } else if (info.status.equals(RequestConstant.KEY_TECH_STATUS_REST)) {
-            resetTechStatusView(R.id.btn_main_tech_rest);
+            resetTechStatusView(-1);
         } else {
             resetTechStatusView(-1);
         }
@@ -914,6 +923,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mTvStarRegisterUser.setText(result.respData.userRanking.name);
             if (Utils.isNotEmpty(result.respData.userRanking.serialNo)) {
                 mTvStarRegisterTechNo.setText(result.respData.userRanking.serialNo);
+                mTvStarRegisterTechNo.setVisibility(View.VISIBLE);
             } else {
                 mTvStarRegisterTechNo.setVisibility(View.GONE);
             }
