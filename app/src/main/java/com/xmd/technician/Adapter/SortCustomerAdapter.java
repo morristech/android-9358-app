@@ -116,16 +116,17 @@ public class SortCustomerAdapter extends BaseAdapter implements SectionIndexer {
         if(null!=mCustomer.customerType){
             if(mCustomer.customerType.equals(RequestConstant.TECH_ADD)){
                 viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_contacts));
-            }
-            else if(mCustomer.customerType.equals(RequestConstant.FANS_USER)){
+                viewHolder.contactOtherType.setVisibility(View.GONE);
+            } else if(mCustomer.customerType.equals(RequestConstant.FANS_USER)){
                 viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
+                viewHolder.contactOtherType.setVisibility(View.GONE);
             }else if(mCustomer.customerType.equals(RequestConstant.FANS_WX_USER)){
                 viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
                 viewHolder.contactOtherType.setVisibility(View.VISIBLE);
                 viewHolder.contactOtherType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
-            }
-            else {
+            } else {
                 viewHolder.contactType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
+                viewHolder.contactOtherType.setVisibility(View.GONE);
             }
         }
         if(Utils.isNotEmpty(mCustomer.userId)){

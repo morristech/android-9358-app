@@ -646,12 +646,21 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else if (dynamicDetail.bizType == 3) {
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_coupon));
                 viewHolder.dynamicItemCommentDetail.setText(textDescription);
-                viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
+                if (Utils.isNotEmpty(textRemark)) {
+                    viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
+                }else {
+                    viewHolder.dynamicItemRemark.setVisibility(View.GONE);
+                }
 
             } else if (dynamicDetail.bizType == 4) {
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_paid));
                 viewHolder.dynamicItemCommentDetail.setText(textDescription);
-                viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
+                if(Utils.isNotEmpty(textDescription)){
+                    viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
+                }else{
+                    viewHolder.dynamicItemRemark.setVisibility(View.GONE);
+                }
+
             } else if (dynamicDetail.bizType == 5) {
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_to_reward));
                 viewHolder.dynamicItemCommentDetail.setText(Utils.changeStringNumColor(textDescription,ResourceUtils.getColor(R.color.colorMainBtn)));

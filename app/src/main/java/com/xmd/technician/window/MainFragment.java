@@ -35,6 +35,7 @@ import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.HeartBeatTimer;
 import com.xmd.technician.common.OnScrollChangedCallback;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CommentOrderRedPkResult;
@@ -640,7 +641,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 case R.id.main_too_keen:
                     MainActivity mainActivity = (MainActivity) getActivity();
                     mainActivity.switchFragment(2);
-                    MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 1);
+                    ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                        @Override
+                        public void run() {
+                            MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 1);
+                        }
+                    },500);
+
                     break;
                 case R.id.main_send_coupon:
                     ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_no_coupon_alert_message));
