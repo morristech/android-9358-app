@@ -36,7 +36,7 @@
         android:layout_gravity="center_horizontal"
         android:paddingBottom="@dimen/small_space"
         android:paddingTop="@dimen/small_space"
-        android:textColor="@color/colorBody"
+        android:textColor="@color/list_item_label_color"
         android:textSize="@dimen/fontBody"
         android:text="@string/main_tech_order_all_finish_text"
         android:visibility="gone"/>

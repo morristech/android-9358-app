@@ -302,8 +302,8 @@
     <style name="relative_layout_title_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingBottom">@dimen/small_space</item>
-        <item name="android:paddingTop">@dimen/small_space</item>
+        <item name="android:paddingBottom">@dimen/margin_10</item>
+        <item name="android:paddingTop">@dimen/margin_10</item>
         <item name="android:paddingRight">@dimen/inter_space</item>
         <item name="android:paddingLeft">@dimen/inter_space</item>
         <item name="android:background">@drawable/personal_item_selector</item>

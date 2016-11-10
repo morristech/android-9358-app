@@ -646,7 +646,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         public void run() {
                             MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 1);
                         }
-                    },500);
+                    },300);
 
                     break;
                 case R.id.main_send_coupon:
@@ -673,9 +673,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.toolbar_back:
                 if (mMainSlidingLayout.isLeftLayoutVisible()) {
-                    mMainSlidingLayout.scrollToRightLayout(screenSpeed, 10);
+                    mMainSlidingLayout.scrollToRightLayout(screenSpeed, 2);
                 } else {
-                    mMainSlidingLayout.scrollToLeftLayout(-screenSpeed, 10);
+                    mMainSlidingLayout.scrollToLeftLayout(-screenSpeed, 2);
                 }
 
                 break;

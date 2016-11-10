@@ -134,10 +134,10 @@ public class SlidingLayout extends RelativeLayout implements OnTouchListener {
         void scrollY(float downY, float upY);
     }
 
-    public void setScrollEvent(View bindView, ViewScrollInterface scrollInterface) {
+    public void setScrollEvent(View bindView) {
         mBindView = bindView;
         mBindView.setOnTouchListener(this);
-        this.viewScrollInterFace = scrollInterface;
+     //   this.viewScrollInterFace = scrollInterface;
     }
 
     /**
@@ -227,19 +227,19 @@ public class SlidingLayout extends RelativeLayout implements OnTouchListener {
                     // 手指抬起时，进行判断当前手势的意图，从而决定是滚动到左侧布局，还是滚动到右侧布局
                     if (wantToShowLeftLayout()) {
                         if (shouldScrollToLeftLayout()) {
-                            scrollToLeftLayout(30,12);
+                            scrollToLeftLayout(30,2);
                         } else {
-                            scrollToRightLayout(-30,12);
+                            scrollToRightLayout(-30,2);
                         }
                     } else if (wantToShowRightLayout()) {
                         if (shouldScrollToRightLayout()) {
-                            scrollToRightLayout(30,12);
+                            scrollToRightLayout(30,2);
                         } else {
-                            scrollToLeftLayout(-30,12);
+                            scrollToLeftLayout(-30,2);
                         }
                     }
                 } else if (upDistanceX < touchSlop && isLeftLayoutVisible) {
-                    scrollToRightLayout(-30,12);
+                    scrollToRightLayout(-30,2);
                 }
                 recycleVelocityTracker();
                 break;
