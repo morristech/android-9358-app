@@ -30,8 +30,8 @@ android {
         targetSdkVersion 23
         // 1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
         // release version : 1.4.0.14
-        versionCode 17
-        versionName "1.4.3"
+        versionCode 18
+        versionName "1.5.0"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
