@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:text="@string/main_bottom_text"
         android:layout_gravity="center_horizontal"
+        android:textColor="@color/list_item_label_color"
+        android:textSize="@dimen/fontBody"
         />
 
 </LinearLayout>

@@ -25,6 +25,7 @@ import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.widget.RoundImageView;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -35,26 +36,24 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2016/7/19.
+ * Created by Administrator on 2016/11/11.
  */
-public class TechShareCardActivity extends BaseActivity {
-
+public class DynamicShareTechActivity extends BaseActivity {
 
     @Bind(R.id.user_card_head)
-    ImageView mCardHead;
+    RoundImageView userCardHead;
     @Bind(R.id.user_card_name)
-    TextView mCardName;
+    TextView userCardName;
     @Bind(R.id.user_card_num)
-    TextView mCardNum;
-    @Bind(R.id.user_card_club)
-    TextView mCardClub;
-    @Bind(R.id.user_share_btn)
-    Button mShareBtn;
-    @Bind(R.id.user_share_img)
-    ImageView mUserShareCode;
+    TextView userCardNum;
     @Bind(R.id.ll_tech_code)
-    LinearLayout mTechCode;
-
+    LinearLayout llTechCode;
+    @Bind(R.id.user_card_club)
+    TextView userCardClub;
+    @Bind(R.id.user_share_img)
+    ImageView userShareImg;
+    @Bind(R.id.user_share_btn)
+    Button userShareBtn;
 
     private String userHead;
     private String userName;
@@ -65,13 +64,12 @@ public class TechShareCardActivity extends BaseActivity {
     private String codeUrl;
     private Bitmap mQRBitmap;
 
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share_card);
+        setContentView(R.layout.activity_dynamic_share);
         ButterKnife.bind(this);
-        setTitle(ResourceUtils.getString(R.string.personal_fragment_layout_user_card));
+        setTitle(ResourceUtils.getString(R.string.all_recent_status_activity));
         setBackVisible(true);
         initView();
     }
@@ -85,42 +83,41 @@ public class TechShareCardActivity extends BaseActivity {
         userShareUrl = intent.getStringExtra(Constant.TECH_SHARE_URL);
         userCanShare = intent.getBooleanExtra(Constant.TECH_CAN_SHARE, false);
         codeUrl = intent.getStringExtra(Constant.TECH_ShARE_CODE_IMG);
+        Glide.with(this).load(userHead).into(userCardHead);
+        userCardName.setText(userName);
+        userCardClub.setText(userClubName);
 
-        Glide.with(this).load(userHead).into(mCardHead);
-        mCardName.setText(userName);
-        mCardClub.setText(userClubName);
-
-        if(userCanShare){
-            mShareBtn.setEnabled(true);
-        }else{
-            mShareBtn.setEnabled(false);
-        }
-        if(Utils.isNotEmpty(userNum)){
-            mCardNum.setText(userNum);
-        }else{
-            mTechCode.setVisibility(View.GONE);
-        }
-        if(Utils.isNotEmpty(codeUrl)){
-            Glide.with(TechShareCardActivity.this).load(codeUrl).error(ResourceUtils.getDrawable(R.drawable.icon22)).into(mUserShareCode);
-        }else {
-            mUserShareCode.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    if(mQRBitmap==null){
-                        try {
-                            mQRBitmap=encodeAsBitmap(0, codeUrl, mUserShareCode.getWidth());
-                            mUserShareCode.setImageBitmap(mQRBitmap);
-                        } catch (WriterException e) {
-                            e.printStackTrace();
-                        }
+    if(userCanShare){
+        userShareBtn.setEnabled(true);
+    }else{
+        userShareBtn.setEnabled(false);
+    }
+    if(Utils.isNotEmpty(userNum)){
+        userCardNum.setText(userNum);
+    }else{
+        llTechCode.setVisibility(View.GONE);
+    }
+    if(Utils.isNotEmpty(codeUrl)){
+        Glide.with(DynamicShareTechActivity.this).load(codeUrl).error(ResourceUtils.getDrawable(R.drawable.icon22)).into(userShareImg);
+    }else {
+        userShareImg.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                if(mQRBitmap==null){
+                    try {
+                        mQRBitmap=encodeAsBitmap(0, codeUrl, userShareImg.getWidth());
+                        userShareImg.setImageBitmap(mQRBitmap);
+                    } catch (WriterException e) {
+                        e.printStackTrace();
                     }
-                    return true;
                 }
-            });
-
-        }
+                return true;
+            }
+        });
 
     }
+
+}
 
     @OnClick(R.id.user_share_btn)
     public void shareUser() {
@@ -165,8 +162,5 @@ public class TechShareCardActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+
 }

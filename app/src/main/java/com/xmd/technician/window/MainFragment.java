@@ -201,6 +201,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private int screenWidth;
     private int screenSpeed;
     private String techJoinClub;
+    private boolean hasDynamic;
 
     private Subscription mGetTechCurrentInfoSubscription;
     private Subscription mUserSwitchesSubscription;
@@ -421,6 +422,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void handleUserSwitchResult(UserSwitchesResult switchResult) {
         if (switchResult.statusCode == 200) {
             if (switchResult.respData.credit.clubSwitch != null && switchResult.respData.credit.systemSwitch != null) {
+
                 if (switchResult.respData.credit.clubSwitch.equals(RequestConstant.KEY_SWITCH_ON) && switchResult.respData.credit.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)) {
                     mBtnMainCreditCenter.setVisibility(View.VISIBLE);
                     isCreditCanExchange = true;
@@ -600,7 +602,33 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.main_tech_dynamic_all:
                 if (Utils.isEmpty(techJoinClub)) {
-                    startActivity(new Intent(getActivity(), DynamicDetailActivity.class));
+                    if(hasDynamic){
+                        startActivity(new Intent(getActivity(), DynamicDetailActivity.class));
+                    }else{
+                        if (mTechInfo == null || TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
+                            return;
+                        }
+                        boolean canShare = true;
+                        if (Constant.TECH_STATUS_VALID.equals(mTechInfo.status) || Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)) {
+                            canShare = false;
+                        }
+                        if (Utils.isNotEmpty(mTechInfo.clubId)) {
+                            Intent intentDynamic = new Intent(getActivity(), DynamicShareTechActivity.class);
+                            StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+                            url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
+                            intentDynamic.putExtra(Constant.TECH_USER_HEAD_URL, mTechInfo.imageUrl);
+                            intentDynamic.putExtra(Constant.TECH_USER_NAME, mTechInfo.userName);
+                            intentDynamic.putExtra(Constant.TECH_USER_TECH_NUM, mTechInfo.serialNo);
+                            intentDynamic.putExtra(Constant.TECH_USER_CLUB_NAME, mTechInfo.clubName);
+                            intentDynamic.putExtra(Constant.TECH_SHARE_URL, url.toString());
+                            intentDynamic.putExtra(Constant.TECH_ShARE_CODE_IMG, mTechInfo.qrCodeUrl);
+                            intentDynamic.putExtra(Constant.TECH_CAN_SHARE, canShare);
+                            startActivity(intentDynamic);
+
+                        }
+
+                    }
+
                 } else {
                     ((BaseFragmentActivity) getActivity()).makeShortToast(techJoinClub);
                 }
@@ -813,6 +841,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
         if (null != result.respData && result.respData.size() > 0) {
             mVisitNull.setVisibility(View.GONE);
+            hasDynamic = true;
             mDynamicList.clear();
             mDynamicList.addAll(result.respData);
             if (mDynamicList.size() == 1) {
@@ -855,6 +884,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
         } else {
             mVisitNull.setVisibility(View.VISIBLE);
+            hasDynamic = false;
         }
 
     }

@@ -221,6 +221,9 @@
             android:name=".window.OrderFragmentActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity android:name=".window.DynamicShareTechActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

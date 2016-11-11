@@ -88,6 +88,8 @@
         android:paddingTop="@dimen/small_space"
         android:paddingBottom="@dimen/small_space"
         android:layout_gravity="center_horizontal"
+        android:textColor="@color/list_item_label_color"
+        android:textSize="@dimen/fontBody"
         android:text="今天共有0人看了我～"
         />
 </LinearLayout>

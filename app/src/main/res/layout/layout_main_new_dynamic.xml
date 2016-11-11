@@ -170,11 +170,9 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:paddingBottom="@dimen/margin_2"
-        android:paddingLeft="@dimen/inter_space"
-        android:paddingRight="@dimen/inter_space"
         android:paddingTop="@dimen/margin_2">
         <View
-           style="@style/horizontal_divider_line"/>
+            style="@style/horizontal_divider_line"/>
 
         <TextView
             android:id="@+id/main_dynamic_none"
@@ -183,6 +181,8 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:paddingTop="@dimen/small_space"
+            android:textColor="@color/list_item_label_color"
+            android:textSize="@dimen/fontBody"
             android:text="@string/main_new_recent_status_none" />
     </RelativeLayout>
 </LinearLayout>
