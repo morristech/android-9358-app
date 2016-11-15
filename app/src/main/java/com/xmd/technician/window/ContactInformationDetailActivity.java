@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -104,7 +105,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     @Bind(R.id.text_contact_marker)
     TextView contactMark;
     @Bind(R.id.linear_belong_tech)
-      LinearLayout linearBelongTech;
+    LinearLayout linearBelongTech;
     @Bind(R.id.belong_tech_name)
     TextView belongTechName;
     @Bind(R.id.belong_tech_num)
@@ -168,7 +169,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         isEmptyCustomer = intent.getBooleanExtra(RequestConstant.KEY_IS_EMPTY, false);
         managerHeadUrl = intent.getStringExtra(RequestConstant.KEY_MANAGER_URL);
         userType = intent.getStringExtra(RequestConstant.CONTACT_TYPE);
-        isMyCustomer = intent.getBooleanExtra(RequestConstant.KEY_IS_MY_CUSTOMER,false);
+        isMyCustomer = intent.getBooleanExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
         initView();
     }
 
@@ -192,7 +193,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         switch (type) {
             case CONTACT_TYPE:
                 isTech = "";
-                if(isMyCustomer){
+                if (isMyCustomer) {
                     contactMore.setVisibility(View.VISIBLE);
                 }
 
@@ -205,12 +206,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 );
                 Map<String, String> params = new HashMap<>();
                 params.put(RequestConstant.KEY_ID, contactId);
-                params.put(RequestConstant.KEY_USER_ID,userId);
+                params.put(RequestConstant.KEY_USER_ID, userId);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL, params);
 
-                if(Utils.isNotEmpty(userId)&&userId.length()>5){
+                if (Utils.isNotEmpty(userId) && userId.length() > 5) {
                     Map<String, String> paramsView = new HashMap<>();
-                    paramsView.put(RequestConstant.KEY_USER_ID,userId);
+                    paramsView.put(RequestConstant.KEY_USER_ID, userId);
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_VISIT_VIEW, paramsView);
                 }
                 break;
@@ -239,7 +240,19 @@ public class ContactInformationDetailActivity extends BaseActivity {
     @OnClick(R.id.btn_call_phone)
     public void callPhone() {
         Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contactPhone));
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//            makeShortToast("权限问题");
+//            return;
+//        }
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1000);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
             makeShortToast("权限问题");
             return;
         }
