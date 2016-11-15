@@ -7,6 +7,20 @@
             <solid android:color="@color/app_bg"/>
             <stroke android:color="@color/colorBtnSelector" android:width="@dimen/line_width"/>
         </shape>
+        <item android:state_pressed="true">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/small_radius"/>
+                <solid android:color="@color/colorRemarkText"/>
+                <stroke android:color="@color/colorBtnChat" android:width="@dimen/line_width"/>
+            </shape>
+        </item>
+        <item android:state_pressed="false">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/three_radius"/>
+                <solid android:color="@color/colorLineDivide"/>
+                <stroke android:color="@color/colorBtnSelector" android:width="@dimen/line_width"/>
+            </shape>
+        </item>
     </item>
 
     <item android:state_enabled="false">
@@ -16,6 +30,9 @@
         <stroke android:color="@color/colorBtnChat" android:width="@dimen/line_width"/>
     </shape>
     </item>
+
+
+
 
 
 </selector>

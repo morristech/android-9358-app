@@ -240,9 +240,11 @@ public class ContactInformationDetailActivity extends BaseActivity {
     public void callPhone() {
         Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contactPhone));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            makeShortToast("权限问题");
             return;
         }
         startActivity(dialIntent);
+        makeShortToast("非权限问题");
 
     }
 
