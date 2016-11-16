@@ -116,7 +116,7 @@
 #升级
 -dontwarn com.shidou.update.**
 -keep class com.shidou.update.**{*;}
-#permission
+#permissions
 -dontwarn com.zhy.m.**
 -keep class com.zhy.m.** {*;}
 -keep interface com.zhy.m.** { *; }
