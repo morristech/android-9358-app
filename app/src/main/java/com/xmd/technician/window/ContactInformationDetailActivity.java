@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
@@ -35,6 +37,9 @@ import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.DropDownMenuDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.RoundImageView;
+import com.zhy.m.permission.MPermissions;
+import com.zhy.m.permission.PermissionDenied;
+import com.zhy.m.permission.PermissionGrant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -156,6 +161,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private Map<String, String> params = new HashMap<>();
     private boolean isMyCustomer;
 
+    private static final int REQUEST_CODE_PHONE = 0x0001;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,6 +178,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         userType = intent.getStringExtra(RequestConstant.CONTACT_TYPE);
         isMyCustomer = intent.getBooleanExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
         initView();
+
     }
 
     private void initView() {
@@ -239,26 +247,38 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     @OnClick(R.id.btn_call_phone)
     public void callPhone() {
-        Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contactPhone));
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-//            makeShortToast("权限问题");
-//            return;
-//        }
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1000);
+        MPermissions.requestPermissions(ContactInformationDetailActivity.this,REQUEST_CODE_PHONE, Manifest.permission.CALL_PHONE);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        MPermissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
+    @PermissionGrant(REQUEST_CODE_PHONE)
+    public void requestSdcardSuccess()
+    {
+        toCallPhone();
+    }
+
+    @PermissionDenied(REQUEST_CODE_PHONE)
+    public void requestSdcardFailed()
+    {
+        Toast.makeText(this, "获取权限失败", Toast.LENGTH_SHORT).show();
+    }
+
+
+
+    public void toCallPhone() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        Uri data = Uri.parse("tel:" + contactPhone);
+        intent.setData(data);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            makeShortToast("权限问题");
             return;
         }
-        startActivity(dialIntent);
-        makeShortToast("非权限问题");
-
+        startActivity(intent);
     }
 
     @OnClick(R.id.btn_chat)
@@ -334,7 +354,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if (doDeleteContactSubscription != null) {
             RxBus.getInstance().unsubscribe(doDeleteContactSubscription);
         }
-        if(doShowVisitViewSubscription != null){
+        if (doShowVisitViewSubscription != null) {
             RxBus.getInstance().unsubscribe(doShowVisitViewSubscription);
         }
 
@@ -358,33 +378,32 @@ public class ContactInformationDetailActivity extends BaseActivity {
         } else {
             chatName = customer.respData.techCustomer.userName;
         }
-        if(Utils.isNotEmpty(customer.respData.techCustomer.belongsTechName)){
+        if (Utils.isNotEmpty(customer.respData.techCustomer.belongsTechName)) {
             userTechName = customer.respData.techCustomer.belongsTechName;
         }
-        if(Utils.isNotEmpty(customer.respData.techCustomer.belongsTechSerialNo)){
-           userTechNo = customer.respData.techCustomer.belongsTechSerialNo;
+        if (Utils.isNotEmpty(customer.respData.techCustomer.belongsTechSerialNo)) {
+            userTechNo = customer.respData.techCustomer.belongsTechSerialNo;
         }
-        if(Utils.isNotEmpty(userTechName)||isMyCustomer){
-            if(isMyCustomer){
-                if(Utils.isNotEmpty(SharedPreferenceHelper.getUserName())){
+        if (Utils.isNotEmpty(userTechName) || isMyCustomer) {
+            if (isMyCustomer) {
+                if (Utils.isNotEmpty(SharedPreferenceHelper.getUserName())) {
                     belongTechName.setText(SharedPreferenceHelper.getUserName());
                 }
-                if(Utils.isNotEmpty(SharedPreferenceHelper.getSerialNo())){
-                    belongTechNum.setText(String.format("[%s]",SharedPreferenceHelper.getSerialNo()));
+                if (Utils.isNotEmpty(SharedPreferenceHelper.getSerialNo())) {
+                    belongTechNum.setText(String.format("[%s]", SharedPreferenceHelper.getSerialNo()));
                 }
 
-            }else if (Utils.isNotEmpty(userTechName)){
+            } else if (Utils.isNotEmpty(userTechName)) {
                 belongTechName.setText(userTechName);
-                if(Utils.isNotEmpty(userTechNo)){
-                    belongTechNum.setText(String.format("[%s]",userTechNo));
+                if (Utils.isNotEmpty(userTechNo)) {
+                    belongTechNum.setText(String.format("[%s]", userTechNo));
                 }
             }
 
-        }else{
+        } else {
             belongTechName.setText("-");
 
         }
-
 
 
         if (customer == null) {
@@ -426,11 +445,11 @@ public class ContactInformationDetailActivity extends BaseActivity {
             if (customer.respData.techCustomer.customerType.equals(RequestConstant.TECH_ADD)) {
                 customerType.setVisibility(View.VISIBLE);
                 customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_contacts));
-            } else if(customer.respData.techCustomer.customerType.equals(RequestConstant.TEMP_USER)){
+            } else if (customer.respData.techCustomer.customerType.equals(RequestConstant.TEMP_USER)) {
                 customerType.setVisibility(View.VISIBLE);
                 customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.temporary_user));
                 btnEmChat.setEnabled(false);
-            }else if (customer.respData.techCustomer.customerType.equals(RequestConstant.FANS_USER)) {
+            } else if (customer.respData.techCustomer.customerType.equals(RequestConstant.FANS_USER)) {
                 customerType.setVisibility(View.VISIBLE);
                 customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
             } else if (customer.respData.techCustomer.customerType.equals(RequestConstant.FANS_WX_USER)) {
@@ -452,9 +471,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
             } else {
                 mContactNickName.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(customer.respData.techCustomer.userLoginName)&& !customer.respData.techCustomer.customerType.equals(RequestConstant.WX_USER)) {
+            if (!TextUtils.isEmpty(customer.respData.techCustomer.userLoginName) && !customer.respData.techCustomer.customerType.equals(RequestConstant.WX_USER)) {
                 mContactTelephone.setText("电话：" + customer.respData.techCustomer.userLoginName);
-            }else{
+            } else {
                 mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + "未知");
             }
             if (!TextUtils.isEmpty(customer.respData.techCustomer.remark)) {
@@ -470,7 +489,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             if (!TextUtils.isEmpty(String.valueOf(customer.respData.techCustomer.rewardAmount))) {
                 mContactReward.setText(String.valueOf(customer.respData.techCustomer.rewardAmount));
             }
-            if(customer.respData.orders == null){
+            if (customer.respData.orders == null) {
                 rlOrder.setVisibility(View.GONE);
                 rlOrder2.setVisibility(View.GONE);
                 orderEmpty.setVisibility(View.VISIBLE);
@@ -496,12 +515,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
             callUnusable();
         }
     }
-    private void handlerVisitView(VisitBean bean){
-        if(bean.statusCode==200) {
-            if (Utils.isNotEmpty(String.valueOf(bean.count))&&bean.count>0) {
+
+    private void handlerVisitView(VisitBean bean) {
+        if (bean.statusCode == 200) {
+            if (Utils.isNotEmpty(String.valueOf(bean.count)) && bean.count > 0) {
                 belongTechDay.setText(RelativeDateFormatUtil.format(bean.recent_date));
                 belongTechVisit.setText(String.format("共访问我%s次，平均%s访问一次", bean.count + "", bean.frequency));
-            }else{
+            } else {
                 belongTechDay.setText("-");
                 belongTechVisit.setText(String.format("共访问我%s次，平均%s访问一次", "-", "-"));
             }

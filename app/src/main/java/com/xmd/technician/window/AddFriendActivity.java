@@ -1,10 +1,12 @@
 package com.xmd.technician.window;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.xmd.technician.R;
 import com.xmd.technician.bean.AddOrEditResult;
 import com.xmd.technician.bean.MarkResult;
@@ -25,6 +29,10 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.ClearableEditText;
 import com.xmd.technician.widget.FlowLayout;
+import com.zhy.m.permission.MPermissions;
+import com.zhy.m.permission.PermissionDenied;
+import com.zhy.m.permission.PermissionGrant;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +72,8 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
     private List<String> markList = new ArrayList<>();
     private List<String> markSelectList = new ArrayList<>();
     private String   text;
-
+    private static final int REQUEST_CODE_CONTACTS = 0x0001;
+    private boolean isHasContacts;
     private Subscription getAddresultSubscription;
     private static final String[] PHONES_PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
@@ -108,7 +117,8 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
     }
     @OnClick(R.id.btn_search_telephone)
     public void getCustomerFromAddressBook() {
-        if(getContactSuccess()){
+        MPermissions.requestPermissions(AddFriendActivity.this,REQUEST_CODE_CONTACTS, Manifest.permission.READ_CONTACTS);
+        if(isHasContacts){
             Intent intent = new Intent(this, CellphoneContactListActivity.class);
             startActivityForResult(intent, REQUEST_CONTANT_CODE);
         }else{
@@ -204,14 +214,32 @@ public class AddFriendActivity extends BaseActivity implements TextWatcher {
         }
         return  s;
     }
-    private boolean getContactSuccess(){
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        MPermissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @PermissionGrant(REQUEST_CODE_CONTACTS)
+    public void requestSdcardSuccess()
+    {
         ContentResolver resolver = AddFriendActivity.this.getContentResolver();
         Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PHONES_PROJECTION, null, null, null);
         if(phoneCursor!=null){
-            return phoneCursor.moveToNext();
+            isHasContacts = true;
+        }else{
+            isHasContacts = false;
         }
-      return false;
     }
+
+    @PermissionDenied(REQUEST_CODE_CONTACTS)
+    public void requestSdcardFailed()
+    {
+        Toast.makeText(this, "获取权限失败", Toast.LENGTH_SHORT).show();
+    }
+
     private void handlerMarkResult(MarkResult result){
         for (int i = 0; i <result.respData.size() ; i++) {
             markList.add(result.respData.get(i).tag);
