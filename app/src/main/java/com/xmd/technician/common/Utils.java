@@ -162,9 +162,15 @@ public class Utils {
      * @return
      */
     public static int[] getScreenWidthHeight(Activity activity) {
+        if(activity == null){
+            activity = ActivityHelper.getInstance().getCurrentActivity();
+        }
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return new int[]{metrics.widthPixels, metrics.heightPixels};
+    }
+    public static int getScreenWidth() {
+        return getScreenWidthHeight(null)[0];
     }
 
     /**

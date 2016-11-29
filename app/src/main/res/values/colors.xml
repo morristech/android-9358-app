@@ -2,7 +2,7 @@
 <resources>
 
     <color name="transparent">#00000000</color>
-    <color name="app_bg">#f5f5f5</color>
+    <color name="app_bg">#EFEFF4</color>
     <color name="text_color_yellow">#ff9d09</color>
     <color name="sideBarcolor">#303F9F</color>
     <color name="colorPrimary">#3F51B5</color>

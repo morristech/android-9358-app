@@ -32,5 +32,8 @@
         <attr name="textColor" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="SlidingMenu">
+        <attr name="menuRightPadding" format="dimension"/>
+    </declare-styleable>
 
 </resources>

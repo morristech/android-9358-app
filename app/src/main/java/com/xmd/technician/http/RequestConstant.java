@@ -8,7 +8,8 @@ public class RequestConstant {
     /*********************************************************************************************/
     /*                                           urls                                            */
     /*********************************************************************************************/
-    public static final String SERVER_HOST = "http://spa.93wifi.com";
+  public static final String SERVER_HOST = "http://spa.93wifi.com";
+
     public static final String BASE_URL = "/spa-manager/api";
 
     public static final String URL_LOGIN = BASE_URL + "/v1/tech/login";

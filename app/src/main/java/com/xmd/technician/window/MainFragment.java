@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -33,7 +34,6 @@ import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.HeartBeatTimer;
-import com.xmd.technician.common.OnScrollChangedCallback;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
@@ -53,8 +53,7 @@ import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.InviteDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
-import com.xmd.technician.widget.ScrollChangeScrollView;
-import com.xmd.technician.widget.SlidingLayout;
+import com.xmd.technician.widget.SlidingMenu;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,7 +69,7 @@ import rx.Subscription;
 /**
  * Created by Administrator on 2016/10/19.
  */
-public class MainFragment extends BaseFragment implements View.OnClickListener, OnScrollChangedCallback, SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends BaseFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
 
     @Bind(R.id.rl_toolbar)
@@ -154,9 +153,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Bind(R.id.tv_title_service)
     TextView mTvTitleService;
     @Bind(R.id.main_scroll_view)
-    ScrollChangeScrollView mMainScrollView;
+    NestedScrollView mMainScrollView;
     @Bind(R.id.main_sliding_layout)
-    SlidingLayout mMainSlidingLayout;
+    SlidingMenu mMainSlidingLayout;
     @Bind(R.id.main_dynamic1)
     LinearLayout mMainDynamic1;
     @Bind(R.id.main_dynamic2)
@@ -260,9 +259,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         visitViewList.add(visitAvatar3);
         visitViewList.add(visitAvatar4);
         visitViewList.add(visitAvatar5);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMainBtn);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        mMainScrollView.setOnScrollChangedCallback(this);
+
+        mMainScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                onScrollViewChanged(scrollX,scrollY);
+            }
+        });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mMainSlidingLayout.closeMenu();
     }
 
     private void getData() {
@@ -700,12 +711,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar_back:
-                if (mMainSlidingLayout.isLeftLayoutVisible()) {
-                    mMainSlidingLayout.scrollToRightLayout(screenSpeed, 2);
-                } else {
-                    mMainSlidingLayout.scrollToLeftLayout(-screenSpeed, 2);
-                }
-
+                mMainSlidingLayout.toggle();
                 break;
             case R.id.toolbar_right_img:
                 //分享二维码
@@ -1033,8 +1039,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         ButterKnife.unbind(this);
     }
 
-    @Override
-    public void onScroll(int l, int t) {
+
+    public void onScrollViewChanged(int l, int t) {
         if (t > 100) {
             mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.recent_status_reward));
         } else {

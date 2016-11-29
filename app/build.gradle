@@ -18,7 +18,7 @@ bugtags {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '23.0.2'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -32,7 +32,7 @@ android {
         // 1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
         // release version : 1.4.0.14
         versionCode 19
-        versionName "1.5.1"
+        versionName "1.5.3"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
