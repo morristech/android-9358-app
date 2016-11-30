@@ -131,15 +131,16 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter{
             int viewType = getItemViewType(position);
             if(viewType == WITHDRAWAL){
                 viewHolder.mAmount.setTextColor(mContext.getResources().getColor(R.color.colorTitle));
-                viewHolder.mAmount.setText(Utils.getFloat2Str(info.amount)+"元");
+
+                viewHolder.mAmount.setText(String.format("%1.2f",info.amount)+"元");
                 viewHolder.mTitle.setText(ResourceUtils.getString(R.string.consume));
                 viewHolder.mAvatar.setImageResource(R.drawable.icon35);
             }else if(viewType == OUT_CLUB){
                 viewHolder.mAmount.setTextColor(mContext.getResources().getColor(R.color.colorTitle));
-                viewHolder.mAmount.setText(Utils.getFloat2Str(info.amount)+"元");
+                viewHolder.mAmount.setText(String.format("%1.2f",info.amount)+"元");
                 viewHolder.mAvatar.setBackground(ResourceUtils.getDrawable(R.drawable.icon46));
             }else {
-                viewHolder.mAmount.setText(Utils.getFloat2Str(info.amount)+"元");
+                viewHolder.mAmount.setText(String.format("%1.2f",info.amount)+"元");
                 if(viewType == COUPON_REWARD){
                     viewHolder.mAvatar.setVisibility(View.GONE);
                 }else {

@@ -437,7 +437,7 @@
     <string name="filtrate_recent_status_collect">只看收藏</string>
     <string name="filtrate_recent_status_coupon">只看领券</string>
     <string name="filtrate_recent_status_paid_coupon">只看点钟券</string>
-    <string name="filtrate_recent_status_reward">只看点打赏</string>
+    <string name="filtrate_recent_status_reward">只看打赏</string>
     <string name="rank_null_text">暂无技师</string>
     <string name="recent_status_type_comment">评价了我</string>
     <string name="recent_status_type_collect">收藏了我</string>

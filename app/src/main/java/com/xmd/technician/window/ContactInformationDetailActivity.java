@@ -247,28 +247,25 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     @OnClick(R.id.btn_call_phone)
     public void callPhone() {
-        MPermissions.requestPermissions(ContactInformationDetailActivity.this,REQUEST_CODE_PHONE, Manifest.permission.CALL_PHONE);
+        MPermissions.requestPermissions(ContactInformationDetailActivity.this, REQUEST_CODE_PHONE, Manifest.permission.CALL_PHONE);
     }
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         MPermissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
 
     @PermissionGrant(REQUEST_CODE_PHONE)
-    public void requestSdcardSuccess()
-    {
+    public void requestSdcardSuccess() {
         toCallPhone();
     }
 
     @PermissionDenied(REQUEST_CODE_PHONE)
-    public void requestSdcardFailed()
-    {
+    public void requestSdcardFailed() {
         Toast.makeText(this, "获取权限失败", Toast.LENGTH_SHORT).show();
     }
-
 
 
     public void toCallPhone() {
@@ -486,8 +483,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
             if (!TextUtils.isEmpty(String.valueOf(customer.respData.techCustomer.orderCount))) {
                 mContactOrder.setText(String.valueOf(customer.respData.techCustomer.orderCount));
             }
-            if (!TextUtils.isEmpty(String.valueOf(customer.respData.techCustomer.rewardAmount))) {
-                mContactReward.setText(String.valueOf(customer.respData.techCustomer.rewardAmount));
+
+            int pay = (int) customer.respData.techCustomer.rewardAmount;
+            if (pay > 10000) {
+                float payMoney = customer.respData.techCustomer.rewardAmount / 10000;
+                mContactReward.setText(String.format("%1.2f", payMoney) + "万");
+            } else {
+                mContactReward.setText(String.format("%1.2f", customer.respData.techCustomer.rewardAmount));
             }
             if (customer.respData.orders == null) {
                 rlOrder.setVisibility(View.GONE);

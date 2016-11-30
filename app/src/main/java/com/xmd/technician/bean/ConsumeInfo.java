@@ -8,7 +8,7 @@ public class ConsumeInfo {
     public String consumeRemark;
     public String consumeDateWeb;*/
     public int consumeMoney;
-    public String amount;
+    public float amount;
     public String consumeChannel;
     public String consumeType;
     public String dealDate;

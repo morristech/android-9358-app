@@ -24,15 +24,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
-public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     public static final String EXTRA_CONSUME_TYPE = "consumeType";
 
-    private static final int mActivityTitles[] = {R.string.user_reward_detail, R.string.coupon_reward_detail,R.string.paid_coupon_detail,R.string.paid_order_detail};
-    public static final String[] mConsumeTypes ={"user_reward","coupon_reward","paid_coupon","paid_order","withdrawal"};
+    private static final int mActivityTitles[] = {R.string.user_reward_detail, R.string.coupon_reward_detail, R.string.paid_coupon_detail, R.string.paid_order_detail};
+    public static final String[] mConsumeTypes = {"user_reward", "coupon_reward", "paid_coupon", "paid_order", "withdrawal"};
 
-    @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.list_view) RecyclerView mListView;
+    @Bind(R.id.swipe_refresh_widget)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.list_view)
+    RecyclerView mListView;
 
     private ConsumeDetailAdapter mAdapter;
     private Subscription mDetailSubscription;
@@ -82,7 +84,7 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
                 mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
             }
         });
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMain);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMainBtn);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mDetailSubscription = RxBus.getInstance().toObservable(ConsumeDetailResult.class).subscribe(
@@ -105,8 +107,8 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
         getConsumeDetailInfo();
     }
 
-    private boolean getConsumeDetailInfo(){
-        if(mPageCount < 0 || ((mCurrentPage + 1) <= mPageCount)){
+    private boolean getConsumeDetailInfo() {
+        if (mPageCount < 0 || ((mCurrentPage + 1) <= mPageCount)) {
             mCurrentPage++;
             Map<String, String> params = new HashMap<>();
             params.put(RequestConstant.KEY_CONSUME_TYPE, mConsumeType);
@@ -118,11 +120,11 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
         return false;
     }
 
-    private void getConsumeDetailResult(ConsumeDetailResult consumeDetailResult){
+    private void getConsumeDetailResult(ConsumeDetailResult consumeDetailResult) {
         mSwipeRefreshLayout.setRefreshing(false);
         mPageCount = consumeDetailResult.pageCount;
-        if(consumeDetailResult.respData != null){
-            if(!mIsLoadingMore){
+        if (consumeDetailResult.respData != null) {
+            if (!mIsLoadingMore) {
                 mConsumeList.clear();
             }
             mConsumeList.addAll(consumeDetailResult.respData);
@@ -131,8 +133,8 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
         }
     }
 
-    private void loadMore(){
-        if(getConsumeDetailInfo()){
+    private void loadMore() {
+        if (getConsumeDetailInfo()) {
             mSwipeRefreshLayout.setRefreshing(true);
             mIsLoadingMore = true;
         }
