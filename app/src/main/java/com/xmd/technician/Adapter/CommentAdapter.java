@@ -17,6 +17,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.bean.CommentInfo;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.widget.CircleImageView;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
 /**
  * Created by sdcm on 16-3-28.
  */
-public class CommentAdapter extends RecyclerView.Adapter{
+public class CommentAdapter extends RecyclerView.Adapter {
     private static final int TYPE_COMMENT_ITEM = 0;
     private static final int TYPE_FOOTER = 99;
 
@@ -38,21 +39,21 @@ public class CommentAdapter extends RecyclerView.Adapter{
 
     private View.OnClickListener mFooterClickListener;
 
-    public CommentAdapter(Context context){
+    public CommentAdapter(Context context) {
         mContext = context;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position < mCommentList.size()){
+        if (position < mCommentList.size()) {
             return TYPE_COMMENT_ITEM;
-        }else {
+        } else {
             return TYPE_FOOTER;
         }
     }
 
-    public void setData(List<CommentInfo> list){
-        if(list != null){
+    public void setData(List<CommentInfo> list) {
+        if (list != null) {
             mCommentList.clear();
             mCommentList.addAll(list);
             ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
@@ -68,16 +69,16 @@ public class CommentAdapter extends RecyclerView.Adapter{
         mIsNoMore = isNoMore;
     }
 
-    public void setOnFooterClickListener(View.OnClickListener listener){
+    public void setOnFooterClickListener(View.OnClickListener listener) {
         mFooterClickListener = listener;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(TYPE_COMMENT_ITEM == viewType){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent,false);
+        if (TYPE_COMMENT_ITEM == viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent, false);
             return new CommentViewHolder(view);
-        }else {
+        } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
             return new ListFooterHolder(view);
         }
@@ -85,21 +86,18 @@ public class CommentAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof CommentViewHolder){
+        if (holder instanceof CommentViewHolder) {
             CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
             CommentInfo commentInfo = getItem(position);
-            commentViewHolder.mName.setText(TextUtils.isEmpty(commentInfo.userInfo.name)?ResourceUtils.getString(R.string.default_user_name):commentInfo.userInfo.name);
-            commentViewHolder.mRatings.setRating(commentInfo.rate/20f);
+            commentViewHolder.mName.setText(TextUtils.isEmpty(commentInfo.userInfo.name) ? ResourceUtils.getString(R.string.default_user_name) : commentInfo.userInfo.name);
+            commentViewHolder.mRatings.setRating(commentInfo.rate / 20f);
             commentViewHolder.mComment.setText(commentInfo.comment);
             commentViewHolder.mTime.setText(commentInfo.createdAt);
-            if(commentInfo.rewardAmount > 0){
-                String s = String.format(mContext.getString(R.string.reward_amount),commentInfo.rewardAmount);
-                SpannableString spanString = new SpannableString(s);
-                int index = s.indexOf(":") + 1;
-                ForegroundColorSpan span = new ForegroundColorSpan(mContext.getResources().getColor(R.color.colorMainBtn));
-                spanString.setSpan(span, index, index + String.valueOf(commentInfo.rewardAmount).length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-                commentViewHolder.mRewardAmount.setText(spanString);
-            }else {
+            if (commentInfo.rewardAmount > 0) {
+                float reward = commentInfo.rewardAmount / 100f;
+                String rewardDes = String.format("打赏:%1.2f元",reward);
+                commentViewHolder.mRewardAmount.setText(Utils.changeColor(rewardDes,ResourceUtils.getColor(R.color.colorMainBtn),3,rewardDes.length()));
+            } else {
                 commentViewHolder.mRewardAmount.setText("");
             }
 
@@ -115,7 +113,7 @@ public class CommentAdapter extends RecyclerView.Adapter{
                 footerHolder.itemFooter.setOnClickListener(null);
             } else {
                 footerHolder.itemFooter.setOnClickListener(v -> {
-                    if(mFooterClickListener != null){
+                    if (mFooterClickListener != null) {
                         mFooterClickListener.onClick(v);
                     }
                 });
@@ -129,22 +127,28 @@ public class CommentAdapter extends RecyclerView.Adapter{
         return mCommentList.size() + 1;
     }
 
-    public CommentInfo getItem(int position){
-        if(mCommentList.size() > position){
+    public CommentInfo getItem(int position) {
+        if (mCommentList.size() > position) {
             return mCommentList.get(position);
         }
 
         return null;
     }
 
-    public class CommentViewHolder extends RecyclerView.ViewHolder{
+    public class CommentViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.avatar) CircleImageView mAvatar;
-        @Bind(R.id.name) TextView mName;
-        @Bind(R.id.ratings) RatingBar mRatings;
-        @Bind(R.id.comment) TextView mComment;
-        @Bind(R.id.time) TextView mTime;
-        @Bind(R.id.reward_amount) TextView mRewardAmount;
+        @Bind(R.id.avatar)
+        CircleImageView mAvatar;
+        @Bind(R.id.name)
+        TextView mName;
+        @Bind(R.id.ratings)
+        RatingBar mRatings;
+        @Bind(R.id.comment)
+        TextView mComment;
+        @Bind(R.id.time)
+        TextView mTime;
+        @Bind(R.id.reward_amount)
+        TextView mRewardAmount;
 
         public CommentViewHolder(View itemView) {
             super(itemView);

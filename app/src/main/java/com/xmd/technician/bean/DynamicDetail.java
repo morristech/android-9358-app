@@ -36,8 +36,7 @@ public class DynamicDetail {
     public int bizType;
     public long createTime;
     public int commentScore;
-    public float rewardAmount;
+    public int rewardAmount;
     public String avatarUrl;
-
 
 }

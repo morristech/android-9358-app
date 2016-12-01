@@ -9,6 +9,6 @@ public class CommentInfo {
     public int rate;
     public int likes;
     public String createdAt;
-    public int rewardAmount;
+    public int  rewardAmount;
     public  UserInfo userInfo;
 }

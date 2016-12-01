@@ -17,7 +17,7 @@ public class CustomerInfo extends BaseResult{
     public String clubId;
     public String emchatId;
     public int orderCount;
-    public float rewardAmount;
+    public int rewardAmount;
     public String avatarUrl;
     public String mPinyin;
     public String sortLetters;

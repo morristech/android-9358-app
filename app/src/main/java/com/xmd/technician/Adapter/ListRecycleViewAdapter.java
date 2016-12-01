@@ -606,13 +606,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
 
-            Glide.with(mContext).load(Utils.isNotEmpty(dynamicDetail.avatarUrl)?dynamicDetail.avatarUrl:dynamicDetail.imageUrl).error(R.drawable.icon22).into(viewHolder.dynamicItemAvatar);
+            Glide.with(mContext).load(Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl).error(R.drawable.icon22).into(viewHolder.dynamicItemAvatar);
             viewHolder.dynamicItemName.setText(dynamicDetail.userName);
             viewHolder.dynamicTime.setText(com.xmd.technician.common.DateUtils.getTimestampString(new Date(dynamicDetail.createTime)));
             String textDescription = dynamicDetail.description;
             String textRemark = dynamicDetail.remark;
             int commentScore = dynamicDetail.commentScore;
-            float rewardAmount = dynamicDetail.rewardAmount;
+          float rewardAmount = dynamicDetail.rewardAmount / 100f;
             if (Utils.isNotEmpty(dynamicDetail.phoneNum)) {
                 viewHolder.dynamicItemTelephone.setText(dynamicDetail.phoneNum);
             }
@@ -631,11 +631,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 } else {
                     viewHolder.dynamicItemCommentStarts.setVisibility(View.GONE);
                 }
-                viewHolder.dynamicItemCommentReward.setText(String.valueOf(rewardAmount));
-                if(rewardAmount>0){
+
+                if (rewardAmount > 0) {
                     viewHolder.dynamicItemCommentReward.setVisibility(View.VISIBLE);
-                    viewHolder.dynamicItemCommentReward.setText(String.valueOf(rewardAmount));
-                }else{
+                    viewHolder.dynamicItemCommentReward.setText(String.format("%1.2f", rewardAmount));
+                } else {
                     viewHolder.dynamicItemCommentReward.setVisibility(View.GONE);
                 }
 
@@ -648,22 +648,22 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.dynamicItemCommentDetail.setText(textDescription);
                 if (Utils.isNotEmpty(textRemark)) {
                     viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
-                }else {
+                } else {
                     viewHolder.dynamicItemRemark.setVisibility(View.GONE);
                 }
 
             } else if (dynamicDetail.bizType == 4) {
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_paid));
                 viewHolder.dynamicItemCommentDetail.setText(textDescription);
-                if(Utils.isNotEmpty(textDescription)){
+                if (Utils.isNotEmpty(textDescription)) {
                     viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
-                }else{
+                } else {
                     viewHolder.dynamicItemRemark.setVisibility(View.GONE);
                 }
 
             } else if (dynamicDetail.bizType == 5) {
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_to_reward));
-                viewHolder.dynamicItemCommentDetail.setText(Utils.changeStringNumColor(textDescription,ResourceUtils.getColor(R.color.colorMainBtn)));
+                viewHolder.dynamicItemCommentDetail.setText(Utils.changeStringNumColor(textDescription, ResourceUtils.getColor(R.color.colorMainBtn)));
             }
             viewHolder.btnThanks.setClickable(true);
             viewHolder.btnThanks.setOnClickListener(v -> mCallback.onSayHiButtonClicked(dynamicDetail));
@@ -834,6 +834,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mTime;
         @Bind(R.id.unread)
         TextView mUnread;
+
         public ConversationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

@@ -483,13 +483,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
             if (!TextUtils.isEmpty(String.valueOf(customer.respData.techCustomer.orderCount))) {
                 mContactOrder.setText(String.valueOf(customer.respData.techCustomer.orderCount));
             }
-
-            int pay = (int) customer.respData.techCustomer.rewardAmount;
-            if (pay > 10000) {
-                float payMoney = customer.respData.techCustomer.rewardAmount / 10000;
+            float reward = customer.respData.techCustomer.rewardAmount/100f;
+            if (reward > 10000) {
+                float payMoney = reward / 10000f;
                 mContactReward.setText(String.format("%1.2f", payMoney) + "万");
             } else {
-                mContactReward.setText(String.format("%1.2f", customer.respData.techCustomer.rewardAmount));
+                mContactReward.setText(String.format("%1.2f", reward));
             }
             if (customer.respData.orders == null) {
                 rlOrder.setVisibility(View.GONE);

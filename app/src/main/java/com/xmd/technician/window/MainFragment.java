@@ -282,7 +282,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA);
         refreshOrderListData();
         getDynamicList();
-        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
+       MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
 
     }
 
@@ -781,9 +781,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void initTechWorkView(TechStatisticsDataResult result) {
         mMainInfoTooKeenNumber.setText(result.respData.userCount);
         mMainSendCouponNumber.setText(result.respData.getCouponCount);
-        int pay = (int) result.respData.incomeAmount;
-        if (pay > 10000) {
-            float payMoney = result.respData.incomeAmount / 10000;
+
+        if (result.respData.incomeAmount > 10000) {
+            float payMoney = result.respData.incomeAmount / 10000f;
             mMainTotalIncomeNumber.setText(String.format("%1.2f", payMoney) + "万");
         } else {
             mMainTotalIncomeNumber.setText(String.format("%1.2f", result.respData.incomeAmount));
