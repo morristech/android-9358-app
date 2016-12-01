@@ -46,10 +46,13 @@ public class LoggingInterceptor implements Interceptor {
             }
 //        Logger.v("request:" + request.toString());
 //        FormBody formBody = (FormBody) request.body();
-//        int size = formBody.size();
-//        for(int i = 0; i < size; i++) {
-//            Logger.v(formBody.name(i) + ":" + formBody.value(i));
+//        if(formBody != null){
+//            int size = formBody.size();
+//            for(int i = 0; i < size; i++) {
+//                Logger.v(formBody.name(i) + ":" + formBody.value(i));
+//            }
 //        }
+
 
         Response response = chain.proceed(request);
         long t2 = System.nanoTime();

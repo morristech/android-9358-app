@@ -130,9 +130,16 @@ public class OrderDetailActivity extends BaseActivity {
         mCreateTime.setText(mOrder.formatCreateTime);
 
         if (Constant.ORDER_STATUS_COMPLETE.equals(mOrder.status)) {
+
             mOrderComment.setText(mOrder.comment);
             mOrderRatings.setRating(mOrder.rating);
-            mOrderReward.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), mOrder.rewardAmount));
+            if(mOrder.rewardAmount>0){
+                float reward = mOrder.rewardAmount/100f;
+                mOrderReward.setText(String.format("%1.2f元",reward));
+            }else{
+                mOrderReward.setText("0.0");
+            }
+
         } else {
             mCommentSection.setVisibility(View.GONE);
         }
