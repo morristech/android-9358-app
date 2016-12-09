@@ -98,7 +98,7 @@ public class UpgradeController extends AbstractController {
                     String msg = intent.getStringExtra(UpdaterController.EXTRA_ERROR_MSG);
                     Logger.d("\terror:" + code + "," + msg);
                     if (!mIsForeUpdate) {
-                        Toast.makeText(context, "升级失败，错误代码：" + code, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "升级失败，" + msg, Toast.LENGTH_LONG).show();
                     }
                 } else if (event == UpdateConstants.EVENT_DOWNLOAD_PROGRESS) {
                     long size = intent.getLongExtra(UpdaterController.EXTRA_DOWNLOAD_SIZE, 0);
