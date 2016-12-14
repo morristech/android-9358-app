@@ -224,6 +224,9 @@
         <activity android:name=".window.DynamicShareTechActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <!-- 裁剪图片 -->
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
     </application>
 
 </manifest>

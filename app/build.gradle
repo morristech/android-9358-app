@@ -135,6 +135,7 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile(name: 'multi-image-selector-1.1', ext: 'aar')
     compile(name: 'shidou-updater-1.5', ext: 'aar')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
@@ -151,4 +152,5 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     apt 'com.zhy:mpermission-compiler:1.0.0'
     compile 'com.zhy:mpermission-api:1.0.0'
+    compile project(':android-crop')
 }

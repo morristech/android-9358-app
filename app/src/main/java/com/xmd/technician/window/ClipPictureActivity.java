@@ -1,6 +1,5 @@
 package com.xmd.technician.window;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.FloatMath;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,10 +19,8 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-
 import com.hyphenate.util.ImageUtils;
 import com.xmd.technician.R;
-import com.xmd.technician.common.Util;
 import com.xmd.technician.widget.ClipView;
 
 import java.io.FileNotFoundException;
@@ -75,7 +71,7 @@ public class ClipPictureActivity extends BaseActivity implements OnTouchListener
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             titleBarHeight = toolbar.getMinimumHeight();
-        }else {
+        } else {
             titleBarHeight = (int) getResources().getDimension(R.dimen.home_button_height);
         }
 
@@ -87,8 +83,8 @@ public class ClipPictureActivity extends BaseActivity implements OnTouchListener
         if (bundle != null) {
             try {
                 Uri uri = Uri.parse(bundle.getString(EXTRA_INPUT));
-                mBitmap = ImageUtils.decodeScaleImage(Util.uriToRealPath(this, uri), metrics.widthPixels, height);
-                if(mBitmap == null){
+                mBitmap = ImageUtils.decodeScaleImage(uri.toString(), metrics.widthPixels, height);
+                if (mBitmap == null) {
                     mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                     mBitmap = ThumbnailUtils.extractThumbnail(mBitmap, height / 2, height / 2);
                 }
@@ -116,12 +112,12 @@ public class ClipPictureActivity extends BaseActivity implements OnTouchListener
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 oldDist = spacing(event);
-               Log.d(TAG, "oldDist=" + oldDist);
+                Log.d(TAG, "oldDist=" + oldDist);
                 if (oldDist > 10f) {
                     savedMatrix.set(matrix);
                     midPoint(mid, event);
                     mode = ZOOM;
-                   Log.d(TAG, "mode=ZOOM");
+                    Log.d(TAG, "mode=ZOOM");
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -170,7 +166,7 @@ public class ClipPictureActivity extends BaseActivity implements OnTouchListener
     }
 
     @OnClick(R.id.toolbar_right)
-    public void cropPicture(){
+    public void cropPicture() {
         showProgressDialog("正在保存图片...");
         new Thread(cropTask).start();
     }

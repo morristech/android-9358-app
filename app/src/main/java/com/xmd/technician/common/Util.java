@@ -87,6 +87,17 @@ public class Util {
         return imgFile;
     }
 
+    public static String bitmap2base64(Bitmap bitmap, boolean needRecycle) {
+        String imgFile = null;
+        /*ByteArrayOutputStream baoStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baoStream);
+        byte[] bytes = baoStream.toByteArray();*/
+
+        byte[] bytes = bmpToByteArray(bitmap, needRecycle);
+        imgFile = "data:image/png;base64," + Base64.encodeToString(bytes, Base64.DEFAULT);
+        return imgFile;
+    }
+
     public static byte[] bmpToByteArray(Bitmap bmp, boolean needRecycle){
         int i;
         int j;

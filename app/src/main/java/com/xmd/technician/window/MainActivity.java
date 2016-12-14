@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
+
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -11,15 +12,16 @@ import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
-import com.xmd.technician.bean.TechSummaryInfo;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+
 import java.util.LinkedList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
