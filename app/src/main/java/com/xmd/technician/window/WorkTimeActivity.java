@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
+import com.xmd.technician.bean.DayInfo;
+import com.xmd.technician.bean.TimeInfo;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.http.gson.UpdateWorkTimeResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
-import com.xmd.technician.bean.DayInfo;
-import com.xmd.technician.bean.TimeInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -63,7 +63,10 @@ public class WorkTimeActivity extends BaseActivity {
                 updateWorkTimeResult ->  updateWorkTimeResult());
 
         mUpdateWorkStatusSubscription = RxBus.getInstance().toObservable(UpdateWorkStatusResult.class).subscribe(
-                updateWorkStatusResult -> {dismissProgressDialogIfShowing(); finish();});
+                updateWorkStatusResult -> {
+                    dismissProgressDialogIfShowing();
+                    finish();
+                });
 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_WORK_TIME);
     }

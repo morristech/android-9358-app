@@ -1,66 +1,82 @@
 package com.xmd.technician.window;
 
-import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.common.ActivityHelper;
-import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Util;
-import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.LoginResult;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
-import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.contract.LoginContract;
+import com.xmd.technician.http.RetrofitServiceFactory;
+import com.xmd.technician.presenter.LoginPresenter;
 import com.xmd.technician.widget.ClearableEditText;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Subscription;
+import butterknife.OnLongClick;
 
-public class LoginActivity extends BaseActivity implements TextWatcher {
+public class LoginActivity extends BaseActivity implements LoginContract.View {
 
-    @Bind(R.id.login_username_txt)
+    @Bind(R.id.layout_phone_login)
+    View mLayoutPhoneLogin;
+    @Bind(R.id.layout_tech_no_login)
+    View mLayoutTechNoLogin;
+
+    @Bind(R.id.phone_number)
     ClearableEditText mEtUsername;
-    @Bind(R.id.login_password_txt)
+    @Bind(R.id.password1)
     ClearableEditText mEtPassword;
-    @Bind(R.id.login_btn)
-    Button mBtnLogin;
-    //@Bind(R.id.toggle_server_host) Button mBtnToggleServerHost;
-    //@Bind(R.id.server_host) Spinner mSpServerHost;
+    @Bind(R.id.login_btn1)
+    Button mBtnLogin1;
 
-    private Subscription mLoginSubscription;
-    private String mUsername;
-    private String mPassword;
-    //private String mSelectedServerHost;
+    @Bind(R.id.invite_code)
+    EditText mInviteCodeEditText;
+    @Bind(R.id.tech_no)
+    EditText mTechNoEditText;
+    @Bind(R.id.password2)
+    ClearableEditText mPasswordEditText2;
+    @Bind(R.id.login_btn2)
+    Button mBtnLogin2;
+
+
+    @Bind(R.id.toggle_server_host)
+    Button mBtnToggleServerHost;
+    @Bind(R.id.server_host)
+    Spinner mSpServerHost;
+    private String mSelectedServerHost;
+
+    LoginContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
 
         ButterKnife.bind(this);
 
         setTitle(R.string.login);
         setBackVisible(true);
 
-        mEtUsername.setText(SharedPreferenceHelper.getUserAccount());
-
-        mLoginSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
-                loginResult -> handleLoginResult(loginResult));
+        mPresenter = new LoginPresenter(this, this);
 
         mEtPassword.setFilters(new InputFilter[]{new InputFilter() {
             @Override
@@ -73,17 +89,52 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
                 return null;
             }
         }, new InputFilter.LengthFilter(20)});
-        mEtPassword.addTextChangedListener(this);
-        mEtUsername.addTextChangedListener(this);
+        mEtPassword.addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                mPresenter.setPassword(s.toString());
+            }
+        });
+        mEtUsername.addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                mPresenter.setPhoneNumber(s.toString());
+            }
+        });
+
+        mInviteCodeEditText.addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                mPresenter.setInviteCode(s.toString());
+            }
+        });
+
+        mTechNoEditText.addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                mPresenter.setTechNumber(s.toString());
+            }
+        });
+
+        mPasswordEditText2.addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                mPresenter.setPassword(s.toString());
+            }
+        });
+
+        initServerHost();
+
+        mPresenter.onCreate();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mLoginSubscription);
+        mPresenter.onDestroy();
     }
 
-    /*public void initContent() {
+    public void initServerHost() {
         mEtUsername.setText(SharedPreferenceHelper.getUserAccount());
 
         ArrayAdapter<String> serverHosts = new ArrayAdapter<>(this, R.layout.spinner_item, AppConfig.sServerHosts);
@@ -92,104 +143,104 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
 
         mSelectedServerHost = SharedPreferenceHelper.getServerHost();
         int selection = 0;
-        if (Utils.isNotEmpty(mSelectedServerHost)) {
+        if (!TextUtils.isEmpty(mSelectedServerHost)) {
             selection = AppConfig.sServerHosts.indexOf(mSelectedServerHost);
-            if(selection < 0) {
+            if (selection < 0) {
                 selection = 0;
             }
             mSpServerHost.setSelection(selection);
+            mSpServerHost.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    SharedPreferenceHelper.setServerHost((String) parent.getItemAtPosition(position));
+                    RetrofitServiceFactory.recreateService();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         }
-    }*/
-
-    @OnClick(R.id.login_btn)
-    public void login() {
-
-        mUsername = mEtUsername.getText().toString();
-        if (TextUtils.isEmpty(mUsername)) {
-            makeShortToast(ResourceUtils.getString(R.string.login_activity_hint_username_not_empty));
-            return;
-        }
-
-        mPassword = mEtPassword.getText().toString();
-        if (TextUtils.isEmpty(mPassword)) {
-            makeShortToast(ResourceUtils.getString(R.string.login_activity_hint_password_not_empty));
-            return;
-        }
-
-        //Save the usernames
-        SharedPreferenceHelper.setUserAccount(mUsername);
-
-        /*mSelectedServerHost = mSpServerHost.getSelectedItem().toString();
-
-        //Save the server host
-        SharedPreferenceHelper.setServerHost(mSelectedServerHost);
-        // Recreate the retrofit service
-        RetrofitServiceFactory.recreateService();*/
-
-        showProgressDialog(getString(R.string.login_signing));
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_USERNAME, mUsername);
-        params.put(RequestConstant.KEY_PASSWORD, mPassword);
-        params.put(RequestConstant.KEY_APP_VERSION, "android." + AppConfig.getAppVersionNameAndCode());
-
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN, params);
     }
 
-    /*@OnLongClick(R.id.toggle_server_host)
+    @OnClick({R.id.login_btn1, R.id.login_btn2})
+    public void login() {
+        mPresenter.onClickLogin();
+    }
+
+    @OnClick({R.id.switch_login1, R.id.switch_login2})
+    public void switchLogin() {
+        mPresenter.onClickSwitchLoginMethod();
+    }
+
+    @OnClick(R.id.register_btn)
+    public void register() {
+        mPresenter.onClickRegister();
+    }
+
+
+    @OnLongClick(R.id.toggle_server_host)
     public boolean toggleServerHostSpinner() {
-        if(mSpServerHost.getVisibility() == View.GONE) {
+        if (mSpServerHost.getVisibility() == View.GONE) {
             mSpServerHost.setVisibility(View.VISIBLE);
         } else {
             mSpServerHost.setVisibility(View.GONE);
         }
         return true;
-    }*/
+    }
 
     @OnClick(R.id.find_password)
     public void gotoFindPassword() {
-        startActivity(new Intent(this, ResetPasswordActivity.class));
+        mPresenter.onClickFindPassword();
     }
 
-    private void handleLoginResult(LoginResult loginResult) {
-        if (loginResult.status.equals("fail")) {
-            dismissProgressDialogIfShowing();
-            makeShortToast(loginResult.message);
+    @Override
+    public void showTechNoLogin() {
+        mLayoutPhoneLogin.setVisibility(View.GONE);
+        mLayoutTechNoLogin.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showPhoneLogin() {
+        mLayoutPhoneLogin.setVisibility(View.VISIBLE);
+        mLayoutTechNoLogin.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setPhoneNumber(String value) {
+        mEtUsername.setText(value);
+    }
+
+    @Override
+    public void enableLogin(boolean enable) {
+        if (mLayoutPhoneLogin.getVisibility() == View.VISIBLE) {
+            mBtnLogin1.setEnabled(enable);
         } else {
-            SharedPreferenceHelper.setUserToken(loginResult.token);
-            SharedPreferenceHelper.setUserId(loginResult.userId);
-            SharedPreferenceHelper.setEmchatId(loginResult.emchatId);
-            SharedPreferenceHelper.setEMchatPassword(loginResult.emchatPassword);
-            /*SharedPreferenceHelper.setUserName(loginResult.name);
-            SharedPreferenceHelper.setUserAvatar(loginResult.avatarUrl);*/
-            UserProfileProvider.getInstance().updateCurrentUserInfo(loginResult.name, loginResult.avatarUrl);
-
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
-
-            dismissProgressDialogIfShowing();
-            ActivityHelper.getInstance().removeAllActivities();
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
+            mBtnLogin2.setEnabled(enable);
         }
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+    public void finishSelf() {
+        finish();
     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    private class BaseTextWatcher implements TextWatcher {
 
-    }
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    @Override
-    public void afterTextChanged(Editable s) {
-        String password = mEtPassword.getText().toString();
-        String account = mEtUsername.getText().toString();
-        if (Util.matchPassWordFormat(password) && Util.matchPhoneNumFormat(account)) {
-            mBtnLogin.setEnabled(true);
-        } else {
-            mBtnLogin.setEnabled(false);
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
         }
     }
 }

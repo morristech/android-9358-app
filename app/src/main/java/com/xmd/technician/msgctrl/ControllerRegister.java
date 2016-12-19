@@ -27,6 +27,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CLUB_COUPON_LIST,
                 MsgDef.MSG_DEF_TOKEN_EXPIRE,
                 MsgDef.MSG_DEF_LOGIN,
+                MsgDef.MSG_DEF_LOGIN_BY_TECH_NO,
                 MsgDef.MSG_DEF_LOGOUT,
                 MsgDef.MSG_DEF_GET_TECH_EDIT_INFO,
                 MsgDef.MSG_DEF_GET_ACCOUNT_MONEY,

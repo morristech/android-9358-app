@@ -10,7 +10,6 @@ import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.GiftListResult;
-import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.RecentlyVisitorResult;
@@ -71,6 +70,14 @@ public interface SpaService {
                             @Field(RequestConstant.KEY_PASSWORD) String password,
                             @Field(RequestConstant.KEY_APP_VERSION) String appVersion,
                             @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_LOGIN_BY_TECH_NO)
+    Call<LoginResult> loginByTechNo(@Field(RequestConstant.KEY_CLUB_CODE) String clubCode,
+                                    @Field(RequestConstant.KEY_TECH_No) String techNo,
+                                    @Field(RequestConstant.KEY_PASSWORD) String password,
+                                    @Field(RequestConstant.KEY_APP_VERSION) String appVersion,
+                                    @Field(RequestConstant.KEY_LOGIN_CHANNEL) String loginChannel);
 
     /**
      * @param userToken
@@ -544,5 +551,5 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_ORDER_INNER_READ)
     Call<BaseResult> setOrderInnerRead(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                             @Field(RequestConstant.KEY_ORDER_ID) String orderId);
+                                       @Field(RequestConstant.KEY_ORDER_ID) String orderId);
 }

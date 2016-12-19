@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
@@ -141,7 +142,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
             intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
             intent.putExtra(RequestConstant.CONTACT_TYPE, bean.customerType);
             intent.putExtra(RequestConstant.KEY_TECH_NAME, bean.techName);
-            intent.putExtra(RequestConstant.KEY_TECH_NO, bean.techSerialNo);
+            intent.putExtra(RequestConstant.KEY_TECH_No, bean.techSerialNo);
             intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, RequestConstant.TYPE_CUSTOMER);
             intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
             startActivity(intent);

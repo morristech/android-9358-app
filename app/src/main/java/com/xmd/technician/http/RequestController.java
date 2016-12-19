@@ -2,6 +2,7 @@ package com.xmd.technician.http;
 
 import android.os.Message;
 import android.text.TextUtils;
+
 import com.hyphenate.chat.EMClient;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -94,6 +95,9 @@ public class RequestController extends AbstractController {
         switch (msg.what) {
             case MsgDef.MSG_DEF_LOGIN:
                 doLogin((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_LOGIN_BY_TECH_NO:
+                doLoginByTechNo((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_LOGOUT:
                 doLogout();
@@ -279,7 +283,7 @@ public class RequestController extends AbstractController {
                 setPageSelected((int) msg.obj);
                 break;
             case MsgDef.MSG_DEF_ORDER_INNER_READ:
-               setOrderInnerRead((Map<String, String>) msg.obj);
+                setOrderInnerRead((Map<String, String>) msg.obj);
                 break;
 
         }
@@ -293,10 +297,42 @@ public class RequestController extends AbstractController {
      * Login Button Clicked in LoginActivity
      */
     private void doLogin(Map<String, String> params) {
-        Call<LoginResult> call = getSpaService().login(params.get(RequestConstant.KEY_USERNAME),
+        Call<LoginResult> call = getSpaService().login(
+                params.get(RequestConstant.KEY_USERNAME),
                 params.get(RequestConstant.KEY_PASSWORD),
                 params.get(RequestConstant.KEY_APP_VERSION),
                 RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new Callback<LoginResult>() {
+            @Override
+            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                LoginResult loginResult = response.body();
+                if (loginResult != null) {
+                    RxBus.getInstance().post(loginResult);
+                } else {
+                    try {
+                        RxBus.getInstance().post(new Throwable(response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResult> call, Throwable t) {
+                RxBus.getInstance().post(t);
+            }
+        });
+    }
+
+    //使用技师编号登录
+    private void doLoginByTechNo(Map<String, String> params) {
+        Call<LoginResult> call = getSpaService().loginByTechNo(
+                params.get(RequestConstant.KEY_CLUB_CODE),
+                params.get(RequestConstant.KEY_TECH_No),
+                params.get(RequestConstant.KEY_PASSWORD),
+                params.get(RequestConstant.KEY_APP_VERSION),
+                RequestConstant.DEFAULT_LOGIN_CHANNEL);
 
         call.enqueue(new Callback<LoginResult>() {
             @Override
@@ -1196,7 +1232,7 @@ public class RequestController extends AbstractController {
      */
     private void getMainPageOrderList(Map<String, String> params) {
         Call<OrderListResult> call = getSpaService().getTechOrderList(SharedPreferenceHelper.getUserToken(),
-                RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ORDER_STATUS),params.get(RequestConstant.KEY_IS_INDEX_PAGE),
+                RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ORDER_STATUS), params.get(RequestConstant.KEY_IS_INDEX_PAGE),
                 params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<OrderListResult>() {
             @Override
@@ -1238,6 +1274,7 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
     /**
      * 动态列表
      *
@@ -1262,8 +1299,8 @@ public class RequestController extends AbstractController {
         RxBus.getInstance().post(new CurrentSelectPage(obj));
     }
 
-    private void setOrderInnerRead(Map<String,String> params){
-        Call<BaseResult> call = getSpaService().setOrderInnerRead(SharedPreferenceHelper.getUserToken(),params.get(RequestConstant.KEY_ORDER_ID));
+    private void setOrderInnerRead(Map<String, String> params) {
+        Call<BaseResult> call = getSpaService().setOrderInnerRead(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_ORDER_ID));
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {

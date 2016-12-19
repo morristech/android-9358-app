@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.hyphenate.chat.EMClient;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ThreadManager;
 
@@ -16,7 +15,7 @@ public class WelcomeActivity extends BaseActivity {
     private Runnable mTask = new Runnable() {
         @Override
         public void run() {
-            Intent intent = new Intent(WelcomeActivity.this , PreLoginActivity.class);
+            Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }

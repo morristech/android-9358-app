@@ -8,11 +8,12 @@ public class RequestConstant {
     /*********************************************************************************************/
     /*                                           urls                                            */
     /*********************************************************************************************/
-  public static final String SERVER_HOST = "http://spa.93wifi.com";
+    public static final String SERVER_HOST = "http://spa.93wifi.com";
 
     public static final String BASE_URL = "/spa-manager/api";
 
     public static final String URL_LOGIN = BASE_URL + "/v1/tech/login";
+    public static final String URL_LOGIN_BY_TECH_NO = BASE_URL + "/v1/spare_tech/login";
     public static final String URL_LOGOUT = BASE_URL + "/v1/tech/logout";
     public static final String URL_REGISTER = BASE_URL + "/v1/tech/register";
     public static final String URL_EDIT_INFO = BASE_URL + "/v1/profile/tech/editInfo";
@@ -111,7 +112,7 @@ public class RequestConstant {
     public static final String KEY_TELEPHONE = "telephone";
     public static final String KEY_REQ_DATE = "reqDate";
     public static final String KEY_TECH_NAME = "techName";
-    public static final String KEY_TECH_NO = "techNO";
+    public static final String KEY_TECH_No = "techNo";
 
     public static final String KEY_SESSION_TYPE = "sessionType";
     public static final String KEY_TOKEN = "token";
@@ -127,6 +128,7 @@ public class RequestConstant {
     public static final String KEY_CHANEL = "chanel";
     public static final String KEY_LOGIN_CHANEL = "loginChanel";
 
+    public static final String KEY_LOGIN_CHANNEL = "loginChannel";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_USER = "user";
@@ -251,6 +253,8 @@ public class RequestConstant {
     public static final int RESP_ERROR = 400;
 
     public static final int RESP_ERROR_CODE_FOR_LOCAL = 9999;
+
+    public static final String DEFAULT_LOGIN_CHANNEL = "android";
 
 }
 

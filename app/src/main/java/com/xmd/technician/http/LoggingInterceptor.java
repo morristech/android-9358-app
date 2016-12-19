@@ -14,6 +14,7 @@ import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -29,7 +30,7 @@ public class LoggingInterceptor implements Interceptor {
         request = request.newBuilder().header("User-Agent",hear + "-android"+ AppConfig.getAppVersionNameAndCode()).build();
         //request.newBuilder().addHeader("User-Agent","android"+ AppConfig.getAppVersionNameAndCode()).build();
 
-        long t1 = System.nanoTime();
+//        long t1 = System.nanoTime();
             if(TechApplication.isTest ){
                 OkHttpClient client = new OkHttpClient();
                 client.newCall(request).enqueue(new Callback() {
@@ -53,12 +54,32 @@ public class LoggingInterceptor implements Interceptor {
 //            }
 //        }
 
+        Logger.d(requestToString(request));
 
         Response response = chain.proceed(request);
-        long t2 = System.nanoTime();
-        Logger.v(String.format("received " + response.toString() + " in %.1fms%n", (t2 - t1) / 1e6d));
+//        long t2 = System.nanoTime();
+//        Logger.d(String.format("received " + response.toString() + " in %.1fms%n", (t2 - t1) / 1e6d));
 
         return response;
 
+    }
+
+
+    private String requestToString(Request request) {
+        String result = request.method() + ":" + request.url().toString();
+        RequestBody requestBody = request.body();
+        if (requestBody != null) {
+            if (requestBody instanceof FormBody) {
+                FormBody body = (FormBody) request.body();
+                result += "----params:";
+                for (int i = 0; i < body.size(); i++) {
+                    result += body.name(i) + "=" + body.value(i) + "&";
+                }
+                result = result.substring(0, result.length() - 1);
+            } else {
+                result += "----un form data!";
+            }
+        }
+        return result;
     }
 }

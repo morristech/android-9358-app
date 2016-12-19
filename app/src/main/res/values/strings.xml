@@ -9,6 +9,8 @@
     <string name="login_activity_login_tips">您的手机号已注册，请输入密码完成登录</string>
     <string name="login_account_hint">输入手机号</string>
     <string name="login">登录</string>
+    <string name="login_phone"><u>使用手机号码登录</u></string>
+    <string name="login_tech_no"><u>使用技师编号登录</u></string>
     <string name="find_password">找回密码</string>
     <string name="forget_password">忘记密码</string>
     <string name="register">注册</string>

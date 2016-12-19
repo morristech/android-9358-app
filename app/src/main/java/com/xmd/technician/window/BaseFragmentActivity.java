@@ -22,6 +22,7 @@ import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.TokenExpiredResult;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.AlertDialogBuilder;
 
 import rx.Subscription;
 
@@ -48,15 +49,24 @@ public class BaseFragmentActivity extends AppCompatActivity {
         ActivityHelper.getInstance().pushActivity(this);
 
         mLogoutSubscription = RxBus.getInstance().toObservable(LogoutResult.class).subscribe(
-                logoutResult -> {dismissProgressDialogIfShowing(); gotoLoginActivity(null);}
+                logoutResult -> {
+                    dismissProgressDialogIfShowing();
+                    gotoLoginActivity(null);
+                }
         );
 
         mTokenExpiredSubscription = RxBus.getInstance().toObservable(TokenExpiredResult.class).subscribe(
-                tokenExpiredResult -> {dismissProgressDialogIfShowing(); gotoLoginActivity(tokenExpiredResult.expiredReason);}
+                tokenExpiredResult -> {
+                    dismissProgressDialogIfShowing();
+                    gotoLoginActivity(tokenExpiredResult.expiredReason);
+                }
         );
 
         mThrowableSubscription = RxBus.getInstance().toObservable(Throwable.class).subscribe(
-                throwable -> {dismissProgressDialogIfShowing(); makeShortToast(throwable.getLocalizedMessage());}
+                throwable -> {
+                    dismissProgressDialogIfShowing();
+                    makeShortToast(throwable.getLocalizedMessage());
+                }
         );
     }
 
@@ -158,10 +168,35 @@ public class BaseFragmentActivity extends AppCompatActivity {
         mToast.show();
     }
 
+    public void showToast(String message) {
+        makeShortToast(message);
+    }
+
+    public void showAlertDialog(String message) {
+        new AlertDialogBuilder(this)
+                .setMessage(message)
+                .setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .show();
+    }
+
+    public void showLoading(String message) {
+        showProgressDialog(message);
+    }
+
+    public void hideLoading() {
+        dismissProgressDialogIfShowing();
+    }
+
     protected void showProgressDialog(String message){
         mProgressDialog = getSpinnerProgressDialog(this, message);
         mProgressDialog.show();
     }
+
 
     protected void dismissProgressDialogIfShowing(){
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
@@ -194,7 +229,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
         SharedPreferenceHelper.clearUserInfo();
 
         ActivityHelper.getInstance().removeAllActivities();
-        Intent intent = new Intent(this, PreLoginActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

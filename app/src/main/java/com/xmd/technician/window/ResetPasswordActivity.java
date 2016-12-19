@@ -1,16 +1,13 @@
 package com.xmd.technician.window;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -85,7 +82,10 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher{
         });
 
         mResetPasswordSubscription = RxBus.getInstance().toObservable(ResetPasswordResult.class).subscribe(
-                resetPasswordResult -> {dismissProgressDialogIfShowing(); finish();}
+                resetPasswordResult -> {
+                    dismissProgressDialogIfShowing();
+                    finish();
+                }
         );
     }
 

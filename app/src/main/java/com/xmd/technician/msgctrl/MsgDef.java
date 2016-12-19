@@ -79,6 +79,11 @@ public class MsgDef {
 
     public static final int MSG_DEF_UPDATE_SERVICE_ITEM_LIST = 0x0025;
 
+    /**
+     * ChatController, start to chat with someone
+     */
+    public static final int MSG_DEF_START_CHAT = 0x0026;
+
     public static final int MSG_DEF_GET_COUPON_LIST = 0x0027;
 
     public static final int MSG_DEF_GET_COUPON_INFO = 0x0028;
@@ -86,6 +91,23 @@ public class MsgDef {
     public static final int MSG_DEF_GET_PAID_COUPON_USER_DETAIL = 0x0029;
 
     public static final int MSG_DEF_SHARE_TO_OTHER = 0x0030;
+
+    public static final int MSG_DEF_SAVE_CHAT_USER = 0x0031;
+    public static final int MSG_DEF_GET_CONVERSATION_LIST = 0x0032;
+    public static final int MSG_DEF_SYSTEM_NOTICE_NOTIFY = 0x0033;
+
+    public static final int MSG_DEF_SORT_ALBUM = 0x0034;
+
+    public static final int MSG_DEF_HIDE_ORDER = 0x0035;
+
+    public static final int MSG_DEF_QUIT_CLUB = 0x0036;
+
+    public static final int MSG_DEF_LOGIN_EMCHAT = 0x0037;
+
+    public static final int MSG_DEF_COUPON_SHARE_EVENT_COUNT = 0x0038;
+
+    public static final int MSG_DEF_GET_APP_UPDATE_CONFIG = 0x0039;
+
 
 
     public static final int MSG_DEF_GET_CLUB_LIST = 0x0040;
@@ -111,35 +133,14 @@ public class MsgDef {
     public static final int MSG_DEF_GET_VISIT_VIEW = 0x0063;
     public static final int MSG_DEF_SAVE_CHAT_TO_CHONTACT = 0x0064;
 
-    public static final int MSF_DEF_GET_TECH_INFO = 0x0065 ;
-    public static final int MSF_DEF_GET_TECH_ORDER_LIST = 0x0066 ;
-    public static final int MSF_DEF_GET_TECH_STATISTICS_DATA = 0x0067 ;
+    public static final int MSF_DEF_GET_TECH_INFO = 0x0065;
+    public static final int MSF_DEF_GET_TECH_ORDER_LIST = 0x0066;
+    public static final int MSF_DEF_GET_TECH_STATISTICS_DATA = 0x0067;
     public static final int MSF_DEF_GET_TECH_RANK_INDEX_DATA = 0x0068;
     public static final int MSF_DEF_GET_TECH_DYNAMIC_LIST = 0x0069;
     public static final int MSF_DEF_SET_PAGE_SELECTED = 0x0070;
     public static final int MSG_DEF_ORDER_INNER_READ = 0x0071;
 
-    /**
-     * ChatController, start to chat with someone
-     */
-    public static final int MSG_DEF_START_CHAT = 0x0026;
+    public static final int MSG_DEF_LOGIN_BY_TECH_NO = 0x0072;
 
-    /**
-     *
-     */
-    public static final int MSG_DEF_SAVE_CHAT_USER = 0x0031;
-    public static final int MSG_DEF_GET_CONVERSATION_LIST = 0x0032;
-    public static final int MSG_DEF_SYSTEM_NOTICE_NOTIFY = 0x0033;
-
-    public static final int MSG_DEF_SORT_ALBUM = 0x0034;
-
-    public static final int MSG_DEF_HIDE_ORDER = 0x0035;
-
-    public static final int MSG_DEF_QUIT_CLUB = 0x0036;
-
-    public static final int MSG_DEF_LOGIN_EMCHAT = 0x0037;
-
-    public static final int MSG_DEF_COUPON_SHARE_EVENT_COUNT = 0x0038;
-
-    public static final int MSG_DEF_GET_APP_UPDATE_CONFIG = 0x0039;
 }
