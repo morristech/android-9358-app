@@ -162,13 +162,14 @@ public class Utils {
      * @return
      */
     public static int[] getScreenWidthHeight(Activity activity) {
-        if(activity == null){
+        if (activity == null) {
             activity = ActivityHelper.getInstance().getCurrentActivity();
         }
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return new int[]{metrics.widthPixels, metrics.heightPixels};
     }
+
     public static int getScreenWidth() {
         return getScreenWidthHeight(null)[0];
     }
@@ -202,6 +203,26 @@ public class Utils {
         Matcher m = p.matcher(text);
 
         return m.matches();
+    }
+
+    public static boolean matchLoginPassword(String text) {
+        if (text == null) {
+            return false;
+        }
+        if (text.length() < 6 || text.length() > 20) {
+            return false;
+        }
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || c > 'z') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean matchVerificationCode(String text) {
+        return TextUtils.isEmpty(text) || (text.length() >= 4 && text.length() <= 20);
     }
 
     /**
@@ -320,7 +341,7 @@ public class Utils {
                 lastNum = i;
             }
         }
-        return changeColor(source, color, 4, lastNum+1);
+        return changeColor(source, color, 4, lastNum + 1);
     }
 
     /**

@@ -1,168 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.xmd.technician.window.RegisterActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <include layout="@layout/toolbar"></include>
+    <data>
 
-    <View
+        <variable
+            name="tech"
+            type="com.xmd.technician.model.LoginTechnician" />
+
+        <variable
+            name="presenter"
+            type="com.xmd.technician.presenter.RegisterPresenter" />
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
+        android:layout_height="match_parent"
+        android:background="@color/color_white">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@android:color/white">
+        <ImageView
+            android:id="@+id/img_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_register1" />
 
-        <com.xmd.technician.widget.ClearableEditText
-            android:id="@+id/user_name"
+        <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_button_height"
-            android:layout_marginLeft="@dimen/personal_padding"
-            android:layout_marginRight="@dimen/personal_padding"
-            android:drawableLeft="@drawable/phone"
-            android:drawablePadding="@dimen/personal_padding"
-            android:background="@android:color/transparent"
-            android:inputType="phone"
-            android:maxLength="11"
-            android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontBody"
-            android:textColorHint="@color/colorRemarkText"
-            android:hint="@string/login_account_hint"/>
+            android:layout_marginTop="24dp"
+            android:background="@null"
+            android:gravity="center"
+            android:text="完善信息"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontTitle" />
 
-        <View
+        <TextView
+            android:id="@+id/tip_invite_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="8dp"
+            android:text="会所邀请码："
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontBody" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/tip_invite_code"
+            android:text="@{tech.inviteCode}"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontBody" />
+
+        <TextView
+            android:id="@+id/tip_tech_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tip_invite_code"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="8dp"
+            android:text="技师编号："
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontBody" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tip_invite_code"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/tip_tech_no"
+            android:text="@{tech.techNo}"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontBody" />
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/line_divide_height"
-            android:layout_marginLeft="@dimen/personal_padding"
-            android:layout_marginRight="@dimen/personal_padding"
-            android:background="@color/colorLineDivide" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/white"
+            android:orientation="vertical">
 
-        <com.xmd.technician.widget.ClearableEditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/home_button_height"
-            android:layout_marginLeft="@dimen/personal_padding"
-            android:layout_marginRight="@dimen/personal_padding"
-            android:drawableLeft="@drawable/password_c"
-            android:drawablePadding="@dimen/personal_padding"
-            android:background="@android:color/transparent"
-            android:inputType="textPassword"
-            android:maxLength="20"
-            android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontBody"
-            android:textColorHint="@color/colorRemarkText"
-            android:hint="@string/register_password_hint"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_divide_height"
-            android:layout_marginLeft="@dimen/personal_padding"
-            android:layout_marginRight="@dimen/personal_padding"
-            android:background="@color/colorLineDivide" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/home_button_height"
-            android:layout_marginLeft="@dimen/personal_padding"
-            android:layout_marginRight="@dimen/personal_padding"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/icode"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_button_height"
-                android:drawableLeft="@drawable/icon44"
-                android:drawablePadding="@dimen/personal_padding"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/phone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:text="+86"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/fontBody" />
+
+                <com.xmd.technician.widget.ClearableEditText
+                    android:id="@+id/phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:afterTextChanged="@{(s)->presenter.setPhoneNumber(s)}"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/login_account_hint"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:textColor="@color/colorBody"
+                    android:textSize="@dimen/fontBody" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_divide_height"
+                android:background="@color/colorLineDivide" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_button_height"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/verification_code" />
+
+                <com.xmd.technician.widget.ClearableEditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:afterTextChanged="@{(s)->presenter.setVerificationCode(s)}"
+                    android:background="@android:color/transparent"
+                    android:hint="输入验证码"
+                    android:inputType="text"
+                    android:maxLength="11"
+                    android:textColor="@color/colorBody"
+                    android:textSize="@dimen/fontBody" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_button_main_selector"
+                    android:enabled="@{presenter.mCanGetVerificationCode}"
+                    android:gravity="center"
+                    android:minHeight="0dp"
+                    android:onClick="@{()->presenter.onClickGetVerificationCode()}"
+                    android:padding="8dp"
+                    android:text="@{presenter.mSendVerificationText}"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/fontHead" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_divide_height"
+                android:background="@color/colorLineDivide" />
+
+            <com.xmd.technician.widget.ClearableEditText
+                android:id="@+id/password1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_button_height"
+                android:afterTextChanged="@{(s)->presenter.setNewPassword(s)}"
                 android:background="@android:color/transparent"
-                android:inputType="number"
-                android:maxLength="6"
+                android:drawableLeft="@drawable/password_c"
+                android:drawablePadding="@dimen/activity_horizontal_margin"
+                android:hint="@string/register_password_hint"
+                android:inputType="textPassword"
+                android:maxLength="20"
                 android:textColor="@color/colorBody"
-                android:textSize="@dimen/fontBody"
                 android:textColorHint="@color/colorRemarkText"
-                android:hint="@string/register_security_code_hint"/>
+                android:textSize="@dimen/fontBody" />
 
             <Button
-                android:id="@+id/send_icode"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/personal_description_height"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/personal_padding"
-                android:paddingRight="@dimen/search_margin"
-                android:paddingLeft="@dimen/search_margin"
+                android:id="@+id/login_btn1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_button_height"
+                android:layout_marginTop="@dimen/personal_margin"
                 android:background="@drawable/login_button_main_selector"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/fontTitle"
-                android:text="@string/register_send_security_code"/>
+                android:enabled="@{presenter.mCanGotoSetInfoView}"
+                android:gravity="center"
+                android:onClick="@{()->presenter.onClickNextStep()}"
+                android:text="下一步"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/fontHead" />
+        </LinearLayout>
 
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_divide_height"
-            android:layout_marginLeft="@dimen/personal_padding"
-            android:layout_marginRight="@dimen/personal_padding"
-            android:background="@color/colorLineDivide" />
-
-        <com.xmd.technician.widget.ClearableEditText
-            android:id="@+id/invite_club"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/home_button_height"
-            android:layout_marginLeft="@dimen/personal_padding"
-            android:layout_marginRight="@dimen/personal_padding"
-            android:drawableLeft="@drawable/ic_yaoqingma"
-            android:drawablePadding="@dimen/personal_padding"
-            android:background="@android:color/transparent"
-            android:digits="@string/only_number_and_char"
-            android:maxLength="6"
-            android:textColor="@color/colorBody"
-            android:textSize="@dimen/fontBody"
-            android:textColorHint="@color/colorRemarkText"
-            android:hint="@string/personal_fragment_button_invite"/>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_divide_height"
-        android:background="@color/colorLineDivide" />
-
-    <Button
-        android:id="@+id/register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/personal_margin"
-        android:layout_marginLeft="@dimen/personal_padding"
-        android:layout_marginRight="@dimen/personal_padding"
-        android:background="@drawable/login_button_main_selector"
-        android:enabled="false"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/fontTitle"
-        android:text="@string/next_step"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/personal_margin"
-        android:layout_marginLeft="@dimen/personal_padding"
-        android:textColor="@color/colorTitle"
-        android:textSize="@dimen/fontBody"
-        android:text="@string/note"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/work_time_padding"
-        android:layout_marginRight="@dimen/work_time_padding"
-        android:layout_marginTop="@dimen/search_margin"
-        android:lineSpacingExtra="@dimen/search_margin"
-        android:textColor="@color/colorBody"
-        android:textSize="@dimen/fontNormal"
-        android:text="@string/register_tips"/>
-
-</LinearLayout>
+    </RelativeLayout>
+</layout>

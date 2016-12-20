@@ -8,47 +8,55 @@
 
     <include layout="@layout/toolbar"></include>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_divide_height"
+        android:background="@color/colorLineDivide" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@android:color/white">
 
-        <LinearLayout
+        <com.xmd.technician.widget.ClearableEditText
+            android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_button_height"
             android:layout_marginLeft="@dimen/personal_padding"
             android:layout_marginRight="@dimen/personal_padding"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:drawableLeft="@drawable/phone"
+            android:drawablePadding="@dimen/personal_padding"
+            android:background="@android:color/transparent"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody"
+            android:textColorHint="@color/colorRemarkText"
+            android:hint="@string/login_account_hint"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/phone"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_divide_height"
+            android:layout_marginLeft="@dimen/personal_padding"
+            android:layout_marginRight="@dimen/personal_padding"
+            android:background="@color/colorLineDivide" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/personal_padding"
-                android:textColor="@color/colorTitle"
-                android:textSize="@dimen/fontBody"
-                android:text="+86"/>
-
-            <com.xmd.technician.widget.ClearableEditText
-                android:id="@+id/user_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/personal_padding"
-                android:layout_marginRight="@dimen/personal_padding"
-                android:background="@android:color/transparent"
-                android:inputType="phone"
-                android:maxLength="11"
-                android:textColor="@color/colorBody"
-                android:textSize="@dimen/fontBody"
-                android:textColorHint="@color/colorRemarkText"
-                android:hint="@string/login_account_hint"/>
-        </LinearLayout>
+        <com.xmd.technician.widget.ClearableEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_button_height"
+            android:layout_marginLeft="@dimen/personal_padding"
+            android:layout_marginRight="@dimen/personal_padding"
+            android:drawableLeft="@drawable/password_c"
+            android:drawablePadding="@dimen/personal_padding"
+            android:background="@android:color/transparent"
+            android:inputType="textPassword"
+            android:maxLength="20"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody"
+            android:textColorHint="@color/colorRemarkText"
+            android:hint="@string/register_password_hint"/>
 
         <View
             android:layout_width="match_parent"
@@ -88,7 +96,6 @@
                 android:paddingRight="@dimen/search_margin"
                 android:paddingLeft="@dimen/search_margin"
                 android:background="@drawable/login_button_main_selector"
-                android:enabled="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/fontTitle"
                 android:text="@string/register_send_security_code"/>
@@ -103,20 +110,20 @@
             android:background="@color/colorLineDivide" />
 
         <com.xmd.technician.widget.ClearableEditText
-            android:id="@+id/password"
+            android:id="@+id/invite_club"
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_button_height"
             android:layout_marginLeft="@dimen/personal_padding"
             android:layout_marginRight="@dimen/personal_padding"
-            android:drawableLeft="@drawable/password_c"
+            android:drawableLeft="@drawable/ic_yaoqingma"
             android:drawablePadding="@dimen/personal_padding"
             android:background="@android:color/transparent"
-            android:inputType="textPassword"
-            android:maxLength="20"
+            android:digits="@string/only_number_and_char"
+            android:maxLength="6"
             android:textColor="@color/colorBody"
             android:textSize="@dimen/fontBody"
             android:textColorHint="@color/colorRemarkText"
-            android:hint="@string/modify_password_new_hint"/>
+            android:hint="@string/personal_fragment_button_invite"/>
 
     </LinearLayout>
 
@@ -126,7 +133,7 @@
         android:background="@color/colorLineDivide" />
 
     <Button
-        android:id="@+id/confirm"
+        android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/personal_margin"
@@ -136,20 +143,26 @@
         android:enabled="false"
         android:textColor="@android:color/white"
         android:textSize="@dimen/fontTitle"
-        android:text="@string/confirm"/>
+        android:text="@string/next_step"/>
 
-    <Button
-        android:id="@+id/login"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
         android:layout_marginTop="@dimen/personal_margin"
-        android:layout_marginRight="@dimen/personal_padding"
-        android:background="@android:color/transparent"
-        android:minHeight="0dp"
-        android:minWidth="0dp"
-        android:textColor="@color/work_status_selector_bg"
+        android:layout_marginLeft="@dimen/personal_padding"
+        android:textColor="@color/colorTitle"
+        android:textSize="@dimen/fontBody"
+        android:text="@string/note"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/work_time_padding"
+        android:layout_marginRight="@dimen/work_time_padding"
+        android:layout_marginTop="@dimen/search_margin"
+        android:lineSpacingExtra="@dimen/search_margin"
+        android:textColor="@color/colorBody"
         android:textSize="@dimen/fontNormal"
-        android:text="@string/login"/>
+        android:text="@string/register_tips"/>
 
 </LinearLayout>

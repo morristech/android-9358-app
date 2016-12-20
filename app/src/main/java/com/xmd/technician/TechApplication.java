@@ -3,6 +3,7 @@ package com.xmd.technician;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.igexin.sdk.PushManager;
@@ -11,6 +12,7 @@ import com.xmd.technician.common.AppUncaughtExceptionHandler;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.TechNotifier;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.ControllerRegister;
 
@@ -36,6 +38,8 @@ public class TechApplication extends Application {
                 Logger.v("Technician initialize !");
                 appContext = getApplicationContext();
                 Thread.setDefaultUncaughtExceptionHandler(new AppUncaughtExceptionHandler(appContext));
+
+                ThreadPoolManager.init(this);
 
                 long start = System.currentTimeMillis();
 

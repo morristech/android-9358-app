@@ -29,7 +29,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="DEF_UPDATE_SERVER"
             android:value="${DEF_UPDATE_SERVER}" />
@@ -46,6 +45,7 @@
             android:value="${UMENG_CHANNEL_VALUE}" />
         <!-- end umeng sdk -->
 
+
         <!-- 设置环信应用的appkey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
@@ -58,6 +58,7 @@
         <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
                 <data android:scheme="package" />
             </intent-filter>
             <!-- 可选filter -->
@@ -102,6 +103,7 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="com.xmd.technician.action.START_CHAT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -136,7 +138,7 @@
             android:name=".window.ClipPictureActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".window.RegisterActivity"
+            android:name=".window.RegisterActivity2"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -181,8 +183,7 @@
         <activity
             android:name=".window.ContactInformationDetailActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".window.SysNoticeListActivity"></activity>
-
+        <activity android:name=".window.SysNoticeListActivity" />
         <activity
             android:name=".window.EditContactInformation"
             android:screenOrientation="portrait" />
@@ -192,7 +193,6 @@
         <activity
             android:name=".window.PreLoginActivity"
             android:launchMode="singleTask" />
-
         <activity
             android:name=".window.ConfigurationMonitorActivity"
             android:screenOrientation="portrait" />
@@ -221,12 +221,17 @@
             android:name=".window.OrderFragmentActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".window.DynamicShareTechActivity"
+        <activity
+            android:name=".window.DynamicShareTechActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <!-- 裁剪图片 -->
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity
+            android:name=".window.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

@@ -14,7 +14,7 @@
         android:src="@drawable/bg_login_header" />
 
     <TextView
-        android:id="@+id/fontHead"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_button_height"
         android:layout_marginTop="24dp"
@@ -22,7 +22,7 @@
         android:gravity="center"
         android:text="登录"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/fontTechWork" />
+        android:textSize="@dimen/fontTitle" />
 
 
     <LinearLayout
@@ -92,7 +92,7 @@
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/password_c"
                 android:drawablePadding="@dimen/personal_padding"
-                android:hint="@string/modify_password_new_hint"
+                android:hint="@string/register_password_hint"
                 android:inputType="textPassword"
                 android:maxLength="20"
                 android:textColor="@color/colorBody"
@@ -103,6 +103,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_divide_height"
+            android:layout_marginLeft="@dimen/personal_padding"
+            android:layout_marginRight="@dimen/personal_padding"
             android:background="@color/colorLineDivide" />
 
         <Button
@@ -180,8 +182,7 @@
                 android:background="@drawable/shape_rect_red"
                 android:gravity="center"
                 android:hint="请输入会所邀请码"
-                android:inputType="number"
-                android:text="111817" />
+                android:inputType="number" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -201,7 +202,7 @@
                 android:background="@drawable/shape_rect_red"
                 android:gravity="center"
                 android:hint="请输入技师编号"
-                android:inputType="number" />
+                android:inputType="text" />
         </LinearLayout>
 
         <com.xmd.technician.widget.ClearableEditText
@@ -212,8 +213,7 @@
             android:background="@drawable/shape_rect_red"
             android:gravity="center"
             android:hint="请输入密码"
-            android:inputType="textPassword"
-            android:text="123456" />
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/login_btn2"

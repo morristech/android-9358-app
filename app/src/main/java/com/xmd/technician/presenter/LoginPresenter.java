@@ -12,11 +12,13 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.LoginContract;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.LoginResult;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.RegisterActivity;
+import com.xmd.technician.window.RegisterActivity2;
 import com.xmd.technician.window.ResetPasswordActivity;
 
 import java.util.HashMap;
@@ -46,7 +48,11 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     @Override
     public void onCreate() {
         mIsPhoneLogin = true;
-        switchLoginMethodTo(0);
+        switchLoginMethodTo(1);
+        LoginTechnician.getInstance().inviteCode = "111817";
+        LoginTechnician.getInstance().techNo = "00003";
+        LoginTechnician.getInstance().techId = "";
+        mContext.startActivity(new Intent(mContext, RegisterActivity.class));//FIXME
     }
 
     @Override
@@ -68,6 +74,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             unregisterTechNoLoginListener();
             registerPhoneLoginListener();
         } else {
+            //FIXME
+            mInviteCode = "111817";
+            mPassword = "123456";
+            mTechNo = "00003";
             mView.showTechNoLogin();
             unregisterPhoneLoginListener();
             registerTechNoLoginListener();
@@ -125,7 +135,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void onClickRegister() {
-        mContext.startActivity(new Intent(mContext, RegisterActivity.class));
+        mContext.startActivity(new Intent(mContext, RegisterActivity2.class));
     }
 
     @Override
@@ -178,7 +188,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         } else {
             if (!mIsPhoneLogin && loginResult.statusCode == 206) {
                 //进入完善资料界面
-                mView.showToast("填写资料");
+                mContext.startActivity(new Intent(mContext, RegisterActivity.class));
             } else {
                 //进入主界面
                 SharedPreferenceHelper.setUserAccount(mPhoneNumber);

@@ -138,7 +138,7 @@ public class PreLoginActivity extends BaseActivity implements TextWatcher {
     private void handleLoginResult(LoginResult loginResult) {
         dismissProgressDialogIfShowing();
         if (loginResult.statusCode == 2) {
-            startActivity(new Intent(this, RegisterActivity.class));
+            startActivity(new Intent(this, RegisterActivity2.class));
         } else if (loginResult.statusCode == 1) {
             startActivity(new Intent(this, LoginActivity.class));
         }

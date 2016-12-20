@@ -3,7 +3,6 @@ package com.xmd.technician;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.http.RequestConstant;
 
 /**
@@ -25,6 +24,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_USER_CLUB_ID = "7660E9BC2D136134F0FBC2856A803DC";//clubID
     private static final String KEY_USER_CLUB_NAME = "7660E9BC2D136134F25XD7F56A803DC";//clubName
     private static final String KEY_CLUB_GAME_TIMEOUT = "7660E9BC2D136134F25XD67d6A803DC";
+    private static final String KEY_VERIFICATION_CODE_TIME = "key_verification_code_time";
 
     /**
      * Last time to check the upgrade automatically
@@ -148,7 +148,7 @@ public class SharedPreferenceHelper {
      * @return
      */
     public static String getServerHost() {
-        return mSettingPreference.getString(KEY_SERVER_HOST, RequestConstant.SERVER_HOST) ;
+        return mSettingPreference.getString(KEY_SERVER_HOST, RequestConstant.SERVER_HOST);
     }
 
     public static void setLastAutoCheckUpgrade(long mill) {
@@ -232,28 +232,42 @@ public class SharedPreferenceHelper {
     public static void setGameTimeout(int timeoutSecond) {
         mSettingPreference.edit().putInt(KEY_CLUB_GAME_TIMEOUT, timeoutSecond * 1000).apply();
     }
+
     public static void setGameMessageId(String gameId, String messageId) {
-        mSettingPreference.edit().putString(gameId+"dice", messageId).apply();
+        mSettingPreference.edit().putString(gameId + "dice", messageId).apply();
     }
+
     public static String getGameMessageId(String gameId) {
-        return mSettingPreference.getString(gameId+"dice", "");
+        return mSettingPreference.getString(gameId + "dice", "");
     }
 
 
     public static Integer getGameTimeout() {
         return mSettingPreference.getInt(KEY_CLUB_GAME_TIMEOUT, 86400 * 1000);
     }
-    public static void setTechNo(String techId,String techNo){
-        mSettingPreference.edit().putString(techId+"techNo",techNo).apply();
+
+    public static void setTechNo(String techId, String techNo) {
+        mSettingPreference.edit().putString(techId + "techNo", techNo).apply();
     }
-    public static String  getTechNo(String techId){
-        return mSettingPreference.getString(techId+"techNo","");
+
+    public static String getTechNo(String techId) {
+        return mSettingPreference.getString(techId + "techNo", "");
     }
-    public static void setGiftImageById(String id,String url){
-        mSettingPreference.edit().putString(id,url).apply();
+
+    public static void setGiftImageById(String id, String url) {
+        mSettingPreference.edit().putString(id, url).apply();
     }
-    public static String getGiftImageById(String id){
-       return mSettingPreference.getString(id,"");
+
+    public static String getGiftImageById(String id) {
+        return mSettingPreference.getString(id, "");
+    }
+
+    public static void setVerificationCodeTime(long time) {
+        mSettingPreference.edit().putLong(KEY_VERIFICATION_CODE_TIME, time).apply();
+    }
+
+    public static long getVerificationCodeTime() {
+        return mSettingPreference.getLong(KEY_VERIFICATION_CODE_TIME, 0);
     }
 
 }
