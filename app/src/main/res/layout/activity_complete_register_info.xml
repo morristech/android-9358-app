@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="presenter"
+            type="com.xmd.technician.presenter.CompleteRegisterInfoPresenter" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_white">
+
+        <ImageView
+            android:id="@+id/img_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_register2" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_button_height"
+            android:background="@null"
+            android:gravity="center"
+            android:text="完善信息"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontTitle" />
+
+        <com.xmd.technician.widget.RoundImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/comment_item_height"
+            android:layout_height="@dimen/comment_item_height"
+            android:layout_below="@+id/title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:background="@drawable/icon22"
+            android:onClick="@{()->presenter.onClickAvatar()}"
+            app:borderRadius="@dimen/search_margin"
+            app:type="round" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_button_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_nickname" />
+
+
+                <com.xmd.technician.widget.ClearableEditText
+                    android:id="@+id/phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:afterTextChanged="@{(s)->presenter.setNickName(s)}"
+                    android:background="@android:color/transparent"
+                    android:hint="输入昵称"
+                    android:inputType="text"
+                    android:maxLength="11"
+                    android:textColor="@color/colorBody"
+                    android:textSize="@dimen/fontBody" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_divide_height"
+                android:background="@color/colorLineDivide" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_button_height"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_gender" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:text="选择性别" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/r1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:onCheckedChanged="@{(v,c)->presenter.setGender(!c)}"
+                        android:text="先生" />
+
+                    <RadioButton
+                        android:id="@+id/r2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:checked="true"
+                        android:text="女士" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_divide_height"
+                android:background="@color/colorLineDivide" />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_button_height"
+                android:layout_marginTop="@dimen/personal_margin"
+                android:background="@drawable/login_button_main_selector"
+                android:enabled="@{presenter.mCanUpdate}"
+                android:gravity="center"
+                android:onClick="@{()->presenter.onClickFinish()}"
+                android:text="完成"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/fontHead" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

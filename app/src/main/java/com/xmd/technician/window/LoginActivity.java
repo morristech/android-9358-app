@@ -1,6 +1,5 @@
 package com.xmd.technician.window;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,7 +8,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -63,12 +61,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setStatusBarColor(0xffff7d6b);
         }
 
         ButterKnife.bind(this);
@@ -210,6 +207,16 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     public void setPhoneNumber(String value) {
         mEtUsername.setText(value);
+    }
+
+    @Override
+    public void setInviteCode(String value) {
+        mInviteCodeEditText.setText(value);
+    }
+
+    @Override
+    public void setTechNo(String value) {
+        mTechNoEditText.setText(value);
     }
 
     @Override

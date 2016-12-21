@@ -29,7 +29,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.AlbumInfo;
 import com.xmd.technician.bean.TechDetailInfo;
 import com.xmd.technician.common.Util;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
@@ -74,8 +73,6 @@ public class TechInfoActivity extends BaseActivity {
     RoundImageView mAvatar;
     @Bind(R.id.user_name)
     TextView mUserName;
-    @Bind(R.id.tech_number)
-    TextView mSerialNo;
     @Bind(R.id.native_place)
     TextView mNativePlace;
     @Bind(R.id.phone_number)
@@ -200,7 +197,6 @@ public class TechInfoActivity extends BaseActivity {
         if (!mViewInitialized) {
             mViewInitialized = true;
             mUserName.setText(mTechInfo.name);
-            mSerialNo.setText(mTechInfo.serialNo);
             mPhoneNumber.setText(mTechInfo.phoneNum);
             mDescription.setText(mTechInfo.description);
 
@@ -293,15 +289,6 @@ public class TechInfoActivity extends BaseActivity {
         }
 
         mTechInfo.name = cacheName;
-        mTechInfo.serialNo = mSerialNo.getText().toString();
-        if (Utils.isNotEmpty(mTechInfo.serialNo) && Utils.isNotEmpty(techJoinClub)) {
-            if (techJoinClub.equals(Constant.TECH_STATUS_UNCERT)) {
-                makeShortToast("会所审核通过后方能修改技师编号");
-            } else {
-                makeShortToast("未加入会所,不可修改编号");
-            }
-            return;
-        }
         mTechInfo.description = replaceBlank(mDescription.getText().toString());
         mTechInfo.gender = mFemale.isChecked() ? "female" : "male";
         //mTechInfo.phoneNum = mPhoneNumber.getText().toString();

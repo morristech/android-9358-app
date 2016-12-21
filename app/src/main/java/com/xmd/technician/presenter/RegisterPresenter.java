@@ -1,6 +1,7 @@
 package com.xmd.technician.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.text.Editable;
@@ -10,14 +11,14 @@ import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.RegisterContract;
 import com.xmd.technician.databinding.ActivityRegisterBinding;
-import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.model.LoginTechnician;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.window.CompleteRegisterInfoActivity;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Future;
+
+import rx.Subscription;
 
 /**
  * Created by heyangya on 16-12-20.
@@ -29,20 +30,18 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
     public ObservableBoolean mCanGetVerificationCode = new ObservableBoolean();//是否能获取验证码
     public ObservableBoolean mCanGotoSetInfoView = new ObservableBoolean(); //是否能跳转到设置资料页面
     public ObservableField<String> mSendVerificationText = new ObservableField<>();
+    private String mPhoneNumber;
     private long mSendVerificationTime;
     private String mVerificationCode;
     private String mPassword;
     private Future mSendVerificationFuture;
     private static final int VERIFICATION_INTERVAL = 60000;//验证码间隔60秒
 
+    private Subscription mRegisterSubscription;
+
     public RegisterPresenter(Context context, RegisterContract.View view, ActivityRegisterBinding binding) {
         super(context, view);
         mBinding = binding;
-    }
-
-    @Override
-    public void onClickNextStep() {
-
     }
 
     @Override
@@ -55,6 +54,10 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
         }
         mBinding.setTech(mTech);
         mBinding.setPresenter(this);
+
+        mRegisterSubscription = RxBus.getInstance().toObservable(RegisterResult.class).subscribe(
+                result -> handleRegisterResult(result)
+        );
     }
 
     @Override
@@ -63,6 +66,14 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
         if (mSendVerificationFuture != null) {
             mSendVerificationFuture.cancel(true);
         }
+        RxBus.getInstance().unsubscribe(mRegisterSubscription);
+    }
+
+    @Override
+    public void onClickNextStep() {
+        //进入下一步，这里进行注册
+        mView.showLoading("正在注册...");
+        mTech.register(mPhoneNumber, mPassword, mVerificationCode, mTech.getInviteCode(), mTech.getTechId(), mTech.getTechNo());
     }
 
     @Override
@@ -70,9 +81,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
         mSendVerificationTime = System.currentTimeMillis();
         SharedPreferenceHelper.setVerificationCodeTime(mSendVerificationTime);
         startVerificationTime();
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_MOBILE, mTech.phoneNumber);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ICODE, params);
+        mTech.getVerificationCode(mPhoneNumber);
     }
 
     //开始验证码倒计时
@@ -101,7 +110,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
 
     //检查并设置验证码按钮状态和文本
     private void checkVerificationCode() {
-        mCanGetVerificationCode.set(Utils.matchPhoneNumFormat(mTech.phoneNumber)
+        mCanGetVerificationCode.set(Utils.matchPhoneNumFormat(mPhoneNumber)
                 && System.currentTimeMillis() - mSendVerificationTime >= VERIFICATION_INTERVAL);
         if (System.currentTimeMillis() - mSendVerificationTime >= VERIFICATION_INTERVAL) {
             mSendVerificationText.set("获取验证码");
@@ -110,7 +119,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
 
     @Override
     public void setPhoneNumber(Editable s) {
-        mTech.phoneNumber = s.toString();
+        mPhoneNumber = s.toString();
         checkVerificationCode();
         checkCanGotoSetInfoView();
     }
@@ -127,10 +136,28 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
         checkCanGotoSetInfoView();
     }
 
+    @Override
+    public void onClickBack() {
+        mView.finishSelf();
+    }
+
     private void checkCanGotoSetInfoView() {
-        mCanGotoSetInfoView.set(mCanGetVerificationCode.get()
+        mCanGotoSetInfoView.set(Utils.matchPhoneNumFormat(mPhoneNumber)
                 && Utils.matchVerificationCode(mVerificationCode)
                 && Utils.matchLoginPassword(mPassword));
     }
 
+    //处理注册结果
+    private void handleRegisterResult(RegisterResult result) {
+        mView.hideLoading();
+        if (result.statusCode > 299 || (result.statusCode < 200 && result.statusCode != 0)) {
+            mView.showAlertDialog(result.msg);
+        } else {
+            mTech.saveRegisterResult(result);
+//            //登录环信
+//            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
+            //跳转到完善信息界面2
+            mContext.startActivity(new Intent(mContext, CompleteRegisterInfoActivity.class));
+        }
+    }
 }

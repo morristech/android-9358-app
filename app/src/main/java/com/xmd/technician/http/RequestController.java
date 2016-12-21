@@ -379,10 +379,15 @@ public class RequestController extends AbstractController {
 
     //不能正常工作me
     private void register(Map<String, String> params) {
-        Call<RegisterResult> call = getSpaService().register(params.get(RequestConstant.KEY_MOBILE),
-                params.get(RequestConstant.KEY_PASSWORD), params.get(RequestConstant.KEY_ICODE),
-                params.get(RequestConstant.KEY_CLUB_CODE), params.get(RequestConstant.KEY_LOGIN_CHANEL),
-                RequestConstant.SESSION_TYPE, RequestConstant.SESSION_TYPE);
+        Call<RegisterResult> call = getSpaService().register(
+                params.get(RequestConstant.KEY_MOBILE),
+                params.get(RequestConstant.KEY_PASSWORD),
+                params.get(RequestConstant.KEY_ICODE),
+                params.get(RequestConstant.KEY_CLUB_CODE),
+                params.get(RequestConstant.KEY_LOGIN_CHANEL),
+                RequestConstant.SESSION_TYPE,
+                params.get(RequestConstant.KEY_SPARE_TECH_ID),
+                RequestConstant.SESSION_TYPE);
 
         call.enqueue(new Callback<RegisterResult>() {
             @Override
@@ -392,7 +397,10 @@ public class RequestController extends AbstractController {
                     RxBus.getInstance().post(result);
                 } else {
                     try {
-                        RxBus.getInstance().post(new Throwable(response.errorBody().string()));
+                        result = new RegisterResult();
+                        result.statusCode = response.code();
+                        result.msg = response.errorBody().string();
+                        RxBus.getInstance().post(result);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

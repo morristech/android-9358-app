@@ -12,6 +12,10 @@ public interface LoginContract {
 
         void setPhoneNumber(String value);
 
+        void setInviteCode(String value);
+
+        void setTechNo(String value);
+
         void enableLogin(boolean enable);
     }
 

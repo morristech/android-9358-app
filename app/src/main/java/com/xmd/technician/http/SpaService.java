@@ -111,6 +111,7 @@ public interface SpaService {
                                   @Field(RequestConstant.KEY_CLUB_CODE) String clubCode,
                                   @Field(RequestConstant.KEY_LOGIN_CHANEL) String loginChannel,
                                   @Field(RequestConstant.KEY_CHANEL) String channel,
+                                  @Field(RequestConstant.KEY_SPARE_TECH_ID) String techId,
                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @GET(RequestConstant.URL_EDIT_INFO)

@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.xmd.technician.AppConfig;
-import com.xmd.technician.SharedPreferenceHelper;
+import com.google.gson.Gson;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.LoginContract;
-import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -18,11 +16,7 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.RegisterActivity;
-import com.xmd.technician.window.RegisterActivity2;
 import com.xmd.technician.window.ResetPasswordActivity;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import rx.Subscription;
 
@@ -38,8 +32,9 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     private String mPassword;
     private String mPhoneNumber;
 
-    private Subscription mPhoneLoginSubscription;
-    private Subscription mTechNoLoginSubscription;
+    private LoginTechnician mLoginTech = LoginTechnician.getInstance();
+
+    private Subscription mLoginSubscription;
 
     public LoginPresenter(Context context, LoginContract.View view) {
         super(context, view);
@@ -47,18 +42,22 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void onCreate() {
-        mIsPhoneLogin = true;
-        switchLoginMethodTo(1);
-        LoginTechnician.getInstance().inviteCode = "111817";
-        LoginTechnician.getInstance().techNo = "00003";
-        LoginTechnician.getInstance().techId = "";
-        mContext.startActivity(new Intent(mContext, RegisterActivity.class));//FIXME
+        //初始化数据
+        mInviteCode = mLoginTech.getInviteCode();
+        mTechNo = mLoginTech.getTechNo();
+        mPhoneNumber = mLoginTech.getPhoneNumber();
+        mView.setInviteCode(mInviteCode);
+        mView.setTechNo(mTechNo);
+        mView.setPhoneNumber(mPhoneNumber);
+
+        mIsPhoneLogin = false;
+        switchLoginMethodTo(mIsPhoneLogin ? 0 : 1);
+        registerLoginListener();
     }
 
     @Override
     public void onDestroy() {
-        unregisterPhoneLoginListener();
-        unregisterTechNoLoginListener();
+        unregisterLoginListener();
     }
 
     @Override
@@ -70,45 +69,22 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     private void switchLoginMethodTo(int loginMethod) {
         if (loginMethod == 0) {
             mView.showPhoneLogin();
-            mView.setPhoneNumber(SharedPreferenceHelper.getUserAccount());
-            unregisterTechNoLoginListener();
-            registerPhoneLoginListener();
         } else {
-            //FIXME
-            mInviteCode = "111817";
-            mPassword = "123456";
-            mTechNo = "00003";
             mView.showTechNoLogin();
-            unregisterPhoneLoginListener();
-            registerTechNoLoginListener();
         }
     }
 
-    private void registerPhoneLoginListener() {
-        if (mPhoneLoginSubscription == null) {
-            mPhoneLoginSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
+    private void registerLoginListener() {
+        if (mLoginSubscription == null) {
+            mLoginSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
                     loginResult -> handleLoginResult(loginResult));
         }
     }
 
-    private void unregisterPhoneLoginListener() {
-        if (mPhoneLoginSubscription != null) {
-            RxBus.getInstance().unsubscribe(mPhoneLoginSubscription);
-            mPhoneLoginSubscription = null;
-        }
-    }
-
-    private void registerTechNoLoginListener() {
-        if (mTechNoLoginSubscription == null) {
-            mTechNoLoginSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
-                    loginResult -> handleLoginResult(loginResult));
-        }
-    }
-
-    private void unregisterTechNoLoginListener() {
-        if (mTechNoLoginSubscription != null) {
-            RxBus.getInstance().unsubscribe(mTechNoLoginSubscription);
-            mTechNoLoginSubscription = null;
+    private void unregisterLoginListener() {
+        if (mLoginSubscription != null) {
+            RxBus.getInstance().unsubscribe(mLoginSubscription);
+            mLoginSubscription = null;
         }
     }
 
@@ -117,25 +93,17 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         mView.showLoading("正在登录...");
         if (mIsPhoneLogin) {
             //使用手机号码登录
-            Map<String, String> params = new HashMap<>();
-            params.put(RequestConstant.KEY_USERNAME, mPhoneNumber);
-            params.put(RequestConstant.KEY_PASSWORD, mPassword);
-            params.put(RequestConstant.KEY_APP_VERSION, "android." + AppConfig.getAppVersionNameAndCode());
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN, params);
+            LoginTechnician.getInstance().loginByPhoneNumber(mPhoneNumber, mPassword);
         } else {
             //使用技师编号登录
-            Map<String, String> params = new HashMap<>();
-            params.put(RequestConstant.KEY_CLUB_CODE, mInviteCode);
-            params.put(RequestConstant.KEY_TECH_No, mTechNo);
-            params.put(RequestConstant.KEY_PASSWORD, mPassword);
-            params.put(RequestConstant.KEY_APP_VERSION, "android." + AppConfig.getAppVersionNameAndCode());
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_BY_TECH_NO, params);
+            LoginTechnician.getInstance().loginByTechNo(mInviteCode, mTechNo, mPassword);
         }
     }
 
     @Override
     public void onClickRegister() {
-        mContext.startActivity(new Intent(mContext, RegisterActivity2.class));
+        //FIXME
+        mContext.startActivity(new Intent(mContext, RegisterActivity.class));
     }
 
     @Override
@@ -186,22 +154,28 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         if (loginResult.statusCode > 299 || (loginResult.statusCode < 200 && loginResult.statusCode != 0)) {
             mView.showAlertDialog(loginResult.msg);
         } else {
-            if (!mIsPhoneLogin && loginResult.statusCode == 206) {
+            if (!mIsPhoneLogin) {
                 //进入完善资料界面
+                if (loginResult.respData != null) {
+                    Gson gson = new Gson();
+                    loginResult = gson.fromJson(gson.toJson(loginResult.respData), LoginResult.class);
+                } else {
+                    mView.showAlertDialog("服务器出错，请联系管理员");
+                }
+            }
+            if (!mIsPhoneLogin && loginResult.statusCode == 206) {
+                //进入注册页面
+                mLoginTech.setTechId(loginResult.spareTechId);
                 mContext.startActivity(new Intent(mContext, RegisterActivity.class));
             } else {
                 //进入主界面
-                SharedPreferenceHelper.setUserAccount(mPhoneNumber);
-                SharedPreferenceHelper.setUserToken(loginResult.token);
-                SharedPreferenceHelper.setUserId(loginResult.userId);
-                SharedPreferenceHelper.setEmchatId(loginResult.emchatId);
-                SharedPreferenceHelper.setEMchatPassword(loginResult.emchatPassword);
+                mLoginTech.saveLoginResult(loginResult);
                 UserProfileProvider.getInstance().updateCurrentUserInfo(loginResult.name, loginResult.avatarUrl);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
                 ActivityHelper.getInstance().removeAllActivities();
                 mContext.startActivity(new Intent(mContext, MainActivity.class));
+                mView.finishSelf();
             }
-            mView.finishSelf();
         }
     }
 }

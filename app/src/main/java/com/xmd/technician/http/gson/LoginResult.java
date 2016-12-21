@@ -16,4 +16,7 @@ public class LoginResult extends BaseResult {
     public String emchatId;
     public String emchatPassword;
     public String message;
+    public String spareTechId;
+
+    public Object respData;
 }

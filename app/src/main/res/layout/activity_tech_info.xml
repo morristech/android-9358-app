@@ -146,27 +146,6 @@
                     android:layout_height="@dimen/line_divide_height"
                     android:background="@color/colorLineDivide" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/home_button_height"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/edit_activity_text_style"
-                        android:text="@string/edit_activity_text_view_id" />
-
-                    <EditText
-                        android:id="@+id/tech_number"
-                        style="@style/edit_activity_edit_text_style"
-                        android:digits="@string/only_number_and_char"
-                        android:hint="输入您的编号"
-                        android:maxLength="5"
-                        android:singleLine="true"
-                        android:textColorHint="@color/colorRemark"/>
-
-                </LinearLayout>
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/line_divide_height"

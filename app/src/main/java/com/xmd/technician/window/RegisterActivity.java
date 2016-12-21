@@ -1,10 +1,8 @@
 package com.xmd.technician.window;
 
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.WindowManager;
 
 import com.xmd.technician.R;
 import com.xmd.technician.contract.RegisterContract;
@@ -16,12 +14,11 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         super.onCreate(savedInstanceState);
         ActivityRegisterBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setStatusBarColor(0xffff936f);
         }
 
         mPresenter = new RegisterPresenter(this, this, binding);

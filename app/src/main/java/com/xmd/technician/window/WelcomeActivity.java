@@ -3,6 +3,7 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.WindowManager;
 
 import com.hyphenate.chat.EMClient;
 import com.xmd.technician.R;
@@ -11,7 +12,6 @@ import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ThreadManager;
 
 public class WelcomeActivity extends BaseActivity {
-
     private Runnable mTask = new Runnable() {
         @Override
         public void run() {
@@ -23,6 +23,7 @@ public class WelcomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 

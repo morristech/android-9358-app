@@ -127,6 +127,7 @@ public class RequestConstant {
     public static final String KEY_CLUB_CODE = "clubCode";
     public static final String KEY_CHANEL = "chanel";
     public static final String KEY_LOGIN_CHANEL = "loginChanel";
+    public static final String KEY_SPARE_TECH_ID = "spareTechId";
 
     public static final String KEY_LOGIN_CHANNEL = "loginChannel";
     public static final String KEY_USERNAME = "username";

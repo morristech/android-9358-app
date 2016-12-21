@@ -231,7 +231,12 @@
         <activity
             android:name=".window.RegisterActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".window.CompleteRegisterInfoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".window.ImageSelectAndCropActivity"></activity>
     </application>
 
 </manifest>

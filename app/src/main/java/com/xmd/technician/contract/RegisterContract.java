@@ -20,5 +20,7 @@ public interface RegisterContract {
         void setVerificationCode(Editable s);
 
         void setNewPassword(Editable s);
+
+        void onClickBack();
     }
 }

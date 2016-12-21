@@ -42,23 +42,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/main_head_tech_name"
         android:layout_marginTop="@dimen/margin_5"
-        android:layout_toRightOf="@id/rl_main_head_tech_rest"
+        android:layout_alignLeft="@id/main_head_tech_name"
         android:background="@drawable/bg_main_tech_serial"
-        android:paddingLeft="@dimen/coupon_item_bottom_corner_bg"
         android:paddingRight="@dimen/coupon_item_bottom_corner_bg"
         android:textColor="@color/color_white"
         android:textSize="@dimen/fontRemark"
         android:visibility="gone"
+        android:gravity="center"
         />
 
     <TextView
         android:id="@+id/main_head_tech_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/main_head_tech_name"
+        android:layout_below="@id/main_head_tech_serial"
         android:layout_marginTop="@dimen/margin_5"
-        android:layout_toRightOf="@id/rl_main_head_tech_rest"
-        android:paddingLeft="@dimen/coupon_item_bottom_corner_bg"
+        android:layout_alignLeft="@id/main_head_tech_name"
         android:paddingRight="@dimen/coupon_item_bottom_corner_bg"
         android:textColor="@color/color_white"
         android:textSize="@dimen/fontNormal"/>

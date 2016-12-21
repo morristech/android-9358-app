@@ -24,16 +24,27 @@
             android:scaleType="fitXY"
             android:src="@drawable/bg_register1" />
 
-        <TextView
+        <FrameLayout
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/home_button_height"
-            android:layout_marginTop="24dp"
-            android:background="@null"
-            android:gravity="center"
-            android:text="完善信息"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/fontTitle" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_button_height"
+                android:background="@null"
+                android:gravity="center"
+                android:text="完善信息"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/fontTitle" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_keyboard_arrow_left_white_3x"
+                android:onClick="@{()->presenter.onClickBack()}" />
+        </FrameLayout>
+
 
         <TextView
             android:id="@+id/tip_invite_code"
@@ -118,6 +129,7 @@
                     android:hint="@string/login_account_hint"
                     android:inputType="phone"
                     android:maxLength="11"
+                    android:text="@{tech.phoneNumber}"
                     android:textColor="@color/colorBody"
                     android:textSize="@dimen/fontBody" />
             </LinearLayout>
@@ -198,6 +210,5 @@
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontHead" />
         </LinearLayout>
-
     </RelativeLayout>
 </layout>

@@ -24,7 +24,9 @@ public class SharedPreferenceHelper {
     private static final String KEY_USER_CLUB_ID = "7660E9BC2D136134F0FBC2856A803DC";//clubID
     private static final String KEY_USER_CLUB_NAME = "7660E9BC2D136134F25XD7F56A803DC";//clubName
     private static final String KEY_CLUB_GAME_TIMEOUT = "7660E9BC2D136134F25XD67d6A803DC";
-    private static final String KEY_VERIFICATION_CODE_TIME = "key_verification_code_time";
+    private static final String KEY_VERIFICATION_CODE_TIME = "16024c10323c6f642892cc17bac62192";
+    private static final String KEY_INVITE_CODE = "fced902e58a478ca5e535c2986f95cb1";
+    private static final String KEY_TECH_NO = "fc9bab349dc493c2a8f6656e1ba66752";
 
     /**
      * Last time to check the upgrade automatically
@@ -148,6 +150,7 @@ public class SharedPreferenceHelper {
      * @return
      */
     public static String getServerHost() {
+//        return "http://192.168.1.90:9880";//FIXME
         return mSettingPreference.getString(KEY_SERVER_HOST, RequestConstant.SERVER_HOST);
     }
 
@@ -246,12 +249,8 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getInt(KEY_CLUB_GAME_TIMEOUT, 86400 * 1000);
     }
 
-    public static void setTechNo(String techId, String techNo) {
+    public static void setTechNoOld(String techId, String techNo) {
         mSettingPreference.edit().putString(techId + "techNo", techNo).apply();
-    }
-
-    public static String getTechNo(String techId) {
-        return mSettingPreference.getString(techId + "techNo", "");
     }
 
     public static void setGiftImageById(String id, String url) {
@@ -268,6 +267,23 @@ public class SharedPreferenceHelper {
 
     public static long getVerificationCodeTime() {
         return mSettingPreference.getLong(KEY_VERIFICATION_CODE_TIME, 0);
+    }
+
+
+    public static String getTechNo() {
+        return mSettingPreference.getString(KEY_TECH_NO, "");
+    }
+
+    public static void setTechNo(String value) {
+        mSettingPreference.edit().putString(KEY_TECH_NO, value).apply();
+    }
+
+    public static String getInviteCode() {
+        return mSettingPreference.getString(KEY_INVITE_CODE, "");
+    }
+
+    public static void setInviteCode(String value) {
+        mSettingPreference.edit().putString(KEY_INVITE_CODE, value).apply();
     }
 
 }

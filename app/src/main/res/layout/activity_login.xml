@@ -17,7 +17,6 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_button_height"
-        android:layout_marginTop="24dp"
         android:background="@null"
         android:gravity="center"
         android:text="登录"
@@ -166,7 +165,7 @@
         android:layout_below="@id/img_header"
         android:layout_marginLeft="@dimen/personal_padding"
         android:layout_marginRight="@dimen/personal_padding"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:orientation="vertical"
         android:visibility="gone">
 

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -556,7 +555,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         chatEmId = tech.respData.emchatId;
         chatHeadUrl = tech.respData.avatarUrl;
         if (Utils.isNotEmpty(tech.respData.serialNo)) {
-            SharedPreferenceHelper.setTechNo(tech.respData.id, tech.respData.serialNo);
+            SharedPreferenceHelper.setTechNoOld(tech.respData.id, tech.respData.serialNo);
         }
         btnEmChat.setEnabled(true);
         contactPhone = tech.respData.phoneNum;
