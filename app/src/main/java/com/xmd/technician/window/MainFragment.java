@@ -36,11 +36,12 @@ import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.HeartBeatTimer;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CommentOrderRedPkResult;
 import com.xmd.technician.http.gson.DynamicListResult;
-import com.xmd.technician.http.gson.InviteCodeResult;
+import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.QuitClubResult;
@@ -51,7 +52,6 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.CircleImageView;
-import com.xmd.technician.widget.InviteDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.SlidingMenu;
 
@@ -265,7 +265,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMainScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                onScrollViewChanged(scrollX,scrollY);
+                onScrollViewChanged(scrollX, scrollY);
             }
         });
     }
@@ -282,7 +282,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA);
         refreshOrderListData();
         getDynamicList();
-       MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
 
     }
 
@@ -328,7 +328,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mQuitClubSubscription = RxBus.getInstance().toObservable(QuitClubResult.class).subscribe(
                 result -> doQuitClubResult());
 
-        mSubmitInviteSubscription = RxBus.getInstance().toObservable(InviteCodeResult.class).subscribe(
+        mSubmitInviteSubscription = RxBus.getInstance().toObservable(JoinClubResult.class).subscribe(
                 inviteCodeResult -> submitInviteResult(inviteCodeResult));
 
         mTechStatusSubscription = RxBus.getInstance().toObservable(CommentOrderRedPkResult.class).subscribe(
@@ -393,29 +393,29 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void handleTechStatus(CommentOrderRedPkResult result) {
-        if(result.statusCode == 200){
+        if (result.statusCode == 200) {
 
             if (null == result.respData) {
                 techJoinClub = ResourceUtils.getString(R.string.default_tips);
                 return;
             }
 
-            if(Constant.TECH_STATUS_VALID.equals(result.respData.techStatus)){
+            if (Constant.TECH_STATUS_VALID.equals(result.respData.techStatus)) {
                 mMainHeadTechSerial.setVisibility(View.GONE);
                 mTechStatus.setVisibility(View.VISIBLE);
                 techJoinClub = ResourceUtils.getString(R.string.join_club_before);
                 mTechStatus.setText(techJoinClub);
-            }else if(Constant.TECH_STATUS_REJECT.equals(result.respData.techStatus)){
+            } else if (Constant.TECH_STATUS_REJECT.equals(result.respData.techStatus)) {
                 mMainHeadTechSerial.setVisibility(View.GONE);
                 mTechStatus.setVisibility(View.VISIBLE);
-                techJoinClub =ResourceUtils.getString(R.string.club_reject_apply);
+                techJoinClub = ResourceUtils.getString(R.string.club_reject_apply);
                 mTechStatus.setText(techJoinClub);
-            }else if(Constant.TECH_STATUS_UNCERT.equals(result.respData.techStatus)){
+            } else if (Constant.TECH_STATUS_UNCERT.equals(result.respData.techStatus)) {
                 mMainHeadTechSerial.setVisibility(View.GONE);
                 mTechStatus.setVisibility(View.VISIBLE);
                 techJoinClub = ResourceUtils.getString(R.string.wait_club_examine);
                 mTechStatus.setText(techJoinClub);
-            }else {
+            } else {
                 techJoinClub = "";
                 if (Utils.isNotEmpty(serialNo)) {
                     mMainHeadTechSerial.setVisibility(View.VISIBLE);
@@ -423,7 +423,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 }
                 mTechStatus.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             techJoinClub = result.msg;
         }
 
@@ -570,7 +570,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 startActivity(new Intent(getActivity(), ModifyPasswordActivity.class));
                 break;
             case R.id.settings_activity_join_club:
-                new InviteDialog(getActivity(), R.style.default_dialog_style).show();
+                UINavigation.gotoJoinClub(getActivity(), false);
                 break;
             case R.id.settings_activity_quit_club:
 
@@ -600,9 +600,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onMainPagePieceClicked(View view) {
         switch (view.getId()) {
             case R.id.main_page_head:
-                    Intent intent = new Intent(getActivity(), TechInfoActivity.class);
-                    intent.putExtra(Constant.TECH_STATUS,techJoinClub);
-                    startActivity(intent);
+                Intent intent = new Intent(getActivity(), TechInfoActivity.class);
+                intent.putExtra(Constant.TECH_STATUS, techJoinClub);
+                startActivity(intent);
                 break;
             case R.id.main_tech_order_all:
                 if (Utils.isEmpty(techJoinClub)) {
@@ -613,9 +613,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.main_tech_dynamic_all:
                 if (Utils.isEmpty(techJoinClub)) {
-                    if(hasDynamic){
+                    if (hasDynamic) {
                         startActivity(new Intent(getActivity(), DynamicDetailActivity.class));
-                    }else{
+                    } else {
                         if (mTechInfo == null || TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
                             return;
                         }
@@ -657,7 +657,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 if (TextUtils.isEmpty(mClubId)) {
                     ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
                     return;
-                }else if(Utils.isEmpty(techJoinClub)){
+                } else if (Utils.isEmpty(techJoinClub)) {
                     String url = SharedPreferenceHelper.getServerHost() + String.format(RequestConstant.URL_RANKING, System.currentTimeMillis(), RequestConstant.USER_TYPE_TECH,
                             RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken()
                     );
@@ -675,7 +675,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     @OnClick({R.id.main_too_keen, R.id.main_send_coupon, R.id.main_get_comment, R.id.main_total_income})
     public void onMainDetailClicked(View view) {
-        if(Utils.isEmpty(techJoinClub)){
+        if (Utils.isEmpty(techJoinClub)) {
             switch (view.getId()) {
                 case R.id.main_too_keen:
                     MainActivity mainActivity = (MainActivity) getActivity();
@@ -685,7 +685,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         public void run() {
                             MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 1);
                         }
-                    },300);
+                    }, 300);
 
                     break;
                 case R.id.main_send_coupon:
@@ -698,14 +698,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                     startActivity(new Intent(getActivity(), MyAccountActivity.class));
                     break;
             }
-        }else{
+        } else {
             ((BaseFragmentActivity) getActivity()).makeShortToast(techJoinClub);
         }
 
- 
-   
 
-}
+    }
 
     @Override
     public void onClick(View v) {
@@ -1050,8 +1048,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
-    private void submitInviteResult(InviteCodeResult inviteCodeResult) {
-        ((BaseFragmentActivity) getActivity()).makeShortToast(String.format(getString(R.string.join_club_success_tips), inviteCodeResult.name));
+    private void submitInviteResult(JoinClubResult joinClubResult) {
+        ((BaseFragmentActivity) getActivity()).makeShortToast(String.format(getString(R.string.join_club_success_tips), joinClubResult.name));
         mMenuSettingsActivityQuitClub.setVisibility(View.VISIBLE);
         mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
     }

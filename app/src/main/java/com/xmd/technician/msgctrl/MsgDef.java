@@ -55,7 +55,7 @@ public class MsgDef {
 
     public static final int MSG_DEF_GET_ICODE = 0x0019;
 
-    public static final int MSG_DEF_SUBMIT_INVITE_CODE = 0x001A;
+    public static final int MSG_DEF_JOIN_CLUB = 0x001A;
 
     public static final int MSG_DEF_REGISTER = 0x001B;
 
@@ -109,7 +109,6 @@ public class MsgDef {
     public static final int MSG_DEF_GET_APP_UPDATE_CONFIG = 0x0039;
 
 
-
     public static final int MSG_DEF_GET_CLUB_LIST = 0x0040;
     public static final int MSG_DEF_ADD_OR_EDIT_CUSTOMER = 0x0041;
     public static final int MSG_DEF_GET_CUSTOMER_INFO_DETAIL = 0x0042;
@@ -142,5 +141,7 @@ public class MsgDef {
     public static final int MSG_DEF_ORDER_INNER_READ = 0x0071;
 
     public static final int MSG_DEF_LOGIN_BY_TECH_NO = 0x0072;
+
+    public static final int MSG_DEF_GET_UNUSED_TECH_NO = 0x0073;
 
 }

@@ -236,7 +236,8 @@
             android:name=".window.CompleteRegisterInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".window.ImageSelectAndCropActivity"></activity>
+        <activity android:name=".window.ImageSelectAndCropActivity" />
+        <activity android:name=".window.JoinClubActivity"></activity>
     </application>
 
 </manifest>

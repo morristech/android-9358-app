@@ -29,7 +29,7 @@ public class RequestConstant {
     public static final String URL_GETUI_BIND_CLIENT_ID = BASE_URL + "/v2/push/clientid";
     public static final String URL_GETUI_UNBIND_CLIENT_ID = BASE_URL + "/v2/push/unbind/clientid";
     public static final String URL_GET_ICODE = BASE_URL + "/v1/icode";
-    public static final String URL_INVITE_CODE = BASE_URL + "/v1/profile/tech/club/change";
+    public static final String URL_JOIN_CLUB = BASE_URL + "/v1/profile/tech/club/change";
     public static final String URL_GET_WORKTIME = BASE_URL + "/v1/profile/tech/calendar";
     public static final String URL_UPDATE_WORKTIME = BASE_URL + "/v1/profile/tech/calendar/update";
     public static final String URL_DELETE_ALBUM = BASE_URL + "/v1/profile/tech/album/delete";
@@ -91,6 +91,8 @@ public class RequestConstant {
 
     //    public static final String URL_APP_UPDATE_CONFIG = "mockjs/17/app-upgrade-system/appUpgrade";
     public static final String URL_APP_UPDATE_CONFIG = "/app-upgrade-system/appUpgrade";
+
+    public static final String URL_GET_UNUSED_TECH_NO = BASE_URL + "/v1/get/tech_no";
 
 
     /*********************************************************************************************/

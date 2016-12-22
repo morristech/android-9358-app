@@ -2,11 +2,11 @@ package com.xmd.technician.presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ActivityHelper;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.LoginContract;
 import com.xmd.technician.http.gson.LoginResult;
@@ -15,7 +15,6 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.window.MainActivity;
-import com.xmd.technician.window.RegisterActivity;
 import com.xmd.technician.window.ResetPasswordActivity;
 
 import rx.Subscription;
@@ -102,8 +101,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void onClickRegister() {
-        //FIXME
-        mContext.startActivity(new Intent(mContext, RegisterActivity.class));
+        UINavigation.gotoRegister(mContext, false);
     }
 
     @Override
@@ -137,14 +135,12 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     private void checkLoginReady() {
         if (mIsPhoneLogin) {
-            mView.enableLogin(!TextUtils.isEmpty(mPhoneNumber)
-                    && Utils.matchPhoneNumFormat(mPhoneNumber)
-                    && !TextUtils.isEmpty(mPassword)
-                    && mPassword.length() >= 6 && mPassword.length() <= 20);
+            mView.enableLogin(Utils.matchPhoneNumFormat(mPhoneNumber)
+                    && Utils.matchLoginPassword(mPassword));
         } else {
-            mView.enableLogin(!TextUtils.isEmpty(mInviteCode) && mInviteCode.length() >= 6
-                    && !TextUtils.isEmpty(mTechNo) && mTechNo.length() >= 5
-                    && !TextUtils.isEmpty(mPassword));
+            mView.enableLogin(Utils.matchInviteCode(mInviteCode)
+                    && Utils.matchTechNo(mTechNo)
+                    && Utils.matchLoginPassword(mPassword));
         }
     }
 
@@ -166,7 +162,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             if (!mIsPhoneLogin && loginResult.statusCode == 206) {
                 //进入注册页面
                 mLoginTech.setTechId(loginResult.spareTechId);
-                mContext.startActivity(new Intent(mContext, RegisterActivity.class));
+                UINavigation.gotoRegister(mContext, true);
             } else {
                 //进入主界面
                 mLoginTech.saveLoginResult(loginResult);

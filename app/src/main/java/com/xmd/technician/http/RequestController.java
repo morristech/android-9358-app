@@ -43,7 +43,7 @@ import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
-import com.xmd.technician.http.gson.InviteCodeResult;
+import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.ModifyPasswordResult;
@@ -60,6 +60,7 @@ import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.http.gson.TokenExpiredResult;
+import com.xmd.technician.http.gson.UnusedTechNoListResult;
 import com.xmd.technician.http.gson.UpdateServiceResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.http.gson.UpdateWorkStatusResult;
@@ -99,6 +100,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_LOGIN_BY_TECH_NO:
                 doLoginByTechNo((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_GET_UNUSED_TECH_NO:
+                doGetUnusedTechNo((Map<String, String>) msg.obj);
+                break;
             case MsgDef.MSG_DEF_LOGOUT:
                 doLogout();
                 break;
@@ -126,8 +130,8 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_ICODE:
                 getICode((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_SUBMIT_INVITE_CODE:
-                submitInviteCode((Map<String, String>) msg.obj);
+            case MsgDef.MSG_DEF_JOIN_CLUB:
+                joinClub((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_TOKEN_EXPIRE:
                 doHandleTokenExpired(msg.obj.toString());
@@ -351,7 +355,44 @@ public class RequestController extends AbstractController {
 
             @Override
             public void onFailure(Call<LoginResult> call, Throwable t) {
-                RxBus.getInstance().post(t);
+                LoginResult result = new LoginResult();
+                result.statusCode = 400;
+                result.msg = t.getMessage();
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //使用技师编号登录
+    private void doGetUnusedTechNo(Map<String, String> params) {
+        Call<UnusedTechNoListResult> call = getSpaService().getUnusedTechNoList(
+                params.get(RequestConstant.KEY_TOKEN),
+                params.get(RequestConstant.KEY_CLUB_CODE));
+
+        call.enqueue(new Callback<UnusedTechNoListResult>() {
+            @Override
+            public void onResponse(Call<UnusedTechNoListResult> call, Response<UnusedTechNoListResult> response) {
+                UnusedTechNoListResult result = response.body();
+                if (result != null) {
+                    RxBus.getInstance().post(result);
+                } else {
+                    try {
+                        result = new UnusedTechNoListResult();
+                        result.statusCode = 400;
+                        result.msg = response.errorBody().string();
+                        RxBus.getInstance().post(result);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UnusedTechNoListResult> call, Throwable t) {
+                UnusedTechNoListResult result = new UnusedTechNoListResult();
+                result.statusCode = 400;
+                result.msg = t.getMessage();
+                RxBus.getInstance().post(result);
             }
         });
     }
@@ -532,14 +573,16 @@ public class RequestController extends AbstractController {
 
     }
 
-    private void submitInviteCode(Map<String, String> params) {
-        Call<InviteCodeResult> call = getSpaService().submitInviteCode(SharedPreferenceHelper.getUserToken(),
-                RequestConstant.SESSION_TYPE,
-                params.get(RequestConstant.KEY_INVITE_CODE));
+    private void joinClub(Map<String, String> params) {
+        Call<JoinClubResult> call = getSpaService().joinClub(
+                params.get(RequestConstant.KEY_TOKEN),
+                params.get(RequestConstant.KEY_INVITE_CODE),
+                params.get(RequestConstant.KEY_SPARE_TECH_ID),
+                RequestConstant.SESSION_TYPE);
 
-        call.enqueue(new TokenCheckedCallback<InviteCodeResult>() {
+        call.enqueue(new TokenCheckedCallback<JoinClubResult>() {
             @Override
-            protected void postResult(InviteCodeResult result) {
+            protected void postResult(JoinClubResult result) {
                 RxBus.getInstance().post(result);
             }
         });

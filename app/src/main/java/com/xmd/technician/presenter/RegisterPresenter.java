@@ -1,20 +1,19 @@
 package com.xmd.technician.presenter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.text.Editable;
 
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.ThreadPoolManager;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.RegisterContract;
 import com.xmd.technician.databinding.ActivityRegisterBinding;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.window.CompleteRegisterInfoActivity;
 
 import java.util.concurrent.Future;
 
@@ -36,6 +35,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
     private String mPassword;
     private Future mSendVerificationFuture;
     private static final int VERIFICATION_INTERVAL = 60000;//验证码间隔60秒
+    public boolean mJoinClub; //是否在注册时加入会所
 
     private Subscription mRegisterSubscription;
 
@@ -58,6 +58,8 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
         mRegisterSubscription = RxBus.getInstance().toObservable(RegisterResult.class).subscribe(
                 result -> handleRegisterResult(result)
         );
+
+        mJoinClub = mView.getIntent().getBooleanExtra(UINavigation.EXTRA_JOIN_CLUB, false);
     }
 
     @Override
@@ -154,10 +156,11 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
             mView.showAlertDialog(result.msg);
         } else {
             mTech.saveRegisterResult(result);
-//            //登录环信
-//            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
-            //跳转到完善信息界面2
-            mContext.startActivity(new Intent(mContext, CompleteRegisterInfoActivity.class));
+            if (mJoinClub) {
+                UINavigation.gotoCompleteRegisterInfo(mContext);
+            } else {
+                UINavigation.gotoJoinClub(mContext, true);
+            }
         }
     }
 }

@@ -8,12 +8,15 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.xmd.technician.R;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -66,7 +69,7 @@ public class InviteDialog extends Dialog implements TextWatcher{
     public void submitInvite(){
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_INVITE_CODE, mClubInviteEdt.getText().toString());
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SUBMIT_INVITE_CODE, params);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_JOIN_CLUB, params);
         dismiss();
     }
 }

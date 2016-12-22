@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
-import com.xmd.technician.http.gson.InviteCodeResult;
+import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -70,11 +70,11 @@ public class SettingActivity extends BaseActivity {
         mQuitClubSubscription = RxBus.getInstance().toObservable(QuitClubResult.class).subscribe(
                 result -> doQuitClubResult());
 
-        mSubmitInviteSubscription = RxBus.getInstance().toObservable(InviteCodeResult.class).subscribe(inviteCodeResult -> submitInviteResult(inviteCodeResult));
+        mSubmitInviteSubscription = RxBus.getInstance().toObservable(JoinClubResult.class).subscribe(inviteCodeResult -> submitInviteResult(inviteCodeResult));
     }
 
-    private void submitInviteResult(InviteCodeResult inviteCodeResult) {
-        makeShortToast(String.format(getString(R.string.join_club_success_tips), inviteCodeResult.name));
+    private void submitInviteResult(JoinClubResult joinClubResult) {
+        makeShortToast(String.format(getString(R.string.join_club_success_tips), joinClubResult.name));
         mQuitClubView.setVisibility(View.VISIBLE);
         mJoinClubView.setVisibility(View.GONE);
     }

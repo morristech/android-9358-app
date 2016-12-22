@@ -10,27 +10,30 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.TechSummaryInfo;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CommentOrderRedPkResult;
-import com.xmd.technician.http.gson.InviteCodeResult;
+import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
-import com.xmd.technician.bean.TechSummaryInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.InviteDialog;
 import com.xmd.technician.widget.QRDialog;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -99,7 +102,7 @@ public class PersonalFragment extends BaseFragment {
         mCommentOrderSubscription = RxBus.getInstance().toObservable(CommentOrderRedPkResult.class).subscribe(
                 commentOrderRedPkResult -> handleCommentOrderRedPk(commentOrderRedPkResult));
 
-        mSubmitInviteSubscription = RxBus.getInstance().toObservable(InviteCodeResult.class).subscribe(inviteCodeResult -> submitInviteResult(inviteCodeResult));
+        mSubmitInviteSubscription = RxBus.getInstance().toObservable(JoinClubResult.class).subscribe(inviteCodeResult -> submitInviteResult(inviteCodeResult));
 
         mUserSwitchesSubscription = RxBus.getInstance().toObservable(UserSwitchesResult.class).subscribe(
                 switchesResult -> handleUserSwitchResult(switchesResult)
@@ -343,7 +346,7 @@ public class PersonalFragment extends BaseFragment {
         new InviteDialog(getActivity(), R.style.default_dialog_style).show();
     }
 
-    private void submitInviteResult(InviteCodeResult result) {
+    private void submitInviteResult(JoinClubResult result) {
         if (result.statusCode == 200) {
             mTechInfo.clubId = result.id;
             mTechInfo.clubName = result.name;

@@ -8,6 +8,7 @@ import android.text.Editable;
 
 public interface RegisterContract {
     interface View extends IBaseView {
+
     }
 
     interface Presenter extends IBasePresenter {

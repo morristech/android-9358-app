@@ -29,7 +29,7 @@ import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
-import com.xmd.technician.http.gson.InviteCodeResult;
+import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.OrderListResult;
@@ -42,6 +42,7 @@ import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
+import com.xmd.technician.http.gson.UnusedTechNoListResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
 
@@ -185,10 +186,11 @@ public interface SpaService {
     Call<BaseResult> getICode(@Field(RequestConstant.KEY_MOBILE) String mobile);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_INVITE_CODE)
-    Call<InviteCodeResult> submitInviteCode(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                            @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                            @Field(RequestConstant.KEY_INVITE_CODE) String inviteCode);
+    @POST(RequestConstant.URL_JOIN_CLUB)
+    Call<JoinClubResult> joinClub(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                  @Field(RequestConstant.KEY_INVITE_CODE) String inviteCode,
+                                  @Field(RequestConstant.KEY_SPARE_TECH_ID) String techId,
+                                  @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_QUIT_CLUB)
@@ -553,4 +555,9 @@ public interface SpaService {
     @POST(RequestConstant.URL_ORDER_INNER_READ)
     Call<BaseResult> setOrderInnerRead(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_ORDER_ID) String orderId);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_UNUSED_TECH_NO)
+    Call<UnusedTechNoListResult> getUnusedTechNoList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                     @Field(RequestConstant.KEY_CLUB_CODE) String clubCode);
 }

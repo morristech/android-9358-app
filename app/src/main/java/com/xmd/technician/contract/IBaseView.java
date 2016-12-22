@@ -1,5 +1,7 @@
 package com.xmd.technician.contract;
 
+import android.content.Intent;
+
 /**
  * Created by heyangya on 16-12-19.
  */
@@ -14,4 +16,6 @@ public interface IBaseView {
     void showToast(String message);
 
     void showAlertDialog(String message);
+
+    Intent getIntent();
 }

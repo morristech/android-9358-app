@@ -9,6 +9,7 @@ import com.hyphenate.chat.EMClient;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.UserProfileProvider;
+import com.xmd.technician.common.ScreenUtils;
 import com.xmd.technician.common.ThreadManager;
 
 public class WelcomeActivity extends BaseActivity {
@@ -27,7 +28,9 @@ public class WelcomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        if(TextUtils.isEmpty(SharedPreferenceHelper.getUserToken())){
+        ScreenUtils.setScreenSize(getWindowManager());
+
+        if (TextUtils.isEmpty(SharedPreferenceHelper.getUserToken())) {
             ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, mTask, 500);
         } else {
             EMClient.getInstance().groupManager().loadAllGroups();

@@ -169,6 +169,17 @@ public class LoginTechnician {
         SharedPreferenceHelper.setEMchatPassword(emchatPassword);
     }
 
+
+    //加入会所，返回JoinClubResult
+    public void joinClub(String inviteCode, String techId) {
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_TOKEN, token);
+        params.put(RequestConstant.KEY_INVITE_CODE, inviteCode);
+        params.put(RequestConstant.KEY_SPARE_TECH_ID, techId);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_JOIN_CLUB, params);
+    }
+
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -194,6 +205,10 @@ public class LoginTechnician {
     public void setInviteCode(String inviteCode) {
         this.inviteCode = inviteCode;
         SharedPreferenceHelper.setInviteCode(inviteCode);
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public String getTechId() {

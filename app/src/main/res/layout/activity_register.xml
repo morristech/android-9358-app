@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="tech"
             type="com.xmd.technician.model.LoginTechnician" />
@@ -34,15 +36,15 @@
                 android:layout_height="@dimen/home_button_height"
                 android:background="@null"
                 android:gravity="center"
-                android:text="完善信息"
+                android:text='@{presenter.mJoinClub?"完善信息":"注册"}'
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontTitle" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_keyboard_arrow_left_white_3x"
-                android:onClick="@{()->presenter.onClickBack()}" />
+                android:onClick="@{()->presenter.onClickBack()}"
+                android:src="@drawable/ic_keyboard_arrow_left_white_3x" />
         </FrameLayout>
 
 
@@ -55,7 +57,8 @@
             android:layout_marginTop="8dp"
             android:text="会所邀请码："
             android:textColor="@color/color_white"
-            android:textSize="@dimen/fontBody" />
+            android:textSize="@dimen/fontBody"
+            android:visibility="@{presenter.mJoinClub?View.VISIBLE:View.GONE}" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,7 +68,8 @@
             android:layout_toRightOf="@id/tip_invite_code"
             android:text="@{tech.inviteCode}"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/fontBody" />
+            android:textSize="@dimen/fontBody"
+            android:visibility="@{presenter.mJoinClub?View.VISIBLE:View.GONE}" />
 
         <TextView
             android:id="@+id/tip_tech_no"
@@ -76,7 +80,8 @@
             android:layout_marginTop="8dp"
             android:text="技师编号："
             android:textColor="@color/color_white"
-            android:textSize="@dimen/fontBody" />
+            android:textSize="@dimen/fontBody"
+            android:visibility="@{presenter.mJoinClub?View.VISIBLE:View.GONE}" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -86,7 +91,8 @@
             android:layout_toRightOf="@id/tip_tech_no"
             android:text="@{tech.techNo}"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/fontBody" />
+            android:textSize="@dimen/fontBody"
+            android:visibility="@{presenter.mJoinClub?View.VISIBLE:View.GONE}" />
 
 
         <LinearLayout
