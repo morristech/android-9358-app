@@ -66,7 +66,7 @@
             android:layout_below="@id/title"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/tip_invite_code"
-            android:text="@{tech.inviteCode}"
+            android:text="@{tech.clubInviteCode}"
             android:textColor="@color/color_white"
             android:textSize="@dimen/fontBody"
             android:visibility="@{presenter.mJoinClub?View.VISIBLE:View.GONE}" />

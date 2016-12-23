@@ -75,7 +75,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
     public void onClickNextStep() {
         //进入下一步，这里进行注册
         mView.showLoading("正在注册...");
-        mTech.register(mPhoneNumber, mPassword, mVerificationCode, mTech.getInviteCode(), mTech.getTechId(), mTech.getTechNo());
+        mTech.register(mPhoneNumber, mPassword, mVerificationCode, mTech.getClubInviteCode(), mTech.getTechId(), mTech.getTechNo());
     }
 
     @Override
@@ -155,7 +155,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
         if (result.statusCode > 299 || (result.statusCode < 200 && result.statusCode != 0)) {
             mView.showAlertDialog(result.msg);
         } else {
-            mTech.saveRegisterResult(result);
+            mTech.onRegisterResult(result);
             if (mJoinClub) {
                 UINavigation.gotoCompleteRegisterInfo(mContext);
             } else {

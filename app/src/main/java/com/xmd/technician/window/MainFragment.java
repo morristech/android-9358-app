@@ -33,6 +33,7 @@ import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
+import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.HeartBeatTimer;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
@@ -48,6 +49,7 @@ import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -326,7 +328,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mGetDynamicListSubscription = RxBus.getInstance().toObservable(DynamicListResult.class).subscribe(
                 dynamicListResult -> initDynamicView(dynamicListResult));
         mQuitClubSubscription = RxBus.getInstance().toObservable(QuitClubResult.class).subscribe(
-                result -> doQuitClubResult());
+                this::doQuitClubResult);
 
         mSubmitInviteSubscription = RxBus.getInstance().toObservable(JoinClubResult.class).subscribe(
                 inviteCodeResult -> submitInviteResult(inviteCodeResult));
@@ -573,11 +575,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 UINavigation.gotoJoinClub(getActivity(), false);
                 break;
             case R.id.settings_activity_quit_club:
-
                 new RewardConfirmDialog(getActivity(), getString(R.string.quit_club_title), getString(R.string.quit_club_tips), "") {
                     @Override
                     public void onConfirmClick() {
-                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_QUIT_CLUB);
+                        LoginTechnician.getInstance().exitClub();
                         super.onConfirmClick();
                     }
                 }.show();
@@ -586,8 +587,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 new RewardConfirmDialog(getActivity(), "", getString(R.string.logout_tips), "") {
                     @Override
                     public void onConfirmClick() {
-                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID);
-                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT);
+                        LoginTechnician.getInstance().logout();
+                        ActivityHelper.getInstance().removeAllActivities();
+                        UINavigation.gotoLogin(getActivity());
                         super.onConfirmClick();
                     }
                 }.show();
@@ -1054,8 +1056,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
     }
 
-    private void doQuitClubResult() {
+    private void doQuitClubResult(QuitClubResult result) {
         ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.quit_club_success_tips));
+        LoginTechnician.getInstance().onExitClub(result);
         mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
         mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
     }

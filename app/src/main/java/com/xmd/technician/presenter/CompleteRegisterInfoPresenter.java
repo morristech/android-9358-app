@@ -94,7 +94,9 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PICK_AVATAR) {
             if (resultCode != Activity.RESULT_OK) {
-                mView.showAlertDialog("选择图片失败！");
+                if (resultCode != Activity.RESULT_CANCELED) {
+                    mView.showAlertDialog("选择图片失败！");
+                }
             } else {
                 mAvatarUrl = data.getData().getPath();
                 Glide.with(mContext)
@@ -137,8 +139,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
         if (result.statusCode < 200 || result.statusCode > 299) {
             mView.showAlertDialog(result.msg);
         } else {
-            mTech.setNickName(mNickName);
-            mTech.setGender(mFemale ? LoginTechnician.GENDER_FEMALE : LoginTechnician.GENDER_MALE);
+            mTech.onUpdateTechNickNameAndGender(mNickName, mFemale, result);
             if (!TextUtils.isEmpty(mAvatarUrl)) {
                 mView.showLoading("正在上传头像...");
                 mTech.uploadAvatar(mAvatarUrl);
@@ -154,7 +155,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
         if (result.statusCode < 200 || result.statusCode > 299) {
             mView.showAlertDialog(result.msg);
         } else {
-            mTech.setAvatarUrl(result.respData);
+            mTech.onUploadAvatarResult(result);
             //登录环信并去主界面
             gotoMainActivity();
         }

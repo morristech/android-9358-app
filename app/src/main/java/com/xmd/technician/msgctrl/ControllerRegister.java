@@ -69,7 +69,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CUSTOMER_LIST,
                 MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL,
                 MsgDef.MSG_DEF_GET_CLUB_LIST,
-                MsgDef.MSG_DEF_QUIT_CLUB,
                 MsgDef.MSG_DEF_GET_APP_UPDATE_CONFIG,
                 MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL,
                 MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL,

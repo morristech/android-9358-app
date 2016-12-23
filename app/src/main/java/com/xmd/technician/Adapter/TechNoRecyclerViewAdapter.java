@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.xmd.technician.R;
 import com.xmd.technician.contract.JoinClubContract;
+import com.xmd.technician.model.TechNo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,17 +72,5 @@ public class TechNoRecyclerViewAdapter extends RecyclerView.Adapter<TechNoRecycl
                     : itemView.getResources().getColor(android.R.color.holo_blue_light));
             mTechNo = techNo;
         }
-    }
-
-    public static class TechNo {
-        public String name;
-        public String id;
-
-        public TechNo(String name, String id) {
-            this.name = name;
-            this.id = id;
-        }
-
-        public static TechNo DEFAULT_TECH_NO = new TechNo("管理员指定", null);
     }
 }

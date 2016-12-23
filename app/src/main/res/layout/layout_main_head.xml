@@ -31,8 +31,8 @@
         android:layout_alignTop="@id/rl_main_head_tech_rest"
         android:layout_marginTop="@dimen/margin_10"
         android:layout_toRightOf="@id/rl_main_head_tech_rest"
-        android:singleLine="true"
         android:enabled="true"
+        android:singleLine="true"
         android:textColor="@color/color_white"
         android:textSize="@dimen/fontHead" />
 
@@ -40,27 +40,28 @@
         android:id="@+id/main_head_tech_serial"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/main_head_tech_name"
         android:layout_below="@id/main_head_tech_name"
         android:layout_marginTop="@dimen/margin_5"
-        android:layout_alignLeft="@id/main_head_tech_name"
         android:background="@drawable/bg_main_tech_serial"
-        android:paddingRight="@dimen/coupon_item_bottom_corner_bg"
-        android:textColor="@color/color_white"
-        android:textSize="@dimen/fontRemark"
-        android:visibility="gone"
         android:gravity="center"
-        />
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textColor="@color/color_white"
+        android:textSize="13sp"
+        android:text="A0001"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/main_head_tech_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/main_head_tech_name"
         android:layout_below="@id/main_head_tech_serial"
         android:layout_marginTop="@dimen/margin_5"
-        android:layout_alignLeft="@id/main_head_tech_name"
         android:paddingRight="@dimen/coupon_item_bottom_corner_bg"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/fontNormal"/>
+        android:textSize="@dimen/fontNormal" />
 
     <ImageView
         android:id="@+id/btn_main_tech_rest"
@@ -70,8 +71,7 @@
         android:layout_alignTop="@id/main_head_tech_name"
         android:layout_marginRight="@dimen/margin_15"
         android:src="@drawable/btn_main_rest_default"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/btn_main_tech_busy"

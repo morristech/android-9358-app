@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.model.LoginTechnician;
 
 /**
  * Created by sdcm on 15-10-23.
@@ -25,9 +26,13 @@ public class SharedPreferenceHelper {
     private static final String KEY_USER_CLUB_NAME = "7660E9BC2D136134F25XD7F56A803DC";//clubName
     private static final String KEY_CLUB_GAME_TIMEOUT = "7660E9BC2D136134F25XD67d6A803DC";
     private static final String KEY_VERIFICATION_CODE_TIME = "16024c10323c6f642892cc17bac62192";
+    private static final String KEY_CLUB_INVITE_CODE = "76a072c99affd6902b8505443f1bf2ac";
     private static final String KEY_INVITE_CODE = "fced902e58a478ca5e535c2986f95cb1";
     private static final String KEY_TECH_NO = "fc9bab349dc493c2a8f6656e1ba66752";
-
+    private static final String KEY_LOGIN_TYPE = "b7ac3a93823c9a27460b8852c11bc1f1";
+    private static final String KEY_TECH_DESCRIPTION = "5ceaf3dc66e692657f7e45e889e9b0ef";
+    private static final String KEY_TECH_QR_DOWNLOAD_URL = "3625d662fe5f3926011a8b7cacc96da9";
+    private static final String KEY_TECH_GENDER = "d70798608c15d7af0f2cd381ea775fa9";
     /**
      * Last time to check the upgrade automatically
      */
@@ -286,4 +291,43 @@ public class SharedPreferenceHelper {
         mSettingPreference.edit().putString(KEY_INVITE_CODE, value).apply();
     }
 
+    public static void setLoginType(int loginType) {
+        mSettingPreference.edit().putInt(KEY_LOGIN_TYPE, loginType).apply();
+    }
+
+    public static int getLoginType() {
+        return mSettingPreference.getInt(KEY_LOGIN_TYPE, LoginTechnician.LOGIN_TYPE_PHONE);
+    }
+
+    public static String getClubInviteCode() {
+        return mSettingPreference.getString(KEY_CLUB_INVITE_CODE, "");
+    }
+
+    public static void setClubInviteCode(String value) {
+        mSettingPreference.edit().putString(KEY_CLUB_INVITE_CODE, value).apply();
+    }
+
+    public static String getTechDescription() {
+        return mSettingPreference.getString(KEY_TECH_DESCRIPTION, "");
+    }
+
+    public static void setTechDescription(String value) {
+        mSettingPreference.edit().putString(KEY_TECH_DESCRIPTION, value).apply();
+    }
+
+    public static String getTechQrDownloadUrl() {
+        return mSettingPreference.getString(KEY_TECH_QR_DOWNLOAD_URL, "");
+    }
+
+    public static void setTechQrDownloadUrl(String value) {
+        mSettingPreference.edit().putString(KEY_TECH_QR_DOWNLOAD_URL, value).apply();
+    }
+
+    public static String getTechGender() {
+        return mSettingPreference.getString(KEY_TECH_GENDER, "");
+    }
+
+    public static void setTechGender(String value) {
+        mSettingPreference.edit().putString(KEY_TECH_GENDER, value).apply();
+    }
 }

@@ -114,9 +114,6 @@
             android:name=".window.CommentActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".window.SettingActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".window.FeedbackActivity"
             android:screenOrientation="portrait" />
         <activity

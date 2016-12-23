@@ -3,7 +3,6 @@ package com.xmd.technician.http;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.hyphenate.chat.EMClient;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.AddOrEditResult;
@@ -28,7 +27,6 @@ import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
-import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.http.gson.AccountMoneyResult;
@@ -66,6 +64,7 @@ import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.http.gson.UpdateWorkTimeResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.RxBus;
@@ -104,7 +103,7 @@ public class RequestController extends AbstractController {
                 doGetUnusedTechNo((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_LOGOUT:
-                doLogout();
+                doLogout((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_MODIFY_PASSWORD:
                 modifyPassWord((Map<String, String>) msg.obj);
@@ -125,7 +124,7 @@ public class RequestController extends AbstractController {
                 doBindGetuiClientId();
                 break;
             case MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID:
-                doUnbindGetuiClientId();
+                doUnbindGetuiClientId((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_ICODE:
                 getICode((Map<String, String>) msg.obj);
@@ -336,7 +335,7 @@ public class RequestController extends AbstractController {
                 params.get(RequestConstant.KEY_TECH_No),
                 params.get(RequestConstant.KEY_PASSWORD),
                 params.get(RequestConstant.KEY_APP_VERSION),
-                RequestConstant.DEFAULT_LOGIN_CHANNEL);
+                RequestConstant.DEFAULT_LOGIN_CHANNEL + AppConfig.getAppVersionCode());
 
         call.enqueue(new Callback<LoginResult>() {
             @Override
@@ -400,10 +399,9 @@ public class RequestController extends AbstractController {
     /**
      * Logout Button Clicked in PopupMoreWindow
      */
-    private void doLogout() {
-        UserProfileProvider.getInstance().reset();
-        EMClient.getInstance().logout(true);
-        Call<LogoutResult> call = getSpaService().logout(SharedPreferenceHelper.getUserToken(),
+    private void doLogout(Map<String, String> params) {
+
+        Call<LogoutResult> call = getSpaService().logout(params.get(RequestConstant.KEY_TOKEN),
                 RequestConstant.SESSION_TYPE);
         call.enqueue(new TokenCheckedCallback<LogoutResult>() {
             @Override
@@ -458,7 +456,7 @@ public class RequestController extends AbstractController {
     private void modifyPassWord(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().modifyPassword(params.get(RequestConstant.KEY_OLD_PASSWORD),
                 params.get(RequestConstant.KEY_NEW_PASSWORD),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
@@ -473,7 +471,7 @@ public class RequestController extends AbstractController {
         Call<BaseResult> call = getSpaService().resetPassword(params.get(RequestConstant.KEY_USERNAME),
                 params.get(RequestConstant.KEY_PASSWORD),
                 params.get(RequestConstant.KEY_ICODE),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
 
         call.enqueue(new Callback<BaseResult>() {
@@ -505,11 +503,11 @@ public class RequestController extends AbstractController {
                     params.get(RequestConstant.KEY_PAGE_SIZE),
                     params.get(RequestConstant.KEY_SORT_TYPE),
                     RequestConstant.SESSION_TYPE,
-                    SharedPreferenceHelper.getUserToken());
+                    LoginTechnician.getInstance().getToken());
         } else {
             call = getSpaService().getCommentList(null, null, null,
                     RequestConstant.SESSION_TYPE,
-                    SharedPreferenceHelper.getUserToken());
+                    LoginTechnician.getInstance().getToken());
         }
 
         call.enqueue(new TokenCheckedCallback<CommentResult>() {
@@ -526,7 +524,7 @@ public class RequestController extends AbstractController {
      * @param params
      */
     private void doManageOrder(Map<String, String> params) {
-        Call<BaseResult> call = getSpaService().manageOrder(SharedPreferenceHelper.getUserToken(),
+        Call<BaseResult> call = getSpaService().manageOrder(LoginTechnician.getInstance().getToken(),
                 RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_PROCESS_TYPE),
                 params.get(RequestConstant.KEY_ID), params.get(RequestConstant.KEY_REASON));
 
@@ -546,7 +544,7 @@ public class RequestController extends AbstractController {
 
     private void hideOrder(String orderId) {
         Call<BaseResult> call = getSpaService().hideOrder(orderId,
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
@@ -589,7 +587,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getTechEditInfo() {
-        Call<TechEditResult> call = getSpaService().getTechEditInfo(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+        Call<TechEditResult> call = getSpaService().getTechEditInfo(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<TechEditResult>() {
             @Override
@@ -600,7 +598,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getTechCurrentInfo() {
-        Call<TechCurrentResult> call = getSpaService().getTechCurrentInfo(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+        Call<TechCurrentResult> call = getSpaService().getTechCurrentInfo(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<TechCurrentResult>() {
             @Override
@@ -612,7 +610,7 @@ public class RequestController extends AbstractController {
 
     private void updateTechInfo(Map<String, String> params) {
         Call<UpdateTechInfoResult> call = getSpaService().updateTechInfo(params.get(RequestConstant.KEY_USER),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
         call.enqueue(new TokenCheckedCallback<UpdateTechInfoResult>() {
             @Override
             protected void postResult(UpdateTechInfoResult result) {
@@ -622,7 +620,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getWorkTime() {
-        Call<WorkTimeResult> call = getSpaService().getWorkTime(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+        Call<WorkTimeResult> call = getSpaService().getWorkTime(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<WorkTimeResult>() {
             @Override
@@ -636,7 +634,7 @@ public class RequestController extends AbstractController {
         Call<BaseResult> call = getSpaService().updateWorkTime(params.get(RequestConstant.KEY_DAY_RANGE),
                 params.get(RequestConstant.KEY_BEGIN_TIME), params.get(RequestConstant.KEY_END_TIME),
                 params.get(RequestConstant.KEY_ID), params.get(RequestConstant.KEY_END_DAY),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
@@ -648,7 +646,7 @@ public class RequestController extends AbstractController {
 
     private void updateWorkStatus(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().updateWorkStatus(params.get(RequestConstant.KEY_STATUS),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {
@@ -659,7 +657,7 @@ public class RequestController extends AbstractController {
 
     private void uploadAvatar(Map<String, String> params) {
         Call<AvatarResult> call = getSpaService().uploadAvatar(params.get(RequestConstant.KEY_IMG_FILE),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<AvatarResult>() {
             @Override
@@ -671,7 +669,7 @@ public class RequestController extends AbstractController {
 
     private void uploadAlbum(Map<String, String> params) {
         Call<AlbumResult> call = getSpaService().uploadAlbum(params.get(RequestConstant.KEY_IMG_FILE),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<AlbumResult>() {
             @Override
@@ -683,7 +681,7 @@ public class RequestController extends AbstractController {
 
     private void deleteAlbum(Map<String, String> params) {
         Call<AlbumResult> call = getSpaService().deleteAlbum(params.get(RequestConstant.KEY_ID),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<AlbumResult>() {
             @Override
@@ -695,7 +693,7 @@ public class RequestController extends AbstractController {
 
     private void sortAlbum(Map<String, String> params) {
         Call<AlbumResult> call = getSpaService().sortAlbum(params.get(RequestConstant.KEY_IDS),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<AlbumResult>() {
             @Override
@@ -706,7 +704,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getServiceList() {
-        Call<ServiceResult> call = getSpaService().getServiceList(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+        Call<ServiceResult> call = getSpaService().getServiceList(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<ServiceResult>() {
             @Override
@@ -718,7 +716,7 @@ public class RequestController extends AbstractController {
 
     private void updateServiceList(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().updateServiceList(params.get(RequestConstant.KEY_IDS),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
@@ -729,7 +727,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getCommentOrderRedPkCount() {
-        Call<CommentOrderRedPkResult> call = getSpaService().getCommentOrderRedPkCount(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE, RequestConstant.USER_TYPE_TECH);
+        Call<CommentOrderRedPkResult> call = getSpaService().getCommentOrderRedPkCount(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE, RequestConstant.USER_TYPE_TECH);
 
         call.enqueue(new TokenCheckedCallback<CommentOrderRedPkResult>() {
             @Override
@@ -740,7 +738,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getAccountMoney() {
-        Call<AccountMoneyResult> call = getSpaService().getAccountMoney(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+        Call<AccountMoneyResult> call = getSpaService().getAccountMoney(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<AccountMoneyResult>() {
             @Override
@@ -753,7 +751,7 @@ public class RequestController extends AbstractController {
     private void getConsumeDetail(Map<String, String> params) {
         Call<ConsumeDetailResult> call = getSpaService().getConsumeDetail(params.get(RequestConstant.KEY_CONSUME_TYPE),
                 params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<ConsumeDetailResult>() {
             @Override
@@ -764,7 +762,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getCouponList() {
-        Call<CouponListResult> call = getSpaService().getCouponList(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+        Call<CouponListResult> call = getSpaService().getCouponList(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<CouponListResult>() {
             @Override
@@ -785,7 +783,7 @@ public class RequestController extends AbstractController {
 
     private void doGetCouponInfo(String actId) {
         Call<CouponInfoResult> call = getSpaService().getCouponInfo(
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE, actId);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE, actId);
 
         call.enqueue(new TokenCheckedCallback<CouponInfoResult>() {
             @Override
@@ -811,7 +809,7 @@ public class RequestController extends AbstractController {
         Call<PaidCouponUserDetailResult> call = getSpaService().getPaidCouponUserDetail(
                 params.get(RequestConstant.KEY_COUPON_STATUS), params.get(RequestConstant.KEY_ACT_ID),
                 params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<PaidCouponUserDetailResult>() {
             @Override
@@ -828,7 +826,7 @@ public class RequestController extends AbstractController {
      */
     private void doSubmitFeedback(Map<String, String> params) {
         Call<BaseResult> call = getSpaService().submitFeedback(params.get(RequestConstant.KEY_COMMENTS),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
@@ -839,7 +837,7 @@ public class RequestController extends AbstractController {
     }
 
     private void quitClub() {
-        Call<QuitClubResult> call = getSpaService().quitClub(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+        Call<QuitClubResult> call = getSpaService().quitClub(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<QuitClubResult>() {
             @Override
@@ -851,7 +849,7 @@ public class RequestController extends AbstractController {
 
     private void doCouponShareEventCount(String actId) {
         Call<BaseResult> call = getSpaService().doCouponShareEventCount(actId, RequestConstant.USER_TYPE_TECH,
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
@@ -863,7 +861,7 @@ public class RequestController extends AbstractController {
 
     private void doBindGetuiClientId() {
 
-        if (TextUtils.isEmpty(SharedPreferenceHelper.getUserToken())) {
+        if (TextUtils.isEmpty(LoginTechnician.getInstance().getToken())) {
             return;
         }
 
@@ -917,10 +915,10 @@ public class RequestController extends AbstractController {
     /**
      * 解绑个推ClientID
      */
-    private void doUnbindGetuiClientId() {
+    private void doUnbindGetuiClientId(Map<String, String> params) {
         Logger.v("start unbind client id");
         Call<BaseResult> call = getSpaService().unbindGetuiClientId(RequestConstant.USER_TYPE_TECH,
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE, AppConfig.sClientId);
+                params.get(RequestConstant.KEY_TOKEN), RequestConstant.SESSION_TYPE, AppConfig.sClientId);
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {
@@ -942,7 +940,7 @@ public class RequestController extends AbstractController {
      */
     private void doAddOrEditCustomer(Map<String, String> params) {
         if (TextUtils.isEmpty(params.get(RequestConstant.KEY_ID))) {
-            Call<BaseResult> call = getSpaService().addCustomer(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(),
+            Call<BaseResult> call = getSpaService().addCustomer(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken(),
                     params.get(RequestConstant.KEY_PHONE_NUMBER), params.get(RequestConstant.KEY_REMARK), params.get(RequestConstant.KEY_NOTE_NAME), params.get(RequestConstant.KEY_MARK_IMPRESSION));
             call.enqueue(new TokenCheckedCallback<BaseResult>() {
                 @Override
@@ -951,7 +949,7 @@ public class RequestController extends AbstractController {
                 }
             });
         } else {
-            Call<BaseResult> call = getSpaService().editCustomer(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_ID),
+            Call<BaseResult> call = getSpaService().editCustomer(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_ID),
                     params.get(RequestConstant.KEY_PHONE_NUMBER), params.get(RequestConstant.KEY_REMARK), params.get(RequestConstant.KEY_NOTE_NAME), params.get(RequestConstant.KEY_MARK_IMPRESSION));
             call.enqueue(new TokenCheckedCallback<BaseResult>() {
                 @Override
@@ -969,7 +967,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doGetCustomerList(Map<String, String> params) {
-        Call<CustomerListResult> call = getSpaService().getCustomerList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE));
+        Call<CustomerListResult> call = getSpaService().getCustomerList(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE));
         call.enqueue(new TokenCheckedCallback<CustomerListResult>() {
             @Override
             protected void postResult(CustomerListResult result) {
@@ -984,7 +982,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doGetCustomerInfoDetail(Map<String, String> params) {
-        Call<CustomerDetailResult> call = getSpaService().getCustomerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_USER_ID), params.get(RequestConstant.KEY_ID), SharedPreferenceHelper.getUserToken());
+        Call<CustomerDetailResult> call = getSpaService().getCustomerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_USER_ID), params.get(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
         call.enqueue(new TokenCheckedCallback<CustomerDetailResult>() {
             @Override
             protected void postResult(CustomerDetailResult result) {
@@ -1000,7 +998,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doGetTechInfoDetail(Map<String, String> params) {
-        Call<TechDetailResult> call = getSpaService().getTechInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), SharedPreferenceHelper.getUserToken());
+        Call<TechDetailResult> call = getSpaService().getTechInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
         call.enqueue(new TokenCheckedCallback<TechDetailResult>() {
             @Override
             protected void postResult(TechDetailResult result) {
@@ -1016,7 +1014,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doGetManagerInfoDetail(Map<String, String> params) {
-        Call<ManagerDetailResult> call = getSpaService().getManagerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), SharedPreferenceHelper.getUserToken());
+        Call<ManagerDetailResult> call = getSpaService().getManagerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
         call.enqueue(new TokenCheckedCallback<ManagerDetailResult>() {
             @Override
             protected void postResult(ManagerDetailResult result) {
@@ -1031,7 +1029,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doGetClubList() {
-        Call<ClubContactResult> call = getSpaService().getClubList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken());
+        Call<ClubContactResult> call = getSpaService().getClubList(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken());
         call.enqueue(new TokenCheckedCallback<ClubContactResult>() {
             @Override
             protected void postResult(ClubContactResult result) {
@@ -1046,7 +1044,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doDeleteContact(Map<String, String> params) {
-        Call<BaseResult> call = getSpaService().doDeleteContact(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), SharedPreferenceHelper.getUserToken());
+        Call<BaseResult> call = getSpaService().doDeleteContact(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {
@@ -1057,7 +1055,7 @@ public class RequestController extends AbstractController {
 
     private void doGetUserRecords(Map<String, String> params) {
         Call<CreditAccountDetailResult> call = getSpaService().doGetUserRecordDetail(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserClubId(),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.USER_TYPE_TECH, params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE)
+                LoginTechnician.getInstance().getToken(), RequestConstant.USER_TYPE_TECH, params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE)
         );
         call.enqueue(new TokenCheckedCallback<CreditAccountDetailResult>() {
             @Override
@@ -1069,7 +1067,7 @@ public class RequestController extends AbstractController {
     }
 
     private void doGetUserCreditSwitchStatus() {
-        Call<CreditStatusResult> call = getSpaService().doGetCreditStatus(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserClubId(), SharedPreferenceHelper.getUserToken());
+        Call<CreditStatusResult> call = getSpaService().doGetCreditStatus(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserClubId(), LoginTechnician.getInstance().getToken());
         call.enqueue(new TokenCheckedCallback<CreditStatusResult>() {
             @Override
             protected void postResult(CreditStatusResult result) {
@@ -1080,7 +1078,7 @@ public class RequestController extends AbstractController {
     }
 
     private void doGetUserCreditAccount() {
-        Call<CreditAccountResult> call = getSpaService().doGetCreditAccount(RequestConstant.USER_TYPE_TECH, SharedPreferenceHelper.getUserClubId(), SharedPreferenceHelper.getUserToken(),
+        Call<CreditAccountResult> call = getSpaService().doGetCreditAccount(RequestConstant.USER_TYPE_TECH, SharedPreferenceHelper.getUserClubId(), LoginTechnician.getInstance().getToken(),
                 RequestConstant.SESSION_TYPE
         );
         call.enqueue(new TokenCheckedCallback<CreditAccountResult>() {
@@ -1094,7 +1092,7 @@ public class RequestController extends AbstractController {
 
     private void doExchangeCredit(Map<String, String> params) {
         Call<CreditExchangeResult> call = getSpaService().doExchangeCredit(RequestConstant.USER_TYPE_TECH, params.get(RequestConstant.KEY_UER_CREDIT_AMOUNT),
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
         call.enqueue(new TokenCheckedCallback<CreditExchangeResult>() {
             @Override
             protected void postResult(CreditExchangeResult result) {
@@ -1110,7 +1108,7 @@ public class RequestController extends AbstractController {
      * @param params
      */
     private void getExchangeApplications(Map<String, String> params) {
-        Call<CreditApplicationsResult> call = getSpaService().getExchangeApplications(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_STATUS),
+        Call<CreditApplicationsResult> call = getSpaService().getExchangeApplications(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_STATUS),
                 params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
 
         call.enqueue(new TokenCheckedCallback<CreditApplicationsResult>() {
@@ -1127,7 +1125,7 @@ public class RequestController extends AbstractController {
      */
     private void doGetContactMark() {
         Call<MarkResult> call = getSpaService().getContactMark(RequestConstant.USER_TYPE_TECH, RequestConstant.TECH_CUSTOMER,
-                SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+                LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
         call.enqueue(new TokenCheckedCallback<MarkResult>() {
             @Override
             protected void postResult(MarkResult result) {
@@ -1145,7 +1143,7 @@ public class RequestController extends AbstractController {
 
         Call<SendGameResult> call = getSpaService().doDiceGameSubmit(params.get(RequestConstant.KEY_USER_CLUB_ID), params.get(RequestConstant.KEY_UER_CREDIT_AMOUNT),
                 params.get(RequestConstant.KEY_GAME_USER_EMCHAT_ID), params.get(RequestConstant.KEY_DICE_GAME_TIME), RequestConstant.SESSION_TYPE,
-                SharedPreferenceHelper.getUserToken());
+                LoginTechnician.getInstance().getToken());
         call.enqueue(new TokenCheckedCallback<SendGameResult>() {
             @Override
             protected void postResult(SendGameResult result) {
@@ -1160,7 +1158,7 @@ public class RequestController extends AbstractController {
      * 游戏开始或拒绝
      */
     private void doDiceGameAcceptOrReject(Map<String, String> params) {
-        Call<GameResult> call = getSpaService().doDiceGameAcceptOrReject(RequestConstant.USER_TYPE_TECH, SharedPreferenceHelper.getUserToken(),
+        Call<GameResult> call = getSpaService().doDiceGameAcceptOrReject(RequestConstant.USER_TYPE_TECH, LoginTechnician.getInstance().getToken(),
                 RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_DICE_GAME_ID), params.get(RequestConstant.KEY_DICE_GAME_STATUS));
         call.enqueue(new TokenCheckedCallback<GameResult>() {
             @Override
@@ -1176,7 +1174,7 @@ public class RequestController extends AbstractController {
      * 获取俱乐部开关
      */
     private void doGetClubUserSwitches() {
-        Call<UserSwitchesResult> call = getSpaService().doGetUserSwitches(SharedPreferenceHelper.getUserClubId(), RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken());
+        Call<UserSwitchesResult> call = getSpaService().doGetUserSwitches(SharedPreferenceHelper.getUserClubId(), RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken());
         call.enqueue(new TokenCheckedCallback<UserSwitchesResult>() {
             @Override
             protected void postResult(UserSwitchesResult result) {
@@ -1192,7 +1190,7 @@ public class RequestController extends AbstractController {
      */
 
     private void doGetRecentlyVisitorList(Map<String, String> params) {
-        Call<RecentlyVisitorResult> call = getSpaService().getRecentlyVisitorList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_LAST_TIME));
+        Call<RecentlyVisitorResult> call = getSpaService().getRecentlyVisitorList(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_LAST_TIME));
         call.enqueue(new TokenCheckedCallback<RecentlyVisitorResult>() {
             @Override
             protected void postResult(RecentlyVisitorResult result) {
@@ -1207,7 +1205,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doGetCreditGiftList() {
-        Call<GiftListResult> call = getSpaService().getCreditGiftList(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken());
+        Call<GiftListResult> call = getSpaService().getCreditGiftList(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken());
         call.enqueue(new TokenCheckedCallback<GiftListResult>() {
             @Override
             protected void postResult(GiftListResult result) {
@@ -1222,7 +1220,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void doSayHi(Map<String, String> params) {
-        Call<SayHiResult> call = getSpaService().doSayHi(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_UPDATE_USER_ID));
+        Call<SayHiResult> call = getSpaService().doSayHi(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_UPDATE_USER_ID));
         call.enqueue(new TokenCheckedCallback<SayHiResult>() {
             @Override
             protected void postResult(SayHiResult result) {
@@ -1232,7 +1230,7 @@ public class RequestController extends AbstractController {
     }
 
     private void doGetVisitView(Map<String, String> params) {
-        Call<VisitBean> call = getSpaService().doGetVisitView(RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_UPDATE_USER_ID));
+        Call<VisitBean> call = getSpaService().doGetVisitView(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_UPDATE_USER_ID));
         call.enqueue(new TokenCheckedCallback<VisitBean>() {
             @Override
             protected void postResult(VisitBean result) {
@@ -1266,7 +1264,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void getTechInfo() {
-        Call<TechInfoResult> call = getSpaService().getTechInfo(SharedPreferenceHelper.getUserToken());
+        Call<TechInfoResult> call = getSpaService().getTechInfo(LoginTechnician.getInstance().getToken());
 
         call.enqueue(new TokenCheckedCallback<TechInfoResult>() {
             @Override
@@ -1282,7 +1280,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void getMainPageOrderList(Map<String, String> params) {
-        Call<OrderListResult> call = getSpaService().getTechOrderList(SharedPreferenceHelper.getUserToken(),
+        Call<OrderListResult> call = getSpaService().getTechOrderList(LoginTechnician.getInstance().getToken(),
                 RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ORDER_STATUS), params.get(RequestConstant.KEY_IS_INDEX_PAGE),
                 params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<OrderListResult>() {
@@ -1299,7 +1297,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void getTechStatisticsData() {
-        Call<TechStatisticsDataResult> call = getSpaService().getTechStatisticData(SharedPreferenceHelper.getUserToken());
+        Call<TechStatisticsDataResult> call = getSpaService().getTechStatisticData(LoginTechnician.getInstance().getToken());
 
         call.enqueue(new TokenCheckedCallback<TechStatisticsDataResult>() {
             @Override
@@ -1316,7 +1314,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void getTechRankData() {
-        Call<TechRankDataResult> call = getSpaService().getTechRankData(SharedPreferenceHelper.getUserToken());
+        Call<TechRankDataResult> call = getSpaService().getTechRankData(LoginTechnician.getInstance().getToken());
 
         call.enqueue(new TokenCheckedCallback<TechRankDataResult>() {
             @Override
@@ -1332,7 +1330,7 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void getDynamicList(Map<String, String> params) {
-        Call<DynamicListResult> call = getSpaService().getDynamicList(SharedPreferenceHelper.getUserToken(),
+        Call<DynamicListResult> call = getSpaService().getDynamicList(LoginTechnician.getInstance().getToken(),
                 params.get(RequestConstant.KEY_TECH_DYNAMIC_TYPE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<DynamicListResult>() {
             @Override
@@ -1351,7 +1349,7 @@ public class RequestController extends AbstractController {
     }
 
     private void setOrderInnerRead(Map<String, String> params) {
-        Call<BaseResult> call = getSpaService().setOrderInnerRead(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_ORDER_ID));
+        Call<BaseResult> call = getSpaService().setOrderInnerRead(LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_ORDER_ID));
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {

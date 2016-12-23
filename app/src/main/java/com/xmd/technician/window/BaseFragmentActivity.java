@@ -50,8 +50,9 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
         mLogoutSubscription = RxBus.getInstance().toObservable(LogoutResult.class).subscribe(
                 logoutResult -> {
-                    dismissProgressDialogIfShowing();
-                    gotoLoginActivity(null);
+                    //FIXME
+//                    dismissProgressDialogIfShowing();
+//                    gotoLoginActivity(null);
                 }
         );
 
@@ -140,7 +141,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
         if (mToolbarRight != null) {
             int visible = isVisible ? View.VISIBLE : View.GONE;
             mToolbarRight.setVisibility(visible);
-            if(isVisible && srcId != -1) {
+            if (isVisible && srcId != -1) {
                 mToolbarRight.setText(srcId);
             }
         }
@@ -158,11 +159,11 @@ public class BaseFragmentActivity extends AppCompatActivity {
         }
     }
 
-    public void makeShortToast(String str){
-        if(mToast == null){
-            mToast = Toast.makeText(TechApplication.getAppContext(), TextUtils.isEmpty(str)?getString(R.string.default_tips):str, Toast.LENGTH_SHORT);
-        }else {
-            mToast.setText(TextUtils.isEmpty(str)?getString(R.string.default_tips):str);
+    public void makeShortToast(String str) {
+        if (mToast == null) {
+            mToast = Toast.makeText(TechApplication.getAppContext(), TextUtils.isEmpty(str) ? getString(R.string.default_tips) : str, Toast.LENGTH_SHORT);
+        } else {
+            mToast.setText(TextUtils.isEmpty(str) ? getString(R.string.default_tips) : str);
             mToast.setDuration(Toast.LENGTH_SHORT);
         }
         mToast.show();
@@ -192,13 +193,13 @@ public class BaseFragmentActivity extends AppCompatActivity {
         dismissProgressDialogIfShowing();
     }
 
-    protected void showProgressDialog(String message){
+    protected void showProgressDialog(String message) {
         mProgressDialog = getSpinnerProgressDialog(this, message);
         mProgressDialog.show();
     }
 
 
-    protected void dismissProgressDialogIfShowing(){
+    protected void dismissProgressDialogIfShowing() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
@@ -216,13 +217,12 @@ public class BaseFragmentActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param message whether to alert the message before going to login activity
      */
     protected void gotoLoginActivity(String message) {
 
         //Before go to login activity, alert the message if it exists
-        if(!TextUtils.isEmpty(message)) {
+        if (!TextUtils.isEmpty(message)) {
             makeShortToast(message);
         }
 

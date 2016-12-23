@@ -230,7 +230,7 @@ public class Utils {
     }
 
     public static boolean matchTechNo(String text) {
-        return TextUtils.isEmpty(text) && (text.length() >= 5 && text.length() <= 20);
+        return !TextUtils.isEmpty(text) && (text.length() >= 5 && text.length() <= 20);
     }
 
     /**

@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
 import com.xmd.technician.window.JoinClubActivity;
+import com.xmd.technician.window.LoginActivity;
 import com.xmd.technician.window.RegisterActivity;
 
 /**
@@ -14,6 +15,11 @@ import com.xmd.technician.window.RegisterActivity;
 public class UINavigation {
     public static final String EXTRA_JOIN_CLUB = "extra_join_club";
     public static final String EXTRA_SHOW_SKIP = "extra_show_skip";
+
+    //登录
+    public static void gotoLogin(Context context) {
+        context.startActivity(new Intent(context, LoginActivity.class));
+    }
 
     //注册
     public static void gotoRegister(Context context, boolean joinClub) {

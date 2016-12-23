@@ -2,6 +2,7 @@ package com.xmd.technician.presenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xmd.technician.chat.UserProfileProvider;
@@ -10,9 +11,8 @@ import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.LoginContract;
 import com.xmd.technician.http.gson.LoginResult;
+import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.model.LoginTechnician;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.ResetPasswordActivity;
@@ -24,8 +24,6 @@ import rx.Subscription;
  */
 
 public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.Presenter {
-    private boolean mIsPhoneLogin;
-
     private String mInviteCode;
     private String mTechNo;
     private String mPassword;
@@ -34,6 +32,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     private LoginTechnician mLoginTech = LoginTechnician.getInstance();
 
     private Subscription mLoginSubscription;
+    private Subscription mLoadTechInfoSubscription;
 
     public LoginPresenter(Context context, LoginContract.View view) {
         super(context, view);
@@ -42,55 +41,49 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     @Override
     public void onCreate() {
         //初始化数据
-        mInviteCode = mLoginTech.getInviteCode();
+        mInviteCode = mLoginTech.getClubInviteCode();
         mTechNo = mLoginTech.getTechNo();
         mPhoneNumber = mLoginTech.getPhoneNumber();
         mView.setInviteCode(mInviteCode);
         mView.setTechNo(mTechNo);
         mView.setPhoneNumber(mPhoneNumber);
 
-        mIsPhoneLogin = false;
-        switchLoginMethodTo(mIsPhoneLogin ? 0 : 1);
-        registerLoginListener();
+        showLoginView();
+
+        mLoginSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
+                result -> handleLoginResult(result));
+        mLoadTechInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class)
+                .subscribe(this::handleLoadTechInfo);
     }
 
     @Override
     public void onDestroy() {
-        unregisterLoginListener();
+        RxBus.getInstance().unsubscribe(mLoadTechInfoSubscription, mLoginSubscription);
     }
 
     @Override
     public void onClickSwitchLoginMethod() {
-        mIsPhoneLogin = !mIsPhoneLogin;
-        switchLoginMethodTo(mIsPhoneLogin ? 0 : 1);
+        if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_PHONE) {
+            mLoginTech.setLoginType(LoginTechnician.LOGIN_TYPE_TECH_NO);
+        } else {
+            mLoginTech.setLoginType(LoginTechnician.LOGIN_TYPE_PHONE);
+        }
+        showLoginView();
     }
 
-    private void switchLoginMethodTo(int loginMethod) {
-        if (loginMethod == 0) {
+    private void showLoginView() {
+        if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_PHONE) {
             mView.showPhoneLogin();
         } else {
             mView.showTechNoLogin();
         }
     }
 
-    private void registerLoginListener() {
-        if (mLoginSubscription == null) {
-            mLoginSubscription = RxBus.getInstance().toObservable(LoginResult.class).subscribe(
-                    loginResult -> handleLoginResult(loginResult));
-        }
-    }
-
-    private void unregisterLoginListener() {
-        if (mLoginSubscription != null) {
-            RxBus.getInstance().unsubscribe(mLoginSubscription);
-            mLoginSubscription = null;
-        }
-    }
 
     @Override
     public void onClickLogin() {
         mView.showLoading("正在登录...");
-        if (mIsPhoneLogin) {
+        if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_PHONE) {
             //使用手机号码登录
             LoginTechnician.getInstance().loginByPhoneNumber(mPhoneNumber, mPassword);
         } else {
@@ -134,7 +127,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     }
 
     private void checkLoginReady() {
-        if (mIsPhoneLogin) {
+        if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_PHONE) {
             mView.enableLogin(Utils.matchPhoneNumFormat(mPhoneNumber)
                     && Utils.matchLoginPassword(mPassword));
         } else {
@@ -145,30 +138,50 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     }
 
     //处理手机登录结果
-    private void handleLoginResult(LoginResult loginResult) {
+    private void handleLoginResult(LoginResult result) {
         mView.hideLoading();
-        if (loginResult.statusCode > 299 || (loginResult.statusCode < 200 && loginResult.statusCode != 0)) {
-            mView.showAlertDialog(loginResult.msg);
+        if (result.statusCode > 299 || (result.statusCode < 200 && result.statusCode != 0)) {
+            mView.showAlertDialog(result.msg);
         } else {
-            if (!mIsPhoneLogin) {
-                //进入完善资料界面
-                if (loginResult.respData != null) {
+            if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_TECH_NO) {
+                //新的接口返回数据在respData中，所以要做一下转换
+                if (result.respData != null) {
                     Gson gson = new Gson();
-                    loginResult = gson.fromJson(gson.toJson(loginResult.respData), LoginResult.class);
+                    LoginResult newLoginResult = gson.fromJson(gson.toJson(result.respData), LoginResult.class);
+                    newLoginResult.statusCode = result.statusCode;
+                    newLoginResult.msg = result.msg;
+                    result = newLoginResult;
                 } else {
                     mView.showAlertDialog("服务器出错，请联系管理员");
                 }
             }
-            if (!mIsPhoneLogin && loginResult.statusCode == 206) {
+            if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_TECH_NO && result.statusCode == 206) {
                 //进入注册页面
-                mLoginTech.setTechId(loginResult.spareTechId);
+                mLoginTech.setTechId(result.spareTechId);
                 UINavigation.gotoRegister(mContext, true);
             } else {
-                //进入主界面
-                mLoginTech.saveLoginResult(loginResult);
-                UserProfileProvider.getInstance().updateCurrentUserInfo(loginResult.name, loginResult.avatarUrl);
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
+                //登录成功，获取用户信息
+                mLoginTech.onLoginResult(result);
+                mView.showLoading("正在获取用户信息...");
+                mLoginTech.loadTechInfo();
+            }
+        }
+    }
+
+    private void handleLoadTechInfo(TechInfoResult result) {
+        mView.hideLoading();
+        if (result.statusCode < 200 || result.statusCode > 299) {
+            mView.showAlertDialog(result.msg);
+        } else {
+            mLoginTech.onLoadTechInfo(result);
+            if (TextUtils.isEmpty(mLoginTech.getClubId())) {
+                //需要提示加入会所
+                UINavigation.gotoJoinClub(mContext, true);
+            } else {
+                mLoadTechInfoSubscription.unsubscribe();
                 ActivityHelper.getInstance().removeAllActivities();
+                UserProfileProvider.getInstance().updateCurrentUserInfo(mLoginTech.getNickName(), mLoginTech.getAvatarUrl());
+                mLoginTech.loginEmChatAccount();
                 mContext.startActivity(new Intent(mContext, MainActivity.class));
                 mView.finishSelf();
             }

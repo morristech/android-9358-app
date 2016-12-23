@@ -7,7 +7,13 @@ import java.util.List;
  */
 
 public class UnusedTechNoListResult extends BaseResult {
-    public List<ListItem> respData;
+    public DATA respData;
+
+    public static class DATA {
+        public String clubId;
+        public String clubName;
+        public List<ListItem> techNos;
+    }
 
     public static class ListItem {
         public String id;

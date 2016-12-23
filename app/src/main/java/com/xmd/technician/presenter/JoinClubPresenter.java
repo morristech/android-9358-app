@@ -4,21 +4,25 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.xmd.technician.Adapter.TechNoRecyclerViewAdapter;
+import com.xmd.technician.chat.UserProfileProvider;
+import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.JoinClubContract;
 import com.xmd.technician.databinding.ActivityJoinClubBinding;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.model.LoginTechnician;
+import com.xmd.technician.model.TechNo;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
+import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.TechNoDialogFragment;
 
 import rx.Subscription;
@@ -38,7 +42,6 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     private String mSelectedTechId;
     private TechNoDialogFragment mTechNoDialogFragment;
     private Subscription mSubscription;
-
 
     public JoinClubPresenter(Context context, JoinClubContract.View view, ActivityJoinClubBinding binding) {
         super(context, view);
@@ -69,7 +72,17 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
                 .setNegativeButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        UINavigation.gotoCompleteRegisterInfo(mContext);
+                        if (TextUtils.isEmpty(mTech.getAvatarUrl()) || TextUtils.isEmpty(mTech.getNickName())) {
+                            //去到完善信息页面
+                            UINavigation.gotoCompleteRegisterInfo(mContext);
+                        } else {
+                            //去到主界面
+                            ActivityHelper.getInstance().removeAllActivities();
+                            UserProfileProvider.getInstance().updateCurrentUserInfo(mTech.getNickName(), mTech.getAvatarUrl());
+                            mTech.loginEmChatAccount();
+                            mContext.startActivity(new Intent(mContext, MainActivity.class));
+                            mView.finishSelf();
+                        }
                     }
                 })
                 .setPositiveButton("取消", new View.OnClickListener() {
@@ -94,10 +107,12 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
         } else {
             //申请加入成功，跳转到完善资料页面
             mView.showToast("申请成功，等待管理员审核");
-            mTech.setInviteCode(mInviteCode);
-            mTech.setTechNo(result.name);
-            mTech.setTechId(result.id);
-            UINavigation.gotoCompleteRegisterInfo(mContext);
+            mTech.onJoinClub(mInviteCode, TechNo.DEFAULT_TECH_NO.name.equals(mSelectedTechNo) ? null : mSelectedTechNo, result);
+            if (mShowSkip) {
+                UINavigation.gotoCompleteRegisterInfo(mContext);
+            } else {
+                mView.finishSelf();
+            }
         }
     }
 
@@ -142,7 +157,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     }
 
     @Override
-    public void onSelectTechNo(TechNoRecyclerViewAdapter.TechNo techNo) {
+    public void onSelectTechNo(TechNo techNo) {
         mTechNoDialogFragment.dismiss();
         mTechNo.set(techNo.name);
         mSelectedTechNo = techNo.name;

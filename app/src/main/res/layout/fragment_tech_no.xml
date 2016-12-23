@@ -20,7 +20,7 @@
             android:layout_height="48dp"
             android:gravity="center"
             android:padding="8dp"
-            android:text="选择技师编号"
+            android:text="@{fragment.mClubName}"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/fontHead"
             android:textStyle="bold" />
@@ -40,7 +40,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
 
             <TextView
                 android:layout_width="match_parent"

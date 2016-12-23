@@ -1,15 +1,23 @@
 package com.xmd.technician.model;
 
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 
+import com.hyphenate.chat.EMClient;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.TechInfo;
+import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AvatarResult;
+import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.LoginResult;
+import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
+import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -28,27 +36,60 @@ public class LoginTechnician {
         return ourInstance;
     }
 
-    private LoginTechnician() {
-        phoneNumber = SharedPreferenceHelper.getUserAccount();
-        inviteCode = SharedPreferenceHelper.getInviteCode();
-        techNo = SharedPreferenceHelper.getTechNo();
-    }
-
-    private String techNo;
-    private String inviteCode;
-    private String phoneNumber;
-    private String techId;
-
-    private String token;
-    private String userId;
-    private String emchatId;
-    private String emchatPassword;
-    private String nickName;
-    private String avatarUrl;
-
+    public static final int LOGIN_TYPE_PHONE = 1;
+    public static final int LOGIN_TYPE_TECH_NO = 2;
     public static final String GENDER_FEMALE = "female";
     public static final String GENDER_MALE = "male";
+
+    private int loginType;
+    private String token;
+
+    //用户信息
+    private String userId;
     private String gender;
+    private String phoneNumber;
+    private String nickName;
+    private String avatarUrl;
+    private String description;
+
+    //聊天账号
+    private String emchatId;
+    private String emchatPassword;
+
+    //技师信息
+    private String techId;
+    private String techNo;
+    private String clubInviteCode;
+    private String inviteCode;
+    private String qrCodeDownloadUrl;
+    private String workStatus; // "busy"|"free"|"rest"|"valid"
+    private String clubId;
+    private String clubName;
+    private int credit;
+    public String innerProvider;
+
+    private LoginTechnician() {
+        loginType = SharedPreferenceHelper.getLoginType();
+        token = SharedPreferenceHelper.getUserToken();
+
+        userId = SharedPreferenceHelper.getUserId();
+        gender = SharedPreferenceHelper.getTechGender();
+        phoneNumber = SharedPreferenceHelper.getUserAccount();
+        nickName = SharedPreferenceHelper.getUserName();
+        avatarUrl = SharedPreferenceHelper.getUserAvatar();
+        description = SharedPreferenceHelper.getTechDescription();
+
+        emchatId = SharedPreferenceHelper.getEmchatId();
+        emchatPassword = SharedPreferenceHelper.getEMchatPassword();
+
+        techNo = SharedPreferenceHelper.getTechNo();
+        clubInviteCode = SharedPreferenceHelper.getClubInviteCode();
+        inviteCode = SharedPreferenceHelper.getInviteCode();
+        qrCodeDownloadUrl = SharedPreferenceHelper.getTechQrDownloadUrl();
+        clubId = SharedPreferenceHelper.getUserClubId();
+        clubName = SharedPreferenceHelper.getUserClubName();
+    }
+
 
     //使用手机号码登录，返回LoginResult
     public void loginByPhoneNumber(String phoneNumber, String password) {
@@ -62,7 +103,7 @@ public class LoginTechnician {
 
     //使用技师编号登录，返回LoginResult
     public void loginByTechNo(String inviteCode, String techNo, String password) {
-        setInviteCode(inviteCode);
+        setClubInviteCode(inviteCode);
         setTechNo(techNo);
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_CLUB_CODE, inviteCode);
@@ -73,12 +114,9 @@ public class LoginTechnician {
     }
 
     //登录成功后，保存数据
-    public void saveLoginResult(LoginResult loginResult) {
-        token = loginResult.token;
-        SharedPreferenceHelper.setUserToken(token);
-
-        userId = loginResult.userId;
-        SharedPreferenceHelper.setUserId(userId);
+    public void onLoginResult(LoginResult loginResult) {
+        setToken(loginResult.token);
+        setUserId(loginResult.userId);
 
         emchatId = loginResult.emchatId;
         SharedPreferenceHelper.setEmchatId(emchatId);
@@ -93,6 +131,43 @@ public class LoginTechnician {
         SharedPreferenceHelper.setUserAvatar(avatarUrl);
     }
 
+    //获取技师信息,返回TechInfoResult
+    public void loadTechInfo() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_INFO);
+    }
+
+    public void onLoadTechInfo(TechInfoResult result) {
+        TechInfo techInfo = result.respData;
+
+        setPhoneNumber(phoneNumber);
+        if (!TextUtils.isEmpty(techInfo.imageUrl)) {
+            setAvatarUrl(techInfo.imageUrl);
+        } else {
+            setAvatarUrl(techInfo.avatar);
+        }
+        setUserId(techInfo.id);
+        setNickName(techInfo.userName);
+        setDescription(techInfo.description);
+
+        setTechNo(techInfo.serialNo);
+        setInviteCode(techInfo.inviteCode);
+        setClubId(techInfo.clubId);
+        setClubName(techInfo.clubName);
+        setCredit(techInfo.creditAmount);
+        setInnerProvider(techInfo.innerProvider);
+        setWorkStatus(techInfo.status);
+        setQrCodeDownloadUrl(techInfo.qrCodeUrl);
+    }
+
+    //登录聊天账号
+    public void loginEmChatAccount() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
+    }
+
+    public void onLoginEmChatAccount() {
+
+    }
+
     //获取短信验证码
     public void getVerificationCode(String phoneNumber) {
         setPhoneNumber(phoneNumber);
@@ -104,8 +179,6 @@ public class LoginTechnician {
     //注册,返回RegisterResult
     public void register(String phoneNumber, String password, String verificationCode, String inviteCode, String techId, String techNo) {
         setPhoneNumber(phoneNumber);
-        setInviteCode(inviteCode);
-        setTechNo(techNo);
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_MOBILE, phoneNumber);
         params.put(RequestConstant.KEY_PASSWORD, password);
@@ -114,6 +187,15 @@ public class LoginTechnician {
         params.put(RequestConstant.KEY_LOGIN_CHANEL, "android" + AppConfig.getAppVersionCode());
         params.put(RequestConstant.KEY_SPARE_TECH_ID, techId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_REGISTER, params);
+    }
+
+    //处理注册成功
+    public void onRegisterResult(RegisterResult result) {
+        setToken(result.token);
+        setNickName(result.name);
+        setUserId(result.userId);
+        setEmchatId(result.emchatId);
+        setEmchatPassword(result.emchatPassword);
     }
 
     //上传头像,返回AvatarResult
@@ -144,6 +226,10 @@ public class LoginTechnician {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPLOAD_AVATAR, params);
     }
 
+    public void onUploadAvatarResult(AvatarResult result) {
+        setAvatarUrl(result.respData);
+    }
+
     //更新技师信息,返回UpdateTechInfoResult
     public void updateTechNickNameAndGender(String nickName, String gender) {
         String user = "{\"name\":\"" + nickName + "\",\"gender\":\"" + gender + "\"}";
@@ -152,21 +238,9 @@ public class LoginTechnician {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPDATE_TECH_INFO, params);
     }
 
-    public void saveRegisterResult(RegisterResult result) {
-        token = result.token;
-        SharedPreferenceHelper.setUserToken(token);
-
-        nickName = result.name;
-        SharedPreferenceHelper.setUserName(nickName);
-
-        userId = result.userId;
-        SharedPreferenceHelper.setUserId(userId);
-
-        emchatId = result.emchatId;
-        SharedPreferenceHelper.setEmchatId(emchatId);
-
-        emchatPassword = result.emchatPassword;
-        SharedPreferenceHelper.setEMchatPassword(emchatPassword);
+    public void onUpdateTechNickNameAndGender(String nickName, boolean female, UpdateTechInfoResult result) {
+        setNickName(nickName);
+        setGender(female ? LoginTechnician.GENDER_FEMALE : LoginTechnician.GENDER_MALE);
     }
 
 
@@ -177,6 +251,39 @@ public class LoginTechnician {
         params.put(RequestConstant.KEY_INVITE_CODE, inviteCode);
         params.put(RequestConstant.KEY_SPARE_TECH_ID, techId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_JOIN_CLUB, params);
+    }
+
+    public void onJoinClub(String inviteCode, String techNo, JoinClubResult result) {
+        setClubInviteCode(inviteCode);
+        setTechNo(techNo);
+        setTechId(result.id);
+    }
+
+    //退出会所，返回QuitClubResult
+    public void exitClub() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_QUIT_CLUB);
+    }
+
+    public void onExitClub(QuitClubResult result) {
+        setTechNo(null);
+        setClubId(null);
+        setClubInviteCode(null);
+    }
+
+    //退出登录,返回LogoutResult
+    public void logout() {
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_TOKEN, token);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID, params);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT, params);
+        //直接清空token，不用等待是否成功
+        UserProfileProvider.getInstance().reset();
+        EMClient.getInstance().logout(true);
+        setToken(null);
+    }
+
+    public void onLogout() {
+
     }
 
 
@@ -198,25 +305,26 @@ public class LoginTechnician {
         SharedPreferenceHelper.setTechNo(techNo);
     }
 
-    public String getInviteCode() {
-        return inviteCode;
+    public String getClubInviteCode() {
+        return clubInviteCode;
     }
 
-    public void setInviteCode(String inviteCode) {
-        this.inviteCode = inviteCode;
-        SharedPreferenceHelper.setInviteCode(inviteCode);
+    public void setClubInviteCode(String clubInviteCode) {
+        this.clubInviteCode = clubInviteCode;
+        SharedPreferenceHelper.setClubInviteCode(clubInviteCode);
     }
 
     public String getToken() {
         return token;
     }
 
-    public String getTechId() {
-        return techId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setTechId(String techId) {
-        this.techId = techId;
+    public void setUserId(String userId) {
+        this.userId = userId;
+        SharedPreferenceHelper.setUserId(userId);
     }
 
     public String getGender() {
@@ -225,6 +333,7 @@ public class LoginTechnician {
 
     public void setGender(String gender) {
         this.gender = gender;
+        SharedPreferenceHelper.setTechGender(gender);
     }
 
     public void setNickName(String nickName) {
@@ -235,5 +344,122 @@ public class LoginTechnician {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
         SharedPreferenceHelper.setUserAvatar(avatarUrl);
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+        SharedPreferenceHelper.setUserToken(token);
+    }
+
+    public int getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(int loginType) {
+        this.loginType = loginType;
+        SharedPreferenceHelper.setLoginType(loginType);
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public String getQrCodeDownloadUrl() {
+        return qrCodeDownloadUrl;
+    }
+
+    public void setQrCodeDownloadUrl(String qrCodeDownloadUrl) {
+        this.qrCodeDownloadUrl = qrCodeDownloadUrl;
+        SharedPreferenceHelper.setTechQrDownloadUrl(qrCodeDownloadUrl);
+    }
+
+    public String getWorkStatus() {
+        return workStatus;
+    }
+
+    public void setWorkStatus(String workStatus) {
+        this.workStatus = workStatus;
+    }
+
+    public String getEmchatId() {
+        return emchatId;
+    }
+
+    public void setEmchatId(String emchatId) {
+        this.emchatId = emchatId;
+        SharedPreferenceHelper.setEmchatId(emchatId);
+    }
+
+    public String getEmchatPassword() {
+        return emchatPassword;
+    }
+
+    public void setEmchatPassword(String emchatPassword) {
+        this.emchatPassword = emchatPassword;
+        SharedPreferenceHelper.setEMchatPassword(emchatPassword);
+    }
+
+    public String getClubId() {
+        return clubId;
+    }
+
+    public void setClubId(String clubId) {
+        this.clubId = clubId;
+        SharedPreferenceHelper.setUserClubId(clubId);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+        SharedPreferenceHelper.setTechDescription(description);
+    }
+
+    public String getClubName() {
+        return clubName;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
+        SharedPreferenceHelper.setUserClubName(clubName);
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+        SharedPreferenceHelper.setInviteCode(inviteCode);
+    }
+
+    public String getTechId() {
+        return techId;
+    }
+
+    public void setTechId(String techId) {
+        this.techId = techId;
+    }
+
+    public String getInnerProvider() {
+        return innerProvider;
+    }
+
+    public void setInnerProvider(String innerProvider) {
+        this.innerProvider = innerProvider;
     }
 }

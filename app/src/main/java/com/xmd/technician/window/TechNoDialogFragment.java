@@ -19,6 +19,7 @@ import com.xmd.technician.contract.JoinClubContract;
 import com.xmd.technician.databinding.FragmentTechNoBinding;
 import com.xmd.technician.http.gson.UnusedTechNoListResult;
 import com.xmd.technician.model.TechManager;
+import com.xmd.technician.model.TechNo;
 import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class TechNoDialogFragment extends DialogFragment {
     private FragmentTechNoBinding mBinding;
     private TechNoRecyclerViewAdapter mAdapter;
     private Subscription mSubscription;
+    public ObservableField<String> mClubName = new ObservableField<>();
     public ObservableBoolean mShowProgressView = new ObservableBoolean();
     public ObservableField<String> mErrorString = new ObservableField<>();
     public ObservableBoolean mDataLoadError = new ObservableBoolean();
@@ -68,6 +70,7 @@ public class TechNoDialogFragment extends DialogFragment {
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mAdapter = new TechNoRecyclerViewAdapter();
         mBinding.recyclerView.setAdapter(mAdapter);
+        mClubName.set("选择技师编号");
         mBinding.setFragment(this);
         loadData();
         return rootView;
@@ -96,17 +99,18 @@ public class TechNoDialogFragment extends DialogFragment {
 
     private void handleUnusedTechNoListResult(UnusedTechNoListResult result) {
         mShowProgressView.set(false);
-        List<TechNoRecyclerViewAdapter.TechNo> data = new ArrayList<>();
-        data.add(TechNoRecyclerViewAdapter.TechNo.DEFAULT_TECH_NO);
+        List<TechNo> data = new ArrayList<>();
+        data.add(TechNo.DEFAULT_TECH_NO);
         if (result.statusCode != 200) {
             //错误
             mDataLoadError.set(true);
             mErrorString.set(result.msg);
         } else {
             mDataLoadError.set(false);
-            for (UnusedTechNoListResult.ListItem item : result.respData) {
+            mClubName.set(result.respData.clubName);
+            for (UnusedTechNoListResult.ListItem item : result.respData.techNos) {
                 if (!TextUtils.isEmpty(item.serialNo) && !TextUtils.isEmpty(item.id)) {
-                    data.add(new TechNoRecyclerViewAdapter.TechNo(item.serialNo, item.id));
+                    data.add(new TechNo(item.serialNo, item.id));
                 }
             }
         }

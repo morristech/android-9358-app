@@ -7,17 +7,17 @@ import android.view.WindowManager;
 
 import com.hyphenate.chat.EMClient;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ScreenUtils;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.UINavigation;
+import com.xmd.technician.model.LoginTechnician;
 
 public class WelcomeActivity extends BaseActivity {
     private Runnable mTask = new Runnable() {
         @Override
         public void run() {
-            Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-            startActivity(intent);
+            UINavigation.gotoLogin(WelcomeActivity.this);
             finish();
         }
     };
@@ -30,7 +30,7 @@ public class WelcomeActivity extends BaseActivity {
 
         ScreenUtils.setScreenSize(getWindowManager());
 
-        if (TextUtils.isEmpty(SharedPreferenceHelper.getUserToken())) {
+        if (TextUtils.isEmpty(LoginTechnician.getInstance().getToken())) {
             ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, mTask, 500);
         } else {
             EMClient.getInstance().groupManager().loadAllGroups();
