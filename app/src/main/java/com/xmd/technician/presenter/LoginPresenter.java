@@ -139,9 +139,9 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     //处理手机登录结果
     private void handleLoginResult(LoginResult result) {
-        mView.hideLoading();
         if (result.statusCode > 299 || (result.statusCode < 200 && result.statusCode != 0)) {
-            mView.showAlertDialog(result.msg);
+            mView.hideLoading();
+            mView.showAlertDialog(result.msg == null ? result.message : result.msg);
         } else {
             if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_TECH_NO) {
                 //新的接口返回数据在respData中，所以要做一下转换
@@ -152,17 +152,19 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     newLoginResult.msg = result.msg;
                     result = newLoginResult;
                 } else {
+                    mView.hideLoading();
                     mView.showAlertDialog("服务器出错，请联系管理员");
+                    return;
                 }
             }
             if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_TECH_NO && result.statusCode == 206) {
                 //进入注册页面
+                mView.hideLoading();
                 mLoginTech.setTechId(result.spareTechId);
                 UINavigation.gotoRegister(mContext, true);
             } else {
                 //登录成功，获取用户信息
                 mLoginTech.onLoginResult(result);
-                mView.showLoading("正在获取用户信息...");
                 mLoginTech.loadTechInfo();
             }
         }
@@ -176,7 +178,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             mLoginTech.onLoadTechInfo(result);
             if (TextUtils.isEmpty(mLoginTech.getClubId())) {
                 //需要提示加入会所
-                UINavigation.gotoJoinClub(mContext, true);
+                UINavigation.gotoJoinClubFrom(mContext, UINavigation.OPEN_JOIN_CLUB_FROM_LOGIN);
             } else {
                 mLoadTechInfoSubscription.unsubscribe();
                 ActivityHelper.getInstance().removeAllActivities();

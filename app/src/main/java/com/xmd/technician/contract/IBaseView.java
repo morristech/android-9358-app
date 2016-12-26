@@ -18,4 +18,6 @@ public interface IBaseView {
     void showAlertDialog(String message);
 
     Intent getIntent();
+
+    void setResult(int resultCode, Intent data);
 }

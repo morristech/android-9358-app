@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.JoinClubContract;
@@ -22,7 +19,6 @@ import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.model.TechNo;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
-import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.TechNoDialogFragment;
 
 import rx.Subscription;
@@ -37,11 +33,13 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     public ObservableBoolean mCanJoin = new ObservableBoolean();
     public ObservableField<String> mTechNo = new ObservableField<>();
     public boolean mShowSkip;
+    public boolean mShowBack;
     private String mInviteCode;
     private String mSelectedTechNo;
     private String mSelectedTechId;
     private TechNoDialogFragment mTechNoDialogFragment;
     private Subscription mSubscription;
+    private int mOpenFrom;
 
     public JoinClubPresenter(Context context, JoinClubContract.View view, ActivityJoinClubBinding binding) {
         super(context, view);
@@ -51,7 +49,11 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     @Override
     public void onCreate() {
         super.onCreate();
-        mShowSkip = mView.getIntent().getBooleanExtra(UINavigation.EXTRA_SHOW_SKIP, false);
+        mOpenFrom = mView.getIntent().getIntExtra(UINavigation.EXTRA_OPEN_JOIN_CLUB_FROM, UINavigation.OPEN_JOIN_CLUB_FROM_MAIN);
+        if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_REGISTER || mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_LOGIN) {
+            mShowSkip = true;
+            mShowBack = false;
+        }
         mTechNo.set("选择技师编号");
         mBinding.setPresenter(this);
         mSubscription = RxBus.getInstance().toObservable(JoinClubResult.class)
@@ -65,6 +67,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     }
 
 
+    //点击跳过
     @Override
     public void onClickSkip() {
         new AlertDialogBuilder(mContext)
@@ -72,16 +75,12 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
                 .setNegativeButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (TextUtils.isEmpty(mTech.getAvatarUrl()) || TextUtils.isEmpty(mTech.getNickName())) {
-                            //去到完善信息页面
+                        if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_REGISTER) {
+                            //注册流程 去到完善信息页面
                             UINavigation.gotoCompleteRegisterInfo(mContext);
                         } else {
-                            //去到主界面
-                            ActivityHelper.getInstance().removeAllActivities();
-                            UserProfileProvider.getInstance().updateCurrentUserInfo(mTech.getNickName(), mTech.getAvatarUrl());
-                            mTech.loginEmChatAccount();
-                            mContext.startActivity(new Intent(mContext, MainActivity.class));
-                            mView.finishSelf();
+                            //登录流程 去到主界面
+                            UINavigation.gotoMainActivityFromRegisterOrLogin(mContext);
                         }
                     }
                 })
@@ -108,10 +107,14 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
             //申请加入成功，跳转到完善资料页面
             mView.showToast("申请成功，等待管理员审核");
             mTech.onJoinClub(mInviteCode, TechNo.DEFAULT_TECH_NO.name.equals(mSelectedTechNo) ? null : mSelectedTechNo, result);
-            if (mShowSkip) {
+            mView.setResult(Activity.RESULT_OK, null);
+            mView.finishSelf();
+            if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_REGISTER) {
+                //注册流程 去到完善信息页面
                 UINavigation.gotoCompleteRegisterInfo(mContext);
-            } else {
-                mView.finishSelf();
+            } else if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_LOGIN) {
+                //登录流程 去到主界面
+                UINavigation.gotoMainActivityFromRegisterOrLogin(mContext);
             }
         }
     }

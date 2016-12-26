@@ -135,10 +135,6 @@
             android:name=".window.ClipPictureActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".window.RegisterActivity2"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".window.ResetPasswordActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
@@ -187,9 +183,6 @@
         <activity
             android:name=".window.TechShareCardActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".window.PreLoginActivity"
-            android:launchMode="singleTask" />
         <activity
             android:name=".window.ConfigurationMonitorActivity"
             android:screenOrientation="portrait" />

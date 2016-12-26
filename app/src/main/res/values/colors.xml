@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorPrimaryDark">#ff5555</color>
+    <color name="colorPrimary">#ff6666</color>
+    <color name="colorAccent">#FF4081</color>
+
     <color name="transparent">#00000000</color>
     <color name="app_bg">#EFEFF4</color>
     <color name="text_color_yellow">#ff9d09</color>
     <color name="sideBarcolor">#303F9F</color>
-    <color name="colorPrimary">#ff6666</color>
-    <color name="colorAccent">#FF4081</color>
     <color name="tab_text_normal_color">#333</color>
     <color name="dialog_content_text_color">#666</color>
 

@@ -159,7 +159,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
             if (mJoinClub) {
                 UINavigation.gotoCompleteRegisterInfo(mContext);
             } else {
-                UINavigation.gotoJoinClub(mContext, true);
+                UINavigation.gotoJoinClubFrom(mContext, UINavigation.OPEN_JOIN_CLUB_FROM_REGISTER);
             }
         }
     }

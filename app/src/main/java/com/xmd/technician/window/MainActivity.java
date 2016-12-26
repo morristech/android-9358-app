@@ -1,5 +1,7 @@
 package com.xmd.technician.window;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -32,6 +34,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     private static final int TAB_INDEX_MESSAGE = 1;
     private static final int TAB_INDEX_CONTACTS = 2;
     private static final int TAB_INDEX_MARKETING = 3;
+
+    public static final int REQUEST_CODE_JOIN_CLUB = 1;
 
     private List<BaseFragment> mFragmentList = new LinkedList<BaseFragment>();
     private List<View> mBottomBarButtonList = new LinkedList<View>();
@@ -99,7 +103,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @OnClick(R.id.main_button_personal)
     public void gotoPersonFragment() {
-        switchFragment(TAB_INDEX_PERSONAL);}
+        switchFragment(TAB_INDEX_PERSONAL);
+    }
 
     @OnClick(R.id.main_button_message)
     public void gotoMessageFragment() {
@@ -212,4 +217,16 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_JOIN_CLUB) {
+            if (resultCode == Activity.RESULT_OK) {
+                //申请成功，需要刷新技师状态
+                if (mFragmentList.size() > TAB_INDEX_PERSONAL && mFragmentList.get(TAB_INDEX_PERSONAL) != null) {
+                    MainFragment mainFragment = (MainFragment) mFragmentList.get(TAB_INDEX_PERSONAL);
+                    mainFragment.doJoinClubSuccess();
+                }
+            }
+        }
+    }
 }

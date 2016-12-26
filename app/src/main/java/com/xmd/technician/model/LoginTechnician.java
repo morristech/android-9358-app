@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.hyphenate.chat.EMClient;
 import com.xmd.technician.AppConfig;
+import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.chat.UserProfileProvider;
@@ -62,7 +63,7 @@ public class LoginTechnician {
     private String clubInviteCode;
     private String inviteCode;
     private String qrCodeDownloadUrl;
-    private String workStatus; // "busy"|"free"|"rest"|"valid"
+    private String status; // "busy"|"free"|"rest"|"valid"
     private String clubId;
     private String clubName;
     private int credit;
@@ -155,7 +156,7 @@ public class LoginTechnician {
         setClubName(techInfo.clubName);
         setCredit(techInfo.creditAmount);
         setInnerProvider(techInfo.innerProvider);
-        setWorkStatus(techInfo.status);
+        setStatus(techInfo.status);
         setQrCodeDownloadUrl(techInfo.qrCodeUrl);
     }
 
@@ -255,8 +256,10 @@ public class LoginTechnician {
 
     public void onJoinClub(String inviteCode, String techNo, JoinClubResult result) {
         setClubInviteCode(inviteCode);
+        setClubName(result.name);
         setTechNo(techNo);
         setTechId(result.id);
+        setStatus(Constant.TECH_STATUS_UNCERT);
     }
 
     //退出会所，返回QuitClubResult
@@ -266,8 +269,11 @@ public class LoginTechnician {
 
     public void onExitClub(QuitClubResult result) {
         setTechNo(null);
+        setTechId(null);
         setClubId(null);
         setClubInviteCode(null);
+        setClubName(null);
+        setStatus(Constant.TECH_STATUS_VALID);
     }
 
     //退出登录,返回LogoutResult
@@ -377,12 +383,12 @@ public class LoginTechnician {
         SharedPreferenceHelper.setTechQrDownloadUrl(qrCodeDownloadUrl);
     }
 
-    public String getWorkStatus() {
-        return workStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setWorkStatus(String workStatus) {
-        this.workStatus = workStatus;
+    public void setStatus(String workStatus) {
+        this.status = workStatus;
     }
 
     public String getEmchatId() {
