@@ -12,7 +12,9 @@ import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
+import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.QuitClubResult;
@@ -63,7 +65,7 @@ public class LoginTechnician {
     private String clubInviteCode;
     private String inviteCode;
     private String qrCodeDownloadUrl;
-    private String status; // "busy"|"free"|"rest"|"valid"
+    private String status; // "busy"|"free"|"uncert"|"valid"|"reject"
     private String clubId;
     private String clubName;
     private int credit;
@@ -201,8 +203,19 @@ public class LoginTechnician {
 
     //上传头像,返回AvatarResult
     public void uploadAvatar(String path) {
-        AvatarResult result = new AvatarResult();
-        Bitmap mPhotoTake = null;
+        uploadAvatarOrAlbumImage(path, new AvatarResult(), 1024, true);
+    }
+
+    public void onUploadAvatarResult(AvatarResult result) {
+        setAvatarUrl(result.respData);
+    }
+
+    public void uploadAlbumImage(String path) {
+        uploadAvatarOrAlbumImage(path, new AlbumResult(), 1024, false);
+    }
+
+    private void uploadAvatarOrAlbumImage(String path, BaseResult result, int maxSize, boolean isAvatar) {
+        Bitmap mPhotoTake;
         //检查文件是否存在
         File file = new File(path);
         if (!file.exists()) {
@@ -212,7 +225,7 @@ public class LoginTechnician {
             return;
         }
         //解码文件
-        mPhotoTake = ImageLoader.getBitmapFromFile(path, 1024);
+        mPhotoTake = ImageLoader.getBitmapFromFile(path, maxSize);
         if (mPhotoTake == null) {
             result.statusCode = 400;
             result.msg = "解码文件失败！";
@@ -224,11 +237,11 @@ public class LoginTechnician {
         mPhotoTake.recycle();
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_IMG_FILE, mImageFile);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPLOAD_AVATAR, params);
-    }
-
-    public void onUploadAvatarResult(AvatarResult result) {
-        setAvatarUrl(result.respData);
+        if (isAvatar) {
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPLOAD_AVATAR, params);
+        } else {
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPLOAD_ALBUM, params);
+        }
     }
 
     //更新技师信息,返回UpdateTechInfoResult

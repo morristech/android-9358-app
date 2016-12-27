@@ -607,8 +607,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         switch (view.getId()) {
             case R.id.main_page_head:
                 Intent intent = new Intent(getActivity(), TechInfoActivity.class);
-                intent.putExtra(Constant.TECH_STATUS, techJoinClub);
-                startActivity(intent);
+                getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_EDIT_TECH_INFO);
                 break;
             case R.id.main_tech_order_all:
                 if (Utils.isEmpty(techJoinClub)) {
@@ -1073,6 +1072,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mMenuClubName.setText(mTech.getClubName());
             showTechStatus(mTech.getStatus());
         }
+    }
+
+    public void doUpdateTechInfoSuccess() {
+        mTech.loadTechInfo();
     }
 
 

@@ -36,6 +36,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     private static final int TAB_INDEX_MARKETING = 3;
 
     public static final int REQUEST_CODE_JOIN_CLUB = 1;
+    public static final int REQUEST_CODE_EDIT_TECH_INFO = 2;
 
     private List<BaseFragment> mFragmentList = new LinkedList<BaseFragment>();
     private List<View> mBottomBarButtonList = new LinkedList<View>();
@@ -225,6 +226,14 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 if (mFragmentList.size() > TAB_INDEX_PERSONAL && mFragmentList.get(TAB_INDEX_PERSONAL) != null) {
                     MainFragment mainFragment = (MainFragment) mFragmentList.get(TAB_INDEX_PERSONAL);
                     mainFragment.doSendJoinClubRequestSuccess();
+                }
+            }
+        } else if (requestCode == REQUEST_CODE_EDIT_TECH_INFO) {
+            if (resultCode == Activity.RESULT_OK) {
+                //更新技师信息，需要刷新界面
+                if (mFragmentList.size() > TAB_INDEX_PERSONAL && mFragmentList.get(TAB_INDEX_PERSONAL) != null) {
+                    MainFragment mainFragment = (MainFragment) mFragmentList.get(TAB_INDEX_PERSONAL);
+                    mainFragment.doUpdateTechInfoSuccess();
                 }
             }
         }
