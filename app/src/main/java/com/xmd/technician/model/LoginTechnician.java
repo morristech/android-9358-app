@@ -468,4 +468,20 @@ public class LoginTechnician {
     public void setInnerProvider(String innerProvider) {
         this.innerProvider = innerProvider;
     }
+
+    //技师是否有会所（包括已申请但还没有处理的情况）
+    public boolean hasClub() {
+        return !TextUtils.isEmpty(clubId);
+    }
+
+    //目前是否处于会所审核状态
+    public boolean isVerifyStatus() {
+        return TextUtils.equals(status, Constant.TECH_STATUS_UNCERT);
+    }
+
+    //目前是否处于在职状态
+    public boolean isActiveStatus() {
+        return TextUtils.equals(status, Constant.TECH_STATUS_FREE)
+                || TextUtils.equals(status, Constant.TECH_STATUS_BUSY);
+    }
 }

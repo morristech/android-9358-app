@@ -79,7 +79,8 @@ public class Constant {
     public static final String TECH_STATUS_VALID = "valid"; //未加入会所
     public static final String TECH_STATUS_REJECT = "reject";//加入会所后被会所拒绝
     public static final String TECH_STATUS_UNCERT = "uncert";//等待会所审核
-    public static final String TECH_STATUS_BUSY = "busy";//已成功加入会所
+    public static final String TECH_STATUS_BUSY = "busy";//已成功加入会所，忙状态
+    public static final String TECH_STATUS_FREE = "free";//已成功加入会所，休状态
     public static final String TECH_STATUS = "status";
 
     /**
@@ -97,18 +98,18 @@ public class Constant {
     /**
      *
      */
-        public static final String TECH_SHARE_URL = "shareUrl";
-        public static final String TECH_CAN_SHARE = "canShare";
-        public static final String TECH_USER_HEAD_URL= "userHead";
-        public static final String TECH_USER_NAME ="userName";
-        public static final String TECH_USER_TECH_NUM = "userNum";
-        public static final String TECH_USER_CLUB_NAME = "userClubName";
-        public static final String TECH_ShARE_CODE_IMG ="userShareCodeImg";
-        public static final String TECH_SHARE_CODE_IMG ="userShareCodeImg";
+    public static final String TECH_SHARE_URL = "shareUrl";
+    public static final String TECH_CAN_SHARE = "canShare";
+    public static final String TECH_USER_HEAD_URL = "userHead";
+    public static final String TECH_USER_NAME = "userName";
+    public static final String TECH_USER_TECH_NUM = "userNum";
+    public static final String TECH_USER_CLUB_NAME = "userClubName";
+    public static final String TECH_ShARE_CODE_IMG = "userShareCodeImg";
+    public static final String TECH_SHARE_CODE_IMG = "userShareCodeImg";
     /**
      * status:submit 未接受，accept 同意，reject 拒绝，cancel 取消，complete 完成，failure 失效，sysReject 超时。 不传默认查全部订单
      */
-    public static final Map<String, String> LABELS = new HashMap<String, String>(){{
+    public static final Map<String, String> LABELS = new HashMap<String, String>() {{
         put(ORDER_STATUS_SUBMIT, "未接受");
         put(ORDER_STATUS_ACCEPT, "已接受");
         put(ORDER_STATUS_REJECTED, "已拒绝");
@@ -123,7 +124,7 @@ public class Constant {
     public static final String COUPON_STATUS_COMPLETE = "2";
     public static final String COUPON_STATUS_EXPIRE = "3";
 
-    public static final List<Entry> COUPON_STATUS_DATA = new ArrayList<Entry>(){{
+    public static final List<Entry> COUPON_STATUS_DATA = new ArrayList<Entry>() {{
         add(new Entry(Constant.COUPON_STATUS_ALL, ResourceUtils.getString(R.string.paid_coupon_user_detail_activity_header_status)));
         add(new Entry(Constant.COUPON_STATUS_ACCEPT, ResourceUtils.getString(R.string.paid_coupon_user_detail_activity_accept)));
         add(new Entry(Constant.COUPON_STATUS_COMPLETE, ResourceUtils.getString(R.string.paid_coupon_user_detail_activity_complete)));
@@ -159,7 +160,9 @@ public class Constant {
 
     public static final String FORMAT_DATE_TIME = "yyyyMMddHHmmss";
 
-    /*******************************自定义事件统计*****************************/
+    /*******************************
+     * 自定义事件统计
+     *****************************/
     public static final String SHARE_COUPON = "couponShare";
     public static final String SHARE_BUSINESS_CARD = "businessCardShare";
     public static final String REGISTER_EVENT = "register";

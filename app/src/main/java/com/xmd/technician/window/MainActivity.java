@@ -224,7 +224,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 //申请成功，需要刷新技师状态
                 if (mFragmentList.size() > TAB_INDEX_PERSONAL && mFragmentList.get(TAB_INDEX_PERSONAL) != null) {
                     MainFragment mainFragment = (MainFragment) mFragmentList.get(TAB_INDEX_PERSONAL);
-                    mainFragment.doJoinClubSuccess();
+                    mainFragment.doSendJoinClubRequestSuccess();
                 }
             }
         }

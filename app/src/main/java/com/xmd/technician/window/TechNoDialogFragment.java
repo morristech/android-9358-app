@@ -18,7 +18,7 @@ import com.xmd.technician.common.ScreenUtils;
 import com.xmd.technician.contract.JoinClubContract;
 import com.xmd.technician.databinding.FragmentTechNoBinding;
 import com.xmd.technician.http.gson.UnusedTechNoListResult;
-import com.xmd.technician.model.TechManager;
+import com.xmd.technician.model.ClubManager;
 import com.xmd.technician.model.TechNo;
 import com.xmd.technician.msgctrl.RxBus;
 
@@ -94,7 +94,7 @@ public class TechNoDialogFragment extends DialogFragment {
 
     public void loadData() {
         mShowProgressView.set(true);
-        TechManager.getInstance().getUnusedTechNos(mInviteCode);
+        ClubManager.getInstance().getUnusedTechNos(mInviteCode);
     }
 
     private void handleUnusedTechNoListResult(UnusedTechNoListResult result) {

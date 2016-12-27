@@ -18,6 +18,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
@@ -35,6 +36,7 @@ import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.HeartBeatTimer;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
@@ -223,18 +225,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mContext = getActivity();
         ButterKnife.bind(this, view);
         initView(view);
-        mTech.loadTechInfo();
+        registerRequestHandlers(); //注册监听器
 
-        if (Utils.isNotEmpty(SharedPreferenceHelper.getUserClubId())) {
-            Map<String, String> visitParams = new HashMap<>();
-            visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
-            visitParams.put(RequestConstant.KEY_LAST_TIME, "");
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
-        }
+
         HeartBeatTimer.getInstance().start(60, mTask);
-        mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
-                visitResult -> initRecentlyViewView(visitResult));
 
+        sendDataRequest();
         return view;
     }
 
@@ -243,18 +239,24 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         super.onDestroy();
 
         HeartBeatTimer.getInstance().shutdown();
-        RxBus.getInstance().unsubscribe(mGetRecentlyVisitorSubscription);
 
-        RxBus.getInstance().unsubscribe(mGetTechCurrentInfoSubscription, mUserSwitchesSubscription, mGetTechOrderListSubscription, mGetTechStatisticsDataSubscription,
-                mGetTechRankIndexDataSubscription, mTechStatusSubscription, mOrderManageSubscription, mGetDynamicListSubscription, mQuitClubSubscription);
+        RxBus.getInstance().unsubscribe(
+                mGetTechCurrentInfoSubscription,
+                mUserSwitchesSubscription,
+                mGetTechOrderListSubscription,
+                mGetTechStatisticsDataSubscription,
+                mGetTechRankIndexDataSubscription,
+                mTechStatusSubscription,
+                mOrderManageSubscription,
+                mGetDynamicListSubscription,
+                mQuitClubSubscription,
+                mGetRecentlyVisitorSubscription);
     }
 
     private void initView(View view) {
         screenWidth = Utils.getScreenWidthHeight(getActivity())[0];
         screenSpeed = screenWidth / 16;
         initTitleView(view);
-        getData();
-        handlerDataResult();
         visitViewList.add(visitAvatar1);
         visitViewList.add(visitAvatar2);
         visitViewList.add(visitAvatar3);
@@ -277,12 +279,19 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMainSlidingLayout.closeMenu();
     }
 
-    private void getData() {
+    private void sendDataRequest() {
+        mTech.loadTechInfo();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA);
         refreshOrderListData();
         getDynamicList();
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
+        if (Utils.isNotEmpty(SharedPreferenceHelper.getUserClubId())) {
+            Map<String, String> visitParams = new HashMap<>();
+            visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
+            visitParams.put(RequestConstant.KEY_LAST_TIME, "");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
+        }
     }
 
 
@@ -302,7 +311,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mAppVersion.setText("v" + AppConfig.getAppVersionNameAndCode());
     }
 
-    private void handlerDataResult() {
+    private void registerRequestHandlers() {
         mGetTechCurrentInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class).subscribe(
                 techCurrentResult -> handleTechCurrentResult(techCurrentResult));
         mUserSwitchesSubscription = RxBus.getInstance().toObservable(UserSwitchesResult.class).subscribe(
@@ -323,6 +332,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
         mTechStatusSubscription = RxBus.getInstance().toObservable(CommentOrderRedPkResult.class).subscribe(
                 commentOrderRedPkResult -> handleTechStatus(commentOrderRedPkResult));
+
+        mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
+                visitResult -> initRecentlyViewView(visitResult));
     }
 
     @Override
@@ -349,8 +361,16 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void handleTechCurrentResult(TechInfoResult result) {
+        Logger.i("result:" + result.statusCode + "," + result.respData.serialNo + "," + result.respData);
         if (result.statusCode >= 200 && result.statusCode <= 299) {
+            boolean isVerify = mTech.isVerifyStatus();
             mTech.onLoadTechInfo(result);
+            if (isVerify && mTech.isActiveStatus()) {
+                //审核通过，提示用户
+                Toast.makeText(getActivity(), "恭喜您，已通过会所审核！", Toast.LENGTH_LONG).show();
+                //更新技师功能信息
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
+            }
         }
         if (result.respData != null) {
             mTechInfo = result.respData;
@@ -382,6 +402,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mTechStatus.setVisibility(View.VISIBLE);
             techJoinClub = ResourceUtils.getString(R.string.join_club_before);
             mTechStatus.setText(techJoinClub);
+            mBtnMainCreditCenter.setVisibility(View.GONE);
         } else if (Constant.TECH_STATUS_REJECT.equals(status)) {
             mTechStatus.setVisibility(View.VISIBLE);
             techJoinClub = ResourceUtils.getString(R.string.club_reject_apply);
@@ -419,7 +440,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void handleUserSwitchResult(UserSwitchesResult switchResult) {
         if (switchResult.statusCode == 200) {
             if (switchResult.respData.credit.clubSwitch != null && switchResult.respData.credit.systemSwitch != null) {
-
                 if (switchResult.respData.credit.clubSwitch.equals(RequestConstant.KEY_SWITCH_ON) && switchResult.respData.credit.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)) {
                     mBtnMainCreditCenter.setVisibility(View.VISIBLE);
                     isCreditCanExchange = true;
@@ -988,7 +1008,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         @Override
         public void run() {
             refreshOrderListData();
-            if (mTech.getStatus().equals(Constant.TECH_STATUS_UNCERT)) {
+            if (mTech.isVerifyStatus()) {
                 //等待审核状态，持续刷新
                 mTech.loadTechInfo();
             }
@@ -1032,7 +1052,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     //加入会所成功后显示
-    public void doJoinClubSuccess() {
+    public void doSendJoinClubRequestSuccess() {
         mMenuSettingsActivityQuitClub.setVisibility(View.VISIBLE);
         mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
         mMenuClubName.setVisibility(View.VISIBLE);
@@ -1058,13 +1078,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onRefresh() {
-        getData();
+        sendDataRequest();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
-        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_INFO);
-        Map<String, String> visitParams = new HashMap<>();
-        visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
-        visitParams.put(RequestConstant.KEY_LAST_TIME, "");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
-
     }
 }

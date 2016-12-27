@@ -9,15 +9,16 @@ import java.util.Map;
 
 /**
  * Created by heyangya on 16-12-22.
+ * 会所相关的操作
  */
-public class TechManager {
-    private static TechManager ourInstance = new TechManager();
+public class ClubManager {
+    private static ClubManager ourInstance = new ClubManager();
 
-    public static TechManager getInstance() {
+    public static ClubManager getInstance() {
         return ourInstance;
     }
 
-    private TechManager() {
+    private ClubManager() {
     }
 
 
@@ -27,5 +28,10 @@ public class TechManager {
         params.put(RequestConstant.KEY_TOKEN, LoginTechnician.getInstance().getToken());
         params.put(RequestConstant.KEY_CLUB_CODE, inviteCode);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_UNUSED_TECH_NO, params);
+    }
+
+    //获取会所功能配置
+    public void getCreditSupportStatus(String clubId) {
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
     }
 }
