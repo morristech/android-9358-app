@@ -27,7 +27,7 @@
             android:paddingLeft="22dp"
             android:lineSpacingExtra="5dp"
             android:layout_marginTop="5dp"
-            android:text="这里的积分指的是，您在会所进行消费以及进行其它的会所指定活动时，会所给您赠送的会所虚拟货币。您可以使用会所积分，参与会所的运营活动，或其它互动游戏。"
+            android:text="这里的积分指的是，会所发放的一种虚拟货币。您可以使用会所积分，参与会所的运营活动、互动游戏、或者直接兑换成会所指定的物品。"
             android:textColor="@color/alert_text_color"
             />
     </RelativeLayout>
@@ -55,7 +55,7 @@
             android:paddingLeft="22dp"
             android:layout_marginTop="5dp"
             android:lineSpacingExtra="5dp"
-            android:text="办理并充值会所的会员卡\n去会所消费；\n跟技师互动赚积分；\n会所特殊活动赠送积分；"
+            android:text="注册并通过管理员审核，成为会所技师；\n跟客户互动游戏赢取积分；\n收到客户的积分打赏；\n会所直接发放积分；"
             android:textColor="@color/alert_text_color"
             />
     </RelativeLayout>
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/dialog_content_text_size"
             android:paddingLeft="22dp"
-            android:text="使用积分可以参与会所指定优惠活动，特价兑换项目或实物；\n可以兑换礼物送给技师；\n可以与技师互动小游戏；\n更多福利持续开发中……"
+            android:text="使用积分可以参与会所指定活动，兑换项目、实物或者现金；\n可以与客户互动小游戏；\n其它符合会所规定的福利；\n更多福利持续开发中……"
             android:textColor="@color/alert_text_color"
             android:layout_marginTop="5dp"
             android:lineSpacingExtra="5dp"

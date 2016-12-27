@@ -1041,7 +1041,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     public void onScrollViewChanged(int l, int t) {
-        if (t > 100) {
+        if (t >  Utils.dip2px(getActivity(), 100)) {
             mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.recent_status_reward));
         } else {
             mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
