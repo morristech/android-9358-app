@@ -23,9 +23,7 @@
     <ListView
         android:id="@+id/main_order_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        />
+        android:layout_height="wrap_content" />
 
     <View style="@style/horizontal_divider_line" />
 
@@ -36,8 +34,8 @@
         android:layout_gravity="center_horizontal"
         android:paddingBottom="@dimen/small_space"
         android:paddingTop="@dimen/small_space"
+        android:text="@string/main_tech_order_all_finish_text"
         android:textColor="@color/list_item_label_color"
         android:textSize="@dimen/fontBody"
-        android:text="@string/main_tech_order_all_finish_text"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </LinearLayout>

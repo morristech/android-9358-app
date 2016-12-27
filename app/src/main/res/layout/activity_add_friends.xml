@@ -1,141 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
-    >
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar"></include>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/customer_contact"
-        android:textColor="@color/contact_info_unit"
-        android:gravity="center_vertical"
-        android:textSize="@dimen/fontTitle"
-        android:padding="@dimen/padding_10"
-        />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/et_customer_name"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/toast_useful_name"
-            android:textColorHint="@color/colorRemarkText"
-            android:textColor="@color/contact_item_name_text_color"
-            android:textSize="@dimen/fontHead"
-            android:background="@color/color_white"
-            android:padding="10dp"
-            android:maxLength="16"
-            />
-        <com.xmd.technician.widget.ClearableEditText
-            android:id="@+id/et_customer_telephone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/et_customer_name"
-            android:background="@color/color_white"
-            android:inputType="phone"
-            android:maxLength="11"
-            android:textColorHint="@color/colorRemarkText"
-            android:hint="@string/contact_hint_phone"
-            android:padding="@dimen/padding_10"/>
-        <Button
-            android:id="@+id/btn_search_telephone"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:background="@drawable/contact_phone_bg"
-            android:text="@string/main_conversion"
-            android:gravity="center"
-            android:layout_marginRight="@dimen/inter_space"
-            android:textColor="@color/colorMainBtn"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/et_customer_name"
-            android:layout_marginTop="10dp"
-            />
+            android:orientation="vertical">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/padding_10"
+                android:text="@string/customer_contact"
+                android:textColor="@color/contact_info_unit"
+                android:textSize="@dimen/fontTitle" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_customer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:hint="@string/toast_useful_name"
+                    android:maxLength="16"
+                    android:padding="10dp"
+                    android:textColor="@color/contact_item_name_text_color"
+                    android:textColorHint="@color/colorRemarkText"
+                    android:textSize="@dimen/fontHead" />
+
+                <com.xmd.technician.widget.ClearableEditText
+                    android:id="@+id/et_customer_telephone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/et_customer_name"
+                    android:background="@color/color_white"
+                    android:hint="@string/contact_hint_phone"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:padding="@dimen/padding_10"
+                    android:textColorHint="@color/colorRemarkText" />
+
+                <Button
+                    android:id="@+id/btn_search_telephone"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@id/et_customer_name"
+                    android:layout_marginRight="@dimen/inter_space"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/contact_phone_bg"
+                    android:gravity="center"
+                    android:text="@string/main_conversion"
+                    android:textColor="@color/colorMainBtn" />
+
+            </RelativeLayout>
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/padding_10"
+                android:text="@string/customer_remark"
+                android:textColor="@color/contact_info_unit"
+                android:textSize="@dimen/fontTitle" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/customer_remark"
-        android:textColor="@color/contact_info_unit"
-        android:gravity="center_vertical"
-        android:textSize="@dimen/fontTitle"
-        android:padding="@dimen/padding_10"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/color_white"
-        android:paddingTop="@dimen/margin_15"
-        >
-        <com.xmd.technician.widget.FlowLayout
-            android:id="@+id/limit_project_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/inter_space"
-            />
-        <View
-            style="@style/horizontal_divider_line"
-            android:layout_marginTop="6dp"
-            android:paddingLeft="@dimen/inter_space"
-            android:paddingRight="@dimen/inter_space"
-            />
-        <EditText
-            android:id="@+id/et_customer_remark"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/edit_remark_height"
-            android:hint="@string/contact_hint_remark"
-            android:textColorHint="@color/colorRemarkText"
-            android:padding="@dimen/padding_10"
-            android:textSize="@dimen/fontHead"
-            android:gravity="top"
-            android:background="@null"
-            android:maxLength="30"
-            />
-        <TextView
-            android:id="@+id/text_remark_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:text="@string/max_text_length"
-            android:layout_marginRight="@dimen/inter_space"
-            android:layout_marginBottom="@dimen/margin_5"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/margin_15">
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/margin_15"
-        >
-        <Button
-            android:id="@+id/btn_save_customer"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/order_detail_section_btn_height"
-            android:text="@string/save"
-            android:enabled="false"
-            android:background="@drawable/login_button_main_selector"
-            android:textColor="@color/btn_search_telephone"
-            android:textSize="@dimen/fontHead"
-            />
+                <com.xmd.technician.widget.FlowLayout
+                    android:id="@+id/limit_project_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/inter_space" />
 
-    </LinearLayout>
+                <View
+                    style="@style/horizontal_divider_line"
+                    android:layout_marginTop="6dp"
+                    android:paddingLeft="@dimen/inter_space"
+                    android:paddingRight="@dimen/inter_space" />
 
-</LinearLayout>
+                <EditText
+                    android:id="@+id/et_customer_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_remark_height"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="@string/contact_hint_remark"
+                    android:maxLength="30"
+                    android:padding="@dimen/padding_10"
+                    android:textColorHint="@color/colorRemarkText"
+                    android:textSize="@dimen/fontHead" />
+
+                <TextView
+                    android:id="@+id/text_remark_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/inter_space"
+                    android:text="@string/max_text_length" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_15"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_save_customer"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/order_detail_section_btn_height"
+                    android:background="@drawable/login_button_main_selector"
+                    android:enabled="false"
+                    android:text="@string/save"
+                    android:textColor="@color/btn_search_telephone"
+                    android:textSize="@dimen/fontHead" />
+
+            </LinearLayout>
+
+        </LinearLayout>
     </ScrollView>
 
 

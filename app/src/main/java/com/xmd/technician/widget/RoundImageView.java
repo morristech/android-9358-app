@@ -19,7 +19,6 @@ import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.xmd.technician.R;
-import com.xmd.technician.common.Logger;
 
 
 /**

@@ -52,7 +52,7 @@ import rx.Subscription;
 /**
  * Created by Administrator on 2016/7/5.
  */
-public class MyClubListFragment extends Fragment implements View.OnClickListener ,SwipeRefreshLayout.OnRefreshListener{
+public class MyClubListFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.list_customer)
     ListView mListView;
@@ -77,9 +77,11 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Subscription mGetCustomerListSubscription;
     private SortClubAdapter adapter;
+
     public static MyClubListFragment getInstance() {
         return new MyClubListFragment();
     }
+
     private int lastFirstVisibleItem = -1;
     private CharacterParser characterParser;
     private List<Manager> mManagerList = new ArrayList<Manager>();
@@ -115,7 +117,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     }
 
     private void handlerClubInfoList(ClubContactResult clubResult) {
-        if(mTitleLayout.getVisibility() == View.GONE){
+        if (mTitleLayout.getVisibility() == View.GONE) {
             mTitleLayout.setVisibility(View.VISIBLE);
         }
         statusBar.setVisibility(View.GONE);
@@ -153,27 +155,26 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-                if(customerInfos!=null&&customerInfos.size()>0){
+                if (customerInfos != null && customerInfos.size() > 0) {
                     intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
                     intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, customerInfos.get(position).userType.equals("manager") ? "manager" : "tech");
-                    if(customerInfos.get(position).userType.equals("manager")){
-                        intent.putExtra(RequestConstant.KEY_MANAGER_URL,customerInfos.get(position).avatarUrl);
+                    if (customerInfos.get(position).userType.equals("manager")) {
+                        intent.putExtra(RequestConstant.KEY_MANAGER_URL, customerInfos.get(position).avatarUrl);
                     }
 
-                }else {
+                } else {
                     intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mClubList.get(position).id);
                     intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, mClubList.get(position).userType.equals("manager") ? "manager" : "tech");
-                    if(mClubList.get(position).userType.equals("manager")){
-                        intent.putExtra(RequestConstant.KEY_MANAGER_URL,mClubList.get(position).avatarUrl);
+                    if (mClubList.get(position).userType.equals("manager")) {
+                        intent.putExtra(RequestConstant.KEY_MANAGER_URL, mClubList.get(position).avatarUrl);
                     }
                 }
-
 
 
                 startActivity(intent);
             }
         });
-        adapter = new SortClubAdapter(getActivity(), mClubList,mManagerList.size());
+        adapter = new SortClubAdapter(getActivity(), mClubList, mManagerList.size());
         mListView.setAdapter(adapter);
         mTitle.setText(ResourceUtils.getString(R.string.contact_manager));
 
@@ -217,7 +218,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
                                 }
                             }
                         }
-                    }else{
+                    } else {
                         mTitle.setText("店长");
                     }
 
@@ -240,17 +241,17 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    if(s.length()>0){
+                    if (s.length() > 0) {
                         mTitleLayout.setVisibility(View.GONE);
                         searchContact();
-                    }else{
+                    } else {
                         mTitleLayout.setVisibility(View.VISIBLE);
-                         closeSearch();
+                        closeSearch();
                     }
 
                 }
             });
-        }else{
+        } else {
             emptyView.setStatus(EmptyView.Status.Gone);
             emptyView.setEmptyPic(R.drawable.empty);
             emptyView.setEmptyTip("");
@@ -267,40 +268,40 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-     closeSearch();
+        closeSearch();
 
     }
 
-private void searchContact() {
-    String editStr = editText.getText().toString();
-    customerInfos = new ArrayList<>();
-    if (TextUtils.isEmpty(editStr)) {
-        mAlterMessage.setVisibility(View.GONE);
-    } else {
-        mAlterMessage.setVisibility(View.GONE);
-        customerInfos.clear();
-        for (CLubMember sortCustomer : mClubList) {
-            String name = sortCustomer.name;
-            if (name.indexOf(editStr.toString()) != -1 || characterParser.getSelling(name)
-                    .startsWith(editStr.toString())) {
-                customerInfos.add(sortCustomer);
+    private void searchContact() {
+        String editStr = editText.getText().toString();
+        customerInfos = new ArrayList<>();
+        if (TextUtils.isEmpty(editStr)) {
+            mAlterMessage.setVisibility(View.GONE);
+        } else {
+            mAlterMessage.setVisibility(View.GONE);
+            customerInfos.clear();
+            for (CLubMember sortCustomer : mClubList) {
+                String name = sortCustomer.name;
+                if (name.indexOf(editStr.toString()) != -1 || characterParser.getSelling(name)
+                        .startsWith(editStr.toString())) {
+                    customerInfos.add(sortCustomer);
+                }
             }
         }
-    }
-    Collections.sort(customerInfos, pinyinComparator);
-    if (customerInfos.size() > 0) {
-        adapter.updateListView(customerInfos ,true);
-    } else {
-        mTitleLayout.setVisibility(View.GONE);
-        mAlterMessage.setVisibility(View.VISIBLE);
+        Collections.sort(customerInfos, pinyinComparator);
+        if (customerInfos.size() > 0) {
+            adapter.updateListView(customerInfos, true);
+        } else {
+            mTitleLayout.setVisibility(View.GONE);
+            mAlterMessage.setVisibility(View.VISIBLE);
 
+        }
     }
-}
 
     public int getSectionForPosition(int position) {
-        if(position<mClubList.size()){
+        if (position < mClubList.size()) {
             return mClubList.get(position).getSortLetters() == null ? -1 : mClubList.get(position).getSortLetters().charAt(0);
-        }else{
+        } else {
             return -1;
         }
 
@@ -316,13 +317,14 @@ private void searchContact() {
         }
         return -1;
     }
-    private  void closeSearch(){
+
+    private void closeSearch() {
         customerInfos = null;
         if (!TextUtils.isEmpty(editText.getText().toString())) {
             editText.setText("");
         }
         mAlterMessage.setVisibility(View.GONE);
-        adapter.updateListView(mClubList,false);
+        adapter.updateListView(mClubList, false);
     }
 
     @Override
@@ -336,10 +338,11 @@ private void searchContact() {
         super.onPause();
         mSwipeRefreshLayout.setRefreshing(false);
     }
+
     private InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
+            if (source.equals(" ") || source.toString().contentEquals("\n")) return "";
             else return null;
         }
     };

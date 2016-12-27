@@ -1,7 +1,6 @@
 package com.xmd.technician.common;
 
 import com.xmd.technician.bean.CLubMember;
-import com.xmd.technician.bean.CustomerInfo;
 
 import java.util.Comparator;
 
