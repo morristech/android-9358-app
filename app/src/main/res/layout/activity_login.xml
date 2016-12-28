@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_white"
+    android:orientation="vertical"
     tools:context="com.xmd.technician.window.LoginActivity">
 
-    <ImageView
-        android:id="@+id/img_header"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:src="@drawable/bg_login" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/home_button_height"
-        android:background="@null"
-        android:gravity="center"
-        android:text="登录"
-        android:textColor="@color/color_white"
-        android:textSize="@dimen/fontTitle" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_login" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_button_height"
+            android:background="@null"
+            android:gravity="center"
+            android:text="登录"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/fontTitle2" />
+    </FrameLayout>
 
 
     <LinearLayout
         android:id="@+id/layout_phone_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img_header"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -162,12 +166,11 @@
         android:id="@+id/layout_tech_no_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img_header"
         android:layout_marginLeft="@dimen/personal_padding"
         android:layout_marginRight="@dimen/personal_padding"
         android:layout_marginTop="32dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -223,7 +226,7 @@
             android:enabled="false"
             android:text="@string/login"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/fontHead" />
+            android:textSize="@dimen/fontBody2" />
 
         <TextView
             android:id="@+id/switch_login2"
@@ -233,16 +236,28 @@
             android:gravity="center"
             android:text="@string/login_phone"
             android:textColor="#0084CF"
-            android:textSize="@dimen/fontTitle_small" />
+            android:textSize="@dimen/fontBody2" />
     </LinearLayout>
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Spinner
+        android:id="@+id/server_host"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_company"
-        android:gravity="center"
+        android:gravity="bottom|center"
         android:text="@string/app_version_code"
         android:textSize="@dimen/fontTitle" />
 
@@ -250,23 +265,9 @@
         android:id="@+id/tv_company"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/small_space"
         android:gravity="center"
         android:text="@string/company_name" />
 
-    <Button
-        android:id="@+id/toggle_server_host"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/tv_version"
-        android:background="@color/transparent" />
 
-    <Spinner
-        android:id="@+id/server_host"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/toggle_server_host"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:visibility="gone" />
-</RelativeLayout>
+</LinearLayout>

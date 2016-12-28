@@ -34,7 +34,7 @@
                 android:gravity="center"
                 android:text="加入会所"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/fontTitle" />
+                android:textSize="@dimen/fontTitle2" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -82,8 +82,7 @@
                     android:hint="输入邀请码"
                     android:inputType="phone"
                     android:maxLength="11"
-                    android:textColor="@color/colorBody"
-                    android:textSize="@dimen/fontBody" />
+                    android:textColor="@color/colorBody" />
             </LinearLayout>
 
             <View
@@ -119,8 +118,7 @@
                     android:maxLength="11"
                     android:onClick="@{()->presenter.onClickShowTechNos()}"
                     android:text="@{presenter.mTechNo}"
-                    android:textColor="@color/colorBody"
-                    android:textSize="@dimen/fontBody" />
+                    android:textColor="@color/colorBody" />
             </LinearLayout>
 
             <View
@@ -144,7 +142,6 @@
                     android:onClick="@{()->presenter.onClickSkip()}"
                     android:text="跳过"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/fontHead"
                     android:visibility="@{presenter.mShowSkip?View.VISIBLE:View.GONE}" />
 
                 <Button
@@ -157,8 +154,7 @@
                     android:gravity="center"
                     android:onClick="@{()->presenter.onClickJoin()}"
                     android:text="申请加入"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/fontHead" />
+                    android:textColor="@color/color_white" />
 
             </LinearLayout>
         </LinearLayout>

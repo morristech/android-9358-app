@@ -54,6 +54,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 result -> handleLoginResult(result));
         mLoadTechInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class)
                 .subscribe(this::handleLoadTechInfo);
+
+        checkLoginReady();
     }
 
     @Override

@@ -50,9 +50,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Bind(R.id.login_btn2)
     Button mBtnLogin2;
 
-
-    @Bind(R.id.toggle_server_host)
-    Button mBtnToggleServerHost;
     @Bind(R.id.server_host)
     Spinner mSpServerHost;
     private String mSelectedServerHost;
@@ -177,7 +174,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
 
-    @OnLongClick(R.id.toggle_server_host)
+    @OnLongClick(R.id.tv_version)
     public boolean toggleServerHostSpinner() {
         if (mSpServerHost.getVisibility() == View.GONE) {
             mSpServerHost.setVisibility(View.VISIBLE);

@@ -217,4 +217,14 @@
     <dimen name="main_page_right_width">320dp</dimen>
 
 
+    <dimen name="fontDisplay4">112sp</dimen>
+    <dimen name="fontDisplay3">56sp</dimen>
+    <dimen name="fontDisplay2">45sp</dimen>
+    <dimen name="fontDisplay1">34sp</dimen>
+    <dimen name="fontHeadline">24sp</dimen>
+    <dimen name="fontTitle2">21sp</dimen>
+    <dimen name="fontSubheading">17sp</dimen>
+    <dimen name="fontBody2">15sp</dimen>
+    <dimen name="fontButton">15sp</dimen>
+    <dimen name="fontCaption">13sp</dimen>
 </resources>
