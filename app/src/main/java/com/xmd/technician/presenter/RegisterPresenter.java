@@ -83,7 +83,11 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
     public void onClickNextStep() {
         //进入下一步，这里进行注册
         mView.showLoading("正在注册...");
-        mTech.register(mPhoneNumber, mPassword, mVerificationCode, mTech.getClubInviteCode(), mTech.getTechId(), mTech.getTechNo());
+        if (!TextUtils.isEmpty(mTech.getTechId())) {
+            mTech.register(mPhoneNumber, mPassword, mVerificationCode, mTech.getClubInviteCode(), mTech.getTechId(), mTech.getTechNo());
+        } else {
+            mTech.register(mPhoneNumber, mPassword, mVerificationCode, null, null, null);
+        }
     }
 
     @Override
