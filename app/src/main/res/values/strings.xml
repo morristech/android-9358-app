@@ -26,7 +26,8 @@
     <string name="list_item_loading">点击或者上拉，加载更多</string>
     <string name="list_item_no_more"> ^_^, 没有更多数据</string>
     <string name="list_item_empty">=_=!!, 还没有数据哦</string>
-    <string name="register_password_hint">请输入6-20位密码，仅限字母和数字</string>
+    <string name="register_password_hint">请输入6-20位新密码，仅限字母和数字</string>
+    <string name="login_password_hint">请输入6-20位密码，仅限字母和数字</string>
     <string name="register_tips">您的手机号未注册，请输入相关信息完成注册</string>
     <string name="register_security_code_hint">输入验证码</string>
     <string name="register_send_security_code">发送验证码</string>

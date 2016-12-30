@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.xmd.technician.window.TechInfoActivity">
 
     <include layout="@layout/toolbar" />
@@ -23,9 +23,9 @@
                 android:id="@+id/album_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/app_default_padding"
                 android:background="@android:color/white"
-                android:visibility="visible"/>
+                android:paddingLeft="@dimen/app_default_padding"
+                android:visibility="visible" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -33,9 +33,9 @@
                 android:background="@android:color/white"
                 android:paddingBottom="@dimen/app_default_padding"
                 android:paddingLeft="@dimen/app_default_padding"
+                android:text="@string/edit_activity_text_view_tip"
                 android:textColor="@color/colorRemark"
-                android:textSize="@dimen/fontRemark"
-                android:text="@string/edit_activity_text_view_tip" />
+                android:textSize="@dimen/fontRemark" />
 
             <View
                 android:layout_width="match_parent"
@@ -45,8 +45,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_divide_height"
-                android:background="@color/colorLineDivide"
-                android:layout_marginTop="@dimen/app_default_padding"/>
+                android:layout_marginTop="@dimen/app_default_padding"
+                android:background="@color/colorLineDivide" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -58,9 +58,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/app_default_padding"
+                    android:text="@string/edit_activity_text_view_desc"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/fontTitle"
-                    android:text="@string/edit_activity_text_view_desc" />
+                    android:textSize="@dimen/fontTitle" />
             </RelativeLayout>
 
             <View
@@ -92,12 +92,12 @@
                         android:id="@+id/avatar"
                         android:layout_width="@dimen/avatar_head"
                         android:layout_height="@dimen/avatar_head"
-                        android:layout_toRightOf="@+id/avatar_hint"
-                        android:layout_marginLeft="@dimen/personal_margin"
                         android:layout_centerInParent="true"
-                        app:type="round"
+                        android:layout_marginLeft="@dimen/personal_margin"
+                        android:layout_toRightOf="@+id/avatar_hint"
                         app:borderRadius="@dimen/search_margin"
-                        app:src="@drawable/icon22"/>
+                        app:src="@drawable/icon22"
+                        app:type="round" />
 
                     <TextView
                         android:id="@+id/change_avatar_txt"
@@ -105,11 +105,11 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
                         android:clickable="true"
+                        android:gravity="center_vertical"
+                        android:text="@string/edit_activity_text_view_change_head"
                         android:textColor="@color/colorRemark"
-                        android:textSize="@dimen/fontRemark"
-                        android:text="@string/edit_activity_text_view_change_head" />
+                        android:textSize="@dimen/fontRemark" />
 
                 </RelativeLayout>
 
@@ -135,9 +135,7 @@
                         android:id="@+id/user_name"
                         style="@style/edit_activity_edit_text_style"
                         android:layout_toRightOf="@id/user_name_hint"
-                        android:maxLength="5"
-                        android:singleLine="true"
-                         />
+                        android:maxLength="7" />
 
                 </RelativeLayout>
 
@@ -174,25 +172,25 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/personal_margin"
-                            android:button="@null"
                             android:background="@null"
+                            android:button="@null"
                             android:checked="true"
                             android:drawableLeft="@drawable/radio_button_style_selector"
                             android:text="女士"
                             android:textColor="@drawable/radio_button_text_color_selector"
-                            android:textSize="@dimen/fontBody"/>
+                            android:textSize="@dimen/fontBody" />
 
                         <RadioButton
                             android:id="@+id/button_male"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/personal_margin"
-                            android:button="@null"
                             android:background="@null"
+                            android:button="@null"
                             android:drawableLeft="@drawable/radio_button_style_selector"
                             android:text="先生"
                             android:textColor="@drawable/radio_button_text_color_selector"
-                            android:textSize="@dimen/fontBody"/>
+                            android:textSize="@dimen/fontBody" />
 
                     </RadioGroup>
 
@@ -216,8 +214,8 @@
                     <TextView
                         android:id="@+id/native_place"
                         style="@style/edit_activity_edit_text_style"
-                        android:gravity="center_vertical"
                         android:clickable="true"
+                        android:gravity="center_vertical"
                         android:text="请选择" />
 
                 </LinearLayout>
@@ -240,7 +238,7 @@
                     <TextView
                         android:id="@+id/phone_number"
                         style="@style/edit_activity_edit_text_style"
-                        android:gravity="center_vertical"/>
+                        android:gravity="center_vertical" />
 
                 </LinearLayout>
 
@@ -263,18 +261,18 @@
                         android:id="@+id/introduce"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/search_margin"
                         android:layout_marginLeft="@dimen/personal_margin"
                         android:layout_marginTop="@dimen/search_margin"
-                        android:layout_marginBottom="@dimen/search_margin"
-                        android:lineSpacingExtra="@dimen/search_margin"
-                        android:gravity="left"
-                        android:maxLength="200"
                         android:background="@null"
-                        android:textSize="@dimen/fontBody"
+                        android:gravity="left"
+                        android:hint="@string/edit_activity_text_view_introduce_desc"
+                        android:imeOptions="actionSend"
+                        android:lineSpacingExtra="@dimen/search_margin"
+                        android:maxLength="200"
                         android:textColor="@color/colorBody"
                         android:textColorHint="@color/colorRemarkText"
-                        android:imeOptions="actionSend"
-                        android:hint="@string/edit_activity_text_view_introduce_desc" />
+                        android:textSize="@dimen/fontBody" />
 
                 </LinearLayout>
 

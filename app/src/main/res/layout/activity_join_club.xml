@@ -81,7 +81,7 @@
                     android:background="@android:color/transparent"
                     android:hint="输入邀请码"
                     android:inputType="phone"
-                    android:maxLength="11"
+                    android:maxLength="6"
                     android:textColor="@color/colorBody" />
             </LinearLayout>
 

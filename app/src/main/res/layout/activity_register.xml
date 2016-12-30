@@ -35,7 +35,7 @@
                 android:layout_height="@dimen/home_button_height"
                 android:background="@null"
                 android:gravity="center"
-                android:text='@{presenter.mJoinClub?"完善信息":"注册"}'
+                android:text='@{presenter.mTitle}'
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontTitle2" />
 
@@ -56,7 +56,7 @@
             android:layout_marginTop="8dp"
             android:text="会所邀请码："
             android:textColor="@color/color_white"
-            android:visibility="@{presenter.mJoinClub?View.VISIBLE:View.GONE}" />
+            android:visibility="@{presenter.mShowTechNoAndClubInviteCode?View.VISIBLE:View.GONE}" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
             android:layout_toRightOf="@id/tip_invite_code"
             android:text="@{tech.clubInviteCode}"
             android:textColor="@color/color_white"
-            android:visibility="@{presenter.mJoinClub?View.VISIBLE:View.GONE}" />
+            android:visibility="@{presenter.mShowTechNoAndClubInviteCode?View.VISIBLE:View.GONE}" />
 
         <TextView
             android:id="@+id/tip_tech_no"
@@ -77,7 +77,7 @@
             android:layout_marginTop="8dp"
             android:text="技师编号："
             android:textColor="@color/color_white"
-            android:visibility="@{presenter.mJoinClub?View.VISIBLE:View.GONE}" />
+            android:visibility="@{presenter.mShowTechNoAndClubInviteCode?View.VISIBLE:View.GONE}" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
             android:layout_toRightOf="@id/tip_tech_no"
             android:text="@{tech.techNo}"
             android:textColor="@color/color_white"
-            android:visibility="@{presenter.mJoinClub?View.VISIBLE:View.GONE}" />
+            android:visibility="@{presenter.mShowTechNoAndClubInviteCode?View.VISIBLE:View.GONE}" />
 
 
         <LinearLayout
@@ -157,8 +157,9 @@
                     android:afterTextChanged="@{(s)->presenter.setVerificationCode(s)}"
                     android:background="@android:color/transparent"
                     android:hint="输入验证码"
-                    android:inputType="text"
-                    android:maxLength="11"
+                    android:inputType="number"
+                    android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:maxLength="6"
                     android:textColor="@color/colorBody" />
 
                 <Button
@@ -179,7 +180,7 @@
                 android:layout_height="@dimen/line_divide_height"
                 android:background="@color/colorLineDivide" />
 
-            <com.xmd.technician.widget.ClearableEditText
+            <com.xmd.technician.widget.ClearablePasswordEditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_button_height"
                 android:afterTextChanged="@{(s)->presenter.setNewPassword(s)}"
@@ -190,7 +191,6 @@
                 android:inputType="textPassword"
                 android:maxLength="20"
                 android:textColor="@color/colorBody"
-                android:textColorHint="@color/colorRemarkText"
                 android:textSize="@dimen/fontBody" />
 
             <Button

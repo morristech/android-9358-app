@@ -10,19 +10,16 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.ImageLoader;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.contract.CompleteRegisterInfoContract;
 import com.xmd.technician.databinding.ActivityCompleteRegisterInfoBinding;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.model.LoginTechnician;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.window.ImageSelectAndCropActivity;
-import com.xmd.technician.window.MainActivity;
 
 import rx.Subscription;
 
@@ -41,6 +38,8 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
     private Subscription mSubscription;
     private Subscription mUploadAvatarSubscription;
 
+    private boolean mJoinClub;
+
     public CompleteRegisterInfoPresenter(Context context, CompleteRegisterInfoContract.View view, ActivityCompleteRegisterInfoBinding binding) {
         super(context, view);
         mBinding = binding;
@@ -57,6 +56,8 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
 
         mUploadAvatarSubscription = RxBus.getInstance().toObservable(AvatarResult.class)
                 .subscribe(this::handleUploadAvatar);
+
+        mJoinClub = TextUtils.isEmpty(mTech.getTechId()); //技师ID为空，需要进入加入会所界面
     }
 
     @Override
@@ -113,7 +114,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
     @Override
     public void onBack() {
         new AlertDialogBuilder(mContext)
-                .setMessage("您还有资料没有填写，确定退出吗?")
+                .setMessage("您还有资料没有填写，确定以后填写吗?")
                 .setPositiveButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -123,7 +124,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
                 .setNegativeButton("以后再填写", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gotoMainActivity();
+                        finishSelf();
                     }
                 })
                 .setCancelable(false)
@@ -144,8 +145,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
                 mView.showLoading("正在上传头像...");
                 mTech.uploadAvatar(mAvatarUrl);
             } else {
-                //登录环信并去主界面
-                gotoMainActivity();
+                finishSelf();
             }
         }
     }
@@ -156,15 +156,16 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
             mView.showAlertDialog(result.msg);
         } else {
             mTech.onUploadAvatarResult(result);
-            //登录环信并去主界面
-            gotoMainActivity();
+            finishSelf();
         }
     }
 
-    private void gotoMainActivity() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
-        ActivityHelper.getInstance().removeAllActivities();
-        mContext.startActivity(new Intent(mContext, MainActivity.class));
+    private void finishSelf() {
+        if (mJoinClub) {
+            UINavigation.gotoJoinClubFrom(mContext, UINavigation.OPEN_JOIN_CLUB_FROM_START);
+        } else {
+            UINavigation.gotoMainActivityFromStart(mContext);
+        }
         mView.finishSelf();
     }
 }

@@ -20,8 +20,7 @@ public class UINavigation {
     public static final String EXTRA_JOIN_CLUB = "extra_join_club";
     public static final String EXTRA_OPEN_JOIN_CLUB_FROM = "extra_join_club_from";
 
-    public static final int OPEN_JOIN_CLUB_FROM_REGISTER = 1;
-    public static final int OPEN_JOIN_CLUB_FROM_LOGIN = 2;
+    public static final int OPEN_JOIN_CLUB_FROM_START = 1;
     public static final int OPEN_JOIN_CLUB_FROM_MAIN = 3;
 
     //登录
@@ -30,9 +29,8 @@ public class UINavigation {
     }
 
     //注册
-    public static void gotoRegister(Context context, boolean joinClub) {
+    public static void gotoRegister(Context context) {
         Intent intent = new Intent(context, RegisterActivity.class);
-        intent.putExtra(EXTRA_JOIN_CLUB, joinClub);
         context.startActivity(intent);
     }
 
@@ -51,12 +49,13 @@ public class UINavigation {
         activity.startActivityForResult(intent, requestCode);
     }
 
-    //完善注册资料
+    //完善注册资料，后续可能需要加入会所
     public static void gotoCompleteRegisterInfo(Context context) {
-        context.startActivity(new Intent(context, CompleteRegisterInfoActivity.class));
+        Intent intent = new Intent(context, CompleteRegisterInfoActivity.class);
+        context.startActivity(intent);
     }
 
-    public static void gotoMainActivityFromRegisterOrLogin(Context context) {
+    public static void gotoMainActivityFromStart(Context context) {
         LoginTechnician technician = LoginTechnician.getInstance();
         ActivityHelper.getInstance().removeAllActivities();
         UserProfileProvider.getInstance().updateCurrentUserInfo(technician.getNickName(), technician.getAvatarUrl());

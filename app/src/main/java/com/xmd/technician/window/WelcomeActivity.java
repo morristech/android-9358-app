@@ -8,7 +8,6 @@ import android.view.WindowManager;
 import com.hyphenate.chat.EMClient;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.common.ScreenUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.model.LoginTechnician;
@@ -27,8 +26,6 @@ public class WelcomeActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-
-        ScreenUtils.setScreenSize(getWindowManager());
 
         if (TextUtils.isEmpty(LoginTechnician.getInstance().getToken())) {
             ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, mTask, 500);

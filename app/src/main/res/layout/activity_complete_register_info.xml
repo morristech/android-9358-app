@@ -138,7 +138,7 @@
                 android:enabled="@{presenter.mCanUpdate}"
                 android:gravity="center"
                 android:onClick="@{()->presenter.onClickFinish()}"
-                android:text="完成"
+                android:text="下一步"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontHead" />
         </LinearLayout>

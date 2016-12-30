@@ -86,7 +86,7 @@
                 android:layout_marginRight="@dimen/personal_padding"
                 android:background="@color/colorLineDivide" />
 
-            <com.xmd.technician.widget.ClearableEditText
+            <com.xmd.technician.widget.ClearablePasswordEditText
                 android:id="@+id/password1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_button_height"
@@ -95,7 +95,7 @@
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/password_c"
                 android:drawablePadding="@dimen/personal_padding"
-                android:hint="@string/register_password_hint"
+                android:hint="@string/login_password_hint"
                 android:inputType="textPassword"
                 android:maxLength="20"
                 android:textColor="@color/colorBody"
@@ -184,7 +184,8 @@
                 android:background="@drawable/shape_rect_red"
                 android:gravity="center"
                 android:hint="请输入会所邀请码"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="6" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -204,18 +205,20 @@
                 android:background="@drawable/shape_rect_red"
                 android:gravity="center"
                 android:hint="请输入技师编号"
-                android:inputType="text" />
+                android:inputType="text"
+                android:maxLength="5" />
         </LinearLayout>
 
-        <com.xmd.technician.widget.ClearableEditText
+        <com.xmd.technician.widget.ClearablePasswordEditText
             android:id="@+id/password2"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/shape_rect_red"
             android:gravity="center"
-            android:hint="请输入密码"
-            android:inputType="textPassword" />
+            android:hint="@string/login_password_hint"
+            android:inputType="textPassword"
+            android:maxLength="20" />
 
         <Button
             android:id="@+id/login_btn2"

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.text.Editable;
+import android.text.TextUtils;
 
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.ThreadPoolManager;
@@ -29,13 +30,15 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
     public ObservableBoolean mCanGetVerificationCode = new ObservableBoolean();//是否能获取验证码
     public ObservableBoolean mCanGotoSetInfoView = new ObservableBoolean(); //是否能跳转到设置资料页面
     public ObservableField<String> mSendVerificationText = new ObservableField<>();
+    public String mTitle;
+    public boolean mShowTechNoAndClubInviteCode;
     private String mPhoneNumber;
     private long mSendVerificationTime;
     private String mVerificationCode;
     private String mPassword;
     private Future mSendVerificationFuture;
     private static final int VERIFICATION_INTERVAL = 60000;//验证码间隔60秒
-    public boolean mJoinClub; //是否在注册时加入会所
+
 
     private Subscription mRegisterSubscription;
 
@@ -52,14 +55,19 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
         if (System.currentTimeMillis() - mSendVerificationTime < VERIFICATION_INTERVAL) {
             startVerificationTime();
         }
+        if (!TextUtils.isEmpty(mTech.getTechId())) {
+            mTitle = "完善资料";
+            mShowTechNoAndClubInviteCode = true;
+        } else {
+            mTitle = "注册";
+            mShowTechNoAndClubInviteCode = false;
+        }
         mBinding.setTech(mTech);
         mBinding.setPresenter(this);
 
         mRegisterSubscription = RxBus.getInstance().toObservable(RegisterResult.class).subscribe(
                 result -> handleRegisterResult(result)
         );
-
-        mJoinClub = mView.getIntent().getBooleanExtra(UINavigation.EXTRA_JOIN_CLUB, false);
     }
 
     @Override
@@ -156,11 +164,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
             mView.showAlertDialog(result.msg);
         } else {
             mTech.onRegisterResult(result);
-            if (mJoinClub) {
-                UINavigation.gotoCompleteRegisterInfo(mContext);
-            } else {
-                UINavigation.gotoJoinClubFrom(mContext, UINavigation.OPEN_JOIN_CLUB_FROM_REGISTER);
-            }
+            UINavigation.gotoCompleteRegisterInfo(mContext); //注册完成，跳到完善资料页面
         }
     }
 }

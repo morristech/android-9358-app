@@ -68,7 +68,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".window.WelcomeActivity">
+        <activity
+            android:name=".window.WelcomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,11 +79,13 @@
         </activity>
         <activity
             android:name=".window.LoginActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".window.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
         <receiver
@@ -226,8 +230,12 @@
             android:name=".window.CompleteRegisterInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".window.ImageSelectAndCropActivity" />
-        <activity android:name=".window.JoinClubActivity"></activity>
+        <activity
+            android:name=".window.ImageSelectAndCropActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.JoinClubActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

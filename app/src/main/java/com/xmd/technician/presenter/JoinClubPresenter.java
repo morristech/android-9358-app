@@ -1,6 +1,7 @@
 package com.xmd.technician.presenter;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -50,7 +51,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     public void onCreate() {
         super.onCreate();
         mOpenFrom = mView.getIntent().getIntExtra(UINavigation.EXTRA_OPEN_JOIN_CLUB_FROM, UINavigation.OPEN_JOIN_CLUB_FROM_MAIN);
-        if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_REGISTER || mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_LOGIN) {
+        if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_START) {
             mShowSkip = true;
             mShowBack = false;
         }
@@ -75,13 +76,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
                 .setNegativeButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_REGISTER) {
-                            //注册流程 去到完善信息页面
-                            UINavigation.gotoCompleteRegisterInfo(mContext);
-                        } else {
-                            //登录流程 去到主界面
-                            UINavigation.gotoMainActivityFromRegisterOrLogin(mContext);
-                        }
+                        UINavigation.gotoMainActivityFromStart(mContext);
                     }
                 })
                 .setPositiveButton("取消", new View.OnClickListener() {
@@ -109,12 +104,8 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
             mTech.onJoinClub(mInviteCode, TechNo.DEFAULT_TECH_NO.name.equals(mSelectedTechNo) ? null : mSelectedTechNo, result);
             mView.setResult(Activity.RESULT_OK, null);
             mView.finishSelf();
-            if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_REGISTER) {
-                //注册流程 去到完善信息页面
-                UINavigation.gotoCompleteRegisterInfo(mContext);
-            } else if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_LOGIN) {
-                //登录流程 去到主界面
-                UINavigation.gotoMainActivityFromRegisterOrLogin(mContext);
+            if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_START) {
+                UINavigation.gotoMainActivityFromStart(mContext);
             }
         }
     }
@@ -131,7 +122,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     }
 
     private void checkCanJoin() {
-        mCanJoin.set(Utils.matchInviteCode(mInviteCode) && !TextUtils.isEmpty(mSelectedTechNo));
+        mCanJoin.set(Utils.matchClubInviteCode(mInviteCode) && !TextUtils.isEmpty(mSelectedTechNo));
     }
 
     @Override
@@ -145,17 +136,19 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
 
     @Override
     public void onClickShowTechNos() {
-        if (!Utils.matchInviteCode(mInviteCode)) {
+        if (!Utils.matchClubInviteCode(mInviteCode)) {
             mView.showToast("请先填写正确的会所邀请码！");
         } else {
-            if (mTechNoDialogFragment == null) {
-                mTechNoDialogFragment = TechNoDialogFragment.newInstance();
-                mTechNoDialogFragment.setPresenter(this);
-            }
-            mTechNoDialogFragment.setParams(mInviteCode, mSelectedTechNo);
             FragmentManager fragmentManager = ((Activity) mContext).getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            mTechNoDialogFragment.show(ft, "");
+            Fragment prev = fragmentManager.findFragmentByTag("tech_no_dialog");
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            mTechNoDialogFragment = TechNoDialogFragment.newInstance();
+            mTechNoDialogFragment.setPresenter(this);
+            mTechNoDialogFragment.setParams(mInviteCode, mSelectedTechNo);
+            mTechNoDialogFragment.show(ft, "tech_no_dialog");
         }
     }
 

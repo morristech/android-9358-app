@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.LoginContract;
@@ -14,7 +12,6 @@ import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.ResetPasswordActivity;
 
 import rx.Subscription;
@@ -96,7 +93,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void onClickRegister() {
-        UINavigation.gotoRegister(mContext, false);
+        mLoginTech.setTechId(null); //清空一下技师ID
+        UINavigation.gotoRegister(mContext);
     }
 
     @Override
@@ -133,7 +131,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             mView.enableLogin(Utils.matchPhoneNumFormat(mPhoneNumber)
                     && Utils.matchLoginPassword(mPassword));
         } else {
-            mView.enableLogin(Utils.matchInviteCode(mInviteCode)
+            mView.enableLogin(Utils.matchClubInviteCode(mInviteCode)
                     && Utils.matchTechNo(mTechNo)
                     && Utils.matchLoginPassword(mPassword));
         }
@@ -163,7 +161,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 //进入注册页面
                 mView.hideLoading();
                 mLoginTech.setTechId(result.spareTechId);
-                UINavigation.gotoRegister(mContext, true);
+                UINavigation.gotoRegister(mContext);
             } else {
                 //登录成功，获取用户信息
                 mLoginTech.onLoginResult(result);
@@ -179,14 +177,12 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         } else {
             mLoginTech.onLoadTechInfo(result);
             if (TextUtils.isEmpty(mLoginTech.getClubId())) {
-                //需要提示加入会所
-                UINavigation.gotoJoinClubFrom(mContext, UINavigation.OPEN_JOIN_CLUB_FROM_LOGIN);
+                //用户未加入会所，需要提示加入会所
+                UINavigation.gotoJoinClubFrom(mContext, UINavigation.OPEN_JOIN_CLUB_FROM_START);
             } else {
+                //登录成功，去主界面
                 mLoadTechInfoSubscription.unsubscribe();
-                ActivityHelper.getInstance().removeAllActivities();
-                UserProfileProvider.getInstance().updateCurrentUserInfo(mLoginTech.getNickName(), mLoginTech.getAvatarUrl());
-                mLoginTech.loginEmChatAccount();
-                mContext.startActivity(new Intent(mContext, MainActivity.class));
+                UINavigation.gotoMainActivityFromStart(mContext);
                 mView.finishSelf();
             }
         }

@@ -8,21 +8,10 @@ import android.view.WindowManager;
  */
 
 public class ScreenUtils {
-    public static int mScreenWidth;
-    public static int mScreenHeight;
-
-    public static void setScreenSize(WindowManager windowManager) {
+    public static void getScreenSize(WindowManager windowManager, int[] size) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-        mScreenWidth = displayMetrics.widthPixels;
-        mScreenHeight = displayMetrics.heightPixels;
-    }
-
-    public static int getScreenWidth() {
-        return mScreenWidth;
-    }
-
-    public static int getScreenHeight() {
-        return mScreenHeight;
+        size[0] = displayMetrics.widthPixels;
+        size[1] = displayMetrics.heightPixels;
     }
 }

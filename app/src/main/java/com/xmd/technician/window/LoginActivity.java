@@ -3,8 +3,6 @@ package com.xmd.technician.window;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -71,18 +69,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         setBackVisible(true);
 
         mPresenter = new LoginPresenter(this, this);
-
-        mEtPassword.setFilters(new InputFilter[]{new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                for (int i = start; i < end; i++) {
-                    if (!Character.isLetterOrDigit(source.charAt(i))) {
-                        return "";
-                    }
-                }
-                return null;
-            }
-        }, new InputFilter.LengthFilter(20)});
         mEtPassword.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
