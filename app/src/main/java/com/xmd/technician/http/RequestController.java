@@ -3,6 +3,7 @@ package com.xmd.technician.http;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.AddOrEditResult;
@@ -25,6 +26,7 @@ import com.xmd.technician.bean.SaveChatUserResult;
 import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
+import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.common.DESede;
@@ -287,6 +289,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_ORDER_INNER_READ:
                 setOrderInnerRead((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_USER_GET_COUPON:
+                getClubUserCoupon((Map<String, Object>) msg.obj);
                 break;
 
         }
@@ -1356,6 +1361,24 @@ public class RequestController extends AbstractController {
                 RxBus.getInstance().post(new OrderManageResult(params.get(RequestConstant.KEY_ORDER_ID)));
             }
         });
+    }
+    private void getClubUserCoupon(Map<String, Object> params) {
+        Call<UserGetCouponResult> call = getSpaService().clubUserCoupon(SharedPreferenceHelper.getUserToken(),(String) params.get(RequestConstant.KEY_USER_COUPON_ACT_ID),
+                (String)params.get(RequestConstant.KEY_USER_COUPON_CHANEL),(String)params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_ID),SharedPreferenceHelper.getInviteCode(),SharedPreferenceHelper.getInviteCode());
+        call.enqueue(new TokenCheckedCallback<UserGetCouponResult>() {
+            @Override
+            protected void postResult(UserGetCouponResult result) {
+                result.mMessage = (EMMessage) params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE);
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                UserGetCouponResult result = new UserGetCouponResult((EMMessage) params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE));
+                RxBus.getInstance().post(result);
+            }
+        });
+
     }
 
     //获取升级配置

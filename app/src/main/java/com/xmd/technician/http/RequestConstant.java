@@ -93,7 +93,10 @@ public class RequestConstant {
     public static final String URL_APP_UPDATE_CONFIG = "/app-upgrade-system/appUpgrade";
 
     public static final String URL_GET_UNUSED_TECH_NO = BASE_URL + "/v1/get/tech_no";
-
+    /**
+     * 自动领取优惠券
+     */
+    public static final String URL_GET_CLUB_USER_GET_COUPON = BASE_URL + "/v2/club/user/get/coupon";
 
     /*********************************************************************************************/
     /*                                           keys                                            */
@@ -245,6 +248,15 @@ public class RequestConstant {
     public static final String KEY_IS_INDEX_PAGE = "isIndexPage";
     public static final String ORDER_TYPE_APPOINT = "appoint";
     public static final String ORDER_TYPE_PAID = "paid";
+    /**
+     * 自动领券
+     */
+    public static final String KEY_USER_COUPON_ACT_ID = "actId";
+    public static final String KEY_USER_COUPON_CHANEL = "chanel"; //tech,manager,qrCode,link,index
+    public static final String KEY_USER_COUPON_EMCHAT_ID = "emchatId";
+    public static final String KEY_USER_COUPON_EMCHAT_MESSAGE = "messageContent";
+    public static final String KEY_USER_TECH_CODE = "techCode";
+    public static final String KEY_USER_CODE = "userCode";
 
 
     /*********************************************************************************************/
