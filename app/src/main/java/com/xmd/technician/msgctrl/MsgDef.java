@@ -29,7 +29,7 @@ public class MsgDef {
 
     public static final int MSG_DEF_GET_COMMENT_LIST = 0x0017;
 
-    public static final int MSG_DEF_GET_NEW_ORDER_COUNT = 0x000B;
+    public static final int MSG_DEF_GET_TECH_PERSONAL_DATA = 0x000B;
 
     public static final int MSG_DEF_FILTER_ORDER_LIST = 0x000C;
 

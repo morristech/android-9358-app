@@ -156,4 +156,9 @@
     <color name="ranking_sail">#FF7C41</color>
     <color name="recent_status_reward">#de5757</color>
     <color name="title_bar_scrolled">#FF6766</color>
+
+    <color name="link_button">@android:color/holo_blue_light</color>
+    <color name="link_button_disable">#808080</color>
+
+    <color name="edit_text_stoke">#808080</color>
 </resources>

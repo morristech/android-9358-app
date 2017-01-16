@@ -20,6 +20,7 @@ import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechPersonalDataResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -70,6 +71,12 @@ public class LoginTechnician {
     private String clubName;
     private int credit;
     public String innerProvider;
+
+    private float amount; //以元为单位
+    private int commentCount;
+    private int unreadCommentCount;
+    private int orderCount;
+
 
     private LoginTechnician() {
         loginType = SharedPreferenceHelper.getLoginType();
@@ -276,8 +283,10 @@ public class LoginTechnician {
     }
 
     //退出会所，返回QuitClubResult
-    public void exitClub() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_QUIT_CLUB);
+    public void exitClub(String password) {
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_PASSWORD, password);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_QUIT_CLUB, params);
     }
 
     public void onExitClub(QuitClubResult result) {
@@ -303,6 +312,20 @@ public class LoginTechnician {
 
     public void onLogout() {
 
+    }
+
+    //获取技师当前数据，包括账户金额，所有评论数，积分，订单数量，状态，状态描述，未读评论
+    public void getTechPersonalData() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_PERSONAL_DATA);
+    }
+
+    public void onGetTechPersonalData(TechPersonalDataResult result) {
+        setAmount(result.respData.accountAmount);
+        setCredit(result.respData.credits);
+        setCommentCount(result.respData.allCommentCount);
+        setUnreadCommentCount(result.respData.unreadCommentCount);
+        setStatus(result.respData.techStatus);
+        setOrderCount(result.respData.orderCount);
     }
 
 
@@ -480,6 +503,38 @@ public class LoginTechnician {
 
     public void setInnerProvider(String innerProvider) {
         this.innerProvider = innerProvider;
+    }
+
+    public float getAmount() {
+        return amount;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public int getUnreadCommentCount() {
+        return unreadCommentCount;
+    }
+
+    public void setUnreadCommentCount(int unreadCommentCount) {
+        this.unreadCommentCount = unreadCommentCount;
+    }
+
+    public int getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(int orderCount) {
+        this.orderCount = orderCount;
     }
 
     //技师是否有会所（包括已申请但还没有处理的情况）

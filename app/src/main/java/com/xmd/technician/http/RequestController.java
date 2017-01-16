@@ -34,7 +34,6 @@ import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AppUpdateConfigResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
-import com.xmd.technician.http.gson.CommentOrderRedPkResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
@@ -55,6 +54,7 @@ import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechPersonalDataResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.http.gson.TokenExpiredResult;
@@ -177,8 +177,8 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_UPDATE_SERVICE_ITEM_LIST:
                 updateServiceList((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT:
-                getCommentOrderRedPkCount();
+            case MsgDef.MSG_DEF_GET_TECH_PERSONAL_DATA:
+                getTechPersonalData();
                 break;
             case MsgDef.MSG_DEF_GET_ACCOUNT_MONEY:
                 getAccountMoney();
@@ -199,7 +199,7 @@ public class RequestController extends AbstractController {
                 doCouponShareEventCount(msg.obj.toString());
                 break;
             case MsgDef.MSG_DEF_QUIT_CLUB:
-                quitClub();
+                quitClub((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_APP_UPDATE_CONFIG:
                 doGetAppUpdateConfig((Map<String, String>) msg.obj);
@@ -726,12 +726,12 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getCommentOrderRedPkCount() {
-        Call<CommentOrderRedPkResult> call = getSpaService().getCommentOrderRedPkCount(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE, RequestConstant.USER_TYPE_TECH);
+    private void getTechPersonalData() {
+        Call<TechPersonalDataResult> call = getSpaService().getTechPersonalData(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE, RequestConstant.USER_TYPE_TECH);
 
-        call.enqueue(new TokenCheckedCallback<CommentOrderRedPkResult>() {
+        call.enqueue(new TokenCheckedCallback<TechPersonalDataResult>() {
             @Override
-            protected void postResult(CommentOrderRedPkResult result) {
+            protected void postResult(TechPersonalDataResult result) {
                 RxBus.getInstance().post(result);
             }
         });
@@ -836,8 +836,9 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void quitClub() {
-        Call<QuitClubResult> call = getSpaService().quitClub(LoginTechnician.getInstance().getToken(), RequestConstant.SESSION_TYPE);
+    private void quitClub(Map<String, String> params) {
+        String password = params.get(RequestConstant.KEY_PASSWORD);
+        Call<QuitClubResult> call = getSpaService().quitClub(LoginTechnician.getInstance().getToken(), password, RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<QuitClubResult>() {
             @Override

@@ -23,7 +23,6 @@ import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
-import com.xmd.technician.http.gson.CommentOrderRedPkResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
@@ -40,6 +39,7 @@ import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechPersonalDataResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.http.gson.UnusedTechNoListResult;
@@ -138,10 +138,10 @@ public interface SpaService {
                                        @Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_COMMENT_ORDER_REDPK_COUNT)
-    Call<CommentOrderRedPkResult> getCommentOrderRedPkCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                            @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                                            @Field(RequestConstant.KEY_USER_TYPE) String userType);
+    @POST(RequestConstant.URL_TECH_PERSONAL_DATA)
+    Call<TechPersonalDataResult> getTechPersonalData(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                     @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                                     @Field(RequestConstant.KEY_USER_TYPE) String userType);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_MODIFY_PASSWORD)
@@ -195,6 +195,7 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_QUIT_CLUB)
     Call<QuitClubResult> quitClub(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                  @Field(RequestConstant.KEY_PASSWORD) String password,
                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded

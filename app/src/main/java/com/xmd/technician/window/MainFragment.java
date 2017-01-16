@@ -1,10 +1,14 @@
 package com.xmd.technician.window;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
@@ -42,12 +46,11 @@ import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.CommentOrderRedPkResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
-import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechPersonalDataResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.model.LoginTechnician;
@@ -213,7 +216,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mGetRecentlyVisitorSubscription;
     private Subscription mOrderManageSubscription;
     private Subscription mGetDynamicListSubscription;
-    private Subscription mQuitClubSubscription;
     private Subscription mTechStatusSubscription;
 
     private LoginTechnician mTech = LoginTechnician.getInstance();
@@ -249,7 +251,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mTechStatusSubscription,
                 mOrderManageSubscription,
                 mGetDynamicListSubscription,
-                mQuitClubSubscription,
                 mGetRecentlyVisitorSubscription);
     }
 
@@ -327,20 +328,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 orderManageResult -> refreshOrderListData());
         mGetDynamicListSubscription = RxBus.getInstance().toObservable(DynamicListResult.class).subscribe(
                 dynamicListResult -> initDynamicView(dynamicListResult));
-        mQuitClubSubscription = RxBus.getInstance().toObservable(QuitClubResult.class).subscribe(
-                this::doQuitClubResult);
 
-        mTechStatusSubscription = RxBus.getInstance().toObservable(CommentOrderRedPkResult.class).subscribe(
+        mTechStatusSubscription = RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(
                 commentOrderRedPkResult -> handleTechStatus(commentOrderRedPkResult));
 
         mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
                 visitResult -> initRecentlyViewView(visitResult));
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
     }
 
     public void refreshOrderListData() {
@@ -424,14 +417,20 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    private void handleTechStatus(CommentOrderRedPkResult result) {
+    private void handleTechStatus(TechPersonalDataResult result) {
         if (result.statusCode == 200) {
             if (null == result.respData) {
                 techJoinClub = ResourceUtils.getString(R.string.default_tips);
                 return;
             }
-
-            showTechStatus(result.respData.techStatus);
+            boolean isVerifyStatus = mTech.isVerifyStatus();
+            mTech.onGetTechPersonalData(result);
+            if (isVerifyStatus && mTech.isActiveStatus()) {
+                //通过审核，获取技师其他信息
+                mTech.loadTechInfo();
+            } else {
+                showTechStatus(result.respData.techStatus);
+            }
         } else {
             techJoinClub = result.msg;
         }
@@ -579,13 +578,24 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 UINavigation.gotoJoinClubForResult(getActivity(), MainActivity.REQUEST_CODE_JOIN_CLUB);
                 break;
             case R.id.settings_activity_quit_club:
-                new RewardConfirmDialog(getActivity(), getString(R.string.quit_club_title), getString(R.string.quit_club_tips), "") {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                Fragment prev = fragmentManager.findFragmentByTag("quit_club");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                QuitClubDialogFragment newFragment = new QuitClubDialogFragment();
+                newFragment.setListener(new QuitClubDialogFragment.QuitClubListener() {
                     @Override
-                    public void onConfirmClick() {
-                        mTech.exitClub();
-                        super.onConfirmClick();
+                    public void onQuitClubSuccess() {
+                        mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
+                        mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
+                        mMenuClubName.setVisibility(View.GONE);
+                        mMenuClubName.setText(mTech.getClubName());
+                        showTechStatus(mTech.getStatus());
                     }
-                }.show();
+                });
+                newFragment.show(ft, "quit_club");
                 break;
             case R.id.settings_activity_logout:
                 new RewardConfirmDialog(getActivity(), "", getString(R.string.logout_tips), "") {
@@ -1007,10 +1017,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         @Override
         public void run() {
             refreshOrderListData();
-            if (mTech.isVerifyStatus()) {
-                //等待审核状态，持续刷新
-                mTech.loadTechInfo();
-            }
+            mTech.getTechPersonalData();
         }
     };
 
@@ -1041,7 +1048,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     public void onScrollViewChanged(int l, int t) {
-        if (t >  Utils.dip2px(getActivity(), 100)) {
+        if (t > Utils.dip2px(getActivity(), 100)) {
             mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.recent_status_reward));
         } else {
             mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
@@ -1059,21 +1066,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         showTechStatus(mTech.getStatus());
     }
 
-    //退出会所成功
-    private void doQuitClubResult(QuitClubResult result) {
-        if (result.statusCode < 200 || result.statusCode > 299) {
-            ((BaseFragmentActivity) getActivity()).makeShortToast(result.msg);
-        } else {
-            ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.quit_club_success_tips));
-            mTech.onExitClub(result);
-            mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
-            mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
-            mMenuClubName.setVisibility(View.GONE);
-            mMenuClubName.setText(mTech.getClubName());
-            showTechStatus(mTech.getStatus());
-        }
-    }
-
     public void doUpdateTechInfoSuccess() {
         mTech.loadTechInfo();
     }
@@ -1082,6 +1074,5 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onRefresh() {
         sendDataRequest();
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
     }
 }

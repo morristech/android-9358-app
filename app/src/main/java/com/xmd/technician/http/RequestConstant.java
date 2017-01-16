@@ -20,7 +20,7 @@ public class RequestConstant {
     public static final String URL_UPDATE_TECH_INFO = BASE_URL + "/v1/profile/tech";
     public static final String URL_CURRENT_INFO = BASE_URL + "/v1/profile/tech/current";
     public static final String URL_COMMENT_LIST = BASE_URL + "/v1/profile/tech/comments";
-    public static final String URL_COMMENT_ORDER_REDPK_COUNT = BASE_URL + "/v2/tech/profile/notice";
+    public static final String URL_TECH_PERSONAL_DATA = BASE_URL + "/v2/tech/profile/notice";
     public static final String URL_MODIFY_PASSWORD = BASE_URL + "/v1/profile/tech/modifyPassword";
     public static final String URL_RESET_PASSWORD = BASE_URL + "/v1/tech/resetPassword";
     public static final String URL_FEEDBACK_CREATE = BASE_URL + "/v2/tech/feedback/create";
@@ -38,7 +38,7 @@ public class RequestConstant {
     public static final String URL_UPLOAD_AVATAR = BASE_URL + "/v1/profile/tech/avatar/base64/upload";
 
 
-    public static final String URL_QUIT_CLUB = BASE_URL + "/v2/tech/quit/club";
+    public static final String URL_QUIT_CLUB = BASE_URL + "/v2/tech/check/password";
     public static final String URL_GET_SERVICE_LIST = BASE_URL + "/v2/tech/profile/service";
     public static final String URL_UPDATE_SERVICE_LIST = BASE_URL + "/v1/profile/tech/service/update";
     public static final String URL_GET_ACCOUNT_MONEY = BASE_URL + "/v1/profile/tech/money";

@@ -20,7 +20,7 @@
             android:text="@string/layout_technician_ranking_check_all" />
     </RelativeLayout>
 
-    <View style="@style/line" />
+    <View style="@style/horizontal_divider_line" />
 
     <LinearLayout
         android:layout_width="match_parent"

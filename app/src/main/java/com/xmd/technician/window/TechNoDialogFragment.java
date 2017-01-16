@@ -80,9 +80,8 @@ public class TechNoDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         Window window = getDialog().getWindow();
-        int[] size = new int[2];
-        ScreenUtils.getScreenSize(getActivity().getWindowManager(), size);
-        window.setLayout(size[0], size[1] / 2);
+        ScreenUtils.initScreenSize(getActivity().getWindowManager());
+        window.setLayout(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2);
     }
 
     public void setPresenter(JoinClubContract.Presenter presenter) {

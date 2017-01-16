@@ -35,7 +35,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_FILTER_ORDER_LIST,
                 MsgDef.MSG_DEF_MANAGE_ORDER,
                 MsgDef.MSG_DEF_HIDE_ORDER,
-                MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT,
+                MsgDef.MSG_DEF_GET_TECH_PERSONAL_DATA,
                 MsgDef.MSG_DEF_SUBMIT_FEEDBACK,
                 MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID,
                 MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID,
