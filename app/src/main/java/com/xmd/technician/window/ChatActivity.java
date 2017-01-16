@@ -40,6 +40,7 @@ import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.GiftListResult;
 import com.xmd.technician.bean.PlayDiceGame;
 import com.xmd.technician.bean.SendGameResult;
+import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserWin;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
@@ -139,6 +140,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private Subscription mCancelGameSubscription;
     private Subscription mCreditStatusSubscription;
     private Subscription mGiftResultSubscription;
+    private Subscription mClubUserGetCouponSubscription;
 
 
     @Override
@@ -249,7 +251,9 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     }
                 }
         );
-
+        mClubUserGetCouponSubscription = RxBus.getInstance().toObservable(UserGetCouponResult.class).subscribe(
+                couponResult -> handleUserGetCoupon(couponResult)
+        );
 
         adverseName = mAppTitle.getText().toString();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
@@ -258,7 +262,15 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST);
     }
-
+    private void handleUserGetCoupon(UserGetCouponResult couponResult) {
+        EMMessage message = couponResult.mMessage;
+        if ( couponResult.statusCode == 200) {
+            if(Utils.isNotEmpty(couponResult.respData.userActId)){
+                message.setAttribute(ChatConstant.KEY_COUPON_ACT_ID, couponResult.respData.userActId);
+            }
+        }
+        sendMessage(message);
+    }
     @Override
     protected void onNewIntent(Intent intent) {
         // 点击notification bar进入聊天页面，保证只有一个聊天页面
@@ -727,7 +739,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "ordinaryCoupon");
         message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
         message.setAttribute(ChatConstant.KEY_TECH_CODE, mTechCode);
-        sendMessage(message);
+        CommonUtils.userGetCoupon(actId, "tech", mToChatUsername, message);
+       // sendMessage(message);
     }
 
     private void sendOrderMessage(String content, String orderId) {

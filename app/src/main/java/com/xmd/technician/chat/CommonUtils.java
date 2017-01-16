@@ -12,6 +12,12 @@ import com.hyphenate.util.PathUtil;
 import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sdcm on 16-3-22.
@@ -32,7 +38,14 @@ public class CommonUtils {
             return EMConversation.EMConversationType.ChatRoom;
         }
     }
-
+    public static void userGetCoupon(String actId, String channel,String emchatId,EMMessage emMessage) {
+        Map<String, Object> params = new HashMap<>();
+        params.put(RequestConstant.KEY_USER_COUPON_ACT_ID, actId);
+        params.put(RequestConstant.KEY_USER_COUPON_CHANEL, channel);
+        params.put(RequestConstant.KEY_USER_COUPON_EMCHAT_ID, emchatId);
+        params.put(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE,emMessage);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_USER_GET_COUPON,params);
+    }
     static String getString(Context context, int resId) {
         return context.getResources().getString(resId);
     }
@@ -92,6 +105,9 @@ public class CommonUtils {
                     e.printStackTrace();
                     digest = txtBody.getMessage();
                     digest = Html.fromHtml(digest).toString();
+                }
+                if(digest.contains("点钟券&")){
+                    digest = "购买了"+digest.substring(0,digest.indexOf("&"));
                 }
                 break;
             case FILE: //普通文件消息

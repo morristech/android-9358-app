@@ -17,6 +17,7 @@ import com.xmd.technician.bean.SaveChatUserResult;
 import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
+import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.http.gson.AccountMoneyResult;
@@ -561,4 +562,13 @@ public interface SpaService {
     @POST(RequestConstant.URL_GET_UNUSED_TECH_NO)
     Call<UnusedTechNoListResult> getUnusedTechNoList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                      @Field(RequestConstant.KEY_CLUB_CODE) String clubCode);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CLUB_USER_GET_COUPON)
+    Call<UserGetCouponResult> clubUserCoupon(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                             @Field(RequestConstant.KEY_USER_COUPON_ACT_ID) String actId,
+                                             @Field(RequestConstant.KEY_USER_COUPON_CHANEL) String chanel,
+                                             @Field(RequestConstant.KEY_USER_COUPON_EMCHAT_ID) String emchatId,
+                                             @Field(RequestConstant.KEY_USER_TECH_CODE) String techCode,
+                                             @Field(RequestConstant.KEY_USER_CODE) String userCode);
 }
