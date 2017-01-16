@@ -21,8 +21,8 @@
             android:layout_marginTop="@dimen/common_v_margin"
             android:gravity="center"
             android:text="@string/quit_club_title"
-            android:textSize="@dimen/fontSubheading"
-            android:textColor="@color/colorTitle" />
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/fontSubheading" />
 
         <TextView
             android:layout_width="match_parent"
@@ -44,6 +44,7 @@
             android:background="@drawable/shape_edit_text"
             android:drawableLeft="@drawable/password_c"
             android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:hint="@string/quit_club_password_hint"
             android:inputType="textPassword"
             android:maxLength="20"
             android:minHeight="32dp"

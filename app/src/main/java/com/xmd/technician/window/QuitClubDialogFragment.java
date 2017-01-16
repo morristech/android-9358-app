@@ -59,9 +59,14 @@ public class QuitClubDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.setCancelable(false);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return dialog;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getDialog().setCancelable(false);
     }
 
     public void onClickOk() {
