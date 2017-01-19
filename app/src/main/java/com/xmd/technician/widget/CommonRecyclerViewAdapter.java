@@ -14,6 +14,7 @@ import java.util.List;
  */
 
 public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRecyclerViewAdapter.ViewHolder> {
+
     private int mHeaderLayout;
     private int mHeaderBR;
     private Object mHeader;
@@ -27,6 +28,8 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
 
     private static final int VIEW_TYPE_HEADER = 1;
     private static final int VIEW_TYPE_DATA = 2;
+
+    private boolean mInvert;
 
     public CommonRecyclerViewAdapter setHeader(int layoutId, int br, Object data) {
         mHeaderLayout = layoutId;
@@ -48,6 +51,14 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         return this;
     }
 
+    public void setInvert(boolean invert) {
+        mInvert = invert;
+    }
+
+    public T getData(int index) {
+        return mData.get(index);
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -56,6 +67,9 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
             binding = DataBindingUtil.inflate(layoutInflater, mHeaderLayout, parent, false);
         } else {
             binding = DataBindingUtil.inflate(layoutInflater, mDataLayout, parent, false);
+        }
+        if (mViewInflatedListener != null) {
+            mViewInflatedListener.onViewInflated(viewType, binding.getRoot());
         }
         ViewHolder viewHolder = new ViewHolder(binding.getRoot());
         viewHolder.setBinding(binding);
@@ -71,7 +85,14 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         if (holder.getItemViewType() == VIEW_TYPE_HEADER) {
             binding.setVariable(mHeaderBR, mHeader);
         } else {
-            binding.setVariable(mDataBR, mData.get(position));
+            if (mInvert) {
+                position = mData.size() - position - 1;
+            }
+            if (mDataTranslator != null) {
+                binding.setVariable(mDataBR, mDataTranslator.translate(mData.get(position)));
+            } else {
+                binding.setVariable(mDataBR, mData.get(position));
+            }
         }
         if (mHandler != null) {
             binding.setVariable(mHandlerBR, mHandler);
@@ -114,5 +135,27 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         public void setBinding(ViewDataBinding binding) {
             this.binding = binding;
         }
+    }
+
+    //item view 处理接口
+    private ViewInflatedListener mViewInflatedListener;
+
+    public interface ViewInflatedListener {
+        void onViewInflated(int viewType, View view);
+    }
+
+    public void setViewInflatedListener(ViewInflatedListener listener) {
+        mViewInflatedListener = listener;
+    }
+
+    //item 数据 处理接口
+    private DataTranslator mDataTranslator;
+
+    public interface DataTranslator {
+        Object translate(Object originData);
+    }
+
+    public void setDataTranslator(DataTranslator translator) {
+        mDataTranslator = translator;
     }
 }

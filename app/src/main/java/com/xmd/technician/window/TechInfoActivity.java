@@ -64,6 +64,11 @@ public class TechInfoActivity extends BaseActivity {
     @Bind(R.id.album_container)
     RecyclerView mAlbumListView;
 
+    @Bind(R.id.button_album_all)
+    RadioButton mAlbumAllAccess;
+    @Bind(R.id.button_album_vip)
+    RadioButton mAlbumVipAccess;
+
     private Subscription mGetTechInfoSubscription;
     private Subscription mUpdateTechInfoSubscription;
     private Subscription mUploadAvatarSubscription;
@@ -157,6 +162,7 @@ public class TechInfoActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         RxBus.getInstance().unsubscribe(mGetTechInfoSubscription, mUpdateTechInfoSubscription, mUploadAlbumSubscription, mUploadAvatarSubscription);
+        hideLoading();
     }
 
     private void handleGetTechEditResult(TechEditResult result) {
@@ -185,6 +191,12 @@ public class TechInfoActivity extends BaseActivity {
                 mMale.setChecked(true);
             } else {
                 mFemale.setChecked(true);
+            }
+
+            if (mTechInfo.viewAlbumType == 1 || mTechInfo.viewAlbumType == 0) {
+                mAlbumAllAccess.setChecked(true);
+            } else if (mTechInfo.viewAlbumType == 2) {
+                mAlbumVipAccess.setChecked(true);
             }
         }
 
@@ -231,6 +243,7 @@ public class TechInfoActivity extends BaseActivity {
         mTechInfo.name = cacheName;
         mTechInfo.description = replaceBlank(mDescription.getText().toString());
         mTechInfo.gender = mFemale.isChecked() ? "female" : "male";
+        mTechInfo.viewAlbumType = mAlbumAllAccess.isChecked() ? 1 : 2;
         //mTechInfo.phoneNum = mPhoneNumber.getText().toString();
         if (mSelectPlaceDialog != null) {
             mTechInfo.provinceCode = mSelectPlaceDialog.mCurrentProvinceCode;

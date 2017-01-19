@@ -92,5 +92,13 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <!-- 时间选择控件 -->
+    <style name="DateSelectView">
+        <item name="android:background">@drawable/shape_rect_r4_gray</item>
+        <item name="android:textColor">@color/colorHead</item>
+        <item name="android:textSize">@dimen/fontBody2</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="android:gravity">center</item>
+    </style>
 
 </resources>

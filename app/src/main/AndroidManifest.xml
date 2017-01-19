@@ -236,6 +236,7 @@
         <activity
             android:name=".window.JoinClubActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".onlinepaynotify.view.OnlinePayNotifyActivity"></activity>
     </application>
 
 </manifest>

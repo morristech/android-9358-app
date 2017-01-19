@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_online_pay_notify"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity">
+
+        <include layout="@layout/toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/color_white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/common_h_margin"
+            android:paddingRight="@dimen/common_h_margin">
+
+            <TextView
+                android:id="@+id/startTime"
+                style="@style/DateSelectView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onClickStartTime" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:text="—" />
+
+            <TextView
+                android:id="@+id/endTime"
+                style="@style/DateSelectView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onClickEndTime" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClickFilter"
+                android:text="确定" />
+        </LinearLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/common_h_margin"
+            android:paddingLeft="@dimen/common_h_margin"
+            android:paddingRight="@dimen/common_h_margin" />
+    </LinearLayout>
+</layout>

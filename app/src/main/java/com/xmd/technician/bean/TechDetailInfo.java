@@ -33,11 +33,12 @@ public class TechDetailInfo {
     public String techTags;
     public String avatarUrl;
     public String phoneNum;
+    public int viewAlbumType;//1全部可见，2 vip用户可见
 
 
     @Override
     public String toString() {
-        return "{\"name\":\"" + name + "\",\"gender\":\"" + gender + "\",\"serialNo\":\"" + serialNo + "\",\"provinceCode\":\"" + provinceCode + "\",\"cityCode\":\"" + cityCode + "\"," +
+        return "{\"name\":\"" + name + "\",\"gender\":\"" + gender + "\",\"viewAlbumType\":\"" + viewAlbumType + "\",\"serialNo\":\"" + serialNo + "\",\"provinceCode\":\"" + provinceCode + "\",\"cityCode\":\"" + cityCode + "\"," +
                 "\"province\":\"" + province + "\",\"city\":\"" + city + "\",\"phoneNum\":\"" + phoneNum + "\",\"description\":\"" + description + "\"}";
     }
 }

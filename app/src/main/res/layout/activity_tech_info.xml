@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:paddingLeft="@dimen/app_default_padding"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -139,10 +139,6 @@
 
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_divide_height"
-                    android:background="@color/colorLineDivide" />
 
                 <View
                     android:layout_width="match_parent"
@@ -261,7 +257,7 @@
                         android:id="@+id/introduce"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/search_margin"
+                        android:layout_marginBottom="@dimen/common_h_margin"
                         android:layout_marginLeft="@dimen/personal_margin"
                         android:layout_marginTop="@dimen/search_margin"
                         android:background="@null"
@@ -276,10 +272,78 @@
 
                 </LinearLayout>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_h_margin"
+                android:background="@color/color_white"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/common_h_margin"
+                android:paddingTop="@dimen/common_v_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="@dimen/common_v_margin"
+                    android:layout_marginLeft="10dp"
+                    android:text="可查看相册人群"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/fontTitle" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/line_divide_height"
                     android:background="@color/colorLineDivide" />
+
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/common_h_margin"
+                    android:layout_marginRight="@dimen/common_h_margin"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/button_album_vip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:background="@null"
+                        android:button="@null"
+                        android:checked="true"
+                        android:drawableLeft="@drawable/radio_button_style_selector"
+                        android:drawablePadding="10dp"
+                        android:text="到店用户及VIP用户"
+                        android:textColor="@drawable/radio_button_text_color_selector"
+                        android:textSize="@dimen/fontBody" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="26dp"
+                        android:layout_marginTop="4dp"
+                        android:text="* VIP用户:打赏、预约、点评及多次浏览会所的用户"
+                        android:textColor="@color/colorRemark"
+                        android:textSize="@dimen/fontCaption" />
+
+                    <RadioButton
+                        android:id="@+id/button_album_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:button="@null"
+                        android:checked="true"
+                        android:drawableLeft="@drawable/radio_button_style_selector"
+                        android:drawablePadding="10dp"
+                        android:text="所有用户"
+                        android:textColor="@drawable/radio_button_text_color_selector"
+                        android:textSize="@dimen/fontBody" />
+                </RadioGroup>
+
             </LinearLayout>
         </LinearLayout>
 

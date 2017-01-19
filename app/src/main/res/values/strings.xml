@@ -455,4 +455,12 @@
     <string name="quit_club_tip">退出会所后，将清空您的评论、订单和积分，确认退出会所吗?</string>
     <string name="quit_club_password_hint">请输入您的密码</string>
 
+    <!-- 买单列表 -->
+    <string name="online_pay_notify_title">买单列表</string>
+    <string name="online_pay_notify_archive_button">知道了</string>
+    <string name="money_rmb">￥</string>
+    <string name="online_pay_notify_status_unverified">待确认</string>
+    <string name="online_pay_notify_status_reject">异常</string>
+    <string name="online_pay_notify_status_accept">已确认</string>
+    <string name="online_pay_notify_status_all">全部</string>
 </resources>

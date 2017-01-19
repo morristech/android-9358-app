@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/online_pay_notify_status_all" />
+    <item android:title="@string/online_pay_notify_status_unverified" />
+    <item android:title="@string/online_pay_notify_status_accept" />
+    <item android:title="@string/online_pay_notify_status_reject" />
+</menu>
