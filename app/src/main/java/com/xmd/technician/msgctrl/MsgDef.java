@@ -145,4 +145,6 @@ public class MsgDef {
     public static final int MSG_DEF_GET_UNUSED_TECH_NO = 0x0073;
     public static final int MSG_DEF_USER_GET_COUPON = 0x0074;
 
+    public static final int MSG_DEF_GET_PAY_NOTIFY = 0x0075;
+
 }

@@ -83,6 +83,9 @@
 -keep class android.support.annotation.** { *;}
 -keep class javax.annotation.** { *; }
 
+# rx bus
+-keep class com.xmd.technician.onlinepaynotify.model.PayNotifyArchiveEvent
+-keep class com.xmd.technician.onlinepaynotify.model.PayNotifyNewDataEvent
 
 # Weixin
 -keep class com.tencent.mm.sdk.** {

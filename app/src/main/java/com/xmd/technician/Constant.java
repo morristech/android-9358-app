@@ -173,5 +173,15 @@ public class Constant {
     public static final int REQUEST_CODE_FOR_USER_COUPON_LIST_ACTIVITY = 0x0001;
     public static final int REQUEST_CODE_FOR_CONSUME_ACTIVITY = 0x0002;
     public static final int REQUEST_CODE_FOR_ORDER_DETAIL_ACTIVITY = 0x0003;
+
+
+    /*******************
+     * 买单通知*************************
+     */
+    public static final int PAY_NOTIFY_MAIN_PAGE_SHOW_LIMIT = 2;
+    public static final int PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT = 12 * 3600 * 1000; //显示最近12小时的数据
+
+
+    public static final String PUSH_MESSAGE_BUSINESS_PAY_NOTIFY = "fast_pay";
 }
 

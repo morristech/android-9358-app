@@ -236,7 +236,12 @@
         <activity
             android:name=".window.JoinClubActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".onlinepaynotify.view.OnlinePayNotifyActivity"></activity>
+        <activity android:name=".onlinepaynotify.view.OnlinePayNotifyActivity" />
+
+        <service
+            android:name=".DataRefreshService"
+            android:enabled="true"
+            android:exported="false"></service>
     </application>
 
 </manifest>

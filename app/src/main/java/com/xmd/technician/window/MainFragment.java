@@ -29,6 +29,7 @@ import com.hyphenate.util.DateUtils;
 import com.xmd.technician.Adapter.MainPageTechOrderListAdapter;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
+import com.xmd.technician.DataRefreshService;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.DynamicDetail;
@@ -57,6 +58,9 @@ import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
+import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
+import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyFragment;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.SlidingMenu;
@@ -187,6 +191,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Bind(R.id.order_figure_out)
     TextView mOrderFigureOut;
 
+    //支付通知
+    @Bind(R.id.fragment_pay_notify_container)
+    View mPayNotifyFragmentContainer;
+    @Bind(R.id.pay_notify_header)
+    RelativeLayout mPayNotifyHeader;
+    private OnlinePayNotifyFragment mPayNotifyFragment;
+
 
     private ImageView imageLeft, imageRight;
     private Context mContext;
@@ -272,6 +283,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 onScrollViewChanged(scrollX, scrollY);
             }
         });
+
+        mPayNotifyHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), OnlinePayNotifyActivity.class));
+            }
+        });
     }
 
     @Override
@@ -293,6 +311,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             visitParams.put(RequestConstant.KEY_LAST_TIME, "");
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
         }
+
+        getPayNotify();
     }
 
 
@@ -604,6 +624,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         mTech.logout();
                         ActivityHelper.getInstance().removeAllActivities();
                         UINavigation.gotoLogin(getActivity());
+                        getActivity().stopService(new Intent(getActivity(), DataRefreshService.class));
                         super.onConfirmClick();
                     }
                 }.show();
@@ -1054,7 +1075,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
 
         }
-
     }
 
     //加入会所成功后显示
@@ -1074,5 +1094,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onRefresh() {
         sendDataRequest();
+    }
+
+    //获取买单通知数据
+    public void getPayNotify() {
+        final long startTime = System.currentTimeMillis() - Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT;
+        final long endTime = System.currentTimeMillis() + (3600 * 1000);
+        mPayNotifyFragment = (OnlinePayNotifyFragment) getActivity().getSupportFragmentManager().findFragmentByTag("fragment_pay_notify");
+        if (mPayNotifyFragment == null) {
+            mPayNotifyFragment = OnlinePayNotifyFragment.newInstance(startTime, endTime, PayNotifyInfo.STATUS_ALL, true, Constant.PAY_NOTIFY_MAIN_PAGE_SHOW_LIMIT);
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.fragment_pay_notify_container, mPayNotifyFragment, "fragment_pay_notify");
+            ft.commit();
+        } else {
+            mPayNotifyFragment.setFilter(startTime, endTime, PayNotifyInfo.STATUS_ALL, true);
+            mPayNotifyFragment.loadData(true);
+        }
     }
 }

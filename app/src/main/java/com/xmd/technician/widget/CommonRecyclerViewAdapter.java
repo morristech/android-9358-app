@@ -22,6 +22,7 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
     private int mDataBR;
     private int mDataLayout;
     private List<T> mData;
+    private int mShowDataCountLimit = -1;
 
     private int mHandlerBR;
     private Object mHandler;
@@ -57,6 +58,14 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
 
     public T getData(int index) {
         return mData.get(index);
+    }
+
+    public List<T> getDataList() {
+        return mData;
+    }
+
+    public void setShowDataCountLimit(int count) {
+        mShowDataCountLimit = count;
     }
 
     @Override
@@ -107,7 +116,11 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
             count++;
         }
         if (mData != null) {
-            count += mData.size();
+            if (mShowDataCountLimit > 0 && mData.size() > mShowDataCountLimit) {
+                count += mShowDataCountLimit;
+            } else {
+                count += mData.size();
+            }
         }
         return count;
     }

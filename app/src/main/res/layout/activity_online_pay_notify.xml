@@ -13,7 +13,33 @@
         android:orientation="vertical"
         tools:context="com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity">
 
-        <include layout="@layout/toolbar" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/appColorTable">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/online_pay_notify_title"
+                android:textColor="@color/colorHead"
+                android:textSize="@dimen/fontTitle2" />
+
+            <TextView
+                android:id="@+id/filter_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="@dimen/common_h_margin"
+                android:drawablePadding="4dp"
+                android:drawableRight="@drawable/icon_filter"
+                android:onClick="onClickFilterMenu"
+                android:text="全部"
+                android:textColor="@color/colorHead"
+                android:textSize="@dimen/fontSubheading" />
+        </android.support.v7.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,8 +48,10 @@
             android:background="@color/color_white"
             android:gravity="center"
             android:orientation="horizontal"
+            android:paddingBottom="@dimen/common_v_margin"
             android:paddingLeft="@dimen/common_h_margin"
-            android:paddingRight="@dimen/common_h_margin">
+            android:paddingRight="@dimen/common_h_margin"
+            android:paddingTop="@dimen/common_v_margin">
 
             <TextView
                 android:id="@+id/startTime"
@@ -52,8 +80,10 @@
                 android:onClick="onClickEndTime" />
 
             <Button
+                style="@style/RedStokeButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/common_v_margin"
                 android:onClick="onClickFilter"
                 android:text="确定" />
         </LinearLayout>

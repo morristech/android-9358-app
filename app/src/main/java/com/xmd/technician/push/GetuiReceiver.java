@@ -12,6 +12,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.igexin.sdk.PushConsts;
 import com.xmd.technician.AppConfig;
+import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.GetuiPayload;
@@ -22,13 +23,9 @@ import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.TechNotifier;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.common.Util;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
 
 /**
  * Created by sdcm on 15-11-30.
@@ -52,7 +49,7 @@ public class GetuiReceiver extends BroadcastReceiver {
                     AppConfig.sClientId = cid;
                     SharedPreferenceHelper.setClientId(AppConfig.sClientId);
                     ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
-                                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
+                            () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
                 }
                 break;
             case PushConsts.GET_MSG_DATA:
@@ -70,17 +67,17 @@ public class GetuiReceiver extends BroadcastReceiver {
                 if (payload != null) {
                     String data = new String(payload);
                     GetuiPayload wrapperMsg = new Gson().fromJson(data, GetuiPayload.class);
-                    if(!TextUtils.isEmpty(wrapperMsg.msgTargetId) && !wrapperMsg.msgTargetId.equals(SharedPreferenceHelper.getUserId())){
+                    if (!TextUtils.isEmpty(wrapperMsg.msgTargetId) && !wrapperMsg.msgTargetId.equals(SharedPreferenceHelper.getUserId())) {
                         Logger.d("Message is not pushed to the current Technician");
                         return;
                     }
 
-                    if(!TextUtils.isEmpty(wrapperMsg.appType)&& !wrapperMsg.appType.contains("android")){
+                    if (!TextUtils.isEmpty(wrapperMsg.appType) && !wrapperMsg.appType.contains("android")) {
                         Logger.d("Message is not pushed to android app");
                         return;
                     }
 
-                    if(ChatConstant.MESSAGE_SYSTEM_NOTICE.equals(wrapperMsg.businessType)){
+                    if (ChatConstant.MESSAGE_SYSTEM_NOTICE.equals(wrapperMsg.businessType)) {
                         SystemNotice notice = new Gson().fromJson(wrapperMsg.msgContent, SystemNotice.class);
                         EMMessage msg = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
                         msg.setChatType(EMMessage.ChatType.Chat);
@@ -98,39 +95,41 @@ public class GetuiReceiver extends BroadcastReceiver {
                         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
                         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY);
 
-                    }else if(ChatConstant.MESSAGE_CHAT_TEXT.equals(wrapperMsg.businessType)){
+                    } else if (ChatConstant.MESSAGE_CHAT_TEXT.equals(wrapperMsg.businessType)) {
                         ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                         UserUtils.saveUser(user);
 
-                        if(EMClient.getInstance().isConnected())
+                        if (EMClient.getInstance().isConnected())
                             TechApplication.getNotifier().showNotification(TechNotifier.CHAT_TEXT, user.getUsername(), user.getNick());
 
-                    }else if(ChatConstant.MESSAGE_CHAT_ORDER.equals(wrapperMsg.businessType)){
+                    } else if (ChatConstant.MESSAGE_CHAT_ORDER.equals(wrapperMsg.businessType)) {
                         ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                         UserUtils.saveUser(user);
 
-                        if(EMClient.getInstance().isConnected())
+                        if (EMClient.getInstance().isConnected())
                             TechApplication.getNotifier().showNotification(TechNotifier.CHAT_ORDER, user.getUsername(), user.getNick());
 
-                    }else if(ChatConstant.MESSAGE_CHAT_REWARD.equals(wrapperMsg.businessType)){
+                    } else if (ChatConstant.MESSAGE_CHAT_REWARD.equals(wrapperMsg.businessType)) {
                         ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                         UserUtils.saveUser(user);
 
-                        if(EMClient.getInstance().isConnected())
+                        if (EMClient.getInstance().isConnected())
                             TechApplication.getNotifier().showNotification(TechNotifier.CHAT_REWARD, user.getUsername(), user.getNick());
 
-                    }else if(ChatConstant.MESSAGE_CHAT_PAID_COUPON.equals(wrapperMsg.businessType)){
+                    } else if (ChatConstant.MESSAGE_CHAT_PAID_COUPON.equals(wrapperMsg.businessType)) {
                         ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                         UserUtils.saveUser(user);
 
-                        if(EMClient.getInstance().isConnected())
+                        if (EMClient.getInstance().isConnected())
                             TechApplication.getNotifier().showNotification(TechNotifier.CHAT_PAID_COUPON, user.getUsername(), user.getNick());
 
+                    } else if (Constant.PUSH_MESSAGE_BUSINESS_PAY_NOTIFY.equals(wrapperMsg.businessType)) {
+                        //买单通知,获取最新数据
+                        PayNotifyInfoManager.getInstance().getRecentDataAndSendNotify(Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT);
                     }
                 }
                 break;
         }
-
     }
 
 }

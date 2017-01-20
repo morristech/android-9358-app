@@ -11,6 +11,7 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.xmd.technician.DataRefreshService;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
@@ -81,7 +82,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE));
 
-//        startActivity(new Intent(this, OnlinePayNotifyActivity.class));
+        startService(new Intent(this, DataRefreshService.class));
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.ImageTool;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
+import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
 
 import java.util.Locale;
 
@@ -22,12 +23,16 @@ public class PayNotifyInfoViewModel {
 
     public PayNotifyInfoViewModel(PayNotifyInfo info) {
         this.info = info;
-        isArchived.set(info.isArchived);
+        if (!info.isArchived && info.payTime > System.currentTimeMillis() - 12 * 3600 * 1000) {
+            isArchived.set(false);
+        } else {
+            isArchived.set(true);
+        }
     }
 
     @BindingAdapter("time")
     public static void setTime(TextView view, long time) {
-        view.setText(DateUtils.getSdf("yyyy-MM-dd hh:mm").format(time));
+        view.setText(DateUtils.getSdf("yyyy-MM-dd HH:mm").format(time));
     }
 
     @BindingAdapter("moneyfen")
@@ -80,7 +85,8 @@ public class PayNotifyInfoViewModel {
     }
 
     public void setArchived() {
-        info.isArchived = true;
         isArchived.set(true);
+        info.isArchived = true;
+        PayNotifyInfoManager.getInstance().setPayNotifyInfoArchived(info);
     }
 }

@@ -98,6 +98,9 @@ public class RequestConstant {
      */
     public static final String URL_GET_CLUB_USER_GET_COUPON = BASE_URL + "/v2/club/user/get/coupon";
 
+    //买单记录查询
+    public static final String URL_GET_PAY_NOTIFY_LIST = BASE_URL + "/v2/tech/fastpay/order/list";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -257,6 +260,9 @@ public class RequestConstant {
     public static final String KEY_USER_COUPON_EMCHAT_MESSAGE = "messageContent";
     public static final String KEY_USER_TECH_CODE = "techCode";
     public static final String KEY_USER_CODE = "userCode";
+
+    public static final String KEY_START_DATE = "startDate";
+    public static final String KEY_END_DATE = "endDate";
 
 
     /*********************************************************************************************/

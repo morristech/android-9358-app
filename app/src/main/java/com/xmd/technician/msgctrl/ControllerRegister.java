@@ -95,7 +95,8 @@ public class ControllerRegister {
                 MsgDef.MSF_DEF_GET_TECH_DYNAMIC_LIST,
                 MsgDef.MSF_DEF_SET_PAGE_SELECTED,
                 MsgDef.MSG_DEF_ORDER_INNER_READ,
-                MsgDef.MSG_DEF_USER_GET_COUPON
+                MsgDef.MSG_DEF_USER_GET_COUPON,
+                MsgDef.MSG_DEF_GET_PAY_NOTIFY,
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

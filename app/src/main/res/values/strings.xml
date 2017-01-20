@@ -456,6 +456,7 @@
     <string name="quit_club_password_hint">请输入您的密码</string>
 
     <!-- 买单列表 -->
+    <string name="online_pay_notify">买单通知</string>
     <string name="online_pay_notify_title">买单列表</string>
     <string name="online_pay_notify_archive_button">知道了</string>
     <string name="money_rmb">￥</string>

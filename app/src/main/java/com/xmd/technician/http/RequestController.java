@@ -42,6 +42,7 @@ import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
+import com.xmd.technician.http.gson.GetPayNotifyListResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
@@ -293,7 +294,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_USER_GET_COUPON:
                 getClubUserCoupon((Map<String, Object>) msg.obj);
                 break;
-
+            case MsgDef.MSG_DEF_GET_PAY_NOTIFY:
+                getPayNotify((Map<String, Object>) msg.obj);
+                break;
         }
 
         return true;
@@ -1363,9 +1366,10 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
     private void getClubUserCoupon(Map<String, Object> params) {
-        Call<UserGetCouponResult> call = getSpaService().clubUserCoupon(SharedPreferenceHelper.getUserToken(),(String) params.get(RequestConstant.KEY_USER_COUPON_ACT_ID),
-                (String)params.get(RequestConstant.KEY_USER_COUPON_CHANEL),(String)params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_ID),SharedPreferenceHelper.getInviteCode(),SharedPreferenceHelper.getInviteCode());
+        Call<UserGetCouponResult> call = getSpaService().clubUserCoupon(SharedPreferenceHelper.getUserToken(), (String) params.get(RequestConstant.KEY_USER_COUPON_ACT_ID),
+                (String) params.get(RequestConstant.KEY_USER_COUPON_CHANEL), (String) params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_ID), SharedPreferenceHelper.getInviteCode(), SharedPreferenceHelper.getInviteCode());
         call.enqueue(new TokenCheckedCallback<UserGetCouponResult>() {
             @Override
             protected void postResult(UserGetCouponResult result) {
@@ -1409,6 +1413,28 @@ public class RequestController extends AbstractController {
             public void onFailure(Call<AppUpdateConfigResult> call, Throwable t) {
 //                RxBus.getInstance().post(t);
                 Logger.e("get app update config failed:" + t.getMessage());
+            }
+        });
+    }
+
+
+    private void getPayNotify(Map<String, Object> params) {
+        Call<GetPayNotifyListResult> call = getSpaService().getPayNotifyList(
+                SharedPreferenceHelper.getUserToken(),
+                (String) params.get(RequestConstant.KEY_START_DATE),
+                (String) params.get(RequestConstant.KEY_END_DATE));
+        call.enqueue(new TokenCheckedCallback<GetPayNotifyListResult>() {
+            @Override
+            protected void postResult(GetPayNotifyListResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                GetPayNotifyListResult result = new GetPayNotifyListResult();
+                result.statusCode = 400;
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
             }
         });
     }

@@ -99,12 +99,13 @@ public class SlidingMenu extends HorizontalScrollView {
         }
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
         switch (action) {
-            // Up时，进行判断，如果显示区域大于菜单宽度一半则完全显示，否则隐藏
             case MotionEvent.ACTION_UP:
+                // Up时，进行判断，如果显示区域大于菜单宽度一半则完全显示，否则隐藏
                 int scrollX = getScrollX();
                 if (scrollX > mHalfMenuWidth) {
                     this.smoothScrollTo(mMenuWidth, 0);

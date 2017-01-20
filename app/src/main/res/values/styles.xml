@@ -101,4 +101,19 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <!-- 按钮 -->
+    <style name="AppButton" parent="Widget.AppCompat.Button">
+        <item name="android:minHeight">32dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <!-- 红框按钮 -->
+    <style name="RedStokeButton" parent="AppButton">
+        <item name="android:background">@drawable/selector_red_stoke_button</item>
+        <item name="android:textColor">@drawable/selector_red_white</item>
+    </style>
+
 </resources>

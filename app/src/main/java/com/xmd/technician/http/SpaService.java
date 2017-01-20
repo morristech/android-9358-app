@@ -29,6 +29,7 @@ import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
+import com.xmd.technician.http.gson.GetPayNotifyListResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
@@ -571,4 +572,11 @@ public interface SpaService {
                                              @Field(RequestConstant.KEY_USER_COUPON_EMCHAT_ID) String emchatId,
                                              @Field(RequestConstant.KEY_USER_TECH_CODE) String techCode,
                                              @Field(RequestConstant.KEY_USER_CODE) String userCode);
+
+    //获取买单通知数据
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_PAY_NOTIFY_LIST)
+    Call<GetPayNotifyListResult> getPayNotifyList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Field(RequestConstant.KEY_START_DATE) String startDate,
+                                                  @Field(RequestConstant.KEY_END_DATE) String endDate);
 }
