@@ -175,7 +175,7 @@
     <string name="video_call">[视频通话]</string>
     <string name="recent_status_expression">[动态表情]</string>
     <string name="cant_find_pictures">找不到图片</string>
-    <string name="request_user_reward">"<i></i>万水千山总是情<br />打赏两个行不行~"</string>
+    <string name="request_user_reward">"<i></i>万水千山总是情<br/>打赏两个行不行~"</string>
     <string name="beg_reward">求打赏</string>
     <string name="send_request_user_reward">确认发送＂求打赏＂信息？</string>
     <string name="accept">接受</string>
@@ -427,7 +427,7 @@
     <string name="main_order_had_finished">已完成</string>
     <string name="main_who_care_me">谁看了我</string>
     <string name="main_new_recent_status">最近动态</string>
-    <string name="main_bottom_text">—您已到达页面底部—</string>
+    <string name="main_bottom_text">—您已经到达页面底部—</string>
     <string name="main_no_coupon_alert_message">暂无详细信息，敬请期待</string>
     <string name="main_new_recent_status_none">最近没人来，分享名片拉客吧～</string>
     <string name="recent_status_collect_card">收藏了我的名片</string>
@@ -454,6 +454,10 @@
     <string name="quit_club_success_tips">你已成功退出会所</string>
     <string name="quit_club_tip">退出会所后，将清空您的评论、订单和积分，确认退出会所吗?</string>
     <string name="quit_club_password_hint">请输入您的密码</string>
+    <!-- 分享有礼 -->
+    <string name="share_coupon">卡券分享</string>
+    <string name="popular_activities">热门活动</string>
+    <string name="club_publicity">会所宣传</string>
 
     <!-- 买单列表 -->
     <string name="online_pay_notify">买单通知</string>

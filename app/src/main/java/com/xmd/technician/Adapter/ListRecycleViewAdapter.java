@@ -224,7 +224,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return;
             }
 
-           final Order order = (Order) obj;
+            final Order order = (Order) obj;
             OrderListItemViewHolder itemHolder = (OrderListItemViewHolder) holder;
             holder.itemView.scrollTo(0, 0);
 
@@ -233,7 +233,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.userName, order.headImgUrl, "")));
             itemHolder.mUserName.setText(order.customerName);
             itemHolder.mOrderTime.setText(order.formatAppointTime);
-           itemHolder.mOrderAmount.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), order.downPayment));
+            itemHolder.mOrderAmount.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), order.downPayment));
 
             // 1) 提交状态能够进行拒绝或者接受
             // 2) 只有普通预约的订单才能由技师来实现完成跟失效，付费预约的必须在核销或者失效的时候更改状态
@@ -606,17 +606,26 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
-
             Glide.with(mContext).load(Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl).error(R.drawable.icon22).into(viewHolder.dynamicItemAvatar);
             viewHolder.dynamicItemName.setText(dynamicDetail.userName);
+            if (Utils.isNotEmpty(dynamicDetail.userEmchatId)) {
+                viewHolder.btnThanks.setVisibility(View.VISIBLE);
+                viewHolder.btnThanks.setClickable(true);
+                viewHolder.btnThanks.setOnClickListener(v -> mCallback.onSayHiButtonClicked(dynamicDetail));
+            } else {
+                viewHolder.btnThanks.setVisibility(View.GONE);
+            }
+            if (Utils.isNotEmpty(dynamicDetail.phoneNum) && Utils.isNotEmpty(dynamicDetail.userEmchatId)) {
+                viewHolder.dynamicItemTelephone.setText(dynamicDetail.phoneNum);
+            } else {
+                viewHolder.dynamicItemTelephone.setText("");
+            }
             viewHolder.dynamicTime.setText(com.xmd.technician.common.DateUtils.getTimestampString(new Date(dynamicDetail.createTime)));
             String textDescription = dynamicDetail.description;
             String textRemark = dynamicDetail.remark;
             int commentScore = dynamicDetail.commentScore;
-          float rewardAmount = dynamicDetail.rewardAmount / 100f;
-            if (Utils.isNotEmpty(dynamicDetail.phoneNum)) {
-                viewHolder.dynamicItemTelephone.setText(dynamicDetail.phoneNum);
-            }
+            float rewardAmount = dynamicDetail.rewardAmount / 100f;
+
             if (dynamicDetail.bizType == 1) {
 
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_comment));
@@ -666,8 +675,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_to_reward));
                 viewHolder.dynamicItemCommentDetail.setText(Utils.changeStringNumColor(textDescription, ResourceUtils.getColor(R.color.colorMainBtn)));
             }
-            viewHolder.btnThanks.setClickable(true);
-            viewHolder.btnThanks.setOnClickListener(v -> mCallback.onSayHiButtonClicked(dynamicDetail));
+
+
             return;
         }
         if (holder instanceof ListFooterHolder) {
