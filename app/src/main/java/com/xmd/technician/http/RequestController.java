@@ -31,6 +31,7 @@ import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AppUpdateConfigResult;
@@ -73,6 +74,7 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.RxBus;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -1339,14 +1341,26 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void getDynamicList(Map<String, String> params) {
-        Call<DynamicListResult> call = getSpaService().getDynamicList(LoginTechnician.getInstance().getToken(),
-                params.get(RequestConstant.KEY_TECH_DYNAMIC_TYPE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
-        call.enqueue(new TokenCheckedCallback<DynamicListResult>() {
-            @Override
-            protected void postResult(DynamicListResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
+        if (!TextUtils.isEmpty(LoginTechnician.getInstance().getClubId())) {
+            Call<DynamicListResult> call = getSpaService().getDynamicList(LoginTechnician.getInstance().getToken(),
+                    params.get(RequestConstant.KEY_TECH_DYNAMIC_TYPE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+            call.enqueue(new TokenCheckedCallback<DynamicListResult>() {
+                @Override
+                protected void postResult(DynamicListResult result) {
+                    RxBus.getInstance().post(result);
+                }
+            });
+        } else {
+            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                @Override
+                public void run() {
+                    DynamicListResult result = new DynamicListResult();
+                    result.statusCode = 200;
+                    result.respData = new ArrayList<>();
+                    RxBus.getInstance().post(result);
+                }
+            });
+        }
     }
 
     private void doHandleTokenExpired(String errorMsg) {

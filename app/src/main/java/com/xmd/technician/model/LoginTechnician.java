@@ -6,11 +6,13 @@ import android.text.TextUtils;
 import com.hyphenate.chat.EMClient;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
+import com.xmd.technician.DataRefreshService;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.Util;
+import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
@@ -98,6 +100,8 @@ public class LoginTechnician {
         qrCodeDownloadUrl = SharedPreferenceHelper.getTechQrDownloadUrl();
         clubId = SharedPreferenceHelper.getUserClubId();
         clubName = SharedPreferenceHelper.getUserClubName();
+
+        RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(this::onGetTechPersonalData);
     }
 
 
@@ -167,6 +171,14 @@ public class LoginTechnician {
         setInnerProvider(techInfo.innerProvider);
         setStatus(techInfo.status);
         setQrCodeDownloadUrl(techInfo.qrCodeUrl);
+
+        //开始刷新个人数据
+        DataRefreshService.refreshPersonalData(true);
+
+        if (isActiveStatus()) {
+            //开始刷新买单通知
+            DataRefreshService.refreshPayNotify(true);
+        }
     }
 
     //登录聊天账号
@@ -266,7 +278,7 @@ public class LoginTechnician {
 
 
     //加入会所，返回JoinClubResult
-    public void joinClub(String inviteCode, String techId) {
+    public void sendJoinClubRequest(String inviteCode, String techId) {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_TOKEN, token);
         params.put(RequestConstant.KEY_INVITE_CODE, inviteCode);
@@ -274,12 +286,20 @@ public class LoginTechnician {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_JOIN_CLUB, params);
     }
 
-    public void onJoinClub(String inviteCode, String techNo, JoinClubResult result) {
+    //加入会所申请成功
+    public void onSendJoinClubRequest(String inviteCode, String techNo, JoinClubResult result) {
         setClubInviteCode(inviteCode);
         setClubName(result.name);
         setTechNo(techNo);
         setTechId(result.id);
         setStatus(Constant.TECH_STATUS_UNCERT);
+    }
+
+    //管理员审核通过，正式加入会所
+    private void onJoinedClub() {
+        //开始刷新买单通知
+        DataRefreshService.refreshPayNotify(true);
+        RxBus.getInstance().post(new EventJoinedClub(getClubName()));
     }
 
     //退出会所，返回QuitClubResult
@@ -296,10 +316,17 @@ public class LoginTechnician {
         setClubInviteCode(null);
         setClubName(null);
         setStatus(Constant.TECH_STATUS_VALID);
+        //停止刷新买单通知
+        DataRefreshService.refreshPayNotify(false);
     }
 
     //退出登录,返回LogoutResult
     public void logout() {
+        //停止刷新个人数据
+        DataRefreshService.refreshPersonalData(false);
+        //停止刷新买单通知
+        DataRefreshService.refreshPayNotify(false);
+
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_TOKEN, token);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID, params);
@@ -308,6 +335,7 @@ public class LoginTechnician {
         UserProfileProvider.getInstance().reset();
         EMClient.getInstance().logout(true);
         setToken(null);
+
     }
 
     public void onLogout() {
@@ -424,7 +452,12 @@ public class LoginTechnician {
     }
 
     public void setStatus(String workStatus) {
+        boolean isVerifyStatus = isVerifyStatus();
         this.status = workStatus;
+        if (isVerifyStatus && isActiveStatus(workStatus)) {
+            //通过审核
+            onJoinedClub();
+        }
     }
 
     public String getEmchatId() {
@@ -549,6 +582,10 @@ public class LoginTechnician {
 
     //目前是否处于在职状态
     public boolean isActiveStatus() {
+        return isActiveStatus(status);
+    }
+
+    public boolean isActiveStatus(String status) {
         return TextUtils.equals(status, Constant.TECH_STATUS_FREE)
                 || TextUtils.equals(status, Constant.TECH_STATUS_BUSY);
     }

@@ -46,6 +46,7 @@ import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.OrderListResult;
@@ -228,6 +229,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mOrderManageSubscription;
     private Subscription mGetDynamicListSubscription;
     private Subscription mTechStatusSubscription;
+    private Subscription mJoinedClubSubscription;
 
     private LoginTechnician mTech = LoginTechnician.getInstance();
 
@@ -239,7 +241,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         ButterKnife.bind(this, view);
         initView(view);
         registerRequestHandlers(); //注册监听器
-
 
         HeartBeatTimer.getInstance().start(60, mTask);
 
@@ -262,7 +263,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mTechStatusSubscription,
                 mOrderManageSubscription,
                 mGetDynamicListSubscription,
-                mGetRecentlyVisitorSubscription);
+                mGetRecentlyVisitorSubscription,
+                mJoinedClubSubscription);
     }
 
     private void initView(View view) {
@@ -303,7 +305,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA);
         refreshOrderListData();
-        getDynamicList();
+
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
         if (Utils.isNotEmpty(SharedPreferenceHelper.getUserClubId())) {
             Map<String, String> visitParams = new HashMap<>();
@@ -312,6 +314,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
         }
 
+        getDynamicList();
         getPayNotify();
     }
 
@@ -354,6 +357,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
         mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
                 visitResult -> initRecentlyViewView(visitResult));
+
+        mJoinedClubSubscription = RxBus.getInstance().toObservable(EventJoinedClub.class).subscribe(this::onEventJoinedClub);
     }
 
     public void refreshOrderListData() {
@@ -376,14 +381,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void handleTechCurrentResult(TechInfoResult result) {
         Logger.i("result:" + result.statusCode + "," + result.respData.serialNo + "," + result.respData);
         if (result.statusCode >= 200 && result.statusCode <= 299) {
-            boolean isVerify = mTech.isVerifyStatus();
             mTech.onLoadTechInfo(result);
-            if (isVerify && mTech.isActiveStatus()) {
-                //审核通过，提示用户
-                Toast.makeText(getActivity(), "恭喜您，已通过会所审核！", Toast.LENGTH_LONG).show();
-                //更新技师功能信息
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
-            }
         }
         if (result.respData != null) {
             mTechInfo = result.respData;
@@ -442,14 +440,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             if (null == result.respData) {
                 techJoinClub = ResourceUtils.getString(R.string.default_tips);
                 return;
-            }
-            boolean isVerifyStatus = mTech.isVerifyStatus();
-            mTech.onGetTechPersonalData(result);
-            if (isVerifyStatus && mTech.isActiveStatus()) {
-                //通过审核，获取技师其他信息
-                mTech.loadTechInfo();
-            } else {
-                showTechStatus(result.respData.techStatus);
             }
         } else {
             techJoinClub = result.msg;
@@ -613,6 +603,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         mMenuClubName.setVisibility(View.GONE);
                         mMenuClubName.setText(mTech.getClubName());
                         showTechStatus(mTech.getStatus());
+
+                        onRefresh();
                     }
                 });
                 newFragment.show(ft, "quit_club");
@@ -730,15 +722,17 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 case R.id.main_get_comment:
                     startActivity(new Intent(getActivity(), CommentActivity.class));
                     break;
+            }
+        } else {
+            switch (view.getId()) {
                 case R.id.main_total_income:
                     startActivity(new Intent(getActivity(), MyAccountActivity.class));
                     break;
+                default:
+                    ((BaseFragmentActivity) getActivity()).makeShortToast(techJoinClub);
+                    break;
             }
-        } else {
-            ((BaseFragmentActivity) getActivity()).makeShortToast(techJoinClub);
         }
-
-
     }
 
     @Override
@@ -917,6 +911,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
         } else {
             mVisitNull.setVisibility(View.VISIBLE);
+            mMainDynamic1.setVisibility(View.GONE);
+            mMainDynamic2.setVisibility(View.GONE);
+            mMainDynamic3.setVisibility(View.GONE);
             hasDynamic = false;
         }
 
@@ -1038,7 +1035,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         @Override
         public void run() {
             refreshOrderListData();
-            mTech.getTechPersonalData();
         }
     };
 
@@ -1077,13 +1073,15 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    //加入会所成功后显示
+    //申请加入会所成功后显示
     public void doSendJoinClubRequestSuccess() {
         mMenuSettingsActivityQuitClub.setVisibility(View.VISIBLE);
         mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
         mMenuClubName.setVisibility(View.VISIBLE);
         mMenuClubName.setText(mTech.getClubName());
         showTechStatus(mTech.getStatus());
+
+        onRefresh();
     }
 
     public void doUpdateTechInfoSuccess() {
@@ -1110,5 +1108,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mPayNotifyFragment.setFilter(startTime, endTime, PayNotifyInfo.STATUS_ALL, true);
             mPayNotifyFragment.loadData(true);
         }
+    }
+
+    //成功通过会所审核
+    private void onEventJoinedClub(EventJoinedClub event) {
+        Toast.makeText(getContext(), "成功通过会所审核！", Toast.LENGTH_LONG).show();
+        onRefresh(); //刷新界面
     }
 }

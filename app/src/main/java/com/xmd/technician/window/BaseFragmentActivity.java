@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
-import com.xmd.technician.DataRefreshService;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
@@ -61,7 +60,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
                 tokenExpiredResult -> {
                     dismissProgressDialogIfShowing();
                     gotoLoginActivity(tokenExpiredResult.expiredReason);
-                    stopService(new Intent(this, DataRefreshService.class));
                 }
         );
 

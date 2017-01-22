@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.xmd.technician.BR;
 import com.xmd.technician.R;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.databinding.FragmentOnlinePayNotifyBinding;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyArchiveEvent;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
@@ -25,6 +27,7 @@ import com.xmd.technician.onlinepaynotify.viewmodel.PayNotifyInfoViewModel;
 import com.xmd.technician.widget.CommonRecyclerViewAdapter;
 import com.xmd.technician.window.BaseFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Subscription;
@@ -44,7 +47,6 @@ public class OnlinePayNotifyFragment extends BaseFragment {
     private int mStatus;
     private boolean mOnlyNotArchived;
     private int mLimitCount;
-    private String mEmptyMessage = "暂无数据，点击刷新";
 
     public ObservableBoolean showLoading = new ObservableBoolean();
     public ObservableField<String> errorString = new ObservableField<>();
@@ -158,7 +160,13 @@ public class OnlinePayNotifyFragment extends BaseFragment {
 
     //加载数据
     public void loadData(boolean forceNetwork) {
-        loadData(forceNetwork, mStartTime, mEndTime, mStatus, mOnlyNotArchived);
+        if (!TextUtils.isEmpty(LoginTechnician.getInstance().getClubId())) {
+            loadData(forceNetwork, mStartTime, mEndTime, mStatus, mOnlyNotArchived);
+        } else {
+            mAdapter.setData(R.layout.list_item_pay_notify, BR.payNotify, new ArrayList<>());
+            mAdapter.notifyDataSetChanged();
+            errorString.set("您暂未加入会所，无法查看数据～");
+        }
     }
 
 
@@ -205,7 +213,7 @@ public class OnlinePayNotifyFragment extends BaseFragment {
                     if (position <= mLimitCount) {
                         mAdapter.notifyItemRemoved(position);
                         if (mAdapter.getDataList().size() == 0) {
-                            errorString.set(mEmptyMessage);
+                            errorString.set("暂无新记录，尝试下拉刷新～");
                         }
                     }
                 } else {

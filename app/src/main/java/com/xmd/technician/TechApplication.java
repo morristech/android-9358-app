@@ -8,7 +8,6 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
-import com.xmd.technician.common.AppUncaughtExceptionHandler;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.TechNotifier;
 import com.xmd.technician.common.ThreadManager;
@@ -37,7 +36,9 @@ public class TechApplication extends Application {
             } else {
                 Logger.v("Technician initialize !");
                 appContext = getApplicationContext();
-                Thread.setDefaultUncaughtExceptionHandler(new AppUncaughtExceptionHandler(appContext));
+//                Thread.setDefaultUncaughtExceptionHandler(new AppUncaughtExceptionHandler(appContext));
+
+                NotificationCenter.init(this);
 
                 ThreadPoolManager.init(this);
 
@@ -67,6 +68,9 @@ public class TechApplication extends Application {
                 EMClient.getInstance().setDebugMode(true);
 
                 initNotifier();
+
+                DataRefreshService.start();
+
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");
             }

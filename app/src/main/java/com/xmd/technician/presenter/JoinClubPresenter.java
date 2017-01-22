@@ -91,7 +91,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     @Override
     public void onClickJoin() {
         mView.showLoading("正在提交申请...");
-        mTech.joinClub(mInviteCode, mSelectedTechId);
+        mTech.sendJoinClubRequest(mInviteCode, mSelectedTechId);
     }
 
     private void handleJoinClubResult(JoinClubResult result) {
@@ -101,7 +101,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
         } else {
             //申请加入成功，跳转到完善资料页面
             mView.showToast("申请成功，等待管理员审核");
-            mTech.onJoinClub(mInviteCode, TechNo.DEFAULT_TECH_NO.name.equals(mSelectedTechNo) ? null : mSelectedTechNo, result);
+            mTech.onSendJoinClubRequest(mInviteCode, TechNo.DEFAULT_TECH_NO.name.equals(mSelectedTechNo) ? null : mSelectedTechNo, result);
             mView.setResult(Activity.RESULT_OK, null);
             mView.finishSelf();
             if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_START) {
