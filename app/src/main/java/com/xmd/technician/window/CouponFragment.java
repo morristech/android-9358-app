@@ -49,11 +49,11 @@ public class CouponFragment extends BaseListFragment<CouponInfo> {
     protected void initView() {
         initTitleView(ResourceUtils.getString(R.string.copuon_fragment_title));
         mGetCouponListSubscription = RxBus.getInstance().toObservable(CouponListResult.class).subscribe(
-            result -> handleGetCopuonListResult(result)
+            result -> handleGetCouponListResult(result)
         );
     }
 
-    private void handleGetCopuonListResult(CouponListResult result) {
+    private void handleGetCouponListResult(CouponListResult result) {
 
         if(!isVisible()){
             return;

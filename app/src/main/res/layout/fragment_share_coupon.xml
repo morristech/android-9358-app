@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/inter_space">
+
+
+            <LinearLayout
+                android:id="@+id/layout_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/inter_space"
+                   >
+
+                    <TextView
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/margin_2"
+                        android:background="@color/colorPrimary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:text="@string/share_coupon"
+                        android:textColor="@color/colorTitle"
+                        android:textSize="@dimen/fontTitle"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    style="@style/layout_share_coupon_style">
+
+                    <ImageView
+                        android:id="@+id/img_pay_ticket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/img_pay_tickets"/>
+
+                    <TextView
+                        android:id="@+id/pay_tickets_name"
+                        style="@style/coupon_type_style"
+                        android:layout_toRightOf="@id/img_pay_ticket"
+                        android:text="点钟券"/>
+
+                    <TextView
+                        android:id="@+id/pay_tickets_text"
+                        style="@style/coupon_total_style"
+                        android:layout_below="@id/pay_tickets_name"
+                        android:layout_toRightOf="@id/img_pay_ticket"
+                        android:text="会所在线点钟券："/>
+
+                    <TextView
+                        android:id="@+id/pay_tickets_title"
+                        style="@style/coupon_total_num_style"
+                        android:layout_toRightOf="@id/pay_tickets_text"
+                        android:text="aa"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_right"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    style="@style/layout_share_coupon_style">
+
+                    <ImageView
+                        android:id="@+id/img_coupon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/img_coupon_share"/>
+
+                    <TextView
+                        android:id="@+id/coupon_name"
+                        style="@style/coupon_type_style"
+                        android:layout_toRightOf="@id/img_coupon"
+                        android:text="优惠券"/>
+
+                    <TextView
+                        android:id="@+id/coupon_text"
+                        style="@style/coupon_total_style"
+                        android:layout_below="@id/coupon_name"
+                        android:layout_toRightOf="@id/img_coupon"
+                        android:text="会所在线优惠券："/>
+
+                    <TextView
+                        android:id="@+id/coupon_title"
+                        style="@style/coupon_total_num_style"
+                        android:layout_toRightOf="@id/coupon_text"
+                        android:text="aa"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_right"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/inter_space"
+                android:orientation="vertical"
+                >
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/small_space"
+                    android:paddingTop="@dimen/small_space">
+
+                    <TextView
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/margin_2"
+                        android:background="@color/colorPrimary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:text="@string/popular_activities"
+                        android:textColor="@color/colorTitle"
+                        android:textSize="@dimen/fontTitle"/>
+                </LinearLayout>
+                <RelativeLayout
+                    style="@style/layout_share_coupon_style">
+
+                    <ImageView
+                        android:id="@+id/img_limit_grab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/img_limit_grab"/>
+
+                    <TextView
+                        android:id="@+id/limit_name"
+                        style="@style/coupon_type_style"
+                        android:layout_toRightOf="@id/img_limit_grab"
+                        android:text="限时抢"/>
+
+                    <TextView
+                        android:id="@+id/limit_text"
+                        style="@style/coupon_total_style"
+                        android:layout_below="@id/limit_name"
+                        android:layout_toRightOf="@id/img_limit_grab"
+                        android:text="会所活动数："/>
+
+                    <TextView
+                        android:id="@+id/limit_grab_total"
+                        style="@style/coupon_total_num_style"
+                        android:layout_toRightOf="@id/limit_text"
+                        android:text="aa"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_right"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    style="@style/layout_share_coupon_style">
+
+                    <ImageView
+                        android:id="@+id/img_pay_for_me"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/img_pay_for_me"/>
+
+                    <TextView
+                        android:id="@+id/pay_for_me_name"
+                        style="@style/coupon_type_style"
+                        android:layout_toRightOf="@id/img_pay_for_me"
+                        android:text="谁替我买单"/>
+
+                    <TextView
+                        android:id="@+id/pay_for_me_text"
+                        style="@style/coupon_total_style"
+                        android:layout_below="@id/pay_for_me_name"
+                        android:layout_toRightOf="@id/img_pay_for_me"
+                        android:text="会所活动数："/>
+
+                    <TextView
+                        android:id="@+id/pay_for_me_total"
+                        style="@style/coupon_total_num_style"
+                        android:layout_toRightOf="@id/pay_for_me_text"
+                        android:text="aa"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_right"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    style="@style/layout_share_coupon_style">
+
+                    <ImageView
+                        android:id="@+id/img_reward"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/img_reward_share"/>
+
+                    <TextView
+                        android:id="@+id/reward_name"
+                        style="@style/coupon_type_style"
+                        android:layout_toRightOf="@id/img_reward"
+                        android:text="抽奖活动"/>
+
+                    <TextView
+                        android:id="@+id/reward_text"
+                        style="@style/coupon_total_style"
+                        android:layout_below="@id/reward_name"
+                        android:layout_toRightOf="@id/img_reward"
+                        android:text="会所活动数："/>
+
+                    <TextView
+                        android:id="@+id/reward_total"
+                        style="@style/coupon_total_num_style"
+                        android:layout_toRightOf="@id/reward_text"
+                        android:text="aa"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_right"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    style="@style/layout_share_coupon_style">
+
+                    <ImageView
+                        android:id="@+id/img_not_online"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/img_line_share"/>
+
+                    <TextView
+                        android:id="@+id/not_online_name"
+                        style="@style/coupon_type_style"
+                        android:layout_toRightOf="@id/img_not_online"
+                        android:text="线下活动"/>
+
+                    <TextView
+                        android:id="@+id/not_online_text"
+                        style="@style/coupon_total_style"
+                        android:layout_below="@id/not_online_name"
+                        android:layout_toRightOf="@id/img_not_online"
+                        android:text="会所活动数："/>
+
+                    <TextView
+                        android:id="@+id/not_online_total"
+                        style="@style/coupon_total_num_style"
+                        android:layout_toRightOf="@id/not_online_text"
+                        android:text="aa"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_right"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_publicity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/inter_space"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/small_space"
+                    android:paddingTop="@dimen/small_space">
+
+                    <TextView
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/margin_2"
+                        android:background="@color/colorPrimary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:text="@string/club_publicity"
+                        android:textColor="@color/colorTitle"
+                        android:textSize="@dimen/fontTitle"/>
+                </LinearLayout>
+                <RelativeLayout
+                    style="@style/layout_share_coupon_style">
+
+                    <ImageView
+                        android:id="@+id/img_publication"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/img_publication"/>
+
+                    <TextView
+                        android:id="@+id/publication_name"
+                        style="@style/coupon_type_style"
+                        android:layout_toRightOf="@id/img_publication"
+                        android:text="会所期刊"/>
+
+                    <TextView
+                        android:id="@+id/publication_text"
+                        style="@style/coupon_total_style"
+                        android:layout_below="@id/publication_name"
+                        android:layout_toRightOf="@id/img_publication"
+                        android:text="会所活动数："/>
+
+                    <TextView
+                        android:id="@+id/publication_total"
+                        style="@style/coupon_total_num_style"
+                        android:layout_toRightOf="@id/publication_text"
+                        android:text="aa"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_right"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <include layout="@layout/layout_main_bottom"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
