@@ -285,13 +285,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 onScrollViewChanged(scrollX, scrollY);
             }
         });
-
-        mPayNotifyHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), OnlinePayNotifyActivity.class));
-            }
-        });
     }
 
     @Override
@@ -701,9 +694,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    @OnClick({R.id.main_too_keen, R.id.main_send_coupon, R.id.main_get_comment, R.id.main_total_income})
+    @OnClick({R.id.main_too_keen, R.id.main_send_coupon, R.id.main_get_comment, R.id.main_total_income, R.id.pay_notify_header})
     public void onMainDetailClicked(View view) {
-        if (Utils.isEmpty(techJoinClub)) {
+        switch (view.getId()) {
+            case R.id.main_total_income:
+                startActivity(new Intent(getActivity(), MyAccountActivity.class));
+                return;
+        }
+        if (mTech.isActiveStatus()) {
             switch (view.getId()) {
                 case R.id.main_too_keen:
                     MainActivity mainActivity = (MainActivity) getActivity();
@@ -714,7 +712,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                             MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 1);
                         }
                     }, 300);
-
                     break;
                 case R.id.main_send_coupon:
                     ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_no_coupon_alert_message));
@@ -722,16 +719,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 case R.id.main_get_comment:
                     startActivity(new Intent(getActivity(), CommentActivity.class));
                     break;
+                case R.id.pay_notify_header:
+                    startActivity(new Intent(getActivity(), OnlinePayNotifyActivity.class));
+                    break;
             }
         } else {
-            switch (view.getId()) {
-                case R.id.main_total_income:
-                    startActivity(new Intent(getActivity(), MyAccountActivity.class));
-                    break;
-                default:
-                    ((BaseFragmentActivity) getActivity()).makeShortToast(techJoinClub);
-                    break;
-            }
+            ((BaseFragmentActivity) getActivity()).makeShortToast(techJoinClub);
         }
     }
 

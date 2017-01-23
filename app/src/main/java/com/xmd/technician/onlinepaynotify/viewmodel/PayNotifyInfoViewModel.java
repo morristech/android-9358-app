@@ -23,11 +23,7 @@ public class PayNotifyInfoViewModel {
 
     public PayNotifyInfoViewModel(PayNotifyInfo info) {
         this.info = info;
-        if (!info.isArchived && info.payTime > System.currentTimeMillis() - 12 * 3600 * 1000) {
-            isArchived.set(false);
-        } else {
-            isArchived.set(true);
-        }
+        isArchived.set(info.isArchived);
     }
 
     @BindingAdapter("time")

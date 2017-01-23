@@ -77,7 +77,6 @@ public class CreditRecordFragment extends BaseListFragment<CreditDetailBean> {
         } else {
             onGetListSucceeded(result.pageCount, result.respData);
         }
-
     }
 
     @Override
