@@ -178,7 +178,7 @@ public class Constant {
     /*******************
      * 买单通知*************************
      */
-    public static final int PAY_NOTIFY_MAIN_PAGE_SHOW_LIMIT = 2;
+    public static final int PAY_NOTIFY_MAIN_PAGE_SHOW_LIMIT = 10;
     public static final int PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT = 12 * 3600 * 1000; //显示最近12小时的数据
 
 
