@@ -1,4 +1,6 @@
-package com.xmd.technician.onlinepaynotify.model;
+package com.xmd.technician.onlinepaynotify.event;
+
+import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
 
 /**
  * Created by heyangya on 17-1-20.

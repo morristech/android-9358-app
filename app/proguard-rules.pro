@@ -84,8 +84,7 @@
 -keep class javax.annotation.** { *; }
 
 # rx bus
--keep class com.xmd.technician.onlinepaynotify.model.PayNotifyArchiveEvent
--keep class com.xmd.technician.onlinepaynotify.model.PayNotifyNewDataEvent
+-keep class com.xmd.technician.onlinepaynotify.event.** {*;}
 -keep com.xmd.technician.event.** {*;}
 
 # Weixin

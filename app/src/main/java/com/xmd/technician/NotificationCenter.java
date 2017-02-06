@@ -10,7 +10,7 @@ import android.support.v7.app.NotificationCompat;
 import com.xmd.technician.common.AppUtils;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.onlinepaynotify.model.PayNotifyNewDataEvent;
+import com.xmd.technician.onlinepaynotify.event.PayNotifyNewDataEvent;
 import com.xmd.technician.window.MainActivity;
 
 /**

@@ -11,6 +11,8 @@ import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.RetrofitServiceFactory;
 import com.xmd.technician.http.gson.GetPayNotifyListResult;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.onlinepaynotify.event.PayNotifyArchiveEvent;
+import com.xmd.technician.onlinepaynotify.event.PayNotifyNewDataEvent;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
