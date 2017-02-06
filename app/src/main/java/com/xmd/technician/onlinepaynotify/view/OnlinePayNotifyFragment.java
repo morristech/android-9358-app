@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.xmd.technician.BR;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.databinding.FragmentOnlinePayNotifyBinding;
 import com.xmd.technician.model.LoginTechnician;
@@ -25,6 +26,7 @@ import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
 import com.xmd.technician.onlinepaynotify.viewmodel.PayNotifyInfoViewModel;
 import com.xmd.technician.widget.CommonRecyclerViewAdapter;
+import com.xmd.technician.widget.CustomAlertDialog;
 import com.xmd.technician.window.BaseFragment;
 
 import java.util.ArrayList;
@@ -57,8 +59,11 @@ public class OnlinePayNotifyFragment extends BaseFragment {
     private Subscription mPayNotifyArchiveEventSubscription;
     private Subscription mPayNotifyNewDataEventSubscription;
 
+    private boolean mIsFirstArchived = false;
+
     public OnlinePayNotifyFragment() {
         // Required empty public constructor
+        mIsFirstArchived = SharedPreferenceHelper.getPayNotifyIsFirstHide();
     }
 
     /**
@@ -205,6 +210,21 @@ public class OnlinePayNotifyFragment extends BaseFragment {
     //接收买单通知被归档的事件
     public void handlePayNotifyArchiveEvent(PayNotifyArchiveEvent event) {
         PayNotifyInfo info = event.info;
+        if (mOnlyNotArchived && mIsFirstArchived) {
+            new CustomAlertDialog.Builder(getContext())
+                    .setTitle("温馨提示")
+                    .setMessage("确认或超过12小时后，本通知将不再保留在首页，如有需要请查看全部。")
+                    .setPositiveButton("确定", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    })
+                    .build()
+                    .show();
+            mIsFirstArchived = false;
+            SharedPreferenceHelper.setPayNotifyIsFirstHide(false);
+        }
         int position = 0;
         for (; position < mAdapter.getDataList().size(); position++) {
             if (mAdapter.getData(position).id == info.id) {

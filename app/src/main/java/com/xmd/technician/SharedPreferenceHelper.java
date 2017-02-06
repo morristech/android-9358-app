@@ -34,6 +34,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_TECH_QR_DOWNLOAD_URL = "3625d662fe5f3926011a8b7cacc96da9";
     private static final String KEY_TECH_GENDER = "d70798608c15d7af0f2cd381ea775fa9";
     private static final String KEY_PAY_NOTIFY_HIDE_ID = "456af6df9b184d2b7c78deb88d288942";
+    private static final String KEY_PAY_NOTIFY_IS_FIRST_HIDE = "3ce13929dfff8cf8b8592ef34d3bffd9";
     /**
      * Last time to check the upgrade automatically
      */
@@ -338,5 +339,13 @@ public class SharedPreferenceHelper {
 
     public static String getPayNotifyHideIds() {
         return mSettingPreference.getString(KEY_PAY_NOTIFY_HIDE_ID, "");
+    }
+
+    public static boolean getPayNotifyIsFirstHide() {
+        return mSettingPreference.getBoolean(KEY_PAY_NOTIFY_IS_FIRST_HIDE, true);
+    }
+
+    public static void setPayNotifyIsFirstHide(boolean first) {
+        mSettingPreference.edit().putBoolean(KEY_PAY_NOTIFY_IS_FIRST_HIDE, first).apply();
     }
 }

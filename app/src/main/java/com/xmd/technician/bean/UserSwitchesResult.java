@@ -23,8 +23,9 @@ public class UserSwitchesResult extends BaseResult {
         public PaidCouponBean paidCoupon;
         public AccountBean account;
         public CreditBean credit;
+        public FastPay fastPay;
 
-       
+
         public static class PaidOrderBean {
             @SerializedName("switch")
             public String switchX;
@@ -48,6 +49,11 @@ public class UserSwitchesResult extends BaseResult {
             public int exchangeLimitation;
             public String diceGameSwitch;
             public String clubSwitch;
+        }
+
+        public static class FastPay {
+            @SerializedName("switch")
+            public String switchString;
         }
     }
 }

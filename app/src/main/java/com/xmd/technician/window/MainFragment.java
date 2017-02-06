@@ -193,6 +193,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mOrderFigureOut;
 
     //支付通知
+    @Bind(R.id.pay_notify_layout)
+    View mPayNotifyLayout;
     @Bind(R.id.fragment_pay_notify_container)
     View mPayNotifyFragmentContainer;
     @Bind(R.id.pay_notify_header)
@@ -308,7 +310,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
 
         getDynamicList();
-        getPayNotify();
     }
 
 
@@ -452,6 +453,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mBtnMainCreditCenter.setVisibility(View.GONE);
             }
 
+            //在线买单开关
+            if (switchResult.respData.fastPay.switchString != null && switchResult.respData.fastPay.switchString.equals(RequestConstant.KEY_SWITCH_ON)) {
+                addPayNotify();
+            } else {
+                removePayNotify();
+            }
         }
     }
 
@@ -1088,7 +1095,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     //获取买单通知数据
-    public void getPayNotify() {
+    public void addPayNotify() {
+        mPayNotifyLayout.setVisibility(View.VISIBLE);
         final long startTime = System.currentTimeMillis() - Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT;
         final long endTime = System.currentTimeMillis() + (3600 * 1000);
         mPayNotifyFragment = (OnlinePayNotifyFragment) getActivity().getSupportFragmentManager().findFragmentByTag("fragment_pay_notify");
@@ -1101,6 +1109,18 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mPayNotifyFragment.setFilter(startTime, endTime, PayNotifyInfo.STATUS_ALL, true);
             mPayNotifyFragment.loadData(true);
         }
+        DataRefreshService.refreshPayNotify(true);
+    }
+
+    public void removePayNotify() {
+        mPayNotifyLayout.setVisibility(View.GONE);
+        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("fragment_pay_notify");
+        if (fragment != null) {
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.remove(fragment);
+            ft.commit();
+        }
+        DataRefreshService.refreshPayNotify(false);
     }
 
     //成功通过会所审核

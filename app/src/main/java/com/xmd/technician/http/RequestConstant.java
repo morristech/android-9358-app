@@ -101,6 +101,9 @@ public class RequestConstant {
     //买单记录查询
     public static final String URL_GET_PAY_NOTIFY_LIST = BASE_URL + "/v2/tech/fastpay/order/list";
 
+    //技师功能权限
+    public static final String URL_GET_SWITCH_STATUS = BASE_URL + "/v1/club/switch/status/get";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/

@@ -9,9 +9,11 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.DataRefreshService;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.TechInfo;
+import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.Util;
+import com.xmd.technician.event.EventExitClub;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AlbumResult;
@@ -78,6 +80,10 @@ public class LoginTechnician {
     private int commentCount;
     private int unreadCommentCount;
     private int orderCount;
+
+    //技师权限
+    private boolean permissionFastPay; //在线买单权限
+    private boolean permissionCredit; //积分权限
 
 
     private LoginTechnician() {
@@ -297,8 +303,6 @@ public class LoginTechnician {
 
     //管理员审核通过，正式加入会所
     private void onJoinedClub() {
-        //开始刷新买单通知
-        DataRefreshService.refreshPayNotify(true);
         RxBus.getInstance().post(new EventJoinedClub(getClubName()));
     }
 
@@ -316,8 +320,9 @@ public class LoginTechnician {
         setClubInviteCode(null);
         setClubName(null);
         setStatus(Constant.TECH_STATUS_VALID);
-        //停止刷新买单通知
+        //开始刷新买单通知
         DataRefreshService.refreshPayNotify(false);
+        RxBus.getInstance().post(new EventExitClub());
     }
 
     //退出登录,返回LogoutResult
@@ -354,6 +359,15 @@ public class LoginTechnician {
         setUnreadCommentCount(result.respData.unreadCommentCount);
         setStatus(result.respData.techStatus);
         setOrderCount(result.respData.orderCount);
+    }
+
+    //获取技师权限
+    public void loadPermissions() {
+
+    }
+
+    public void onTechPermissions(UserSwitchesResult result) {
+
     }
 
 
