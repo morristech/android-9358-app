@@ -85,7 +85,7 @@
 
 # rx bus
 -keep class com.xmd.technician.onlinepaynotify.event.** {*;}
--keep com.xmd.technician.event.** {*;}
+-keep class com.xmd.technician.event.** {*;}
 
 # Weixin
 -keep class com.tencent.mm.sdk.** {
