@@ -38,6 +38,8 @@ public class PayNotifyInfoManager extends Observable {
         return ourInstance;
     }
 
+    private final Object mDataLocker = new Object();
+
     private PayNotifyInfoManager() {
         mData = new ArrayList<>();
         mRecentArchivedMaps = new HashMap<>();
@@ -92,8 +94,11 @@ public class PayNotifyInfoManager extends Observable {
             loadDataFromNetwork(startTime, endTime, new Callback<List<PayNotifyInfo>>() {
                 @Override
                 public void onResult(Throwable error, List<PayNotifyInfo> result) {
+                    if (result != null) {
+                        result.clear();
+                    }
                     if (error == null) {
-                        if (result.size() > 0) {
+                        if (mData.size() > 0) {
                             result = getDataByFilter(startTime, endTime, status, onlyNotArchived, limitCount);
                             //前台刷新时，记录最新买单时间
                             mNewestPayTime = mData.get(0).payTime;
@@ -231,8 +236,10 @@ public class PayNotifyInfoManager extends Observable {
                         }
                         data.add(info);
                     }
-                    //合并数据
-                    processNewData(data);
+                    synchronized (mDataLocker) {
+                        //合并数据
+                        processNewData(data);
+                    }
                 }
                 ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                     @Override
@@ -290,7 +297,7 @@ public class PayNotifyInfoManager extends Observable {
                 }
             }
             if (!alreadyInsert) {
-                if (insetPosition > 0) {
+                if (insetPosition >= 0 && insetPosition < originData.size()) {
                     originData.add(insetPosition, info);
                 } else {
                     originData.add(info);

@@ -2,7 +2,6 @@ package com.xmd.technician.onlinepaynotify.view;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -119,16 +118,6 @@ public class OnlinePayNotifyFragment extends BaseFragment {
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setRemoveDuration(300);
         mBinding.recyclerView.setItemAnimator(itemAnimator);
-        mBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                if (mOnlyNotArchived) {
-                    outRect.set(0, 0, 0, 1);
-                } else {
-                    outRect.set(0, 1, 0, 1);
-                }
-            }
-        });
         mAdapter = new CommonRecyclerViewAdapter<>();
         mAdapter.setDataTranslator(mDataTranslator);
         mAdapter.setShowDataCountLimit(mLimitCount);

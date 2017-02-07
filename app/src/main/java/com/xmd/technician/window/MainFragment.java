@@ -373,6 +373,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void handleTechCurrentResult(TechInfoResult result) {
+        if (result.respData == null) {
+            return;
+        }
         Logger.i("result:" + result.statusCode + "," + result.respData.serialNo + "," + result.respData);
         if (result.statusCode >= 200 && result.statusCode <= 299) {
             mTech.onLoadTechInfo(result);
