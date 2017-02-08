@@ -8,8 +8,11 @@ import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.event.EventLogout;
 import com.xmd.technician.http.RetrofitServiceFactory;
+import com.xmd.technician.http.gson.CheckPayNotifyResult;
 import com.xmd.technician.http.gson.GetPayNotifyListResult;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.event.PayNotifyArchiveEvent;
 import com.xmd.technician.onlinepaynotify.event.PayNotifyNewDataEvent;
@@ -38,8 +41,6 @@ public class PayNotifyInfoManager extends Observable {
         return ourInstance;
     }
 
-    private final Object mDataLocker = new Object();
-
     private PayNotifyInfoManager() {
         mData = new ArrayList<>();
         mRecentArchivedMaps = new HashMap<>();
@@ -57,14 +58,17 @@ public class PayNotifyInfoManager extends Observable {
                 mRecentArchivedMaps.put(id, new ArchiveData(id, time, status));
             }
         }
+
+        RxBus.getInstance().toObservable(EventLogout.class).subscribe(this::handleLogoutEvent);
     }
 
     private List<PayNotifyInfo> mData;
     private long mCurrentStartTime = -1;
     private long mCurrentEndTime = -1;
     private Map<String, ArchiveData> mRecentArchivedMaps;
-    private Call mDataRequestCall;
-    private long mNewestPayTime;
+    private Call<GetPayNotifyListResult> mDataGetCall;
+    private Call<CheckPayNotifyResult> mDataCheckCall;
+    private final Object mDataLocker = new Object();
 
     private static class ArchiveData {
         public String id;
@@ -100,8 +104,6 @@ public class PayNotifyInfoManager extends Observable {
                     if (error == null) {
                         if (mData.size() > 0) {
                             result = getDataByFilter(startTime, endTime, status, onlyNotArchived, limitCount);
-                            //前台刷新时，记录最新买单时间
-                            mNewestPayTime = mData.get(0).payTime;
                         }
                         if (mCurrentStartTime == -1 || mCurrentStartTime > startTime) {
                             mCurrentStartTime = startTime;
@@ -188,14 +190,14 @@ public class PayNotifyInfoManager extends Observable {
 //                });
 //            }
 //        }.start();
-        if (mDataRequestCall != null) {
-            mDataRequestCall.cancel();
+        if (mDataGetCall != null) {
+            mDataGetCall.cancel();
         }
         String startDate = DateUtils.getSdf("yyyy-MM-dd").format(new Date(startTime));
         String endDate = DateUtils.getSdf("yyyy-MM-dd").format(new Date(endTime));
-        mDataRequestCall = RetrofitServiceFactory.getSpaService()
+        mDataGetCall = RetrofitServiceFactory.getSpaService()
                 .getPayNotifyList(SharedPreferenceHelper.getUserToken(), startDate, endDate);
-        mDataRequestCall.enqueue(new retrofit2.Callback<GetPayNotifyListResult>() {
+        mDataGetCall.enqueue(new retrofit2.Callback<GetPayNotifyListResult>() {
             @Override
             public void onResponse(Call<GetPayNotifyListResult> call, Response<GetPayNotifyListResult> response) {
                 List<PayNotifyInfo> data = new ArrayList<>();
@@ -340,6 +342,43 @@ public class PayNotifyInfoManager extends Observable {
         });
     }
 
+    //检查是否有新的支付数据
+    public void checkNewPayNotify() {
+        mDataCheckCall = RetrofitServiceFactory.getSpaService().checkPayNotifyData(
+                LoginTechnician.getInstance().getToken(),
+                "fast_pay");
+        mDataCheckCall.enqueue(new retrofit2.Callback<CheckPayNotifyResult>() {
+            @Override
+            public void onResponse(Call<CheckPayNotifyResult> call, Response<CheckPayNotifyResult> response) {
+                CheckPayNotifyResult result = response.body();
+                if (result != null && result.respData != null && result.respData.equals("Y")) {
+                    //有新的数据
+                    getRecentDataAndSendNotify(Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CheckPayNotifyResult> call, Throwable t) {
+
+            }
+        });
+    }
+
+    //清除数据
+    public void clearData() {
+        Logger.d("----clear pay notify cache data -------");
+        if (mDataCheckCall != null) {
+            mDataCheckCall.cancel();
+        }
+        if (mDataGetCall != null) {
+            mDataGetCall.cancel();
+        }
+        synchronized (mDataLocker) {
+            mData.clear();
+        }
+    }
+
+
     private void saveArchivedIds() {
         Iterator<String> iterator = mRecentArchivedMaps.keySet().iterator();
         StringBuilder save = new StringBuilder();
@@ -353,6 +392,10 @@ public class PayNotifyInfoManager extends Observable {
             save.setLength(save.length() - 1);
         }
         SharedPreferenceHelper.setPayNotifyArchivedIds(save.toString());
+    }
+
+    private void handleLogoutEvent(EventLogout event) {
+        clearData();
     }
 
 }

@@ -149,6 +149,7 @@
     <string name="coupon_reward_detail">优惠券提成明细</string>
     <string name="paid_coupon_detail">点钟券提成明细</string>
     <string name="paid_order_detail">付费预约提成明细</string>
+    <string name="time_card_detail">次卡提成明细</string>
 
     <string name="modify_password_old_hint">输入原密码</string>
     <string name="modify_password_new_hint">请输入6-20位新密码，仅限字母和数字</string>

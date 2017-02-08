@@ -100,6 +100,7 @@ public class RequestConstant {
 
     //买单记录查询
     public static final String URL_GET_PAY_NOTIFY_LIST = BASE_URL + "/v2/tech/fastpay/order/list";
+    public static final String URL_CHECK_PAY_NOTIFY = BASE_URL + "/v2/club/order/notify/check";
 
     //技师功能权限
     public static final String URL_GET_SWITCH_STATUS = BASE_URL + "/v1/club/switch/status/get";
@@ -267,6 +268,7 @@ public class RequestConstant {
     public static final String KEY_START_DATE = "startDate";
     public static final String KEY_END_DATE = "endDate";
 
+    public static final String KEY_TYPE = "type";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

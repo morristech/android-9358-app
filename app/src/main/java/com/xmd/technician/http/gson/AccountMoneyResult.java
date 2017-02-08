@@ -13,5 +13,6 @@ public class AccountMoneyResult extends BaseResult {
         public float paidMoney;
         public float orderMoney;
         public String withdrawal;
+        public float onceCardMoney;//次卡余额
     }
 }
