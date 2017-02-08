@@ -457,11 +457,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
 
             //在线买单开关
-            if (switchResult.respData.fastPay.switchString != null && switchResult.respData.fastPay.switchString.equals(RequestConstant.KEY_SWITCH_ON)) {
-                addPayNotify();
-            } else {
-                removePayNotify();
+            if(switchResult.respData.fastPay != null){
+                if (switchResult.respData.fastPay.switchString != null && switchResult.respData.fastPay.switchString.equals(RequestConstant.KEY_SWITCH_ON)) {
+                    addPayNotify();
+                } else {
+                    removePayNotify();
+                }
             }
+
         }
     }
 

@@ -13,6 +13,7 @@ import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.Util;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.event.EventExitClub;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.event.EventLogout;
@@ -355,12 +356,14 @@ public class LoginTechnician {
     }
 
     public void onGetTechPersonalData(TechPersonalDataResult result) {
-        setAmount(result.respData.accountAmount);
-        setCredit(result.respData.credits);
-        setCommentCount(result.respData.allCommentCount);
-        setUnreadCommentCount(result.respData.unreadCommentCount);
-        setStatus(result.respData.techStatus);
-        setOrderCount(result.respData.orderCount);
+       if(result.respData != null){
+           setAmount(result.respData.accountAmount);
+           setCredit(result.respData.credits);
+           setCommentCount(result.respData.allCommentCount);
+           setUnreadCommentCount(result.respData.unreadCommentCount);
+           setStatus(result.respData.techStatus);
+           setOrderCount(result.respData.orderCount);
+       }
     }
 
     //获取技师权限
