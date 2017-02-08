@@ -9,6 +9,7 @@ import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.xmd.technician.R;
 import com.xmd.technician.common.CustomDatePicker;
@@ -74,10 +75,10 @@ public class OnlinePayNotifyActivity extends BaseActivity implements BaseFragmen
         mBinding.startTime.setText(DateUtils.getSdf("yyyy-MM-dd").format(startTime));
         mBinding.endTime.setText(DateUtils.getSdf("yyyy-MM-dd").format(endTime));
 
-        mBinding.fragmentContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mBinding.refreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mBinding.fragmentContainer.setRefreshing(false);
+                mBinding.refreshView.setRefreshing(false);
                 mNotifyListFragment.loadData(true);
             }
         });
@@ -109,8 +110,12 @@ public class OnlinePayNotifyActivity extends BaseActivity implements BaseFragmen
     }
 
     public void onClickFilter(View view) {
-        mNotifyListFragment.setFilter(startTime, endTime, status, false);
-        mNotifyListFragment.loadData(false);
+        if (startTime > endTime) {
+            Toast.makeText(this, "开始时间大于结束时间，请重新设置！", Toast.LENGTH_SHORT).show();
+        } else {
+            mNotifyListFragment.setFilter(startTime, endTime, status, false);
+            mNotifyListFragment.loadData(false);
+        }
     }
 
     public void onClickFilterMenu(View view) {

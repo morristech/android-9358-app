@@ -88,12 +88,21 @@
                 android:text="确定" />
         </LinearLayout>
 
+
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/fragmentContainer"
+            android:id="@+id/refreshView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_h_margin"
             android:paddingLeft="@dimen/common_h_margin"
-            android:paddingRight="@dimen/common_h_margin" />
+            android:paddingRight="@dimen/common_h_margin">
+
+            <FrameLayout
+                android:id="@+id/fragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
     </LinearLayout>
 </layout>

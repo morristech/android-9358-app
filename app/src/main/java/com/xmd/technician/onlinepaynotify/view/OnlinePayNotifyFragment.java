@@ -16,6 +16,7 @@ import com.xmd.technician.BR;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.Callback;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.databinding.FragmentOnlinePayNotifyBinding;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
@@ -48,6 +49,7 @@ public class OnlinePayNotifyFragment extends BaseFragment {
     private int mStatus;
     private boolean mOnlyNotArchived;
     private int mLimitCount;
+    private boolean mSetFooter;
 
     public ObservableBoolean showLoading = new ObservableBoolean();
     public ObservableField<String> errorString = new ObservableField<>();
@@ -114,6 +116,18 @@ public class OnlinePayNotifyFragment extends BaseFragment {
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         if (mOnlyNotArchived) {
             mBinding.recyclerView.setNestedScrollingEnabled(false);
+        } else {
+            mBinding.recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    Logger.i("#####" + mBinding.recyclerView.canScrollVertically(1) + "," + mBinding.recyclerView.canScrollVertically(-1));
+                    if (!mSetFooter && (mBinding.recyclerView.canScrollVertically(1) || mBinding.recyclerView.canScrollVertically(-1))) {
+                        mAdapter.setFooter(R.layout.list_footer_no_more, -1, null);
+                        mAdapter.notifyDataSetChanged();
+                        mSetFooter = true;
+                    }
+                }
+            });
         }
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setRemoveDuration(300);
@@ -158,6 +172,7 @@ public class OnlinePayNotifyFragment extends BaseFragment {
             loadData(forceNetwork, mStartTime, mEndTime, mStatus, mOnlyNotArchived);
         } else {
             mAdapter.setData(R.layout.list_item_pay_notify, BR.payNotify, new ArrayList<>());
+            removeFooter();
             mAdapter.notifyDataSetChanged();
             errorString.set("您暂未加入会所，无法查看数据～");
         }
@@ -175,6 +190,7 @@ public class OnlinePayNotifyFragment extends BaseFragment {
 
                 if (error == null) {
                     mAdapter.setData(R.layout.list_item_pay_notify, BR.payNotify, result);
+                    removeFooter();
                     mAdapter.notifyDataSetChanged();
                     if (result.size() == 0) {
                         errorString.set("暂无新记录，尝试下拉刷新～");
@@ -186,6 +202,11 @@ public class OnlinePayNotifyFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    private void removeFooter() {
+        mAdapter.setFooter(0, -1, null);
+        mSetFooter = false;
     }
 
     //数据转换器
