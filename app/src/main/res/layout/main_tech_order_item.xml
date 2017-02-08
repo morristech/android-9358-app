@@ -164,6 +164,8 @@
             android:background="@drawable/btn_chat_selector"
             android:focusable="false"
             android:text="@string/accept"
+            android:gravity="center"
+            android:textSize="@dimen/fontBody"
             android:textColor="@color/color_white" />
 
     </LinearLayout>

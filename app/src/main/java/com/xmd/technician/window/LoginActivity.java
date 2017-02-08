@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
@@ -47,7 +48,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     ClearableEditText mPasswordEditText2;
     @Bind(R.id.login_btn2)
     Button mBtnLogin2;
-
+    @Bind(R.id.tv_version)
+    TextView mTvVersion;
     @Bind(R.id.server_host)
     Spinner mSpServerHost;
     private String mSelectedServerHost;
@@ -106,6 +108,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         initServerHost();
 
         mPresenter.onCreate();
+        mTvVersion.setText("v" + AppConfig.getAppVersionNameAndCode());
     }
 
     @Override

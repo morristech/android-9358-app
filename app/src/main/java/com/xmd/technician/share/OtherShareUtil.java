@@ -1,11 +1,7 @@
 package com.xmd.technician.share;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.ActivityHelper;
 
 import java.util.Map;
