@@ -15,6 +15,7 @@ import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.event.EventExitClub;
 import com.xmd.technician.event.EventJoinedClub;
+import com.xmd.technician.event.EventLogout;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
@@ -341,6 +342,7 @@ public class LoginTechnician {
         EMClient.getInstance().logout(true);
         setToken(null);
 
+        RxBus.getInstance().post(new EventLogout());
     }
 
     public void onLogout() {

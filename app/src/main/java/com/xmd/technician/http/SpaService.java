@@ -24,6 +24,7 @@ import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
+import com.xmd.technician.http.gson.CheckPayNotifyResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
@@ -579,4 +580,16 @@ public interface SpaService {
     Call<GetPayNotifyListResult> getPayNotifyList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_START_DATE) String startDate,
                                                   @Field(RequestConstant.KEY_END_DATE) String endDate);
+
+    //检查是否有新的买单通知数据
+
+    /**
+     * @param userToken token
+     * @param type      fast_pay:在线买单
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CHECK_PAY_NOTIFY)
+    Call<CheckPayNotifyResult> checkPayNotifyData(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Field(RequestConstant.KEY_TYPE) String type);
 }

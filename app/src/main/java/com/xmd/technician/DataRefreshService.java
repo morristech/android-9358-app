@@ -16,7 +16,7 @@ public class DataRefreshService extends Service {
     private final static String EXTRA_CMD_DATA = "cmd_data";
 
     private final static int CMD_REFRESH_PERSONAL_DATA = 1;
-    private final static int CMD_REFRESH_PAY_NOTIFY = 2;
+    private final static int CMD_CHECK_PAY_NOTIFY = 2;
 
     private boolean mRefreshPersonalData;
     private boolean mRefreshPayNotify;
@@ -48,7 +48,7 @@ public class DataRefreshService extends Service {
         if (intent != null) {
             int cmd = intent.getIntExtra(EXTRA_CMD, -1);
             switch (cmd) {
-                case CMD_REFRESH_PAY_NOTIFY:
+                case CMD_CHECK_PAY_NOTIFY:
                     mRefreshPayNotify = intent.getBooleanExtra(EXTRA_CMD_DATA, false);
                     Logger.i("set refresh pay notify to " + mRefreshPayNotify);
                     break;
@@ -80,8 +80,8 @@ public class DataRefreshService extends Service {
                 Logger.i("-------------work thread running-----------");
                 if (mRefreshPayNotify) {
                     //定时刷新买单通知
-                    Logger.i("work thread: refresh pay notify");
-                    PayNotifyInfoManager.getInstance().getRecentDataAndSendNotify(Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT);
+                    Logger.i("work thread: check pay notify");
+                    PayNotifyInfoManager.getInstance().checkNewPayNotify();
                 }
                 if (mRefreshPersonalData) {
                     Logger.i("work thread: refresh personal data");
@@ -118,7 +118,7 @@ public class DataRefreshService extends Service {
     public static void refreshPayNotify(boolean on) {
         Context context = TechApplication.getAppContext();
         Intent intent = new Intent(context, DataRefreshService.class);
-        intent.putExtra(EXTRA_CMD, DataRefreshService.CMD_REFRESH_PAY_NOTIFY);
+        intent.putExtra(EXTRA_CMD, DataRefreshService.CMD_CHECK_PAY_NOTIFY);
         intent.putExtra(EXTRA_CMD_DATA, on);
         context.startService(intent);
     }

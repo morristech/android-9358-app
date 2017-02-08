@@ -1,16 +1,16 @@
 package com.xmd.technician.window;
 
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.xmd.technician.Adapter.ConsumeDetailAdapter;
 import com.xmd.technician.R;
+import com.xmd.technician.bean.ConsumeInfo;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
-import com.xmd.technician.bean.ConsumeInfo;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -28,8 +28,8 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
 
     public static final String EXTRA_CONSUME_TYPE = "consumeType";
 
-    private static final int mActivityTitles[] = {R.string.user_reward_detail, R.string.coupon_reward_detail, R.string.paid_coupon_detail, R.string.paid_order_detail};
-    public static final String[] mConsumeTypes = {"user_reward", "coupon_reward", "paid_coupon", "paid_order", "withdrawal"};
+    private static final int mActivityTitles[] = {R.string.user_reward_detail, R.string.coupon_reward_detail, R.string.paid_coupon_detail, R.string.paid_order_detail, R.string.time_card_detail};
+    public static final String[] mConsumeTypes = {"user_reward", "coupon_reward", "paid_coupon", "paid_order", "once_card", "withdrawal"};
 
     @Bind(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
