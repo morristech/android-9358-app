@@ -579,7 +579,9 @@ public interface SpaService {
     @POST(RequestConstant.URL_GET_PAY_NOTIFY_LIST)
     Call<GetPayNotifyListResult> getPayNotifyList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_START_DATE) String startDate,
-                                                  @Field(RequestConstant.KEY_END_DATE) String endDate);
+                                                  @Field(RequestConstant.KEY_END_DATE) String endDate,
+                                                  @Field(RequestConstant.KEY_PAGE_NUMBER) String pageNumber,
+                                                  @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     //检查是否有新的买单通知数据
 

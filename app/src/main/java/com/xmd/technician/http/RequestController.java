@@ -43,7 +43,6 @@ import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
-import com.xmd.technician.http.gson.GetPayNotifyListResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
@@ -1433,24 +1432,25 @@ public class RequestController extends AbstractController {
 
 
     private void getPayNotify(Map<String, Object> params) {
-        Call<GetPayNotifyListResult> call = getSpaService().getPayNotifyList(
-                SharedPreferenceHelper.getUserToken(),
-                (String) params.get(RequestConstant.KEY_START_DATE),
-                (String) params.get(RequestConstant.KEY_END_DATE));
-        call.enqueue(new TokenCheckedCallback<GetPayNotifyListResult>() {
-            @Override
-            protected void postResult(GetPayNotifyListResult result) {
-                RxBus.getInstance().post(result);
-            }
-
-            @Override
-            protected void postError(String errorMsg) {
-                GetPayNotifyListResult result = new GetPayNotifyListResult();
-                result.statusCode = 400;
-                result.msg = errorMsg;
-                RxBus.getInstance().post(result);
-            }
-        });
+//        Call<GetPayNotifyListResult> call = getSpaService().getPayNotifyList(
+//                SharedPreferenceHelper.getUserToken(),
+//                (String) params.get(RequestConstant.KEY_START_DATE),
+//                (String) params.get(RequestConstant.KEY_END_DATE),
+//                "1", String.valueOf(Integer.MAX_VALUE));
+//        call.enqueue(new TokenCheckedCallback<GetPayNotifyListResult>() {
+//            @Override
+//            protected void postResult(GetPayNotifyListResult result) {
+//                RxBus.getInstance().post(result);
+//            }
+//
+//            @Override
+//            protected void postError(String errorMsg) {
+//                GetPayNotifyListResult result = new GetPayNotifyListResult();
+//                result.statusCode = 400;
+//                result.msg = errorMsg;
+//                RxBus.getInstance().post(result);
+//            }
+//        });
     }
 
 }

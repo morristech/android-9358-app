@@ -197,7 +197,8 @@ public class PayNotifyInfoManager extends Observable {
         String startDate = DateUtils.getSdf("yyyy-MM-dd").format(new Date(startTime));
         String endDate = DateUtils.getSdf("yyyy-MM-dd").format(new Date(endTime));
         mDataGetCall = RetrofitServiceFactory.getSpaService()
-                .getPayNotifyList(SharedPreferenceHelper.getUserToken(), startDate, endDate);
+                .getPayNotifyList(SharedPreferenceHelper.getUserToken(),
+                        startDate, endDate, "1", String.valueOf(Integer.MAX_VALUE));
         mDataGetCall.enqueue(new retrofit2.Callback<GetPayNotifyListResult>() {
             @Override
             public void onResponse(Call<GetPayNotifyListResult> call, Response<GetPayNotifyListResult> response) {

@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.http.gson.TokenExpiredResult;
 import com.xmd.technician.model.LoginTechnician;
+import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
+
+import rx.Subscription;
 
 public class DataRefreshService extends Service {
     private Thread workThread;
@@ -21,7 +25,10 @@ public class DataRefreshService extends Service {
     private boolean mRefreshPersonalData;
     private boolean mRefreshPayNotify;
 
+    private Subscription mTokenExpiredSubscription;
+
     public DataRefreshService() {
+
     }
 
     @Override
@@ -34,6 +41,7 @@ public class DataRefreshService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        mTokenExpiredSubscription = RxBus.getInstance().toObservable(TokenExpiredResult.class).subscribe(this::handleTokenExpired);
     }
 
     @Override
@@ -70,6 +78,7 @@ public class DataRefreshService extends Service {
             workThread.interrupt();
             workThread = null;
         }
+        mTokenExpiredSubscription.unsubscribe();
     }
 
 
@@ -105,6 +114,12 @@ public class DataRefreshService extends Service {
     public static void stop() {
         Context context = TechApplication.getAppContext();
         context.stopService(new Intent(context, DataRefreshService.class));
+    }
+
+    public void handleTokenExpired(TokenExpiredResult event) {
+        Logger.i("===token expired ===");
+        mRefreshPayNotify = false;
+        mRefreshPersonalData = false;
     }
 
     public static void refreshPersonalData(boolean on) {
