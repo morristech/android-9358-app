@@ -1,10 +1,12 @@
 package com.xmd.technician.onlinepaynotify.model;
 
+
 import android.text.TextUtils;
 
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.Callback;
+import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.event.EventLogout;
@@ -16,7 +18,11 @@ import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.event.PayNotifyArchiveEvent;
 import com.xmd.technician.onlinepaynotify.event.PayNotifyNewDataEvent;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -149,113 +155,113 @@ public class PayNotifyInfoManager extends Observable {
 
     //从网络加载数据
     public void loadDataFromNetwork(long startTime, long endTime, Callback<List<PayNotifyInfo>> callback) {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                List<PayNotifyInfo> data = new ArrayList<>();
-                int mockCount = 10;
-                for (int i = 0; i < mockCount; i++) {
-                    PayNotifyInfo info = new PayNotifyInfo();
-                    info.id = i + 1;
-                    info.userName = "顾客" + i;
-                    info.amount = (long) (Math.random() * 1000);
-                    info.isArchived = false;
-                    long currentTime = 1485057077000L;
-                    info.payTime = System.currentTimeMillis() - i * 10 * 3600 * 1000;
-
-                    info.status = PayNotifyInfo.STATUS_ACCEPTED;
-                    info.userAvatar = "http://img3.duitang.com/uploads/item/201608/21/20160821200538_vHxLi.thumb.700_0.jpeg";
-                    info.combineTechs = new ArrayList<>();
-                    info.combineTechs.add("A00" + i);
-                    info.combineTechs.add("A100");
-                    data.add(info);
-                }
-
-                ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-                    @Override
-                    public void run() {
-                        processNewData(data);
-                        callback.onResult(null, data);
-                    }
-                });
-            }
-        }.start();
-//        if (mDataGetCall != null) {
-//            mDataGetCall.cancel();
-//        }
-//        String startDate = DateUtils.getSdf("yyyy-MM-dd").format(new Date(startTime));
-//        String endDate = DateUtils.getSdf("yyyy-MM-dd").format(new Date(endTime));
-//        mDataGetCall = RetrofitServiceFactory.getSpaService()
-//                .getPayNotifyList(SharedPreferenceHelper.getUserToken(), startDate, endDate);
-//        mDataGetCall.enqueue(new retrofit2.Callback<GetPayNotifyListResult>() {
+//        new Thread() {
 //            @Override
-//            public void onResponse(Call<GetPayNotifyListResult> call, Response<GetPayNotifyListResult> response) {
-//                List<PayNotifyInfo> data = new ArrayList<>();
-//                GetPayNotifyListResult result = response.body();
-//                if (result != null) {
-//                    SimpleDateFormat sdf = DateUtils.getSdf("yyyy-MM-dd HH:mm:ss");
-//                    for (GetPayNotifyListResult.Item item : response.body().respData) {
-//                        PayNotifyInfo info = new PayNotifyInfo();
-//                        info.id = item.id;
-//                        try {
-//                            info.payTime = sdf.parse(item.createTime).getTime();
-//                        } catch (ParseException e) {
-//                            //时间 解析出错，设置为当前时间
-//                            info.payTime = System.currentTimeMillis();
-//                            Logger.e("parse time error:" + item.createTime);
-//                        }
-//                        info.amount = item.payAmount;
-//                        info.userName = item.userName;
-//                        info.userAvatar = item.userAvatarUrl;
-//                        info.combineTechs = new ArrayList<>();
-//                        if (!TextUtils.isEmpty(item.otherTechNames)) {
-//                            String[] techs = item.otherTechNames.split(",");
-//                            Collections.addAll(info.combineTechs, techs);
-//                        }
-//                        switch (item.status) {
-//                            case "paid":
-//                                info.status = PayNotifyInfo.STATUS_UNVERIFIED;
-//                                break;
-//                            case "pass":
-//                                info.status = PayNotifyInfo.STATUS_ACCEPTED;
-//                                break;
-//                            case "unpass":
-//                                info.status = PayNotifyInfo.STATUS_REJECTED;
-//                                break;
-//                            default:
-//                                info.status = PayNotifyInfo.STATUS_UNVERIFIED;
-//                                break;
-//                        }
-//                        data.add(info);
-//                    }
-//                    synchronized (mDataLocker) {
-//                        //合并数据
-//                        processNewData(data);
-//                    }
+//            public void run() {
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
 //                }
+//                List<PayNotifyInfo> data = new ArrayList<>();
+//                int mockCount = 10;
+//                for (int i = 0; i < mockCount; i++) {
+//                    PayNotifyInfo info = new PayNotifyInfo();
+//                    info.id = i + 1;
+//                    info.userName = "顾客" + i;
+//                    info.amount = (long) (Math.random() * 1000);
+//                    info.isArchived = false;
+//                    long currentTime = 1485057077000L;
+//                    info.payTime = System.currentTimeMillis() - i * 10 * 3600 * 1000;
+//
+//                    info.status = PayNotifyInfo.STATUS_ACCEPTED;
+//                    info.userAvatar = "http://img3.duitang.com/uploads/item/201608/21/20160821200538_vHxLi.thumb.700_0.jpeg";
+//                    info.combineTechs = new ArrayList<>();
+//                    info.combineTechs.add("A00" + i);
+//                    info.combineTechs.add("A100");
+//                    data.add(info);
+//                }
+//
 //                ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
 //                    @Override
 //                    public void run() {
+//                        processNewData(data);
 //                        callback.onResult(null, data);
 //                    }
 //                });
 //            }
-//
-//            @Override
-//            public void onFailure(Call<GetPayNotifyListResult> call, Throwable t) {
-//                ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        callback.onResult(t, null);
-//                    }
-//                });
-//            }
-//        });
+//        }.start();
+        if (mDataGetCall != null) {
+            mDataGetCall.cancel();
+        }
+        String startDate = DateUtils.getSdf("yyyy-MM-dd").format(new Date(startTime));
+        String endDate = DateUtils.getSdf("yyyy-MM-dd").format(new Date(endTime));
+        mDataGetCall = RetrofitServiceFactory.getSpaService()
+                .getPayNotifyList(SharedPreferenceHelper.getUserToken(), startDate, endDate);
+        mDataGetCall.enqueue(new retrofit2.Callback<GetPayNotifyListResult>() {
+            @Override
+            public void onResponse(Call<GetPayNotifyListResult> call, Response<GetPayNotifyListResult> response) {
+                List<PayNotifyInfo> data = new ArrayList<>();
+                GetPayNotifyListResult result = response.body();
+                if (result != null) {
+                    SimpleDateFormat sdf = DateUtils.getSdf("yyyy-MM-dd HH:mm:ss");
+                    for (GetPayNotifyListResult.Item item : response.body().respData) {
+                        PayNotifyInfo info = new PayNotifyInfo();
+                        info.id = item.id;
+                        try {
+                            info.payTime = sdf.parse(item.createTime).getTime();
+                        } catch (ParseException e) {
+                            //时间 解析出错，设置为当前时间
+                            info.payTime = System.currentTimeMillis();
+                            Logger.e("parse time error:" + item.createTime);
+                        }
+                        info.amount = item.payAmount;
+                        info.userName = item.userName;
+                        info.userAvatar = item.userAvatarUrl;
+                        info.combineTechs = new ArrayList<>();
+                        if (!TextUtils.isEmpty(item.otherTechNames)) {
+                            String[] techs = item.otherTechNames.split(",");
+                            Collections.addAll(info.combineTechs, techs);
+                        }
+                        switch (item.status) {
+                            case "paid":
+                                info.status = PayNotifyInfo.STATUS_UNVERIFIED;
+                                break;
+                            case "pass":
+                                info.status = PayNotifyInfo.STATUS_ACCEPTED;
+                                break;
+                            case "unpass":
+                                info.status = PayNotifyInfo.STATUS_REJECTED;
+                                break;
+                            default:
+                                info.status = PayNotifyInfo.STATUS_UNVERIFIED;
+                                break;
+                        }
+                        data.add(info);
+                    }
+                    synchronized (mDataLocker) {
+                        //合并数据
+                        processNewData(data);
+                    }
+                }
+                ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResult(null, data);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<GetPayNotifyListResult> call, Throwable t) {
+                ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResult(t, null);
+                    }
+                });
+            }
+        });
     }
 
     //处理新数据，将新数据合并到缓存中
