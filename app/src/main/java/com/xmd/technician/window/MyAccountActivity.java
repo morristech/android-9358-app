@@ -71,7 +71,7 @@ public class MyAccountActivity extends BaseActivity {
             mCouponAmount.setText(String.format("%1.2f", result.respData.redPack));
             mClockAmount.setText(String.format("%1.2f", result.respData.paidMoney));
             mPaidOrderAmount.setText(String.format("%1.2f", result.respData.orderMoney));
-            mTimeCardAmount.setText(String.format("%1.2f", result.respData.onceCardMoney));
+//            mTimeCardAmount.setText(String.format("%1.2f", result.respData.onceCardMoney));
             mCouponConsumeBtn.setEnabled(true);
             if (result.respData.withdrawal.equals("Y")) {
                 isCanDrawMoney = true;

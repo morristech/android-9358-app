@@ -237,14 +237,15 @@
         android:layout_marginLeft="@dimen/search_margin"
         android:layout_marginRight="@dimen/search_margin"
         android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true">
+        android:clickable="true"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/personal_padding"
             android:layout_marginLeft="@dimen/search_margin"
-            android:drawableLeft="@drawable/icon45"
+            android:drawableLeft="@drawable/icon_time_card"
             android:drawablePadding="@dimen/search_margin"
             android:gravity="center_vertical"
             android:textColor="@color/colorTitle"

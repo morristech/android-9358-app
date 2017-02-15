@@ -58,7 +58,6 @@ android {
     }
 
     buildTypes {
-
         debug {
             manifestPlaceholders = [
                     EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
