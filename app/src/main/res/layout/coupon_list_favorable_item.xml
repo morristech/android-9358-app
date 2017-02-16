@@ -29,7 +29,7 @@
                 android:paddingTop="@dimen/padding_10"
                 android:textColor="@color/colorHead"
                 android:ellipsize="middle"
-                android:singleLine="true"
+                android:lines="1"
                 android:textSize="@dimen/fontTitle" />
             <TextView
                 android:id="@+id/coupon_type"
@@ -41,7 +41,6 @@
                 android:text="@string/coupon_code_item"
                 android:textSize="@dimen/fontNormal"
                 android:visibility="gone"
-
                 />
             <TextView
                 android:id="@+id/tv_coupon_reward"
@@ -50,10 +49,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/padding_10"
                 android:background="@drawable/favorable_coupon"
-                android:gravity="center"
+               android:gravity="center"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/fontBody"
-                android:paddingRight="@dimen/padding_5"
                 />
 
         </RelativeLayout>
@@ -119,6 +117,7 @@
                 android:textSize="@dimen/fontNormal" />
 
             <TextView
+                android:id="@+id/btn_share_coupon"
                 android:layout_width="@dimen/share_btn_width"
                 android:layout_height="@dimen/margin_20"
                 android:layout_alignParentRight="true"

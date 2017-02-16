@@ -69,6 +69,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
         void onSayHiButtonClicked(T bean);
 
+
+
         /**
          * @return whether the item is slideable
          */
@@ -304,6 +306,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
             couponListItemViewHolder.mCouponPeriod.setText("有效时间：" + Utils.StrSubstring(19, couponInfo.couponPeriod, true));
             if (couponInfo.techCommission > 0) {
+                couponListItemViewHolder.mTvCouponReward.setVisibility(View.VISIBLE);
                 String money = Utils.getFloat2Str(String.valueOf(couponInfo.techCommission));
                 String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), money);
                 SpannableString spannableString = new SpannableString(text);
@@ -312,7 +315,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 couponListItemViewHolder.mTvCouponReward.setVisibility(View.GONE);
             }
-            couponListItemViewHolder.mTvCouponReward.setVisibility(View.GONE);
+
             if (Utils.isNotEmpty(couponInfo.consumeMoney)) {
                 couponListItemViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
             }
