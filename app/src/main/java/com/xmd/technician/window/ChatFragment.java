@@ -70,7 +70,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                getFilter().filter(s);
+                getFilter().filter(s.toString().trim());
             }
 
             @Override
