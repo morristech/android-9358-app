@@ -119,6 +119,7 @@
                 android:textSize="@dimen/fontNormal" />
 
             <TextView
+                android:id="@+id/btn_share_coupon"
                 android:layout_width="@dimen/share_btn_width"
                 android:layout_height="@dimen/margin_20"
                 android:layout_alignParentRight="true"
