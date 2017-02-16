@@ -16,6 +16,8 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -353,6 +355,30 @@ public class Utils {
     }
 
     /**
+     * @param text  需要添加中划线的字符串
+     * @param start 字符串中划线的开始的位置
+     * @param end   字符串中划线的结束的位置（包前不包后）
+     */
+    public static Spannable textStrikeThrough(String text, int start, int end) {
+        SpannableString spannableString = new SpannableString(text);
+        StrikethroughSpan strikethroughSpan = new StrikethroughSpan();
+        spannableString.setSpan(strikethroughSpan, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+
+    /**
+     * @param text  需要添加下划线的字符串
+     * @param start 字符串下划线的开始的位置
+     * @param end   字符串下划线的结束的位置（包前不包后）
+     */
+    public static Spannable textUnderLine(String text, int start, int end) {
+        SpannableString spannableString = new SpannableString(text);
+        UnderlineSpan underlineSpan = new UnderlineSpan();
+        spannableString.setSpan(underlineSpan, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+
+    /**
      * @param tag
      */
     public static void printThreadName(String tag) {
@@ -459,7 +485,7 @@ public class Utils {
 
     public static String getFloat2Str(String f) {
         String fStr = String.valueOf(f);
-        while ((fStr.length() > 1) && fStr.endsWith("0")) {
+        while ((fStr.length() > 1) && fStr.contains(".")&&fStr.endsWith("0")) {
             fStr = fStr.substring(0, fStr.length() - 1);
         }
 
