@@ -102,21 +102,10 @@
                         />
 
                     <TextView
-                        android:id="@+id/tv_tips_expire"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/attention"
-                        android:textColor="@color/alert_text_color"
-                        android:textSize="@dimen/fontTitle_small"
-                        />
-
-                    <TextView
                         android:id="@+id/tv_tips_verified"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/tv_tips_expire"
-                        android:layout_below="@+id/tv_tips_expire"
-                        android:layout_marginTop="@dimen/margin_5"
+                        android:layout_toRightOf="@+id/attention"
                         android:textColor="@color/alert_text_color"
                         android:textSize="@dimen/fontTitle_small"
                         />

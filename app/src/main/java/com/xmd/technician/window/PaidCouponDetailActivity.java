@@ -41,7 +41,6 @@ import rx.Subscription;
  */
 public class PaidCouponDetailActivity extends BaseActivity {
 
-    @Bind(R.id.tv_tips_expire) TextView mTvTipsExpire;
     @Bind(R.id.tv_tips_verified) TextView mTvTipsVerified;
     @Bind(R.id.btn_share) Button mShare;
     @Bind(R.id.tv_consume_money_description) TextView mTvConsumeMoneyDescription;
@@ -108,11 +107,7 @@ public class PaidCouponDetailActivity extends BaseActivity {
         mWvActContent.getSettings().setJavaScriptEnabled(false);
         mWvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);
         mWvActContent.loadDataWithBaseURL(null, couponInfo.actContent, Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
-        String expire = String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_expire), Utils.getFloat2Str(couponInfo.techBaseCommission));
-        SpannableString spannableExpire =new SpannableString(expire);
-        spannableExpire.setSpan(new TextAppearanceSpan(this,R.style.text_marked),14,expire.lastIndexOf("元"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTvTipsExpire.setText(spannableExpire);
-        String verified = String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_verified), Utils.getFloat2Str(couponInfo.techCommission));
+        String verified = String.format(ResourceUtils.getString(R.string.paid_coupon_detail_tips_verified), Utils.getFloat2Str(couponInfo.commission));
         SpannableString spannableVerified =new SpannableString(verified);
         spannableVerified.setSpan(new TextAppearanceSpan(this,R.style.text_marked),14,verified.lastIndexOf("元"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mTvTipsVerified.setText(spannableVerified);

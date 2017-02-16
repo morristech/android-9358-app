@@ -125,7 +125,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
         if(Utils.isEmpty(couponInfo.actContent)) {
             couponInfo.actContent="无";
         }
-        String shareText = String.format(ResourceUtils.getString(R.string.normal_coupon_detail_activity_share_text), couponInfo.sysCommission);
+        String shareText = String.format(ResourceUtils.getString(R.string.normal_coupon_detail_activity_share_text), couponInfo.commission);
         SpannableString spannableString = new SpannableString(shareText);
         spannableString.setSpan(new TextAppearanceSpan(this,R.style.text_marked),16,shareText.lastIndexOf("元"),SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
         mTvShareText.setText(spannableString);
@@ -170,10 +170,9 @@ public class NormalCouponDetailActivity extends BaseActivity {
     private void initChildViews(){
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.leftMargin = 10;
-        lp.rightMargin = 10;
-        lp.topMargin = 36;
-        lp.bottomMargin =40;
+        lp.leftMargin = Utils.dip2px(NormalCouponDetailActivity.this,5);
+        lp.rightMargin = Utils.dip2px(NormalCouponDetailActivity.this,5);
+        lp.topMargin = Utils.dip2px(NormalCouponDetailActivity.this,12);
         for(int i = 0; i < limitList.size(); i ++){
             TextView view = new TextView(this);
             view.setPadding(36,5,36,5);
