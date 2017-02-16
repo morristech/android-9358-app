@@ -13,9 +13,9 @@ import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.Util;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.event.EventExitClub;
 import com.xmd.technician.event.EventJoinedClub;
+import com.xmd.technician.event.EventLogin;
 import com.xmd.technician.event.EventLogout;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AlbumResult;
@@ -151,6 +151,8 @@ public class LoginTechnician {
 
         avatarUrl = loginResult.avatarUrl;
         SharedPreferenceHelper.setUserAvatar(avatarUrl);
+
+        RxBus.getInstance().post(new EventLogin());
     }
 
     //获取技师信息,返回TechInfoResult

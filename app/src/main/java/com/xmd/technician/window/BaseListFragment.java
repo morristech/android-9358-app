@@ -22,12 +22,14 @@ import rx.Subscription;
 /**
  * Created by linms@xiaomodo.com on 16-4-29.
  */
-public abstract class BaseListFragment<T> extends BaseFragment implements ListRecycleViewAdapter.Callback<T>, SwipeRefreshLayout.OnRefreshListener{
+public abstract class BaseListFragment<T> extends BaseFragment implements ListRecycleViewAdapter.Callback<T>, SwipeRefreshLayout.OnRefreshListener {
     protected static final int PAGE_START = 0;
     protected static final int PAGE_SIZE = 20;
 
-    @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.list) RecyclerView mListView;
+    @Bind(R.id.swipe_refresh_widget)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.list)
+    RecyclerView mListView;
 
     protected LinearLayoutManager mLayoutManager;
     protected ListRecycleViewAdapter mListAdapter;
@@ -40,17 +42,24 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     protected Subscription mThrowableSubscription;
 
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ButterKnife.bind(this, getView());
         mThrowableSubscription = RxBus.getInstance().toObservable(Throwable.class).subscribe(
-                throwable -> {if(mSwipeRefreshLayout.isRefreshing()){
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }}
+                throwable -> {
+                    if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
         );
         initContent();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mThrowableSubscription.unsubscribe();
     }
 
     private void initContent() {
@@ -90,7 +99,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
 
     private void loadMore() {
 
-        if(getListSafe()){
+        if (getListSafe()) {
             //上拉刷新，加载更多数据
             mSwipeRefreshLayout.setRefreshing(true);
             mIsLoadingMore = true;
@@ -99,29 +108,29 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
 
     /**
      * Only when current page is less than the pageCount, it's able to send request to server
+     *
      * @return true means it really sends the request
      */
-    private boolean getListSafe(){
-        if(mPageCount < 0 || mPages + 1 <= mPageCount) {
-            mPages ++;
-          dispatchRequest();
+    private boolean getListSafe() {
+        if (mPageCount < 0 || mPages + 1 <= mPageCount) {
+            mPages++;
+            dispatchRequest();
             return true;
         }
         return false;
     }
 
     /**
-     *
      * @param pageCount
-     * @param list - The List with T
+     * @param list      - The List with T
      */
     protected void onGetListSucceeded(int pageCount, List<T> list) {
 
         mPageCount = pageCount;
         mSwipeRefreshLayout.setRefreshing(false);
         if (list != null) {
-            if(!mIsLoadingMore || pageCount<-100) {
-                if(pageCount <-100){
+            if (!mIsLoadingMore || pageCount < -100) {
+                if (pageCount < -100) {
                     mPages = PAGE_START;
                 }
                 mData.clear();
@@ -134,7 +143,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
 
     protected void onGetListFailed(String errorMsg) {
         mSwipeRefreshLayout.setRefreshing(false);
-        ((BaseFragmentActivity)getActivity()).makeShortToast(errorMsg);
+        ((BaseFragmentActivity) getActivity()).makeShortToast(errorMsg);
     }
 
     @Override
@@ -169,7 +178,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     }
 
     @Override
-    public boolean isHorizontalSliding(){
+    public boolean isHorizontalSliding() {
         return false;
     }
 

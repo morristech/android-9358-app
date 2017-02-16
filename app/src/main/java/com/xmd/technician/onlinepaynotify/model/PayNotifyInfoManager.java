@@ -42,23 +42,12 @@ public class PayNotifyInfoManager extends Observable {
         return ourInstance;
     }
 
+    private boolean mNeedLoadArchivedIds;
+
     private PayNotifyInfoManager() {
         mData = new ArrayList<>();
         mRecentArchivedMaps = new HashMap<>();
-        String hideIds = SharedPreferenceHelper.getPayNotifyHideIds();
-        if (!TextUtils.isEmpty(hideIds)) {
-            String[] ids = hideIds.split(",");
-            long limitTime = System.currentTimeMillis() - Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT;
-            for (int i = 0; i < ids.length / 3; i++) {
-                String id = ids[3 * i];
-                long time = Long.parseLong(ids[3 * i + 1]);
-                if (time < limitTime) {
-                    continue;
-                }
-                int status = Integer.parseInt(ids[3 * i + 2]);
-                mRecentArchivedMaps.put(id, new ArchiveData(id, time, status));
-            }
-        }
+        mNeedLoadArchivedIds = true;
 
         RxBus.getInstance().toObservable(EventLogout.class).subscribe(this::handleLogoutEvent);
     }
@@ -95,6 +84,9 @@ public class PayNotifyInfoManager extends Observable {
      * @param callback        通知函数
      */
     public void getNotifyInfo(boolean forceNetwork, final long startTime, final long endTime, final int status, final boolean onlyNotArchived, final int limitCount, Callback<List<PayNotifyInfo>> callback) {
+        if (mNeedLoadArchivedIds) {
+            loadArchivedIds();
+        }
         if (forceNetwork || mCurrentStartTime == -1 || startTime < mCurrentStartTime || endTime > mCurrentEndTime) {
             loadDataFromNetwork(startTime, endTime, new Callback<List<PayNotifyInfo>>() {
                 @Override
@@ -377,7 +369,12 @@ public class PayNotifyInfoManager extends Observable {
         }
         synchronized (mDataLocker) {
             mData.clear();
+            mCurrentStartTime = -1;
+            mCurrentEndTime = -1;
         }
+
+        mRecentArchivedMaps.clear();
+        mNeedLoadArchivedIds = true;
     }
 
 
@@ -396,8 +393,24 @@ public class PayNotifyInfoManager extends Observable {
         SharedPreferenceHelper.setPayNotifyArchivedIds(save.toString());
     }
 
+    private void loadArchivedIds() {
+        String hideIds = SharedPreferenceHelper.getPayNotifyHideIds();
+        if (!TextUtils.isEmpty(hideIds)) {
+            String[] ids = hideIds.split(",");
+            long limitTime = System.currentTimeMillis() - Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT;
+            for (int i = 0; i < ids.length / 3; i++) {
+                String id = ids[3 * i];
+                long time = Long.parseLong(ids[3 * i + 1]);
+                if (time < limitTime) {
+                    continue;
+                }
+                int status = Integer.parseInt(ids[3 * i + 2]);
+                mRecentArchivedMaps.put(id, new ArchiveData(id, time, status));
+            }
+        }
+    }
+
     private void handleLogoutEvent(EventLogout event) {
         clearData();
     }
-
 }

@@ -334,11 +334,11 @@ public class SharedPreferenceHelper {
     }
 
     public static void setPayNotifyArchivedIds(String value) {
-        mSettingPreference.edit().putString(KEY_PAY_NOTIFY_HIDE_ID, value).apply();
+        mSettingPreference.edit().putString(KEY_PAY_NOTIFY_HIDE_ID + "-" + getUserId(), value).apply();
     }
 
     public static String getPayNotifyHideIds() {
-        return mSettingPreference.getString(KEY_PAY_NOTIFY_HIDE_ID, "");
+        return mSettingPreference.getString(KEY_PAY_NOTIFY_HIDE_ID + "-" + getUserId(), "");
     }
 
     public static boolean getPayNotifyIsFirstHide() {
