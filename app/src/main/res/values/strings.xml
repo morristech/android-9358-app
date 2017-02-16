@@ -263,7 +263,7 @@
     <string name="paid_coupon_detail_share">分享</string>
     <string name="paid_coupon_detail_tips">注：</string>
     <string name="paid_coupon_detail_tips_expire">客户的点钟券过期后，您将获得 %1$s 元打赏。</string>
-    <string name="paid_coupon_detail_tips_verified">客户的点钟券使用后，您将获得 %1$s 元打赏。</string>
+    <string name="paid_coupon_detail_tips_verified">客户购买点钟券后，您将获得 %1$s 元打赏。</string>
 
     <string name="paid_coupon_user_detail_activity_header_user">用户</string>
     <string name="paid_coupon_user_detail_activity_header_status">全部状态</string>
@@ -469,4 +469,15 @@
     <string name="online_pay_notify_status_reject">异常</string>
     <string name="online_pay_notify_status_accept">已确认</string>
     <string name="online_pay_notify_status_all">全部</string>
+    <!--技师分享改版-->
+    <string name="paid_coupon_list_title">点钟券</string>
+    <string name="normal_coupon_list_title">优惠券</string>
+    <string name="once_card_list_title">次卡</string>
+    <string name="limit_grab_list_title">限时抢</string>
+    <string name="pay_for_me_list_title">谁替我买单</string>
+    <string name="club_journal_list_title">会所期刊</string>
+    <string name="reward_list_title">抽奖活动</string>
+    <string name="offline_activity_list_title">线下活动</string>
+
+
 </resources>
