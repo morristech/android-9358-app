@@ -19,19 +19,14 @@ import com.google.zxing.common.BitMatrix;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.common.ImageLoader;
-import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.common.Utils;
-import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
+
+
+import com.xmd.technician.share.ShareController;
 
 import java.util.EnumMap;
-import java.util.HashMap;
+
 import java.util.Map;
 
-import butterknife.OnClick;
 
 /**
  * Created by heyangya on 15-6-5.
@@ -69,7 +64,9 @@ public class QRDialog extends Dialog {
         mQRShareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doShare();
+
+                dismiss();
+                ShareController.doShare("",mShareUrl,SharedPreferenceHelper.getUserName() + "欢迎您","点我聊聊，更多优惠，更好服务！",Constant.SHARE_BUSINESS_CARD,"");
             }
         });
         mQRImageView=(ImageView)findViewById(R.id.home_fragment_qr_code_image);
@@ -144,19 +141,5 @@ public class QRDialog extends Dialog {
         return bitmap;
     }
 
-    public void doShare() {
-        dismiss();
-        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
-            Bitmap thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put(Constant.PARAM_SHARE_THUMBNAIL, thumbnail);
-                params.put(Constant.PARAM_SHARE_URL, mShareUrl);
-                params.put(Constant.PARAM_SHARE_TITLE,SharedPreferenceHelper.getUserName() + "欢迎您");
-                params.put(Constant.PARAM_SHARE_DESCRIPTION, "点我聊聊，更多优惠，更好服务！");
-                params.put(Constant.PARAM_SHARE_TYPE,Constant.SHARE_BUSINESS_CARD);
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM, params);
-            });
-        });
-    }
+
 }

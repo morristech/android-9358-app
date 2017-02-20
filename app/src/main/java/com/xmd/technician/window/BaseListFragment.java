@@ -200,4 +200,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     public void onSayHiButtonClicked(T bean) {
 
     }
+
+    @Override
+    public void onShareClicked(T bean) {
+
+    }
 }

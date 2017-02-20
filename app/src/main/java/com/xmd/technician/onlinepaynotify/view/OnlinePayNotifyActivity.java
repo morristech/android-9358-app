@@ -34,7 +34,6 @@ public class OnlinePayNotifyActivity extends BaseActivity implements BaseFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_online_pay_notify);
-
         setSupportActionBar(mBinding.titleBar);
         if (getSupportActionBar() != null) {
             ActionBar actionBar = getSupportActionBar();

@@ -78,7 +78,6 @@
                     android:paddingRight="@dimen/margin_20"
                     android:textColor="@color/alert_text_color"
                     android:textSize="@dimen/fontTitle_small"
-
                     />
 
                 <Button
@@ -89,7 +88,7 @@
                     android:layout_marginLeft="@dimen/coupon_margin_20"
                     android:layout_marginRight="@dimen/coupon_margin_20"
                     android:layout_marginTop="19dp"
-                    android:background="@drawable/rect_bg"
+                    android:background="@drawable/share_button_selector_bg"
                     android:text="@string/share_now"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/fontHead"
@@ -272,8 +271,6 @@
                         android:paddingBottom="@dimen/coupon_margin_17"
                         android:paddingRight="@dimen/coupon_margin_20"
                         android:paddingTop="10dp"
-
-
                         />
                 </RelativeLayout>
 

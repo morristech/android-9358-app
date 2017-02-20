@@ -221,6 +221,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private int screenSpeed;
     private String techJoinClub;
     private boolean hasDynamic;
+    private LinearLayout mContactMore;
 
     private Subscription mGetTechCurrentInfoSubscription;
     private Subscription mUserSwitchesSubscription;
@@ -317,7 +318,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_page);
         ((TextView) view.findViewById(R.id.toolbar_title)).setTextColor(Color.WHITE);
         view.findViewById(R.id.divide_line).setVisibility(View.GONE);
-        view.findViewById(R.id.contact_more).setVisibility(View.VISIBLE);
+        mContactMore = (LinearLayout) view.findViewById(R.id.contact_more);
+        mContactMore.setVisibility(View.VISIBLE);
+        mContactMore.setOnClickListener(this);
         view.findViewById(R.id.rl_toolbar).setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
         imageRight = ((ImageView) view.findViewById(R.id.toolbar_right_img));
         imageLeft = (ImageView) view.findViewById(R.id.toolbar_back);
@@ -325,7 +328,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         imageRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_qr_code));
         imageLeft.setVisibility(View.VISIBLE);
         imageLeft.setOnClickListener(this);
-        imageRight.setOnClickListener(this);
         mAppVersion.setText("v" + AppConfig.getAppVersionNameAndCode());
     }
 
@@ -607,7 +609,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
                         mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
                         mMenuClubName.setVisibility(View.GONE);
-                        mMenuClubName.setText(mTech.getClubName());
+                        mMenuClubName.setText(Utils.briefString(mTech.getClubName(),6));
                         showTechStatus(mTech.getStatus());
 
                         onRefresh();
@@ -747,7 +749,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             case R.id.toolbar_back:
                 mMainSlidingLayout.toggle();
                 break;
-            case R.id.toolbar_right_img:
+            case R.id.contact_more:
                 //分享二维码
                 if (mTechInfo == null || TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
                     return;
@@ -796,7 +798,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             resetTechStatusView(-1);
         }
         if (Utils.isNotEmpty(info.clubName)) {
-            mMenuClubName.setText(info.clubName);
+            mMenuClubName.setText(Utils.briefString(info.clubName,6));
         } else {
             mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
             mMenuClubName.setVisibility(View.GONE);
@@ -1084,7 +1086,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMenuSettingsActivityQuitClub.setVisibility(View.VISIBLE);
         mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
         mMenuClubName.setVisibility(View.VISIBLE);
-        mMenuClubName.setText(mTech.getClubName());
+
+        mMenuClubName.setText(Utils.briefString(mTech.getClubName(),6));
         showTechStatus(mTech.getStatus());
 
         onRefresh();

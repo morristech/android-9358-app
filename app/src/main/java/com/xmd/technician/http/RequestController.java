@@ -33,10 +33,12 @@ import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.AccountMoneyResult;
+import com.xmd.technician.http.gson.ActivityListResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AppUpdateConfigResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
+import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
@@ -44,16 +46,23 @@ import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
 import com.xmd.technician.http.gson.JoinClubResult;
+import com.xmd.technician.http.gson.JournalListResult;
+import com.xmd.technician.http.gson.LimitGrabResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.ModifyPasswordResult;
+import com.xmd.technician.http.gson.OnceCardResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
+import com.xmd.technician.http.gson.PayForMeListResult;
+import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
+import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.http.gson.ServiceResult;
+import com.xmd.technician.http.gson.ShareCouponResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
@@ -297,6 +306,33 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_GET_PAY_NOTIFY:
                 getPayNotify((Map<String, Object>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_CARD_SHARE_LIST:
+                getCardShareList();
+                break;
+            case MsgDef.MSG_DEF_GET_ACTIVITY_LIST:
+                getActivityList();
+                break;
+            case MsgDef.MSG_DEF_GET_PROPAGANDA_LIST:
+                getPropagandaList();
+                break;
+            case MsgDef.MSG_DEF_GET_ONCE_CARD_LIST_DETAIL:
+                getOnceCardListDetail();
+                break;
+            case MsgDef.MSG_DEF_GET_CARD_LIST_DETAIL:
+                getCardListDetail(msg.obj.toString());
+                break;
+            case MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST_DETAIL:
+                getServiceItemListDetail();
+                break;
+            case MsgDef.MSG_DEF_GET_REWARD_ACTIVITY_LIST:
+                getRewardActivityList();
+                break;
+            case MsgDef.MSG_DEF_GET_CLUB_JOURNAL_LIST:
+                getClubJournalList();
+                break;
+            case MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL:
+                getPayForMeListDetail();
                 break;
         }
 
@@ -1399,6 +1435,130 @@ public class RequestController extends AbstractController {
 
     }
 
+    /**
+     * 卡券列表
+     */
+    private void getCardShareList() {
+        Call<CardShareListResult> call = getSpaService().cardShareList(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+        call.enqueue(new TokenCheckedCallback<CardShareListResult>() {
+            @Override
+            protected void postResult(CardShareListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+
+
+    }
+
+    /**
+     * 热门活动列表
+     */
+    private void getActivityList() {
+        Call<ActivityListResult> call = getSpaService().activityList(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+        call.enqueue(new TokenCheckedCallback<ActivityListResult>() {
+            @Override
+            protected void postResult(ActivityListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 宣传列表
+     * propagandaList
+     */
+    private void getPropagandaList() {
+        Call<PropagandaListResult> call = getSpaService().propagandaList(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+        call.enqueue(new TokenCheckedCallback<PropagandaListResult>() {
+            @Override
+            protected void postResult(PropagandaListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 次卡列表
+     */
+    private void getOnceCardListDetail() {
+        Call<OnceCardResult> call = getSpaService().onceCardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+        call.enqueue(new TokenCheckedCallback<OnceCardResult>() {
+            @Override
+            protected void postResult(OnceCardResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 券列表
+     *
+     * @param type
+     */
+    private void getCardListDetail(String type) {
+        Call<ShareCouponResult> call = getSpaService().cardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(), type);
+        call.enqueue(new TokenCheckedCallback<ShareCouponResult>() {
+            @Override
+            protected void postResult(ShareCouponResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 限时抢列表
+     */
+    private void getServiceItemListDetail() {
+        Call<LimitGrabResult> call = getSpaService().serviceItemListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+        call.enqueue(new TokenCheckedCallback<LimitGrabResult>() {
+            @Override
+            protected void postResult(LimitGrabResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 抽奖活动
+     */
+    private void getRewardActivityList() {
+        Call<RewardListResult> call = getSpaService().rewardActivityListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+        call.enqueue(new TokenCheckedCallback<RewardListResult>() {
+            @Override
+            protected void postResult(RewardListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 期刊列表
+     *
+     */
+    private void getClubJournalList(){
+        Call<JournalListResult> call = getSpaService().clubJournalListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+        call.enqueue(new TokenCheckedCallback<JournalListResult>() {
+            @Override
+            protected void postResult(JournalListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * 谁替我买单列表
+     *
+     */
+    private void getPayForMeListDetail(){
+        Call<PayForMeListResult> call = getSpaService().payForMeListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+        call.enqueue(new TokenCheckedCallback<PayForMeListResult>() {
+            @Override
+            protected void postResult(PayForMeListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
     //获取升级配置
     private void doGetAppUpdateConfig(Map<String, String> params) {
         String version = params.get(RequestConstant.KEY_UPDATE_VERSION);
@@ -1452,5 +1612,6 @@ public class RequestController extends AbstractController {
 //            }
 //        });
     }
+
 
 }

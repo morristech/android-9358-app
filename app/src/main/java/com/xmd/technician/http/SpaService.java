@@ -21,9 +21,11 @@ import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.http.gson.AccountMoneyResult;
+import com.xmd.technician.http.gson.ActivityListResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
+import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.CheckPayNotifyResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
@@ -32,13 +34,20 @@ import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.GetPayNotifyListResult;
 import com.xmd.technician.http.gson.JoinClubResult;
+import com.xmd.technician.http.gson.JournalListResult;
+import com.xmd.technician.http.gson.LimitGrabResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
+import com.xmd.technician.http.gson.OnceCardResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
+import com.xmd.technician.http.gson.PayForMeListResult;
+import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
+import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.http.gson.ServiceResult;
+import com.xmd.technician.http.gson.ShareCouponResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
@@ -594,4 +603,57 @@ public interface SpaService {
     @POST(RequestConstant.URL_CHECK_PAY_NOTIFY)
     Call<CheckPayNotifyResult> checkPayNotifyData(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_TYPE) String type);
+
+    //营销—卡券列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CARD_SHARE_LIST_INFO)
+    Call<CardShareListResult> cardShareList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                            @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+
+    //营销—活动列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_ACTIVITY_LIST_INFO)
+    Call<ActivityListResult> activityList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                          @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+
+    //营销—宣传列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_PROPAGANDA_LIST_INFO)
+    Call<PropagandaListResult> propagandaList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+
+    //次卡列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_ONCE_CARD_LIST_DETAIL)
+    Call<OnceCardResult> onceCardListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                            @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+
+    //券列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CARD_LIST_DETAIL)
+    Call<ShareCouponResult> cardListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                           @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                           @Field(RequestConstant.KEY_COUPON_TYPE) String couponType);
+
+    //限时抢列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_SERVICE_ITEM_LIST)
+    Call<LimitGrabResult> serviceItemListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+
+    //抽奖活动列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_REWARD_ACTIVITY_LIST)
+    Call<RewardListResult> rewardActivityListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                    @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+    //期刊列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_CLUB_JOURNAL_LIST_DETAIL)
+    Call<JournalListResult> clubJournalListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                     @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+    //谁替我买单列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_PAY_FOR_ME_LIST)
+    Call<PayForMeListResult> payForMeListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                   @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
 }

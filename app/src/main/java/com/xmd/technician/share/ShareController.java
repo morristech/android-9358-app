@@ -1,13 +1,20 @@
 package com.xmd.technician.share;
 
+
 import android.graphics.Bitmap;
 import android.os.Message;
 
 import com.xmd.technician.Constant;
+import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.common.ImageLoader;
+import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.window.SharePlatformPopupWindow;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,7 +27,7 @@ public class ShareController extends AbstractController {
 
         switch (msg.what) {
             case MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM:
-                showPlatfromWindow((Map<String, String>) msg.obj);
+                showPlatformWindow((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_SHARE_TO_TIMELINE:
                 shareToTimeline((Map<String, Object>) msg.obj);
@@ -36,13 +43,35 @@ public class ShareController extends AbstractController {
         return true;
     }
 
-    private void showPlatfromWindow(Map<String, String> params) {
+    public static void doShare(String imageUrl, String userShareUrl, String title, String description, String type, String actId) {
+        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
+            Bitmap thumbnail;
+            if (Utils.isEmpty(imageUrl)) {
+                thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());
+            } else {
+                thumbnail = ImageLoader.readBitmapFromImgUrl(imageUrl);
+            }
+            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> {
+                Map<String, Object> params = new HashMap<>();
+                params.put(Constant.PARAM_SHARE_THUMBNAIL, thumbnail);
+                params.put(Constant.PARAM_SHARE_URL, userShareUrl);
+                params.put(Constant.PARAM_SHARE_TITLE, title);
+                params.put(Constant.PARAM_SHARE_DESCRIPTION, description);
+                params.put(Constant.PARAM_SHARE_TYPE, type);
+                if (Utils.isNotEmpty(actId)) {
+                    params.put(Constant.PARAM_ACT_ID, actId);
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM, params);
+                }
+            });
+        });
+    }
+
+    private void showPlatformWindow(Map<String, String> params) {
         SharePlatformPopupWindow popupWindow = new SharePlatformPopupWindow(params);
         popupWindow.showAtBottom();
     }
 
     /**
-     *
      * @param params
      */
     private void shareToOther(Map<String, Object> params) {
@@ -51,6 +80,7 @@ public class ShareController extends AbstractController {
 
     /**
      * 分享到朋友圈
+     *
      * @param params
      */
     private void shareToTimeline(Map<String, Object> params) {
@@ -59,6 +89,7 @@ public class ShareController extends AbstractController {
 
     /**
      * 分享给朋友
+     *
      * @param params
      */
     private void shareToFriends(Map<String, Object> params) {

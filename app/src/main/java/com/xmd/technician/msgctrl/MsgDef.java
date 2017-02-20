@@ -147,4 +147,16 @@ public class MsgDef {
 
     public static final int MSG_DEF_GET_PAY_NOTIFY = 0x0075;
 
+    public static final int MSG_DEF_GET_CARD_SHARE_LIST = 0x0076;
+    public static final int MSG_DEF_GET_ACTIVITY_LIST = 0x0077;
+    public static final int MSG_DEF_GET_PROPAGANDA_LIST = 0x0078;
+    public static final int MSG_DEF_GET_ONCE_CARD_LIST_DETAIL = 0x0079;
+    public static final int MSG_DEF_GET_CARD_LIST_DETAIL = 0x0080;
+    public static final int MSG_DEF_GET_SERVICE_ITEM_LIST_DETAIL = 0x0081;
+    public static final int MSG_DEF_GET_REWARD_ACTIVITY_LIST = 0x0082;
+    public static final int MSG_DEF_GET_CLUB_JOURNAL_LIST = 0x0083;
+    public static final int MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL = 0x0084;
+
+
+
 }

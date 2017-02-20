@@ -26,15 +26,11 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.TechSummaryInfo;
-import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.share.ShareController;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -134,7 +130,7 @@ public class UserShareCardActivity extends BaseActivity {
 
     @OnClick(R.id.user_share_btn)
     public void shareUser() {
-        doShare();
+        ShareController.doShare("",userShareUrl,SharedPreferenceHelper.getUserName() + "欢迎您","点我聊聊，更多优惠，更好服务！",Constant.SHARE_BUSINESS_CARD,"");
     }
     private Bitmap encodeAsBitmap(int logoResourceId,String contentString,int dimension) throws WriterException {
         Map<EncodeHintType,Object> hints = new EnumMap<EncodeHintType,Object>(EncodeHintType.class);
@@ -160,20 +156,7 @@ public class UserShareCardActivity extends BaseActivity {
         //TODO add logo to the bitmap
         return bitmap;
     }
-    public void doShare() {
-        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
-            Bitmap thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put(Constant.PARAM_SHARE_THUMBNAIL, thumbnail);
-                params.put(Constant.PARAM_SHARE_URL, userShareUrl);
-                params.put(Constant.PARAM_SHARE_TITLE,SharedPreferenceHelper.getUserName() + "欢迎您");
-                params.put(Constant.PARAM_SHARE_DESCRIPTION, "点我聊聊，更多优惠，更好服务！");
-                params.put(Constant.PARAM_SHARE_TYPE,Constant.SHARE_BUSINESS_CARD);
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM, params);
-            });
-        });
-    }
+
 
     @Override
     protected void onDestroy() {

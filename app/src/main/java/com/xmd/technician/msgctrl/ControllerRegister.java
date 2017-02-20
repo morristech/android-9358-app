@@ -97,6 +97,15 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_ORDER_INNER_READ,
                 MsgDef.MSG_DEF_USER_GET_COUPON,
                 MsgDef.MSG_DEF_GET_PAY_NOTIFY,
+                MsgDef.MSG_DEF_GET_CARD_SHARE_LIST,
+                MsgDef.MSG_DEF_GET_ACTIVITY_LIST,
+                MsgDef.MSG_DEF_GET_PROPAGANDA_LIST,
+                MsgDef.MSG_DEF_GET_CARD_LIST_DETAIL,
+                MsgDef.MSG_DEF_GET_ONCE_CARD_LIST_DETAIL,
+                MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST_DETAIL,
+                MsgDef.MSG_DEF_GET_REWARD_ACTIVITY_LIST,
+                MsgDef.MSG_DEF_GET_CLUB_JOURNAL_LIST,
+                MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

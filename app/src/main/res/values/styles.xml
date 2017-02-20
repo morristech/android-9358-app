@@ -99,6 +99,7 @@
         <item name="android:padding">@dimen/inter_space</item>
         <item name="android:layout_marginRight">@dimen/inter_space</item>
         <item name="android:layout_marginTop">@dimen/inter_space</item>
+        <item name="android:visibility">gone</item>
     </style>
     <style name="coupon_type_style" parent="wh_wrap_content_layout">
         <item name="android:textColor">@color/colorHead</item>

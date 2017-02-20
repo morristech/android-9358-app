@@ -3,7 +3,7 @@ package com.xmd.technician.bean;
 import com.xmd.technician.http.gson.BaseResult;
 
 /**
- * Created by Administrator on 2016/8/9.
+ * Created by Lhj on 2016/8/9.
  */
 public class CreditDetailBean extends BaseResult {
 

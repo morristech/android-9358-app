@@ -82,8 +82,8 @@ public class ChatCouponAdapter extends RecyclerView.Adapter{
             }
            chatCouponViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
            chatCouponViewHolder.mCouponPeriod.setText("有效时间："+Utils.StrSubstring(18,couponInfo.couponPeriod,true));
-            if (couponInfo.techCommission > 0) {
-                String money = Utils.getFloat2Str(String.valueOf(couponInfo.techCommission));
+            if (couponInfo.commission > 0) {
+                String money = Utils.getFloat2Str(String.valueOf(couponInfo.commission));
                 String text = String.format(ResourceUtils.getString(R.string.coupon_fragment_coupon_reward), money);
                 SpannableString spannableString = new SpannableString(text);
                 spannableString.setSpan(new TextAppearanceSpan(mContext,R.style.text_bold),3,text.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -113,6 +113,7 @@ public class ChatCouponAdapter extends RecyclerView.Adapter{
         @Bind(R.id.coupon_amount)TextView mCouponAmount;
         @Bind(R.id.coupon_type)TextView mCouponType;
         @Bind(R.id.coupon_select)TextView mTextCheck;
+
         public ChatCouponViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

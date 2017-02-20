@@ -72,5 +72,9 @@ public class Order implements Serializable {
      * 评分
      */
     public int rating;
+    /**
+     * 全额预约
+     */
+    public int payType;
 
 }

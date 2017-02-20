@@ -79,6 +79,11 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
             viewHolder.orderMoneyDetail.setVisibility(View.VISIBLE);
             String orderMoney = order.downPayment+"元";
             viewHolder.orderMoneyDetail.setText(Utils.changeColor(orderMoney,ResourceUtils.getColor(R.color.colorMainBtn),0,orderMoney.length()-1));
+            if(order.payType == 1){
+                viewHolder.mPaidMark.setVisibility(View.VISIBLE);
+            }else{
+                viewHolder.mPaidMark.setVisibility(View.GONE);
+            }
         }
 
         viewHolder.mainTechOrderSurplusTimeDetail.setText(order.remainTime + "");
@@ -137,6 +142,8 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
         TextView orderMoney;
         @Bind(R.id.order_money_detail)
         TextView orderMoneyDetail;
+        @Bind(R.id.paid_mark)
+        TextView mPaidMark;
         @Bind(R.id.main_tech_order_surplus_time_detail)
         TextView mainTechOrderSurplusTimeDetail;
         @Bind(R.id.main_tech_order_btn_accept)

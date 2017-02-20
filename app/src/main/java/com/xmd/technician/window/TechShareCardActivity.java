@@ -2,6 +2,7 @@ package com.xmd.technician.window;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -19,15 +20,11 @@ import com.google.zxing.common.BitMatrix;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.share.ShareController;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -35,7 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2016/7/19.
+ * Created by Lhj on 2016/7/19.
  */
 public class TechShareCardActivity extends BaseActivity {
 
@@ -90,25 +87,29 @@ public class TechShareCardActivity extends BaseActivity {
         mCardName.setText(userName);
         mCardClub.setText(userClubName);
 
-        if(userCanShare){
+        if (userCanShare) {
             mShareBtn.setEnabled(true);
-        }else{
+        } else {
             mShareBtn.setEnabled(false);
         }
-        if(Utils.isNotEmpty(userNum)){
+        if (Utils.isNotEmpty(userNum)) {
             mCardNum.setText(userNum);
-        }else{
+        } else {
             mTechCode.setVisibility(View.GONE);
         }
-        if(Utils.isNotEmpty(codeUrl)){
+        if (Utils.isNotEmpty(codeUrl)) {
             Glide.with(TechShareCardActivity.this).load(codeUrl).error(ResourceUtils.getDrawable(R.drawable.icon22)).into(mUserShareCode);
-        }else {
+        } else {
             mUserShareCode.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
-                    if(mQRBitmap==null){
+                    if (mQRBitmap == null) {
                         try {
-                            mQRBitmap=encodeAsBitmap(0, codeUrl, mUserShareCode.getWidth());
+                            mQRBitmap = encodeAsBitmap(R.mipmap.ic_launcher, codeUrl, mUserShareCode.getWidth());
+                     /*         BitmapDrawable bd = (BitmapDrawable) ResourceUtils.getDrawable(R.mipmap.ic_launcher);
+                            Bitmap bitmapLogo = bd.getBitmap();
+
+                            mUserShareCode.setImageBitmap( addLogo(mQRBitmap,bitmapLogo));*/
                             mUserShareCode.setImageBitmap(mQRBitmap);
                         } catch (WriterException e) {
                             e.printStackTrace();
@@ -118,16 +119,18 @@ public class TechShareCardActivity extends BaseActivity {
                 }
             });
 
-        }
+            //    }
 
+        }
     }
 
     @OnClick(R.id.user_share_btn)
     public void shareUser() {
-        doShare();
+        ShareController.doShare("", userShareUrl, SharedPreferenceHelper.getUserName() + "欢迎您", "点我聊聊，更多优惠，更好服务！", Constant.SHARE_BUSINESS_CARD, "");
     }
-    private Bitmap encodeAsBitmap(int logoResourceId,String contentString,int dimension) throws WriterException {
-        Map<EncodeHintType,Object> hints = new EnumMap<EncodeHintType,Object>(EncodeHintType.class);
+
+    private Bitmap encodeAsBitmap(int logoResourceId, String contentString, int dimension) throws WriterException {
+        Map<EncodeHintType, Object> hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         BitMatrix result;
         try {
@@ -150,19 +153,47 @@ public class TechShareCardActivity extends BaseActivity {
         //TODO add logo to the bitmap
         return bitmap;
     }
-    public void doShare() {
-        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
-            Bitmap thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put(Constant.PARAM_SHARE_THUMBNAIL, thumbnail);
-                params.put(Constant.PARAM_SHARE_URL, userShareUrl);
-                params.put(Constant.PARAM_SHARE_TITLE,SharedPreferenceHelper.getUserName() + "欢迎您");
-                params.put(Constant.PARAM_SHARE_DESCRIPTION, "点我聊聊，更多优惠，更好服务！");
-                params.put(Constant.PARAM_SHARE_TYPE,Constant.SHARE_BUSINESS_CARD);
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM, params);
-            });
-        });
+
+    private static Bitmap addLogo(Bitmap src, Bitmap logo) {
+        if (src == null) {
+            return null;
+        }
+
+        if (logo == null) {
+            return src;
+        }
+
+        //获取图片的宽高
+        int srcWidth = src.getWidth();
+        int srcHeight = src.getHeight();
+        int logoWidth = logo.getWidth();
+        int logoHeight = logo.getHeight();
+
+        if (srcWidth == 0 || srcHeight == 0) {
+            return null;
+        }
+
+        if (logoWidth == 0 || logoHeight == 0) {
+            return src;
+        }
+
+        //logo大小为二维码整体大小的1/5
+        float scaleFactor = srcWidth * 1.0f / 5 / logoWidth;
+        Bitmap bitmap = Bitmap.createBitmap(srcWidth, srcHeight, Bitmap.Config.ARGB_8888);
+        try {
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawBitmap(src, 0, 0, null);
+            canvas.scale(scaleFactor, scaleFactor, srcWidth / 2, srcHeight / 2);
+            canvas.drawBitmap(logo, (srcWidth - logoWidth) / 2, (srcHeight - logoHeight) / 2, null);
+
+            canvas.save(Canvas.ALL_SAVE_FLAG);
+            canvas.restore();
+        } catch (Exception e) {
+            bitmap = null;
+            e.getStackTrace();
+        }
+
+        return bitmap;
     }
 
     @Override

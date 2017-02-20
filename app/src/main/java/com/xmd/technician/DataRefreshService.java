@@ -99,6 +99,7 @@ public class DataRefreshService extends Service {
                 try {
                     Thread.sleep(60 * 1000);
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
                     break;
                 }
             }

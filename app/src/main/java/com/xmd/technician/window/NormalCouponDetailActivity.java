@@ -27,12 +27,11 @@ import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.share.ShareController;
 import com.xmd.technician.widget.FlowLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -148,31 +147,17 @@ public class NormalCouponDetailActivity extends BaseActivity {
 
     @OnClick(R.id.btn_share)
     public void doShare() {
-        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
-            String imgUrl = mCouponInfoResult.respData != null ? mCouponInfoResult.respData.imgUrl : "";
-            if (Utils.isEmpty(imgUrl)) {
-                imgUrl = UserProfileProvider.getInstance().getCurrentUserInfo().getAvatar();
-            }
-            final Bitmap thumbnail = ImageLoader.readBitmapFromImgUrl(imgUrl);
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> {
-                Map<String, Object> params = new HashMap<>();
-
-                params.put(Constant.PARAM_SHARE_THUMBNAIL, thumbnail);
-                params.put(Constant.PARAM_SHARE_URL, mCouponInfoResult.respData.shareUrl);
-                params.put(Constant.PARAM_SHARE_TITLE, mCouponInfoResult.respData.clubName + "-" + mCouponInfoResult.respData.activities.actTitle);
-                params.put(Constant.PARAM_SHARE_DESCRIPTION, mCouponInfoResult.respData.activities.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。");
-                params.put(Constant.PARAM_SHARE_TYPE,Constant.SHARE_COUPON);
-                params.put(Constant.PARAM_ACT_ID, mActId);
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM, params);
-            });
-        });
+        String imgUrl = mCouponInfoResult.respData != null ? mCouponInfoResult.respData.imgUrl : "";
+        ShareController.doShare(imgUrl,mCouponInfoResult.respData.shareUrl,mCouponInfoResult.respData.clubName + "-" + mCouponInfoResult.respData.activities.actTitle,
+                mCouponInfoResult.respData.activities.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。",Constant.SHARE_COUPON,mActId);
     }
     private void initChildViews(){
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.leftMargin = Utils.dip2px(NormalCouponDetailActivity.this,5);
-        lp.rightMargin = Utils.dip2px(NormalCouponDetailActivity.this,5);
+        lp.leftMargin = 10;
+        lp.rightMargin = 10;
         lp.topMargin = Utils.dip2px(NormalCouponDetailActivity.this,12);
+        //  lp.bottomMargin =40;
         for(int i = 0; i < limitList.size(); i ++){
             TextView view = new TextView(this);
             view.setPadding(36,5,36,5);
@@ -182,4 +167,4 @@ public class NormalCouponDetailActivity extends BaseActivity {
             mFlowLayout.addView(view,lp);
         }
     }
- }
+}

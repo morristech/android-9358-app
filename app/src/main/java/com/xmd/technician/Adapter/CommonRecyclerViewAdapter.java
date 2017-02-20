@@ -1,4 +1,4 @@
-package com.xmd.technician.widget;
+package com.xmd.technician.Adapter;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;

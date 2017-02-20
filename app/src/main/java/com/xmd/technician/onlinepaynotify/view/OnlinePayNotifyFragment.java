@@ -25,7 +25,7 @@ import com.xmd.technician.onlinepaynotify.event.PayNotifyNewDataEvent;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
 import com.xmd.technician.onlinepaynotify.viewmodel.PayNotifyInfoViewModel;
-import com.xmd.technician.widget.CommonRecyclerViewAdapter;
+import com.xmd.technician.Adapter.CommonRecyclerViewAdapter;
 import com.xmd.technician.widget.CustomAlertDialog;
 import com.xmd.technician.window.BaseFragment;
 

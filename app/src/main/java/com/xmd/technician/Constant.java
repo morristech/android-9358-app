@@ -22,6 +22,38 @@ public class Constant {
 
     public static final String ORDER_STATUS_ALL = "";
     /**
+     *优惠券
+     */
+    public static final String COUPON_TYPE = "redpack,ordinary";
+    public static final String NORMAL_COUPON_TYPE = "coupon";
+
+    /**
+     *点钟券
+     */
+    public static final String PAID_TYPE = "paid";
+    /**
+     *次卡
+     */
+    public static final String ONCE_TYPE = "once";
+    /**
+     *谁替我买单
+     */
+    public static final String PAID_ITEM_TYPE = "paidItem";
+    /**
+     *限时抢
+     */
+    public static final String ONE_YUAN_TYPE = "oneYuan";
+    /**
+     *抽奖活动
+     */
+    public static final String DRAW_TYPE = "draw";
+    /**
+     *期刊
+     */
+    public static final String JOURNAL_TYPE = "journal";
+
+
+    /**
      * 已接受
      */
     public static final String ORDER_STATUS_ACCEPT = "accept";

@@ -104,6 +104,19 @@ public class RequestConstant {
 
     //技师功能权限
     public static final String URL_GET_SWITCH_STATUS = BASE_URL + "/v1/club/switch/status/get";
+    /**
+     * 营销列表
+     */
+    public static final String URL_GET_CARD_SHARE_LIST_INFO = BASE_URL + "/v1/techshare/cardListInfo";        //卡券列表
+    public static final String URL_GET_ACTIVITY_LIST_INFO = BASE_URL + "/v1/techshare/activityListInfo";     //热门活动列表
+    public static final String URL_GET_PROPAGANDA_LIST_INFO = BASE_URL + "/v1/techshare/propagandaListInfo";//会所宣传列表
+    public static final String URL_GET_CARD_LIST_DETAIL = BASE_URL + "/v1/techshare/cardListDetail";       //点钟券、优惠券列表
+    public static final String URL_GET_ONCE_CARD_LIST_DETAIL = BASE_URL + "/v2/club/once_card/activity/list";//次卡列表
+    public static final String URL_GET_SERVICE_ITEM_LIST = BASE_URL + "/v1/techshare/serviceItemListDetail";    //限时抢列表
+    public static final String URL_GET_PAY_FOR_ME_LIST = BASE_URL + "/v1/techshare/oneYuanListDetail";//谁替我买单列表
+    public static final String URL_GET_CLUB_JOURNAL_LIST_DETAIL = BASE_URL + "/v1/techshare/journalListDetail";//会所期刊列表
+    public static final String URL_GET_REWARD_ACTIVITY_LIST = BASE_URL + "/v1/techshare/darwActListDetail";//抽奖活动列表
+
 
     /*********************************************************************************************/
     /*                                           keys                                            */
@@ -255,6 +268,7 @@ public class RequestConstant {
     public static final String KEY_IS_INDEX_PAGE = "isIndexPage";
     public static final String ORDER_TYPE_APPOINT = "appoint";
     public static final String ORDER_TYPE_PAID = "paid";
+    public static final String KEY_COUPON_TYPE = "couponType";
     /**
      * 自动领券
      */

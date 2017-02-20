@@ -22,6 +22,7 @@ public class CouponInfo {
     public String useType;
     public String consumeMoney;
     public String couponTypeName;
+    public String shareUrl;
 
     @Override
     public String toString() {

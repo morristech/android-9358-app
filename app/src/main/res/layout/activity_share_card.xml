@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".window.TechShareCardActivity"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".window.TechShareCardActivity"
     >
-    <include layout="@layout/toolbar" />
+
+    <include layout="@layout/toolbar"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="#AA9b9b9b"
         >
+
         <ImageView
             android:id="@+id/img_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/card_big"
             android:layout_gravity="center"
             android:scaleType="fitXY"
+            android:src="@drawable/card_big"
             />
 
         <LinearLayout
@@ -43,20 +46,22 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/margin_10">
+
                     <com.xmd.technician.widget.RoundImageView
                         android:id="@+id/user_card_head"
                         android:layout_width="@dimen/photo_head_big"
                         android:layout_height="@dimen/photo_head_big"
                         android:layout_marginLeft="@dimen/margin_25"
                         android:layout_marginTop="@dimen/margin_25"
-                        app:type="round"
+                        android:background="@drawable/img_default_square"
                         app:borderRadius="@dimen/search_margin"
-                       android:background="@drawable/icon22"
+                        app:type="round"
                         />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_15"
+                        android:layout_marginLeft="@dimen/small_space"
                         android:layout_marginTop="@dimen/margin_20"
                         android:orientation="vertical">
 
@@ -70,19 +75,21 @@
                                 android:id="@+id/user_card_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/colorHead"
+                                android:ellipsize="end"
                                 android:maxEms="4"
                                 android:singleLine="true"
-                                android:ellipsize="end"
-                                android:textSize="@dimen/fontHead" />
+                                android:textColor="@color/colorHead"
+                                android:textSize="@dimen/fontHead"/>
+
                             <LinearLayout
                                 android:id="@+id/ll_tech_code"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="3dp"
                                 android:layout_marginLeft="@dimen/margin_10"
+                                android:layout_marginTop="3dp"
+                                android:orientation="horizontal"
                                 >
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -95,7 +102,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="@dimen/margin_2"
                                     android:layout_marginRight="@dimen/margin_2"
-                                    android:textColor="@color/text_color_yellow" />
+                                    android:textColor="@color/text_color_yellow"/>
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -112,29 +120,32 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_10"
                             android:textColor="@color/phone_number_text_color"
-                            android:textSize="@dimen/fontBody" />
+                            android:textSize="@dimen/fontBody"/>
                     </LinearLayout>
                 </LinearLayout>
-                <View style="@style/horizontal_divider_line_title" />
+
+                <View style="@style/horizontal_divider_line_title"/>
+
                 <ImageView
                     android:id="@+id/user_share_img"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/margin_10"
+                    android:layout_weight="1"
                     android:src="@drawable/icon23"
                     />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/user_code_message"
-                    android:gravity="center"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/margin_2"
-                    android:textSize="@dimen/fontBody"
-                    android:textColor="@color/alert_text_color"
                     android:layout_marginBottom="@dimen/margin_2"
+                    android:layout_marginTop="@dimen/margin_2"
+                    android:gravity="center"
+                    android:text="@string/user_code_message"
+                    android:textColor="@color/alert_text_color"
+                    android:textSize="@dimen/fontBody"
                     />
 
 
@@ -143,11 +154,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/order_detail_section_btn_height"
                     android:layout_marginBottom="@dimen/margin_10"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:background="@drawable/rect_bg"
                     android:text="@string/coupon_fragment_share"
                     android:textColor="@color/color_white"
-                    android:background="@drawable/rect_bg"
-                    android:layout_marginRight="@dimen/margin_20"
-                    android:layout_marginLeft="@dimen/margin_20"
                     />
 
             </LinearLayout>
@@ -155,7 +166,6 @@
         </LinearLayout>
 
     </FrameLayout>
-
 
 
 </LinearLayout>
