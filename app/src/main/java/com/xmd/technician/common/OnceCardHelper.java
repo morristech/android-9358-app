@@ -1,5 +1,7 @@
 package com.xmd.technician.common;
 
+
+
 import com.xmd.technician.bean.OnceCardBean;
 import com.xmd.technician.bean.OnceCardItemBean;
 import com.xmd.technician.http.gson.OnceCardResult;
@@ -42,7 +44,7 @@ public class OnceCardHelper {
             techRoyalty = getTechRoyalty(onceCardResult.respData.activityList.get(i));
             price = getOnceCardPrice(onceCardResult.respData.activityList.get(i));
             mCardItemBeanList.add(new OnceCardItemBean(onceCardResult.respData.activityList.get(i).id,onceCardResult.respData.activityList.get(i).name, onceCardResult.respData.activityList.get(i).imageUrl,
-                    isPreferential, comboDescription, techRoyalty, price, onceCardResult.respData.activityList.get(i).shareUrl));
+                    isPreferential, comboDescription,onceCardResult.respData.activityList.get(i).itemName+getComboShareDescription(onceCardResult.respData.activityList.get(i)), techRoyalty, price, onceCardResult.respData.activityList.get(i).shareUrl));
         }
         return mCardItemBeanList;
     }
@@ -53,6 +55,16 @@ public class OnceCardHelper {
             mCombo.add(String.format("买%s送%s", bean.onceCardPlans.get(i).paidCount, bean.onceCardPlans.get(i).giveCount));
         }
         return String.format("套餐：%s", Utils.listToString(mCombo));
+    }
+    private String getComboShareDescription(OnceCardBean bean){
+        String desShare = "";
+        for (int i = 0; i < bean.onceCardPlans.size(); i++) {
+            if(bean.onceCardPlans.get(i).optimal.equals("Y")){
+                desShare = "_"+String.format("%1.1f折",bean.onceCardPlans.get(i).actAmount*1.0/(bean .onceCardPlans.get(i).itemAmount)
+                )+"_"+String.format("(买%s送%s)",bean.onceCardPlans.get(i).paidCount,bean.onceCardPlans.get(i).giveCount);
+            }
+        }
+        return desShare;
     }
 
     private String getTechRoyalty(OnceCardBean bean) {

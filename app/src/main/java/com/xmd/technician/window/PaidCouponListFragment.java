@@ -11,12 +11,19 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ShareCouponBean;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ShareCouponResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareController;
+import com.xmd.technician.widget.EmptyView;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Subscription;
 
 /**
@@ -25,21 +32,37 @@ import rx.Subscription;
 
 public class PaidCouponListFragment extends BaseListFragment<ShareCouponBean> {
 
+    @Bind(R.id.empty_view_widget)
+    EmptyView mEmptyViewWidget;
     private Subscription mGetPaidCouponListSubscription;
+    private int mTotalAmount;
 
-    public static PaidCouponListFragment getInstance() {
-        return new PaidCouponListFragment();
+    public static PaidCouponListFragment getInstance(int totalAmount) {
+        PaidCouponListFragment pf = new PaidCouponListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT, totalAmount);
+        pf.setArguments(bundle);
+        return pf;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list_view, container, false);
+        mTotalAmount = getArguments().getInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT);
+        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
+        ButterKnife.bind(this, view);
+        mEmptyViewWidget.setStatus(EmptyView.Status.Loading);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
+        return view;
     }
 
     @Override
     protected void dispatchRequest() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_LIST_DETAIL, Constant.PAID_TYPE);
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
+        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+        params.put(RequestConstant.KEY_COUPON_TYPE,Constant.PAID_TYPE);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_LIST_DETAIL, params);
     }
 
     @Override
@@ -51,7 +74,20 @@ public class PaidCouponListFragment extends BaseListFragment<ShareCouponBean> {
 
     private void handleCouponList(ShareCouponResult couponListResult) {
         if (couponListResult.statusCode == 200) {
-            onGetListSucceeded(1, couponListResult.respData);
+            if (couponListResult.respData == null) {
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                mEmptyViewWidget.setEmptyViewWithDescription(R.drawable.ic_failed, "点钟券已下线");
+            } else {
+                mEmptyViewWidget.setStatus(EmptyView.Status.Gone);
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                if (couponListResult.respData.size() != mTotalAmount) {
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
+                }
+                onGetListSucceeded(couponListResult.pageCount, couponListResult.respData);
+            }
+
         } else {
             onGetListFailed(couponListResult.msg);
         }
@@ -77,5 +113,7 @@ public class PaidCouponListFragment extends BaseListFragment<ShareCouponBean> {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mGetPaidCouponListSubscription);
+        ButterKnife.unbind(this);
     }
+
 }

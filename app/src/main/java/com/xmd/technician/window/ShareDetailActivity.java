@@ -1,5 +1,6 @@
 package com.xmd.technician.window;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -26,15 +27,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by sdcm on 15-10-27.
+ * Created by Lhj on 2017/2/22.
  */
-public class BrowserActivity extends BaseActivity implements View.OnClickListener{
 
-    public static final String EXTRA_URL = "url";
-    public static final String EXTRA_SHOW_MENU = "show_menu";
-    public static final String EXTRA_FULLSCREEN = "fullScreen";
+public class ShareDetailActivity extends BaseActivity implements View.OnClickListener{
 
-    @Bind(R.id.mainwebView) WebView mainWebView;
+
+    @Bind(R.id.share_web_view) WebView shareWebView;
     @Bind(R.id.back_ImageView) ImageView back_ImageView;
     @Bind(R.id.go_next_ImageView) ImageView go_next_ImageView;
     @Bind(R.id.refresh_ImageView) ImageView refresh_ImageView;
@@ -42,36 +41,43 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
     @Bind(R.id.download_progressbar) SmoothProgressBar downloadProgressbar;
     @Bind(R.id.menu_LinearLayout) LinearLayout mMenuBar;
 
-    //    private View mCustomView;
-//    private WebChromeClient.CustomViewCallback mCustomViewCallback;
-    private WebSettings ws;
+    public static final String SHARE_URL = "share_url";
+    public static final String SHARE_TITLE = "share_title";
+    public static final String EXTRA_SHOW_MENU = "show_menu";
+    public static final String EXTRA_FULLSCREEN = "fullScreen";
 
+    private String mShareUrl;
+    private String mTitle;
+    private WebSettings ws;
     private boolean mShowMenu;
-    private String mCurrentUrl;
+    
+    public static void startShareDetailActivity(Context activity, String url,String title,Boolean showMenu) {
+        Intent intent = new Intent(activity, ShareDetailActivity.class);
+        intent.putExtra(SHARE_URL, url);
+        intent.putExtra(SHARE_TITLE,title);
+        intent.putExtra(EXTRA_SHOW_MENU,showMenu);
+        activity.startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        boolean fullScreen = getIntent().getBooleanExtra(EXTRA_FULLSCREEN, false);
-//        if (fullScreen) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//        } else {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        }
-        setContentView(R.layout.activity_browser);
+        setContentView(R.layout.activity_share_detail);
         ButterKnife.bind(this);
 
-        mShowMenu = getIntent().getBooleanExtra(EXTRA_SHOW_MENU, true);
-        mCurrentUrl = getIntent().getStringExtra(EXTRA_URL);
 
+        mShowMenu = getIntent().getBooleanExtra(EXTRA_SHOW_MENU, false);
+        mShareUrl = getIntent().getStringExtra(SHARE_URL);
+        mTitle = getIntent().getStringExtra(SHARE_TITLE);
+        setTitle(mTitle);
+        setBackVisible(true);
         back_ImageView.setOnClickListener(this);
         go_next_ImageView.setOnClickListener(this);
         refresh_ImageView.setOnClickListener(this);
         home_ImageView.setOnClickListener(this);
 
-        ws = mainWebView.getSettings();
+        ws = shareWebView.getSettings();
         ws.setUserAgentString(Constant.APP_BROWSER_USER_AGENT);
         ws.setBuiltInZoomControls(false);//隐藏缩放按钮
         ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
@@ -90,60 +96,19 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
         ws.setJavaScriptEnabled(true);
         ws.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
 
-        //mainWebView.addJavascriptInterface(new ShareJavaScriptInterface(), "AppInterface");
-
-        mainWebView.setWebChromeClient(new WebChromeClient() {
+        shareWebView.setWebChromeClient(new WebChromeClient() {
             public void onReceivedTitle(WebView view, String title) {
-                setTitle(title);
+                setTitle(mTitle);
             }
 
             public void onProgressChanged(WebView view, int newProgress) {
                 downloadProgressbar.setTargetProgress(newProgress * 10);
             }
 
-//            @Override
-//            public void onShowCustomView(View view, CustomViewCallback callback) {
-//                if (mCustomViewCallback != null) {
-//                    mCustomViewCallback.onCustomViewHidden();
-//                    mCustomViewCallback = null;
-//                    return;
-//                }
-//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//                BrowserActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//                ViewGroup parentViewGroup = (ViewGroup) mainWebView.getParent();
-//                parentViewGroup.removeView(mainWebView);
-//                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//                view.setLayoutParams(layoutParams);
-//                parentViewGroup.addView(view);
-//                mCustomView = view;
-//                mCustomViewCallback = callback;
-//                mMenuBar.setVisibility(View.GONE);
-//            }
-//
-//            @Override
-//            public void onHideCustomView() {
-//                if (mCustomView != null) {
-//                    if (mCustomViewCallback != null) {
-//                        mCustomViewCallback.onCustomViewHidden();
-//                        mCustomViewCallback = null;
-//                    }
-//                    BrowserActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//                    ViewGroup parentViewGroup = (ViewGroup) mCustomView.getParent();
-//                    parentViewGroup.removeView(mCustomView);
-//                    parentViewGroup.addView(mainWebView);
-//                    mCustomView = null;
-//                    if (mShowMenu) {
-//                        mMenuBar.setVisibility(View.VISIBLE);
-//                    }
-//
-//                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//                }
-//            }
+
         });
 
-        mainWebView.setDownloadListener(new DownloadListener() {
+        shareWebView.setDownloadListener(new DownloadListener() {
 
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
@@ -153,7 +118,7 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
-        mainWebView.setWebViewClient(new WebViewClient() {
+        shareWebView.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -170,7 +135,7 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 ws.setBlockNetworkImage(true);
-                go_next_ImageView.setEnabled(mainWebView.canGoForward());
+                go_next_ImageView.setEnabled(shareWebView.canGoForward());
                 downloadProgressbar.setProgress(0);
                 downloadProgressbar.setTargetProgress(10);
             }
@@ -190,14 +155,14 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
         if (!mShowMenu) {
             mMenuBar.setVisibility(View.GONE);
         }
-        mainWebView.loadUrl(mCurrentUrl);
-        mainWebView.addJavascriptInterface(new JsOperator(this), "browser");
+        shareWebView.loadUrl(mShareUrl);
+        shareWebView.addJavascriptInterface(new JsOperator(this), "browser");
     }
 
     @Override
     public void onBackPressed() {
-        if (mainWebView.canGoBack() && mShowMenu) {
-            mainWebView.goBack();
+        if (shareWebView.canGoBack() && mShowMenu) {
+            shareWebView.goBack();
             return;
         }
         super.onBackPressed();
@@ -207,19 +172,19 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_ImageView:
-                if (mainWebView.canGoBack()) {
-                    mainWebView.goBack();
+                if (shareWebView.canGoBack()) {
+                    shareWebView.goBack();
                 } else {
                     finish();
                 }
                 break;
             case R.id.go_next_ImageView:
-                if (mainWebView.canGoForward()) {
-                    mainWebView.goForward();
+                if (shareWebView.canGoForward()) {
+                    shareWebView.goForward();
                 }
                 break;
             case R.id.refresh_ImageView:
-                mainWebView.reload();
+                shareWebView.reload();
                 break;
             case R.id.home_ImageView:
                 finish();
@@ -232,7 +197,7 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
     public void onResume() {
         super.onResume();
         try {
-            mainWebView.getClass().getMethod("onResume").invoke(mainWebView, (Object[]) null);
+            shareWebView.getClass().getMethod("onResume").invoke(shareWebView, (Object[]) null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -242,13 +207,13 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
         super.onPause();
 
         try {
-            mainWebView.getClass().getMethod("onPause").invoke(mainWebView, (Object[]) null);
+            shareWebView.getClass().getMethod("onPause").invoke(shareWebView, (Object[]) null);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void share(String url) {
+/*    public void share(String url) {
         Uri uri = Uri.parse(url);
         String title = uri.getQueryParameter("title");
         String text = uri.getQueryParameter("message");
@@ -258,7 +223,7 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
         intent.putExtra(Intent.EXTRA_TITLE, title);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(Intent.createChooser(intent, title));
-    }
+    }*/
 
     private class JsOperator {
         private Context mmContext;
@@ -287,4 +252,5 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
             mmContext.startActivity(Intent.createChooser(intent, mmContext.getString(R.string.app_name)));
         }
     }
+
 }

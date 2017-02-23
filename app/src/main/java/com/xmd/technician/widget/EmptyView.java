@@ -129,6 +129,12 @@ public class EmptyView extends RelativeLayout {
         ivEmptyPic.setImageResource(resId);
         return this;
     }
+    public EmptyView setEmptyViewWithDescription(int resId,CharSequence tip){
+        setStatus(Status.Empty);
+        ivEmptyPic.setImageResource(resId);
+        tvEmptyTip.setText(tip);
+        return this;
+    }
 
     public void setOnRefreshListener(OnRefreshListener listener){
         mRefreshListener=listener;

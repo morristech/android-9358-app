@@ -320,7 +320,7 @@ public class RequestController extends AbstractController {
                 getOnceCardListDetail();
                 break;
             case MsgDef.MSG_DEF_GET_CARD_LIST_DETAIL:
-                getCardListDetail(msg.obj.toString());
+                getCardListDetail((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST_DETAIL:
                 getServiceItemListDetail();
@@ -1481,7 +1481,7 @@ public class RequestController extends AbstractController {
      * 次卡列表
      */
     private void getOnceCardListDetail() {
-        Call<OnceCardResult> call = getSpaService().onceCardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+        Call<OnceCardResult> call = getSpaService().onceCardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(),"true");
         call.enqueue(new TokenCheckedCallback<OnceCardResult>() {
             @Override
             protected void postResult(OnceCardResult result) {
@@ -1493,10 +1493,10 @@ public class RequestController extends AbstractController {
     /**
      * 券列表
      *
-     * @param type
+     * @param params
      */
-    private void getCardListDetail(String type) {
-        Call<ShareCouponResult> call = getSpaService().cardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(), type);
+    private void getCardListDetail(Map<String, String> params) {
+        Call<ShareCouponResult> call = getSpaService().cardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(), params.get(RequestConstant.KEY_COUPON_TYPE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<ShareCouponResult>() {
             @Override
             protected void postResult(ShareCouponResult result) {
@@ -1533,9 +1533,8 @@ public class RequestController extends AbstractController {
 
     /**
      * 期刊列表
-     *
      */
-    private void getClubJournalList(){
+    private void getClubJournalList() {
         Call<JournalListResult> call = getSpaService().clubJournalListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
         call.enqueue(new TokenCheckedCallback<JournalListResult>() {
             @Override
@@ -1547,9 +1546,8 @@ public class RequestController extends AbstractController {
 
     /**
      * 谁替我买单列表
-     *
      */
-    private void getPayForMeListDetail(){
+    private void getPayForMeListDetail() {
         Call<PayForMeListResult> call = getSpaService().payForMeListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
         call.enqueue(new TokenCheckedCallback<PayForMeListResult>() {
             @Override

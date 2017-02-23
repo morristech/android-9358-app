@@ -12,9 +12,10 @@ public class OnceCardItemBean {
     public String comboDescription;
     public String techRoyalty;
     public String price;
-    public String ShareUrl;
+    public String shareUrl;
+    public String shareDescription;
 
-    public OnceCardItemBean(int id,String name,String imageUrl, boolean isPreferential, String comboDescription, String techRoyalty, String price,String shareUrl) {
+    public OnceCardItemBean(int id,String name,String imageUrl, boolean isPreferential, String comboDescription,String shareDescription,String techRoyalty, String price,String shareUrl) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -22,7 +23,8 @@ public class OnceCardItemBean {
         this.comboDescription = comboDescription;
         this.techRoyalty = techRoyalty;
         this.price = price;
-        this.ShareUrl = shareUrl;
+        this.shareUrl = shareUrl;
+        this.shareDescription = shareDescription;
     }
 
 

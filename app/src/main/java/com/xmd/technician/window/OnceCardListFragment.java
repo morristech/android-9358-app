@@ -1,22 +1,29 @@
 package com.xmd.technician.window;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.OnceCardItemBean;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.OnceCardHelper;
+import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.OnceCardResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareController;
+import com.xmd.technician.widget.EmptyView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Subscription;
 
 /**
@@ -25,18 +32,27 @@ import rx.Subscription;
 
 public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
 
+    @Bind(R.id.empty_view_widget)
+    EmptyView mEmptyViewWidget;
     private Subscription mOnceCardListSubscription;
     private OnceCardHelper mOnceCardHelper;
+    private int mTotalAmount;
 
-    public static OnceCardListFragment getInstance() {
-        OnceCardListFragment nf = new OnceCardListFragment();
-        return nf;
+    public static OnceCardListFragment getInstance(int totalAmount) {
+        OnceCardListFragment of = new OnceCardListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT, totalAmount);
+        of.setArguments(bundle);
+        return of;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list_view, container, false);
+        mTotalAmount = getArguments().getInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT);
+        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -53,10 +69,22 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
 
     private void handleCardResult(OnceCardResult onceCardResult) {
         if (onceCardResult.statusCode == 200) {
-            if (mOnceCardHelper == null) {
-                mOnceCardHelper = new OnceCardHelper();
+
+            if (onceCardResult.respData == null) {
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                mEmptyViewWidget.setEmptyViewWithDescription(R.drawable.ic_failed, "活动已下线");
+            } else {
+                if (onceCardResult.respData.activityList.size() != mTotalAmount) {
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
+                }
+                if (mOnceCardHelper == null) {
+                    mOnceCardHelper = new OnceCardHelper();
+                }
+                onGetListSucceeded(1, mOnceCardHelper.getCardItemBeanList(onceCardResult));
             }
-            onGetListSucceeded(1, mOnceCardHelper.getCardItemBeanList(onceCardResult));
+
         } else {
             onGetListFailed(onceCardResult.msg);
         }
@@ -65,8 +93,13 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
     @Override
     public void onShareClicked(OnceCardItemBean bean) {
         super.onShareClicked(bean);
-        ShareController.doShare("", bean.ShareUrl, SharedPreferenceHelper.getUserClubName() + "-" + bean.name,
-                bean.comboDescription + "，超值优惠，超值享受。快来购买吧。", Constant.SHARE_COUPON, "");
+        ShareController.doShare("", bean.shareUrl,  bean.name,
+                bean.shareDescription, Constant.SHARE_COUPON, "");
+    }
+
+    @Override
+    public void onItemClicked(OnceCardItemBean bean) throws HyphenateException {
+        super.onItemClicked(bean);
     }
 
     @Override
@@ -75,9 +108,11 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
     }
 
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mOnceCardListSubscription);
+        ButterKnife.unbind(this);
     }
 }

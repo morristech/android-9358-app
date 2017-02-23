@@ -262,7 +262,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
             listView.setAdapter(adapter);
             mSwipeRefreshLayout.setRefreshing(false);
             Utils.makeShortToast(getActivity(),"未查询到相关联系人");
-            mEmptyView.setStatus(EmptyView.Status.Empty);
+
         }
 
     }

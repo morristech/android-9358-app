@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:background="@drawable/img_pay_for_me"
+                android:background="@drawable/img_default_square"
                 app:borderRadius="@dimen/limit_grab_item_img_radius"
                 app:type="round"/>
 

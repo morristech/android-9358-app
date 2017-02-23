@@ -2,11 +2,13 @@ package com.xmd.technician.share;
 
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Message;
 
 import com.xmd.technician.Constant;
-import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.R;
 import com.xmd.technician.common.ImageLoader;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.AbstractController;
@@ -47,7 +49,9 @@ public class ShareController extends AbstractController {
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
             Bitmap thumbnail;
             if (Utils.isEmpty(imageUrl)) {
-                thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());
+                //  thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());
+                BitmapDrawable bd = (BitmapDrawable) ResourceUtils.getDrawable(R.drawable.img_default_square);
+                thumbnail = bd.getBitmap();
             } else {
                 thumbnail = ImageLoader.readBitmapFromImgUrl(imageUrl);
             }
@@ -58,10 +62,9 @@ public class ShareController extends AbstractController {
                 params.put(Constant.PARAM_SHARE_TITLE, title);
                 params.put(Constant.PARAM_SHARE_DESCRIPTION, description);
                 params.put(Constant.PARAM_SHARE_TYPE, type);
-                if (Utils.isNotEmpty(actId)) {
-                    params.put(Constant.PARAM_ACT_ID, actId);
-                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM, params);
-                }
+                params.put(Constant.PARAM_ACT_ID, actId);
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM, params);
+
             });
         });
     }

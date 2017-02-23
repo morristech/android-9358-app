@@ -19,6 +19,7 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
 
     private static final String SHARE_TYPE = "share_type";
     private static final String SHARE_TITLE = "share_title";
+    public static final String SHARE_TOTAL_AMOUNT = "share_total_amount";
 
     public static final int PAID_COUPON = 0x001;//点钟券
     public static final int NORMAL_COUPON = 0x002;//普通券
@@ -31,12 +32,14 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
 
 
     private int mCurrentShareList;
-    private String mCurrentTitle;
+   public String mCurrentTitle;
+    private int mTotal;
 
-    public static void startShareDetailListActivity(Activity activity, int shareType, String title) {
+    public static void startShareDetailListActivity(Activity activity, int shareType, String title, int totalAmount) {
         Intent intent = new Intent(activity, ShareDetailListActivity.class);
         intent.putExtra(SHARE_TYPE, shareType);
         intent.putExtra(SHARE_TITLE, title);
+        intent.putExtra(SHARE_TOTAL_AMOUNT, totalAmount);
         activity.startActivity(intent);
     }
 
@@ -46,6 +49,7 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
         setContentView(R.layout.activity_share_detail_list);
         mCurrentShareList = getIntent().getIntExtra(SHARE_TYPE, 0);
         mCurrentTitle = getIntent().getStringExtra(SHARE_TITLE);
+        mTotal = getIntent().getIntExtra(SHARE_TOTAL_AMOUNT, 0);
         initView(mCurrentShareList);
     }
 
@@ -56,31 +60,31 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
                 return;
             case PAID_COUPON:
                 setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.paid_coupon_list_title) : mCurrentTitle);
-                setFragment(PaidCouponListFragment.getInstance());
+                setFragment(PaidCouponListFragment.getInstance(mTotal));
                 break;
             case NORMAL_COUPON:
                 setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.normal_coupon_list_title) : mCurrentTitle);
-                setFragment(NormalCouponListFragment.getInstance());
+                setFragment(NormalCouponListFragment.getInstance(mTotal));
                 break;
             case ONCE_CARD:
                 setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.once_card_list_title) : mCurrentTitle);
-                setFragment(OnceCardListFragment.getInstance());
+                setFragment(OnceCardListFragment.getInstance(mTotal));
                 break;
             case LIMIT_GRAB:
                 setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.limit_grab_list_title) : mCurrentTitle);
-                setFragment(LimitGrabListFragment.getInstance());
+                setFragment(LimitGrabListFragment.getInstance(mTotal));
                 break;
             case PAY_FOR_ME:
                 setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.pay_for_me_list_title) : mCurrentTitle);
-                setFragment(PayForMeListFragment.getInstance());
+                setFragment(PayForMeListFragment.getInstance(mTotal));
                 break;
             case CLUB_JOURNAL:
                 setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.club_journal_list_title) : mCurrentTitle);
-                setFragment(ClubJournalListFragment.getInstance());
+                setFragment(ClubJournalListFragment.getInstance(mTotal));
                 break;
             case REWARD_ACTIVITY:
                 setTitle(Utils.isEmpty(mCurrentTitle) ? ResourceUtils.getString(R.string.reward_list_title) : mCurrentTitle);
-                setFragment(RewardActivityListFragment.getInstance());
+                setFragment(RewardActivityListFragment.getInstance(mTotal));
                 break;
        /*     case OFFLINE_ACTIVITY:
                 setTitle(Utils.isEmpty(mCurrentTitle)? ResourceUtils.getString(R.string.offline_activity_list_title):mCurrentTitle);

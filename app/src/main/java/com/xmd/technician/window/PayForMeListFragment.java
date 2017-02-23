@@ -6,16 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.PayForMeBean;
+import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.PayForMeListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareController;
+import com.xmd.technician.widget.EmptyView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Subscription;
 
 /**
@@ -24,16 +30,26 @@ import rx.Subscription;
 
 public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
 
+    @Bind(R.id.empty_view_widget)
+    EmptyView mEmptyViewWidget;
     private Subscription mPayForMeListSubscription;
+    private int mTotalAmount;
 
-    public static PayForMeListFragment getInstance(){
-        return  new PayForMeListFragment();
+    public static PayForMeListFragment getInstance(int totalAmount) {
+        PayForMeListFragment pf = new PayForMeListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT, totalAmount);
+        pf.setArguments(bundle);
+        return pf;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
+        ButterKnife.bind(this, view);
+        mTotalAmount = getArguments().getInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT);
+        return view;
     }
 
     @Override
@@ -49,9 +65,19 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
     }
 
     private void handlePayForMeListResult(PayForMeListResult payForMeListResult) {
-        if(payForMeListResult.statusCode == 200){
-            onGetListSucceeded(1,payForMeListResult.respData);
-        }else{
+        if (payForMeListResult.statusCode == 200) {
+            if (payForMeListResult.respData == null) {
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                mEmptyViewWidget.setEmptyViewWithDescription(R.drawable.ic_failed, "活动已下线");
+            } else {
+                if (payForMeListResult.respData.size() != mTotalAmount) {
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
+                }
+                onGetListSucceeded(1, payForMeListResult.respData);
+            }
+        } else {
             onGetListFailed(payForMeListResult.msg);
         }
     }
@@ -59,14 +85,26 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
     @Override
     public void onShareClicked(PayForMeBean bean) {
         super.onShareClicked(bean);
-        ShareController.doShare(bean.image, bean.shareUrl, SharedPreferenceHelper.getUserClubName() + "-" + bean.actName,
-              String.format("原价%s,现价%s，超值优惠，超值享受。快来抢购吧。",bean.prizePrice,bean.prizePrice), Constant.SHARE_COUPON, "");
+        ShareController.doShare(bean.image, bean.shareUrl, bean.actName,
+                ResourceUtils.getString(R.string.pay_for_me_share_description), Constant.SHARE_COUPON, "");
+    }
+
+    @Override
+    public void onItemClicked(PayForMeBean bean) throws HyphenateException {
+        super.onItemClicked(bean);
+        if(Utils.isNotEmpty(bean.shareUrl)){
+            bean.shareUrl = "http://192.168.1.105:9880/spa-manager/spa2/?club=601679316694081536#login";
+            ShareDetailActivity.startShareDetailActivity(getActivity(),bean.shareUrl, ResourceUtils.getString(R.string.pay_for_me_list_title),false);
+        }else{
+            return;
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mPayForMeListSubscription);
+        ButterKnife.unbind(this);
     }
 
     @Override

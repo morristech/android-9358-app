@@ -626,14 +626,17 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_ONCE_CARD_LIST_DETAIL)
     Call<OnceCardResult> onceCardListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                            @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+                                            @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                            @Field(RequestConstant.KEY_IS_SHARE )String isShare);
 
     //券列表
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CARD_LIST_DETAIL)
     Call<ShareCouponResult> cardListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                            @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
-                                           @Field(RequestConstant.KEY_COUPON_TYPE) String couponType);
+                                           @Field(RequestConstant.KEY_COUPON_TYPE) String couponType,
+                                           @Field(RequestConstant.KEY_PAGE) String page,
+                                           @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     //限时抢列表
     @FormUrlEncoded

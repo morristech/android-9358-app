@@ -478,6 +478,10 @@
     <string name="club_journal_list_title">会所期刊</string>
     <string name="reward_list_title">抽奖活动</string>
     <string name="offline_activity_list_title">线下活动</string>
+    <string name="limit_grab_share_description">据说这个项目一般人抢不到，但是我觉得你可以！抢项目，约技师，享人间极乐。</string>
+    <string name="pay_for_me_share_description">我和你只有一块钱的距离，点我立即参与</string>
+    <string name="reward_share_description">那一世转山转水，只为相见，点我立即开始</string>
+
 
 
 </resources>

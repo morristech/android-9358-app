@@ -283,6 +283,7 @@ public class RequestConstant {
     public static final String KEY_END_DATE = "endDate";
 
     public static final String KEY_TYPE = "type";
+    public static final String KEY_IS_SHARE = "isShare";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

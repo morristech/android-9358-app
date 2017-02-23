@@ -6,16 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ClubJournalBean;
+import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareController;
+import com.xmd.technician.widget.EmptyView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Subscription;
 
 /**
@@ -25,16 +30,26 @@ import rx.Subscription;
 public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
 
 
+    @Bind(R.id.empty_view_widget)
+    EmptyView mEmptyViewWidget;
     private Subscription mClubJournalListSubscription;
+    private int mTotalAmount;
 
-    public static ClubJournalListFragment getInstance() {
-        return new ClubJournalListFragment();
+    public static ClubJournalListFragment getInstance(int totalAmount) {
+        ClubJournalListFragment cf = new ClubJournalListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT, totalAmount);
+        cf.setArguments(bundle);
+        return cf;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list_view, container, false);
+        mTotalAmount = getArguments().getInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT);
+        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -51,7 +66,17 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
 
     private void handleJournalListResult(JournalListResult journalListResult) {
         if (journalListResult.statusCode == 200) {
-            onGetListSucceeded(1, journalListResult.respData);
+            if (journalListResult.respData == null) {
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PROPAGANDA_LIST);
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                mEmptyViewWidget.setEmptyViewWithDescription(R.drawable.ic_failed, "期刊已下线");
+            } else {
+                if (journalListResult.respData.size() != mTotalAmount) {
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PROPAGANDA_LIST);
+                }
+                onGetListSucceeded(1, journalListResult.respData);
+            }
         } else {
             onGetListFailed(journalListResult.msg);
         }
@@ -60,14 +85,27 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
     @Override
     public void onShareClicked(ClubJournalBean bean) {
         super.onShareClicked(bean);
-        ShareController.doShare(bean.image, bean.shareUrl, SharedPreferenceHelper.getUserClubName() + "-" + bean.title,
-                "会所最新期刊发布了", Constant.SHARE_COUPON, "");
+        ShareController.doShare(bean.image, bean.shareUrl,  bean.title,
+                bean.subTitle, Constant.SHARE_COUPON, "");
+    }
+
+    @Override
+    public void onItemClicked(ClubJournalBean bean) throws HyphenateException {
+        super.onItemClicked(bean);
+        if(Utils.isNotEmpty(bean.shareUrl)){
+            bean.shareUrl = "http://192.168.1.105:9880/spa-manager/journal/#/1?id=99&userId=768364493666258944";
+            ShareDetailActivity.startShareDetailActivity(getActivity(),bean.shareUrl, ResourceUtils.getString(R.string.club_journal_list_title),false);
+
+        }else{
+            return;
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mClubJournalListSubscription);
+        ButterKnife.unbind(this);
     }
 
     @Override

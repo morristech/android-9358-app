@@ -391,6 +391,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 }
             });
             couponListItemViewHolder.mBtnShareCoupon.setOnClickListener(v -> mCallback.onShareClicked(couponInfo));
+            couponListItemViewHolder.itemView.setOnClickListener(v -> {
+                try {
+                    mCallback.onItemClicked(couponInfo);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            });
             return;
         }
         if (holder instanceof ShareCouponListItemViewHolder) {
@@ -801,6 +808,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             cardItemViewHolder.mOnceCardMoney.setText(onceCard.techRoyalty);
             cardItemViewHolder.mOnceCardPrice.setText(onceCard.price);
             cardItemViewHolder.mOnceCardShare.setOnClickListener(v -> mCallback.onShareClicked(onceCard));
+            cardItemViewHolder.itemView.setOnClickListener(v -> {
+                try {
+                    mCallback.onItemClicked(onceCard);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            });
             if (position == 0) {
                 cardItemViewHolder.mOnceCardMarkNew.setVisibility(View.VISIBLE);
                 cardItemViewHolder.mOnceCardMarkFavorable.setVisibility(View.GONE);
@@ -860,6 +874,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
 
             limitGrabViewHolder.mLimitGrabShare.setOnClickListener(v -> mCallback.onShareClicked(limitGrabBean));
+            limitGrabViewHolder.itemView.setOnClickListener(v -> {
+                try {
+                    mCallback.onItemClicked(limitGrabBean);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            });
             return;
         }
         if (holder instanceof RewardActivityItemViewHolder) {
@@ -877,6 +898,14 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             rewardHolder.mRewardName.setText(rewardBean.actName);
             rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", rewardBean.startTime, rewardBean.endTime));
             rewardHolder.mRewardShare.setOnClickListener(v -> mCallback.onShareClicked(rewardBean));
+            rewardHolder.itemView.setOnClickListener(v -> {
+                try {
+                    mCallback.onItemClicked(rewardBean);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            });
+
             return;
         }
         if (holder instanceof ClubJournalItemViewHolder) {
@@ -893,6 +922,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 clubJournalHolder.mJournalMark.setVisibility(View.GONE);
             }
             clubJournalHolder.mJournalShare.setOnClickListener(v -> mCallback.onShareClicked(clubJournal));
+            clubJournalHolder.itemView.setOnClickListener(v -> {
+                try {
+                    mCallback.onItemClicked(clubJournal);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            });
             Glide.with(mContext).load(clubJournal.image).into(clubJournalHolder.mJournalHead);
             clubJournalHolder.mJournalName.setText(clubJournal.title);
             clubJournalHolder.mJournalReleaseTime.setText(String.format("发布时间：%s", clubJournal.modifyDate.substring(0, 10)));
@@ -916,6 +952,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 payForMeViewHolder.mPayForMeDetail.setVisibility(View.GONE);
             }
             payForMeViewHolder.mPayForMeShare.setOnClickListener(v -> mCallback.onShareClicked(payForMe));
+            payForMeViewHolder.itemView.setOnClickListener(v -> {
+                try {
+                    mCallback.onItemClicked(payForMe);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            });
         }
         if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;

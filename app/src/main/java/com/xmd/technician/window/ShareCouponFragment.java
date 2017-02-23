@@ -22,6 +22,7 @@ import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,12 +97,16 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     TextView mTvBottomText;
     @Bind(R.id.sv_share_view)
     ScrollView mSvShareView;
+    @Bind(R.id.share_empty)
+    EmptyView mShareEmpty;
 
     private Subscription mShareCouponViewSubscription;
     private Subscription mShareActivityViewSubscription;
     private Subscription mSharePropagandaViewSubscription;
     private List<String> mCards;
-    private List<String> mActivitys;
+    private List<String> mAction;
+    private int mPaidAmount, mNormalCouponAmount, mOnceCardAmount, mLimitGrabAmount, mPayForMeAmount, mClubJournalAmount, mRewardActivityAmount;
+    private boolean mCardIsNull, mActivityIsNull, mPropagandaIsNull;
 
 
     @Nullable
@@ -132,6 +137,8 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.colorMainBtn));
         onRefresh();
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
+
     }
 
     @Override
@@ -142,16 +149,16 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     private void handleCardList(CardShareListResult cardShareListResult) {
-        if (cardShareListResult.respData == null) {
-            return;
-        }
+
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
         if (cardShareListResult.statusCode == 200) {
             if (cardShareListResult.respData == null || cardShareListResult.respData.size() == 0) {
+                mCardIsNull = true;
                 mLayoutCoupon.setVisibility(View.GONE);
             } else if (cardShareListResult.respData.size() > 0) {
+                mCardIsNull = false;
                 mLayoutCoupon.setVisibility(View.VISIBLE);
                 setCardViewSate(cardShareListResult);
                 for (int i = 0; i < cardShareListResult.respData.size(); i++) {
@@ -159,12 +166,15 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                         if (cardShareListResult.respData.get(i).couponType.equals(Constant.NORMAL_COUPON_TYPE)) {
                             mCouponName.setText(cardShareListResult.respData.get(i).couponName);
                             mCouponTitle.setText(cardShareListResult.respData.get(i).count);
+                            mNormalCouponAmount = Integer.parseInt(cardShareListResult.respData.get(i).count);
                         } else if (cardShareListResult.respData.get(i).couponType.equals(Constant.PAID_TYPE)) {
                             mPayTicketsName.setText(cardShareListResult.respData.get(i).couponName);
                             mPayTicketsTitle.setText(cardShareListResult.respData.get(i).count);
+                            mPaidAmount = Integer.parseInt(cardShareListResult.respData.get(i).count);
                         } else if (cardShareListResult.respData.get(i).couponType.equals(Constant.ONCE_TYPE)) {
                             mOnceCardName.setText(cardShareListResult.respData.get(i).couponName);
                             mOnceCardTitle.setText(cardShareListResult.respData.get(i).count);
+                            mOnceCardAmount = Integer.parseInt(cardShareListResult.respData.get(i).count);
                         }
                     }
                 }
@@ -177,12 +187,11 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
     private void handleActivityList(ActivityListResult activityListResult) {
         if (activityListResult.statusCode == 200) {
-            if (activityListResult.respData == null) {
-                return;
-            }
-            if (activityListResult.respData.size() == 0) {
+            if (activityListResult.respData == null || activityListResult.respData.size() == 0) {
+                mActivityIsNull = true;
                 mLayoutActivity.setVisibility(View.GONE);
             } else if (activityListResult.respData.size() > 0) {
+                mActivityIsNull = false;
                 mLayoutActivity.setVisibility(View.VISIBLE);
                 setActivityViewSate(activityListResult);
                 for (int i = 0; i < activityListResult.respData.size(); i++) {
@@ -190,12 +199,16 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                         if (activityListResult.respData.get(i).actType.equals(Constant.ONE_YUAN_TYPE)) {
                             mPayForMeName.setText(activityListResult.respData.get(i).actName);
                             mPayForMeTotal.setText(activityListResult.respData.get(i).count);
+                            mPayForMeAmount = Integer.parseInt(activityListResult.respData.get(i).count);
                         } else if (activityListResult.respData.get(i).actType.equals(Constant.PAID_ITEM_TYPE)) {
                             mLimitName.setText(activityListResult.respData.get(i).actName);
                             mLimitGrabTotal.setText(activityListResult.respData.get(i).count);
+                            mLimitGrabAmount = Integer.parseInt(activityListResult.respData.get(i).count);
                         } else if (activityListResult.respData.get(i).actType.equals(Constant.DRAW_TYPE)) {
                             mRewardName.setText(activityListResult.respData.get(i).actName);
                             mRewardTotal.setText(activityListResult.respData.get(i).count);
+                            mRewardActivityAmount = Integer.parseInt(activityListResult.respData.get(i).count);
+                            mClubJournalAmount = Integer.parseInt(activityListResult.respData.get(i).count);
                         }
 
                     }
@@ -205,16 +218,16 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         } else {
             mLayoutCoupon.setVisibility(View.GONE);
         }
+
     }
 
     private void handlePropagandaList(PropagandaListResult propagandaListResult) {
         if (propagandaListResult.statusCode == 200) {
-            if (propagandaListResult.respData == null) {
-                return;
-            }
-            if (propagandaListResult.respData.size() == 0) {
+            if (propagandaListResult.respData == null || propagandaListResult.respData.size() == 0) {
                 mLayoutPublicity.setVisibility(View.GONE);
+                mPropagandaIsNull = true;
             } else if (propagandaListResult.respData.size() > 0) {
+                mPropagandaIsNull = false;
                 mLayoutPublicity.setVisibility(View.VISIBLE);
                 for (int i = 0; i < propagandaListResult.respData.size(); i++) {
                     if (Integer.parseInt(propagandaListResult.respData.get(i).count) > 0) {
@@ -227,7 +240,10 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
                 }
             }
+
         }
+
+
 
     }
 
@@ -236,25 +252,25 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_paid_coupon:
-                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.PAID_COUPON, mPayTicketsName.getText().toString());
+                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.PAID_COUPON, mPayTicketsName.getText().toString(), mPaidAmount);
                 break;
             case R.id.rl_normal_coupon:
-                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.NORMAL_COUPON, mCouponName.getText().toString());
+                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.NORMAL_COUPON, mCouponName.getText().toString(), mNormalCouponAmount);
                 break;
             case R.id.rl_once_card:
-                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.ONCE_CARD, mOnceCardName.getText().toString());
+                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.ONCE_CARD, mOnceCardName.getText().toString(), mOnceCardAmount);
                 break;
             case R.id.rl_limit_grab:
-                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.LIMIT_GRAB, mLimitName.getText().toString());
+                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.LIMIT_GRAB, mLimitName.getText().toString(), mLimitGrabAmount);
                 break;
             case R.id.rl_pay_for_me:
-                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.PAY_FOR_ME, mPayForMeName.getText().toString());
+                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.PAY_FOR_ME, mPayForMeName.getText().toString(), mPayForMeAmount);
                 break;
             case R.id.rl_reward:
-                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.REWARD_ACTIVITY, mRewardName.getText().toString());
+                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.REWARD_ACTIVITY, mRewardName.getText().toString(), mRewardActivityAmount);
                 break;
             case R.id.rl_publication:
-                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.CLUB_JOURNAL, mPublicationName.getText().toString());
+                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.CLUB_JOURNAL, mPublicationName.getText().toString(), mClubJournalAmount);
                 break;
         }
     }
@@ -293,28 +309,45 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     private void setActivityViewSate(ActivityListResult activityListResult) {
-        if (mActivitys == null) {
-            mActivitys = new ArrayList<>();
+        if (mAction == null) {
+            mAction = new ArrayList<>();
         } else {
-            mActivitys.clear();
+            mAction.clear();
         }
         for (int i = 0; i < activityListResult.respData.size(); i++) {
-            mActivitys.add(activityListResult.respData.get(i).actType);
+            mAction.add(activityListResult.respData.get(i).actType);
         }
-        if (mActivitys.contains(Constant.ONE_YUAN_TYPE)) {
+        if (mAction.contains(Constant.ONE_YUAN_TYPE)) {
             mRlPayForMe.setVisibility(View.VISIBLE);
         } else {
             mRlPayForMe.setVisibility(View.GONE);
         }
-        if (mActivitys.contains(Constant.PAID_ITEM_TYPE)) {
+        if (mAction.contains(Constant.PAID_ITEM_TYPE)) {
             mRlLimitGrab.setVisibility(View.VISIBLE);
         } else {
             mRlLimitGrab.setVisibility(View.GONE);
         }
-        if (mActivitys.contains(Constant.DRAW_TYPE)) {
+        if (mAction.contains(Constant.DRAW_TYPE)) {
             mRlReward.setVisibility(View.VISIBLE);
         } else {
             mRlReward.setVisibility(View.GONE);
+        }
+    }
+
+    private void setViewSate() {
+        if (mCardIsNull && mActivityIsNull && mPropagandaIsNull) {
+            mSvShareView.setVisibility(View.GONE);
+            mShareEmpty.setStatus(EmptyView.Status.Empty);
+            mShareEmpty.setEmptyPic(R.drawable.ic_failed);
+            mShareEmpty.setEmptyTip("暂无数据，下拉刷新试试");
+        } else {
+            if (mShareEmpty.getVisibility() == View.VISIBLE) {
+                mShareEmpty.setVisibility(View.GONE);
+            }
+            if (mSvShareView.getVisibility() == View.GONE) {
+                mSvShareView.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 

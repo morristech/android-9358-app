@@ -157,9 +157,7 @@ public class AppConfig {
             ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
                 @Override
                 public void run() {
-                    if(Utils.isNotEmpty(sClientId)){
-                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_COUPON_SHARE_EVENT_COUNT, sCouponId);
-                    }
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_COUPON_SHARE_EVENT_COUNT, sCouponId);
                 }
             });
         }
