@@ -51,17 +51,17 @@ public class OnceCardHelper {
 
     private String getComboDescription(OnceCardBean bean) {
         List<String> mCombo = new ArrayList<>();
-        for (int i = 0; i < bean.onceCardPlans.size(); i++) {
-            mCombo.add(String.format("买%s送%s", bean.onceCardPlans.get(i).paidCount, bean.onceCardPlans.get(i).giveCount));
+        for (int i = 0; i < bean.itemCardPlans.size(); i++) {
+            mCombo.add(String.format("买%s送%s", bean.itemCardPlans.get(i).paidCount, bean.itemCardPlans.get(i).giveCount));
         }
         return String.format("套餐：%s", Utils.listToString(mCombo));
     }
     private String getComboShareDescription(OnceCardBean bean){
         String desShare = "";
-        for (int i = 0; i < bean.onceCardPlans.size(); i++) {
-            if(bean.onceCardPlans.get(i).optimal.equals("Y")){
-                desShare = "_"+String.format("%1.1f折",bean.onceCardPlans.get(i).actAmount*1.0/(bean .onceCardPlans.get(i).itemAmount)
-                )+"_"+String.format("(买%s送%s)",bean.onceCardPlans.get(i).paidCount,bean.onceCardPlans.get(i).giveCount);
+        for (int i = 0; i < bean.itemCardPlans.size(); i++) {
+            if(bean.itemCardPlans.get(i).optimal.equals("Y")){
+                desShare = "_"+String.format("%1.1f折",bean.itemCardPlans.get(i).actAmount*1.0/(bean .itemCardPlans.get(i).itemAmount)
+                )+"_"+String.format("(买%s送%s)",bean.itemCardPlans.get(i).paidCount,bean.itemCardPlans.get(i).giveCount);
             }
         }
         return desShare;
@@ -69,17 +69,17 @@ public class OnceCardHelper {
 
     private String getTechRoyalty(OnceCardBean bean) {
         List<String> mTechAmount = new ArrayList<>();
-        for (int i = 0; i < bean.onceCardPlans.size(); i++) {
-            mTechAmount.add(String.format("%s元", bean.onceCardPlans.get(i).techAmount / 100));
+        for (int i = 0; i < bean.itemCardPlans.size(); i++) {
+            mTechAmount.add(String.format("%s元", bean.itemCardPlans.get(i).techAmount / 100));
         }
         return String.format("提成：%s", Utils.listToString(mTechAmount));
     }
 
     private String getOnceCardPrice(OnceCardBean bean) {
         double price = 0;
-        for (int i = 0; i < bean.onceCardPlans.size(); i++) {
-            if (bean.onceCardPlans.get(i).optimal.equals("Y")) {
-                price = bean.onceCardPlans.get(i).actAmount / 100d;
+        for (int i = 0; i < bean.itemCardPlans.size(); i++) {
+            if (bean.itemCardPlans.get(i).optimal.equals("Y")) {
+                price = bean.itemCardPlans.get(i).actAmount / 100d;
             }
         }
         return String.format("%s元", String.valueOf(price));

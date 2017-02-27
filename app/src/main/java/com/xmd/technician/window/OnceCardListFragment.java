@@ -1,6 +1,5 @@
 package com.xmd.technician.window;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,10 +10,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.OnceCardItemBean;
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.OnceCardHelper;
-import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.OnceCardResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -52,6 +48,7 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
         mTotalAmount = getArguments().getInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT);
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
+        mEmptyViewWidget.setStatus(EmptyView.Status.Loading);
         return view;
     }
 
@@ -70,12 +67,13 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
     private void handleCardResult(OnceCardResult onceCardResult) {
         if (onceCardResult.statusCode == 200) {
 
-            if (onceCardResult.respData == null) {
+            if (onceCardResult.respData == null ) {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setVisibility(View.GONE);
                 mEmptyViewWidget.setEmptyViewWithDescription(R.drawable.ic_failed, "活动已下线");
             } else {
+                mEmptyViewWidget.setStatus(EmptyView.Status.Gone);
                 if (onceCardResult.respData.activityList.size() != mTotalAmount) {
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
                 }
@@ -93,7 +91,7 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
     @Override
     public void onShareClicked(OnceCardItemBean bean) {
         super.onShareClicked(bean);
-        ShareController.doShare("", bean.shareUrl,  bean.name,
+        ShareController.doShare("", bean.shareUrl, bean.name,
                 bean.shareDescription, Constant.SHARE_COUPON, "");
     }
 
@@ -106,7 +104,6 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
     public boolean isPaged() {
         return false;
     }
-
 
 
     @Override

@@ -7,7 +7,9 @@ import android.os.Message;
 
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.ImageLoader;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
@@ -29,15 +31,19 @@ public class ShareController extends AbstractController {
 
         switch (msg.what) {
             case MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM:
+
                 showPlatformWindow((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_SHARE_TO_TIMELINE:
+
                 shareToTimeline((Map<String, Object>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_SHARE_TO_FRIEND:
+
                 shareToFriends((Map<String, Object>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_SHARE_TO_OTHER:
+
                 shareToOther((Map<String, Object>) msg.obj);
                 break;
         }
@@ -46,12 +52,13 @@ public class ShareController extends AbstractController {
     }
 
     public static void doShare(String imageUrl, String userShareUrl, String title, String description, String type, String actId) {
+
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
             Bitmap thumbnail;
             if (Utils.isEmpty(imageUrl)) {
-                //  thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());
-                BitmapDrawable bd = (BitmapDrawable) ResourceUtils.getDrawable(R.drawable.img_default_square);
-                thumbnail = bd.getBitmap();
+                 thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());
+//                BitmapDrawable bd = (BitmapDrawable) ResourceUtils.getDrawable(R.drawable.img_default_square);
+//                thumbnail = bd.getBitmap();
             } else {
                 thumbnail = ImageLoader.readBitmapFromImgUrl(imageUrl);
             }

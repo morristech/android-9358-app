@@ -20,6 +20,7 @@ import com.google.zxing.common.BitMatrix;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.share.ShareController;
@@ -106,11 +107,12 @@ public class TechShareCardActivity extends BaseActivity {
                     if (mQRBitmap == null) {
                         try {
                             mQRBitmap = encodeAsBitmap(R.mipmap.ic_launcher, codeUrl, mUserShareCode.getWidth());
+                            mUserShareCode.setImageBitmap(mQRBitmap);
                      /*         BitmapDrawable bd = (BitmapDrawable) ResourceUtils.getDrawable(R.mipmap.ic_launcher);
                             Bitmap bitmapLogo = bd.getBitmap();
 
                             mUserShareCode.setImageBitmap( addLogo(mQRBitmap,bitmapLogo));*/
-                            mUserShareCode.setImageBitmap(mQRBitmap);
+
                         } catch (WriterException e) {
                             e.printStackTrace();
                         }
@@ -126,7 +128,7 @@ public class TechShareCardActivity extends BaseActivity {
 
     @OnClick(R.id.user_share_btn)
     public void shareUser() {
-        ShareController.doShare("", userShareUrl, SharedPreferenceHelper.getUserName() + "欢迎您", "点我聊聊，更多优惠，更好服务！", Constant.SHARE_BUSINESS_CARD, "");
+        ShareController.doShare(userHead, userShareUrl, SharedPreferenceHelper.getUserName() + "欢迎您", "点我聊聊，更多优惠，更好服务！", Constant.SHARE_BUSINESS_CARD, "");
     }
 
     private Bitmap encodeAsBitmap(int logoResourceId, String contentString, int dimension) throws WriterException {

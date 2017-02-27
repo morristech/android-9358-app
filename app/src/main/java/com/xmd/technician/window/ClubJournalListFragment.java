@@ -49,6 +49,7 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
         mTotalAmount = getArguments().getInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT);
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
+        mEmptyViewWidget.setStatus(EmptyView.Status.Loading);
         return view;
     }
 
@@ -66,7 +67,8 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
 
     private void handleJournalListResult(JournalListResult journalListResult) {
         if (journalListResult.statusCode == 200) {
-            if (journalListResult.respData == null) {
+            if (journalListResult.respData == null && journalListResult.respData.size()==0) {
+
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PROPAGANDA_LIST);
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setVisibility(View.GONE);
@@ -75,6 +77,7 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
                 if (journalListResult.respData.size() != mTotalAmount) {
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PROPAGANDA_LIST);
                 }
+                mEmptyViewWidget.setStatus(EmptyView.Status.Gone);
                 onGetListSucceeded(1, journalListResult.respData);
             }
         } else {
@@ -93,7 +96,6 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
     public void onItemClicked(ClubJournalBean bean) throws HyphenateException {
         super.onItemClicked(bean);
         if(Utils.isNotEmpty(bean.shareUrl)){
-            bean.shareUrl = "http://192.168.1.105:9880/spa-manager/journal/#/1?id=99&userId=768364493666258944";
             ShareDetailActivity.startShareDetailActivity(getActivity(),bean.shareUrl, ResourceUtils.getString(R.string.club_journal_list_title),false);
 
         }else{

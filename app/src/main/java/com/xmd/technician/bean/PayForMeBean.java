@@ -7,19 +7,21 @@ package com.xmd.technician.bean;
 public class PayForMeBean {
 
     /**
-     * actId : 832414712518963201
-     * actName : 88888
-     * actPrice : 546
+     * actId : 836107121492783104
+     * actName : 测试上传图片10
+     * actPrice : 10
+     * unitPrice : 1
      * image : null
-     * prizeName : 88888
-     * prizePrice : 546
+     * prizeName : 测试上传图片10
+     * prizePrice : 10
      * prizeDiscountPrice : null
-     * shareUrl : http://t.cn/RJH3Sun
+     * shareUrl : http://w.url.cn/s/AA2arXT
      */
 
     public String actId;
     public String actName;
     public int actPrice;
+    public int unitPrice;
     public String image;
     public String prizeName;
     public String prizePrice;

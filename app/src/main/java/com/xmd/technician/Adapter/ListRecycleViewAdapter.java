@@ -1,6 +1,7 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
+import android.databinding.tool.util.L;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -43,6 +44,7 @@ import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ItemSlideHelper;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -804,8 +806,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             OnceCardItemViewHolder cardItemViewHolder = (OnceCardItemViewHolder) holder;
             Glide.with(mContext).load(onceCard.imageUrl).into(cardItemViewHolder.mOnceCardHead);
             cardItemViewHolder.mOnceCardTitle.setText(onceCard.name);
-            cardItemViewHolder.mOnceCardCredit.setText(onceCard.comboDescription);
-            cardItemViewHolder.mOnceCardMoney.setText(onceCard.techRoyalty);
+            cardItemViewHolder.mOnceCardCredit.setText(Utils.StrSubstring(13,onceCard.comboDescription,true));
+            cardItemViewHolder.mOnceCardMoney.setText(Utils.StrSubstring(9,onceCard.techRoyalty,true));
             cardItemViewHolder.mOnceCardPrice.setText(onceCard.price);
             cardItemViewHolder.mOnceCardShare.setOnClickListener(v -> mCallback.onShareClicked(onceCard));
             cardItemViewHolder.itemView.setOnClickListener(v -> {
@@ -837,30 +839,31 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             LimitGrabItemViewHolder limitGrabViewHolder = (LimitGrabItemViewHolder) holder;
             Glide.with(mContext).load(limitGrabBean.image).into(limitGrabViewHolder.mLimitGrabHead);
             limitGrabViewHolder.mLimitGrabTitle.setText(limitGrabBean.itemName);
-            if(Utils.isNotEmpty(limitGrabBean.price)){}
-            if(Utils.isNotEmpty(limitGrabBean.amount)){
+            if (Utils.isNotEmpty(limitGrabBean.price)) {
+            }
+            if (Utils.isNotEmpty(limitGrabBean.amount)) {
                 limitGrabViewHolder.mLimitGrabMoney.setVisibility(View.VISIBLE);
                 limitGrabViewHolder.mUnit.setVisibility(View.VISIBLE);
                 limitGrabViewHolder.mLimitGrabMoney.setText(limitGrabBean.amount);
-                if(Utils.isNotEmpty(limitGrabBean.credits)){
+                if (Utils.isNotEmpty(limitGrabBean.credits)) {
                     limitGrabViewHolder.mLimitGrabCredit.setVisibility(View.VISIBLE);
-                    String des = String.format("（或%s积分）",limitGrabBean.credits);
-                    limitGrabViewHolder.mLimitGrabCredit.setText(Utils.changeColor(des,ResourceUtils.getColor(R.color.order_item_surplus_time_color),2,des.length()-3));
-                }else{
+                    String des = String.format("（或%s积分）", limitGrabBean.credits);
+                    limitGrabViewHolder.mLimitGrabCredit.setText(Utils.changeColor(des, ResourceUtils.getColor(R.color.order_item_surplus_time_color), 2, des.length() - 3));
+                } else {
                     limitGrabViewHolder.mLimitGrabCredit.setVisibility(View.GONE);
                 }
-            }else{
-                if(Utils.isNotEmpty(limitGrabBean.credits)){
+            } else {
+                if (Utils.isNotEmpty(limitGrabBean.credits)) {
                     limitGrabViewHolder.mLimitGrabCredit.setVisibility(View.VISIBLE);
-                    String des = String.format("%s积分",limitGrabBean.credits);
-                    limitGrabViewHolder.mLimitGrabCredit.setText(Utils.changeColor(des,ResourceUtils.getColor(R.color.order_item_surplus_time_color),0,des.length()-3));
-                }else{
+                    String des = String.format("%s积分", limitGrabBean.credits);
+                    limitGrabViewHolder.mLimitGrabCredit.setText(Utils.changeColor(des, ResourceUtils.getColor(R.color.order_item_surplus_time_color), 0, des.length() - 3));
+                } else {
                     limitGrabViewHolder.mLimitGrabCredit.setVisibility(View.GONE);
                 }
             }
-            if(limitGrabBean.limitedUse){
+            if (limitGrabBean.limitedUse) {
                 limitGrabViewHolder.mLimitGrabMark.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 limitGrabViewHolder.mLimitGrabMark.setVisibility(View.GONE);
             }
 
@@ -896,7 +899,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 Glide.with(mContext).load(ResourceUtils.getDrawable(R.drawable.img_default_reward)).into(rewardHolder.mRewardHead);
             }
             rewardHolder.mRewardName.setText(rewardBean.actName);
-            rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", rewardBean.startTime, rewardBean.endTime));
+            String st = rewardBean.startTime.substring(2, 10).replace("-", ".");
+            String et = rewardBean.endTime.substring(2, 10).replace("-", ".");
+            rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", st, et));
             rewardHolder.mRewardShare.setOnClickListener(v -> mCallback.onShareClicked(rewardBean));
             rewardHolder.itemView.setOnClickListener(v -> {
                 try {
@@ -934,21 +939,26 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             clubJournalHolder.mJournalReleaseTime.setText(String.format("发布时间：%s", clubJournal.modifyDate.substring(0, 10)));
             return;
         }
-        if(holder instanceof PayForMeListItemViewHolder){
+        if (holder instanceof PayForMeListItemViewHolder) {
             Object obj = mData.get(position);
-            if(!(obj instanceof PayForMeBean)){
+            if (!(obj instanceof PayForMeBean)) {
                 return;
             }
             final PayForMeBean payForMe = (PayForMeBean) obj;
             PayForMeListItemViewHolder payForMeViewHolder = (PayForMeListItemViewHolder) holder;
             Glide.with(mContext).load(payForMe.image).into(payForMeViewHolder.mPayForMeHead);
             payForMeViewHolder.mPayForMeTitle.setText(payForMe.actName);
-            payForMeViewHolder.mPayForMeMoney.setText(String.valueOf(payForMe.actPrice));
-            if(Utils.isNotEmpty(payForMe.prizePrice)){
+            payForMeViewHolder.mPayForMeMoney.setText(String.valueOf(payForMe.unitPrice));
+            if (payForMe.unitPrice == 1) {
+                payForMeViewHolder.mPayForMeMark.setVisibility(View.VISIBLE);
+            } else {
+                payForMeViewHolder.mPayForMeMark.setVisibility(View.GONE);
+            }
+            if (Utils.isNotEmpty(payForMe.prizePrice)) {
                 payForMeViewHolder.mPayForMeDetail.setVisibility(View.VISIBLE);
                 String des = String.format("原价：%s元", String.valueOf(payForMe.prizePrice));
                 payForMeViewHolder.mPayForMeDetail.setText(Utils.textStrikeThrough(des, 0, des.length()));
-            }else{
+            } else {
                 payForMeViewHolder.mPayForMeDetail.setVisibility(View.GONE);
             }
             payForMeViewHolder.mPayForMeShare.setOnClickListener(v -> mCallback.onShareClicked(payForMe));
@@ -975,7 +985,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             footerHolder.itemFooter.setText(desc);
             return;
         }
-
 
 
     }
