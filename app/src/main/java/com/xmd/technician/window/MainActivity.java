@@ -63,7 +63,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mFragmentList.add(new MainFragment());
         mFragmentList.add(new ChatFragment());
         mFragmentList.add(new ContactsFragment());
-        //mFragmentList.add(new CouponFragment());
         mFragmentList.add(new ShareCouponFragment());
 
         EMClient.getInstance().groupManager().loadAllGroups();

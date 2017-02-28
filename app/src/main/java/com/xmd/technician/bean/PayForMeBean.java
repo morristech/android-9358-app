@@ -20,7 +20,7 @@ public class PayForMeBean {
 
     public String actId;
     public String actName;
-    public int actPrice;
+    public String actPrice;
     public int unitPrice;
     public String image;
     public String prizeName;

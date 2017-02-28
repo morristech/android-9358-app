@@ -37,16 +37,10 @@ public class BaseShareUtil {
 
         Object thumbnail = params.get(Constant.PARAM_SHARE_THUMBNAIL);
         if (thumbnail != null) {
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
-                @Override
-                public void run() {
-                    Bitmap bmp = (Bitmap) thumbnail;
-                    mShareThumbnail = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
-                    bmp.recycle();
-                    //mShareThumbnail = (Bitmap) thumbnail;
-                }
-            });
-
+            Bitmap bmp = (Bitmap) thumbnail;
+            mShareThumbnail = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
+            bmp.recycle();
+            //mShareThumbnail = (Bitmap) thumbnail;
         }
 
         AppConfig.reportShareEvent(params);

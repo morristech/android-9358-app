@@ -78,7 +78,7 @@ import butterknife.OnClick;
 import rx.Subscription;
 
 /**
- * Created by Administrator on 2016/10/19.
+ * Created by Lhj on 2016/10/19.
  */
 public class MainFragment extends BaseFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -699,7 +699,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                     );
                     Intent intentRanking = new Intent(getActivity(), BrowserActivity.class);
                     intentRanking.putExtra(BrowserActivity.EXTRA_SHOW_MENU, false);
-                    url = "http://192.168.1.105:9880/spa-manager/journal/#/1?id=99&userId=768364493666258944";
                     intentRanking.putExtra(BrowserActivity.EXTRA_URL, url);
                     startActivity(intentRanking);
                 } else {

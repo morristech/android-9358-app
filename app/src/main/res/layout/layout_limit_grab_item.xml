@@ -75,7 +75,8 @@
                     android:paddingTop="1dp"
                     android:text="限时用"
                     android:textColor="@color/primary_color"
-                    android:textSize="@dimen/fontRemark"/>
+                    android:textSize="@dimen/fontRemark"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 

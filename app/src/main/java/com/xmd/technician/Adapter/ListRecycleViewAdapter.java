@@ -862,9 +862,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 }
             }
             if (limitGrabBean.limitedUse) {
-                limitGrabViewHolder.mLimitGrabMark.setVisibility(View.VISIBLE);
+                limitGrabViewHolder.mLimitGrabTitleMark.setVisibility(View.VISIBLE);
             } else {
-                limitGrabViewHolder.mLimitGrabMark.setVisibility(View.GONE);
+                limitGrabViewHolder.mLimitGrabTitleMark.setVisibility(View.GONE);
             }
 
             if (Utils.isNotEmpty(limitGrabBean.price)) {
@@ -898,7 +898,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 Glide.with(mContext).load(ResourceUtils.getDrawable(R.drawable.img_default_reward)).into(rewardHolder.mRewardHead);
             }
-            rewardHolder.mRewardName.setText(rewardBean.actName);
+            rewardHolder.mRewardName.setText(String.format("赢取%s",rewardBean.firstPrizeName));
             String st = rewardBean.startTime.substring(2, 10).replace("-", ".");
             String et = rewardBean.endTime.substring(2, 10).replace("-", ".");
             rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", st, et));
@@ -954,9 +954,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 payForMeViewHolder.mPayForMeMark.setVisibility(View.GONE);
             }
-            if (Utils.isNotEmpty(payForMe.prizePrice)) {
+            if (Utils.isNotEmpty(payForMe.actPrice)) {
                 payForMeViewHolder.mPayForMeDetail.setVisibility(View.VISIBLE);
-                String des = String.format("原价：%s元", String.valueOf(payForMe.prizePrice));
+                String des = String.format("原价：%s元", payForMe.actPrice);
                 payForMeViewHolder.mPayForMeDetail.setText(Utils.textStrikeThrough(des, 0, des.length()));
             } else {
                 payForMeViewHolder.mPayForMeDetail.setVisibility(View.GONE);

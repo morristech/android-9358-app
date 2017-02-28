@@ -159,4 +159,5 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.zhy:mpermission-api:1.0.0'
     apt 'com.zhy:mpermission-compiler:1.0.0'
+
 }
