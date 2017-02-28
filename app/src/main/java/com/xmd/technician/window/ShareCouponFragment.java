@@ -99,6 +99,8 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     ScrollView mSvShareView;
     @Bind(R.id.share_empty)
     EmptyView mShareEmpty;
+    @Bind(R.id.ll_share_view)
+    LinearLayout mShareView;
 
     private Subscription mShareCouponViewSubscription;
     private Subscription mShareActivityViewSubscription;
@@ -135,21 +137,20 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                 propagandaListResult -> handlePropagandaList(propagandaListResult)
         );
         mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.colorMainBtn));
-        onRefresh();
         mSwipeRefreshLayout.setOnRefreshListener(this);
-
+        onRefresh();
 
     }
 
     @Override
     public void onRefresh() {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PROPAGANDA_LIST);
+
+
     }
 
     private void handleCardList(CardShareListResult cardShareListResult) {
-
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
@@ -186,6 +187,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     private void handleActivityList(ActivityListResult activityListResult) {
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PROPAGANDA_LIST);
         if (activityListResult.statusCode == 200) {
             if (activityListResult.respData == null || activityListResult.respData.size() == 0) {
                 mActivityIsNull = true;
@@ -243,7 +245,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
         }
 
-
+        setViewSate();
 
     }
 
@@ -336,16 +338,16 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
     private void setViewSate() {
         if (mCardIsNull && mActivityIsNull && mPropagandaIsNull) {
-            mSvShareView.setVisibility(View.GONE);
+            mShareView.setVisibility(View.GONE);
             mShareEmpty.setStatus(EmptyView.Status.Empty);
-            mShareEmpty.setEmptyPic(R.drawable.ic_failed);
-            mShareEmpty.setEmptyTip("暂无数据，下拉刷新试试");
+            mShareEmpty.setEmptyPic(R.drawable.img_share_null);
+            mShareEmpty.setEmptyTip("");
         } else {
             if (mShareEmpty.getVisibility() == View.VISIBLE) {
                 mShareEmpty.setVisibility(View.GONE);
             }
-            if (mSvShareView.getVisibility() == View.GONE) {
-                mSvShareView.setVisibility(View.VISIBLE);
+            if (mShareView.getVisibility() == View.GONE) {
+                mShareView.setVisibility(View.VISIBLE);
             }
 
         }

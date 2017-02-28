@@ -160,6 +160,16 @@ public class AppConfig {
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_COUPON_SHARE_EVENT_COUNT, sCouponId);
                 }
             });
+            return;
+        }
+        if(Constant.SHARE_JOURNAL.equals(sShareType)){
+            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+                @Override
+                public void run() {
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT, sCouponId);
+                }
+            });
+            return;
         }
     }
 

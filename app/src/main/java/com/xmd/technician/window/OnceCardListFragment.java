@@ -91,7 +91,7 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
     @Override
     public void onShareClicked(OnceCardItemBean bean) {
         super.onShareClicked(bean);
-        ShareController.doShare("", bean.shareUrl, bean.name,
+        ShareController.doShare(bean.imageUrl, bean.shareUrl, bean.name,
                 bean.shareDescription, Constant.SHARE_COUPON, "");
     }
 

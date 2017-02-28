@@ -334,6 +334,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL:
                 getPayForMeListDetail();
                 break;
+            case MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT:
+                journalShareCount(msg.obj.toString());
+                break;
         }
 
         return true;
@@ -1481,7 +1484,7 @@ public class RequestController extends AbstractController {
      * 次卡列表
      */
     private void getOnceCardListDetail() {
-        Call<OnceCardResult> call = getSpaService().onceCardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(),"true");
+        Call<OnceCardResult> call = getSpaService().onceCardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(), "true");
         call.enqueue(new TokenCheckedCallback<OnceCardResult>() {
             @Override
             protected void postResult(OnceCardResult result) {
@@ -1553,6 +1556,21 @@ public class RequestController extends AbstractController {
             @Override
             protected void postResult(PayForMeListResult result) {
                 RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * journalShareCount
+     *
+     * @param
+     */
+    private void journalShareCount(String journalId) {
+        Call<BaseResult> call = getSpaService().journalShareCount(SharedPreferenceHelper.getUserToken(),journalId);
+        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+            @Override
+            protected void postResult(BaseResult result) {
+
             }
         });
     }

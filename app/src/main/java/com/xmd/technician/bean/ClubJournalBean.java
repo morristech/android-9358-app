@@ -19,7 +19,7 @@ public class ClubJournalBean {
      * shareUrl : http://t.cn/RJdilKD
      */
 
-    public int journalId;
+    public String journalId;
     public int sequenceNo;
     public String title;
     public String subTitle;

@@ -60,8 +60,8 @@ public class OnceCardHelper {
         String desShare = "";
         for (int i = 0; i < bean.itemCardPlans.size(); i++) {
             if(bean.itemCardPlans.get(i).optimal.equals("Y")){
-                desShare = "_"+String.format("%1.1f折",bean.itemCardPlans.get(i).actAmount*1.0/(bean .itemCardPlans.get(i).itemAmount)
-                )+"_"+String.format("(买%s送%s)",bean.itemCardPlans.get(i).paidCount,bean.itemCardPlans.get(i).giveCount);
+                desShare = String.format("原价%1.1f元",bean.itemCardPlans.get(i).itemAmount*1.0/100f)
+                +String.format("(买%s送%s)",bean.itemCardPlans.get(i).paidCount,bean.itemCardPlans.get(i).giveCount) +String.format("折后%1.1f元",bean.itemCardPlans.get(i).actAmount*1.0/(100f*(bean.itemCardPlans.get(i).paidCount+bean.itemCardPlans.get(i).giveCount)));
             }
         }
         return desShare;

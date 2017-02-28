@@ -18,6 +18,7 @@ public class CustomerInfo extends BaseResult{
     public String emchatId;
     public int orderCount;
     public int rewardAmount;
+    public int rewardAmounts;
     public String avatarUrl;
     public String mPinyin;
     public String sortLetters;

@@ -92,12 +92,7 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
     @Override
     public void onItemClicked(PayForMeBean bean) throws HyphenateException {
         super.onItemClicked(bean);
-        if(Utils.isNotEmpty(bean.shareUrl)){
-            bean.shareUrl = "http://192.168.1.105:9880/spa-manager/spa2/?club=601679316694081536#login";
-            ShareDetailActivity.startShareDetailActivity(getActivity(),bean.shareUrl, ResourceUtils.getString(R.string.pay_for_me_list_title),false);
-        }else{
-            return;
-        }
+
     }
 
     @Override

@@ -116,6 +116,7 @@ public class RequestConstant {
     public static final String URL_GET_PAY_FOR_ME_LIST = BASE_URL + "/v1/techshare/oneYuanListDetail";//谁替我买单列表
     public static final String URL_GET_CLUB_JOURNAL_LIST_DETAIL = BASE_URL + "/v1/techshare/journalListDetail";//会所期刊列表
     public static final String URL_GET_REWARD_ACTIVITY_LIST = BASE_URL + "/v1/techshare/darwActListDetail";//抽奖活动列表
+    public static final String URL_DO_USER_JOURNAL_SHARE_COUNT = BASE_URL + "/v2/user/journal/share/count";//期刊统计
 
 
     /*********************************************************************************************/
@@ -269,6 +270,7 @@ public class RequestConstant {
     public static final String ORDER_TYPE_APPOINT = "appoint";
     public static final String ORDER_TYPE_PAID = "paid";
     public static final String KEY_COUPON_TYPE = "couponType";
+    public static final String KEY_JOURNAL_ID = "journalId";
     /**
      * 自动领券
      */

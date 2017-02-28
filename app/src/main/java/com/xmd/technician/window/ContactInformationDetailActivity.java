@@ -482,7 +482,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             if (!TextUtils.isEmpty(String.valueOf(customer.respData.techCustomer.orderCount))) {
                 mContactOrder.setText(String.valueOf(customer.respData.techCustomer.orderCount));
             }
-            float reward = customer.respData.techCustomer.rewardAmount/100f;
+            float reward = customer.respData.techCustomer.rewardAmounts/100f;
             if (reward > 10000) {
                 float payMoney = reward / 10000f;
                 mContactReward.setText(String.format("%1.2f", payMoney) + "万");

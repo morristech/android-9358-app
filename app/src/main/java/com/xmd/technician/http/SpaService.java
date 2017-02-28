@@ -659,4 +659,10 @@ public interface SpaService {
     @POST(RequestConstant.URL_GET_PAY_FOR_ME_LIST)
     Call<PayForMeListResult> payForMeListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                    @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+    //期刊分享加1
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_DO_USER_JOURNAL_SHARE_COUNT)
+    Call<BaseResult> journalShareCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                       @Field(RequestConstant.KEY_JOURNAL_ID) String journalId);
 }

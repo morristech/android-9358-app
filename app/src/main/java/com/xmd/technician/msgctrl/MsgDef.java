@@ -156,7 +156,7 @@ public class MsgDef {
     public static final int MSG_DEF_GET_REWARD_ACTIVITY_LIST = 0x0082;
     public static final int MSG_DEF_GET_CLUB_JOURNAL_LIST = 0x0083;
     public static final int MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL = 0x0084;
-
+    public static final int MSG_DEF_JOURNAL_SHARE_COUNT = 0x0085;
 
 
 }

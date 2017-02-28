@@ -198,6 +198,8 @@ public class Constant {
     public static final String SHARE_COUPON = "couponShare";
     public static final String SHARE_BUSINESS_CARD = "businessCardShare";
     public static final String REGISTER_EVENT = "register";
+    public static final String SHARE_JOURNAL = "journalShare";
+    public static final String SHARE_OTHER = "otherShare";
 
     /**
      * ******************************* Request Code for activities ***************

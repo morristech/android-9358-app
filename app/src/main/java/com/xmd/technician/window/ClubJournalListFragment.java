@@ -89,7 +89,7 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
     public void onShareClicked(ClubJournalBean bean) {
         super.onShareClicked(bean);
         ShareController.doShare(bean.image, bean.shareUrl,  bean.title,
-                bean.subTitle, Constant.SHARE_COUPON, "");
+                bean.subTitle, Constant.SHARE_JOURNAL, bean.journalId);
     }
 
     @Override
