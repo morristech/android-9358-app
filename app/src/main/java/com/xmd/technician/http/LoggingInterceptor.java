@@ -40,7 +40,7 @@ public class LoggingInterceptor implements Interceptor {
         if (requestBody != null) {
             if (requestBody instanceof FormBody) {
                 FormBody body = (FormBody) request.body();
-                result += "----params:";
+                result += "?";
                 for (int i = 0; i < body.size(); i++) {
                     result += body.name(i) + "=" + body.value(i) + "&";
                 }

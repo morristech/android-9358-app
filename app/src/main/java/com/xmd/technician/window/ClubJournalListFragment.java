@@ -12,12 +12,16 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.ClubJournalBean;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareController;
 import com.xmd.technician.widget.EmptyView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,12 +54,17 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
         mEmptyViewWidget.setStatus(EmptyView.Status.Loading);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
         return view;
     }
 
     @Override
     protected void dispatchRequest() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_JOURNAL_LIST);
+
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
+        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_JOURNAL_LIST, params);
     }
 
     @Override
@@ -74,11 +83,12 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
                 mSwipeRefreshLayout.setVisibility(View.GONE);
                 mEmptyViewWidget.setEmptyViewWithDescription(R.drawable.ic_failed, "期刊已下线");
             } else {
+                mEmptyViewWidget.setStatus(EmptyView.Status.Gone);
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 if (journalListResult.respData.size() != mTotalAmount) {
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PROPAGANDA_LIST);
                 }
-                mEmptyViewWidget.setStatus(EmptyView.Status.Gone);
-                onGetListSucceeded(1, journalListResult.respData);
+                onGetListSucceeded(journalListResult.pageCount, journalListResult.respData);
             }
         } else {
             onGetListFailed(journalListResult.msg);
@@ -112,6 +122,6 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
 
     @Override
     public boolean isPaged() {
-        return false;
+        return true;
     }
 }

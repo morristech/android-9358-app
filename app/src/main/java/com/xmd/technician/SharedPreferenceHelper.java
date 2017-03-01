@@ -35,6 +35,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_TECH_GENDER = "d70798608c15d7af0f2cd381ea775fa9";
     private static final String KEY_PAY_NOTIFY_HIDE_ID = "456af6df9b184d2b7c78deb88d288942";
     private static final String KEY_PAY_NOTIFY_IS_FIRST_HIDE = "3ce13929dfff8cf8b8592ef34d3bffd9";
+    private static final String KEY_TECH_STATUS = "d70798608c15e7af0f4cd381ea775fa9";
     /**
      * Last time to check the upgrade automatically
      */
@@ -339,6 +340,14 @@ public class SharedPreferenceHelper {
 
     public static String getPayNotifyHideIds() {
         return mSettingPreference.getString(KEY_PAY_NOTIFY_HIDE_ID + "-" + getUserId(), "");
+    }
+
+    public static void setTechStatus(String status){
+         mSettingPreference.edit().putString(KEY_TECH_STATUS+"_"+getUserId(),status).apply();
+    }
+
+    public static String getTechStatus(){
+        return mSettingPreference.getString(KEY_TECH_STATUS+"_"+getUserId(),"");
     }
 
     public static boolean getPayNotifyIsFirstHide() {

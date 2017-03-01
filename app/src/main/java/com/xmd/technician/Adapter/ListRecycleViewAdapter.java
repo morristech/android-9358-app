@@ -806,8 +806,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             OnceCardItemViewHolder cardItemViewHolder = (OnceCardItemViewHolder) holder;
             Glide.with(mContext).load(onceCard.imageUrl).into(cardItemViewHolder.mOnceCardHead);
             cardItemViewHolder.mOnceCardTitle.setText(onceCard.name);
-            cardItemViewHolder.mOnceCardCredit.setText(Utils.StrSubstring(13,onceCard.comboDescription,true));
-            cardItemViewHolder.mOnceCardMoney.setText(Utils.StrSubstring(10,onceCard.techRoyalty,true));
+            cardItemViewHolder.mOnceCardCredit.setText(Utils.StrSubstring(13,onceCard.comboDescription,true).trim());
+            cardItemViewHolder.mOnceCardMoney.setText(onceCard.techRoyalty);
             cardItemViewHolder.mOnceCardPrice.setText(onceCard.price);
             cardItemViewHolder.mOnceCardShare.setOnClickListener(v -> mCallback.onShareClicked(onceCard));
             cardItemViewHolder.itemView.setOnClickListener(v -> {

@@ -82,7 +82,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_space"
+                android:layout_marginTop="@dimen/margin_2"
                 android:orientation="horizontal">
 
                 <TextView
@@ -99,7 +99,6 @@
                 android:id="@+id/once_card_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_space"
                 android:textColor="@color/colorBtnChecked"
                 android:textSize="@dimen/fontBiggerThanNormal"
                 android:visibility="visible"

@@ -218,7 +218,7 @@
     <dimen name="main_head_avatar_height">70dp</dimen>
     <dimen name="main_page_left_width">270dp</dimen>
     <dimen name="main_page_right_width">320dp</dimen>
-    <dimen name="limit_grab_item_img_width">66dp</dimen>
+    <dimen name="limit_grab_item_img_width">70dp</dimen>
     <dimen name="limit_grab_item_img_radius">6dp</dimen>
 
 

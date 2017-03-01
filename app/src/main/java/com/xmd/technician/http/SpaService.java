@@ -627,7 +627,9 @@ public interface SpaService {
     @POST(RequestConstant.URL_GET_ONCE_CARD_LIST_DETAIL)
     Call<OnceCardResult> onceCardListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                             @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
-                                            @Field(RequestConstant.KEY_IS_SHARE )String isShare);
+                                            @Field(RequestConstant.KEY_IS_SHARE) String isShare,
+                                            @Field(RequestConstant.KEY_PAGE) String page,
+                                            @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     //券列表
     @FormUrlEncoded
@@ -649,16 +651,22 @@ public interface SpaService {
     @POST(RequestConstant.URL_GET_REWARD_ACTIVITY_LIST)
     Call<RewardListResult> rewardActivityListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                     @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+
     //期刊列表
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_CLUB_JOURNAL_LIST_DETAIL)
     Call<JournalListResult> clubJournalListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                     @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+                                                  @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                                  @Field(RequestConstant.KEY_PAGE) String page,
+                                                  @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
     //谁替我买单列表
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_PAY_FOR_ME_LIST)
     Call<PayForMeListResult> payForMeListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                   @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+                                                @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                                @Field(RequestConstant.KEY_PAGE) String page,
+                                                @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
     //期刊分享加1
 
     @FormUrlEncoded

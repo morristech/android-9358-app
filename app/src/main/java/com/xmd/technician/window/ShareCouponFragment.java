@@ -1,6 +1,7 @@
 package com.xmd.technician.window;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,10 +16,14 @@ import android.widget.TextView;
 
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.gson.ActivityListResult;
 import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
+import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechPersonalDataResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -105,10 +110,14 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     private Subscription mShareCouponViewSubscription;
     private Subscription mShareActivityViewSubscription;
     private Subscription mSharePropagandaViewSubscription;
+    private Subscription mGetTechCurrentInfoSubscription;
+
     private List<String> mCards;
     private List<String> mAction;
     private int mPaidAmount, mNormalCouponAmount, mOnceCardAmount, mLimitGrabAmount, mPayForMeAmount, mClubJournalAmount, mRewardActivityAmount;
     private boolean mCardIsNull, mActivityIsNull, mPropagandaIsNull;
+    private boolean isJoinedClub;
+    private boolean isFirst;
 
 
     @Nullable
@@ -116,17 +125,21 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_share_coupon, container, false);
         ButterKnife.bind(this, view);
+        isFirst = true;
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         initView();
     }
 
     private void initView() {
         initTitleView(ResourceUtils.getString(R.string.copuon_fragment_title));
+        mGetTechCurrentInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class).subscribe(
+                techCurrentResult -> handleTechCurrentResult(techCurrentResult));
         mShareCouponViewSubscription = RxBus.getInstance().toObservable(CardShareListResult.class).subscribe(
                 cardShareListResult -> handleCardList(cardShareListResult)
         );
@@ -142,9 +155,37 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
     }
 
+    private void handleTechCurrentResult(TechInfoResult techCurrentResult) {
+
+        if (techCurrentResult.respData.status.equals(Constant.TECH_STATUS_VALID) || techCurrentResult.respData.status.equals(Constant.TECH_STATUS_UNCERT) || techCurrentResult.respData.status.equals(Constant.TECH_STATUS_REJECT)) {
+            isJoinedClub = false;
+        } else {
+            isJoinedClub = true;
+        }
+
+    }
+
+
     @Override
     public void onRefresh() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
+        if(isFirst){
+            String status = SharedPreferenceHelper.getTechStatus();
+            if(status.equals(Constant.TECH_STATUS_VALID) || status.equals(Constant.TECH_STATUS_UNCERT) || status.equals(Constant.TECH_STATUS_REJECT)){
+                setViewSate(false);
+            }else{
+                isJoinedClub = true;
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
+            }
+            isFirst = false;
+
+        }else{
+            if(isJoinedClub){
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
+            }else{
+                mSwipeRefreshLayout.setRefreshing(false);
+                setViewSate(isJoinedClub);
+            }
+        }
 
 
     }
@@ -245,7 +286,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
         }
 
-        setViewSate();
+        setViewSate(isJoinedClub);
 
     }
 
@@ -281,7 +322,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        RxBus.getInstance().unsubscribe(mShareActivityViewSubscription, mShareCouponViewSubscription, mSharePropagandaViewSubscription);
+        RxBus.getInstance().unsubscribe(mShareActivityViewSubscription, mShareCouponViewSubscription, mSharePropagandaViewSubscription, mGetTechCurrentInfoSubscription);
     }
 
     private void setCardViewSate(CardShareListResult cardShareListResult) {
@@ -336,21 +377,29 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         }
     }
 
-    private void setViewSate() {
-        if (mCardIsNull && mActivityIsNull && mPropagandaIsNull) {
+    private void setViewSate(boolean isJoinedClub) {
+        if(isJoinedClub){
+            if (mCardIsNull && mActivityIsNull && mPropagandaIsNull) {
+                mShareView.setVisibility(View.GONE);
+                mShareEmpty.setStatus(EmptyView.Status.Empty);
+                mShareEmpty.setEmptyPic(R.drawable.img_share_null);
+                mShareEmpty.setEmptyTip("");
+            } else {
+                if (mShareEmpty.getVisibility() == View.VISIBLE) {
+                    mShareEmpty.setVisibility(View.GONE);
+                }
+                if (mShareView.getVisibility() == View.GONE) {
+                    mShareView.setVisibility(View.VISIBLE);
+                }
+
+            }
+        }else{
             mShareView.setVisibility(View.GONE);
             mShareEmpty.setStatus(EmptyView.Status.Empty);
-            mShareEmpty.setEmptyPic(R.drawable.img_share_null);
-            mShareEmpty.setEmptyTip("");
-        } else {
-            if (mShareEmpty.getVisibility() == View.VISIBLE) {
-                mShareEmpty.setVisibility(View.GONE);
-            }
-            if (mShareView.getVisibility() == View.GONE) {
-                mShareView.setVisibility(View.VISIBLE);
-            }
-
+            mShareEmpty.setEmptyPic(R.drawable.ic_failed);
+            mShareEmpty.setEmptyTip("请先加入会所");
         }
+
     }
 
 

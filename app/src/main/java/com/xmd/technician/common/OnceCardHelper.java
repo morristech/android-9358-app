@@ -54,6 +54,7 @@ public class OnceCardHelper {
         for (int i = 0; i < bean.itemCardPlans.size(); i++) {
             mCombo.add(String.format("买%s送%s", bean.itemCardPlans.get(i).paidCount, bean.itemCardPlans.get(i).giveCount));
         }
+
         return String.format("套餐：%s", Utils.listToString(mCombo));
     }
     private String getComboShareDescription(OnceCardBean bean){

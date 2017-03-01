@@ -13,12 +13,16 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.PayForMeBean;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.PayForMeListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareController;
 import com.xmd.technician.widget.EmptyView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,12 +53,17 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
         mTotalAmount = getArguments().getInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT);
+        mEmptyViewWidget.setStatus(EmptyView.Status.Loading);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
         return view;
     }
 
     @Override
     protected void dispatchRequest() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL);
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
+        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL,params);
     }
 
     @Override
@@ -72,10 +81,12 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
                 mSwipeRefreshLayout.setVisibility(View.GONE);
                 mEmptyViewWidget.setEmptyViewWithDescription(R.drawable.ic_failed, "活动已下线");
             } else {
+                mEmptyViewWidget.setStatus(EmptyView.Status.Gone);
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 if (payForMeListResult.respData.size() != mTotalAmount) {
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
                 }
-                onGetListSucceeded(1, payForMeListResult.respData);
+                onGetListSucceeded(payForMeListResult.pageCount, payForMeListResult.respData);
             }
         } else {
             onGetListFailed(payForMeListResult.msg);
@@ -104,7 +115,6 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
 
     @Override
     public boolean isPaged() {
-        return false;
-
+        return true;
     }
 }
