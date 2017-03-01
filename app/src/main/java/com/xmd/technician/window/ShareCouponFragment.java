@@ -1,7 +1,6 @@
 package com.xmd.technician.window;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,13 +16,11 @@ import android.widget.TextView;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.gson.ActivityListResult;
 import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.http.gson.TechInfoResult;
-import com.xmd.technician.http.gson.TechPersonalDataResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -118,7 +115,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     private boolean mCardIsNull, mActivityIsNull, mPropagandaIsNull;
     private boolean isJoinedClub;
     private boolean isFirst;
-
+    private String emptyViewDes;
 
     @Nullable
     @Override
@@ -158,6 +155,15 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     private void handleTechCurrentResult(TechInfoResult techCurrentResult) {
 
         if (techCurrentResult.respData.status.equals(Constant.TECH_STATUS_VALID) || techCurrentResult.respData.status.equals(Constant.TECH_STATUS_UNCERT) || techCurrentResult.respData.status.equals(Constant.TECH_STATUS_REJECT)) {
+            if(techCurrentResult.respData.status.equals(Constant.TECH_STATUS_VALID)){
+                emptyViewDes = ResourceUtils.getString(R.string.join_club_before);
+            }else if(techCurrentResult.respData.status.equals(Constant.TECH_STATUS_UNCERT)){
+                emptyViewDes = ResourceUtils.getString(R.string.wait_club_examine);
+            }else if(techCurrentResult.respData.status.equals(Constant.TECH_STATUS_REJECT)){
+                emptyViewDes = ResourceUtils.getString(R.string.club_reject_apply);
+            }else{
+                emptyViewDes = "";
+            }
             isJoinedClub = false;
         } else {
             isJoinedClub = true;
@@ -171,6 +177,15 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         if(isFirst){
             String status = SharedPreferenceHelper.getTechStatus();
             if(status.equals(Constant.TECH_STATUS_VALID) || status.equals(Constant.TECH_STATUS_UNCERT) || status.equals(Constant.TECH_STATUS_REJECT)){
+                if(status.equals(Constant.TECH_STATUS_VALID)){
+                    emptyViewDes = ResourceUtils.getString(R.string.join_club_before);
+                }else if(status.equals(Constant.TECH_STATUS_UNCERT)){
+                    emptyViewDes = ResourceUtils.getString(R.string.wait_club_examine);
+                }else if(status.equals(Constant.TECH_STATUS_REJECT)){
+                    emptyViewDes = ResourceUtils.getString(R.string.club_reject_apply);
+                }else{
+                    emptyViewDes = "";
+                }
                 setViewSate(false);
             }else{
                 isJoinedClub = true;
@@ -397,7 +412,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
             mShareView.setVisibility(View.GONE);
             mShareEmpty.setStatus(EmptyView.Status.Empty);
             mShareEmpty.setEmptyPic(R.drawable.ic_failed);
-            mShareEmpty.setEmptyTip("请先加入会所");
+            mShareEmpty.setEmptyTip(emptyViewDes);
         }
 
     }
