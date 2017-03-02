@@ -644,7 +644,9 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_SERVICE_ITEM_LIST)
     Call<LimitGrabResult> serviceItemListDetail(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId);
+                                                @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
+                                                @Field(RequestConstant.KEY_PAGE) String page,
+                                                @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     //抽奖活动列表
     @FormUrlEncoded

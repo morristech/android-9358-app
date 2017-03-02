@@ -33,8 +33,9 @@ android {
         // release version : 1.4.0.14
         // 1.5.4 备用技师登录需求
         // 1.5.6 技师相册权限+在线买单通知
-        versionCode 27
-        versionName "1.5.9"
+        //1.6.0 技师营销页面改版
+        versionCode 28
+        versionName "1.6.0"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",

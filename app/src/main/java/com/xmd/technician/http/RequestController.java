@@ -323,7 +323,7 @@ public class RequestController extends AbstractController {
                 getCardListDetail((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST_DETAIL:
-                getServiceItemListDetail();
+                getServiceItemListDetail((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_REWARD_ACTIVITY_LIST:
                 getRewardActivityList();
@@ -1512,8 +1512,8 @@ public class RequestController extends AbstractController {
     /**
      * 限时抢列表
      */
-    private void getServiceItemListDetail() {
-        Call<LimitGrabResult> call = getSpaService().serviceItemListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId());
+    private void getServiceItemListDetail(Map<String, String> params) {
+        Call<LimitGrabResult> call = getSpaService().serviceItemListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(),params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<LimitGrabResult>() {
             @Override
             protected void postResult(LimitGrabResult result) {

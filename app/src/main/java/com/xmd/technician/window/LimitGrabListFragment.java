@@ -12,12 +12,16 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.LimitGrabBean;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.LimitGrabResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareController;
 import com.xmd.technician.widget.EmptyView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,12 +52,17 @@ public class LimitGrabListFragment extends BaseListFragment<LimitGrabBean> {
         mTotalAmount = getArguments().getInt(ShareDetailListActivity.SHARE_TOTAL_AMOUNT);
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
+        mEmptyViewWidget.setStatus(EmptyView.Status.Loading);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
         return view;
     }
 
     @Override
     protected void dispatchRequest() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST_DETAIL);
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
+        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST_DETAIL,params);
     }
 
     @Override
@@ -71,10 +80,12 @@ public class LimitGrabListFragment extends BaseListFragment<LimitGrabBean> {
                 mSwipeRefreshLayout.setVisibility(View.GONE);
                 mEmptyViewWidget.setEmptyViewWithDescription(R.drawable.ic_failed, "活动已下线");
             } else {
+                mEmptyViewWidget.setStatus(EmptyView.Status.Gone);
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 if (limitGrabResult.respData.size() != mTotalAmount) {
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
                 }
-                onGetListSucceeded(1, limitGrabResult.respData);
+                onGetListSucceeded(limitGrabResult.pageCount, limitGrabResult.respData);
             }
         } else {
             onGetListFailed(limitGrabResult.msg);
@@ -95,7 +106,7 @@ public class LimitGrabListFragment extends BaseListFragment<LimitGrabBean> {
 
     @Override
     public boolean isPaged() {
-        return false;
+        return true;
     }
 
     @Override

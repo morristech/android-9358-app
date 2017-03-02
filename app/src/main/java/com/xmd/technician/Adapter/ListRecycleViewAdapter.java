@@ -806,7 +806,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             OnceCardItemViewHolder cardItemViewHolder = (OnceCardItemViewHolder) holder;
             Glide.with(mContext).load(onceCard.imageUrl).into(cardItemViewHolder.mOnceCardHead);
             cardItemViewHolder.mOnceCardTitle.setText(onceCard.name);
-            cardItemViewHolder.mOnceCardCredit.setText(Utils.StrSubstring(13,onceCard.comboDescription,true).trim());
+            cardItemViewHolder.mOnceCardCredit.setText(Utils.StrSubstring(13, onceCard.comboDescription, true).trim());
             cardItemViewHolder.mOnceCardMoney.setText(onceCard.techRoyalty);
             cardItemViewHolder.mOnceCardPrice.setText(onceCard.price);
             cardItemViewHolder.mOnceCardShare.setOnClickListener(v -> mCallback.onShareClicked(onceCard));
@@ -839,27 +839,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             LimitGrabItemViewHolder limitGrabViewHolder = (LimitGrabItemViewHolder) holder;
             Glide.with(mContext).load(limitGrabBean.image).into(limitGrabViewHolder.mLimitGrabHead);
             limitGrabViewHolder.mLimitGrabTitle.setText(limitGrabBean.itemName);
-            if (Utils.isNotEmpty(limitGrabBean.price)) {
-            }
-            if (Utils.isNotEmpty(limitGrabBean.amount)) {
-                limitGrabViewHolder.mLimitGrabMoney.setVisibility(View.VISIBLE);
-                limitGrabViewHolder.mUnit.setVisibility(View.VISIBLE);
-                limitGrabViewHolder.mLimitGrabMoney.setText(limitGrabBean.amount);
-                if (Utils.isNotEmpty(limitGrabBean.credits)) {
-                    limitGrabViewHolder.mLimitGrabCredit.setVisibility(View.VISIBLE);
-                    String des = String.format("（或%s积分）", limitGrabBean.credits);
-                    limitGrabViewHolder.mLimitGrabCredit.setText(Utils.changeColor(des, ResourceUtils.getColor(R.color.order_item_surplus_time_color), 2, des.length() - 3));
-                } else {
-                    limitGrabViewHolder.mLimitGrabCredit.setVisibility(View.GONE);
-                }
+            limitGrabViewHolder.mLimitGrabMoney.setText(limitGrabBean.amount);
+            if (Integer.parseInt(limitGrabBean.credits) > 0) {
+                limitGrabViewHolder.mLimitGrabCredit.setVisibility(View.VISIBLE);
+                String des = String.format("（或%s积分）", limitGrabBean.credits);
+                limitGrabViewHolder.mLimitGrabCredit.setText(Utils.changeColor(des, ResourceUtils.getColor(R.color.order_item_surplus_time_color), 2, des.length() - 3));
             } else {
-                if (Utils.isNotEmpty(limitGrabBean.credits)) {
-                    limitGrabViewHolder.mLimitGrabCredit.setVisibility(View.VISIBLE);
-                    String des = String.format("%s积分", limitGrabBean.credits);
-                    limitGrabViewHolder.mLimitGrabCredit.setText(Utils.changeColor(des, ResourceUtils.getColor(R.color.order_item_surplus_time_color), 0, des.length() - 3));
-                } else {
-                    limitGrabViewHolder.mLimitGrabCredit.setVisibility(View.GONE);
-                }
+                limitGrabViewHolder.mLimitGrabCredit.setVisibility(View.GONE);
             }
             if (limitGrabBean.limitedUse) {
                 limitGrabViewHolder.mLimitGrabTitleMark.setVisibility(View.VISIBLE);
@@ -898,7 +884,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 Glide.with(mContext).load(ResourceUtils.getDrawable(R.drawable.img_default_reward)).into(rewardHolder.mRewardHead);
             }
-            rewardHolder.mRewardName.setText(String.format("赢取%s",rewardBean.firstPrizeName));
+            rewardHolder.mRewardName.setText(String.format("赢取%s", rewardBean.firstPrizeName));
             String st = rewardBean.startTime.substring(2, 10).replace("-", ".");
             String et = rewardBean.endTime.substring(2, 10).replace("-", ".");
             rewardHolder.mRewardTime.setText(String.format("活动时间：%s-%s", st, et));
