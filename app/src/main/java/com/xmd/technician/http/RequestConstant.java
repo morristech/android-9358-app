@@ -87,6 +87,7 @@ public class RequestConstant {
     public static final String URL_GET_TECH_RANK_INDEX = BASE_URL + "/v2/tech/tech_rank_index";
     public static final String URL_GET_RECENT_DYNAMICS_LIST = BASE_URL + "/v2/tech/recent/dynamics/list";
     public static final String URL_ORDER_INNER_READ = BASE_URL + "/v2/tech/order/inner/read";
+    public static final String URL_GET_PROFILE_TECH_ACCOUNT_LIST = BASE_URL + "/v1/profile/tech/account/list";
 
 
     //    public static final String URL_APP_UPDATE_CONFIG = "mockjs/17/app-upgrade-system/appUpgrade";

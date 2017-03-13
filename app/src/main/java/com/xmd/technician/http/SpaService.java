@@ -48,6 +48,7 @@ import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
+import com.xmd.technician.http.gson.TechAccountListResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
@@ -675,4 +676,9 @@ public interface SpaService {
     @POST(RequestConstant.URL_DO_USER_JOURNAL_SHARE_COUNT)
     Call<BaseResult> journalShareCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_JOURNAL_ID) String journalId);
+    //技师账户列表
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_PROFILE_TECH_ACCOUNT_LIST)
+    Call<TechAccountListResult> techAccountList(@Field(RequestConstant.KEY_TOKEN) String userToken);
 }

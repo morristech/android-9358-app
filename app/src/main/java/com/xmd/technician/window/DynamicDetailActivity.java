@@ -23,7 +23,7 @@ import butterknife.OnClick;
 import rx.Subscription;
 
 /**
- * Created by Administrator on 2016/10/25.
+ * Created by Lhj on 2016/10/25.
  */
 public class DynamicDetailActivity extends BaseListActivity<DynamicDetail> {
 

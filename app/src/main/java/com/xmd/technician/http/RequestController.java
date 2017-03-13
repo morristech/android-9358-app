@@ -63,6 +63,7 @@ import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
+import com.xmd.technician.http.gson.TechAccountListResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
@@ -336,6 +337,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT:
                 journalShareCount(msg.obj.toString());
+                break;
+            case MsgDef.MSG_DEF_TECH_ACCOUNT_LIST:
+                getTechAccountList();
                 break;
         }
 
@@ -1484,7 +1488,7 @@ public class RequestController extends AbstractController {
      * 次卡列表
      */
     private void getOnceCardListDetail(Map<String, String> params) {
-        Call<OnceCardResult> call = getSpaService().onceCardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(), "true",params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+        Call<OnceCardResult> call = getSpaService().onceCardListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(), "true", params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<OnceCardResult>() {
             @Override
             protected void postResult(OnceCardResult result) {
@@ -1513,7 +1517,7 @@ public class RequestController extends AbstractController {
      * 限时抢列表
      */
     private void getServiceItemListDetail(Map<String, String> params) {
-        Call<LimitGrabResult> call = getSpaService().serviceItemListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(),params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+        Call<LimitGrabResult> call = getSpaService().serviceItemListDetail(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<LimitGrabResult>() {
             @Override
             protected void postResult(LimitGrabResult result) {
@@ -1569,14 +1573,30 @@ public class RequestController extends AbstractController {
      * @param
      */
     private void journalShareCount(String journalId) {
-        Call<BaseResult> call = getSpaService().journalShareCount(SharedPreferenceHelper.getUserToken(),journalId);
+        Call<BaseResult> call = getSpaService().journalShareCount(SharedPreferenceHelper.getUserToken(), journalId);
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {
-
+                RxBus.getInstance().post(result);
             }
         });
     }
+
+    /**
+     * 账户余额列表
+     *
+     * @param
+     */
+    private void getTechAccountList() {
+        Call<TechAccountListResult> call = getSpaService().techAccountList(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<TechAccountListResult>() {
+            @Override
+            protected void postResult(TechAccountListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
 
     //获取升级配置
     private void doGetAppUpdateConfig(Map<String, String> params) {

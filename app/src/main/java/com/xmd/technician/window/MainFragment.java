@@ -41,7 +41,6 @@ import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.HeartBeatTimer;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
@@ -713,7 +712,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onMainDetailClicked(View view) {
         switch (view.getId()) {
             case R.id.main_total_income:
-                startActivity(new Intent(getActivity(), MyAccountActivity.class));
+                startActivity(new Intent(getActivity(),TechAccountActivity.class));
                 return;
         }
         if (mTech.isActiveStatus()) {

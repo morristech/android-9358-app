@@ -238,7 +238,7 @@
         android:layout_marginRight="@dimen/search_margin"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:layout_width="match_parent"

@@ -240,8 +240,12 @@
         <activity
             android:name=".window.ShareDetailListActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".window.ShareDetailActivity"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.ShareDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".window.TechAccountActivity"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".DataRefreshService"

@@ -1,0 +1,101 @@
+package com.xmd.technician.Adapter;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.xmd.technician.R;
+import com.xmd.technician.bean.TechAccountBean;
+import com.xmd.technician.common.Utils;
+
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+/**
+ * Created by Lhj on 2017/03/9.
+ */
+public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountListAdapter.TechAccountViewHolder> {
+    private Context mContext;
+    private List<TechAccountBean> mData;
+    private CallBack mCallBack;
+    private String mWithdrawal = "";
+
+    public interface CallBack {
+        void onWithDrawClicked(String type);
+
+        void onItemClicked(String type);
+    }
+
+    public TechAccountListAdapter(Context context, List<TechAccountBean> data) {
+        this.mContext = context;
+        this.mData = data;
+
+    }
+
+    public void setData(List<TechAccountBean> data, String withdrawal) {
+        this.mData = data;
+        this.mWithdrawal = withdrawal;
+        notifyDataSetChanged();
+    }
+
+    public void setOnWithDrawClickedListener(CallBack callBack) {
+        this.mCallBack = callBack;
+    }
+
+    @Override
+    public TechAccountViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_tech_account_item, parent, false);
+        TechAccountViewHolder holder = new TechAccountViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(TechAccountViewHolder holder, int position) {
+        TechAccountBean bean = mData.get(position);
+        holder.accountName.setText(bean.name);
+        holder.rewardAmount.setText(Utils.getFloat2Str(String.valueOf(bean.amount / 100)));
+        if (bean.status.equals("normal")) {
+            holder.accountConsume.setEnabled(true);
+        } else {
+            holder.accountConsume.setEnabled(false);
+        }
+        if (bean.accountType.equals("redPacket")) {
+            if (mWithdrawal.equals("Y")) {
+                holder.accountConsume.setEnabled(true);
+            } else {
+                holder.accountConsume.setEnabled(false);
+            }
+        }
+        Glide.with(mContext).load(bean.imageUrl).into(holder.imgAccountHead);
+        holder.itemView.setOnClickListener(v -> mCallBack.onItemClicked(bean.accountType));
+        holder.accountConsume.setOnClickListener(v -> mCallBack.onWithDrawClicked(bean.accountType));
+    }
+
+    @Override
+    public int getItemCount() {
+        return mData.size();
+    }
+
+    static class TechAccountViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.img_account_head)
+        ImageView imgAccountHead;
+        @Bind(R.id.account_name)
+        TextView accountName;
+        @Bind(R.id.reward_amount)
+        TextView rewardAmount;
+        @Bind(R.id.account_consume)
+        TextView accountConsume;
+
+        public TechAccountViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+}
