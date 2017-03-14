@@ -127,7 +127,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private String adverseName;
     private int mAvailableCredit;
     private FlowerAnimation animation;
-
     private Subscription mManagerOrderSubscription;
     private Subscription mGetRedpacklistSubscription;
     private Subscription mSendMessageSubscription;
@@ -321,7 +320,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription, mSendMessageSubscription,
                     mSendDiceGameSubscription, mAcceptGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription
                     , mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription, mCreditStatusSubscription,
-                    mGiftResultSubscription);
+                    mGiftResultSubscription,mClubUserGetCouponSubscription);
         }
     }
 
@@ -456,6 +455,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             if (result.respData.coupons != null) {
                 mCouponList.clear();
                 for (CouponInfo info : result.respData.coupons) {
+                    info.selectedStatus = 1;
                     mCouponList.add(info);
                 }
             }

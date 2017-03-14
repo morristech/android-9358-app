@@ -32,9 +32,18 @@ public class ChatCouponAdapter extends RecyclerView.Adapter{
     private static final int FAVORABLE_COUPON_TYPE = 2;
     private OnItemClickListener mOnItemClick;
 
-    public ChatCouponAdapter(Context context , List<CouponInfo> data,OnItemClickListener itemClickListener){
+    public ChatCouponAdapter(Context context , List<CouponInfo> data){
         this.mContext = context;
         this.mData = data;
+    }
+    public void setCouponInfoData(List<CouponInfo> data){
+        this.mData = data;
+        notifyDataSetChanged();
+    }
+    public  interface OnItemClickListener{
+        void onItemCheck(CouponInfo info,int position,boolean idChecked);
+    }
+    public void setOnItemClickListener(OnItemClickListener itemClickListener){
         this.mOnItemClick = itemClickListener;
     }
     @Override
@@ -94,7 +103,14 @@ public class ChatCouponAdapter extends RecyclerView.Adapter{
             if(Utils.isNotEmpty(couponInfo.consumeMoney)){
                 chatCouponViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
             }
-            chatCouponViewHolder.itemView.setOnClickListener(v -> mOnItemClick.onItemCheck(position,chatCouponViewHolder.mTextCheck));
+            if(couponInfo.selectedStatus == 1){
+                chatCouponViewHolder.mTextCheck.setSelected(false);
+                chatCouponViewHolder.itemView.setOnClickListener(v -> mOnItemClick.onItemCheck(couponInfo,position,false));
+            }else{
+                chatCouponViewHolder.mTextCheck.setSelected(true);
+                chatCouponViewHolder.itemView.setOnClickListener(v -> mOnItemClick.onItemCheck(couponInfo,position,true));
+            }
+
         }
     }
 
@@ -102,9 +118,7 @@ public class ChatCouponAdapter extends RecyclerView.Adapter{
     public int getItemCount() {
         return mData.size();
     }
-    public  interface OnItemClickListener{
-       void onItemCheck(int position,View view);
-    }
+
     static class ChatCouponViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tv_consume_money_description) TextView mTvConsumeMoneyDescription;
         @Bind(R.id.tv_coupon_title) TextView mTvCouponTitle;

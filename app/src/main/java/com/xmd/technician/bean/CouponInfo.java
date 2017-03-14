@@ -23,6 +23,7 @@ public class CouponInfo {
     public String consumeMoney;
     public String couponTypeName;
     public String shareUrl;
+    public int selectedStatus; //1可被选中且未被选中，2，可被选中且已被选中
 
     @Override
     public String toString() {

@@ -139,7 +139,5 @@
         android:background="@drawable/chat_coupon_bg"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/inter_space"
-        android:layout_marginRight="@dimen/inter_space"
-        android:enabled="false"
-        />
+        android:layout_marginRight="@dimen/inter_space"/>
 </LinearLayout>
