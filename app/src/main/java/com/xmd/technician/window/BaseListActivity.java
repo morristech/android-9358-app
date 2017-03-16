@@ -185,5 +185,10 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
 
     }
 
+    @Override
+    public void onLongClicked(T bean) {
+
+    }
+
     protected abstract void setContentViewLayout();
 }

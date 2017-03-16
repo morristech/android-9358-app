@@ -156,24 +156,4 @@ public class MyAccountActivity extends BaseActivity {
             }
         }.show();
     }
-    /*public void wxLogin(){
-        WXShareUtil.getInstance().loginWX();
-    }
-
-    public void DrawCash(){
-        if(SharedPreferenceHelper.getBindSuccess()){
-            //已绑定微信 去提现
-          //      doDrawMoney();
-        }else{
-            //未绑定微信 去绑定
-         //   showConfirmDialog();
-        }
-
-    }
-    private void doDrawMoney(){
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_TRADE_AMOUNT, "1");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_DRAW_MONEY, params);
-    }*/
-
 }

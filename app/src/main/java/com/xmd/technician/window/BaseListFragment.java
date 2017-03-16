@@ -202,6 +202,11 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     }
 
     @Override
+    public void onLongClicked(T bean) {
+
+    }
+
+    @Override
     public void onShareClicked(T bean) {
 
     }

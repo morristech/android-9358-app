@@ -159,5 +159,7 @@ public class MsgDef {
     public static final int MSG_DEF_JOURNAL_SHARE_COUNT = 0x0085;
     public static final int MSG_DEF_TECH_ACCOUNT_LIST = 0x0086;
 
+    public static final int MSG_DEG_DELETE_CONVERSATION_FROM_DB = 0x0087;
+
 
 }

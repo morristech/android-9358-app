@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
@@ -27,6 +28,7 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.ChatMessageManagerDialog;
 import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
@@ -40,13 +42,15 @@ import rx.Subscription;
  */
 public class ChatFragment extends BaseListFragment<EMConversation> {
 
-    @Bind(R.id.empty_view_widget) EmptyView mEmptyView;
-    @Bind(R.id.header_container) FrameLayout mHeadContainer;
+    @Bind(R.id.empty_view_widget)
+    EmptyView mEmptyView;
+    @Bind(R.id.header_container)
+    FrameLayout mHeadContainer;
     protected List<EMConversation> mConversationList = new ArrayList<>();
     private Filter mFilter;
     private Subscription mGetConversationListSubscription;
     private TextView mSearchView;
-    private String  mMessageFrom;
+    private String mMessageFrom;
 
     @Nullable
     @Override
@@ -57,12 +61,12 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     }
 
     @Override
-    protected void initView(){
+    protected void initView() {
         initTitleView(ResourceUtils.getString(R.string.message_fragment_title));
         View searchView = getActivity().getLayoutInflater().inflate(R.layout.search_bar, mHeadContainer, false);
         mHeadContainer.addView(searchView);
         mSearchView = (TextView) searchView.findViewById(R.id.search_word);
-        ((TextView)searchView.findViewById(R.id.search_word)).addTextChangedListener(new TextWatcher() {
+        ((TextView) searchView.findViewById(R.id.search_word)).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -101,15 +105,17 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Override
     public void onResume() {
         super.onResume();
-        if(mSearchView != null && !TextUtils.isEmpty(mSearchView.getText())) mSearchView.setText("");
+        if (mSearchView != null && !TextUtils.isEmpty(mSearchView.getText()))
+            mSearchView.setText("");
         onRefresh();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
-            if(mSearchView != null && !TextUtils.isEmpty(mSearchView.getText())) mSearchView.setText("");
+        if (!hidden) {
+            if (mSearchView != null && !TextUtils.isEmpty(mSearchView.getText()))
+                mSearchView.setText("");
             onRefresh();
         }
     }
@@ -120,15 +126,15 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             mEmptyView.setStatus(EmptyView.Status.Failed);
         } else {
             onGetListSucceeded(0, result.respData);
-            if(result.respData != null){
-                if(!mIsLoadingMore) {
+            if (result.respData != null) {
+                if (!mIsLoadingMore) {
                     mConversationList.clear();
                 }
                 mConversationList.addAll(result.respData);
             }
-            if(result.respData.isEmpty()){
+            if (result.respData.isEmpty()) {
                 mEmptyView.setStatus(EmptyView.Status.Empty);
-            }else {
+            } else {
                 mEmptyView.setStatus(EmptyView.Status.Gone);
             }
         }
@@ -138,57 +144,58 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     public void onItemClicked(EMConversation conversation) {
         String username = conversation.getUserName();
         if (username.equals(SharedPreferenceHelper.getEmchatId()))
-            ((BaseFragmentActivity)getActivity()).makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
-        else if(username.equals(ChatConstant.MESSAGE_SYSTEM_NOTICE)) {
+            ((BaseFragmentActivity) getActivity()).makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
+        else if (username.equals(ChatConstant.MESSAGE_SYSTEM_NOTICE)) {
             Intent intent = new Intent(getContext(), SysNoticeListActivity.class);
             // it's single chat
             intent.putExtra(ChatConstant.EMCHAT_ID, username);
             startActivity(intent);
-        }else{
-                // 进入聊天页面
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                if(conversation.isGroup()){
-                    if(conversation.getType() == EMConversation.EMConversationType.ChatRoom){
-                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_CHATROOM);
-                    }else{
-                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
-                    }
+        } else {
+            // 进入聊天页面
+            Intent intent = new Intent(getContext(), ChatActivity.class);
+            if (conversation.isGroup()) {
+                if (conversation.getType() == EMConversation.EMConversationType.ChatRoom) {
+                    intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_CHATROOM);
+                } else {
+                    intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
                 }
-            if(conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())){
-                   if(SharedPreferenceHelper.getUserIsTech(username).equals("tech")){
-                       mMessageFrom ="tech";
-                   } else if(SharedPreferenceHelper.getUserIsTech(username).equals("manager")){
-                       mMessageFrom ="manager";
-                   }else{
-                       mMessageFrom ="";
-                   }
+            }
+            if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
+                if (SharedPreferenceHelper.getUserIsTech(username).equals("tech")) {
+                    mMessageFrom = "tech";
+                } else if (SharedPreferenceHelper.getUserIsTech(username).equals("manager")) {
+                    mMessageFrom = "manager";
+                } else {
+                    mMessageFrom = "";
+                }
 
-            }else{
+            } else {
                 mMessageFrom = "";
                 try {
-                    if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID)));
+                    if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID)))
+                        ;
                     mMessageFrom = "tech";
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                 }
                 try {
-                    if(Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_GAME_CLUB_ID))){
+                    if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_GAME_CLUB_ID))) {
                         mMessageFrom = "manager";
                     }
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                 }
             }
-                        conversation.getAllMessages();
-                // it's single chat
-                intent.putExtra(ChatConstant.EMCHAT_ID, username);
-                intent.putExtra(ChatConstant.EMCHAT_IS_TECH,mMessageFrom);
-                startActivity(intent);
+            conversation.getAllMessages();
+            // it's single chat
+            intent.putExtra(ChatConstant.EMCHAT_ID, username);
+            intent.putExtra(ChatConstant.EMCHAT_IS_TECH, mMessageFrom);
+            startActivity(intent);
         }
     }
 
-    public Filter getFilter(){
-        if(mFilter == null){
+    public Filter getFilter() {
+        if (mFilter == null) {
             mFilter = new ConversationFilter(mConversationList);
         }
         return mFilter;
@@ -211,7 +218,8 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             /*if (prefix == null || prefix.length() == 0) {
                 results.values = mConversationList;
                 results.count = mConversationList.size();
-            } else*/ {
+            } else*/
+            {
                 String prefixString = prefix.toString();
                 final int count = mOriginalValues.size();
                 final ArrayList<EMConversation> newValues = new ArrayList<EMConversation>();
@@ -222,9 +230,9 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
 
 
                     EMGroup group = EMClient.getInstance().groupManager().getGroup(username);
-                    if(group != null){
+                    if (group != null) {
                         username = group.getGroupName();
-                    }else {
+                    } else {
                         username = UserUtils.getUserNick(value.getUserName());
                         /*ChatUser  chatUser = UserUtils.getUserInfo(value.getUserName());
                         if(chatUser != null){
@@ -235,7 +243,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     // First match against the whole ,non-splitted value
                     if (username.startsWith(prefixString)) {
                         newValues.add(value);
-                    } else{
+                    } else {
                         final String[] words = username.split(" ");
                         final int wordCount = words.length;
 
@@ -262,7 +270,21 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
 
     }
 
-
+    @Override
+    public void onLongClicked(EMConversation bean) {
+        super.onLongClicked(bean);
+        //  MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_DELETE_CONVERSATION_FROM_DB, bean);
+        ChatMessageManagerDialog dialog = new ChatMessageManagerDialog(getActivity());
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setItemClickedListener(new ChatMessageManagerDialog.OnItemClickedListener() {
+            @Override
+            public void onItemClicked() {
+                dialog.dismiss();
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_DELETE_CONVERSATION_FROM_DB, bean);
+            }
+        });
+        dialog.show();
+    }
 
     @Override
     public boolean isPaged() {

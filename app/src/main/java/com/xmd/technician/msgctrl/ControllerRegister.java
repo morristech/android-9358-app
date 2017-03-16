@@ -108,6 +108,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL,
                 MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT,
                 MsgDef.MSG_DEF_TECH_ACCOUNT_LIST
+
         };
         MsgDispatcher.register(controllerId, msgIds);
     }
@@ -130,7 +131,8 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_SAVE_CHAT_USER,
                 MsgDef.MSG_DEF_GET_CONVERSATION_LIST,
                 MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY,
-                MsgDef.MSG_DEF_LOGIN_EMCHAT
+                MsgDef.MSG_DEF_LOGIN_EMCHAT,
+                MsgDef.MSG_DEG_DELETE_CONVERSATION_FROM_DB
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

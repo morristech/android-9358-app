@@ -80,6 +80,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
         void onShareClicked(T bean);
 
+        void onLongClicked(T bean);
+
         /**
          * @return whether the item is slideable
          */
@@ -545,6 +547,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     e.printStackTrace();
                 }
             });
+           holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+               @Override
+               public boolean onLongClick(View v) {
+                    mCallback.onLongClicked(conversation);
+                   return true;
+               }
+           });
             return;
         }
         if (holder instanceof CreditRecordViewHolder) {
