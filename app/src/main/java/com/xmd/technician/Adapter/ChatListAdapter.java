@@ -1,6 +1,7 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
+import com.xmd.technician.DataRefreshService;
+import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.AcceptOrRejectGame;
 import com.xmd.technician.bean.PlayDiceGame;
@@ -32,11 +35,15 @@ import com.xmd.technician.chat.chatview.ChatViewReward;
 import com.xmd.technician.chat.chatview.ChatViewsendGame;
 import com.xmd.technician.chat.chatview.ChatViewText;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
+import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.CustomAlertDialog;
+import com.xmd.technician.widget.RewardConfirmDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -174,6 +181,34 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ChatViewHolder) {
             ((ChatViewHolder) holder).setUpView(getItem(position), mItemClickListener);
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+              /*      new CustomAlertDialog.Builder(mContext)
+                            .setTitle("温馨提示")
+                            .setMessage("确认删除此条消息码？")
+                            .setPositiveButton("确认", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mConversation.removeMessage(getItem(position).getMsgId());
+                                    refreshSelectLast();
+                                }
+                            })
+                            .build()
+                            .show();*/
+                    new RewardConfirmDialog(mContext, "温馨提示", "确认删除此条消息码？", "确认") {
+                        @Override
+                        public void onConfirmClick() {
+                            this.dismiss();
+                            mConversation.removeMessage(getItem(position).getMsgId());
+                            refreshSelectLast();
+
+                        }
+                    }.show();
+
+                    return false;
+                }
+            });
         }
     }
 
@@ -302,6 +337,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
         }
+
         /**
          * 拒绝游戏
          */
