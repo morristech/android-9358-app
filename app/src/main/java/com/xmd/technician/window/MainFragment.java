@@ -37,7 +37,6 @@ import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.TechInfo;
-import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.HeartBeatTimer;
@@ -46,6 +45,7 @@ import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.event.EventJoinedClub;
+import com.xmd.technician.event.EventRequestJoinClub;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.OrderListResult;
@@ -61,6 +61,8 @@ import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyFragment;
+import com.xmd.technician.permission.CheckBusinessPermission;
+import com.xmd.technician.permission.PermissionConstants;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.SlidingMenu;
@@ -86,10 +88,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     RelativeLayout mRlToolBar;
     @Bind(R.id.app_version)
     TextView mAppVersion;
-    @Bind(R.id.settings_activity_join_club)
-    RelativeLayout mMenuSettingsActivityJoinClub;
-    @Bind(R.id.settings_activity_quit_club)
-    RelativeLayout mMenuSettingsActivityQuitClub;
+    @Bind(R.id.join_or_quit_club)
+    TextView mJoinOrQuitClub;
+    @Bind(R.id.settings_activity_join_or_quit_club)
+    RelativeLayout mMenuJoinOrQuitClub;
     @Bind(R.id.menu_club_name)
     TextView mMenuClubName;
     @Bind(R.id.main_head_avatar)
@@ -104,8 +106,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     ImageView mBtnMainTechBusy;
     @Bind(R.id.btn_main_tech_free)
     ImageView mBtnMainTechFree;
-    @Bind(R.id.btn_main_credit_center)
-    ImageView mBtnMainCreditCenter;
     @Bind(R.id.main_info_too_keen_number)
     TextView mMainInfoTooKeenNumber;
     @Bind(R.id.main_send_coupon_number)
@@ -192,10 +192,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mOrderFigureOut;
 
     //支付通知
-    @Bind(R.id.pay_notify_layout)
+    @Bind(R.id.online_pay_notify_layout)
     View mPayNotifyLayout;
-    @Bind(R.id.fragment_pay_notify_container)
-    View mPayNotifyFragmentContainer;
     @Bind(R.id.pay_notify_header)
     RelativeLayout mPayNotifyHeader;
     private OnlinePayNotifyFragment mPayNotifyFragment;
@@ -232,22 +230,35 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mGetDynamicListSubscription;
     private Subscription mTechStatusSubscription;
     private Subscription mJoinedClubSubscription;
+    private Subscription mRequestJoinClubSubscription;
 
     private LoginTechnician mTech = LoginTechnician.getInstance();
+
+    private View mRootView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.main_fragment, container, false);
+        mRootView = inflater.inflate(R.layout.main_fragment, container, false);
         mContext = getActivity();
-        ButterKnife.bind(this, view);
-        initView(view);
+        ButterKnife.bind(this, mRootView);
+        initView(mRootView);
+
+        initStatistic();
+        initOnlinePay();
+        initOrder();
+        initVisitor();
+        initMoment();
+        initRanking();
+        initCredit();
+        initWorkStatus();
+
         registerRequestHandlers(); //注册监听器
 
         HeartBeatTimer.getInstance().start(60, mTask);
 
         sendDataRequest();
-        return view;
+        return mRootView;
     }
 
     @Override
@@ -266,13 +277,15 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mOrderManageSubscription,
                 mGetDynamicListSubscription,
                 mGetRecentlyVisitorSubscription,
-                mJoinedClubSubscription);
+                mJoinedClubSubscription,
+                mRequestJoinClubSubscription);
     }
 
     private void initView(View view) {
         screenWidth = Utils.getScreenWidthHeight(getActivity())[0];
         screenSpeed = screenWidth / 16;
         initTitleView(view);
+        initMenu();
         visitViewList.add(visitAvatar1);
         visitViewList.add(visitAvatar2);
         visitViewList.add(visitAvatar3);
@@ -322,9 +335,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mContactMore.setOnClickListener(this);
         view.findViewById(R.id.rl_toolbar).setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
         imageRight = ((ImageView) view.findViewById(R.id.toolbar_right_img));
+        imageRight.setVisibility(View.GONE);
+        initQRCode();
         imageLeft = (ImageView) view.findViewById(R.id.toolbar_back);
         imageLeft.setImageDrawable(ResourceUtils.getDrawable(R.drawable.ic_main_menu));
-        imageRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_qr_code));
         imageLeft.setVisibility(View.VISIBLE);
         imageLeft.setOnClickListener(this);
         mAppVersion.setText("v" + AppConfig.getAppVersionNameAndCode());
@@ -333,8 +347,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void registerRequestHandlers() {
         mGetTechCurrentInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class).subscribe(
                 techCurrentResult -> handleTechCurrentResult(techCurrentResult));
-        mUserSwitchesSubscription = RxBus.getInstance().toObservable(UserSwitchesResult.class).subscribe(
-                switchesResult -> handleUserSwitchResult(switchesResult));
         mGetTechStatisticsDataSubscription = RxBus.getInstance().toObservable(TechStatisticsDataResult.class).subscribe(
                 statisticsData -> initTechWorkView(statisticsData));
         mGetTechOrderListSubscription = RxBus.getInstance().toObservable(OrderListResult.class).subscribe(
@@ -354,7 +366,94 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 visitResult -> initRecentlyViewView(visitResult));
 
         mJoinedClubSubscription = RxBus.getInstance().toObservable(EventJoinedClub.class).subscribe(this::onEventJoinedClub);
+
+        mRequestJoinClubSubscription = RxBus.getInstance().toObservable(EventRequestJoinClub.class).subscribe(this::onEventRequestJoinClub);
     }
+
+    @CheckBusinessPermission((PermissionConstants.QR_CODE))
+    public void initQRCode() {
+        imageRight.setVisibility(View.VISIBLE);
+        imageRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_qr_code));
+    }
+
+    //加载统计数据
+    @CheckBusinessPermission(PermissionConstants.STATISTIC)
+    public void initStatistic() {
+        mRootView.findViewById(R.id.statistic_layout).setVisibility(View.VISIBLE);
+        initStatisticInviteCustomer();
+        initStatisticDistributeCoupon();
+        initStatisticIncome();
+        initStatisticPraise();
+    }
+
+    @CheckBusinessPermission(PermissionConstants.STATISTIC_INVITE_CUSTOMER)
+    public void initStatisticInviteCustomer() {
+        mRootView.findViewById(R.id.main_too_keen).setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.STATISTIC_DISTRIBUTE_COUPON)
+    public void initStatisticDistributeCoupon() {
+        mRootView.findViewById(R.id.main_send_coupon).setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.STATISTIC_PRAISE)
+    public void initStatisticPraise() {
+        mRootView.findViewById(R.id.main_get_comment).setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.STATISTIC_INCOME)
+    public void initStatisticIncome() {
+        mRootView.findViewById(R.id.main_total_income).setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.ONLINE_PAY)
+    public void initOnlinePay() {
+        mPayNotifyLayout.setVisibility(View.VISIBLE);
+        final long startTime = System.currentTimeMillis() - Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT;
+        final long endTime = System.currentTimeMillis() + (3600 * 1000);
+        mPayNotifyFragment = (OnlinePayNotifyFragment) getActivity().getSupportFragmentManager().findFragmentByTag("fragment_pay_notify");
+        if (mPayNotifyFragment == null) {
+            mPayNotifyFragment = OnlinePayNotifyFragment.newInstance(startTime, endTime, PayNotifyInfo.STATUS_ALL, true, Constant.PAY_NOTIFY_MAIN_PAGE_SHOW_LIMIT);
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.fragment_pay_notify_container, mPayNotifyFragment, "fragment_pay_notify");
+            ft.commit();
+        } else {
+            mPayNotifyFragment.setFilter(startTime, endTime, PayNotifyInfo.STATUS_ALL, true);
+            mPayNotifyFragment.loadData(true);
+        }
+        DataRefreshService.refreshPayNotify(true);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.ORDER)
+    public void initOrder() {
+        mRootView.findViewById(R.id.order_layout).setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.VISITOR)
+    public void initVisitor() {
+        mRootView.findViewById(R.id.visitor_layout).setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MOMENT)
+    public void initMoment() {
+        mRootView.findViewById(R.id.moment_layout).setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
+    public void initRanking() {
+        mRootView.findViewById(R.id.ranking_layout).setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.CREDIT)
+    public void initCredit() {
+        mRootView.findViewById(R.id.btn_main_credit_center).setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.WORK_STATUS)
+    public void initWorkStatus() {
+        mRootView.findViewById(R.id.work_status_layout).setVisibility(View.VISIBLE);
+    }
+
 
     public void refreshOrderListData() {
         Map<String, String> param = new HashMap<>();
@@ -385,12 +484,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             UserProfileProvider.getInstance().updateCurrentUserInfo(mTechInfo.userName, mTechInfo.imageUrl);
             if (Utils.isNotEmpty(result.respData.clubId)) {
                 mClubId = result.respData.clubId;
-                mMenuSettingsActivityQuitClub.setVisibility(View.VISIBLE);
-                mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
-
-            } else {
-                mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
-                mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
             }
 
             if (Utils.isNotEmpty(result.respData.innerProvider)) {
@@ -411,7 +504,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mTechStatus.setVisibility(View.VISIBLE);
             techJoinClub = ResourceUtils.getString(R.string.join_club_before);
             mTechStatus.setText(techJoinClub);
-            mBtnMainCreditCenter.setVisibility(View.GONE);
         } else if (Constant.TECH_STATUS_REJECT.equals(status)) {
             mTechStatus.setVisibility(View.VISIBLE);
             techJoinClub = ResourceUtils.getString(R.string.club_reject_apply);
@@ -441,31 +533,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
         } else {
             techJoinClub = result.msg;
-        }
-    }
-
-    private void handleUserSwitchResult(UserSwitchesResult switchResult) {
-        if (switchResult.statusCode == 200) {
-            if (switchResult.respData.credit.clubSwitch != null && switchResult.respData.credit.systemSwitch != null) {
-                if (switchResult.respData.credit.clubSwitch.equals(RequestConstant.KEY_SWITCH_ON) && switchResult.respData.credit.systemSwitch.equals(RequestConstant.KEY_SWITCH_ON)) {
-                    mBtnMainCreditCenter.setVisibility(View.VISIBLE);
-                    isCreditCanExchange = true;
-                } else {
-                    mBtnMainCreditCenter.setVisibility(View.GONE);
-                }
-            } else {
-                mBtnMainCreditCenter.setVisibility(View.GONE);
-            }
-
-            //在线买单开关
-            if(switchResult.respData.fastPay != null){
-                if (switchResult.respData.fastPay.switchString != null && switchResult.respData.fastPay.switchString.equals(RequestConstant.KEY_SWITCH_ON)) {
-                    addPayNotify();
-                } else {
-                    removePayNotify();
-                }
-            }
-
         }
     }
 
@@ -561,9 +628,56 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPDATE_WORK_STATUS, params);
     }
 
+    public void initMenu() {
+        initMenuWorkTime();
+        initMenuWorkProject();
+        initMenuAbout();
+        initMenuSuggest();
+        initMenuChangePassword();
+        initMenuJoinOrQuitClub();
+    }
+
+    @CheckBusinessPermission(PermissionConstants.WORK_TIME)
+    public void initMenuWorkTime() {
+        initMenuItem(R.id.menu_work_time);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.WORK_PROJECT)
+    public void initMenuWorkProject() {
+        initMenuItem(R.id.menu_work_project);
+    }
+
+    public void initMenuAbout() {
+        initMenuItem(R.id.menu_about_us);
+    }
+
+    public void initMenuSuggest() {
+        initMenuItem(R.id.menu_suggest);
+    }
+
+    public void initMenuChangePassword() {
+        initMenuItem(R.id.settings_activity_modify_pw);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.JOIN_OR_QUIT_CLUB)
+    public void initMenuJoinOrQuitClub() {
+        initMenuItem(R.id.settings_activity_join_or_quit_club);
+        if (mTech.hasClub()) {
+            mJoinOrQuitClub.setText("退出会所");
+            mMenuClubName.setText(mTech.getClubName());
+        } else {
+            mJoinOrQuitClub.setText("加入会所");
+            mMenuClubName.setText(null);
+        }
+    }
+
+    public void initMenuItem(int resourceId) {
+        mRootView.findViewById(resourceId).setVisibility(View.VISIBLE);
+    }
+
 
     @OnClick({R.id.menu_work_time, R.id.menu_work_project, R.id.menu_about_us, R.id.menu_suggest, R.id.settings_activity_modify_pw, R.id.settings_activity_join_club,
-            R.id.settings_activity_quit_club, R.id.settings_activity_logout})
+            R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout})
     public void onMainMenuSettingClicked(View view) {
         switch (view.getId()) {
             case R.id.menu_work_time:
@@ -594,27 +708,30 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             case R.id.settings_activity_join_club:
                 UINavigation.gotoJoinClubForResult(getActivity(), MainActivity.REQUEST_CODE_JOIN_CLUB);
                 break;
-            case R.id.settings_activity_quit_club:
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                Fragment prev = fragmentManager.findFragmentByTag("quit_club");
-                if (prev != null) {
-                    ft.remove(prev);
-                }
-                QuitClubDialogFragment newFragment = new QuitClubDialogFragment();
-                newFragment.setListener(new QuitClubDialogFragment.QuitClubListener() {
-                    @Override
-                    public void onQuitClubSuccess() {
-                        mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
-                        mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
-                        mMenuClubName.setVisibility(View.GONE);
-                        mMenuClubName.setText(Utils.briefString(mTech.getClubName(),6));
-                        showTechStatus(mTech.getStatus());
-
-                        onRefresh();
+            case R.id.settings_activity_join_or_quit_club:
+                if (!mTech.hasClub()) {
+                    //加入会所
+                    UINavigation.gotoJoinClubForResult(getActivity(), MainActivity.REQUEST_CODE_JOIN_CLUB);
+                } else {
+                    //退出会所
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    Fragment prev = fragmentManager.findFragmentByTag("quit_club");
+                    if (prev != null) {
+                        ft.remove(prev);
                     }
-                });
-                newFragment.show(ft, "quit_club");
+                    QuitClubDialogFragment newFragment = new QuitClubDialogFragment();
+                    newFragment.setListener(new QuitClubDialogFragment.QuitClubListener() {
+                        @Override
+                        public void onQuitClubSuccess() {
+                            mJoinOrQuitClub.setText("加入会所");
+                            mMenuClubName.setText(null);
+                            showTechStatus(mTech.getStatus());
+                            onRefresh();
+                        }
+                    });
+                    newFragment.show(ft, "quit_club");
+                }
                 break;
             case R.id.settings_activity_logout:
                 new RewardConfirmDialog(getActivity(), "", getString(R.string.logout_tips), "") {
@@ -632,12 +749,17 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    @OnClick({R.id.main_page_head, R.id.main_tech_order_all, R.id.main_tech_dynamic_all, R.id.main_tech_who_care_all, R.id.layout_technician_ranking})
+    @CheckBusinessPermission(PermissionConstants.PERSONAL_EDIT)
+    public void gotoEditPersonalData() {
+        Intent intent = new Intent(getActivity(), TechInfoActivity.class);
+        getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_EDIT_TECH_INFO);
+    }
+
+    @OnClick({R.id.main_page_head, R.id.main_tech_order_all, R.id.main_tech_dynamic_all, R.id.main_tech_who_care_all, R.id.ranking_layout})
     public void onMainPagePieceClicked(View view) {
         switch (view.getId()) {
             case R.id.main_page_head:
-                Intent intent = new Intent(getActivity(), TechInfoActivity.class);
-                getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_EDIT_TECH_INFO);
+                gotoEditPersonalData();
                 break;
             case R.id.main_tech_order_all:
                 if (Utils.isEmpty(techJoinClub)) {
@@ -712,7 +834,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onMainDetailClicked(View view) {
         switch (view.getId()) {
             case R.id.main_total_income:
-                startActivity(new Intent(getActivity(),TechAccountActivity.class));
+                startActivity(new Intent(getActivity(), TechAccountActivity.class));
                 return;
         }
         if (mTech.isActiveStatus()) {
@@ -795,12 +917,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             resetTechStatusView(-1);
         } else {
             resetTechStatusView(-1);
-        }
-        if (Utils.isNotEmpty(info.clubName)) {
-            mMenuClubName.setText(Utils.briefString(info.clubName,6));
-        } else {
-            mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
-            mMenuClubName.setVisibility(View.GONE);
         }
 
         showTechStatus(mTech.getStatus());
@@ -1080,17 +1196,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    //申请加入会所成功后显示
-    public void doSendJoinClubRequestSuccess() {
-        mMenuSettingsActivityQuitClub.setVisibility(View.VISIBLE);
-        mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
-        mMenuClubName.setVisibility(View.VISIBLE);
-
-        mMenuClubName.setText(Utils.briefString(mTech.getClubName(),6));
-        showTechStatus(mTech.getStatus());
-
-        onRefresh();
-    }
 
     public void doUpdateTechInfoSuccess() {
         mTech.loadTechInfo();
@@ -1100,24 +1205,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onRefresh() {
         sendDataRequest();
-    }
-
-    //获取买单通知数据
-    public void addPayNotify() {
-        mPayNotifyLayout.setVisibility(View.VISIBLE);
-        final long startTime = System.currentTimeMillis() - Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT;
-        final long endTime = System.currentTimeMillis() + (3600 * 1000);
-        mPayNotifyFragment = (OnlinePayNotifyFragment) getActivity().getSupportFragmentManager().findFragmentByTag("fragment_pay_notify");
-        if (mPayNotifyFragment == null) {
-            mPayNotifyFragment = OnlinePayNotifyFragment.newInstance(startTime, endTime, PayNotifyInfo.STATUS_ALL, true, Constant.PAY_NOTIFY_MAIN_PAGE_SHOW_LIMIT);
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_pay_notify_container, mPayNotifyFragment, "fragment_pay_notify");
-            ft.commit();
-        } else {
-            mPayNotifyFragment.setFilter(startTime, endTime, PayNotifyInfo.STATUS_ALL, true);
-            mPayNotifyFragment.loadData(true);
-        }
-        DataRefreshService.refreshPayNotify(true);
     }
 
     public void removePayNotify() {
@@ -1135,5 +1222,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void onEventJoinedClub(EventJoinedClub event) {
         Toast.makeText(getContext(), "成功通过会所审核！", Toast.LENGTH_LONG).show();
         onRefresh(); //刷新界面
+    }
+
+    //申请加入会所事件
+    private void onEventRequestJoinClub(EventRequestJoinClub event) {
+        mJoinOrQuitClub.setText("退出会所");
+        mMenuClubName.setText(mTech.getClubName());
+        showTechStatus(mTech.getStatus());
+
+        onRefresh();
     }
 }

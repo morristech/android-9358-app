@@ -71,8 +71,7 @@
             android:layout_height="32dp"
             android:layout_below="@+id/et_sendmessage"
             android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            >
+            android:paddingBottom="8dp">
 
             <LinearLayout
                 android:id="@+id/btn_photo"
@@ -107,7 +106,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:paddingLeft="@dimen/personal_padding"
-                android:paddingRight="@dimen/personal_padding">
+                android:paddingRight="@dimen/personal_padding"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/personal_item_icon_height"
@@ -121,7 +121,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:paddingLeft="@dimen/personal_padding"
-                android:paddingRight="@dimen/personal_padding">
+                android:paddingRight="@dimen/personal_padding"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/personal_item_icon_height"
@@ -136,7 +137,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:paddingLeft="@dimen/personal_padding"
-                android:paddingRight="@dimen/personal_padding">
+                android:paddingRight="@dimen/personal_padding"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/personal_item_icon_height"
@@ -150,7 +152,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:paddingLeft="@dimen/personal_padding"
-                android:paddingRight="@dimen/personal_padding">
+                android:paddingRight="@dimen/personal_padding"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/personal_item_icon_height"

@@ -57,7 +57,6 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
         params.put(RequestConstant.KEY_LAST_TIME, lastTime);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, params);
-
     }
 
     @Override

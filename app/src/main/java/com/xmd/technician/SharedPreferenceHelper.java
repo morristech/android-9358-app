@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.model.LoginTechnician;
 
+import java.util.Set;
+
 /**
  * Created by sdcm on 15-10-23.
  */
@@ -36,6 +38,8 @@ public class SharedPreferenceHelper {
     private static final String KEY_PAY_NOTIFY_HIDE_ID = "456af6df9b184d2b7c78deb88d288942";
     private static final String KEY_PAY_NOTIFY_IS_FIRST_HIDE = "3ce13929dfff8cf8b8592ef34d3bffd9";
     private static final String KEY_TECH_STATUS = "d70798608c15e7af0f4cd381ea775fa9";
+    private static final String KEY_PERMISSION = "0b43e8e104bfbdbf3a67587e5154dc0c";
+    private static final String KEY_PERMISSION_SYNC_DATE = "5d2de249318aa422e6937cb56b8952b3";
     /**
      * Last time to check the upgrade automatically
      */
@@ -158,7 +162,7 @@ public class SharedPreferenceHelper {
      * @return
      */
     public static String getServerHost() {
-//        return "http://192.168.1.100:9880";//FIXME
+//        return "http://192.168.1.105:9880";//FIXME
         return mSettingPreference.getString(KEY_SERVER_HOST, RequestConstant.SERVER_HOST);
     }
 
@@ -342,12 +346,12 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(KEY_PAY_NOTIFY_HIDE_ID + "-" + getUserId(), "");
     }
 
-    public static void setTechStatus(String status){
-         mSettingPreference.edit().putString(KEY_TECH_STATUS+"_"+getUserId(),status).apply();
+    public static void setTechStatus(String status) {
+        mSettingPreference.edit().putString(KEY_TECH_STATUS + "_" + getUserId(), status).apply();
     }
 
-    public static String getTechStatus(){
-        return mSettingPreference.getString(KEY_TECH_STATUS+"_"+getUserId(),"");
+    public static String getTechStatus() {
+        return mSettingPreference.getString(KEY_TECH_STATUS + "_" + getUserId(), "");
     }
 
     public static boolean getPayNotifyIsFirstHide() {
@@ -356,5 +360,22 @@ public class SharedPreferenceHelper {
 
     public static void setPayNotifyIsFirstHide(boolean first) {
         mSettingPreference.edit().putBoolean(KEY_PAY_NOTIFY_IS_FIRST_HIDE, first).apply();
+    }
+
+    /******************************权限*************************************/
+    public static Set<String> getPermissionList() {
+        return mSettingPreference.getStringSet(KEY_PERMISSION, null);
+    }
+
+    public static void setPermissionList(Set<String> permissionList) {
+        mSettingPreference.edit().clear().putStringSet(KEY_PERMISSION, permissionList).apply();
+    }
+
+    public static void setPermissionSyncDate(Long utcTime) {
+        mSettingPreference.edit().putLong(KEY_PERMISSION_SYNC_DATE, utcTime).apply();
+    }
+
+    public static long getPermissionSyncDate() {
+        return mSettingPreference.getLong(KEY_PERMISSION_SYNC_DATE, 0);
     }
 }

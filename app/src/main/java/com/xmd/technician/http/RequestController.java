@@ -61,6 +61,7 @@ import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.RewardListResult;
+import com.xmd.technician.http.gson.RolePermissionListResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
 import com.xmd.technician.http.gson.TechAccountListResult;
@@ -242,7 +243,7 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_USER_RECORDE:
                 doGetUserRecords((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_GET_SWITCH_STATUS:
+            case MsgDef.MSG_DEF_GET_CREDIT_STATUS:
                 doGetUserCreditSwitchStatus();
                 break;
             case MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT:
@@ -340,6 +341,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_TECH_ACCOUNT_LIST:
                 getTechAccountList();
+                break;
+            case MsgDef.MSG_DEF_GET_ROLE_PERMISSION:
+                getRolePermissionList();
                 break;
         }
 
@@ -1625,6 +1629,26 @@ public class RequestController extends AbstractController {
             public void onFailure(Call<AppUpdateConfigResult> call, Throwable t) {
 //                RxBus.getInstance().post(t);
                 Logger.e("get app update config failed:" + t.getMessage());
+            }
+        });
+    }
+
+    private void getRolePermissionList() {
+        Call<RolePermissionListResult> call = getSpaService().getRolePermissionList(LoginTechnician.getInstance().getToken(), RequestConstant.VALUE_PLATFORM_TECH);
+
+        call.enqueue(new TokenCheckedCallback<RolePermissionListResult>() {
+            @Override
+            protected void postResult(RolePermissionListResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                Logger.v("getCouponList: " + errorMsg);
+                RolePermissionListResult result = new RolePermissionListResult();
+                result.statusCode = RequestConstant.RESP_ERROR_CODE_FOR_LOCAL;
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
             }
         });
     }

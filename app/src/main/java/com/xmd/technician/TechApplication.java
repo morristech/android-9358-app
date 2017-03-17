@@ -3,17 +3,20 @@ package com.xmd.technician;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.TechNotifier;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.ControllerRegister;
+import com.xmd.technician.window.WelcomeActivity;
 
 import java.util.List;
 
@@ -23,7 +26,7 @@ import java.util.List;
 public class TechApplication extends Application {
     private static Context appContext;
     private static TechNotifier mNotifier;
-    public static Boolean isTest = false;
+    public static Boolean isTest = true;
 
     @Override
     public void onCreate() {
@@ -102,5 +105,13 @@ public class TechApplication extends Application {
 
     public static TechNotifier getNotifier() {
         return mNotifier;
+    }
+
+    public static void restart() {
+        Logger.i("----------restart application----------");
+        ActivityHelper.getInstance().removeAllActivities();
+        Intent intent = new Intent(appContext, WelcomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        appContext.startActivity(intent);
     }
 }

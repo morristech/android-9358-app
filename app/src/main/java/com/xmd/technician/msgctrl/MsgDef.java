@@ -118,7 +118,7 @@ public class MsgDef {
     public static final int MSG_DEF_DELETE_CONTACT = 0x0046;
     public static final int MSG_DEF_DO_DRAW_MONEY = 0x0047;
     public static final int MSG_DEF_GET_USER_RECORDE = 0x0050;
-    public static final int MSG_DEF_GET_SWITCH_STATUS = 0x0051;
+    public static final int MSG_DEF_GET_CREDIT_STATUS = 0x0051;
     public static final int MSG_DEF_GET_CREDIT_ACCOUNT = 0x0052;
     public static final int MSG_DEF_DO_CREDIT_EXCHANGE = 0x0053;
     public static final int MSG_DEF_GET_CONTACT_MARK = 0x0054;
@@ -159,7 +159,8 @@ public class MsgDef {
     public static final int MSG_DEF_JOURNAL_SHARE_COUNT = 0x0085;
     public static final int MSG_DEF_TECH_ACCOUNT_LIST = 0x0086;
 
-    public static final int MSG_DEG_DELETE_CONVERSATION_FROM_DB = 0x0087;
+    public static final int MSG_DEF_GET_ROLE_PERMISSION = 0x0087;
+    public static final int MSG_DEG_DELETE_CONVERSATION_FROM_DB = 0x0088;
 
 
 }

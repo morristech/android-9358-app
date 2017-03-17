@@ -120,6 +120,8 @@ public class RequestConstant {
     public static final String URL_DO_USER_JOURNAL_SHARE_COUNT = BASE_URL + "/v2/user/journal/share/count";//期刊统计
 
 
+    public static final String URL_ROLE_PERMISSION = BASE_URL + "/v2/tech/menu/list";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -287,6 +289,9 @@ public class RequestConstant {
 
     public static final String KEY_TYPE = "type";
     public static final String KEY_IS_SHARE = "isShare";
+
+    public static final String KEY_PLATFORM = "platform";
+    public static final String VALUE_PLATFORM_TECH = "TECH_APP";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

@@ -6,12 +6,12 @@ import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.TextAppearanceSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CreditAccountResult;
 import com.xmd.technician.bean.CreditExchangeResult;
@@ -22,11 +22,11 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.SuccessDialog;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -108,7 +108,7 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher 
     @Override
     protected void onResume() {
         super.onResume();
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_STATUS);
     }
     private void handlerCreditStatus(CreditStatusResult result) {
         mExchangeRatio = result.respData.exchangeRatio;

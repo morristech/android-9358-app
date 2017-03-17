@@ -75,7 +75,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_DELETE_CONTACT,
                 MsgDef.MSG_DEF_DO_DRAW_MONEY,
                 MsgDef.MSG_DEF_GET_USER_RECORDE,
-                MsgDef.MSG_DEF_GET_SWITCH_STATUS,
+                MsgDef.MSG_DEF_GET_CREDIT_STATUS,
                 MsgDef.MSG_DEF_GET_CREDIT_ACCOUNT,
                 MsgDef.MSG_DEF_DO_CREDIT_EXCHANGE,
                 MsgDef.MSG_DEF_GET_CONTACT_MARK,
@@ -107,6 +107,8 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CLUB_JOURNAL_LIST,
                 MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL,
                 MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT,
+                MsgDef.MSG_DEF_TECH_ACCOUNT_LIST,
+                MsgDef.MSG_DEF_GET_ROLE_PERMISSION,
                 MsgDef.MSG_DEF_TECH_ACCOUNT_LIST
 
         };
