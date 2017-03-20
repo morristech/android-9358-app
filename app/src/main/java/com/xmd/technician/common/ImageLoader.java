@@ -2,19 +2,27 @@ package com.xmd.technician.common;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.xmd.technician.http.RequestConstant;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -190,6 +198,41 @@ public class ImageLoader {
         @Override
         public String getId() {
             return getClass().getName();
+        }
+    }
+
+    public static void saveBitmapToLocal(Context context,Bitmap mBitmap,String bitmapName){
+        File file;
+        file = new File(Environment.getExternalStorageDirectory()+"/"+bitmapName+".jpg");
+        FileOutputStream fOut = null;
+        try {
+            fOut = new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        mBitmap.compress(Bitmap.CompressFormat.JPEG,100,fOut);
+        try {
+            fOut.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                fOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        saveImageToGallery(context,file);
+    }
+
+    public static void saveImageToGallery(Context context,File file){
+        try {
+            MediaStore.Images.Media.insertImage(context.getContentResolver(),file.getAbsolutePath(),"code",null);
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"+file)));
+            Toast.makeText(context,"保存成功",Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            Toast.makeText(context,"保存失败",Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 }

@@ -27,7 +27,7 @@
             android:id="@+id/dialog_content"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dialog_content_height"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:padding="@dimen/inter_space"
             android:text="Content"
             android:textColor="@color/dialog_content_text_color"

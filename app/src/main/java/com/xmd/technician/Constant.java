@@ -21,6 +21,7 @@ public class Constant {
     public static final int APP_ID = 1;
 
     public static final String ORDER_STATUS_ALL = "";
+    public static final String SHARE_CONTEXT = "context";
     /**
      *优惠券
      */

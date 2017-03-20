@@ -1,7 +1,6 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
-import android.databinding.tool.util.L;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -44,7 +43,6 @@ import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ItemSlideHelper;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -837,6 +835,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     cardItemViewHolder.mOnceCardMarkFavorable.setVisibility(View.GONE);
                 }
             }
+            cardItemViewHolder.mShowCode.setOnClickListener(v -> mCallback.onPositiveButtonClicked(onceCard));
             return;
         }
         if (holder instanceof LimitGrabItemViewHolder) {
@@ -879,6 +878,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     e.printStackTrace();
                 }
             });
+            limitGrabViewHolder.mShowCode.setOnClickListener(v -> mCallback.onPositiveButtonClicked(limitGrabBean));
             return;
         }
         if (holder instanceof RewardActivityItemViewHolder) {
@@ -964,6 +964,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     e.printStackTrace();
                 }
             });
+            payForMeViewHolder.mShowCode.setOnClickListener(v -> mCallback.onPositiveButtonClicked(payForMe));
+            return;
         }
         if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
@@ -1274,6 +1276,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mOnceCardPrice;
         @Bind(R.id.once_card_share)
         Button mOnceCardShare;
+        @Bind(R.id.ll_show_code)
+        LinearLayout mShowCode;
 
         public OnceCardItemViewHolder(View view) {
             super(view);
@@ -1300,7 +1304,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         Button mLimitGrabShare;
         @Bind(R.id.unit)
         TextView mUnit;
-
+        @Bind(R.id.ll_show_code)
+        LinearLayout mShowCode;
         public LimitGrabItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -1354,7 +1359,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mPayForMeDetail;
         @Bind(R.id.pay_for_me_share)
         Button mPayForMeShare;
-
+        @Bind(R.id.ll_show_code)
+        LinearLayout mShowCode;
         public PayForMeListItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

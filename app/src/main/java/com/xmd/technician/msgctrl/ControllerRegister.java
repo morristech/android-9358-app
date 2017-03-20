@@ -120,6 +120,8 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_SHARE_TO_TIMELINE,
                 MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM,
                 MsgDef.MSG_DEF_SHARE_TO_OTHER,
+                MsgDef.MSG_DEG_SHARE_QR_CODE
+
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

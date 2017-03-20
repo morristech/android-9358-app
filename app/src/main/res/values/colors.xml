@@ -164,4 +164,6 @@
 
     <color name="color616161">#616161</color>
     <color name="bg_edit_time">#cccccc</color>
+    <color name="share_coupon_dialog_top_color">#f3f3fc</color>
+    <color name="share_coupon_btn_text_color">#0e7bd0</color>
 </resources>

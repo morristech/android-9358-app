@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item >
+    <item android:state_pressed="false">
         <shape android:shape="rectangle">
-            <stroke android:color="@color/stroke_color" android:width="0.5dp"/>
+            <stroke android:color="@color/colorMainBtn" android:width="0.5dp"/>
             <corners android:radius="5dp"/>
-            <solid android:color="@color/colorMainBtn"></solid>
+            <solid android:color="@color/color_white"></solid>
         </shape>
+
     </item>
+
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <stroke android:color="@color/stroke_color" android:width="0.5dp"/>
+            <stroke android:color="@color/colorMainBtn" android:width="0.5dp"/>
             <corners android:radius="5dp"/>
-            <solid android:color="@color/colorBtnChat"></solid>
+            <solid android:color="#c3c3c3"></solid>
         </shape>
+
     </item>
 </selector>

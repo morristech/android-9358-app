@@ -1,22 +1,27 @@
 package com.xmd.technician.window;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.ActivityListResult;
 import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
@@ -24,6 +29,7 @@ import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.share.ShareController;
 import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
@@ -103,6 +109,14 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     EmptyView mShareEmpty;
     @Bind(R.id.ll_share_view)
     LinearLayout mShareView;
+    @Bind(R.id.ll_share_tech_card)
+    LinearLayout mShareTechCard;
+    @Bind(R.id.img_tech_head)
+    ImageView mImgTechHead;
+    @Bind(R.id.user_name)
+    TextView mUserName;
+    @Bind(R.id.btn_share_user_card)
+    Button mBtnShareUserCard;
 
     private Subscription mShareCouponViewSubscription;
     private Subscription mShareActivityViewSubscription;
@@ -116,6 +130,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     private boolean isJoinedClub;
     private boolean isFirst;
     private String emptyViewDes;
+    private TechInfo mTechInfo;
 
     @Nullable
     @Override
@@ -146,6 +161,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         mSharePropagandaViewSubscription = RxBus.getInstance().toObservable(PropagandaListResult.class).subscribe(
                 propagandaListResult -> handlePropagandaList(propagandaListResult)
         );
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_INFO);
         mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.colorMainBtn));
         mSwipeRefreshLayout.setOnRefreshListener(this);
         onRefresh();
@@ -155,48 +171,60 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     private void handleTechCurrentResult(TechInfoResult techCurrentResult) {
 
         if (techCurrentResult.respData.status.equals(Constant.TECH_STATUS_VALID) || techCurrentResult.respData.status.equals(Constant.TECH_STATUS_UNCERT) || techCurrentResult.respData.status.equals(Constant.TECH_STATUS_REJECT)) {
-            if(techCurrentResult.respData.status.equals(Constant.TECH_STATUS_VALID)){
+            if (techCurrentResult.respData.status.equals(Constant.TECH_STATUS_VALID)) {
                 emptyViewDes = ResourceUtils.getString(R.string.join_club_before);
-            }else if(techCurrentResult.respData.status.equals(Constant.TECH_STATUS_UNCERT)){
+            } else if (techCurrentResult.respData.status.equals(Constant.TECH_STATUS_UNCERT)) {
                 emptyViewDes = ResourceUtils.getString(R.string.wait_club_examine);
-            }else if(techCurrentResult.respData.status.equals(Constant.TECH_STATUS_REJECT)){
+            } else if (techCurrentResult.respData.status.equals(Constant.TECH_STATUS_REJECT)) {
                 emptyViewDes = ResourceUtils.getString(R.string.club_reject_apply);
-            }else{
+            } else {
                 emptyViewDes = "";
             }
             isJoinedClub = false;
         } else {
             isJoinedClub = true;
         }
-
+        Glide.with(getActivity()).load(techCurrentResult.respData.imageUrl).into(mImgTechHead);
+        String userInfo;
+        if (Utils.isNotEmpty(techCurrentResult.respData.serialNo)) {
+            userInfo = techCurrentResult.respData.userName + "[" + techCurrentResult.respData.serialNo + "]";
+            mUserName.setText(Utils.changeColor(userInfo, ResourceUtils.getColor(R.color.contact_marker), SharedPreferenceHelper.getUserName().length() + 1, userInfo.length() - 1));
+        } else {
+            userInfo = techCurrentResult.respData.userName;
+            mUserName.setText(userInfo);
+        }
+        mTechInfo = techCurrentResult.respData;
     }
 
 
     @Override
     public void onRefresh() {
-        if(isFirst){
+        if (isFirst) {
             String status = SharedPreferenceHelper.getTechStatus();
-            if(status.equals(Constant.TECH_STATUS_VALID) || status.equals(Constant.TECH_STATUS_UNCERT) || status.equals(Constant.TECH_STATUS_REJECT)){
-                if(status.equals(Constant.TECH_STATUS_VALID)){
+            if (status.equals(Constant.TECH_STATUS_VALID) || status.equals(Constant.TECH_STATUS_UNCERT) || status.equals(Constant.TECH_STATUS_REJECT)) {
+                if (status.equals(Constant.TECH_STATUS_VALID)) {
                     emptyViewDes = ResourceUtils.getString(R.string.join_club_before);
-                }else if(status.equals(Constant.TECH_STATUS_UNCERT)){
+                } else if (status.equals(Constant.TECH_STATUS_UNCERT)) {
                     emptyViewDes = ResourceUtils.getString(R.string.wait_club_examine);
-                }else if(status.equals(Constant.TECH_STATUS_REJECT)){
+                } else if (status.equals(Constant.TECH_STATUS_REJECT)) {
                     emptyViewDes = ResourceUtils.getString(R.string.club_reject_apply);
-                }else{
+                } else {
                     emptyViewDes = "";
                 }
                 setViewSate(false);
-            }else{
+            } else {
                 isJoinedClub = true;
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
             }
             isFirst = false;
 
-        }else{
-            if(isJoinedClub){
+        } else {
+            if (isJoinedClub) {
+                mShareTechCard.setVisibility(View.VISIBLE);
+
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
-            }else{
+            } else {
+                mShareTechCard.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
                 setViewSate(isJoinedClub);
             }
@@ -306,7 +334,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
 
-    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication})
+    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.btn_share_user_card,R.id.ll_share_view})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_paid_coupon:
@@ -330,6 +358,32 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
             case R.id.rl_publication:
                 ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.CLUB_JOURNAL, mPublicationName.getText().toString(), mClubJournalAmount);
                 break;
+            case R.id.ll_share_view:
+                if(mTechInfo != null){
+                    Boolean canShare = true;
+                    if (Constant.TECH_STATUS_VALID.equals(mTechInfo.status) || Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)) {
+                        canShare = false;
+                    }
+                    Intent intent = new Intent(getActivity(), TechShareCardActivity.class);
+                    StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+                    url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
+                    intent.putExtra(Constant.TECH_USER_HEAD_URL, mTechInfo.imageUrl);
+                    intent.putExtra(Constant.TECH_USER_NAME, mTechInfo.userName);
+                    intent.putExtra(Constant.TECH_USER_TECH_NUM, mTechInfo.serialNo);
+                    intent.putExtra(Constant.TECH_USER_CLUB_NAME, mTechInfo.clubName);
+                    intent.putExtra(Constant.TECH_SHARE_URL, url.toString());
+                    intent.putExtra(Constant.TECH_ShARE_CODE_IMG, mTechInfo.qrCodeUrl);
+                    intent.putExtra(Constant.TECH_CAN_SHARE, canShare);
+                    startActivity(intent);
+                }
+
+                break;
+            case R.id.btn_share_user_card:
+                StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+                url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", SharedPreferenceHelper.getUserClubId(), SharedPreferenceHelper.getUserId(), SharedPreferenceHelper.getInviteCode()));
+                ShareController.doShare(SharedPreferenceHelper.getUserAvatar(), url.toString(), SharedPreferenceHelper.getUserName() + "欢迎您", "点我聊聊，更多优惠，更好服务！", Constant.SHARE_BUSINESS_CARD, "");
+                break;
+
         }
     }
 
@@ -393,7 +447,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     private void setViewSate(boolean isJoinedClub) {
-        if(isJoinedClub){
+        if (isJoinedClub) {
             if (mCardIsNull && mActivityIsNull && mPropagandaIsNull) {
                 mShareView.setVisibility(View.GONE);
                 mShareEmpty.setStatus(EmptyView.Status.Empty);
@@ -408,7 +462,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                 }
 
             }
-        }else{
+        } else {
             mShareView.setVisibility(View.GONE);
             mShareEmpty.setStatus(EmptyView.Status.Empty);
             mShareEmpty.setEmptyPic(R.drawable.ic_failed);

@@ -37,6 +37,7 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
     private Subscription mOnceCardListSubscription;
     private OnceCardHelper mOnceCardHelper;
     private int mTotalAmount;
+    Map<String, Object> params = new HashMap<>();
 
     public static OnceCardListFragment getInstance(int totalAmount) {
         OnceCardListFragment of = new OnceCardListFragment();
@@ -62,7 +63,7 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ONCE_CARD_LIST_DETAIL,params);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ONCE_CARD_LIST_DETAIL, params);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
     private void handleCardResult(OnceCardResult onceCardResult) {
         if (onceCardResult.statusCode == 200) {
 
-            if (onceCardResult.respData == null ) {
+            if (onceCardResult.respData == null) {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setVisibility(View.GONE);
@@ -105,6 +106,20 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
     }
 
     @Override
+    public void onPositiveButtonClicked(OnceCardItemBean bean) {
+        super.onPositiveButtonClicked(bean);
+        params.clear();
+        params.put(Constant.SHARE_CONTEXT, getActivity());
+        params.put(Constant.PARAM_SHARE_THUMBNAIL, bean.imageUrl);
+        params.put(Constant.PARAM_SHARE_URL, bean.shareUrl);
+        params.put(Constant.PARAM_SHARE_TITLE, bean.name);
+        params.put(Constant.PARAM_SHARE_DESCRIPTION, bean.shareDescription);
+        params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_COUPON);
+        params.put(Constant.PARAM_ACT_ID, "");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
+    }
+
+    @Override
     public void onItemClicked(OnceCardItemBean bean) throws HyphenateException {
         super.onItemClicked(bean);
     }
@@ -121,4 +136,6 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
         RxBus.getInstance().unsubscribe(mOnceCardListSubscription);
         ButterKnife.unbind(this);
     }
+
+
 }
