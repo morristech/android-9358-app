@@ -5,19 +5,23 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMFileMessageBody;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.ImageUtils;
+import com.xmd.technician.Adapter.ChatListAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.bean.ImageCache;
+import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.window.ShowBigImageActivity;
 
 import java.io.File;
@@ -30,9 +34,19 @@ public class ChatViewImage extends BaseChatView {
     protected ImageView imageView;
     private EMImageMessageBody imgBody;
     protected EMCallBack messageReceiveCallback;
+    private EMConversation emConversation;
+    private RecyclerView.Adapter adapter;
+    private Context mContext;
 
     public ChatViewImage(Context context, EMMessage.Direct direct) {
         super(context, direct);
+    }
+
+    public ChatViewImage(Context context, EMMessage.Direct direct, EMConversation emConversation, RecyclerView.Adapter adapter) {
+        super(context, direct);
+        this.mContext = context;
+        this.emConversation = emConversation;
+        this.adapter = adapter;
     }
 
     /*@Override
@@ -70,6 +84,23 @@ public class ChatViewImage extends BaseChatView {
                 context.startActivity(intent);
             }
         });
+        imageView.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                new RewardConfirmDialog(mContext, "温馨提示", "确认删除此条消息码？", "确认") {
+                    @Override
+                    public void onConfirmClick() {
+                        this.dismiss();
+                        emConversation.removeMessage(message.getMsgId());
+                        ((ChatListAdapter) adapter).refreshSelectLast();
+
+                    }
+                }.show();
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -105,7 +136,7 @@ public class ChatViewImage extends BaseChatView {
      * @param iv
      * @return the image exists or not
      */
-    private boolean showImageView(final String thumbernailPath, final ImageView iv, final String localFullSizePath,final EMMessage message) {
+    private boolean showImageView(final String thumbernailPath, final ImageView iv, final String localFullSizePath, final EMMessage message) {
         // first check if the thumbnail image already loaded into cache
         Bitmap bitmap = ImageCache.getInstance().get(thumbernailPath);
         if (bitmap != null) {
@@ -122,8 +153,7 @@ public class ChatViewImage extends BaseChatView {
                         return ImageUtils.decodeScaleImage(thumbernailPath, 240, 240);
                     } else if (new File(imgBody.thumbnailLocalPath()).exists()) {
                         return ImageUtils.decodeScaleImage(imgBody.thumbnailLocalPath(), 240, 240);
-                    }
-                    else {
+                    } else {
                         if (message.direct() == EMMessage.Direct.SEND) {
                             if (localFullSizePath != null && new File(localFullSizePath).exists()) {
                                 return ImageUtils.decodeScaleImage(localFullSizePath, 240, 240);
@@ -165,8 +195,8 @@ public class ChatViewImage extends BaseChatView {
     /**
      * 设置消息接收callback
      */
-    protected void setMessageReceiveCallback(){
-        if(messageReceiveCallback == null){
+    protected void setMessageReceiveCallback() {
+        if (messageReceiveCallback == null) {
             messageReceiveCallback = new EMCallBack() {
 
                 @Override

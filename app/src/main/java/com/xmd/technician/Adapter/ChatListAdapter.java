@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -180,22 +181,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ChatViewHolder) {
-            ((ChatViewHolder) holder).setUpView(getItem(position), mItemClickListener);
+
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-              /*      new CustomAlertDialog.Builder(mContext)
-                            .setTitle("温馨提示")
-                            .setMessage("确认删除此条消息码？")
-                            .setPositiveButton("确认", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    mConversation.removeMessage(getItem(position).getMsgId());
-                                    refreshSelectLast();
-                                }
-                            })
-                            .build()
-                            .show();*/
                     new RewardConfirmDialog(mContext, "温馨提示", "确认删除此条消息码？", "确认") {
                         @Override
                         public void onConfirmClick() {
@@ -206,9 +195,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         }
                     }.show();
 
-                    return false;
+                    return true;
                 }
             });
+            ((ChatViewHolder) holder).setUpView(getItem(position), mItemClickListener);
         }
     }
 
@@ -247,10 +237,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 chatRow = new ChatViewText(context, EMMessage.Direct.RECEIVE);
                 break;
             case MESSAGE_TYPE_RECV_IMAGE:
-                chatRow = new ChatViewImage(context, EMMessage.Direct.RECEIVE);
+                chatRow = new ChatViewImage(context, EMMessage.Direct.RECEIVE,mConversation,(RecyclerView.Adapter) ChatListAdapter.this);
                 break;
             case MESSAGE_TYPE_SENT_IMAGE:
-                chatRow = new ChatViewImage(context, EMMessage.Direct.SEND);
+                chatRow = new ChatViewImage(context, EMMessage.Direct.SEND,mConversation,(RecyclerView.Adapter)ChatListAdapter.this);
                 break;
             case ChatConstant.MESSAGE_TYPE_RECV_ORDER:
                 chatRow = new ChatViewOrder(context, EMMessage.Direct.RECEIVE);

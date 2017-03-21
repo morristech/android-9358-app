@@ -992,6 +992,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     private void initTechRankingView(TechRankDataResult result) {
+        if(result.respData == null){
+            return;
+        }
         if (null != result.respData.userRanking) {
             Glide.with(mContext).load(result.respData.userRanking.avatarUrl).into(mCvStarRegister);
             mTvStarRegisterUser.setText(result.respData.userRanking.name);
