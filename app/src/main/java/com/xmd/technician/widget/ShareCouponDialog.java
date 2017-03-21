@@ -32,8 +32,9 @@ public class ShareCouponDialog extends Dialog {
 
     private Button mButtonShare;
     private ImageView btnDismiss, mCode;
-    private String shareThumbnail, shareUrl, shareTitle, ShareDescription, type, actId;
+    private String shareThumbnail, shareUrl, shareTitle, ShareDescription, type, actId,dialogTitle;
     private Context mContext;
+    private TextView mDialogTitle,mDialogDes;
 
 
     public ShareCouponDialog(Context context, Map<String, Object> params) {
@@ -44,6 +45,7 @@ public class ShareCouponDialog extends Dialog {
         shareTitle = (String) params.get(Constant.PARAM_SHARE_TITLE);
         ShareDescription = (String) params.get(Constant.PARAM_SHARE_DESCRIPTION);
         type = (String) params.get(Constant.PARAM_SHARE_TYPE);
+        dialogTitle = (String) params.get(Constant.PARAM_SHARE_DIALOG_TITLE);
         actId = (String) params.get(Constant.PARAM_ACT_ID);
     }
 
@@ -64,6 +66,10 @@ public class ShareCouponDialog extends Dialog {
         btnDismiss = (ImageView) findViewById(R.id.btn_dismiss);
         mButtonShare = (Button) findViewById(R.id.coupon_share_btn);
         mCode = (ImageView) findViewById(R.id.img_share_code);
+        mDialogTitle = (TextView) findViewById(R.id.dialog_title_text);
+        mDialogDes = (TextView) findViewById(R.id.des_share_text);
+        mDialogTitle.setText(String.format("%s二维码",dialogTitle));
+        mDialogDes.setText(String.format("扫码关注9358,购买%s",dialogTitle));
         btnDismiss.setOnClickListener(v -> this.dismiss());
         mButtonShare.setOnClickListener(v -> {
             ShareController.doShare(shareThumbnail, shareUrl, shareTitle,

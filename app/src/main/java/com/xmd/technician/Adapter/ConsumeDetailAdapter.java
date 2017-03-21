@@ -10,9 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.bean.ConsumeInfo;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.widget.CircleImageView;
 
 import java.util.ArrayList;

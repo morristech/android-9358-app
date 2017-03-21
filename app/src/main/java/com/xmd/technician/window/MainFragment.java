@@ -458,7 +458,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
 
             //在线买单开关
-            if(switchResult.respData.fastPay != null){
+            if (switchResult.respData.fastPay != null) {
                 if (switchResult.respData.fastPay.switchString != null && switchResult.respData.fastPay.switchString.equals(RequestConstant.KEY_SWITCH_ON)) {
                     addPayNotify();
                 } else {
@@ -608,7 +608,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
                         mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
                         mMenuClubName.setVisibility(View.GONE);
-                        mMenuClubName.setText(Utils.briefString(mTech.getClubName(),6));
+                        mMenuClubName.setText(Utils.briefString(mTech.getClubName(), 6));
                         showTechStatus(mTech.getStatus());
 
                         onRefresh();
@@ -660,8 +660,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         }
                         if (Utils.isNotEmpty(mTechInfo.clubId)) {
                             Intent intentDynamic = new Intent(getActivity(), DynamicShareTechActivity.class);
-                            StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-                            url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
+                            StringBuilder url;
+                            if (Utils.isEmpty(mTechInfo.shareUrl)) {
+                                url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+                                url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
+                            } else {
+                                url = new StringBuilder(mTechInfo.shareUrl);
+                            }
                             intentDynamic.putExtra(Constant.TECH_USER_HEAD_URL, mTechInfo.imageUrl);
                             intentDynamic.putExtra(Constant.TECH_USER_NAME, mTechInfo.userName);
                             intentDynamic.putExtra(Constant.TECH_USER_TECH_NUM, mTechInfo.serialNo);
@@ -712,7 +717,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onMainDetailClicked(View view) {
         switch (view.getId()) {
             case R.id.main_total_income:
-                startActivity(new Intent(getActivity(),TechAccountActivity.class));
+                startActivity(new Intent(getActivity(), TechAccountActivity.class));
                 return;
         }
         if (mTech.isActiveStatus()) {
@@ -797,7 +802,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             resetTechStatusView(-1);
         }
         if (Utils.isNotEmpty(info.clubName)) {
-            mMenuClubName.setText(Utils.briefString(info.clubName,6));
+            mMenuClubName.setText(Utils.briefString(info.clubName, 6));
         } else {
             mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
             mMenuClubName.setVisibility(View.GONE);
@@ -992,7 +997,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     private void initTechRankingView(TechRankDataResult result) {
-        if(result.respData == null){
+        if (result.respData == null) {
             return;
         }
         if (null != result.respData.userRanking) {
@@ -1089,7 +1094,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
         mMenuClubName.setVisibility(View.VISIBLE);
 
-        mMenuClubName.setText(Utils.briefString(mTech.getClubName(),6));
+        mMenuClubName.setText(Utils.briefString(mTech.getClubName(), 6));
         showTechStatus(mTech.getStatus());
 
         onRefresh();

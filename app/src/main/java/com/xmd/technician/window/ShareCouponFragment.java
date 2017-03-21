@@ -20,6 +20,7 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.TechInfo;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.ActivityListResult;
@@ -221,7 +222,6 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         } else {
             if (isJoinedClub) {
                 mShareTechCard.setVisibility(View.VISIBLE);
-
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
             } else {
                 mShareTechCard.setVisibility(View.GONE);
@@ -334,7 +334,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
 
-    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.btn_share_user_card,R.id.ll_share_view})
+    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.btn_share_user_card, R.id.ll_share_view})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_paid_coupon:
@@ -359,14 +359,19 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                 ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.CLUB_JOURNAL, mPublicationName.getText().toString(), mClubJournalAmount);
                 break;
             case R.id.ll_share_view:
-                if(mTechInfo != null){
+                if (mTechInfo != null) {
                     Boolean canShare = true;
                     if (Constant.TECH_STATUS_VALID.equals(mTechInfo.status) || Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)) {
                         canShare = false;
                     }
                     Intent intent = new Intent(getActivity(), TechShareCardActivity.class);
-                    StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-                    url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
+                    StringBuilder url;
+                    if (Utils.isEmpty(mTechInfo.shareUrl)) {
+                        url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+                        url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
+                    } else {
+                        url = new StringBuilder(mTechInfo.shareUrl);
+                    }
                     intent.putExtra(Constant.TECH_USER_HEAD_URL, mTechInfo.imageUrl);
                     intent.putExtra(Constant.TECH_USER_NAME, mTechInfo.userName);
                     intent.putExtra(Constant.TECH_USER_TECH_NUM, mTechInfo.serialNo);
@@ -374,13 +379,19 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                     intent.putExtra(Constant.TECH_SHARE_URL, url.toString());
                     intent.putExtra(Constant.TECH_ShARE_CODE_IMG, mTechInfo.qrCodeUrl);
                     intent.putExtra(Constant.TECH_CAN_SHARE, canShare);
+
                     startActivity(intent);
                 }
 
                 break;
             case R.id.btn_share_user_card:
-                StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-                url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", SharedPreferenceHelper.getUserClubId(), SharedPreferenceHelper.getUserId(), SharedPreferenceHelper.getInviteCode()));
+                StringBuilder url;
+                if (Utils.isEmpty(mTechInfo.shareUrl)) {
+                    url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+                    url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
+                } else {
+                    url = new StringBuilder(mTechInfo.shareUrl);
+                }
                 ShareController.doShare(SharedPreferenceHelper.getUserAvatar(), url.toString(), SharedPreferenceHelper.getUserName() + "欢迎您", "点我聊聊，更多优惠，更好服务！", Constant.SHARE_BUSINESS_CARD, "");
                 break;
 

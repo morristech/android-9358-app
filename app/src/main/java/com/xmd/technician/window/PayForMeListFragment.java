@@ -118,6 +118,7 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
         params.put(Constant.PARAM_SHARE_DESCRIPTION, ResourceUtils.getString(R.string.pay_for_me_share_description));
         params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_COUPON);
         params.put(Constant.PARAM_ACT_ID, "");
+        params.put(Constant.PARAM_SHARE_DIALOG_TITLE,"谁替我买单");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
     }
 

@@ -39,5 +39,6 @@ public class TechInfo {
     public String userName;
     public String clubName;
     public String innerProvider;
+    public String shareUrl;
 
 }

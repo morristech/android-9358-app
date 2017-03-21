@@ -188,6 +188,7 @@ public class Constant {
     public static final String PARAM_SHARE_URL = "p_share_url";
     public static final String PARAM_SHARE_DESCRIPTION = "p_share_desc";
     public static final String PARAM_SHARE_TYPE = "p_share_type";
+    public static final String PARAM_SHARE_DIALOG_TITLE = "dialog_title";
 
     public static final String APP_BROWSER_USER_AGENT = "9358.tech.android.browser";
 

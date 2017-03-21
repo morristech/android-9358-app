@@ -117,6 +117,7 @@ public class LimitGrabListFragment extends BaseListFragment<LimitGrabBean> {
         params.put(Constant.PARAM_SHARE_DESCRIPTION, ResourceUtils.getString(R.string.limit_grab_share_description));
         params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_COUPON);
         params.put(Constant.PARAM_ACT_ID, "");
+        params.put(Constant.PARAM_SHARE_DIALOG_TITLE,"限时抢");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
     }
 

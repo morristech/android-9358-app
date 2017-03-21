@@ -116,6 +116,7 @@ public class OnceCardListFragment extends BaseListFragment<OnceCardItemBean> {
         params.put(Constant.PARAM_SHARE_DESCRIPTION, bean.shareDescription);
         params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_COUPON);
         params.put(Constant.PARAM_ACT_ID, "");
+        params.put(Constant.PARAM_SHARE_DIALOG_TITLE,"次卡");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
     }
 
