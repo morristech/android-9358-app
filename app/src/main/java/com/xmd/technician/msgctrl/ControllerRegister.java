@@ -107,8 +107,22 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CLUB_JOURNAL_LIST,
                 MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL,
                 MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT,
-                MsgDef.MSG_DEF_TECH_ACCOUNT_LIST
+                MsgDef.MSG_DEF_TECH_ACCOUNT_LIST,
 
+                // -------------------------------------> 附近的人 <---------------------------------
+                MsgDef.MSG_DEF_GET_CLUB_POSITION_INFO,
+                MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT,
+                MsgDef.MSG_DEF_GET_NEARBY_CUS_LIST,
+                MsgDef.MSG_DEF_GET_HELLO_LEFT_COUNT,
+                MsgDef.MSG_DEF_TECH_SAY_HELLO,
+                MsgDef.MSG_DEF_GET_HELLO_RECORD_LIST,
+                MsgDef.MSG_DEF_CHECK_HELLO_DONE,
+                MsgDef.MSG_DEF_CHECK_CONTACTS_STATUS,
+                MsgDef.MSG_DEF_GET_SET_TEMPLATE,
+                MsgDef.MSG_DEF_SAVE_SET_TEMPLATE,
+                MsgDef.MSG_DEF_GET_SYS_TEMPLATE_LIST,
+                MsgDef.MSG_DEF_UPLOAD_HELLO_TEMPLATE_IMG,
+                MsgDef.MSG_DEF_DOWNLOAD_HELLO_IMAGE_CACHE
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

@@ -23,33 +23,33 @@ public class Constant {
     public static final String ORDER_STATUS_ALL = "";
     public static final String SHARE_CONTEXT = "context";
     /**
-     *优惠券
+     * 优惠券
      */
     public static final String COUPON_TYPE = "redpack,ordinary";
     public static final String NORMAL_COUPON_TYPE = "coupon";
 
     /**
-     *点钟券
+     * 点钟券
      */
     public static final String PAID_TYPE = "paid";
     /**
-     *次卡
+     * 次卡
      */
     public static final String ONCE_TYPE = "once";
     /**
-     *谁替我买单
+     * 谁替我买单
      */
     public static final String PAID_ITEM_TYPE = "paidItem";
     /**
-     *限时抢
+     * 限时抢
      */
     public static final String ONE_YUAN_TYPE = "oneYuan";
     /**
-     *抽奖活动
+     * 抽奖活动
      */
     public static final String DRAW_TYPE = "draw";
     /**
-     *期刊
+     * 期刊
      */
     public static final String JOURNAL_TYPE = "journal";
 
@@ -192,7 +192,7 @@ public class Constant {
 
     public static final String APP_BROWSER_USER_AGENT = "9358.tech.android.browser";
 
-    public static final String FORMAT_DATE_TIME = "yyyyMMddHHmmss";
+    public static final String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
 
     /*******************************
      * 自定义事件统计

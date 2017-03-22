@@ -21,6 +21,7 @@ import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.GiftListResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
+import com.xmd.technician.bean.NearbyCusInfo;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SaveChatUserResult;
 import com.xmd.technician.bean.SayHiResult;
@@ -39,18 +40,30 @@ import com.xmd.technician.http.gson.AppUpdateConfigResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
+import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
+import com.xmd.technician.http.gson.ContactsStatusResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
+import com.xmd.technician.http.gson.HelloCheckSayResult;
+import com.xmd.technician.http.gson.HelloGetTemplateResult;
+import com.xmd.technician.http.gson.HelloLeftCountResult;
+import com.xmd.technician.http.gson.HelloRecordListResult;
+import com.xmd.technician.http.gson.HelloSaveTemplateResult;
+import com.xmd.technician.http.gson.HelloSysTemplateResult;
+import com.xmd.technician.http.gson.HelloTechSayResult;
+import com.xmd.technician.http.gson.HelloUploadImgResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.ModifyPasswordResult;
+import com.xmd.technician.http.gson.NearbyCusCountResult;
+import com.xmd.technician.http.gson.NearbyCusListResult;
 import com.xmd.technician.http.gson.OnceCardResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
@@ -77,6 +90,7 @@ import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.http.gson.UpdateWorkTimeResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
+import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -340,6 +354,47 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_TECH_ACCOUNT_LIST:
                 getTechAccountList();
+                break;
+
+            // --------------------------------------> 附近的人 <------------------------------------
+            case MsgDef.MSG_DEF_GET_CLUB_POSITION_INFO:
+                getClubPosition();
+                break;
+            case MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT:
+                getNearbyCusCount();
+                break;
+            case MsgDef.MSG_DEF_GET_NEARBY_CUS_LIST:
+                getNearbyCusList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_HELLO_LEFT_COUNT:
+                getHelloLeftCount();
+                break;
+            case MsgDef.MSG_DEF_GET_HELLO_RECORD_LIST:
+                getHelloRecordList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_TECH_SAY_HELLO:
+                techSayHello((Map<String, Object>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_CHECK_HELLO_DONE:
+                checkHelloDone((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_CHECK_CONTACTS_STATUS:
+                checkContactsStatus((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_SET_TEMPLATE:
+                getSetTemplate();
+                break;
+            case MsgDef.MSG_DEF_SAVE_SET_TEMPLATE:
+                saveSetTemplate((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_GET_SYS_TEMPLATE_LIST:
+                getSysTemplateList();
+                break;
+            case MsgDef.MSG_DEF_UPLOAD_HELLO_TEMPLATE_IMG:
+                uploadHelloTemplateImg((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_DOWNLOAD_HELLO_IMAGE_CACHE:
+                downloadHelloImageCache();
                 break;
         }
 
@@ -1653,4 +1708,155 @@ public class RequestController extends AbstractController {
     }
 
 
+    // -----------------------------------------> 附近的人 <-----------------------------------------
+    // 获取会所位置信息
+    private void getClubPosition() {
+        Call<ClubPositionResult> call = getSpaService().getClubPosition(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<ClubPositionResult>() {
+            @Override
+            protected void postResult(ClubPositionResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 获取会所附近客户数量
+    private void getNearbyCusCount() {
+        Call<NearbyCusCountResult> call = getSpaService().getNearbyCusCount(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<NearbyCusCountResult>() {
+            @Override
+            protected void postResult(NearbyCusCountResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 获取会所附近客户列表
+    private void getNearbyCusList(Map<String, String> params) {
+        Call<NearbyCusListResult> call = getSpaService().getNearbyCusList(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+        call.enqueue(new TokenCheckedCallback<NearbyCusListResult>() {
+            @Override
+            protected void postResult(NearbyCusListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 打招呼
+    private void techSayHello(Map<String, Object> params) {
+        NearbyCusInfo info = (NearbyCusInfo) params.get(RequestConstant.KEY_NEARBY_CUSTOMER_INFO);
+        Call<HelloTechSayResult> call = getSpaService().techSayHello(info.userId,
+                SharedPreferenceHelper.getUserToken(),
+                (String) params.get(RequestConstant.KEY_HELLO_TEMPLATE_ID));
+        call.enqueue(new TokenCheckedCallback<HelloTechSayResult>() {
+            @Override
+            protected void postResult(HelloTechSayResult result) {
+                // 返回结果中带上传递的参数customerId,便于处理
+                result.customerInfo = info;
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 获取剩余打招呼次数
+    private void getHelloLeftCount() {
+        Call<HelloLeftCountResult> call = getSpaService().getHelloLeftCount(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<HelloLeftCountResult>() {
+            @Override
+            protected void postResult(HelloLeftCountResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 获取打招呼记录
+    private void getHelloRecordList(Map<String, String> params) {
+        Call<HelloRecordListResult> call = getSpaService().getHelloRecordList(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_PAGE),
+                params.get(RequestConstant.KEY_PAGE_SIZE));
+        call.enqueue(new TokenCheckedCallback<HelloRecordListResult>() {
+            @Override
+            protected void postResult(HelloRecordListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 查询同某个客户是否打过招呼
+    private void checkHelloDone(Map<String, String> params) {
+        Call<HelloCheckSayResult> call = getSpaService().checkHelloDone(params.get(RequestConstant.KEY_NEARBY_CUSTOMER_ID),
+                SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<HelloCheckSayResult>() {
+            @Override
+            protected void postResult(HelloCheckSayResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 查询同客户的联系
+    private void checkContactsStatus(Map<String, String> params) {
+        Call<ContactsStatusResult> call = getSpaService().checkContactsStatus(params.get(RequestConstant.KEY_NEARBY_CUSTOMER_ID),
+                SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<ContactsStatusResult>() {
+            @Override
+            protected void postResult(ContactsStatusResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 获取打招呼内容
+    private void getSetTemplate() {
+        Call<HelloGetTemplateResult> call = getSpaService().getSetTemplate(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<HelloGetTemplateResult>() {
+            @Override
+            protected void postResult(HelloGetTemplateResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 保存打招呼内容
+    private void saveSetTemplate(Map<String, String> params) {
+        Call<HelloSaveTemplateResult> call = getSpaService().saveSetTemplate(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_MSG_TYPE_TEXT),
+                params.get(RequestConstant.KEY_TEMPLATE_IMAGE_ID),
+                params.get(RequestConstant.KEY_HELLO_TEMPLATE_ID));
+        call.enqueue(new TokenCheckedCallback<HelloSaveTemplateResult>() {
+            @Override
+            protected void postResult(HelloSaveTemplateResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 查询系统打招呼模版列表
+    private void getSysTemplateList() {
+        Call<HelloSysTemplateResult> call = getSpaService().getSysTemplateList(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<HelloSysTemplateResult>() {
+            @Override
+            protected void postResult(HelloSysTemplateResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 上传打招呼图片
+    private void uploadHelloTemplateImg(Map<String, String> params) {
+        Call<HelloUploadImgResult> call = getSpaService().uploadTemplateImg(SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_IMG_FILE));
+        call.enqueue(new TokenCheckedCallback<HelloUploadImgResult>() {
+            @Override
+            protected void postResult(HelloUploadImgResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    // 下载打招呼图片进行缓存
+    private void downloadHelloImageCache() {
+        HelloSettingManager.getInstance().getCacheFilePath();
+    }
 }

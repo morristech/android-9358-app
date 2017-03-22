@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -48,12 +49,15 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.DynamicListResult;
+import com.xmd.technician.http.gson.HelloGetTemplateResult;
+import com.xmd.technician.http.gson.NearbyCusCountResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.http.gson.TechPersonalDataResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
+import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -75,6 +79,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by Lhj on 2016/10/19.
@@ -191,6 +196,18 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Bind(R.id.order_figure_out)
     TextView mOrderFigureOut;
 
+    // 附近的人
+    @Bind(R.id.main_layout_nearby)
+    RelativeLayout mNearbyLayout;
+    @Bind(R.id.main_nearby_position)
+    TextView mNearbyPosition;
+    @Bind(R.id.main_nearby_desc)
+    TextView mNearbyDesc;
+    @Bind(R.id.main_nearby_say_hello)
+    Button mNearbySayHello;
+    @Bind(R.id.main_nearby_go_toker)
+    Button mNearbyGoToker;
+
     //支付通知
     @Bind(R.id.pay_notify_layout)
     View mPayNotifyLayout;
@@ -232,8 +249,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mGetDynamicListSubscription;
     private Subscription mTechStatusSubscription;
     private Subscription mJoinedClubSubscription;
+    private Subscription mGetNearbyCusCountSubscription;    // 附近的人:获取会所附近客户数量;
+    private Subscription mGetHelloSetTemplateSubscription;  // 获取打招呼内容
 
     private LoginTechnician mTech = LoginTechnician.getInstance();
+    private HelloSettingManager mHelloSettingManager = HelloSettingManager.getInstance();
 
     @Nullable
     @Override
@@ -266,7 +286,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mOrderManageSubscription,
                 mGetDynamicListSubscription,
                 mGetRecentlyVisitorSubscription,
-                mJoinedClubSubscription);
+                mJoinedClubSubscription,
+                mGetNearbyCusCountSubscription,
+                mGetHelloSetTemplateSubscription);
     }
 
     private void initView(View view) {
@@ -307,7 +329,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
             visitParams.put(RequestConstant.KEY_LAST_TIME, "");
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
+            // 附近的人:获取会所附近客户数量(条件:技师已经加入了会所)
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT);
         }
+
+        // 技师登录进入首页后,获取打招呼内容
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SET_TEMPLATE);
 
         getDynamicList();
     }
@@ -354,6 +381,19 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 visitResult -> initRecentlyViewView(visitResult));
 
         mJoinedClubSubscription = RxBus.getInstance().toObservable(EventJoinedClub.class).subscribe(this::onEventJoinedClub);
+
+        // 附近的人:订阅会所附近客户数量的事件监听
+        mGetNearbyCusCountSubscription = RxBus.getInstance().toObservable(NearbyCusCountResult.class).subscribe(
+                nearbyCusCountResult -> handleNearbyStatus(nearbyCusCountResult));
+
+        // 打招呼:获取打招呼内容
+        mGetHelloSetTemplateSubscription = RxBus.getInstance().toObservable(HelloGetTemplateResult.class).subscribe(new Action1<HelloGetTemplateResult>() {
+            @Override
+            public void call(HelloGetTemplateResult helloGetTemplateResult) {
+                handleSetTemplateResult(helloGetTemplateResult);
+            }
+        });
+
     }
 
     public void refreshOrderListData() {
@@ -388,9 +428,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mMenuSettingsActivityQuitClub.setVisibility(View.VISIBLE);
                 mMenuSettingsActivityJoinClub.setVisibility(View.GONE);
 
+                // 已经加入会所:展示"附近的人"
+                mNearbyLayout.setVisibility(View.VISIBLE);
             } else {
                 mMenuSettingsActivityQuitClub.setVisibility(View.GONE);
                 mMenuSettingsActivityJoinClub.setVisibility(View.VISIBLE);
+
+                // 尚未加入会所:隐藏"附近的人"
+                mNearbyLayout.setVisibility(View.GONE);
             }
 
             if (Utils.isNotEmpty(result.respData.innerProvider)) {
@@ -404,7 +449,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             SharedPreferenceHelper.setTechStatus(mTechInfo.status);
         }
     }
-
 
     public void showTechStatus(String status) {
         if (Constant.TECH_STATUS_VALID.equals(status)) {
@@ -466,6 +510,38 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 }
             }
 
+        }
+    }
+
+    // 处理打招呼内容
+    private void handleSetTemplateResult(HelloGetTemplateResult result) {
+        if (result.statusCode == 200 && result.respData != null) {
+            mHelloSettingManager.setTemplate(result.respData);
+            // 缓存打招呼图片
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DOWNLOAD_HELLO_IMAGE_CACHE);
+        }
+    }
+
+    // 附近的人
+    private void handleNearbyStatus(NearbyCusCountResult result) {
+        if (Utils.isNotEmpty(mTech.getClubPosition())) {
+            mNearbyPosition.setText(mTech.getClubPosition());
+        }
+        if (result.statusCode == 200) {
+            if (result.respData <= 0) {
+                mNearbyDesc.setText(R.string.nearby_no_customer_text);
+                mNearbySayHello.setVisibility(View.GONE);
+                mNearbyGoToker.setVisibility(View.VISIBLE);
+            } else {
+                String textCount = "附近有" + result.respData + "个客人，打个招呼吧~";
+                mNearbyDesc.setText(Utils.changeColor(textCount, ResourceUtils.getColor(R.color.colorMainBtn), 3, textCount.length() - 10));
+                mNearbySayHello.setVisibility(View.VISIBLE);
+                mNearbyGoToker.setVisibility(View.GONE);
+            }
+        } else {
+            mNearbyDesc.setText(R.string.nearby_get_customer_exception);
+            mNearbyGoToker.setVisibility(View.GONE);
+            mNearbySayHello.setVisibility(View.GONE);
         }
     }
 
@@ -783,6 +859,24 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
+    // 附近的人:打招呼按钮的点击事件
+    @OnClick({R.id.main_nearby_say_hello, R.id.main_nearby_go_toker})
+    public void onNearbyClick(View view) {
+        switch (view.getId()) {
+            case R.id.main_nearby_say_hello:
+                // 打开附近的人
+                Intent intent = new Intent(getActivity(), NearbyActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.main_nearby_go_toker:
+                // 跳转到营销页面
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.switchFragment(3);
+                MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 0);
+                break;
+        }
+    }
+
     private void initHeadView(TechInfo info) {
         if (null == info) {
             return;
@@ -990,6 +1084,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             visitViewList.get(i).setVisibility(View.VISIBLE);
             Glide.with(mContext).load(visitList.get(i).avatarUrl).into((CircleImageView) visitViewList.get(i));
             final int finalI = i;
+            /**
+             * TODO:关系到RecentlyVisitorBean
+             * 1.如果添加了canEchat字段则直接根据字段判断跳转页面;
+             * 2.如果没有添加canEchat字段则访问"客户联系权限"接口,根据结果来进行跳转;
+             */
             visitViewList.get(i).setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(visitList.get(finalI).emchatId,
                     Utils.isEmpty(visitList.get(finalI).userNoteName) ? visitList.get(finalI).userName : visitList.get(finalI).userNoteName, visitList.get(finalI).avatarUrl, "")));
         }

@@ -27,17 +27,29 @@ import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.CheckPayNotifyResult;
+import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
+import com.xmd.technician.http.gson.ContactsStatusResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.GetPayNotifyListResult;
+import com.xmd.technician.http.gson.HelloCheckSayResult;
+import com.xmd.technician.http.gson.HelloGetTemplateResult;
+import com.xmd.technician.http.gson.HelloLeftCountResult;
+import com.xmd.technician.http.gson.HelloRecordListResult;
+import com.xmd.technician.http.gson.HelloSaveTemplateResult;
+import com.xmd.technician.http.gson.HelloSysTemplateResult;
+import com.xmd.technician.http.gson.HelloTechSayResult;
+import com.xmd.technician.http.gson.HelloUploadImgResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
+import com.xmd.technician.http.gson.NearbyCusCountResult;
+import com.xmd.technician.http.gson.NearbyCusListResult;
 import com.xmd.technician.http.gson.OnceCardResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
@@ -64,6 +76,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -681,4 +694,69 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_PROFILE_TECH_ACCOUNT_LIST)
     Call<TechAccountListResult> techAccountList(@Field(RequestConstant.KEY_TOKEN) String userToken);
+
+
+    // ------------------------------------------> 附近的人 <----------------------------------------
+    // 查看会所位置
+    @GET(RequestConstant.URL_GET_CLUB_POSITION)
+    Call<ClubPositionResult> getClubPosition(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    // 获取会所附近客户数量
+    @GET(RequestConstant.URL_GET_NEARBY_CUS_COUNT)
+    Call<NearbyCusCountResult> getNearbyCusCount(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    // 获取会所附近客户列表
+    @GET(RequestConstant.URL_GET_NEARBY_CUS_LIST)
+    Call<NearbyCusListResult> getNearbyCusList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                               @Query(RequestConstant.KEY_PAGE) String page,
+                                               @Query(RequestConstant.KEY_PAGE_SIZE) String page_size);
+
+    // 打招呼
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_TECH_SAY_HELLO)
+    Call<HelloTechSayResult> techSayHello(@Path(RequestConstant.KEY_NEARBY_CUSTOMER_ID) String customerId,
+                                          @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                          @Field(RequestConstant.KEY_HELLO_TEMPLATE_ID) String templateId);
+
+    // 获取剩余打招呼次数
+    @GET(RequestConstant.URL_GET_HELLO_LEFT_COUNT)
+    Call<HelloLeftCountResult> getHelloLeftCount(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    // 获取招呼记录
+    @GET(RequestConstant.URL_GET_HELLO_RECORD_LIST)
+    Call<HelloRecordListResult> getHelloRecordList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                   @Query(RequestConstant.KEY_PAGE) String page,
+                                                   @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
+    // 查询近期是否打过招呼
+    @GET(RequestConstant.URL_CHECK_HELLO_DONE)
+    Call<HelloCheckSayResult> checkHelloDone(@Path(RequestConstant.KEY_NEARBY_CUSTOMER_ID) String customerId,
+                                             @Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    // 查询联系状态
+    @GET(RequestConstant.URL_CHECK_CONTACTS_STATUS)
+    Call<ContactsStatusResult> checkContactsStatus(@Path(RequestConstant.KEY_NEARBY_CUSTOMER_ID) String customerId,
+                                                   @Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    // 获取打招呼内容
+    @GET(RequestConstant.URL_GET_HELLO_TEMPLATE)
+    Call<HelloGetTemplateResult> getSetTemplate(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    // 保存打招呼内容
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_SAVE_HELLO_TEMPLATE)
+    Call<HelloSaveTemplateResult> saveSetTemplate(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Field(RequestConstant.KEY_MSG_TYPE_TEXT) String text,
+                                                  @Field(RequestConstant.KEY_TEMPLATE_IMAGE_ID) String imageId,
+                                                  @Field(RequestConstant.KEY_HELLO_TEMPLATE_ID) String templateId);
+
+    // 查询系统模版列表
+    @GET(RequestConstant.URL_GET_HELLO_TEMPLATE_LIST)
+    Call<HelloSysTemplateResult> getSysTemplateList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    // 上传打招呼图片
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_UPLOAD_HELLO_TEMPLATE_IMAGE)
+    Call<HelloUploadImgResult> uploadTemplateImg(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                 @Field(RequestConstant.KEY_IMG_FILE) String imgFile);
 }

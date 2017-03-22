@@ -54,6 +54,8 @@
 
                         <include layout="@layout/layout_main_new_dynamic" />
 
+                        <include layout="@layout/layout_main_nearby" />
+
                         <include layout="@layout/layout_technician_ranking" />
 
                         <include layout="@layout/layout_main_bottom" />

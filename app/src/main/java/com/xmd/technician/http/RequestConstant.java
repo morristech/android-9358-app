@@ -120,6 +120,37 @@ public class RequestConstant {
     public static final String URL_DO_USER_JOURNAL_SHARE_COUNT = BASE_URL + "/v2/user/journal/share/count";//期刊统计
 
 
+    /**
+     * --------------------------------------> 附近的人:url <----------------------------------------
+     */
+    // 查看会所位置(未使用)
+    public static final String URL_GET_CLUB_POSITION = BASE_URL + "/v1/position/club";
+    // 获取所属会所附近客户数量
+    public static final String URL_GET_NEARBY_CUS_COUNT = BASE_URL + "/v2/tech/club/nearby/user/count";
+    // 获取会所附近客户列表
+    public static final String URL_GET_NEARBY_CUS_LIST = BASE_URL + "/v2/tech/club/nearby/user/list";
+
+    // 技师打招呼
+    public static final String URL_TECH_SAY_HELLO = BASE_URL + "/v2/tech/hello/{customerId}";
+    // 获取技师打招呼剩余数量
+    public static final String URL_GET_HELLO_LEFT_COUNT = BASE_URL + "/v2/tech/hello/number/left";
+    // 获取技师打招呼列表
+    public static final String URL_GET_HELLO_RECORD_LIST = BASE_URL + "/v2/tech/hello/list";
+    // 近期是否打过招呼
+    public static final String URL_CHECK_HELLO_DONE = BASE_URL + "/v2/hello/{customerId}/status";
+
+    // 查询同客户的联系限制
+    public static final String URL_CHECK_CONTACTS_STATUS = BASE_URL + "/v2/tech/contacts/limit/{customerId}";
+
+    // 保存打招呼内容 post
+    public static final String URL_SAVE_HELLO_TEMPLATE = BASE_URL + "/v2/tech/hello/template";
+    // 获取打招呼内容 get
+    public static final String URL_GET_HELLO_TEMPLATE = BASE_URL + "/v2/tech/hello/template";
+    // 查询系统模版列表
+    public static final String URL_GET_HELLO_TEMPLATE_LIST = BASE_URL + "/v2/tech/hello/template/list";
+    // 上传打招呼图片
+    public static final String URL_UPLOAD_HELLO_TEMPLATE_IMAGE = BASE_URL + "/v2/tech/hello/template/image";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -287,6 +318,14 @@ public class RequestConstant {
 
     public static final String KEY_TYPE = "type";
     public static final String KEY_IS_SHARE = "isShare";
+
+    // -----------------------------------------> 附近的人 <-----------------------------------------
+    public static final String KEY_NEARBY_CUSTOMER_ID = "customerId";
+    public static final String KEY_NEARBY_CUSTOMER_INFO = "customerInfo";
+    public static final String KEY_HELLO_TEMPLATE_ID = "templateId";
+    public static final String KEY_HELLO_SINCE = "since";           // 保留
+    public static final String KEY_HELLO_TYPE_REPLY = "onlyReply";  // 保留
+    public static final String KEY_TEMPLATE_IMAGE_ID = "imageId";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

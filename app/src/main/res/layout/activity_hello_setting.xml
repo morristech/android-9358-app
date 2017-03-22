@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/padding_10"
+                android:text="@string/hello_setting_content"
+                android:textColor="@color/text_index"
+                android:textSize="@dimen/fontBody" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/indicator_normal_color" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rc_template_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <CheckBox
+                    android:id="@+id/cb_custom_text_enable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/padding_15"
+                    android:layout_marginRight="@dimen/padding_15"
+                    android:button="@drawable/radio_button_style_selector"
+                    android:paddingBottom="@dimen/margin_20"
+                    android:paddingTop="@dimen/margin_20"
+                    android:text="@null" />
+
+                <EditText
+                    android:id="@+id/et_custom_text_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="@dimen/padding_15"
+                    android:layout_marginRight="@dimen/padding_15"
+                    android:layout_marginTop="@dimen/padding_15"
+                    android:layout_toRightOf="@id/cb_custom_text_enable"
+                    android:background="@drawable/comment_game_rect_bg"
+                    android:gravity="top"
+                    android:hint="@string/hello_setting_custom_template_hint"
+                    android:lineSpacingMultiplier="1.2"
+                    android:maxLength="50"
+                    android:padding="@dimen/margin_5"
+                    android:textColor="@color/nearby_text_black_light"
+                    android:textColorHint="@color/colorRemark"
+                    android:textSize="@dimen/fontBody" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/indicator_normal_color" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/padding_10"
+                android:text="@string/hello_setting_image"
+                android:textColor="@color/text_index"
+                android:textSize="@dimen/fontBody" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/color_white">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/indicator_normal_color" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/indicator_normal_color" />
+
+                <CheckBox
+                    android:id="@+id/cb_image_enable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/padding_15"
+                    android:button="@drawable/cb_btn_bg_selector"
+                    android:paddingBottom="@dimen/padding_10"
+                    android:paddingTop="@dimen/padding_10"
+                    android:text="@null" />
+
+                <com.xmd.technician.widget.RoundImageView
+                    android:id="@+id/img_need_upload"
+                    android:layout_width="74dp"
+                    android:layout_height="74dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/padding_10"
+                    android:layout_toRightOf="@id/cb_image_enable"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/icon22"
+                    android:visibility="gone"
+                    app:borderRadius="@dimen/search_margin"
+                    app:type="round" />
+
+                <Button
+                    android:id="@+id/btn_add_image"
+                    android:layout_width="160dp"
+                    android:layout_height="34dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bg_journal_mark"
+                    android:onClick="onAddBtnClick"
+                    android:padding="0dp"
+                    android:text="选择图片"
+                    android:textColor="@color/colorMainBtn"
+                    android:textSize="@dimen/fontTitle" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_template_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:layout_marginLeft="@dimen/padding_10"
+                android:layout_marginRight="@dimen/padding_10"
+                android:layout_marginTop="@dimen/margin_20"
+                android:background="@drawable/btn_chat_selector"
+                android:onClick="onConfirmBtnClick"
+                android:text="确定"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/fontTitle" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
