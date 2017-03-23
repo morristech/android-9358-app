@@ -48,6 +48,7 @@ import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.http.gson.ContactPermissionWithBeanResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.NearbyCusCountResult;
@@ -251,6 +252,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mJoinedClubSubscription;
     private Subscription mGetNearbyCusCountSubscription;    // 附近的人:获取会所附近客户数量;
     private Subscription mGetHelloSetTemplateSubscription;  // 获取打招呼内容
+    private Subscription mGetContactPermissionSubscription; // 获取聊天限制
 
     private LoginTechnician mTech = LoginTechnician.getInstance();
     private HelloSettingManager mHelloSettingManager = HelloSettingManager.getInstance();
@@ -288,7 +290,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mGetRecentlyVisitorSubscription,
                 mJoinedClubSubscription,
                 mGetNearbyCusCountSubscription,
-                mGetHelloSetTemplateSubscription);
+                mGetHelloSetTemplateSubscription,
+                mGetContactPermissionSubscription);
     }
 
     private void initView(View view) {
@@ -387,13 +390,16 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 nearbyCusCountResult -> handleNearbyStatus(nearbyCusCountResult));
 
         // 打招呼:获取打招呼内容
-        mGetHelloSetTemplateSubscription = RxBus.getInstance().toObservable(HelloGetTemplateResult.class).subscribe(new Action1<HelloGetTemplateResult>() {
-            @Override
-            public void call(HelloGetTemplateResult helloGetTemplateResult) {
-                handleSetTemplateResult(helloGetTemplateResult);
-            }
+        mGetHelloSetTemplateSubscription = RxBus.getInstance().toObservable(HelloGetTemplateResult.class).subscribe(helloGetTemplateResult -> {
+            handleSetTemplateResult(helloGetTemplateResult);
         });
 
+        mGetContactPermissionSubscription = RxBus.getInstance().toObservable(ContactPermissionWithBeanResult.class).subscribe(new Action1<ContactPermissionWithBeanResult>() {
+            @Override
+            public void call(ContactPermissionWithBeanResult contactPermissionWithBeanResult) {
+                handleContactPermission(contactPermissionWithBeanResult);
+            }
+        });
     }
 
     public void refreshOrderListData() {
@@ -1084,17 +1090,44 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             visitViewList.get(i).setVisibility(View.VISIBLE);
             Glide.with(mContext).load(visitList.get(i).avatarUrl).into((CircleImageView) visitViewList.get(i));
             final int finalI = i;
-            /**
-             * TODO:关系到RecentlyVisitorBean
-             * 1.如果添加了canEchat字段则直接根据字段判断跳转页面;
-             * 2.如果没有添加canEchat字段则访问"客户联系权限"接口,根据结果来进行跳转;
-             */
-            visitViewList.get(i).setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(visitList.get(finalI).emchatId,
-                    Utils.isEmpty(visitList.get(finalI).userNoteName) ? visitList.get(finalI).userName : visitList.get(finalI).userNoteName, visitList.get(finalI).avatarUrl, "")));
+            visitViewList.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RecentlyVisitorBean bean = visitList.get(finalI);
+                    Map<String, Object> params = new HashMap<>();
+                    params.put(RequestConstant.KEY_REQUEST_TAG, false);
+                    params.put(RequestConstant.KEY_NEARBY_CUSTOMER_ID, bean.userId);
+                    params.put(RequestConstant.KEY_RECENTLY_VISITOR_BEAN, bean);
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
+                }
+            });
         }
     }
 
-
+    private void handleContactPermission(ContactPermissionWithBeanResult result) {
+        RecentlyVisitorBean bean = result.bean;
+        if (result != null && result.statusCode == 200 && result.respData.echat) {
+            // 聊天
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(bean.emchatId,
+                    Utils.isEmpty(bean.userNoteName) ? bean.userName : bean.userNoteName, bean.avatarUrl, ""));
+        } else {
+            // 详情
+            if (Long.parseLong(bean.userId) > 0) {
+                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
+                intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
+                intent.putExtra(RequestConstant.CONTACT_TYPE, bean.customerType);
+                intent.putExtra(RequestConstant.KEY_TECH_NAME, bean.techName);
+                intent.putExtra(RequestConstant.KEY_TECH_No, bean.techSerialNo);
+                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, RequestConstant.TYPE_CUSTOMER);
+                intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
+                intent.putExtra(RequestConstant.KEY_CAN_SAY_HELLO, bean.canSayHello);
+                startActivity(intent);
+            } else {
+                Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
+            }
+        }
+    }
+    
     private void initTechRankingView(TechRankDataResult result) {
         if (result.respData == null) {
             return;

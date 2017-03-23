@@ -150,6 +150,12 @@ public class NearbyActivity extends BaseActivity {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_HELLO_LEFT_COUNT);
     }
 
+    private void saveChatContact(String chatId) {
+        Map<String, String> saveParams = new HashMap<>();
+        saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, chatId);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
+    }
+
     // 处理技师打招呼数量
     private void handleHelloLeftCountResult(HelloLeftCountResult result) {
         if (result != null && result.statusCode == 200) {
@@ -195,6 +201,7 @@ public class NearbyActivity extends BaseActivity {
             showToast("打招呼成功");
             // 刷新打招呼次数
             getHelloLeftCount();
+            saveChatContact(info.userEmchatId); //保存用户好友关系链
         } else {
             // 错误提示
             showToast("向客户打招呼失败:" + result.msg);

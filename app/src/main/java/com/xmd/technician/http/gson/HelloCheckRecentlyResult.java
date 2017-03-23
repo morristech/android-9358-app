@@ -5,6 +5,6 @@ package com.xmd.technician.http.gson;
  * 同某个客户是否打过招呼
  */
 
-public class HelloCheckSayResult extends BaseResult{
+public class HelloCheckRecentlyResult extends BaseResult{
     public String respData;     //Y:打过;N:没有打过;
 }

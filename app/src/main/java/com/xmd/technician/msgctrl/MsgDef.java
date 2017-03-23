@@ -170,8 +170,8 @@ public class MsgDef {
     public static final int MSG_DEF_GET_HELLO_LEFT_COUNT = 0x0093;      // 获取剩余打招呼次数
     public static final int MSG_DEF_TECH_SAY_HELLO = 0x0094;            // 打招呼
     public static final int MSG_DEF_GET_HELLO_RECORD_LIST = 0x0095;     // 获取打招呼记录
-    public static final int MSG_DEF_CHECK_HELLO_DONE = 0x0096;          // 查询是否打过招呼
-    public static final int MSG_DEF_CHECK_CONTACTS_STATUS = 0x0097;     // 查询同客户关系
+    public static final int MSG_DEF_CHECK_HELLO_RECENTLY = 0x0096;          // 查询是否打过招呼
+    public static final int MSG_DEF_GET_CONTACT_PERMISSION = 0x0097;     // 查询同客户关系
     public static final int MSG_DEF_GET_SET_TEMPLATE = 0x0098;          // 获取打招呼内容
     public static final int MSG_DEF_SAVE_SET_TEMPLATE = 0x0099;         // 保存打招呼内容
     public static final int MSG_DEF_GET_SYS_TEMPLATE_LIST = 0x0100;     // 获取系统招呼模版列表

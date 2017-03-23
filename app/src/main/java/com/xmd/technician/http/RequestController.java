@@ -22,6 +22,7 @@ import com.xmd.technician.bean.GiftListResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.NearbyCusInfo;
+import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SaveChatUserResult;
 import com.xmd.technician.bean.SayHiResult;
@@ -43,12 +44,13 @@ import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
-import com.xmd.technician.http.gson.ContactsStatusResult;
+import com.xmd.technician.http.gson.ContactPermissionResult;
+import com.xmd.technician.http.gson.ContactPermissionWithBeanResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
-import com.xmd.technician.http.gson.HelloCheckSayResult;
+import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.HelloRecordListResult;
@@ -375,11 +377,11 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_TECH_SAY_HELLO:
                 techSayHello((Map<String, Object>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_CHECK_HELLO_DONE:
-                checkHelloDone((Map<String, String>) msg.obj);
+            case MsgDef.MSG_DEF_CHECK_HELLO_RECENTLY:
+                checkHelloRecently((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_CHECK_CONTACTS_STATUS:
-                checkContactsStatus((Map<String, String>) msg.obj);
+            case MsgDef.MSG_DEF_GET_CONTACT_PERMISSION:
+                getContactPermission((Map<String, Object>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_SET_TEMPLATE:
                 getSetTemplate();
@@ -1784,25 +1786,32 @@ public class RequestController extends AbstractController {
     }
 
     // 查询同某个客户是否打过招呼
-    private void checkHelloDone(Map<String, String> params) {
-        Call<HelloCheckSayResult> call = getSpaService().checkHelloDone(params.get(RequestConstant.KEY_NEARBY_CUSTOMER_ID),
+    private void checkHelloRecently(Map<String, String> params) {
+        Call<HelloCheckRecentlyResult> call = getSpaService().checkHelloRecently(params.get(RequestConstant.KEY_NEARBY_CUSTOMER_ID),
                 SharedPreferenceHelper.getUserToken());
-        call.enqueue(new TokenCheckedCallback<HelloCheckSayResult>() {
+        call.enqueue(new TokenCheckedCallback<HelloCheckRecentlyResult>() {
             @Override
-            protected void postResult(HelloCheckSayResult result) {
+            protected void postResult(HelloCheckRecentlyResult result) {
                 RxBus.getInstance().post(result);
             }
         });
     }
 
     // 查询同客户的联系
-    private void checkContactsStatus(Map<String, String> params) {
-        Call<ContactsStatusResult> call = getSpaService().checkContactsStatus(params.get(RequestConstant.KEY_NEARBY_CUSTOMER_ID),
+    private void getContactPermission(Map<String, Object> params) {
+        boolean tag = (boolean) params.get(RequestConstant.KEY_REQUEST_TAG);
+        Call<ContactPermissionResult> call = getSpaService().getContactPermission((String) params.get(RequestConstant.KEY_NEARBY_CUSTOMER_ID),
                 SharedPreferenceHelper.getUserToken());
-        call.enqueue(new TokenCheckedCallback<ContactsStatusResult>() {
+        call.enqueue(new TokenCheckedCallback<ContactPermissionResult>() {
             @Override
-            protected void postResult(ContactsStatusResult result) {
-                RxBus.getInstance().post(result);
+            protected void postResult(ContactPermissionResult result) {
+                if (tag) {
+                    RxBus.getInstance().post(result);
+                } else {
+                    ContactPermissionWithBeanResult withBeanResult = new ContactPermissionWithBeanResult(result);
+                    withBeanResult.bean = (RecentlyVisitorBean) params.get(RequestConstant.KEY_RECENTLY_VISITOR_BEAN);
+                    RxBus.getInstance().post(withBeanResult);
+                }
             }
         });
     }

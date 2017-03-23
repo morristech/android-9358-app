@@ -145,6 +145,7 @@ public class RecentlyVisitorFragment extends BaseListFragment<RecentlyVisitorBea
             intent.putExtra(RequestConstant.KEY_TECH_No, bean.techSerialNo);
             intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, RequestConstant.TYPE_CUSTOMER);
             intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
+            intent.putExtra(RequestConstant.KEY_CAN_SAY_HELLO, bean.canSayHello);
             startActivity(intent);
         } else {
             Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));

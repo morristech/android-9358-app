@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -34,6 +34,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.AcceptOrRejectGame;
 import com.xmd.technician.bean.CheckedCoupon;
+import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.bean.CreditAccountResult;
 import com.xmd.technician.bean.CreditStatusResult;
 import com.xmd.technician.bean.GameResult;
@@ -55,9 +56,8 @@ import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.CouponListResult;
-import com.xmd.technician.bean.CouponInfo;
+import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -72,6 +72,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -231,12 +232,12 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         );
         mCancelGameSubscription = RxBus.getInstance().toObservable(CancelGame.class).subscribe(
                 result -> {
-                   EMMessage message = result.message;
+                    EMMessage message = result.message;
                     try {
-                        Map<String,String> params = new HashMap<String, String>();
+                        Map<String, String> params = new HashMap<String, String>();
                         params.put(RequestConstant.KEY_DICE_GAME_STATUS, ChatConstant.KEY_CANCEL_GAME_TYPE);
                         params.put(RequestConstant.KEY_DICE_GAME_ID, message.getStringAttribute(RequestConstant.KEY_DICE_GAME_ID).substring(5));
-                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT,params);
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT, params);
                     } catch (HyphenateException e) {
                         e.printStackTrace();
                     }
@@ -245,8 +246,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         );
         mGiftResultSubscription = RxBus.getInstance().toObservable(GiftListResult.class).subscribe(
                 result -> {
-                    for (int i = 0; i <result.respData.size() ; i++) {
-                        SharedPreferenceHelper.setGiftImageById(result.respData.get(i).id,result.respData.get(i).gifUrl);
+                    for (int i = 0; i < result.respData.size(); i++) {
+                        SharedPreferenceHelper.setGiftImageById(result.respData.get(i).id, result.respData.get(i).gifUrl);
                     }
                 }
         );
@@ -261,15 +262,17 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_GIFT_LIST);
     }
+
     private void handleUserGetCoupon(UserGetCouponResult couponResult) {
         EMMessage message = couponResult.mMessage;
-        if ( couponResult.statusCode == 200) {
-            if(Utils.isNotEmpty(couponResult.respData.userActId)){
+        if (couponResult.statusCode == 200) {
+            if (Utils.isNotEmpty(couponResult.respData.userActId)) {
                 message.setAttribute(ChatConstant.KEY_COUPON_ACT_ID, couponResult.respData.userActId);
             }
         }
         sendMessage(message);
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         // 点击notification bar进入聊天页面，保证只有一个聊天页面
@@ -299,7 +302,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     protected void onPause() {
         super.onPause();
-       EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListener);
+        EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListener);
         if (mGetRedpacklistSubscription != null) {
             RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription);
 
@@ -320,7 +323,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription, mSendMessageSubscription,
                     mSendDiceGameSubscription, mAcceptGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription
                     , mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription, mCreditStatusSubscription,
-                    mGiftResultSubscription,mClubUserGetCouponSubscription);
+                    mGiftResultSubscription, mClubUserGetCouponSubscription);
         }
     }
 
@@ -393,7 +396,6 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         });
         mEmojiconMenuContainer.init(Arrays.asList(DefaultEmojiconDatas.getData()));
     }
-
 
 
     private void onConversationInit() {
@@ -472,29 +474,29 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private void handlerGameInvite(GameResult result) {
         if (result.statusCode == 200) {
-            SharedPreferenceHelper.setGameStatus(result.respData.id,ChatConstant.KEY_ACCEPT_GAME);
+            SharedPreferenceHelper.setGameStatus(result.respData.id, ChatConstant.KEY_ACCEPT_GAME);
             if (result.respData.status.equals(ChatConstant.KEY_ACCEPT_GAME)) {
-                       sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_ACCEPT_GAME, "0:0", mToChatUsername);
+                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_ACCEPT_GAME, "0:0", mToChatUsername);
                 ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                     @Override
                     public void run() {
-                        mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_"+result.respData.id));
+                        mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_" + result.respData.id));
                         sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVER_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
                     }
-                },250);
+                }, 250);
             } else if (result.respData.status.equals(ChatConstant.KEY_GAME_REJECT)) {
-                SharedPreferenceHelper.setGameStatus(result.respData.id,ChatConstant.KEY_GAME_REJECT);
+                SharedPreferenceHelper.setGameStatus(result.respData.id, ChatConstant.KEY_GAME_REJECT);
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_GAME_REJECT, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
-            } else if (result.respData.status.equals(ChatConstant.KEY_OVERTIME_GAME)){
+            } else if (result.respData.status.equals(ChatConstant.KEY_OVERTIME_GAME)) {
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVERTIME_GAME, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
-            }else if(result.respData.status.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)){
-                mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_"+result.respData.id));
+            } else if (result.respData.status.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)) {
+                mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_" + result.respData.id));
                 sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_CANCEL_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
             }
 
-        }else {
-           // mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_"+result.respData.id));
-            SharedPreferenceHelper.setGameStatus(result.respData.id,ChatConstant.KEY_GAME_DISABLE);
+        } else {
+            // mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_"+result.respData.id));
+            SharedPreferenceHelper.setGameStatus(result.respData.id, ChatConstant.KEY_GAME_DISABLE);
             mConversation.removeMessage(result.respData.id);
         }
 
@@ -740,7 +742,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
         message.setAttribute(ChatConstant.KEY_TECH_CODE, mTechCode);
         CommonUtils.userGetCoupon(actId, "tech", mToChatUsername, message);
-       // sendMessage(message);
+        // sendMessage(message);
     }
 
     private void sendOrderMessage(String content, String orderId) {
@@ -824,12 +826,12 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     try {
                         String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
                         String messageStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
-                        if(messageStatus.equals(ChatConstant.KEY_ACCEPT_GAME)){
+                        if (messageStatus.equals(ChatConstant.KEY_ACCEPT_GAME)) {
                             mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(gameId));
-                            SharedPreferenceHelper.setGameMessageId(gameId,message.getMsgId());
+                            SharedPreferenceHelper.setGameMessageId(gameId, message.getMsgId());
                         }
-                        if(messageStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)||messageStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE)||messageStatus.equals(ChatConstant.KEY_GAME_REJECT)){
-                            SharedPreferenceHelper.setGameStatus(gameId,messageStatus);
+                        if (messageStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE) || messageStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE) || messageStatus.equals(ChatConstant.KEY_GAME_REJECT)) {
+                            SharedPreferenceHelper.setGameStatus(gameId, messageStatus);
                             mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(gameId));
                         }
 

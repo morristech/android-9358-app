@@ -24,8 +24,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_SERIAL_NO = "492B6C37356A803DCB43795618DB5DCA";//serialNo
     private static final String KEY_USER_CLUB_ID = "7660E9BC2D136134F0FBC2856A803DC";//clubID
     private static final String KEY_USER_CLUB_NAME = "7660E9BC2D136134F25XD7F56A803DC";//clubName
-    // TODO generate
-    private static final String KEY_USER_CLUB_POSITION = "";    // clubPosition
+    private static final String KEY_USER_CLUB_POSITION = "daf34286f22d3e3ab9b95029d8fb98d0";    // add zr clubPosition
     private static final String KEY_CLUB_GAME_TIMEOUT = "7660E9BC2D136134F25XD67d6A803DC";
     private static final String KEY_VERIFICATION_CODE_TIME = "16024c10323c6f642892cc17bac62192";
     private static final String KEY_CLUB_INVITE_CODE = "76a072c99affd6902b8505443f1bf2ac";
@@ -111,7 +110,7 @@ public class SharedPreferenceHelper {
     }
 
     public static void setUserClubPosition(String clubPosition) {
-        mSettingPreference.edit().putString(KEY_USER_CLUB_POSITION,clubPosition).apply();
+        mSettingPreference.edit().putString(KEY_USER_CLUB_POSITION, clubPosition).apply();
     }
 
     public static String getUserClubPosition() {
@@ -352,12 +351,12 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getString(KEY_PAY_NOTIFY_HIDE_ID + "-" + getUserId(), "");
     }
 
-    public static void setTechStatus(String status){
-         mSettingPreference.edit().putString(KEY_TECH_STATUS+"_"+getUserId(),status).apply();
+    public static void setTechStatus(String status) {
+        mSettingPreference.edit().putString(KEY_TECH_STATUS + "_" + getUserId(), status).apply();
     }
 
-    public static String getTechStatus(){
-        return mSettingPreference.getString(KEY_TECH_STATUS+"_"+getUserId(),"");
+    public static String getTechStatus() {
+        return mSettingPreference.getString(KEY_TECH_STATUS + "_" + getUserId(), "");
     }
 
     public static boolean getPayNotifyIsFirstHide() {
