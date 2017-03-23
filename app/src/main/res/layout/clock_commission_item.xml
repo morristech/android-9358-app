@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/coupon_item_height"
-    android:background="@android:color/white"
-    android:paddingTop="@dimen/personal_padding"
-    android:paddingLeft="@dimen/work_time_padding"
-    android:paddingRight="@dimen/personal_padding">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:paddingTop="@dimen/personal_padding"
+                android:paddingLeft="@dimen/work_time_padding"
+                android:paddingRight="@dimen/personal_padding">
 
     <com.xmd.technician.widget.CircleImageView
         android:id="@+id/avatar"
@@ -28,12 +29,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/avatar"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/search_margin"
-        android:singleLine="true"
+        android:layout_below="@id/title"
+        android:layout_toLeftOf="@id/time"
+        android:maxLines="2"
         android:textColor="@color/colorRemark"
+        android:layout_marginRight="@dimen/inter_space"
         android:textSize="@dimen/fontNormal"
-        android:text="hello"/>
+        tools:text="hello"/>
 
     <TextView
         android:id="@+id/amount"
@@ -42,6 +44,7 @@
         android:layout_alignParentRight="true"
         android:textColor="@color/colorMainBtn"
         android:textSize="@dimen/fontTitle"
+        tools:text="aaa"
         />
 
     <TextView
@@ -49,15 +52,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/search_margin"
+        android:layout_below="@id/amount"
         android:textColor="@color/colorRemark"
         android:textSize="@dimen/fontNormal"
-        android:text="03-19"/>
+        tools:text="03-19"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
+        android:layout_below="@id/time"
+        android:layout_marginTop="@dimen/search_margin"
         android:background="@color/colorLineDivide"
-        android:layout_alignParentBottom="true"/>
+        />
 </RelativeLayout>

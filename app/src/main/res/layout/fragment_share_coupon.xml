@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_bg"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_widget"
@@ -31,7 +33,61 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingLeft="@dimen/inter_space">
+                        android:paddingLeft="@dimen/inter_space"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:id="@+id/ll_share_tech_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/inter_space"
+                            android:layout_marginTop="@dimen/inter_space"
+                            android:background="@color/color_white"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/inter_space">
+
+                            <com.xmd.technician.widget.RoundImageView
+                                android:id="@+id/img_tech_head"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:background="@drawable/img_default_square"
+                                app:borderRadius="@dimen/search_margin"
+                                app:type="round"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:orientation="vertical"
+                                android:paddingLeft="@dimen/inter_space"
+                                >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/my_share_card"
+                                    android:textColor="@color/colorHead"
+                                    android:textSize="@dimen/fontOrderName"/>
+
+                                <TextView
+                                    android:id="@+id/user_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/small_space"
+                                    android:textColor="@color/colorHead"
+                                    android:textSize="@dimen/fontBody"
+                                    tools:text="郑美丽[088]"/>
+                            </LinearLayout>
+
+                            <Button
+                                android:id="@+id/btn_share_user_card"
+                                style="@style/share_btn_style"
+                                />
+
+                        </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/layout_coupon"
@@ -51,7 +107,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginLeft="@dimen/margin_2"
-                                    android:background="@color/colorPrimary" />
+                                    android:background="@color/colorPrimary"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -59,7 +115,7 @@
                                     android:layout_marginLeft="@dimen/margin_10"
                                     android:text="@string/share_coupon"
                                     android:textColor="@color/colorTitle"
-                                    android:textSize="@dimen/fontTitle" />
+                                    android:textSize="@dimen/fontTitle"/>
                             </LinearLayout>
 
                             <RelativeLayout
@@ -70,33 +126,33 @@
                                     android:id="@+id/img_pay_ticket"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/img_pay_tickets" />
+                                    android:src="@drawable/img_pay_tickets"/>
 
                                 <TextView
                                     android:id="@+id/pay_tickets_name"
                                     style="@style/coupon_type_style"
                                     android:layout_toRightOf="@id/img_pay_ticket"
-                                    android:text="点钟券" />
+                                    android:text="点钟券"/>
 
                                 <TextView
                                     android:id="@+id/pay_tickets_text"
                                     style="@style/coupon_total_style"
                                     android:layout_below="@id/pay_tickets_name"
                                     android:layout_toRightOf="@id/img_pay_ticket"
-                                    android:text="会所在线点钟券：" />
+                                    android:text="会所在线点钟券："/>
 
                                 <TextView
                                     android:id="@+id/pay_tickets_title"
                                     style="@style/coupon_total_num_style"
                                     android:layout_toRightOf="@id/pay_tickets_text"
-                                    android:text="aa" />
+                                    android:text="aa"/>
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:src="@drawable/icon_right" />
+                                    android:src="@drawable/icon_right"/>
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -107,33 +163,33 @@
                                     android:id="@+id/img_coupon"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/img_coupon_share" />
+                                    android:src="@drawable/img_coupon_share"/>
 
                                 <TextView
                                     android:id="@+id/coupon_name"
                                     style="@style/coupon_type_style"
                                     android:layout_toRightOf="@id/img_coupon"
-                                    android:text="优惠券" />
+                                    android:text="优惠券"/>
 
                                 <TextView
                                     android:id="@+id/coupon_text"
                                     style="@style/coupon_total_style"
                                     android:layout_below="@id/coupon_name"
                                     android:layout_toRightOf="@id/img_coupon"
-                                    android:text="会所在线优惠券：" />
+                                    android:text="会所在线优惠券："/>
 
                                 <TextView
                                     android:id="@+id/coupon_title"
                                     style="@style/coupon_total_num_style"
                                     android:layout_toRightOf="@id/coupon_text"
-                                    android:text="aa" />
+                                    android:text="aa"/>
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:src="@drawable/icon_right" />
+                                    android:src="@drawable/icon_right"/>
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -144,33 +200,33 @@
                                     android:id="@+id/img_once_card"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/img_multi_card" />
+                                    android:src="@drawable/img_multi_card"/>
 
                                 <TextView
                                     android:id="@+id/once_card_name"
                                     style="@style/coupon_type_style"
                                     android:layout_toRightOf="@id/img_once_card"
-                                    android:text="次卡" />
+                                    android:text="次卡"/>
 
                                 <TextView
                                     android:id="@+id/once_card_text"
                                     style="@style/coupon_total_style"
                                     android:layout_below="@id/once_card_name"
                                     android:layout_toRightOf="@id/img_once_card"
-                                    android:text="会所在线次卡：" />
+                                    android:text="会所在线次卡："/>
 
                                 <TextView
                                     android:id="@+id/once_card_title"
                                     style="@style/coupon_total_num_style"
                                     android:layout_toRightOf="@id/once_card_text"
-                                    android:text="aa" />
+                                    android:text="aa"/>
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:src="@drawable/icon_right" />
+                                    android:src="@drawable/icon_right"/>
                             </RelativeLayout>
                         </LinearLayout>
 
@@ -194,7 +250,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginLeft="@dimen/margin_2"
-                                    android:background="@color/colorPrimary" />
+                                    android:background="@color/colorPrimary"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -202,7 +258,7 @@
                                     android:layout_marginLeft="@dimen/margin_10"
                                     android:text="@string/popular_activities"
                                     android:textColor="@color/colorTitle"
-                                    android:textSize="@dimen/fontTitle" />
+                                    android:textSize="@dimen/fontTitle"/>
                             </LinearLayout>
 
                             <RelativeLayout
@@ -213,33 +269,33 @@
                                     android:id="@+id/img_limit_grab"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/img_limit_grab" />
+                                    android:src="@drawable/img_limit_grab"/>
 
                                 <TextView
                                     android:id="@+id/limit_name"
                                     style="@style/coupon_type_style"
                                     android:layout_toRightOf="@id/img_limit_grab"
-                                    android:text="限时抢" />
+                                    android:text="限时抢"/>
 
                                 <TextView
                                     android:id="@+id/limit_text"
                                     style="@style/coupon_total_style"
                                     android:layout_below="@id/limit_name"
                                     android:layout_toRightOf="@id/img_limit_grab"
-                                    android:text="会所活动数：" />
+                                    android:text="会所活动数："/>
 
                                 <TextView
                                     android:id="@+id/limit_grab_total"
                                     style="@style/coupon_total_num_style"
                                     android:layout_toRightOf="@id/limit_text"
-                                    android:text="aa" />
+                                    android:text="aa"/>
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:src="@drawable/icon_right" />
+                                    android:src="@drawable/icon_right"/>
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -250,33 +306,33 @@
                                     android:id="@+id/img_pay_for_me"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/img_pay_for_me" />
+                                    android:src="@drawable/img_pay_for_me"/>
 
                                 <TextView
                                     android:id="@+id/pay_for_me_name"
                                     style="@style/coupon_type_style"
                                     android:layout_toRightOf="@id/img_pay_for_me"
-                                    android:text="谁替我买单" />
+                                    android:text="谁替我买单"/>
 
                                 <TextView
                                     android:id="@+id/pay_for_me_text"
                                     style="@style/coupon_total_style"
                                     android:layout_below="@id/pay_for_me_name"
                                     android:layout_toRightOf="@id/img_pay_for_me"
-                                    android:text="会所活动数：" />
+                                    android:text="会所活动数："/>
 
                                 <TextView
                                     android:id="@+id/pay_for_me_total"
                                     style="@style/coupon_total_num_style"
                                     android:layout_toRightOf="@id/pay_for_me_text"
-                                    android:text="aa" />
+                                    android:text="aa"/>
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:src="@drawable/icon_right" />
+                                    android:src="@drawable/icon_right"/>
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -287,33 +343,33 @@
                                     android:id="@+id/img_reward"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/img_reward_share" />
+                                    android:src="@drawable/img_reward_share"/>
 
                                 <TextView
                                     android:id="@+id/reward_name"
                                     style="@style/coupon_type_style"
                                     android:layout_toRightOf="@id/img_reward"
-                                    android:text="抽奖活动" />
+                                    android:text="抽奖活动"/>
 
                                 <TextView
                                     android:id="@+id/reward_text"
                                     style="@style/coupon_total_style"
                                     android:layout_below="@id/reward_name"
                                     android:layout_toRightOf="@id/img_reward"
-                                    android:text="会所活动数：" />
+                                    android:text="会所活动数："/>
 
                                 <TextView
                                     android:id="@+id/reward_total"
                                     style="@style/coupon_total_num_style"
                                     android:layout_toRightOf="@id/reward_text"
-                                    android:text="aa" />
+                                    android:text="aa"/>
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:src="@drawable/icon_right" />
+                                    android:src="@drawable/icon_right"/>
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -325,33 +381,33 @@
                                     android:id="@+id/img_not_online"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/img_line_share" />
+                                    android:src="@drawable/img_line_share"/>
 
                                 <TextView
                                     android:id="@+id/not_online_name"
                                     style="@style/coupon_type_style"
                                     android:layout_toRightOf="@id/img_not_online"
-                                    android:text="线下活动" />
+                                    android:text="线下活动"/>
 
                                 <TextView
                                     android:id="@+id/not_online_text"
                                     style="@style/coupon_total_style"
                                     android:layout_below="@id/not_online_name"
                                     android:layout_toRightOf="@id/img_not_online"
-                                    android:text="会所活动数：" />
+                                    android:text="会所活动数："/>
 
                                 <TextView
                                     android:id="@+id/not_online_total"
                                     style="@style/coupon_total_num_style"
                                     android:layout_toRightOf="@id/not_online_text"
-                                    android:text="aa" />
+                                    android:text="aa"/>
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:src="@drawable/icon_right" />
+                                    android:src="@drawable/icon_right"/>
                             </RelativeLayout>
                         </LinearLayout>
 
@@ -375,7 +431,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginLeft="@dimen/margin_2"
-                                    android:background="@color/colorPrimary" />
+                                    android:background="@color/colorPrimary"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -383,7 +439,7 @@
                                     android:layout_marginLeft="@dimen/margin_10"
                                     android:text="@string/club_publicity"
                                     android:textColor="@color/colorTitle"
-                                    android:textSize="@dimen/fontTitle" />
+                                    android:textSize="@dimen/fontTitle"/>
                             </LinearLayout>
 
                             <RelativeLayout
@@ -394,37 +450,37 @@
                                     android:id="@+id/img_publication"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/img_publication" />
+                                    android:src="@drawable/img_publication"/>
 
                                 <TextView
                                     android:id="@+id/publication_name"
                                     style="@style/coupon_type_style"
                                     android:layout_toRightOf="@id/img_publication"
-                                    android:text="会所期刊" />
+                                    android:text="会所期刊"/>
 
                                 <TextView
                                     android:id="@+id/publication_text"
                                     style="@style/coupon_total_style"
                                     android:layout_below="@id/publication_name"
                                     android:layout_toRightOf="@id/img_publication"
-                                    android:text="会所活动数：" />
+                                    android:text="会所活动数："/>
 
                                 <TextView
                                     android:id="@+id/publication_total"
                                     style="@style/coupon_total_num_style"
                                     android:layout_toRightOf="@id/publication_text"
-                                    android:text="aa" />
+                                    android:text="aa"/>
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:src="@drawable/icon_right" />
+                                    android:src="@drawable/icon_right"/>
                             </RelativeLayout>
                         </LinearLayout>
 
-                        <include layout="@layout/layout_main_bottom" />
+                        <include layout="@layout/layout_main_bottom"/>
 
                     </LinearLayout>
 
@@ -433,7 +489,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:visibility="gone" />
+                        android:visibility="gone"/>
                 </FrameLayout>
 
             </LinearLayout>

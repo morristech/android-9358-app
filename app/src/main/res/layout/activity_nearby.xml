@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_nearby_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/large_space"
+            android:layout_marginRight="@dimen/large_space"
+            android:layout_marginTop="@dimen/large_space">
+
+            <ImageView
+                android:id="@+id/img_nearby_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/small_space"
+                android:src="@drawable/ic_nearby_template_set" />
+
+            <TextView
+                android:id="@+id/tv_nearby_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_near_hello_desc"
+                android:paddingBottom="@dimen/common_v_margin"
+                android:paddingLeft="@dimen/large_space"
+                android:paddingRight="@dimen/large_space"
+                android:paddingTop="@dimen/common_v_margin"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/fontBody"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_nearby_customer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingBottom="@dimen/common_v_margin" />
+    </LinearLayout>
+
+</LinearLayout>

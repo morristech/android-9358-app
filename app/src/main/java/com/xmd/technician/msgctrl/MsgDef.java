@@ -159,8 +159,25 @@ public class MsgDef {
     public static final int MSG_DEF_JOURNAL_SHARE_COUNT = 0x0085;
     public static final int MSG_DEF_TECH_ACCOUNT_LIST = 0x0086;
 
-    public static final int MSG_DEF_GET_ROLE_PERMISSION = 0x0087;
-    public static final int MSG_DEG_DELETE_CONVERSATION_FROM_DB = 0x0088;
 
+    public static final int MSG_DEG_DELETE_CONVERSATION_FROM_DB = 0x0087;
+    public static final int MSG_DEG_SHARE_QR_CODE = 0x0088;
+
+    // ------------------------------------------> 附近的人 <----------------------------------------
+    public static final int MSG_DEF_GET_CLUB_POSITION_INFO = 0x0090;    //获取会所位置信息
+    public static final int MSG_DEF_GET_NEARBY_CUS_COUNT = 0x0091;      //获取会所附近客户数量
+    public static final int MSG_DEF_GET_NEARBY_CUS_LIST = 0x0092;       //获取会所附近客户列表
+    public static final int MSG_DEF_GET_HELLO_LEFT_COUNT = 0x0093;      // 获取剩余打招呼次数
+    public static final int MSG_DEF_TECH_SAY_HELLO = 0x0094;            // 打招呼
+    public static final int MSG_DEF_GET_HELLO_RECORD_LIST = 0x0095;     // 获取打招呼记录
+    public static final int MSG_DEF_CHECK_HELLO_DONE = 0x0096;          // 查询是否打过招呼
+    public static final int MSG_DEF_CHECK_CONTACTS_STATUS = 0x0097;     // 查询同客户关系
+    public static final int MSG_DEF_GET_SET_TEMPLATE = 0x0098;          // 获取打招呼内容
+    public static final int MSG_DEF_SAVE_SET_TEMPLATE = 0x0099;         // 保存打招呼内容
+    public static final int MSG_DEF_GET_SYS_TEMPLATE_LIST = 0x0100;     // 获取系统招呼模版列表
+    public static final int MSG_DEF_UPLOAD_HELLO_TEMPLATE_IMG = 0x0101; // 上传打招呼图片
+    public static final int MSG_DEF_DOWNLOAD_HELLO_IMAGE_CACHE = 0x102; // 下载到招呼图片的缓存
+
+    public static final int MSG_DEF_GET_ROLE_PERMISSION = 0x0103;
 
 }

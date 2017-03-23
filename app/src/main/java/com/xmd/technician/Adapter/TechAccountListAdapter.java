@@ -60,7 +60,7 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
     public void onBindViewHolder(TechAccountViewHolder holder, int position) {
         TechAccountBean bean = mData.get(position);
         holder.accountName.setText(bean.name);
-        holder.rewardAmount.setText(Utils.getFloat2Str(String.valueOf(bean.amount / 100)));
+        holder.rewardAmount.setText(Utils.getFloat2Str(String.valueOf(bean.amount / 100f)));
         if (bean.status.equals("normal")) {
             holder.accountConsume.setEnabled(true);
         } else {

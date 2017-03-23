@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_main_tech_serial"
+        app:cardCornerRadius="@dimen/common_v_margin"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/common_v_margin"
+            android:paddingTop="@dimen/common_v_margin">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_10"
+                android:paddingLeft="@dimen/padding_10"
+                android:paddingRight="@dimen/padding_10">
+
+                <TextView
+                    android:id="@+id/cus_item_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:drawableLeft="@drawable/ic_nearby_position"
+                    android:drawablePadding="@dimen/common_v_margin"
+                    android:text="深圳福田"
+                    android:textColor="@color/nearby_text_gray_light"
+                    android:textSize="@dimen/fontTitle" />
+
+                <TextView
+                    android:id="@+id/cus_item_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="距离567m"
+                    android:textColor="@color/nearby_text_gray_light"
+                    android:textSize="@dimen/fontBody" />
+            </RelativeLayout>
+
+            <com.xmd.technician.widget.CircleImageView
+                android:id="@+id/cus_item_avatar"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_gravity="center"
+                android:src="@drawable/icon22" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_15"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/cus_item_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="张先生"
+                    android:textColor="@color/nearby_text_black_dark"
+                    android:textSize="@dimen/fontTitle2" />
+
+                <ImageView
+                    android:id="@+id/cus_item_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/small_space"
+                    android:src="@drawable/icon_weixin"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/cus_item_other_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/small_space"
+                    android:src="@drawable/icon_weixin"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/cus_item_last_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_15"
+                android:layout_marginTop="@dimen/padding_10"
+                android:gravity="center"
+                android:text="2分钟前登录"
+                android:textColor="@color/nearby_text_black_light"
+                android:textSize="@dimen/fontBody" />
+
+            <include
+                layout="@layout/include_nearby_hello_data"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/cus_item_last_hello_dynamic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/large_space"
+                android:layout_marginRight="@dimen/large_space"
+                android:layout_marginTop="@dimen/padding_10"
+                android:background="@drawable/bg_near_hello_data"
+                android:gravity="center"
+                android:paddingBottom="@dimen/padding_10"
+                android:paddingTop="@dimen/padding_10"
+                android:text="2天前 我打过招呼..."
+                android:textColor="@color/nearby_text_gray_light"
+                android:textSize="@dimen/fontBody" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <Button
+        android:id="@+id/cus_item_btn_hello"
+        android:layout_width="190dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/inter_space"
+        android:background="@drawable/bg_near_hello_btn"
+        android:gravity="center"
+        android:padding="0dp"
+        android:text="@string/to_say_hi"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/fontTitle"
+        android:visibility="visible" />
+</LinearLayout>

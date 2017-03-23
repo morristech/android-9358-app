@@ -176,7 +176,7 @@
     <string name="video_call">[视频通话]</string>
     <string name="recent_status_expression">[动态表情]</string>
     <string name="cant_find_pictures">找不到图片</string>
-    <string name="request_user_reward">"<i></i>万水千山总是情<br/>打赏两个行不行~"</string>
+    <string name="request_user_reward">"<i></i>万水千山总是情<br />打赏两个行不行~"</string>
     <string name="beg_reward">求打赏</string>
     <string name="send_request_user_reward">确认发送＂求打赏＂信息？</string>
     <string name="accept">接受</string>
@@ -414,6 +414,7 @@
     <string name="layout_technician_star_sales">销售之星</string>
     <string name="layout_technician_star_service">服务之星</string>
     <string name="layout_technician_no_technician">暂无技师</string>
+
     <string name="main_info_item_too_keen">总拓客（人）</string>
     <string name="main_info_item_send_coupon">总发券（张）</string>
     <string name="main_info_item_get_comment">总好评（个）</string>
@@ -431,6 +432,19 @@
     <string name="main_bottom_text">—您已经到达页面底部—</string>
     <string name="main_no_coupon_alert_message">暂无详细信息，敬请期待</string>
     <string name="main_new_recent_status_none">最近没人来，分享名片拉客吧～</string>
+    <string name="main_nearby_title">附近的人</string>
+    <string name="nearby_bar_right_text">记录</string>
+    <string name="nearby_toker_text">去拓客</string>
+    <string name="hello_record_bar_title">招呼记录</string>
+    <string name="hello_setting_bar_title">打招呼设置</string>
+    <string name="nearby_no_customer_text">附近一个客人都没有，不如自己来拓客吧~</string>
+    <string name="nearby_get_customer_exception">服务器异常，尝试下拉刷新~</string>
+    <string name="nearby_have_no_hello_say">您还没有与该客户打过招呼哟~</string>
+    <string name="hello_setting_content">选择打招呼内容</string>
+    <string name="hello_setting_image">选择打招呼图片（选填）</string>
+    <string name="hello_setting_custom_template_hint">请您输入打招呼内容，字数在50字以内</string>
+    <string name="hello_setting_content_replace">"[客户昵称]</string>
+
     <string name="recent_status_collect_card">收藏了我的名片</string>
     <string name="all_recent_status_activity">全部动态</string>
     <string name="filtrate_recent_status_all">全部</string>
@@ -481,7 +495,13 @@
     <string name="limit_grab_share_description">据说这个项目一般人抢不到，但是我觉得你可以！抢项目，约技师，享人间极乐。</string>
     <string name="pay_for_me_share_description">我和你只有一块钱的距离，点我立即参与</string>
     <string name="reward_share_description">那一世转山转水，只为相见，点我立即开始</string>
-
+    <string name="my_share_card">我的微名片</string>
+    <string name="share_coupon_dialog_title">项目二维码</string>
+    <string name="share_coupon_dialog_description">扫码关注9358,购买项目</string>
+    <string name="scan_code_to_buy">点击扫码可购买</string>
+    <string name="button_save_card">保存至手机</string>
+    <string name="save_tech_card_path">techQRCode</string>
+    <string name="had_saved_tech_card">您已保存过该二维码</string>
 
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -20,8 +21,10 @@ import com.google.zxing.common.BitMatrix;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.common.Logger;
+import com.xmd.technician.common.FileUtils;
+import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.share.ShareController;
 
@@ -52,6 +55,8 @@ public class TechShareCardActivity extends BaseActivity {
     ImageView mUserShareCode;
     @Bind(R.id.ll_tech_code)
     LinearLayout mTechCode;
+    @Bind(R.id.user_save_btn)
+    Button userSaveBtn;
 
 
     private String userHead;
@@ -196,6 +201,24 @@ public class TechShareCardActivity extends BaseActivity {
         }
 
         return bitmap;
+    }
+    @OnClick(R.id.user_save_btn)
+    public void saveUserCard(){
+        String filePath = Environment.getExternalStorageDirectory()+"/"+ResourceUtils.getString(R.string.save_tech_card_path)+".jpg";
+        if(FileUtils.checkFileExist(filePath,false)){
+            makeShortToast(ResourceUtils.getString(R.string.had_saved_tech_card));
+
+        }else{
+            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+                @Override
+                public void run() {
+                    Bitmap bitmap = ImageLoader.readBitmapFromImgUrl(codeUrl);
+                    ImageLoader.saveBitmapToLocal(TechShareCardActivity.this,bitmap,ResourceUtils.getString(R.string.save_tech_card_path));
+                }
+            });
+        }
+
+
     }
 
     @Override

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout_nearby"
+    style="@style/main_page_margin_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/main_nearby_title"
+        style="@style/relative_layout_title_style"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            style="@style/main_fragment_layout_title_left_style"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/icon_main_nearby"
+            android:text="@string/main_nearby_title" />
+
+        <TextView
+            android:id="@+id/main_nearby_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/ic_nearby_position"
+            android:drawablePadding="@dimen/small_space"
+            android:textColor="@color/list_item_label_color"
+            android:textSize="@dimen/fontBody" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/main_nearby_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_nearby_title"
+        android:gravity="center"
+        android:paddingBottom="@dimen/small_space"
+        android:paddingTop="@dimen/small_space"
+        android:textColor="@color/list_item_label_color"
+        android:textSize="@dimen/fontBody" />
+
+    <Button
+        android:id="@+id/main_nearby_say_hello"
+        android:layout_width="160dp"
+        android:layout_height="34dp"
+        android:layout_below="@id/main_nearby_desc"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/inter_space"
+        android:layout_marginTop="@dimen/small_space"
+        android:background="@drawable/visitor_chat_bg"
+        android:text="@string/to_say_hi"
+        android:visibility="visible"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/fontTitle" />
+
+    <Button
+        android:id="@+id/main_nearby_go_toker"
+        android:layout_width="160dp"
+        android:layout_height="34dp"
+        android:layout_below="@id/main_nearby_desc"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/inter_space"
+        android:layout_marginTop="@dimen/small_space"
+        android:background="@drawable/visitor_chat_bg"
+        android:text="@string/nearby_toker_text"
+        android:textColor="@color/color_white"
+        android:visibility="gone"
+        android:textSize="@dimen/fontTitle" />
+</RelativeLayout>

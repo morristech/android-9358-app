@@ -1,21 +1,19 @@
 package com.xmd.technician.share;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Message;
 
 import com.xmd.technician.Constant;
-import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.ImageLoader;
-import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.widget.ShareCouponDialog;
 import com.xmd.technician.window.SharePlatformPopupWindow;
 
 import java.util.HashMap;
@@ -31,20 +29,19 @@ public class ShareController extends AbstractController {
 
         switch (msg.what) {
             case MsgDef.MSG_DEF_SHOW_SHARE_PLATFORM:
-
                 showPlatformWindow((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_SHARE_TO_TIMELINE:
-
                 shareToTimeline((Map<String, Object>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_SHARE_TO_FRIEND:
-
                 shareToFriends((Map<String, Object>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_SHARE_TO_OTHER:
-
                 shareToOther((Map<String, Object>) msg.obj);
+                break;
+            case MsgDef.MSG_DEG_SHARE_QR_CODE:
+                showShareDialog((Map<String, Object>) msg.obj);
                 break;
         }
 
@@ -56,7 +53,7 @@ public class ShareController extends AbstractController {
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
             Bitmap thumbnail;
             if (Utils.isEmpty(imageUrl)) {
-                 thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());
+                thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());
 //                BitmapDrawable bd = (BitmapDrawable) ResourceUtils.getDrawable(R.drawable.img_default_square);
 //                thumbnail = bd.getBitmap();
             } else {
@@ -79,6 +76,15 @@ public class ShareController extends AbstractController {
     private void showPlatformWindow(Map<String, String> params) {
         SharePlatformPopupWindow popupWindow = new SharePlatformPopupWindow(params);
         popupWindow.showAtBottom();
+    }
+
+    private void showShareDialog(Map<String, Object> params) {
+
+        ShareCouponDialog dialog = new ShareCouponDialog((Context) params.get("context"), params);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+
     }
 
     /**

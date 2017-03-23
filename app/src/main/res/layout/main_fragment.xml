@@ -70,9 +70,15 @@
                             android:visibility="gone" />
 
                         <include
+                            android:id="@+id/nearby_layout"
+                            layout="@layout/layout_main_nearby"
+                            android:visibility="gone"/>
+
+                        <include
                             android:id="@+id/ranking_layout"
                             layout="@layout/layout_technician_ranking"
                             android:visibility="gone" />
+
 
                         <include layout="@layout/layout_main_bottom" />
 

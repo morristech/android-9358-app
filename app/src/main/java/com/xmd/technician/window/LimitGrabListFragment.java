@@ -22,6 +22,7 @@ import com.xmd.technician.widget.EmptyView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,6 +38,7 @@ public class LimitGrabListFragment extends BaseListFragment<LimitGrabBean> {
     EmptyView mEmptyViewWidget;
     private Subscription mLimitGrabListSubscription;
     private int mTotalAmount;
+    private Map<String, Object> params = new HashMap<>();
 
     public static LimitGrabListFragment getInstance(int totalAmount) {
         LimitGrabListFragment lf = new LimitGrabListFragment();
@@ -62,7 +64,7 @@ public class LimitGrabListFragment extends BaseListFragment<LimitGrabBean> {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST_DETAIL,params);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SERVICE_ITEM_LIST_DETAIL, params);
     }
 
     @Override
@@ -95,13 +97,28 @@ public class LimitGrabListFragment extends BaseListFragment<LimitGrabBean> {
     @Override
     public void onShareClicked(LimitGrabBean bean) {
         super.onShareClicked(bean);
-        ShareController.doShare(bean.image, bean.shareUrl, SharedPreferenceHelper.getUserClubName() + "-" + bean.itemName+"限时抢购就等你来",
+        ShareController.doShare(bean.image, bean.shareUrl, SharedPreferenceHelper.getUserClubName() + "-" + bean.itemName + "限时抢购就等你来",
                 ResourceUtils.getString(R.string.limit_grab_share_description), Constant.SHARE_COUPON, "");
     }
 
     @Override
     public void onItemClicked(LimitGrabBean bean) throws HyphenateException {
         super.onItemClicked(bean);
+    }
+
+    @Override
+    public void onPositiveButtonClicked(LimitGrabBean bean) {
+        super.onPositiveButtonClicked(bean);
+        params.clear();
+        params.put(Constant.SHARE_CONTEXT, getActivity());
+        params.put(Constant.PARAM_SHARE_THUMBNAIL, bean.image);
+        params.put(Constant.PARAM_SHARE_URL, bean.shareUrl);
+        params.put(Constant.PARAM_SHARE_TITLE, SharedPreferenceHelper.getUserClubName() + "-" + bean.itemName + "限时抢购就等你来");
+        params.put(Constant.PARAM_SHARE_DESCRIPTION, ResourceUtils.getString(R.string.limit_grab_share_description));
+        params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_COUPON);
+        params.put(Constant.PARAM_ACT_ID, "");
+        params.put(Constant.PARAM_SHARE_DIALOG_TITLE,"限时抢");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
     }
 
     @Override

@@ -51,6 +51,7 @@ public class DynamicShareTechActivity extends BaseActivity {
     @Bind(R.id.user_share_btn)
     Button userShareBtn;
 
+
     private String userHead;
     private String userName;
     private String userNum;
@@ -143,5 +144,6 @@ public class DynamicShareTechActivity extends BaseActivity {
         //TODO add logo to the bitmap
         return bitmap;
     }
+
 
 }

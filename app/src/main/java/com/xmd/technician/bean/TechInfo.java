@@ -22,6 +22,7 @@ public class TechInfo {
      * userName : 开发用户
      * clubName : 刘哥会所2
      * innerProvider :所属会所对接内网提供商
+     * clubPosition :所属会所所在位置
      */
 
     public int validSeconds;
@@ -39,5 +40,7 @@ public class TechInfo {
     public String userName;
     public String clubName;
     public String innerProvider;
+    public String shareUrl;
 
+    public String clubPosition;     // add ZR
 }

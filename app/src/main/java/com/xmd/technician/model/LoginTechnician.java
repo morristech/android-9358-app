@@ -75,6 +75,7 @@ public class LoginTechnician {
     private String status; // "busy"|"free"|"uncert"|"valid"|"reject"
     private String clubId;
     private String clubName;
+    private String clubPosition;    //会所所在位置 add ZR
     private int credit;
     public String innerProvider;
 
@@ -108,6 +109,7 @@ public class LoginTechnician {
         qrCodeDownloadUrl = SharedPreferenceHelper.getTechQrDownloadUrl();
         clubId = SharedPreferenceHelper.getUserClubId();
         clubName = SharedPreferenceHelper.getUserClubName();
+        clubPosition = SharedPreferenceHelper.getUserClubPosition();
 
         RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(this::onGetTechPersonalData);
     }
@@ -177,6 +179,7 @@ public class LoginTechnician {
         setInviteCode(techInfo.inviteCode);
         setClubId(techInfo.clubId);
         setClubName(techInfo.clubName);
+        setClubPosition(techInfo.clubPosition);
         setCredit(techInfo.creditAmount);
         setInnerProvider(techInfo.innerProvider);
         setStatus(techInfo.status);
@@ -323,6 +326,7 @@ public class LoginTechnician {
         setClubId(null);
         setClubInviteCode(null);
         setClubName(null);
+        setClubPosition(null);
         setStatus(Constant.TECH_STATUS_VALID);
         //开始刷新买单通知
         DataRefreshService.refreshPayNotify(false);
@@ -358,14 +362,14 @@ public class LoginTechnician {
     }
 
     public void onGetTechPersonalData(TechPersonalDataResult result) {
-       if(result.respData != null){
-           setAmount(result.respData.accountAmount);
-           setCredit(result.respData.credits);
-           setCommentCount(result.respData.allCommentCount);
-           setUnreadCommentCount(result.respData.unreadCommentCount);
-           setStatus(result.respData.techStatus);
-           setOrderCount(result.respData.orderCount);
-       }
+        if (result.respData != null) {
+            setAmount(result.respData.accountAmount);
+            setCredit(result.respData.credits);
+            setCommentCount(result.respData.allCommentCount);
+            setUnreadCommentCount(result.respData.unreadCommentCount);
+            setStatus(result.respData.techStatus);
+            setOrderCount(result.respData.orderCount);
+        }
     }
 
     //获取技师权限
@@ -524,6 +528,15 @@ public class LoginTechnician {
     public void setClubName(String clubName) {
         this.clubName = clubName;
         SharedPreferenceHelper.setUserClubName(clubName);
+    }
+
+    public String getClubPosition() {
+        return clubPosition;
+    }
+
+    public void setClubPosition(String clubPosition) {
+        this.clubPosition = clubPosition;
+        SharedPreferenceHelper.setUserClubPosition(clubPosition);
     }
 
     public int getCredit() {

@@ -38,6 +38,7 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
     EmptyView mEmptyViewWidget;
     private Subscription mPayForMeListSubscription;
     private int mTotalAmount;
+    private Map<String, Object> params = new HashMap<>();
 
     public static PayForMeListFragment getInstance(int totalAmount) {
         PayForMeListFragment pf = new PayForMeListFragment();
@@ -104,6 +105,21 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
     public void onItemClicked(PayForMeBean bean) throws HyphenateException {
         super.onItemClicked(bean);
 
+    }
+
+    @Override
+    public void onPositiveButtonClicked(PayForMeBean bean) {
+        super.onPositiveButtonClicked(bean);
+        params.clear();
+        params.put(Constant.SHARE_CONTEXT, getActivity());
+        params.put(Constant.PARAM_SHARE_THUMBNAIL, bean.image);
+        params.put(Constant.PARAM_SHARE_URL, bean.shareUrl);
+        params.put(Constant.PARAM_SHARE_TITLE, bean.actName);
+        params.put(Constant.PARAM_SHARE_DESCRIPTION, ResourceUtils.getString(R.string.pay_for_me_share_description));
+        params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_COUPON);
+        params.put(Constant.PARAM_ACT_ID, "");
+        params.put(Constant.PARAM_SHARE_DIALOG_TITLE,"谁替我买单");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
     }
 
     @Override
