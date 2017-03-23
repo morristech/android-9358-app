@@ -197,7 +197,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mOrderFigureOut;
 
     // 附近的人
-    @Bind(R.id.main_layout_nearby)
+    @Bind(R.id.nearby_layout)
     RelativeLayout mNearbyLayout;
     @Bind(R.id.main_nearby_position)
     TextView mNearbyPosition;
@@ -272,6 +272,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initRanking();
         initCredit();
         initWorkStatus();
+        initNearbyUser();
 
         registerRequestHandlers(); //注册监听器
 
@@ -492,6 +493,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.WORK_STATUS)
     public void initWorkStatus() {
         mRootView.findViewById(R.id.work_status_layout).setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.NEARBY_USER)
+    public void initNearbyUser() {
+        mRootView.findViewById(R.id.nearby_layout).setVisibility(View.VISIBLE);
     }
 
 

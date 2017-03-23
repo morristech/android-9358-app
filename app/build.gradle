@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         applicationId "com.xmd.technician"
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 25
         // 1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
         // release version : 1.4.0.14
