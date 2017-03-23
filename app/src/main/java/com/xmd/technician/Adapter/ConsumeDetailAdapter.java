@@ -32,16 +32,13 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
     private static final byte TYPE_FOOTER = 0;
 
     private List<ConsumeInfo> mConsumeList;
-    private int mConsumeType = WITHDRAWAL;
     private Context mContext;
     private boolean mIsNoMore = false;
     private View.OnClickListener mFooterClickListener;
 
-    public ConsumeDetailAdapter(Context context, int consumeType) {
+    public ConsumeDetailAdapter(Context context) {
         mContext = context;
         mConsumeList = new ArrayList<>();
-        mConsumeType = consumeType;
-
     }
 
     public void setOnFooterClickListener(View.OnClickListener listener) {
@@ -71,7 +68,6 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
         if (position + 1 == getItemCount()) {
             return TYPE_FOOTER;
         }
-
         ConsumeInfo consumeInfo = mConsumeList.get(position);
         if (consumeInfo.consumeChannel.equals("user_reward")) {
             return USER_REWARD;
@@ -84,6 +80,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
         } else {
             return WITHDRAWAL;
         }
+
     }
 
     @Override

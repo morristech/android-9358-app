@@ -27,9 +27,7 @@ import rx.Subscription;
 public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     public static final String EXTRA_CONSUME_TYPE = "consumeType";
-
-    private static final int mActivityTitles[] = {R.string.user_reward_detail, R.string.coupon_reward_detail, R.string.paid_coupon_detail, R.string.paid_order_detail, R.string.time_card_detail};
-    public static final String[] mConsumeTypes = {"user_reward", "coupon_reward", "paid_coupon", "paid_order", "once_card", "withdrawal"};
+    public static final String EXTRA_CONSUME_NAME = "consumeName";
 
     @Bind(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -47,21 +45,20 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
     private boolean mIsLoadingMore = false;
     private int mLastVisibleItem;
     private LinearLayoutManager mLayoutManager;
+    private String mConsumeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
-
-        int type = getIntent().getExtras().getInt(EXTRA_CONSUME_TYPE);
-        mConsumeType = mConsumeTypes[type];
-
-        setTitle(mActivityTitles[type]);
+        mConsumeName = getIntent().getExtras().getString(EXTRA_CONSUME_NAME);
+        mConsumeType = getIntent().getExtras().getString(EXTRA_CONSUME_TYPE);
+        setTitle(String.format("%s明细", mConsumeName));
         setBackVisible(true);
 
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new ConsumeDetailAdapter(this, 1);
+        mAdapter = new ConsumeDetailAdapter(this);
         mAdapter.setOnFooterClickListener(v -> loadMore());
         mListView.setHasFixedSize(true);
         mListView.setLayoutManager(mLayoutManager);

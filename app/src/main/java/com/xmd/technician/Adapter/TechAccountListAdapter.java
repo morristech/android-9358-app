@@ -30,7 +30,7 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
     public interface CallBack {
         void onWithDrawClicked(String type);
 
-        void onItemClicked(String type);
+        void onItemClicked(TechAccountBean bean);
     }
 
     public TechAccountListAdapter(Context context, List<TechAccountBean> data) {
@@ -74,7 +74,7 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
             }
         }
         Glide.with(mContext).load(bean.imageUrl).into(holder.imgAccountHead);
-        holder.itemView.setOnClickListener(v -> mCallBack.onItemClicked(bean.accountType));
+        holder.itemView.setOnClickListener(v -> mCallBack.onItemClicked(bean));
         holder.accountConsume.setOnClickListener(v -> mCallBack.onWithDrawClicked(bean.accountType));
     }
 
