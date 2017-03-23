@@ -210,7 +210,8 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_ICODE)
-    Call<BaseResult> getICode(@Field(RequestConstant.KEY_MOBILE) String mobile);
+    Call<BaseResult> getICode(@Field(RequestConstant.KEY_MOBILE) String mobile,
+                              @Field(RequestConstant.KEY_WHICH)String androidTechRecoverPassword);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_JOIN_CLUB)

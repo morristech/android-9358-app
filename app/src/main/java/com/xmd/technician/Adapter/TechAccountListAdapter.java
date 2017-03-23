@@ -30,7 +30,7 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
     public interface CallBack {
         void onWithDrawClicked(String type);
 
-        void onItemClicked(String type);
+        void onItemClicked(TechAccountBean bean);
     }
 
     public TechAccountListAdapter(Context context, List<TechAccountBean> data) {
@@ -61,20 +61,13 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
         TechAccountBean bean = mData.get(position);
         holder.accountName.setText(bean.name);
         holder.rewardAmount.setText(Utils.getFloat2Str(String.valueOf(bean.amount / 100f)));
-        if (bean.status.equals("normal")) {
+        if (mWithdrawal.equals("Y")&&bean.status.equals("normal")) {
             holder.accountConsume.setEnabled(true);
         } else {
             holder.accountConsume.setEnabled(false);
         }
-        if (bean.accountType.equals("redPacket")) {
-            if (mWithdrawal.equals("Y")) {
-                holder.accountConsume.setEnabled(true);
-            } else {
-                holder.accountConsume.setEnabled(false);
-            }
-        }
         Glide.with(mContext).load(bean.imageUrl).into(holder.imgAccountHead);
-        holder.itemView.setOnClickListener(v -> mCallBack.onItemClicked(bean.accountType));
+        holder.itemView.setOnClickListener(v -> mCallBack.onItemClicked(bean));
         holder.accountConsume.setOnClickListener(v -> mCallBack.onWithDrawClicked(bean.accountType));
     }
 

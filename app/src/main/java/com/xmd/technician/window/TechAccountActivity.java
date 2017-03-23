@@ -62,24 +62,8 @@ public class TechAccountActivity extends BaseActivity {
             }
 
             @Override
-            public void onItemClicked(String type) {
-                int mCurrentType = 0;
-                if (type.equals("paid_reward")) {
-                    mCurrentType = 0;
-                }
-                if (type.equals("redPacket")) {
-                    mCurrentType = 1;
-                }
-                if (type.equals("paid_coupon")) {
-                    mCurrentType = 2;
-                }
-                if (type.equals("paid_order")) {
-                    mCurrentType = 3;
-                }
-                if (type.equals("item_card")) {
-                    mCurrentType = 4;
-                }
-                gotoDetailActivity(mCurrentType);
+            public void onItemClicked(TechAccountBean bean) {
+                gotoDetailActivity(bean.accountType,bean.name);
             }
         });
     }
@@ -101,9 +85,10 @@ public class TechAccountActivity extends BaseActivity {
         RxBus.getInstance().unsubscribe(mTechAccountListSubscription);
     }
 
-    private void gotoDetailActivity(int type) {
+    private void gotoDetailActivity(String type,String name) {
         Intent intent = new Intent(TechAccountActivity.this, ConsumeDetailActivity.class);
         intent.putExtra(ConsumeDetailActivity.EXTRA_CONSUME_TYPE, type);
+        intent.putExtra(ConsumeDetailActivity.EXTRA_CONSUME_NAME,name);
         startActivity(intent);
     }
 
