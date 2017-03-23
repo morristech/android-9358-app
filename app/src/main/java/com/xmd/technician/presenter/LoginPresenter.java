@@ -157,14 +157,16 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     return;
                 }
             }
+
             if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_TECH_NO && result.statusCode == 206) {
                 //进入注册页面
                 mView.hideLoading();
                 mLoginTech.setTechId(result.spareTechId);
                 UINavigation.gotoRegister(mContext);
             } else {
-                //登录成功，获取用户信息
+                //登录成功
                 mLoginTech.onLoginResult(result);
+                //获取用户信息
                 mLoginTech.loadTechInfo();
             }
         }

@@ -15,6 +15,7 @@ import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.JoinClubContract;
 import com.xmd.technician.databinding.ActivityJoinClubBinding;
+import com.xmd.technician.event.EventRequestJoinClub;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.model.TechNo;
@@ -107,6 +108,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
             if (mOpenFrom == UINavigation.OPEN_JOIN_CLUB_FROM_START) {
                 UINavigation.gotoMainActivityFromStart(mContext);
             }
+            RxBus.getInstance().post(new EventRequestJoinClub());
         }
     }
 

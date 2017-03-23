@@ -26,17 +26,19 @@ public class RxBus {
     }
 
 
-    public void post(Object o){
+    public void post(Object o) {
         bus.onNext(o);
     }
 
-    public <T extends Object> Observable<T> toObservable (final Class<T> eventType) {
-        return bus.filter( o -> { return eventType.isInstance(o); }).cast(eventType);
+    public <T extends Object> Observable<T> toObservable(final Class<T> eventType) {
+        return bus.filter(o -> {
+            return eventType.isInstance(o);
+        }).cast(eventType);
     }
 
     public void unsubscribe(Subscription... subscriptions) {
-        for (Subscription subscription: subscriptions) {
-            if (!subscription.isUnsubscribed()) {
+        for (Subscription subscription : subscriptions) {
+            if (subscription != null && !subscription.isUnsubscribed()) {
                 subscription.unsubscribe();
             }
         }

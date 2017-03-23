@@ -23,6 +23,7 @@
 
     <RelativeLayout
         android:id="@+id/menu_work_time"
+        android:visibility="gone"
         style="@style/menu_setting_relative_style">
 
         <ImageView
@@ -40,6 +41,7 @@
 
     <RelativeLayout
         android:id="@+id/menu_work_project"
+        android:visibility="gone"
         style="@style/menu_setting_relative_style">
 
         <ImageView
@@ -55,6 +57,7 @@
 
     <RelativeLayout
         android:id="@+id/menu_about_us"
+        android:visibility="gone"
         style="@style/menu_setting_relative_style"
         android:layout_marginTop="@dimen/inter_space">
 
@@ -84,6 +87,7 @@
 
     <RelativeLayout
         android:id="@+id/menu_suggest"
+        android:visibility="gone"
         style="@style/menu_setting_relative_style">
 
         <ImageView
@@ -100,6 +104,7 @@
 
     <RelativeLayout
         android:id="@+id/settings_activity_modify_pw"
+        android:visibility="gone"
         style="@style/menu_setting_relative_style"
         android:layout_marginTop="@dimen/inter_space">
 
@@ -116,7 +121,8 @@
 
     </RelativeLayout>
     <RelativeLayout
-        android:id="@+id/settings_activity_quit_club"
+        android:id="@+id/settings_activity_join_or_quit_club"
+        android:visibility="gone"
         style="@style/menu_setting_relative_style"
         android:layout_marginTop="@dimen/inter_space"
         >

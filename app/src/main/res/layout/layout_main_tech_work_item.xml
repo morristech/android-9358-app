@@ -1,94 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_info_item"
-    android:orientation="horizontal"
+    android:id="@+id/statistic_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/feedback_btn_width"
-    android:background="@color/color_white"
-    android:layout_marginTop="-10dp"
-    android:layout_marginRight="@dimen/main_page_margin"
     android:layout_marginLeft="@dimen/main_page_margin"
+    android:layout_marginRight="@dimen/main_page_margin"
+    android:layout_marginTop="-10dp"
+    android:background="@color/color_white"
+    android:orientation="horizontal">
 
-    >
     <RelativeLayout
         android:id="@+id/main_too_keen"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
         android:background="@drawable/personal_item_selector"
-        android:layout_height="wrap_content">
+        android:visibility="gone">
+
         <TextView
             style="@style/main_info_title_text_style"
-            android:text="@string/main_info_item_too_keen"
-            />
+            android:text="@string/main_info_item_too_keen" />
+
         <TextView
             android:id="@+id/main_info_too_keen_number"
             style="@style/main_info_number_text_style"
-            android:text="0"
-            />
+            android:text="0" />
     </RelativeLayout>
-    <View
-       style="@style/main_info_vertical_line_style"
-        />
+
+    <View style="@style/main_info_vertical_line_style" />
+
     <RelativeLayout
         android:id="@+id/main_send_coupon"
+        android:visibility="gone"
         android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
         android:background="@drawable/personal_item_selector">
+
         <TextView
             style="@style/main_info_title_text_style"
-            android:text="@string/main_info_item_send_coupon"
-            />
+            android:text="@string/main_info_item_send_coupon" />
+
         <TextView
             android:id="@+id/main_send_coupon_number"
             style="@style/main_info_number_text_style"
-            android:text="0"
-            />
+            android:text="0" />
 
     </RelativeLayout>
-    <View
-        style="@style/main_info_vertical_line_style"
-        />
+
+    <View style="@style/main_info_vertical_line_style" />
+
     <RelativeLayout
         android:id="@+id/main_get_comment"
+        android:visibility="gone"
         android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
         android:background="@drawable/personal_item_selector">
+
         <TextView
             style="@style/main_info_title_text_style"
-            android:text="@string/main_info_item_get_comment"
-            />
+            android:text="@string/main_info_item_get_comment" />
+
         <TextView
             android:id="@+id/main_get_comment_number"
             style="@style/main_info_number_text_style"
-            android:text="0"
-            />
+            android:text="0" />
 
     </RelativeLayout>
-    <View
-        style="@style/main_info_vertical_line_style"
-        />
+
+    <View style="@style/main_info_vertical_line_style" />
+
     <RelativeLayout
         android:id="@+id/main_total_income"
+        android:visibility="gone"
         android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
         android:background="@drawable/personal_item_selector">
+
         <TextView
             style="@style/main_info_title_text_style"
-            android:text="@string/main_info_item_total_income"
-            />
+            android:text="@string/main_info_item_total_income" />
+
         <TextView
             android:id="@+id/main_total_income_number"
             style="@style/main_info_number_text_style"
             android:text="0"
-            android:textColor="@color/colorBtnChecked"
-            />
+            android:textColor="@color/colorBtnChecked" />
     </RelativeLayout>
 
 

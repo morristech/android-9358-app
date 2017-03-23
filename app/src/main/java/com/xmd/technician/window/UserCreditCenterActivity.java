@@ -96,7 +96,7 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
     @Override
     protected void onResume() {
         super.onResume();
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SWITCH_STATUS);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_STATUS);
         mExchangeCreditResultSubscription = RxBus.getInstance().toObservable(CreditExchangeResult.class).subscribe(
                 result -> {
                     if (result.statusCode == 200) {

@@ -10,156 +10,170 @@
         android:id="@+id/main_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_button_height"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:paddingTop="@dimen/margin_5"
         android:background="@color/appColorTable"
-        >
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/margin_5">
+
         <RelativeLayout
+            android:id="@+id/main_button_home"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-            <Button
-                android:id="@+id/main_button_personal"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:drawableTop="@drawable/home_personal_bg"
                 android:scaleType="centerInside"
+                android:gravity="center"
+                android:text="@string/main_page"
                 android:textColor="@color/home_button_text_bg"
-                android:textSize="@dimen/fontRemark"
-                android:text="@string/main_page"/>
+                android:textSize="@dimen/fontRemark" />
 
             <TextView
                 android:id="@+id/main_unread_personal"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/search_pic_height"
-                android:minWidth="@dimen/search_pic_height"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/personal_margin"
                 android:background="@drawable/unread_count_bg"
                 android:gravity="center"
+                android:minWidth="@dimen/search_pic_height"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/fontRemark"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/main_button_message"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-            <Button
-                android:id="@+id/main_button_message"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:drawableTop="@drawable/home_new_bg"
+                android:gravity="center"
                 android:scaleType="centerInside"
+                android:text="@string/main_chat"
                 android:textColor="@color/home_button_text_bg"
-                android:textSize="@dimen/fontRemark"
-                android:text="@string/main_chat" />
+                android:textSize="@dimen/fontRemark" />
 
             <TextView
                 android:id="@+id/main_unread_message"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/search_pic_height"
-                android:minWidth="@dimen/search_pic_height"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/personal_margin_table"
                 android:background="@drawable/unread_count_bg"
                 android:gravity="center"
+                android:minWidth="@dimen/search_pic_height"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/fontRemark"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
         </RelativeLayout>
+
         <RelativeLayout
+            android:id="@+id/main_button_contacts"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-            <Button
-                android:id="@+id/main_button_contacts"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:drawableTop="@drawable/contact_bg"
+                android:gravity="center"
                 android:scaleType="centerInside"
+                android:text="@string/main_conversion"
                 android:textColor="@color/home_button_text_bg"
-                android:textSize="@dimen/fontRemark"
-                android:text="@string/main_conversion" />
+                android:textSize="@dimen/fontRemark" />
 
             <TextView
                 android:id="@+id/main_unread_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/search_pic_height"
-                android:minWidth="@dimen/search_pic_height"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/personal_margin"
                 android:background="@drawable/unread_count_bg"
                 android:gravity="center"
+                android:minWidth="@dimen/search_pic_height"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/fontRemark"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
         </RelativeLayout>
 
+        <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:visibility="gone">-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/main_button_order"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@null"-->
+        <!--android:drawableTop="@drawable/home_order_bg"-->
+        <!--android:gravity="center"-->
+        <!--android:scaleType="centerInside"-->
+        <!--android:text="@string/main_order"-->
+        <!--android:textColor="@color/home_button_text_bg"-->
+        <!--android:textSize="@dimen/fontRemark" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/main_unread_order"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="@dimen/search_pic_height"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginRight="@dimen/personal_margin"-->
+        <!--android:background="@drawable/unread_count_bg"-->
+        <!--android:gravity="center"-->
+        <!--android:minWidth="@dimen/search_pic_height"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:textSize="@dimen/fontRemark"-->
+        <!--android:visibility="invisible"-->
+        <!--tools:text="11" />-->
+        <!--</RelativeLayout>-->
+
         <RelativeLayout
+            android:id="@+id/main_button_marketing"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="gone"
-            >
-            <Button
-                android:id="@+id/main_button_order"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:drawableTop="@drawable/home_order_bg"
-                android:scaleType="centerInside"
-                android:textColor="@color/home_button_text_bg"
-                android:textSize="@dimen/fontRemark"
-                android:text="@string/main_order"/>
+            android:visibility="gone">
 
             <TextView
-                android:id="@+id/main_unread_order"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/search_pic_height"
-                android:minWidth="@dimen/search_pic_height"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/personal_margin"
-                android:background="@drawable/unread_count_bg"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/fontRemark"
-                tools:text="11"
-                android:visibility="invisible"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <Button
-                android:id="@+id/main_button_marketing"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:drawableTop="@drawable/home_market_bg"
+                android:gravity="center"
                 android:scaleType="centerInside"
+                android:text="@string/main_market"
                 android:textColor="@color/home_button_text_bg"
-                android:textSize="@dimen/fontRemark"
-                android:text="@string/main_market"/>
+                android:textSize="@dimen/fontRemark" />
 
             <TextView
                 android:id="@+id/main_unread_marketing"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/search_pic_height"
-                android:minWidth="@dimen/search_pic_height"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/personal_margin"
                 android:background="@drawable/unread_count_bg"
                 android:gravity="center"
+                android:minWidth="@dimen/search_pic_height"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/fontRemark"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -168,14 +182,14 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/stroke_width"
-        android:background="@color/colorLineDivideTable"
-        android:layout_above="@+id/main_bottom_bar"/>
+        android:layout_above="@+id/main_bottom_bar"
+        android:background="@color/colorLineDivideTable" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/divider"/>
+        android:layout_above="@+id/divider"
+        android:layout_below="@+id/toolbar" />
 
 </RelativeLayout>

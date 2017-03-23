@@ -120,6 +120,8 @@ public class RequestConstant {
     public static final String URL_DO_USER_JOURNAL_SHARE_COUNT = BASE_URL + "/v2/user/journal/share/count";//期刊统计
 
 
+    public static final String URL_ROLE_PERMISSION = BASE_URL + "/v2/tech/menu/list";
+
     /**
      * --------------------------------------> 附近的人:url <----------------------------------------
      */
@@ -331,6 +333,9 @@ public class RequestConstant {
     public static final String KEY_TEMPLATE_IMAGE_ID = "imageId";
     public static final String KEY_RECENTLY_VISITOR_BEAN = "recentlyBean";
     public static final String KEY_REQUEST_TAG = "requestTag";
+
+    public static final String KEY_PLATFORM = "platform";
+    public static final String VALUE_PLATFORM_TECH = "TECH_APP";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

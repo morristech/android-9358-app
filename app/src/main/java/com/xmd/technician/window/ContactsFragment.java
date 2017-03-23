@@ -29,10 +29,10 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.permission.CheckBusinessPermission;
+import com.xmd.technician.permission.PermissionConstants;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -62,32 +62,43 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     @Bind(R.id.recently_visitor)
     TextView mRecentlyVisitor;
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
-    private List<Fragment> mlistViews;
     private int mCurrentPage;
     private int screenWidth;
     private Activity ac;
     private Map<String, String> params = new HashMap<>();
     private View viewM;
-    private View view;
+    private View mRootView;
     private PopupWindow window = null;
     private LayoutInflater layoutInflater;
     private ImageView imgRight;
     private boolean currentFragmentIsContact;
 
+    private RecentlyVisitorFragment visitorFragment;
+    private CustomerListFragment customerFragment;
+    private MyClubListFragment myClubFragment;
+    private int fragmentSize;
 
     private Subscription getCurrentSelectedPageSubscription;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_constacts, container, false);
-        ButterKnife.bind(this, view);
-        ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_conversion);
-        view.findViewById(R.id.contact_more).setVisibility(View.VISIBLE);
-        imgRight = ((ImageView) view.findViewById(R.id.toolbar_right_img));
+        mRootView = inflater.inflate(R.layout.fragment_constacts, container, false);
+        ButterKnife.bind(this, mRootView);
+        fragmentSize = 0;
+        mRootView.findViewById(R.id.contact_more).setVisibility(View.VISIBLE);
+        ((TextView) mRootView.findViewById(R.id.toolbar_title)).setText(R.string.main_conversion);
+        imgRight = ((ImageView) mRootView.findViewById(R.id.toolbar_right_img));
         imgRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.contact_add));
         imgRight.setOnClickListener(this);
+        imgRight.setVisibility(View.GONE);
         mRecentlyVisitor.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+        initVisitorView();
+        initCustomerView();
+        initMyClubView();
+        if (visitorFragment == null && customerFragment != null) {
+            initAddFromContacts();
+        }
         getCurrentSelectedPageSubscription = RxBus.getInstance().toObservable(CurrentSelectPage.class).subscribe(
                 selectedPage -> {
                     getActivity().runOnUiThread(new Runnable() {
@@ -98,32 +109,59 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                     });
                 }
         );
-        return view;
+
+        return mRootView;
+    }
+
+    @CheckBusinessPermission(PermissionConstants.CONTACTS_VISITOR)
+    public void initVisitorView() {
+        mContactVisitor.setVisibility(View.VISIBLE);
+        visitorFragment = new RecentlyVisitorFragment();
+        fragmentSize++;
+        mContactVisitor.setOnClickListener(this);
+
+    }
+
+    @CheckBusinessPermission(PermissionConstants.CONTACTS_CUSTOMER)
+    public void initCustomerView() {
+        mContactLeft.setVisibility(View.VISIBLE);
+        customerFragment = new CustomerListFragment();
+        fragmentSize++;
+        mContactLeft.setOnClickListener(this);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.CONTACTS_MY_CLUB)
+    public void initMyClubView() {
+        mContactRight.setVisibility(View.VISIBLE);
+        myClubFragment = new MyClubListFragment();
+        fragmentSize++;
+        mContactRight.setOnClickListener(this);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.CONTACTS_ADD_CUSTOMER)
+    public void initAddFromContacts() {
+        imgRight.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ac = getActivity();
-        initView();
         initImageView();
         initViewPager();
     }
 
-    private void initView() {
-        mContactLeft.setOnClickListener(this);
-        mContactVisitor.setOnClickListener(this);
-        mContactRight.setOnClickListener(this);
-
-    }
-
     private void initImageView() {
-        DisplayMetrics dpMetrics = new DisplayMetrics();
-        getActivity().getWindow().getWindowManager().getDefaultDisplay().getMetrics(dpMetrics);
-        screenWidth = dpMetrics.widthPixels;
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabBottomImg.getLayoutParams();
-        lp.width = screenWidth / 3;
-        mTabBottomImg.setLayoutParams(lp);
+        if (fragmentSize > 0) {
+            DisplayMetrics dpMetrics = new DisplayMetrics();
+            getActivity().getWindow().getWindowManager().getDefaultDisplay().getMetrics(dpMetrics);
+            screenWidth = dpMetrics.widthPixels;
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabBottomImg.getLayoutParams();
+            lp.width = screenWidth / fragmentSize;
+            mTabBottomImg.setLayoutParams(lp);
+        } else {
+            mTabBottomImg.setVisibility(View.GONE);
+        }
     }
 
     private void resetTextView() {
@@ -133,45 +171,52 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initViewPager() {
-        mlistViews = new ArrayList<>();
+        if (fragmentSize == 0) {
+            return;
+        }
         mPageFragmentPagerAdapter = new PageFragmentPagerAdapter(getChildFragmentManager(), getActivity());
-        mPageFragmentPagerAdapter.addFragment(new RecentlyVisitorFragment());
-        mPageFragmentPagerAdapter.addFragment(new CustomerListFragment());
-        mPageFragmentPagerAdapter.addFragment(new MyClubListFragment());
+        if (visitorFragment != null) {
+            mPageFragmentPagerAdapter.addFragment(visitorFragment);
+        }
+        if (customerFragment != null) {
+            mPageFragmentPagerAdapter.addFragment(customerFragment);
+        }
+        if (myClubFragment != null) {
+            mPageFragmentPagerAdapter.addFragment(myClubFragment);
+        }
         mViewpagerContact.setAdapter(mPageFragmentPagerAdapter);
         mViewpagerContact.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float offset, int positionOffsetPixels) {
-                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabBottomImg.getLayoutParams();
-                if (mCurrentPage == 0 && position == 0) {
-                    lp.leftMargin = mCurrentPage * (screenWidth / 3);
-                } else if (mCurrentPage == 1 && position == 1) {
-                    lp.leftMargin = mCurrentPage * (screenWidth / 3);
-                } else if (mCurrentPage == 2 && position == 2) {
-                    lp.leftMargin = mCurrentPage * (screenWidth / 3);
+                if (fragmentSize > 0) {
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabBottomImg.getLayoutParams();
+                    if (mCurrentPage == 0 && position == 0) {
+                        lp.leftMargin = mCurrentPage * (screenWidth / fragmentSize);
+                    } else if (mCurrentPage == 1 && position == 1) {
+                        lp.leftMargin = mCurrentPage * (screenWidth / fragmentSize);
+                    } else if (mCurrentPage == 2 && position == 2) {
+                        lp.leftMargin = mCurrentPage * (screenWidth / fragmentSize);
+                    }
+                    mTabBottomImg.setLayoutParams(lp);
                 }
-                mTabBottomImg.setLayoutParams(lp);
             }
 
             @Override
             public void onPageSelected(int position) {
                 resetTextView();
-                switch (position) {
-                    case 0:
-                        mRecentlyVisitor.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-                        currentFragmentIsContact = false;
-                        imgRight.setVisibility(View.GONE);
-                        break;
-                    case 1:
-                        mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-                        currentFragmentIsContact = true;
-                        imgRight.setVisibility(View.VISIBLE);
-                        break;
-                    case 2:
-                        mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
-                        currentFragmentIsContact = false;
-                        imgRight.setVisibility(View.GONE);
-                        break;
+                Fragment fragment = mPageFragmentPagerAdapter.getFragments().get(position);
+                if (fragment == visitorFragment) {
+                    mRecentlyVisitor.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                    currentFragmentIsContact = false;
+                    imgRight.setVisibility(View.GONE);
+                } else if (fragment == customerFragment) {
+                    mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                    currentFragmentIsContact = true;
+                    initAddFromContacts();
+                } else if (fragment == myClubFragment) {
+                    mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
+                    currentFragmentIsContact = false;
+                    imgRight.setVisibility(View.GONE);
                 }
                 mCurrentPage = position;
             }
@@ -194,8 +239,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         switch (v.getId()) {
             case R.id.contact_visitor:
                 resetTextView();
-                mViewpagerContact.setCurrentItem(0);
-                mCurrentPage = 0;
+                mCurrentPage = mPageFragmentPagerAdapter.getFragments().indexOf(visitorFragment);
+                mViewpagerContact.setCurrentItem(mCurrentPage);
                 mRecentlyVisitor.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
                 currentFragmentIsContact = false;
 
@@ -205,16 +250,16 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                     showOutMenu();
                 } else {
                     resetTextView();
-                    mViewpagerContact.setCurrentItem(1);
-                    mCurrentPage = 1;
+                    mCurrentPage = mPageFragmentPagerAdapter.getFragments().indexOf(customerFragment);
+                    mViewpagerContact.setCurrentItem(mCurrentPage);
                     mTableContact.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
                     currentFragmentIsContact = true;
                 }
                 break;
             case R.id.contact_right:
                 resetTextView();
-                mViewpagerContact.setCurrentItem(2);
-                mCurrentPage = 2;
+                mCurrentPage = mPageFragmentPagerAdapter.getFragments().indexOf(myClubFragment);
+                mViewpagerContact.setCurrentItem(mCurrentPage);
                 mTableClub.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
 
                 break;
@@ -281,7 +326,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         }
         try {
             if (window != null) {
-                window.showAtLocation(view.findViewById(R.id.search_contact), Gravity.BOTTOM, 0, 0);
+                window.showAtLocation(mRootView.findViewById(R.id.search_contact), Gravity.BOTTOM, 0, 0);
             }
         } catch (Exception e) {
             e.printStackTrace();

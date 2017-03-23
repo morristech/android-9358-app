@@ -47,9 +47,9 @@
         android:gravity="center"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
+        android:text="A0001"
         android:textColor="@color/color_white"
         android:textSize="13sp"
-        android:text="A0001"
         android:visibility="gone" />
 
     <TextView
@@ -73,31 +73,38 @@
         android:src="@drawable/btn_main_rest_default"
         android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/btn_main_tech_busy"
+    <LinearLayout
+        android:id="@+id/work_status_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/btn_main_tech_rest"
-        android:layout_marginRight="@dimen/margin_10"
-        android:src="@drawable/btn_main_busy_default" />
+        android:visibility="gone">
 
-    <ImageView
-        android:id="@+id/btn_main_tech_free"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/btn_main_tech_rest"
-        android:layout_marginRight="@dimen/margin_10"
-        android:layout_toLeftOf="@id/btn_main_tech_busy"
-        android:src="@drawable/btn_main_free_selected" />
+        <ImageView
+            android:id="@+id/btn_main_tech_busy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_10"
+            android:src="@drawable/btn_main_busy_default" />
+
+        <ImageView
+            android:id="@+id/btn_main_tech_free"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_10"
+            android:src="@drawable/btn_main_free_selected" />
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/btn_main_credit_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/btn_main_tech_busy"
+        android:layout_below="@+id/work_status_layout"
         android:layout_marginTop="@dimen/margin_20"
-        android:src="@drawable/image_main_integral" />
+        android:src="@drawable/image_main_integral"
+        android:visibility="gone" />
 
 </RelativeLayout>
