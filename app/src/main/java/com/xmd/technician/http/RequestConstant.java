@@ -28,7 +28,7 @@ public class RequestConstant {
     public static final String URL_HIDE_ORDER = BASE_URL + "/v2/tech/hide/order";
     public static final String URL_GETUI_BIND_CLIENT_ID = BASE_URL + "/v2/push/clientid";
     public static final String URL_GETUI_UNBIND_CLIENT_ID = BASE_URL + "/v2/push/unbind/clientid";
-    public static final String URL_GET_ICODE = BASE_URL + "/v1/icode";
+    public static final String URL_GET_ICODE = BASE_URL + "/v1/verifyCode";
     public static final String URL_JOIN_CLUB = BASE_URL + "/v1/profile/tech/club/change";
     public static final String URL_GET_WORKTIME = BASE_URL + "/v1/profile/tech/calendar";
     public static final String URL_UPDATE_WORKTIME = BASE_URL + "/v1/profile/tech/calendar/update";
@@ -303,6 +303,8 @@ public class RequestConstant {
     public static final String ORDER_TYPE_PAID = "paid";
     public static final String KEY_COUPON_TYPE = "couponType";
     public static final String KEY_JOURNAL_ID = "journalId";
+    public static final String KEY_WHICH = "which";
+    public static final String KEY_WHICH_VALUE = "androidTechRecoverPassword";
     /**
      * 自动领券
      */

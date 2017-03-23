@@ -63,22 +63,6 @@ public class TechAccountActivity extends BaseActivity {
 
             @Override
             public void onItemClicked(TechAccountBean bean) {
-            /*    int mCurrentType = 0;
-                if (bean.accountType.equals("paid_reward")) {
-                    mCurrentType = 0;
-                }
-                if (bean.accountType.equals("redPacket")) {
-                    mCurrentType = 1;
-                }
-                if (bean.accountType.equals("paid_coupon")) {
-                    mCurrentType = 2;
-                }
-                if (bean.accountType.equals("paid_order")) {
-                    mCurrentType = 3;
-                }
-                if (bean.accountType.equals("commission")) {
-                    mCurrentType = 4;
-                }*/
                 gotoDetailActivity(bean.accountType,bean.name);
             }
         });

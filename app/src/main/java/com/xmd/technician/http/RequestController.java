@@ -662,7 +662,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getICode(Map<String, String> params) {
-        Call<BaseResult> call = getSpaService().getICode(params.get(RequestConstant.KEY_MOBILE));
+        Call<BaseResult> call = getSpaService().getICode(params.get(RequestConstant.KEY_MOBILE),RequestConstant.KEY_WHICH_VALUE);
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override

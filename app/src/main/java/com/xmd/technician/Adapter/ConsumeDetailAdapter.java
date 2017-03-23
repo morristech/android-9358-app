@@ -192,7 +192,6 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
 
         @Bind(R.id.item_footer)
         TextView itemFooter;
-
         public FooterViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
