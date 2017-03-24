@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.xmd.technician.R;
+import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ResetPasswordResult;
@@ -182,9 +183,12 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher{
         //do something
         mCurrentTimeMillis = SystemClock.elapsedRealtime();
         mHandler.post(mRefreshICodeTask);
-
+        String mobile = mAccountNumberEdt.getText().toString();
+        String sign = DESede.encrypt(mobile+RequestConstant.KEY_WHICH_VALUE);
         Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_MOBILE, mAccountNumberEdt.getText().toString());
+        params.put(RequestConstant.KEY_MOBILE, mobile);
+        params.put(RequestConstant.KEY_WHICH,RequestConstant.KEY_WHICH_VALUE);
+        params.put(RequestConstant.KEY_SIGN,sign);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ICODE, params);
     }
 

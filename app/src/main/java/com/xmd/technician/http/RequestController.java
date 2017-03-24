@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.AppConfig;
+import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.AddOrEditResult;
 import com.xmd.technician.bean.ClubContactResult;
@@ -31,6 +32,7 @@ import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
@@ -668,7 +670,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getICode(Map<String, String> params) {
-        Call<BaseResult> call = getSpaService().getICode(params.get(RequestConstant.KEY_MOBILE), RequestConstant.KEY_WHICH_VALUE);
+        Call<BaseResult> call = getSpaService().getICode(params.get(RequestConstant.KEY_MOBILE), RequestConstant.KEY_WHICH_VALUE,params.get(RequestConstant.KEY_SIGN));
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
@@ -1007,7 +1009,6 @@ public class RequestController extends AbstractController {
                 .append(AppConfig.sClientId);
         String secretBefore = sb.toString();
         String secret = DESede.encrypt(secretBefore);
-
         Call<BaseResult> call = getSpaService().bindGetuiClientId(userId, RequestConstant.USER_TYPE_TECH, RequestConstant.APP_TYPE_ANDROID,
                 AppConfig.sClientId, secret);
 
@@ -1304,10 +1305,12 @@ public class RequestController extends AbstractController {
      */
 
     private void doGetRecentlyVisitorList(Map<String, String> params) {
-        Call<RecentlyVisitorResult> call = getSpaService().getRecentlyVisitorList(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_LAST_TIME));
+        Call<RecentlyVisitorResult> call = getSpaService().getRecentlyVisitorList(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_LAST_TIME),
+                params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<RecentlyVisitorResult>() {
             @Override
             protected void postResult(RecentlyVisitorResult result) {
+                result.isMainPage = params.get(RequestConstant.KEY_IS_MAIN_PAGE);
                 RxBus.getInstance().post(result);
             }
         });
@@ -1338,6 +1341,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<SayHiResult>() {
             @Override
             protected void postResult(SayHiResult result) {
+                result.position = params.get(ChatConstant.KEY_SAY_HI_POSITION);
                 RxBus.getInstance().post(result);
             }
         });

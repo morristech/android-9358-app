@@ -11,6 +11,7 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.chat.UserProfileProvider;
+import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.event.EventExitClub;
@@ -211,8 +212,15 @@ public class LoginTechnician {
     //获取短信验证码
     public void getVerificationCode(String phoneNumber) {
         setPhoneNumber(phoneNumber);
-        Map<String, String> params = new HashMap<>();
+    /*    Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_MOBILE, phoneNumber);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ICODE, params);*/
+        String mobile = phoneNumber;
+        String sign = DESede.encrypt(mobile+RequestConstant.KEY_WHICH_VALUE);
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_MOBILE, mobile);
+        params.put(RequestConstant.KEY_WHICH,RequestConstant.KEY_WHICH_VALUE);
+        params.put(RequestConstant.KEY_SIGN,sign);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ICODE, params);
     }
 

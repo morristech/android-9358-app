@@ -27,6 +27,7 @@ public class ChatConstant {
 
     public static final String MESSAGE_ATTR_IS_BIG_EXPRESSION = "em_is_big_expression";
     public static final String MESSAGE_ATTR_EXPRESSION_ID = "em_expression_id";
+    public static final String KEY_SAY_HI_POSITION = "say_hi_position";
 
     //自定义消息
     public static final int MESSAGE_TYPE_SENT_REWARD = 0x81;

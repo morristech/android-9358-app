@@ -9,4 +9,5 @@ import java.util.List;
  */
 public class RecentlyVisitorResult extends BaseResult {
     public List<RecentlyVisitorBean> respData;
+    public String isMainPage;
 }

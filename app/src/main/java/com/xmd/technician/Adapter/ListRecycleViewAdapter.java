@@ -98,7 +98,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_CONVERSATION = 3;
     private static final int TYPE_CREDIT_RECORD_ITEM = 4;
     private static final int TYPE_CREDIT_APPLICATION_ITEM = 5;
-    private static final int TYPE_RECENTLY_VISIT_ITEM = 6;
+ //   private static final int TYPE_RECENTLY_VISIT_ITEM = 6;
     private static final int TYPE_DYNAMIC_COMMENT_ITEM = 7;
     private static final int TYPE_DYNAMIC_COLLECT_ITEM = 8;
     private static final int TYPE_DYNAMIC_COUPON_ITEM = 9;
@@ -113,7 +113,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_COUPON_CASH_ITEM = 19;
     private static final int TYPE_COUPON_FAVORABLE_ITEM = 20;
     private static final int TYPE_COUPON_PAY_FOR_ME_ITEM = 21;
-    private static final int TYPE_OTHER_ITEM = 98;
     private static final int TYPE_FOOTER = 99;
 
     private boolean mIsNoMore = false;
@@ -171,9 +170,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_CREDIT_RECORD_ITEM;
             } else if (mData.get(position) instanceof ApplicationBean) {
                 return TYPE_CREDIT_APPLICATION_ITEM;
-            } else if (mData.get(position) instanceof RecentlyVisitorBean) {
-                return TYPE_RECENTLY_VISIT_ITEM;
-            } else if (mData.get(position) instanceof DynamicDetail) {
+            }  else if (mData.get(position) instanceof DynamicDetail) {
                 if (((DynamicDetail) mData.get(position)).bizType == 1) {
                     return TYPE_DYNAMIC_COMMENT_ITEM;
                 } else if (((DynamicDetail) mData.get(position)).bizType == 2 || ((DynamicDetail) mData.get(position)).bizType == 3) {
@@ -200,7 +197,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else if (mData.get(position) instanceof PayForMeBean) {
                 return TYPE_COUPON_PAY_FOR_ME_ITEM;
             } else {
-                return TYPE_OTHER_ITEM;
+                return TYPE_FOOTER;
             }
         }
 
@@ -233,9 +230,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_CREDIT_APPLICATION_ITEM:
                 View viewApplication = LayoutInflater.from(parent.getContext()).inflate(R.layout.credit_application_item, parent, false);
                 return new CreditApplicationViewHolder(viewApplication);
-            case TYPE_RECENTLY_VISIT_ITEM:
-                View viewRecentlyVisit = LayoutInflater.from(parent.getContext()).inflate(R.layout.recently_visitor_item, parent, false);
-                return new RecentlyVisitViewHolder(viewRecentlyVisit);
+
             case TYPE_DYNAMIC_COMMENT_ITEM:
                 View viewComment = LayoutInflater.from(parent.getContext()).inflate(R.layout.dynamic_comment_item, parent, false);
                 return new DynamicItemViewHolder(viewComment);
@@ -618,111 +613,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             creditApplicationViewHolder.mCreditTime.setText(applicationBean.createDate);
             return;
         }
-        if (holder instanceof RecentlyVisitViewHolder) {
-            Object obj = mData.get(position);
-            if (!(obj instanceof RecentlyVisitorBean)) {
-                return;
-            }
-            final RecentlyVisitorBean recentlyVisitor = (RecentlyVisitorBean) obj;
-            RecentlyVisitViewHolder viewHolder = (RecentlyVisitViewHolder) holder;
 
-            if (Long.parseLong(recentlyVisitor.userId) > 0) {
-                if (Utils.isNotEmpty(recentlyVisitor.userNoteName)) {
-                    viewHolder.mVisitorName.setText(recentlyVisitor.userNoteName);
-                } else if (Utils.isNotEmpty(recentlyVisitor.userName)) {
-                    viewHolder.mVisitorName.setText(recentlyVisitor.userName);
-                } else {
-                    viewHolder.mVisitorName.setText(ResourceUtils.getString(R.string.default_user_name));
-                }
-            } else {
-                viewHolder.mVisitorName.setText(ResourceUtils.getString(R.string.visitor_type));
-            }
-            if (Utils.isNotEmpty(recentlyVisitor.customerType)) {
-                if (Utils.isNotEmpty(recentlyVisitor.emchatId) && !recentlyVisitor.customerType.equals(RequestConstant.TEMP_USER)) {
-                    viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
-                    if (Utils.isNotEmpty(recentlyVisitor.canSayHello)) {
-                        viewHolder.mVisitorToChat.setVisibility(View.VISIBLE);
-                        if (recentlyVisitor.canSayHello.equals("0")) {
-                            viewHolder.mVisitorToChat.setEnabled(false);
-                            viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.had_say_hi));
-                            viewHolder.mVisitorToChat.setTextColor(ResourceUtils.getColor(R.color.color_white));
-                        } else if (recentlyVisitor.canSayHello.equals("1")) {
-                            viewHolder.mVisitorToChat.setEnabled(true);
-                            viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.to_say_hi));
-                        }
-                    } else {
-                        viewHolder.mVisitorToChat.setVisibility(View.GONE);
-                    }
-                } else {
-                    viewHolder.mVisitorToChat.setVisibility(View.GONE);
-                }
-            } else {
-                viewHolder.mVisitorToChat.setVisibility(View.GONE);
-            }
-
-            if (Utils.isNotEmpty(recentlyVisitor.techName) && Utils.isNotEmpty(recentlyVisitor.techSerialNo)) {
-                viewHolder.mVisitorTech.setVisibility(View.VISIBLE);
-                viewHolder.mVisitorTechNum.setVisibility(View.VISIBLE);
-                viewHolder.mVisitorTech.setText(String.format("所属技师：%s", recentlyVisitor.techName));
-                String mun = String.format("[%s]", recentlyVisitor.techSerialNo);
-                viewHolder.mVisitorTechNum.setText(Utils.changeColor(mun, ResourceUtils.getColor(R.color.contact_marker), 1, mun.lastIndexOf("]")));
-            } else if (Utils.isNotEmpty(recentlyVisitor.techName)) {
-                viewHolder.mVisitorTech.setVisibility(View.VISIBLE);
-                viewHolder.mVisitorTech.setText(String.format("所属技师：%s", recentlyVisitor.techName));
-            } else {
-                viewHolder.mVisitorTech.setVisibility(View.GONE);
-                viewHolder.mVisitorTechNum.setVisibility(View.GONE);
-            }
-
-            if (null != recentlyVisitor.customerType) {
-                viewHolder.mVisitorType.setVisibility(View.GONE);
-                viewHolder.mVisitorOtherType.setVisibility(View.GONE);
-                if (recentlyVisitor.customerType.equals(RequestConstant.FANS_USER)) {
-                    viewHolder.mVisitorType.setVisibility(View.VISIBLE);
-                    viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
-                } else if (recentlyVisitor.customerType.equals(RequestConstant.TEMP_USER)) {
-                    viewHolder.mVisitorType.setVisibility(View.VISIBLE);
-                    viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.temporary_user));
-                } else if (recentlyVisitor.customerType.equals(RequestConstant.FANS_WX_USER)) {
-                    viewHolder.mVisitorOtherType.setVisibility(View.VISIBLE);
-                    viewHolder.mVisitorType.setVisibility(View.VISIBLE);
-                    viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
-                    viewHolder.mVisitorOtherType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
-                } else {
-                    viewHolder.mVisitorType.setVisibility(View.VISIBLE);
-                    viewHolder.mVisitorType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
-                }
-            } else {
-                viewHolder.mVisitorType.setVisibility(View.GONE);
-                viewHolder.mVisitorOtherType.setVisibility(View.GONE);
-            }
-            viewHolder.mVisitorTime.setText(RelativeDateFormatUtil.format(recentlyVisitor.createdAt));
-            Glide.with(mContext).load(recentlyVisitor.avatarUrl).into(viewHolder.mVisitorHead);
-            viewHolder.mVisitorToChat.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        mCallback.onSayHiButtonClicked(recentlyVisitor);
-                        viewHolder.mVisitorToChat.setEnabled(false);
-                        viewHolder.mVisitorToChat.setText(ResourceUtils.getString(R.string.had_say_hi));
-                        viewHolder.mVisitorToChat.setTextColor(ResourceUtils.getColor(R.color.color_white));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            viewHolder.itemView.setOnClickListener(v -> {
-                try {
-                    mCallback.onItemClicked(recentlyVisitor);
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            return;
-
-        }
 
         if (holder instanceof DynamicItemViewHolder) {
             Object obj = mData.get(position);
@@ -967,21 +858,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             payForMeViewHolder.mShowCode.setOnClickListener(v -> mCallback.onPositiveButtonClicked(payForMe));
             return;
         }
-        if (holder instanceof ListFooterHolder) {
-            ListFooterHolder footerHolder = (ListFooterHolder) holder;
-            String desc = ResourceUtils.getString(R.string.order_list_item_loading);
-            if (mIsEmpty) {
-                desc = ResourceUtils.getString(R.string.order_list_item_empty);
-                footerHolder.itemFooter.setOnClickListener(null);
-            } else if (mIsNoMore) {
-                desc = ResourceUtils.getString(R.string.order_list_item_no_more);
-                footerHolder.itemFooter.setOnClickListener(null);
-            } else {
-                footerHolder.itemFooter.setOnClickListener(v -> mCallback.onLoadMoreButtonClicked());
-            }
-            footerHolder.itemFooter.setText(desc);
-            return;
-        }
+
 
 
     }
@@ -1203,30 +1080,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    static class RecentlyVisitViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.visitor_head)
-        CircleImageView mVisitorHead;
-        @Bind(R.id.visitor_name)
-        TextView mVisitorName;
-        @Bind(R.id.visitor_type)
-        ImageView mVisitorType;
-        @Bind(R.id.visitor_other_type)
-        ImageView mVisitorOtherType;
-        @Bind(R.id.visitor_to_chat)
-        TextView mVisitorToChat;
-        @Bind(R.id.visitor_tech)
-        TextView mVisitorTech;
-        @Bind(R.id.visitor_tech_num)
-        TextView mVisitorTechNum;
-        @Bind(R.id.visitor_time)
-        TextView mVisitorTime;
-
-        public RecentlyVisitViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
 
 
     static class DynamicItemViewHolder extends RecyclerView.ViewHolder {

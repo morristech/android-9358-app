@@ -23,7 +23,7 @@ public class RecentlyVisitorBean implements Serializable {
      * techName : 冰与火之歌
      */
 
-    public String canSayHello;
+    public String canSayHello;  //0已打招呼，1未打招呼
     public String customerType;
     public String userNoteName;
     public String techId;
@@ -35,6 +35,7 @@ public class RecentlyVisitorBean implements Serializable {
     public String emchatId;
     public String techName;
     public String tech_customer_id;
+
 
 
 }

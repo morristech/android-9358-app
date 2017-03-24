@@ -211,7 +211,8 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_ICODE)
     Call<BaseResult> getICode(@Field(RequestConstant.KEY_MOBILE) String mobile,
-                              @Field(RequestConstant.KEY_WHICH)String androidTechRecoverPassword);
+                              @Field(RequestConstant.KEY_WHICH)String which,
+                              @Field(RequestConstant.KEY_SIGN)String sign);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_JOIN_CLUB)
@@ -477,7 +478,8 @@ public interface SpaService {
     Call<RecentlyVisitorResult> getRecentlyVisitorList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                        @Field(RequestConstant.KEY_TOKEN) String userToken,
                                                        @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
-                                                       @Field(RequestConstant.KEY_LAST_TIME) String lastTime
+                                                       @Field(RequestConstant.KEY_LAST_TIME) String lastTime,
+                                                       @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize
     );
 
     @FormUrlEncoded

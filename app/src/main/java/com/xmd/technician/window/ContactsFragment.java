@@ -185,6 +185,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
             mPageFragmentPagerAdapter.addFragment(myClubFragment);
         }
         mViewpagerContact.setAdapter(mPageFragmentPagerAdapter);
+        mViewpagerContact.setOffscreenPageLimit(3);
         mViewpagerContact.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float offset, int positionOffsetPixels) {
