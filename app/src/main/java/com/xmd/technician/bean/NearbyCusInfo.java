@@ -3,7 +3,6 @@ package com.xmd.technician.bean;
 /**
  * Created by ZR on 17-3-2.
  * 附近的人
- * TODO:需要互动动态,预约,打赏信息
  */
 
 public class NearbyCusInfo {

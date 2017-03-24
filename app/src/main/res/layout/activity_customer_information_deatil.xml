@@ -1,108 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar"></include>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        >
+        android:scrollbars="none">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/margin_20"
-            >
+            android:paddingBottom="@dimen/margin_20">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/comment_item_height"
+                android:background="@color/color_white"
                 android:orientation="horizontal"
+                android:paddingBottom="@dimen/padding_5"
                 android:paddingLeft="@dimen/padding_15"
                 android:paddingRight="@dimen/padding_15"
-                android:paddingBottom="@dimen/padding_5"
-                android:paddingTop="@dimen/padding_10"
-                android:background="@color/color_white"
-                >
+                android:paddingTop="@dimen/padding_10">
+
                 <com.xmd.technician.widget.RoundImageView
                     android:id="@+id/customer_head"
                     android:layout_width="@dimen/photo_head_big"
                     android:layout_height="@dimen/photo_head_big"
                     android:layout_marginRight="@dimen/search_margin"
-                    app:type="round"
                     app:borderRadius="@dimen/search_margin"
                     app:src="@drawable/icon22"
-                    />
+                    app:type="round" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        >
+                        android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/tv_customer_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/fontSize"
-                            android:textColor="@color/contact_item_name_text_color"
-                            android:maxLength="16"
                             android:ellipsize="end"
-                            />
+                            android:maxLength="16"
+                            android:textColor="@color/contact_item_name_text_color"
+                            android:textSize="@dimen/fontSize" />
+
                         <ImageView
                             android:id="@+id/customer_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/icon_weixin"
-                            android:layout_marginTop="@dimen/margin_2"
                             android:layout_marginLeft="@dimen/margin_5"
-                            android:visibility="gone"
-                            />
+                            android:layout_marginTop="@dimen/margin_2"
+                            android:src="@drawable/icon_weixin"
+                            android:visibility="gone" />
+
                         <ImageView
                             android:id="@+id/customer_other_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/icon_weixin"
-                            android:layout_marginTop="@dimen/margin_2"
                             android:layout_marginLeft="@dimen/margin_5"
-                            android:visibility="gone"
-                            />
+                            android:layout_marginTop="@dimen/margin_2"
+                            android:src="@drawable/icon_weixin"
+                            android:visibility="gone" />
+
                         <LinearLayout
                             android:id="@+id/ll_tech_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:layout_marginLeft="@dimen/margin_5"
                             android:layout_marginTop="2dp"
-                            android:visibility="gone"
-                            >
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/fontTitle"
-
                                 android:text="["
-                                />
+
+                                android:textSize="@dimen/fontTitle" />
+
                             <TextView
                                 android:id="@+id/tech_number"
                                 android:layout_width="wrap_content"
-                                android:textSize="@dimen/fontTitle"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_color_yellow"
-                                />
+                                android:textSize="@dimen/fontTitle" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/fontTitle"
                                 android:text="]"
-                                />
+                                android:textSize="@dimen/fontTitle" />
 
                         </LinearLayout>
 
@@ -113,175 +113,176 @@
                         android:id="@+id/tv_customer_telephone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/fontTitle"
                         android:layout_marginTop="@dimen/search_margin"
                         android:textColor="@color/phone_number_text_color"
-                        />
+                        android:textSize="@dimen/fontTitle" />
+
                     <TextView
                         android:id="@+id/tv_customer_nick_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/fontTitle"
                         android:textColor="@color/phone_number_text_color"
-                        />
+                        android:textSize="@dimen/fontTitle" />
                 </LinearLayout>
             </LinearLayout>
-            <View
-           style="@style/horizontal_divider_line"/>
+
+            <View style="@style/horizontal_divider_line" />
+
             <LinearLayout
                 android:id="@+id/ll_marker_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:background="@color/color_white"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/personal_margin_table"
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingTop="@dimen/padding_15"
-                android:paddingBottom="@dimen/personal_margin_table"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/contact_remark"
-                    />
+                    android:src="@drawable/contact_remark" />
+
                 <TextView
                     android:id="@+id/text_contact_marker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/inter_space"
                     android:textColor="@color/contact_marker"
                     android:textSize="@dimen/fontTitle"
-                    android:layout_marginLeft="@dimen/inter_space"
 
                     />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/line_divide_height"
-                android:orientation="horizontal"
                 android:background="@color/color_white"
-                android:paddingLeft="@dimen/inter_space"
-                >
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/inter_space">
+
                 <TextView
                     android:id="@+id/remark_alert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="备注："
-                    android:textSize="@dimen/fontTitle"
                     android:layout_gravity="center"
+                    android:text="备注："
                     android:textColor="@color/phone_number_text_color"
-                    android:visibility="gone"
-                    />
+                    android:textSize="@dimen/fontTitle"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/tv_customer_remark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/padding_15"
-                    android:paddingLeft="@dimen/padding_5"
-                    android:paddingTop="@dimen/padding_10"
                     android:paddingBottom="@dimen/padding_10"
-                    android:textSize="@dimen/fontTitle"
+                    android:paddingLeft="@dimen/padding_5"
+                    android:paddingRight="@dimen/padding_15"
+                    android:paddingTop="@dimen/padding_10"
                     android:textColor="@color/contact_remark_text_color"
-                    />
+                    android:textSize="@dimen/fontTitle" />
 
             </LinearLayout>
-            <View
-                style="@style/horizontal_divider_line"></View>
+
+            <View style="@style/horizontal_divider_line"></View>
+
             <LinearLayout
                 android:id="@+id/linear_belong_tech"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginTop="@dimen/margin_15"
-                android:visibility="gone"
-                >
+                android:orientation="vertical"
+                android:visibility="gone">
+
                 <RelativeLayout
 
                     android:id="@+id/rl_visit_tech_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_gravity="center_vertical"
-                    android:paddingTop="@dimen/inter_space"
                     android:background="@color/color_white"
-                    >
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/inter_space">
+
                     <TextView
                         android:id="@+id/belong_tech"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/padding_15"
                         android:drawableLeft="@drawable/icon_tech"
-                        android:paddingLeft="@dimen/margin_15"
-                        android:textSize="@dimen/fontHead"
-                        android:textColor="@color/colorBody"
-                        android:text="@string/belong_tech"
+                        android:drawablePadding="@dimen/padding_15"
                         android:gravity="center_vertical"
                         android:paddingBottom="@dimen/inter_space"
-                        />
+                        android:paddingLeft="@dimen/margin_15"
+                        android:text="@string/belong_tech"
+                        android:textColor="@color/colorBody"
+                        android:textSize="@dimen/fontHead" />
+
                     <TextView
                         android:id="@+id/belong_tech_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/belong_tech"
                         android:layout_marginLeft="@dimen/margin_25"
+                        android:layout_toRightOf="@id/belong_tech"
                         android:textColor="@color/text_index"
-                        android:textSize="@dimen/fontSize"
-                        />
+                        android:textSize="@dimen/fontSize" />
+
                     <TextView
                         android:id="@+id/belong_tech_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/belong_tech_name"
-                        android:textColor="@color/contact_marker"
-                        android:textSize="@dimen/fontBody"
                         android:layout_marginLeft="@dimen/margin_5"
                         android:layout_marginTop="@dimen/margin_2"
-                        />
-                    <View style="@style/horizontal_divider_line"
-                      android:layout_alignParentBottom="true"
-                        ></View>
+                        android:layout_toRightOf="@id/belong_tech_name"
+                        android:textColor="@color/contact_marker"
+                        android:textSize="@dimen/fontBody" />
+
+                    <View
+                        style="@style/horizontal_divider_line"
+                        android:layout_alignParentBottom="true"></View>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/rl_recently_visit_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/margin_10"
                     android:background="@color/color_white"
+                    android:paddingTop="@dimen/margin_10"
 
                     >
+
                     <TextView
                         android:id="@+id/belong_tech_times"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="45dp"
-                        android:textSize="@dimen/fontHead"
-                        android:textColor="@color/colorBody"
                         android:text="@string/nearly_visit"
-                        />
+                        android:textColor="@color/colorBody"
+                        android:textSize="@dimen/fontHead" />
+
                     <TextView
                         android:id="@+id/belong_tech_day"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/belong_tech_times"
                         android:layout_marginLeft="@dimen/margin_10"
-                        android:textColor="@color/text_index"
-                        android:textSize="@dimen/fontSize"
+                        android:layout_toRightOf="@id/belong_tech_times"
                         android:text="-"
-                        />
+                        android:textColor="@color/text_index"
+                        android:textSize="@dimen/fontSize" />
+
                     <TextView
                         android:id="@+id/belong_tech_visit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/belong_tech_day"
                         android:layout_alignLeft="@id/belong_tech_day"
-                        android:textColor="@color/colorRemark"
-                        android:textSize="@dimen/fontNormal"
-                        android:text="共访问我 - 次，平均 - 天访问一次"
                         android:layout_alignParentBottom="true"
+                        android:layout_below="@id/belong_tech_day"
                         android:gravity="bottom"
                         android:paddingBottom="@dimen/margin_5"
-                        />
+                        android:text="共访问我 - 次，平均 - 天访问一次"
+                        android:textColor="@color/colorRemark"
+                        android:textSize="@dimen/fontNormal" />
                 </RelativeLayout>
 
 
@@ -291,46 +292,46 @@
                 android:id="@+id/ll_customer_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginTop="@dimen/margin_15"
                 android:background="@color/color_white"
-                android:visibility="gone"
-                >
+                android:orientation="vertical"
+                android:visibility="gone">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/order_list_item_height"
-                    android:orientation="horizontal"
                     android:layout_marginLeft="@dimen/margin_right_10"
+                    android:orientation="horizontal"
 
                     >
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
                         android:layout_marginTop="@dimen/margin_5"
-                        >
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:drawablePadding="@dimen/padding_15"
                                 android:drawableLeft="@drawable/icon_reservation"
+                                android:drawablePadding="@dimen/padding_15"
                                 android:paddingLeft="@dimen/margin_5"
-                                android:textSize="@dimen/fontHead"
-                                android:textColor="@color/contact_info_order"
                                 android:text="@string/order_info"
-                                />
+                                android:textColor="@color/contact_info_order"
+                                android:textSize="@dimen/fontHead" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/order_info_unit_time"
-                                android:textSize="@dimen/fontTitle"
-                                />
+                                android:textSize="@dimen/fontTitle" />
 
                         </LinearLayout>
 
@@ -339,120 +340,121 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:textSize="@dimen/fontBig"
                             android:gravity="center"
-                            />
+                            android:textSize="@dimen/fontBig" />
                     </LinearLayout>
+
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
-                        android:background="#55C3C3C3"
-                        />
+                        android:background="#55C3C3C3" />
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        >
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:layout_marginTop="@dimen/margin_5"
+                            android:orientation="horizontal"
 
                             >
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/margin_5"
-                                android:text="@string/reward_info"
-                                android:textSize="@dimen/fontHead"
                                 android:drawableLeft="@drawable/icon_reward"
                                 android:drawablePadding="@dimen/padding_15"
+                                android:text="@string/reward_info"
                                 android:textColor="@color/contact_info_order"
-                                />
+                                android:textSize="@dimen/fontHead" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/order_info_unit_yuan"
-                                android:textSize="@dimen/fontTitle"
-                                />
+                                android:textSize="@dimen/fontTitle" />
                         </LinearLayout>
+
                         <TextView
                             android:id="@+id/customer_reward"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:textSize="@dimen/fontBig"
                             android:gravity="center"
-                            />
+                            android:textSize="@dimen/fontBig" />
                     </LinearLayout>
 
                 </LinearLayout>
-                <View
-                    style="@style/horizontal_divider_line"></View>
+
+                <View style="@style/horizontal_divider_line"></View>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_15"
-                    android:background="@color/app_bg"
-                    />
+                    android:background="@color/app_bg" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="@string/nearly_order"
-                    android:gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/margin_15"
                     android:drawableLeft="@drawable/icon_bill"
                     android:drawablePadding="@dimen/padding_15"
-                    android:layout_marginLeft="@dimen/margin_15"
+                    android:gravity="center_vertical"
+                    android:text="@string/nearly_order"
                     android:textColor="@color/contact_info_order"
-                    android:textSize="@dimen/fontHead"
-                    />
+                    android:textSize="@dimen/fontHead" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/app_bg"
-                    />
+                    android:background="@color/app_bg" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
+
                     <RelativeLayout
                         android:id="@+id/rl_order"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_5"
                         android:layout_marginLeft="@dimen/margin_15"
                         android:layout_marginTop="@dimen/margin_right_10"
-                        android:paddingBottom="@dimen/padding_5"
-                        android:layout_marginBottom="@dimen/margin_5"
-                        >
+                        android:paddingBottom="@dimen/padding_5">
+
                         <TextView
                             android:id="@+id/order"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/order_detail_order_time"
-                            android:textSize="@dimen/fontTitle"
-                            />
+                            android:textSize="@dimen/fontTitle" />
+
                         <TextView
                             android:id="@+id/order_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/order"
                             android:layout_marginLeft="10dp"
-                            android:textSize="@dimen/fontTitle"
+                            android:layout_toRightOf="@+id/order"
                             android:textColor="@color/contact_item_name_text_color"
-                            />
+                            android:textSize="@dimen/fontTitle" />
+
                         <TextView
                             android:id="@+id/order_state"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="10dp"
-                            android:textSize="@dimen/fontTitle"
                             android:textColor="@color/order_state"
-                            />
+                            android:textSize="@dimen/fontTitle" />
+
                         <TextView
                             android:id="@+id/order_item"
                             android:layout_width="wrap_content"
@@ -463,59 +465,60 @@
                             android:textSize="@dimen/fontTitle"
 
                             />
+
                         <TextView
                             android:id="@+id/order_item_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/order_item"
                             android:layout_below="@+id/order"
-                            android:layout_marginTop="5dp"
                             android:layout_marginLeft="10dp"
-                            android:textSize="@dimen/fontTitle"
+                            android:layout_marginTop="5dp"
+                            android:layout_toRightOf="@id/order_item"
                             android:textColor="@color/contact_item_name_text_color"
-                            />
+                            android:textSize="@dimen/fontTitle" />
                     </RelativeLayout>
+
                     <View
                         android:id="@+id/view_div"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:background="@color/app_bg"
-                        android:visibility="gone"
-                        />
+                        android:visibility="gone" />
+
                     <RelativeLayout
                         android:id="@+id/rl_order2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_5"
                         android:layout_marginLeft="@dimen/margin_15"
                         android:layout_marginTop="@dimen/margin_right_10"
-                        android:paddingBottom="@dimen/padding_5"
-                        android:layout_marginBottom="@dimen/margin_5"
-                        >
+                        android:paddingBottom="@dimen/padding_5">
+
                         <TextView
                             android:id="@+id/order2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/order_detail_order_time"
-                            android:textSize="@dimen/fontTitle"
-                            />
+                            android:textSize="@dimen/fontTitle" />
+
                         <TextView
                             android:id="@+id/order2_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/order2"
                             android:layout_marginLeft="@dimen/margin_right_10"
-                            android:textSize="@dimen/fontTitle"
+                            android:layout_toRightOf="@+id/order2"
                             android:textColor="@color/contact_item_name_text_color"
-                            />
+                            android:textSize="@dimen/fontTitle" />
+
                         <TextView
                             android:id="@+id/order2_state"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="@dimen/margin_right_10"
-                            android:textSize="@dimen/fontTitle"
                             android:textColor="@color/order_state"
-                            />
+                            android:textSize="@dimen/fontTitle" />
+
                         <TextView
                             android:id="@+id/order2_item"
                             android:layout_width="wrap_content"
@@ -523,105 +526,116 @@
                             android:layout_below="@+id/order2"
                             android:layout_marginTop="@dimen/margin_5"
                             android:text="@string/order_detail_order_service"
-                            android:textSize="@dimen/fontTitle"
-                            />
+                            android:textSize="@dimen/fontTitle" />
+
                         <TextView
                             android:id="@+id/order2_item_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/order2_item"
                             android:layout_below="@+id/order2"
-                            android:layout_marginTop="@dimen/margin_5"
                             android:layout_marginLeft="@dimen/margin_right_10"
-                            android:textSize="@dimen/fontTitle"
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:layout_toRightOf="@id/order2_item"
                             android:textColor="@color/contact_item_name_text_color"
-                            />
+                            android:textSize="@dimen/fontTitle" />
                     </RelativeLayout>
+
                     <TextView
                         android:id="@+id/order_empty_alter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/padding_15"
                         android:paddingBottom="@dimen/padding_10"
+                        android:paddingLeft="@dimen/padding_15"
                         android:paddingTop="@dimen/padding_10"
                         android:text="@string/customer_order_empty"
-                        android:visibility="gone"
-                        />
+                        android:visibility="gone" />
 
 
                 </LinearLayout>
-                <View
-                    style="@style/horizontal_divider_line"></View>
+
+                <View style="@style/horizontal_divider_line"></View>
             </LinearLayout>
+
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/margin_15"/>
-            <LinearLayout
+                android:layout_height="@dimen/margin_15" />
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/order_detail_section_btn_height"
-                android:orientation="horizontal"
-                >
+                android:layout_height="@dimen/order_detail_section_btn_height">
+
                 <Button
                     android:id="@+id/btn_EmChat"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/main_chat"
-                    android:textSize="@dimen/fontHead"
-                    android:background="@drawable/btn_chat_selector"
                     android:layout_marginLeft="@dimen/margin_15"
                     android:layout_marginRight="@dimen/margin_15"
+                    android:background="@drawable/btn_chat_selector"
                     android:gravity="center"
-                    android:enabled="false"
+                    android:text="@string/main_em_chat"
                     android:textColor="@color/color_white"
-                    />
-            </LinearLayout>
+                    android:textSize="@dimen/fontHead"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/btn_EmHello"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/margin_15"
+                    android:layout_marginRight="@dimen/margin_15"
+                    android:background="@drawable/btn_chat_selector"
+                    android:gravity="center"
+                    android:text="@string/to_say_hi"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/fontHead"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/order_detail_section_btn_height"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/margin_15"
                 android:layout_marginLeft="@dimen/margin_15"
                 android:layout_marginRight="@dimen/margin_15"
-                >
+                android:layout_marginTop="@dimen/margin_15"
+                android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/btn_call_phone"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="@string/make_call"
-                    android:textSize="@dimen/fontHead"
-                    android:gravity="center"
-                    android:enabled="true"
-                    android:textColor="@color/colorBtnSelector"
+                    android:layout_weight="1"
                     android:background="@drawable/call_or_send_message_bg"
-                    />
+                    android:enabled="true"
+                    android:gravity="center"
+                    android:text="@string/make_call"
+                    android:textColor="@color/colorBtnSelector"
+                    android:textSize="@dimen/fontHead" />
+
                 <Button
                     android:id="@+id/btn_chat"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/margin_15"
+                    android:layout_weight="1"
+                    android:background="@drawable/call_or_send_message_bg"
+                    android:enabled="true"
+                    android:gravity="center"
                     android:text="@string/send_message"
                     android:textColor="@color/colorBtnSelector"
-                    android:layout_marginLeft="@dimen/margin_15"
-                    android:visibility="visible"
-                    android:gravity="center"
                     android:textSize="@dimen/fontHead"
-                    android:enabled="true"
-                    android:background="@drawable/call_or_send_message_bg"
-                    />
+                    android:visibility="visible" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/register_alert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/register_alert"
                 android:layout_marginLeft="@dimen/margin_15"
                 android:layout_marginTop="@dimen/margin_5"
+                android:text="@string/register_alert"
                 android:textColor="@color/phone_number_text_color"
                 android:textSize="@dimen/fontTitle"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
         </LinearLayout>
 

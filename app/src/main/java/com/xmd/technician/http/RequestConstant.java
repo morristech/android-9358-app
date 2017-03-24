@@ -139,10 +139,10 @@ public class RequestConstant {
     // 获取技师打招呼列表
     public static final String URL_GET_HELLO_RECORD_LIST = BASE_URL + "/v2/tech/hello/list";
     // 近期是否打过招呼
-    public static final String URL_CHECK_HELLO_DONE = BASE_URL + "/v2/hello/{customerId}/status";
+    public static final String URL_CHECK_HELLO_RECENTLY = BASE_URL + "/v2/tech/hello/{customerId}/status";
 
     // 查询同客户的联系限制
-    public static final String URL_CHECK_CONTACTS_STATUS = BASE_URL + "/v2/tech/contacts/limit/{customerId}";
+    public static final String URL_GET_CONTACT_PERMISSION = BASE_URL + "/v2/tech/contact/permission/{customerId}";
 
     // 保存打招呼内容 post
     public static final String URL_SAVE_HELLO_TEMPLATE = BASE_URL + "/v2/tech/hello/template";
@@ -282,6 +282,7 @@ public class RequestConstant {
     public static final String KEY_DICE_GAME_TIME = "timestamp";
 
 
+    public static final String KEY_CAN_SAY_HELLO = "canSayHello";
     public static final String KEY_IS_MY_CUSTOMER = "isMyCustomer";
     public static final String KEY_CURRENT_CHAT_ID = "currentChatId";
     public static final String KEY_CURRENT_USER_TYPE = "currentUserType";
@@ -330,6 +331,8 @@ public class RequestConstant {
     public static final String KEY_HELLO_SINCE = "since";           // 保留
     public static final String KEY_HELLO_TYPE_REPLY = "onlyReply";  // 保留
     public static final String KEY_TEMPLATE_IMAGE_ID = "imageId";
+    public static final String KEY_RECENTLY_VISITOR_BEAN = "recentlyBean";
+    public static final String KEY_REQUEST_TAG = "requestTag";
 
     public static final String KEY_PLATFORM = "platform";
     public static final String VALUE_PLATFORM_TECH = "TECH_APP";

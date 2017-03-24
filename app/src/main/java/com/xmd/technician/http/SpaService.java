@@ -30,12 +30,12 @@ import com.xmd.technician.http.gson.CheckPayNotifyResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
-import com.xmd.technician.http.gson.ContactsStatusResult;
+import com.xmd.technician.http.gson.ContactPermissionResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.GetPayNotifyListResult;
-import com.xmd.technician.http.gson.HelloCheckSayResult;
+import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.HelloRecordListResult;
@@ -734,14 +734,14 @@ public interface SpaService {
                                                    @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     // 查询近期是否打过招呼
-    @GET(RequestConstant.URL_CHECK_HELLO_DONE)
-    Call<HelloCheckSayResult> checkHelloDone(@Path(RequestConstant.KEY_NEARBY_CUSTOMER_ID) String customerId,
-                                             @Query(RequestConstant.KEY_TOKEN) String userToken);
+    @GET(RequestConstant.URL_CHECK_HELLO_RECENTLY)
+    Call<HelloCheckRecentlyResult> checkHelloRecently(@Path(RequestConstant.KEY_NEARBY_CUSTOMER_ID) String customerId,
+                                                      @Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 查询联系状态
-    @GET(RequestConstant.URL_CHECK_CONTACTS_STATUS)
-    Call<ContactsStatusResult> checkContactsStatus(@Path(RequestConstant.KEY_NEARBY_CUSTOMER_ID) String customerId,
-                                                   @Query(RequestConstant.KEY_TOKEN) String userToken);
+    @GET(RequestConstant.URL_GET_CONTACT_PERMISSION)
+    Call<ContactPermissionResult> getContactPermission(@Path(RequestConstant.KEY_NEARBY_CUSTOMER_ID) String customerId,
+                                                       @Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 获取打招呼内容
     @GET(RequestConstant.URL_GET_HELLO_TEMPLATE)

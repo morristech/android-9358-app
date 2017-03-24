@@ -296,14 +296,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private void handleUserGetCoupon(UserGetCouponResult couponResult) {
         EMMessage message = couponResult.mMessage;
-        if (couponResult.statusCode == 200) {
-            if (Utils.isNotEmpty(couponResult.respData.userActId)) {
+        if ( couponResult.statusCode == 200) {
+            if(Utils.isNotEmpty(couponResult.respData.userActId)){
                 message.setAttribute(ChatConstant.KEY_COUPON_ACT_ID, couponResult.respData.userActId);
             }
         }
         sendMessage(message);
     }
-
     @Override
     protected void onNewIntent(Intent intent) {
         // 点击notification bar进入聊天页面，保证只有一个聊天页面
