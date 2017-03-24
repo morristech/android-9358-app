@@ -38,7 +38,6 @@ import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.TechInfo;
-import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.HeartBeatTimer;
 import com.xmd.technician.common.ResourceUtils;
@@ -553,7 +552,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
         if (result.respData != null) {
             mTechInfo = result.respData;
-            UserProfileProvider.getInstance().updateCurrentUserInfo(mTechInfo.userName, mTechInfo.imageUrl);
             if (Utils.isNotEmpty(result.respData.clubId)) {
                 mClubId = result.respData.clubId;
                 // 已经加入会所:展示"附近的人"

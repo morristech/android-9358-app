@@ -185,8 +185,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 //登录成功，去主界面
                 mLoadTechInfoSubscription.unsubscribe();
                 UINavigation.gotoMainActivityFromStart(mContext);
-                mView.finishSelf();
             }
+            mView.finishSelf();
         }
     }
 }

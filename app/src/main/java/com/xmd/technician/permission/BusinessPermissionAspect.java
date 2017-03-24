@@ -21,12 +21,12 @@ public class BusinessPermissionAspect {
 //            Logger.d("loop " + method.getName());
             if (method.getName().equals(methodName)) {
                 CheckBusinessPermission annotation = method.getAnnotation(CheckBusinessPermission.class);
-                Logger.d("check " + annotation.value()[0] + " on " + method.getName());
+                Logger.v("check " + annotation.value()[0] + " on " + method.getName());
                 if (pm.containPermission(annotation.value())) {
-                    Logger.d("pass");
+                    Logger.v("pass");
                     joinPoint.proceed();
                 } else {
-                    Logger.d("refuse");
+                    Logger.v("refuse");
                 }
                 break;
             }

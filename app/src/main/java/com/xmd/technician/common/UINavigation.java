@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
 import com.xmd.technician.window.JoinClubActivity;
 import com.xmd.technician.window.LoginActivity;
@@ -38,12 +36,14 @@ public class UINavigation {
     //从注册流程加入所会，需要显示跳过按钮，并跳转到信息完善界面
     //从登录流程加入会所，只显示跳过按钮
     public static void gotoJoinClubFrom(Context context, int openFrom) {
+        Logger.i("---gotoJoinClubFrom---" + openFrom);
         Intent intent = new Intent(context, JoinClubActivity.class);
         intent.putExtra(EXTRA_OPEN_JOIN_CLUB_FROM, openFrom);
         context.startActivity(intent);
     }
 
     public static void gotoJoinClubForResult(Activity activity, int requestCode) {
+        Logger.i("---gotoJoinClubForResult---");
         Intent intent = new Intent(activity, JoinClubActivity.class);
         intent.putExtra(EXTRA_OPEN_JOIN_CLUB_FROM, OPEN_JOIN_CLUB_FROM_MAIN);
         activity.startActivityForResult(intent, requestCode);
@@ -56,11 +56,6 @@ public class UINavigation {
     }
 
     public static void gotoMainActivityFromStart(Context context) {
-        LoginTechnician technician = LoginTechnician.getInstance();
-        ActivityHelper.getInstance().removeAllActivities();
-        UserProfileProvider.getInstance().updateCurrentUserInfo(technician.getNickName(), technician.getAvatarUrl());
-        technician.loginEmChatAccount();
         context.startActivity(new Intent(context, MainActivity.class));
-
     }
 }

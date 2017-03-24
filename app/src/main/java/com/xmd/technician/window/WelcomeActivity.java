@@ -37,10 +37,9 @@ public class WelcomeActivity extends BaseActivity {
                         if (techInfoResult.statusCode == 200) {
                             LoginTechnician.getInstance().onLoadTechInfo(techInfoResult);
                         }
-                        UINavigation.gotoMainActivityFromStart(WelcomeActivity.this);
+                        UINavigation.gotoMainActivityFromStart(this);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         finish();
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
             );
             LoginTechnician.getInstance().loadTechInfo();

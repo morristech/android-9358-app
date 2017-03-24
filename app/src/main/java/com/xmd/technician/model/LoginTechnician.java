@@ -192,6 +192,9 @@ public class LoginTechnician {
             //开始刷新买单通知
             DataRefreshService.refreshPayNotify(true);
         }
+
+        UserProfileProvider.getInstance().updateCurrentUserInfo(getNickName(), getAvatarUrl());
+        loginEmChatAccount();
     }
 
     //登录聊天账号

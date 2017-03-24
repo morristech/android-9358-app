@@ -49,7 +49,9 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
                         }
                         mIsLoaded = true;
                     } else {
-                        mCallback.onResult(new Throwable(result.msg), null);
+                        if (mCallback != null) {
+                            mCallback.onResult(new Throwable(result.msg), null);
+                        }
                     }
 
                     mCallback = null;
@@ -61,7 +63,6 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
                 eventLogout -> {
                     Logger.i("permission center: process eventLogout");
                     clearPermission();
-                    syncPermissionsImmediately();
                 }
         );
 

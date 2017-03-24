@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.HanziToPinyin;
@@ -71,14 +70,13 @@ public class UserProfileProvider {
             String username = SharedPreferenceHelper.getEmchatId();
             mCurrentUser = new ChatUser(username);
             String nick = SharedPreferenceHelper.getUserName();
-            mCurrentUser.setNick((nick != null) ? nick : username);
+            mCurrentUser.setNick(!TextUtils.isEmpty(nick) ? nick : username);
             mCurrentUser.setAvatar(SharedPreferenceHelper.getUserAvatar());
         }
         return mCurrentUser;
     }
 
     public synchronized void updateCurrentUserInfo(String nick, String avatarUrl) {
-
         SharedPreferenceHelper.setUserName(nick);
         SharedPreferenceHelper.setUserAvatar(avatarUrl);
         if (mCurrentUser != null && mCurrentUser.getUsername().equals(SharedPreferenceHelper.getEmchatId())) {

@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.contract.CompleteRegisterInfoContract;
@@ -164,6 +165,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
         if (mJoinClub) {
             UINavigation.gotoJoinClubFrom(mContext, UINavigation.OPEN_JOIN_CLUB_FROM_START);
         } else {
+            ActivityHelper.getInstance().removeAllActivities();
             UINavigation.gotoMainActivityFromStart(mContext);
         }
         mView.finishSelf();
