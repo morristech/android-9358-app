@@ -131,14 +131,15 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
     //检查是否包含某个权限,一般来说不用调用，而是使用@CheckBusinessPermission注解
     @Override
     public boolean containPermission(String[] permissions) {
-        boolean pass = true;
-        for (String permissionCode : permissions) {
-            if (!mPermissionList.contains(permissionCode)) {
-                pass = false;
-                break;
-            }
-        }
-        return pass;
+//        boolean pass = true;
+//        for (String permissionCode : permissions) {
+//            if (!mPermissionList.contains(permissionCode)) {
+//                pass = false;
+//                break;
+//            }
+//        }
+//        return pass;
+        return true;
     }
 
     /******************其他模块调用***********************************/

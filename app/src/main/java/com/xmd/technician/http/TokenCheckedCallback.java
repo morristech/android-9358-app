@@ -1,6 +1,8 @@
 package com.xmd.technician.http;
 
 
+import android.text.TextUtils;
+
 import com.xmd.technician.R;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
@@ -41,7 +43,9 @@ public abstract class TokenCheckedCallback<T extends BaseResult> implements Call
                 String errorStr = response.errorBody().string();
                 postError(errorStr);
             } catch (Exception t) {
-                Logger.v(t.getLocalizedMessage());
+                if (!TextUtils.isEmpty(t.getLocalizedMessage())) {
+                    Logger.v(t.getLocalizedMessage());
+                }
             }
         }
     }

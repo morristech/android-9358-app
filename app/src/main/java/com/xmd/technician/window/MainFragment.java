@@ -309,11 +309,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         screenSpeed = screenWidth / 16;
         initTitleView(view);
         initMenu();
-        visitViewList.add(visitAvatar1);
-        visitViewList.add(visitAvatar2);
-        visitViewList.add(visitAvatar3);
-        visitViewList.add(visitAvatar4);
-        visitViewList.add(visitAvatar5);
+
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorMainBtn);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -338,15 +334,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         refreshOrderListData();
 
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
-        if (Utils.isNotEmpty(SharedPreferenceHelper.getUserClubId())) {
-            Map<String, String> visitParams = new HashMap<>();
-            visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
-            visitParams.put(RequestConstant.KEY_LAST_TIME, "");
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
-            // 附近的人:获取会所附近客户数量(条件:技师已经加入了会所)
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT);
-        }
 
+        loadVisitor();
         // 技师登录进入首页后,获取打招呼内容
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SET_TEMPLATE);
 
@@ -390,8 +379,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mTechStatusSubscription = RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(
                 commentOrderRedPkResult -> handleTechStatus(commentOrderRedPkResult));
 
-        mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
-                visitResult -> initRecentlyViewView(visitResult));
 
         mJoinedClubSubscription = RxBus.getInstance().toObservable(EventJoinedClub.class).subscribe(this::onEventJoinedClub);
 
@@ -473,6 +460,27 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.VISITOR)
     public void initVisitor() {
         mRootView.findViewById(R.id.visitor_layout).setVisibility(View.VISIBLE);
+        visitViewList.add(visitAvatar1);
+        visitViewList.add(visitAvatar2);
+        visitViewList.add(visitAvatar3);
+        visitViewList.add(visitAvatar4);
+        visitViewList.add(visitAvatar5);
+        if (mGetRecentlyVisitorSubscription == null) {
+            mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
+                    visitResult -> initRecentlyViewView(visitResult));
+        }
+    }
+
+    @CheckBusinessPermission(PermissionConstants.VISITOR)
+    public void loadVisitor() {
+        if (mTech.isActiveStatus()) {
+            Map<String, String> visitParams = new HashMap<>();
+            visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
+            visitParams.put(RequestConstant.KEY_LAST_TIME, "");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
+            // 附近的人:获取会所附近客户数量(条件:技师已经加入了会所)
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT);
+        }
     }
 
     @CheckBusinessPermission(PermissionConstants.MOMENT)
@@ -617,6 +625,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mNearbySayHello.setVisibility(View.GONE);
         }
     }
+
     @OnClick({R.id.btn_main_tech_free, R.id.btn_main_tech_busy, R.id.btn_main_tech_rest, R.id.btn_main_credit_center})
     public void onMainHeadClicked(View view) {
 

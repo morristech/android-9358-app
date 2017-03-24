@@ -16,7 +16,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.SystemNoticeResult;
@@ -66,25 +65,34 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
         ButterKnife.bind(this);
 
-        permissionManager.loadPermissions(new Callback<Void>() {
-            @Override
-            public void onResult(Throwable error, Void result) {
-                if (error == null) {
-                    addFragmentHome();
-                    addFragmentMessage();
-                    addFragmentContacts();
-                    addFragmentMarketing();
-                    if (mFragmentList.size() == 0) {
-                        Toast.makeText(MainActivity.this, "对不起，您没有任何权限，请询问管理员", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    switchFragment(0);
-                    permissionManager.checkAndSyncPermissions();
-                } else {
-                    Toast.makeText(MainActivity.this, "加载权限失败:" + error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+//        permissionManager.loadPermissions(new Callback<Void>() {
+//            @Override
+//            public void onResult(Throwable error, Void result) {
+//                if (error == null) {
+//                    addFragmentHome();
+//                    addFragmentMessage();
+//                    addFragmentContacts();
+//                    addFragmentMarketing();
+//                    if (mFragmentList.size() == 0) {
+//                        Toast.makeText(MainActivity.this, "对不起，您没有任何权限，请询问管理员", Toast.LENGTH_LONG).show();
+//                        return;
+//                    }
+//                    switchFragment(0);
+//                    permissionManager.checkAndSyncPermissions();
+//                } else {
+//                    Toast.makeText(MainActivity.this, "加载权限失败:" + error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+        addFragmentHome();
+        addFragmentMessage();
+        addFragmentContacts();
+        addFragmentMarketing();
+        if (mFragmentList.size() == 0) {
+            Toast.makeText(MainActivity.this, "对不起，您没有任何权限，请询问管理员", Toast.LENGTH_LONG).show();
+            return;
+        }
+        switchFragment(0);
 
         EMClient.getInstance().groupManager().loadAllGroups();
         EMClient.getInstance().chatManager().loadAllConversations();

@@ -29,6 +29,9 @@ public class LoggingInterceptor implements Interceptor {
             Logger.d(requestToString(request));
         }
         Response response = chain.proceed(request);
+        if (TechApplication.isTest) {
+            Logger.d("response to " + request.url() + "," + response.code());
+        }
         return response;
 
     }
