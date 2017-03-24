@@ -40,6 +40,8 @@ public class QuitClubDialogFragment extends DialogFragment {
 
     private FragmentQuitClubBinding mBinding;
 
+    private LoginTechnician technician = LoginTechnician.getInstance();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +86,7 @@ public class QuitClubDialogFragment extends DialogFragment {
         cancelButtonEnable.set(false);
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(mBinding.editPassword.getWindowToken(), 0);
-        LoginTechnician.getInstance().exitClub(mPassword);
+        technician.exitClub(mPassword);
     }
 
     public void onClickCancel() {
@@ -100,7 +102,11 @@ public class QuitClubDialogFragment extends DialogFragment {
             errorString.set("请求失败：" + result.msg);
         } else {
             errorString.set(null);
-            Toast.makeText(getActivity(), getString(R.string.quit_club_success_tips), Toast.LENGTH_LONG).show();
+            if (technician.isActiveStatus()) {
+                Toast.makeText(getActivity(), getString(R.string.quit_club_success_tips), Toast.LENGTH_LONG).show();
+            } else if (technician.isVerifyStatus()) {
+                Toast.makeText(getActivity(), getString(R.string.cancel_join_success_tips), Toast.LENGTH_LONG).show();
+            }
             LoginTechnician.getInstance().onExitClub(result);
             if (mListener != null) {
                 mListener.onQuitClubSuccess();

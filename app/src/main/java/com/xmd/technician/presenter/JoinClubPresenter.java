@@ -78,6 +78,7 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
                     @Override
                     public void onClick(View v) {
                         UINavigation.gotoMainActivityFromStart(mContext);
+                        mView.finishSelf();
                     }
                 })
                 .setPositiveButton("取消", new View.OnClickListener() {

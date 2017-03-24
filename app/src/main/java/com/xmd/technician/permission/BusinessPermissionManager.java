@@ -53,7 +53,6 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
                             mCallback.onResult(new Throwable(result.msg), null);
                         }
                     }
-
                     mCallback = null;
                 }
         );
@@ -71,7 +70,8 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
                 eventExitClub -> {
                     Logger.i("permission center: process eventExitClub");
                     clearPermission();
-                    syncPermissionsImmediately();
+                    //重启应用
+                    TechApplication.restart();
                 }
         );
 
@@ -81,7 +81,8 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
                     Logger.i("permission center: process eventJoinedClub");
                     if (mIsLoaded) {
                         clearPermission();
-                        syncPermissionsImmediately();
+                        //重启应用
+                        TechApplication.restart();
                     }
                 }
         );

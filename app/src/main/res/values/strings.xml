@@ -469,6 +469,7 @@
     <!-- 退出会所 -->
     <string name="quit_club_title">退出会所</string>
     <string name="quit_club_success_tips">你已成功退出会所</string>
+    <string name="cancel_join_success_tips">取消申请成功！</string>
     <string name="quit_club_tip">退出会所后，将清空您的评论、订单和积分，确认退出会所吗?</string>
     <string name="quit_club_password_hint">请输入您的密码</string>
     <!-- 分享有礼 -->

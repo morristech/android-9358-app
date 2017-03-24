@@ -377,7 +377,7 @@ public class SharedPreferenceHelper {
     }
 
     public static void setPermissionList(Set<String> permissionList) {
-        mSettingPreference.edit().clear().putStringSet(KEY_PERMISSION, permissionList).apply();
+        mSettingPreference.edit().putStringSet(KEY_PERMISSION, permissionList).apply();
     }
 
     public static void setPermissionSyncDate(Long utcTime) {

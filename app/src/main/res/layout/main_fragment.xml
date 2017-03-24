@@ -52,7 +52,7 @@
                         <include
                             android:id="@+id/online_pay_notify_layout"
                             layout="@layout/layout_main_pay_notify"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
                         <include
                             android:id="@+id/order_layout"

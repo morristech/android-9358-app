@@ -20,7 +20,6 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.TechInfo;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.ActivityListResult;
@@ -128,7 +127,6 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     private List<String> mAction;
     private int mPaidAmount, mNormalCouponAmount, mOnceCardAmount, mLimitGrabAmount, mPayForMeAmount, mClubJournalAmount, mRewardActivityAmount;
     private boolean mCardIsNull, mActivityIsNull, mPropagandaIsNull;
-    private boolean isJoinedClub;
     private boolean isFirst;
     private String emptyViewDes;
     private TechInfo mTechInfo;
@@ -170,21 +168,6 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     private void handleTechCurrentResult(TechInfoResult techCurrentResult) {
-
-        if (techCurrentResult.respData.status.equals(Constant.TECH_STATUS_VALID) || techCurrentResult.respData.status.equals(Constant.TECH_STATUS_UNCERT) || techCurrentResult.respData.status.equals(Constant.TECH_STATUS_REJECT)) {
-            if (techCurrentResult.respData.status.equals(Constant.TECH_STATUS_VALID)) {
-                emptyViewDes = ResourceUtils.getString(R.string.join_club_before);
-            } else if (techCurrentResult.respData.status.equals(Constant.TECH_STATUS_UNCERT)) {
-                emptyViewDes = ResourceUtils.getString(R.string.wait_club_examine);
-            } else if (techCurrentResult.respData.status.equals(Constant.TECH_STATUS_REJECT)) {
-                emptyViewDes = ResourceUtils.getString(R.string.club_reject_apply);
-            } else {
-                emptyViewDes = "";
-            }
-            isJoinedClub = false;
-        } else {
-            isJoinedClub = true;
-        }
         Glide.with(getActivity()).load(techCurrentResult.respData.imageUrl).into(mImgTechHead);
         String userInfo;
         if (Utils.isNotEmpty(techCurrentResult.respData.serialNo)) {
@@ -201,36 +184,11 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     @Override
     public void onRefresh() {
         if (isFirst) {
-            String status = SharedPreferenceHelper.getTechStatus();
-            if (status.equals(Constant.TECH_STATUS_VALID) || status.equals(Constant.TECH_STATUS_UNCERT) || status.equals(Constant.TECH_STATUS_REJECT)) {
-                if (status.equals(Constant.TECH_STATUS_VALID)) {
-                    emptyViewDes = ResourceUtils.getString(R.string.join_club_before);
-                } else if (status.equals(Constant.TECH_STATUS_UNCERT)) {
-                    emptyViewDes = ResourceUtils.getString(R.string.wait_club_examine);
-                } else if (status.equals(Constant.TECH_STATUS_REJECT)) {
-                    emptyViewDes = ResourceUtils.getString(R.string.club_reject_apply);
-                } else {
-                    emptyViewDes = "";
-                }
-                setViewSate(false);
-            } else {
-                isJoinedClub = true;
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
-            }
             isFirst = false;
-
         } else {
-            if (isJoinedClub) {
-                mShareTechCard.setVisibility(View.VISIBLE);
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
-            } else {
-                mShareTechCard.setVisibility(View.GONE);
-                mSwipeRefreshLayout.setRefreshing(false);
-                setViewSate(isJoinedClub);
-            }
+            mShareTechCard.setVisibility(View.VISIBLE);
         }
-
-
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_SHARE_LIST);
     }
 
     private void handleCardList(CardShareListResult cardShareListResult) {
@@ -326,11 +284,8 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
                 }
             }
-
         }
-
-        setViewSate(isJoinedClub);
-
+        updateViewSate();
     }
 
 
@@ -457,8 +412,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
         }
     }
 
-    private void setViewSate(boolean isJoinedClub) {
-        if (isJoinedClub) {
+    private void updateViewSate() {
             if (mCardIsNull && mActivityIsNull && mPropagandaIsNull) {
                 mShareView.setVisibility(View.GONE);
                 mShareEmpty.setStatus(EmptyView.Status.Empty);
@@ -473,14 +427,5 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                 }
 
             }
-        } else {
-            mShareView.setVisibility(View.GONE);
-            mShareEmpty.setStatus(EmptyView.Status.Empty);
-            mShareEmpty.setEmptyPic(R.drawable.ic_failed);
-            mShareEmpty.setEmptyTip(emptyViewDes);
-        }
-
     }
-
-
 }
