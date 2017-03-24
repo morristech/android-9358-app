@@ -219,7 +219,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     private ImageView imageLeft, imageRight;
     private Context mContext;
-    private boolean isCreditCanExchange;
     private String mClubId;
     private TechInfo mTechInfo;
     private List<Order> mAllTechOrderList = new ArrayList<>();
@@ -239,13 +238,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private LinearLayout mContactMore;
 
     private Subscription mGetTechCurrentInfoSubscription;
-    private Subscription mUserSwitchesSubscription;
     private Subscription mGetTechOrderListSubscription;
     private Subscription mGetTechStatisticsDataSubscription;
     private Subscription mGetTechRankIndexDataSubscription;
     private Subscription mGetRecentlyVisitorSubscription;
     private Subscription mOrderManageSubscription;
-    private Subscription mGetDynamicListSubscription;
+    private Subscription mGetMomentListSubscription;
     private Subscription mTechStatusSubscription;
     private Subscription mJoinedClubSubscription;
     private Subscription mRequestJoinClubSubscription;
@@ -292,13 +290,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
         RxBus.getInstance().unsubscribe(
                 mGetTechCurrentInfoSubscription,
-                mUserSwitchesSubscription,
                 mGetTechOrderListSubscription,
                 mGetTechStatisticsDataSubscription,
                 mGetTechRankIndexDataSubscription,
                 mTechStatusSubscription,
                 mOrderManageSubscription,
-                mGetDynamicListSubscription,
+                mGetMomentListSubscription,
                 mGetRecentlyVisitorSubscription,
                 mJoinedClubSubscription,
                 mRequestJoinClubSubscription,
@@ -331,18 +328,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void sendDataRequest() {
-        mTech.loadTechInfo();
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_USER_CLUB_SWITCHES);
-        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA);
-        refreshOrderListData();
-
-        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
-
+        loadStatisticData();
+        loadOrderListData();
+        loadRankingData();
         loadVisitor();
-        // 技师登录进入首页后,获取打招呼内容
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SET_TEMPLATE);
-
-        getDynamicList();
+        loadMomentData();
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SET_TEMPLATE);// 技师登录进入首页后,获取打招呼内容
     }
 
 
@@ -367,17 +358,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void registerRequestHandlers() {
         mGetTechCurrentInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class).subscribe(
                 techCurrentResult -> handleTechCurrentResult(techCurrentResult));
-        mGetTechStatisticsDataSubscription = RxBus.getInstance().toObservable(TechStatisticsDataResult.class).subscribe(
-                statisticsData -> initTechWorkView(statisticsData));
-        mGetTechOrderListSubscription = RxBus.getInstance().toObservable(OrderListResult.class).subscribe(
-                orderListResult -> initOrderView(orderListResult));
-        mGetTechRankIndexDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
-                techRankResult -> initTechRankingView(techRankResult));
-
-        mOrderManageSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
-                orderManageResult -> refreshOrderListData());
-        mGetDynamicListSubscription = RxBus.getInstance().toObservable(DynamicListResult.class).subscribe(
-                dynamicListResult -> initDynamicView(dynamicListResult));
 
         mTechStatusSubscription = RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(
                 commentOrderRedPkResult -> handleTechStatus(commentOrderRedPkResult));
@@ -387,9 +367,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
         mRequestJoinClubSubscription = RxBus.getInstance().toObservable(EventRequestJoinClub.class).subscribe(this::onEventRequestJoinClub);
 
-        // 附近的人:订阅会所附近客户数量的事件监听
-        mGetNearbyCusCountSubscription = RxBus.getInstance().toObservable(NearbyCusCountResult.class).subscribe(
-                nearbyCusCountResult -> handleNearbyStatus(nearbyCusCountResult));
 
         // 打招呼:获取打招呼内容
         mGetHelloSetTemplateSubscription = RxBus.getInstance().toObservable(HelloGetTemplateResult.class).subscribe(helloGetTemplateResult -> {
@@ -410,7 +387,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         imageRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_qr_code));
     }
 
-    //加载统计数据
+    /**************************统计数据***************************/
     @CheckBusinessPermission(PermissionConstants.STATISTIC)
     public void initStatistic() {
         mRootView.findViewById(R.id.statistic_layout).setVisibility(View.VISIBLE);
@@ -418,7 +395,15 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initStatisticDistributeCoupon();
         initStatisticIncome();
         initStatisticPraise();
+        mGetTechStatisticsDataSubscription = RxBus.getInstance().toObservable(TechStatisticsDataResult.class).subscribe(
+                statisticsData -> initTechWorkView(statisticsData));
     }
+
+    @CheckBusinessPermission(PermissionConstants.STATISTIC)
+    public void loadStatisticData() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_STATISTICS_DATA);
+    }
+
 
     @CheckBusinessPermission(PermissionConstants.STATISTIC_INVITE_CUSTOMER)
     public void initStatisticInviteCustomer() {
@@ -440,6 +425,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mRootView.findViewById(R.id.main_total_income).setVisibility(View.VISIBLE);
     }
 
+    /**************************在线买单***************************/
     @CheckBusinessPermission(PermissionConstants.ONLINE_PAY)
     public void initOnlinePay() {
         mPayNotifyLayout.setVisibility(View.VISIBLE);
@@ -458,11 +444,27 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         DataRefreshService.refreshPayNotify(true);
     }
 
+    /**************************订单***************************/
     @CheckBusinessPermission(PermissionConstants.ORDER)
     public void initOrder() {
         mRootView.findViewById(R.id.order_layout).setVisibility(View.VISIBLE);
+        mOrderManageSubscription = RxBus.getInstance().toObservable(OrderManageResult.class).subscribe(
+                orderManageResult -> loadOrderListData());
+        mGetTechOrderListSubscription = RxBus.getInstance().toObservable(OrderListResult.class).subscribe(
+                this::initOrderView);
     }
 
+    @CheckBusinessPermission(PermissionConstants.ORDER)
+    public void loadOrderListData() {
+        Map<String, String> param = new HashMap<>();
+        param.put(RequestConstant.KEY_PAGE, "1");
+        param.put(RequestConstant.KEY_IS_INDEX_PAGE, "Y");
+        param.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(20));
+        param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT_AND_ACCEPT);
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, param);
+    }
+
+    /**************************最近访客***************************/
     @CheckBusinessPermission(PermissionConstants.VISITOR)
     public void initVisitor() {
         mRootView.findViewById(R.id.visitor_layout).setVisibility(View.VISIBLE);
@@ -473,7 +475,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         visitViewList.add(visitAvatar5);
         if (mGetRecentlyVisitorSubscription == null) {
             mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
-                    visitResult -> initRecentlyViewView(visitResult));
+                    this::initRecentlyViewView);
         }
     }
 
@@ -489,48 +491,58 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
+    /**************************动态***************************/
     @CheckBusinessPermission(PermissionConstants.MOMENT)
     public void initMoment() {
         mRootView.findViewById(R.id.moment_layout).setVisibility(View.VISIBLE);
+        mGetMomentListSubscription = RxBus.getInstance().toObservable(DynamicListResult.class).subscribe(
+                this::initDynamicView);
     }
 
-    @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
-    public void initRanking() {
-        mRootView.findViewById(R.id.ranking_layout).setVisibility(View.VISIBLE);
-    }
-
-    @CheckBusinessPermission(PermissionConstants.CREDIT)
-    public void initCredit() {
-        mRootView.findViewById(R.id.btn_main_credit_center).setVisibility(View.VISIBLE);
-    }
-
-    @CheckBusinessPermission(PermissionConstants.WORK_STATUS)
-    public void initWorkStatus() {
-        mRootView.findViewById(R.id.work_status_layout).setVisibility(View.VISIBLE);
-    }
-
-    @CheckBusinessPermission(PermissionConstants.NEARBY_USER)
-    public void initNearbyUser() {
-        mRootView.findViewById(R.id.nearby_layout).setVisibility(View.VISIBLE);
-    }
-
-
-    public void refreshOrderListData() {
-        Map<String, String> param = new HashMap<>();
-        param.put(RequestConstant.KEY_PAGE, "1");
-        param.put(RequestConstant.KEY_IS_INDEX_PAGE, "Y");
-        param.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(20));
-        param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT_AND_ACCEPT);
-        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, param);
-    }
-
-    public void getDynamicList() {
+    @CheckBusinessPermission(PermissionConstants.MOMENT)
+    public void loadMomentData() {
         Map<String, String> param = new HashMap<>();
         param.put(RequestConstant.KEY_PAGE, "1");
         param.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(3));
         param.put(RequestConstant.KEY_ORDER_STATUS, RequestConstant.KEY_ORDER_STATUS_SUBMIT);
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_DYNAMIC_LIST, param);
     }
+
+    /**************************排行榜***************************/
+    @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
+    public void initRanking() {
+        mRootView.findViewById(R.id.ranking_layout).setVisibility(View.VISIBLE);
+        mGetTechRankIndexDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
+                this::initTechRankingView);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
+    public void loadRankingData() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
+    }
+
+    /**************************积分中心***************************/
+    @CheckBusinessPermission(PermissionConstants.CREDIT)
+    public void initCredit() {
+        mRootView.findViewById(R.id.btn_main_credit_center).setVisibility(View.VISIBLE);
+    }
+
+    /**************************工作状态***************************/
+    @CheckBusinessPermission(PermissionConstants.WORK_STATUS)
+    public void initWorkStatus() {
+        mRootView.findViewById(R.id.work_status_layout).setVisibility(View.VISIBLE);
+    }
+
+
+    /**************************附近的人***************************/
+    @CheckBusinessPermission(PermissionConstants.NEARBY_USER)
+    public void initNearbyUser() {
+        mRootView.findViewById(R.id.nearby_layout).setVisibility(View.VISIBLE);
+        // 附近的人:订阅会所附近客户数量的事件监听
+        mGetNearbyCusCountSubscription = RxBus.getInstance().toObservable(NearbyCusCountResult.class).subscribe(
+                this::handleNearbyStatus);
+    }
+
 
     private void handleTechCurrentResult(TechInfoResult result) {
         if (result.respData == null) {
@@ -667,20 +679,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 }
                 break;
             case R.id.btn_main_credit_center:
-                if (Utils.isEmpty(techJoinClub)) {
-                    if (isCreditCanExchange) {
-                        Intent intentCredit = new Intent(getActivity(), UserCreditCenterActivity.class);
-                        startActivity(intentCredit);
-                    } else {
-                        ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.personal_fragment_status_check));
-                    }
-                } else {
-                    ((BaseFragmentActivity) getActivity()).makeShortToast(techJoinClub);
-                }
+                Intent intentCredit = new Intent(getActivity(), UserCreditCenterActivity.class);
+                startActivity(intentCredit);
                 break;
         }
-
-
     }
 
     private void resetTechStatusView(int id) {
@@ -1256,7 +1258,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
         }
     }
-    
+
     private void initTechRankingView(TechRankDataResult result) {
         if (result.respData == null) {
             return;
@@ -1310,7 +1312,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public Runnable mTask = new Runnable() {
         @Override
         public void run() {
-            refreshOrderListData();
+            loadOrderListData();
         }
     };
 
@@ -1357,6 +1359,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onRefresh() {
+        mTech.loadTechInfo();
         sendDataRequest();
     }
 

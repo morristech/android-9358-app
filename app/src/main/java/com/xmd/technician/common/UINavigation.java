@@ -61,5 +61,6 @@ public class UINavigation {
         UserProfileProvider.getInstance().updateCurrentUserInfo(technician.getNickName(), technician.getAvatarUrl());
         technician.loginEmChatAccount();
         context.startActivity(new Intent(context, MainActivity.class));
+
     }
 }

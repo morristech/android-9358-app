@@ -668,7 +668,7 @@ public class RequestController extends AbstractController {
     }
 
     private void getICode(Map<String, String> params) {
-        Call<BaseResult> call = getSpaService().getICode(params.get(RequestConstant.KEY_MOBILE),RequestConstant.KEY_WHICH_VALUE);
+        Call<BaseResult> call = getSpaService().getICode(params.get(RequestConstant.KEY_MOBILE), RequestConstant.KEY_WHICH_VALUE);
 
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
@@ -1384,6 +1384,15 @@ public class RequestController extends AbstractController {
             @Override
             protected void postResult(TechInfoResult result) {
                 RxBus.getInstance().post(result);
+            }
+
+            @Override
+            public void onFailure(Call<TechInfoResult> call, Throwable t) {
+                TechInfoResult result = new TechInfoResult();
+                result.statusCode = 400;
+                result.msg = t.getLocalizedMessage();
+                RxBus.getInstance().post(result);
+                RxBus.getInstance().post(t.getLocalizedMessage());
             }
         });
     }

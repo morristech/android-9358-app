@@ -109,6 +109,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE));
 
+        EMClient.getInstance().groupManager().loadAllGroups();
+        EMClient.getInstance().chatManager().loadAllConversations();
+        UserProfileProvider.getInstance().initContactList();
     }
 
     @CheckBusinessPermission(PermissionConstants.HOME)

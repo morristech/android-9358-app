@@ -22,8 +22,9 @@
 -dontpreverify
 -verbose
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
-
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
 -keep public class * extends android.app.Activity
+-keep public class * extends android.app.AppCompatActivity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
@@ -124,3 +125,9 @@
 -keep class com.zhy.m.** {*;}
 -keep interface com.zhy.m.** { *; }
 -keep class **$$PermissionProxy { *; }
+
+#permission
+-keep class com.xmd.technician.permission.CheckBusinessPermission {*;}
+-keep class * {
+    @com.xmd.technician.permission.CheckBusinessPermission public <methods>;
+}
