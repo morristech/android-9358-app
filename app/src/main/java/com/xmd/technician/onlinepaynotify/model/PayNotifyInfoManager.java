@@ -17,6 +17,8 @@ import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.event.PayNotifyArchiveEvent;
 import com.xmd.technician.onlinepaynotify.event.PayNotifyNewDataEvent;
+import com.xmd.technician.permission.CheckBusinessPermission;
+import com.xmd.technician.permission.PermissionConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -337,6 +339,7 @@ public class PayNotifyInfoManager extends Observable {
     }
 
     //检查是否有新的支付数据
+    @CheckBusinessPermission(PermissionConstants.ONLINE_PAY)
     public void checkNewPayNotify() {
         mDataCheckCall = RetrofitServiceFactory.getSpaService().checkPayNotifyData(
                 LoginTechnician.getInstance().getToken(),

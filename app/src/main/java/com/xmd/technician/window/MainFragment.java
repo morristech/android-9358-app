@@ -822,7 +822,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 intentRanking.putExtra(BrowserActivity.EXTRA_URL, url);
                 startActivity(intentRanking);
                 break;
-
         }
     }
 
@@ -1228,12 +1227,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     //成功通过会所审核
     private void onEventJoinedClub(EventJoinedClub event) {
         Toast.makeText(getContext(), "成功通过会所审核！", Toast.LENGTH_LONG).show();
-        onRefresh(); //刷新界面
     }
 
     //申请加入会所事件
     private void onEventRequestJoinClub(EventRequestJoinClub event) {
         showTechStatus(mTech.getStatus());
-        onRefresh();
     }
 }
