@@ -536,7 +536,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             UserProfileProvider.getInstance().updateCurrentUserInfo(mTechInfo.userName, mTechInfo.imageUrl);
             if (Utils.isNotEmpty(result.respData.clubId)) {
                 mClubId = result.respData.clubId;
-// 已经加入会所:展示"附近的人"
+                // 已经加入会所:展示"附近的人"
                 mNearbyLayout.setVisibility(View.VISIBLE);
             } else {
                 // 尚未加入会所:隐藏"附近的人"
