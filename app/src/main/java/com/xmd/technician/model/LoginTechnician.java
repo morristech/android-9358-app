@@ -71,13 +71,14 @@ public class LoginTechnician {
     private String techNo;
     private String clubInviteCode;
     private String inviteCode;
-    private String qrCodeDownloadUrl;
+    private String qrCodeUrl;
     private String status; // "busy"|"free"|"uncert"|"valid"|"reject"
     private String clubId;
     private String clubName;
     private String clubPosition;    //会所所在位置 add ZR
     private int credit;
     public String innerProvider;
+    private String shareUrl;
 
     private float amount; //以元为单位
     private int commentCount;
@@ -106,7 +107,7 @@ public class LoginTechnician {
         techNo = SharedPreferenceHelper.getTechNo();
         clubInviteCode = SharedPreferenceHelper.getClubInviteCode();
         inviteCode = SharedPreferenceHelper.getInviteCode();
-        qrCodeDownloadUrl = SharedPreferenceHelper.getTechQrDownloadUrl();
+        qrCodeUrl = SharedPreferenceHelper.getTechQrDownloadUrl();
         clubId = SharedPreferenceHelper.getUserClubId();
         clubName = SharedPreferenceHelper.getUserClubName();
         clubPosition = SharedPreferenceHelper.getUserClubPosition();
@@ -183,7 +184,8 @@ public class LoginTechnician {
         setCredit(techInfo.creditAmount);
         setInnerProvider(techInfo.innerProvider);
         setStatus(techInfo.status);
-        setQrCodeDownloadUrl(techInfo.qrCodeUrl);
+        setQrCodeUrl(techInfo.qrCodeUrl);
+        setShareUrl(techInfo.shareUrl);
 
         //开始刷新个人数据
         DataRefreshService.refreshPersonalData(true);
@@ -330,10 +332,12 @@ public class LoginTechnician {
         setClubInviteCode(null);
         setClubName(null);
         setClubPosition(null);
-        setStatus(Constant.TECH_STATUS_VALID);
-        //开始刷新买单通知
+        //关闭刷新买单通知
         DataRefreshService.refreshPayNotify(false);
-        RxBus.getInstance().post(new EventExitClub());
+        if (isActiveStatus()) {
+            RxBus.getInstance().post(new EventExitClub());
+        }
+        setStatus(Constant.TECH_STATUS_VALID);
     }
 
     //退出登录,返回LogoutResult
@@ -466,13 +470,13 @@ public class LoginTechnician {
         return avatarUrl;
     }
 
-    public String getQrCodeDownloadUrl() {
-        return qrCodeDownloadUrl;
+    public String getQrCodeUrl() {
+        return qrCodeUrl;
     }
 
-    public void setQrCodeDownloadUrl(String qrCodeDownloadUrl) {
-        this.qrCodeDownloadUrl = qrCodeDownloadUrl;
-        SharedPreferenceHelper.setTechQrDownloadUrl(qrCodeDownloadUrl);
+    public void setQrCodeUrl(String qrCodeUrl) {
+        this.qrCodeUrl = qrCodeUrl;
+        SharedPreferenceHelper.setTechQrDownloadUrl(qrCodeUrl);
     }
 
     public String getStatus() {
@@ -597,6 +601,14 @@ public class LoginTechnician {
 
     public void setUnreadCommentCount(int unreadCommentCount) {
         this.unreadCommentCount = unreadCommentCount;
+    }
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
     }
 
     public int getOrderCount() {

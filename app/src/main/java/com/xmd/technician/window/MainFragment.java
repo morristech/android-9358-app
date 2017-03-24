@@ -37,7 +37,6 @@ import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
-import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.HeartBeatTimer;
 import com.xmd.technician.common.ResourceUtils;
@@ -218,8 +217,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     private ImageView imageLeft, imageRight;
     private Context mContext;
-    private String mClubId;
-    private TechInfo mTechInfo;
     private List<Order> mAllTechOrderList = new ArrayList<>();
     private List<Order> mTechOrderList = new ArrayList<>();
     private List<RecentlyVisitorBean> mTechVisitor = new ArrayList<>();
@@ -227,11 +224,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private List<View> visitViewList = new ArrayList<>();
     private List<DynamicDetail> mDynamicList = new ArrayList<>();
     private MainPageTechOrderListAdapter orderListAdapter;
-    private String innerProvider;
-    private String techStatus;
-    private String serialNo;
     private int screenWidth;
-    private int screenSpeed;
     private String techJoinClub;
     private boolean hasDynamic;
     private LinearLayout mContactMore;
@@ -273,6 +266,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initWorkStatus();
         initNearbyUser();
 
+        showHeadView();
+
         registerRequestHandlers(); //注册监听器
 
         HeartBeatTimer.getInstance().start(60, mTask);
@@ -305,7 +300,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     private void initView(View view) {
         screenWidth = Utils.getScreenWidthHeight(getActivity())[0];
-        screenSpeed = screenWidth / 16;
         initTitleView(view);
         initMenu();
 
@@ -544,58 +538,53 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     private void handleTechCurrentResult(TechInfoResult result) {
+        mSwipeRefreshLayout.setRefreshing(false);
         if (result.respData == null) {
             return;
         }
         if (result.statusCode >= 200 && result.statusCode <= 299) {
             mTech.onLoadTechInfo(result);
-        }
-        if (result.respData != null) {
-            mTechInfo = result.respData;
-            if (Utils.isNotEmpty(result.respData.clubId)) {
-                mClubId = result.respData.clubId;
-                // 已经加入会所:展示"附近的人"
-                mNearbyLayout.setVisibility(View.VISIBLE);
-            } else {
-                // 尚未加入会所:隐藏"附近的人"
-                mNearbyLayout.setVisibility(View.GONE);
-            }
-
-            if (Utils.isNotEmpty(result.respData.innerProvider)) {
-                innerProvider = result.respData.innerProvider;
-            }
-            if (result.respData.status.equals("error")) {
-                techStatus = result.respData.status;
-            }
-            initHeadView(mTechInfo);
-            mSwipeRefreshLayout.setRefreshing(false);
-            SharedPreferenceHelper.setTechStatus(mTechInfo.status);
+            showHeadView();
         }
     }
 
     public void showTechStatus(String status) {
-        if (Constant.TECH_STATUS_VALID.equals(status)) {
-            mTechStatus.setVisibility(View.VISIBLE);
-            techJoinClub = ResourceUtils.getString(R.string.join_club_before);
-            mTechStatus.setText(techJoinClub);
-        } else if (Constant.TECH_STATUS_REJECT.equals(status)) {
-            mTechStatus.setVisibility(View.VISIBLE);
-            techJoinClub = ResourceUtils.getString(R.string.club_reject_apply);
-            mTechStatus.setText(techJoinClub);
-        } else if (Constant.TECH_STATUS_UNCERT.equals(status)) {
-            mTechStatus.setVisibility(View.VISIBLE);
-            techJoinClub = ResourceUtils.getString(R.string.wait_club_examine);
-            mTechStatus.setText(techJoinClub);
-        } else {
-            techJoinClub = "";
-            mTechStatus.setVisibility(View.GONE);
-        }
-
-        if (!TextUtils.isEmpty(mTech.getTechNo())) {
-            mMainHeadTechSerial.setText(mTech.getTechNo());
-            mMainHeadTechSerial.setVisibility(View.VISIBLE);
-        } else {
-            mMainHeadTechSerial.setVisibility(View.GONE);
+        mMainHeadTechSerial.setVisibility(View.GONE);
+        mTechStatus.setVisibility(View.GONE);
+        mJoinOrQuitClub.setText("退出会所");
+        mMenuClubName.setText(mTech.getClubName());
+        switch (status) {
+            case Constant.TECH_STATUS_VALID:
+                mTechStatus.setVisibility(View.VISIBLE);
+                mTechStatus.setText(ResourceUtils.getString(R.string.join_club_before));
+                mJoinOrQuitClub.setText("加入会所");
+                mMenuClubName.setText("");
+                break;
+            case Constant.TECH_STATUS_REJECT:
+                mTechStatus.setVisibility(View.VISIBLE);
+                mTechStatus.setText(ResourceUtils.getString(R.string.club_reject_apply));
+                mJoinOrQuitClub.setText("加入会所");
+                mMenuClubName.setText("");
+                break;
+            case Constant.TECH_STATUS_UNCERT:
+                mMainHeadTechSerial.setVisibility(View.VISIBLE);
+                mMainHeadTechSerial.setText(mTech.getTechNo());
+                mTechStatus.setVisibility(View.VISIBLE);
+                mTechStatus.setText(ResourceUtils.getString(R.string.wait_club_examine));
+                mJoinOrQuitClub.setText("取消申请");
+                break;
+            case Constant.TECH_STATUS_FREE:
+                mMainHeadTechSerial.setVisibility(View.VISIBLE);
+                mMainHeadTechSerial.setText(mTech.getTechNo());
+                resetTechStatusView(R.id.btn_main_tech_free);
+                break;
+            case Constant.TECH_STATUS_BUSY:
+                mMainHeadTechSerial.setVisibility(View.VISIBLE);
+                mMainHeadTechSerial.setText(mTech.getTechNo());
+                resetTechStatusView(R.id.btn_main_tech_busy);
+                break;
+            default:
+                break;
         }
     }
 
@@ -648,7 +637,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         switch (view.getId()) {
             case R.id.btn_main_tech_free:
                 if (Utils.isEmpty(techJoinClub)) {
-                    if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
+                    if (Utils.isNotEmpty(mTech.getInnerProvider())) {
                         ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
                     } else {
                         resetTechStatusView(R.id.btn_main_tech_free);
@@ -660,7 +649,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.btn_main_tech_busy:
                 if (Utils.isEmpty(techJoinClub)) {
-                    if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
+                    if (Utils.isNotEmpty(mTech.getInnerProvider())) {
                         ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
                     } else {
                         resetTechStatusView(R.id.btn_main_tech_busy);
@@ -670,7 +659,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 }
                 break;
             case R.id.btn_main_tech_rest:
-                if (Utils.isNotEmpty(innerProvider) || Utils.isNotEmpty(techStatus)) {
+                if (Utils.isNotEmpty(mTech.getInnerProvider())) {
                     ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_fragment_tech_status_select));
                 } else {
                     resetTechStatusView(-1);
@@ -757,13 +746,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.JOIN_OR_QUIT_CLUB)
     public void initMenuJoinOrQuitClub() {
         initMenuItem(R.id.settings_activity_join_or_quit_club);
-        if (mTech.hasClub()) {
-            mJoinOrQuitClub.setText("退出会所");
-            mMenuClubName.setText(mTech.getClubName());
-        } else {
-            mJoinOrQuitClub.setText("加入会所");
-            mMenuClubName.setText(null);
-        }
     }
 
     public void initMenuItem(int resourceId) {
@@ -808,7 +790,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                     //加入会所
                     UINavigation.gotoJoinClubForResult(getActivity(), MainActivity.REQUEST_CODE_JOIN_CLUB);
                 } else {
-                    //退出会所
+                    //退出会所/取消申请加入会所
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction ft = fragmentManager.beginTransaction();
                     Fragment prev = fragmentManager.findFragmentByTag("quit_club");
@@ -819,10 +801,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                     newFragment.setListener(new QuitClubDialogFragment.QuitClubListener() {
                         @Override
                         public void onQuitClubSuccess() {
-                            mJoinOrQuitClub.setText("加入会所");
-                            mMenuClubName.setText(null);
                             showTechStatus(mTech.getStatus());
-                            onRefresh();
                         }
                     });
                     newFragment.show(ft, "quit_club");
@@ -840,7 +819,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                     }
                 }.show();
                 break;
-
         }
     }
 
@@ -864,67 +842,45 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 }
                 break;
             case R.id.main_tech_dynamic_all:
-                if (Utils.isEmpty(techJoinClub)) {
-                    if (hasDynamic) {
-                        startActivity(new Intent(getActivity(), DynamicDetailActivity.class));
-                    } else {
-                        if (mTechInfo == null || TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
-                            return;
-                        }
-                        boolean canShare = true;
-                        if (Constant.TECH_STATUS_VALID.equals(mTechInfo.status) || Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)) {
-                            canShare = false;
-                        }
-                        if (Utils.isNotEmpty(mTechInfo.clubId)) {
-                            Intent intentDynamic = new Intent(getActivity(), DynamicShareTechActivity.class);
-                            StringBuilder url;
-                            if (Utils.isEmpty(mTechInfo.shareUrl)) {
-                                url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-                                url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
-                            } else {
-                                url = new StringBuilder(mTechInfo.shareUrl);
-                            }
-                            intentDynamic.putExtra(Constant.TECH_USER_HEAD_URL, mTechInfo.imageUrl);
-                            intentDynamic.putExtra(Constant.TECH_USER_NAME, mTechInfo.userName);
-                            intentDynamic.putExtra(Constant.TECH_USER_TECH_NUM, mTechInfo.serialNo);
-                            intentDynamic.putExtra(Constant.TECH_USER_CLUB_NAME, mTechInfo.clubName);
-                            intentDynamic.putExtra(Constant.TECH_SHARE_URL, url.toString());
-                            intentDynamic.putExtra(Constant.TECH_ShARE_CODE_IMG, mTechInfo.qrCodeUrl);
-                            intentDynamic.putExtra(Constant.TECH_CAN_SHARE, canShare);
-                            startActivity(intentDynamic);
-
-                        }
-
-                    }
-
+                if (hasDynamic) {
+                    startActivity(new Intent(getActivity(), DynamicDetailActivity.class));
                 } else {
-                    ((BaseFragmentActivity) getActivity()).makeShortToast(techJoinClub);
+                    if (TextUtils.isEmpty(mTech.getQrCodeUrl())) {
+                        return;
+                    }
+                    if (mTech.isActiveStatus()) {
+                        Intent intentDynamic = new Intent(getActivity(), DynamicShareTechActivity.class);
+                        StringBuilder url;
+                        if (Utils.isEmpty(mTech.getShareUrl())) {
+                            url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+                            url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTech.getClubId(), mTech.getUserId(), mTech.getInviteCode()));
+                        } else {
+                            url = new StringBuilder(mTech.getShareUrl());
+                        }
+                        intentDynamic.putExtra(Constant.TECH_USER_HEAD_URL, mTech.getAvatarUrl());
+                        intentDynamic.putExtra(Constant.TECH_USER_NAME, mTech.getNickName());
+                        intentDynamic.putExtra(Constant.TECH_USER_TECH_NUM, mTech.getTechNo());
+                        intentDynamic.putExtra(Constant.TECH_USER_CLUB_NAME, mTech.getClubName());
+                        intentDynamic.putExtra(Constant.TECH_SHARE_URL, url.toString());
+                        intentDynamic.putExtra(Constant.TECH_ShARE_CODE_IMG, mTech.getQrCodeUrl());
+                        intentDynamic.putExtra(Constant.TECH_CAN_SHARE, true);
+                        startActivity(intentDynamic);
+                    }
                 }
                 break;
             case R.id.main_tech_who_care_all:
-                if (Utils.isEmpty(techJoinClub)) {
-                    MainActivity mainActivity = (MainActivity) getActivity();
-                    mainActivity.switchFragment(2);
-                    MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 0);
-                } else {
-                    ((BaseFragmentActivity) getActivity()).makeShortToast(techJoinClub);
-                }
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.switchFragment(2);
+                MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 0);
                 break;
             case R.id.layout_technician_ranking:
-                if (TextUtils.isEmpty(mClubId)) {
-                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
-                    return;
-                } else if (Utils.isEmpty(techJoinClub)) {
-                    String url = SharedPreferenceHelper.getServerHost() + String.format(RequestConstant.URL_RANKING, System.currentTimeMillis(), RequestConstant.USER_TYPE_TECH,
-                            RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken()
-                    );
-                    Intent intentRanking = new Intent(getActivity(), BrowserActivity.class);
-                    intentRanking.putExtra(BrowserActivity.EXTRA_SHOW_MENU, false);
-                    intentRanking.putExtra(BrowserActivity.EXTRA_URL, url);
-                    startActivity(intentRanking);
-                } else {
-                    ((BaseFragmentActivity) getActivity()).makeShortToast(techJoinClub);
-                }
+                String url = SharedPreferenceHelper.getServerHost() + String.format(RequestConstant.URL_RANKING, System.currentTimeMillis(), RequestConstant.USER_TYPE_TECH,
+                        RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken()
+                );
+                Intent intentRanking = new Intent(getActivity(), BrowserActivity.class);
+                intentRanking.putExtra(BrowserActivity.EXTRA_SHOW_MENU, false);
+                intentRanking.putExtra(BrowserActivity.EXTRA_URL, url);
+                startActivity(intentRanking);
                 break;
 
         }
@@ -972,30 +928,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.contact_more:
                 //分享二维码
-                if (mTechInfo == null || TextUtils.isEmpty(mTechInfo.qrCodeUrl)) {
+                if (TextUtils.isEmpty(mTech.getQrCodeUrl())) {
+                    Toast.makeText(getContext(), "二维码为空！", Toast.LENGTH_LONG).show();
                     return;
                 }
-                boolean canShare = true;
-                if (Constant.TECH_STATUS_VALID.equals(mTechInfo.status) || Constant.TECH_STATUS_REJECT.equals(mTechInfo.status) || Constant.TECH_STATUS_UNCERT.equals(mTechInfo.status)) {
-                    canShare = false;
-                }
-                if (Utils.isNotEmpty(mTechInfo.clubId)) {
-                    Intent intent = new Intent(getActivity(), TechShareCardActivity.class);
-                    StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-                    url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
-                    intent.putExtra(Constant.TECH_USER_HEAD_URL, mTechInfo.imageUrl);
-                    intent.putExtra(Constant.TECH_USER_NAME, mTechInfo.userName);
-                    intent.putExtra(Constant.TECH_USER_TECH_NUM, mTechInfo.serialNo);
-                    intent.putExtra(Constant.TECH_USER_CLUB_NAME, mTechInfo.clubName);
-                    intent.putExtra(Constant.TECH_SHARE_URL, url.toString());
-                    intent.putExtra(Constant.TECH_ShARE_CODE_IMG, mTechInfo.qrCodeUrl);
-                    intent.putExtra(Constant.TECH_CAN_SHARE, canShare);
-                    startActivity(intent);
-
-                } else {
-                    ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.personal_fragment_join_club));
-                }
-
+                Intent intent = new Intent(getActivity(), TechShareCardActivity.class);
+                StringBuilder url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+                url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTech.getClubId(), mTech.getUserId(), mTech.getInviteCode()));
+                intent.putExtra(Constant.TECH_USER_HEAD_URL, mTech.getAvatarUrl());
+                intent.putExtra(Constant.TECH_USER_NAME, mTech.getNickName());
+                intent.putExtra(Constant.TECH_USER_TECH_NUM, mTech.getTechNo());
+                intent.putExtra(Constant.TECH_USER_CLUB_NAME, mTech.getClubName());
+                intent.putExtra(Constant.TECH_SHARE_URL, url.toString());
+                intent.putExtra(Constant.TECH_ShARE_CODE_IMG, mTech.getQrCodeUrl());
+                intent.putExtra(Constant.TECH_CAN_SHARE, true);
+                startActivity(intent);
                 break;
         }
     }
@@ -1018,25 +965,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    private void initHeadView(TechInfo info) {
-        if (null == info) {
-            return;
+    private void showHeadView() {
+        if (!TextUtils.isEmpty(mTech.getAvatarUrl())) {
+            Glide.with(mContext).load(mTech.getAvatarUrl()).error(R.drawable.icon22).into(mMainHeadAvatar);
         }
-        if (Utils.isNotEmpty(info.imageUrl) && mContext != null) {
-            Glide.with(mContext).load(info.imageUrl).error(R.drawable.icon22).into(mMainHeadAvatar);
-        }
-        mMainHeadTechName.setText(info.userName);
-
-        if (info.status.equals(RequestConstant.KEY_TECH_STATUS_FREE)) {
-            resetTechStatusView(R.id.btn_main_tech_free);
-        } else if (info.status.equals(RequestConstant.KEY_TECH_STATUS_BUSY)) {
-            resetTechStatusView(R.id.btn_main_tech_busy);
-        } else if (info.status.equals(RequestConstant.KEY_TECH_STATUS_REST)) {
-            resetTechStatusView(-1);
-        } else {
-            resetTechStatusView(-1);
-        }
-
+        mMainHeadTechName.setText(mTech.getNickName());
         showTechStatus(mTech.getStatus());
     }
 
@@ -1380,10 +1313,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     //申请加入会所事件
     private void onEventRequestJoinClub(EventRequestJoinClub event) {
-        mJoinOrQuitClub.setText("退出会所");
-        mMenuClubName.setText(mTech.getClubName());
         showTechStatus(mTech.getStatus());
-
         onRefresh();
     }
 }
