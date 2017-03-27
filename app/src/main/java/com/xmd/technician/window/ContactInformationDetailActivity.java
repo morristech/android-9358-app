@@ -27,6 +27,7 @@ import com.xmd.technician.bean.OrderBean;
 import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.VisitBean;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
@@ -165,6 +166,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private String userTechName;
     private String userTechNo;
     private String canSayHello;
+    private int chatPosition;
     private Map<String, String> params = new HashMap<>();
     private boolean isMyCustomer;
 
@@ -185,6 +187,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         userType = intent.getStringExtra(RequestConstant.CONTACT_TYPE);
         isMyCustomer = intent.getBooleanExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
         canSayHello = intent.getStringExtra(RequestConstant.KEY_CAN_SAY_HELLO);
+        chatPosition = intent.getIntExtra(ChatConstant.KEY_SAY_HI_POSITION, -1);
         initView();
 
     }
@@ -583,6 +586,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void sayHello(String customerId) {
         Map<String, Object> params = new HashMap<>();
         params.put(RequestConstant.KEY_USER_ID, customerId);
+        params.put(ChatConstant.KEY_SAY_HI_POSITION, String.valueOf(chatPosition));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_SAY_HI, params);
     }
 

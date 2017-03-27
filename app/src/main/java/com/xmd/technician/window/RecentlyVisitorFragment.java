@@ -130,9 +130,10 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
 
         if (result.statusCode == 200) {
             position = Integer.parseInt(result.position);
-            mVisitors.get(position).canSayHello = "0";
-            adapter.notifyItemChanged(position);
-
+            if (position != -1) {
+                mVisitors.get(position).canSayHello = "0";
+                adapter.notifyItemChanged(position);
+            }
 
             if (Utils.isNotEmpty(SharedPreferenceHelper.getSerialNo())) {
                 sendGreetingTextMessage(String.format("客官您好，我是%s[%s]技师，希望能够为您服务，约我哟～", SharedPreferenceHelper.getUserName(), SharedPreferenceHelper.getSerialNo()), friendUserId);
@@ -209,7 +210,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
         }
 
         @Override
-        public void onItemClicked(RecentlyVisitorBean bean) {
+        public void onItemClicked(RecentlyVisitorBean bean, int position) {
             if (Long.parseLong(bean.userId) > 0) {
                 Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
                 intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
@@ -219,6 +220,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
                 intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, RequestConstant.TYPE_CUSTOMER);
                 intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
                 intent.putExtra(RequestConstant.KEY_CAN_SAY_HELLO, bean.canSayHello);
+                intent.putExtra(ChatConstant.KEY_SAY_HI_POSITION, position);
                 startActivity(intent);
             } else {
                 Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));

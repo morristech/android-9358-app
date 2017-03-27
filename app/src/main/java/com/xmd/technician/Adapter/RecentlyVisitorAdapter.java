@@ -45,9 +45,9 @@ public class RecentlyVisitorAdapter<T> extends RecyclerView.Adapter {
 
     public void setData(List<RecentlyVisitorBean> data) {
         this.mData = data;
-        if(data.size() == 0){
+        if (data.size() == 0) {
             mIsEmpty = true;
-        }else {
+        } else {
             mIsEmpty = false;
         }
         notifyDataSetChanged();
@@ -64,9 +64,9 @@ public class RecentlyVisitorAdapter<T> extends RecyclerView.Adapter {
 
     public interface CallbackInterface<T> {
 
-        void onSayHiButtonClicked(T bean,int position);
+        void onSayHiButtonClicked(T bean, int position);
 
-        void onItemClicked(T bean);
+        void onItemClicked(T bean, int position);
 
         void onLoadMoreButtonClicked();
     }
@@ -176,7 +176,7 @@ public class RecentlyVisitorAdapter<T> extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     try {
-                        mCallbackInterface.onSayHiButtonClicked(recentlyVisitor,position);
+                        mCallbackInterface.onSayHiButtonClicked(recentlyVisitor, position);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -185,12 +185,12 @@ public class RecentlyVisitorAdapter<T> extends RecyclerView.Adapter {
             });
 
             viewHolder.itemView.setOnClickListener(v -> {
-                mCallbackInterface.onItemClicked(recentlyVisitor);
+                mCallbackInterface.onItemClicked(recentlyVisitor, position);
             });
 
             return;
 
-        }else if (holder instanceof ListFooterHolder) {
+        } else if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);
             if (mIsEmpty) {
