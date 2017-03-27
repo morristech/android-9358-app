@@ -179,5 +179,6 @@ public class MsgDef {
     public static final int MSG_DEF_DOWNLOAD_HELLO_IMAGE_CACHE = 0x102; // 下载到招呼图片的缓存
 
     public static final int MSG_DEF_GET_ROLE_PERMISSION = 0x0103;
+    public static final int MSG_DEF_GET_ROLE_LIST = 0x0104;
 
 }

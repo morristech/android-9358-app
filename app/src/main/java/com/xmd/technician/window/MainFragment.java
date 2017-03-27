@@ -233,7 +233,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mGetRecentlyVisitorSubscription;
     private Subscription mOrderManageSubscription;
     private Subscription mGetMomentListSubscription;
-    private Subscription mTechStatusSubscription;
     private Subscription mJoinedClubSubscription;
     private Subscription mRequestJoinClubSubscription;
     private Subscription mGetNearbyCusCountSubscription;    // 附近的人:获取会所附近客户数量;
@@ -284,7 +283,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mGetTechOrderListSubscription,
                 mGetTechStatisticsDataSubscription,
                 mGetTechRankIndexDataSubscription,
-                mTechStatusSubscription,
                 mOrderManageSubscription,
                 mGetMomentListSubscription,
                 mGetRecentlyVisitorSubscription,
@@ -779,7 +777,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         mTech.logout();
                         ActivityHelper.getInstance().removeAllActivities();
                         UINavigation.gotoLogin(getActivity());
-                        getActivity().stopService(new Intent(getActivity(), DataRefreshService.class));
                         super.onConfirmClick();
                     }
                 }.show();

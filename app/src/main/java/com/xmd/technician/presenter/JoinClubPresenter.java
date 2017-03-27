@@ -17,11 +17,16 @@ import com.xmd.technician.contract.JoinClubContract;
 import com.xmd.technician.databinding.ActivityJoinClubBinding;
 import com.xmd.technician.event.EventRequestJoinClub;
 import com.xmd.technician.http.gson.JoinClubResult;
+import com.xmd.technician.http.gson.RoleListResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.model.TechNo;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.window.TechNoDialogFragment;
+
+import java.util.List;
 
 import rx.Subscription;
 
@@ -41,7 +46,10 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
     private String mSelectedTechId;
     private TechNoDialogFragment mTechNoDialogFragment;
     private Subscription mSubscription;
+    private Subscription mRoleListSubscription;
     private int mOpenFrom;
+    private List<RoleListResult.Item> mRoleList;
+    private RoleListResult.Item mSelectRole;
 
     public JoinClubPresenter(Context context, JoinClubContract.View view, ActivityJoinClubBinding binding) {
         super(context, view);
@@ -60,12 +68,16 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
         mBinding.setPresenter(this);
         mSubscription = RxBus.getInstance().toObservable(JoinClubResult.class)
                 .subscribe(this::handleJoinClubResult);
+        mRoleListSubscription = RxBus.getInstance().toObservable(RoleListResult.class)
+                .subscribe(this::handleGetRoleList);
+        mView.showLoading("加载角色列表");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ROLE_LIST);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSubscription.unsubscribe();
+        RxBus.getInstance().unsubscribe(mSubscription, mRoleListSubscription);
     }
 
 
@@ -92,8 +104,27 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
 
     @Override
     public void onClickJoin() {
+        if (mSelectRole == null) {
+            mView.showToast("角色加载失败，无法加入会所！");
+            return;
+        }
         mView.showLoading("正在提交申请...");
-        mTech.sendJoinClubRequest(mInviteCode, mSelectedTechId);
+        mTech.sendJoinClubRequest(mInviteCode, mSelectedTechId, mSelectRole.code);
+    }
+
+    private void handleGetRoleList(RoleListResult result) {
+        mView.hideLoading();
+        if (result.statusCode != 200) {
+            mView.showToast("加载角色列表失败：" + result.statusCode + "," + result.msg);
+            return;
+        }
+        if (result.respData == null || result.respData.size() == 0) {
+            mView.showToast("角色列表为空！");
+            return;
+        }
+        mRoleList = result.respData;
+        mSelectRole = mRoleList.get(0);
+        mView.showRoleList(mRoleList, 0);
     }
 
     private void handleJoinClubResult(JoinClubResult result) {
@@ -162,5 +193,10 @@ public class JoinClubPresenter extends BasePresenter<JoinClubContract.View> impl
         mSelectedTechNo = techNo.name;
         mSelectedTechId = techNo.id;
         checkCanJoin();
+    }
+
+    @Override
+    public void onSelectRole(int selectPosition) {
+        mSelectRole = mRoleList.get(selectPosition);
     }
 }

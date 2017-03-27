@@ -109,6 +109,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT,
                 MsgDef.MSG_DEF_TECH_ACCOUNT_LIST,
                 MsgDef.MSG_DEF_GET_ROLE_PERMISSION,
+                MsgDef.MSG_DEF_GET_ROLE_LIST,
 
                 // -------------------------------------> 附近的人 <---------------------------------
                 MsgDef.MSG_DEF_GET_CLUB_POSITION_INFO,

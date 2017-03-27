@@ -55,7 +55,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
         if (System.currentTimeMillis() - mSendVerificationTime < VERIFICATION_INTERVAL) {
             startVerificationTime();
         }
-        if (!TextUtils.isEmpty(mTech.getTechId())) {
+        if (!TextUtils.isEmpty(mTech.getUserId())) {
             mTitle = "完善资料";
             mShowTechNoAndClubInviteCode = true;
         } else {
@@ -83,10 +83,10 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
     public void onClickNextStep() {
         //进入下一步，这里进行注册
         mView.showLoading("正在注册...");
-        if (!TextUtils.isEmpty(mTech.getTechId())) {
-            mTech.register(mPhoneNumber, mPassword, mVerificationCode, mTech.getClubInviteCode(), mTech.getTechId(), mTech.getTechNo());
+        if (!TextUtils.isEmpty(mTech.getUserId())) {
+            mTech.register(mPhoneNumber, mPassword, mVerificationCode, mTech.getClubInviteCode(), mTech.getUserId(), mTech.getTechNo(), mTech.getRoles());
         } else {
-            mTech.register(mPhoneNumber, mPassword, mVerificationCode, null, null, null);
+            mTech.register(mPhoneNumber, mPassword, mVerificationCode, null, null, null, null);
         }
     }
 

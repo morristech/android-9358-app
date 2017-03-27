@@ -93,7 +93,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void onClickRegister() {
-        mLoginTech.setTechId(null); //清空一下技师ID
+        mLoginTech.clearTechNoLoginResult();
         UINavigation.gotoRegister(mContext);
     }
 
@@ -161,7 +161,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             if (mLoginTech.getLoginType() == LoginTechnician.LOGIN_TYPE_TECH_NO && result.statusCode == 206) {
                 //进入注册页面
                 mView.hideLoading();
-                mLoginTech.setTechId(result.spareTechId);
+                mLoginTech.onTechNoLoginResult(mTechNo, mInviteCode, result);
                 UINavigation.gotoRegister(mContext);
             } else {
                 //登录成功

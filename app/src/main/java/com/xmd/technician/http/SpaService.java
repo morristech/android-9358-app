@@ -58,6 +58,7 @@ import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.RewardListResult;
+import com.xmd.technician.http.gson.RoleListResult;
 import com.xmd.technician.http.gson.RolePermissionListResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
@@ -136,6 +137,7 @@ public interface SpaService {
     Call<RegisterResult> register(@Field(RequestConstant.KEY_MOBILE) String mobile,
                                   @Field(RequestConstant.KEY_PASSWORD) String passWord,
                                   @Field(RequestConstant.KEY_ICODE) String iCode,
+                                  @Field(RequestConstant.KEY_ROLE_CODE) String roleCode,
                                   @Field(RequestConstant.KEY_CLUB_CODE) String clubCode,
                                   @Field(RequestConstant.KEY_LOGIN_CHANEL) String loginChannel,
                                   @Field(RequestConstant.KEY_CHANEL) String channel,
@@ -219,6 +221,7 @@ public interface SpaService {
     Call<JoinClubResult> joinClub(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                   @Field(RequestConstant.KEY_INVITE_CODE) String inviteCode,
                                   @Field(RequestConstant.KEY_SPARE_TECH_ID) String techId,
+                                  @Field(RequestConstant.KEY_ROLE_CODE) String roleCode,
                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 
     @FormUrlEncoded
@@ -766,4 +769,8 @@ public interface SpaService {
     @POST(RequestConstant.URL_UPLOAD_HELLO_TEMPLATE_IMAGE)
     Call<HelloUploadImgResult> uploadTemplateImg(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                  @Field(RequestConstant.KEY_IMG_FILE) String imgFile);
+
+    // 查询角色列表
+    @GET(RequestConstant.URL_ROLE_LIST)
+    Call<RoleListResult> getRoleList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 }

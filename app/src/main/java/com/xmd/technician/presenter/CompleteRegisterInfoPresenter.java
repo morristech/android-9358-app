@@ -58,7 +58,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
         mUploadAvatarSubscription = RxBus.getInstance().toObservable(AvatarResult.class)
                 .subscribe(this::handleUploadAvatar);
 
-        mJoinClub = TextUtils.isEmpty(mTech.getTechId()); //技师ID为空，需要进入加入会所界面
+        mJoinClub = !mTech.hasClub(); //需要进入加入会所界面
     }
 
     @Override

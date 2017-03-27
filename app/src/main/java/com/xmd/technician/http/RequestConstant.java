@@ -120,7 +120,8 @@ public class RequestConstant {
     public static final String URL_DO_USER_JOURNAL_SHARE_COUNT = BASE_URL + "/v2/user/journal/share/count";//期刊统计
 
 
-    public static final String URL_ROLE_PERMISSION = BASE_URL + "/v2/tech/menu/list";
+    public static final String URL_ROLE_PERMISSION = BASE_URL + "/v2/tech/menu/list"; //权限
+    public static final String URL_ROLE_LIST = BASE_URL + "/v2/tech/role/list"; //角色列表
 
     /**
      * --------------------------------------> 附近的人:url <----------------------------------------
@@ -185,6 +186,7 @@ public class RequestConstant {
     public static final String KEY_INVITE_CODE = "inviteCode";
     public static final String KEY_ICODE = "code";
     public static final String KEY_CLUB_CODE = "clubCode";
+    public static final String KEY_ROLE_CODE = "roleCode";
     public static final String KEY_CHANEL = "chanel";
     public static final String KEY_LOGIN_CHANEL = "loginChanel";
     public static final String KEY_SPARE_TECH_ID = "spareTechId";

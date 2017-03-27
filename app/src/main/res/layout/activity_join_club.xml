@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
         <import type="android.view.View" />
 
         <variable
@@ -44,6 +43,7 @@
                 android:visibility="@{presenter.mShowSkip?View.INVISIBLE:View.VISIBLE}" />
         </FrameLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,6 +53,7 @@
             android:layout_marginTop="24dp"
             android:background="@android:color/white"
             android:orientation="vertical">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,13 +99,45 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/icon_nickname" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="职位：" />
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spinner"
+                    android:layout_width="0dp"
+                    style="@style/Widget.AppCompat.Spinner.DropDown"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_divide_height"
+                android:background="@color/colorLineDivide" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_button_height"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/icon_code" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:text="技师编号：" />
+                    android:text="编号：" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -155,7 +188,6 @@
                     android:onClick="@{()->presenter.onClickJoin()}"
                     android:text="申请加入"
                     android:textColor="@color/color_white" />
-
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

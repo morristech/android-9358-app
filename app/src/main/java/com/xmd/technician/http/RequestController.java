@@ -77,6 +77,7 @@ import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.RewardListResult;
+import com.xmd.technician.http.gson.RoleListResult;
 import com.xmd.technician.http.gson.RolePermissionListResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
@@ -362,6 +363,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_ROLE_PERMISSION:
                 getRolePermissionList();
                 break;
+            case MsgDef.MSG_DEF_GET_ROLE_LIST:
+                getRoleList();
+                break;
 
             // --------------------------------------> 附近的人 <------------------------------------
             case MsgDef.MSG_DEF_GET_CLUB_POSITION_INFO:
@@ -530,12 +534,12 @@ public class RequestController extends AbstractController {
         });
     }
 
-    //不能正常工作me
     private void register(Map<String, String> params) {
         Call<RegisterResult> call = getSpaService().register(
                 params.get(RequestConstant.KEY_MOBILE),
                 params.get(RequestConstant.KEY_PASSWORD),
                 params.get(RequestConstant.KEY_ICODE),
+                params.get(RequestConstant.KEY_ROLE_CODE),
                 params.get(RequestConstant.KEY_CLUB_CODE),
                 params.get(RequestConstant.KEY_LOGIN_CHANEL),
                 RequestConstant.SESSION_TYPE,
@@ -690,6 +694,7 @@ public class RequestController extends AbstractController {
                 params.get(RequestConstant.KEY_TOKEN),
                 params.get(RequestConstant.KEY_INVITE_CODE),
                 params.get(RequestConstant.KEY_SPARE_TECH_ID),
+                params.get(RequestConstant.KEY_ROLE_CODE),
                 RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<JoinClubResult>() {
@@ -847,6 +852,11 @@ public class RequestController extends AbstractController {
             @Override
             protected void postResult(TechPersonalDataResult result) {
                 RxBus.getInstance().post(result);
+            }
+
+            @Override
+            public void onFailure(Call<TechPersonalDataResult> call, Throwable t) {
+                Logger.e("getTechPersonalData:" + t.getLocalizedMessage());
             }
         });
     }
@@ -1713,7 +1723,27 @@ public class RequestController extends AbstractController {
 
             @Override
             protected void postError(String errorMsg) {
-                Logger.v("getCouponList: " + errorMsg);
+                Logger.v("getRolePermissionList: " + errorMsg);
+                RolePermissionListResult result = new RolePermissionListResult();
+                result.statusCode = RequestConstant.RESP_ERROR_CODE_FOR_LOCAL;
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    private void getRoleList() {
+        Call<RoleListResult> call = getSpaService().getRoleList(LoginTechnician.getInstance().getToken());
+
+        call.enqueue(new TokenCheckedCallback<RoleListResult>() {
+            @Override
+            protected void postResult(RoleListResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                Logger.v("getRoleList: " + errorMsg);
                 RolePermissionListResult result = new RolePermissionListResult();
                 result.statusCode = RequestConstant.RESP_ERROR_CODE_FOR_LOCAL;
                 result.msg = errorMsg;

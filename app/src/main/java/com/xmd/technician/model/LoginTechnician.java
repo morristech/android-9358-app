@@ -68,7 +68,6 @@ public class LoginTechnician {
     private String emchatPassword;
 
     //技师信息
-    private String techId;
     private String techNo;
     private String clubInviteCode;
     private String inviteCode;
@@ -86,9 +85,7 @@ public class LoginTechnician {
     private int unreadCommentCount;
     private int orderCount;
 
-    //技师权限
-    private boolean permissionFastPay; //在线买单权限
-    private boolean permissionCredit; //积分权限
+    private String roles;
 
 
     private LoginTechnician() {
@@ -129,8 +126,6 @@ public class LoginTechnician {
 
     //使用技师编号登录，返回LoginResult
     public void loginByTechNo(String inviteCode, String techNo, String password) {
-        setClubInviteCode(inviteCode);
-        setTechNo(techNo);
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_CLUB_CODE, inviteCode);
         params.put(RequestConstant.KEY_TECH_No, techNo);
@@ -156,7 +151,28 @@ public class LoginTechnician {
         avatarUrl = loginResult.avatarUrl;
         SharedPreferenceHelper.setUserAvatar(avatarUrl);
 
+        setRoles(loginResult.roles);
+
         RxBus.getInstance().post(new EventLogin());
+    }
+
+    //备用技师编号登录成功
+    public void onTechNoLoginResult(String techNo, String inviteCode, LoginResult result) {
+        setClubInviteCode(inviteCode);
+        setTechNo(techNo);
+        setClubId(result.clubId);
+        setClubName(result.clubName);
+        setUserId(result.spareTechId);
+        setRoles(result.roles);
+    }
+
+    public void clearTechNoLoginResult() {
+        setClubInviteCode(null);
+        setTechNo(null);
+        setClubId(null);
+        setClubName(null);
+        setUserId(null);
+        setRoles(null);
     }
 
     //获取技师信息,返回TechInfoResult
@@ -225,12 +241,13 @@ public class LoginTechnician {
     }
 
     //注册,返回RegisterResult
-    public void register(String phoneNumber, String password, String verificationCode, String inviteCode, String techId, String techNo) {
+    public void register(String phoneNumber, String password, String verificationCode, String inviteCode, String techId, String techNo, String roleCode) {
         setPhoneNumber(phoneNumber);
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_MOBILE, phoneNumber);
         params.put(RequestConstant.KEY_PASSWORD, password);
         params.put(RequestConstant.KEY_ICODE, verificationCode);
+        params.put(RequestConstant.KEY_ROLE_CODE, roleCode);
         params.put(RequestConstant.KEY_CLUB_CODE, inviteCode);
         params.put(RequestConstant.KEY_LOGIN_CHANEL, "android" + AppConfig.getAppVersionCode());
         params.put(RequestConstant.KEY_SPARE_TECH_ID, techId);
@@ -239,11 +256,18 @@ public class LoginTechnician {
 
     //处理注册成功
     public void onRegisterResult(RegisterResult result) {
+        if (hasClub()) {
+            setStatus(Constant.TECH_STATUS_UNCERT);
+        } else {
+            setStatus(Constant.TECH_STATUS_VALID);
+        }
         setToken(result.token);
         setNickName(result.name);
         setUserId(result.userId);
         setEmchatId(result.emchatId);
         setEmchatPassword(result.emchatPassword);
+
+        DataRefreshService.refreshPersonalData(true);
     }
 
     //上传头像,返回AvatarResult
@@ -304,11 +328,12 @@ public class LoginTechnician {
 
 
     //加入会所，返回JoinClubResult
-    public void sendJoinClubRequest(String inviteCode, String techId) {
+    public void sendJoinClubRequest(String inviteCode, String techId, String roleCode) {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_TOKEN, token);
         params.put(RequestConstant.KEY_INVITE_CODE, inviteCode);
         params.put(RequestConstant.KEY_SPARE_TECH_ID, techId);
+        params.put(RequestConstant.KEY_ROLE_CODE, roleCode);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_JOIN_CLUB, params);
     }
 
@@ -317,7 +342,7 @@ public class LoginTechnician {
         setClubInviteCode(inviteCode);
         setClubName(result.name);
         setTechNo(techNo);
-        setTechId(result.id);
+        setClubId(result.id);
         setStatus(Constant.TECH_STATUS_UNCERT);
     }
 
@@ -335,7 +360,6 @@ public class LoginTechnician {
 
     public void onExitClub(QuitClubResult result) {
         setTechNo(null);
-        setTechId(null);
         setClubId(null);
         setClubInviteCode(null);
         setClubName(null);
@@ -358,7 +382,7 @@ public class LoginTechnician {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_TOKEN, token);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID, params);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT, params);
+//        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT, params);
         //直接清空token，不用等待是否成功
         UserProfileProvider.getInstance().reset();
         EMClient.getInstance().logout(true);
@@ -571,14 +595,6 @@ public class LoginTechnician {
         SharedPreferenceHelper.setInviteCode(inviteCode);
     }
 
-    public String getTechId() {
-        return techId;
-    }
-
-    public void setTechId(String techId) {
-        this.techId = techId;
-    }
-
     public String getInnerProvider() {
         return innerProvider;
     }
@@ -645,5 +661,13 @@ public class LoginTechnician {
     public boolean isActiveStatus(String status) {
         return TextUtils.equals(status, Constant.TECH_STATUS_FREE)
                 || TextUtils.equals(status, Constant.TECH_STATUS_BUSY);
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 }
