@@ -64,10 +64,10 @@ android {
             manifestPlaceholders = [
                     EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
                     //Getui placeHolder
-                    GETUI_APP_ID        : "vvWn2qLOH36MEuvokazrJ2",
-                    GETUI_APP_KEY       : "n45kk01jfP8EV64z6k1JB7",
-                    GETUI_APP_SECRET    : "ZzasGwsuQS6rYT3WlowwD5",
-                    GETUI_MASTER_SECRET : "dK97cOa5xX9jiEmTH2kqh5",
+                    GETUI_APP_ID        : "tKz4NrRkbB7liB2hQKH1K3",
+                    GETUI_APP_KEY       : "1Z7IMxPegvAc3p5fFhXZm1",
+                    GETUI_APP_SECRET    : "H1A8oGj86TARVycNo28c28",
+                    GETUI_MASTER_SECRET : "auiTyQZRcc6AUA9PQWoak7",
                     DEF_UPDATE_SERVER   : "http://192.168.1.100:9883",
             ]
             signingConfig signingConfigs.release
@@ -87,10 +87,10 @@ android {
             manifestPlaceholders = [
                     EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
                     //Getui placeHolder
-                    GETUI_APP_ID        : "vvWn2qLOH36MEuvokazrJ2",
-                    GETUI_APP_KEY       : "n45kk01jfP8EV64z6k1JB7",
-                    GETUI_APP_SECRET    : "ZzasGwsuQS6rYT3WlowwD5",
-                    GETUI_MASTER_SECRET : "dK97cOa5xX9jiEmTH2kqh5",
+                    GETUI_APP_ID        : "tKz4NrRkbB7liB2hQKH1K3",
+                    GETUI_APP_KEY       : "1Z7IMxPegvAc3p5fFhXZm1",
+                    GETUI_APP_SECRET    : "H1A8oGj86TARVycNo28c28",
+                    GETUI_MASTER_SECRET : "auiTyQZRcc6AUA9PQWoak7",
                     DEF_UPDATE_SERVER   : "http://192.168.1.100:9883",
             ]
         }
@@ -99,10 +99,10 @@ android {
             manifestPlaceholders = [
                     EASEMOB_APPKEY_VALUE: "xiaomodo#spa",
                     //Getui placeHolder
-                    GETUI_APP_ID        : "dUOMF7jzEH9j7DzNlPMjq1",
-                    GETUI_APP_KEY       : "0AOTuy05B56krNV8mSxObA",
-                    GETUI_APP_SECRET    : "5gE0zPRO0d9NvViMIkGN51",
-                    GETUI_MASTER_SECRET : "NhG6hDnw7NAEf28PLim5K9",
+                    GETUI_APP_ID        : "9M8R2lPBQw9CB1NSODZOJ2",
+                    GETUI_APP_KEY       : "Sc5C01E4Vr5mx3nv2o4hz4",
+                    GETUI_APP_SECRET    : "hUACujejlx5GmDMaLfqj92",
+                    GETUI_MASTER_SECRET : "BZmw1WsvNhAVz4NjsJKrm3",
                     DEF_UPDATE_SERVER   : "http://service.xiaomodo.com",
             ]
         }

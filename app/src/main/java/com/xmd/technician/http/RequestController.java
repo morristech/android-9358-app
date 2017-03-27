@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.AppConfig;
-import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.AddOrEditResult;
 import com.xmd.technician.bean.ClubContactResult;

@@ -23,7 +23,6 @@ import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -61,7 +60,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
     private int mLastVisibleItem;
     private LinearLayoutManager mLayoutManager;
     private boolean mIsLoadingMore = false;
-    private int pageSize = 5;
+    private int pageSize = 20;
     private int currentGetSize = 0;
 
 
@@ -71,16 +70,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
         View view = inflater.inflate(R.layout.fragment_recently_visitor, container, false);
         ButterKnife.bind(this, view);
         initView();
-        Logger.i(">>>","onCreate");
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
-                result -> handlerClubInfoList(result)
-        );
     }
 
     private void initView() {
@@ -94,8 +84,12 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
         list.setLayoutManager(mLayoutManager);
         list.setAdapter(adapter);
         swipeRefreshWidget.setOnRefreshListener(this);
+
         mSayHiResultSubscription = RxBus.getInstance().toObservable(SayHiResult.class).subscribe(
                 result -> handlerSayHiResult(result)
+        );
+        mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
+                result -> handlerClubInfoList(result)
         );
         list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -113,7 +107,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
                 mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
             }
         });
-        dispatchRequest();
+
     }
 
     private void loadMore() {
@@ -157,13 +151,13 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
 
         swipeRefreshWidget.setRefreshing(false);
         if (result.statusCode == 200) {
-            if(result.isMainPage .equals("0")){
+            if (result.isMainPage.equals("0")) {
                 onRefresh();
                 return;
             }
             currentGetSize = result.respData.size();
             if (result.respData != null) {
-                if(result.respData.size()>0){
+                if (result.respData.size() > 0) {
                     for (int i = 0; i < result.respData.size(); i++) {
                         if (Utils.isNotEmpty(result.respData.get(i).emchatId)) {
                             ChatUser user;
@@ -195,7 +189,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
         params.put(RequestConstant.KEY_LAST_TIME, lastTime);
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(pageSize));
-        params.put(RequestConstant.KEY_IS_MAIN_PAGE,"1");
+        params.put(RequestConstant.KEY_IS_MAIN_PAGE, "1");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, params);
 
     }
