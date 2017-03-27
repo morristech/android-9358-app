@@ -495,7 +495,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     /**************************排行榜***************************/
     @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
     public void initRanking() {
-        mRootView.findViewById(R.id.ranking_layout).setVisibility(View.VISIBLE);
+        mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.VISIBLE);
         mGetTechRankIndexDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
                 this::initTechRankingView);
     }
@@ -793,7 +793,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_EDIT_TECH_INFO);
     }
 
-    @OnClick({R.id.main_page_head, R.id.main_tech_order_all, R.id.main_tech_dynamic_all, R.id.main_tech_who_care_all, R.id.ranking_layout})
+    @OnClick({R.id.main_page_head, R.id.main_tech_order_all, R.id.main_tech_dynamic_all, R.id.main_tech_who_care_all, R.id.layout_technician_ranking})
     public void onMainPagePieceClicked(View view) {
         switch (view.getId()) {
             case R.id.main_page_head:

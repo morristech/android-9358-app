@@ -75,7 +75,7 @@
                             android:visibility="gone"/>
 
                         <include
-                            android:id="@+id/ranking_layout"
+                            android:id="@+id/layout_technician_ranking"
                             layout="@layout/layout_technician_ranking"
                             android:visibility="gone" />
 
