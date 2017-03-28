@@ -737,8 +737,9 @@ public interface SpaService {
 
     // 查询联系状态
     @GET(RequestConstant.URL_GET_CONTACT_PERMISSION)
-    Call<ContactPermissionResult> getContactPermission(@Path(RequestConstant.KEY_NEW_CUSTOMER_ID) String customerId,
-                                                       @Query(RequestConstant.KEY_TOKEN) String userToken);
+    Call<ContactPermissionResult> getContactPermission(@Path(RequestConstant.KEY_ID) String id,
+                                                       @Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                       @Query(RequestConstant.KEY_CONTACT_ID_TYPE) String idType);
 
     // 获取打招呼内容
     @GET(RequestConstant.URL_GET_HELLO_TEMPLATE)

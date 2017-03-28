@@ -17,6 +17,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.exceptions.HyphenateException;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ConversationListResult;
@@ -25,6 +26,7 @@ import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.http.gson.ContactPermissionChatResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -32,10 +34,13 @@ import com.xmd.technician.widget.ChatMessageManagerDialog;
 import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by sdcm on 16-3-23.
@@ -49,6 +54,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     protected List<EMConversation> mConversationList = new ArrayList<>();
     private Filter mFilter;
     private Subscription mGetConversationListSubscription;
+    private Subscription mContactPermissionChatSubscription;
     private TextView mSearchView;
     private String mMessageFrom;
 
@@ -89,6 +95,12 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         mGetConversationListSubscription = RxBus.getInstance().toObservable(ConversationListResult.class).subscribe(
                 conversationListResult -> handleGetConversationListResult(conversationListResult)
         );
+        mContactPermissionChatSubscription = RxBus.getInstance().toObservable(ContactPermissionChatResult.class).subscribe(new Action1<ContactPermissionChatResult>() {
+            @Override
+            public void call(ContactPermissionChatResult contactPermissionChatResult) {
+                handleContactPermissionChat(contactPermissionChatResult);
+            }
+        });
     }
 
     @Override
@@ -99,7 +111,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        RxBus.getInstance().unsubscribe(mGetConversationListSubscription);
+        RxBus.getInstance().unsubscribe(mGetConversationListSubscription, mContactPermissionChatSubscription);
     }
 
     @Override
@@ -117,6 +129,41 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             if (mSearchView != null && !TextUtils.isEmpty(mSearchView.getText()))
                 mSearchView.setText("");
             onRefresh();
+        }
+    }
+
+    private void getContactPermissionChat(EMConversation conversation) {
+        Map<String, Object> params = new HashMap<>();
+        params.put(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG, Constant.REQUEST_CONTACT_PERMISSION_EMCHAT);
+        params.put(RequestConstant.KEY_ID, conversation.getUserName());
+        params.put(RequestConstant.KEY_CONTACT_ID_TYPE, Constant.REQUEST_CONTACT_ID_TYPE_EMCHAT);
+        params.put(RequestConstant.KEY_CHAT_CONVERSATION_BEAN, conversation);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
+    }
+
+    private void handleContactPermissionChat(ContactPermissionChatResult result) {
+        if (result != null && result.statusCode == 200 && result.respData.echat) {
+            if (result.respData.echat) {
+                EMConversation conversation = result.emConversation;
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                if (conversation.isGroup()) {
+                    if (conversation.getType() == EMConversation.EMConversationType.ChatRoom) {
+                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_CHATROOM);
+                    } else {
+                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
+                    }
+                }
+                conversation.getAllMessages();
+                intent.putExtra(ChatConstant.EMCHAT_ID, conversation.getUserName());
+                intent.putExtra(ChatConstant.EMCHAT_IS_TECH, "");
+                startActivity(intent);
+            } else {
+                // 跳转到详情
+                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
+                intent.putExtra(RequestConstant.KEY_USER_ID, result.respData.customerId);
+                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
+                startActivity(intent);
+            }
         }
     }
 
@@ -151,24 +198,14 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             intent.putExtra(ChatConstant.EMCHAT_ID, username);
             startActivity(intent);
         } else {
-            // 进入聊天页面
-            Intent intent = new Intent(getContext(), ChatActivity.class);
-            if (conversation.isGroup()) {
-                if (conversation.getType() == EMConversation.EMConversationType.ChatRoom) {
-                    intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_CHATROOM);
-                } else {
-                    intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
-                }
-            }
             if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
-                if (SharedPreferenceHelper.getUserIsTech(username).equals("tech")) {
+                if (SharedPreferenceHelper.getUserIsTech(conversation.getUserName()).equals("tech")) {
                     mMessageFrom = "tech";
-                } else if (SharedPreferenceHelper.getUserIsTech(username).equals("manager")) {
+                } else if (SharedPreferenceHelper.getUserIsTech(conversation.getUserName()).equals("manager")) {
                     mMessageFrom = "manager";
                 } else {
                     mMessageFrom = "";
                 }
-
             } else {
                 mMessageFrom = "";
                 try {
@@ -186,11 +223,25 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     e.printStackTrace();
                 }
             }
-            conversation.getAllMessages();
-            // it's single chat
-            intent.putExtra(ChatConstant.EMCHAT_ID, username);
-            intent.putExtra(ChatConstant.EMCHAT_IS_TECH, mMessageFrom);
-            startActivity(intent);
+
+            if (mMessageFrom.equals("")) {
+                // customer
+                getContactPermissionChat(conversation);
+            } else {
+                // tech or manager
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                if (conversation.isGroup()) {
+                    if (conversation.getType() == EMConversation.EMConversationType.ChatRoom) {
+                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_CHATROOM);
+                    } else {
+                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
+                    }
+                }
+                conversation.getAllMessages();
+                intent.putExtra(ChatConstant.EMCHAT_ID, conversation.getUserName());
+                intent.putExtra(ChatConstant.EMCHAT_IS_TECH, mMessageFrom);
+                startActivity(intent);
+            }
         }
     }
 

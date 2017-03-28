@@ -3,6 +3,7 @@ package com.xmd.technician.http;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
@@ -47,8 +48,9 @@ import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
+import com.xmd.technician.http.gson.ContactPermissionChatResult;
 import com.xmd.technician.http.gson.ContactPermissionResult;
-import com.xmd.technician.http.gson.ContactPermissionWithBeanResult;
+import com.xmd.technician.http.gson.ContactPermissionVisitorResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
@@ -1110,7 +1112,6 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<CustomerDetailResult>() {
             @Override
             protected void postResult(CustomerDetailResult result) {
-
                 RxBus.getInstance().post(result);
             }
         });
@@ -1819,6 +1820,9 @@ public class RequestController extends AbstractController {
                         visitorResult.position = params.get(ChatConstant.KEY_SAY_HI_POSITION);
                         RxBus.getInstance().post(visitorResult);
                         break;
+                    case Constant.REQUEST_SAY_HI_TYPE_DETAIL:
+                        RxBus.getInstance().post(result);
+                        break;
                     default:
                         break;
                 }
@@ -1865,8 +1869,9 @@ public class RequestController extends AbstractController {
     // 查询同客户的联系
     private void getContactPermission(Map<String, Object> params) {
         String tag = (String) params.get(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG);
-        Call<ContactPermissionResult> call = getSpaService().getContactPermission((String) params.get(RequestConstant.KEY_NEW_CUSTOMER_ID),
-                SharedPreferenceHelper.getUserToken());
+        Call<ContactPermissionResult> call = getSpaService().getContactPermission((String) params.get(RequestConstant.KEY_ID),
+                SharedPreferenceHelper.getUserToken(),
+                (String) params.get(RequestConstant.KEY_CONTACT_ID_TYPE));
         call.enqueue(new TokenCheckedCallback<ContactPermissionResult>() {
             @Override
             protected void postResult(ContactPermissionResult result) {
@@ -1875,11 +1880,17 @@ public class RequestController extends AbstractController {
                         // DetailActivity
                         RxBus.getInstance().post(result);
                         break;
-                    case Constant.REQUEST_CONTACT_PERMISSION_OTHER:
-                        // MainFragment
-                        ContactPermissionWithBeanResult withBeanResult = new ContactPermissionWithBeanResult(result);
-                        withBeanResult.bean = (RecentlyVisitorBean) params.get(RequestConstant.KEY_RECENTLY_VISITOR_BEAN);
-                        RxBus.getInstance().post(withBeanResult);
+                    case Constant.REQUEST_CONTACT_PERMISSION_VISITOR:
+                        // MainFragment 最近访客
+                        ContactPermissionVisitorResult visitorResult = new ContactPermissionVisitorResult(result);
+                        visitorResult.bean = (RecentlyVisitorBean) params.get(RequestConstant.KEY_RECENTLY_VISITOR_BEAN);
+                        RxBus.getInstance().post(visitorResult);
+                        break;
+                    case Constant.REQUEST_CONTACT_PERMISSION_EMCHAT:
+                        // ChatFragment 聊天列表
+                        ContactPermissionChatResult chatResult = new ContactPermissionChatResult(result);
+                        chatResult.emConversation = (EMConversation) params.get(RequestConstant.KEY_CHAT_CONVERSATION_BEAN);
+                        RxBus.getInstance().post(chatResult);
                         break;
                     default:
                         break;

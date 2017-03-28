@@ -204,13 +204,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
             if (Long.parseLong(bean.userId) > 0) {
                 Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
                 intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-                intent.putExtra(RequestConstant.CONTACT_TYPE, bean.customerType);
-                intent.putExtra(RequestConstant.KEY_TECH_NAME, bean.techName);
-                intent.putExtra(RequestConstant.KEY_TECH_No, bean.techSerialNo);
-                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, RequestConstant.TYPE_CUSTOMER);
-                intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
-                intent.putExtra(RequestConstant.KEY_CAN_SAY_HELLO, bean.canSayHello);
-                intent.putExtra(ChatConstant.KEY_SAY_HI_POSITION, position);
+                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
                 startActivity(intent);
             } else {
                 Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
