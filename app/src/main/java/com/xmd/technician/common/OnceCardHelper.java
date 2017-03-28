@@ -1,7 +1,6 @@
 package com.xmd.technician.common;
 
 
-
 import com.xmd.technician.bean.OnceCardBean;
 import com.xmd.technician.bean.OnceCardItemBean;
 import com.xmd.technician.http.gson.OnceCardResult;
@@ -18,7 +17,7 @@ public class OnceCardHelper {
     private List<OnceCardItemBean> mCardItemBeanList;
     public static OnceCardHelper mOnceCardHelper;
 
-    public  OnceCardHelper getInstance() {
+    public OnceCardHelper getInstance() {
         if (mOnceCardHelper == null) {
             mOnceCardHelper = new OnceCardHelper();
         }
@@ -40,29 +39,46 @@ public class OnceCardHelper {
             } else {
                 isPreferential = false;
             }
+
             comboDescription = getComboDescription(onceCardResult.respData.activityList.get(i));
             techRoyalty = getTechRoyalty(onceCardResult.respData.activityList.get(i));
             price = getOnceCardPrice(onceCardResult.respData.activityList.get(i));
-            mCardItemBeanList.add(new OnceCardItemBean(onceCardResult.respData.activityList.get(i).id,onceCardResult.respData.activityList.get(i).name, onceCardResult.respData.activityList.get(i).imageUrl,
-                    isPreferential, comboDescription,onceCardResult.respData.activityList.get(i).itemName+getComboShareDescription(onceCardResult.respData.activityList.get(i)), techRoyalty, price, onceCardResult.respData.activityList.get(i).shareUrl));
+            mCardItemBeanList.add(new OnceCardItemBean(onceCardResult.respData.activityList.get(i).id, onceCardResult.respData.activityList.get(i).name, onceCardResult.respData.activityList.get(i).imageUrl,
+                    isPreferential, comboDescription, onceCardResult.respData.activityList.get(i).itemName + getComboShareDescription(onceCardResult.respData.activityList.get(i)), techRoyalty, price, onceCardResult.respData.activityList.get(i).shareUrl));
         }
         return mCardItemBeanList;
     }
 
     private String getComboDescription(OnceCardBean bean) {
         List<String> mCombo = new ArrayList<>();
-        for (int i = 0; i < bean.itemCardPlans.size(); i++) {
-            mCombo.add(String.format("买%s送%s", bean.itemCardPlans.get(i).paidCount, bean.itemCardPlans.get(i).giveCount));
+        if (bean.type == 1) {
+            for (int i = 0; i < bean.itemCardPlans.size(); i++) {
+                mCombo.add(String.format("买%s送%s", bean.itemCardPlans.get(i).paidCount, bean.itemCardPlans.get(i).giveCount));
+            }
+        } else {
+            for (int i = 0; i < bean.itemCardPlans.size(); i++) {
+                mCombo.add(String.format("%s次", bean.itemCardPlans.get(i).paidCount));
+            }
         }
 
         return String.format("套餐：%s", Utils.listToString(mCombo));
     }
-    private String getComboShareDescription(OnceCardBean bean){
+
+    private String getComboShareDescription(OnceCardBean bean) {
         String desShare = "";
-        for (int i = 0; i < bean.itemCardPlans.size(); i++) {
-            if(bean.itemCardPlans.get(i).optimal.equals("Y")){
-                desShare = String.format("，原价%s元",bean.itemCardPlans.get(i).itemAmount/100)
-                +String.format("(买%s送%s)，",bean.itemCardPlans.get(i).paidCount,bean.itemCardPlans.get(i).giveCount) +String.format("折后%1.1f元",bean.itemCardPlans.get(i).actAmount*1.0/(100f*(bean.itemCardPlans.get(i).paidCount+bean.itemCardPlans.get(i).giveCount)));
+        if (bean.type == 1) {
+            for (int i = 0; i < bean.itemCardPlans.size(); i++) {
+                if (bean.itemCardPlans.get(i).optimal.equals("Y")) {
+                    desShare = String.format("，原价%s元", bean.itemCardPlans.get(i).itemAmount / 100)
+                            + String.format("(买%s送%s)，", bean.itemCardPlans.get(i).paidCount, bean.itemCardPlans.get(i).giveCount) + String.format("折后%1.1f元", bean.itemCardPlans.get(i).actAmount * 1.0 / (100f * (bean.itemCardPlans.get(i).paidCount + bean.itemCardPlans.get(i).giveCount)));
+                }
+            }
+        } else {
+            for (int i = 0; i < bean.itemCardPlans.size(); i++) {
+                if (bean.itemCardPlans.get(i).optimal.equals("Y")) {
+                    desShare = String.format("，原价%s元", bean.itemCardPlans.get(i).itemAmount / 100) + String.format("（%s次，直减%s元）", bean.itemCardPlans.get(i).paidCount, (bean.itemCardPlans.get(i).paidCount * bean.itemCardPlans.get(i).itemAmount - bean.itemCardPlans.get(i).actAmount) / 100)
+                            + String.format("折后%1.1f元", bean.itemCardPlans.get(i).actAmount * 1.0 / (100f * (bean.itemCardPlans.get(i).paidCount + bean.itemCardPlans.get(i).giveCount)));
+                }
             }
         }
         return desShare;

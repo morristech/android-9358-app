@@ -98,7 +98,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_CONVERSATION = 3;
     private static final int TYPE_CREDIT_RECORD_ITEM = 4;
     private static final int TYPE_CREDIT_APPLICATION_ITEM = 5;
-    //    private static final int TYPE_RECENTLY_VISIT_ITEM = 6;
     private static final int TYPE_DYNAMIC_COMMENT_ITEM = 7;
     private static final int TYPE_DYNAMIC_COLLECT_ITEM = 8;
     private static final int TYPE_DYNAMIC_COUPON_ITEM = 9;

@@ -435,8 +435,14 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if (Utils.isNotEmpty(customer.respData.techCustomer.belongsTechSerialNo)) {
             userTechNo = customer.respData.techCustomer.belongsTechSerialNo;
         }
-        if (Utils.isNotEmpty(userTechName) || isMyCustomer) {
-            if (isMyCustomer) {
+        if (Utils.isNotEmpty(userTechName) ) {
+           if (Utils.isNotEmpty(userTechName)) {
+                belongTechName.setText(userTechName);
+                if (Utils.isNotEmpty(userTechNo)) {
+                    belongTechNum.setText(String.format("[%s]", userTechNo));
+                }
+            }
+       /*    else if (isMyCustomer) {
                 if (Utils.isNotEmpty(SharedPreferenceHelper.getUserName())) {
                     belongTechName.setText(SharedPreferenceHelper.getUserName());
                 }
@@ -444,12 +450,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     belongTechNum.setText(String.format("[%s]", SharedPreferenceHelper.getSerialNo()));
                 }
 
-            } else if (Utils.isNotEmpty(userTechName)) {
-                belongTechName.setText(userTechName);
-                if (Utils.isNotEmpty(userTechNo)) {
-                    belongTechNum.setText(String.format("[%s]", userTechNo));
-                }
-            }
+            }*/
 
         } else {
             belongTechName.setText("-");
