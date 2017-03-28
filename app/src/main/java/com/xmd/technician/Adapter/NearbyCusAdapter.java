@@ -47,6 +47,11 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         this.mCallback = callback;
     }
 
+    public void updateBtnStatus(int position) {
+        mList.get(position).techHelloRecently = true;
+        notifyItemChanged(position);
+    }
+
     public void setData(List<NearbyCusInfo> list) {
         if (list != null) {
             mList.clear();
@@ -125,7 +130,7 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         } else {
             holder.mSayHello.setText("打招呼");
             holder.mSayHello.setEnabled(true);
-            holder.mSayHello.setOnClickListener(v -> mCallback.onBtnClick(info));
+            holder.mSayHello.setOnClickListener(v -> mCallback.onBtnClick(info, position));
         }
     }
 
@@ -167,7 +172,7 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
     }
 
     public interface OnItemCallBack {
-        void onBtnClick(NearbyCusInfo info);
+        void onBtnClick(NearbyCusInfo info, int position);
     }
 
 

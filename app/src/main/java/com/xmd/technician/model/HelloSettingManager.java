@@ -1,9 +1,16 @@
 package com.xmd.technician.model;
 
+import android.text.TextUtils;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.HelloTemplateInfo;
+import com.xmd.technician.chat.ChatConstant;
 
 import java.io.File;
 
@@ -84,8 +91,11 @@ public class HelloSettingManager {
         return templateImageLink;
     }
 
+    /**
+     * 缓存图片到本地
+     * 利用Glide缓存
+     */
     public void getCacheFilePath() {
-        // 利用Glide缓存
         FutureTarget<File> futureTarget = Glide.with(TechApplication.getAppContext())
                 .load(templateImageUrl)
                 .downloadOnly(0, 0);
@@ -98,7 +108,38 @@ public class HelloSettingManager {
         }
     }
 
+    /**
+     * 获取缓存图片的本地路径
+     *
+     * @return
+     */
     public String getTemplateImageCachePath() {
         return templateImageCachePath;
+    }
+
+    /**
+     * 打招呼
+     *
+     * @param userName
+     * @param userEmchatId
+     */
+    public void sendHelloTemplate(String userName, String userEmchatId) {
+        // 招呼文本
+        EMMessage txtMessage = EMMessage.createTxtSendMessage(templateContentText.replace(TechApplication.getAppContext().getResources().getString(R.string.hello_setting_content_replace), userName), userEmchatId);
+        emSendMessage(txtMessage);
+        if (!TextUtils.isEmpty(templateImageCachePath)) {
+            // 招呼图片
+            EMMessage imgMessage = EMMessage.createTxtSendMessage(templateImageCachePath, userEmchatId);
+            emSendMessage(imgMessage);
+        }
+    }
+
+    private void emSendMessage(EMMessage message) {
+        message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
+        message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
+        message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
+        message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
+        message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
+        EMClient.getInstance().chatManager().sendMessage(message);
     }
 }

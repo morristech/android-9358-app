@@ -1084,16 +1084,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             visitViewList.get(i).setVisibility(View.VISIBLE);
             Glide.with(mContext).load(visitList.get(i).avatarUrl).into((CircleImageView) visitViewList.get(i));
             final int finalI = i;
-            visitViewList.get(i).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RecentlyVisitorBean bean = visitList.get(finalI);
-                    Map<String, Object> params = new HashMap<>();
-                    params.put(RequestConstant.KEY_REQUEST_TAG, false);
-                    params.put(RequestConstant.KEY_NEARBY_CUSTOMER_ID, bean.userId);
-                    params.put(RequestConstant.KEY_RECENTLY_VISITOR_BEAN, bean);
-                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
-                }
+            visitViewList.get(i).setOnClickListener(v -> {
+                RecentlyVisitorBean bean = visitList.get(finalI);
+                Map<String, Object> params = new HashMap<>();
+                params.put(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG, Constant.REQUEST_CONTACT_PERMISSION_OTHER);
+                params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, bean.userId);
+                params.put(RequestConstant.KEY_RECENTLY_VISITOR_BEAN, bean);
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
             });
         }
     }

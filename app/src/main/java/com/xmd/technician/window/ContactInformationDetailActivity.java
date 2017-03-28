@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ContactPermissionInfo;
@@ -24,7 +25,7 @@ import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.DeleteContactResult;
 import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.OrderBean;
-import com.xmd.technician.bean.SayHiResult;
+import com.xmd.technician.bean.SayHiVisitorResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.chat.ChatConstant;
@@ -147,7 +148,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private Subscription doDeleteContactSubscription;
     private Subscription doShowVisitViewSubscription;
     private Subscription getContactPermissionSubscription;  // 聊天限制
-    private Subscription sayHelloSubscription;  // 打招呼
+    private Subscription sayHelloVisitorSubscription;  // 打招呼
     private String contactId;
     private String userId;
     private boolean isEmptyCustomer;
@@ -227,8 +228,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     handleContactPermissionResult(contactPermissionResult);
                 });
                 // 打招呼
-                sayHelloSubscription = RxBus.getInstance().toObservable(SayHiResult.class).subscribe(result -> {
-                    handleSayHelloResult(result);
+                sayHelloVisitorSubscription = RxBus.getInstance().toObservable(SayHiVisitorResult.class).subscribe(result -> {
+                    handleSayHiVisitorResult(result);
                 });
 
                 Map<String, String> params = new HashMap<>();
@@ -405,8 +406,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if (getContactPermissionSubscription != null) {
             RxBus.getInstance().unsubscribe(getContactPermissionSubscription);
         }
-        if (sayHelloSubscription != null) {
-            RxBus.getInstance().unsubscribe(sayHelloSubscription);
+        if (sayHelloVisitorSubscription != null) {
+            RxBus.getInstance().unsubscribe(sayHelloVisitorSubscription);
         }
     }
 
@@ -584,16 +585,21 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     // 打招呼
     private void sayHello(String customerId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put(RequestConstant.KEY_USER_ID, customerId);
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_VISITOR);
+        params.put(RequestConstant.KEY_USERNAME, chatName);
+        params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, chatEmId);
+        params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, customerId);
         params.put(ChatConstant.KEY_SAY_HI_POSITION, String.valueOf(chatPosition));
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_SAY_HI, params);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, params);
     }
 
     // 处理打招呼结果
-    private void handleSayHelloResult(SayHiResult result) {
+    private void handleSayHiVisitorResult(SayHiVisitorResult result) {
         if (result.statusCode == 200) {
             showToast("打招呼成功");
+            btnEmHello.setEnabled(false);
+            btnEmHello.setText(R.string.had_say_hi);
         } else {
             showToast("打招呼失败:" + result.msg);
         }
@@ -602,8 +608,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
     // 获取聊天限制
     private void getContactPermission(String customerId) {
         Map<String, Object> params = new HashMap<>();
-        params.put(RequestConstant.KEY_REQUEST_TAG, true);
-        params.put(RequestConstant.KEY_NEARBY_CUSTOMER_ID, customerId);
+        params.put(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG, Constant.REQUEST_CONTACT_PERMISSION_DETAIL);
+        params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, customerId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
     }
 
@@ -620,10 +626,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 btnEmHello.setVisibility(View.VISIBLE);
                 if (!TextUtils.isEmpty(canSayHello) && canSayHello.equals("0")) {
                     btnEmHello.setEnabled(false);
-                    btnEmHello.setText("已招呼");
+                    btnEmHello.setText(R.string.had_say_hi);
                 } else {
                     btnEmHello.setEnabled(true);
-                    btnEmHello.setText("打招呼");
+                    btnEmHello.setText(R.string.to_say_hi);
                 }
             }
             btnCallPhone.setVisibility(info.call ? View.VISIBLE : View.GONE);
@@ -729,12 +735,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             params.put(RequestConstant.KEY_CONTACT_TYPE, "");
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST, params);
             makeShortToast(ResourceUtils.getString(R.string.delete_contact_success));
-            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-                @Override
-                public void run() {
-                    ContactInformationDetailActivity.this.finish();
-                }
-            }, 1500);
+            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, () -> ContactInformationDetailActivity.this.finish(), 1500);
         } else {
             makeShortToast(result.msg.toString());
         }

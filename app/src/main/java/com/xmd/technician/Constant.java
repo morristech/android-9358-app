@@ -219,5 +219,11 @@ public class Constant {
 
 
     public static final String PUSH_MESSAGE_BUSINESS_PAY_NOTIFY = "fast_pay";
+
+    public static final String REQUEST_SAY_HI_TYPE_VISITOR = "visitor";
+    public static final String REQUEST_SAY_HI_TYPE_NEARBY = "nearby";
+
+    public static final String REQUEST_CONTACT_PERMISSION_DETAIL = "detail";
+    public static final String REQUEST_CONTACT_PERMISSION_OTHER = "other";
 }
 

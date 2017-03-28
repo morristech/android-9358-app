@@ -4,22 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.Adapter.NearbyCusAdapter;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.NearbyCusInfo;
+import com.xmd.technician.bean.SayHiNearbyResult;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
-import com.xmd.technician.http.gson.HelloTechSayResult;
 import com.xmd.technician.http.gson.NearbyCusListResult;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -55,7 +52,7 @@ public class NearbyActivity extends BaseActivity {
 
     private Subscription mGetHelloLeftCountSubscription;
     private Subscription mGetNearbyCusListSubscription;
-    private Subscription mTechSayHelloSubscription;
+    private Subscription mSayHiNearbySubscription;
 
     private List<NearbyCusInfo> mAdapterList = new ArrayList<>();
 
@@ -78,8 +75,8 @@ public class NearbyActivity extends BaseActivity {
             handleNearbyCusListResult(result);
         });
 
-        mTechSayHelloSubscription = RxBus.getInstance().toObservable(HelloTechSayResult.class).subscribe(helloTechSayResult -> {
-            handleTechSayHelloResult(helloTechSayResult);
+        mSayHiNearbySubscription = RxBus.getInstance().toObservable(SayHiNearbyResult.class).subscribe(result -> {
+            handleSayHiNearbyResult(result);
         });
 
         getHelloLeftCount();
@@ -93,11 +90,14 @@ public class NearbyActivity extends BaseActivity {
 
         mFixSnapHelper = new FixLinearSnapHelper();
         mCusAdapter = new NearbyCusAdapter(this);
-        mCusAdapter.setCallback(info -> {
+        mCusAdapter.setCallback((info, position) -> {
             // 打招呼
-            Map<String, Object> params = new HashMap<>();
-            params.put(RequestConstant.KEY_NEARBY_CUSTOMER_INFO, info);
-            params.put(RequestConstant.KEY_HELLO_TEMPLATE_ID, String.valueOf(HelloSettingManager.getInstance().getTemplateId()));
+            Map<String, String> params = new HashMap<>();
+            params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_NEARBY);
+            params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, info.userId);
+            params.put(RequestConstant.KEY_USERNAME, info.userName);
+            params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, info.userEmchatId);
+            params.put(ChatConstant.KEY_SAY_HI_POSITION, String.valueOf(position));
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, params);
         });
         mCusRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -190,44 +190,23 @@ public class NearbyActivity extends BaseActivity {
     }
 
     // 打招呼
-    private void handleTechSayHelloResult(HelloTechSayResult result) {
+    private void handleSayHiNearbyResult(SayHiNearbyResult result) {
         if (result != null && result.statusCode == 200) {
-            NearbyCusInfo info = result.customerInfo;
-            // 调用环信打招呼,如果有图片需要发送图片
-            emSendTextMessage(HelloSettingManager.getInstance().getTemplateContentText().replace(getResources().getString(R.string.hello_setting_content_replace), info.userName), info.userEmchatId);
-            if (!TextUtils.isEmpty(HelloSettingManager.getInstance().getTemplateImageCachePath())) {
-                emSendImageMessage(HelloSettingManager.getInstance().getTemplateImageCachePath(), info.userEmchatId);
-            }
-            showToast("打招呼成功");
+            //环信招呼
+            HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId);
             // 刷新打招呼次数
             getHelloLeftCount();
-            saveChatContact(info.userEmchatId); //保存用户好友关系链
+            //保存用户好友关系链
+            saveChatContact(result.userEmchatId);
+            //更新列表状态
+            mAdapterList.get(result.cusPosition).techHelloRecently = true;
+            mCusAdapter.updateBtnStatus(result.cusPosition);
+            // 成功提示
+            showToast("打招呼成功");
         } else {
             // 错误提示
             showToast("向客户打招呼失败:" + result.msg);
         }
-    }
-
-    // 使用环信发送图片
-    private void emSendImageMessage(String imagePath, String emChatTarget) {
-        EMMessage message = EMMessage.createImageSendMessage(imagePath, false, emChatTarget);
-        emSendMessage(message);
-    }
-
-
-    // 使用环信发送文本消息
-    private void emSendTextMessage(String content, String emChatTarget) {
-        EMMessage message = EMMessage.createTxtSendMessage(content, emChatTarget);
-        emSendMessage(message);
-    }
-
-    private void emSendMessage(EMMessage message) {
-        message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
-        message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
-        message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
-        message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
-        message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
-        EMClient.getInstance().chatManager().sendMessage(message);
     }
 
     @Override
@@ -236,7 +215,7 @@ public class NearbyActivity extends BaseActivity {
         ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mGetHelloLeftCountSubscription,
                 mGetNearbyCusListSubscription,
-                mTechSayHelloSubscription);
+                mSayHiNearbySubscription);
     }
 
     // 招呼记录
