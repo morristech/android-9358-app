@@ -219,5 +219,20 @@ public class Constant {
 
 
     public static final String PUSH_MESSAGE_BUSINESS_PAY_NOTIFY = "fast_pay";
+
+    public static final String REQUEST_SAY_HI_TYPE_VISITOR = "visitor";
+    public static final String REQUEST_SAY_HI_TYPE_NEARBY = "nearby";
+    public static final String REQUEST_SAY_HI_TYPE_DETAIL = "detail";
+
+    public static final String REQUEST_CONTACT_PERMISSION_VISITOR = "visitor";
+    public static final String REQUEST_CONTACT_PERMISSION_EMCHAT = "emchat";
+    public static final String REQUEST_CONTACT_PERMISSION_DETAIL = "detail";
+
+    public static final String REQUEST_CONTACT_ID_TYPE_CUSTOMER = "customer";
+    public static final String REQUEST_CONTACT_ID_TYPE_EMCHAT = "emchat";
+
+    public static final String CONTACT_INFO_DETAIL_TYPE_CUSTOMER = "customer";
+    public static final String CONTACT_INFO_DETAIL_TYPE_MANAGER = "manager";
+    public static final String CONTACT_INFO_DETAIL_TYPE_TECH = "tech";
 }
 

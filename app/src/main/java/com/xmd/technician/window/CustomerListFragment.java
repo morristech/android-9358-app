@@ -10,11 +10,9 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -26,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xmd.technician.Adapter.SortCustomerAdapter;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.bean.CustomerListResult;
@@ -53,7 +52,7 @@ import rx.Subscription;
 /**
  * Created by Administrator on 2016/7/4.
  */
-public class CustomerListFragment extends Fragment implements View.OnClickListener ,SwipeRefreshLayout.OnRefreshListener{
+public class CustomerListFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.search_contact)
     EditText editText;
     @Bind(R.id.btn_search)
@@ -91,7 +90,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     private List<CustomerInfo> mCustomerList = new ArrayList<CustomerInfo>();
     private PinyinCompartorUtil pinyinComparator;
     private List<CustomerInfo> customerInfos;
-    private Map<String,String> params = new HashMap<>();
+    private Map<String, String> params = new HashMap<>();
 
     @Nullable
     @Override
@@ -108,8 +107,8 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     }
 
     protected void initView(View view) {
-        params.put(RequestConstant.KEY_CONTACT_TYPE,"");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
+        params.put(RequestConstant.KEY_CONTACT_TYPE, "");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST, params);
         characterParser = CharacterParser.getInstance();
         mGetCustomerListSubscription = RxBus.getInstance().toObservable(CustomerListResult.class).subscribe(customer -> {
             handlerCustomerInfoList(customer);
@@ -125,9 +124,9 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         mCustomerList.addAll(customerResult.respData);
         statusBar.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
-        if(mCustomerList.size()>0){
+        if (mCustomerList.size() > 0) {
             mEmptyView.setStatus(EmptyView.Status.Gone);
-                       titleLayout.setVisibility(View.VISIBLE);
+            titleLayout.setVisibility(View.VISIBLE);
             String name;
             for (int i = 0; i < mCustomerList.size(); i++) {
                 if (Utils.isNotEmpty(mCustomerList.get(i).userNoteName)) {
@@ -160,26 +159,22 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
                 }
             });
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-                    if(customerInfos!=null&&customerInfos.size()>0){
-                        intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
-                        intent.putExtra(RequestConstant.KEY_USER_ID,customerInfos.get(position).userId);
-                    }else{
-                        intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mCustomerList.get(position).id);
-                        intent.putExtra(RequestConstant.KEY_USER_ID,mCustomerList.get(position).userId);
-                        intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER,true);
-                    }
-                    intent.putExtra(RequestConstant.CONTACT_TYPE,mCustomerList.get(position).customerType);
-                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, "customer");
-                    startActivity(intent);
+            listView.setOnItemClickListener((parent, view1, position, id) -> {
+                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
+                if (customerInfos != null && customerInfos.size() > 0) {
+                    intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
+                    intent.putExtra(RequestConstant.KEY_USER_ID, customerInfos.get(position).userId);
+                } else {
+                    intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mCustomerList.get(position).id);
+                    intent.putExtra(RequestConstant.KEY_USER_ID, mCustomerList.get(position).userId);
+                    intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, true);
                 }
+                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
+                startActivity(intent);
             });
             pinyinComparator = new PinyinCompartorUtil();
             Collections.sort(mCustomerList, pinyinComparator);
-            if (mCustomerList.size() <=0) {
+            if (mCustomerList.size() <= 0) {
                 return;
             }
             adapter = new SortCustomerAdapter(getActivity(), mCustomerList);
@@ -242,10 +237,10 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    if(s.length()>0){
+                    if (s.length() > 0) {
                         titleLayout.setVisibility(View.GONE);
                         searchCustomer();
-                    }else{
+                    } else {
                         titleLayout.setVisibility(View.VISIBLE);
                         closeSearch();
                     }
@@ -253,7 +248,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
                 }
             });
 
-        }else{
+        } else {
             mEmptyView.setStatus(EmptyView.Status.Gone);
             mEmptyView.setEmptyPic(R.drawable.empty);
             mEmptyView.setEmptyTip("");
@@ -261,7 +256,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
             adapter = new SortCustomerAdapter(getActivity(), new ArrayList<>());
             listView.setAdapter(adapter);
             mSwipeRefreshLayout.setRefreshing(false);
-            Utils.makeShortToast(getActivity(),"未查询到相关联系人");
+            Utils.makeShortToast(getActivity(), "未查询到相关联系人");
 
         }
 
@@ -276,7 +271,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-      closeSearch();
+        closeSearch();
     }
 
     private void searchCustomer() {
@@ -288,8 +283,8 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
             alertMessage.setVisibility(View.GONE);
             customerInfos.clear();
             for (CustomerInfo sortCustomer : mCustomerList) {
-                String name = Utils.isNotEmpty(sortCustomer.userName)?sortCustomer.userName:"匿名用户";
-                String noteName = Utils.isNotEmpty(sortCustomer.userNoteName)?sortCustomer.userNoteName:name;
+                String name = Utils.isNotEmpty(sortCustomer.userName) ? sortCustomer.userName : "匿名用户";
+                String noteName = Utils.isNotEmpty(sortCustomer.userNoteName) ? sortCustomer.userNoteName : name;
                 if (noteName.indexOf(editStr.toString()) != -1 || characterParser.getSelling(noteName)
                         .startsWith(editStr.toString())) {
                     customerInfos.add(sortCustomer);
@@ -298,7 +293,7 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         }
         Collections.sort(customerInfos, pinyinComparator);
         if (customerInfos.size() > 0) {
-            adapter.updateListView(customerInfos,true);
+            adapter.updateListView(customerInfos, true);
         } else {
             titleLayout.setVisibility(View.GONE);
             alertMessage.setVisibility(View.VISIBLE);
@@ -307,9 +302,9 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
 
     public int getSectionForPosition(int position) {
 
-        if(position<mCustomerList.size()){
+        if (position < mCustomerList.size()) {
             return mCustomerList.get(position).sortLetters.charAt(0);
-        }else{
+        } else {
             return -1;
         }
 
@@ -326,21 +321,20 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
         return -1;
     }
 
-    private void closeSearch(){
+    private void closeSearch() {
         if (!TextUtils.isEmpty(editText.getText().toString())) {
             editText.setText("");
         }
-        customerInfos =null;
+        customerInfos = null;
         alertMessage.setVisibility(View.GONE);
-        adapter.updateListView(mCustomerList ,false);
+        adapter.updateListView(mCustomerList, false);
     }
-
 
 
     @Override
     public void onPause() {
         super.onPause();
-        if(window!=null){
+        if (window != null) {
             window.dismiss();
         }
         mSwipeRefreshLayout.setRefreshing(false);
@@ -349,27 +343,29 @@ public class CustomerListFragment extends Fragment implements View.OnClickListen
     @Override
     public void onRefresh() {
         TextView tv = (TextView) getActivity().findViewById(R.id.table_contact);
-        if(tv.getText().equals(ResourceUtils.getString(R.string.phone_contact))){
+        if (tv.getText().equals(ResourceUtils.getString(R.string.phone_contact))) {
             requestContactList(RequestConstant.TECH_ADD);
-        }else if(tv.getText().equals(ResourceUtils.getString(R.string.fans_contact))){
+        } else if (tv.getText().equals(ResourceUtils.getString(R.string.fans_contact))) {
             requestContactList(RequestConstant.FANS_USER);
-        }else if(tv.getText().equals(ResourceUtils.getString(R.string.wx_contact))){
+        } else if (tv.getText().equals(ResourceUtils.getString(R.string.wx_contact))) {
             requestContactList(RequestConstant.WX_USER);
-        }else{
-            params.put(RequestConstant.KEY_CUSTOMER_TYPE,"");
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
+        } else {
+            params.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST, params);
         }
 
     }
-    private void requestContactList(String type){
+
+    private void requestContactList(String type) {
         params.clear();
-        params.put(RequestConstant.KEY_CUSTOMER_TYPE,type);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST,params);
+        params.put(RequestConstant.KEY_CUSTOMER_TYPE, type);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST, params);
     }
+
     private InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            if(source.equals(" ")||source.toString().contentEquals("\n"))return "";
+            if (source.equals(" ") || source.toString().contentEquals("\n")) return "";
             else return null;
         }
     };

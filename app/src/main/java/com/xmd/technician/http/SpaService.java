@@ -14,7 +14,7 @@ import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SaveChatUserResult;
-import com.xmd.technician.bean.SayHiResult;
+import com.xmd.technician.bean.SayHiBaseResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.UserGetCouponResult;
@@ -41,7 +41,6 @@ import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.HelloRecordListResult;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
-import com.xmd.technician.http.gson.HelloTechSayResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
@@ -213,8 +212,8 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_ICODE)
     Call<BaseResult> getICode(@Field(RequestConstant.KEY_MOBILE) String mobile,
-                              @Field(RequestConstant.KEY_WHICH)String which,
-                              @Field(RequestConstant.KEY_SIGN)String sign);
+                              @Field(RequestConstant.KEY_WHICH) String which,
+                              @Field(RequestConstant.KEY_SIGN) String sign);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_JOIN_CLUB)
@@ -492,13 +491,6 @@ public interface SpaService {
     );
 
     @FormUrlEncoded
-    @POST(RequestConstant.URL_CUSTOMER_SAY_HI)
-    Call<SayHiResult> doSayHi(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                              @Field(RequestConstant.KEY_TOKEN) String userToken,
-                              @Field(RequestConstant.KEY_UPDATE_USER_ID) String userId
-    );
-
-    @FormUrlEncoded
     @POST(RequestConstant.URL_CUSTOMER_VIEW_VISIT)
     Call<VisitBean> doGetVisitView(@Field(RequestConstant.KEY_USER_TYPE) String userType,
                                    @Field(RequestConstant.KEY_TOKEN) String userToken,
@@ -512,8 +504,6 @@ public interface SpaService {
                                            @Field(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
                                            @Field(RequestConstant.KEY_FRIEND_USER_TYPE) String friendUserType,
                                            @Field(RequestConstant.KEY_FRIEND_MESSAGE_TYPE) String msgType
-
-
     );
 
     /**
@@ -690,11 +680,13 @@ public interface SpaService {
                                                 @Field(RequestConstant.KEY_USER_CLUB_ID) String clubId,
                                                 @Field(RequestConstant.KEY_PAGE) String page,
                                                 @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
     //期刊分享加1
     @FormUrlEncoded
     @POST(RequestConstant.URL_DO_USER_JOURNAL_SHARE_COUNT)
     Call<BaseResult> journalShareCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_JOURNAL_ID) String journalId);
+
     //技师账户列表
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_PROFILE_TECH_ACCOUNT_LIST)
@@ -724,9 +716,9 @@ public interface SpaService {
     // 打招呼
     @FormUrlEncoded
     @POST(RequestConstant.URL_TECH_SAY_HELLO)
-    Call<HelloTechSayResult> techSayHello(@Path(RequestConstant.KEY_NEARBY_CUSTOMER_ID) String customerId,
-                                          @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                          @Field(RequestConstant.KEY_HELLO_TEMPLATE_ID) String templateId);
+    Call<SayHiBaseResult> techSayHello(@Path(RequestConstant.KEY_NEW_CUSTOMER_ID) String customerId,
+                                       @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                       @Field(RequestConstant.KEY_HELLO_TEMPLATE_ID) String templateId);
 
     // 获取剩余打招呼次数
     @GET(RequestConstant.URL_GET_HELLO_LEFT_COUNT)
@@ -740,13 +732,14 @@ public interface SpaService {
 
     // 查询近期是否打过招呼
     @GET(RequestConstant.URL_CHECK_HELLO_RECENTLY)
-    Call<HelloCheckRecentlyResult> checkHelloRecently(@Path(RequestConstant.KEY_NEARBY_CUSTOMER_ID) String customerId,
+    Call<HelloCheckRecentlyResult> checkHelloRecently(@Path(RequestConstant.KEY_NEW_CUSTOMER_ID) String customerId,
                                                       @Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 查询联系状态
     @GET(RequestConstant.URL_GET_CONTACT_PERMISSION)
-    Call<ContactPermissionResult> getContactPermission(@Path(RequestConstant.KEY_NEARBY_CUSTOMER_ID) String customerId,
-                                                       @Query(RequestConstant.KEY_TOKEN) String userToken);
+    Call<ContactPermissionResult> getContactPermission(@Path(RequestConstant.KEY_ID) String id,
+                                                       @Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                       @Query(RequestConstant.KEY_CONTACT_ID_TYPE) String idType);
 
     // 获取打招呼内容
     @GET(RequestConstant.URL_GET_HELLO_TEMPLATE)

@@ -12,20 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.Adapter.RecentlyVisitorAdapter;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
-import com.xmd.technician.bean.SayHiResult;
+import com.xmd.technician.bean.SayHiVisitorResult;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -48,11 +47,10 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
     SwipeRefreshLayout swipeRefreshWidget;
 
     private Subscription mGetRecentlyVisitorSubscription;
-    private Subscription mSayHiResultSubscription;
+    private Subscription mSayHiVisitorResultSubscription;
     private Map<String, String> params = new HashMap<>();
     private Map<String, String> mSayHiParams = new HashMap<>();
     private String lastTime;
-    private String friendUserId;
     private boolean isRefresh;
     private RecentlyVisitorAdapter<RecentlyVisitorBean> adapter;
     private List<RecentlyVisitorBean> mVisitors;
@@ -85,8 +83,8 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
         list.setAdapter(adapter);
         swipeRefreshWidget.setOnRefreshListener(this);
 
-        mSayHiResultSubscription = RxBus.getInstance().toObservable(SayHiResult.class).subscribe(
-                result -> handlerSayHiResult(result)
+        mSayHiVisitorResultSubscription = RxBus.getInstance().toObservable(SayHiVisitorResult.class).subscribe(
+                result -> handlerSayHiVisitorResult(result)
         );
         mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
                 result -> handlerClubInfoList(result)
@@ -126,8 +124,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
         return false;
     }
 
-    private void handlerSayHiResult(SayHiResult result) {
-
+    private void handlerSayHiVisitorResult(SayHiVisitorResult result) {
         if (result.statusCode == 200) {
             position = Integer.parseInt(result.position);
             if (position != -1) {
@@ -135,21 +132,17 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
                 adapter.notifyItemChanged(position);
             }
 
-            if (Utils.isNotEmpty(SharedPreferenceHelper.getSerialNo())) {
-                sendGreetingTextMessage(String.format("客官您好，我是%s[%s]技师，希望能够为您服务，约我哟～", SharedPreferenceHelper.getUserName(), SharedPreferenceHelper.getSerialNo()), friendUserId);
-            } else {
-                sendGreetingTextMessage(String.format("客官您好，我是%s技师，希望能够为您服务，约我哟～", SharedPreferenceHelper.getUserName()), friendUserId);
-            }
-            Map<String, String> saveParams = new HashMap<>();
-            saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, friendUserId);
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
+            // 环信打招呼
+            HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId);
 
+            Map<String, String> saveParams = new HashMap<>();
+            saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, result.userEmchatId);
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
         }
 
     }
 
     private void handlerClubInfoList(RecentlyVisitorResult result) {
-
         swipeRefreshWidget.setRefreshing(false);
         if (result.statusCode == 200) {
             if (result.isMainPage.equals("0")) {
@@ -167,7 +160,6 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
                             user.setNick(result.respData.get(i).userName);
                             UserUtils.saveUser(user);
                         }
-
                     }
                     lastTime = String.valueOf(result.respData.get(result.respData.size() - 1).createdAt);
                 }
@@ -192,21 +184,19 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(pageSize));
         params.put(RequestConstant.KEY_IS_MAIN_PAGE, "1");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, params);
-
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        RxBus.getInstance().unsubscribe(mGetRecentlyVisitorSubscription, mSayHiResultSubscription);
+        RxBus.getInstance().unsubscribe(mGetRecentlyVisitorSubscription, mSayHiVisitorResultSubscription);
     }
 
     private RecentlyVisitorAdapter.CallbackInterface<RecentlyVisitorBean> inteface = new RecentlyVisitorAdapter.CallbackInterface<RecentlyVisitorBean>() {
         @Override
         public void onSayHiButtonClicked(RecentlyVisitorBean bean, int position) {
-            friendUserId = bean.emchatId;
-            sayHiRequest(bean.userId, String.valueOf(position));
+            sayHiRequest(bean.userId, bean.userName, bean.emchatId, String.valueOf(position));
         }
 
         @Override
@@ -214,18 +204,11 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
             if (Long.parseLong(bean.userId) > 0) {
                 Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
                 intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-                intent.putExtra(RequestConstant.CONTACT_TYPE, bean.customerType);
-                intent.putExtra(RequestConstant.KEY_TECH_NAME, bean.techName);
-                intent.putExtra(RequestConstant.KEY_TECH_No, bean.techSerialNo);
-                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, RequestConstant.TYPE_CUSTOMER);
-                intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
-                intent.putExtra(RequestConstant.KEY_CAN_SAY_HELLO, bean.canSayHello);
-                intent.putExtra(ChatConstant.KEY_SAY_HI_POSITION, position);
+                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
                 startActivity(intent);
             } else {
                 Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
             }
-
         }
 
         @Override
@@ -234,27 +217,14 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
         }
     };
 
-    private void sayHiRequest(String userId, String position) {
+    private void sayHiRequest(String userId, String userName, String userEmchatId, String position) {
         mSayHiParams.clear();
-        params.put(RequestConstant.KEY_USER_ID, userId);
+        params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_VISITOR);
+        params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, userId);
+        params.put(RequestConstant.KEY_USERNAME, userName);
+        params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, userEmchatId);
         params.put(ChatConstant.KEY_SAY_HI_POSITION, position);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_SAY_HI, params);
-    }
-
-    private void sendGreetingTextMessage(String content, String mToChatUsername) {
-        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
-        sendMessage(message);
-    }
-
-    protected void sendMessage(EMMessage message) {
-        message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
-        message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
-        message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
-        message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
-        message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
-        //发送消息
-        EMClient.getInstance().chatManager().sendMessage(message);
-
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, params);
     }
 
     @Override

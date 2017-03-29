@@ -68,6 +68,7 @@ public class OnceCardResult extends BaseResult {
             public String image;
             public String imageUrl;
             public String statusName;
+            public int type;
             public List<ItemCardPlansBean> itemCardPlans;
 
             public static class ItemCardPlansBean {

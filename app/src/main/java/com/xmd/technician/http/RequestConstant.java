@@ -143,7 +143,7 @@ public class RequestConstant {
     public static final String URL_CHECK_HELLO_RECENTLY = BASE_URL + "/v2/tech/hello/{customerId}/status";
 
     // 查询同客户的联系限制
-    public static final String URL_GET_CONTACT_PERMISSION = BASE_URL + "/v2/tech/contact/permission/{customerId}";
+    public static final String URL_GET_CONTACT_PERMISSION = BASE_URL + "/v2/tech/contact/permission/{id}";
 
     // 保存打招呼内容 post
     public static final String URL_SAVE_HELLO_TEMPLATE = BASE_URL + "/v2/tech/hello/template";
@@ -329,14 +329,17 @@ public class RequestConstant {
     public static final String KEY_IS_SHARE = "isShare";
 
     // -----------------------------------------> 附近的人 <-----------------------------------------
-    public static final String KEY_NEARBY_CUSTOMER_ID = "customerId";
-    public static final String KEY_NEARBY_CUSTOMER_INFO = "customerInfo";
+    public static final String KEY_NEW_CUSTOMER_ID = "customerId";
     public static final String KEY_HELLO_TEMPLATE_ID = "templateId";
     public static final String KEY_HELLO_SINCE = "since";           // 保留
     public static final String KEY_HELLO_TYPE_REPLY = "onlyReply";  // 保留
     public static final String KEY_TEMPLATE_IMAGE_ID = "imageId";
     public static final String KEY_RECENTLY_VISITOR_BEAN = "recentlyBean";
-    public static final String KEY_REQUEST_TAG = "requestTag";
+    public static final String KEY_CHAT_CONVERSATION_BEAN = "conversationBean";
+    public static final String KEY_REQUEST_CONTACT_PERMISSION_TAG = "requestContactPermission";
+    public static final String KEY_REQUEST_SAY_HI_TYPE = "requestSayHiType";
+    public static final String KEY_CONTACT_ID_TYPE = "idType";
+    public static final String KEY_CONTACT_PERMISSION_INFO = "permissionInfo";
 
     public static final String KEY_PLATFORM = "platform";
     public static final String VALUE_PLATFORM_TECH = "TECH_APP";

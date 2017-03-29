@@ -46,7 +46,7 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.event.EventRequestJoinClub;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.ContactPermissionWithBeanResult;
+import com.xmd.technician.http.gson.ContactPermissionVisitorResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.NearbyCusCountResult;
@@ -79,7 +79,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
-import rx.functions.Action1;
 
 /**
  * Created by Lhj on 2016/10/19.
@@ -237,7 +236,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mRequestJoinClubSubscription;
     private Subscription mGetNearbyCusCountSubscription;    // 附近的人:获取会所附近客户数量;
     private Subscription mGetHelloSetTemplateSubscription;  // 获取打招呼内容
-    private Subscription mGetContactPermissionSubscription; // 获取聊天限制
+    private Subscription mContactPermissionVisitorSubscription; // 获取聊天限制
 
     private LoginTechnician mTech = LoginTechnician.getInstance();
     private HelloSettingManager mHelloSettingManager = HelloSettingManager.getInstance();
@@ -290,7 +289,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mRequestJoinClubSubscription,
                 mGetNearbyCusCountSubscription,
                 mGetHelloSetTemplateSubscription,
-                mGetContactPermissionSubscription);
+                mContactPermissionVisitorSubscription);
     }
 
     private void initView(View view) {
@@ -355,11 +354,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             handleSetTemplateResult(helloGetTemplateResult);
         });
 
-        mGetContactPermissionSubscription = RxBus.getInstance().toObservable(ContactPermissionWithBeanResult.class).subscribe(new Action1<ContactPermissionWithBeanResult>() {
-            @Override
-            public void call(ContactPermissionWithBeanResult contactPermissionWithBeanResult) {
-                handleContactPermission(contactPermissionWithBeanResult);
-            }
+        mContactPermissionVisitorSubscription = RxBus.getInstance().toObservable(ContactPermissionVisitorResult.class).subscribe(contactPermissionVisitorResult -> {
+            handleContactPermissionVisitor(contactPermissionVisitorResult);
         });
     }
 
@@ -369,7 +365,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         imageRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.btn_main_qr_code));
     }
 
-    /**************************统计数据***************************/
+    /**************************
+     * 统计数据
+     ***************************/
     @CheckBusinessPermission(PermissionConstants.STATISTIC)
     public void initStatistic() {
         mRootView.findViewById(R.id.statistic_layout).setVisibility(View.VISIBLE);
@@ -407,7 +405,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mRootView.findViewById(R.id.main_total_income).setVisibility(View.VISIBLE);
     }
 
-    /**************************在线买单***************************/
+    /**************************
+     * 在线买单
+     ***************************/
     @CheckBusinessPermission(PermissionConstants.ONLINE_PAY)
     public void initOnlinePay() {
         mPayNotifyLayout.setVisibility(View.VISIBLE);
@@ -426,7 +426,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         DataRefreshService.refreshPayNotify(true);
     }
 
-    /**************************订单***************************/
+    /**************************
+     * 订单
+     ***************************/
     @CheckBusinessPermission(PermissionConstants.ORDER)
     public void initOrder() {
         mRootView.findViewById(R.id.order_layout).setVisibility(View.VISIBLE);
@@ -446,7 +448,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, param);
     }
 
-    /**************************最近访客***************************/
+    /**************************
+     * 最近访客
+     ***************************/
     @CheckBusinessPermission(PermissionConstants.VISITOR)
     public void initVisitor() {
         mRootView.findViewById(R.id.visitor_layout).setVisibility(View.VISIBLE);
@@ -466,14 +470,16 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         Map<String, String> visitParams = new HashMap<>();
         visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
         visitParams.put(RequestConstant.KEY_LAST_TIME, "");
-        visitParams.put(RequestConstant.KEY_PAGE_SIZE,"20");
-        visitParams.put(RequestConstant.KEY_IS_MAIN_PAGE,"0");//0表示首页请求最近访客1表示联系人列表请求
+        visitParams.put(RequestConstant.KEY_PAGE_SIZE, "20");
+        visitParams.put(RequestConstant.KEY_IS_MAIN_PAGE, "0");//0表示首页请求最近访客1表示联系人列表请求
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
         // 附近的人:获取会所附近客户数量(条件:技师已经加入了会所)
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT);
     }
 
-    /**************************动态***************************/
+    /**************************
+     * 动态
+     ***************************/
     @CheckBusinessPermission(PermissionConstants.MOMENT)
     public void initMoment() {
         mRootView.findViewById(R.id.moment_layout).setVisibility(View.VISIBLE);
@@ -490,7 +496,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_DYNAMIC_LIST, param);
     }
 
-    /**************************排行榜***************************/
+    /**************************
+     * 排行榜
+     ***************************/
     @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
     public void initRanking() {
         mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.VISIBLE);
@@ -503,20 +511,26 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
     }
 
-    /**************************积分中心***************************/
+    /**************************
+     * 积分中心
+     ***************************/
     @CheckBusinessPermission(PermissionConstants.CREDIT)
     public void initCredit() {
         mRootView.findViewById(R.id.btn_main_credit_center).setVisibility(View.VISIBLE);
     }
 
-    /**************************工作状态***************************/
+    /**************************
+     * 工作状态
+     ***************************/
     @CheckBusinessPermission(PermissionConstants.WORK_STATUS)
     public void initWorkStatus() {
         mRootView.findViewById(R.id.work_status_layout).setVisibility(View.VISIBLE);
     }
 
 
-    /**************************附近的人***************************/
+    /**************************
+     * 附近的人
+     ***************************/
     @CheckBusinessPermission(PermissionConstants.NEARBY_USER)
     public void initNearbyUser() {
         mRootView.findViewById(R.id.nearby_layout).setVisibility(View.VISIBLE);
@@ -761,12 +775,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         ft.remove(prev);
                     }
                     QuitClubDialogFragment newFragment = new QuitClubDialogFragment();
-                    newFragment.setListener(new QuitClubDialogFragment.QuitClubListener() {
-                        @Override
-                        public void onQuitClubSuccess() {
-                            showTechStatus(mTech.getStatus());
-                        }
-                    });
+                    newFragment.setListener(() -> showTechStatus(mTech.getStatus()));
                     newFragment.show(ft, "quit_club");
                 }
                 break;
@@ -1084,21 +1093,20 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             visitViewList.get(i).setVisibility(View.VISIBLE);
             Glide.with(mContext).load(visitList.get(i).avatarUrl).into((CircleImageView) visitViewList.get(i));
             final int finalI = i;
-            visitViewList.get(i).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RecentlyVisitorBean bean = visitList.get(finalI);
-                    Map<String, Object> params = new HashMap<>();
-                    params.put(RequestConstant.KEY_REQUEST_TAG, false);
-                    params.put(RequestConstant.KEY_NEARBY_CUSTOMER_ID, bean.userId);
-                    params.put(RequestConstant.KEY_RECENTLY_VISITOR_BEAN, bean);
-                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
-                }
+            visitViewList.get(i).setOnClickListener(v -> {
+                RecentlyVisitorBean bean = visitList.get(finalI);
+                Map<String, Object> params = new HashMap<>();
+                params.put(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG, Constant.REQUEST_CONTACT_PERMISSION_VISITOR);
+                params.put(RequestConstant.KEY_ID, bean.userId);
+                params.put(RequestConstant.KEY_CONTACT_ID_TYPE, Constant.REQUEST_CONTACT_ID_TYPE_CUSTOMER);
+                params.put(RequestConstant.KEY_RECENTLY_VISITOR_BEAN, bean);
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
             });
         }
     }
 
-    private void handleContactPermission(ContactPermissionWithBeanResult result) {
+    // 最近访客:跳转聊天或者详情
+    private void handleContactPermissionVisitor(ContactPermissionVisitorResult result) {
         RecentlyVisitorBean bean = result.bean;
         if (result.statusCode == 200 && result.respData.echat) {
             // 聊天
@@ -1109,12 +1117,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             if (Long.parseLong(bean.userId) > 0) {
                 Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
                 intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-                intent.putExtra(RequestConstant.CONTACT_TYPE, bean.customerType);
-                intent.putExtra(RequestConstant.KEY_TECH_NAME, bean.techName);
-                intent.putExtra(RequestConstant.KEY_TECH_No, bean.techSerialNo);
-                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, RequestConstant.TYPE_CUSTOMER);
-                intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
-                intent.putExtra(RequestConstant.KEY_CAN_SAY_HELLO, bean.canSayHello);
+                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
                 startActivity(intent);
             } else {
                 Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));

@@ -11,7 +11,6 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +24,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xmd.technician.Adapter.SortClubAdapter;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CLubMember;
 import com.xmd.technician.bean.ClubContactResult;
-import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.bean.Manager;
 import com.xmd.technician.bean.Tech;
 import com.xmd.technician.common.CharacterParser;
@@ -151,28 +150,23 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
             }
         });
         mSwipeRefreshLayout.setRefreshing(false);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-                if (customerInfos != null && customerInfos.size() > 0) {
-                    intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
-                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, customerInfos.get(position).userType.equals("manager") ? "manager" : "tech");
-                    if (customerInfos.get(position).userType.equals("manager")) {
-                        intent.putExtra(RequestConstant.KEY_MANAGER_URL, customerInfos.get(position).avatarUrl);
-                    }
-
-                } else {
-                    intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mClubList.get(position).id);
-                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, mClubList.get(position).userType.equals("manager") ? "manager" : "tech");
-                    if (mClubList.get(position).userType.equals("manager")) {
-                        intent.putExtra(RequestConstant.KEY_MANAGER_URL, mClubList.get(position).avatarUrl);
-                    }
+        mListView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
+            if (customerInfos != null && customerInfos.size() > 0) {
+                intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, customerInfos.get(position).id);
+                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, customerInfos.get(position).userType.equals(Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER) ? Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER : Constant.CONTACT_INFO_DETAIL_TYPE_TECH);
+                if (customerInfos.get(position).userType.equals(Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER)) {
+                    intent.putExtra(RequestConstant.KEY_MANAGER_URL, customerInfos.get(position).avatarUrl);
                 }
 
-
-                startActivity(intent);
+            } else {
+                intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, mClubList.get(position).id);
+                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, mClubList.get(position).userType.equals(Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER) ? Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER : Constant.CONTACT_INFO_DETAIL_TYPE_TECH);
+                if (mClubList.get(position).userType.equals(Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER)) {
+                    intent.putExtra(RequestConstant.KEY_MANAGER_URL, mClubList.get(position).avatarUrl);
+                }
             }
+            startActivity(intent);
         });
         adapter = new SortClubAdapter(getActivity(), mClubList, mManagerList.size());
         mListView.setAdapter(adapter);
