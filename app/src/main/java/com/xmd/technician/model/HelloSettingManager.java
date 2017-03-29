@@ -11,6 +11,7 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.HelloTemplateInfo;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.common.ThreadManager;
 
 import java.io.File;
 
@@ -96,16 +97,18 @@ public class HelloSettingManager {
      * 利用Glide缓存
      */
     public void getCacheFilePath() {
-        FutureTarget<File> futureTarget = Glide.with(TechApplication.getAppContext())
-                .load(templateImageUrl)
-                .downloadOnly(0, 0);
-        try {
-            File cacheFile = futureTarget.get();
-            templateImageCachePath = cacheFile.getAbsolutePath();
-        } catch (Exception e) {
-            e.printStackTrace();
-            templateImageCachePath = null;
-        }
+        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
+            FutureTarget<File> futureTarget = Glide.with(TechApplication.getAppContext())
+                    .load(templateImageUrl)
+                    .downloadOnly(0, 0);
+            try {
+                File cacheFile = futureTarget.get();
+                templateImageCachePath = cacheFile.getAbsolutePath();
+            } catch (Exception e) {
+                e.printStackTrace();
+                templateImageCachePath = null;
+            }
+        });
     }
 
     /**
@@ -129,7 +132,7 @@ public class HelloSettingManager {
         emSendMessage(txtMessage);
         if (!TextUtils.isEmpty(templateImageCachePath)) {
             // 招呼图片
-            EMMessage imgMessage = EMMessage.createTxtSendMessage(templateImageCachePath, userEmchatId);
+            EMMessage imgMessage = EMMessage.createImageSendMessage(templateImageCachePath, false, userEmchatId);
             emSendMessage(imgMessage);
         }
     }
