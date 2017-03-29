@@ -110,6 +110,8 @@ public class LoginTechnician {
         clubName = SharedPreferenceHelper.getUserClubName();
         clubPosition = SharedPreferenceHelper.getUserClubPosition();
 
+        status = SharedPreferenceHelper.getTechStatus();
+
         RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(this::onGetTechPersonalData);
     }
 
@@ -518,6 +520,7 @@ public class LoginTechnician {
     public void setStatus(String workStatus) {
         boolean isVerifyStatus = isVerifyStatus();
         this.status = workStatus;
+        SharedPreferenceHelper.setTechStatus(workStatus);
         if (isVerifyStatus && isActiveStatus(workStatus)) {
             //通过审核
             onJoinedClub();

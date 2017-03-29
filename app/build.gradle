@@ -147,7 +147,6 @@ aspectjx {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'multi-image-selector-1.2', ext: 'aar')
-    compile(name: 'permission-tool-1.0', ext: 'aar')
     compile(name: 'shidou-updater-1.5', ext: 'aar')
     compile files('libs/hyphenatechat_3.1.0.jar')
     compile project(':android-crop')
@@ -165,8 +164,8 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.zhy:mpermission-api:1.0.0'
     apt 'com.zhy:mpermission-compiler:1.0.0'
-//    aspectj
+    //    aspectj
     compile 'org.aspectj:aspectjrt:1.8.+'
-
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    compile project(':permission-tool')
 }

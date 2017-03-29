@@ -168,16 +168,18 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     private void handleTechCurrentResult(TechInfoResult techCurrentResult) {
-        Glide.with(getActivity()).load(techCurrentResult.respData.imageUrl).into(mImgTechHead);
-        String userInfo;
-        if (Utils.isNotEmpty(techCurrentResult.respData.serialNo)) {
-            userInfo = techCurrentResult.respData.userName + "[" + techCurrentResult.respData.serialNo + "]";
-            mUserName.setText(Utils.changeColor(userInfo, ResourceUtils.getColor(R.color.contact_marker), SharedPreferenceHelper.getUserName().length() + 1, userInfo.length() - 1));
-        } else {
-            userInfo = techCurrentResult.respData.userName;
-            mUserName.setText(userInfo);
+        if (techCurrentResult.respData != null) {
+            Glide.with(getActivity()).load(techCurrentResult.respData.imageUrl).into(mImgTechHead);
+            String userInfo;
+            if (Utils.isNotEmpty(techCurrentResult.respData.serialNo)) {
+                userInfo = techCurrentResult.respData.userName + "[" + techCurrentResult.respData.serialNo + "]";
+                mUserName.setText(Utils.changeColor(userInfo, ResourceUtils.getColor(R.color.contact_marker), SharedPreferenceHelper.getUserName().length() + 1, userInfo.length() - 1));
+            } else {
+                userInfo = techCurrentResult.respData.userName;
+                mUserName.setText(userInfo);
+            }
+            mTechInfo = techCurrentResult.respData;
         }
-        mTechInfo = techCurrentResult.respData;
     }
 
 
@@ -413,19 +415,19 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     private void updateViewSate() {
-            if (mCardIsNull && mActivityIsNull && mPropagandaIsNull) {
-                mShareView.setVisibility(View.GONE);
-                mShareEmpty.setStatus(EmptyView.Status.Empty);
-                mShareEmpty.setEmptyPic(R.drawable.img_share_null);
-                mShareEmpty.setEmptyTip("");
-            } else {
-                if (mShareEmpty.getVisibility() == View.VISIBLE) {
-                    mShareEmpty.setVisibility(View.GONE);
-                }
-                if (mShareView.getVisibility() == View.GONE) {
-                    mShareView.setVisibility(View.VISIBLE);
-                }
-
+        if (mCardIsNull && mActivityIsNull && mPropagandaIsNull) {
+            mShareView.setVisibility(View.GONE);
+            mShareEmpty.setStatus(EmptyView.Status.Empty);
+            mShareEmpty.setEmptyPic(R.drawable.img_share_null);
+            mShareEmpty.setEmptyTip("");
+        } else {
+            if (mShareEmpty.getVisibility() == View.VISIBLE) {
+                mShareEmpty.setVisibility(View.GONE);
             }
+            if (mShareView.getVisibility() == View.GONE) {
+                mShareView.setVisibility(View.VISIBLE);
+            }
+
+        }
     }
 }
