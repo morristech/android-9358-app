@@ -142,8 +142,9 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     }
 
     private void handleContactPermissionChat(ContactPermissionChatResult result) {
-        if (result != null && result.statusCode == 200 && result.respData.echat) {
+        if (result != null && result.statusCode == 200) {
             if (result.respData.echat) {
+                // 跳转聊天
                 EMConversation conversation = result.emConversation;
                 Intent intent = new Intent(getContext(), ChatActivity.class);
                 if (conversation.isGroup()) {
@@ -158,12 +159,17 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 intent.putExtra(ChatConstant.EMCHAT_IS_TECH, "");
                 startActivity(intent);
             } else {
-                // 跳转到详情
+                // 跳转详情
                 Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
                 intent.putExtra(RequestConstant.KEY_USER_ID, result.respData.customerId);
                 intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(RequestConstant.KEY_CONTACT_PERMISSION_INFO, result.respData);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
+        } else {
+            // TODO
         }
     }
 

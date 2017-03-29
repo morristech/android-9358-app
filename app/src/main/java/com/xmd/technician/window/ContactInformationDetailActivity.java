@@ -34,6 +34,7 @@ import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.http.gson.ContactPermissionResult;
 import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -53,6 +54,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by lhj on 2016/7/5.
@@ -148,7 +150,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private Subscription doDeleteContactSubscription;
     private Subscription doShowVisitViewSubscription;
     private Subscription sayHiDetailSubscription;  // 打招呼
-    private Subscription getSayHiSatusSubscription;
+    private Subscription getSayHiStatusSubscription;
+    private Subscription contactPermissionDetailSubscription;
 
     //  -----------------customer
     private String userId;
@@ -217,13 +220,18 @@ public class ContactInformationDetailActivity extends BaseActivity {
                         visitBean -> handlerVisitView(visitBean)
                 );
                 // 处理打招呼状态
-                getSayHiSatusSubscription = RxBus.getInstance().toObservable(HelloCheckRecentlyResult.class).subscribe(result -> {
+                getSayHiStatusSubscription = RxBus.getInstance().toObservable(HelloCheckRecentlyResult.class).subscribe(result -> {
                     handleSayHiStatus(result);
                 });
 
                 // 处理打招呼结果
                 sayHiDetailSubscription = RxBus.getInstance().toObservable(SayHiBaseResult.class).subscribe(result -> {
                     handleSayHiDetailResult(result);
+                });
+
+                // 处理关系权限
+                contactPermissionDetailSubscription = RxBus.getInstance().toObservable(ContactPermissionResult.class).subscribe(result -> {
+                    handleContactPermissionDetail(result);
                 });
 
                 // 获取客户信息
@@ -307,7 +315,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     // 打招呼
     private void sayHello(String customerId) {
         Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_VISITOR);
+        params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_DETAIL);
         params.put(RequestConstant.KEY_USERNAME, emChatName);
         params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, emChatId);
         params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, customerId);
@@ -324,6 +332,36 @@ public class ContactInformationDetailActivity extends BaseActivity {
             btnEmHello.setText(R.string.had_say_hi);
         } else {
             showToast("打招呼失败:" + result.msg);
+        }
+    }
+
+    private void getContactPermissionDetail(String userId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG, Constant.REQUEST_CONTACT_PERMISSION_DETAIL);
+        params.put(RequestConstant.KEY_ID, userId);
+        params.put(RequestConstant.KEY_CONTACT_ID_TYPE, Constant.REQUEST_CONTACT_ID_TYPE_CUSTOMER);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
+    }
+
+    private void handleContactPermissionDetail(ContactPermissionResult result) {
+        if (result != null && result.statusCode == 200) {
+            // 更新按钮状态
+            if (result.respData.echat && result.respData.hello) {
+                btnEmChat.setVisibility(View.VISIBLE);
+                btnEmHello.setVisibility(View.GONE);
+            } else {
+                btnEmChat.setVisibility(View.GONE);
+                btnEmHello.setVisibility(View.VISIBLE);
+                getSayHiStatus(userId);
+            }
+            btnCallPhone.setVisibility(result.respData.call ? View.VISIBLE : View.GONE);
+            btnChat.setVisibility(result.respData.sms ? View.VISIBLE : View.GONE);
+        } else {
+            // 默认按钮状态:只能打招呼
+            btnEmHello.setVisibility(View.VISIBLE);
+            btnEmChat.setVisibility(View.GONE);
+            btnCallPhone.setVisibility(View.GONE);
+            btnChat.setVisibility(View.GONE);
         }
     }
 
@@ -466,8 +504,11 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if (sayHiDetailSubscription != null) {
             RxBus.getInstance().unsubscribe(sayHiDetailSubscription);
         }
-        if (getSayHiSatusSubscription != null) {
-            RxBus.getInstance().unsubscribe(getSayHiSatusSubscription);
+        if (getSayHiStatusSubscription != null) {
+            RxBus.getInstance().unsubscribe(getSayHiStatusSubscription);
+        }
+        if (contactPermissionDetailSubscription != null) {
+            RxBus.getInstance().unsubscribe(contactPermissionDetailSubscription);
         }
     }
 
@@ -491,16 +532,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
             } else {
                 btnEmChat.setVisibility(View.GONE);
                 btnEmHello.setVisibility(View.VISIBLE);
-                getSayHiStatus(mCustomerInfo.userId);
+                getSayHiStatus(userId);
             }
             btnCallPhone.setVisibility(permissionInfo.call ? View.VISIBLE : View.GONE);
             btnChat.setVisibility(permissionInfo.sms ? View.VISIBLE : View.GONE);
         } else {
-            // 默认按钮状态:只能打招呼
-            btnEmHello.setVisibility(View.VISIBLE);
-            btnEmChat.setVisibility(View.GONE);
-            btnCallPhone.setVisibility(View.GONE);
-            btnChat.setVisibility(View.GONE);
+            getContactPermissionDetail(userId);
         }
 
         emChatId = mCustomerInfo.emchatId;
@@ -521,20 +558,15 @@ public class ContactInformationDetailActivity extends BaseActivity {
             emChatName = customer.respData.techCustomer.userName;
         }
 
-        if (!isMyCustomer && Utils.isNotEmpty(mCustomerInfo.belongsTechName)) {
-            belongTechName.setText("-");
-        } else {
-            if (isMyCustomer || (Utils.isNotEmpty(mCustomerInfo.belongsTechSerialNo) && mCustomerInfo.belongsTechSerialNo.equals(SharedPreferenceHelper.getSerialNo()))) {
-                belongTechName.setText(SharedPreferenceHelper.getUserName());
-                belongTechNum.setText(String.format("[%s]", SharedPreferenceHelper.getSerialNo()));
-            } else {
-                if (Utils.isNotEmpty(mCustomerInfo.belongsTechName)) {
-                    belongTechName.setText(mCustomerInfo.belongsTechName);
-                }
+        if (Utils.isNotEmpty(mCustomerInfo.belongsTechName)) {
+            if (Utils.isNotEmpty(mCustomerInfo.belongsTechName)) {
+                belongTechName.setText(mCustomerInfo.belongsTechName);
                 if (Utils.isNotEmpty(mCustomerInfo.belongsTechSerialNo)) {
                     belongTechNum.setText(String.format("[%s]", mCustomerInfo.belongsTechSerialNo));
                 }
             }
+        } else {
+            belongTechName.setText("-");
         }
 
         if (TextUtils.isEmpty(mCustomerInfo.emchatId)) {
@@ -661,65 +693,73 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
 
     private void handlerTech(TechDetailResult tech) {
-        emChatName = tech.respData.name;
-        emChatId = tech.respData.emchatId;
-        chatHeadUrl = tech.respData.avatarUrl;
-        if (Utils.isNotEmpty(tech.respData.serialNo)) {
-            SharedPreferenceHelper.setTechNoOld(tech.respData.id, tech.respData.serialNo);
-        }
-        btnEmChat.setEnabled(true);
-        contactPhone = tech.respData.phoneNum;
-        emChatId = tech.respData.emchatId;
-        Glide.with(mContext).load(tech.respData.avatarUrl).error(R.drawable.icon22).into(mContactHead);
-        if (TextUtils.isEmpty(tech.respData.serialNo)) {
-            mContactName.setText(Utils.StrSubstring(12, tech.respData.name, true));
-        } else {
-            mContactName.setText(Utils.StrSubstring(12, tech.respData.name, true));
-            llTechNum.setVisibility(View.VISIBLE);
-            techNum.setText(tech.respData.serialNo);
+        if (tech != null && tech.statusCode == 200) {
+            emChatName = tech.respData.name;
+            emChatId = tech.respData.emchatId;
+            chatHeadUrl = tech.respData.avatarUrl;
+            if (Utils.isNotEmpty(tech.respData.serialNo)) {
+                SharedPreferenceHelper.setTechNoOld(tech.respData.id, tech.respData.serialNo);
+            }
+            btnEmChat.setEnabled(true);
+            contactPhone = tech.respData.phoneNum;
+            emChatId = tech.respData.emchatId;
+            Glide.with(mContext).load(tech.respData.avatarUrl).error(R.drawable.icon22).into(mContactHead);
+            if (TextUtils.isEmpty(tech.respData.serialNo)) {
+                mContactName.setText(Utils.StrSubstring(12, tech.respData.name, true));
+            } else {
+                mContactName.setText(Utils.StrSubstring(12, tech.respData.name, true));
+                llTechNum.setVisibility(View.VISIBLE);
+                techNum.setText(tech.respData.serialNo);
 
-        }
-        if (Utils.isNotEmpty(tech.respData.phoneNum)) {
-            mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + tech.respData.phoneNum);
-        } else {
-            mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + "未知");
-            callUnusable();
-        }
-        if (TextUtils.isEmpty(tech.respData.description)) {
-            mContactRemark.setText(ResourceUtils.getString(R.string.contact_description_remark_empty));
-        } else {
-            textRemarkAlert.setText(ResourceUtils.getString(R.string.contact_description_remark));
-            textRemarkAlert.setVisibility(View.VISIBLE);
-            mContactRemark.setText(tech.respData.description);
-        }
+            }
+            if (Utils.isNotEmpty(tech.respData.phoneNum)) {
+                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + tech.respData.phoneNum);
+            } else {
+                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + "未知");
+                callUnusable();
+            }
+            if (TextUtils.isEmpty(tech.respData.description)) {
+                mContactRemark.setText(ResourceUtils.getString(R.string.contact_description_remark_empty));
+            } else {
+                textRemarkAlert.setText(ResourceUtils.getString(R.string.contact_description_remark));
+                textRemarkAlert.setVisibility(View.VISIBLE);
+                mContactRemark.setText(tech.respData.description);
+            }
 
-        mContactOrderLayout.setVisibility(View.GONE);
-        linearBelongTech.setVisibility(View.GONE);
-        mContactNickName.setVisibility(View.GONE);
+            mContactOrderLayout.setVisibility(View.GONE);
+            linearBelongTech.setVisibility(View.GONE);
+            mContactNickName.setVisibility(View.GONE);
+        } else {
+            showToast("获取详细资料失败");
+        }
     }
 
     private void handlerManager(ManagerDetailResult manager) {
-        emChatName = manager.respData.name;
-        chatHeadUrl = manager.respData.avatarUrl;
-        contactPhone = manager.respData.phoneNum;
-        emChatId = manager.respData.emchatId;
-        if (Utils.isNotEmpty(emChatId)) {
-            btnEmChat.setEnabled(true);
-        }
-        if (!TextUtils.isEmpty(managerHeadUrl)) {
-            Glide.with(mContext).load(managerHeadUrl).error(R.drawable.icon22).into(mContactHead);
-        }
-        mContactName.setText(manager.respData.name);
-        if (Utils.isNotEmpty(manager.respData.phoneNum)) {
-            mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + manager.respData.phoneNum);
+        if (manager != null && manager.statusCode == 200) {
+            emChatName = manager.respData.name;
+            chatHeadUrl = manager.respData.avatarUrl;
+            contactPhone = manager.respData.phoneNum;
+            emChatId = manager.respData.emchatId;
+            if (Utils.isNotEmpty(emChatId)) {
+                btnEmChat.setEnabled(true);
+            }
+            if (!TextUtils.isEmpty(managerHeadUrl)) {
+                Glide.with(mContext).load(managerHeadUrl).error(R.drawable.icon22).into(mContactHead);
+            }
+            mContactName.setText(manager.respData.name);
+            if (Utils.isNotEmpty(manager.respData.phoneNum)) {
+                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + manager.respData.phoneNum);
+            } else {
+                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + "未知");
+                callUnusable();
+            }
+            mContactOrderLayout.setVisibility(View.GONE);
+            linearBelongTech.setVisibility(View.GONE);
+            mContactNickName.setVisibility(View.GONE);
+            mContactRemark.setVisibility(View.GONE);
         } else {
-            mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + "未知");
-            callUnusable();
+            showToast("获取详细资料失败");
         }
-        mContactOrderLayout.setVisibility(View.GONE);
-        linearBelongTech.setVisibility(View.GONE);
-        mContactNickName.setVisibility(View.GONE);
-        mContactRemark.setVisibility(View.GONE);
     }
 
     private void handlerDeleteCustomer(DeleteContactResult result) {
