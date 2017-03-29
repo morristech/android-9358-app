@@ -517,7 +517,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if (customer.respData != null && customer.respData.techCustomer != null) {
             mCustomerInfo = customer.respData.techCustomer;
         } else {
-            showToast("获取客户详细资料失败");
+            showToast(customer.msg);
             return;
         }
         if (isMyCustomer) {
@@ -730,7 +730,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             linearBelongTech.setVisibility(View.GONE);
             mContactNickName.setVisibility(View.GONE);
         } else {
-            showToast("获取详细资料失败");
+            showToast(tech.msg);
         }
     }
 
@@ -758,7 +758,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             mContactNickName.setVisibility(View.GONE);
             mContactRemark.setVisibility(View.GONE);
         } else {
-            showToast("获取详细资料失败");
+            showToast(manager.msg);
         }
     }
 
