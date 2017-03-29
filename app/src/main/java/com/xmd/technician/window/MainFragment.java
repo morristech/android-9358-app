@@ -1118,6 +1118,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
                 intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
                 intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(RequestConstant.KEY_CONTACT_PERMISSION_INFO, result.respData);
+                intent.putExtras(bundle);
                 startActivity(intent);
             } else {
                 Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
