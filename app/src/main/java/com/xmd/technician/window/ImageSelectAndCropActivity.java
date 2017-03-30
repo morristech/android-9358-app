@@ -69,7 +69,7 @@ public class ImageSelectAndCropActivity extends BaseActivity {
                     Uri fromUri = new Uri.Builder().scheme("file").path(result.get(0)).build();
                     mCropFilePath = getCacheDir().getPath() + File.separator + "crop-file";
                     Uri toUri = new Uri.Builder().scheme("file").path(mCropFilePath).build();
-                    Crop.of(fromUri, toUri).start(this, REQUEST_CODE_CROP);
+                    Crop.of(fromUri, toUri).asPng(true).start(this, REQUEST_CODE_CROP);
                 }
             } else {
                 finish();

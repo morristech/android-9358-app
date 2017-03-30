@@ -33,6 +33,7 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -303,8 +304,10 @@ public class LoginTechnician {
             RxBus.getInstance().post(result);
             return;
         }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        mPhotoTake.compress(Bitmap.CompressFormat.PNG, 100, baos);
 
-        String mImageFile = Util.bitmap2base64(mPhotoTake, false);
+        String mImageFile = Util.bytes2base64(baos.toByteArray());
         mPhotoTake.recycle();
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_IMG_FILE, mImageFile);

@@ -98,6 +98,10 @@ public class Util {
         return imgFile;
     }
 
+    public static String bytes2base64(byte[] bytes) {
+        return "data:image/png;base64," + Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
     public static byte[] bmpToByteArray(Bitmap bmp, boolean needRecycle){
         int i;
         int j;
