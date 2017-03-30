@@ -241,16 +241,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 break;
             case Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER:
                 isTech = Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER;
-                getTechInformationSubscription = RxBus.getInstance().toObservable(TechDetailResult.class).subscribe(
-                        tech -> handlerTech(tech)
-                );
-                // 获取技师信息
-                Map<String, String> paramTech = new HashMap<>();
-                paramTech.put(RequestConstant.KEY_ID, contactId);
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL, paramTech);
-                break;
-            case Constant.CONTACT_INFO_DETAIL_TYPE_TECH:
-                isTech = Constant.CONTACT_INFO_DETAIL_TYPE_TECH;
                 getManagerInformationSubscription = RxBus.getInstance().toObservable(ManagerDetailResult.class).subscribe(
                         manager -> handlerManager(manager)
                 );
@@ -258,6 +248,16 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 Map<String, String> paramManager = new HashMap<>();
                 paramManager.put(RequestConstant.KEY_ID, contactId);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL, paramManager);
+                break;
+            case Constant.CONTACT_INFO_DETAIL_TYPE_TECH:
+                isTech = Constant.CONTACT_INFO_DETAIL_TYPE_TECH;
+                getTechInformationSubscription = RxBus.getInstance().toObservable(TechDetailResult.class).subscribe(
+                        tech -> handlerTech(tech)
+                );
+                // 获取技师信息
+                Map<String, String> paramTech = new HashMap<>();
+                paramTech.put(RequestConstant.KEY_ID, contactId);
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL, paramTech);
                 break;
             default:
                 break;
@@ -473,8 +473,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     } else {
                         intent.putExtra(RequestConstant.KEY_REMARK, mContactRemark.getText().toString());
                     }
-
-
                     intent.putExtra(RequestConstant.KEY_PHONE_NUMBER, contactPhone);
                     startActivityForResult(intent, RESULT_ADD_REMARK);
                     break;
