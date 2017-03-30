@@ -240,7 +240,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 getVisitView(userId);
                 break;
             case Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER:
-                isTech = Constant.CONTACT_INFO_DETAIL_TYPE_TECH;
+                isTech = Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER;
                 getManagerInformationSubscription = RxBus.getInstance().toObservable(ManagerDetailResult.class).subscribe(
                         manager -> handlerManager(manager)
                 );
@@ -250,7 +250,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL, paramManager);
                 break;
             case Constant.CONTACT_INFO_DETAIL_TYPE_TECH:
-                isTech = Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER;
+                isTech = Constant.CONTACT_INFO_DETAIL_TYPE_TECH;
                 getTechInformationSubscription = RxBus.getInstance().toObservable(TechDetailResult.class).subscribe(
                         tech -> handlerTech(tech)
                 );
