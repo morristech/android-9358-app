@@ -102,6 +102,8 @@ public class HelloSettingActivity extends BaseActivity {
             handleSaveHelloTemplateResult(result);
         });
 
+        mUploadImage.setOnClickListener(v -> ImageSelectAndCropActivity.onlyPick(HelloSettingActivity.this, REQUEST_CODE_LOCAL_PICTURE_HELLO));
+
         // 获取系统模版列表
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SYS_TEMPLATE_LIST);
     }
