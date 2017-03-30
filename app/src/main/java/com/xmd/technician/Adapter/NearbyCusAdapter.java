@@ -107,14 +107,23 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
             holder.mType.setVisibility(View.GONE);
         }
 
-        holder.mLastLogin.setText(RelativeDateFormatUtil.format(DateUtils.StringToDate(info.userPositionUpdateTime, Constant.FORMAT_DATE_TIME).getTime()) + "登录");  //登录情况
+        holder.mLastLogin.setText(RelativeDateFormatUtil.formatModify(DateUtils.StringToDate(info.userPositionUpdateTime, Constant.FORMAT_DATE_TIME).getTime()) + "登录");  //登录情况
         holder.mHelloCount.setText(String.valueOf(info.userLeftHelloCount));    //可到招呼次数
         holder.mBookingCount.setText(String.valueOf(info.orderCount));      //预约次数
-        holder.mRewardCount.setText(String.valueOf(info.rewardAmount));     //打赏金额
+
+        //打赏金额
+        float reward = info.rewardAmount / 100f;
+        if (info.rewardAmount > 10000) {
+            float payMoney = info.rewardAmount / 10000f;
+            holder.mRewardCount.setText(String.format("%1.2f", payMoney) + "万");
+        } else {
+            holder.mRewardCount.setText(String.format("%1.2f", reward));
+        }
+
         if (TextUtils.isEmpty(info.lastTechHelloTime)) {
             holder.mLastHelloDynamic.setText(R.string.nearby_have_no_hello_say);
         } else {
-            holder.mLastHelloDynamic.setText(RelativeDateFormatUtil.format(DateUtils.StringToDate(info.lastTechHelloTime, Constant.FORMAT_DATE_TIME).getTime()) + "打过招呼");  //打招呼动态
+            holder.mLastHelloDynamic.setText(RelativeDateFormatUtil.formatModify(DateUtils.StringToDate(info.lastTechHelloTime, Constant.FORMAT_DATE_TIME).getTime()) + "打过招呼");  //打招呼动态
         }
 
         if (info.techHelloRecently) {

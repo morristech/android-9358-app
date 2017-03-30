@@ -1,70 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@android:color/white"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/work_time_padding"
+              android:paddingRight="@dimen/personal_padding"
+              android:paddingTop="@dimen/personal_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:orientation="horizontal">
+
+        <com.xmd.technician.widget.CircleImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/search_view_height"
+            android:layout_height="@dimen/search_view_height"
+            android:layout_marginRight="@dimen/margin_10"
+            android:background="@drawable/icon22"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingRight="@dimen/inter_space">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingLeft="@dimen/work_time_padding"
-                android:paddingRight="@dimen/personal_padding"
-                android:paddingTop="@dimen/personal_margin">
+                android:text="@string/consume"
+                android:textColor="#4d4d4d"
+                android:textSize="@dimen/fontTitle"/>
 
-    <com.xmd.technician.widget.CircleImageView
-        android:id="@+id/avatar"
-        android:layout_width="@dimen/search_view_height"
-        android:layout_height="@dimen/search_view_height"
-        android:layout_marginRight="@dimen/personal_padding"
-        android:background="@drawable/icon22"/>
+            <TextView
+                android:id="@+id/remark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/alert_text_color"
+                android:textSize="@dimen/fontBody"
+                android:visibility="visible"
+                tools:text="描述信息"/>
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/avatar"
-        android:text="@string/consume"
-        android:textColor="@color/colorTitle"
-        android:textSize="@dimen/fontTitle"/>
+            <TextView
+                android:id="@+id/commission_remark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/inter_space"
+                android:layout_marginTop="@dimen/small_space"
+                android:maxLines="1"
+                android:textColor="@color/colorRemark"
+                android:textSize="@dimen/fontNormal"
+                android:visibility="gone"
+                tools:text="描述信息"/>
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/remark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_marginRight="@dimen/inter_space"
-        android:layout_marginTop="@dimen/small_space"
-        android:layout_toLeftOf="@id/time"
-        android:layout_toRightOf="@+id/avatar"
-        android:maxLines="2"
-        android:textColor="@color/colorRemark"
-        android:textSize="@dimen/fontNormal"
-        android:visibility="visible"
-        tools:text="描述信息"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/colorMainBtn"
-        android:textSize="@dimen/fontTitle"
-        tools:text="11111"/>
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/colorMainBtn"
+                android:textSize="@dimen/fontTitle"
+                tools:text="11111"/>
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/remark"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/amount"
-        android:layout_marginTop="@dimen/small_space"
-        android:gravity="bottom"
-        android:textColor="@color/colorRemark"
-        android:textSize="@dimen/fontNormal"
-        tools:text="03-19"/>
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/small_space"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:textColor="@color/colorRemark"
+                android:textSize="@dimen/fontNormal"
+                tools:text="03-19"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_divide_height"
-        android:layout_below="@id/time"
-        android:layout_marginTop="@dimen/search_margin"
+        android:layout_marginTop="15dp"
         android:background="@color/colorLineDivide"/>
-</RelativeLayout>
+</LinearLayout>

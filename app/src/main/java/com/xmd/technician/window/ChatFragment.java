@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -169,7 +170,9 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 startActivity(intent);
             }
         } else {
-            // TODO
+            if (getActivity() != null) {
+                Toast.makeText(getActivity(), result.msg, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
