@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.bean.ConsumeInfo;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.widget.CircleImageView;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
     private static final byte PAID_COUPON = 3;
     private static final byte WITHDRAWAL = 4;
     private static final byte OUT_CLUB = 5;
+    private static final byte COMMISSION_TYPE = 6; //分佣
     private static final byte TYPE_FOOTER = 0;
 
     private List<ConsumeInfo> mConsumeList;
@@ -73,10 +75,10 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
             return USER_REWARD;
         } else if (consumeInfo.consumeChannel.equals("red_commission")) {
             return COUPON_REWARD;
-        } else if (consumeInfo.consumeChannel.equals("commission")) {
-            return PAID_COUPON;
         } else if (consumeInfo.consumeChannel.equals("out_club")) {
             return OUT_CLUB;
+        } else if (consumeInfo.consumeChannel.equals("commission")) {
+            return COMMISSION_TYPE;
         } else {
             return WITHDRAWAL;
         }
@@ -101,7 +103,9 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
             case PAID_COUPON:
             case OUT_CLUB:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.clock_commission_item, parent, false);
-
+                break;
+            case COMMISSION_TYPE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.commission_record_item, parent, false);
                 break;
             default:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.consume_record_item, parent, false);
@@ -116,13 +120,21 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
             DetailViewHolder viewHolder = (DetailViewHolder) holder;
             ConsumeInfo info = mConsumeList.get(position);
             viewHolder.mTitle.setText(info.title);
-            if (info.remark.contains("##")) {
-                String desStart = info.remark.substring(0, info.remark.lastIndexOf("#") - 1);
-                String desEnd = info.remark.substring(info.remark.lastIndexOf("#") + 1, info.remark.length());
-                viewHolder.mRemark.setText(desStart + "\n" + desEnd);
-            } else {
-                viewHolder.mRemark.setText(info.remark);
-            }
+         if(Utils.isNotEmpty(info.remark)){
+             if (info.remark.contains("##")) {
+                 String desStart = info.remark.substring(0, info.remark.lastIndexOf("#") - 1);
+                 String desEnd = info.remark.substring(info.remark.lastIndexOf("#") + 1, info.remark.length());
+                 viewHolder.mRemark.setText(desStart);
+                 viewHolder.mCommissionRemark.setVisibility(View.VISIBLE);
+                 viewHolder.mCommissionRemark.setText(desEnd);
+             } else {
+                 viewHolder.mCommissionRemark.setVisibility(View.GONE);
+                 viewHolder.mRemark.setText(info.remark);
+             }
+         }else{
+             viewHolder.mRemark.setVisibility(View.GONE);
+             viewHolder.mCommissionRemark.setVisibility(View.GONE);
+         }
             viewHolder.mTimeStamp.setText(info.dealDate);
 
             int viewType = getItemViewType(position);
@@ -134,7 +146,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
             } else if (viewType == OUT_CLUB) {
                 viewHolder.mAmount.setTextColor(mContext.getResources().getColor(R.color.colorTitle));
                 viewHolder.mAmount.setText(String.format("%1.2f", info.amount) + "元");
-                viewHolder.mAvatar.setBackground(ResourceUtils.getDrawable(R.drawable.icon46));
+                viewHolder.mAvatar.setBackgroundDrawable(ResourceUtils.getDrawable(R.drawable.icon46));
             } else {
                 viewHolder.mAmount.setText(String.format("%1.2f", info.amount) + "元");
                 if (viewType == COUPON_REWARD) {
@@ -181,6 +193,8 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
         TextView mAmount;
         @Bind(R.id.time)
         TextView mTimeStamp;
+        @Bind(R.id.commission_remark)
+        TextView mCommissionRemark;
 
         public DetailViewHolder(View itemView) {
             super(itemView);
@@ -192,6 +206,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
 
         @Bind(R.id.item_footer)
         TextView itemFooter;
+
         public FooterViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

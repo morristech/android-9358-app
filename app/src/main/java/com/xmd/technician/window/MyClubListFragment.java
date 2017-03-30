@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -116,6 +115,9 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
     }
 
     private void handlerClubInfoList(ClubContactResult clubResult) {
+        if (clubResult.respData == null) {
+            return;
+        }
         if (mTitleLayout.getVisibility() == View.GONE) {
             mTitleLayout.setVisibility(View.VISIBLE);
         }
@@ -186,7 +188,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
 
                         int section = getSectionForPosition(firstVisibleItem);
                         int nextSection = getSectionForPosition(firstVisibleItem + 1);
-                        int nextSecPositon = getPositonForSection(+nextSection);
+                        int nextSecPosition = getPositonForSection(+nextSection);
                         if (firstVisibleItem != lastFirstVisibleItem) {
                             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mTitleLayout.getLayoutParams();
                             params.topMargin = 0;
@@ -194,7 +196,7 @@ public class MyClubListFragment extends Fragment implements View.OnClickListener
 
                             mTitle.setText(mClubList.get(getPositonForSection(section)).sortLetters);
                         }
-                        if (nextSecPositon == firstVisibleItem + 1) {
+                        if (nextSecPosition == firstVisibleItem + 1) {
                             View childView = view.getChildAt(0);
                             if (childView != null) {
                                 int titleHeight = mTitleLayout.getHeight();
