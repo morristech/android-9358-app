@@ -16,5 +16,6 @@ public class SayHiNearbyResult extends SayHiBaseResult {
         this.pageCount = result.pageCount;
         this.userName = result.userName;
         this.userEmchatId = result.userEmchatId;
+        this.respData = result.respData;
     }
 }

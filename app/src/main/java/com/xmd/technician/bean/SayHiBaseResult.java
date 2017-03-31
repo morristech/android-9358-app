@@ -9,4 +9,11 @@ import com.xmd.technician.http.gson.BaseResult;
 public class SayHiBaseResult extends BaseResult {
     public String userName;
     public String userEmchatId;
+
+    public DATA respData;
+
+    public static class DATA {
+        public int customerLeft;
+        public int technicianLeft;
+    }
 }

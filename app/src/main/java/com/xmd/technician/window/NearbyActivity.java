@@ -199,6 +199,7 @@ public class NearbyActivity extends BaseActivity {
             //保存用户好友关系链
             saveChatContact(result.userEmchatId);
             //更新列表状态
+            mAdapterList.get(result.cusPosition).userLeftHelloCount = result.respData.customerLeft;
             mAdapterList.get(result.cusPosition).techHelloRecently = true;
             mCusAdapter.updateBtnStatus(result.cusPosition);
             // 成功提示
