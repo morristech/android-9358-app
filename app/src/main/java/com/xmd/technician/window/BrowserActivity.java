@@ -203,6 +203,7 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
         super.onBackPressed();
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -246,6 +247,14 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mainWebView != null) {
+            mainWebView.destroy();
+        }
+        super.onDestroy();
     }
 
     public void share(String url) {

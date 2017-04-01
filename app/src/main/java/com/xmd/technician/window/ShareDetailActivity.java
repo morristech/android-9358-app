@@ -213,6 +213,14 @@ public class ShareDetailActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if (shareWebView != null) {
+            shareWebView.destroy();
+        }
+        super.onDestroy();
+    }
+
 /*    public void share(String url) {
         Uri uri = Uri.parse(url);
         String title = uri.getQueryParameter("title");

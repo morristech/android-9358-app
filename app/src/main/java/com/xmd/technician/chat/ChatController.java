@@ -3,6 +3,7 @@ package com.xmd.technician.chat;
 import android.content.Intent;
 import android.os.Message;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -11,6 +12,7 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.ConversationListResult;
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.event.EventEmChatLogin;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.msgctrl.AbstractController;
@@ -18,7 +20,6 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -122,8 +123,13 @@ public class ChatController extends AbstractController {
 
                         @Override
                         public void onError(int i, String s) {
-                            Logger.v("onError:" + i + ", " + s);
-                            RxBus.getInstance().post(new IOException("初始化聊天系统失败:" + i + "," + s));
+                            Logger.e("onError:" + i + ", " + s);
+                            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(TechApplication.getAppContext(), "初始化聊天系统失败:" + i + "," + s, Toast.LENGTH_SHORT).show();
+                                }
+                            });
                             RxBus.getInstance().post(new EventEmChatLogin(false));
                         }
 
