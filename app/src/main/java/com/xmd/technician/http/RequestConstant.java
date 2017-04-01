@@ -141,6 +141,8 @@ public class RequestConstant {
     public static final String URL_GET_HELLO_RECORD_LIST = BASE_URL + "/v2/tech/hello/list";
     // 近期是否打过招呼
     public static final String URL_CHECK_HELLO_RECENTLY = BASE_URL + "/v2/tech/hello/{customerId}/status";
+    // 查询最新回复列表
+    public static final String URL_CHECK_HELLO_REPLY = BASE_URL + "/v2/tech/hello/list/reply/new";
 
     // 查询同客户的联系限制
     public static final String URL_GET_CONTACT_PERMISSION = BASE_URL + "/v2/tech/contact/permission/{id}";

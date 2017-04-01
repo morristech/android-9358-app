@@ -7,6 +7,7 @@ import android.os.IBinder;
 
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.http.gson.TokenExpiredResult;
+import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
@@ -22,8 +23,12 @@ public class DataRefreshService extends Service {
     private final static int CMD_REFRESH_PERSONAL_DATA = 1;
     private final static int CMD_CHECK_PAY_NOTIFY = 2;
 
+    private final static int CMD_CHECK_HELLO_REPLY = 3;
+
     private boolean mRefreshPersonalData;
     private boolean mRefreshPayNotify;
+
+    private boolean mRefreshHelloReply;
 
     private Subscription mTokenExpiredSubscription;
 
@@ -64,6 +69,10 @@ public class DataRefreshService extends Service {
                     mRefreshPersonalData = intent.getBooleanExtra(EXTRA_CMD_DATA, false);
                     Logger.i("set refresh personal data to " + mRefreshPersonalData);
                     break;
+                case CMD_CHECK_HELLO_REPLY:
+                    mRefreshHelloReply = intent.getBooleanExtra(EXTRA_CMD_DATA, false);
+                    Logger.i("set refresh reply data to " + mRefreshHelloReply);
+                    break;
             }
         }
         return START_STICKY;
@@ -96,6 +105,11 @@ public class DataRefreshService extends Service {
                     Logger.i("work thread: refresh personal data");
                     LoginTechnician.getInstance().getTechPersonalData();
                 }
+                if (mRefreshHelloReply) {
+                    Logger.i("work thread: refresh reply data");
+                    HelloSettingManager.getInstance().checkHelloReply();
+                }
+
                 try {
                     Thread.sleep(60 * 1000);
                 } catch (InterruptedException e) {
@@ -135,6 +149,14 @@ public class DataRefreshService extends Service {
         Context context = TechApplication.getAppContext();
         Intent intent = new Intent(context, DataRefreshService.class);
         intent.putExtra(EXTRA_CMD, DataRefreshService.CMD_CHECK_PAY_NOTIFY);
+        intent.putExtra(EXTRA_CMD_DATA, on);
+        context.startService(intent);
+    }
+
+    public static void refreshHelloReply(boolean on) {
+        Context context = TechApplication.getAppContext();
+        Intent intent = new Intent(context, DataRefreshService.class);
+        intent.putExtra(EXTRA_CMD, DataRefreshService.CMD_CHECK_HELLO_REPLY);
         intent.putExtra(EXTRA_CMD_DATA, on);
         context.startService(intent);
     }

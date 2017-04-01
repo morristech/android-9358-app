@@ -1,11 +1,11 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL 
- * __________________ 
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved. 
- *  
- * NOTICE: All information contained herein is, and remains 
+ * * EaseMob CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * <p>
+ * NOTICE: All information contained herein is, and remains
  * the property of EaseMob Technologies.
- * Dissemination of this information or reproduction of this material 
+ * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
  * from EaseMob Technologies.
  */
@@ -27,9 +27,7 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.hyphenate.util.EasyUtils;
-import com.xmd.technician.bean.UserInfo;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
 
 import java.util.HashSet;
@@ -37,7 +35,7 @@ import java.util.HashSet;
 
 /**
  * 新消息提醒class
- * 
+ *
  * this class is subject to be inherited and implement the relative APIs
  */
 public class TechNotifier {
@@ -48,8 +46,8 @@ public class TechNotifier {
 
     private final static String TAG = "notify";
     Ringtone ringtone = null;
-    
-    protected final static String[] msgs = { "发来一条消息", "给你下单了", "购买了你的点钟券", "打赏了你", "系统消息", "%1个联系人发来%2条消息"};
+
+    protected final static String[] msgs = {"发来一条消息", "给你下单了", "购买了你的点钟券", "打赏了你", "系统消息", "%1个联系人发来%2条消息"};
 
     protected static int notifyID = 0525; // start notification id
     protected static int foregroundNotifyID = 0555;
@@ -68,14 +66,14 @@ public class TechNotifier {
 
     public TechNotifier() {
     }
-    
+
     /**
      * 开发者可以重载此函数
      * this function can be override
      * @param context
      * @return
      */
-    public TechNotifier init(Context context){
+    public TechNotifier init(Context context) {
         appContext = context;
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -84,15 +82,15 @@ public class TechNotifier {
 
         audioManager = (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
         vibrator = (Vibrator) appContext.getSystemService(Context.VIBRATOR_SERVICE);
-        
+
         return this;
     }
-    
+
     /**
      * 开发者可以重载此函数
      * this function can be override
      */
-    public void reset(){
+    public void reset() {
         resetNotificationCount();
         cancelNotificaton();
     }
@@ -101,7 +99,7 @@ public class TechNotifier {
         notificationNum = 0;
         fromUsers.clear();
     }
-    
+
     void cancelNotificaton() {
         if (notificationManager != null)
             notificationManager.cancelAll();
@@ -109,10 +107,10 @@ public class TechNotifier {
 
     /**
      * 处理新收到的消息，然后发送通知
-     * 
+     *
      * 开发者可以重载此函数
      * this function can be override
-     * 
+     *
      * @param
      */
     public synchronized void showNotification(int msgType, String emchatId, String nick) {
@@ -121,14 +119,14 @@ public class TechNotifier {
         if(!settingsProvider.isMsgNotifyAllowed(message)){
             return;
         }*/
-        
+
         // 判断app是否在后台
         if (!EasyUtils.isAppRunningForeground(appContext)) {
             sendNotification(msgType, emchatId, nick);
         }
         viberateAndPlayTone();
     }
-    
+
     /**
      * 发送通知栏提示
      * This can be override by subclass to provide customer implementation
@@ -137,31 +135,31 @@ public class TechNotifier {
     protected void sendNotification(int msgType, String emchatId, String nick) {
         try {
             String username = nick;
-            if(TextUtils.isEmpty(nick)) username = UserUtils.getUserNick(emchatId);
+            if (TextUtils.isEmpty(nick)) username = UserUtils.getUserNick(emchatId);
             /*ChatUser user = UserUtils.getUserInfo(emchatId);
             if(user != null){
                 username = user.getNick();
             }*/
             CharSequence notifyText = TextUtils.concat(username, " ", msgs[msgType % msgs.length]);
-            
+
             PackageManager packageManager = appContext.getPackageManager();
             // notification titile
             String contentTitle = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
 
             // create and send notificaiton
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(appContext)
-                                                                        .setSmallIcon(appContext.getApplicationInfo().icon)
-                                                                        .setWhen(System.currentTimeMillis())
-                                                                        .setAutoCancel(true);
+                    .setSmallIcon(appContext.getApplicationInfo().icon)
+                    .setWhen(System.currentTimeMillis())
+                    .setAutoCancel(true);
 
             Intent msgIntent = defaultLaunchIntent(emchatId);
-            PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             notificationNum++;
             fromUsers.add(emchatId);
 
             int fromUsersNum = fromUsers.size();
-            String summaryBody = msgs[msgs.length - 1].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2",Integer.toString(notificationNum));
+            String summaryBody = msgs[msgs.length - 1].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2", Integer.toString(notificationNum));
 
             mBuilder.setContentTitle(contentTitle);
             mBuilder.setTicker(notifyText);
@@ -177,7 +175,7 @@ public class TechNotifier {
         }
     }
 
-    Intent defaultLaunchIntent(String emchatId){
+    Intent defaultLaunchIntent(String emchatId) {
         Intent intent = new Intent("com.xmd.technician.action.START_CHAT");
         intent.putExtra(ChatConstant.EMCHAT_ID, emchatId);
         return intent;
@@ -192,7 +190,7 @@ public class TechNotifier {
             // received new messages within 2 seconds, skip play ringtone
             return;
         }
-        
+
         try {
             lastNotifyTime = System.currentTimeMillis();
 
@@ -202,12 +200,14 @@ public class TechNotifier {
                 return;
             }
             /*EaseSettingsProvider settingsProvider = EaseUI.getInstance().getSettingsProvider();
-            if(settingsProvider.isMsgVibrateAllowed(message))*/{
-                long[] pattern = new long[] { 0, 180, 80, 120 };
+            if(settingsProvider.isMsgVibrateAllowed(message))*/
+            {
+                long[] pattern = new long[]{0, 180, 80, 120};
                 vibrator.vibrate(pattern, -1);
             }
 
-            /*if(settingsProvider.isMsgSoundAllowed(message))*/{
+            /*if(settingsProvider.isMsgSoundAllowed(message))*/
+            {
                 if (ringtone == null) {
                     Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -217,10 +217,10 @@ public class TechNotifier {
                         return;
                     }
                 }
-                
+
                 if (!ringtone.isPlaying()) {
                     String vendor = Build.MANUFACTURER;
-                    
+
                     ringtone.play();
                     // for samsung S3, we meet a bug that the phone will
                     // continue ringtone without stop

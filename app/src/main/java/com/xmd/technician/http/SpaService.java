@@ -39,6 +39,7 @@ import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.HelloRecordListResult;
+import com.xmd.technician.http.gson.HelloReplyResult;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
@@ -744,6 +745,10 @@ public interface SpaService {
     // 获取打招呼内容
     @GET(RequestConstant.URL_GET_HELLO_TEMPLATE)
     Call<HelloGetTemplateResult> getSetTemplate(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    // 获取最新回复列表
+    @GET(RequestConstant.URL_CHECK_HELLO_REPLY)
+    Call<HelloReplyResult> checkHelloReply(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 保存打招呼内容
     @FormUrlEncoded

@@ -214,6 +214,9 @@ public class LoginTechnician {
         //开始刷新个人数据
         DataRefreshService.refreshPersonalData(true);
 
+        //开始刷新回复
+        DataRefreshService.refreshHelloReply(true);
+
         if (isActiveStatus()) {
             //开始刷新买单通知
             DataRefreshService.refreshPayNotify(true);
@@ -239,11 +242,11 @@ public class LoginTechnician {
         params.put(RequestConstant.KEY_MOBILE, phoneNumber);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ICODE, params);*/
         String mobile = phoneNumber;
-        String sign = DESede.encrypt(mobile+RequestConstant.KEY_WHICH_VALUE);
+        String sign = DESede.encrypt(mobile + RequestConstant.KEY_WHICH_VALUE);
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_MOBILE, mobile);
-        params.put(RequestConstant.KEY_WHICH,RequestConstant.KEY_WHICH_VALUE);
-        params.put(RequestConstant.KEY_SIGN,sign);
+        params.put(RequestConstant.KEY_WHICH, RequestConstant.KEY_WHICH_VALUE);
+        params.put(RequestConstant.KEY_SIGN, sign);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ICODE, params);
     }
 
@@ -387,6 +390,8 @@ public class LoginTechnician {
         DataRefreshService.refreshPersonalData(false);
         //停止刷新买单通知
         DataRefreshService.refreshPayNotify(false);
+        //停止刷新回复
+        DataRefreshService.refreshHelloReply(false);
 
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_TOKEN, token);

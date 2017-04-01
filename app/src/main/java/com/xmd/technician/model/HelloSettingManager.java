@@ -9,13 +9,21 @@ import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
+import com.xmd.technician.bean.HelloReplyInfo;
 import com.xmd.technician.bean.HelloTemplateInfo;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.common.TechNotifier;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.http.RetrofitServiceFactory;
+import com.xmd.technician.http.gson.HelloReplyResult;
 
 import java.io.File;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by zr on 17-3-18.
@@ -23,6 +31,8 @@ import java.io.File;
  */
 
 public class HelloSettingManager {
+    private Call<HelloReplyResult> mHelloReplyCheck;
+
     private Integer templateId;
     private Integer templateParentId;   //为null:代表自定义模版
     private String templateContentText;
@@ -151,5 +161,25 @@ public class HelloSettingManager {
         message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
         message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
         EMClient.getInstance().chatManager().sendMessage(message);
+    }
+
+    public void checkHelloReply() {
+        mHelloReplyCheck = RetrofitServiceFactory.getSpaService().checkHelloReply(SharedPreferenceHelper.getUserToken());
+        mHelloReplyCheck.enqueue(new Callback<HelloReplyResult>() {
+            @Override
+            public void onResponse(Call<HelloReplyResult> call, Response<HelloReplyResult> response) {
+                HelloReplyResult result = response.body();
+                if (result != null && result.respData != null && result.respData.size() > 0) {
+                    HelloReplyInfo info = result.respData.get(0);
+                    if (EMClient.getInstance().isConnected())
+                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_TEXT, info.receiverEmChatId, info.receiverName);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HelloReplyResult> call, Throwable t) {
+
+            }
+        });
     }
 }
