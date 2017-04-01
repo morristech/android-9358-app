@@ -688,4 +688,12 @@ public class LoginTechnician {
     public void setEmchatLogined(boolean emchatLogined) {
         this.emchatLogined = emchatLogined;
     }
+
+    public boolean checkAndLoginEmchat() {
+        if (isEmchatLogined()) {
+            return true;
+        }
+        loginEmChatAccount();
+        return false;
+    }
 }

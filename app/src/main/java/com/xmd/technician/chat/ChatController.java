@@ -18,6 +18,7 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -122,6 +123,7 @@ public class ChatController extends AbstractController {
                         @Override
                         public void onError(int i, String s) {
                             Logger.v("onError:" + i + ", " + s);
+                            RxBus.getInstance().post(new IOException("初始化聊天系统失败:" + i + "," + s));
                             RxBus.getInstance().post(new EventEmChatLogin(false));
                         }
 

@@ -315,7 +315,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     // 打招呼
     private void sayHello(String customerId) {
-        if (!LoginTechnician.getInstance().isEmchatLogined()) {
+        if (!LoginTechnician.getInstance().checkAndLoginEmchat()) {
             showToast("聊天系统正在初始化，请稍后再试!");
             return;
         }

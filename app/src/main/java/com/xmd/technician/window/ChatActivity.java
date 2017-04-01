@@ -58,6 +58,7 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -151,6 +152,11 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         setContentView(R.layout.custom_chat_primary_menu);
         ButterKnife.bind(this);
 
+        if (!LoginTechnician.getInstance().checkAndLoginEmchat()) {
+            showToast("聊天系统正在初始化，请稍后重试");
+            finish();
+        }
+
         mToChatEmchatId = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
         isTechOrManger = getIntent().getExtras().getString(ChatConstant.EMCHAT_IS_TECH);
         if (TextUtils.isEmpty(isTechOrManger)) {
@@ -193,7 +199,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         adverseName = mAppTitle.getText().toString();
 
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
+
     }
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_REWARD)
@@ -297,13 +303,14 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private void handleUserGetCoupon(UserGetCouponResult couponResult) {
         EMMessage message = couponResult.mMessage;
-        if ( couponResult.statusCode == 200) {
-            if(Utils.isNotEmpty(couponResult.respData.userActId)){
+        if (couponResult.statusCode == 200) {
+            if (Utils.isNotEmpty(couponResult.respData.userActId)) {
                 message.setAttribute(ChatConstant.KEY_COUPON_ACT_ID, couponResult.respData.userActId);
             }
         }
         sendMessage(message);
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         // 点击notification bar进入聊天页面，保证只有一个聊天页面
@@ -354,7 +361,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription, mSendMessageSubscription,
                     mSendDiceGameSubscription, mAcceptGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription
                     , mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription, mCreditStatusSubscription,
-                    mGiftResultSubscription,mClubUserGetCouponSubscription);
+                    mGiftResultSubscription, mClubUserGetCouponSubscription);
         }
     }
 
