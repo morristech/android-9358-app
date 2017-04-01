@@ -6,6 +6,7 @@ package com.xmd.technician.bean;
 
 public class SayHiNearbyResult extends SayHiBaseResult {
     public int cusPosition;
+
     public SayHiNearbyResult() {
 
     }
@@ -16,6 +17,8 @@ public class SayHiNearbyResult extends SayHiBaseResult {
         this.pageCount = result.pageCount;
         this.userName = result.userName;
         this.userEmchatId = result.userEmchatId;
+        this.userAvatar = result.userAvatar;
+        this.userType = result.userType;
         this.respData = result.respData;
     }
 }

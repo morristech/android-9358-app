@@ -11,6 +11,8 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.HelloTemplateInfo;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatUser;
+import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ThreadManager;
 
 import java.io.File;
@@ -126,7 +128,12 @@ public class HelloSettingManager {
      * @param userName
      * @param userEmchatId
      */
-    public void sendHelloTemplate(String userName, String userEmchatId) {
+    public void sendHelloTemplate(String userName, String userEmchatId, String userAvatar, String userType) {
+        ChatUser chatUser = new ChatUser(userEmchatId);
+        chatUser.setNick(userName);
+        chatUser.setAvatar(userAvatar);
+        chatUser.setUserType(userType);
+        UserUtils.saveUser(chatUser);
         // 招呼文本
         EMMessage txtMessage = EMMessage.createTxtSendMessage(templateContentText.replace(TechApplication.getAppContext().getResources().getString(R.string.hello_setting_content_replace), userName), userEmchatId);
         emSendMessage(txtMessage);

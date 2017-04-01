@@ -17,5 +17,8 @@ public class SayHiVisitorResult extends SayHiBaseResult {
         this.pageCount = result.pageCount;
         this.userName = result.userName;
         this.userEmchatId = result.userEmchatId;
+        this.userAvatar = result.userAvatar;
+        this.userType = result.userType;
+        this.respData = result.respData;
     }
 }

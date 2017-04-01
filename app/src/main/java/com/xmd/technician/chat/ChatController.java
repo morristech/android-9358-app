@@ -11,6 +11,7 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.ConversationListResult;
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.event.EventEmChatLogin;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -115,11 +116,13 @@ public class ChatController extends AbstractController {
                             if (runnable instanceof Runnable) {
                                 ((Runnable) runnable).run();
                             }
+                            RxBus.getInstance().post(new EventEmChatLogin(true));
                         }
 
                         @Override
                         public void onError(int i, String s) {
                             Logger.v("onError:" + i + ", " + s);
+                            RxBus.getInstance().post(new EventEmChatLogin(false));
                         }
 
                         @Override

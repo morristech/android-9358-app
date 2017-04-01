@@ -14,6 +14,7 @@ import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.Util;
+import com.xmd.technician.event.EventEmChatLogin;
 import com.xmd.technician.event.EventExitClub;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.event.EventLogin;
@@ -86,6 +87,8 @@ public class LoginTechnician {
     private int unreadCommentCount;
     private int orderCount;
 
+    private boolean emchatLogined;
+
     private String roles;
 
 
@@ -114,6 +117,7 @@ public class LoginTechnician {
         status = SharedPreferenceHelper.getTechStatus();
 
         RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(this::onGetTechPersonalData);
+        RxBus.getInstance().toObservable(EventEmChatLogin.class).subscribe(this::onLoginEmChatAccount);
     }
 
 
@@ -224,8 +228,8 @@ public class LoginTechnician {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
     }
 
-    public void onLoginEmChatAccount() {
-
+    public void onLoginEmChatAccount(EventEmChatLogin eventEmChatLogin) {
+        setEmchatLogined(eventEmChatLogin.isLoginSuccess());
     }
 
     //获取短信验证码
@@ -675,5 +679,13 @@ public class LoginTechnician {
 
     public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    public boolean isEmchatLogined() {
+        return emchatLogined;
+    }
+
+    public void setEmchatLogined(boolean emchatLogined) {
+        this.emchatLogined = emchatLogined;
     }
 }

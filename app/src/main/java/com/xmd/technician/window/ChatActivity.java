@@ -111,7 +111,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     RelativeLayout relative;
     ViewPager mCommentMsgView;
 
-    private String mToChatUsername;
+    private String mToChatEmchatId;
     private int mChatType = ChatConstant.CHATTYPE_SINGLE;
     private InputMethodManager mInputManager;
     private ChatListAdapter mChatAdapter;
@@ -150,7 +150,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_chat_primary_menu);
         ButterKnife.bind(this);
-        mToChatUsername = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
+
+        mToChatEmchatId = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
         isTechOrManger = getIntent().getExtras().getString(ChatConstant.EMCHAT_IS_TECH);
         if (TextUtils.isEmpty(isTechOrManger)) {
             isTechOrManger = "";
@@ -160,7 +161,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         initPlayCreditGame();
         initFastReply();
 
-        UserUtils.setUserNick(mToChatUsername, mAppTitle);
+        UserUtils.setUserNick(mToChatEmchatId, mAppTitle);
         setBackVisible(true);
         mInputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         mRefreshLayout.setColorSchemeResources(R.color.colorMain);
@@ -307,7 +308,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     protected void onNewIntent(Intent intent) {
         // 点击notification bar进入聊天页面，保证只有一个聊天页面
         String username = intent.getStringExtra(ChatConstant.EMCHAT_ID);
-        if (mToChatUsername.equals(username)) {
+        if (mToChatEmchatId.equals(username)) {
             //刷新ui
             if (mIsMessageListInited) {
                 mChatAdapter.refreshSelectLast();
@@ -431,7 +432,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private void onConversationInit() {
         // 获取当前conversation对象
 
-        mConversation = EMClient.getInstance().chatManager().getConversation(mToChatUsername, CommonUtils.getConversationType(mChatType), true);
+        mConversation = EMClient.getInstance().chatManager().getConversation(mToChatEmchatId, CommonUtils.getConversationType(mChatType), true);
         // 把此会话的未读数置为0
         mConversation.markAllMessagesAsRead();
         // 初始化db时，每个conversation加载数目是getChatOptions().getNumberOfMessagesLoaded
@@ -449,7 +450,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     private void initChatList() {
-        mChatAdapter = new ChatListAdapter(this, mMsgListView, mToChatUsername, mChatType);
+        mChatAdapter = new ChatListAdapter(this, mMsgListView, mToChatEmchatId, mChatType);
         mMsgListView.setHasFixedSize(true);
         mMsgListView.setLayoutManager(new LinearLayoutManager(this));
         mMsgListView.setAdapter(mChatAdapter);
@@ -506,22 +507,22 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         if (result.statusCode == 200) {
             SharedPreferenceHelper.setGameStatus(result.respData.id, ChatConstant.KEY_ACCEPT_GAME);
             if (result.respData.status.equals(ChatConstant.KEY_ACCEPT_GAME)) {
-                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_ACCEPT_GAME, "0:0", mToChatUsername);
+                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_ACCEPT_GAME, "0:0", mToChatEmchatId);
                 ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                     @Override
                     public void run() {
                         mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_" + result.respData.id));
-                        sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVER_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
+                        sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVER_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatEmchatId);
                     }
                 }, 250);
             } else if (result.respData.status.equals(ChatConstant.KEY_GAME_REJECT)) {
                 SharedPreferenceHelper.setGameStatus(result.respData.id, ChatConstant.KEY_GAME_REJECT);
-                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_GAME_REJECT, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
+                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_GAME_REJECT, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatEmchatId);
             } else if (result.respData.status.equals(ChatConstant.KEY_OVERTIME_GAME)) {
-                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVERTIME_GAME, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
+                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_OVERTIME_GAME, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatEmchatId);
             } else if (result.respData.status.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)) {
                 mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId("dice_" + result.respData.id));
-                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_CANCEL_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatUsername);
+                sendDiceGameMessage(result.respData.belongingsAmount, result.respData.id, ChatConstant.KEY_CANCEL_GAME_TYPE, result.respData.srcPoint + ":" + result.respData.dstPoint, mToChatEmchatId);
             }
 
         } else {
@@ -653,7 +654,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     Map<String, String> params = new HashMap<String, String>();
                     params.put(RequestConstant.KEY_USER_CLUB_ID, SharedPreferenceHelper.getUserClubId());
                     params.put(RequestConstant.KEY_UER_CREDIT_AMOUNT, String.valueOf(mGameIntegral));
-                    params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, mToChatUsername);
+                    params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, mToChatEmchatId);
                     params.put(RequestConstant.KEY_DICE_GAME_TIME, String.valueOf(System.currentTimeMillis()));
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_INITIATE_GAME, params);
                 } else {
@@ -743,39 +744,39 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     protected void sendTextMessage(String content) {
-        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
         sendMessage(message);
     }
 
     protected void sendImageMessage(String imagePath) {
-        EMMessage message = EMMessage.createImageSendMessage(imagePath, false, mToChatUsername);
+        EMMessage message = EMMessage.createImageSendMessage(imagePath, false, mToChatEmchatId);
         sendMessage(message);
     }
 
     protected void sendBegRewardMessage(String content) {
-        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
         message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "begReward");
         sendMessage(message);
     }
 
     private void sendCouponMessage(String content, String actId) {
-        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
         message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "ordinaryCoupon");
         message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
         message.setAttribute(ChatConstant.KEY_TECH_CODE, mTechCode);
-        CommonUtils.userGetCoupon(actId, "tech", mToChatUsername, message);
+        CommonUtils.userGetCoupon(actId, "tech", mToChatEmchatId, message);
         // sendMessage(message);
     }
 
     private void sendOrderMessage(String content, String orderId) {
-        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
         message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "order");
         message.setAttribute(ChatConstant.KEY_ORDER_ID, orderId);
         sendMessage(message);
     }
 
     private void sendPaidCouponMessage(String content, String actId) {
-        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
         message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "paidCoupon");
         message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
         message.setAttribute(ChatConstant.KEY_TECH_CODE, mTechCode);
@@ -783,7 +784,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     private void sendDiceGameMessage(String content, String gameId, String gameState, String gameResult, String gameInvite) {
-        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatUsername);
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
         message.setAttribute(ChatConstant.KEY_GAME_CLUB_ID, SharedPreferenceHelper.getUserClubId());
         message.setAttribute(ChatConstant.KEY_GAME_CLUB_NAME, SharedPreferenceHelper.getUserClubName());
         message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, ChatConstant.KEY_MSG_GAME_TYPE);
@@ -844,7 +845,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 }
 
                 // 如果是当前会话的消息，刷新聊天页面
-                if (username.equals(mToChatUsername)) {
+                if (username.equals(mToChatEmchatId)) {
                     try {
                         String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
                         String messageStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
@@ -986,7 +987,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         Map<String, String> params = new HashMap<String, String>();
         params.put(RequestConstant.KEY_USER_CLUB_ID, SharedPreferenceHelper.getUserClubId());
         params.put(RequestConstant.KEY_UER_CREDIT_AMOUNT, content);
-        params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, mToChatUsername);
+        params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, mToChatEmchatId);
         params.put(RequestConstant.KEY_DICE_GAME_TIME, String.valueOf(System.currentTimeMillis()));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_INITIATE_GAME, params);
 

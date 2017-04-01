@@ -37,6 +37,7 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ContactPermissionResult;
 import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
 import com.xmd.technician.model.HelloSettingManager;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -54,7 +55,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
-import rx.functions.Action1;
 
 /**
  * Created by lhj on 2016/7/5.
@@ -168,6 +168,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private boolean remarkIsNotEmpty;   //是否添加了备注
     private String emChatName;    // 用户名称
     private String chatHeadUrl; // 用户头像
+    private String chatType; //用户类型
     private String impression;  // 印象
     private String isTech;      // 聊天参数
 
@@ -314,9 +315,15 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     // 打招呼
     private void sayHello(String customerId) {
+        if (!LoginTechnician.getInstance().isEmchatLogined()) {
+            showToast("聊天系统正在初始化，请稍后再试!");
+            return;
+        }
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_DETAIL);
         params.put(RequestConstant.KEY_USERNAME, emChatName);
+        params.put(RequestConstant.KEY_USER_AVATAR, chatHeadUrl);
+        params.put(RequestConstant.KEY_USER_TYPE, chatType);
         params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, emChatId);
         params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, customerId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, params);
@@ -326,7 +333,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void handleSayHiDetailResult(SayHiBaseResult result) {
         if (result.statusCode == 200) {
             showToast("打招呼成功");
-            HelloSettingManager.getInstance().sendHelloTemplate(emChatName, emChatId);
+            HelloSettingManager.getInstance().sendHelloTemplate(emChatName, emChatId, result.userAvatar, result.userType);
             saveChatContact(emChatId);
             btnEmHello.setEnabled(false);
             btnEmHello.setText(R.string.had_say_hi);
@@ -540,6 +547,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
         emChatId = mCustomerInfo.emchatId;
         chatHeadUrl = mCustomerInfo.avatarUrl;
+        chatType = mCustomerInfo.customerType;
         Glide.with(mContext).load(mCustomerInfo.avatarUrl).error(R.drawable.icon22).into(mContactHead);
 
         impression = mCustomerInfo.impression;

@@ -193,6 +193,7 @@ public class RequestConstant {
 
     public static final String KEY_LOGIN_CHANNEL = "loginChannel";
     public static final String KEY_USERNAME = "username";
+    public static final String KEY_USER_AVATAR = "userAvatar";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_USER = "user";
     public static final String KEY_STATUS = "status";

@@ -25,6 +25,7 @@ import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.model.HelloSettingManager;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -133,7 +134,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
             }
 
             // 环信打招呼
-            HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId);
+            HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId, result.userAvatar, result.userType);
 
             Map<String, String> saveParams = new HashMap<>();
             saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, result.userEmchatId);
@@ -196,7 +197,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
     private RecentlyVisitorAdapter.CallbackInterface<RecentlyVisitorBean> inteface = new RecentlyVisitorAdapter.CallbackInterface<RecentlyVisitorBean>() {
         @Override
         public void onSayHiButtonClicked(RecentlyVisitorBean bean, int position) {
-            sayHiRequest(bean.userId, bean.userName, bean.emchatId, String.valueOf(position));
+            sayHiRequest(bean.userId, bean.userName, bean.avatarUrl, bean.customerType, bean.emchatId, String.valueOf(position));
         }
 
         @Override
@@ -217,11 +218,17 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
         }
     };
 
-    private void sayHiRequest(String userId, String userName, String userEmchatId, String position) {
+    private void sayHiRequest(String userId, String userName, String avatarUrl, String userType, String userEmchatId, String position) {
+        if (!LoginTechnician.getInstance().isEmchatLogined()) {
+            ((BaseActivity) getActivity()).showToast("聊天系统正在初始化，请稍后再试!");
+            return;
+        }
         mSayHiParams.clear();
         params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_VISITOR);
         params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, userId);
         params.put(RequestConstant.KEY_USERNAME, userName);
+        params.put(RequestConstant.KEY_USER_AVATAR, avatarUrl);
+        params.put(RequestConstant.KEY_USER_TYPE, userType);
         params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, userEmchatId);
         params.put(ChatConstant.KEY_SAY_HI_POSITION, position);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, params);

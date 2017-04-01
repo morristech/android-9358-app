@@ -9,6 +9,8 @@ import com.xmd.technician.http.gson.BaseResult;
 public class SayHiBaseResult extends BaseResult {
     public String userName;
     public String userEmchatId;
+    public String userType;
+    public String userAvatar;
 
     public DATA respData;
 

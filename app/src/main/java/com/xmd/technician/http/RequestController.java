@@ -1807,6 +1807,8 @@ public class RequestController extends AbstractController {
             protected void postResult(SayHiBaseResult result) {
                 result.userName = params.get(RequestConstant.KEY_USERNAME);
                 result.userEmchatId = params.get(RequestConstant.KEY_GAME_USER_EMCHAT_ID);
+                result.userAvatar = params.get(RequestConstant.KEY_USER_AVATAR);
+                result.userType = params.get(RequestConstant.KEY_USER_TYPE);
                 switch (type) {
                     case Constant.REQUEST_SAY_HI_TYPE_NEARBY:
                         // 附近的人打招呼

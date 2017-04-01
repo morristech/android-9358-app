@@ -19,6 +19,7 @@ import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.NearbyCusListResult;
 import com.xmd.technician.model.HelloSettingManager;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -91,11 +92,17 @@ public class NearbyActivity extends BaseActivity {
         mFixSnapHelper = new FixLinearSnapHelper();
         mCusAdapter = new NearbyCusAdapter(this);
         mCusAdapter.setCallback((info, position) -> {
+            if (!LoginTechnician.getInstance().isEmchatLogined()) {
+                showToast("聊天系统正在初始化，请稍后再试!");
+                return;
+            }
             // 打招呼
             Map<String, String> params = new HashMap<>();
             params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_NEARBY);
             params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, info.userId);
             params.put(RequestConstant.KEY_USERNAME, info.userName);
+            params.put(RequestConstant.KEY_USER_AVATAR, info.userAvatar);
+            params.put(RequestConstant.KEY_USER_TYPE, info.userType);
             params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, info.userEmchatId);
             params.put(ChatConstant.KEY_SAY_HI_POSITION, String.valueOf(position));
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, params);
@@ -193,7 +200,7 @@ public class NearbyActivity extends BaseActivity {
     private void handleSayHiNearbyResult(SayHiNearbyResult result) {
         if (result != null && result.statusCode == 200) {
             //环信招呼
-            HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId);
+            HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId, result.userAvatar, result.userType);
             // 刷新打招呼次数
             getHelloLeftCount();
             //保存用户好友关系链
