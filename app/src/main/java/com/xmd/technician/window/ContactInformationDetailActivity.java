@@ -267,6 +267,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     private void getCustomerInfo(String userId) {
         Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_ID, contactId);
         params.put(RequestConstant.KEY_USER_ID, userId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL, params);
     }
@@ -280,9 +281,11 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
 
     private void getSayHiStatus(String userId) {
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, userId);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_CHECK_HELLO_RECENTLY, params);
+        if (Utils.isNotEmpty(userId)) {
+            Map<String, String> params = new HashMap<>();
+            params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, userId);
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_CHECK_HELLO_RECENTLY, params);
+        }
     }
 
     private void saveChatContact(String chatId) {
@@ -343,11 +346,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
     }
 
     private void getContactPermissionDetail(String userId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG, Constant.REQUEST_CONTACT_PERMISSION_DETAIL);
-        params.put(RequestConstant.KEY_ID, userId);
-        params.put(RequestConstant.KEY_CONTACT_ID_TYPE, Constant.REQUEST_CONTACT_ID_TYPE_CUSTOMER);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
+        if (Utils.isNotEmpty(userId)) {
+            Map<String, Object> params = new HashMap<>();
+            params.put(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG, Constant.REQUEST_CONTACT_PERMISSION_DETAIL);
+            params.put(RequestConstant.KEY_ID, userId);
+            params.put(RequestConstant.KEY_CONTACT_ID_TYPE, Constant.REQUEST_CONTACT_ID_TYPE_CUSTOMER);
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
+        }
     }
 
     private void handleContactPermissionDetail(ContactPermissionResult result) {
