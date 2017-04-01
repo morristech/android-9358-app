@@ -166,17 +166,21 @@ public class NearbyActivity extends BaseActivity {
     // 处理技师打招呼数量
     private void handleHelloLeftCountResult(HelloLeftCountResult result) {
         if (result != null && result.statusCode == 200) {
-            if (result.respData > 0) {
-                String temp = "今天还有" + result.respData + "次打招呼的机会哟";
-                mDescText.setText(Utils.changeColor(temp, ResourceUtils.getColor(R.color.text_color_yellow), 4, temp.length() - 8));
-            } else if (result.respData == 0) {
-                mDescText.setText("Sorry，今天打招呼次数已用完");
-            } else {
-                // -1:代表打招呼不受限
-                mDescText.setText("打招呼次数无限制哟，赶紧打招呼吧");
-            }
+            updateHelloLeftCount(result.respData);
         } else {
             mDescText.setText("获取打招呼配置失败...");
+        }
+    }
+
+    private void updateHelloLeftCount(int count) {
+        if (count > 0) {
+            String temp = "今天还有" + count + "次打招呼的机会哟";
+            mDescText.setText(Utils.changeColor(temp, ResourceUtils.getColor(R.color.text_color_yellow), 4, temp.length() - 8));
+        } else if (count == 0) {
+            mDescText.setText("Sorry，今天打招呼次数已用完");
+        } else {
+            // -1:代表打招呼不受限
+            mDescText.setText("打招呼次数无限制哟，赶紧打招呼吧");
         }
     }
 
@@ -204,7 +208,7 @@ public class NearbyActivity extends BaseActivity {
             //环信招呼
             HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId, result.userAvatar, result.userType);
             // 刷新打招呼次数
-            getHelloLeftCount();
+            updateHelloLeftCount(result.respData.technicianLeft);
             //保存用户好友关系链
             saveChatContact(result.userEmchatId);
             //更新列表状态

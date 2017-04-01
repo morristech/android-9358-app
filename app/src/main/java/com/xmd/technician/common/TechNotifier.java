@@ -35,7 +35,7 @@ import java.util.HashSet;
 
 /**
  * 新消息提醒class
- *
+ * <p>
  * this class is subject to be inherited and implement the relative APIs
  */
 public class TechNotifier {
@@ -43,6 +43,7 @@ public class TechNotifier {
     public static final int CHAT_ORDER = 1;
     public static final int CHAT_REWARD = 3;
     public static final int CHAT_PAID_COUPON = 2;
+    public static final int CHAT_HELLO_REPLY = 4;
 
     private final static String TAG = "notify";
     Ringtone ringtone = null;
@@ -70,6 +71,7 @@ public class TechNotifier {
     /**
      * 开发者可以重载此函数
      * this function can be override
+     *
      * @param context
      * @return
      */
@@ -107,7 +109,7 @@ public class TechNotifier {
 
     /**
      * 处理新收到的消息，然后发送通知
-     *
+     * <p>
      * 开发者可以重载此函数
      * this function can be override
      *
@@ -130,6 +132,7 @@ public class TechNotifier {
     /**
      * 发送通知栏提示
      * This can be override by subclass to provide customer implementation
+     *
      * @param
      */
     protected void sendNotification(int msgType, String emchatId, String nick) {
@@ -140,7 +143,12 @@ public class TechNotifier {
             if(user != null){
                 username = user.getNick();
             }*/
-            CharSequence notifyText = TextUtils.concat(username, " ", msgs[msgType % msgs.length]);
+            CharSequence notifyText;
+            if (msgType == CHAT_HELLO_REPLY) {
+                notifyText = username + " 回复了您的招呼";
+            } else {
+                notifyText = TextUtils.concat(username, " ", msgs[msgType % msgs.length]);
+            }
 
             PackageManager packageManager = appContext.getPackageManager();
             // notification titile
@@ -159,7 +167,12 @@ public class TechNotifier {
             fromUsers.add(emchatId);
 
             int fromUsersNum = fromUsers.size();
-            String summaryBody = msgs[msgs.length - 1].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2", Integer.toString(notificationNum));
+            String summaryBody;
+            if (msgType == CHAT_HELLO_REPLY) {
+                summaryBody = username + " 回复了您的招呼";
+            } else {
+                summaryBody = msgs[msgs.length - 1].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2", Integer.toString(notificationNum));
+            }
 
             mBuilder.setContentTitle(contentTitle);
             mBuilder.setTicker(notifyText);

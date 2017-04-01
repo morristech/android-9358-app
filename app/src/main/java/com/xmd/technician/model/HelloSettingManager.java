@@ -172,7 +172,7 @@ public class HelloSettingManager {
                 if (result != null && result.respData != null && result.respData.size() > 0) {
                     HelloReplyInfo info = result.respData.get(0);
                     if (EMClient.getInstance().isConnected())
-                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_TEXT, info.receiverEmChatId, info.receiverName);
+                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_HELLO_REPLY, info.receiverEmChatId, info.receiverName);
                 }
             }
 
