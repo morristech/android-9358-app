@@ -193,6 +193,8 @@ public class NearbyActivity extends BaseActivity {
             }
             mAdapterList.addAll(result.respData);
             mCusAdapter.setData(mAdapterList);
+        } else {
+            makeShortToast(result.msg);
         }
     }
 
@@ -208,7 +210,7 @@ public class NearbyActivity extends BaseActivity {
             //更新列表状态
             mAdapterList.get(result.cusPosition).userLeftHelloCount = result.respData.customerLeft;
             mAdapterList.get(result.cusPosition).techHelloRecently = true;
-            mCusAdapter.updateBtnStatus(result.cusPosition);
+            mCusAdapter.updateCurrentItem(result.cusPosition, result.respData.customerLeft);
             // 成功提示
             showToast("打招呼成功");
         } else {

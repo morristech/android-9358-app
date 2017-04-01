@@ -47,8 +47,9 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         this.mCallback = callback;
     }
 
-    public void updateBtnStatus(int position) {
+    public void updateCurrentItem(int position, int count) {
         mList.get(position).techHelloRecently = true;
+        mList.get(position).userLeftHelloCount = count;
         notifyItemChanged(position);
     }
 
