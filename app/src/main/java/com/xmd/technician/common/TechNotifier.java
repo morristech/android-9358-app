@@ -123,9 +123,10 @@ public class TechNotifier {
         }*/
 
         // 判断app是否在后台
-        if (!EasyUtils.isAppRunningForeground(appContext)) {
+        /*if (!EasyUtils.isAppRunningForeground(appContext)) {
             sendNotification(msgType, emchatId, nick);
-        }
+        }*/
+        sendNotification(msgType, emchatId, nick);
         viberateAndPlayTone();
     }
 
