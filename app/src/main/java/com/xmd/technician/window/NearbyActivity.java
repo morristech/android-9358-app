@@ -23,9 +23,11 @@ import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.FixLinearSnapHelper;
+import com.xmd.technician.widget.FixPagerSnapHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +49,10 @@ public class NearbyActivity extends BaseActivity {
     RecyclerView mCusRecyclerView;
 
     private static final int DEFAULT_CUS_PAGE_SIZE = 10;
+    private SimpleDateFormat formatter;
 
     private NearbyCusAdapter mCusAdapter;
-    private FixLinearSnapHelper mFixSnapHelper;
+    private FixPagerSnapHelper mFixSnapHelper;
 
     private Subscription mGetHelloLeftCountSubscription;
     private Subscription mGetNearbyCusListSubscription;
@@ -65,6 +68,9 @@ public class NearbyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby);
+
+        formatter = new SimpleDateFormat(Constant.FORMAT_DATE_TIME);
+
         ButterKnife.bind(this);
         initView();
 
@@ -89,7 +95,7 @@ public class NearbyActivity extends BaseActivity {
         setBackVisible(true);
         setRightVisible(true, R.string.nearby_bar_right_text);
 
-        mFixSnapHelper = new FixLinearSnapHelper();
+        mFixSnapHelper = new FixPagerSnapHelper();
         mCusAdapter = new NearbyCusAdapter(this);
         mCusAdapter.setCallback((info, position) -> {
             if (!LoginTechnician.getInstance().checkAndLoginEmchat()) {
@@ -105,6 +111,7 @@ public class NearbyActivity extends BaseActivity {
             params.put(RequestConstant.KEY_USER_TYPE, info.userType);
             params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, info.userEmchatId);
             params.put(ChatConstant.KEY_SAY_HI_POSITION, String.valueOf(position));
+            params.put(RequestConstant.KEY_TIME_STAMP, formatter.format(new Date()));
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, params);
         });
         mCusRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -207,14 +214,15 @@ public class NearbyActivity extends BaseActivity {
         if (result != null && result.statusCode == 200) {
             //环信招呼
             HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId, result.userAvatar, result.userType);
-            // 刷新打招呼次数
+            //刷新打招呼次数
             updateHelloLeftCount(result.respData.technicianLeft);
             //保存用户好友关系链
             saveChatContact(result.userEmchatId);
             //更新列表状态
             mAdapterList.get(result.cusPosition).userLeftHelloCount = result.respData.customerLeft;
             mAdapterList.get(result.cusPosition).techHelloRecently = true;
-            mCusAdapter.updateCurrentItem(result.cusPosition, result.respData.customerLeft);
+            mAdapterList.get(result.cusPosition).lastTechHelloTime = result.cusSayHiTime;
+            mCusAdapter.updateCurrentItem(result.cusPosition, result.respData.customerLeft, result.cusSayHiTime);
             // 成功提示
             showToast("打招呼成功");
         } else {

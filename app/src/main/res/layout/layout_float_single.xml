@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_float_single"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/home_button_height"
+    android:background="@drawable/bg_float_view"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/padding_10"
+    android:paddingRight="@dimen/padding_10">
+
+    <com.xmd.technician.widget.CircleImageView
+        android:id="@+id/img_single_avatar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="@dimen/padding_10"
+        android:layout_marginBottom="@dimen/padding_10"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/common_v_margin"
+        android:src="@drawable/icon22" />
+
+    <TextView
+        android:id="@+id/tv_single_nickname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/common_v_margin"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/fontBody" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/hello_reply_single_tips"
+        android:singleLine="true"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/fontBody" />
+</LinearLayout>

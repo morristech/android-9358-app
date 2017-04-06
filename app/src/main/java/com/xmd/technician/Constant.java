@@ -234,5 +234,9 @@ public class Constant {
     public static final String CONTACT_INFO_DETAIL_TYPE_CUSTOMER = "customer";
     public static final String CONTACT_INFO_DETAIL_TYPE_MANAGER = "manager";
     public static final String CONTACT_INFO_DETAIL_TYPE_TECH = "tech";
+
+    public static final String EXTRA_FRAGMENT_SWITCH = "switch";
+    public static final String EXTRA_HELLO_REPLY_INFO = "hello_reply_info";
+    public static final String ACTION_HELLO_REPLY_RECEIVER = "com.xmd.technician.HELLO_REPLY";
 }
 

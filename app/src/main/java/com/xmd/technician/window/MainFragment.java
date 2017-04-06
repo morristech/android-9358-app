@@ -912,7 +912,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 // 跳转到营销页面
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(3);
-                MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 0);
                 break;
         }
     }

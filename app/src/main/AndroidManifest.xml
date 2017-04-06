@@ -262,6 +262,10 @@
         <activity
             android:name=".window.HelloSettingActivity"
             android:screenOrientation="portrait" />
+
+        <service android:name=".model.HelloReplyService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>

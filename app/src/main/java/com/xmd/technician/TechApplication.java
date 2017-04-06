@@ -15,6 +15,7 @@ import com.xmd.technician.common.TechNotifier;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.model.HelloReplyService;
 import com.xmd.technician.msgctrl.ControllerRegister;
 import com.xmd.technician.window.WelcomeActivity;
 
@@ -73,6 +74,7 @@ public class TechApplication extends Application {
                 initNotifier();
 
                 DataRefreshService.start();
+                HelloReplyService.start();
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");

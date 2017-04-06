@@ -26,7 +26,6 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
-import com.hyphenate.util.EasyUtils;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.UserUtils;
 
@@ -43,7 +42,6 @@ public class TechNotifier {
     public static final int CHAT_ORDER = 1;
     public static final int CHAT_REWARD = 3;
     public static final int CHAT_PAID_COUPON = 2;
-    public static final int CHAT_HELLO_REPLY = 4;
 
     private final static String TAG = "notify";
     Ringtone ringtone = null;
@@ -144,12 +142,7 @@ public class TechNotifier {
             if(user != null){
                 username = user.getNick();
             }*/
-            CharSequence notifyText;
-            if (msgType == CHAT_HELLO_REPLY) {
-                notifyText = username + " 回复了您的招呼";
-            } else {
-                notifyText = TextUtils.concat(username, " ", msgs[msgType % msgs.length]);
-            }
+            CharSequence notifyText = TextUtils.concat(username, " ", msgs[msgType % msgs.length]);
 
             PackageManager packageManager = appContext.getPackageManager();
             // notification titile
@@ -168,12 +161,7 @@ public class TechNotifier {
             fromUsers.add(emchatId);
 
             int fromUsersNum = fromUsers.size();
-            String summaryBody;
-            if (msgType == CHAT_HELLO_REPLY) {
-                summaryBody = username + " 回复了您的招呼";
-            } else {
-                summaryBody = msgs[msgs.length - 1].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2", Integer.toString(notificationNum));
-            }
+            String summaryBody = msgs[msgs.length - 1].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2", Integer.toString(notificationNum));
 
             mBuilder.setContentTitle(contentTitle);
             mBuilder.setTicker(notifyText);

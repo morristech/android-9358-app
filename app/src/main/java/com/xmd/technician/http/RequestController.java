@@ -1814,6 +1814,7 @@ public class RequestController extends AbstractController {
                         // 附近的人打招呼
                         SayHiNearbyResult nearbyResult = new SayHiNearbyResult(result);
                         nearbyResult.cusPosition = Integer.parseInt(params.get(ChatConstant.KEY_SAY_HI_POSITION));
+                        nearbyResult.cusSayHiTime = params.get(RequestConstant.KEY_TIME_STAMP);
                         RxBus.getInstance().post(nearbyResult);
                         break;
                     case Constant.REQUEST_SAY_HI_TYPE_VISITOR:

@@ -47,9 +47,10 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         this.mCallback = callback;
     }
 
-    public void updateCurrentItem(int position, int count) {
+    public void updateCurrentItem(int position, int count, String time) {
         mList.get(position).techHelloRecently = true;
         mList.get(position).userLeftHelloCount = count;
+        mList.get(position).lastTechHelloTime = time;
         notifyItemChanged(position);
     }
 

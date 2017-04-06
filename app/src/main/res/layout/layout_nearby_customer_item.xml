@@ -59,6 +59,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_10"
+                android:layout_marginRight="@dimen/padding_10"
                 android:layout_marginTop="@dimen/padding_15"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -67,7 +69,7 @@
                     android:id="@+id/cus_item_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="张先生"
+                    android:singleLine="true"
                     android:textColor="@color/nearby_text_black_dark"
                     android:textSize="@dimen/fontTitle2" />
 
@@ -95,7 +97,7 @@
                 android:layout_marginBottom="@dimen/padding_15"
                 android:layout_marginTop="@dimen/padding_10"
                 android:gravity="center"
-                android:text="2分钟前登录"
+                android:singleLine="true"
                 android:textColor="@color/nearby_text_black_light"
                 android:textSize="@dimen/fontBody" />
 
@@ -116,7 +118,7 @@
                 android:gravity="center"
                 android:paddingBottom="@dimen/padding_10"
                 android:paddingTop="@dimen/padding_10"
-                android:text="2天前 我打过招呼..."
+                android:singleLine="true"
                 android:textColor="@color/nearby_text_gray_light"
                 android:textSize="@dimen/fontBody" />
 
@@ -133,7 +135,7 @@
         android:gravity="center"
         android:padding="0dp"
         android:text="@string/to_say_hi"
-        android:textColor="@color/color_white"
+        android:textColor="@color/selector_txt_near_hello_btn"
         android:textSize="@dimen/fontTitle"
         android:visibility="visible" />
 </LinearLayout>

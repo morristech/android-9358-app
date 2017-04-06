@@ -506,5 +506,7 @@
     <string name="save_tech_card_path">techQRCode</string>
     <string name="had_saved_tech_card">您已保存过该二维码</string>
 
-
+    <string name="hello_reply_single_tips">回复了您的招呼</string>
+    <string name="hello_reply_multi_tips">共%s个客户回复了您的招呼</string>
+    <string name="hello_reply_multi_more_tips">等%s个客户回复了您的招呼</string>
 </resources>

@@ -36,6 +36,7 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/tv_item_status"
         android:layout_toRightOf="@id/img_item_avatar"
+        android:singleLine="true"
         android:text="客户昵称"
         android:textColor="@color/black"
         android:textSize="@dimen/fontHead" />

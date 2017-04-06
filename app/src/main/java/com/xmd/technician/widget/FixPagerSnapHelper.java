@@ -2,8 +2,8 @@ package com.xmd.technician.widget;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -11,7 +11,7 @@ import android.view.View;
  * Created by ZR on 17-3-17.
  */
 
-public class FixLinearSnapHelper extends LinearSnapHelper {
+public class FixPagerSnapHelper extends PagerSnapHelper {
     private OrientationHelper mVerticalHelper;
     private OrientationHelper mHorizontalHelper;
     private RecyclerView mRecyclerView;

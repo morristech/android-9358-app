@@ -6,6 +6,7 @@ package com.xmd.technician.bean;
 
 public class SayHiNearbyResult extends SayHiBaseResult {
     public int cusPosition;
+    public String cusSayHiTime;
 
     public SayHiNearbyResult() {
 

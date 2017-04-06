@@ -12,6 +12,7 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
@@ -113,6 +114,16 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         EMClient.getInstance().groupManager().loadAllGroups();
         EMClient.getInstance().chatManager().loadAllConversations();
         UserProfileProvider.getInstance().initContactList();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        int index = getIntent().getIntExtra(Constant.EXTRA_FRAGMENT_SWITCH, -1);
+        if (index >= 0) {
+            switchFragment(index);
+        }
     }
 
     @CheckBusinessPermission(PermissionConstants.HOME)

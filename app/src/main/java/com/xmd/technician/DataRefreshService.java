@@ -22,12 +22,10 @@ public class DataRefreshService extends Service {
 
     private final static int CMD_REFRESH_PERSONAL_DATA = 1;
     private final static int CMD_CHECK_PAY_NOTIFY = 2;
-
     private final static int CMD_CHECK_HELLO_REPLY = 3;
 
     private boolean mRefreshPersonalData;
     private boolean mRefreshPayNotify;
-
     private boolean mRefreshHelloReply;
 
     private Subscription mTokenExpiredSubscription;
@@ -135,6 +133,7 @@ public class DataRefreshService extends Service {
         Logger.i("===token expired ===");
         mRefreshPayNotify = false;
         mRefreshPersonalData = false;
+        mRefreshHelloReply = false;
     }
 
     public static void refreshPersonalData(boolean on) {

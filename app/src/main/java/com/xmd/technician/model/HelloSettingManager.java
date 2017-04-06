@@ -1,25 +1,27 @@
 package com.xmd.technician.model;
 
+import android.content.Intent;
 import android.text.TextUtils;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
-import com.xmd.technician.bean.HelloReplyInfo;
 import com.xmd.technician.bean.HelloTemplateInfo;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
-import com.xmd.technician.common.TechNotifier;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.RetrofitServiceFactory;
 import com.xmd.technician.http.gson.HelloReplyResult;
 
 import java.io.File;
+import java.io.Serializable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -168,17 +170,19 @@ public class HelloSettingManager {
         mHelloReplyCheck.enqueue(new Callback<HelloReplyResult>() {
             @Override
             public void onResponse(Call<HelloReplyResult> call, Response<HelloReplyResult> response) {
+                // APP内部回复通知
                 HelloReplyResult result = response.body();
                 if (result != null && result.respData != null && result.respData.size() > 0) {
-                    HelloReplyInfo info = result.respData.get(0);
-                    if (EMClient.getInstance().isConnected())
-                        TechApplication.getNotifier().showNotification(TechNotifier.CHAT_HELLO_REPLY, info.receiverEmChatId, info.receiverName);
+                    Intent intent = new Intent();
+                    intent.setAction(Constant.ACTION_HELLO_REPLY_RECEIVER);
+                    intent.putExtra(Constant.EXTRA_HELLO_REPLY_INFO, (Serializable) result.respData);
+                    TechApplication.getAppContext().sendBroadcast(intent);
                 }
             }
 
             @Override
             public void onFailure(Call<HelloReplyResult> call, Throwable t) {
-
+                Logger.e(t.getLocalizedMessage());
             }
         });
     }

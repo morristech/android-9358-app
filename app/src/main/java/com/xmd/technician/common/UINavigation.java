@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.xmd.technician.Constant;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
 import com.xmd.technician.window.JoinClubActivity;
 import com.xmd.technician.window.LoginActivity;
@@ -57,5 +59,19 @@ public class UINavigation {
 
     public static void gotoMainActivityFromStart(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
+    }
+
+    public static void gotoMainActivityIndexFragmentFromService(Context context, int index) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(Constant.EXTRA_FRAGMENT_SWITCH, index);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    public static void gotoChatActivityFromService(Context context, String emChatId) {
+        Intent intent = new Intent("com.xmd.technician.action.START_CHAT");
+        intent.putExtra(ChatConstant.EMCHAT_ID, emChatId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }
