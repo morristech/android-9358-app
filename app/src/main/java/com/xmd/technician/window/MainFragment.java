@@ -250,6 +250,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mContext = getActivity();
         ButterKnife.bind(this, mRootView);
         initView(mRootView);
+        registerRequestHandlers(); //注册监听器
 
         initStatistic();
         initOnlinePay();
@@ -260,13 +261,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initCredit();
         initWorkStatus();
         initNearbyUser();
-
         showHeadView();
-
-        registerRequestHandlers(); //注册监听器
-
         HeartBeatTimer.getInstance().start(60, mTask);
-
         sendDataRequest();
         return mRootView;
     }

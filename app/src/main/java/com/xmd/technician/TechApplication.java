@@ -27,7 +27,7 @@ import java.util.List;
 public class TechApplication extends Application {
     private static Context appContext;
     private static TechNotifier mNotifier;
-    public static Boolean isTest = false;
+    public static Boolean isTest = true;
 
     @Override
     public void onCreate() {
@@ -52,8 +52,17 @@ public class TechApplication extends Application {
                 ThreadManager.initialize();
                 ControllerRegister.initialize();
                 SharedPreferenceHelper.initialize();
+                EMOptions emOptions = new EMOptions();
+                EMClient.getInstance().init(this, emOptions);
 
-                MobclickAgent.setCatchUncaughtExceptions(true);
+                if(isTest){
+                    MobclickAgent.setCatchUncaughtExceptions(false);
+                    //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+                    EMClient.getInstance().setDebugMode(false);
+                }else{
+                    MobclickAgent.setCatchUncaughtExceptions(true);
+                    EMClient.getInstance().setDebugMode(true);
+                }
                 // 应用入口，禁止默认的页面统计方式
                 MobclickAgent.openActivityDurationTrack(false);
 
@@ -66,10 +75,7 @@ public class TechApplication extends Application {
                         build();
                 Bugtags.start(AppConfig.BUGTAGS_APP_KEY, this, Bugtags.BTGInvocationEventNone, options);
                 */
-                EMOptions emOptions = new EMOptions();
-                EMClient.getInstance().init(this, emOptions);
-                //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-                EMClient.getInstance().setDebugMode(true);
+
 
                 initNotifier();
 

@@ -39,7 +39,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
     private Toast mToast;
 
     private Subscription mLogoutSubscription;
-    private Subscription mTokenExpiredSubscription;
+    protected Subscription mTokenExpiredSubscription;
     private Subscription mThrowableSubscription;
 
     @Override
@@ -160,13 +160,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
     }
 
     public void makeShortToast(String str) {
-        if (mToast == null) {
-            mToast = Toast.makeText(TechApplication.getAppContext(), TextUtils.isEmpty(str) ? getString(R.string.default_tips) : str, Toast.LENGTH_SHORT);
-        } else {
-            mToast.setText(TextUtils.isEmpty(str) ? getString(R.string.default_tips) : str);
-            mToast.setDuration(Toast.LENGTH_SHORT);
-        }
-        mToast.show();
+        Toast.makeText(TechApplication.getAppContext(), TextUtils.isEmpty(str) ? getString(R.string.default_tips) : str, Toast.LENGTH_SHORT).show();
     }
 
     public void showToast(String message) {
@@ -220,7 +214,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
      * @param message whether to alert the message before going to login activity
      */
     protected void gotoLoginActivity(String message) {
-
         //Before go to login activity, alert the message if it exists
         if (!TextUtils.isEmpty(message)) {
             makeShortToast(message);
@@ -232,6 +225,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 
 }

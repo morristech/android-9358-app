@@ -785,6 +785,13 @@ public class RequestController extends AbstractController {
             protected void postResult(AvatarResult result) {
                 RxBus.getInstance().post(result);
             }
+
+            @Override
+            protected void postError(String errorMsg) {
+                AvatarResult avatarResult = new AvatarResult();
+                avatarResult.respData = errorMsg;
+                RxBus.getInstance().post(avatarResult);
+            }
         });
     }
 

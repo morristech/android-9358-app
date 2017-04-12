@@ -8,7 +8,6 @@ import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.QuitClubResult;
-import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -29,7 +28,6 @@ public abstract class TokenCheckedCallback<T extends BaseResult> implements Call
             T result = response.body();
             if (result.statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TOKEN_EXPIRE, result.msg);
-                LoginTechnician.getInstance().setToken(null);
             } else if (result.statusCode == RequestConstant.RESP_ERROR && !(result instanceof QuitClubResult)) {
                 postError(result.msg);
             } else {

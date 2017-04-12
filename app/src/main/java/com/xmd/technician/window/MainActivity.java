@@ -64,7 +64,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
 
         permissionManager.loadPermissions(new Callback<Void>() {

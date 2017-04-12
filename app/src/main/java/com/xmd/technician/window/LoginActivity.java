@@ -18,6 +18,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.contract.LoginContract;
 import com.xmd.technician.http.RetrofitServiceFactory;
+import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.presenter.LoginPresenter;
 import com.xmd.technician.widget.ClearableEditText;
 
@@ -60,6 +61,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if (mTokenExpiredSubscription != null) {
+            RxBus.getInstance().unsubscribe(mTokenExpiredSubscription);
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(0xffff7d6b);

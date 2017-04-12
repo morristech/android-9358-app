@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -28,19 +29,26 @@ import butterknife.ButterKnife;
 /**
  * Created by sdcm on 15-10-27.
  */
-public class BrowserActivity extends BaseActivity implements View.OnClickListener{
+public class BrowserActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String EXTRA_URL = "url";
     public static final String EXTRA_SHOW_MENU = "show_menu";
     public static final String EXTRA_FULLSCREEN = "fullScreen";
 
-    @Bind(R.id.mainwebView) WebView mainWebView;
-    @Bind(R.id.back_ImageView) ImageView back_ImageView;
-    @Bind(R.id.go_next_ImageView) ImageView go_next_ImageView;
-    @Bind(R.id.refresh_ImageView) ImageView refresh_ImageView;
-    @Bind(R.id.home_ImageView) ImageView home_ImageView;
-    @Bind(R.id.download_progressbar) SmoothProgressBar downloadProgressbar;
-    @Bind(R.id.menu_LinearLayout) LinearLayout mMenuBar;
+    @Bind(R.id.mainwebView)
+    WebView mainWebView;
+    @Bind(R.id.back_ImageView)
+    ImageView back_ImageView;
+    @Bind(R.id.go_next_ImageView)
+    ImageView go_next_ImageView;
+    @Bind(R.id.refresh_ImageView)
+    ImageView refresh_ImageView;
+    @Bind(R.id.home_ImageView)
+    ImageView home_ImageView;
+    @Bind(R.id.download_progressbar)
+    SmoothProgressBar downloadProgressbar;
+    @Bind(R.id.menu_LinearLayout)
+    LinearLayout mMenuBar;
 
     //    private View mCustomView;
 //    private WebChromeClient.CustomViewCallback mCustomViewCallback;
@@ -79,7 +87,7 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
         ws.setLoadWithOverviewMode(true);
         ws.setSupportZoom(true); //支持缩放
         ws.setBuiltInZoomControls(true);
-
+        ws.setDisplayZoomControls(false);
         ws.setSaveFormData(true); // 保存表单数据
         ws.setDomStorageEnabled(true);
 
@@ -251,11 +259,16 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void onDestroy() {
-        if (mainWebView != null) {
+        if (mainWebView != null && mainWebView.getParent() != null) {
+            mainWebView.setVisibility(View.GONE);
+            ((ViewGroup) mainWebView.getParent()).removeView(mainWebView);
             mainWebView.destroy();
+            mainWebView = null;
+
         }
         super.onDestroy();
     }
+
 
     public void share(String url) {
         Uri uri = Uri.parse(url);

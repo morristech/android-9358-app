@@ -503,11 +503,11 @@ public class Utils {
 
     public static String getStringMetaData(String metaDataName) {
         PackageManager pm = TechApplication.getAppContext().getPackageManager();
-        ApplicationInfo appinfo;
+        ApplicationInfo appInfo;
         String metaDataValue = "";
         try {
-            appinfo = pm.getApplicationInfo(TechApplication.getAppContext().getPackageName(), PackageManager.GET_META_DATA);
-            Bundle metaData = appinfo.metaData;
+            appInfo = pm.getApplicationInfo(TechApplication.getAppContext().getPackageName(), PackageManager.GET_META_DATA);
+            Bundle metaData = appInfo.metaData;
             metaDataValue = metaData.getString(metaDataName);
             return metaDataValue;
         } catch (Exception e) {

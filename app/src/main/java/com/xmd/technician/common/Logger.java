@@ -223,7 +223,9 @@ public class Logger {
      *            The message you would like logged.
      */
     public static void e(String msg) {
-        e(TAG, msg);
+        if(Utils.isNotEmpty(msg)){
+            e(TAG, msg);
+        }
     }
 
     /**
