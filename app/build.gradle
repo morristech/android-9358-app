@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.application' //说明module的类型
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.bugtags.library.plugin'
 apply plugin: 'com.neenbedankt.android-apt'
@@ -18,18 +18,18 @@ bugtags {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '23.0.3'
+    compileSdkVersion 25   //编译的sdk版本
+    buildToolsVersion '23.0.3'//编译的tools版本
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    defaultConfig {
-        applicationId "com.xmd.technician"
-        minSdkVersion 15
-        targetSdkVersion 25
+    defaultConfig {//默认配置
+        applicationId "com.xmd.technician" //应用程序包名
+        minSdkVersion 15 //支持的最低版本
+        targetSdkVersion 25 //目标版本
         // 1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
         // release version : 1.4.0.14
         // 1.5.4 备用技师登录需求
@@ -48,20 +48,20 @@ android {
     }
 
     lintOptions {
-        abortOnError false
+        abortOnError false  //lint 时终止错误上报，防止编译的时候莫名失败
     }
 
-    signingConfigs {
+    signingConfigs { //签名配置
         release {
-            storeFile file("tools/xmd_app_key.keystore")
-            storePassword sign_password
-            keyAlias key_alias
-            keyPassword sign_password
+            storeFile file("tools/xmd_app_key.keystore") //密钥文件路径
+            storePassword sign_password //密钥文件密码
+            keyAlias key_alias //key别名
+            keyPassword sign_password//key密码
         }
     }
 
-    buildTypes {
-        debug {
+    buildTypes { //build类型
+        debug {//调试
             manifestPlaceholders = [
                     EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
                     //Getui placeHolder
@@ -74,12 +74,12 @@ android {
             signingConfig signingConfigs.release
         }
 
-        release {
-            minifyEnabled true
+        release {//发布
+            minifyEnabled true  //混淆开启
             zipAlignEnabled true
             shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//指定混淆文件
+            signingConfig signingConfigs.release //设置签名信息
         }
 
     }
@@ -145,7 +145,8 @@ aspectjx {
     excludeJarFilter '.jar'
 }
 
-dependencies {
+
+dependencies { //依赖文件
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'multi-image-selector-1.2', ext: 'aar')
     compile(name: 'shidou-updater-1.5', ext: 'aar')

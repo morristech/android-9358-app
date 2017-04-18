@@ -220,7 +220,7 @@
     <dimen name="main_page_right_width">320dp</dimen>
     <dimen name="limit_grab_item_img_width">70dp</dimen>
     <dimen name="limit_grab_item_img_radius">6dp</dimen>
-
+    <dimen name="time_filter_item_width">120dp</dimen>
 
     <dimen name="fontDisplay4">112sp</dimen>
     <dimen name="fontDisplay3">56sp</dimen>

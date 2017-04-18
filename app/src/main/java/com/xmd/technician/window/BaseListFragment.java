@@ -42,7 +42,6 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     protected Subscription mThrowableSubscription;
 
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -144,7 +143,10 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
 
     protected void onGetListFailed(String errorMsg) {
         mSwipeRefreshLayout.setRefreshing(false);
-        ((BaseFragmentActivity) getActivity()).makeShortToast(errorMsg);
+        if (((BaseFragmentActivity) getActivity()) != null) {
+            ((BaseFragmentActivity) getActivity()).makeShortToast(errorMsg);
+        }
+
     }
 
     @Override

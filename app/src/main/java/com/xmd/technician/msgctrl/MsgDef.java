@@ -158,8 +158,6 @@ public class MsgDef {
     public static final int MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL = 0x0084;
     public static final int MSG_DEF_JOURNAL_SHARE_COUNT = 0x0085;
     public static final int MSG_DEF_TECH_ACCOUNT_LIST = 0x0086;
-
-
     public static final int MSG_DEG_DELETE_CONVERSATION_FROM_DB = 0x0087;
     public static final int MSG_DEG_SHARE_QR_CODE = 0x0088;
 
@@ -180,5 +178,12 @@ public class MsgDef {
 
     public static final int MSG_DEF_GET_ROLE_PERMISSION = 0x0103;
     public static final int MSG_DEF_GET_ROLE_LIST = 0x0104;
+    // ------------------------------------------> 技师排行榜 <----------------------------------------
+    public static final int MSG_DEF_TECH_PK_RANKING = 0x00105;
+    public static final int MSG_DEF_TECH_PK_ACTIVITY_LIST = 0x0106;
+    public static final int MSG_DEF_TECH_PK_TEAM_RANKING_LIST = 0x0107;
+    public static final int MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST = 0x0108;
+    public static final int MSG_DEF_TECH_RANKING_LIST = 0x0109;
+
 
 }

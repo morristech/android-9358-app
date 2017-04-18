@@ -11,6 +11,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +31,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.Adapter.MainPageTechOrderListAdapter;
+import com.xmd.technician.Adapter.PKRankingAdapter;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.DataRefreshService;
@@ -53,6 +57,7 @@ import com.xmd.technician.http.gson.NearbyCusCountResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechPKRankingResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.model.HelloSettingManager;
@@ -192,6 +197,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mTechStatus;
     @Bind(R.id.order_figure_out)
     TextView mOrderFigureOut;
+    @Bind(R.id.team_list)
+    RecyclerView mTeamList;
+    @Bind(R.id.ranking_more)
+    TextView mRankingMore;
 
     // 附近的人
     @Bind(R.id.nearby_layout)
@@ -210,6 +219,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     View mPayNotifyLayout;
     @Bind(R.id.pay_notify_header)
     RelativeLayout mPayNotifyHeader;
+
     private OnlinePayNotifyFragment mPayNotifyFragment;
 
 
@@ -225,6 +235,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private boolean hasDynamic;
     private LinearLayout mContactMore;
 
+
     private Subscription mGetTechCurrentInfoSubscription;
     private Subscription mGetTechOrderListSubscription;
     private Subscription mGetTechStatisticsDataSubscription;
@@ -237,11 +248,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mGetNearbyCusCountSubscription;    // 附近的人:获取会所附近客户数量;
     private Subscription mGetHelloSetTemplateSubscription;  // 获取打招呼内容
     private Subscription mContactPermissionVisitorSubscription; // 获取聊天限制
-
+    private Subscription mTechPKRankingSubscription;
     private LoginTechnician mTech = LoginTechnician.getInstance();
     private HelloSettingManager mHelloSettingManager = HelloSettingManager.getInstance();
 
     private View mRootView;
+    private boolean isHasPk;
 
     @Nullable
     @Override
@@ -257,13 +269,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initOrder();
         initVisitor();
         initMoment();
-        initRanking();
         initCredit();
         initWorkStatus();
         initNearbyUser();
         showHeadView();
         HeartBeatTimer.getInstance().start(60, mTask);
+        initPkRanking();
         sendDataRequest();
+
         return mRootView;
     }
 
@@ -285,7 +298,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mRequestJoinClubSubscription,
                 mGetNearbyCusCountSubscription,
                 mGetHelloSetTemplateSubscription,
-                mContactPermissionVisitorSubscription);
+                mContactPermissionVisitorSubscription,
+                mTechPKRankingSubscription);
     }
 
     private void initView(View view) {
@@ -312,10 +326,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void sendDataRequest() {
         loadStatisticData();
         loadOrderListData();
-        loadRankingData();
         loadVisitor();
         loadMomentData();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SET_TEMPLATE);// 技师登录进入首页后,获取打招呼内容
+        loadRankingData();
+
     }
 
 
@@ -373,6 +388,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initStatisticPraise();
         mGetTechStatisticsDataSubscription = RxBus.getInstance().toObservable(TechStatisticsDataResult.class).subscribe(
                 statisticsData -> initTechWorkView(statisticsData));
+
     }
 
     @CheckBusinessPermission(PermissionConstants.STATISTIC)
@@ -492,19 +508,30 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_DYNAMIC_LIST, param);
     }
 
+
     /**************************
-     * 排行榜
+     * 排行榜无PK
      ***************************/
     @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
     public void initRanking() {
         mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.VISIBLE);
         mGetTechRankIndexDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
                 this::initTechRankingView);
+
     }
 
     @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
+    public void initPkRanking() {
+        mTechPKRankingSubscription = RxBus.getInstance().toObservable(TechPKRankingResult.class).subscribe(
+                techPKRankingResult -> handleTechPKRankingView(techPKRankingResult)
+        );
+    }
+
+
+    @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
     public void loadRankingData() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_PK_RANKING);
+
     }
 
     /**************************
@@ -795,7 +822,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_EDIT_TECH_INFO);
     }
 
-    @OnClick({R.id.main_page_head, R.id.main_tech_order_all, R.id.main_tech_dynamic_all, R.id.main_tech_who_care_all, R.id.layout_technician_ranking})
+    @OnClick({R.id.main_page_head, R.id.main_tech_order_all, R.id.main_tech_dynamic_all, R.id.main_tech_who_care_all, R.id.layout_technician_ranking, R.id.layout_technician_pk_ranking})
     public void onMainPagePieceClicked(View view) {
         switch (view.getId()) {
             case R.id.main_page_head:
@@ -818,14 +845,17 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 0);
                 break;
             case R.id.layout_technician_ranking:
-                String url = SharedPreferenceHelper.getServerHost() + String.format(RequestConstant.URL_RANKING, System.currentTimeMillis(), RequestConstant.USER_TYPE_TECH,
-                        RequestConstant.SESSION_TYPE, SharedPreferenceHelper.getUserToken()
-                );
-                Intent intentRanking = new Intent(getActivity(), BrowserActivity.class);
-                intentRanking.putExtra(BrowserActivity.EXTRA_SHOW_MENU, false);
-                intentRanking.putExtra(BrowserActivity.EXTRA_URL, url);
-                startActivity(intentRanking);
+                if (isHasPk) {
+                    startActivity(new Intent(getActivity(), TechPKActiveActivity.class));
+                } else {
+                    Intent personalRanking = new Intent(getActivity(), TechPersonalRankingDetailActivity.class);
+                    startActivity(personalRanking);
+                }
                 break;
+            case R.id.layout_technician_pk_ranking:
+                startActivity(new Intent(getActivity(), TechPKActiveActivity.class));
+                break;
+
         }
     }
 
@@ -834,9 +864,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         switch (view.getId()) {
             case R.id.main_total_income:
                 startActivity(new Intent(getActivity(), TechAccountActivity.class));
-                return;
-        }
-        switch (view.getId()) {
+                break;
             case R.id.main_too_keen:
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(2);
@@ -1166,6 +1194,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mTvTitleService.setVisibility(View.GONE);
         }
 
+
     }
 
     @Override
@@ -1233,4 +1262,37 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void onEventRequestJoinClub(EventRequestJoinClub event) {
         showTechStatus(mTech.getStatus());
     }
+
+    private void handleTechPKRankingView(TechPKRankingResult techPKRankingResult) {
+        if (techPKRankingResult.statusCode == 200) {
+            if (techPKRankingResult.respData.count == Constant.HAS_RUNNING_PK_GROUP) {
+                mRootView.findViewById(R.id.layout_technician_pk_ranking).setVisibility(View.VISIBLE);
+                mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.GONE);
+                PKRankingAdapter adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList);
+                mTeamList.setItemAnimator(new DefaultItemAnimator());
+                mTeamList.setHasFixedSize(true);
+                mTeamList.setNestedScrollingEnabled(true);
+                mTeamList.setLayoutManager(new GridLayoutManager(mContext, 3));
+                mTeamList.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                isHasPk = true;
+                return;
+            }
+            mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.VISIBLE);
+            mRootView.findViewById(R.id.layout_technician_pk_ranking).setVisibility(View.GONE);
+            if (techPKRankingResult.respData.count == Constant.HAS_NONE_RUNNING_PK_GROUP) {
+                mRankingMore.setText(ResourceUtils.getString(R.string.layout_technician_ranking_check_all));
+                isHasPk = true;
+            } else {
+                isHasPk = false;
+                mRankingMore.setText("");
+            }
+            initRanking();
+            MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
+        }
+
+
+    }
+
+
 }

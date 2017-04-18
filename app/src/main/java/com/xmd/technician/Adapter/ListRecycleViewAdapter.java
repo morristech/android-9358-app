@@ -1,6 +1,7 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -24,6 +25,7 @@ import com.hyphenate.util.DateUtils;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.ActivityRankingBean;
 import com.xmd.technician.bean.ApplicationBean;
 import com.xmd.technician.bean.ClubJournalBean;
 import com.xmd.technician.bean.CouponInfo;
@@ -34,26 +36,27 @@ import com.xmd.technician.bean.OnceCardItemBean;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.PaidCouponUserDetail;
 import com.xmd.technician.bean.PayForMeBean;
-import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RewardBean;
 import com.xmd.technician.bean.ShareCouponBean;
+import com.xmd.technician.bean.TechRankingBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ItemSlideHelper;
-import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
+import com.xmd.technician.widget.BlockChildLinearLayout;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RoundImageView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -112,6 +115,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_COUPON_CASH_ITEM = 19;
     private static final int TYPE_COUPON_FAVORABLE_ITEM = 20;
     private static final int TYPE_COUPON_PAY_FOR_ME_ITEM = 21;
+    private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 22;
+    private static final int TYPE_TECH_PERSONAL_RANKING = 23;
     private static final int TYPE_FOOTER = 99;
 
     private boolean mIsNoMore = false;
@@ -195,6 +200,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 }
             } else if (mData.get(position) instanceof PayForMeBean) {
                 return TYPE_COUPON_PAY_FOR_ME_ITEM;
+            } else if (mData.get(position) instanceof ActivityRankingBean) {
+                return TYPE_TECH_PK_ACTIVITY_ITEM;
+            } else if (mData.get(position) instanceof TechRankingBean) {
+                return TYPE_TECH_PERSONAL_RANKING;
             } else {
                 return TYPE_FOOTER;
             }
@@ -262,6 +271,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_COUPON_PAY_FOR_ME_ITEM:
                 View viewPayForMe = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_pay_for_me_item, parent, false);
                 return new PayForMeListItemViewHolder(viewPayForMe);
+            case TYPE_TECH_PK_ACTIVITY_ITEM:
+                View viewPKActivity = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_technician_pk_ranking, parent, false);
+                return new PKActivityRankingListItemViewHolder(viewPKActivity);
+            case TYPE_TECH_PERSONAL_RANKING:
+                View viewRanking = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_tech_personal_ranking_item, parent, false);
+                return new TechPersonalRankingListItemViewHolder(viewRanking);
             default:
                 View viewDefault = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
                 return new ListFooterHolder(viewDefault);
@@ -854,6 +869,97 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             payForMeViewHolder.mShowCode.setOnClickListener(v -> mCallback.onPositiveButtonClicked(payForMe));
             return;
         }
+        if (holder instanceof PKActivityRankingListItemViewHolder) {
+            Object obj = mData.get(position);
+            if (!(obj instanceof ActivityRankingBean)) {
+                return;
+            }
+            final ActivityRankingBean activityBean = (ActivityRankingBean) obj;
+            PKActivityRankingListItemViewHolder rankingViewHolder = (PKActivityRankingListItemViewHolder) holder;
+            rankingViewHolder.pkActiveName.setText(activityBean.activityName);
+            rankingViewHolder.pkActiveStatus.setText(activityBean.statusName);
+            if (activityBean.status.equals("4")) {
+                Glide.with(mContext).load(R.drawable.icon_underway).into(rankingViewHolder.imgPkActiveStatus);
+                rankingViewHolder.pkActiveStatus.setTextColor(ResourceUtils.getColor(R.color.underway_color));
+            } else {
+                Glide.with(mContext).load(R.drawable.icon_completed).into(rankingViewHolder.imgPkActiveStatus);
+                rankingViewHolder.pkActiveStatus.setTextColor(ResourceUtils.getColor(R.color.colorRemark));
+            }
+            rankingViewHolder.pkActiveTime.setText(activityBean.startDate + "至" + activityBean.endDate);
+            if (activityBean.rankingList != null) {
+                PKRankingAdapter adapter = new PKRankingAdapter(mContext, activityBean.rankingList);
+                rankingViewHolder.teamList.setLayoutManager(new GridLayoutManager(mContext, 3));
+                rankingViewHolder.teamList.setAdapter(adapter);
+            }
+            rankingViewHolder.layoutTechnicianRanking.setOnClickListener(v -> {
+                try {
+                    mCallback.onItemClicked(activityBean);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            });
+            return;
+        }
+        if (holder instanceof TechPersonalRankingListItemViewHolder) {
+            Object obj = mData.get(position);
+            if (!(obj instanceof TechRankingBean)) {
+                return;
+            }
+            final TechRankingBean techBean = (TechRankingBean) obj;
+            TechPersonalRankingListItemViewHolder techRankingViewHolder = (TechPersonalRankingListItemViewHolder) holder;
+            if (techBean.type.equals(RequestConstant.KEY_TECH_SORT_BY_USER)) {
+                techRankingViewHolder.tvRankingMemberNumber.setText(String.format("%s 人", techBean.counts));
+            } else if (techBean.type.equals(RequestConstant.KEY_TECH_SORT_BY_PAID)) {
+                techRankingViewHolder.tvRankingMemberNumber.setText(String.format("%s 个", techBean.counts));
+            } else {
+                techRankingViewHolder.tvRankingMemberNumber.setText(String.format("%s 个", techBean.counts));
+            }
+            if (position == 0) {
+                techRankingViewHolder.rankingTitle.setVisibility(View.VISIBLE);
+                if (techBean.type.equals(RequestConstant.KEY_TECH_SORT_BY_USER)) {
+                    techRankingViewHolder.sortType.setText("注册用户");
+                } else if (techBean.type.equals(RequestConstant.KEY_TECH_SORT_BY_PAID)) {
+                    techRankingViewHolder.sortType.setText("点钟券");
+                } else {
+                    techRankingViewHolder.sortType.setText("好评数");
+                }
+
+            } else {
+                techRankingViewHolder.rankingTitle.setVisibility(View.GONE);
+            }
+            if (position == 0) {
+
+                Glide.with(mContext).load(R.drawable.icon_nub_01).into(techRankingViewHolder.imgRankingNumber);
+                techRankingViewHolder.imgRankingNumber.setVisibility(View.VISIBLE);
+                techRankingViewHolder.textRankingNumber.setVisibility(View.GONE);
+            } else if (position == 1) {
+                Glide.with(mContext).load(R.drawable.icon_nub_02).into(techRankingViewHolder.imgRankingNumber);
+                techRankingViewHolder.imgRankingNumber.setVisibility(View.VISIBLE);
+                techRankingViewHolder.textRankingNumber.setVisibility(View.GONE);
+            } else if (position == 2) {
+                Glide.with(mContext).load(R.drawable.icon_nub_03).into(techRankingViewHolder.imgRankingNumber);
+                techRankingViewHolder.imgRankingNumber.setVisibility(View.VISIBLE);
+                techRankingViewHolder.textRankingNumber.setVisibility(View.GONE);
+            } else {
+                techRankingViewHolder.textRankingNumber.setText(String.valueOf(position + 1));
+                techRankingViewHolder.imgRankingNumber.setVisibility(View.GONE);
+                techRankingViewHolder.textRankingNumber.setVisibility(View.VISIBLE);
+            }
+            if (Utils.isNotEmpty(techBean.name)) {
+                techRankingViewHolder.tvTechName.setText(techBean.name);
+            } else {
+                techRankingViewHolder.tvTechName.setText("技师");
+            }
+            if (Utils.isNotEmpty(techBean.serialNo)) {
+                String techNO = String.format("[%s]", techBean.serialNo);
+                techRankingViewHolder.tvTechSerialNo.setText(Utils.changeColor(techNO, ResourceUtils.getColor(R.color.contact_marker), 1, techNO.length() - 1));
+                techRankingViewHolder.tvTechSerialNo.setVisibility(View.VISIBLE);
+            } else {
+                techRankingViewHolder.tvTechSerialNo.setVisibility(View.GONE);
+            }
+            Glide.with(mContext).load(techBean.avatarUrl).into(techRankingViewHolder.imgTechHead);
+
+        }
         if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);
@@ -869,7 +975,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             footerHolder.itemFooter.setText(desc);
             return;
         }
-
 
     }
 
@@ -1225,6 +1330,52 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         LinearLayout mShowCode;
 
         public PayForMeListItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class PKActivityRankingListItemViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.pk_active_name)
+        TextView pkActiveName;
+        @Bind(R.id.img_pk_active_status)
+        ImageView imgPkActiveStatus;
+        @Bind(R.id.pk_active_status)
+        TextView pkActiveStatus;
+        @Bind(R.id.team_list)
+        RecyclerView teamList;
+        @Bind(R.id.pk_active_time)
+        TextView pkActiveTime;
+        @Bind(R.id.layout_technician_ranking)
+        BlockChildLinearLayout layoutTechnicianRanking;
+        @Bind(R.id.ll_tech_ranking)
+        LinearLayout llTechTanking;
+
+        PKActivityRankingListItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class TechPersonalRankingListItemViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.sort_type)
+        TextView sortType;
+        @Bind(R.id.ranking_title)
+        LinearLayout rankingTitle;
+        @Bind(R.id.img_ranking_number)
+        ImageView imgRankingNumber;
+        @Bind(R.id.text_ranking_number)
+        TextView textRankingNumber;
+        @Bind(R.id.img_tech_head)
+        RoundImageView imgTechHead;
+        @Bind(R.id.tv_tech_name)
+        TextView tvTechName;
+        @Bind(R.id.tv_tech_serialNo)
+        TextView tvTechSerialNo;
+        @Bind(R.id.tv_ranking_member_number)
+        TextView tvRankingMemberNumber;
+
+        TechPersonalRankingListItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

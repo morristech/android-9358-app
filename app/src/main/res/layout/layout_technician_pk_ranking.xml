@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xmd.technician.widget.BlockChildLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/layout_technician_ranking"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/margin_10"
+              android:background="@drawable/white_background_selector"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/inter_space"
+        android:descendantFocusability="blocksDescendants"
+       >
+
+        <View
+            android:layout_width="@dimen/margin_2"
+            android:layout_height="18dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/pk_active_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/coupon_code_text_color"
+            android:textSize="@dimen/fontTitle"
+            tools:text="金秋技师PK"/>
+
+        <ImageView
+            android:id="@+id/img_pk_active_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_underway"/>
+
+        <TextView
+            android:id="@+id/pk_active_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_gravity="center_vertical"
+            android:text="@string/pk_ranking_on_line"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="@dimen/fontBiggerThanNormal"/>
+    </LinearLayout>
+
+    <View
+        style="@style/horizontal_divider_line"/>
+
+    <LinearLayout
+        android:id="@+id/ll_tech_ranking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space"
+        android:descendantFocusability="blocksDescendants"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/team_list"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/right_arrow"/>
+    </LinearLayout>
+
+    <View
+        style="@style/horizontal_divider_line"
+        android:layout_marginTop="@dimen/small_space"/>
+
+    <TextView
+        android:id="@+id/pk_active_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/inter_space"
+        android:textSize="@dimen/fontBody"
+        tools:text="2月10日-2月27日"/>
+
+</com.xmd.technician.widget.BlockChildLinearLayout>

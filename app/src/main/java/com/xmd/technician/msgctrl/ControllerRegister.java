@@ -107,7 +107,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CLUB_JOURNAL_LIST,
                 MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL,
                 MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT,
-                MsgDef.MSG_DEF_TECH_ACCOUNT_LIST,
                 MsgDef.MSG_DEF_GET_ROLE_PERMISSION,
                 MsgDef.MSG_DEF_GET_ROLE_LIST,
 
@@ -124,7 +123,14 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_SAVE_SET_TEMPLATE,
                 MsgDef.MSG_DEF_GET_SYS_TEMPLATE_LIST,
                 MsgDef.MSG_DEF_UPLOAD_HELLO_TEMPLATE_IMG,
-                MsgDef.MSG_DEF_DOWNLOAD_HELLO_IMAGE_CACHE
+                MsgDef.MSG_DEF_DOWNLOAD_HELLO_IMAGE_CACHE,
+                MsgDef.MSG_DEF_TECH_ACCOUNT_LIST,
+                //-------------------------------------> 技师pk排行榜 <---------------------------------
+                MsgDef.MSG_DEF_TECH_PK_RANKING,
+                MsgDef.MSG_DEF_TECH_PK_ACTIVITY_LIST,
+                MsgDef.MSG_DEF_TECH_PK_TEAM_RANKING_LIST,
+                MsgDef.MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST,
+                MsgDef.MSG_DEF_TECH_RANKING_LIST
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

@@ -73,6 +73,9 @@ import com.xmd.technician.http.gson.NearbyCusListResult;
 import com.xmd.technician.http.gson.OnceCardResult;
 import com.xmd.technician.http.gson.OrderListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
+import com.xmd.technician.http.gson.PKActivityListResult;
+import com.xmd.technician.http.gson.PKPersonalListResult;
+import com.xmd.technician.http.gson.PKTeamListResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
 import com.xmd.technician.http.gson.PayForMeListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
@@ -88,8 +91,10 @@ import com.xmd.technician.http.gson.TechAccountListResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechPKRankingResult;
 import com.xmd.technician.http.gson.TechPersonalDataResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
+import com.xmd.technician.http.gson.TechRankingListResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.http.gson.TokenExpiredResult;
 import com.xmd.technician.http.gson.UnusedTechNoListResult;
@@ -408,6 +413,21 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_DOWNLOAD_HELLO_IMAGE_CACHE:
                 downloadHelloImageCache();
+                break;
+            case MsgDef.MSG_DEF_TECH_PK_RANKING:
+                getTechPKRanking();
+                break;
+            case MsgDef.MSG_DEF_TECH_PK_ACTIVITY_LIST:
+                getTechPKActivityList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_TECH_PK_TEAM_RANKING_LIST:
+                getTechPkTeamList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST:
+                getTechPKPersonalList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_TECH_RANKING_LIST:
+                getTechPersonalList((Map<String, String>) msg.obj);
                 break;
         }
 
@@ -1672,6 +1692,90 @@ public class RequestController extends AbstractController {
         });
     }
 
+    /**
+     * 首页技师排行榜
+     *
+     * @param
+     */
+    private void getTechPKRanking() {
+        Call<TechPKRankingResult> call = getSpaService().techPKRanking(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<TechPKRankingResult>() {
+            @Override
+            protected void postResult(TechPKRankingResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * pk活动列表
+     *
+     * @param params
+     */
+    private void getTechPKActivityList(Map<String, String> params) {
+        Call<PKActivityListResult> call = getSpaService().pkActivityList(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_PAGE),
+                params.get(RequestConstant.KEY_PAGE_SIZE));
+        call.enqueue(new TokenCheckedCallback<PKActivityListResult>() {
+            @Override
+            protected void postResult(PKActivityListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     * pk队伍排行
+     *
+     * @param params
+     */
+    private void getTechPkTeamList(Map<String, String> params) {
+        Call<PKTeamListResult> call = getSpaService().techPkTeamList(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_PK_ACTIVITY_ID), params.get(RequestConstant.KEY_SORT_KEY),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+        call.enqueue(new TokenCheckedCallback<PKTeamListResult>() {
+            @Override
+            protected void postResult(PKTeamListResult result) {
+                result.sortType = params.get(RequestConstant.KEY_SORT_KEY);
+                RxBus.getInstance().post(result);
+            }
+        });
+
+    }
+
+    /**
+     * pk个人排行
+     *
+     * @param params
+     */
+    private void getTechPKPersonalList(Map<String, String> params) {
+        Call<PKPersonalListResult> call = getSpaService().techPkPersonalList(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_PK_ACTIVITY_ID), params.get(RequestConstant.KEY_SORT_KEY),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+        call.enqueue(new TokenCheckedCallback<PKPersonalListResult>() {
+            @Override
+            protected void postResult(PKPersonalListResult result) {
+                result.type = params.get(RequestConstant.KEY_SORT_KEY);
+                RxBus.getInstance().post(result);
+            }
+        });
+
+    }
+
+    /**
+     * 技师个人排行
+     *
+     * @param params
+     */
+    private void getTechPersonalList(Map<String, String> params) {
+        Call<TechRankingListResult> call = getSpaService().techPersonalRankingList(SharedPreferenceHelper.getUserToken(), RequestConstant.USER_TYPE_TECH, params.get(RequestConstant.KEY_TECH_RANKING_SOR_TYPE),
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+        call.enqueue(new TokenCheckedCallback<TechRankingListResult>() {
+            @Override
+            protected void postResult(TechRankingListResult result) {
+                result.sortType = params.get(RequestConstant.KEY_TECH_RANKING_SOR_TYPE);
+                RxBus.getInstance().post(result);
+            }
+        });
+
+    }
 
     //获取升级配置
     private void doGetAppUpdateConfig(Map<String, String> params) {

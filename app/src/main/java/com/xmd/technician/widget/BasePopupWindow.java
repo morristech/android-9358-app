@@ -55,6 +55,16 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
         dismissPopupWindow(mActivity, mPopupWindow);
     }
 
+    public void showAsDownCenter(boolean toMask) {
+        showAsDown(mParentView.getWidth() / 2 - mPopupWindow.getWidth() / 2, 0);
+    }
+    /**
+     * 显示在点击的View下方
+     */
+    public void showAsDown(int offsetX, int offsetY) {
+        showPopupWindowAsDropDown(mActivity, mPopupWindow, mParentView, offsetX, offsetY);
+    }
+
     /**
      * 默认显示在屏幕中央
      */
@@ -142,6 +152,17 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
             Utils.maskScreen(activity, true);
         }
     }
+    /**
+     * @param activity
+     * @param popupWindow
+     * @param parent
+     *
+     */
+    private void showPopupWindowAsDropDown(Activity activity, PopupWindow popupWindow, View parent, int x,
+                                           int y) {
+        popupWindow.showAsDropDown(parent, x, y);
+
+    }
 
     /**
      * 隐藏弹窗，并取消遮罩效果
@@ -155,4 +176,7 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
         }
         Utils.maskScreen(activity, false);
     }
+
+
+
 }

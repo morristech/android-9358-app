@@ -19,6 +19,7 @@ public class DateUtils extends com.hyphenate.util.DateUtils{
 
     public static final long DAY_MILLIS_SECOND = 24 * 3600 * 1000;
 
+
     public DateUtils() {
 
     }
@@ -245,4 +246,7 @@ public class DateUtils extends com.hyphenate.util.DateUtils{
         }
         return tl.get();
     }
+
+
+
 }

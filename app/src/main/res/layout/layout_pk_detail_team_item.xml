@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="@dimen/margin_10"
+              android:layout_marginLeft="@dimen/margin_10"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/team_ranking_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@drawable/bg_team_ranking_title"
+        android:gravity="center"
+        android:padding="@dimen/small_space"
+        android:text="@string/pk_team_ranking_title"
+        android:textColor="#f98100"
+        android:textSize="@dimen/fontSize"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/color_white"
+        android:padding="@dimen/margin_10">
+
+        <ImageView
+            android:id="@+id/img_ranking_number"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_nub_01"/>
+
+        <TextView
+            android:id="@+id/text_ranking_number"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/fontSize"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:orientation="vertical">
+
+            <com.xmd.technician.widget.RoundImageView
+                android:id="@+id/img_ranking_head"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/icon22"/>
+
+            <TextView
+                android:id="@+id/tv_captain_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-8dp"
+                android:background="@drawable/bg_ranking_captain_mark"
+                android:paddingBottom="2dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/fontRemark"
+                android:visibility="gone"
+                android:text="队长"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.2"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_ranking_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/small_space"
+                android:textColor="@color/colorTitle"
+                android:textSize="@dimen/fontTitle"
+                android:layout_gravity="center_vertical"
+                tools:text="李佳绩"/>
+            <TextView
+                android:id="@+id/tv_ranking_serialNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="6dp"
+                android:textColor="@color/colorTitle"
+                android:textSize="@dimen/fontNormal"
+                android:layout_gravity="center_vertical"
+                tools:text="[ 0021 ]"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_ranking_member"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#757575"
+            android:textSize="@dimen/fontBody"
+            android:lines="1"
+            tools:text="#8队员"/>
+
+        <TextView
+            android:id="@+id/tv_ranking_member_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="@dimen/small_space"
+            android:textColor="@color/colorMainBtn"
+            android:textSize="@dimen/fontTitle"
+            tools:text="157个"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

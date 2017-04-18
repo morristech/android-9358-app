@@ -1,5 +1,7 @@
 package com.xmd.technician.http;
 
+import retrofit2.BaseUrl;
+
 /**
  * Created by sdcm on 15-10-23.
  */
@@ -118,7 +120,15 @@ public class RequestConstant {
     public static final String URL_GET_CLUB_JOURNAL_LIST_DETAIL = BASE_URL + "/v1/techshare/journalListDetail";//会所期刊列表
     public static final String URL_GET_REWARD_ACTIVITY_LIST = BASE_URL + "/v1/techshare/darwActListDetail";//抽奖活动列表
     public static final String URL_DO_USER_JOURNAL_SHARE_COUNT = BASE_URL + "/v2/user/journal/share/count";//期刊统计
-
+    /**
+     * PK排行榜
+     */
+    public static final String URL_GET_TECH_PK_ACTIVITY_RANKING = BASE_URL + "/v1/tech/pk/activity/ranking/index";
+    public static final String URL_GET_TECH_PK_ACTIVITY_LIST = BASE_URL + "/v1/tech/pk/activity/list";
+    public static final String URL_GET_PK_TEAM_RANKING_LIST = BASE_URL + "/v1/tech/pk/activity/team/ranking/list";
+    public static final String URL_GET_PK_PERSONAL_RANKING_LIST = BASE_URL + "/v1/tech/pk/activity/personal/ranking/list";
+    public static final String URL_GET_PK_ACTIVITY_CATEGORY_LIST = "/spa-manager/pk/activity/category/list";
+    public static final String URL_GET_PERSONAL_RANKING_LIST = BASE_URL + "/v2/manager/ranking_list";
 
     public static final String URL_ROLE_PERMISSION = BASE_URL + "/v2/tech/menu/list"; //权限
     public static final String URL_ROLE_LIST = BASE_URL + "/v2/tech/role/list"; //角色列表
@@ -330,6 +340,23 @@ public class RequestConstant {
 
     public static final String KEY_TYPE = "type";
     public static final String KEY_IS_SHARE = "isShare";
+    /**
+     * PK排行榜
+     */
+    public static final String KEY_SORT_BY_COMMENT = "commentStat";
+    public static final String KEY_SORT_BY_CUSTOMER = "customerStat";
+    public static final String KEY_SORT_BY_SALE = "saleStat";
+    public static final String KEY_SORT_BY_COUPON = "couponStat";
+    public static final String KEY_PK_ACTIVITY_ID = "pkActivityId";
+    public static final String KEY_SORT_KEY = "sortKey";
+    public static final String KEY_TECH_SORT_BY_USER = "userList";
+    public static final String KEY_TECH_SORT_BY_COMMENT = "commentList";
+    public static final String KEY_TECH_SORT_BY_PAID = "paidList";
+    public static final String KEY_TECH_RANKING_SOR_TYPE = "type";
+    public static final String KEY_SELECT = "select";
+    public static final String KEY_SELECT_BY_DAY = "day";
+    public static final String KEY_SELECT_BY_WEEK = "week";
+    public static final String KEY_SELECT_BY_MONTH = "month";
 
     // -----------------------------------------> 附近的人 <-----------------------------------------
     public static final String KEY_NEW_CUSTOMER_ID = "customerId";

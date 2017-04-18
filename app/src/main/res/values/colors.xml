@@ -48,7 +48,7 @@
     <!-- listitem operation button -->
     <color name="operation_button_positive_bg_normal">#fE6765</color>
     <color name="operation_button_positive_text_normal">#FFF</color>
-    <color name="operation_button_positive_text_pressed">#FFF</color>
+    <color name="operation_button_positive_text_pressed">#CAC7CB</color>
 
     <color name="operation_button_negative_bg_normal">#CAC7CB</color>
     <color name="operation_button_negative_text_normal">#FFF</color>
@@ -172,4 +172,7 @@
     <color name="nearby_text_black_dark">#4d4d4d</color>
     <color name="nearby_text_black_light">#616161</color>
     <color name="nearby_bg_gray_light">#f2f3fa</color>
+    <color name="number_of_groups">#feb705</color>
+    <color name="underway_color">#6ed745</color>
+    <color name="bg_btn_color">#FEFEFE</color>
 </resources>

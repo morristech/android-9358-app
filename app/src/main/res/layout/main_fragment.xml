@@ -78,7 +78,10 @@
                             android:id="@+id/layout_technician_ranking"
                             layout="@layout/layout_technician_ranking"
                             android:visibility="gone" />
-
+                        <include
+                            android:id="@+id/layout_technician_pk_ranking"
+                            layout="@layout/layout_team_pk_item"
+                            android:visibility="gone"/>
 
                         <include layout="@layout/layout_main_bottom" />
 

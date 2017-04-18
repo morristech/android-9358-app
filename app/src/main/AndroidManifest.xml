@@ -127,9 +127,6 @@
             android:name=".window.WorkTimeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".window.MyAccountActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".window.ConsumeDetailActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -266,6 +263,13 @@
         <service android:name=".model.HelloReplyService"
             android:enabled="true"
             android:exported="false"/>
+        <activity
+            android:name=".window.TechPKActiveActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".window.TechPKRankingDetailActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".window.TechPersonalRankingDetailActivity"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

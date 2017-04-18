@@ -411,7 +411,7 @@
     <string name="main_busy">忙</string>
     <string name="main_holiday">休</string>
     <string name="layout_technician_ranking_title">本周技师排行榜</string>
-    <string name="layout_technician_ranking_check_all">查看全部</string>
+    <string name="layout_technician_ranking_check_all">全部</string>
     <string name="layout_technician_star_register_user">拓客之星</string>
     <string name="layout_technician_star_sales">销售之星</string>
     <string name="layout_technician_star_service">服务之星</string>
@@ -505,6 +505,22 @@
     <string name="button_save_card">保存至手机</string>
     <string name="save_tech_card_path">techQRCode</string>
     <string name="had_saved_tech_card">您已保存过该二维码</string>
+    <!--排行版-->
+    <string name="pk_ranking_head">排行榜</string>
+    <string name="pk_ranking_on_line">进行中</string>
+    <string name="pk_ranking_out_off_line">已结束</string>
+    <string name="pk_active_title">谁是王者</string>
+    <string name="btn_pk_ranking_detail">查看个人排行</string>
+    <string name="pk_ranking_detail_title">排行榜</string>
+    <string name="pk_filter_register">拓客</string>
+    <string name="pk_filter_sail">营销</string>
+    <string name="pk_filter_service">好评</string>
+    <string name="pk_time_filter_limit_alter">已无更多数据</string>
+    <string name="pk_team_ranking_title">队伍排名</string>
+    <string name="pk_personal_ranking_title">个人排名</string>
+    <string name="personal_ranking_toker">拓客之星</string>
+    <string name="personal_ranking_sale">销售之星</string>
+    <string name="personal_ranking_service">服务之星</string>
 
     <string name="hello_reply_single_tips">回复了您的招呼</string>
     <string name="hello_reply_multi_tips">共%s个客户回复了您的招呼</string>

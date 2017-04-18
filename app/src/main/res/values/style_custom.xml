@@ -345,12 +345,29 @@
         <item name="android:paddingLeft">6dp</item>
         <item name="android:gravity">center</item>
     </style>
+    <style name="main_fragment_layout_technician_pk_ranking_label_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/fontBody</item>
+        <item name="android:textColor">@color/number_of_groups</item>
+        <item name="android:layout_marginTop">@dimen/margin_2</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:gravity">center</item>
+    </style>
 
     <style name="main_fragment_layout_technician_ranking_value_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/fontTitle</item>
         <item name="android:textColor">@color/colorHead</item>
+        <item name="android:layout_marginTop">-20dp</item>
+    </style>
+    <style name="main_fragment_layout_technician_pk_ranking_value_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/fontBody</item>
+        <item name="android:textColor">@color/order_detail_step_view_text_color</item>
         <item name="android:layout_marginTop">-20dp</item>
     </style>
 

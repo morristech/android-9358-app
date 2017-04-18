@@ -6,6 +6,7 @@ import com.xmd.technician.common.ResourceUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -151,6 +152,18 @@ public class Constant {
         put(ORDER_STATUS_OVERTIME, "超时");
         put(ORDER_STATUS_CANCEL, "取消");
     }};
+    /**
+     * timeFilter 全部all,每天everyDay;
+     */
+    public static final String TIME_FILTER_EVERY_DAY = "everyDay";
+    public static final String TIME_FILTER_ALL = "all";
+
+    public static final String TIME_FILTER_BY_DAY = "day";
+    public static final String TIME_FILTER_BY_WEEK = "week";
+    public static final String TIME_FILTER_BY_MONTH = "month";
+    public static final String TIME_FILTER_BY_QUARTER = "quarter";
+    public static final String TIME_FILTER_BY_YEAR = "year";
+    public static final String TIME_FILTER_BY_ALL = "all";
 
     public static final String COUPON_STATUS_ALL = "0";
     public static final String COUPON_STATUS_ACCEPT = "1";
@@ -162,6 +175,21 @@ public class Constant {
         add(new Entry(Constant.COUPON_STATUS_ACCEPT, ResourceUtils.getString(R.string.paid_coupon_user_detail_activity_accept)));
         add(new Entry(Constant.COUPON_STATUS_COMPLETE, ResourceUtils.getString(R.string.paid_coupon_user_detail_activity_complete)));
         add(new Entry(Constant.COUPON_STATUS_EXPIRE, ResourceUtils.getString(R.string.paid_coupon_user_detail_activity_expire)));
+    }};
+
+    public static final Map<String, String> TIME_FILTER_LABELS = new LinkedHashMap<String, String>() {{
+        put("每天", TIME_FILTER_EVERY_DAY);
+        put("累计", TIME_FILTER_ALL);
+
+    }};
+
+    public static final Map<String, String> RANKING_TIME_FILTER_LABELS = new LinkedHashMap<String, String>() {{
+        put("日", TIME_FILTER_BY_DAY);
+        put("周", TIME_FILTER_BY_WEEK);
+        put("月", TIME_FILTER_BY_MONTH);
+        put("季", TIME_FILTER_BY_QUARTER);
+        put("年", TIME_FILTER_BY_YEAR);
+        put("累计", TIME_FILTER_BY_ALL);
     }};
 
     /**
@@ -238,5 +266,16 @@ public class Constant {
     public static final String EXTRA_FRAGMENT_SWITCH = "switch";
     public static final String EXTRA_HELLO_REPLY_INFO = "hello_reply_info";
     public static final String ACTION_HELLO_REPLY_RECEIVER = "com.xmd.technician.HELLO_REPLY";
+    /**
+     * 分组pK
+     */
+    public static final int HAS_NONE_PK_GROUP = -1;
+    public static final int HAS_NONE_RUNNING_PK_GROUP = 0;
+    public static final int HAS_RUNNING_PK_GROUP = 1;
+    public static final String KEY_CATEGORY_LIST = "categoryList";
+    public static final String KEY_CATEGORY_CUSTOMER_TYPE = "01";
+    public static final String KEY_CATEGORY_SAIL_TYPE = "02";
+    public static final String KEY_CATEGORY_COMMENT_TYPE = "03";
+    public static final String KEY_CATEGORY_COUPON_TYPE = "04";
 }
 

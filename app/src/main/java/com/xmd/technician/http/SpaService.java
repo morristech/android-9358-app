@@ -52,6 +52,9 @@ import com.xmd.technician.http.gson.NearbyCusCountResult;
 import com.xmd.technician.http.gson.NearbyCusListResult;
 import com.xmd.technician.http.gson.OnceCardResult;
 import com.xmd.technician.http.gson.OrderListResult;
+import com.xmd.technician.http.gson.PKActivityListResult;
+import com.xmd.technician.http.gson.PKPersonalListResult;
+import com.xmd.technician.http.gson.PKTeamListResult;
 import com.xmd.technician.http.gson.PaidCouponUserDetailResult;
 import com.xmd.technician.http.gson.PayForMeListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
@@ -66,8 +69,10 @@ import com.xmd.technician.http.gson.TechAccountListResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
+import com.xmd.technician.http.gson.TechPKRankingResult;
 import com.xmd.technician.http.gson.TechPersonalDataResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
+import com.xmd.technician.http.gson.TechRankingListResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.http.gson.UnusedTechNoListResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
@@ -771,4 +776,51 @@ public interface SpaService {
     // 查询角色列表
     @GET(RequestConstant.URL_ROLE_LIST)
     Call<RoleListResult> getRoleList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+    //首页pK
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TECH_PK_ACTIVITY_RANKING)
+    Call<TechPKRankingResult> techPKRanking(@Field(RequestConstant.KEY_TOKEN) String userToken);
+
+    //pk列表pkActivityList
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TECH_PK_ACTIVITY_LIST)
+    Call<PKActivityListResult> pkActivityList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Field(RequestConstant.KEY_PAGE) String page,
+                                              @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
+    //pk队伍排行列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_PK_TEAM_RANKING_LIST)
+    Call<PKTeamListResult> techPkTeamList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                          @Field(RequestConstant.KEY_PK_ACTIVITY_ID) String pkActivityId,
+                                          @Field(RequestConstant.KEY_SORT_KEY) String sortKey,
+                                          @Field(RequestConstant.KEY_START_DATE) String startDate,
+                                          @Field(RequestConstant.KEY_END_DATE) String endDate,
+                                          @Field(RequestConstant.KEY_PAGE) String pager,
+                                          @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
+    //pk个人排行列表
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_PK_PERSONAL_RANKING_LIST)
+    Call<PKPersonalListResult> techPkPersonalList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Field(RequestConstant.KEY_PK_ACTIVITY_ID) String pkActivityId,
+                                                  @Field(RequestConstant.KEY_SORT_KEY) String sortKey,
+                                                  @Field(RequestConstant.KEY_START_DATE) String startDate,
+                                                  @Field(RequestConstant.KEY_END_DATE) String endDate,
+                                                  @Field(RequestConstant.KEY_PAGE) String pager,
+                                                  @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
+
+    //技师排行榜
+    //URL_GET_PERSONAL_RANKING_LIST
+
+    @GET(RequestConstant.URL_GET_PERSONAL_RANKING_LIST)
+    Call<TechRankingListResult> techPersonalRankingList(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                        @Query(RequestConstant.KEY_USER_TYPE) String userType,
+                                                        @Query(RequestConstant.KEY_TECH_RANKING_SOR_TYPE) String type,
+                                                        @Query(RequestConstant.KEY_START_DATE) String startDate,
+                                                        @Query(RequestConstant.KEY_END_DATE) String endDate,
+                                                        @Query(RequestConstant.KEY_PAGE) String pager,
+                                                        @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 }

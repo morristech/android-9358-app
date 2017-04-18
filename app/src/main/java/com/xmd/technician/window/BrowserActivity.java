@@ -50,8 +50,6 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
     @Bind(R.id.menu_LinearLayout)
     LinearLayout mMenuBar;
 
-    //    private View mCustomView;
-//    private WebChromeClient.CustomViewCallback mCustomViewCallback;
     private WebSettings ws;
 
     private boolean mShowMenu;
@@ -60,14 +58,6 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        boolean fullScreen = getIntent().getBooleanExtra(EXTRA_FULLSCREEN, false);
-//        if (fullScreen) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//        } else {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        }
         setContentView(R.layout.activity_browser);
         ButterKnife.bind(this);
 
@@ -109,46 +99,6 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
                 downloadProgressbar.setTargetProgress(newProgress * 10);
             }
 
-//            @Override
-//            public void onShowCustomView(View view, CustomViewCallback callback) {
-//                if (mCustomViewCallback != null) {
-//                    mCustomViewCallback.onCustomViewHidden();
-//                    mCustomViewCallback = null;
-//                    return;
-//                }
-//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//                BrowserActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//                ViewGroup parentViewGroup = (ViewGroup) mainWebView.getParent();
-//                parentViewGroup.removeView(mainWebView);
-//                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//                view.setLayoutParams(layoutParams);
-//                parentViewGroup.addView(view);
-//                mCustomView = view;
-//                mCustomViewCallback = callback;
-//                mMenuBar.setVisibility(View.GONE);
-//            }
-//
-//            @Override
-//            public void onHideCustomView() {
-//                if (mCustomView != null) {
-//                    if (mCustomViewCallback != null) {
-//                        mCustomViewCallback.onCustomViewHidden();
-//                        mCustomViewCallback = null;
-//                    }
-//                    BrowserActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//                    ViewGroup parentViewGroup = (ViewGroup) mCustomView.getParent();
-//                    parentViewGroup.removeView(mCustomView);
-//                    parentViewGroup.addView(mainWebView);
-//                    mCustomView = null;
-//                    if (mShowMenu) {
-//                        mMenuBar.setVisibility(View.VISIBLE);
-//                    }
-//
-//                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//                }
-//            }
         });
 
         mainWebView.setDownloadListener(new DownloadListener() {
