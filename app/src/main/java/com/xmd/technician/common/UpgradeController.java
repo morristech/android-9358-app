@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Message;
 import android.widget.Toast;
 
+import com.shidou.update.IUpdater;
+import com.shidou.update.UpdateConfig;
 import com.shidou.update.UpdateConstants;
 import com.shidou.update.UpdaterController;
 import com.xmd.technician.Constant;
@@ -33,8 +35,6 @@ public class UpgradeController extends AbstractController {
     public void init(Context context) {
         mContext = context;
         mUpdaterController = new UpdaterController(mContext);
-        mUpdaterController.setDownloadFileName("xiaomodo-9358-tech.apk");
-        mUpdaterController.registerUpdateEventReceiver(mBroadcastReceiver);
         RxBus.getInstance().toObservable(AppUpdateConfigResult.class).subscribe(
                 configResult -> {
                     if (!configResult.update) {
@@ -44,9 +44,24 @@ public class UpgradeController extends AbstractController {
                         }
                     } else {
                         mIsForeUpdate = configResult.config.type == UpdateConstants.UPDATE_TYPE_FORCE;
-                        configResult.config.allowMobile = !mIsBackgroundUpdate;
-                        configResult.config.showDownloadNotification = !mIsForeUpdate;
-                        mUpdaterController.startUpdate(configResult.config);
+                        mUpdaterController.startUpdate(configResult.config, new IUpdater.UpdateListener() {
+                            @Override
+                            public void onUpdateError(UpdateConfig updateConfig, int i, String s) {
+
+                            }
+
+                            @Override
+                            public void onUserCancel(UpdateConfig updateConfig) {
+                                if (mIsForeUpdate) {
+                                    ActivityHelper.getInstance().exitAndClearApplication();
+                                }
+                            }
+
+                            @Override
+                            public void onUpdateComplete(UpdateConfig updateConfig) {
+
+                            }
+                        });
                     }
                 });
     }
@@ -82,36 +97,4 @@ public class UpgradeController extends AbstractController {
         params.put(RequestConstant.KEY_UPDATE_APP_ID, String.valueOf(Constant.APP_ID));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_APP_UPDATE_CONFIG, params);
     }
-
-    BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(UpdaterController.ACTION_UPDATE_EVENT)) {
-                int event = intent.getIntExtra(UpdaterController.EXTRA_UPDATE_EVENT, -1);
-                Logger.d("event:" + event);
-                if (event == UpdateConstants.EVENT_DOWNLOAD_START) {
-                    if (!mIsForeUpdate) {
-                        Toast.makeText(context, "开始进行更新", Toast.LENGTH_LONG).show();
-                    }
-                } else if (event == UpdateConstants.EVENT_UPDATE_ERROR) {
-                    int code = intent.getIntExtra(UpdaterController.EXTRA_ERROR_CODE, -1);
-                    String msg = intent.getStringExtra(UpdaterController.EXTRA_ERROR_MSG);
-                    Logger.d("\terror:" + code + "," + msg);
-                    if (!mIsForeUpdate) {
-                        Toast.makeText(context, "升级失败，" + msg, Toast.LENGTH_LONG).show();
-                    }
-                } else if (event == UpdateConstants.EVENT_DOWNLOAD_PROGRESS) {
-                    long size = intent.getLongExtra(UpdaterController.EXTRA_DOWNLOAD_SIZE, 0);
-                    long totalSize = intent.getLongExtra(UpdaterController.EXTRA_DOWNLOAD_TOTAL_SIZE, 0);
-                    Logger.d(size + "/" + totalSize + "===" + (100 * size) / totalSize + "%");
-                } else if (event == UpdateConstants.EVENT_HIDE_UPDATE_UI) {
-                    if (mIsForeUpdate) {
-                        ActivityHelper.getInstance().exitAndClearApplication();
-                    }
-                }
-            }
-        }
-    };
-
-
 }
