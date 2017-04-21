@@ -68,17 +68,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingTop="@dimen/margin_15">
+                            android:gravity="center_vertical"
+                            android:paddingTop="@dimen/small_space">
 
                             <TextView
                                 android:id="@+id/user_card_name"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
+                                android:maxLines="2"
                                 android:ellipsize="end"
-                                android:maxEms="4"
-                                android:lines="1"
                                 android:textColor="@color/colorHead"
-                                android:textSize="@dimen/fontHead"/>
+                                android:textSize="@dimen/fontTitle"/>
 
                             <LinearLayout
                                 android:id="@+id/ll_tech_code"
@@ -107,6 +108,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="]"
+                                    android:layout_marginRight="@dimen/inter_space"
                                     />
 
                             </LinearLayout>
@@ -117,7 +119,9 @@
                             android:id="@+id/user_card_club"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_10"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:layout_marginTop="@dimen/small_space"
                             android:textColor="@color/phone_number_text_color"
                             android:textSize="@dimen/fontBody"/>
                     </LinearLayout>

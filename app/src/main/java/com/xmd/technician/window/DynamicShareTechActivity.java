@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2016/11/11.
+ * Created by Lhj on 2016/11/11.
  */
 public class DynamicShareTechActivity extends BaseActivity {
 
@@ -81,7 +81,7 @@ public class DynamicShareTechActivity extends BaseActivity {
         userCanShare = intent.getBooleanExtra(Constant.TECH_CAN_SHARE, false);
         codeUrl = intent.getStringExtra(Constant.TECH_ShARE_CODE_IMG);
         Glide.with(this).load(userHead).into(userCardHead);
-        userCardName.setText(userName);
+        userCardName.setText(Utils.StrSubstring(10,userName,true));
         userCardClub.setText(userClubName);
 
     if(userCanShare){

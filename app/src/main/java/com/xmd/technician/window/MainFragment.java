@@ -578,7 +578,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMainHeadTechSerial.setVisibility(View.GONE);
         mTechStatus.setVisibility(View.GONE);
         mJoinOrQuitClub.setText("退出会所");
-        mMenuClubName.setText(mTech.getClubName());
+        mMenuClubName.setText(Utils.StrSubstring(6,mTech.getClubName(),true));
         switch (status) {
             case Constant.TECH_STATUS_VALID:
                 mTechStatus.setVisibility(View.VISIBLE);

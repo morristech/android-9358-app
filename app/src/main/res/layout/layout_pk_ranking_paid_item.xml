@@ -8,7 +8,7 @@
               android:paddingRight="@dimen/small_space">
 
 
-
+    <!--销售之星-->
     <LinearLayout
         android:id="@+id/ll_star_user"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="@dimen/margin_10"
-                android:background="@drawable/bg_ranking_register"
+                android:background="@drawable/bg_ranking_paid"
                 />
 
             <com.xmd.technician.widget.CircleImageView
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="@dimen/margin_5"
-                android:src="@drawable/img_pk_register"
+                android:src="@drawable/img_pk_paid"
                 />
         </FrameLayout>
 
@@ -54,7 +54,9 @@
             style="@style/main_fragment_layout_technician_pk_ranking_label_style"
             tools:text="289人"/>
 
+
     </LinearLayout>
+
 
 </LinearLayout>
 

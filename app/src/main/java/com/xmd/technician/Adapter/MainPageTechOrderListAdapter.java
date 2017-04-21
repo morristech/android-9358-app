@@ -68,7 +68,12 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
         }
 
         Glide.with(mContext).load(order.headImgUrl).into(viewHolder.mainOrderAvatar);
-        viewHolder.orderName.setText(order.userName);
+        if(Utils.isNotEmpty(order.customerName)){
+            viewHolder.orderName.setText(order.customerName);
+        }else{
+            viewHolder.orderName.setText(order.userName);
+        }
+
         viewHolder.orderPhoneDetail.setText(order.phoneNum);
         viewHolder.orderTimeDetail.setText(order.formatAppointTime);
         if(order.orderType.equals(RequestConstant.ORDER_TYPE_APPOINT)){

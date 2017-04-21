@@ -71,6 +71,7 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
     private ArrayBottomPopupWindow<String> mTimeFilterPopupWindow;
     private long mCurrentMillisecond;  //当前显示日期毫秒日
     private long mTodayMillisecond;   //当天毫秒值
+    private long mStartMillisecond;
     private String mCurrentTime;//MM月dd日，显示中间时间
     private String mLastTime;//MM月dd日，显示前一天时间
     private String mNextTime;//MM月dd日，显示后一天时间
@@ -80,7 +81,6 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
     private String mEndDate;//当前查询结束时间
     private String mActivityStartDate;//当前活动开始时间
     private String mActivityEndDate;//当前活动结束时间
-    private String mBeforeChangedDate;//时间切换时保存时间
     private List<PKItemBean> itemList;
 
 
@@ -100,6 +100,7 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
         mActivityStartDate = getIntent().getStringExtra(TechPKActiveActivity.PK_ITEM_START_DATE);
         mActivityEndDate = getIntent().getStringExtra(TechPKActiveActivity.PK_ITEM_END_DATE);
         itemList = getIntent().getParcelableArrayListExtra(TechPKActiveActivity.PK_ACTIVITY_ITEM);
+
         if (mActivityStatus.equals("4")) {
             pkActiveStatus.setText("进行中");
             pkActiveStatus.setEnabled(true);
@@ -113,11 +114,45 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
             leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
             pkActiveStatus.setCompoundDrawables(leftDrawable, null, null, null);
         }
+           initTimeFilterView(mActivityStatus);
+
+    }
+
+    private void initTimeFilterView(String  activityStatus) {
+        if(activityStatus.equals("4")){
+            mCurrentMillisecond = System.currentTimeMillis();
+            timeToday.setText("今天");
+            timeFilterTomorrow.setVisibility(View.INVISIBLE);
+            timeFilterYesterday.setVisibility(View.VISIBLE);
+            timeFilterToday.setVisibility(View.VISIBLE);
+            timeFilterYesterday.setText(DateUtil.getCurrentDate(mCurrentMillisecond - DAY_MILLISECOND));
+            timeFilterToday.setText(DateUtil.getCurrentDate(mCurrentMillisecond));
+            mStartDate = DateUtil.getCurrentDate(mCurrentMillisecond);
+            mEndDate = mStartDate;
+        }else{
+            mCurrentMillisecond = DateUtil.dateToLong(mActivityEndDate);
+            if(mActivityStartDate.equals(mActivityEndDate)){
+                timeToday.setText(DateUtil.getCurrentDate(mCurrentMillisecond));
+                timeFilterTomorrow.setVisibility(View.INVISIBLE);
+                timeFilterYesterday.setVisibility(View.INVISIBLE);
+                timeFilterToday.setVisibility(View.GONE);
+            }else{
+                timeToday.setText(DateUtil.getCurrentDate(mCurrentMillisecond));
+                timeFilterYesterday.setText(DateUtil.getCurrentDate(mCurrentMillisecond - DAY_MILLISECOND));
+                timeFilterTomorrow.setVisibility(View.INVISIBLE);
+                timeFilterYesterday.setVisibility(View.VISIBLE);
+                timeFilterToday.setVisibility(View.GONE);
+
+            }
+            mStartDate = mActivityEndDate;
+            mEndDate = mActivityEndDate;
+        }
+        mStartMillisecond = DateUtil.dateToLong(mActivityStartDate);
+        mTodayMillisecond = mCurrentMillisecond;
     }
 
 
     private void initViewPagerView() {
-        getTime(true);
         String[] tabTexts = new String[itemList.size()];
         mPageFragmentPagerAdapter = new PageFragmentPagerAdapter(getSupportFragmentManager(), this);
         for (int i = 0; i < itemList.size(); i++) {
@@ -140,7 +175,7 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
     }
 
     private void initTimeFilterPopupWindowView() {
-        pkDetailTimeFilter.setText("每天");
+        pkDetailTimeFilter.setText("累计");
         mTimeFilterPopupWindow = new ArrayBottomPopupWindow<>(rlPkDetailTime, null, ResourceUtils.getDimenInt(R.dimen.time_filter_item_width));
         mTimeFilterPopupWindow.setDataSet(new ArrayList<>(Constant.TIME_FILTER_LABELS.keySet()), pkDetailTimeFilter.getText().toString());
         mTimeFilterPopupWindow.setItemClickListener((parent, view, position, id) -> {
@@ -150,13 +185,11 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
             if (sTitle.equals("累计")) {
                 llFilterSelectedTotal.setVisibility(View.VISIBLE);
                 llFilterByDay.setVisibility(View.GONE);
-                mBeforeChangedDate = mStartDate;
                 mStartDate = "2017-03-30";
                 mEndDate = DateUtil.getDate(System.currentTimeMillis());
                 RxBus.getInstance().post(new DateChangedResult("2017-03-30", DateUtil.getDate(System.currentTimeMillis())));
             } else {
-                mStartDate = mBeforeChangedDate;
-                mEndDate = mBeforeChangedDate;
+                initTimeFilterView(mActivityStatus);
                 RxBus.getInstance().post(new DateChangedResult(mStartDate, mEndDate));
                 llFilterSelectedTotal.setVisibility(View.GONE);
                 llFilterByDay.setVisibility(View.VISIBLE);
@@ -196,49 +229,58 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
         }
     }
 
-    private void getTime(boolean isNextTime) {
-
-        if (mCurrentMillisecond > 0) {
-
-            if (isNextTime) {
-                if (mCurrentMillisecond == mTodayMillisecond) {
-                    makeShortToast(ResourceUtils.getString(R.string.pk_time_filter_limit_alter));
-                    return;
-                }
-                mCurrentMillisecond = (mCurrentMillisecond + DAY_MILLISECOND);
-            } else {
-                if (mCurrentMillisecond == 10000) {
-                    makeShortToast(ResourceUtils.getString(R.string.pk_time_filter_limit_alter));
-                    return;
-                }
-                mCurrentMillisecond -= DAY_MILLISECOND;
-            }
-
+    private void getTime(boolean isTomorrow) {
+        if (isTomorrow) {
+            mCurrentMillisecond += DAY_MILLISECOND;
         } else {
-            mCurrentMillisecond = System.currentTimeMillis();
-            mTodayMillisecond = mCurrentMillisecond;
+            mCurrentMillisecond -= DAY_MILLISECOND;
         }
         mCurrentTime = DateUtil.getCurrentDate(mCurrentMillisecond);
         mLastTime = DateUtil.getLastDate(mCurrentMillisecond);
         mNextTime = DateUtil.getNextDate(mCurrentMillisecond);
-
+        timeFilterToday.setText(mCurrentTime);
         timeFilterTomorrow.setText(mNextTime);
         timeFilterYesterday.setText(mLastTime);
-        if (mTodayMillisecond == mCurrentMillisecond) {
-            timeToday.setText("今天");
-            timeFilterToday.setVisibility(View.VISIBLE);
-            timeFilterToday.setText(mCurrentTime);
-            timeFilterTomorrow.setVisibility(View.INVISIBLE);
-        } else if (mActivityStartDate.equals(DateUtil.getCurrentDate(mCurrentMillisecond, "MM-dd"))) {
-            timeToday.setText("第一天");
-            timeFilterToday.setVisibility(View.VISIBLE);
-            timeFilterToday.setText(mCurrentTime);
-            timeFilterYesterday.setVisibility(View.INVISIBLE);
-        } else {
-            timeToday.setText(mCurrentTime);
-            timeFilterTomorrow.setVisibility(View.VISIBLE);
-            timeFilterYesterday.setVisibility(View.VISIBLE);
-            timeFilterToday.setVisibility(View.GONE);
+        if (mActivityStatus.equals("4")) {//进行中
+            if (mTodayMillisecond == mCurrentMillisecond) {
+                timeToday.setText("今天");
+                timeFilterToday.setVisibility(View.VISIBLE);
+                timeFilterToday.setText(mCurrentTime);
+                timeFilterTomorrow.setVisibility(View.INVISIBLE);
+            } else if (mActivityStartDate.equals(DateUtil.getCurrentDate(mCurrentMillisecond, "yyyy-MM-dd"))) {
+                timeToday.setText("第一天");
+                timeFilterToday.setVisibility(View.VISIBLE);
+                timeFilterYesterday.setVisibility(View.INVISIBLE);
+            } else {
+                timeToday.setText(mCurrentTime);
+                timeFilterTomorrow.setVisibility(View.VISIBLE);
+                timeFilterYesterday.setVisibility(View.VISIBLE);
+                timeFilterToday.setVisibility(View.GONE);
+            }
+        } else {//已结束
+            if(mActivityStartDate.equals(mActivityEndDate)){//只有一天
+                timeToday.setText(mCurrentTime);
+                timeFilterToday.setVisibility(View.GONE);
+                timeFilterYesterday.setVisibility(View.INVISIBLE);
+                timeFilterTomorrow.setVisibility(View.INVISIBLE);
+            }else {
+                if ( mCurrentMillisecond==mTodayMillisecond ) {
+                    timeToday.setText(mCurrentTime);
+                    timeFilterTomorrow.setVisibility(View.INVISIBLE);
+                    timeFilterYesterday.setVisibility(View.VISIBLE);
+                    timeFilterToday.setVisibility(View.GONE);
+                }else if(mCurrentMillisecond == mStartMillisecond){
+                    timeToday.setText("第一天");
+                    timeFilterToday.setVisibility(View.VISIBLE);
+                    timeFilterYesterday.setVisibility(View.INVISIBLE);
+                    timeFilterTomorrow.setVisibility(View.VISIBLE);
+                }else{
+                    timeToday.setText(mCurrentTime);
+                    timeFilterToday.setVisibility(View.GONE);
+                    timeFilterYesterday.setVisibility(View.VISIBLE);
+                    timeFilterTomorrow.setVisibility(View.VISIBLE);
+                }
+            }
         }
         mStartDate = DateUtil.getDate(mCurrentMillisecond);
         mEndDate = DateUtil.getDate(mCurrentMillisecond);

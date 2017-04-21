@@ -28,6 +28,7 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
     private static final byte REGISTER_TYPE = 1;
     private static final byte SALE_TYPE = 2;
     private static final byte SERVICE_TYPE = 3;
+    private static final byte PAID_TYPE = 4;
 
     private Context mContext;
     private List<RankingListBean> mData;
@@ -46,6 +47,8 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
             return REGISTER_TYPE;
         } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_SAIL_TYPE)) {
             return SALE_TYPE;
+        }else if(bean.categoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)){
+            return PAID_TYPE;
         } else {
             return SERVICE_TYPE;
         }
@@ -63,6 +66,9 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
                 break;
             case SERVICE_TYPE:
                 view = LayoutInflater.from(mContext).inflate(R.layout.layout_pk_ranking_service_item, parent, false);
+                break;
+            case PAID_TYPE:
+                view = LayoutInflater.from(mContext).inflate(R.layout.layout_pk_ranking_paid_item, parent, false);
                 break;
             default:
                 view = LayoutInflater.from(mContext).inflate(R.layout.layout_pk_ranking_register_item, parent, false);
