@@ -1,5 +1,6 @@
 package com.xmd.technician.http;
 
+import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
 
@@ -20,7 +21,7 @@ public class RetrofitServiceFactory {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(SharedPreferenceHelper.getServerHost())
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client(buildClient())
+                    .client(OkHttpUtil.getInstance().getClient())
                     .build();
             mSpaService = retrofit.create(SpaService.class);
         }
@@ -32,19 +33,19 @@ public class RetrofitServiceFactory {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(AppConfig.sDefUpdateServer)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client(buildClient())
+                    .client(OkHttpUtil.getInstance().getClient())
                     .build();
             mAppUpdateService = retrofit.create(AppUpdateService.class);
         }
         return mAppUpdateService;
     }
 
-    private static OkHttpClient buildClient() {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addNetworkInterceptor(new LoggingInterceptor())
-                .build();
-        return client;
-    }
+//    private static OkHttpClient buildClient() {
+//        OkHttpClient client = new OkHttpClient.Builder()
+//                .addNetworkInterceptor(new LoggingInterceptor())
+//                .build();
+//        return client;
+//    }
 
     /**
      * Recreate the spaservice, when configuration changed, such as baseUrl

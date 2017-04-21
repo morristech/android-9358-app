@@ -19,6 +19,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
+import static android.support.v7.widget.RecyclerView.NO_POSITION;
+
 /**
  * Created by linms@xiaomodo.com on 16-4-29.
  */
@@ -83,16 +85,18 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && mLastVisibleItem + 1 == mListAdapter.getItemCount()) {
-                    loadMore();
+                int lastViewPosition = mLayoutManager.findLastVisibleItemPosition();
+                if (lastViewPosition != NO_POSITION) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE
+                            && lastViewPosition + 1 == mListAdapter.getItemCount()) {
+                        loadMore();
+                    }
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
             }
         });
     }

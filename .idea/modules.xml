@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/android-crop/android-crop.iml" filepath="$PROJECT_DIR$/android-crop/android-crop.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/permission-tool/permission-tool.iml" filepath="$PROJECT_DIR$/permission-tool/permission-tool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shidou-commonlibrary/shidou-commonlibrary.iml" filepath="$PROJECT_DIR$/shidou-commonlibrary/shidou-commonlibrary.iml" />
     </modules>
   </component>
 </project>

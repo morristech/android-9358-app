@@ -1,6 +1,7 @@
 package com.xmd.technician.http;
 
 import com.xmd.technician.AppConfig;
+import com.xmd.technician.BuildConfig;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.Logger;
 
@@ -25,11 +26,11 @@ public class LoggingInterceptor implements Interceptor {
         request = request.newBuilder().header("User-Agent", hear + "-android" + AppConfig.getAppVersionNameAndCode()).build();
 
 
-        if (TechApplication.isTest) {
+        if (BuildConfig.DEBUG) {
             Logger.d(requestToString(request));
         }
         Response response = chain.proceed(request);
-        if (TechApplication.isTest) {
+        if (BuildConfig.DEBUG) {
             Logger.d("response to " + request.url() + "," + response.code());
         }
         return response;

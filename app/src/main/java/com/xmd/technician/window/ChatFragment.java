@@ -218,9 +218,9 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             } else {
                 mMessageFrom = "";
                 try {
-                    if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID)))
-                        ;
-                    mMessageFrom = "tech";
+                    if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID))) {
+                        mMessageFrom = "tech";
+                    }
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                 }

@@ -47,20 +47,7 @@ public class AppUncaughtExceptionHandler implements Thread.UncaughtExceptionHand
         // 收集异常
         collectDeviceInfo();
         saveCrashInfo2File(ex);
-        new Thread() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                //Toast.makeText(mContext,"T_T, 程序崩溃了，将重新启动", Toast.LENGTH_SHORT).show();
-                Looper.loop();
-            }
-        }.start();
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        restart();
+
     }
 
     /**

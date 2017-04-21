@@ -62,6 +62,7 @@ android {
 
     buildTypes { //build类型
         debug {//调试
+            buildConfigField("Boolean","debug","true")
             manifestPlaceholders = [
                     EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
                     //Getui placeHolder
@@ -75,6 +76,7 @@ android {
         }
 
         release {//发布
+            buildConfigField("Boolean","debug","false")
             minifyEnabled true  //混淆开启
             zipAlignEnabled true
             shrinkResources false
@@ -94,6 +96,7 @@ android {
                     GETUI_MASTER_SECRET : "auiTyQZRcc6AUA9PQWoak7",
                     DEF_UPDATE_SERVER   : "http://192.168.1.100:9883",
             ]
+            buildConfigField("String","flavors","\"dev\"")
         }
 
         prd {
@@ -106,6 +109,7 @@ android {
                     GETUI_MASTER_SECRET : "BZmw1WsvNhAVz4NjsJKrm3",
                     DEF_UPDATE_SERVER   : "http://service.xiaomodo.com",
             ]
+            buildConfigField("String","flavors","\"prd\"")
         }
     }
 
@@ -146,7 +150,9 @@ aspectjx {
 }
 
 
-dependencies { //依赖文件
+dependencies {
+
+    //依赖文件
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'multi-image-selector-1.2', ext: 'aar')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
@@ -170,4 +176,5 @@ dependencies { //依赖文件
     compile 'org.aspectj:aspectjrt:1.8.+'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile project(':permission-tool')
+    compile project(':shidou-commonlibrary')
 }
