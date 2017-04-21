@@ -38,13 +38,13 @@ public class CommonUtils {
             return EMConversation.EMConversationType.ChatRoom;
         }
     }
-    public static void userGetCoupon(String actId, String channel,String emchatId,EMMessage emMessage) {
+    public static void userGetCoupon(String content, String actId, String channel, String emchatId) {
         Map<String, Object> params = new HashMap<>();
+        params.put(RequestConstant.KEY_COUPON_CONTENT, content);
         params.put(RequestConstant.KEY_USER_COUPON_ACT_ID, actId);
         params.put(RequestConstant.KEY_USER_COUPON_CHANEL, channel);
         params.put(RequestConstant.KEY_USER_COUPON_EMCHAT_ID, emchatId);
-        params.put(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE,emMessage);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_USER_GET_COUPON,params);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_USER_GET_COUPON, params);
     }
     static String getString(Context context, int resId) {
         return context.getResources().getString(resId);

@@ -13,9 +13,9 @@ public class UserGetCouponResult extends BaseResult{
      */
 
     public RespDataBean respData;
-    public String actId;
     public String content;
-    public EMMessage mMessage;
+    public String actId;
+    public String techCode;
 
     public static class RespDataBean {
         /**
@@ -25,7 +25,9 @@ public class UserGetCouponResult extends BaseResult{
         public String userActId;
     }
 
-    public UserGetCouponResult(EMMessage msg) {
-        this.mMessage = msg;
+    public UserGetCouponResult(String content,String actId,String techCode){
+        this.content = content;
+        this.actId =actId;
+        this.techCode = techCode;
     }
 }

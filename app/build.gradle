@@ -150,7 +150,7 @@ dependencies { //依赖文件
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'multi-image-selector-1.2', ext: 'aar')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
-    compile files('libs/hyphenatechat_3.1.0.jar')
+    compile files('libs/hyphenatechat_3.3.0.jar')
     compile project(':android-crop')
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:recyclerview-v7:25.1.1'

@@ -329,7 +329,7 @@ public class RequestController extends AbstractController {
                 setOrderInnerRead((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_USER_GET_COUPON:
-                getClubUserCoupon((Map<String, Object>) msg.obj);
+                getClubUserCoupon((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_GET_PAY_NOTIFY:
                 getPayNotify((Map<String, Object>) msg.obj);
@@ -1518,19 +1518,21 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getClubUserCoupon(Map<String, Object> params) {
-        Call<UserGetCouponResult> call = getSpaService().clubUserCoupon(SharedPreferenceHelper.getUserToken(), (String) params.get(RequestConstant.KEY_USER_COUPON_ACT_ID),
-                (String) params.get(RequestConstant.KEY_USER_COUPON_CHANEL), (String) params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_ID), SharedPreferenceHelper.getInviteCode(), SharedPreferenceHelper.getInviteCode());
+    private void getClubUserCoupon(Map<String, String> params) {
+        Call<UserGetCouponResult> call = getSpaService().clubUserCoupon(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_USER_COUPON_ACT_ID),
+                 params.get(RequestConstant.KEY_USER_COUPON_CHANEL),  params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_ID), SharedPreferenceHelper.getInviteCode(), SharedPreferenceHelper.getInviteCode());
         call.enqueue(new TokenCheckedCallback<UserGetCouponResult>() {
             @Override
             protected void postResult(UserGetCouponResult result) {
-                result.mMessage = (EMMessage) params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE);
+                result.actId = params.get(RequestConstant.KEY_ACT_ID);
+                result.content = params.get(RequestConstant.KEY_COUPON_CONTENT);
+                result.techCode = params.get(RequestConstant.KEY_USER_TECH_CODE);
                 RxBus.getInstance().post(result);
             }
 
             @Override
             protected void postError(String errorMsg) {
-                UserGetCouponResult result = new UserGetCouponResult((EMMessage) params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE));
+                UserGetCouponResult result = new UserGetCouponResult(params.get(RequestConstant.KEY_COUPON_CONTENT),params.get(RequestConstant.KEY_ACT_ID), params.get(RequestConstant.KEY_USER_TECH_CODE));
                 RxBus.getInstance().post(result);
             }
         });

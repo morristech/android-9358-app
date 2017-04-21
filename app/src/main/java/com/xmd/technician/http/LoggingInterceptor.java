@@ -52,6 +52,7 @@ public class LoggingInterceptor implements Interceptor {
                 result += "----un form data!";
             }
         }
+
         return result;
     }
 }

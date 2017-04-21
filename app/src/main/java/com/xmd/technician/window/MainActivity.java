@@ -229,12 +229,12 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         }
 
         @Override
-        public void onMessageReadAckReceived(List<EMMessage> list) {
+        public void onMessageRead(List<EMMessage> list) {
 
         }
 
         @Override
-        public void onMessageDeliveryAckReceived(List<EMMessage> list) {
+        public void onMessageDelivered(List<EMMessage> list) {
 
         }
 

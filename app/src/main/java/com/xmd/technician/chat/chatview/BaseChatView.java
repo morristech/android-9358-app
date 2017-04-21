@@ -161,11 +161,12 @@ public abstract class BaseChatView extends LinearLayout {
         activity.runOnUiThread(new Runnable() {
             public void run() {
                 if (message.status() == EMMessage.Status.FAIL) {
-                    if (message.getError() == EMError.MESSAGE_INCLUDE_ILLEGAL_CONTENT) {
-                        ((BaseFragmentActivity) activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.error_send_invalid_content));
-                    } else {
-                        ((BaseFragmentActivity) activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.connect_failuer_toast));
-                    }
+//                    if (message.getError() == EMError.MESSAGE_INCLUDE_ILLEGAL_CONTENT) {
+//                        ((BaseFragmentActivity) activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.error_send_invalid_content));
+//                    } else {
+//                        ((BaseFragmentActivity) activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.connect_failuer_toast));
+//                    }
+                    ((BaseFragmentActivity) activity).makeShortToast(activity.getString(R.string.send_fail) + activity.getString(R.string.connect_failuer_toast));
                 }
                 setupMessageStatusView();
             }
