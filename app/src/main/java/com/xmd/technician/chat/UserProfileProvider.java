@@ -9,8 +9,10 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.HanziToPinyin;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
+import com.xmd.technician.chat.event.EventLoginSuccess;
 import com.xmd.technician.common.DbOpenHelper;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -43,6 +45,14 @@ public class UserProfileProvider {
 
     private UserProfileProvider(){
         dbHelper = DbOpenHelper.getInstance(TechApplication.getAppContext());
+
+        //注册监听环信登录消息
+        RxBus.getInstance().toObservable(EventLoginSuccess.class).subscribe(
+                eventEmChatLogin -> {
+                    //初始化联系人列表
+                    initContactList();
+                }
+        );
     }
 
     public void initContactList(){

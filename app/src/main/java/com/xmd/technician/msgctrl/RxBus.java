@@ -1,5 +1,9 @@
 package com.xmd.technician.msgctrl;
 
+import android.os.Looper;
+
+import com.xmd.technician.common.ThreadManager;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.subjects.PublishSubject;
@@ -15,7 +19,7 @@ public class RxBus {
         private static RxBus sInstance = new RxBus();
     }
 
-    private Subject bus;
+    private Subject<Object, Object> bus;
 
     private RxBus() {
         bus = new SerializedSubject<>(PublishSubject.create());
@@ -26,14 +30,21 @@ public class RxBus {
     }
 
 
-    public void post(Object o) {
-        bus.onNext(o);
+    public void post(final Object o) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            bus.onNext(o);
+        } else {
+            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+                @Override
+                public void run() {
+                    bus.onNext(o);
+                }
+            });
+        }
     }
 
-    public <T extends Object> Observable<T> toObservable(final Class<T> eventType) {
-        return bus.filter(o -> {
-            return eventType.isInstance(o);
-        }).cast(eventType);
+    public <T> Observable<T> toObservable(final Class<T> eventType) {
+        return bus.ofType(eventType);
     }
 
     public void unsubscribe(Subscription... subscriptions) {

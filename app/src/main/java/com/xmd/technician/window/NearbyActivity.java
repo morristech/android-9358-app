@@ -98,7 +98,7 @@ public class NearbyActivity extends BaseActivity {
         mFixSnapHelper = new FixPagerSnapHelper();
         mCusAdapter = new NearbyCusAdapter(this);
         mCusAdapter.setCallback((info, position) -> {
-            if (!LoginTechnician.getInstance().checkAndLoginEmchat()) {
+            if (!LoginTechnician.getInstance().isLoginEmchat()) {
                 showToast("聊天系统正在初始化，请稍后再试!");
                 return;
             }

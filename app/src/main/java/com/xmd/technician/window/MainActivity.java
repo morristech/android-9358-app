@@ -16,7 +16,11 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
+import com.xmd.technician.chat.EmchatManager;
+import com.xmd.technician.chat.IEmchat;
 import com.xmd.technician.chat.UserProfileProvider;
+import com.xmd.technician.chat.event.EventReceiveMessage;
+import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
@@ -54,6 +58,10 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     private Subscription mSysNoticeNotifySubscription;
     private Subscription mGetUserIsBindWXSubscription;
 
+    //环信
+    private IEmchat emchat= EmchatManager.getInstance();
+    private Subscription mUnreadEmchatCountSubscription;
+
     @Bind(R.id.main_unread_message)
     TextView mUnreadMsgLabel;
 
@@ -85,22 +93,10 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 }
             }
         });
-//        addFragmentHome();
-//        addFragmentMessage();
-//        addFragmentContacts();
-//        addFragmentMarketing();
-//        if (mFragmentList.size() == 0) {
-//            Toast.makeText(MainActivity.this, "对不起，您没有任何权限，请询问管理员", Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//        switchFragment(0);
-
-        EMClient.getInstance().groupManager().loadAllGroups();
-        EMClient.getInstance().chatManager().loadAllConversations();
-        UserProfileProvider.getInstance().initContactList();
 
         mSysNoticeNotifySubscription = RxBus.getInstance().toObservable(SystemNoticeResult.class).subscribe(
-                result -> updateUnreadMsgLabel());
+                result -> updateUnreadMsgLabel(emchat.getUnreadMessageCount()));
+
         mGetUserIsBindWXSubscription = RxBus.getInstance().toObservable(IsBindResult.class).subscribe(
                 result -> handlerIsBindResult(result)
         );
@@ -110,9 +106,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE));
 
-        EMClient.getInstance().groupManager().loadAllGroups();
-        EMClient.getInstance().chatManager().loadAllConversations();
-        UserProfileProvider.getInstance().initContactList();
     }
 
     @Override
@@ -133,6 +126,12 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @CheckBusinessPermission(PermissionConstants.MESSAGE)
     public void addFragmentMessage() {
         mChatFragment = (ChatFragment) addFragment(R.id.main_button_message, ChatFragment.class);
+        updateUnreadMsgLabel(emchat.getUnreadMessageCount());
+        mUnreadEmchatCountSubscription=RxBus.getInstance().toObservable(EventUnreadMessageCount.class).subscribe(
+                unreadMessageCount -> {
+                    updateUnreadMsgLabel(unreadMessageCount.getUnread());
+                }
+        );
     }
 
     @CheckBusinessPermission(PermissionConstants.CONTACTS)
@@ -175,20 +174,20 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @Override
     protected void onResume() {
         super.onResume();
-        updateUnreadMsgLabel();
-        EMClient.getInstance().chatManager().addMessageListener(mMessageListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        EMClient.getInstance().chatManager().removeMessageListener(mMessageListener);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mSysNoticeNotifySubscription, mGetUserIsBindWXSubscription);
+        RxBus.getInstance().unsubscribe(
+                mSysNoticeNotifySubscription,
+                mGetUserIsBindWXSubscription,
+                mUnreadEmchatCountSubscription);
     }
 
     public void switchFragment(int index) {
@@ -207,64 +206,10 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mCurrentTabIndex = index;
     }
 
-    EMMessageListener mMessageListener = new EMMessageListener() {
-        @Override
-        public void onMessageReceived(List<EMMessage> list) {
-            /*// 提示新消息
-            for (EMMessage message : messages) {
-                DemoHelper.getInstance().getNotifier().onNewMsg(message);
-            }*/
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    updateUnreadMsgLabel();
-                }
-            });
-        }
-
-        @Override
-        public void onCmdMessageReceived(List<EMMessage> list) {
-
-        }
-
-        @Override
-        public void onMessageRead(List<EMMessage> list) {
-
-        }
-
-        @Override
-        public void onMessageDelivered(List<EMMessage> list) {
-
-        }
-
-        @Override
-        public void onMessageChanged(EMMessage emMessage, Object o) {
-
-        }
-    };
-
-    /**
-     * 获取未读消息数
-     *
-     * @return
-     */
-    public int getUnreadMsgCountTotal() {
-        int unreadMsgCountTotal = 0;
-        int chatroomUnreadMsgCount = 0;
-        unreadMsgCountTotal = EMClient.getInstance().chatManager().getUnreadMsgsCount();
-        for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
-            if (conversation.getType() == EMConversation.EMConversationType.ChatRoom)
-                chatroomUnreadMsgCount = chatroomUnreadMsgCount + conversation.getUnreadMsgCount();
-        }
-        return unreadMsgCountTotal - chatroomUnreadMsgCount;
-    }
-
     /**
      * 刷新未读消息数
      */
-    public void updateUnreadMsgLabel() {
-        int count = getUnreadMsgCountTotal();
+    public void updateUnreadMsgLabel(int count) {
         if (count > 0) {
             if (count > 99) {
                 mUnreadMsgLabel.setText("99+");

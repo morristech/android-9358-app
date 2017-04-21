@@ -219,7 +219,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
     };
 
     private void sayHiRequest(String userId, String userName, String avatarUrl, String userType, String userEmchatId, String position) {
-        if (!LoginTechnician.getInstance().checkAndLoginEmchat()) {
+        if (!LoginTechnician.getInstance().isLoginEmchat()) {
             ((BaseActivity) getActivity()).showToast("聊天系统正在初始化，请稍后再试!");
             return;
         }

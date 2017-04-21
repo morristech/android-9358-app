@@ -16,6 +16,7 @@ import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.TechNotifier;
@@ -59,13 +60,13 @@ public class TechApplication extends Application {
 
                 //初始化日志
                 XLogger.init(7, getFilesDir().getPath() + File.separator + "logs");
+                XLogger.setGloableTag("9358");
                 printMachineInfo();
 
                 //初始化网络库
                 OkHttpUtil.init(getFilesDir() + File.separator + "networkCache", 10 * 1024 * 1024, 10000, 10000, 10000);
-                OkHttpUtil.getInstance().setLog(true);
+                OkHttpUtil.getInstance().setLog(BuildConfig.DEBUG);
                 OkHttpUtil.getInstance().setCommonHeader("User-Agent", getUserAgent());
-                OkHttpUtil.getInstance().setCommonHeader("XMD_VERSION_CODE", String.valueOf(mAppVersionCode));
 
                 //初始化错误拦截器
                 CrashHandler.getInstance().init(getApplicationContext(), new CrashHandler.Callback() {
@@ -100,17 +101,12 @@ public class TechApplication extends Application {
                 ThreadManager.initialize();
                 ControllerRegister.initialize();
                 SharedPreferenceHelper.initialize();
-                EMOptions emOptions = new EMOptions();
-                EMClient.getInstance().init(this, emOptions);
 
-                if (BuildConfig.DEBUG) {
-                    EMClient.getInstance().setDebugMode(true);
-                } else {
-                    //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-                    EMClient.getInstance().setDebugMode(false);
-                }
                 //初始化消息推送
                 PushManager.getInstance().initialize(this);
+
+                //初始化环信
+                EmchatManager.getInstance().init(this,BuildConfig.DEBUG);
 
                 initNotifier();
                 DataRefreshService.start();

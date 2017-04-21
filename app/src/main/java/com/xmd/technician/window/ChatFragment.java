@@ -21,9 +21,11 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.bean.ConversationListResult;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.EmchatManager;
+import com.xmd.technician.chat.IEmchat;
 import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.chat.event.EventLoginSuccess;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -41,7 +43,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import rx.Subscription;
-import rx.functions.Action1;
 
 /**
  * Created by sdcm on 16-3-23.
@@ -54,10 +55,13 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     FrameLayout mHeadContainer;
     protected List<EMConversation> mConversationList = new ArrayList<>();
     private Filter mFilter;
+    private Subscription mLoginStatusSubscription;
     private Subscription mGetConversationListSubscription;
     private Subscription mContactPermissionChatSubscription;
     private TextView mSearchView;
     private String mMessageFrom;
+
+    private IEmchat emchat = EmchatManager.getInstance();
 
     @Nullable
     @Override
@@ -93,26 +97,36 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         mEmptyView.setStatus(EmptyView.Status.Gone);
         mEmptyView.setEmptyPic(R.drawable.empty);
         mEmptyView.setEmptyTip("");
-        mGetConversationListSubscription = RxBus.getInstance().toObservable(ConversationListResult.class).subscribe(
-                conversationListResult -> handleGetConversationListResult(conversationListResult)
+
+        //监听获取联系人权限消息
+        mContactPermissionChatSubscription = RxBus.getInstance()
+                .toObservable(ContactPermissionChatResult.class)
+                .subscribe(this::handleContactPermissionChat);
+
+        //监听登录消息
+        mLoginStatusSubscription = RxBus.getInstance().toObservable(EventLoginSuccess.class).subscribe(
+                eventEmChatLogin -> {
+                    //登录成功的消息,刷新一次
+                    onRefresh();
+                }
         );
-        mContactPermissionChatSubscription = RxBus.getInstance().toObservable(ContactPermissionChatResult.class).subscribe(new Action1<ContactPermissionChatResult>() {
-            @Override
-            public void call(ContactPermissionChatResult contactPermissionChatResult) {
-                handleContactPermissionChat(contactPermissionChatResult);
-            }
-        });
     }
 
     @Override
     protected void dispatchRequest() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
+        List<EMConversation> list = emchat.getAllConversationList();
+        mConversationList.clear();
+        mConversationList.addAll(list);
+        onGetListSucceeded(0, list);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        RxBus.getInstance().unsubscribe(mGetConversationListSubscription, mContactPermissionChatSubscription);
+        RxBus.getInstance().unsubscribe(
+                mLoginStatusSubscription,
+                mGetConversationListSubscription,
+                mContactPermissionChatSubscription);
     }
 
     @Override
@@ -158,6 +172,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 conversation.getAllMessages();
                 intent.putExtra(ChatConstant.EMCHAT_ID, conversation.conversationId());
                 intent.putExtra(ChatConstant.EMCHAT_IS_TECH, "");
+                emchat.clearUnreadMessage(conversation);
                 startActivity(intent);
             } else {
                 // 跳转详情
@@ -176,25 +191,25 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         }
     }
 
-    private void handleGetConversationListResult(ConversationListResult result) {
-        if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
-            onGetListFailed(result.msg);
-            mEmptyView.setStatus(EmptyView.Status.Failed);
-        } else {
-            onGetListSucceeded(0, result.respData);
-            if (result.respData != null) {
-                if (!mIsLoadingMore) {
-                    mConversationList.clear();
-                }
-                mConversationList.addAll(result.respData);
-            }
-            if (result.respData.isEmpty()) {
-                mEmptyView.setStatus(EmptyView.Status.Empty);
-            } else {
-                mEmptyView.setStatus(EmptyView.Status.Gone);
-            }
-        }
-    }
+//    private void handleGetConversationListResult(ConversationListResult result) {
+//        if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
+//            onGetListFailed(result.msg);
+//            mEmptyView.setStatus(EmptyView.Status.Failed);
+//        } else {
+//            onGetListSucceeded(0, result.respData);
+//            if (result.respData != null) {
+//                if (!mIsLoadingMore) {
+//                    mConversationList.clear();
+//                }
+//                mConversationList.addAll(result.respData);
+//            }
+//            if (result.respData.isEmpty()) {
+//                mEmptyView.setStatus(EmptyView.Status.Empty);
+//            } else {
+//                mEmptyView.setStatus(EmptyView.Status.Gone);
+//            }
+//        }
+//    }
 
     @Override
     public void onItemClicked(EMConversation conversation) {

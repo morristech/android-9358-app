@@ -1,22 +1,15 @@
 package com.xmd.technician.chat;
 
 import android.content.Intent;
-import android.databinding.tool.util.L;
 import android.os.Message;
 import android.text.TextUtils;
-import android.widget.Toast;
 
-import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.ConversationListResult;
-import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.event.EventEmChatLogin;
 import com.xmd.technician.http.gson.SystemNoticeResult;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -28,6 +21,7 @@ import java.util.Map;
  * Created by sdcm on 16-4-14.
  */
 public class ChatController extends AbstractController {
+    private LoginTechnician technician = LoginTechnician.getInstance();
 
     @Override
     public boolean handleMessage(Message msg) {
@@ -92,7 +86,7 @@ public class ChatController extends AbstractController {
     }
 
     private void doGetConversationList() {
-        RxBus.getInstance().post(new ConversationListResult(EmchatManager.getInstance().loadConversationList()));
+//        RxBus.getInstance().post(new ConversationListResult(EmchatManager.getInstance().getAllConversationList()));
     }
 
     private void systemNoticeNotify() {
@@ -106,46 +100,46 @@ public class ChatController extends AbstractController {
 
     private void doLoginEmchat(Object runnable) {
 
-        if (!TextUtils.isEmpty(SharedPreferenceHelper.getEmchatId())
-                && !TextUtils.isEmpty(SharedPreferenceHelper.getEMchatPassword())) {
-            try {
-                EMClient.getInstance().login(SharedPreferenceHelper.getEmchatId(),
-                        SharedPreferenceHelper.getEMchatPassword(), new EMCallBack() {
-                            @Override
-                            public void onSuccess() {
-                                //   EMClient.getInstance().groupManager().loadAllGroups();
-                                EMClient.getInstance().chatManager().loadAllConversations();
-                                UserProfileProvider.getInstance().initContactList();
-                                Logger.v("ChatController.doLoginEmchat : success");
-                                // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
-                                EMClient.getInstance().updateCurrentUserNick(SharedPreferenceHelper.getUserName());
-                                if (runnable instanceof Runnable) {
-                                    ((Runnable) runnable).run();
-                                }
-                                RxBus.getInstance().post(new EventEmChatLogin(true));
-                            }
-
-                            @Override
-                            public void onError(int i, String s) {
-                                Logger.e("onError:" + i + ", " + s);
-                                ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(TechApplication.getAppContext(), "初始化聊天系统失败:" + i + "," + s, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                                RxBus.getInstance().post(new EventEmChatLogin(false));
-                            }
-
-                            @Override
-                            public void onProgress(int i, String s) {
-                            }
-                        });
-            }catch (Exception e){
-                e.printStackTrace();
-                Logger.e("登录异常");
-            }
-        }
+//        if (!TextUtils.isEmpty(SharedPreferenceHelper.getEmchatId())
+//                && !TextUtils.isEmpty(SharedPreferenceHelper.getEMchatPassword())) {
+//            try {
+//                EMClient.getInstance().login(SharedPreferenceHelper.getEmchatId(),
+//                        SharedPreferenceHelper.getEMchatPassword(), new EMCallBack() {
+//                            @Override
+//                            public void onSuccess() {
+//                                //   EMClient.getInstance().groupManager().loadAllGroups();
+//                                EMClient.getInstance().chatManager().loadAllConversations();
+//                                UserProfileProvider.getInstance().initContactList();
+//                                Logger.v("ChatController.doLoginEmchat : success");
+//                                // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
+//                                EMClient.getInstance().updateCurrentUserNick(SharedPreferenceHelper.getUserName());
+//                                if (runnable instanceof Runnable) {
+//                                    ((Runnable) runnable).run();
+//                                }
+//                                RxBus.getInstance().post(new EventLoginSuccess(true));
+//                            }
+//
+//                            @Override
+//                            public void onError(int i, String s) {
+//                                Logger.e("onError:" + i + ", " + s);
+//                                ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        Toast.makeText(TechApplication.getAppContext(), "初始化聊天系统失败:" + i + "," + s, Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//
+//                                RxBus.getInstance().post(new EventLoginSuccess(false));
+//                            }
+//
+//                            @Override
+//                            public void onProgress(int i, String s) {
+//                            }
+//                        });
+//            }catch (Exception e){
+//                e.printStackTrace();
+//                Logger.e("登录异常");
+//            }
+//        }
     }
 }

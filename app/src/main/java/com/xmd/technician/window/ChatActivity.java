@@ -51,6 +51,7 @@ import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.chat.bean.CancelGame;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
+import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
@@ -145,17 +146,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private Subscription mGiftResultSubscription;
     private Subscription mClubUserGetCouponSubscription;
 
+    private Subscription mNewMessageSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_chat_primary_menu);
         ButterKnife.bind(this);
-
-        if (!LoginTechnician.getInstance().checkAndLoginEmchat()) {
-            showToast("聊天系统正在初始化，请稍后重试");
-            finish();
-        }
 
         mToChatEmchatId = getIntent().getExtras().getString(ChatConstant.EMCHAT_ID);
         isTechOrManger = getIntent().getExtras().getString(ChatConstant.EMCHAT_IS_TECH);
@@ -335,21 +332,16 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     protected void onResume() {
         super.onResume();
-        EMClient.getInstance().chatManager().addMessageListener(mEMMessageListener);
+        mNewMessageSubscription=RxBus.getInstance().toObservable(EventReceiveMessage.class).subscribe(this::handleNewMessage);
         if (mIsMessageListInited) {
             mChatAdapter.refreshList();
         }
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListener);
-        if (mGetRedpacklistSubscription != null) {
-            RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription);
-
-        }
+        RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription,mNewMessageSubscription);
     }
 
     @Override
@@ -846,77 +838,46 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mChatAdapter.refreshList();
     }
 
-    EMMessageListener mEMMessageListener = new EMMessageListener() {
+    private void handleNewMessage(EventReceiveMessage eventReceiveMessage){
+        List<EMMessage> messages=eventReceiveMessage.getList();
+        for (EMMessage message : messages) {
+            String username = null;
+            // 群组消息
+            if (message.getChatType() == EMMessage.ChatType.GroupChat || message.getChatType() == EMMessage.ChatType.ChatRoom) {
+                username = message.getTo();
+            } else {
+                // 单聊消息
+                username = message.getFrom();
+            }
 
-        @Override
-        public void onMessageReceived(List<EMMessage> messages) {
-
-            for (EMMessage message : messages) {
-                String username = null;
-                // 群组消息
-                if (message.getChatType() == EMMessage.ChatType.GroupChat || message.getChatType() == EMMessage.ChatType.ChatRoom) {
-                    username = message.getTo();
-                } else {
-                    // 单聊消息
-                    username = message.getFrom();
-                }
-
-                // 如果是当前会话的消息，刷新聊天页面
-                if (username.equals(mToChatEmchatId)) {
-                    try {
-                        String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
-                        String messageStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
-                        if (messageStatus.equals(ChatConstant.KEY_ACCEPT_GAME)) {
-                            mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(gameId));
-                            SharedPreferenceHelper.setGameMessageId(gameId, message.getMsgId());
-                        }
-                        if (messageStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE) || messageStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE) || messageStatus.equals(ChatConstant.KEY_GAME_REJECT)) {
-                            SharedPreferenceHelper.setGameStatus(gameId, messageStatus);
-                            mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(gameId));
-                        }
-
-                    } catch (HyphenateException e) {
-                        e.printStackTrace();
-                        mChatAdapter.refreshSelectLast();
+            // 如果是当前会话的消息，刷新聊天页面
+            if (username.equals(mToChatEmchatId)) {
+                try {
+                    String gameId = message.getStringAttribute(ChatConstant.KEY_GAME_ID);
+                    String messageStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS);
+                    if (messageStatus.equals(ChatConstant.KEY_ACCEPT_GAME)) {
+                        mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(gameId));
+                        SharedPreferenceHelper.setGameMessageId(gameId, message.getMsgId());
                     }
+                    if (messageStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE) || messageStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE) || messageStatus.equals(ChatConstant.KEY_GAME_REJECT)) {
+                        SharedPreferenceHelper.setGameStatus(gameId, messageStatus);
+                        mConversation.removeMessage(SharedPreferenceHelper.getGameMessageId(gameId));
+                    }
+
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
                     mChatAdapter.refreshSelectLast();
-
-                    // 声音和震动提示有新消息
-                    //EaseUI.getInstance().getNotifier().viberateAndPlayTone(message);
-                } else {
-                    // 如果消息不是和当前聊天ID的消息
-                    //EaseUI.getInstance().getNotifier().onNewMsg(message);
                 }
-            }
+                mChatAdapter.refreshSelectLast();
 
-        }
-
-        @Override
-        public void onCmdMessageReceived(List<EMMessage> messages) {
-
-        }
-
-        @Override
-        public void onMessageRead(List<EMMessage> messages) {
-            if (mIsMessageListInited) {
-                mChatAdapter.refreshList();
+                // 声音和震动提示有新消息
+                //EaseUI.getInstance().getNotifier().viberateAndPlayTone(message);
+            } else {
+                // 如果消息不是和当前聊天ID的消息
+                //EaseUI.getInstance().getNotifier().onNewMsg(message);
             }
         }
-
-        @Override
-        public void onMessageDelivered(List<EMMessage> message) {
-            if (mIsMessageListInited) {
-                mChatAdapter.refreshList();
-            }
-        }
-
-        @Override
-        public void onMessageChanged(EMMessage message, Object change) {
-            if (mIsMessageListInited) {
-                mChatAdapter.refreshList();
-            }
-        }
-    };
+    }
 
     private void initCommentViewPager(View view) {
         indicatorLeft.setEnabled(true);

@@ -1,9 +1,20 @@
 package com.xmd.technician.chat;
 
+import android.content.Context;
+import android.os.SystemClock;
 import android.util.Pair;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMOptions;
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.technician.chat.event.EventLoginSuccess;
+import com.xmd.technician.chat.event.EventReceiveMessage;
+import com.xmd.technician.chat.event.EventUnreadMessageCount;
+import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +24,8 @@ import java.util.Map;
 /**
  * Created by linms@xiaomodo.com on 16-5-6.
  */
-public class EmchatManager {
+public class EmchatManager implements IEmchat {
+    private static final String TAG = "EmchatManager";
 
     private static class EmchatManagerHolder {
         private static EmchatManager sInstance = new EmchatManager();
@@ -27,14 +39,101 @@ public class EmchatManager {
         return EmchatManagerHolder.sInstance;
     }
 
+    private boolean login; //是否登录
+    private boolean doLogin; //是否正在登录
+
+    /**
+     * 初始化环信
+     *
+     * @param context 应用上下文
+     * @param debug   调试模式
+     */
+    @Override
+    public void init(Context context, boolean debug) {
+        EMOptions emOptions = new EMOptions();
+        emOptions.setRequireAck(false); //不发送已读回执
+        emOptions.setSortMessageByServerTime(true); //消息按时间排序
+        EMClient.getInstance().init(context, emOptions);
+        EMClient.getInstance().setDebugMode(debug);
+    }
+
+    @Override
+    public void login(final String name, final String password) {
+        if (!doLogin && !isLogin()) {
+            doLogin = true;
+            XLogger.i(TAG, "login:" + name + "," + password);
+            EMClient.getInstance().login(name, password, new EMCallBack() {
+                @Override
+                public void onSuccess() {
+                    XLogger.i(TAG, "login success");
+                    setLogin(true);
+                    doLogin = false;
+                    //加载会话消息
+                    long t1 = SystemClock.elapsedRealtime();
+                    EMClient.getInstance().groupManager().loadAllGroups();
+                    EMClient.getInstance().chatManager().loadAllConversations();
+                    XLogger.i(TAG, "load groups and conversations cost:" + (SystemClock.elapsedRealtime() - t1));
+                    //注册消息监听器
+                    EMClient.getInstance().chatManager().addMessageListener(messageListener);
+                    //发送登录成功消息
+                    RxBus.getInstance().post(new EventLoginSuccess());
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    XLogger.e(TAG, "login failed:" + i + "," + s);
+                    //retry
+                    doLogin = false;
+                    login(name, password);
+                }
+
+                @Override
+                public void onProgress(int i, String s) {
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public void updateNickName(String nickName) {
+        EMClient.getInstance().pushManager().updatePushNickname(nickName);
+    }
+
+    @Override
+    public void logout() {
+        if (isLogin()) {
+            EMClient.getInstance().logout(true, new EMCallBack() {
+                @Override
+                public void onSuccess() {
+                    XLogger.i(TAG, "logout");
+                    login = false;
+                    doLogin = false;
+                }
+
+                @Override
+                public void onError(int i, String s) {
+
+                }
+
+                @Override
+                public void onProgress(int i, String s) {
+
+                }
+            });
+        }
+    }
+
+
     /**
      * 获取会话列表
+     *
      * @return
      */
-    public List<EMConversation> loadConversationList(){
+    public List<EMConversation> getAllConversationList() {
         // 获取所有会话，包括陌生人
         Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
-        // 过滤掉messages size为0的conversation
+
         /**
          * 如果在排序过程中有新消息收到，lastMsgTime会发生变化
          * 影响排序过程，Collection.sort会产生异常
@@ -44,17 +143,17 @@ public class EmchatManager {
         List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
         synchronized (conversations) {
             for (EMConversation conversation : conversations.values()) {
-                if (conversation.getAllMessages().size() != 0) {
-                    //if(conversation.getType() != EMConversationType.ChatRoom){
-                    sortList.add(new Pair<Long, EMConversation>(conversation.getLastMessage().getMsgTime(), conversation));
-                    //}
+                if (conversation.getAllMsgCount() > 0) {
+                    sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
+                } else {
+                    sortList.add(new Pair<>(0L, conversation));
                 }
             }
         }
         try {
             // 根据最后一条消息的时间排序
             Collections.sort(sortList, (con1, con2) -> {
-                        if (con1.first == con2.first) {
+                        if (con1.first.equals(con2.first)) {
                             return 0;
                         } else if (con2.first > con1.first) {
                             return 1;
@@ -73,4 +172,57 @@ public class EmchatManager {
         return list;
     }
 
+    @Override
+    public int getUnreadMessageCount() {
+        return EMClient.getInstance().chatManager().getUnreadMessageCount();
+    }
+
+    @Override
+    public void clearUnreadMessage(String userName) {
+        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(userName);
+        clearUnreadMessage(conversation);
+    }
+
+    @Override
+    public void clearUnreadMessage(EMConversation conversation) {
+        conversation.markAllMessagesAsRead();
+        RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
+    }
+
+    public boolean isLogin() {
+        return this.login;
+    }
+
+    private void setLogin(boolean login) {
+        this.login = login;
+    }
+
+    private EMMessageListener messageListener = new EMMessageListener() {
+        @Override
+        public void onMessageReceived(List<EMMessage> list) {
+            XLogger.d("new message:" + list.size() + ", unread:" + getUnreadMessageCount());
+            RxBus.getInstance().post(new EventReceiveMessage(list));
+            RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageRead(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageDelivered(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage emMessage, Object o) {
+
+        }
+    };
 }
