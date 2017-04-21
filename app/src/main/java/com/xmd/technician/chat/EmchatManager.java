@@ -5,12 +5,14 @@ import android.os.SystemClock;
 import android.util.Pair;
 
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.chat.event.EventLoginSuccess;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
@@ -40,7 +42,7 @@ public class EmchatManager implements IEmchat {
     }
 
     private boolean login; //是否登录
-    private boolean doLogin; //是否正在登录
+    private boolean isCalledLogin; //是否正在登录
 
     /**
      * 初始化环信
@@ -59,15 +61,17 @@ public class EmchatManager implements IEmchat {
 
     @Override
     public void login(final String name, final String password) {
-        if (!doLogin && !isLogin()) {
-            doLogin = true;
+        if (isCalledLogin) {
+            XLogger.d("is called login in!");
+            return;
+        }
+        isCalledLogin = true;
+        if (!EMClient.getInstance().isLoggedInBefore()) {
             XLogger.i(TAG, "login:" + name + "," + password);
             EMClient.getInstance().login(name, password, new EMCallBack() {
                 @Override
                 public void onSuccess() {
                     XLogger.i(TAG, "login success");
-                    setLogin(true);
-                    doLogin = false;
                     //加载会话消息
                     long t1 = SystemClock.elapsedRealtime();
                     EMClient.getInstance().groupManager().loadAllGroups();
@@ -83,8 +87,18 @@ public class EmchatManager implements IEmchat {
                 public void onError(int i, String s) {
                     XLogger.e(TAG, "login failed:" + i + "," + s);
                     //retry
-                    doLogin = false;
-                    login(name, password);
+                    if (i == EMError.NETWORK_ERROR
+                            || i == EMError.SERVER_TIMEOUT
+                            || i == EMError.SERVER_BUSY
+                            || i == EMError.SERVER_GET_DNSLIST_FAILED
+                            || i == EMError.SERVER_NOT_REACHABLE
+                            || i == EMError.SERVER_UNKNOWN_ERROR) {
+                        XLogger.i("retry ... login");
+                        isCalledLogin = false;
+                        login(name, password);
+                    } else {
+                        XToast.show("无法初始化聊天系统:" + i + "," + s);
+                    }
                 }
 
                 @Override
@@ -92,6 +106,12 @@ public class EmchatManager implements IEmchat {
 
                 }
             });
+        } else {
+            XLogger.i(TAG,"is login before ");
+            //注册消息监听器
+            EMClient.getInstance().chatManager().addMessageListener(messageListener);
+            //发送登录成功消息
+            RxBus.getInstance().post(new EventLoginSuccess());
         }
     }
 
@@ -102,13 +122,13 @@ public class EmchatManager implements IEmchat {
 
     @Override
     public void logout() {
-        if (isLogin()) {
+        if (isConnected()) {
             EMClient.getInstance().logout(true, new EMCallBack() {
                 @Override
                 public void onSuccess() {
                     XLogger.i(TAG, "logout");
                     login = false;
-                    doLogin = false;
+                    isCalledLogin = false;
                 }
 
                 @Override
@@ -131,6 +151,9 @@ public class EmchatManager implements IEmchat {
      * @return
      */
     public List<EMConversation> getAllConversationList() {
+        //获取所有的会话消息
+        EMClient.getInstance().groupManager().loadAllGroups();
+        EMClient.getInstance().chatManager().loadAllConversations();
         // 获取所有会话，包括陌生人
         Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
 
@@ -189,12 +212,8 @@ public class EmchatManager implements IEmchat {
         RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
     }
 
-    public boolean isLogin() {
-        return this.login;
-    }
-
-    private void setLogin(boolean login) {
-        this.login = login;
+    public boolean isConnected() {
+        return EMClient.getInstance().isConnected();
     }
 
     private EMMessageListener messageListener = new EMMessageListener() {

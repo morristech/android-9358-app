@@ -676,6 +676,6 @@ public class LoginTechnician {
     }
 
     public boolean isLoginEmchat() {
-        return emchatManager.isLogin();
+        return emchatManager.isConnected();
     }
 }

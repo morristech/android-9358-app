@@ -15,6 +15,7 @@ import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.network.OkHttpUtil;
+import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.common.ActivityHelper;
@@ -75,6 +76,8 @@ public class TechApplication extends Application {
                         ActivityHelper.getInstance().exitAndClearApplication();
                     }
                 });
+
+                XToast.init(this,-1);
 
                 //初始化磁盘缓存模块
                 try {

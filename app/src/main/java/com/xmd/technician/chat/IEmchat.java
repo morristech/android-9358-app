@@ -41,7 +41,7 @@ public interface IEmchat {
     /**
      * 是否登录成功
      */
-    boolean isLogin();
+    boolean isConnected();
 
 
     /**

@@ -483,7 +483,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
         visitParams.put(RequestConstant.KEY_LAST_TIME, "");
         visitParams.put(RequestConstant.KEY_PAGE_SIZE, "20");
-        visitParams.put(RequestConstant.KEY_IS_MAIN_PAGE, "0");//0表示首页请求最近访客1表示联系人列表请求
+        visitParams.put(RequestConstant.KEY_IS_MAIN_PAGE, "Y");//Y表示首页请求最近访客
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
         // 附近的人:获取会所附近客户数量(条件:技师已经加入了会所)
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT);

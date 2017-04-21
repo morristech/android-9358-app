@@ -13,6 +13,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.NearbyCusInfo;
 import com.xmd.technician.bean.SayHiNearbyResult;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -98,8 +99,8 @@ public class NearbyActivity extends BaseActivity {
         mFixSnapHelper = new FixPagerSnapHelper();
         mCusAdapter = new NearbyCusAdapter(this);
         mCusAdapter.setCallback((info, position) -> {
-            if (!LoginTechnician.getInstance().isLoginEmchat()) {
-                showToast("聊天系统正在初始化，请稍后再试!");
+            if (!EmchatManager.getInstance().isConnected()) {
+                showToast("当前已经离线，请稍后再试!");
                 return;
             }
             // 打招呼

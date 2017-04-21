@@ -29,6 +29,8 @@ import com.xmd.technician.bean.OrderBean;
 import com.xmd.technician.bean.SayHiBaseResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.VisitBean;
+import com.xmd.technician.chat.EmchatManager;
+import com.xmd.technician.chat.IEmchat;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
@@ -174,6 +176,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     private Map<String, String> params = new HashMap<>();
 
+    private IEmchat emchat= EmchatManager.getInstance();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -318,8 +322,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     // 打招呼
     private void sayHello(String customerId) {
-        if (!LoginTechnician.getInstance().isLoginEmchat()) {
-            showToast("聊天系统正在初始化，请稍后再试!");
+        if (!emchat.isConnected()) {
+            showToast("当前已经离线，请稍后再试!");
             return;
         }
         Map<String, String> params = new HashMap<>();

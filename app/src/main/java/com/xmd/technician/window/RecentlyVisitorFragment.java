@@ -20,6 +20,7 @@ import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SayHiVisitorResult;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
+import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -88,7 +89,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
                 result -> handlerSayHiVisitorResult(result)
         );
         mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
-                result -> handlerClubInfoList(result)
+                result -> handlerRecentlyVisitorResult(result)
         );
         list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -107,6 +108,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
             }
         });
 
+        onRefresh();
     }
 
     private void loadMore() {
@@ -143,11 +145,10 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
 
     }
 
-    private void handlerClubInfoList(RecentlyVisitorResult result) {
+    private void handlerRecentlyVisitorResult(RecentlyVisitorResult result) {
         swipeRefreshWidget.setRefreshing(false);
         if (result.statusCode == 200) {
-            if (result.isMainPage.equals("0")) {
-                onRefresh();
+            if (result.isMainPage.equals("Y")) {
                 return;
             }
             currentGetSize = result.respData.size();
@@ -183,7 +184,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
         params.put(RequestConstant.KEY_LAST_TIME, lastTime);
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(pageSize));
-        params.put(RequestConstant.KEY_IS_MAIN_PAGE, "1");
+        params.put(RequestConstant.KEY_IS_MAIN_PAGE, "N");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, params);
     }
 
@@ -219,8 +220,8 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
     };
 
     private void sayHiRequest(String userId, String userName, String avatarUrl, String userType, String userEmchatId, String position) {
-        if (!LoginTechnician.getInstance().isLoginEmchat()) {
-            ((BaseActivity) getActivity()).showToast("聊天系统正在初始化，请稍后再试!");
+        if (!EmchatManager.getInstance().isConnected()) {
+            ((BaseActivity) getActivity()).showToast("当前已经离线，请稍后再试!");
             return;
         }
         mSayHiParams.clear();
