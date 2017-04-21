@@ -136,7 +136,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private void getContactPermissionChat(EMConversation conversation) {
         Map<String, Object> params = new HashMap<>();
         params.put(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG, Constant.REQUEST_CONTACT_PERMISSION_EMCHAT);
-        params.put(RequestConstant.KEY_ID, conversation.getUserName());
+        params.put(RequestConstant.KEY_ID, conversation.conversationId());
         params.put(RequestConstant.KEY_CONTACT_ID_TYPE, Constant.REQUEST_CONTACT_ID_TYPE_EMCHAT);
         params.put(RequestConstant.KEY_CHAT_CONVERSATION_BEAN, conversation);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
@@ -156,7 +156,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     }
                 }
                 conversation.getAllMessages();
-                intent.putExtra(ChatConstant.EMCHAT_ID, conversation.getUserName());
+                intent.putExtra(ChatConstant.EMCHAT_ID, conversation.conversationId());
                 intent.putExtra(ChatConstant.EMCHAT_IS_TECH, "");
                 startActivity(intent);
             } else {
@@ -198,7 +198,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
 
     @Override
     public void onItemClicked(EMConversation conversation) {
-        String username = conversation.getUserName();
+        String username = conversation.conversationId();
         if (username.equals(SharedPreferenceHelper.getEmchatId()))
             ((BaseFragmentActivity) getActivity()).makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
         else if (username.equals(ChatConstant.MESSAGE_SYSTEM_NOTICE)) {
@@ -208,9 +208,9 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             startActivity(intent);
         } else {
             if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
-                if (SharedPreferenceHelper.getUserIsTech(conversation.getUserName()).equals("tech")) {
+                if (SharedPreferenceHelper.getUserIsTech(conversation.conversationId()).equals("tech")) {
                     mMessageFrom = "tech";
-                } else if (SharedPreferenceHelper.getUserIsTech(conversation.getUserName()).equals("manager")) {
+                } else if (SharedPreferenceHelper.getUserIsTech(conversation.conversationId()).equals("manager")) {
                     mMessageFrom = "manager";
                 } else {
                     mMessageFrom = "";
@@ -247,7 +247,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     }
                 }
                 conversation.getAllMessages();
-                intent.putExtra(ChatConstant.EMCHAT_ID, conversation.getUserName());
+                intent.putExtra(ChatConstant.EMCHAT_ID, conversation.conversationId());
                 intent.putExtra(ChatConstant.EMCHAT_IS_TECH, mMessageFrom);
                 startActivity(intent);
             }
@@ -286,15 +286,15 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
 
                 for (int i = 0; i < count; i++) {
                     final EMConversation value = mOriginalValues.get(i);
-                    String username = value.getUserName();
+                    String username = value.conversationId();
 
 
                     EMGroup group = EMClient.getInstance().groupManager().getGroup(username);
                     if (group != null) {
                         username = group.getGroupName();
                     } else {
-                        username = UserUtils.getUserNick(value.getUserName());
-                        /*ChatUser  chatUser = UserUtils.getUserInfo(value.getUserName());
+                        username = UserUtils.getUserNick(value.conversationId());
+                        /*ChatUser  chatUser = UserUtils.getUserInfo(value.conversationId());
                         if(chatUser != null){
                             username = chatUser.getNick();
                         }*/

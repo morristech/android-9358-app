@@ -496,7 +496,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 try {
                     if (lastMessage.direct() == EMMessage.Direct.RECEIVE) {
                         ChatUser user;
-                        user = new ChatUser(conversation.getUserName());
+                        user = new ChatUser(conversation.conversationId());
                         user.setAvatar(lastMessage.getStringAttribute(ChatConstant.KEY_HEADER));
                         if (Utils.isNotEmpty(SharedPreferenceHelper.getUserRemark(lastMessage.getFrom()))) {
                             user.setNick(SharedPreferenceHelper.getUserRemark(lastMessage.getFrom()));
@@ -505,8 +505,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                         }
                         UserUtils.updateUser(user);
                     }
-                    UserUtils.setUserAvatar(mContext, conversation.getUserName(), conversationHolder.mAvatar);
-                    UserUtils.setUserNick(conversation.getUserName(), conversationHolder.mName);
+                    UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
+                    UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                 } catch (NullPointerException e) {

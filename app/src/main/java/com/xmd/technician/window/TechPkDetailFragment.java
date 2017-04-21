@@ -83,7 +83,7 @@ public class TechPkDetailFragment extends BaseFragment implements BaseFragment.I
         } else {
             mSortKey = RequestConstant.KEY_SORT_BY_COUPON;
         }
-        mStartDate = DateUtil.getDate(System.currentTimeMillis());
+        mStartDate = "2017-03-01";
         mEndDate = DateUtil.getDate(System.currentTimeMillis());
         mTeamRankingSubscription = RxBus.getInstance().toObservable(PKTeamListResult.class).subscribe(
                 teamResult -> handleTeamRanking(teamResult)

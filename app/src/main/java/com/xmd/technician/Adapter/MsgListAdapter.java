@@ -83,7 +83,7 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ConversationViewHolder conversationHolder = (ConversationViewHolder) holder;
             EMConversation conversation = getItem(position);
 
-            conversationHolder.mName.setText(conversation.getUserName());
+            conversationHolder.mName.setText(conversation.conversationId());
             if(conversation.getUnreadMsgCount() > 0){
                 conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
                 conversationHolder.mUnread.setVisibility(View.VISIBLE);
@@ -100,13 +100,13 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 try {
                     if (lastMessage.direct() == EMMessage.Direct.RECEIVE) {
                         ChatUser user;
-                        user = new ChatUser(conversation.getUserName());
+                        user = new ChatUser(conversation.conversationId());
                         user.setAvatar(lastMessage.getStringAttribute(ChatConstant.KEY_HEADER));
                    //     user.setNick(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
                         UserUtils.saveUser(user);
                     }
-                    UserUtils.setUserAvatar(mContext, conversation.getUserName(), conversationHolder.mAvatar);
-                    UserUtils.setUserNick(conversation.getUserName(), conversationHolder.mName);
+                    UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
+                    UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                 }catch (NullPointerException e){
@@ -160,7 +160,7 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 for (int i = 0; i < count; i++) {
                     final EMConversation value = mOriginalValues.get(i);
-                    String username = value.getUserName();
+                    String username = value.conversationId();
 
                     EMGroup group = EMClient.getInstance().groupManager().getGroup(username);
                     if(group != null){

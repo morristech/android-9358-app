@@ -171,7 +171,7 @@ public class SharedPreferenceHelper {
      * @return
      */
     public static String getServerHost() {
-//        return "http://192.168.1.100:9880";//FIXME
+        //return "http://192.168.1.100:9880";//FIXME
         return mSettingPreference.getString(KEY_SERVER_HOST, RequestConstant.SERVER_HOST);
     }
 

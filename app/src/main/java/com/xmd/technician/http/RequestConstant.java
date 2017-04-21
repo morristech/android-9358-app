@@ -328,6 +328,7 @@ public class RequestConstant {
     /**
      * 自动领券
      */
+    public static final String KEY_COUPON_CONTENT = "content";
     public static final String KEY_USER_COUPON_ACT_ID = "actId";
     public static final String KEY_USER_COUPON_CHANEL = "chanel"; //tech,manager,qrCode,link,index
     public static final String KEY_USER_COUPON_EMCHAT_ID = "emchatId";

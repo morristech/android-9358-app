@@ -302,13 +302,18 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     private void handleUserGetCoupon(UserGetCouponResult couponResult) {
-        EMMessage message = couponResult.mMessage;
+        String userActId = "";
+
         if (couponResult.statusCode == 200) {
+            if (couponResult.respData == null) {
+                return;
+            }
             if (Utils.isNotEmpty(couponResult.respData.userActId)) {
-                message.setAttribute(ChatConstant.KEY_COUPON_ACT_ID, couponResult.respData.userActId);
+                userActId = couponResult.respData.userActId;
             }
         }
-        sendMessage(message);
+        sendCouponMessage(couponResult.content,couponResult.actId,userActId);
+
     }
 
     @Override
@@ -686,7 +691,9 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private void handlerCheckedCoupon(CheckedCoupon result) {
         if (!("paid").equals(result.couponType)) {
-            sendCouponMessage(String.format("<i>%s</i><span>%d</span>元<b>%s</b>", result.useTypeName, result.actValue, result.couponPeriod), result.actId);
+       //     sendCouponMessage(String.format("<i>%s</i><span>%d</span>元<b>%s</b>", result.useTypeName, result.actValue, result.couponPeriod), result.actId);
+            String content = String.format("<i>%s</i><span>%d</span>元<b>%s</b>", result.useTypeName, result.actValue, result.couponPeriod);
+            CommonUtils.userGetCoupon(content, result.actId, "tech", mToChatEmchatId);
         } else {
             sendPaidCouponMessage(String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", result.actValue, result.couponPeriod), result.actId);
         }
@@ -766,13 +773,16 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         sendMessage(message);
     }
 
-    private void sendCouponMessage(String content, String actId) {
+    private void sendCouponMessage(String content, String actId,String userActId) {
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
         message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "ordinaryCoupon");
         message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
         message.setAttribute(ChatConstant.KEY_TECH_CODE, mTechCode);
-        CommonUtils.userGetCoupon(actId, "tech", mToChatEmchatId, message);
-        // sendMessage(message);
+        if (Utils.isNotEmpty(userActId)) {
+            message.setAttribute(ChatConstant.KEY_COUPON_ACT_ID, userActId);
+        }
+
+       sendMessage(message);
     }
 
     private void sendOrderMessage(String content, String orderId) {
@@ -887,14 +897,14 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
 
         @Override
-        public void onMessageReadAckReceived(List<EMMessage> messages) {
+        public void onMessageRead(List<EMMessage> messages) {
             if (mIsMessageListInited) {
                 mChatAdapter.refreshList();
             }
         }
 
         @Override
-        public void onMessageDeliveryAckReceived(List<EMMessage> message) {
+        public void onMessageDelivered(List<EMMessage> message) {
             if (mIsMessageListInited) {
                 mChatAdapter.refreshList();
             }
