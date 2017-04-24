@@ -46,7 +46,7 @@ import java.util.Map;
 public class LoginTechnician {
     private static LoginTechnician ourInstance = new LoginTechnician();
 
-    private IEmchat emchatManager=EmchatManager.getInstance();
+    private IEmchat emchatManager = EmchatManager.getInstance();
 
     public static LoginTechnician getInstance() {
         return ourInstance;
@@ -213,7 +213,7 @@ public class LoginTechnician {
         setShareUrl(techInfo.shareUrl);
 
         //登录环信
-        emchatManager.login(getEmchatId(),getEmchatPassword());
+        emchatManager.login(getEmchatId(), getEmchatPassword());
 
         //开始刷新个人数据
         DataRefreshService.refreshPersonalData(true);
@@ -393,6 +393,9 @@ public class LoginTechnician {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_TOKEN, token);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID, params);
+
+        //清空当前用户打招呼数据
+        HelloSettingManager.getInstance().resetTemplate();
 
         //直接清空token，不用等待是否成功
         UserProfileProvider.getInstance().reset();

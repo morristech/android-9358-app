@@ -48,7 +48,7 @@ public class HelloTemplateAdapter extends RecyclerView.Adapter<RecyclerView.View
             mData.addAll(list);
             // 初始化数据
             for (HelloTemplateInfo info : mData) {
-                if (info.id == mHelloSettingManager.getTemplateId().intValue() || (mHelloSettingManager.getTemplateParentId() != null && info.id == mHelloSettingManager.getTemplateParentId().intValue())) {
+                if (mHelloSettingManager.getTemplateParentId() != null && info.id == mHelloSettingManager.getTemplateParentId().intValue()) {
                     mCheckId = info.id;
                     info.setSelected(true);
                     mCheckPos = mData.indexOf(info);

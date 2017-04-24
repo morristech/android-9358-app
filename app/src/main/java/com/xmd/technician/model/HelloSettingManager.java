@@ -53,6 +53,16 @@ public class HelloSettingManager {
     private HelloSettingManager() {
     }
 
+    public void resetTemplate() {
+        templateId = null;
+        templateParentId = null;
+        templateContentText = null;
+        templateImageId = null;
+        templateImageUrl = null;
+        templateImageLink = null;
+        templateImageCachePath = null;
+    }
+
     public void setTemplate(HelloTemplateInfo info) {
         templateId = info.id;
         templateParentId = info.parentId;

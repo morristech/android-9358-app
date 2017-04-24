@@ -21,6 +21,7 @@ import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.http.gson.LogoutResult;
 import com.xmd.technician.http.gson.TokenExpiredResult;
+import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
 
@@ -220,6 +221,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
         }
 
         SharedPreferenceHelper.clearUserInfo();
+        HelloSettingManager.getInstance().resetTemplate();
 
         ActivityHelper.getInstance().removeAllActivities();
         Intent intent = new Intent(this, LoginActivity.class);
