@@ -55,6 +55,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     Spinner mSpServerHost;
     private String mSelectedServerHost;
 
+    private boolean mNeedRestartApp;
+
     LoginContract.Presenter mPresenter;
 
     @Override
@@ -141,6 +143,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     SharedPreferenceHelper.setServerHost((String) parent.getItemAtPosition(position));
                     RetrofitServiceFactory.recreateService();
+                    if (SharedPreferenceHelper.isDevelopMode() && SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com")) {
+                        mNeedRestartApp = true;
+                    } else if (!SharedPreferenceHelper.isDevelopMode() && !SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com")) {
+                        mNeedRestartApp = true;
+                    }
+                    SharedPreferenceHelper.setDevelopMode(!SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com"));
                 }
 
                 @Override
@@ -216,6 +224,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         } else {
             mBtnLogin2.setEnabled(enable);
         }
+    }
+
+    @Override
+    public boolean needRestart() {
+        return mNeedRestartApp;
     }
 
     @Override

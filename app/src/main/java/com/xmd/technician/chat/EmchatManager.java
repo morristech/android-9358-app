@@ -2,6 +2,7 @@ package com.xmd.technician.chat;
 
 import android.content.Context;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Pair;
 
 import com.hyphenate.EMCallBack;
@@ -51,8 +52,11 @@ public class EmchatManager implements IEmchat {
      * @param debug   调试模式
      */
     @Override
-    public void init(Context context, boolean debug) {
+    public void init(Context context, String appKey,boolean debug) {
         EMOptions emOptions = new EMOptions();
+        if(!TextUtils.isEmpty(appKey)) {
+            emOptions.setAppKey(appKey);
+        }
         emOptions.setRequireAck(false); //不发送已读回执
         emOptions.setSortMessageByServerTime(true); //消息按时间排序
         EMClient.getInstance().init(context, emOptions);

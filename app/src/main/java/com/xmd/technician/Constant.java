@@ -15,6 +15,9 @@ import java.util.Map;
  */
 public class Constant {
 
+    public final static String EMCHAT_APP_KEY_DEBUG="xiaomodo#spatest";
+    public final static String EMCHAT_APP_KEY_RELEASE="xiaomodo#spa";
+
     public static final String DEFAULT_ENCODE = "utf-8";
     public static final String MIME_TYPE_HTML = "text/html";
     public static final int WEBVIEW_TEXT_ZOOM = 80;

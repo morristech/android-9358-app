@@ -58,7 +58,6 @@ public class ActivityHelper {
                 activity.finish();
             }
             activities.pop();
-            activity = null;
         }
 
     }
@@ -82,6 +81,7 @@ public class ActivityHelper {
             removeActivity(activity);
         }
         System.exit(0);
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
 }

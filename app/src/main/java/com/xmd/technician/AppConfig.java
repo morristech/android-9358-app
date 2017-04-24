@@ -56,20 +56,6 @@ public class AppConfig {
     private static String sCouponId;
 
     public static void initialize() {
-        String pkgName = TechApplication.getAppContext().getPackageName();
-        try {
-            ApplicationInfo appInfo = TechApplication.getAppContext().getPackageManager().getApplicationInfo(pkgName, PackageManager.GET_META_DATA);
-            if (appInfo.metaData != null) {
-                sGetuiAppId = appInfo.metaData.getString("PUSH_APPID");
-                sGetuiAppSecret = appInfo.metaData.getString("PUSH_APPSECRET");
-                sGetuiMasterSecret = appInfo.metaData.getString("PUSH_MASTERSECRET");
-                sGetuiAppKey = (appInfo.metaData.get("PUSH_APPKEY") != null) ? appInfo.metaData.get("PUSH_APPKEY").toString() : null;
-                sDefUpdateServer = appInfo.metaData.getString("DEF_UPDATE_SERVER");
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
         sServerHosts = new ArrayList<>();
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             sSDCardPath = Environment.getExternalStorageDirectory().getPath();
@@ -87,7 +73,6 @@ public class AppConfig {
                 readServerUpDateHostFile();
             }
         }
-
     }
 
     private static void readServerHostFile() {

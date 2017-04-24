@@ -1,8 +1,6 @@
 package com.xmd.technician.common;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Message;
 import android.widget.Toast;
 
@@ -65,6 +63,8 @@ public class UpgradeController extends AbstractController {
                     }
                 });
     }
+
+
 
     @Override
     public boolean handleMessage(Message msg) {

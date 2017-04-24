@@ -4,12 +4,11 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMOptions;
 import com.igexin.sdk.PushManager;
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
@@ -26,6 +25,8 @@ import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.HelloReplyService;
 import com.xmd.technician.msgctrl.ControllerRegister;
+import com.xmd.technician.push.GetuiPushService;
+import com.xmd.technician.push.GetuiReceiveService;
 import com.xmd.technician.window.WelcomeActivity;
 
 import java.io.File;
@@ -56,6 +57,9 @@ public class TechApplication extends Application {
                 Logger.v("Technician initialize !");
                 appContext = getApplicationContext();
 
+                //SP初始化
+                SharedPreferenceHelper.initialize();
+
                 //解析APP版本和渠道信息
                 parseAppVersion();
 
@@ -77,7 +81,7 @@ public class TechApplication extends Application {
                     }
                 });
 
-                XToast.init(this,-1);
+                XToast.init(this, -1);
 
                 //初始化磁盘缓存模块
                 try {
@@ -101,15 +105,22 @@ public class TechApplication extends Application {
                 long start = System.currentTimeMillis();
 
                 AppConfig.initialize();
+                //初始化升级服务器
+                initUpdateServer();
+
                 ThreadManager.initialize();
                 ControllerRegister.initialize();
-                SharedPreferenceHelper.initialize();
+
 
                 //初始化消息推送
-                PushManager.getInstance().initialize(this);
+                initGeiTuiPush();
 
                 //初始化环信
-                EmchatManager.getInstance().init(this,BuildConfig.DEBUG);
+                if (SharedPreferenceHelper.isDevelopMode()) {
+                    EmchatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_DEBUG, BuildConfig.DEBUG);
+                } else {
+                    EmchatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_RELEASE, BuildConfig.DEBUG);
+                }
 
                 initNotifier();
                 DataRefreshService.start();
@@ -172,7 +183,30 @@ public class TechApplication extends Application {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+    }
 
+    private void initGeiTuiPush() {
+        try {
+            PackageManager packageManager = getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            AppConfig.sGetuiAppId = applicationInfo.metaData.getString("GETUI_APP_ID", "");
+            AppConfig.sGetuiAppKey = applicationInfo.metaData.getString("GETUI_APP_KEY", "");
+            AppConfig.sGetuiAppSecret = applicationInfo.metaData.getString("GETUI_APP_SECRET", "");
+            AppConfig.sGetuiMasterSecret = applicationInfo.metaData.getString("GETUI_MASTER_SECRET", "");
+            //注意METADATA是没有办法运行时修改的，所以需要推送的测试，还是只能编译一个版本出来
+            PushManager.getInstance().initialize(this, GetuiPushService.class);
+            PushManager.getInstance().registerPushIntentService(this, GetuiReceiveService.class);
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException("can not get meta data!");
+        }
+    }
+
+    private void initUpdateServer() {
+        if (SharedPreferenceHelper.isDevelopMode()) {
+            AppConfig.sDefUpdateServer = "http://192.168.1.100:9883";
+        } else {
+            AppConfig.sDefUpdateServer = "http://service.xiaomodo.com";
+        }
     }
 
     private void printMachineInfo() {
@@ -183,6 +217,7 @@ public class TechApplication extends Application {
         XLogger.i(TAG, "DEVICE:" + Build.DEVICE);
         XLogger.i(TAG, "MANUFACTURER:" + Build.MANUFACTURER);
         XLogger.i(TAG, "APP PRODUCT FLAVORS:" + BuildConfig.FLAVOR);
+        XLogger.i(TAG, "APP PRODUCT DEV MODE :" + SharedPreferenceHelper.isDevelopMode());
         XLogger.i(TAG, "APP VERSION CODE:" + mAppVersionCode);
         XLogger.i(TAG, "APP VERSION NAME:" + mAppVersionName);
         XLogger.i(TAG, "=========================================");

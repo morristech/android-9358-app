@@ -15,6 +15,9 @@ public class SharedPreferenceHelper {
 
     private static final String SETTING_PREFERENCE = "00DF60D934C0D482F0C950B6D3605F50"; //setting_preference
     private static SharedPreferences mSettingPreference;
+
+    private static final String KEY_DEV_MODE = "e9fbb7c44116f423bbf68ce03f8d1096"; //开发者模式
+
     private static final String KEY_USER_ACCOUNT = "4E6EF539AAF119D82AC4C2BC84FBA21F";//userAccount
     private static final String KEY_USER_TOKEN = "CE4A0B029C785BFAA2B398C06E1D94C0"; //userToken
     private static final String KEY_USER_NAME = "435E0648D634175C46BD40AC366545A8";//userName
@@ -51,6 +54,14 @@ public class SharedPreferenceHelper {
 
     public static void initialize() {
         mSettingPreference = TechApplication.getAppContext().getSharedPreferences(SETTING_PREFERENCE, Activity.MODE_PRIVATE);
+    }
+
+    public static void setDevelopMode(boolean debugMode) {
+        mSettingPreference.edit().putBoolean(KEY_DEV_MODE, debugMode).apply();
+    }
+
+    public static boolean isDevelopMode() {
+        return mSettingPreference.getBoolean(KEY_DEV_MODE, false);
     }
 
     public static void setUserAccount(String userAccount) {
@@ -171,7 +182,6 @@ public class SharedPreferenceHelper {
      * @return
      */
     public static String getServerHost() {
-       //return "http://192.168.1.100:9880";//FIXME
         return mSettingPreference.getString(KEY_SERVER_HOST, RequestConstant.SERVER_HOST);
     }
 

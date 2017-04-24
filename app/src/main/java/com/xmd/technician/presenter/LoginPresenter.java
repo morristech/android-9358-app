@@ -3,8 +3,10 @@ package com.xmd.technician.presenter;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.google.gson.Gson;
+import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.LoginContract;
@@ -12,6 +14,7 @@ import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.window.ResetPasswordActivity;
 
 import rx.Subscription;
@@ -30,6 +33,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     private Subscription mLoginSubscription;
     private Subscription mLoadTechInfoSubscription;
+
+    private boolean needRestartApp;
 
     public LoginPresenter(Context context, LoginContract.View view) {
         super(context, view);
@@ -166,8 +171,21 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             } else {
                 //登录成功
                 mLoginTech.onLoginResult(result);
-                //获取用户信息
-                mLoginTech.loadTechInfo();
+                if (mView.needRestart()) {
+                    mView.hideLoading();
+                    new AlertDialogBuilder(mContext).setMessage("切换运行环境，需要重新打开应用")
+                            .setCancelable(false)
+                            .setPositiveButton("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ActivityHelper.getInstance().exitAndClearApplication();
+                                }
+                            })
+                            .show();
+                } else {
+                    //获取用户信息
+                    mLoginTech.loadTechInfo();
+                }
             }
         }
     }

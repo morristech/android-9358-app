@@ -17,6 +17,8 @@ public interface LoginContract {
         void setTechNo(String value);
 
         void enableLogin(boolean enable);
+
+        boolean needRestart();
     }
 
     interface Presenter extends IBasePresenter {

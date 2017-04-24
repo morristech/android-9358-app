@@ -12,11 +12,6 @@ def releaseTime() {
     return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+8"))
 }
 
-bugtags {
-    appKey "32ae23df06dfde970b3b8affdd3abd30"  //这里是你的 appKey
-    appSecret "a6ddbd7c863004c90552a85c24776190"    //这里是你的 appSecret，管理员在设置页可以查看
-}
-
 android {
     compileSdkVersion 25   //编译的sdk版本
     buildToolsVersion '23.0.3'//编译的tools版本
@@ -36,7 +31,7 @@ android {
         // 1.5.6 技师相册权限+在线买单通知
         //1.6.0 技师营销页面改版
         //1.6.2 附近的人，打招呼
-        versionCode 31
+        versionCode 21
         versionName "1.6.3"
 
         manifestPlaceholders = [
@@ -45,6 +40,10 @@ android {
                 UMENG_APPKEY_VALUE : "568cf00e67e58eeba4000e38",
                 UMENG_CHANNEL_VALUE: "xiaomodo-tech",
         ]
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
     }
 
     lintOptions {
@@ -63,15 +62,6 @@ android {
     buildTypes { //build类型
         debug {//调试
             buildConfigField("Boolean","debug","true")
-            manifestPlaceholders = [
-                    EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
-                    //Getui placeHolder
-                    GETUI_APP_ID        : "tKz4NrRkbB7liB2hQKH1K3",
-                    GETUI_APP_KEY       : "1Z7IMxPegvAc3p5fFhXZm1",
-                    GETUI_APP_SECRET    : "H1A8oGj86TARVycNo28c28",
-                    GETUI_MASTER_SECRET : "auiTyQZRcc6AUA9PQWoak7",
-                    DEF_UPDATE_SERVER   : "http://192.168.1.100:9883",
-            ]
             signingConfig signingConfigs.release
         }
 
@@ -89,7 +79,6 @@ android {
         dev {
             manifestPlaceholders = [
                     EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
-                    //Getui placeHolder
                     GETUI_APP_ID        : "tKz4NrRkbB7liB2hQKH1K3",
                     GETUI_APP_KEY       : "1Z7IMxPegvAc3p5fFhXZm1",
                     GETUI_APP_SECRET    : "H1A8oGj86TARVycNo28c28",
@@ -102,7 +91,6 @@ android {
         prd {
             manifestPlaceholders = [
                     EASEMOB_APPKEY_VALUE: "xiaomodo#spa",
-                    //Getui placeHolder
                     GETUI_APP_ID        : "9M8R2lPBQw9CB1NSODZOJ2",
                     GETUI_APP_KEY       : "Sc5C01E4Vr5mx3nv2o4hz4",
                     GETUI_APP_SECRET    : "hUACujejlx5GmDMaLfqj92",
@@ -165,8 +153,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile 'com.getui:sdk:2.7.0.0'
-    compile 'com.getui:ext:2.0.3'
+    compile 'com.getui:sdk:2.10.2.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
