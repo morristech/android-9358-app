@@ -100,8 +100,12 @@ public class CommentAdapter extends RecyclerView.Adapter {
             } else {
                 commentViewHolder.mRewardAmount.setText("");
             }
+            if(Utils.isNotEmpty(commentInfo.userInfo.avatarUrl)){
+                Glide.with(mContext).load(commentInfo.userInfo.avatarUrl).into(commentViewHolder.mAvatar);
+            }else{
+                Glide.with(mContext).load(commentInfo.userInfo.headimgurl).into(commentViewHolder.mAvatar);
+            }
 
-            Glide.with(mContext).load(commentInfo.userInfo.imageUrl).into(commentViewHolder.mAvatar);
         } else if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);
