@@ -34,8 +34,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     private Subscription mLoginSubscription;
     private Subscription mLoadTechInfoSubscription;
 
-    private boolean needRestartApp;
-
     public LoginPresenter(Context context, LoginContract.View view) {
         super(context, view);
     }

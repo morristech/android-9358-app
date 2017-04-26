@@ -8,18 +8,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.chat.IEmchat;
-import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
@@ -104,8 +98,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
                 () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
 
-        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
-                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE));
+        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_BACKGROUND,
+                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE), 2000);
     }
 
     @Override
