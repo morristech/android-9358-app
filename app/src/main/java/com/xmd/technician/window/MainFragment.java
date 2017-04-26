@@ -68,6 +68,7 @@ import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyFragment;
+import com.xmd.technician.permission.BusinessPermissionManager;
 import com.xmd.technician.permission.CheckBusinessPermission;
 import com.xmd.technician.permission.PermissionConstants;
 import com.xmd.technician.widget.CircleImageView;
@@ -1251,6 +1252,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onRefresh() {
         mTech.loadTechInfo();
         sendDataRequest();
+        BusinessPermissionManager.getInstance().syncPermissionsImmediately();//刷新权限
     }
 
     //成功通过会所审核

@@ -17,7 +17,7 @@ import com.xmd.technician.chat.IEmchat;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -53,7 +53,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     private Subscription mGetUserIsBindWXSubscription;
 
     //环信
-    private IEmchat emchat= EmchatManager.getInstance();
+    private IEmchat emchat = EmchatManager.getInstance();
     private Subscription mUnreadEmchatCountSubscription;
 
     @Bind(R.id.main_unread_message)
@@ -95,11 +95,18 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 result -> handlerIsBindResult(result)
         );
 
-        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
-                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
+        ThreadPoolManager.run(() -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
 
-        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_BACKGROUND,
-                () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE), 2000);
+        //检查更新
+        ThreadPoolManager.run(
+                () -> {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
+                });
     }
 
     @Override
@@ -112,6 +119,11 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         }
     }
 
+
+    private String getFragmentTagById(int id) {
+        return "fragment_" + id;
+    }
+
     @CheckBusinessPermission(PermissionConstants.HOME)
     public void addFragmentHome() {
         mHomeFragment = (MainFragment) addFragment(R.id.main_button_home, MainFragment.class);
@@ -121,7 +133,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     public void addFragmentMessage() {
         mChatFragment = (ChatFragment) addFragment(R.id.main_button_message, ChatFragment.class);
         updateUnreadMsgLabel(emchat.getUnreadMessageCount());
-        mUnreadEmchatCountSubscription=RxBus.getInstance().toObservable(EventUnreadMessageCount.class).subscribe(
+        mUnreadEmchatCountSubscription = RxBus.getInstance().toObservable(EventUnreadMessageCount.class).subscribe(
                 unreadMessageCount -> {
                     updateUnreadMsgLabel(unreadMessageCount.getUnread());
                 }
@@ -141,20 +153,21 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     private BaseFragment addFragment(int id, Class clazz) {
         View view = findViewById(id);
         if (view != null) {
-            BaseFragment baseFragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag("fragment_" + id);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            BaseFragment baseFragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(getFragmentTagById(id));
             if (baseFragment == null) {
                 try {
                     baseFragment = (BaseFragment) clazz.newInstance();
+                    ft.add(R.id.fragment_container, baseFragment, getFragmentTagById(id));
                 } catch (Exception e) {
                     Logger.e("init fragment failed:" + e.getLocalizedMessage());
                     return null;
                 }
             }
-            mFragmentList.add(baseFragment);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_container, baseFragment, "fragment_" + id);
             ft.hide(baseFragment);
             ft.commit();
+
+            mFragmentList.add(baseFragment);
 
             view.setVisibility(View.VISIBLE);
             mBottomBarButtonList.add(view);

@@ -38,11 +38,13 @@ public class NotificationCenter {
     }
 
 
-    public static final int TYPE_PAY_NOTIFY = 1; //支付通知
-    public static final int TYPE_ORDER = 2;//订单
-    public static final int TYPE_JOINED_CLUB = 3;//通过会所审核
+    public static final int TYPE_DEFAULT = 1;
+    public static final int TYPE_PAY_NOTIFY = 2; //支付通知
+    public static final int TYPE_ORDER = 3;//订单
+    public static final int TYPE_JOINED_CLUB = 4;//通过会所审核
 
-    public static final int ID_PAY_NOTIFY = 1;
+    public static final int ID_DEFAULT = 1;
+    public static final int ID_PAY_NOTIFY = 2;
     public static final int ID_JOINED_CLUB = 3;
 
     public void notify(String title, String text, int type) {
@@ -63,11 +65,15 @@ public class NotificationCenter {
                 break;
             case TYPE_ORDER:
                 builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                //TODO
                 break;
             case TYPE_JOINED_CLUB:
                 builder.setPriority(NotificationCompat.PRIORITY_HIGH);
                 mNotificationManager.notify(ID_JOINED_CLUB, builder.build());
                 break;
+            case TYPE_DEFAULT:
+            default:
+                mNotificationManager.notify(ID_DEFAULT, builder.build());
         }
     }
 

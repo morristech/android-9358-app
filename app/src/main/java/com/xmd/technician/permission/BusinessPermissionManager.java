@@ -29,7 +29,7 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
 
     private Callback<Void> mCallback;
     private Set<String> mPermissionList = new HashSet<>();
-    private static final int SYNC_INTERVAL = 1 * 60 * 1000; //FIXME 测试设置为1分钟
+    private static final int SYNC_INTERVAL = 10 * 60 * 1000;//打开时会检查权限间隔
     private boolean mIsLoaded;
 
     private BusinessPermissionManager() {

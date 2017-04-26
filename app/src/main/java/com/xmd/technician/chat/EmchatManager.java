@@ -57,7 +57,7 @@ public class EmchatManager implements IEmchat {
         if(!TextUtils.isEmpty(appKey)) {
             emOptions.setAppKey(appKey);
         }
-        emOptions.setRequireAck(false); //不发送已读回执
+        emOptions.setAutoLogin(true);
         emOptions.setSortMessageByServerTime(true); //消息按时间排序
         EMClient.getInstance().init(context, emOptions);
         EMClient.getInstance().setDebugMode(debug);

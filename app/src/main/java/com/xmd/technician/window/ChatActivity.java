@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
@@ -46,7 +45,9 @@ import com.xmd.technician.bean.UserWin;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
+import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.chat.Emojicon;
+import com.xmd.technician.chat.IEmchat;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.chat.bean.CancelGame;
@@ -59,7 +60,6 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.OrderManageResult;
-import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -147,6 +147,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private Subscription mClubUserGetCouponSubscription;
 
     private Subscription mNewMessageSubscription;
+
+    private IEmchat emchatManager = EmchatManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -309,7 +311,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 userActId = couponResult.respData.userActId;
             }
         }
-        sendCouponMessage(couponResult.content,couponResult.actId,userActId);
+        sendCouponMessage(couponResult.content, couponResult.actId, userActId);
 
     }
 
@@ -332,7 +334,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     protected void onResume() {
         super.onResume();
-        mNewMessageSubscription=RxBus.getInstance().toObservable(EventReceiveMessage.class).subscribe(this::handleNewMessage);
+        mNewMessageSubscription = RxBus.getInstance().toObservable(EventReceiveMessage.class).subscribe(this::handleNewMessage);
         if (mIsMessageListInited) {
             mChatAdapter.refreshList();
         }
@@ -341,7 +343,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     protected void onPause() {
         super.onPause();
-        RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription,mNewMessageSubscription);
+        RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mNewMessageSubscription);
     }
 
     @Override
@@ -683,7 +685,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private void handlerCheckedCoupon(CheckedCoupon result) {
         if (!("paid").equals(result.couponType)) {
-       //     sendCouponMessage(String.format("<i>%s</i><span>%d</span>元<b>%s</b>", result.useTypeName, result.actValue, result.couponPeriod), result.actId);
+            //     sendCouponMessage(String.format("<i>%s</i><span>%d</span>元<b>%s</b>", result.useTypeName, result.actValue, result.couponPeriod), result.actId);
             String content = String.format("<i>%s</i><span>%d</span>元<b>%s</b>", result.useTypeName, result.actValue, result.couponPeriod);
             CommonUtils.userGetCoupon(content, result.actId, "tech", mToChatEmchatId);
         } else {
@@ -765,7 +767,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         sendMessage(message);
     }
 
-    private void sendCouponMessage(String content, String actId,String userActId) {
+    private void sendCouponMessage(String content, String actId, String userActId) {
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
         message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "ordinaryCoupon");
         message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
@@ -774,7 +776,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             message.setAttribute(ChatConstant.KEY_COUPON_ACT_ID, userActId);
         }
 
-       sendMessage(message);
+        sendMessage(message);
     }
 
     private void sendOrderMessage(String content, String orderId) {
@@ -838,8 +840,8 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mChatAdapter.refreshList();
     }
 
-    private void handleNewMessage(EventReceiveMessage eventReceiveMessage){
-        List<EMMessage> messages=eventReceiveMessage.getList();
+    private void handleNewMessage(EventReceiveMessage eventReceiveMessage) {
+        List<EMMessage> messages = eventReceiveMessage.getList();
         for (EMMessage message : messages) {
             String username = null;
             // 群组消息

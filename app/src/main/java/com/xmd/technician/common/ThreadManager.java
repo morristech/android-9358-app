@@ -7,6 +7,7 @@ import android.os.Looper;
 /**
  * Created by sdcm on 15-10-28.
  */
+@Deprecated
 public class ThreadManager {
 
     public static final int THREAD_TYPE_BACKGROUND = 0x01;

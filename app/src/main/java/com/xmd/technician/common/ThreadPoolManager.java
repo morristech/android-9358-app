@@ -31,4 +31,11 @@ public class ThreadPoolManager {
         }
         return mHandler.post(runnable);
     }
+
+    public synchronized static boolean postToUIDelayed(Runnable runnable, long delay) {
+        if (mHandler == null) {
+            throw new RuntimeException("Thread pool manager not init!");
+        }
+        return mHandler.postDelayed(runnable, delay);
+    }
 }

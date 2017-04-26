@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.Adapter.RecentlyVisitorAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -26,7 +27,6 @@ import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.model.HelloSettingManager;
-import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -221,7 +221,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
 
     private void sayHiRequest(String userId, String userName, String avatarUrl, String userType, String userEmchatId, String position) {
         if (!EmchatManager.getInstance().isConnected()) {
-            ((BaseActivity) getActivity()).showToast("当前已经离线，请稍后再试!");
+            XToast.show("当前已经离线，请稍后再试!");
             return;
         }
         mSayHiParams.clear();
