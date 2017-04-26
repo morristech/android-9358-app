@@ -21,6 +21,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.DeleteConversionResult;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.chat.IEmchat;
@@ -58,6 +59,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private Subscription mLoginStatusSubscription;
     private Subscription mGetConversationListSubscription;
     private Subscription mContactPermissionChatSubscription;
+    private Subscription mDeleteConversionSubscription;
     private TextView mSearchView;
     private String mMessageFrom;
 
@@ -110,6 +112,10 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     onRefresh();
                 }
         );
+        //监听删除聊天，刷新
+        mDeleteConversionSubscription = RxBus.getInstance().toObservable(DeleteConversionResult.class).subscribe(
+                result ->dispatchRequest()
+        );
     }
 
     @Override
@@ -126,7 +132,8 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         RxBus.getInstance().unsubscribe(
                 mLoginStatusSubscription,
                 mGetConversationListSubscription,
-                mContactPermissionChatSubscription);
+                mContactPermissionChatSubscription,
+                mDeleteConversionSubscription);
     }
 
     @Override
@@ -348,7 +355,6 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Override
     public void onLongClicked(EMConversation bean) {
         super.onLongClicked(bean);
-        //  MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_DELETE_CONVERSATION_FROM_DB, bean);
         ChatMessageManagerDialog dialog = new ChatMessageManagerDialog(getActivity());
         dialog.setCanceledOnTouchOutside(true);
         dialog.setItemClickedListener(new ChatMessageManagerDialog.OnItemClickedListener() {

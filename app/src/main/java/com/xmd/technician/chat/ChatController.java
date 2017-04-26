@@ -8,6 +8,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.ConversationListResult;
+import com.xmd.technician.bean.DeleteConversionResult;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.AbstractController;
@@ -95,7 +96,8 @@ public class ChatController extends AbstractController {
 
     private void doDeleteConversation(String userName, boolean deleteMessages) {
         EMClient.getInstance().chatManager().deleteConversation(userName, deleteMessages);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
+       // MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
+        RxBus.getInstance().post(new DeleteConversionResult());
     }
 
     private void doLoginEmchat(Object runnable) {

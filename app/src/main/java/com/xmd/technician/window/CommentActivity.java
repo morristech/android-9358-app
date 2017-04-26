@@ -125,7 +125,12 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
             if(!mIsLoadingMore){
                 mCommentList.clear();
             }
-            mCommentList.addAll(result.respData);
+            for (int i = 0; i < result.respData.size(); i++) {
+               if(result.respData.get(i).userInfo != null){
+                   mCommentList.add(result.respData.get(i));
+               }
+            }
+
             mAdapter.setIsNoMore(mPages == mPageCount);
             mAdapter.setData(mCommentList);
         }

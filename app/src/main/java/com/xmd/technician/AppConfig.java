@@ -1,6 +1,5 @@
 package com.xmd.technician;
 
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.text.TextUtils;

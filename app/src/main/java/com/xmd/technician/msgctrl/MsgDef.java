@@ -186,4 +186,5 @@ public class MsgDef {
     public static final int MSG_DEF_TECH_RANKING_LIST = 0x0109;
 
 
+
 }

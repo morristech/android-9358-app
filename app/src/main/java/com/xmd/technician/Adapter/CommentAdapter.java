@@ -86,7 +86,7 @@ public class CommentAdapter extends RecyclerView.Adapter {
         if (holder instanceof CommentViewHolder) {
             CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
             CommentInfo commentInfo = getItem(position);
-            if(commentInfo.userInfo == null){
+            if (commentInfo.userInfo == null) {
                 return;
             }
             commentViewHolder.mName.setText(TextUtils.isEmpty(commentInfo.userInfo.name) ? ResourceUtils.getString(R.string.default_user_name) : commentInfo.userInfo.name);
@@ -95,14 +95,15 @@ public class CommentAdapter extends RecyclerView.Adapter {
             commentViewHolder.mTime.setText(commentInfo.createdAt);
             if (commentInfo.rewardAmount > 0) {
                 float reward = commentInfo.rewardAmount / 100f;
-                String rewardDes = String.format("打赏:%1.2f元",reward);
-                commentViewHolder.mRewardAmount.setText(Utils.changeColor(rewardDes,ResourceUtils.getColor(R.color.colorMainBtn),3,rewardDes.length()));
+                String rewardDes = String.format("打赏:%1.2f元", reward);
+                commentViewHolder.mRewardAmount.setText(Utils.changeColor(rewardDes, ResourceUtils.getColor(R.color.colorMainBtn), 3, rewardDes.length()));
             } else {
                 commentViewHolder.mRewardAmount.setText("");
             }
-            if(Utils.isNotEmpty(commentInfo.userInfo.avatarUrl)){
+
+            if (Utils.isNotEmpty(commentInfo.userInfo.avatarUrl)) {
                 Glide.with(mContext).load(commentInfo.userInfo.avatarUrl).into(commentViewHolder.mAvatar);
-            }else{
+            } else {
                 Glide.with(mContext).load(commentInfo.userInfo.headimgurl).into(commentViewHolder.mAvatar);
             }
 
