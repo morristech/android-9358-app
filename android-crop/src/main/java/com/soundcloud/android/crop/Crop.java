@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -20,6 +21,17 @@ public class Crop {
     public static final int REQUEST_PICK = 9162;
     public static final int RESULT_ERROR = 404;
 
+    public static class ResultBitmap{
+        private Bitmap bitmap;
+        public ResultBitmap(Bitmap bitmap) {
+            this.bitmap = bitmap;
+        }
+
+        public Bitmap getBitmap() {
+            return bitmap;
+        }
+    }
+
     interface Extra {
         String ASPECT_X = "aspect_x";
         String ASPECT_Y = "aspect_y";
@@ -27,6 +39,7 @@ public class Crop {
         String MAX_Y = "max_y";
         String AS_PNG = "as_png";
         String ERROR = "error";
+        String ONLY_BITMAP = "only_bitmap";
     }
 
     private Intent cropIntent;
@@ -87,6 +100,16 @@ public class Crop {
      */
     public Crop asPng(boolean asPng) {
         cropIntent.putExtra(Extra.AS_PNG, asPng);
+        return this;
+    }
+
+    /**
+     * Only need bitmap , this will send with rxbus a @ResultBitmap
+     * @param asBitmap
+     * @return
+     */
+    public Crop onlyBitmap(boolean asBitmap){
+        cropIntent.putExtra(Extra.ONLY_BITMAP,asBitmap);
         return this;
     }
 

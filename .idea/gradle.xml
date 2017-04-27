@@ -8,9 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/android-crop" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/permission-tool" />
             <option value="$PROJECT_DIR$/shidou-commonlibrary" />
           </set>
         </option>

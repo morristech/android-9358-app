@@ -8,6 +8,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.multidex.MultiDexApplication;
 
 import com.igexin.sdk.PushManager;
 import com.shidou.commonlibrary.helper.CrashHandler;
@@ -36,7 +37,7 @@ import java.util.List;
 /**
  * Created by sdcm on 16-3-10.
  */
-public class TechApplication extends Application {
+public class TechApplication extends MultiDexApplication {
     private static final String TAG = "TechApplication";
     private static Context appContext;
     private static TechNotifier mNotifier;

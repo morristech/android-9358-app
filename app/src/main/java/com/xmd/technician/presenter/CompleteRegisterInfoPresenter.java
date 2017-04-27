@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.ObservableBoolean;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.image_tool.ImageTool;
+import com.xmd.technician.Constant;
 import com.xmd.technician.common.ActivityHelper;
-import com.xmd.technician.common.ImageLoader;
+import com.xmd.technician.common.ImageUploader;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.contract.CompleteRegisterInfoContract;
 import com.xmd.technician.databinding.ActivityCompleteRegisterInfoBinding;
@@ -20,7 +23,6 @@ import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
-import com.xmd.technician.window.ImageSelectAndCropActivity;
 
 import rx.Subscription;
 
@@ -32,12 +34,13 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
     private ActivityCompleteRegisterInfoBinding mBinding;
     private LoginTechnician mTech = LoginTechnician.getInstance();
     public ObservableBoolean mCanUpdate = new ObservableBoolean();
-    private String mAvatarUrl;
     private String mNickName;
     private boolean mFemale;
-    private static final int REQUEST_CODE_PICK_AVATAR = 1;
     private Subscription mSubscription;
     private Subscription mUploadAvatarSubscription;
+
+    private ImageTool mImageTool = new ImageTool();
+    private Bitmap mAvatar;
 
     private boolean mJoinClub;
 
@@ -82,7 +85,18 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
 
     @Override
     public void onClickAvatar() {
-        ImageSelectAndCropActivity.pickAndCrop((Activity) mContext, REQUEST_CODE_PICK_AVATAR);
+        mImageTool.maxSize(Constant.AVATAR_MAX_SIZE).start((Activity) mContext, new ImageTool.ResultListener() {
+            @Override
+            public void onResult(String s, Uri uri, Bitmap bitmap) {
+                if (s != null) {
+                    XToast.show(s);
+                } else if (bitmap != null) {
+                    mAvatar = bitmap;
+                    mBinding.avatar.setImageBitmap(mAvatar);
+                    checkCanUpdate();
+                }
+            }
+        });
     }
 
     @Override
@@ -94,22 +108,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_PICK_AVATAR) {
-            if (resultCode != Activity.RESULT_OK) {
-                if (resultCode != Activity.RESULT_CANCELED) {
-                    mView.showAlertDialog("选择图片失败！");
-                }
-            } else {
-                mAvatarUrl = data.getData().getPath();
-                Glide.with(mContext)
-                        .load(mAvatarUrl)
-                        .transform(ImageLoader.circleTransformation(mContext))
-                        .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(mBinding.avatar);
-                checkCanUpdate();
-            }
-        }
+        mImageTool.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -133,7 +132,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
     }
 
     private void checkCanUpdate() {
-        mCanUpdate.set(!TextUtils.isEmpty(mNickName) && !TextUtils.isEmpty(mAvatarUrl));
+        mCanUpdate.set(!TextUtils.isEmpty(mNickName) && mAvatar != null);
     }
 
     private void handleUpdateNickNameAndGenderResult(UpdateTechInfoResult result) {
@@ -142,9 +141,9 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
             mView.showAlertDialog(result.msg);
         } else {
             mTech.onUpdateTechNickNameAndGender(mNickName, mFemale, result);
-            if (!TextUtils.isEmpty(mAvatarUrl)) {
+            if (mAvatar != null) {
                 mView.showLoading("正在上传头像...");
-                mTech.uploadAvatar(mAvatarUrl);
+                ImageUploader.getInstance().upload(ImageUploader.TYPE_AVATAR, mAvatar);
             } else {
                 finishSelf();
             }

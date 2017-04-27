@@ -2,7 +2,7 @@ package com.xmd.technician.msgctrl;
 
 import android.os.Looper;
 
-import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.ThreadPoolManager;
 
 import rx.Observable;
 import rx.Subscription;
@@ -14,7 +14,6 @@ import rx.subjects.Subject;
  * Created by sdcm on 16-1-12.
  */
 public class RxBus {
-
     private static class RxBusHolder {
         private static RxBus sInstance = new RxBus();
     }
@@ -34,7 +33,7 @@ public class RxBus {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             bus.onNext(o);
         } else {
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
+            ThreadPoolManager.postToUI(new Runnable() {
                 @Override
                 public void run() {
                     bus.onNext(o);
@@ -54,5 +53,4 @@ public class RxBus {
             }
         }
     }
-
 }

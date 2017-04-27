@@ -1,7 +1,8 @@
 package com.xmd.technician.window;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -12,17 +13,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.image_tool.ImageTool;
 import com.xmd.technician.Adapter.AlbumAdapter;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.AlbumInfo;
 import com.xmd.technician.bean.TechDetailInfo;
+import com.xmd.technician.common.ImageUploader;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
-import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -76,12 +79,13 @@ public class TechInfoActivity extends BaseActivity {
 
     private List<AlbumInfo> mAlbums;
     private TechDetailInfo mTechInfo;
+    private Bitmap mAvatarBitmap;
 
     // 籍贯
     private AlbumAdapter mAdapter;
     private boolean mViewInitialized = false;
     private SelectPlaceDialog mSelectPlaceDialog;
-    private String mAvatarUrl;
+    private ImageTool mImageTool = new ImageTool();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +100,17 @@ public class TechInfoActivity extends BaseActivity {
         mAdapter = new AlbumAdapter(this, new AlbumAdapter.OnItemClickListener() {
             @Override
             public void onAddAlbum() {
-                ImageSelectAndCropActivity.pickAndCrop(TechInfoActivity.this, REQUEST_CODE_LOCAL_PICTURE_ALBUM);
+                mImageTool.reset().maxSize(Constant.ALBUM_MAX_SIZE).start(TechInfoActivity.this, new ImageTool.ResultListener() {
+                    @Override
+                    public void onResult(String s, Uri uri, Bitmap bitmap) {
+                        if (s != null) {
+                            XToast.show(s);
+                        } else if (bitmap != null) {
+                            showLoading("正在上传照片...");
+                            ImageUploader.getInstance().upload(ImageUploader.TYPE_ALBUM, bitmap);
+                        }
+                    }
+                });
             }
 
             @Override
@@ -205,7 +219,18 @@ public class TechInfoActivity extends BaseActivity {
 
     @OnClick(R.id.change_avatar_txt)
     public void changeAvatarClick() {
-        ImageSelectAndCropActivity.pickAndCrop(this, REQUEST_CODE_LOCAL_PICTURE_AVATAR);
+        mImageTool.reset().maxSize(Constant.AVATAR_MAX_SIZE).start(this, new ImageTool.ResultListener() {
+            @Override
+            public void onResult(String s, Uri uri, Bitmap bitmap) {
+                if (s != null) {
+                    XToast.show(s);
+                } else if (bitmap != null) {
+                    showProgressDialog("正在上传头像...");
+                    mAvatarBitmap = bitmap;
+                    ImageUploader.getInstance().upload(ImageUploader.TYPE_AVATAR, bitmap);
+                }
+            }
+        });
     }
 
     @OnClick(R.id.native_place)
@@ -260,24 +285,7 @@ public class TechInfoActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_LOCAL_PICTURE_AVATAR || requestCode == REQUEST_CODE_LOCAL_PICTURE_ALBUM) {
-            if (resultCode != Activity.RESULT_OK) {
-                if (resultCode != Activity.RESULT_CANCELED) {
-                    Toast.makeText(TechInfoActivity.this, "图片选择器没有返回数据!", Toast.LENGTH_LONG).show();
-                }
-            } else {
-                String imageUrl = data.getData().getPath();
-                if (requestCode == REQUEST_CODE_LOCAL_PICTURE_AVATAR) {
-                    //上传头像
-                    mAvatarUrl = imageUrl;
-                    showProgressDialog("正在上传头像...");
-                    LoginTechnician.getInstance().uploadAvatar(imageUrl);
-                } else {
-                    showProgressDialog("正在上传照片...");
-                    LoginTechnician.getInstance().uploadAlbumImage(imageUrl);
-                }
-            }
-        }
+        mImageTool.onActivityResult(requestCode, resultCode, data);
     }
 
     private void handleAvatarResult(AvatarResult result) {
@@ -285,11 +293,7 @@ public class TechInfoActivity extends BaseActivity {
         if (result.statusCode >= 200 && result.statusCode <= 299) {
             setResult(RESULT_OK);
             //加载本地图片会比较快一些
-            Glide.with(this)
-                    .load(mAvatarUrl)
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(mAvatar);
+            mAvatar.setImageBitmap(mAvatarBitmap);
         } else {
             Toast.makeText(this, "头像上传失败：" + result.msg, Toast.LENGTH_LONG).show();
         }

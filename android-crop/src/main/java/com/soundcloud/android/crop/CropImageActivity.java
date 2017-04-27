@@ -68,6 +68,8 @@ public class CropImageActivity extends MonitoredActivity {
     private CropImageView imageView;
     private HighlightView cropView;
 
+    private boolean onlyBitmap;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -128,6 +130,7 @@ public class CropImageActivity extends MonitoredActivity {
             maxY = extras.getInt(Crop.Extra.MAX_Y);
             saveAsPng = extras.getBoolean(Crop.Extra.AS_PNG, false);
             saveUri = extras.getParcelable(MediaStore.EXTRA_OUTPUT);
+            onlyBitmap = extras.getBoolean(Crop.Extra.ONLY_BITMAP);
         }
 
         sourceUri = intent.getData();
@@ -301,7 +304,12 @@ public class CropImageActivity extends MonitoredActivity {
             imageView.center();
             imageView.highlightViews.clear();
         }
-        saveImage(croppedImage);
+        if (onlyBitmap) {
+            EventBus.getDefault().post(croppedImage);
+            finish();
+        } else {
+            saveImage(croppedImage);
+        }
     }
 
     private void saveImage(Bitmap croppedImage) {
@@ -394,10 +402,14 @@ public class CropImageActivity extends MonitoredActivity {
                 CropUtil.closeSilently(outputStream);
             }
 
-            CropUtil.copyExifRotation(
-                    CropUtil.getFromMediaUri(this, getContentResolver(), sourceUri),
-                    CropUtil.getFromMediaUri(this, getContentResolver(), saveUri)
-            );
+            try {
+                CropUtil.copyExifRotation(
+                        CropUtil.getFromMediaUri(this, getContentResolver(), sourceUri),
+                        CropUtil.getFromMediaUri(this, getContentResolver(), saveUri)
+                );
+            } catch (Exception e) {
+                Log.e("copyExifRotation failed:", e);
+            }
 
             setResultUri(saveUri);
         }

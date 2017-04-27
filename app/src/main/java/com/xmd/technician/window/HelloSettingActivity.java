@@ -1,11 +1,9 @@
 package com.xmd.technician.window;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,10 +12,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.image_tool.ImageTool;
 import com.xmd.technician.Adapter.HelloTemplateAdapter;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.common.ImageLoader;
-import com.xmd.technician.common.Util;
+import com.xmd.technician.common.ImageUploader;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
@@ -28,7 +28,6 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.RoundImageView;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,13 +62,15 @@ public class HelloSettingActivity extends BaseActivity {
     private HelloSettingManager mHelloSettingManager;
 
     private String mImageId;
-    private Bitmap mPhotoTake;  //缩略图
+    private Bitmap mHelloBitmap;  //缩略图
     private String mTemplateContent;
     private String mTemplateId;
 
     private Subscription mGetSysTemplateListSubscription;
     private Subscription mUploadTemplateImageSubscription;
     private Subscription mSaveHelloTemplateSubscription;
+
+    private ImageTool mImageTool = new ImageTool();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +103,7 @@ public class HelloSettingActivity extends BaseActivity {
             handleSaveHelloTemplateResult(result);
         });
 
-        mUploadImage.setOnClickListener(v -> ImageSelectAndCropActivity.onlyPick(HelloSettingActivity.this, REQUEST_CODE_LOCAL_PICTURE_HELLO));
+        mUploadImage.setOnClickListener(v -> selectHelloPicture());
 
         // 获取系统模版列表
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SYS_TEMPLATE_LIST);
@@ -159,7 +160,7 @@ public class HelloSettingActivity extends BaseActivity {
 
             mAddImgBtn.setVisibility(View.GONE);        //隐藏添加图片按钮
             mUploadImage.setVisibility(View.VISIBLE);   //显示图片
-            mUploadImage.setImageBitmap(mPhotoTake);    //加载缩略图
+            mUploadImage.setImageBitmap(mHelloBitmap);    //加载缩略图
         } else {
             // 上传失败
             showToast("上传失败，请稍候重试");
@@ -184,88 +185,33 @@ public class HelloSettingActivity extends BaseActivity {
 
     // 添加上传的图片
     public void onAddBtnClick(View view) {
-        ImageSelectAndCropActivity.onlyPick(HelloSettingActivity.this, REQUEST_CODE_LOCAL_PICTURE_HELLO);
-        /*
-        Util.selectPicFromLocal(HelloSettingActivity.this, REQUEST_CODE_LOCAL_PICTURE_HELLO);
-        */
+        selectHelloPicture();
+    }
+
+    private void selectHelloPicture() {
+        mImageTool.maxSize(Constant.ALBUM_MAX_SIZE).start(this, new ImageTool.ResultListener() {
+            @Override
+            public void onResult(String s, Uri uri, Bitmap bitmap) {
+                if (s != null) {
+                    XToast.show(s);
+                } else if (bitmap != null) {
+                    mHelloBitmap = bitmap;
+                    uploadHelloPicture();
+                }
+            }
+        });
+    }
+
+    private void uploadHelloPicture() {
+        showLoading("正在上传图片...");
+        ImageUploader.getInstance().upload(ImageUploader.TYPE_HELLO, mHelloBitmap);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_LOCAL_PICTURE_HELLO) {
-            if (resultCode == RESULT_OK) {
-                String imagePath = data.getData().getPath();
-                if (imagePath != null) {
-                    setImage(imagePath);
-                } else {
-                    showToast("未返回有效数据");
-                }
-
-                /*
-                Uri selectImage = data.getData();
-                if (selectImage != null) {
-                    setImage(selectImage);
-                } else {
-                    showToast("未返回有效数据");
-                }
-                */
-            } else {
-                showToast("未选中图片");
-            }
-        }
+        mImageTool.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setImage(String imagePath) {
-        File file = new File(imagePath);
-        if (!file.exists()) {
-            showToast("选中的文件不存在，请重新选择...");
-            return;
-        }
-
-        mPhotoTake = ImageLoader.getBitmapFromFile(imagePath, 1024);
-        if (mPhotoTake == null) {
-            showToast("处理图片出现错误，请重新上传...");
-            return;
-        }
-
-        // 上传图片
-        showLoading("正在上传...");
-        uploadHelloImage(Util.bitmap2base64(mPhotoTake, false));
-    }
-
-    private void setImage(Uri imageUri) {
-        String picturePath;
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(imageUri, filePathColumn, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            if (TextUtils.isEmpty(picturePath) || picturePath.equals("null")) {
-                showToast("选中的文件不存在，请重新选择...");
-                return;
-            }
-        } else {
-            File file = new File(imageUri.getPath());
-            if (!file.exists()) {
-                showToast("选中的文件不存在，请重新选择...");
-                return;
-            }
-            picturePath = file.getAbsolutePath();
-        }
-
-        mPhotoTake = ImageLoader.getBitmapFromFile(picturePath, 1024);
-        if (mPhotoTake == null) {
-            showToast("处理图片出现错误，请重新上传...");
-            return;
-        }
-
-        // 上传图片
-        showLoading("正在上传...");
-        uploadHelloImage(Util.bitmap2base64(mPhotoTake, false));
-    }
 
     public void onConfirmBtnClick(View view) {
         // 检查自定义招呼内容和招呼图片
@@ -310,8 +256,8 @@ public class HelloSettingActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mPhotoTake != null) {
-            mPhotoTake.recycle();
+        if (mHelloBitmap != null) {
+            mHelloBitmap.recycle();
         }
         ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mGetSysTemplateListSubscription,

@@ -1,1 +1,1 @@
-include ':app', ':android-crop', ':permission-tool', ':shidou-commonlibrary'
+include ':app', ':shidou-commonlibrary'

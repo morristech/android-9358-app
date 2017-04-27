@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.technician.http.RequestConstant;
 
 import java.io.File;
@@ -71,35 +72,30 @@ public class ImageLoader {
 
     //从文件中读取图片，如果超过限制，则按长宽比进行压缩
     public static Bitmap getBitmapFromFile(String imagePath, int maxSize) {
-        final BitmapFactory.Options options = new BitmapFactory.Options();
+        BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(imagePath, options);
-        boolean needScale = false;
+        XLogger.d("getBitmapFromFile", "origin size:" + options.outWidth + "x" + options.outHeight);
+        if (options.outHeight == -1 || options.outWidth == -1) {
+            XLogger.e("can not decode the file:" + imagePath + ",outHeight:" + options.outHeight + ",outWidth:" + options.outWidth);
+            return null;
+        }
+        int sampleSize = 1;
         if (options.outWidth > maxSize || options.outHeight > maxSize) {
-            needScale = true;
-            int sampleSize = 1;
             do {
                 sampleSize <<= 1;
             }
-            while (options.outHeight / sampleSize > maxSize && options.outWidth / sampleSize > maxSize);
-            sampleSize >>= 1;
-            options.inSampleSize = sampleSize;
+            while (options.outHeight / sampleSize > maxSize || options.outWidth / sampleSize > maxSize);
         }
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        options.inDither = false;
-        options.inScaled = false;
-        options.inJustDecodeBounds = false;
+        options = new BitmapFactory.Options(); //使用默认值
+        options.inSampleSize = sampleSize;
+        Logger.d("getBitmapFromFile", "sampleSize:" + sampleSize);
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
         if (bitmap == null) {
+            XLogger.e("can not decode the file:" + imagePath);
             return null;
-        }
-        if (needScale) {
-            float scale1 = ((float) maxSize) / bitmap.getWidth();
-            float scale2 = ((float) maxSize) / bitmap.getHeight();
-            float scale = scale1 > scale2 ? scale1 : scale2;
-            Matrix matrix = new Matrix();
-            matrix.postScale(scale, scale);
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        } else {
+            XLogger.d("getBitmapFromFile", "result size:" + options.outWidth + "x" + options.outHeight);
         }
         return bitmap;
     }
@@ -201,37 +197,37 @@ public class ImageLoader {
         }
     }
 
-    public static void saveBitmapToLocal(Context context,Bitmap mBitmap,String bitmapName){
+    public static void saveBitmapToLocal(Context context, Bitmap mBitmap, String bitmapName) {
         File file;
-        file = new File(Environment.getExternalStorageDirectory()+"/"+bitmapName+".jpg");
+        file = new File(Environment.getExternalStorageDirectory() + "/" + bitmapName + ".jpg");
         FileOutputStream fOut = null;
         try {
             fOut = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        mBitmap.compress(Bitmap.CompressFormat.JPEG,100,fOut);
+        mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
         try {
             fOut.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 fOut.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        saveImageToGallery(context,file);
+        saveImageToGallery(context, file);
     }
 
-    public static void saveImageToGallery(Context context,File file){
+    public static void saveImageToGallery(Context context, File file) {
         try {
-            MediaStore.Images.Media.insertImage(context.getContentResolver(),file.getAbsolutePath(),"code",null);
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"+file)));
-            Toast.makeText(context,"保存成功",Toast.LENGTH_SHORT).show();
+            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), "code", null);
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file)));
+            Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
-            Toast.makeText(context,"保存失败",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "保存失败", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

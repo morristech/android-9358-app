@@ -25,6 +25,7 @@ android {
         applicationId "com.xmd.technician" //应用程序包名
         minSdkVersion 15 //支持的最低版本
         targetSdkVersion 25 //目标版本
+        multiDexEnabled true
         // 1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
         // release version : 1.4.0.14
         // 1.5.4 备用技师登录需求
@@ -62,16 +63,17 @@ android {
 
     buildTypes { //build类型
         debug {//调试
-            buildConfigField("Boolean","debug","true")
+            buildConfigField("Boolean", "debug", "true")
             signingConfig signingConfigs.release
         }
 
         release {//发布
-            buildConfigField("Boolean","debug","false")
+            buildConfigField("Boolean", "debug", "false")
             minifyEnabled true  //混淆开启
             zipAlignEnabled true
             shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//指定混淆文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//指定混淆文件
             signingConfig signingConfigs.release //设置签名信息
         }
 
@@ -86,7 +88,7 @@ android {
                     GETUI_MASTER_SECRET : "auiTyQZRcc6AUA9PQWoak7",
                     DEF_UPDATE_SERVER   : "http://192.168.1.100:9883",
             ]
-            buildConfigField("String","flavors","\"dev\"")
+            buildConfigField("String", "flavors", "\"dev\"")
         }
 
         prd {
@@ -98,7 +100,7 @@ android {
                     GETUI_MASTER_SECRET : "BZmw1WsvNhAVz4NjsJKrm3",
                     DEF_UPDATE_SERVER   : "http://service.xiaomodo.com",
             ]
-            buildConfigField("String","flavors","\"prd\"")
+            buildConfigField("String", "flavors", "\"prd\"")
         }
     }
 
@@ -143,10 +145,14 @@ dependencies {
 
     //依赖文件
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile(name: 'multi-image-selector-1.2', ext: 'aar')
+    compile project(':shidou-commonlibrary')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
+    compile(name: 'permission-tool-1.0', ext: 'aar')
+    compile(name: 'xmd-image-tool-1.0', ext: 'aar')
+    compile(name: 'xmd-image-crop-1.0', ext: 'aar')
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile(name: 'xmd-image-selector-1.0', ext: 'aar')
     compile files('libs/hyphenatechat_3.3.0.jar')
-    compile project(':android-crop')
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:recyclerview-v7:25.1.1'
     compile 'com.android.support:support-v4:25.1.1'
@@ -163,6 +169,7 @@ dependencies {
     //    aspectj
     compile 'org.aspectj:aspectjrt:1.8.+'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-    compile project(':permission-tool')
-    compile project(':shidou-commonlibrary')
+    // for multidex
+    compile 'com.android.support:multidex:1.0.1'
+
 }

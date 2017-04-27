@@ -15,8 +15,8 @@ import java.util.Map;
  */
 public class Constant {
 
-    public final static String EMCHAT_APP_KEY_DEBUG="xiaomodo#spatest";
-    public final static String EMCHAT_APP_KEY_RELEASE="xiaomodo#spa";
+    public final static String EMCHAT_APP_KEY_DEBUG = "xiaomodo#spatest";
+    public final static String EMCHAT_APP_KEY_RELEASE = "xiaomodo#spa";
 
     public static final String DEFAULT_ENCODE = "utf-8";
     public static final String MIME_TYPE_HTML = "text/html";
@@ -26,6 +26,10 @@ public class Constant {
 
     public static final String ORDER_STATUS_ALL = "";
     public static final String SHARE_CONTEXT = "context";
+
+    public static final int AVATAR_MAX_SIZE = 512;
+    public static final int ALBUM_MAX_SIZE = 1024;
+
     /**
      * 优惠券
      */

@@ -274,49 +274,9 @@ public class LoginTechnician {
         DataRefreshService.refreshPersonalData(true);
     }
 
-    //上传头像,返回AvatarResult
-    public void uploadAvatar(String path) {
-        uploadAvatarOrAlbumImage(path, new AvatarResult(), 1024, true);
-    }
 
     public void onUploadAvatarResult(AvatarResult result) {
         setAvatarUrl(result.respData);
-    }
-
-    public void uploadAlbumImage(String path) {
-        uploadAvatarOrAlbumImage(path, new AlbumResult(), 1024, false);
-    }
-
-    private void uploadAvatarOrAlbumImage(String path, BaseResult result, int maxSize, boolean isAvatar) {
-        Bitmap mPhotoTake;
-        //检查文件是否存在
-        File file = new File(path);
-        if (!file.exists()) {
-            result.statusCode = 400;
-            result.msg = "文件不存在！";
-            RxBus.getInstance().post(result);
-            return;
-        }
-        //解码文件
-        mPhotoTake = ImageLoader.getBitmapFromFile(path, maxSize);
-        if (mPhotoTake == null) {
-            result.statusCode = 400;
-            result.msg = "解码文件失败！";
-            RxBus.getInstance().post(result);
-            return;
-        }
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        mPhotoTake.compress(Bitmap.CompressFormat.PNG, 100, baos);
-
-        String mImageFile = Util.bytes2base64(baos.toByteArray());
-        mPhotoTake.recycle();
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_IMG_FILE, mImageFile);
-        if (isAvatar) {
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPLOAD_AVATAR, params);
-        } else {
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPLOAD_ALBUM, params);
-        }
     }
 
     //更新技师信息,返回UpdateTechInfoResult
