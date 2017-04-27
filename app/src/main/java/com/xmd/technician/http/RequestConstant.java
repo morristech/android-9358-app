@@ -305,6 +305,8 @@ public class RequestConstant {
     public static final String KEY_FRIEND_CHAT_ID = "friendChatId";
     public static final String KEY_FRIEND_USER_TYPE = "friendUserType";
     public static final String KEY_FRIEND_MESSAGE_TYPE = "msgType";
+    public static final String KEY_CHAT_MSG_ID = "msgId";
+    public static final String KEY_SEND_POST = "sentPost" ;//"0"不发送"1"发送
     public static final String KEY_MSG_TYPE_TEXT = "text";
     public static final String KEY_ORDER_STATUS = "orderStatus";
     public static final String KEY_ORDER_STATUS_COMPLETE = "complete";

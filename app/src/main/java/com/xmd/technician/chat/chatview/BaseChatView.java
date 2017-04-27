@@ -11,16 +11,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hyphenate.EMCallBack;
-import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessage.Direct;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.window.BaseFragmentActivity;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class BaseChatView extends LinearLayout {
 
@@ -35,7 +39,7 @@ public abstract class BaseChatView extends LinearLayout {
     protected Activity activity;
     private EMCallBack messageSendCallback;
     private RecyclerView.Adapter adapter;
-
+    private Map<String,String> mParams;
     protected EMessageListItemClickListener itemClickListener;
 
     public BaseChatView(Context context, EMMessage.Direct direct) {
@@ -102,11 +106,11 @@ public abstract class BaseChatView extends LinearLayout {
                     progressBar.setVisibility(View.GONE);
                     statusView.setVisibility(View.VISIBLE);
                     // 发送消息
-//                sendMsgInBackground(message);
                     break;
                 case SUCCESS: // 发送成功
                     progressBar.setVisibility(View.GONE);
                     statusView.setVisibility(View.GONE);
+
                     break;
                 case FAIL: // 发送失败
                     progressBar.setVisibility(View.GONE);
@@ -122,6 +126,18 @@ public abstract class BaseChatView extends LinearLayout {
         }
     }
 
+    private void sendMessageCallBack(EMMessage emMessage){
+        if(mParams == null){
+            mParams = new HashMap<>();
+        }else{
+            mParams.clear();
+        }
+        mParams.put(RequestConstant.KEY_FRIEND_CHAT_ID,emMessage.getTo());
+        mParams.put(RequestConstant.KEY_CHAT_MSG_ID,emMessage.getMsgId());
+        mParams.put(RequestConstant.KEY_SEND_POST,"0");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT,mParams);
+    }
+
     /**
      * 设置消息发送callback
      */
@@ -131,6 +147,7 @@ public abstract class BaseChatView extends LinearLayout {
 
                 @Override
                 public void onSuccess() {
+                    sendMessageCallBack(message);
                     updateView();
                 }
 

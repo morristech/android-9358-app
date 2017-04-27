@@ -509,6 +509,7 @@ public interface SpaService {
                                            @Field(RequestConstant.KEY_CURRENT_USER_TYPE) String currentUserType,
                                            @Field(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
                                            @Field(RequestConstant.KEY_FRIEND_USER_TYPE) String friendUserType,
+                                           @Field(RequestConstant.KEY_CHAT_MSG_ID) String msgId,
                                            @Field(RequestConstant.KEY_FRIEND_MESSAGE_TYPE) String msgType
     );
 

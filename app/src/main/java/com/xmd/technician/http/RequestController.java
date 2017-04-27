@@ -1385,14 +1385,14 @@ public class RequestController extends AbstractController {
      */
     private void doSaveToContact(Map<String, String> params) {
         Call<SaveChatUserResult> call = getSpaService().doSaveContact(SharedPreferenceHelper.getEmchatId(),
-                RequestConstant.USER_TYPE_TECH, params.get(RequestConstant.KEY_FRIEND_CHAT_ID), RequestConstant.USER_TYPE_USER, RequestConstant.KEY_MSG_TYPE_TEXT);
+                RequestConstant.USER_TYPE_TECH, params.get(RequestConstant.KEY_FRIEND_CHAT_ID), RequestConstant.USER_TYPE_USER, params.get(RequestConstant.KEY_CHAT_MSG_ID),RequestConstant.KEY_MSG_TYPE_TEXT);
         call.enqueue(new TokenCheckedCallback<SaveChatUserResult>() {
             @Override
             protected void postResult(SaveChatUserResult result) {
-                RxBus.getInstance().post(result);
-                if (result.statusCode == 200) {
-                    Logger.i(result.msg);
+                if(!params.get(RequestConstant.KEY_SEND_POST).equals("0")){
+                    RxBus.getInstance().post(result);
                 }
+
             }
         });
     }

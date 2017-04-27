@@ -832,6 +832,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         if (mIsMessageListInited) {
             mChatAdapter.refreshSelectLast();
         }
+        hideKeyboard();
     }
 
     public void resendMessage(EMMessage message) {

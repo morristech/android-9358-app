@@ -140,6 +140,8 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
 
             Map<String, String> saveParams = new HashMap<>();
             saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, result.userEmchatId);
+            saveParams.put(RequestConstant.KEY_CHAT_MSG_ID, "");
+            saveParams.put(RequestConstant.KEY_SEND_POST, "1");
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
         }
 

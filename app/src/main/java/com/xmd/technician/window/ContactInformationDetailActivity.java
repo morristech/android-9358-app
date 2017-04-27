@@ -295,6 +295,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void saveChatContact(String chatId) {
         Map<String, String> saveParams = new HashMap<>();
         saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, chatId);
+        saveParams.put(RequestConstant.KEY_CHAT_MSG_ID,"");
+        saveParams.put(RequestConstant.KEY_SEND_POST,"1");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
     }
 
