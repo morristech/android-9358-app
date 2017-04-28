@@ -579,7 +579,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMainHeadTechSerial.setVisibility(View.GONE);
         mTechStatus.setVisibility(View.GONE);
         mJoinOrQuitClub.setText("退出会所");
-        mMenuClubName.setText(Utils.StrSubstring(6,mTech.getClubName(),true));
+        mMenuClubName.setText(Utils.StrSubstring(6, mTech.getClubName(), true));
         switch (status) {
             case Constant.TECH_STATUS_VALID:
                 mTechStatus.setVisibility(View.VISIBLE);
@@ -1270,7 +1270,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             if (techPKRankingResult.respData.count == Constant.HAS_RUNNING_PK_GROUP) {
                 mRootView.findViewById(R.id.layout_technician_pk_ranking).setVisibility(View.VISIBLE);
                 mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.GONE);
-                PKRankingAdapter adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList);
+                PKRankingAdapter adapter;
+                if (Utils.isNotEmpty(techPKRankingResult.respData.categoryId)) {
+                    adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList, techPKRankingResult.respData.categoryId);
+                } else {
+                    adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList, null);
+                }
+
                 mTeamList.setItemAnimator(new DefaultItemAnimator());
                 mTeamList.setHasFixedSize(true);
                 mTeamList.setNestedScrollingEnabled(true);

@@ -123,11 +123,15 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
             mCurrentMillisecond = System.currentTimeMillis();
             timeToday.setText("今天");
             timeFilterTomorrow.setVisibility(View.INVISIBLE);
-            timeFilterYesterday.setVisibility(View.VISIBLE);
             timeFilterToday.setVisibility(View.VISIBLE);
             timeFilterYesterday.setText(DateUtil.getCurrentDate(mCurrentMillisecond - DAY_MILLISECOND));
             timeFilterToday.setText(DateUtil.getCurrentDate(mCurrentMillisecond));
-            mStartDate = DateUtil.getCurrentDate(mCurrentMillisecond);
+            if(mActivityStartDate.equals(DateUtil.getCurrentDate(mCurrentMillisecond,"yyyy-MM-dd"))){
+                timeFilterYesterday.setVisibility(View.INVISIBLE);
+            }else{
+                timeFilterYesterday.setVisibility(View.VISIBLE);
+            }
+            mStartDate = DateUtil.getCurrentDate(mCurrentMillisecond,"yyyy-MM-dd");
             mEndDate = mStartDate;
         }else{
             mCurrentMillisecond = DateUtil.dateToLong(mActivityEndDate);

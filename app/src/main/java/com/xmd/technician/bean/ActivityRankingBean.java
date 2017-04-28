@@ -25,6 +25,8 @@ public class ActivityRankingBean {
         public String endDate;
         public String activityName;
         public String pkActivityId;
+        public String categoryName;
+        public String categoryId;
         public List<RankingListBean> rankingList;
 
 

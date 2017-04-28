@@ -887,7 +887,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             rankingViewHolder.pkActiveTime.setText(activityBean.startDate + "至" + activityBean.endDate);
             if (activityBean.rankingList != null) {
-                PKRankingAdapter adapter = new PKRankingAdapter(mContext, activityBean.rankingList);
+                PKRankingAdapter adapter = null;
+                if( Utils.isEmpty(activityBean.categoryId)){
+                    adapter = new PKRankingAdapter(mContext, activityBean.rankingList,"");
+                }else{
+                    adapter = new PKRankingAdapter(mContext, activityBean.rankingList,activityBean.categoryId);
+                }
                 rankingViewHolder.teamList.setLayoutManager(new GridLayoutManager(mContext, 3));
                 rankingViewHolder.teamList.setAdapter(adapter);
             }

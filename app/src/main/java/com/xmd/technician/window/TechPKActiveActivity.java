@@ -91,9 +91,14 @@ public class TechPKActiveActivity extends BaseListActivity<ActivityRankingBean> 
         } else {
             intent.putExtra(PK_ITEM_END_DATE, DateUtil.getDate(System.currentTimeMillis()));
         }
-        for (int i = 0; i < bean.rankingList.size(); i++) {
-            pkList.add(new PKItemBean(bean.rankingList.get(i).categoryId, bean.rankingList.get(i).categoryName));
+        if (Utils.isNotEmpty(bean.rankingList.get(0).categoryId)) {
+            for (int i = 0; i < bean.rankingList.size(); i++) {
+                pkList.add(new PKItemBean(bean.rankingList.get(i).categoryId, bean.rankingList.get(i).categoryName));
+            }
+        } else {
+            pkList.add(new PKItemBean(bean.categoryId, bean.categoryName));
         }
+
         intent.putParcelableArrayListExtra(PK_ACTIVITY_ITEM, (ArrayList<? extends Parcelable>) pkList);
         startActivity(intent);
     }
