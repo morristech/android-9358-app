@@ -15,6 +15,7 @@ import com.xmd.technician.http.gson.PKActivityListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,11 +40,12 @@ public class TechPKActiveActivity extends BaseListActivity<ActivityRankingBean> 
     public static final String PK_ITEM_START_DATE = "activityStartDate";//活动开始日期
     public static final String PK_ITEM_END_DATE = "activityEndDate";//活动结束日期
     public static final String PK_ACTIVITY_ITEM = "pk_item";//pk项目
-
+    private EmptyView mEmptyView;
     private Subscription mPKActivityListSubscription;
 
     @Override
     protected void dispatchRequest() {
+        mEmptyView.setStatus(EmptyView.Status.Loading);
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
@@ -60,6 +62,7 @@ public class TechPKActiveActivity extends BaseListActivity<ActivityRankingBean> 
     }
 
     private void handlePKActivityListResult(PKActivityListResult activityListResult) {
+        mEmptyView.setStatus(EmptyView.Status.Gone);
         if (activityListResult.statusCode == 200) {
             onGetListSucceeded(activityListResult.pageCount, activityListResult.respData);
         } else {
@@ -70,6 +73,7 @@ public class TechPKActiveActivity extends BaseListActivity<ActivityRankingBean> 
     @Override
     protected void setContentViewLayout() {
         setContentView(R.layout.activity_tech_pk_active);
+        mEmptyView = (EmptyView) findViewById(R.id.empty_view_widget);
     }
 
     @OnClick(R.id.btn_pk_ranking_detail)
