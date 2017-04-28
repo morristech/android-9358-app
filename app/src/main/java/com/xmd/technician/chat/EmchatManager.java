@@ -1,7 +1,6 @@
 package com.xmd.technician.chat;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -52,9 +51,9 @@ public class EmchatManager implements IEmchat {
      * @param debug   调试模式
      */
     @Override
-    public void init(Context context, String appKey,boolean debug) {
+    public void init(Context context, String appKey, boolean debug) {
         EMOptions emOptions = new EMOptions();
-        if(!TextUtils.isEmpty(appKey)) {
+        if (!TextUtils.isEmpty(appKey)) {
             emOptions.setAppKey(appKey);
         }
         emOptions.setAutoLogin(true);
@@ -70,17 +69,15 @@ public class EmchatManager implements IEmchat {
             return;
         }
         isCalledLogin = true;
-        if (!EMClient.getInstance().isLoggedInBefore()) {
+//        if (!EMClient.getInstance().isLoggedInBefore()) {
             XLogger.i(TAG, "login:" + name + "," + password);
             EMClient.getInstance().login(name, password, new EMCallBack() {
                 @Override
                 public void onSuccess() {
                     XLogger.i(TAG, "login success");
                     //加载会话消息
-                    long t1 = SystemClock.elapsedRealtime();
                     EMClient.getInstance().groupManager().loadAllGroups();
                     EMClient.getInstance().chatManager().loadAllConversations();
-                    XLogger.i(TAG, "load groups and conversations cost:" + (SystemClock.elapsedRealtime() - t1));
                     //注册消息监听器
                     EMClient.getInstance().chatManager().addMessageListener(messageListener);
                     //发送登录成功消息
@@ -110,13 +107,13 @@ public class EmchatManager implements IEmchat {
 
                 }
             });
-        } else {
-            XLogger.i(TAG,"is login before ");
-            //注册消息监听器
-            EMClient.getInstance().chatManager().addMessageListener(messageListener);
-            //发送登录成功消息
-            RxBus.getInstance().post(new EventLoginSuccess());
-        }
+//        } else {
+//            XLogger.i(TAG, "is login before ");
+//            //注册消息监听器
+//            EMClient.getInstance().chatManager().addMessageListener(messageListener);
+//            //发送登录成功消息
+//            RxBus.getInstance().post(new EventLoginSuccess());
+//        }
     }
 
     @Override
@@ -126,26 +123,24 @@ public class EmchatManager implements IEmchat {
 
     @Override
     public void logout() {
-        if (isConnected()) {
-            EMClient.getInstance().logout(true, new EMCallBack() {
-                @Override
-                public void onSuccess() {
-                    XLogger.i(TAG, "logout");
-                    login = false;
-                    isCalledLogin = false;
-                }
+        login = false;
+        isCalledLogin = false;
+        EMClient.getInstance().logout(true, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                XLogger.i(TAG, "logout");
+            }
 
-                @Override
-                public void onError(int i, String s) {
+            @Override
+            public void onError(int i, String s) {
 
-                }
+            }
 
-                @Override
-                public void onProgress(int i, String s) {
+            @Override
+            public void onProgress(int i, String s) {
 
-                }
-            });
-        }
+            }
+        });
     }
 
 
