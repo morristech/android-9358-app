@@ -1,7 +1,6 @@
 package com.xmd.technician;
 
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -26,6 +25,7 @@ import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.HelloReplyService;
 import com.xmd.technician.msgctrl.ControllerRegister;
+import com.xmd.technician.notify.NotificationCenter;
 import com.xmd.technician.push.GetuiPushService;
 import com.xmd.technician.push.GetuiReceiveService;
 import com.xmd.technician.window.WelcomeActivity;

@@ -9,6 +9,7 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -50,7 +51,7 @@ public class ShareController extends AbstractController {
 
     public static void doShare(String imageUrl, String userShareUrl, String title, String description, String type, String actId) {
 
-        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
+        ThreadPoolManager.run(() -> {
             Bitmap thumbnail;
             if (Utils.isEmpty(imageUrl)) {
                 thumbnail = ImageLoader.readBitmapFromImgUrl(SharedPreferenceHelper.getUserAvatar());

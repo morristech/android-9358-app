@@ -11,7 +11,7 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.event.EventLoginSuccess;
 import com.xmd.technician.common.DbOpenHelper;
-import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.Hashtable;
@@ -57,7 +57,7 @@ public class UserProfileProvider {
 
     public void initContactList(){
         if(mLocalUsers == null){
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+            ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
                     mLocalUsers = getContactList();
@@ -101,7 +101,7 @@ public class UserProfileProvider {
 
     public Map<String, ChatUser> getChatUserList() {
         if (EMClient.getInstance().isLoggedInBefore() && mLocalUsers == null) {
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+            ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
                     mLocalUsers = getContactList();
@@ -142,7 +142,7 @@ public class UserProfileProvider {
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if(chatUser == null || !chatUser.equals(user)){
             getChatUserList().put(user.getUsername(), user);
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+            ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
                     saveContact(user);
@@ -161,7 +161,7 @@ public class UserProfileProvider {
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if(chatUser == null || !chatUser.exactlyEquals(user)){
             getChatUserList().put(user.getUsername(), user);
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+            ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
                     saveContact(user);

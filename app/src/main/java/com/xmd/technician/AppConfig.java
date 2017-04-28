@@ -3,11 +3,12 @@ package com.xmd.technician;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.text.TextUtils;
+
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.bean.Entry;
 import com.xmd.technician.common.FileUtils;
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -138,7 +139,7 @@ public class AppConfig {
 
     public static void reportCouponShareEvent() {
         if (Constant.SHARE_COUPON.equals(sShareType)) {
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+            ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_COUPON_SHARE_EVENT_COUNT, sCouponId);
@@ -147,7 +148,7 @@ public class AppConfig {
             return;
         }
         if(Constant.SHARE_JOURNAL.equals(sShareType)){
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+            ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
                     MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_JOURNAL_SHARE_COUNT, sCouponId);

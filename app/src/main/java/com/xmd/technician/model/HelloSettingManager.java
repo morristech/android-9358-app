@@ -16,7 +16,7 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.http.RetrofitServiceFactory;
 import com.xmd.technician.http.gson.HelloReplyResult;
 
@@ -121,7 +121,7 @@ public class HelloSettingManager {
      * 利用Glide缓存
      */
     public void getCacheFilePath() {
-        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, () -> {
+        ThreadPoolManager.run(() -> {
             FutureTarget<File> futureTarget = Glide.with(TechApplication.getAppContext())
                     .load(templateImageUrl)
                     .downloadOnly(0, 0);

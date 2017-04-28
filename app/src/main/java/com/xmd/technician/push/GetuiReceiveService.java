@@ -22,7 +22,7 @@ import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.TechNotifier;
-import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
@@ -43,7 +43,7 @@ public class GetuiReceiveService extends GTIntentService {
         if (!TextUtils.isEmpty(cid)) {
             AppConfig.sClientId = cid;
             SharedPreferenceHelper.setClientId(AppConfig.sClientId);
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND,
+            ThreadPoolManager.run(
                     () -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
         }
     }
@@ -82,14 +82,16 @@ public class GetuiReceiveService extends GTIntentService {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY);
 
-            } else if (ChatConstant.MESSAGE_CHAT_TEXT.equals(wrapperMsg.businessType)) {
+            }
+            /*else if (ChatConstant.MESSAGE_CHAT_TEXT.equals(wrapperMsg.businessType)) {
                 ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                 UserUtils.saveUser(user);
 
                 if (EMClient.getInstance().isConnected())
                     TechApplication.getNotifier().showNotification(TechNotifier.CHAT_TEXT, user.getUsername(), user.getNick());
 
-            } else if (ChatConstant.MESSAGE_CHAT_ORDER.equals(wrapperMsg.businessType)) {
+            } */
+            else if (ChatConstant.MESSAGE_CHAT_ORDER.equals(wrapperMsg.businessType)) {
                 ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                 UserUtils.saveUser(user);
 

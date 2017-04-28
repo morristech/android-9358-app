@@ -3,14 +3,21 @@ package com.xmd.technician.common;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.xmd.technician.Constant;
+import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatUser;
+import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.window.ChatActivity;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
 import com.xmd.technician.window.JoinClubActivity;
 import com.xmd.technician.window.LoginActivity;
 import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.RegisterActivity;
+
+import java.util.Map;
 
 /**
  * Created by heyangya on 16-12-22.
@@ -69,9 +76,33 @@ public class UINavigation {
     }
 
     public static void gotoChatActivityFromService(Context context, String emChatId) {
-        Intent intent = new Intent("com.xmd.technician.action.START_CHAT");
+        Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra(ChatConstant.EMCHAT_ID, emChatId);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    public static void gotoChatActivity(Context context, Map<String, Object> params) {
+        String emchatId = (String) params.get(ChatConstant.EMCHAT_ID);
+        String emchatNickname = (String) params.get(ChatConstant.EMCHAT_NICKNAME);
+        String emchatAvatar = (String) params.get(ChatConstant.EMCHAT_AVATAR);
+        String emchatUserType = (String) params.get(ChatConstant.EMCHAT_USER_TYPE);
+        String emchatIsTech = (String) params.get(ChatConstant.EMCHAT_IS_TECH);
+
+        if (TextUtils.isEmpty(emchatId)) {
+            return;
+        }
+
+        ChatUser chatUser = new ChatUser(emchatId);
+        chatUser.setNick(emchatNickname);
+        chatUser.setAvatar(emchatAvatar);
+        chatUser.setUserType(emchatUserType);
+        UserUtils.saveUser(chatUser);
+
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra(ChatConstant.EMCHAT_ID, emchatId);
+        intent.putExtra(ChatConstant.EMCHAT_IS_TECH, emchatIsTech);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        TechApplication.getAppContext().startActivity(intent);
     }
 }

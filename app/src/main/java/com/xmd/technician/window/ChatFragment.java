@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
+import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -27,6 +28,7 @@ import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.chat.IEmchat;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.chat.event.EventLoginSuccess;
+import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -55,9 +57,10 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Bind(R.id.header_container)
     FrameLayout mHeadContainer;
     protected List<EMConversation> mConversationList = new ArrayList<>();
+    private List<String> mConversationNameList = new ArrayList<>();
     private Filter mFilter;
     private Subscription mLoginStatusSubscription;
-    private Subscription mGetConversationListSubscription;
+    private Subscription mNewMessageSubscription;
     private Subscription mContactPermissionChatSubscription;
     private Subscription mDeleteConversionSubscription;
     private TextView mSearchView;
@@ -114,8 +117,11 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         );
         //监听删除聊天，刷新
         mDeleteConversionSubscription = RxBus.getInstance().toObservable(DeleteConversionResult.class).subscribe(
-                result ->dispatchRequest()
+                result -> dispatchRequest()
         );
+
+        //监听新的消息，刷新
+        mNewMessageSubscription = RxBus.getInstance().toObservable(EventReceiveMessage.class).subscribe(this::handleNewMessage);
     }
 
     @Override
@@ -123,6 +129,15 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         List<EMConversation> list = emchat.getAllConversationList();
         mConversationList.clear();
         mConversationList.addAll(list);
+
+        mConversationNameList.clear();
+        for (EMConversation conversation : mConversationList) {
+            EMMessage lastFromOther = conversation.getLatestMessageFromOthers();
+            if (lastFromOther != null) {
+                mConversationNameList.add(lastFromOther.getFrom());
+            }
+        }
+
         onGetListSucceeded(0, list);
     }
 
@@ -131,7 +146,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(
                 mLoginStatusSubscription,
-                mGetConversationListSubscription,
+                mNewMessageSubscription,
                 mContactPermissionChatSubscription,
                 mDeleteConversionSubscription);
     }
@@ -198,25 +213,13 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         }
     }
 
-//    private void handleGetConversationListResult(ConversationListResult result) {
-//        if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
-//            onGetListFailed(result.msg);
-//            mEmptyView.setStatus(EmptyView.Status.Failed);
-//        } else {
-//            onGetListSucceeded(0, result.respData);
-//            if (result.respData != null) {
-//                if (!mIsLoadingMore) {
-//                    mConversationList.clear();
-//                }
-//                mConversationList.addAll(result.respData);
-//            }
-//            if (result.respData.isEmpty()) {
-//                mEmptyView.setStatus(EmptyView.Status.Empty);
-//            } else {
-//                mEmptyView.setStatus(EmptyView.Status.Gone);
-//            }
-//        }
-//    }
+    private void handleNewMessage(EventReceiveMessage eventReceiveMessage) {
+        List<EMMessage> list = eventReceiveMessage.getList();
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        onRefresh();
+    }
 
     @Override
     public void onItemClicked(EMConversation conversation) {

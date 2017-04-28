@@ -34,12 +34,12 @@ import com.xmd.technician.chat.IEmchat;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ContactPermissionResult;
 import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
 import com.xmd.technician.model.HelloSettingManager;
-import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -176,7 +176,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     private Map<String, String> params = new HashMap<>();
 
-    private IEmchat emchat= EmchatManager.getInstance();
+    private IEmchat emchat = EmchatManager.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -295,8 +295,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void saveChatContact(String chatId) {
         Map<String, String> saveParams = new HashMap<>();
         saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, chatId);
-        saveParams.put(RequestConstant.KEY_CHAT_MSG_ID,"");
-        saveParams.put(RequestConstant.KEY_SEND_POST,"1");
+        saveParams.put(RequestConstant.KEY_CHAT_MSG_ID, "");
+        saveParams.put(RequestConstant.KEY_SEND_POST, "1");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
     }
 
@@ -446,7 +446,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             this.makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
             return;
         } else {
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(emChatId, emChatName, chatHeadUrl, isTech));
+            UINavigation.gotoChatActivity(this, Utils.wrapChatParams(emChatId, emChatName, chatHeadUrl, isTech));
             SharedPreferenceHelper.setUserIsTech(emChatId, isTech);
         }
 

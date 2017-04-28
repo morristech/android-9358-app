@@ -24,7 +24,7 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.FileUtils;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.share.ShareController;
 
@@ -209,7 +209,7 @@ public class TechShareCardActivity extends BaseActivity {
             makeShortToast(ResourceUtils.getString(R.string.had_saved_tech_card));
 
         }else{
-            ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+            ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
                     Bitmap bitmap = ImageLoader.readBitmapFromImgUrl(codeUrl);

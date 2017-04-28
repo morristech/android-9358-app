@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.DateUtils;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -56,7 +58,6 @@ import com.xmd.technician.widget.RoundImageView;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -494,24 +495,29 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
                 conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
                 try {
-                    if (lastMessage.direct() == EMMessage.Direct.RECEIVE) {
-                        ChatUser user;
-                        user = new ChatUser(conversation.conversationId());
-                        user.setAvatar(lastMessage.getStringAttribute(ChatConstant.KEY_HEADER));
-                        if (Utils.isNotEmpty(SharedPreferenceHelper.getUserRemark(lastMessage.getFrom()))) {
-                            user.setNick(SharedPreferenceHelper.getUserRemark(lastMessage.getFrom()));
-                        } else {
-                            user.setNick(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
+                    EMMessage lastOtherMessage = conversation.getLatestMessageFromOthers();
+                    if (lastOtherMessage != null) {
+                        ChatUser user = new ChatUser(conversation.conversationId());
+                        String avatar = lastOtherMessage.getStringAttribute(ChatConstant.KEY_HEADER);
+                        String nickName = lastOtherMessage.getStringAttribute(ChatConstant.KEY_NAME);
+                        if (!TextUtils.isEmpty(SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom()))) {
+                            nickName = SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom());
                         }
-                        UserUtils.updateUser(user);
+                        boolean needUpdate = !TextUtils.isEmpty(avatar) && !avatar.equals(user.getAvatar());
+                        needUpdate |= !TextUtils.isEmpty(nickName) && !nickName.equals(user.getNickname());
+                        if (needUpdate) {
+                            XLogger.i("update user info-> nickName:" + nickName + ",avatar:" + avatar);
+                            user.setAvatar(avatar);
+                            user.setNickname(nickName);
+                            UserUtils.updateUser(user);
+                        }
                     }
-                    UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
-                    UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
                 } catch (HyphenateException e) {
                     e.printStackTrace();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
                 }
+                UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
+                UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
+
 //                conversationHolder.mUserManagerType.setVisibility(View.GONE);
 //                conversationHolder.mUserTechType.setVisibility(View.GONE);
                 if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
@@ -888,10 +894,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             rankingViewHolder.pkActiveTime.setText(activityBean.startDate + "至" + activityBean.endDate);
             if (activityBean.rankingList != null) {
                 PKRankingAdapter adapter = null;
-                if( Utils.isEmpty(activityBean.categoryId)){
-                    adapter = new PKRankingAdapter(mContext, activityBean.rankingList,"");
-                }else{
-                    adapter = new PKRankingAdapter(mContext, activityBean.rankingList,activityBean.categoryId);
+                if (Utils.isEmpty(activityBean.categoryId)) {
+                    adapter = new PKRankingAdapter(mContext, activityBean.rankingList, "");
+                } else {
+                    adapter = new PKRankingAdapter(mContext, activityBean.rankingList, activityBean.categoryId);
                 }
                 rankingViewHolder.teamList.setLayoutManager(new GridLayoutManager(mContext, 3));
                 rankingViewHolder.teamList.setAdapter(adapter);
