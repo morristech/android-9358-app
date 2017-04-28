@@ -82,15 +82,14 @@ public class GetuiReceiveService extends GTIntentService {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY);
 
-            }
-            /*else if (ChatConstant.MESSAGE_CHAT_TEXT.equals(wrapperMsg.businessType)) {
+            } else if (ChatConstant.MESSAGE_CHAT_TEXT.equals(wrapperMsg.businessType)) {
                 ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                 UserUtils.saveUser(user);
 
                 if (EMClient.getInstance().isConnected())
                     TechApplication.getNotifier().showNotification(TechNotifier.CHAT_TEXT, user.getUsername(), user.getNick());
 
-            } */
+            }
             else if (ChatConstant.MESSAGE_CHAT_ORDER.equals(wrapperMsg.businessType)) {
                 ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
                 UserUtils.saveUser(user);
