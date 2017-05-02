@@ -258,6 +258,9 @@ public class XLogger {
     }
 
     private static void writeToLogcat(int level, String tag, String msg, Throwable tr) {
+        if (msg == null) {
+            msg = "";
+        }
         if (tr != null) {
             msg += '\n' + Log.getStackTraceString(tr);
         }

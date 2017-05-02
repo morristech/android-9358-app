@@ -94,7 +94,7 @@ public class UINavigation {
         }
 
         ChatUser chatUser = new ChatUser(emchatId);
-        chatUser.setNick(emchatNickname);
+        chatUser.setNickName(emchatNickname);
         chatUser.setAvatar(emchatAvatar);
         chatUser.setUserType(emchatUserType);
         UserUtils.saveUser(chatUser);

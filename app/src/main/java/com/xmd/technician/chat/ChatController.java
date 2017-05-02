@@ -7,13 +7,11 @@ import android.text.TextUtils;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.xmd.technician.TechApplication;
-import com.xmd.technician.bean.ConversationListResult;
 import com.xmd.technician.bean.DeleteConversionResult;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.AbstractController;
 import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.Map;
@@ -70,7 +68,7 @@ public class ChatController extends AbstractController {
         }
 
         ChatUser chatUser = new ChatUser(emchatId);
-        chatUser.setNick(emchatNickname);
+        chatUser.setNickName(emchatNickname);
         chatUser.setAvatar(emchatAvatar);
         chatUser.setUserType(emchatUserType);
         UserUtils.saveUser(chatUser);

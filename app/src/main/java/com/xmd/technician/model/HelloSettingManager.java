@@ -152,7 +152,7 @@ public class HelloSettingManager {
      */
     public void sendHelloTemplate(String userName, String userEmchatId, String userAvatar, String userType) {
         ChatUser chatUser = new ChatUser(userEmchatId);
-        chatUser.setNick(userName);
+        chatUser.setNickname(userName);
         chatUser.setAvatar(userAvatar);
         chatUser.setUserType(userType);
         UserUtils.saveUser(chatUser);

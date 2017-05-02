@@ -255,6 +255,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     private View mRootView;
     private boolean isHasPk;
+    private boolean isInitNormalRanking;
 
     @Nullable
     @Override
@@ -276,6 +277,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         showHeadView();
         HeartBeatTimer.getInstance().start(60, mTask);
         initPkRanking();
+        isInitNormalRanking = false;
         sendDataRequest();
 
         return mRootView;
@@ -518,7 +520,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mRootView.findViewById(R.id.layout_technician_ranking).setVisibility(View.VISIBLE);
         mGetTechRankIndexDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
                 this::initTechRankingView);
-
     }
 
     @CheckBusinessPermission(PermissionConstants.RANKING_TECHNICIAN)
@@ -1156,6 +1157,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         if (result.respData == null) {
             return;
         }
+        Glide.with(mContext).load("http://www.baidu.com/").into(mCvStarRegister);
         if (null != result.respData.userRanking) {
             Glide.with(mContext).load(result.respData.userRanking.avatarUrl).into(mCvStarRegister);
             mTvStarRegisterUser.setText(result.respData.userRanking.name);
@@ -1295,7 +1297,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 isHasPk = false;
                 mRankingMore.setText("");
             }
-            initRanking();
+            if (!isInitNormalRanking) {
+                isInitNormalRanking = true;
+                initRanking();
+            }
             MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_RANK_INDEX_DATA);
         }
 

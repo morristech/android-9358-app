@@ -18,10 +18,10 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
-import com.xmd.technician.chat.ChatUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,7 +102,7 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         ChatUser user;
                         user = new ChatUser(conversation.conversationId());
                         user.setAvatar(lastMessage.getStringAttribute(ChatConstant.KEY_HEADER));
-                   //     user.setNick(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
+                        //     user.setNickName(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
                         UserUtils.saveUser(user);
                     }
                     UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);

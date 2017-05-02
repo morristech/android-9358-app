@@ -26,16 +26,16 @@ public class UserProfileProvider {
     public static final String COLUMN_NAME_ID = "username";
     public static final String COLUMN_NAME_NICK = "nick";
     public static final String COLUMN_NAME_AVATAR = "avatar";
-    
+
     private DbOpenHelper dbHelper;
     private static UserProfileProvider userProvider;
-    private Map<String, ChatUser> mLocalUsers ;
+    private Map<String, ChatUser> mLocalUsers;
     private ChatUser mCurrentUser;
 
-    public static UserProfileProvider getInstance(){
-        if(userProvider == null){
-            synchronized (UserProfileProvider.class){
-                if(userProvider == null){
+    public static UserProfileProvider getInstance() {
+        if (userProvider == null) {
+            synchronized (UserProfileProvider.class) {
+                if (userProvider == null) {
                     userProvider = new UserProfileProvider();
                 }
             }
@@ -43,7 +43,7 @@ public class UserProfileProvider {
         return userProvider;
     }
 
-    private UserProfileProvider(){
+    private UserProfileProvider() {
         dbHelper = DbOpenHelper.getInstance(TechApplication.getAppContext());
 
         //注册监听环信登录消息
@@ -55,8 +55,8 @@ public class UserProfileProvider {
         );
     }
 
-    public void initContactList(){
-        if(mLocalUsers == null){
+    public void initContactList() {
+        if (mLocalUsers == null) {
             ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
@@ -66,13 +66,13 @@ public class UserProfileProvider {
         }
     }
 
-    public ChatUser getChatUserInfo(String username){
-        if(username.equals(SharedPreferenceHelper.getEmchatId())){
+    public ChatUser getChatUserInfo(String username) {
+        if (username.equals(SharedPreferenceHelper.getEmchatId())) {
             return getCurrentUserInfo();
         }
         ChatUser user = getChatUserList().get(username);
 
-            return user;
+        return user;
     }
 
     public synchronized ChatUser getCurrentUserInfo() {
@@ -80,7 +80,7 @@ public class UserProfileProvider {
             String username = SharedPreferenceHelper.getEmchatId();
             mCurrentUser = new ChatUser(username);
             String nick = SharedPreferenceHelper.getUserName();
-            mCurrentUser.setNick(!TextUtils.isEmpty(nick) ? nick : username);
+            mCurrentUser.setNickName(!TextUtils.isEmpty(nick) ? nick : username);
             mCurrentUser.setAvatar(SharedPreferenceHelper.getUserAvatar());
         }
         return mCurrentUser;
@@ -90,12 +90,12 @@ public class UserProfileProvider {
         SharedPreferenceHelper.setUserName(nick);
         SharedPreferenceHelper.setUserAvatar(avatarUrl);
         if (mCurrentUser != null && mCurrentUser.getUsername().equals(SharedPreferenceHelper.getEmchatId())) {
-            mCurrentUser.setNick(nick);
+            mCurrentUser.setNickName(nick);
             mCurrentUser.setAvatar(avatarUrl);
         }
     }
 
-    public boolean userExisted(String username){
+    public boolean userExisted(String username) {
         return getChatUserList().containsKey(username);
     }
 
@@ -110,7 +110,7 @@ public class UserProfileProvider {
         }
 
         // return a empty non-null object to avoid app crash
-        if(mLocalUsers == null){
+        if (mLocalUsers == null) {
             mLocalUsers = new Hashtable<String, ChatUser>();
         }
 
@@ -119,28 +119,30 @@ public class UserProfileProvider {
 
     /**
      * 保存一个联系人
+     *
      * @param user
      */
-    synchronized private void saveContact(ChatUser user){
+    synchronized private void saveContact(ChatUser user) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_ID, user.getUsername());
-        if(user.getNick() != null)
+        if (user.getNick() != null)
             values.put(COLUMN_NAME_NICK, user.getNick());
-        if(user.getAvatar() != null)
+        if (user.getAvatar() != null)
             values.put(COLUMN_NAME_AVATAR, user.getAvatar());
-        if(db.isOpen()){
+        if (db.isOpen()) {
             db.replace(TABLE_NAME, null, values);
         }
     }
 
     /**
      * 保存一个联系人
+     *
      * @param user
      */
-    public void saveContactInfo(ChatUser user){
+    public void saveContactInfo(ChatUser user) {
         ChatUser chatUser = getChatUserList().get(user.getUsername());
-        if(chatUser == null || !chatUser.equals(user)){
+        if (chatUser == null || !chatUser.equals(user)) {
             getChatUserList().put(user.getUsername(), user);
             ThreadPoolManager.run(new Runnable() {
                 @Override
@@ -148,18 +150,19 @@ public class UserProfileProvider {
                     saveContact(user);
                 }
             });
-        }else{
+        } else {
             updateContactInfo(user);
         }
     }
 
     /**
      * 更新联系人信息
+     *
      * @param user
      */
-    public void updateContactInfo(ChatUser user){
+    public void updateContactInfo(ChatUser user) {
         ChatUser chatUser = getChatUserList().get(user.getUsername());
-        if(chatUser == null || !chatUser.exactlyEquals(user)){
+        if (chatUser == null || !chatUser.exactlyEquals(user)) {
             getChatUserList().put(user.getUsername(), user);
             ThreadPoolManager.run(new Runnable() {
                 @Override
@@ -185,24 +188,20 @@ public class UserProfileProvider {
                 String nick = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NICK));
                 String avatar = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_AVATAR));
                 ChatUser user = new ChatUser(username);
-                user.setNick(nick);
+                user.setNickname(nick);
                 user.setAvatar(avatar);
                 String headerName = null;
-                if (!TextUtils.isEmpty(user.getNick())) {
-                    headerName = user.getNick();
-                } else if(TextUtils.isEmpty(user.getUsername())){
+                if (!TextUtils.isEmpty(user.getNickname())) {
+                    headerName = user.getNickname();
+                } else if (TextUtils.isEmpty(user.getUsername())) {
                     headerName = user.getUsername();
-                }else{
+                } else {
                     headerName = "匿名用户";
                 }
 
-                /*if (username.equals(Constant.NEW_FRIENDS_USERNAME) || username.equals(Constant.GROUP_USERNAME)
-                        || username.equals(Constant.CHAT_ROOM)|| username.equals(Constant.CHAT_ROBOT)) {
-                    user.setInitialLetter("");
-                } else*/ if (Character.isDigit(headerName.charAt(0))) {
+                if (Character.isDigit(headerName.charAt(0))) {
                     user.setInitialLetter("#");
                 } else {
-
                     user.setInitialLetter(HanziToPinyin.getInstance().get(headerName.trim().substring(0, 1))
                             .get(0).target.substring(0, 1).toUpperCase());
                     char header = user.getInitialLetter().toLowerCase().charAt(0);
@@ -217,10 +216,10 @@ public class UserProfileProvider {
         return users;
     }
 
-    synchronized public void reset(){
+    synchronized public void reset() {
         mCurrentUser = null;
 
-        if(dbHelper != null){
+        if (dbHelper != null) {
             dbHelper.closeDB();
         }
         userProvider = null;

@@ -69,51 +69,43 @@ public class EmchatManager implements IEmchat {
             return;
         }
         isCalledLogin = true;
-//        if (!EMClient.getInstance().isLoggedInBefore()) {
-            XLogger.i(TAG, "login:" + name + "," + password);
-            EMClient.getInstance().login(name, password, new EMCallBack() {
-                @Override
-                public void onSuccess() {
-                    XLogger.i(TAG, "login success");
-                    //加载会话消息
-                    EMClient.getInstance().groupManager().loadAllGroups();
-                    EMClient.getInstance().chatManager().loadAllConversations();
-                    //注册消息监听器
-                    EMClient.getInstance().chatManager().addMessageListener(messageListener);
-                    //发送登录成功消息
-                    RxBus.getInstance().post(new EventLoginSuccess());
-                }
+        XLogger.i(TAG, "login:" + name + "," + password);
+        EMClient.getInstance().login(name, password, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                XLogger.i(TAG, "login success");
+                //加载会话消息
+                EMClient.getInstance().groupManager().loadAllGroups();
+                EMClient.getInstance().chatManager().loadAllConversations();
+                //注册消息监听器
+                EMClient.getInstance().chatManager().addMessageListener(messageListener);
+                //发送登录成功消息
+                RxBus.getInstance().post(new EventLoginSuccess());
+            }
 
-                @Override
-                public void onError(int i, String s) {
-                    XLogger.e(TAG, "login failed:" + i + "," + s);
-                    //retry
-                    if (i == EMError.NETWORK_ERROR
-                            || i == EMError.SERVER_TIMEOUT
-                            || i == EMError.SERVER_BUSY
-                            || i == EMError.SERVER_GET_DNSLIST_FAILED
-                            || i == EMError.SERVER_NOT_REACHABLE
-                            || i == EMError.SERVER_UNKNOWN_ERROR) {
-                        XLogger.i("retry ... login");
-                        isCalledLogin = false;
-                        login(name, password);
-                    } else {
-                        XToast.show("无法初始化聊天系统:" + i + "," + s);
-                    }
+            @Override
+            public void onError(int i, String s) {
+                XLogger.e(TAG, "login failed:" + i + "," + s);
+                //retry
+                if (i == EMError.NETWORK_ERROR
+                        || i == EMError.SERVER_TIMEOUT
+                        || i == EMError.SERVER_BUSY
+                        || i == EMError.SERVER_GET_DNSLIST_FAILED
+                        || i == EMError.SERVER_NOT_REACHABLE
+                        || i == EMError.SERVER_UNKNOWN_ERROR) {
+                    XLogger.i("retry ... login");
+                    isCalledLogin = false;
+                    login(name, password);
+                } else {
+                    XToast.show("无法初始化聊天系统:" + i + "," + s);
                 }
+            }
 
-                @Override
-                public void onProgress(int i, String s) {
+            @Override
+            public void onProgress(int i, String s) {
 
-                }
-            });
-//        } else {
-//            XLogger.i(TAG, "is login before ");
-//            //注册消息监听器
-//            EMClient.getInstance().chatManager().addMessageListener(messageListener);
-//            //发送登录成功消息
-//            RxBus.getInstance().post(new EventLoginSuccess());
-//        }
+            }
+        });
     }
 
     @Override
