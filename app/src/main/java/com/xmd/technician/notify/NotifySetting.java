@@ -12,11 +12,11 @@ public class NotifySetting {
     private boolean light; //是否有灯光
     private boolean vibrate; //是否振动
 
-    private String title;
-    private String message;
+    private CharSequence title;
+    private CharSequence message;
     private Class targetActivity;
 
-    public NotifySetting(int notifyId, int priority, boolean sound, boolean light, boolean vibrate, String title, String message, Class targetActivity) {
+    public NotifySetting(int notifyId, int priority, boolean sound, boolean light, boolean vibrate, CharSequence title, CharSequence message, Class targetActivity) {
         this.notifyId = notifyId;
         this.priority = priority;
         this.sound = sound;
@@ -67,19 +67,19 @@ public class NotifySetting {
         this.vibrate = vibrate;
     }
 
-    public String getTitle() {
+    public CharSequence getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(CharSequence title) {
         this.title = title;
     }
 
-    public String getMessage() {
+    public CharSequence getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(CharSequence message) {
         this.message = message;
     }
 

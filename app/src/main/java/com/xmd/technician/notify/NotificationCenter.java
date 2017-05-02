@@ -9,7 +9,10 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.R;
+import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.common.AppUtils;
 import com.xmd.technician.event.EventJoinedClub;
@@ -87,7 +90,7 @@ public class NotificationCenter {
         return builder;
     }
 
-    private void notify(int type, String title, String message) {
+    private void notify(int type, CharSequence title, CharSequence message) {
         if (AppUtils.isBackground()) {
             NotifySetting setting = settingMap.get(type);
             if (setting == null) {
@@ -99,6 +102,7 @@ public class NotificationCenter {
             }
             if (!TextUtils.isEmpty(message)) {
                 builder.setContentText(message);
+                builder.setTicker(message);
             }
             mNotificationManager.notify(setting.getNotifyId(), builder.build());
         }
@@ -120,7 +124,14 @@ public class NotificationCenter {
     private void onEventChatMessage(EventReceiveMessage eventReceiveMessage) {
         List<EMMessage> list = eventReceiveMessage.getList();
         if (list != null && list.size() > 0) {
-            notify(TYPE_CHAT_MESSAGE, null, null);
+            EMMessage message = list.get(0);
+            String userName = "客户";
+            try {
+                userName = message.getStringAttribute(ChatConstant.KEY_NAME);
+            } catch (HyphenateException e) {
+                e.printStackTrace();
+            }
+            notify(TYPE_CHAT_MESSAGE, null, userName + ":" + CommonUtils.getMessageDigest(message, sContext));
         }
     }
 }
