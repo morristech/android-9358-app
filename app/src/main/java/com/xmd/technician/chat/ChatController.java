@@ -68,7 +68,7 @@ public class ChatController extends AbstractController {
         }
 
         ChatUser chatUser = new ChatUser(emchatId);
-        chatUser.setNickName(emchatNickname);
+        chatUser.setNickname(emchatNickname);
         chatUser.setAvatar(emchatAvatar);
         chatUser.setUserType(emchatUserType);
         UserUtils.saveUser(chatUser);

@@ -80,7 +80,7 @@ public class UserProfileProvider {
             String username = SharedPreferenceHelper.getEmchatId();
             mCurrentUser = new ChatUser(username);
             String nick = SharedPreferenceHelper.getUserName();
-            mCurrentUser.setNickName(!TextUtils.isEmpty(nick) ? nick : username);
+            mCurrentUser.setNickname(!TextUtils.isEmpty(nick) ? nick : username);
             mCurrentUser.setAvatar(SharedPreferenceHelper.getUserAvatar());
         }
         return mCurrentUser;
@@ -90,7 +90,7 @@ public class UserProfileProvider {
         SharedPreferenceHelper.setUserName(nick);
         SharedPreferenceHelper.setUserAvatar(avatarUrl);
         if (mCurrentUser != null && mCurrentUser.getUsername().equals(SharedPreferenceHelper.getEmchatId())) {
-            mCurrentUser.setNickName(nick);
+            mCurrentUser.setNickname(nick);
             mCurrentUser.setAvatar(avatarUrl);
         }
     }

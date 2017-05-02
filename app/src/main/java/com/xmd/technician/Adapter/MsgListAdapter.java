@@ -102,7 +102,7 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         ChatUser user;
                         user = new ChatUser(conversation.conversationId());
                         user.setAvatar(lastMessage.getStringAttribute(ChatConstant.KEY_HEADER));
-                        //     user.setNickName(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
+                        //     user.setNickname(lastMessage.getStringAttribute(ChatConstant.KEY_NAME));
                         UserUtils.saveUser(user);
                     }
                     UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);

@@ -161,7 +161,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
                             ChatUser user;
                             user = new ChatUser(result.respData.get(i).emchatId);
                             user.setAvatar(result.respData.get(i).avatarUrl);
-                            user.setNickName(result.respData.get(i).userName);
+                            user.setNickname(result.respData.get(i).userName);
                             UserUtils.saveUser(user);
                         }
                     }
