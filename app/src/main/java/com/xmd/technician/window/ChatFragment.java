@@ -24,10 +24,10 @@ import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.DeleteConversionResult;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.chat.IEmchat;
 import com.xmd.technician.chat.UserUtils;
-import com.xmd.technician.chat.event.EventLoginSuccess;
+import com.xmd.technician.chat.XMDEmChatManager;
+import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -66,7 +66,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private TextView mSearchView;
     private String mMessageFrom;
 
-    private IEmchat emchat = EmchatManager.getInstance();
+    private IEmchat emchat = XMDEmChatManager.getInstance();
 
     @Nullable
     @Override
@@ -109,7 +109,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 .subscribe(this::handleContactPermissionChat);
 
         //监听登录消息
-        mLoginStatusSubscription = RxBus.getInstance().toObservable(EventLoginSuccess.class).subscribe(
+        mLoginStatusSubscription = RxBus.getInstance().toObservable(EventEmChatLoginSuccess.class).subscribe(
                 eventEmChatLogin -> {
                     //登录成功的消息,刷新一次
                     onRefresh();

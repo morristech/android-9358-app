@@ -45,11 +45,11 @@ import com.xmd.technician.bean.UserWin;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
-import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.IEmchat;
 import com.xmd.technician.chat.SmileUtils;
 import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.chat.XMDEmChatManager;
 import com.xmd.technician.chat.bean.CancelGame;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.chat.event.EventReceiveMessage;
@@ -148,7 +148,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private Subscription mNewMessageSubscription;
 
-    private IEmchat emchatManager = EmchatManager.getInstance();
+    private IEmchat emchatManager = XMDEmChatManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

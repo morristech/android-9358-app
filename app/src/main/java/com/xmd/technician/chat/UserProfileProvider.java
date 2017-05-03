@@ -9,7 +9,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.HanziToPinyin;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
-import com.xmd.technician.chat.event.EventLoginSuccess;
+import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.common.DbOpenHelper;
 import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.msgctrl.RxBus;
@@ -47,7 +47,7 @@ public class UserProfileProvider {
         dbHelper = DbOpenHelper.getInstance(TechApplication.getAppContext());
 
         //注册监听环信登录消息
-        RxBus.getInstance().toObservable(EventLoginSuccess.class).subscribe(
+        RxBus.getInstance().toObservable(EventEmChatLoginSuccess.class).subscribe(
                 eventEmChatLogin -> {
                     //初始化联系人列表
                     initContactList();

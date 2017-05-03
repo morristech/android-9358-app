@@ -21,7 +21,7 @@ public interface IEmchat {
      *
      * @param name     用户名
      * @param password 密码
-     *                 登录成功后会发送@EventLoginSuccess , 会一直重试，直到登录成功
+     *                 登录成功后会发送@EventEmChatLoginSuccess , 会一直重试，直到登录成功
      */
     void login(final String name, final String password);
 

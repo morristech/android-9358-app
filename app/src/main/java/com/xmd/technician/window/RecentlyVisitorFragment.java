@@ -21,8 +21,8 @@ import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SayHiVisitorResult;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
-import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.chat.XMDEmChatManager;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -222,7 +222,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
     };
 
     private void sayHiRequest(String userId, String userName, String avatarUrl, String userType, String userEmchatId, String position) {
-        if (!EmchatManager.getInstance().isConnected()) {
+        if (!XMDEmChatManager.getInstance().isConnected()) {
             XToast.show("当前已经离线，请稍后再试!");
             return;
         }

@@ -13,9 +13,12 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.technician.chat.event.EventLoginSuccess;
+import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
+import com.xmd.technician.event.EventLogin;
+import com.xmd.technician.event.EventLogout;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.ArrayList;
@@ -26,23 +29,20 @@ import java.util.Map;
 /**
  * Created by linms@xiaomodo.com on 16-5-6.
  */
-public class EmchatManager implements IEmchat {
-    private static final String TAG = "EmchatManager";
+public class XMDEmChatManager implements IEmchat {
+    private static final String TAG = "XMDEmChatManager";
+    private static final XMDEmChatManager ourInstance = new XMDEmChatManager();
 
-    private static class EmchatManagerHolder {
-        private static EmchatManager sInstance = new EmchatManager();
+    public static XMDEmChatManager getInstance() {
+        return ourInstance;
     }
 
-    private EmchatManager() {
+    private XMDEmChatManager() {
 
     }
 
-    public static EmchatManager getInstance() {
-        return EmchatManagerHolder.sInstance;
-    }
-
-    private boolean login; //是否登录
     private boolean isCalledLogin; //是否正在登录
+    private LoginTechnician technician = LoginTechnician.getInstance();
 
     /**
      * 初始化环信
@@ -60,6 +60,13 @@ public class EmchatManager implements IEmchat {
         emOptions.setSortMessageByServerTime(true); //消息按时间排序
         EMClient.getInstance().init(context, emOptions);
         EMClient.getInstance().setDebugMode(debug);
+
+        //注册登录/登出事件监听器
+        RxBus.getInstance().toObservable(EventLogin.class).subscribe(this::handleLogin);
+        RxBus.getInstance().toObservable(EventLogout.class).subscribe(this::handleLogout);
+
+        //注册消息监听器
+        EMClient.getInstance().chatManager().addMessageListener(messageListener);
     }
 
     @Override
@@ -77,10 +84,9 @@ public class EmchatManager implements IEmchat {
                 //加载会话消息
                 EMClient.getInstance().groupManager().loadAllGroups();
                 EMClient.getInstance().chatManager().loadAllConversations();
-                //注册消息监听器
-                EMClient.getInstance().chatManager().addMessageListener(messageListener);
+
                 //发送登录成功消息
-                RxBus.getInstance().post(new EventLoginSuccess());
+                RxBus.getInstance().post(new EventEmChatLoginSuccess());
             }
 
             @Override
@@ -95,7 +101,9 @@ public class EmchatManager implements IEmchat {
                         || i == EMError.SERVER_UNKNOWN_ERROR) {
                     XLogger.i("retry ... login");
                     isCalledLogin = false;
-                    login(name, password);
+                    if (technician.isLogin()) {
+                        login(name, password);
+                    }
                 } else {
                     XToast.show("无法初始化聊天系统:" + i + "," + s);
                 }
@@ -110,12 +118,15 @@ public class EmchatManager implements IEmchat {
 
     @Override
     public void updateNickName(String nickName) {
-        EMClient.getInstance().pushManager().updatePushNickname(nickName);
+        if (isConnected()) {
+            XLogger.d(TAG, "update nickname:" + nickName);
+            EMClient.getInstance().pushManager().updatePushNickname(nickName);
+        }
     }
 
     @Override
     public void logout() {
-        login = false;
+        XLogger.i(TAG, "logout ");
         isCalledLogin = false;
         EMClient.getInstance().logout(true, new EMCallBack() {
             @Override
@@ -205,6 +216,17 @@ public class EmchatManager implements IEmchat {
 
     public boolean isConnected() {
         return EMClient.getInstance().isConnected();
+    }
+
+
+    //登录事件
+    private void handleLogin(EventLogin eventLogin) {
+        login(technician.getEmchatId(), technician.getEmchatPassword());
+    }
+
+    //登出事件
+    private void handleLogout(EventLogout eventLogout) {
+        logout();
     }
 
     private EMMessageListener messageListener = new EMMessageListener() {

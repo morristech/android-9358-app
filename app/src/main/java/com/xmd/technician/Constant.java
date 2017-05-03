@@ -252,9 +252,6 @@ public class Constant {
     public static final int PAY_NOTIFY_MAIN_PAGE_SHOW_LIMIT = 10;
     public static final int PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT = 12 * 3600 * 1000; //显示最近12小时的数据
 
-
-    public static final String PUSH_MESSAGE_BUSINESS_PAY_NOTIFY = "fast_pay";
-
     public static final String REQUEST_SAY_HI_TYPE_VISITOR = "visitor";
     public static final String REQUEST_SAY_HI_TYPE_NEARBY = "nearby";
     public static final String REQUEST_SAY_HI_TYPE_DETAIL = "detail";
@@ -284,5 +281,11 @@ public class Constant {
     public static final String KEY_CATEGORY_SAIL_TYPE = "02";
     public static final String KEY_CATEGORY_COMMENT_TYPE = "03";
     public static final String KEY_CATEGORY_PAID_TYPE = "04";
+
+
+    /**
+     * 推送
+     */
+    public static final String PUSH_MESSAGE_BUSINESS_PAY_NOTIFY = "fast_pay";
 }
 

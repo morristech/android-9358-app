@@ -4,7 +4,6 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -35,7 +34,6 @@ import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.AccountMoneyResult;
@@ -96,7 +94,6 @@ import com.xmd.technician.http.gson.TechPersonalDataResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechRankingListResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
-import com.xmd.technician.http.gson.TokenExpiredResult;
 import com.xmd.technician.http.gson.UnusedTechNoListResult;
 import com.xmd.technician.http.gson.UpdateServiceResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
@@ -174,8 +171,7 @@ public class RequestController extends AbstractController {
                 joinClub((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_TOKEN_EXPIRE:
-                doHandleTokenExpired(msg.obj.toString());
-                break;
+                throw new RuntimeException("not support!");
             case MsgDef.MSG_DEF_GET_TECH_EDIT_INFO:
                 getTechEditInfo();
                 break;
@@ -1014,55 +1010,55 @@ public class RequestController extends AbstractController {
     }
 
     private void doBindGetuiClientId() {
-
-        if (TextUtils.isEmpty(LoginTechnician.getInstance().getToken())) {
-            return;
-        }
-
-        /*if (!SettingFlags.getBoolean(SettingFlags.ORDER_NOTIFIATION_ON)) {
-            return;
-        }*/
-
-        String clientId = AppConfig.sClientId;
-
-        //并将其存由于之前获取过clientid，放在shared_preferences中了，而SDK在获取client_id的过程中可能存在延迟，
-        // 此时可从shared_preferences中先获取，减少client_id为空的几率
-        if (TextUtils.isEmpty(clientId)) {
-            clientId = SharedPreferenceHelper.getClientId();
-            if (TextUtils.isEmpty(clientId)) {
-                return;
-            }
-        }
-
-        String userId = SharedPreferenceHelper.getUserId();
-        Logger.v("start bind client id : " + AppConfig.sClientId + " with user Id : " + userId);
-
-        //String decryptPwd = appID + appSecret + telephone + appKey + masterSecret + clientId;
-        StringBuilder sb = new StringBuilder();
-        sb.append(AppConfig.sGetuiAppId)
-                .append(AppConfig.sGetuiAppSecret)
-                .append(userId)
-                .append(AppConfig.sGetuiAppKey)
-                .append(AppConfig.sGetuiMasterSecret)
-                .append(AppConfig.sClientId);
-        String secretBefore = sb.toString();
-        String secret = DESede.encrypt(secretBefore);
-        Call<BaseResult> call = getSpaService().bindGetuiClientId(userId, RequestConstant.USER_TYPE_TECH, RequestConstant.APP_TYPE_ANDROID,
-                AppConfig.sClientId, secret);
-
-        call.enqueue(new TokenCheckedCallback<BaseResult>() {
-            @Override
-            protected void postResult(BaseResult result) {
-                Logger.v("bind successful with client id : " + AppConfig.sClientId);
-                AppConfig.sBindClientIdStatus = "bind Successful";
-            }
-
-            @Override
-            protected void postError(String errorMsg) {
-                Logger.v("bind failed with " + errorMsg);
-                AppConfig.sBindClientIdStatus = "bind failed";
-            }
-        });
+        throw new RuntimeException("do not call this!!");
+//        if (TextUtils.isEmpty(LoginTechnician.getInstance().getToken())) {
+//            return;
+//        }
+//
+//        /*if (!SettingFlags.getBoolean(SettingFlags.ORDER_NOTIFIATION_ON)) {
+//            return;
+//        }*/
+//
+//        String clientId = AppConfig.sClientId;
+//
+//        //并将其存由于之前获取过clientid，放在shared_preferences中了，而SDK在获取client_id的过程中可能存在延迟，
+//        // 此时可从shared_preferences中先获取，减少client_id为空的几率
+//        if (TextUtils.isEmpty(clientId)) {
+//            clientId = SharedPreferenceHelper.getClientId();
+//            if (TextUtils.isEmpty(clientId)) {
+//                return;
+//            }
+//        }
+//
+//        String userId = SharedPreferenceHelper.getUserId();
+//        Logger.d("start bind client id : " + AppConfig.sClientId + " with user Id : " + userId);
+//
+//        //String decryptPwd = appID + appSecret + telephone + appKey + masterSecret + clientId;
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(AppConfig.sGetuiAppId)
+//                .append(AppConfig.sGetuiAppSecret)
+//                .append(userId)
+//                .append(AppConfig.sGetuiAppKey)
+//                .append(AppConfig.sGetuiMasterSecret)
+//                .append(AppConfig.sClientId);
+//        String secretBefore = sb.toString();
+//        String secret = DESede.encrypt(secretBefore);
+//        Call<BaseResult> call = getSpaService().bindGetuiClientId(userId, RequestConstant.USER_TYPE_TECH, RequestConstant.APP_TYPE_ANDROID,
+//                AppConfig.sClientId, secret);
+//
+//        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+//            @Override
+//            protected void postResult(BaseResult result) {
+//                Logger.i("bind successful with client id : " + AppConfig.sClientId);
+//                AppConfig.sBindClientIdStatus = "bind Successful";
+//            }
+//
+//            @Override
+//            protected void postError(String errorMsg) {
+//                Logger.e("bind failed with " + errorMsg);
+//                AppConfig.sBindClientIdStatus = "bind failed";
+//            }
+//        });
     }
 
     /**
@@ -1070,20 +1066,21 @@ public class RequestController extends AbstractController {
      */
     private void doUnbindGetuiClientId(Map<String, String> params) {
         Logger.v("start unbind client id");
-        Call<BaseResult> call = getSpaService().unbindGetuiClientId(RequestConstant.USER_TYPE_TECH,
-                params.get(RequestConstant.KEY_TOKEN), RequestConstant.SESSION_TYPE, AppConfig.sClientId);
-        call.enqueue(new TokenCheckedCallback<BaseResult>() {
-            @Override
-            protected void postResult(BaseResult result) {
-                Logger.v("unbind successful");
-                AppConfig.sBindClientIdStatus = "unbind successful";
-            }
-
-            @Override
-            protected void postError(String errorMsg) {
-                AppConfig.sBindClientIdStatus = "unbind failed";
-            }
-        });
+        throw new RuntimeException("do not call this!!");
+//        Call<BaseResult> call = getSpaService().unbindGetuiClientId(RequestConstant.USER_TYPE_TECH,
+//                params.get(RequestConstant.KEY_TOKEN), RequestConstant.SESSION_TYPE, AppConfig.sClientId);
+//        call.enqueue(new TokenCheckedCallback<BaseResult>() {
+//            @Override
+//            protected void postResult(BaseResult result) {
+//                Logger.v("unbind successful");
+//                AppConfig.sBindClientIdStatus = "unbind successful";
+//            }
+//
+//            @Override
+//            protected void postError(String errorMsg) {
+//                AppConfig.sBindClientIdStatus = "unbind failed";
+//            }
+//        });
     }
 
     /**
@@ -1385,11 +1382,11 @@ public class RequestController extends AbstractController {
      */
     private void doSaveToContact(Map<String, String> params) {
         Call<SaveChatUserResult> call = getSpaService().doSaveContact(SharedPreferenceHelper.getEmchatId(),
-                RequestConstant.USER_TYPE_TECH, params.get(RequestConstant.KEY_FRIEND_CHAT_ID), RequestConstant.USER_TYPE_USER, params.get(RequestConstant.KEY_CHAT_MSG_ID),RequestConstant.KEY_MSG_TYPE_TEXT);
+                RequestConstant.USER_TYPE_TECH, params.get(RequestConstant.KEY_FRIEND_CHAT_ID), RequestConstant.USER_TYPE_USER, params.get(RequestConstant.KEY_CHAT_MSG_ID), RequestConstant.KEY_MSG_TYPE_TEXT);
         call.enqueue(new TokenCheckedCallback<SaveChatUserResult>() {
             @Override
             protected void postResult(SaveChatUserResult result) {
-                if(!params.get(RequestConstant.KEY_SEND_POST).equals("0")){
+                if (!params.get(RequestConstant.KEY_SEND_POST).equals("0")) {
                     RxBus.getInstance().post(result);
                 }
 
@@ -1500,10 +1497,6 @@ public class RequestController extends AbstractController {
         }
     }
 
-    private void doHandleTokenExpired(String errorMsg) {
-        RxBus.getInstance().post(new TokenExpiredResult(errorMsg));
-    }
-
     private void setPageSelected(int obj) {
         RxBus.getInstance().post(new CurrentSelectPage(obj));
     }
@@ -1520,7 +1513,7 @@ public class RequestController extends AbstractController {
 
     private void getClubUserCoupon(Map<String, String> params) {
         Call<UserGetCouponResult> call = getSpaService().clubUserCoupon(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_USER_COUPON_ACT_ID),
-                 params.get(RequestConstant.KEY_USER_COUPON_CHANEL),  params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_ID), SharedPreferenceHelper.getInviteCode(), SharedPreferenceHelper.getInviteCode());
+                params.get(RequestConstant.KEY_USER_COUPON_CHANEL), params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_ID), SharedPreferenceHelper.getInviteCode(), SharedPreferenceHelper.getInviteCode());
         call.enqueue(new TokenCheckedCallback<UserGetCouponResult>() {
             @Override
             protected void postResult(UserGetCouponResult result) {
@@ -1532,7 +1525,7 @@ public class RequestController extends AbstractController {
 
             @Override
             protected void postError(String errorMsg) {
-                UserGetCouponResult result = new UserGetCouponResult(params.get(RequestConstant.KEY_COUPON_CONTENT),params.get(RequestConstant.KEY_ACT_ID), params.get(RequestConstant.KEY_USER_TECH_CODE));
+                UserGetCouponResult result = new UserGetCouponResult(params.get(RequestConstant.KEY_COUPON_CONTENT), params.get(RequestConstant.KEY_ACT_ID), params.get(RequestConstant.KEY_USER_TECH_CODE));
                 RxBus.getInstance().post(result);
             }
         });

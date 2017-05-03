@@ -2,7 +2,6 @@ package com.xmd.technician.window;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,12 +15,8 @@ import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.ActivityHelper;
-import com.xmd.technician.http.gson.LogoutResult;
-import com.xmd.technician.http.gson.TokenExpiredResult;
-import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
 
@@ -37,10 +32,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
     protected TextView mToolbarRight;
     protected Toolbar mToolbar;
     private ProgressDialog mProgressDialog;
-    private Toast mToast;
 
-    private Subscription mLogoutSubscription;
-    protected Subscription mTokenExpiredSubscription;
     private Subscription mThrowableSubscription;
 
     @Override
@@ -48,21 +40,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ActivityHelper.getInstance().pushActivity(this);
-
-        mLogoutSubscription = RxBus.getInstance().toObservable(LogoutResult.class).subscribe(
-                logoutResult -> {
-                    //FIXME
-//                    dismissProgressDialogIfShowing();
-//                    gotoLoginActivity(null);
-                }
-        );
-
-        mTokenExpiredSubscription = RxBus.getInstance().toObservable(TokenExpiredResult.class).subscribe(
-                tokenExpiredResult -> {
-                    dismissProgressDialogIfShowing();
-                    gotoLoginActivity(tokenExpiredResult.expiredReason);
-                }
-        );
 
         mThrowableSubscription = RxBus.getInstance().toObservable(Throwable.class).subscribe(
                 throwable -> {
@@ -88,7 +65,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mLogoutSubscription, mTokenExpiredSubscription, mThrowableSubscription);
+        RxBus.getInstance().unsubscribe(mThrowableSubscription);
         ActivityHelper.getInstance().removeActivity(this);
     }
 
@@ -210,24 +187,4 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
         return progressDialog;
     }
-
-    /**
-     * @param message whether to alert the message before going to login activity
-     */
-    protected void gotoLoginActivity(String message) {
-        //Before go to login activity, alert the message if it exists
-        if (!TextUtils.isEmpty(message)) {
-            makeShortToast(message);
-        }
-
-        SharedPreferenceHelper.clearUserInfo();
-        HelloSettingManager.getInstance().resetTemplate();
-
-        ActivityHelper.getInstance().removeAllActivities();
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
-    }
-
 }

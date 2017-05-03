@@ -81,6 +81,9 @@
             android:windowSoftInputMode="adjustPan" />
 
         <!-- 个推 -->
+        <meta-data
+            android:name="GETUI_MASTER_SECRET"
+            android:value="${GETUI_MASTER_SECRET}" />
         <service
             android:name=".push.GetuiPushService"
             android:exported="true"

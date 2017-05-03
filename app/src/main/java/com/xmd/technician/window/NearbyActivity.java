@@ -13,14 +13,13 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.NearbyCusInfo;
 import com.xmd.technician.bean.SayHiNearbyResult;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.EmchatManager;
+import com.xmd.technician.chat.XMDEmChatManager;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.NearbyCusListResult;
 import com.xmd.technician.model.HelloSettingManager;
-import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -99,7 +98,7 @@ public class NearbyActivity extends BaseActivity {
         mFixSnapHelper = new FixPagerSnapHelper();
         mCusAdapter = new NearbyCusAdapter(this);
         mCusAdapter.setCallback((info, position) -> {
-            if (!EmchatManager.getInstance().isConnected()) {
+            if (!XMDEmChatManager.getInstance().isConnected()) {
                 showToast("当前已经离线，请稍后再试!");
                 return;
             }

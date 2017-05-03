@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.http.gson.TokenExpiredResult;
+import com.xmd.technician.event.EventLogout;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
@@ -44,7 +44,7 @@ public class DataRefreshService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mTokenExpiredSubscription = RxBus.getInstance().toObservable(TokenExpiredResult.class).subscribe(this::handleTokenExpired);
+        mTokenExpiredSubscription = RxBus.getInstance().toObservable(EventLogout.class).subscribe(this::handleLogoutEvent);
     }
 
     @Override
@@ -129,8 +129,7 @@ public class DataRefreshService extends Service {
         context.stopService(new Intent(context, DataRefreshService.class));
     }
 
-    public void handleTokenExpired(TokenExpiredResult event) {
-        Logger.i("===token expired ===");
+    public void handleLogoutEvent(EventLogout event) {
         mRefreshPayNotify = false;
         mRefreshPersonalData = false;
         mRefreshHelloReply = false;

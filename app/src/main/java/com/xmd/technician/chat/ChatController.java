@@ -85,7 +85,7 @@ public class ChatController extends AbstractController {
     }
 
     private void doGetConversationList() {
-//        RxBus.getInstance().post(new ConversationListResult(EmchatManager.getInstance().getAllConversationList()));
+//        RxBus.getInstance().post(new ConversationListResult(XMDEmChatManager.getInstance().getAllConversationList()));
     }
 
     private void systemNoticeNotify() {
@@ -116,7 +116,7 @@ public class ChatController extends AbstractController {
 //                                if (runnable instanceof Runnable) {
 //                                    ((Runnable) runnable).run();
 //                                }
-//                                RxBus.getInstance().post(new EventLoginSuccess(true));
+//                                RxBus.getInstance().post(new EventEmChatLoginSuccess(true));
 //                            }
 //
 //                            @Override
@@ -129,7 +129,7 @@ public class ChatController extends AbstractController {
 //                                    }
 //                                });
 //
-//                                RxBus.getInstance().post(new EventLoginSuccess(false));
+//                                RxBus.getInstance().post(new EventEmChatLoginSuccess(false));
 //                            }
 //
 //                            @Override

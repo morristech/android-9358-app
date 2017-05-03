@@ -12,8 +12,8 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
-import com.xmd.technician.chat.EmchatManager;
 import com.xmd.technician.chat.IEmchat;
+import com.xmd.technician.chat.XMDEmChatManager;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
@@ -53,7 +53,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     private Subscription mGetUserIsBindWXSubscription;
 
     //环信
-    private IEmchat emchat = EmchatManager.getInstance();
+    private IEmchat emchat = XMDEmChatManager.getInstance();
     private Subscription mUnreadEmchatCountSubscription;
 
     @Bind(R.id.main_unread_message)
@@ -94,8 +94,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mGetUserIsBindWXSubscription = RxBus.getInstance().toObservable(IsBindResult.class).subscribe(
                 result -> handlerIsBindResult(result)
         );
-
-        ThreadPoolManager.run(() -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID));
 
         //检查更新
         ThreadPoolManager.run(

@@ -1,13 +1,13 @@
-package com.xmd.technician.http.gson;
+package com.xmd.technician.event;
 
 /**
  * Created by sdcm on 16-1-12.
  */
-public class TokenExpiredResult {
+public class EventTokenExpired {
 
     public String expiredReason;
 
-    public TokenExpiredResult(String expiredReason) {
+    public EventTokenExpired(String expiredReason) {
         this.expiredReason = expiredReason;
     }
 }

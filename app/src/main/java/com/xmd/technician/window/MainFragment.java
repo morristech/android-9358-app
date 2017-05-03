@@ -41,7 +41,6 @@ import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
-import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.HeartBeatTimer;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
@@ -809,8 +808,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                     @Override
                     public void onConfirmClick() {
                         mTech.logout();
-                        ActivityHelper.getInstance().removeAllActivities();
-                        UINavigation.gotoLogin(getActivity());
                         super.onConfirmClick();
                     }
                 }.show();

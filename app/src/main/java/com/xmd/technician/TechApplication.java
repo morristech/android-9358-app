@@ -16,7 +16,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
-import com.xmd.technician.chat.EmchatManager;
+import com.xmd.technician.chat.XMDEmChatManager;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.TechNotifier;
@@ -118,9 +118,9 @@ public class TechApplication extends MultiDexApplication {
 
                 //初始化环信
                 if (SharedPreferenceHelper.isDevelopMode()) {
-                    EmchatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_DEBUG, BuildConfig.DEBUG);
+                    XMDEmChatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_DEBUG, BuildConfig.DEBUG);
                 } else {
-                    EmchatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_RELEASE, BuildConfig.DEBUG);
+                    XMDEmChatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_RELEASE, BuildConfig.DEBUG);
                 }
 
                 initNotifier();
@@ -190,9 +190,9 @@ public class TechApplication extends MultiDexApplication {
         try {
             PackageManager packageManager = getPackageManager();
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-            AppConfig.sGetuiAppId = applicationInfo.metaData.getString("GETUI_APP_ID", "");
-            AppConfig.sGetuiAppKey = applicationInfo.metaData.getString("GETUI_APP_KEY", "");
-            AppConfig.sGetuiAppSecret = applicationInfo.metaData.getString("GETUI_APP_SECRET", "");
+            AppConfig.sGetuiAppId = applicationInfo.metaData.getString("PUSH_APPID", "");
+            AppConfig.sGetuiAppKey = applicationInfo.metaData.getString("PUSH_APPKEY", "");
+            AppConfig.sGetuiAppSecret = applicationInfo.metaData.getString("PUSH_APPSECRET", "");
             AppConfig.sGetuiMasterSecret = applicationInfo.metaData.getString("GETUI_MASTER_SECRET", "");
             //注意METADATA是没有办法运行时修改的，所以需要推送的测试，还是只能编译一个版本出来
             PushManager.getInstance().initialize(this, GetuiPushService.class);

@@ -1,42 +1,36 @@
 package com.xmd.technician.model;
 
-import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.DataRefreshService;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.TechInfo;
-import com.xmd.technician.chat.EmchatManager;
-import com.xmd.technician.chat.IEmchat;
 import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.chat.event.EventLoginSuccess;
+import com.xmd.technician.chat.XMDEmChatManager;
+import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.DESede;
-import com.xmd.technician.common.ImageLoader;
-import com.xmd.technician.common.Util;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.event.EventExitClub;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.event.EventLogin;
 import com.xmd.technician.event.EventLogout;
+import com.xmd.technician.event.EventTokenExpired;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
-import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.http.gson.TechPersonalDataResult;
-import com.xmd.technician.http.gson.TokenExpiredResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,8 +39,6 @@ import java.util.Map;
  */
 public class LoginTechnician {
     private static LoginTechnician ourInstance = new LoginTechnician();
-
-    private IEmchat emchatManager = EmchatManager.getInstance();
 
     public static LoginTechnician getInstance() {
         return ourInstance;
@@ -94,6 +86,7 @@ public class LoginTechnician {
 
 
     private LoginTechnician() {
+
         loginType = SharedPreferenceHelper.getLoginType();
         token = SharedPreferenceHelper.getUserToken();
 
@@ -118,18 +111,18 @@ public class LoginTechnician {
         status = SharedPreferenceHelper.getTechStatus();
 
         RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(this::onGetTechPersonalData);
-        RxBus.getInstance().toObservable(EventLoginSuccess.class).subscribe(
-                eventEmChatLogin -> {
-                    emchatManager.updateNickName(getNickName());
-                }
-        );
-        RxBus.getInstance().toObservable(TokenExpiredResult.class).subscribe(
-                tokenExpiredResult -> {
-                    emchatManager.logout();
+
+        RxBus.getInstance().toObservable(EventTokenExpired.class).subscribe(
+                eventTokenExpired -> {
+                    logout();
                 }
         );
     }
 
+
+    public boolean isLogin() {
+        return !TextUtils.isEmpty(getToken());
+    }
 
     //使用手机号码登录，返回LoginResult
     public void loginByPhoneNumber(String phoneNumber, String password) {
@@ -161,7 +154,7 @@ public class LoginTechnician {
         setAvatarUrl(loginResult.avatarUrl);
         setRoles(loginResult.roles);
 
-        RxBus.getInstance().post(new EventLogin());
+        RxBus.getInstance().post(new EventLogin(loginResult.token, loginResult.userId));
     }
 
     //备用技师编号登录成功
@@ -211,9 +204,6 @@ public class LoginTechnician {
         setStatus(techInfo.status);
         setQrCodeUrl(techInfo.qrCodeUrl);
         setShareUrl(techInfo.shareUrl);
-
-        //登录环信
-        emchatManager.login(getEmchatId(), getEmchatPassword());
 
         //开始刷新个人数据
         DataRefreshService.refreshPersonalData(true);
@@ -340,6 +330,10 @@ public class LoginTechnician {
 
     //退出登录,返回LogoutResult
     public void logout() {
+        if (TextUtils.isEmpty(getToken())) {
+            //已经登出了，不再次调用
+            return;
+        }
         //停止刷新个人数据
         DataRefreshService.refreshPersonalData(false);
         //停止刷新买单通知
@@ -347,23 +341,19 @@ public class LoginTechnician {
         //停止刷新回复
         DataRefreshService.refreshHelloReply(false);
 
-        //退出环信
-        emchatManager.logout();
-
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_TOKEN, token);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID, params);
-
         //清空当前用户打招呼数据
         HelloSettingManager.getInstance().resetTemplate();
 
-        //直接清空token，不用等待是否成功
         UserProfileProvider.getInstance().reset();
+
+        //发送登出事件
+        RxBus.getInstance().post(new EventLogout(getToken(), getUserId()));
+
+        //清空token
         setToken(null);
 
-
-
-        RxBus.getInstance().post(new EventLogout());
+        ActivityHelper.getInstance().removeAllActivities();
+        UINavigation.gotoLogin(TechApplication.getAppContext());
     }
 
     public void onLogout() {
@@ -439,6 +429,7 @@ public class LoginTechnician {
     public void setNickName(String nickName) {
         this.nickName = nickName;
         SharedPreferenceHelper.setUserName(nickName);
+        XMDEmChatManager.getInstance().updateNickName(nickName);
     }
 
     public void setAvatarUrl(String avatarUrl) {
@@ -639,6 +630,6 @@ public class LoginTechnician {
     }
 
     public boolean isLoginEmchat() {
-        return emchatManager.isConnected();
+        return XMDEmChatManager.getInstance().isConnected();
     }
 }

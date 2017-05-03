@@ -149,42 +149,6 @@ public class PayNotifyInfoManager extends Observable {
 
     //从网络加载数据
     public void loadDataFromNetwork(long startTime, long endTime, Callback<List<PayNotifyInfo>> callback) {
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                List<PayNotifyInfo> data = new ArrayList<>();
-//                int mockCount = 10;
-//                for (int i = 0; i < mockCount; i++) {
-//                    PayNotifyInfo info = new PayNotifyInfo();
-//                    info.id = i + 1;
-//                    info.userName = "顾客" + i;
-//                    info.amount = (long) (Math.random() * 1000);
-//                    info.isArchived = false;
-//                    long currentTime = 1485057077000L;
-//                    info.payTime = System.currentTimeMillis() - i * 10 * 3600 * 1000;
-//
-//                    info.status = PayNotifyInfo.STATUS_ACCEPTED;
-//                    info.userAvatar = "http://img3.duitang.com/uploads/item/201608/21/20160821200538_vHxLi.thumb.700_0.jpeg";
-//                    info.combineTechs = new ArrayList<>();
-//                    info.combineTechs.add("A00" + i);
-//                    info.combineTechs.add("A100");
-//                    data.add(info);
-//                }
-//
-//                ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        processNewData(data);
-//                        callback.onResult(null, data);
-//                    }
-//                });
-//            }
-//        }.start();
         if (mDataGetCall != null) {
             mDataGetCall.cancel();
         }
@@ -326,7 +290,7 @@ public class PayNotifyInfoManager extends Observable {
     }
 
     //后台获取最新数据并发出通知
-    public void getRecentDataAndSendNotify(int limitTime) {
+    public void getRecentData(int limitTime) {
         final long startTime = System.currentTimeMillis() - limitTime;
         final long endTime = System.currentTimeMillis() + (3600 * 1000);
 
@@ -350,7 +314,7 @@ public class PayNotifyInfoManager extends Observable {
                 CheckPayNotifyResult result = response.body();
                 if (result != null && result.respData != null && result.respData.equals("Y")) {
                     //有新的数据
-                    getRecentDataAndSendNotify(Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT);
+                    getRecentData(Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT);
                 }
             }
 

@@ -17,7 +17,6 @@ import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.common.AppUtils;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.onlinepaynotify.event.PayNotifyNewDataEvent;
 import com.xmd.technician.window.MainActivity;
 
 import java.util.List;
@@ -44,8 +43,7 @@ public class NotificationCenter {
     private NotificationCenter() {
         //通过会所审核
         RxBus.getInstance().toObservable(EventJoinedClub.class).subscribe(this::onEventJoinedClub);
-        //买单通知
-        RxBus.getInstance().toObservable(PayNotifyNewDataEvent.class).subscribe(this::onPayNotifyNewDataEvent);
+
         //聊天消息
         RxBus.getInstance().toObservable(EventReceiveMessage.class).subscribe(this::onEventChatMessage);
     }
@@ -111,8 +109,8 @@ public class NotificationCenter {
     /*****************************处理各种消息**************************************/
 
     //有新的买单通知
-    public void onPayNotifyNewDataEvent(PayNotifyNewDataEvent event) {
-        notify(TYPE_PAY_NOTIFY, null, null);
+    public void notifyPayNotify(String title, String message) {
+        notify(TYPE_PAY_NOTIFY, title, message);
     }
 
     //会所审核通过

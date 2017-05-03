@@ -6,10 +6,9 @@ import android.text.TextUtils;
 import com.xmd.technician.R;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.event.EventTokenExpired;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.QuitClubResult;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
 import retrofit2.Call;
@@ -27,7 +26,8 @@ public abstract class TokenCheckedCallback<T extends BaseResult> implements Call
             //OK
             T result = response.body();
             if (result.statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TOKEN_EXPIRE, result.msg);
+                //token 失效
+                RxBus.getInstance().post(new EventTokenExpired(result.msg));
             } else if (result.statusCode == RequestConstant.RESP_ERROR && !(result instanceof QuitClubResult)) {
                 postError(result.msg);
             } else {
@@ -37,7 +37,8 @@ public abstract class TokenCheckedCallback<T extends BaseResult> implements Call
             //No Content But OK
             postResult(response.body());
         } else if (401 == response.code()) {
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TOKEN_EXPIRE, ResourceUtils.getString(R.string.token_expired_error_msg));
+            //token 失效
+            RxBus.getInstance().post(new EventTokenExpired(ResourceUtils.getString(R.string.token_expired_error_msg)));
         } else {
             try {
                 String errorStr = response.errorBody().string();
