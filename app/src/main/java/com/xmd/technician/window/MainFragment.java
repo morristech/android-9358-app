@@ -1154,7 +1154,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         if (result.respData == null) {
             return;
         }
-        Glide.with(mContext).load("http://www.baidu.com/").into(mCvStarRegister);
         if (null != result.respData.userRanking) {
             Glide.with(mContext).load(result.respData.userRanking.avatarUrl).into(mCvStarRegister);
             mTvStarRegisterUser.setText(result.respData.userRanking.name);
