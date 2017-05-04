@@ -440,7 +440,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         mConversation = EMClient.getInstance().chatManager().getConversation(mToChatEmchatId, CommonUtils.getConversationType(mChatType), true);
         // 把此会话的未读数置为0
-        mConversation.markAllMessagesAsRead();
+        emchatManager.clearUnreadMessage(mConversation);
         // 初始化db时，每个conversation加载数目是getChatOptions().getNumberOfMessagesLoaded
         // 这个数目如果比用户期望进入会话界面时显示的个数不一样，就多加载一些
         final List<EMMessage> msgs = mConversation.getAllMessages();
