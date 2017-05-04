@@ -3,13 +3,16 @@ package com.xmd.technician.common;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.technician.Constant;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.notify.NotificationCenter;
 import com.xmd.technician.window.ChatActivity;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
 import com.xmd.technician.window.JoinClubActivity;
@@ -26,6 +29,7 @@ import java.util.Map;
 public class UINavigation {
     public static final String EXTRA_JOIN_CLUB = "extra_join_club";
     public static final String EXTRA_OPEN_JOIN_CLUB_FROM = "extra_join_club_from";
+    public static final String EXTRA_NOTIFY_ID = "extra_notify_id";
 
     public static final int OPEN_JOIN_CLUB_FROM_START = 1;
     public static final int OPEN_JOIN_CLUB_FROM_MAIN = 3;
@@ -106,5 +110,24 @@ public class UINavigation {
         intent.putExtra(ChatConstant.EMCHAT_IS_TECH, emchatIsTech);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         TechApplication.getAppContext().startActivity(intent);
+    }
+
+
+    public static boolean routeNotify(Context context, int notifyId, Bundle extraData) {
+        XLogger.d("routeNotify:" + notifyId);
+        switch (notifyId) {
+            case NotificationCenter.TYPE_ORDER:
+            case NotificationCenter.TYPE_CHAT_MESSAGE:
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtras(extraData);
+                context.startActivity(intent);
+                return true;
+            case NotificationCenter.TYPE_PAY_NOTIFY:
+                gotoMainActivityIndexFragmentFromService(context, 0);
+                return true;
+            default:
+                break;
+        }
+        return false;
     }
 }

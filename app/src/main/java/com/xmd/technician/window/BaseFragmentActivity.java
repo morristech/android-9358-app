@@ -52,7 +52,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        TechApplication.getNotifier().reset();
         MobclickAgent.onResume(this);
     }
 

@@ -16,9 +16,11 @@ import android.widget.TextView;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.contract.LoginContract;
 import com.xmd.technician.http.RetrofitServiceFactory;
 import com.xmd.technician.presenter.LoginPresenter;
+import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.ClearableEditText;
 
 import butterknife.Bind;
@@ -145,6 +147,17 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                         mNeedRestartApp = true;
                     }
                     SharedPreferenceHelper.setDevelopMode(!SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com"));
+                    if (mNeedRestartApp) {
+                        new AlertDialogBuilder(LoginActivity.this).setMessage("切换运行环境，需要重新打开应用")
+                                .setCancelable(false)
+                                .setPositiveButton("确定", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        ActivityHelper.getInstance().exitAndClearApplication();
+                                    }
+                                })
+                                .show();
+                    }
                 }
 
                 @Override
@@ -220,11 +233,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         } else {
             mBtnLogin2.setEnabled(enable);
         }
-    }
-
-    @Override
-    public boolean needRestart() {
-        return mNeedRestartApp;
     }
 
     @Override

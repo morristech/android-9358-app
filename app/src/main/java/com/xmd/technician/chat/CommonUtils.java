@@ -3,6 +3,7 @@ package com.xmd.technician.chat;
 import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
+
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
@@ -38,6 +39,7 @@ public class CommonUtils {
             return EMConversation.EMConversationType.ChatRoom;
         }
     }
+
     public static void userGetCoupon(String content, String actId, String channel, String emchatId) {
         Map<String, Object> params = new HashMap<>();
         params.put(RequestConstant.KEY_COUPON_CONTENT, content);
@@ -46,6 +48,7 @@ public class CommonUtils {
         params.put(RequestConstant.KEY_USER_COUPON_EMCHAT_ID, emchatId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_USER_GET_COUPON, params);
     }
+
     static String getString(Context context, int resId) {
         return context.getResources().getString(resId);
     }
@@ -97,17 +100,17 @@ public class CommonUtils {
                     } else {
                         digest = getString(context, R.string.recent_status_expression);
                     }
-                }else try {
-                    if(Utils.isNotEmpty(message.getStringAttribute(ChatConstant.KEY_GAME_ID))){
-                     digest = ResourceUtils.getString(R.string.dice_game);
+                } else try {
+                    if (Utils.isNotEmpty(message.getStringAttribute(ChatConstant.KEY_GAME_ID))) {
+                        digest = ResourceUtils.getString(R.string.dice_game);
                     }
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                     digest = txtBody.getMessage();
                     digest = Html.fromHtml(digest).toString();
                 }
-                if(digest.contains("点钟券&")){
-                    digest = "购买了"+digest.substring(0,digest.indexOf("&"));
+                if (digest.contains("点钟券&")) {
+                    digest = "购买了" + digest.substring(0, digest.indexOf("&"));
                 }
                 break;
             case FILE: //普通文件消息
@@ -161,10 +164,10 @@ public class CommonUtils {
                     } else if (gameStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
                         type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_TYPE_RECV_GAME_OVER : ChatConstant.MESSAGE_TYPE_SEND_GAME_OVER);
                     }
-                }else if(msgType.equals("gift")){
-              //    String giftValue = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_VALUE);
-              //      String giftName = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_NAME)
-              //    String giftId = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_ID);
+                } else if (msgType.equals("gift")) {
+                    //    String giftValue = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_VALUE);
+                    //      String giftName = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_NAME)
+                    //    String giftId = message.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_ID);
                     type = ChatConstant.MESSAGE_TYPE_RECV_CREDIT_GIFT;
                 }
             } catch (HyphenateException e) {
@@ -172,6 +175,16 @@ public class CommonUtils {
             }
         }
         return type;
+    }
+
+    public static String getMessageStringAttribute(EMMessage message, String key) {
+        String value = null;
+        try {
+            value = message.getStringAttribute(key);
+        } catch (HyphenateException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 
 }

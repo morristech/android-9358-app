@@ -19,7 +19,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.chat.XMDEmChatManager;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.TechNotifier;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
@@ -40,7 +39,6 @@ import java.util.List;
 public class TechApplication extends MultiDexApplication {
     private static final String TAG = "TechApplication";
     private static Context appContext;
-    private static TechNotifier mNotifier;
 
     private String mAppVersionName;
     private int mAppVersionCode;
@@ -123,7 +121,6 @@ public class TechApplication extends MultiDexApplication {
                     XMDEmChatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_RELEASE, BuildConfig.DEBUG);
                 }
 
-                initNotifier();
                 DataRefreshService.start();
                 HelloReplyService.start();
 
@@ -149,15 +146,6 @@ public class TechApplication extends MultiDexApplication {
             }
         }
         return null;
-    }
-
-    void initNotifier() {
-        mNotifier = new TechNotifier();
-        mNotifier.init(appContext);
-    }
-
-    public static TechNotifier getNotifier() {
-        return mNotifier;
     }
 
     public static void restart() {

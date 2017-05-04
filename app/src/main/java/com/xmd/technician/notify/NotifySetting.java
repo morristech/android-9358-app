@@ -1,5 +1,7 @@
 package com.xmd.technician.notify;
 
+import android.net.Uri;
+
 /**
  * Created by heyangya on 17-4-28.
  * 通知设置
@@ -11,6 +13,7 @@ public class NotifySetting {
     private boolean sound; //是否播放声音
     private boolean light; //是否有灯光
     private boolean vibrate; //是否振动
+    private Uri soundUri;
 
     private CharSequence title;
     private CharSequence message;
@@ -89,5 +92,13 @@ public class NotifySetting {
 
     public void setTargetActivity(Class targetActivity) {
         this.targetActivity = targetActivity;
+    }
+
+    public Uri getSoundUri() {
+        return soundUri;
+    }
+
+    public void setSoundUri(Uri soundUri) {
+        this.soundUri = soundUri;
     }
 }

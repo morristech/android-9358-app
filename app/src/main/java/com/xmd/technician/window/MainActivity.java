@@ -18,7 +18,9 @@ import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadPoolManager;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.http.gson.SystemNoticeResult;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -68,6 +70,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        checkLoginStatus();
+
         permissionManager.loadPermissions(new Callback<Void>() {
             @Override
             public void onResult(Throwable error, Void result) {
@@ -80,7 +84,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                         Toast.makeText(MainActivity.this, "对不起，您没有任何权限，请询问管理员", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    switchFragment(0);
+                    if (!processNotifyRoute(getIntent())) {
+                        switchFragment(0);
+                    }
                     permissionManager.checkAndSyncPermissions();
                 } else {
                     Toast.makeText(MainActivity.this, "加载权限失败:" + error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -110,11 +116,33 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        checkLoginStatus();
+
+        if (processNotifyRoute(intent)) {
+            return;
+        }
+
         setIntent(intent);
         int index = getIntent().getIntExtra(Constant.EXTRA_FRAGMENT_SWITCH, -1);
         if (index >= 0) {
             switchFragment(index);
         }
+    }
+
+    private void checkLoginStatus() {
+        if (!LoginTechnician.getInstance().isLogin()) {
+            UINavigation.gotoLogin(this);
+            finish();
+        }
+    }
+
+    private boolean processNotifyRoute(Intent intent) {
+        //处理通知栏的跳转
+        int notifyId = intent.getIntExtra(UINavigation.EXTRA_NOTIFY_ID, -1);
+        if (notifyId > 0) {
+            return UINavigation.routeNotify(this, notifyId, intent.getExtras());
+        }
+        return false;
     }
 
 
