@@ -4,6 +4,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -165,7 +167,12 @@ public class NotificationCenter {
                     notify(TYPE_ORDER, null, userName + ":" + CommonUtils.getMessageDigest(message, sContext), bundle);
                 } else {
                     //其他消息
-                    notifyWhenBackground(TYPE_CHAT_MESSAGE, null, userName + ":" + CommonUtils.getMessageDigest(message, sContext), bundle);
+                    if (AppUtils.isBackground()) {
+                        notify(TYPE_CHAT_MESSAGE, null, userName + ":" + CommonUtils.getMessageDigest(message, sContext), bundle);
+                    } else {
+                        Ringtone rt = RingtoneManager.getRingtone(sContext, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                        rt.play();
+                    }
                 }
             }
         }
