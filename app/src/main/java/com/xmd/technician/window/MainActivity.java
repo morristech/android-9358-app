@@ -17,7 +17,6 @@ import com.xmd.technician.chat.XMDEmChatManager;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.model.LoginTechnician;
@@ -101,15 +100,16 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         );
 
         //检查更新
-        ThreadPoolManager.run(
-                () -> {
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
-                });
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
+//        ThreadPoolManager.run(
+//                () -> {
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
+//                });
     }
 
     @Override
