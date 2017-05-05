@@ -84,9 +84,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                         Toast.makeText(MainActivity.this, "对不起，您没有任何权限，请询问管理员", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    if (!processNotifyRoute(getIntent())) {
-                        switchFragment(0);
-                    }
+                    switchFragment(0);
+                    processNotifyRoute(getIntent());
                     permissionManager.checkAndSyncPermissions();
                 } else {
                     Toast.makeText(MainActivity.this, "加载权限失败:" + error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
