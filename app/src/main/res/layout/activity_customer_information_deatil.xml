@@ -575,7 +575,7 @@
                     android:text="@string/main_em_chat"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/fontHead"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/btn_EmHello"
@@ -609,7 +609,8 @@
                     android:gravity="center"
                     android:text="@string/make_call"
                     android:textColor="@color/colorBtnSelector"
-                    android:textSize="@dimen/fontHead" />
+                    android:textSize="@dimen/fontHead"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/btn_chat"
@@ -623,7 +624,7 @@
                     android:text="@string/send_message"
                     android:textColor="@color/colorBtnSelector"
                     android:textSize="@dimen/fontHead"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
             </LinearLayout>
 
             <TextView

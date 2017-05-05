@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application' //说明module的类型
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.bugtags.library.plugin'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'android-aspectjx'
 
 retrolambda {
@@ -14,7 +12,7 @@ def releaseTime() {
 
 android {
     compileSdkVersion 25   //编译的sdk版本
-    buildToolsVersion '23.0.3'//编译的tools版本
+    buildToolsVersion '25.0.2'//编译的tools版本
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -164,12 +162,9 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'com.zhy:mpermission-api:1.0.0'
-    apt 'com.zhy:mpermission-compiler:1.0.0'
     //    aspectj
     compile 'org.aspectj:aspectjrt:1.8.+'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     // for multidex
     compile 'com.android.support:multidex:1.0.1'
-
 }

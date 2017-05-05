@@ -101,15 +101,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
         //检查更新
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
-//        ThreadPoolManager.run(
-//                () -> {
-//                    try {
-//                        Thread.sleep(2000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
-//                });
     }
 
     @Override

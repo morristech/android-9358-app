@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.crazyman.library.PermissionTool;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -46,9 +47,6 @@ import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.DropDownMenuDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.RoundImageView;
-import com.zhy.m.permission.MPermissions;
-import com.zhy.m.permission.PermissionDenied;
-import com.zhy.m.permission.PermissionGrant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -143,8 +141,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     private Context mContext;
 
-    private static final int RESULT_ADD_REMARK = 0x010;
-    private static final int REQUEST_CODE_PHONE = 0x0001;
+    private static final int REQUEST_CODE_CALL_PERMISSION = 0x1;
+    private static final int REQUEST_CODE_SET_REMARK = 0x2;
 
     private Subscription getCustomerInformationSubscription;
     private Subscription getManagerInformationSubscription;
@@ -208,11 +206,36 @@ public class ContactInformationDetailActivity extends BaseActivity {
             handlerDeleteCustomer(result);
         });
 
-        getViewFromType(contactType);
+        intiViewForType(contactType);
+    }
+
+    private void initOperationButtonForType(String contactType) {
+        switch (contactType) {
+            case Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER:
+                btnEmHello.setVisibility(View.VISIBLE);
+                btnEmChat.setVisibility(View.GONE);
+                btnCallPhone.setVisibility(View.GONE);
+                btnChat.setVisibility(View.GONE);
+                break;
+            case Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER:
+            case Constant.CONTACT_INFO_DETAIL_TYPE_TECH:
+                btnEmHello.setVisibility(View.GONE);
+                btnEmChat.setVisibility(View.VISIBLE);
+                btnCallPhone.setVisibility(View.GONE);
+                btnChat.setVisibility(View.GONE);
+                break;
+            default:
+                btnEmHello.setVisibility(View.GONE);
+                btnEmChat.setVisibility(View.GONE);
+                btnCallPhone.setVisibility(View.GONE);
+                btnChat.setVisibility(View.GONE);
+                break;
+        }
     }
 
 
-    private void getViewFromType(String contactType) {
+    private void intiViewForType(String contactType) {
+        initOperationButtonForType(contactType);
         switch (contactType) {
             case Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER:
                 isTech = "";
@@ -364,13 +387,22 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void handleContactPermissionDetail(ContactPermissionResult result) {
         if (result != null && result.statusCode == 200) {
             // 更新按钮状态
+            //检查打招呼权限
+            if (result.respData.hello) {
+                getSayHiStatus(userId);
+            }
+            //检查聊天权限
+            if (result.respData.echat) {
+                btnEmHello.setVisibility(View.VISIBLE);
+            }
+
             if (result.respData.echat && result.respData.hello) {
                 btnEmChat.setVisibility(View.VISIBLE);
                 btnEmHello.setVisibility(View.GONE);
             } else {
                 btnEmChat.setVisibility(View.GONE);
-                btnEmHello.setVisibility(View.VISIBLE);
-                getSayHiStatus(userId);
+
+
             }
             btnCallPhone.setVisibility(result.respData.call ? View.VISIBLE : View.GONE);
             btnChat.setVisibility(result.respData.sms ? View.VISIBLE : View.GONE);
@@ -381,22 +413,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
             btnCallPhone.setVisibility(View.GONE);
             btnChat.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        MPermissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @PermissionGrant(REQUEST_CODE_PHONE)
-    public void requestSdcardSuccess() {
-        toCallPhone();
-    }
-
-    @PermissionDenied(REQUEST_CODE_PHONE)
-    public void requestSdcardFailed() {
-        Toast.makeText(this, "获取权限失败", Toast.LENGTH_SHORT).show();
     }
 
     public void toCallPhone() {
@@ -417,7 +433,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             this.makeShortToast("手机号码不存在");
             return;
         }
-        MPermissions.requestPermissions(ContactInformationDetailActivity.this, REQUEST_CODE_PHONE, Manifest.permission.CALL_PHONE);
+        PermissionTool.requestPermission(this, new String[]{Manifest.permission.CALL_PHONE}, new String[]{"拨打电话"}, REQUEST_CODE_CALL_PERMISSION);
     }
 
     // 发短信
@@ -492,7 +508,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                         intent.putExtra(RequestConstant.KEY_REMARK, mContactRemark.getText().toString());
                     }
                     intent.putExtra(RequestConstant.KEY_PHONE_NUMBER, contactPhone);
-                    startActivityForResult(intent, RESULT_ADD_REMARK);
+                    startActivityForResult(intent, REQUEST_CODE_SET_REMARK);
                     break;
             }
         })).show(contactMore);
@@ -729,12 +745,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 techNum.setText(tech.respData.serialNo);
 
             }
-            if (Utils.isNotEmpty(tech.respData.phoneNum)) {
-                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + tech.respData.phoneNum);
-            } else {
-                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + "未知");
-                callUnusable();
-            }
             if (TextUtils.isEmpty(tech.respData.description)) {
                 mContactRemark.setText(ResourceUtils.getString(R.string.contact_description_remark_empty));
             } else {
@@ -764,12 +774,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 Glide.with(mContext).load(managerHeadUrl).error(R.drawable.icon22).into(mContactHead);
             }
             mContactName.setText(manager.respData.name);
-            if (Utils.isNotEmpty(manager.respData.phoneNum)) {
-                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + manager.respData.phoneNum);
-            } else {
-                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + "未知");
-                callUnusable();
-            }
             mContactOrderLayout.setVisibility(View.GONE);
             linearBelongTech.setVisibility(View.GONE);
             mContactNickName.setVisibility(View.GONE);
@@ -793,6 +797,14 @@ public class ContactInformationDetailActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CALL_PERMISSION) {
+            if (resultCode == RESULT_OK) {
+                toCallPhone();
+            } else {
+                Toast.makeText(this, "获取权限失败", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
         if (resultCode == RESULT_OK) {
             if (Utils.isNotEmpty(data.getStringExtra(RequestConstant.KEY_NOTE_NAME))) {
                 mContactName.setText(Utils.StrSubstring(12, data.getStringExtra(RequestConstant.KEY_NOTE_NAME), true));

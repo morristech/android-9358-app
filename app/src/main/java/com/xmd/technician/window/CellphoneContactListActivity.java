@@ -1,23 +1,22 @@
 package com.xmd.technician.window;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.crazyman.library.PermissionTool;
 import com.xmd.technician.Adapter.CellPhoneContactAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.PhoneContactor;
@@ -25,17 +24,10 @@ import com.xmd.technician.common.CharacterParser;
 import com.xmd.technician.common.PinyinContactUtil;
 import com.xmd.technician.widget.DividerItemDecoration;
 import com.xmd.technician.widget.SideBar;
-import com.zhy.m.permission.MPermissions;
-import com.zhy.m.permission.PermissionGrant;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2016/7/4.
@@ -53,13 +45,11 @@ public class CellphoneContactListActivity extends BaseActivity {
     private CellPhoneContactAdapter.AddClieckedListener clieckedListener;
     private static final String[] PHONES_PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
-    private int mSelectPosition =-1;
     protected LinearLayoutManager mLayoutManager;
     private CharacterParser characterParser;
     private PinyinContactUtil pinyinContactUtil;
 
-    private static final int REQUEST_CODE_CONTACTS = 0x0001;
-    private boolean isHasContacts;
+    private static final int REQUEST_CODE_CONTACTS_PERMISSION = 0x0001;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,22 +59,10 @@ public class CellphoneContactListActivity extends BaseActivity {
         setTitle(R.string.customer_telephone_list);
         setBackVisible(true);
         characterParser = CharacterParser.getInstance();
-        MPermissions.requestPermissions(CellphoneContactListActivity.this,REQUEST_CODE_CONTACTS, Manifest.permission.READ_CONTACTS);
-        if(isHasContacts){
-            getPhoneContacts();
-            for (PhoneContactor contactor : contactList){
-                if(characterParser.getSelling(contactor.name.substring(0,1)).toUpperCase().substring(0,1).matches("[A-Z]")){
-                    contactor.sortLetters = characterParser.getSelling(contactor.name.substring(0,1)).toUpperCase().substring(0,1);
-                }else{
-                    contactor.sortLetters = "#";
-                }
-            }
-        }else {
-            makeShortToast("联系人权限未开启");
-        }
+        PermissionTool.requestPermission(this, new String[]{Manifest.permission.READ_CONTACTS}, new String[]{"读取联系人"}, REQUEST_CODE_CONTACTS_PERMISSION);
 
         pinyinContactUtil = new PinyinContactUtil();
-        Collections.sort(contactList,pinyinContactUtil);
+        Collections.sort(contactList, pinyinContactUtil);
         contactSidebar = (SideBar) findViewById(R.id.contact_sidebar);
         contentDialog = (TextView) findViewById(R.id.content_dialog);
         mLayoutManager = new LinearLayoutManager(this);
@@ -108,14 +86,11 @@ public class CellphoneContactListActivity extends BaseActivity {
         contactSidebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String s) {
-                for (int i = 0; i <contactList.size() ; i++) {
+                for (int i = 0; i < contactList.size(); i++) {
                     PhoneContactor contactor = contactList.get(i);
-              String firstLetter =   characterParser.getSelling(contactor.name).substring(0,1).toUpperCase();
-                    if(TextUtils.equals(firstLetter,s)){
-                        mSelectPosition = i;
-                        mLayoutManager.scrollToPositionWithOffset(i>0?i:0,0);
-
-
+                    String firstLetter = characterParser.getSelling(contactor.name).substring(0, 1).toUpperCase();
+                    if (TextUtils.equals(firstLetter, s)) {
+                        mLayoutManager.scrollToPositionWithOffset(i > 0 ? i : 0, 0);
                     }
 
                 }
@@ -142,29 +117,35 @@ public class CellphoneContactListActivity extends BaseActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        MPermissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @PermissionGrant(REQUEST_CODE_CONTACTS)
-    public void requestContactsSuccess()
-    {
-        ContentResolver resolver = CellphoneContactListActivity.this.getContentResolver();
-        Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PHONES_PROJECTION, null, null, null);
-        if(phoneCursor!=null){
-            isHasContacts = true;
-        }else{
-            isHasContacts = false;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CONTACTS_PERMISSION) {
+            if (resultCode == Activity.RESULT_OK) {
+                ContentResolver resolver = CellphoneContactListActivity.this.getContentResolver();
+                Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PHONES_PROJECTION, null, null, null);
+                if (phoneCursor != null) {
+                    getPhoneContacts();
+                    for (PhoneContactor contactor : contactList) {
+                        if (characterParser.getSelling(contactor.name.substring(0, 1)).toUpperCase().substring(0, 1).matches("[A-Z]")) {
+                            contactor.sortLetters = characterParser.getSelling(contactor.name.substring(0, 1)).toUpperCase().substring(0, 1);
+                        } else {
+                            contactor.sortLetters = "#";
+                        }
+                    }
+                } else {
+                    makeShortToast("读取联系人失败！");
+                }
+            } else {
+                makeShortToast("联系人权限未开启");
+            }
         }
     }
 
-    private void showText(String letter){
+    private void showText(String letter) {
         contentDialog.setVisibility(View.VISIBLE);
         contentDialog.setText(letter);
 
     }
-
 
 
 }
