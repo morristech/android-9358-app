@@ -38,6 +38,7 @@ import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.ActivityListResult;
+import com.xmd.technician.http.gson.AddToBlacklistResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AppUpdateConfigResult;
 import com.xmd.technician.http.gson.AvatarResult;
@@ -60,6 +61,7 @@ import com.xmd.technician.http.gson.HelloRecordListResult;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
+import com.xmd.technician.http.gson.InBlacklistResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
@@ -79,6 +81,7 @@ import com.xmd.technician.http.gson.PayForMeListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
+import com.xmd.technician.http.gson.RemoveFromBlacklistResult;
 import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.http.gson.RoleListResult;
@@ -86,6 +89,7 @@ import com.xmd.technician.http.gson.RolePermissionListResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
 import com.xmd.technician.http.gson.TechAccountListResult;
+import com.xmd.technician.http.gson.TechBlacklistResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
@@ -424,6 +428,19 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_TECH_RANKING_LIST:
                 getTechPersonalList((Map<String, String>) msg.obj);
+                break;
+            // --------------------------------------> 聊天黑名单 <------------------------------------
+            case MsgDef.MSG_DEF_ADD_TO_BLACKLIST:
+                addToBlacklist(msg.obj.toString());
+                break;
+            case MsgDef.MSG_DEF_REMOVE_FROM_BLACKLIST:
+                removeFromBlacklist(msg.obj.toString());
+                break;
+            case MsgDef.MSG_DEF_IN_BLACKLIST:
+                inBlacklist(msg.obj.toString());
+                break;
+            case MsgDef.MSG_DEF_GET_TECH_BLACKLIST:
+                getBlacklist((Map<String, String>) msg.obj);
                 break;
         }
 
@@ -2059,5 +2076,50 @@ public class RequestController extends AbstractController {
     // 下载打招呼图片进行缓存
     private void downloadHelloImageCache() {
         HelloSettingManager.getInstance().getCacheFilePath();
+    }
+
+    // -----------------------------------------> 聊天黑名单 <-----------------------------------------
+    //将联系人加入聊天黑名单
+    private void addToBlacklist(String friendId) {
+        Call<AddToBlacklistResult> call = getSpaService().addToBlacklist(friendId, LoginTechnician.getInstance().getToken());
+        call.enqueue(new TokenCheckedCallback<AddToBlacklistResult>() {
+            @Override
+            protected void postResult(AddToBlacklistResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //将联系人移出聊天黑名单
+    private void removeFromBlacklist(String friendId) {
+        Call<RemoveFromBlacklistResult> call = getSpaService().removeFromBlacklist(friendId, LoginTechnician.getInstance().getToken());
+        call.enqueue(new TokenCheckedCallback<RemoveFromBlacklistResult>() {
+            @Override
+            protected void postResult(RemoveFromBlacklistResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //联系人是否在聊天黑名单中
+    private void inBlacklist(String friendId) {
+        Call<InBlacklistResult> call = getSpaService().inBlacklist(friendId, LoginTechnician.getInstance().getToken());
+        call.enqueue(new TokenCheckedCallback<InBlacklistResult>() {
+            @Override
+            protected void postResult(InBlacklistResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取技师聊天黑名单
+    private void getBlacklist(Map<String, String> params) {
+        Call<TechBlacklistResult> call = getSpaService().getBlacklist(params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE), LoginTechnician.getInstance().getToken());
+        call.enqueue(new TokenCheckedCallback<TechBlacklistResult>() {
+            @Override
+            protected void postResult(TechBlacklistResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
     }
 }

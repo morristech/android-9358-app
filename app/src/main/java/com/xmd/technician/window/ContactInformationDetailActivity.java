@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
+import com.hyphenate.chat.EMClient;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -38,8 +39,11 @@ import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.http.gson.AddToBlacklistResult;
 import com.xmd.technician.http.gson.ContactPermissionResult;
 import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
+import com.xmd.technician.http.gson.InBlacklistResult;
+import com.xmd.technician.http.gson.RemoveFromBlacklistResult;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -100,6 +104,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
     Button btnEmChat;
     @Bind(R.id.btn_EmHello)
     Button btnEmHello;
+    @Bind(R.id.btn_rm_blacklist)
+    Button btnRmBlacklist;
     @Bind(R.id.order_empty_alter)
     TextView orderEmpty;
     @Bind(R.id.contact_more)
@@ -152,6 +158,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private Subscription sayHiDetailSubscription;  // 打招呼
     private Subscription getSayHiStatusSubscription;
     private Subscription contactPermissionDetailSubscription;
+    private Subscription addToBlacklistSubscription;
+    private Subscription removeFromBlacklistSubscription;
+    private Subscription inBlacklistSubscription;
 
     //  -----------------customer
     private String userId;
@@ -171,6 +180,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private String chatType; //用户类型
     private String impression;  // 印象
     private String isTech;      // 聊天参数
+
+    private boolean inBlacklist = false; //是否在聊天黑名单中
 
     private Map<String, String> params = new HashMap<>();
 
@@ -205,6 +216,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
         doDeleteContactSubscription = RxBus.getInstance().toObservable(DeleteContactResult.class).subscribe(result -> {
             handlerDeleteCustomer(result);
         });
+
+        addToBlacklistSubscription = RxBus.getInstance().toObservable(AddToBlacklistResult.class).subscribe(result -> handlerAddToBlacklist(result));
+        removeFromBlacklistSubscription = RxBus.getInstance().toObservable(RemoveFromBlacklistResult.class).subscribe(result -> handlerRemoveFromBlacklist(result));
+        inBlacklistSubscription = RxBus.getInstance().toObservable(InBlacklistResult.class).subscribe(result -> handlerInBlacklist(result));
 
         intiViewForType(contactType);
     }
@@ -266,6 +281,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 getCustomerInfo(userId);
                 // 获取客户访问情况
                 getVisitView(userId);
+                //判断用户是否在聊天黑名单中
+                inBlacklist(userId);
                 break;
             case Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER:
                 isTech = Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER;
@@ -312,6 +329,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
             Map<String, String> params = new HashMap<>();
             params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, userId);
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_CHECK_HELLO_RECENTLY, params);
+        }
+    }
+
+    private void inBlacklist(String userId) {
+        if (Utils.isNotEmpty(userId)) {
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_IN_BLACKLIST, userId);
         }
     }
 
@@ -386,17 +409,35 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     private void handleContactPermissionDetail(ContactPermissionResult result) {
         if (result != null && result.statusCode == 200) {
+            permissionInfo = result.respData;
+        }
+        // 更新按钮状态
+        showButton(false);
+    }
+
+    private void showButton(boolean needPermission){
+        if(inBlacklist){
+            btnEmHello.setVisibility(View.GONE);
+            btnEmChat.setVisibility(View.GONE);
+            btnCallPhone.setVisibility(View.GONE);
+            btnChat.setVisibility(View.GONE);
+            btnRmBlacklist.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        btnRmBlacklist.setVisibility(View.GONE);
+        if (permissionInfo != null) {
             // 更新按钮状态
             //检查打招呼权限
-            if (result.respData.hello) {
+            if (permissionInfo.hello) {
                 getSayHiStatus(userId);
             }
             //检查聊天权限
-            if (result.respData.echat) {
+            if (permissionInfo.echat) {
                 btnEmHello.setVisibility(View.VISIBLE);
             }
 
-            if (result.respData.echat && result.respData.hello) {
+            if (permissionInfo.echat && permissionInfo.hello) {
                 btnEmChat.setVisibility(View.VISIBLE);
                 btnEmHello.setVisibility(View.GONE);
             } else {
@@ -404,14 +445,18 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
 
             }
-            btnCallPhone.setVisibility(result.respData.call ? View.VISIBLE : View.GONE);
-            btnChat.setVisibility(result.respData.sms ? View.VISIBLE : View.GONE);
+            btnCallPhone.setVisibility(permissionInfo.call ? View.VISIBLE : View.GONE);
+            btnChat.setVisibility(permissionInfo.sms ? View.VISIBLE : View.GONE);
         } else {
-            // 默认按钮状态:只能打招呼
-            btnEmHello.setVisibility(View.VISIBLE);
-            btnEmChat.setVisibility(View.GONE);
-            btnCallPhone.setVisibility(View.GONE);
-            btnChat.setVisibility(View.GONE);
+            if(needPermission){  //需要获取权限信息
+                getContactPermissionDetail(userId);
+            }else {
+                // 默认按钮状态:只能打招呼
+                btnEmHello.setVisibility(View.VISIBLE);
+                btnEmChat.setVisibility(View.GONE);
+                btnCallPhone.setVisibility(View.GONE);
+                btnChat.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -481,7 +526,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     @OnClick(R.id.contact_more)
     public void toDoMore() {
-        final String[] items = new String[]{ResourceUtils.getString(R.string.delete_contact), ResourceUtils.getString(R.string.add_remark)};
+        final String[] items = new String[]{ResourceUtils.getString(R.string.delete_contact), ResourceUtils.getString(R.string.add_to_blacklist), ResourceUtils.getString(R.string.add_remark)};
         DropDownMenuDialog.getDropDownMenuDialog(ContactInformationDetailActivity.this, items, (index -> {
             switch (index) {
                 case 0:
@@ -496,6 +541,17 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     }.show();
                     break;
                 case 1:
+                    new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_add_to_blacklist), getString(R.string.alert_add_to_blacklist_message), "") {
+                        @Override
+                        public void onConfirmClick() {
+                            if(!inBlacklist && Utils.isNotEmpty(userId)) {
+                                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_TO_BLACKLIST, userId);
+                            }
+                            super.onConfirmClick();
+                        }
+                    }.show();
+                    break;
+                case 2:
                     Intent intent = new Intent(ContactInformationDetailActivity.this, EditContactInformation.class);
                     intent.putExtra(RequestConstant.KEY_ID, contactId);
                     intent.putExtra(RequestConstant.KEY_NOTE_NAME, mContactName.getText().toString());
@@ -512,6 +568,14 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     break;
             }
         })).show(contactMore);
+    }
+
+    // 移出聊天黑名单
+    @OnClick(R.id.btn_rm_blacklist)
+    public void removeFromBlacklist() {
+        if(inBlacklist && Utils.isNotEmpty(userId)){
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_REMOVE_FROM_BLACKLIST, userId);
+        }
     }
 
     @Override
@@ -542,6 +606,18 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if (contactPermissionDetailSubscription != null) {
             RxBus.getInstance().unsubscribe(contactPermissionDetailSubscription);
         }
+
+        if(addToBlacklistSubscription != null){
+            RxBus.getInstance().unsubscribe(addToBlacklistSubscription);
+        }
+
+        if(removeFromBlacklistSubscription != null){
+            RxBus.getInstance().unsubscribe(removeFromBlacklistSubscription);
+        }
+
+        if(inBlacklistSubscription != null){
+            RxBus.getInstance().unsubscribe(inBlacklistSubscription);
+        }
     }
 
     private void handlerCustomer(CustomerDetailResult customer) {
@@ -556,21 +632,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
             contactMore.setVisibility(View.VISIBLE);
         }
 
-        if (permissionInfo != null) {
-            // 更新按钮状态
-            if (permissionInfo.echat && permissionInfo.hello) {
-                btnEmChat.setVisibility(View.VISIBLE);
-                btnEmHello.setVisibility(View.GONE);
-            } else {
-                btnEmChat.setVisibility(View.GONE);
-                btnEmHello.setVisibility(View.VISIBLE);
-                getSayHiStatus(userId);
-            }
-            btnCallPhone.setVisibility(permissionInfo.call ? View.VISIBLE : View.GONE);
-            btnChat.setVisibility(permissionInfo.sms ? View.VISIBLE : View.GONE);
-        } else {
-            getContactPermissionDetail(userId);
-        }
+        // 更新按钮状态
+        showButton(true);
 
         emChatId = mCustomerInfo.emchatId;
         chatHeadUrl = mCustomerInfo.avatarUrl;
@@ -788,10 +851,53 @@ public class ContactInformationDetailActivity extends BaseActivity {
             params.put(RequestConstant.KEY_CONTACT_TYPE, "");
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST, params);
             makeShortToast(ResourceUtils.getString(R.string.delete_contact_success));
+            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, () -> {
+                //更新黑名单列表
+                setResult(RESULT_OK);
+                ContactInformationDetailActivity.this.finish();
+            }, 1500);
+        } else {
+            makeShortToast(result.msg.toString());
+        }
+    }
+
+    private void handlerAddToBlacklist(AddToBlacklistResult result) {
+        if (result.statusCode == 200) {
+            //更新客户列表
+            params.put(RequestConstant.KEY_CONTACT_TYPE, "");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST, params);
+            makeShortToast(ResourceUtils.getString(R.string.add_to_blacklist_success));
+            //清空聊天记录
+            EMClient.getInstance().chatManager().deleteConversation(emChatId, true);
             ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, () -> ContactInformationDetailActivity.this.finish(), 1500);
         } else {
             makeShortToast(result.msg.toString());
         }
+    }
+
+    private void handlerRemoveFromBlacklist(RemoveFromBlacklistResult result) {
+        if (result.statusCode == 200) {
+            //更新客户列表
+            params.clear();
+            params.put(RequestConstant.KEY_CONTACT_TYPE, "");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CUSTOMER_LIST, params);
+            makeShortToast(ResourceUtils.getString(R.string.remove_from_blacklist_success));
+            ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, () -> {
+                //更新黑名单列表
+                setResult(RESULT_OK);
+                ContactInformationDetailActivity.this.finish();
+            }, 1500);
+        } else {
+            makeShortToast(result.msg.toString());
+        }
+    }
+
+    private void handlerInBlacklist(InBlacklistResult result) {
+        if (result.statusCode == 200) {
+            inBlacklist = result.respData;
+        }
+        // 更新按钮状态
+        showButton(false);
     }
 
     @Override

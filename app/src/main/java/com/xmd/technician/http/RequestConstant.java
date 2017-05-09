@@ -166,6 +166,18 @@ public class RequestConstant {
     // 上传打招呼图片
     public static final String URL_UPLOAD_HELLO_TEMPLATE_IMAGE = BASE_URL + "/v2/tech/hello/template/image";
 
+    /**
+     * --------------------------------------> 聊天黑名单 <----------------------------------------
+     */
+    // 将联系人加入黑名单
+    public static final String URL_ADD_TO_BLACKLIST = BASE_URL + "/v2/tech/customer/add/emchat/blacklist";
+    // 将联系人移出黑名单
+    public static final String URL_REMOVE_FROM_BLACKLIST = BASE_URL + "/v2/tech/customer/remove/emchat/blacklist";
+    // 联系人是否在黑名单中
+    public static final String URL_IN_BLACKLIST = BASE_URL + "/v2/tech/customer/in/emchat/blacklist";
+    // 获取技师黑名单列表
+    public static final String URL_GET_TECH_BLACKLIST = BASE_URL + "/v2/tech/customer/emchat/blacklist";
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -222,6 +234,7 @@ public class RequestConstant {
     public static final String KEY_IDS = "ids";
     public static final String KEY_REASON = "reason";
     public static final String KEY_ORDER_ID = "orderId";
+    public static final String KEY_FRIEND_ID = "friendId";
 
     public static final String KEY_COMMENTS = "comments";
     public static final String KEY_DAY_RANGE = "dayRange";

@@ -253,6 +253,8 @@
                   android:screenOrientation="portrait"/>
         <activity android:name=".window.TechPersonalRankingDetailActivity"
                   android:screenOrientation="portrait"/>
+        <activity android:name=".window.EmchatBlacklistActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

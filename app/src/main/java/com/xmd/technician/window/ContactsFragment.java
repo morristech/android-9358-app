@@ -1,6 +1,7 @@
 package com.xmd.technician.window;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -31,12 +32,15 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.permission.CheckBusinessPermission;
 import com.xmd.technician.permission.PermissionConstants;
+import com.xmd.technician.widget.DropDownMenuDialog;
+import com.xmd.technician.widget.RewardConfirmDialog;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Subscription;
 
 /**
@@ -89,8 +93,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         mRootView.findViewById(R.id.contact_more).setVisibility(View.VISIBLE);
         ((TextView) mRootView.findViewById(R.id.toolbar_title)).setText(R.string.main_conversion);
         imgRight = ((ImageView) mRootView.findViewById(R.id.toolbar_right_img));
-        imgRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.contact_add));
-        imgRight.setOnClickListener(this);
+        imgRight.setImageDrawable(ResourceUtils.getDrawable(R.drawable.contact_icon_more));
+        //imgRight.setOnClickListener(this);
         imgRight.setVisibility(View.GONE);
         mRecentlyVisitor.setTextColor(ResourceUtils.getColor(R.color.colorMainBtn));
         initVisitorView();
@@ -269,6 +273,24 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 ac.startActivity(intent);
                 break;
         }
+    }
+
+    @OnClick(R.id.toolbar_right_img)
+    public void toDoMoreRight() {
+        final String[] items = new String[]{ResourceUtils.getString(R.string.add_contact), ResourceUtils.getString(R.string.blacklist_manager)};
+        DropDownMenuDialog.getDropDownMenuDialog(getActivity(), items, (index -> {
+            switch (index) {
+                case 0:
+                    Intent intent = new Intent(ac, AddFriendActivity.class);
+                    ac.startActivity(intent);
+                    break;
+                case 1:
+                    Intent intent1 = new Intent(ac, EmchatBlacklistActivity.class);
+                    ac.startActivity(intent1);
+                    break;
+
+            }
+        })).show(imgRight);
     }
 
     public void showOutMenu() {

@@ -22,6 +22,7 @@ import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.http.gson.AccountMoneyResult;
 import com.xmd.technician.http.gson.ActivityListResult;
+import com.xmd.technician.http.gson.AddToBlacklistResult;
 import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
@@ -43,6 +44,7 @@ import com.xmd.technician.http.gson.HelloReplyResult;
 import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
+import com.xmd.technician.http.gson.InBlacklistResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
@@ -60,12 +62,14 @@ import com.xmd.technician.http.gson.PayForMeListResult;
 import com.xmd.technician.http.gson.PropagandaListResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.http.gson.RegisterResult;
+import com.xmd.technician.http.gson.RemoveFromBlacklistResult;
 import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.http.gson.RoleListResult;
 import com.xmd.technician.http.gson.RolePermissionListResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
 import com.xmd.technician.http.gson.TechAccountListResult;
+import com.xmd.technician.http.gson.TechBlacklistResult;
 import com.xmd.technician.http.gson.TechCurrentResult;
 import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
@@ -825,4 +829,24 @@ public interface SpaService {
                                                         @Query(RequestConstant.KEY_END_DATE) String endDate,
                                                         @Query(RequestConstant.KEY_PAGE) String pager,
                                                         @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize);
+
+    // ------------------------------------------> 聊天黑名单 <----------------------------------------
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_ADD_TO_BLACKLIST)
+    Call<AddToBlacklistResult> addToBlacklist(@Field(RequestConstant.KEY_FRIEND_ID) String id,
+                                              @Field(RequestConstant.KEY_TOKEN) String userToken);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_REMOVE_FROM_BLACKLIST)
+    Call<RemoveFromBlacklistResult> removeFromBlacklist(@Field(RequestConstant.KEY_FRIEND_ID) String id,
+                                                        @Field(RequestConstant.KEY_TOKEN) String userToken);
+
+    @GET(RequestConstant.URL_IN_BLACKLIST)
+    Call<InBlacklistResult> inBlacklist(@Query(RequestConstant.KEY_FRIEND_ID) String id,
+                                        @Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @GET(RequestConstant.URL_GET_TECH_BLACKLIST)
+    Call<TechBlacklistResult> getBlacklist(@Query(RequestConstant.KEY_PAGE) String page,
+                                           @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                           @Query(RequestConstant.KEY_TOKEN) String userToken);
 }

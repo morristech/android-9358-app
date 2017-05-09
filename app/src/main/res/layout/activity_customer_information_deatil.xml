@@ -589,6 +589,19 @@
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/fontHead"
                     android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn_rm_blacklist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/margin_15"
+                    android:layout_marginRight="@dimen/margin_15"
+                    android:background="@drawable/btn_chat_selector"
+                    android:gravity="center"
+                    android:text="@string/remove_from_blacklist"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/fontHead"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <LinearLayout

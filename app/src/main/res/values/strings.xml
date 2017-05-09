@@ -315,10 +315,16 @@
     <string name="contact_hint_phone">请输入手机号</string>
     <string name="toast_useful_name">请输入姓名</string>
     <string name="delete_contact">删除好友</string>
+    <string name="add_to_blacklist">加入黑名单</string>
+    <string name="blacklist_manager">黑名单管理</string>
     <string name="add_remark">修改备注</string>
     <string name="alert_delete_contact">确认删除好友？</string>
     <string name="alert_delete_contact_message">删除好友后您的好友列表不再显示该好友信息。</string>
     <string name="delete_contact_success">删除好友成功</string>
+    <string name="alert_add_to_blacklist">加入黑名单</string>
+    <string name="alert_add_to_blacklist_message">添加至黑名单后，将不再接收对方消息</string>
+    <string name="add_to_blacklist_success">好友已加入黑名单</string>
+    <string name="remove_from_blacklist_success">好友成功移出黑名单</string>
     <string name="edit_remark">备注名 </string>
     <string name="edit_remark_message">备注信息 </string>
     <string name="change_remark_message"> 修改备注</string>
@@ -404,6 +410,7 @@
 
     <string name="had_say_hi">已招呼</string>
     <string name="to_say_hi">打招呼</string>
+    <string name="remove_from_blacklist">移出黑名单</string>
     <string name="visitor_has_no_message">游客无详情信息</string>
 
     <!-- 首页-->

@@ -32,12 +32,14 @@ import com.xmd.technician.bean.ApplicationBean;
 import com.xmd.technician.bean.ClubJournalBean;
 import com.xmd.technician.bean.CouponInfo;
 import com.xmd.technician.bean.CreditDetailBean;
+import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.bean.LimitGrabBean;
 import com.xmd.technician.bean.OnceCardItemBean;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.PaidCouponUserDetail;
 import com.xmd.technician.bean.PayForMeBean;
+import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RewardBean;
 import com.xmd.technician.bean.ShareCouponBean;
 import com.xmd.technician.bean.TechRankingBean;
@@ -118,6 +120,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_COUPON_PAY_FOR_ME_ITEM = 21;
     private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 22;
     private static final int TYPE_TECH_PERSONAL_RANKING = 23;
+    private static final int TYPE_TECH_BLACKLIST = 24;
     private static final int TYPE_FOOTER = 99;
 
     private boolean mIsNoMore = false;
@@ -205,6 +208,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_TECH_PK_ACTIVITY_ITEM;
             } else if (mData.get(position) instanceof TechRankingBean) {
                 return TYPE_TECH_PERSONAL_RANKING;
+            } else if(mData.get(position) instanceof CustomerInfo){
+                return TYPE_TECH_BLACKLIST;
             } else {
                 return TYPE_FOOTER;
             }
@@ -278,6 +283,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_TECH_PERSONAL_RANKING:
                 View viewRanking = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_tech_personal_ranking_item, parent, false);
                 return new TechPersonalRankingListItemViewHolder(viewRanking);
+            case TYPE_TECH_BLACKLIST:
+                View emchatBlasklist = LayoutInflater.from(parent.getContext()).inflate(R.layout.emchat_blacklist_item, parent, false);
+                return new EmchatBlacklistListItemViewHolder(emchatBlasklist);
             default:
                 View viewDefault = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
                 return new ListFooterHolder(viewDefault);
@@ -971,6 +979,35 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             Glide.with(mContext).load(techBean.avatarUrl).into(techRankingViewHolder.imgTechHead);
 
         }
+        if(holder instanceof EmchatBlacklistListItemViewHolder){
+            Object obj = mData.get(position);
+            if (!(obj instanceof CustomerInfo)) {
+                return;
+            }
+            final CustomerInfo customerInfo = (CustomerInfo) obj;
+            EmchatBlacklistListItemViewHolder viewHolder = (EmchatBlacklistListItemViewHolder) holder;
+
+            if (Long.parseLong(customerInfo.userId) > 0) {
+                if (Utils.isNotEmpty(customerInfo.userNoteName)) {
+                    viewHolder.tvCustomerName.setText(customerInfo.userNoteName);
+                } else if (Utils.isNotEmpty(customerInfo.userName)) {
+                    viewHolder.tvCustomerName.setText(customerInfo.userName);
+                } else {
+                    viewHolder.tvCustomerName.setText(ResourceUtils.getString(R.string.default_user_name));
+                }
+            } else {
+                viewHolder.tvCustomerName.setText(ResourceUtils.getString(R.string.visitor_type));
+            }
+            Glide.with(mContext).load(customerInfo.avatarUrl).into(viewHolder.imgCustomerHead);
+
+            viewHolder.itemView.setOnClickListener(v -> {
+                try {
+                    mCallback.onItemClicked(customerInfo);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
         if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);
@@ -1387,6 +1424,18 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView tvRankingMemberNumber;
 
         TechPersonalRankingListItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class EmchatBlacklistListItemViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.customer_head)
+        CircleImageView imgCustomerHead;
+        @Bind(R.id.customer_name)
+        TextView tvCustomerName;
+
+        EmchatBlacklistListItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

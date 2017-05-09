@@ -185,6 +185,9 @@ public class MsgDef {
     public static final int MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST = 0x0108;
     public static final int MSG_DEF_TECH_RANKING_LIST = 0x0109;
 
-
-
+    //------------------------------------------> 聊天黑名单 <-----------------------------------------
+    public static final int MSG_DEF_IN_BLACKLIST = 0x0110;
+    public static final int MSG_DEF_ADD_TO_BLACKLIST = 0x0111;
+    public static final int MSG_DEF_REMOVE_FROM_BLACKLIST = 0x0112;
+    public static final int MSG_DEF_GET_TECH_BLACKLIST = 0x0113;
 }
