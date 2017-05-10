@@ -177,6 +177,8 @@ public class RequestConstant {
     public static final String URL_IN_BLACKLIST = BASE_URL + "/v2/tech/customer/in/emchat/blacklist";
     // 获取技师黑名单列表
     public static final String URL_GET_TECH_BLACKLIST = BASE_URL + "/v2/tech/customer/emchat/blacklist";
+    // 技师是否在联系人黑名单中
+    public static final String URL_IN_USER_BLACKLIST = BASE_URL + "/v2/tech/customer/in/user/blacklist";
 
     /*********************************************************************************************/
     /*                                           keys                                            */

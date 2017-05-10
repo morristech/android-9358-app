@@ -62,6 +62,7 @@ import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
 import com.xmd.technician.http.gson.InBlacklistResult;
+import com.xmd.technician.http.gson.InUserBlacklistResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
@@ -441,6 +442,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_GET_TECH_BLACKLIST:
                 getBlacklist((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_IN_USER_BLACKLIST:
+                inUserBlacklist(msg.obj.toString());
                 break;
         }
 
@@ -2118,6 +2122,17 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<TechBlacklistResult>() {
             @Override
             protected void postResult(TechBlacklistResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //技师是否在联系人聊天黑名单中
+    private void inUserBlacklist(String friendChatId) {
+        Call<InUserBlacklistResult> call = getSpaService().inUserBlacklist(friendChatId, LoginTechnician.getInstance().getToken());
+        call.enqueue(new TokenCheckedCallback<InUserBlacklistResult>() {
+            @Override
+            protected void postResult(InUserBlacklistResult result) {
                 RxBus.getInstance().post(result);
             }
         });

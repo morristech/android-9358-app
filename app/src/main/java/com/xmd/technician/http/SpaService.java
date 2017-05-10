@@ -45,6 +45,7 @@ import com.xmd.technician.http.gson.HelloSaveTemplateResult;
 import com.xmd.technician.http.gson.HelloSysTemplateResult;
 import com.xmd.technician.http.gson.HelloUploadImgResult;
 import com.xmd.technician.http.gson.InBlacklistResult;
+import com.xmd.technician.http.gson.InUserBlacklistResult;
 import com.xmd.technician.http.gson.JoinClubResult;
 import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
@@ -849,4 +850,8 @@ public interface SpaService {
     Call<TechBlacklistResult> getBlacklist(@Query(RequestConstant.KEY_PAGE) String page,
                                            @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
                                            @Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @GET(RequestConstant.URL_IN_USER_BLACKLIST)
+    Call<InUserBlacklistResult> inUserBlacklist(@Query(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
+                                                @Query(RequestConstant.KEY_TOKEN) String userToken);
 }

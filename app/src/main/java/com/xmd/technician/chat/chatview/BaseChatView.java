@@ -11,11 +11,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessage.Direct;
 import com.hyphenate.util.DateUtils;
 import com.xmd.technician.R;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.UserUtils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -113,8 +115,14 @@ public abstract class BaseChatView extends LinearLayout {
 
                     break;
                 case FAIL: // 发送失败
-                    progressBar.setVisibility(View.GONE);
-                    statusView.setVisibility(View.VISIBLE);
+                    String errorCode = message.getStringAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_SERVER_NOT_REACHABLE);
+                    if(ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)){
+                        progressBar.setVisibility(View.GONE);
+                        statusView.setVisibility(View.GONE);
+                    }else {
+                        progressBar.setVisibility(View.GONE);
+                        statusView.setVisibility(View.VISIBLE);
+                    }
                     break;
                 case INPROGRESS: // 发送中
                     progressBar.setVisibility(View.VISIBLE);
@@ -157,6 +165,7 @@ public abstract class BaseChatView extends LinearLayout {
 
                 @Override
                 public void onError(int code, String error) {
+                    message.setAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_SERVER_NOT_REACHABLE);
                     updateView();
                 }
             };

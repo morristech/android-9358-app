@@ -324,6 +324,7 @@
     <string name="alert_add_to_blacklist">加入黑名单</string>
     <string name="alert_add_to_blacklist_message">添加至黑名单后，将不再接收对方消息</string>
     <string name="add_to_blacklist_success">好友已加入黑名单</string>
+    <string name="add_to_blacklist_failed">加入黑名单失败，缺少客户信息</string>
     <string name="remove_from_blacklist_success">好友成功移出黑名单</string>
     <string name="edit_remark">备注名 </string>
     <string name="edit_remark_message">备注信息 </string>

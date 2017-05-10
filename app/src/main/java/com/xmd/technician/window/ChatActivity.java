@@ -59,6 +59,7 @@ import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CouponListResult;
+import com.xmd.technician.http.gson.InUserBlacklistResult;
 import com.xmd.technician.http.gson.OrderManageResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -145,10 +146,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private Subscription mCreditStatusSubscription;
     private Subscription mGiftResultSubscription;
     private Subscription mClubUserGetCouponSubscription;
+    private Subscription mInUserBlacklistSubscription;
 
     private Subscription mNewMessageSubscription;
 
     private IEmchat emchatManager = XMDEmChatManager.getInstance();
+    //技师在用户黑名单中
+    private boolean mInUserBlacklist = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,9 +200,12 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         );
 
 
+        mInUserBlacklistSubscription = RxBus.getInstance().toObservable(InUserBlacklistResult.class).subscribe(
+                result -> handlerUserInBlacklist(result));
+
         adverseName = mAppTitle.getText().toString();
 
-
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_IN_USER_BLACKLIST, mToChatEmchatId);
     }
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_REWARD)
@@ -360,7 +367,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription, mSendMessageSubscription,
                     mSendDiceGameSubscription, mAcceptGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription
                     , mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription, mCreditStatusSubscription,
-                    mGiftResultSubscription, mClubUserGetCouponSubscription);
+                    mGiftResultSubscription, mClubUserGetCouponSubscription, mInUserBlacklistSubscription);
         }
     }
 
@@ -693,6 +700,12 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
     }
 
+    private void handlerUserInBlacklist(InUserBlacklistResult result) {
+        if (result.statusCode == 200) {
+            mInUserBlacklist = result.respData;
+        }
+    }
+
     /**
      * 隐藏软键盘
      */
@@ -824,6 +837,9 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
         message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
         message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
+        if(mInUserBlacklist){
+            message.setAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_IN_BLACKLIST);
+        }
 
 
         //发送消息

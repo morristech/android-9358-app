@@ -29,6 +29,10 @@ public class ChatConstant {
     public static final String MESSAGE_ATTR_EXPRESSION_ID = "em_expression_id";
     public static final String KEY_SAY_HI_POSITION = "say_hi_position";
 
+    //环信消息失败原因
+    public static final String ERROR_SERVER_NOT_REACHABLE = "server_not_reachable";
+    public static final String ERROR_IN_BLACKLIST = "in_blacklist";
+
     //自定义消息
     public static final int MESSAGE_TYPE_SENT_REWARD = 0x81;
     public static final int MESSAGE_TYPE_RECV_REWARD = 0x82;
@@ -102,5 +106,6 @@ public class ChatConstant {
     public static final String MESSAGE_TECH_TYPE = "tech";
     public static final String KEY_COUPON_ACT_ID = "userActId";
     public static final String KEY_PAID_COUPON_TIP = "paidCouponTip";
+    public static final String KEY_ERROR_CODE = "errorCode";
 
 }

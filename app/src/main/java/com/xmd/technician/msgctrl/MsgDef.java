@@ -190,4 +190,5 @@ public class MsgDef {
     public static final int MSG_DEF_ADD_TO_BLACKLIST = 0x0111;
     public static final int MSG_DEF_REMOVE_FROM_BLACKLIST = 0x0112;
     public static final int MSG_DEF_GET_TECH_BLACKLIST = 0x0113;
+    public static final int MSG_DEF_IN_USER_BLACKLIST = 0x0114;
 }

@@ -544,7 +544,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_add_to_blacklist), getString(R.string.alert_add_to_blacklist_message), "") {
                         @Override
                         public void onConfirmClick() {
-                            if(!inBlacklist && Utils.isNotEmpty(userId)) {
+                            if(Utils.isEmpty(userId)){
+                                ContactInformationDetailActivity.this.makeShortToast(getString(R.string.add_to_blacklist_failed));
+                            } else if(!inBlacklist) {
                                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_TO_BLACKLIST, userId);
                             }
                             super.onConfirmClick();
