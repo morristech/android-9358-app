@@ -1,15 +1,18 @@
 package com.xmd.technician.window;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -97,13 +100,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
     @Bind(R.id.rl_order2)
     RelativeLayout rlOrder2;
     @Bind(R.id.btn_chat)
-    Button btnChat;
+    ImageButton btnChat;
     @Bind(R.id.btn_call_phone)
-    Button btnCallPhone;
+    ImageButton btnCallPhone;
     @Bind(R.id.btn_EmChat)
-    Button btnEmChat;
+    ImageButton btnEmChat;
     @Bind(R.id.btn_EmHello)
-    Button btnEmHello;
+    ImageButton btnEmHello;
     @Bind(R.id.btn_rm_blacklist)
     Button btnRmBlacklist;
     @Bind(R.id.order_empty_alter)
@@ -144,6 +147,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
     RelativeLayout mVisitTime;
     @Bind(R.id.rl_visit_tech_name)
     RelativeLayout mVisitTechName;
+    @Bind(R.id.layout_operation_buttons)
+    LinearLayout layoutOperationButtons;
+    @Bind(R.id.btn_operation)
+    ImageButton btnOperation;
 
     private Context mContext;
 
@@ -187,6 +194,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     private IEmchat emchat = XMDEmChatManager.getInstance();
 
+    private boolean showOperationButtons;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -227,19 +236,25 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void initOperationButtonForType(String contactType) {
         switch (contactType) {
             case Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER:
-                btnEmHello.setVisibility(View.VISIBLE);
+                layoutOperationButtons.setVisibility(View.GONE);
+                btnOperation.setVisibility(View.GONE);
+                btnEmHello.setVisibility(View.GONE);
                 btnEmChat.setVisibility(View.GONE);
                 btnCallPhone.setVisibility(View.GONE);
                 btnChat.setVisibility(View.GONE);
                 break;
             case Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER:
             case Constant.CONTACT_INFO_DETAIL_TYPE_TECH:
+                layoutOperationButtons.setVisibility(View.VISIBLE);
+                btnOperation.setVisibility(View.VISIBLE);
                 btnEmHello.setVisibility(View.GONE);
                 btnEmChat.setVisibility(View.VISIBLE);
                 btnCallPhone.setVisibility(View.GONE);
                 btnChat.setVisibility(View.GONE);
                 break;
             default:
+                layoutOperationButtons.setVisibility(View.VISIBLE);
+                btnOperation.setVisibility(View.VISIBLE);
                 btnEmHello.setVisibility(View.GONE);
                 btnEmChat.setVisibility(View.GONE);
                 btnCallPhone.setVisibility(View.GONE);
@@ -283,6 +298,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 getVisitView(userId);
                 //判断用户是否在聊天黑名单中
                 inBlacklist(userId);
+                //获取用户的联系权限
+                getContactPermissionDetail(userId);
                 break;
             case Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER:
                 isTech = Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER;
@@ -348,11 +365,11 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     private void handleSayHiStatus(HelloCheckRecentlyResult result) {
         if (result != null && result.statusCode == 200 && "Y".equals(result.respData)) {
-            btnEmHello.setEnabled(false);
-            btnEmHello.setText(R.string.had_say_hi);
+//            btnEmHello.setEnabled(false);
+//            btnEmHello.setText(R.string.had_say_hi);
         } else {
-            btnEmHello.setEnabled(true);
-            btnEmHello.setText(R.string.to_say_hi);
+//            btnEmHello.setEnabled(true);
+//            btnEmHello.setText(R.string.to_say_hi);
         }
     }
 
@@ -390,8 +407,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
             showToast("打招呼成功");
             HelloSettingManager.getInstance().sendHelloTemplate(emChatName, emChatId, result.userAvatar, result.userType);
             saveChatContact(emChatId);
-            btnEmHello.setEnabled(false);
-            btnEmHello.setText(R.string.had_say_hi);
+//            btnEmHello.setEnabled(false);
+//            btnEmHello.setText(R.string.had_say_hi);
         } else {
             showToast("打招呼失败:" + result.msg);
         }
@@ -412,51 +429,30 @@ public class ContactInformationDetailActivity extends BaseActivity {
             permissionInfo = result.respData;
         }
         // 更新按钮状态
-        showButton(false);
+        showButton();
     }
 
-    private void showButton(boolean needPermission){
-        if(inBlacklist){
+    private void showButton() {
+        if (inBlacklist) {
             btnEmHello.setVisibility(View.GONE);
             btnEmChat.setVisibility(View.GONE);
             btnCallPhone.setVisibility(View.GONE);
             btnChat.setVisibility(View.GONE);
             btnRmBlacklist.setVisibility(View.VISIBLE);
+            btnOperation.setVisibility(View.GONE);
+            layoutOperationButtons.setVisibility(View.GONE);
             return;
         }
 
-        btnRmBlacklist.setVisibility(View.GONE);
         if (permissionInfo != null) {
+            boolean showOperation = permissionInfo.call || permissionInfo.hello || permissionInfo.sms || permissionInfo.echat;
+            btnOperation.setVisibility(showOperation ? View.VISIBLE : View.GONE);
+            layoutOperationButtons.setVisibility(showOperation ? View.VISIBLE : View.GONE);
             // 更新按钮状态
-            //检查打招呼权限
-            if (permissionInfo.hello) {
-                getSayHiStatus(userId);
-            }
-            //检查聊天权限
-            if (permissionInfo.echat) {
-                btnEmHello.setVisibility(View.VISIBLE);
-            }
-
-            if (permissionInfo.echat && permissionInfo.hello) {
-                btnEmChat.setVisibility(View.VISIBLE);
-                btnEmHello.setVisibility(View.GONE);
-            } else {
-                btnEmChat.setVisibility(View.GONE);
-
-
-            }
+            btnEmHello.setVisibility(permissionInfo.hello ? View.VISIBLE : View.GONE);
+            btnEmChat.setVisibility(permissionInfo.echat ? View.VISIBLE : View.GONE);
             btnCallPhone.setVisibility(permissionInfo.call ? View.VISIBLE : View.GONE);
             btnChat.setVisibility(permissionInfo.sms ? View.VISIBLE : View.GONE);
-        } else {
-            if(needPermission){  //需要获取权限信息
-                getContactPermissionDetail(userId);
-            }else {
-                // 默认按钮状态:只能打招呼
-                btnEmHello.setVisibility(View.VISIBLE);
-                btnEmChat.setVisibility(View.GONE);
-                btnCallPhone.setVisibility(View.GONE);
-                btnChat.setVisibility(View.GONE);
-            }
         }
     }
 
@@ -473,6 +469,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
     // 打电话
     @OnClick(R.id.btn_call_phone)
     public void callPhoneToCustomer() {
+        if (!showOperationButtons) {
+            return;
+        }
         // 判断客户号码是否可用
         if (TextUtils.isEmpty(contactPhone)) {
             this.makeShortToast("手机号码不存在");
@@ -484,6 +483,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
     // 发短信
     @OnClick(R.id.btn_chat)
     public void sendMessageToCustomer() {
+        if (!showOperationButtons) {
+            return;
+        }
         // 判断客户号码是否可用
         if (TextUtils.isEmpty(contactPhone)) {
             this.makeShortToast("手机号码不存在");
@@ -498,6 +500,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
     // 环信聊天
     @OnClick(R.id.btn_EmChat)
     public void enChatToCustomer() {
+        if (!showOperationButtons) {
+            return;
+        }
         // 判断emChatId是否存在
         if (TextUtils.isEmpty(emChatId)) {
             this.makeShortToast("聊天失败，缺少客户信息");
@@ -516,6 +521,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
     // 同客户打招呼
     @OnClick(R.id.btn_EmHello)
     public void emHelloToCustomer() {
+        if (!showOperationButtons) {
+            return;
+        }
         //  环信打招呼
         if (TextUtils.isEmpty(emChatId)) {
             this.makeShortToast("打招呼失败，缺少客户信息");
@@ -544,9 +552,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_add_to_blacklist), getString(R.string.alert_add_to_blacklist_message), "") {
                         @Override
                         public void onConfirmClick() {
-                            if(Utils.isEmpty(userId)){
+                            if (Utils.isEmpty(userId)) {
                                 ContactInformationDetailActivity.this.makeShortToast(getString(R.string.add_to_blacklist_failed));
-                            } else if(!inBlacklist) {
+                            } else if (!inBlacklist) {
                                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_TO_BLACKLIST, userId);
                             }
                             super.onConfirmClick();
@@ -575,7 +583,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     // 移出聊天黑名单
     @OnClick(R.id.btn_rm_blacklist)
     public void removeFromBlacklist() {
-        if(inBlacklist && Utils.isNotEmpty(userId)){
+        if (inBlacklist && Utils.isNotEmpty(userId)) {
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_REMOVE_FROM_BLACKLIST, userId);
         }
     }
@@ -609,15 +617,15 @@ public class ContactInformationDetailActivity extends BaseActivity {
             RxBus.getInstance().unsubscribe(contactPermissionDetailSubscription);
         }
 
-        if(addToBlacklistSubscription != null){
+        if (addToBlacklistSubscription != null) {
             RxBus.getInstance().unsubscribe(addToBlacklistSubscription);
         }
 
-        if(removeFromBlacklistSubscription != null){
+        if (removeFromBlacklistSubscription != null) {
             RxBus.getInstance().unsubscribe(removeFromBlacklistSubscription);
         }
 
-        if(inBlacklistSubscription != null){
+        if (inBlacklistSubscription != null) {
             RxBus.getInstance().unsubscribe(inBlacklistSubscription);
         }
     }
@@ -633,9 +641,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if (isMyCustomer) {
             contactMore.setVisibility(View.VISIBLE);
         }
-
-        // 更新按钮状态
-        showButton(true);
 
         emChatId = mCustomerInfo.emchatId;
         chatHeadUrl = mCustomerInfo.avatarUrl;
@@ -899,7 +904,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             inBlacklist = result.respData;
         }
         // 更新按钮状态
-        showButton(false);
+        showButton();
     }
 
     @Override
@@ -933,12 +938,20 @@ public class ContactInformationDetailActivity extends BaseActivity {
         }
     }
 
-    private void callUnusable() {
-        btnCallPhone.setEnabled(false);
-        btnCallPhone.setClickable(false);
-        btnCallPhone.setTextColor(ResourceUtils.getColor(R.color.colorBtnChat));
-        btnChat.setEnabled(false);
-        btnChat.setClickable(false);
-        btnChat.setTextColor(ResourceUtils.getColor(R.color.colorBtnChat));
+    @OnClick(R.id.btn_operation)
+    public void onClickBtnOperation() {
+        TransitionDrawable drawable = (TransitionDrawable) btnOperation.getDrawable();
+        if (!showOperationButtons) {
+            ObjectAnimator animator = ObjectAnimator.ofFloat(layoutOperationButtons, "alpha", 1.0f);
+            animator.setDuration(500);
+            animator.start();
+            drawable.startTransition(500);
+        } else {
+            ObjectAnimator animator = ObjectAnimator.ofFloat(layoutOperationButtons, "alpha", 0.0f);
+            animator.setDuration(500);
+            animator.start();
+            drawable.reverseTransition(500);
+        }
+        showOperationButtons = !showOperationButtons;
     }
 }

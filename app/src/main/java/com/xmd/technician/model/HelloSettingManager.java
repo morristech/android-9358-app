@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -151,6 +152,10 @@ public class HelloSettingManager {
      * @param userEmchatId
      */
     public void sendHelloTemplate(String userName, String userEmchatId, String userAvatar, String userType) {
+        if (TextUtils.isEmpty(userEmchatId)) {
+            XToast.showInNotUI("参数不正确");
+            return;
+        }
         ChatUser chatUser = new ChatUser(userEmchatId);
         chatUser.setNickname(userName);
         chatUser.setAvatar(userAvatar);

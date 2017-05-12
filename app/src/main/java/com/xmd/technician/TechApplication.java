@@ -14,6 +14,7 @@ import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.network.OkHttpUtil;
+import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.chat.XMDEmChatManager;
@@ -204,6 +205,7 @@ public class TechApplication extends MultiDexApplication {
         XLogger.i(TAG, "MODEL:" + Build.MODEL);
         XLogger.i(TAG, "BOARD:" + Build.BOARD);
         XLogger.i(TAG, "DEVICE:" + Build.DEVICE);
+        XLogger.i(TAG, "IMEI:" + DeviceInfoUtils.getDeviceId(this));
         XLogger.i(TAG, "MANUFACTURER:" + Build.MANUFACTURER);
         XLogger.i(TAG, "APP PRODUCT FLAVORS:" + BuildConfig.FLAVOR);
         XLogger.i(TAG, "APP PRODUCT DEV MODE :" + SharedPreferenceHelper.isDevelopMode());
