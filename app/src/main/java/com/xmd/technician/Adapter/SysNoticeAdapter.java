@@ -13,9 +13,11 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.CommonUtils;
+
+import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.window.BrowserActivity;
 
@@ -23,7 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by sdcm on 16-5-13.
+ * Created by Lhj on 16-5-13.
  */
 public class SysNoticeAdapter extends RecyclerView.Adapter{
     private static final byte TYPE_FOOTER = 0;
@@ -38,7 +40,7 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
 
     public SysNoticeAdapter(Context context, String username, int chatType){
         mContext = context;
-        mConversation = EMClient.getInstance().chatManager().getConversation(username, CommonUtils.getConversationType(chatType), true);
+        mConversation = EMClient.getInstance().chatManager().getConversation(username, EaseCommonUtils.getConversationType(chatType), true);
     }
 
     public void setOnFooterClickListener(View.OnClickListener listener){

@@ -17,7 +17,7 @@ import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
-import com.xmd.technician.chat.XMDEmChatManager;
+import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
@@ -91,7 +91,7 @@ public class TechApplication extends MultiDexApplication {
                 }
 
                 //打开友盟错误统计,可以和全局错误拦截器共存
-                MobclickAgent.setCatchUncaughtExceptions(true);
+                MobclickAgent.setCatchUncaughtExceptions(false);
 
                 // 应用入口，禁止默认的页面统计方式
                 MobclickAgent.openActivityDurationTrack(false);
@@ -116,11 +116,12 @@ public class TechApplication extends MultiDexApplication {
                 initGeiTuiPush();
 
                 //初始化环信
-                if (SharedPreferenceHelper.isDevelopMode()) {
-                    XMDEmChatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_DEBUG, BuildConfig.DEBUG);
-                } else {
-                    XMDEmChatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_RELEASE, BuildConfig.DEBUG);
-                }
+//                if (SharedPreferenceHelper.isDevelopMode()) {
+//                    XMDEmChatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_DEBUG, BuildConfig.DEBUG);
+//                } else {
+//                    XMDEmChatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_RELEASE, BuildConfig.DEBUG);
+//                }
+                ChatHelper.getInstance().init(getAppContext());
 
                 DataRefreshService.start();
                 HelloReplyService.start();

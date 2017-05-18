@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/rectangle_white_select_bg"
-        android:paddingBottom="@dimen/small_space"
-        android:paddingLeft="@dimen/margin_20"
-        android:paddingRight="@dimen/margin_20"
-        android:paddingTop="@dimen/small_space"
+        android:paddingBottom="8dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="8dp"
         android:text="删除该聊天"
         android:textColor="@color/colorTitle"/>
 

@@ -13,7 +13,10 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.NearbyCusInfo;
 import com.xmd.technician.bean.SayHiNearbyResult;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.XMDEmChatManager;
+import com.xmd.technician.chat.ChatHelper;
+import com.xmd.technician.chat.ChatUser;
+
+import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -98,7 +101,7 @@ public class NearbyActivity extends BaseActivity {
         mFixSnapHelper = new FixPagerSnapHelper();
         mCusAdapter = new NearbyCusAdapter(this);
         mCusAdapter.setCallback((info, position) -> {
-            if (!XMDEmChatManager.getInstance().isConnected()) {
+            if (!ChatHelper.getInstance().isConnected()) {
                 showToast("当前已经离线，请稍后再试!");
                 return;
             }
@@ -167,8 +170,8 @@ public class NearbyActivity extends BaseActivity {
     private void saveChatContact(String chatId) {
         Map<String, String> saveParams = new HashMap<>();
         saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, chatId);
-        saveParams.put(RequestConstant.KEY_CHAT_MSG_ID,"");
-        saveParams.put(RequestConstant.KEY_SEND_POST,"1");
+        saveParams.put(RequestConstant.KEY_CHAT_MSG_ID, "");
+        saveParams.put(RequestConstant.KEY_SEND_POST, "1");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
     }
 
@@ -227,6 +230,11 @@ public class NearbyActivity extends BaseActivity {
             mCusAdapter.updateCurrentItem(result.cusPosition, result.respData.customerLeft, result.cusSayHiTime);
             // 成功提示
             showToast("打招呼成功");
+            ChatUser chatUser = new ChatUser(result.userEmchatId);
+            chatUser.setAvatar(result.userAvatar);
+            chatUser.setNick(result.userName);
+            chatUser.setUserType(ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER);
+            UserUtils.saveUser(chatUser);
         } else {
             // 错误提示
             showToast("向客户打招呼失败:" + result.msg);

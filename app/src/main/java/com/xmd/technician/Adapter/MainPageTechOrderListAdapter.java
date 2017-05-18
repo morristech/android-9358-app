@@ -1,7 +1,6 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.Order;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -28,7 +28,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by Administrator on 2016/10/26.
+ * Created by Lhj on 2016/10/26.
  */
 public class MainPageTechOrderListAdapter extends BaseAdapter {
 
@@ -115,7 +115,7 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
         }
         viewHolder.mainOrderAvatar.setOnClickListener(v -> {
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, Utils.isEmpty(order.customerName) ? order.customerName : order.userName,
-                    order.headImgUrl, ""));
+                    order.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
         });
         return convertView;
     }

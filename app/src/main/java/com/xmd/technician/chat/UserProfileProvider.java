@@ -9,8 +9,10 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.HanziToPinyin;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
+import com.xmd.technician.chat.db.ChatDBManager;
+import com.xmd.technician.chat.db.DbOpenHelper;
 import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
-import com.xmd.technician.common.DbOpenHelper;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.msgctrl.RxBus;
 
@@ -26,6 +28,7 @@ public class UserProfileProvider {
     public static final String COLUMN_NAME_ID = "username";
     public static final String COLUMN_NAME_NICK = "nick";
     public static final String COLUMN_NAME_AVATAR = "avatar";
+    public static final String COLUMN_NAME_TYPE = "type";
 
     private DbOpenHelper dbHelper;
     private static UserProfileProvider userProvider;
@@ -92,11 +95,18 @@ public class UserProfileProvider {
         if (mCurrentUser != null && mCurrentUser.getUsername().equals(SharedPreferenceHelper.getEmchatId())) {
             mCurrentUser.setNickname(nick);
             mCurrentUser.setAvatar(avatarUrl);
+            mCurrentUser.setUserType(ChatConstant.TO_CHAT_USER_TYPE_TECH);
         }
     }
 
     public boolean userExisted(String username) {
         return getChatUserList().containsKey(username);
+    }
+
+    public void deleteChatUser(String username){
+        if(userExisted(username)){
+           ChatDBManager.getInstance().deleteContact(username);
+        }
     }
 
     public Map<String, ChatUser> getChatUserList() {
@@ -123,6 +133,7 @@ public class UserProfileProvider {
      * @param user
      */
     synchronized private void saveContact(ChatUser user) {
+        Logger.i(">>>","保存联系人>>"+"name>>"+user.getNick()+"type"+user);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_ID, user.getUsername());
@@ -130,6 +141,11 @@ public class UserProfileProvider {
             values.put(COLUMN_NAME_NICK, user.getNick());
         if (user.getAvatar() != null)
             values.put(COLUMN_NAME_AVATAR, user.getAvatar());
+        if(user.getAvatar()!= null){
+            values.put(COLUMN_NAME_TYPE, user.getAvatar());
+        }else{
+            values.put(COLUMN_NAME_TYPE, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER);
+        }
         if (db.isOpen()) {
             db.replace(TABLE_NAME, null, values);
         }
@@ -141,6 +157,7 @@ public class UserProfileProvider {
      * @param user
      */
     public void saveContactInfo(ChatUser user) {
+        Logger.i(">>>","保存联系人Info>>"+"name>>"+user.getNick()+"type"+user);
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if (chatUser == null || !chatUser.equals(user)) {
             getChatUserList().put(user.getUsername(), user);
@@ -161,6 +178,7 @@ public class UserProfileProvider {
      * @param user
      */
     public void updateContactInfo(ChatUser user) {
+        Logger.i(">>>","更新联系人>>"+"name>>"+user.getNick()+"type"+user.getUserType());
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if (chatUser == null || !chatUser.exactlyEquals(user)) {
             getChatUserList().put(user.getUsername(), user);
@@ -187,9 +205,11 @@ public class UserProfileProvider {
                 String username = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID));
                 String nick = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NICK));
                 String avatar = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_AVATAR));
+                String type = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TYPE));
                 ChatUser user = new ChatUser(username);
                 user.setNickname(nick);
                 user.setAvatar(avatar);
+                user.setUserType(type);
                 String headerName = null;
                 if (!TextUtils.isEmpty(user.getNickname())) {
                     headerName = user.getNickname();

@@ -10,7 +10,7 @@ import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.Adapter.SysNoticeAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.CommonUtils;
+import com.xmd.technician.chat.utils.EaseCommonUtils;
 
 import java.util.List;
 
@@ -58,7 +58,7 @@ public class SysNoticeListActivity extends BaseActivity{
     }
 
     private void initView(){
-        mNoticeAdapter = new SysNoticeAdapter(this, mToChatUsername,ChatConstant.CHATTYPE_SINGLE);
+        mNoticeAdapter = new SysNoticeAdapter(this, mToChatUsername,ChatConstant.CHAT_TYPE_SINGLE);
         mNoticeAdapter.setOnFooterClickListener(v -> loadMore());
         mLayoutManager = new LinearLayoutManager(this);
         mNoticeListView.setHasFixedSize(true);
@@ -84,7 +84,7 @@ public class SysNoticeListActivity extends BaseActivity{
 
     private void onConversationInit(){
         // 获取当前conversation对象
-        mConversation = EMClient.getInstance().chatManager().getConversation(mToChatUsername, CommonUtils.getConversationType(ChatConstant.CHATTYPE_SINGLE), true);
+        mConversation = EMClient.getInstance().chatManager().getConversation(mToChatUsername, EaseCommonUtils.getConversationType(ChatConstant.CHAT_TYPE_SINGLE), true);
         // 把此会话的未读数置为0
         mConversation.markAllMessagesAsRead();
         // 初始化db时，每个conversation加载数目是getChatOptions().getNumberOfMessagesLoaded

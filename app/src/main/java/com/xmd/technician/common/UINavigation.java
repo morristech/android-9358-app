@@ -11,14 +11,14 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
-import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.notify.NotificationCenter;
-import com.xmd.technician.window.ChatActivity;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
 import com.xmd.technician.window.JoinClubActivity;
 import com.xmd.technician.window.LoginActivity;
 import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.RegisterActivity;
+import com.xmd.technician.window.TechChatActivity;
 
 import java.util.Map;
 
@@ -82,8 +82,8 @@ public class UINavigation {
     }
 
     public static void gotoChatActivityFromService(Context context, String emChatId) {
-        Intent intent = new Intent(context, ChatActivity.class);
-        intent.putExtra(ChatConstant.EMCHAT_ID, emChatId);
+        Intent intent = new Intent(context, TechChatActivity.class);
+        intent.putExtra(ChatConstant.TO_CHAT_USER_ID, emChatId);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -92,7 +92,6 @@ public class UINavigation {
         String emchatId = (String) params.get(ChatConstant.EMCHAT_ID);
         String emchatNickname = (String) params.get(ChatConstant.EMCHAT_NICKNAME);
         String emchatAvatar = (String) params.get(ChatConstant.EMCHAT_AVATAR);
-        String emchatUserType = (String) params.get(ChatConstant.EMCHAT_USER_TYPE);
         String emchatIsTech = (String) params.get(ChatConstant.EMCHAT_IS_TECH);
 
         if (TextUtils.isEmpty(emchatId)) {
@@ -102,12 +101,11 @@ public class UINavigation {
         ChatUser chatUser = new ChatUser(emchatId);
         chatUser.setNickname(emchatNickname);
         chatUser.setAvatar(emchatAvatar);
-        chatUser.setUserType(emchatUserType);
+        chatUser.setUserType(emchatIsTech);
         UserUtils.saveUser(chatUser);
 
-        Intent intent = new Intent(context, ChatActivity.class);
-        intent.putExtra(ChatConstant.EMCHAT_ID, emchatId);
-        intent.putExtra(ChatConstant.EMCHAT_IS_TECH, emchatIsTech);
+        Intent intent = new Intent(context, TechChatActivity.class);
+        intent.putExtra(ChatConstant.TO_CHAT_USER_ID, emchatId);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         TechApplication.getAppContext().startActivity(intent);
     }
@@ -118,7 +116,7 @@ public class UINavigation {
         switch (notifyId) {
             case NotificationCenter.TYPE_ORDER:
             case NotificationCenter.TYPE_CHAT_MESSAGE:
-                Intent intent = new Intent(context, ChatActivity.class);
+                Intent intent = new Intent(context, MainActivity.class);
                 intent.putExtras(extraData);
                 context.startActivity(intent);
                 return true;

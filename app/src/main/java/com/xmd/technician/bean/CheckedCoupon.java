@@ -1,9 +1,11 @@
 package com.xmd.technician.bean;
 
+import android.os.Parcelable;
+
 /**
- * Created by Administrator on 2016/8/4.
+ * Created by Lhj on 2016/8/4.
  */
-public class CheckedCoupon extends CouponInfo {
+public class CheckedCoupon extends CouponInfo implements Parcelable{
     public int position;
 
     public  CheckedCoupon(String userTypeName,int actValue,String couponPeriod,String actId,String couponType,int position){

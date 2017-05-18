@@ -30,7 +30,7 @@ public class OnceCardBean {
      * statusName : 进行中
      */
 
-    public int id;
+    public String id;
     public String name;
     public Object startTime;
     public Object endTime;

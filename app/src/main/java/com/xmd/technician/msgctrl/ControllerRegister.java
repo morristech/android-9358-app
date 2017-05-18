@@ -137,7 +137,12 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_REMOVE_FROM_BLACKLIST,
                 MsgDef.MSG_DEF_IN_BLACKLIST,
                 MsgDef.MSG_DEF_IN_USER_BLACKLIST,
-                MsgDef.MSG_DEF_GET_TECH_BLACKLIST
+                MsgDef.MSG_DEF_GET_TECH_BLACKLIST,
+                MsgDef.MSG_DEF_TECH_RANKING_LIST,
+                //---------聊天优化---
+                MsgDef.MSG_DEF_MARK_CHAT_TO_USER,
+                MsgDef.MSG_DEF_GET_CHAT_CATEGORY_LIST,
+                MsgDef.MSG_DEF_GET_TECH_MARKETING_LIST
         };
         MsgDispatcher.register(controllerId, msgIds);
     }
@@ -163,7 +168,8 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_CONVERSATION_LIST,
                 MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY,
                 MsgDef.MSG_DEF_LOGIN_EMCHAT,
-                MsgDef.MSG_DEG_DELETE_CONVERSATION_FROM_DB
+                MsgDef.MSG_DEG_DELETE_CONVERSATION_FROM_DB,
+                MsgDef.MSG_DEF_LOGOUT_EMCHAT
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

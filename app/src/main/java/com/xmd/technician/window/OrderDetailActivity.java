@@ -18,6 +18,7 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.Order;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -117,7 +118,7 @@ public class OrderDetailActivity extends BaseActivity {
         //Avatar
         Glide.with(this).load(mOrder.headImgUrl).placeholder(R.drawable.icon22).error(R.drawable.icon22).into(mAvatar);
         mAvatar.setOnClickListener(v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
-                Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl,"")));
+                Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)));
         mCustomerName.setText(mOrder.customerName);
         mTelephone.setText(mOrder.phoneNum);
         mRemainTime.setText(mOrder.remainTime.contains("-") ? "0" : mOrder.remainTime);
@@ -215,7 +216,7 @@ public class OrderDetailActivity extends BaseActivity {
                 doMakeCall();
                 break;
             case R.id.action_chat:
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl,""));
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl,ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
                 break;
         }
     }

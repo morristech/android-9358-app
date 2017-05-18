@@ -16,8 +16,8 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.CommonUtils;
 import com.xmd.technician.chat.event.EventReceiveMessage;
+import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.common.AppUtils;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.event.EventJoinedClub;
@@ -160,15 +160,15 @@ public class NotificationCenter {
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString(ChatConstant.EMCHAT_ID, message.getFrom());
-                bundle.putString(ChatConstant.EMCHAT_NICKNAME, CommonUtils.getMessageStringAttribute(message, ChatConstant.EMCHAT_NICKNAME));
-                bundle.putString(ChatConstant.EMCHAT_AVATAR, CommonUtils.getMessageStringAttribute(message, ChatConstant.EMCHAT_AVATAR));
-                if (CommonUtils.getCustomChatType(message) == ChatConstant.MESSAGE_TYPE_RECV_ORDER) {
+                bundle.putString(ChatConstant.EMCHAT_NICKNAME, EaseCommonUtils.getMessageStringAttribute(message, ChatConstant.EMCHAT_NICKNAME));
+                bundle.putString(ChatConstant.EMCHAT_AVATAR, EaseCommonUtils.getMessageStringAttribute(message, ChatConstant.EMCHAT_AVATAR));
+                if (EaseCommonUtils.getCustomChatType(message) == ChatConstant.MESSAGE_RECEIVE_ORDER_TYPE) {
                     //订单消息
-                    notify(TYPE_ORDER, null, userName + ":" + CommonUtils.getMessageDigest(message, sContext), bundle);
+                    notify(TYPE_ORDER, null, userName + ":" + EaseCommonUtils.getMessageDigest(message, sContext), bundle);
                 } else {
                     //其他消息
                     if (AppUtils.isBackground()) {
-                        notify(TYPE_CHAT_MESSAGE, null, userName + ":" + CommonUtils.getMessageDigest(message, sContext), bundle);
+                        notify(TYPE_CHAT_MESSAGE, null, userName + ":" + EaseCommonUtils.getMessageDigest(message, sContext), bundle);
                     } else {
                         Ringtone rt = RingtoneManager.getRingtone(sContext, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                         rt.play();

@@ -31,8 +31,8 @@ android {
         //1.6.0 技师营销页面改版
         //1.6.2 附近的人，打招呼
         // 1.6.4Pk分组，修复已知bug
-        versionCode 34
-        versionName "1.6.6"
+        versionCode 35
+        versionName "1.6.7"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",

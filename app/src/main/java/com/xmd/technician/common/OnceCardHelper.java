@@ -34,7 +34,7 @@ public class OnceCardHelper {
             String techRoyalty;
             String price;
             boolean isPreferential;
-            if (onceCardResult.respData.optimalActivity.id == onceCardResult.respData.activityList.get(i).id) {
+            if ((onceCardResult.respData.optimalActivity.id).equals(onceCardResult.respData.activityList.get(i).id)) {
                 isPreferential = true;
             } else {
                 isPreferential = false;

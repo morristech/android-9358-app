@@ -9,7 +9,7 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.chat.XMDEmChatManager;
+import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.UINavigation;
@@ -153,7 +153,6 @@ public class LoginTechnician {
         setNickName(loginResult.name);
         setAvatarUrl(loginResult.avatarUrl);
         setRoles(loginResult.roles);
-
         RxBus.getInstance().post(new EventLogin(loginResult.token, loginResult.userId));
     }
 
@@ -215,8 +214,19 @@ public class LoginTechnician {
             //开始刷新买单通知
             DataRefreshService.refreshPayNotify(true);
         }
-
+        RxBus.getInstance().toObservable(EventEmChatLoginSuccess.class).subscribe(loginResult -> {
+                    if (!loginResult.loginSuccess) {
+                        loginEmChatAccount();
+                    }
+                }
+        );
         UserProfileProvider.getInstance().updateCurrentUserInfo(getNickName(), getAvatarUrl());
+        loginEmChatAccount();
+    }
+
+    //登录聊天账号
+    public void loginEmChatAccount() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
     }
 
     //获取短信验证码
@@ -354,6 +364,7 @@ public class LoginTechnician {
 
         ActivityHelper.getInstance().removeAllActivities();
         UINavigation.gotoLogin(TechApplication.getAppContext());
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT_EMCHAT);
     }
 
     public void onLogout() {
@@ -429,7 +440,7 @@ public class LoginTechnician {
     public void setNickName(String nickName) {
         this.nickName = nickName;
         SharedPreferenceHelper.setUserName(nickName);
-        XMDEmChatManager.getInstance().updateNickName(nickName);
+        //XMDEmChatManager.getInstance().updateNickName(nickName);
     }
 
     public void setAvatarUrl(String avatarUrl) {
@@ -629,7 +640,7 @@ public class LoginTechnician {
         this.roles = roles;
     }
 
-    public boolean isLoginEmchat() {
-        return XMDEmChatManager.getInstance().isConnected();
-    }
+//    public boolean isLoginEmchat() {
+//        return XMDEmChatManager.getInstance().isConnected();
+//    }
 }

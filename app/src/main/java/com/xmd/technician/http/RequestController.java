@@ -44,6 +44,7 @@ import com.xmd.technician.http.gson.AppUpdateConfigResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
+import com.xmd.technician.http.gson.CategoryListResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
@@ -68,6 +69,8 @@ import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
+import com.xmd.technician.http.gson.MarkChatToUserResult;
+import com.xmd.technician.http.gson.MarketingListResult;
 import com.xmd.technician.http.gson.ModifyPasswordResult;
 import com.xmd.technician.http.gson.NearbyCusCountResult;
 import com.xmd.technician.http.gson.NearbyCusListResult;
@@ -446,6 +449,16 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_IN_USER_BLACKLIST:
                 inUserBlacklist(msg.obj.toString());
                 break;
+            case MsgDef.MSG_DEF_MARK_CHAT_TO_USER:
+                getMarkChatToUser();
+                break;
+            case MsgDef.MSG_DEF_GET_CHAT_CATEGORY_LIST:
+                getCategoryList();
+                break;
+            case MsgDef.MSG_DEF_GET_TECH_MARKETING_LIST:
+                getTechMarketingList();
+                break;
+
         }
 
         return true;
@@ -2133,6 +2146,37 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<InUserBlacklistResult>() {
             @Override
             protected void postResult(InUserBlacklistResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //消息发送成功后回执
+    private void getMarkChatToUser() {
+        Call<MarkChatToUserResult> call = getSpaService().markChatToUser(SharedPreferenceHelper.getUserToken(),SharedPreferenceHelper.getUserClubId(),"");
+        call.enqueue(new TokenCheckedCallback<MarkChatToUserResult>() {
+            @Override
+            protected void postResult(MarkChatToUserResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+    //获取聊天显示内容列表
+    private void getCategoryList(){
+        Call<CategoryListResult> call = getSpaService().categoryList(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<CategoryListResult>() {
+            @Override
+            protected void postResult(CategoryListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+    //各营销活动列表
+    private void getTechMarketingList(){
+        Call<MarketingListResult> call = getSpaService().techMarketingList(SharedPreferenceHelper.getUserToken());
+        call.enqueue(new TokenCheckedCallback<MarketingListResult>() {
+            @Override
+            protected void postResult(MarketingListResult result) {
                 RxBus.getInstance().post(result);
             }
         });

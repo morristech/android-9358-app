@@ -1,11 +1,14 @@
 package com.xmd.technician.bean;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Lhj on 2017/2/9.
  */
 
-public class ClubJournalBean {
+public class ClubJournalBean implements Parcelable{
 
 
     /**
@@ -27,4 +30,50 @@ public class ClubJournalBean {
     public int templateId;
     public String image;
     public String shareUrl;
+    public int selectedStatus; //1可被选中且未被选中，2，可被选中且已被选中
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.journalId);
+        dest.writeInt(this.sequenceNo);
+        dest.writeString(this.title);
+        dest.writeString(this.subTitle);
+        dest.writeString(this.modifyDate);
+        dest.writeInt(this.templateId);
+        dest.writeString(this.image);
+        dest.writeString(this.shareUrl);
+        dest.writeInt(this.selectedStatus);
+    }
+
+    public ClubJournalBean() {
+    }
+
+    protected ClubJournalBean(Parcel in) {
+        this.journalId = in.readString();
+        this.sequenceNo = in.readInt();
+        this.title = in.readString();
+        this.subTitle = in.readString();
+        this.modifyDate = in.readString();
+        this.templateId = in.readInt();
+        this.image = in.readString();
+        this.shareUrl = in.readString();
+        this.selectedStatus = in.readInt();
+    }
+
+    public static final Creator<ClubJournalBean> CREATOR = new Creator<ClubJournalBean>() {
+        @Override
+        public ClubJournalBean createFromParcel(Parcel source) {
+            return new ClubJournalBean(source);
+        }
+
+        @Override
+        public ClubJournalBean[] newArray(int size) {
+            return new ClubJournalBean[size];
+        }
+    };
 }

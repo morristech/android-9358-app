@@ -1,6 +1,5 @@
 package com.xmd.technician.http;
 
-import retrofit2.BaseUrl;
 
 /**
  * Created by sdcm on 15-10-23.
@@ -180,6 +179,10 @@ public class RequestConstant {
     // 技师是否在联系人黑名单中
     public static final String URL_IN_USER_BLACKLIST = BASE_URL + "/v2/tech/customer/in/user/blacklist";
 
+    //获取会所位置
+    public static final String URL_GET_MARK_CHAT_TO_USER = BASE_URL + "/v2/club/location/staticmap";
+    public static final String URL_GET_TECH_CHAT_CATEGORY_LIST = BASE_URL + "/v2/tech/chat/category/list";
+    public static final String URL_GET_TECH_MARKETING_ITEM_LIST = BASE_URL + "/v2/tech/marketing_item/list";
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -321,7 +324,7 @@ public class RequestConstant {
     public static final String KEY_FRIEND_USER_TYPE = "friendUserType";
     public static final String KEY_FRIEND_MESSAGE_TYPE = "msgType";
     public static final String KEY_CHAT_MSG_ID = "msgId";
-    public static final String KEY_SEND_POST = "sentPost" ;//"0"不发送"1"发送
+    public static final String KEY_SEND_POST = "sentPost";//"0"不发送"1"发送
     public static final String KEY_MSG_TYPE_TEXT = "text";
     public static final String KEY_ORDER_STATUS = "orderStatus";
     public static final String KEY_ORDER_STATUS_COMPLETE = "complete";
@@ -391,6 +394,7 @@ public class RequestConstant {
 
     public static final String KEY_PLATFORM = "platform";
     public static final String VALUE_PLATFORM_TECH = "TECH_APP";
+    public static final String KEY_MAP_SIZE = "size";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

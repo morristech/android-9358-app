@@ -37,20 +37,27 @@ public class GameSettingDialog extends Dialog {
     @Bind(R.id.dialog_alert_ok_btn)
     Button mCommentOkBtn;
 
-    public interface GetGameIntegralInterFace {
-        void getIngefral(int num);
+    public int integralNum = 1;
+
+
+
+    public interface ConfirmClickInterface{
+        void ConfirmClicked(int num);
     }
 
     private static List<View> mText = new ArrayList<>();
-    private GetGameIntegralInterFace mGetGameIntegral;
+
+    private ConfirmClickInterface mConfirmClickInterface;
 
     public GameSettingDialog(Context context) {
         this(context, R.style.default_dialog_style);
     }
 
-    public GameSettingDialog(Context context, GetGameIntegralInterFace mInterface) {
-        this(context, R.style.default_dialog_style);
-        this.mGetGameIntegral = mInterface;
+
+
+
+    public void setConfirmClickInterface(ConfirmClickInterface confirmClickInterface){
+        this.mConfirmClickInterface = confirmClickInterface;
     }
 
     public GameSettingDialog(Context context, int themeResId) {
@@ -82,6 +89,7 @@ public class GameSettingDialog extends Dialog {
 
     @OnClick(R.id.dialog_alert_ok_btn)
     public void onConfirmClick() {
+        mConfirmClickInterface.ConfirmClicked(integralNum);
         dismiss();
     }
 
@@ -92,32 +100,32 @@ public class GameSettingDialog extends Dialog {
             case R.id.comment_game_one:
                 selectText();
                 mCommentGameOne.setSelected(true);
-                mGetGameIntegral.getIngefral(1);
+                integralNum = 1;
                 break;
             case R.id.comment_game_ten:
                 selectText();
                 mCommentGameTen.setSelected(true);
-                mGetGameIntegral.getIngefral(10);
+                integralNum = 10;
                 break;
             case R.id.comment_game_fifty:
                 selectText();
                 mCommentGameFifty.setSelected(true);
-                mGetGameIntegral.getIngefral(50);
+                integralNum = 50;
                 break;
             case R.id.comment_game_one_hundred:
                 selectText();
                 mCommentGameOneHundred.setSelected(true);
-                mGetGameIntegral.getIngefral(100);
+                integralNum = 100;
                 break;
             case R.id.comment_game_five_hundred:
                 selectText();
                 mCommentGameFiveHundred.setSelected(true);
-                mGetGameIntegral.getIngefral(500);
+                integralNum = 500;
                 break;
             case R.id.comment_game_ten_hundred:
                 selectText();
                 mCommentGameTenHundred.setSelected(true);
-                mGetGameIntegral.getIngefral(1000);
+                integralNum = 1000;
                 break;
 
 

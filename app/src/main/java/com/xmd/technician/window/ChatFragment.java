@@ -17,18 +17,19 @@ import android.widget.Toast;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.exceptions.HyphenateException;
+
+
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.bean.DeleteConversionResult;
+import com.xmd.technician.chat.event.DeleteConversionResult;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.IEmchat;
-import com.xmd.technician.chat.UserUtils;
-import com.xmd.technician.chat.XMDEmChatManager;
+
+import com.xmd.technician.chat.ChatHelper;
+import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
-import com.xmd.technician.chat.event.EventReceiveMessage;
+import com.xmd.technician.chat.event.ReceiveMessage;
+import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -57,7 +58,6 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Bind(R.id.header_container)
     FrameLayout mHeadContainer;
     protected List<EMConversation> mConversationList = new ArrayList<>();
-    private List<String> mConversationNameList = new ArrayList<>();
     private Filter mFilter;
     private Subscription mLoginStatusSubscription;
     private Subscription mNewMessageSubscription;
@@ -65,8 +65,8 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private Subscription mDeleteConversionSubscription;
     private TextView mSearchView;
     private String mMessageFrom;
+    private ChatHelper emchat;
 
-    private IEmchat emchat = XMDEmChatManager.getInstance();
 
     @Nullable
     @Override
@@ -79,6 +79,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Override
     protected void initView() {
         initTitleView(ResourceUtils.getString(R.string.message_fragment_title));
+        emchat = ChatHelper.getInstance();
         View searchView = getActivity().getLayoutInflater().inflate(R.layout.search_bar, mHeadContainer, false);
         mHeadContainer.addView(searchView);
         mSearchView = (TextView) searchView.findViewById(R.id.search_word);
@@ -121,7 +122,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         );
 
         //监听新的消息，刷新
-        mNewMessageSubscription = RxBus.getInstance().toObservable(EventReceiveMessage.class).subscribe(this::handleNewMessage);
+        mNewMessageSubscription = RxBus.getInstance().toObservable(ReceiveMessage.class).subscribe(receiveMessage ->onRefresh() );
     }
 
     @Override
@@ -129,15 +130,6 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         List<EMConversation> list = emchat.getAllConversationList();
         mConversationList.clear();
         mConversationList.addAll(list);
-
-        mConversationNameList.clear();
-        for (EMConversation conversation : mConversationList) {
-            EMMessage lastFromOther = conversation.getLatestMessageFromOthers();
-            if (lastFromOther != null) {
-                mConversationNameList.add(lastFromOther.getFrom());
-            }
-        }
-
         onGetListSucceeded(0, list);
     }
 
@@ -183,18 +175,8 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             if (result.respData.echat) {
                 // 跳转聊天
                 EMConversation conversation = result.emConversation;
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                if (conversation.isGroup()) {
-                    if (conversation.getType() == EMConversation.EMConversationType.ChatRoom) {
-                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_CHATROOM);
-                    } else {
-                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
-                    }
-                }
-                conversation.getAllMessages();
-                intent.putExtra(ChatConstant.EMCHAT_ID, conversation.conversationId());
-                intent.putExtra(ChatConstant.EMCHAT_IS_TECH, "");
-                emchat.clearUnreadMessage(conversation);
+                Intent intent = new Intent(getContext(), TechChatActivity.class);
+                intent.putExtra(ChatConstant.TO_CHAT_USER_ID, conversation.conversationId());
                 startActivity(intent);
             } else {
                 // 跳转详情
@@ -209,73 +191,40 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         } else {
             if (getActivity() != null) {
                 Toast.makeText(getActivity(), result.msg, Toast.LENGTH_SHORT).show();
+
             }
         }
-    }
-
-    private void handleNewMessage(EventReceiveMessage eventReceiveMessage) {
-        List<EMMessage> list = eventReceiveMessage.getList();
-        if (list == null || list.size() == 0) {
-            return;
-        }
-        onRefresh();
     }
 
     @Override
     public void onItemClicked(EMConversation conversation) {
         String username = conversation.conversationId();
+        String tochat = "";
+
         if (username.equals(SharedPreferenceHelper.getEmchatId()))
             ((BaseFragmentActivity) getActivity()).makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
         else if (username.equals(ChatConstant.MESSAGE_SYSTEM_NOTICE)) {
             Intent intent = new Intent(getContext(), SysNoticeListActivity.class);
-            // it's single chat
             intent.putExtra(ChatConstant.EMCHAT_ID, username);
             startActivity(intent);
         } else {
-            if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
-                if (SharedPreferenceHelper.getUserIsTech(conversation.conversationId()).equals("tech")) {
-                    mMessageFrom = "tech";
-                } else if (SharedPreferenceHelper.getUserIsTech(conversation.conversationId()).equals("manager")) {
-                    mMessageFrom = "manager";
-                } else {
-                    mMessageFrom = "";
-                }
-            } else {
-                mMessageFrom = "";
-                try {
-                    if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID))) {
-                        mMessageFrom = "tech";
-                    }
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_GAME_CLUB_ID))) {
-                        mMessageFrom = "manager";
-                    }
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
+            if(conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())){
+                tochat = conversation.getLastMessage().getTo();
+            }else{
+                tochat = conversation.getLastMessage().getFrom();
+            }
+            if(null != UserProfileProvider.getInstance().getChatUserInfo(tochat) ){
+                mMessageFrom = UserProfileProvider.getInstance().getChatUserInfo(tochat).getUserType();
             }
 
-            if (mMessageFrom.equals("")) {
-                // customer
+            if(Utils.isEmpty(mMessageFrom)||mMessageFrom.equals(ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)){
                 getContactPermissionChat(conversation);
-            } else {
-                // tech or manager
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                if (conversation.isGroup()) {
-                    if (conversation.getType() == EMConversation.EMConversationType.ChatRoom) {
-                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_CHATROOM);
-                    } else {
-                        intent.putExtra(ChatConstant.EXTRA_CHAT_TYPE, ChatConstant.CHATTYPE_GROUP);
-                    }
-                }
-                conversation.getAllMessages();
-                intent.putExtra(ChatConstant.EMCHAT_ID, conversation.conversationId());
-                intent.putExtra(ChatConstant.EMCHAT_IS_TECH, mMessageFrom);
-                startActivity(intent);
+            }else{
+                Intent intent = new Intent(getContext(), TechChatActivity.class);
+                intent.putExtra(ChatConstant.TO_CHAT_USER_ID, tochat);
+                getActivity().startActivity(intent);
             }
+
         }
     }
 
@@ -319,10 +268,6 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                         username = group.getGroupName();
                     } else {
                         username = UserUtils.getUserNick(value.conversationId());
-                        /*ChatUser  chatUser = UserUtils.getUserInfo(value.conversationId());
-                        if(chatUser != null){
-                            username = chatUser.getNick();
-                        }*/
                     }
 
                     // First match against the whole ,non-splitted value

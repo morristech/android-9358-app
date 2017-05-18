@@ -4,9 +4,24 @@ package com.xmd.technician.chat;
  * Created by sdcm on 16-3-23.
  */
 public class ChatConstant {
-    public static final int CHATTYPE_SINGLE = 1;
-    public static final int CHATTYPE_GROUP = 2;
-    public static final int CHATTYPE_CHATROOM = 3;
+
+    public static final int CHAT_TYPE_SINGLE = 1;
+    public static final int CHAT_TYPE_GROUP = 2;
+    public static final int CHAT_TYPE_CHATROOM = 3;
+
+    public static final int CHAT_USER_TYPE_TECH = 1; //技师
+    public static final int CHAT_USER_TYPE_MANAGER = 2;//管理者
+    public static final int CHAT_USER_TYPE_CUSTOMER = 3;//普通用户
+    public static final String TO_CHAT_USER_TYPE_TECH = "tech";
+    public static final String TO_CHAT_USER_TYPE_MANAGER = "manager";
+    public static final String TO_CHAT_USER_TYPE_CUSTOMER = "customer";
+
+
+
+    public static final String MESSAGE_ATTR_AT_MSG = "em_at_list";
+    public static final String MESSAGE_ATTR_VALUE_AT_MSG_ALL = "ALL";
+
+
 
     public static final String EXTRA_CHAT_TYPE = "chatType";
     public static final String EMCHAT_ID = "emchatId";
@@ -33,39 +48,43 @@ public class ChatConstant {
     public static final String ERROR_SERVER_NOT_REACHABLE = "server_not_reachable";
     public static final String ERROR_IN_BLACKLIST = "in_blacklist";
 
-    //自定义消息
-    public static final int MESSAGE_TYPE_SENT_REWARD = 0x81;
-    public static final int MESSAGE_TYPE_RECV_REWARD = 0x82;
-    public static final int MESSAGE_TYPE_SENT_ORDER = 0x83;
-    public static final int MESSAGE_TYPE_RECV_ORDER = 0x84;
-    public static final int MESSAGE_TYPE_SENT_PAID_COUPON_TIP = 0x85;
-    public static final int MESSAGE_TYPE_RECV_PAID_COUPON_TIP = 0x86;
-    public static final int MESSAGE_TYPE_SENT_BEG_REWARD = 0x87;
-    public static final int MESSAGE_TYPE_RECV_BEG_REWARD = 0x88;
-    public static final int MESSAGE_TYPE_SENT_PAID_COUPON = 0x89;
-    public static final int MESSAGE_TYPE_RECV_PAID_COUPON = 0x8A;
-    public static final int MESSAGE_TYPE_SENT_ORDINARY_COUPON = 0x8B;
-    public static final int MESSAGE_TYPE_RECV_ORDINARY_COUPON = 0x8C;
-    public static final int MESSAGE_TYPE_SENT_COUPON_TIP = 0x8E;
-    public static final int MESSAGE_TYPE_RECV_COUPON_TIP = 0x8F;
-    public static final int MESSAGE_TYPE_SEND_GAME_INVITE = 0x91;
-    public static final int MESSAGE_TYPE_RECV_GAME_INVITE = 0x92;
-    public static final int MESSAGE_TYPE_SEND_GAME_ACCEPT = 0x93;
-    public static final int MESSAGE_TYPE_RECV_GAME_ACCEPT = 0x94;
-    public static final int MESSAGE_TYPE_SEND_GAME_REJECT = 0x95;
-    public static final int MESSAGE_TYPE_RECV_GAME_REJECT = 0x96;
-    public static final int MESSAGE_TYPE_SEND_GAME_OVERTIME = 0x97;
-    public static final int MESSAGE_TYPE_RECV_GAME_OVERTIME = 0x98;
-    public static final int MESSAGE_TYPE_SEND_GAME_OVER = 0x99;
-    public static final int MESSAGE_TYPE_RECV_GAME_OVER = 0x100;
-    public static final int MESSAGE_TYPE_RECV_GAME_CANCEL = 0x101;
-    public static final int MESSAGE_TYPE_SEND_GAME_CANCEL = 0x102;
-    public static final int MESSAGE_TYPE_RECV_CREDIT_GIFT = 0x102;
+    //重构代码
+    public static final String TO_CHAT_USER_ID = "userId";
 
-    public static final String KEY_CHAT_TYPE = "chatType";
-    public static final String KEY_MSG = "msg";
-    public static final String KEY_TO = "to";
-    public static final String KEY_IMAGE_PATH = "imagePath";
+
+
+    //自定义消息
+    public static final int MESSAGE_SENT_REWARD_TYPE = 0x001;
+    public static final int MESSAGE_RECEIVE_REWARD_TYPE = 0x002;
+    public static final int MESSAGE_SENT_ORDER_TYPE=0x03;
+    public static final int MESSAGE_RECEIVE_ORDER_TYPE = 0x004;
+    public static final int MESSAGE_SENT_COUPON_TYPE = 0x05;
+    public static final int MESSAGE_RECEIVE_COUPON_TYPE = 0x006;
+    public static final int MESSAGE_SENT_PAID_PAID_COUPON_TYPE = 0x007;
+    public static final int MESSAGE_RECEIVE_PAID_COUPON_TYPE = 0x008;
+    public static final int MESSAGE_SENT_GAME_REQUEST_TYPE = 0x009;
+    public static final int MESSAGE_RECEIVE_GAME_REQUEST_TYPE = 0x010;
+    public static final int MESSAGE_SENT_GAME_REFUSED_TYPE = 0x011;
+    public static final int MESSAGE_RECEIVE_GAME_REFUSED_TYPE = 0x012;
+    public static final int MESSAGE_SENT_GAME_ACCEPT_TYPE = 0x013;
+    public static final int MESSAGE_RECEIVE_GAME_ACCEPT_TYPE = 0x014;
+    public static final int MESSAGE_SENT_GAME_CANCEL_TYPE = 0x015;
+    public static final int MESSAGE_RECEIVE_GAME_CANCEL_TYPE = 0x016;
+    public static final int MESSAGE_SENT_GAME_OVER_TIME_TYPE = 0x017;
+    public static final int MESSAGE_RECEIVE_GAME_OVER_TIME_TYPE = 0x018;
+    public static final int MESSAGE_SENT_GAME_OVER_TYPE = 0x019;
+    public static final int MESSAGE_RECEIVE_GAME_OVER_TYPE = 0x020;
+    public static final int MESSAGE_SENT_GIFT_TYPE = 0x21;
+    public static final int MESSAGE_CREDIT_GIFT_TYPE = 0x22;
+    public static final int MESSAGE_SENT_LOCATION_TYPE = 0x23;
+    public static final int MESSAGE_RECEIVE_LOCATION_TYPE = 0x24;
+    public static final int MESSAGE_SENT_REVOKE_MESSAGE_TYPE = 0x25;
+    public static final int MESSAGE_RECEIVE_REVOKE_MESSAGE_TYPE = 0x26;
+    public static final int MESSAGE_SENT_ACTIVITY_TYPE = 0x27;
+    public static final int MESSAGE_RECEIVE_ACTIVITY_TYPE = 0x28;
+
+
+
     public static final String KEY_CUSTOM_TYPE = "msgType";
     public static final String KEY_ACT_ID = "actId";
     public static final String KEY_ORDER_ID = "orderId";
@@ -81,7 +100,6 @@ public class ChatConstant {
     public static final String KEY_SERIAL_NO = "no";
     public static final String KEY_GAME_ACCEPT = "accept";
     public static final String KEY_GAME_REJECT = "reject";
-    public static final String KEY_GAME_CLUB_ID = "clubId";
     public static final String KEY_GAME_CLUB_NAME = "clubName";
     public static final String KEY_GAME_STATUS = "gameStatus";
     public static final String KEY_GAME_INVITE = "gameInvite";
@@ -95,6 +113,15 @@ public class ChatConstant {
     public static final String KEY_MSG_GAME_TYPE = "diceGame";
     public static final String KEY_OVER_GAME_TYPE = "over";
     public static final String KEY_CANCEL_GAME_TYPE = "cancel";
+    public static final String KEY_COUPON_PAID_TYPE = "paid";
+
+    public static final String KEY_REQUEST_GAME_STATUS = "request";
+    public static final String KEY_ACCEPT_GAME_STATUS = "accept";
+    public static final String KEY_REFUSED_GAME_STATUS = "refused";
+    public static final String KEY_OVER_TIME_GAME_STATUS = "overtime";
+    public static final String KEY_MSG_GAME_STATUS = "diceGame";
+    public static final String KEY_OVER_GAME_STATUS = "over";
+    public static final String KEY_CANCEL_GAME_STATUS = "cancel";
     public static final String KEY_GIFT_TYPE = "gift";
     public static final String KEY_CREDIT_GIFT_VALUE = "giftValue";
     public static final String KEY_CREDIT_GIFT_NAME = "giftName";
@@ -107,5 +134,32 @@ public class ChatConstant {
     public static final String KEY_COUPON_ACT_ID = "userActId";
     public static final String KEY_PAID_COUPON_TIP = "paidCouponTip";
     public static final String KEY_ERROR_CODE = "errorCode";
+    public static final String KEY_LOCATION_LAT = "lat";
+    public static final String KEY_LOCATION_LNG = "lng";
+    public static final String KEY_LOCATION_ADDRESS = "address";
+    public static final String KEY_LOCATION_STATIC_MAP = "staticMap";
+    public static final String KEY_MESSAGE_ID = "messageId";
+    public static final String KEY_REVOKE_TYPE = "mark";
+    public static final String KEY_ACTITY_TYPE = "activity";
+    public static final String KEY_SUB_TYPE_INDIANA = "indiana";//一元夺
+    public static final String KEY_SUB_TYPE_SECKILL = "seckill";//抢项目
+    public static final String KEY_SUB_TYPE_TURNTABLE = "turntable";//转盘
+    public static final String KEY_SUB_TYPE_TIMES_SCARD = "timescard";//次卡
+    public static final String KEY_SUB_TYPE_JOURNAL = "journal";//电子期刊
+
+    public static final String KEY_CHAT_SENT_REWARD_TYPE = "begReward";//技师求打赏
+    public static final String KEY_CHAT_RECEIVE_REWARD = "reward"; //用户打赏
+    public static final String KEY_CHAT_SENT_COUPON_TYPE = "ordinaryCoupon";//技师发送优惠券
+    public static final String KEY_CHAT_RECEIVE_ORDER_TYPE = "order"; //用户预约
+    public static final String KEY_CHAT_SENT_PAID_COUPON_TYPE = "paidCoupon";//技师求点钟
+    public static final String KEY_CHAT_RECEIVE_PAID_COUPON_TYPE ="paidCouponTip";//用户购买点钟券
+    public static final String KEY_CHAT_DICE_GAME = "diceGame";//用户发起游戏
+    public static final String KEY_CHAT_GIFT_TYPE = "gift";
+    public static final String KEY_CHAT_LOCATION_TYPE = "clubLocation";
+    public static final String KEY_SUB_TYPE = "subType";
+
+
+    public static final String KEY_CHAT_CMD_REVOKE_ACTION = "revoke";
+
 
 }

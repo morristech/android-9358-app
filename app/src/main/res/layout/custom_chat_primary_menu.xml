@@ -80,11 +80,11 @@
                 android:paddingLeft="@dimen/personal_padding"
                 android:paddingRight="@dimen/personal_padding">
 
-                <ImageView
-                    android:layout_width="@dimen/personal_item_icon_height"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/menu_picture_selector"
-                    android:scaleType="fitCenter" />
+                <!--<ImageView-->
+                    <!--android:layout_width="@dimen/personal_item_icon_height"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@drawable/menu_picture_selector"-->
+                    <!--android:scaleType="fitCenter" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -94,11 +94,11 @@
                 android:paddingLeft="@dimen/personal_padding"
                 android:paddingRight="@dimen/personal_padding">
 
-                <ImageView
-                    android:layout_width="@dimen/personal_item_icon_height"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/menu_face_selector"
-                    android:scaleType="fitCenter" />
+                <!--<ImageView-->
+                    <!--android:layout_width="@dimen/personal_item_icon_height"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@drawable/menu_face_selector"-->
+                    <!--android:scaleType="fitCenter" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -109,11 +109,11 @@
                 android:paddingRight="@dimen/personal_padding"
                 android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="@dimen/personal_item_icon_height"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/menu_common_selector"
-                    android:scaleType="fitCenter" />
+                <!--<ImageView-->
+                    <!--android:layout_width="@dimen/personal_item_icon_height"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@drawable/menu_common_selector"-->
+                    <!--android:scaleType="fitCenter" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -124,11 +124,11 @@
                 android:paddingRight="@dimen/personal_padding"
                 android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="@dimen/personal_item_icon_height"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/menu_reward_selector"
-                    android:scaleType="fitCenter" />
+                <!--<ImageView-->
+                    <!--android:layout_width="@dimen/personal_item_icon_height"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@drawable/menu_reward_selector"-->
+                    <!--android:scaleType="fitCenter" />-->
             </LinearLayout>
 
 
@@ -143,7 +143,7 @@
                 <ImageView
                     android:layout_width="@dimen/personal_item_icon_height"
                     android:layout_height="match_parent"
-                    android:background="@drawable/menu_coupon_selector"
+                    android:background="@drawable/chat_ticket_icon_bg"
                     android:scaleType="fitCenter" />
             </LinearLayout>
 

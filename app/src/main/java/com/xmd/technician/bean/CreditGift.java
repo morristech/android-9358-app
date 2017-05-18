@@ -1,7 +1,7 @@
 package com.xmd.technician.bean;
 
 /**
- * Created by Administrator on 2016/9/12.
+ * Created by Lhj on 2016/9/12.
  */
 public class CreditGift {
 

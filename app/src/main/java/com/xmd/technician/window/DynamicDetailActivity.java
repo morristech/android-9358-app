@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 
 import com.xmd.technician.R;
 import com.xmd.technician.bean.DynamicDetail;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -100,7 +101,7 @@ public class DynamicDetailActivity extends BaseListActivity<DynamicDetail> {
     public void onSayHiButtonClicked(DynamicDetail bean) {
         super.onSayHiButtonClicked(bean);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(bean.userEmchatId,
-                bean.userName, bean.imageUrl, ""));
+                bean.userName, bean.imageUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
     }
 
     public void getDynamicList(int type) {

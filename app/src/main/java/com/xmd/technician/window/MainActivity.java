@@ -12,8 +12,8 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
-import com.xmd.technician.chat.IEmchat;
-import com.xmd.technician.chat.XMDEmChatManager;
+
+import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
@@ -52,10 +52,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     private int mCurrentTabIndex = -1;
     private Subscription mSysNoticeNotifySubscription;
     private Subscription mGetUserIsBindWXSubscription;
-
     //环信
-    private IEmchat emchat = XMDEmChatManager.getInstance();
     private Subscription mUnreadEmchatCountSubscription;
+    private ChatHelper mChatHelper;
 
     @Bind(R.id.main_unread_message)
     TextView mUnreadMsgLabel;
@@ -68,9 +67,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         checkLoginStatus();
-
+        mChatHelper = ChatHelper.getInstance();
         permissionManager.loadPermissions(new Callback<Void>() {
             @Override
             public void onResult(Throwable error, Void result) {
@@ -93,7 +91,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         });
 
         mSysNoticeNotifySubscription = RxBus.getInstance().toObservable(SystemNoticeResult.class).subscribe(
-                result -> updateUnreadMsgLabel(emchat.getUnreadMessageCount()));
+                result -> updateUnreadMsgLabel(mChatHelper.getUnreadMessageCount()));
 
         mGetUserIsBindWXSubscription = RxBus.getInstance().toObservable(IsBindResult.class).subscribe(
                 result -> handlerIsBindResult(result)
@@ -148,7 +146,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @CheckBusinessPermission(PermissionConstants.MESSAGE)
     public void addFragmentMessage() {
         mChatFragment = (ChatFragment) addFragment(R.id.main_button_message, ChatFragment.class);
-        updateUnreadMsgLabel(emchat.getUnreadMessageCount());
+        updateUnreadMsgLabel(mChatHelper.getUnreadMessageCount());
         mUnreadEmchatCountSubscription = RxBus.getInstance().toObservable(EventUnreadMessageCount.class).subscribe(
                 unreadMessageCount -> {
                     updateUnreadMsgLabel(unreadMessageCount.getUnread());

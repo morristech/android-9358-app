@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/toolbar" />
+
+    <com.xmd.technician.widget.EmptyView
+        android:id="@+id/view_emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/ll_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:layout_marginTop="@dimen/inter_space"
+        android:paddingRight="@dimen/small_space"
+        android:paddingTop="8dp">
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:background="@color/primary_color"/>
+
+        <TextView
+            android:id="@+id/tv_market_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_weight="1"
+            android:text="次卡"
+            android:textColor="@color/colorHead"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/img_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/inter_space"
+            android:src="@drawable/arrow_down"/>
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:background="@color/app_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:paddingLeft="@dimen/inter_space"
+        />
+
+</LinearLayout>

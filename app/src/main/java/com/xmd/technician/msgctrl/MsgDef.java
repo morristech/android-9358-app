@@ -191,4 +191,12 @@ public class MsgDef {
     public static final int MSG_DEF_REMOVE_FROM_BLACKLIST = 0x0112;
     public static final int MSG_DEF_GET_TECH_BLACKLIST = 0x0113;
     public static final int MSG_DEF_IN_USER_BLACKLIST = 0x0114;
+    //获取聊天定位
+    public static final int MSG_DEF_MARK_CHAT_TO_USER = 0x0115;
+    public static final int MSG_DEF_LOGOUT_EMCHAT = 0x0116;
+    public static final int MSG_DEF_GET_CHAT_CATEGORY_LIST = 0x0117;
+    public static final int MSG_DEF_GET_TECH_MARKETING_LIST = 0x118;
+
+
+
 }

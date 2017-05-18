@@ -238,14 +238,14 @@ public class SharedPreferenceHelper {
         return mSettingPreference.getBoolean(RequestConstant.KEY_BIND_WX_SUCCESS, false);
     }
 
-    public static void setUserIsTech(String userChatId, String isTech) {
-
-        mSettingPreference.edit().putString(userChatId + "11", isTech).apply();
-    }
-
-    public static String getUserIsTech(String userChatId) {
-        return mSettingPreference.getString(userChatId + "11", "");
-    }
+//    public static void setUserIsTech(String userChatId, String isTech) {
+//
+//        mSettingPreference.edit().putString(userChatId + "11", isTech).apply();
+//    }
+//
+//    public static String getUserIsTech(String userChatId) {
+//        return mSettingPreference.getString(userChatId + "11", "");
+//    }
 
     public static void setUserRemarkName(String userChatId, String remark) {
         mSettingPreference.edit().putString(userChatId, remark).apply();

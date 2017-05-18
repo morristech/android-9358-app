@@ -10,6 +10,9 @@ import java.util.List;
 
 public class EventReceiveMessage {
     private List<EMMessage> list;
+    public EventReceiveMessage(){
+
+    }
 
     public EventReceiveMessage(List<EMMessage> list) {
         this.list = list;

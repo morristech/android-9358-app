@@ -201,7 +201,7 @@ public class Emojicon {
     
     /**
      * 设置识别码
-     * @param identityId
+     * @param
      */
     public void setIdentityCode(String identityCode) {
         this.identityCode = identityCode;

@@ -17,7 +17,7 @@ import com.xmd.technician.bean.GetuiPayload;
 import com.xmd.technician.bean.SystemNotice;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
-import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;

@@ -41,6 +41,9 @@ import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
+import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatHelper;
+import com.xmd.technician.chat.model.ChatModel;
 import com.xmd.technician.common.HeartBeatTimer;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
@@ -73,6 +76,7 @@ import com.xmd.technician.permission.PermissionConstants;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.SlidingMenu;
+import com.xmd.technician.widget.SwitchButton;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -219,6 +223,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     View mPayNotifyLayout;
     @Bind(R.id.pay_notify_header)
     RelativeLayout mPayNotifyHeader;
+    //声音，震动
+    @Bind(R.id.switch_sound)
+    SwitchButton mSwitchSound;
+    @Bind(R.id.switch_vibrate)
+    SwitchButton mSwitchVibrate;
 
     private OnlinePayNotifyFragment mPayNotifyFragment;
 
@@ -255,6 +264,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private View mRootView;
     private boolean isHasPk;
     private boolean isInitNormalRanking;
+    private ChatModel mChatModel;
 
     @Nullable
     @Override
@@ -281,6 +291,55 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
         return mRootView;
     }
+
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mChatModel = ChatHelper.getInstance().getModel();
+        mChatModel.setSettingMsgVibrate(true);
+        mChatModel.setSettingMsgSound(true);
+        mChatModel.setSettingMsgSpeaker(true);
+    }
+//    private void initSettingMenuView() {
+//        // sound notification is switched on or not?
+//        if (mChatModel.getSettingMsgSound()) {
+//            mSwitchSound.openSwitch();
+//        } else {
+//            mSwitchSound.closeSwitch();
+//        }
+//
+//        // vibrate notification is switched on or not?
+//        if (mChatModel.getSettingMsgVibrate()) {
+//            mSwitchVibrate.openSwitch();
+//        } else {
+//            mSwitchVibrate.closeSwitch();
+//        }
+//    }
+//    @OnClick({R.id.switch_sound,R.id.switch_vibrate})
+//    public void onSwitchSetting(View v){
+//        switch (v.getId()){
+//            case R.id.switch_sound:
+//                if (mSwitchSound.isSwitchOpen()) {
+//                    mSwitchSound.closeSwitch();
+//                    mChatModel.setSettingMsgSound(false);
+//                } else {
+//                    mSwitchSound.openSwitch();
+//                    mChatModel.setSettingMsgSound(true);
+//                }
+//                break;
+//            case R.id.switch_vibrate:
+//                if (mSwitchVibrate.isSwitchOpen()) {
+//                    mSwitchVibrate.closeSwitch();
+//                    mChatModel.setSettingMsgVibrate(false);
+//                } else {
+//                    mSwitchVibrate.openSwitch();
+//                    mChatModel.setSettingMsgVibrate(true);
+//                }
+//                break;
+//        }
+ //   }
 
     @Override
     public void onDestroy() {
@@ -1133,7 +1192,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         if (result.statusCode == 200 && result.respData.echat) {
             // 聊天
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(bean.emchatId,
-                    Utils.isEmpty(bean.userNoteName) ? bean.userName : bean.userNoteName, bean.avatarUrl, ""));
+                    Utils.isEmpty(bean.userNoteName) ? bean.userName : bean.userNoteName, bean.avatarUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
         } else {
             // 详情
             if (Long.parseLong(bean.userId) > 0) {

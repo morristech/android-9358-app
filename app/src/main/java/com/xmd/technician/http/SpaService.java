@@ -27,6 +27,7 @@ import com.xmd.technician.http.gson.AlbumResult;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
+import com.xmd.technician.http.gson.CategoryListResult;
 import com.xmd.technician.http.gson.CheckPayNotifyResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.CommentResult;
@@ -51,6 +52,8 @@ import com.xmd.technician.http.gson.JournalListResult;
 import com.xmd.technician.http.gson.LimitGrabResult;
 import com.xmd.technician.http.gson.LoginResult;
 import com.xmd.technician.http.gson.LogoutResult;
+import com.xmd.technician.http.gson.MarkChatToUserResult;
+import com.xmd.technician.http.gson.MarketingListResult;
 import com.xmd.technician.http.gson.NearbyCusCountResult;
 import com.xmd.technician.http.gson.NearbyCusListResult;
 import com.xmd.technician.http.gson.OnceCardResult;
@@ -854,4 +857,17 @@ public interface SpaService {
     @GET(RequestConstant.URL_IN_USER_BLACKLIST)
     Call<InUserBlacklistResult> inUserBlacklist(@Query(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
                                                 @Query(RequestConstant.KEY_TOKEN) String userToken);
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_MARK_CHAT_TO_USER)
+    Call<MarkChatToUserResult> markChatToUser(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Field(RequestConstant.KEY_ID) String id,
+                                             @Field(RequestConstant.KEY_MAP_SIZE) String size);
+    //categoryList
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TECH_CHAT_CATEGORY_LIST)
+    Call<CategoryListResult> categoryList (@Field(RequestConstant.KEY_TOKEN) String userToken);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TECH_MARKETING_ITEM_LIST)
+    Call<MarketingListResult> techMarketingList (@Field(RequestConstant.KEY_TOKEN) String userToken);
 }

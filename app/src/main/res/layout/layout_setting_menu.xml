@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="240dp"
-    android:layout_height="match_parent"
-    android:background="@color/app_bg"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="240dp"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,59 +18,59 @@
             android:gravity="center"
             android:text="设 置"
             android:textColor="@color/colorHead"
-            android:textSize="@dimen/fontHead" />
+            android:textSize="@dimen/fontHead"/>
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/menu_work_time"
-        android:visibility="gone"
-        style="@style/menu_setting_relative_style">
+        style="@style/menu_setting_relative_style"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_work" />
+            android:background="@drawable/icon_work"/>
 
         <TextView
             style="@style/menu_setting_text_style"
-            android:text="@string/settings_activity_work" />
+            android:text="@string/settings_activity_work"/>
     </RelativeLayout>
 
-    <View style="@style/horizontal_divider_line" />
+    <View style="@style/horizontal_divider_line"/>
 
     <RelativeLayout
         android:id="@+id/menu_work_project"
-        android:visibility="gone"
-        style="@style/menu_setting_relative_style">
+        style="@style/menu_setting_relative_style"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_server" />
+            android:background="@drawable/icon_server"/>
 
         <TextView
             style="@style/menu_setting_text_style"
-            android:text="@string/settings_activity_project" />
+            android:text="@string/settings_activity_project"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/menu_about_us"
-        android:visibility="gone"
         style="@style/menu_setting_relative_style"
-        android:layout_marginTop="@dimen/inter_space">
+        android:layout_marginTop="@dimen/inter_space"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_about_us" />
+            android:background="@drawable/icon_about_us"/>
 
         <TextView
             style="@style/menu_setting_text_style"
-            android:text="@string/settings_activity_about_us" />
+            android:text="@string/settings_activity_about_us"/>
 
         <TextView
             android:id="@+id/app_version"
@@ -79,52 +80,87 @@
             android:layout_centerVertical="true"
             android:paddingRight="@dimen/small_space"
             android:textColor="@color/colorRemark"
-            android:textSize="@dimen/fontBody" />
+            android:textSize="@dimen/fontBody"/>
 
     </RelativeLayout>
 
-    <View style="@style/horizontal_divider_line" />
+    <View style="@style/horizontal_divider_line"/>
 
     <RelativeLayout
         android:id="@+id/menu_suggest"
-        android:visibility="gone"
-        style="@style/menu_setting_relative_style">
+        style="@style/menu_setting_relative_style"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_feed_back" />
+            android:background="@drawable/icon_feed_back"/>
 
         <TextView
             style="@style/menu_setting_text_style"
-            android:text="@string/settings_activity_suggest" />
+            android:text="@string/settings_activity_suggest"/>
     </RelativeLayout>
 
 
     <RelativeLayout
         android:id="@+id/settings_activity_modify_pw"
-        android:visibility="gone"
         style="@style/menu_setting_relative_style"
-        android:layout_marginTop="@dimen/inter_space">
+        android:layout_marginTop="@dimen/inter_space"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_password" />
+            android:background="@drawable/icon_password"/>
 
         <TextView
             style="@style/menu_setting_text_style"
-            android:text="@string/settings_activity_modify_password" />
+            android:text="@string/settings_activity_modify_password"/>
 
 
     </RelativeLayout>
+
     <RelativeLayout
-        android:id="@+id/settings_activity_join_or_quit_club"
-        android:visibility="gone"
+        android:id="@+id/settings_model_sound"
         style="@style/menu_setting_relative_style"
         android:layout_marginTop="@dimen/inter_space"
+        android:visibility="gone">
+
+
+        <com.xmd.technician.widget.SwitchButton
+            android:id="@+id/switch_sound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            app:switchStatus="open"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/settings_model_vibrate"
+        style="@style/menu_setting_relative_style"
+        android:layout_marginTop="@dimen/inter_space"
+        android:visibility="gone">
+
+
+        <com.xmd.technician.widget.SwitchButton
+            android:id="@+id/switch_vibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            app:switchStatus="open"
+            />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/settings_activity_join_or_quit_club"
+        style="@style/menu_setting_relative_style"
+        android:layout_marginTop="@dimen/inter_space"
+        android:visibility="gone"
         >
 
         <ImageView
@@ -137,7 +173,7 @@
         <TextView
             android:id="@+id/join_or_quit_club"
             style="@style/menu_setting_text_style"
-            android:text="@string/setting_activity_quit_club" />
+            android:text="@string/setting_activity_quit_club"/>
 
         <TextView
             android:id="@+id/menu_club_name"
@@ -145,9 +181,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/colorBtnChecked"
             android:paddingRight="@dimen/small_space"
-            android:textSize="@dimen/fontBody" />
+            android:textColor="@color/colorBtnChecked"
+            android:textSize="@dimen/fontBody"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -160,11 +196,11 @@
             android:layout_width="@dimen/personal_item_icon_height"
             android:layout_height="@dimen/personal_item_icon_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_join" />
+            android:background="@drawable/icon_join"/>
 
         <TextView
             style="@style/menu_setting_text_style"
-            android:text="@string/setting_activity_join_club" />
+            android:text="@string/setting_activity_join_club"/>
 
     </RelativeLayout>
 
@@ -172,28 +208,28 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/app_bg" />
-
+        android:background="@color/app_bg"/>
 
 
     <RelativeLayout
         android:id="@+id/settings_activity_logout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@drawable/bg_quit_club"
         android:layout_marginBottom="@dimen/dynamic_item_rl_width"
         android:layout_marginLeft="@dimen/home_button_height"
         android:layout_marginRight="@dimen/home_button_height"
+        android:background="@drawable/bg_quit_club"
 
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/setting_activity_layout_exit"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/fontTitle"
-            android:text="@string/setting_activity_layout_exit" />
+            android:textSize="@dimen/fontTitle"/>
 
     </RelativeLayout>
 

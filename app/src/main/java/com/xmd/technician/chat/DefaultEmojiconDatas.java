@@ -1,6 +1,7 @@
 package com.xmd.technician.chat;
 
 import com.xmd.technician.R;
+import com.xmd.technician.chat.utils.SmileUtils;
 
 public class DefaultEmojiconDatas {
 

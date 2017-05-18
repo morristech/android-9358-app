@@ -39,15 +39,17 @@ import com.xmd.technician.bean.OnceCardItemBean;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.PaidCouponUserDetail;
 import com.xmd.technician.bean.PayForMeBean;
-import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RewardBean;
 import com.xmd.technician.bean.ShareCouponBean;
 import com.xmd.technician.bean.TechRankingBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
-import com.xmd.technician.chat.CommonUtils;
-import com.xmd.technician.chat.SmileUtils;
-import com.xmd.technician.chat.UserUtils;
+
+
+
+import com.xmd.technician.chat.utils.EaseCommonUtils;
+import com.xmd.technician.chat.utils.SmileUtils;
+import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -66,7 +68,7 @@ import butterknife.ButterKnife;
 
 
 /**
- * Created by sdcm on 15-11-24.
+ * Created by Lhj on 15-11-24.
  */
 public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemSlideHelper.Callback {
 
@@ -308,7 +310,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             Glide.with(mContext).load(order.headImgUrl).into(itemHolder.mUserHeadUrl);
             itemHolder.mUserHeadUrl.setOnClickListener(
-                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.userName, order.headImgUrl, "")));
+                    v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, order.userName, order.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)));
             itemHolder.mUserName.setText(order.customerName);
             itemHolder.mOrderTime.setText(order.formatAppointTime);
             itemHolder.mOrderAmount.setText(String.format(ResourceUtils.getString(R.string.amount_unit_format), order.downPayment));
@@ -473,7 +475,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             Glide.with(mContext).load(paidCouponUserDetail.headImgUrl).into(itemHolder.mAvatar);
             itemHolder.mAvatar.setOnClickListener(
                     v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
-                            Utils.wrapChatParams(paidCouponUserDetail.emchatId, paidCouponUserDetail.userName, paidCouponUserDetail.headImgUrl, "")));
+                            Utils.wrapChatParams(paidCouponUserDetail.emchatId, paidCouponUserDetail.userName, paidCouponUserDetail.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)));
             itemHolder.mTvCustomerName.setText(paidCouponUserDetail.userName);
             itemHolder.mTvGetDate.setText(paidCouponUserDetail.getDate);
             itemHolder.mTvTelephone.setText(paidCouponUserDetail.telephone);
@@ -498,8 +500,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (conversation.getAllMsgCount() != 0) {
                 // 把最后一条消息的内容作为item的message内容
                 EMMessage lastMessage = conversation.getLastMessage();
-                String toId = lastMessage.getTo();
-                Spannable span = SmileUtils.getSmiledText(mContext, CommonUtils.getMessageDigest(lastMessage, mContext));
+                Spannable span = SmileUtils.getSmiledText(mContext, EaseCommonUtils.getMessageDigest(lastMessage, mContext));
                 conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
                 conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
                 try {
@@ -508,6 +509,16 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                         ChatUser user = new ChatUser(conversation.conversationId());
                         String avatar = lastOtherMessage.getStringAttribute(ChatConstant.KEY_HEADER);
                         String nickName = lastOtherMessage.getStringAttribute(ChatConstant.KEY_NAME);
+                        String isTech = lastOtherMessage.getStringAttribute(ChatConstant.KEY_TECH_ID,"");
+                        String isManager = lastOtherMessage.getStringAttribute(ChatConstant.KEY_CLUB_ID,"");
+                        String userType = "";
+                        if(Utils.isNotEmpty(isTech)&&Utils.isNotEmpty(isManager)){
+                            userType = ChatConstant.TO_CHAT_USER_TYPE_TECH;
+                        }else if(Utils.isNotEmpty(isManager)&&Utils.isEmpty(isTech)){
+                            userType = ChatConstant.TO_CHAT_USER_TYPE_MANAGER;
+                        }else{
+                            userType = ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER;
+                        }
                         if (!TextUtils.isEmpty(SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom()))) {
                             nickName = SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom());
                         }
@@ -517,6 +528,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                             XLogger.i("update user info-> nickName:" + nickName + ",avatar:" + avatar);
                             user.setAvatar(avatar);
                             user.setNickname(nickName);
+                            user.setUserType(userType);
                             UserUtils.updateUser(user);
                         }
                     }
@@ -525,39 +537,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 }
                 UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
                 UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
-
-//                conversationHolder.mUserManagerType.setVisibility(View.GONE);
-//                conversationHolder.mUserTechType.setVisibility(View.GONE);
-                if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
-                    if (SharedPreferenceHelper.getUserIsTech(toId).equals("tech")) {
-                        try {
-                            if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO))) {
-                                String last = conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO);
-                                //  conversationHolder.mUserTechType.setVisibility(View.VISIBLE);
-                                //  conversationHolder.mUserTechType.setText(Utils.changeColor(last,ResourceUtils.getColor(R.color.contact_marker),1,last.length()));
-                            }
-                        } catch (HyphenateException e) {
-                            e.printStackTrace();
-                        }
-                    } else if (SharedPreferenceHelper.getUserIsTech(toId).equals("manager")) {
-                        //  conversationHolder.mUserManagerType.setVisibility(View.VISIBLE);
-                    }
-
-                } else {
-                    try {
-
-                        if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_TECH_ID)))
-                            ;
-                        if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO))) {
-                            String last = conversation.getLastMessage().getStringAttribute(ChatConstant.KEY_SERIAL_NO);
-                            //  conversationHolder.mUserTechType.setVisibility(View.VISIBLE);
-                            // conversationHolder.mUserTechType.setText(Utils.changeColor(last,ResourceUtils.getColor(R.color.contact_marker),1,last.length()));
-                        }
-
-                    } catch (HyphenateException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
 
             holder.itemView.setOnClickListener(v -> {
@@ -829,7 +808,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (!(obj instanceof ClubJournalBean)) {
                 return;
             }
-
             final ClubJournalBean clubJournal = (ClubJournalBean) obj;
             ClubJournalItemViewHolder clubJournalHolder = (ClubJournalItemViewHolder) holder;
             if (position == 0) {

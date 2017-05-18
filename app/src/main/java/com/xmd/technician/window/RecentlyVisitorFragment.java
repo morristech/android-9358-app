@@ -20,9 +20,10 @@ import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SayHiVisitorResult;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.ChatUser;
-import com.xmd.technician.chat.UserUtils;
-import com.xmd.technician.chat.XMDEmChatManager;
+
+import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -162,6 +163,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
                             user = new ChatUser(result.respData.get(i).emchatId);
                             user.setAvatar(result.respData.get(i).avatarUrl);
                             user.setNickname(result.respData.get(i).userName);
+                            user.setUserType("");
                             UserUtils.saveUser(user);
                         }
                     }
@@ -222,7 +224,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
     };
 
     private void sayHiRequest(String userId, String userName, String avatarUrl, String userType, String userEmchatId, String position) {
-        if (!XMDEmChatManager.getInstance().isConnected()) {
+        if (!ChatHelper.getInstance().isConnected()) {
             XToast.show("当前已经离线，请稍后再试!");
             return;
         }

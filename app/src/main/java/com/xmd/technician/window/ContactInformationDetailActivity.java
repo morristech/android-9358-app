@@ -34,8 +34,7 @@ import com.xmd.technician.bean.OrderBean;
 import com.xmd.technician.bean.SayHiBaseResult;
 import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.VisitBean;
-import com.xmd.technician.chat.IEmchat;
-import com.xmd.technician.chat.XMDEmChatManager;
+import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
@@ -186,13 +185,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private String chatHeadUrl; // 用户头像
     private String chatType; //用户类型
     private String impression;  // 印象
-    private String isTech;      // 聊天参数
+    private String userChatType;      // 聊天参数
 
     private boolean inBlacklist = false; //是否在聊天黑名单中
 
     private Map<String, String> params = new HashMap<>();
 
-    private IEmchat emchat = XMDEmChatManager.getInstance();
+
 
     private boolean showOperationButtons;
 
@@ -270,7 +269,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         initOperationButtonForType(contactType);
         switch (contactType) {
             case Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER:
-                isTech = "";
+                userChatType = ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER;
                 // 处理客户信息
                 getCustomerInformationSubscription = RxBus.getInstance().toObservable(CustomerDetailResult.class).subscribe(
                         customer -> handlerCustomer(customer)
@@ -304,7 +303,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 getContactPermissionDetail(userId);
                 break;
             case Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER:
-                isTech = Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER;
+                userChatType = ChatConstant.TO_CHAT_USER_TYPE_MANAGER;
                 getManagerInformationSubscription = RxBus.getInstance().toObservable(ManagerDetailResult.class).subscribe(
                         manager -> handlerManager(manager)
                 );
@@ -314,7 +313,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL, paramManager);
                 break;
             case Constant.CONTACT_INFO_DETAIL_TYPE_TECH:
-                isTech = Constant.CONTACT_INFO_DETAIL_TYPE_TECH;
+                userChatType = ChatConstant.TO_CHAT_USER_TYPE_TECH;
                 getTechInformationSubscription = RxBus.getInstance().toObservable(TechDetailResult.class).subscribe(
                         tech -> handlerTech(tech)
                 );
@@ -389,7 +388,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     // 打招呼
     private void sayHello(String customerId) {
-        if (!emchat.isConnected()) {
+        if (!EMClient.getInstance().isConnected()) {
             showToast("当前已经离线，请稍后再试!");
             return;
         }
@@ -514,8 +513,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             this.makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
             return;
         } else {
-            UINavigation.gotoChatActivity(this, Utils.wrapChatParams(emChatId, emChatName, chatHeadUrl, isTech));
-            SharedPreferenceHelper.setUserIsTech(emChatId, isTech);
+            UINavigation.gotoChatActivity(this, Utils.wrapChatParams(emChatId, emChatName, chatHeadUrl, userChatType));
         }
 
     }

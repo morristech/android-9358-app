@@ -15,7 +15,7 @@ import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.HelloTemplateInfo;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
-import com.xmd.technician.chat.UserUtils;
+import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.http.RetrofitServiceFactory;
@@ -159,7 +159,7 @@ public class HelloSettingManager {
         ChatUser chatUser = new ChatUser(userEmchatId);
         chatUser.setNickname(userName);
         chatUser.setAvatar(userAvatar);
-        chatUser.setUserType(userType);
+        chatUser.setUserType("");
         UserUtils.saveUser(chatUser);
         // 招呼文本
         EMMessage txtMessage = EMMessage.createTxtSendMessage(templateContentText.replace(TechApplication.getAppContext().getResources().getString(R.string.hello_setting_content_replace), userName), userEmchatId);

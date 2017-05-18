@@ -233,4 +233,7 @@
     <dimen name="fontButton">15sp</dimen>
     <dimen name="fontCaption">13sp</dimen>
     <dimen name="QR_code_wide">140dp</dimen>
+    <!--聊天重构-->
+    <dimen name="view_margin_left">55dp</dimen>
+    <dimen name="bubble_width">225dp</dimen>
 </resources>
