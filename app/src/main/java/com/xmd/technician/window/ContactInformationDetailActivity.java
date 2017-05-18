@@ -196,6 +196,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     private boolean showOperationButtons;
 
+    private String[] mContactMoreItems;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -534,8 +536,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     @OnClick(R.id.contact_more)
     public void toDoMore() {
-        final String[] items = new String[]{ResourceUtils.getString(R.string.delete_contact), ResourceUtils.getString(R.string.add_to_blacklist), ResourceUtils.getString(R.string.add_remark)};
-        DropDownMenuDialog.getDropDownMenuDialog(ContactInformationDetailActivity.this, items, (index -> {
+        DropDownMenuDialog.getDropDownMenuDialog(ContactInformationDetailActivity.this, mContactMoreItems, (index -> {
             switch (index) {
                 case 0:
                     new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_delete_contact), getString(R.string.alert_delete_contact_message), "") {
@@ -549,19 +550,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     }.show();
                     break;
                 case 1:
-                    new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_add_to_blacklist), getString(R.string.alert_add_to_blacklist_message), "") {
-                        @Override
-                        public void onConfirmClick() {
-                            if (Utils.isEmpty(userId)) {
-                                ContactInformationDetailActivity.this.makeShortToast(getString(R.string.add_to_blacklist_failed));
-                            } else if (!inBlacklist) {
-                                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_TO_BLACKLIST, userId);
-                            }
-                            super.onConfirmClick();
-                        }
-                    }.show();
-                    break;
-                case 2:
                     Intent intent = new Intent(ContactInformationDetailActivity.this, EditContactInformation.class);
                     intent.putExtra(RequestConstant.KEY_ID, contactId);
                     intent.putExtra(RequestConstant.KEY_NOTE_NAME, mContactName.getText().toString());
@@ -575,6 +563,19 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     }
                     intent.putExtra(RequestConstant.KEY_PHONE_NUMBER, contactPhone);
                     startActivityForResult(intent, REQUEST_CODE_SET_REMARK);
+                    break;
+                case 2:
+                    new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_add_to_blacklist), getString(R.string.alert_add_to_blacklist_message), "") {
+                        @Override
+                        public void onConfirmClick() {
+                            if (Utils.isEmpty(userId)) {
+                                ContactInformationDetailActivity.this.makeShortToast(getString(R.string.add_to_blacklist_failed));
+                            } else if (!inBlacklist) {
+                                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_TO_BLACKLIST, userId);
+                            }
+                            super.onConfirmClick();
+                        }
+                    }.show();
                     break;
             }
         })).show(contactMore);
@@ -639,6 +640,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             return;
         }
         if (isMyCustomer) {
+            mContactMoreItems = new String[]{ResourceUtils.getString(R.string.delete_contact), ResourceUtils.getString(R.string.add_remark), ResourceUtils.getString(R.string.add_to_blacklist)};
             contactMore.setVisibility(View.VISIBLE);
         }
 
@@ -670,6 +672,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
             }
         } else {
             belongTechName.setText("-");
+        }
+
+        if(TextUtils.isEmpty(mCustomerInfo.emchatId) || mCustomerInfo.customerType.equals(RequestConstant.TECH_ADD)){
+            mContactMoreItems = new String[]{ResourceUtils.getString(R.string.delete_contact), ResourceUtils.getString(R.string.add_remark)};
         }
 
         if (TextUtils.isEmpty(mCustomerInfo.emchatId)) {
