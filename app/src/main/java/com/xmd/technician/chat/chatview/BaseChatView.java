@@ -165,7 +165,7 @@ public abstract class BaseChatView extends LinearLayout {
 
                 @Override
                 public void onError(int code, String error) {
-                    message.setAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_SERVER_NOT_REACHABLE);
+                    message.setAttribute(ChatConstant.KEY_ERROR_CODE, (EMError.USER_PERMISSION_DENIED == code ? ChatConstant.ERROR_IN_BLACKLIST : ChatConstant.ERROR_SERVER_NOT_REACHABLE));
                     updateView();
                 }
             };
