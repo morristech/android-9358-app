@@ -67,7 +67,7 @@ public class EmchatBlacklistActivity extends BaseListActivity<CustomerInfo>{
         intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, bean.id);
         intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
         intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
-        intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER,true);
+        //intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER,true);
         startActivityForResult(intent, 0);
     }
 
