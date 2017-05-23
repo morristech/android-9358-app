@@ -142,7 +142,7 @@ aspectjx {
 dependencies {
     //依赖文件
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':shidou-commonlibrary')
+    compile project(':commonlibrary')
     compile project(':xmd-app')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
     compile(name: 'permission-tool-1.0', ext: 'aar')

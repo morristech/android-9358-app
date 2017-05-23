@@ -1,1 +1,1 @@
-include ':xmd-tech', ':shidou-commonlibrary', ':xmd-app', ':loading-view', ':xmd-mgr', ':xmd-cashier'
+include ':xmd-tech', ':commonlibrary', ':xmd-app', ':loading-view', ':xmd-mgr', ':xmd-cashier'

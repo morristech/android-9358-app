@@ -187,5 +187,5 @@ dependencies {
     compile project(':loading-view')
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.ms-square:expandableTextView:0.1.4'
-    compile project(':shidou-commonlibrary')
+    compile project(':commonlibrary')
 }
