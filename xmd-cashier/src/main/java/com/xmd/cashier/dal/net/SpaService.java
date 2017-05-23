@@ -407,9 +407,9 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_ONLINE_PAY_STATUS_UPDATE)
-    Observable<BaseResult> updateOnlinePayStatus(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                 @Field(RequestConstant.KEY_ORDER_ID) String orderId,
-                                                 @Field(RequestConstant.KEY_STATUS) String status);
+    Observable<StringResult> updateOnlinePayStatus(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                   @Field(RequestConstant.KEY_ORDER_ID) String orderId,
+                                                   @Field(RequestConstant.KEY_STATUS) String status);
 
     /**
      * 获取会所预约订单列表
@@ -439,10 +439,10 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_ORDER_RECORD_STATUS_UPDATE)
-    Observable<BaseResult> updateOrderRecordStatus(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                                   @Field(RequestConstant.KEY_PROCESS_TYPE) String processType,
-                                                   @Field(RequestConstant.KEY_ID) String id);
+    Observable<StringResult> updateOrderRecordStatus(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                     @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                                     @Field(RequestConstant.KEY_PROCESS_TYPE) String processType,
+                                                     @Field(RequestConstant.KEY_ID) String id);
 
     /****************************************
      * Pos结算 *

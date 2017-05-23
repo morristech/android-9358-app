@@ -223,7 +223,7 @@ public class VerifyRecordActivity extends BaseActivity implements VerifyRecordCo
 
     @Override
     public void initFilter(List<String> list) {
-        mFilterText.setText(AppConstants.STATUS_ALL);
+        mFilterText.setText(AppConstants.STATUS_ALL_TEXT);
         mPopFilter = new ArrayPopupWindow<>(this, mFilterText, null, getWindowManager().getDefaultDisplay().getWidth() / 3, R.style.anim_top_to_bottom_style,
                 getResources().getDrawable(R.drawable.bg_ex_popup_window), 0);
         mPopFilter.setDataSet(list);

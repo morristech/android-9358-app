@@ -268,7 +268,7 @@ public class VerifyRecordPresenter implements VerifyRecordContract.Presenter {
                     for (VerifyTypeInfo info : mTypeMap) {
                         tempList.add(info.value);
                     }
-                    tempList.add(0, AppConstants.STATUS_ALL);
+                    tempList.add(0, AppConstants.STATUS_ALL_TEXT);
                     mView.initFilter(tempList);
                 }
             }
