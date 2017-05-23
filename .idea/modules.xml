@@ -4,9 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-9358-tech.iml" filepath="$PROJECT_DIR$/android-9358-tech.iml" />
       <module fileurl="file://$PROJECT_DIR$/android-crop/android-crop.iml" filepath="$PROJECT_DIR$/android-crop/android-crop.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/permission-tool/permission-tool.iml" filepath="$PROJECT_DIR$/permission-tool/permission-tool.iml" />
       <module fileurl="file://$PROJECT_DIR$/shidou-commonlibrary/shidou-commonlibrary.iml" filepath="$PROJECT_DIR$/shidou-commonlibrary/shidou-commonlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xmd-app/xmd-app.iml" filepath="$PROJECT_DIR$/xmd-app/xmd-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xmd-tech/xmd-tech.iml" filepath="$PROJECT_DIR$/xmd-tech/xmd-tech.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,171 @@
+apply plugin: 'com.android.application' //说明module的类型
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'android-aspectjx'
+
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
+}
+
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+8"))
+}
+
+android {
+    compileSdkVersion 25   //编译的sdk版本
+    buildToolsVersion '25.0.2'//编译的tools版本
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {//默认配置
+        applicationId "com.xmd.technician" //应用程序包名
+        minSdkVersion 15 //支持的最低版本
+        targetSdkVersion 25 //目标版本
+        multiDexEnabled true
+        // 1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
+        // release version : 1.4.0.14
+        // 1.5.4 备用技师登录需求
+        // 1.5.6 技师相册权限+在线买单通知
+        //1.6.0 技师营销页面改版
+        //1.6.2 附近的人，打招呼
+        // 1.6.4Pk分组，修复已知bug
+        versionCode 35
+        versionName "1.6.7"
+
+        manifestPlaceholders = [
+                PACKAGE_NAME       : "com.xmd.technician",
+                //UMENG_APPKEY for release
+                UMENG_APPKEY_VALUE : "568cf00e67e58eeba4000e38",
+                UMENG_CHANNEL_VALUE: "xiaomodo-tech",
+        ]
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
+    }
+
+    lintOptions {
+        abortOnError false  //lint 时终止错误上报，防止编译的时候莫名失败
+    }
+
+    signingConfigs { //签名配置
+        release {
+            storeFile file("tools/xmd_app_key.keystore") //密钥文件路径
+            storePassword sign_password //密钥文件密码
+            keyAlias key_alias //key别名
+            keyPassword sign_password//key密码
+        }
+    }
+
+    buildTypes { //build类型
+        debug {//调试
+            buildConfigField("Boolean", "debug", "true")
+            signingConfig signingConfigs.release
+        }
+
+        release {//发布
+            buildConfigField("Boolean", "debug", "false")
+            minifyEnabled true  //混淆开启
+            zipAlignEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//指定混淆文件
+            signingConfig signingConfigs.release //设置签名信息
+        }
+
+    }
+    productFlavors {
+        dev {
+            manifestPlaceholders = [
+                    EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
+                    GETUI_APP_ID        : "tKz4NrRkbB7liB2hQKH1K3",
+                    GETUI_APP_KEY       : "1Z7IMxPegvAc3p5fFhXZm1",
+                    GETUI_APP_SECRET    : "H1A8oGj86TARVycNo28c28",
+                    GETUI_MASTER_SECRET : "auiTyQZRcc6AUA9PQWoak7",
+                    DEF_UPDATE_SERVER   : "http://192.168.1.100:9883",
+            ]
+            buildConfigField("String", "flavors", "\"dev\"")
+        }
+
+        prd {
+            manifestPlaceholders = [
+                    EASEMOB_APPKEY_VALUE: "xiaomodo#spa",
+                    GETUI_APP_ID        : "9M8R2lPBQw9CB1NSODZOJ2",
+                    GETUI_APP_KEY       : "Sc5C01E4Vr5mx3nv2o4hz4",
+                    GETUI_APP_SECRET    : "hUACujejlx5GmDMaLfqj92",
+                    GETUI_MASTER_SECRET : "BZmw1WsvNhAVz4NjsJKrm3",
+                    DEF_UPDATE_SERVER   : "http://service.xiaomodo.com",
+            ]
+            buildConfigField("String", "flavors", "\"prd\"")
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith("release.apk")) {
+                // output
+                def flavorName = variant.productFlavors[0].name + "_";
+                if (flavorName == "prd_") {
+                    flavorName = "";
+                }
+                def fileName = "9358tech_v${defaultConfig.versionName}.${defaultConfig.versionCode}_${flavorName}xiaomodo_${releaseTime()}.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+aspectjx {
+    excludeJarFilter '.jar'
+}
+
+
+dependencies {
+    //依赖文件
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':shidou-commonlibrary')
+    compile project(':xmd-app')
+    compile(name: 'shidou-updater-1.7', ext: 'aar')
+    compile(name: 'permission-tool-1.0', ext: 'aar')
+    compile(name: 'xmd-image-tool-1.0', ext: 'aar')
+    compile(name: 'xmd-image-crop-1.0', ext: 'aar')
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile(name: 'xmd-image-selector-1.0', ext: 'aar')
+    compile files('libs/hyphenatechat_3.3.0.jar')
+    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
+    compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibraryVersion}"
+    compile "com.android.support:cardview-v7:${rootProject.ext.supportLibraryVersion}"
+    compile "com.android.support:support-v4:${rootProject.ext.supportLibraryVersion}"
+    compile "com.android.support:design:${rootProject.ext.supportLibraryVersion}"
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    compile 'com.getui:sdk:2.10.2.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    //    aspectj
+    compile 'org.aspectj:aspectjrt:1.8.+'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    // for multidex
+    compile 'com.android.support:multidex:1.0.1'
+}

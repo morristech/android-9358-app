@@ -1,1 +1,1 @@
-include ':app', ':shidou-commonlibrary'
+include ':xmd-tech', ':shidou-commonlibrary', ':xmd-app'
