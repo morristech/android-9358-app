@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/customer_comment_margin_top"
+    android:background="@color/tab_bg"
+    android:orientation="vertical">
+
+    <View style="@style/comment_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/customer_comment_margin_top"
+        android:layout_marginTop="@dimen/customer_comment_margin_top"
+        android:orientation="horizontal">
+
+        <com.xmd.manager.widget.CircleImageView
+            android:id="@+id/tech_avatar"
+            android:layout_width="@dimen/customer_comment_list_item_avatar_size"
+            android:layout_height="@dimen/customer_comment_list_item_avatar_size"
+            android:layout_marginLeft="@dimen/customer_comment_margin_left"
+            android:background="@drawable/icon22" />
+
+        <TextView
+            android:id="@+id/tv_tech_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/customer_comment_margin_right"
+            android:gravity="center"
+            android:textColor="@color/value_color"
+            android:textSize="@dimen/large_text_size"
+            tools:text="匿名用户" />
+
+        <TextView
+            android:id="@+id/tv_tech_no"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/customer_comment_margin_top"
+            android:gravity="center"
+            android:textColor="@color/colorBody"
+            android:textSize="@dimen/fontBody"
+            tools:text="[]" />
+
+    </LinearLayout>
+
+    <View style="@style/comment_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_space">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/customer_comment_margin_left"
+            android:text="@string/customer_comments_score"
+            android:textColor="@color/value_color"
+            android:textSize="@dimen/x_large_text_size" />
+
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/customer_comment_score_text_color"
+            android:textSize="@dimen/xh_large_text_size"
+            tools:text="4.8" />
+
+        <TextView
+            android:id="@+id/tv_reward"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/customer_comment_margin_left"
+            android:gravity="right"
+            android:textColor="@color/desc_color"
+            android:textSize="@dimen/middle_text_size"
+            tools:text="打赏" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/comment_rate_list"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="@dimen/customer_comment_margin_left" />
+
+
+    <View
+        style="@style/comment_line"
+        android:layout_marginLeft="@dimen/customer_comment_margin_left"
+        android:layout_marginTop="@dimen/small_space" />
+
+    <GridView
+        android:id="@+id/impression_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/customer_comment_margin_left"
+        android:layout_marginTop="@dimen/inter_space"
+        android:gravity="center_vertical"
+        android:numColumns="4"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/customer_comment_margin_left"
+        android:layout_marginRight="@dimen/customer_comment_margin_right"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/h_large_text_size"
+        tools:text="1221323" />
+
+    <View
+        android:id="@+id/impression_line"
+        style="@style/comment_line"
+        android:layout_marginLeft="@dimen/customer_comment_margin_left"
+        android:layout_marginTop="@dimen/small_space" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/personal_description_height"
+        android:paddingLeft="@dimen/customer_comment_margin_left"
+        android:paddingRight="@dimen/feedback_btn_height">
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorRemark"
+            android:textSize="@dimen/inter_text_size"
+            tools:text="2015.06.06" />
+
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="center"
+            android:src="@drawable/icon_shanchu" />
+    </RelativeLayout>
+
+    <View style="@style/comment_line" />
+
+</LinearLayout>

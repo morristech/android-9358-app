@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.xmd.manager.widget.CircularBeadImageView
+        android:id="@+id/customer_head"
+        android:layout_width="@dimen/select_member_padding"
+        android:layout_height="35dp"
+        android:layout_toRightOf="@id/customer_select_state"
+        android:scaleType="fitXY"
+        android:layout_marginLeft="@dimen/small_space"
+        android:background="@drawable/default_rectangular_avatar"
+        app:border_radius="2dp"
+        app:type="1" />
+
+</LinearLayout>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_check_info"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_weight="1" />
+
+    <RelativeLayout
+        android:id="@+id/layout_verify_op"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/view_divide"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorStoke" />
+
+        <Button
+            android:id="@+id/btn_op_verify"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/view_divide"
+            android:layout_marginLeft="16dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="核销"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/medium_font_size" />
+
+        <TextView
+            android:id="@+id/tv_op_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/view_divide"
+            android:layout_marginLeft="16dp"
+            android:layout_toLeftOf="@id/btn_op_verify"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorText4"
+            android:textSize="@dimen/small_font_size" />
+    </RelativeLayout>
+</LinearLayout>

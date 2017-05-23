@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="presenter"
+            type="com.xmd.manager.journal.presenter.JournalContentImageArticlePresenter" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="@{()->presenter.onClickSelectTemplate()}"
+            android:text="选择样式"
+            android:visibility="@{presenter.mShowSelectTemplateButton?View.VISIBLE:View.GONE}" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{presenter.mShowLoadingData?View.VISIBLE:View.GONE}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@{presenter.mLoadDataError}"
+            android:visibility="@{presenter.mLoadDataError!=null?View.VISIBLE:View.GONE}" />
+    </FrameLayout>
+</layout>

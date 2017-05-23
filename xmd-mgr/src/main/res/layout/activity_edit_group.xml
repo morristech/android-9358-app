@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/smooth_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/edit_group_group_name"
+                    android:padding="@dimen/inter_space"
+                    android:text="@string/group_name" />
+
+                <View style="@style/line" />
+
+                <com.xmd.manager.widget.ClearableEditText
+                    android:id="@+id/group_name_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:hint="@string/group_input_group_name"
+                    android:maxLength="14"
+                    android:padding="@dimen/inter_space"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    app:bg_color_filter="@color/white" />
+
+                <View style="@style/line" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/edit_group_group_name"
+                    android:padding="@dimen/inter_space"
+                    android:text="@string/group_remark" />
+
+                <View style="@style/horizontal_line" />
+
+                <com.xmd.manager.widget.ClearableEditText
+                    android:id="@+id/group_remark_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:hint="@string/group_remark_hint"
+                    android:maxLength="20"
+                    android:padding="@dimen/inter_space"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    app:bg_color_filter="@color/white" />
+
+                <View style="@style/horizontal_line" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/edit_group_group_name"
+                    android:padding="@dimen/inter_space"
+                    android:text="@string/group_member" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/group_member_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="@dimen/inter_space"
+                    android:paddingTop="8dp"
+                    android:text="@string/group_add_or_delete_group_member"
+                    android:textColor="@color/order_verification_content"
+                    android:textSize="@dimen/fontCaption" />
+
+                <View style="@style/horizontal_line" />
+
+                <Button
+                    android:id="@+id/btn_delete_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="@dimen/inter_space"
+                    android:layout_marginRight="@dimen/inter_space"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/login_button_main_selector"
+                    android:text="@string/delete_group"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fontTitle" />
+            </LinearLayout>
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+
+</LinearLayout>

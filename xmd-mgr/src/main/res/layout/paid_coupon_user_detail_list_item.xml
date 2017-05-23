@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/paid_coupon_user_detail_list_item_height"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/small_space"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.xmd.techName.widget.CircleImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/paid_coupon_user_detail_list_item_avatar_size"
+            android:layout_height="@dimen/paid_coupon_user_detail_list_item_avatar_size" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/small_space"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_customer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/paid_coupon_user_detail_list_item_user_name_text_size" />
+
+            <TextView
+                android:id="@+id/tv_telephone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/paid_coupon_user_detail_list_item_telephone_text_size" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_coupon_status_description"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tv_get_date"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" />
+
+</LinearLayout>

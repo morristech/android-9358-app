@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name">9358收银台</string>
+
+    <string name="hint_input_money">请输入金额</string>
+    <string name="hint_input_coupon_money">请输入优惠金额</string>
+
+    <!--登录界面-->
+    <string name="login_title">@string/app_name</string>
+    <string name="login_hint_username">输入用户名</string>
+    <string name="login_hint_password">输入密码</string>
+    <string name="login_button">立即登录</string>
+    <string name="login_company">深圳市小摩豆网络科技有限公司</string>
+
+    <!-- 收银界面 -->
+    <string name="cashier_title">收银</string>
+    <string name="cashier_logout">退出登录</string>
+    <string name="tip_origin_money">消费金额</string>
+    <string name="tip_finally_money">实收金额</string>
+    <string name="cashier_money_tag">￥</string>
+    <string name="cashier_money">￥%1$s</string>
+    <string name="main_exit_confirm">确定退出收银台程序?</string>
+
+    <!-- 核销界面 -->
+    <string name="verification_title">选择优惠券</string>
+    <string name="verification_button_use">确定</string>
+    <string name="verification_button_search">搜索</string>
+    <string name="verify_service_title">项目券核销</string>
+    <string name="verify_prize_title">奖品核销</string>
+    <string name="verify_common_title">通用核销</string>
+
+    <!-- 确认界面 -->
+    <string name="confirm_title">支付提示</string>
+
+    <!-- 交易流水 -->
+    <string name="bill_record_title">交易流水</string>
+    <string name="bill_detail_title">收款详情</string>
+
+    <string name="verify_only_title">核销</string>
+
+    <string name="btn_add_coupon">添加优惠券</string>
+    <string name="btn_change_coupon">修改</string>
+
+    <string name="token_expired">会话已过期，请重新登录</string>
+
+    <string name="menu_logout">退出登录</string>
+
+    <string name="coupon_info_is_added">该优惠券已在列表中</string>
+
+    <string name="network_disabled">无法连接网络，请检查网络连接</string>
+    <string name="key_enter">收银</string>
+
+    <string name="verification_item_detail_title">详情</string>
+
+    <!-- 会员支付 -->
+    <string name="member_pay_title">会员支付</string>
+    <string name="member_pay_balance_not_enough">余额不足（不能享受折扣）</string>
+    <string name="member_pay_part_pay">会员支付￥%1$s，其他支付￥%2$s</string>
+    <string name="member_pay_pay">立即收款</string>
+
+
+    <!-- 支付方式 -->
+    <string name="pay_type_title">选择支付方式</string>
+    <string name="pay_type_amount">需要支付￥%1$s</string>
+    <string name="pay_type_tip">请选择支付方式</string>
+    <string name="pay_type_cash">现金</string>
+    <string name="pay_type_card">刷卡</string>
+    <string name="pay_type_wechat">微信</string>
+    <string name="pay_type_alipay">支付宝</string>
+    <string name="pay_type_pay">确认支付</string>
+
+    <string name="title_online_pay">小摩豆买单</string>
+    <string name="title_order_record">预约订单</string>
+
+    <!-- 结算 -->
+    <string name="settle_record_month_total">共%1$s条结算记录</string>
+    <string name="settle_other_total_count">共%1$s笔</string>
+    <string name="settle_other_refund_count">退款 共%1$s笔</string>
+    <string name="settle_other_start_time">开始时间：%1$s</string>
+    <string name="settle_other_end_time">截止时间：%1$s</string>
+    <string name="settle_other_cashier_people">收银员：%1$s</string>
+    <string name="settle_other_js_people">结算人员：%1$s</string>
+    <string name="settle_other_js_time">结算时间：%1$s</string>
+</resources>

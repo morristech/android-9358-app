@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_space"
+        android:background="@android:drawable/editbox_background_normal"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.xmd.manager.widget.ClearableEditText
+            android:id="@+id/search_customer"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/service_bottom_dialog_padding"
+            android:layout_weight="1"
+            android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/search_hint"
+            android:lines="1"
+            android:paddingLeft="@dimen/inter_space"
+            android:textColor="@color/colorBody"
+            android:textColorHint="@color/colorCommentDivide"
+            android:textSize="@dimen/fontSubheading" />
+
+        <TextView
+            style="@style/vertical_line"
+            android:layout_marginBottom="@dimen/small_space"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginTop="@dimen/small_space" />
+
+        <ImageView
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:padding="@dimen/small_space"
+            android:src="@drawable/ic_search_pressed" />
+    </LinearLayout>
+
+    <View style="@style/horizontal_line" />
+
+    <LinearLayout
+        android:id="@+id/selected_customer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bad_comment_wight"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="@dimen/small_space"
+            android:text="已选" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/group_customer_selected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/small_space"
+            android:background="@color/white" />
+    </LinearLayout>
+
+    <View style="@style/horizontal_line" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_bg">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_customer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:divider="@null"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/title_layout_no_friends"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/login_top_margin"
+            android:layout_gravity="right|top"
+            android:background="@color/app_bg"
+            android:gravity="center_vertical"
+            android:text="没有匹配的联系人"
+            android:textSize="@dimen/fontTitle"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/status_progressbar"
+            android:layout_width="@dimen/new_order_count_bg_radius"
+            android:layout_height="@dimen/new_order_count_bg_radius"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+
+    </FrameLayout>
+
+</LinearLayout>

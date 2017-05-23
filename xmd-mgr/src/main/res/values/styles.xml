@@ -1,0 +1,79 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Theme.App.Base" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <!-- Both of these are needed, hide the action bar -->
+        <item name="toolbarStyle">@style/MyToolbar</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="buttonStyle">@style/primary_button_style</item>
+        <item name="android:textSize">@dimen/fontBody</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.App.Base">
+        <item name="android:listDivider">@drawable/list_item_divider</item>
+    </style>
+
+    <style name="AppTheme.ToolBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">@color/primary_color</item>
+    </style>
+
+    <style name="progressDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="proDialog" parent="@style/progressDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <!-- 设置未浮动窗口 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 设置无边框 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 设置无标题 -->
+        <item name="android:windowBackground">@color/transparent</item>
+        <!-- 设置完全透明 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 设置屏幕变暗 -->
+    </style>
+
+    <style name="customerCheckboxTheme" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_style</item>
+    </style>
+
+    <style name="main_page_margin_style">
+        <item name="android:layout_marginRight">@dimen/inter_space</item>
+        <item name="android:layout_marginLeft">@dimen/inter_space</item>
+    </style>
+
+    <style name="popup_window_style">
+        <item name="android:windowEnterAnimation">@anim/popup_anim_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_anim_out</item>
+    </style>
+
+    <style name="all_bad_comment_text_style">
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/selector_bad_comment_text</item>
+        <item name="android:textSize">@dimen/fontSubheading</item>
+
+    </style>
+
+    <style name="default_dialog_style" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/round_rect_white_bg</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

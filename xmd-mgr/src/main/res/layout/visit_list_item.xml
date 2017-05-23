@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_marginLeft="@dimen/inter_space"
+    android:layout_marginRight="@dimen/inter_space"
+    android:layout_marginTop="@dimen/margin_10"
+    app:cardCornerRadius="@dimen/list_item_card_corner_radius"
+    app:cardPreventCornerOverlap="false"
+    app:elevation="@dimen/list_item_card_elevation">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_club_list_item_content"
+        android:paddingBottom="@dimen/large_space">
+
+        <LinearLayout
+            android:id="@+id/ll_group_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/large_space"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/group_coupon_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorClubItemTitle"
+                android:lineSpacingExtra="5dp"
+                android:textSize="@dimen/fontSelectGroup" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorClubItemTitle"
+                android:textSize="@dimen/fontBig" />
+
+            <TextView
+                android:id="@+id/user_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/inter_space"
+                android:singleLine="true"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/tab_notice_size"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody"
+                android:text="@string/visit_from" />
+
+
+            <TextView
+                android:id="@+id/user_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/inter_space"
+                android:singleLine="true"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/dialog_button_row_padding"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody"
+                android:text="@string/visit_time" />
+
+            <TextView
+                android:id="@+id/user_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

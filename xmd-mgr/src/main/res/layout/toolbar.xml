@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_height"
+    android:background="@color/primary_color"
+    android:minHeight="?attr/actionBarSize">
+
+    <RelativeLayout
+        android:id="@+id/rl_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space">
+
+        <ImageView
+            android:id="@+id/toolbar_left"
+            android:layout_width="@dimen/toolbar_img_width"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:contentDescription="@string/content_description"
+            android:scaleType="center"
+            android:src="@drawable/ic_back_selector" />
+
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/toolbar_title_color"
+            android:textSize="@dimen/toolbar_title_text_size" />
+
+        <TextView
+            android:id="@+id/toolbar_customer_filter_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:drawablePadding="@dimen/small_space"
+            android:drawableRight="@drawable/icon_triangle"
+            android:gravity="center"
+            android:text="全部客户"
+            android:textColor="@color/toolbar_title_color"
+            android:textSize="@dimen/toolbar_title_text_size"
+            android:visibility="invisible" />
+
+        <FrameLayout
+            android:id="@+id/toolbar_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:minWidth="@dimen/toolbar_img_width">
+
+            <TextView
+                android:id="@+id/toolbar_right_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingLeft="@dimen/margin_10"
+                android:paddingRight="@dimen/small_space"
+                android:paddingTop="2dp"
+                android:textColor="@color/select_toolbar_text"
+                android:textSize="@dimen/fontButton"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/toolbar_right_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/content_description"
+                android:scaleType="center"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/toolbar_notice_unread_msg"
+                android:layout_width="@dimen/large_space"
+                android:layout_height="@dimen/large_space"
+                android:layout_gravity="right|top"
+                android:layout_marginTop="@dimen/toolbar_notice_icon_margin_top"
+                android:background="@drawable/shape_toolbar_unread_msg"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/small_text_size"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.Toolbar>

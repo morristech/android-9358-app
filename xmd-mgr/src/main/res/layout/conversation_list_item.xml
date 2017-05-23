@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/conversation_list_item_height"
+    android:background="@drawable/selector_list_item_clicked"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fl_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_space">
+
+            <com.xmd.manager.widget.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/conversation_list_item_avatar_size"
+                android:layout_height="@dimen/conversation_list_item_avatar_size"
+                android:background="@drawable/icon22" />
+
+            <TextView
+                android:id="@+id/unread"
+                android:layout_width="@dimen/large_space"
+                android:layout_height="@dimen/large_space"
+                android:layout_gravity="right|top"
+                android:background="@drawable/shape_unread_bg"
+                android:gravity="center"
+                android:text="11"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tiny_text_size" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_space"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/conversation_list_item_half_height"
+                android:gravity="center_vertical"
+                android:text="匿名用户"
+                android:textColor="@color/desc_color" />
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/conversation_list_item_half_height"
+                android:ellipsize="end"
+                android:maxLength="360"
+                android:singleLine="true"
+                android:textColor="@color/label_color" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/inter_space"
+            android:textColor="@color/label_color" />
+    </LinearLayout>
+
+    <!--    <LinearLayout
+            android:id="@+id/operation_conversion"
+            android:layout_width="@dimen/delete_item_btn"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/tvDelete"
+                android:layout_width="@dimen/delete_item_btn"
+                android:layout_height="match_parent"
+                android:background="#FF0000"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="删除" />
+
+
+        </LinearLayout>-->
+
+</LinearLayout>

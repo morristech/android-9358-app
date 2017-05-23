@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xmd.manager.widget.SelectorTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tv_name"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/technician_list_item_height"
+    android:clickable="true"
+    android:gravity="center"
+    android:textColor="@color/customer_technician_list_item_text_color"
+    android:textSize="@dimen/fontBody"
+    app:selected_background="@color/tab_bg"
+    app:selected_color="@color/primary_color"
+    app:selected_width="@dimen/card_elevation" />
+

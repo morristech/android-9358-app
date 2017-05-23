@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/app_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space">
+
+        <com.xmd.manager.widget.ClearableEditText
+            android:id="@+id/search_club"
+            style="@style/clearable_edit_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/small_space"
+            android:layout_weight="1"
+            android:hint="@string/search_club_activity_search_hint"
+            android:singleLine="true" />
+
+    </LinearLayout>
+
+
+    <include layout="@layout/layout_swipe_refresh_list" />
+
+
+</LinearLayout>

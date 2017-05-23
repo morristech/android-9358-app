@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_verification"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.xmd.cashier.activity.VerificationActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_qr" />
+
+    <LinearLayout
+        android:id="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_normal_margin"
+        android:background="@drawable/bg_text_search"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingLeft="@dimen/activity_normal_margin">
+
+        <com.xmd.cashier.widget.CustomCouponNumberEditText
+            android:id="@+id/edt_number"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_search"
+            android:drawablePadding="4dp"
+            android:hint="输入手机号或核销码"
+            android:textSize="@dimen/small_font_size" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_btn_search"
+            android:onClick="onClickSearch"
+            android:text="@string/verification_button_search" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/activity_normal_margin"
+        android:layout_marginRight="@dimen/activity_normal_margin"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivide" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_normal_margin">
+
+            <Button
+                style="@style/AppTheme.Button.Negative"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/activity_small_margin"
+                android:gravity="center"
+                android:onClick="onClickCleanAll"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:text="清除所有"
+                android:textSize="@dimen/medium_font_size" />
+
+            <Button
+                style="@style/AppTheme.Button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:onClick="onClickOk"
+                android:text="@string/verification_button_use"
+                android:textSize="@dimen/medium_font_size" />
+        </LinearLayout>
+
+        <include
+            layout="@layout/keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

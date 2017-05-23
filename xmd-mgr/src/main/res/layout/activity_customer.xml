@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/tab_bg"
+                android:gravity="center_vertical"
+                android:padding="@dimen/inter_space">
+
+                <com.xmd.manager.widget.CircularBeadImageView
+                    android:id="@+id/civ_avatar"
+                    android:layout_width="@dimen/avatar_head"
+                    android:layout_height="@dimen/avatar_head"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/small_space"
+                    android:src="@drawable/icon22"
+                    app:border_radius="2dp"
+                    app:type="1" />
+
+
+                <TextView
+                    android:id="@+id/tv_customer_name"
+                    style="@style/customer_activity_value_style"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/civ_avatar"
+                    android:padding="@dimen/small_space" />
+
+                <TextView
+                    android:id="@+id/tv_customer_type"
+                    android:layout_width="@dimen/customer_type_label_width"
+                    android:layout_height="@dimen/customer_type_label_height"
+                    android:layout_marginLeft="@dimen/small_space"
+                    android:layout_marginTop="@dimen/inter_radius"
+                    android:layout_toRightOf="@+id/tv_customer_name"
+                    android:background="@drawable/customer_type_weixin"
+                    android:gravity="center"
+                    android:textColor="@color/customer_type_label_weixin"
+                    android:textSize="@dimen/tiny_text_size"
+                    tools:text="微信" />
+
+                <TextView
+                    android:id="@+id/tv_telephone"
+                    style="@style/customer_activity_desc_style"
+                    android:layout_alignBaseline="@+id/civ_avatar"
+                    android:layout_below="@+id/tv_customer_name"
+                    android:layout_toRightOf="@+id/civ_avatar"
+                    android:padding="@dimen/small_space" />
+
+            </RelativeLayout>
+
+            <View style="@style/line" />
+
+            <LinearLayout
+                android:id="@+id/layout_group_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/inter_space"
+                android:background="@drawable/bg_white_pressed"
+                android:orientation="horizontal"
+                android:padding="@dimen/inter_space"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/customer_activity_value_style"
+                    android:text="@string/customer_group_data" />
+
+                <TextView
+                    android:id="@+id/customer_group_data"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="@dimen/small_space"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textColor="@color/number_color" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/arrow_right" />
+
+            </LinearLayout>
+
+
+            <View style="@style/line" />
+
+            <View
+                style="@style/line"
+                android:layout_marginTop="@dimen/inter_space" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/tab_bg"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/inter_space">
+
+                    <TextView
+                        style="@style/customer_activity_value_style"
+                        android:text="@string/customer_activity_belonged_technician" />
+
+                    <TextView
+                        android:id="@+id/tv_technician_name"
+                        style="@style/customer_activity_value_style"
+                        android:layout_marginLeft="@dimen/inter_space" />
+                </LinearLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/inter_space" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/inter_space">
+
+                    <TextView
+                        style="@style/customer_activity_value_style"
+                        android:text="@string/customer_activity_last_visit" />
+
+                    <TextView
+                        android:id="@+id/tv_last_visit"
+                        style="@style/customer_activity_value_style"
+                        android:layout_marginLeft="@dimen/inter_space" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View style="@style/line" />
+
+            <View
+                style="@style/line"
+                android:layout_marginTop="@dimen/inter_space" />
+
+            <LinearLayout
+                android:id="@+id/rl_orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/tab_bg"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/selector_list_item_clicked"
+                    android:padding="@dimen/inter_space">
+
+                    <TextView
+                        android:id="@+id/tv_orders_label"
+                        style="@style/customer_activity_value_style"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/customer_activity_orders" />
+
+                    <TextView
+                        android:id="@+id/tv_orders_count"
+                        style="@style/customer_activity_value_style"
+                        android:layout_toRightOf="@+id/tv_orders_label"
+                        android:text="(0)" />
+
+                    <ImageView style="@style/relative_layout_arrow_right" />
+                </RelativeLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/inter_space" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_comments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/selector_list_item_clicked"
+                    android:padding="@dimen/inter_space">
+
+                    <TextView
+                        android:id="@+id/tv_comments_count"
+                        style="@style/customer_activity_value_style"
+                        android:layout_toRightOf="@+id/tv_comments_label"
+                        android:text="(0)" />
+
+                    <ImageView style="@style/relative_layout_arrow_right" />
+
+                    <TextView
+                        android:id="@+id/tv_comments_label"
+                        style="@style/customer_activity_value_style"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/customer_activity_comments" />
+                </RelativeLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/inter_space" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_coupons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/selector_list_item_clicked"
+                    android:padding="@dimen/inter_space">
+
+                    <TextView
+                        android:id="@+id/tv_coupons_label"
+                        style="@style/customer_activity_value_style"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/customer_activity_coupons" />
+
+                    <TextView
+                        android:id="@+id/tv_coupons_count"
+                        style="@style/customer_activity_value_style"
+                        android:layout_toRightOf="@+id/tv_coupons_label" />
+
+                    <ImageView style="@style/relative_layout_arrow_right" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View style="@style/line" />
+
+            <LinearLayout
+                android:id="@+id/ll_btn_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/inter_space"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/inter_space"
+                    android:layout_marginRight="@dimen/inter_space"
+                    android:text="@string/customer_activity_button_text_chat" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/inter_space"
+                    android:layout_marginTop="@dimen/inter_space">
+
+                    <Button
+                        android:id="@+id/btn_sms"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/inter_space"
+                        android:layout_marginRight="@dimen/inter_space"
+                        android:layout_weight="1"
+                        android:text="@string/customer_activity_button_text_sms" />
+
+                    <Button
+                        android:id="@+id/btn_coupon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/inter_space"
+                        android:layout_marginRight="@dimen/inter_space"
+                        android:layout_weight="1"
+                        android:text="@string/customer_activity_button_text_coupon" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

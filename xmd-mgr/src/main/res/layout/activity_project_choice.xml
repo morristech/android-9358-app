@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/app_bg">
+
+    <include layout="@layout/toolbar" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_service_view"
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/small_space"
+        android:background="@color/white"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_bg"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <Button
+            android:id="@+id/btn_service_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_select_service_items_cancel"
+
+            android:onClick="onClickPreview"
+            android:text="取消"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/font_button_medium" />
+
+        <Button
+            android:id="@+id/btn_service_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_select_service_items"
+            android:onClick="onClickSave"
+            android:text="确定"
+            android:enabled="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_button_medium" />
+    </LinearLayout>
+</LinearLayout>

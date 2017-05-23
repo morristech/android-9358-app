@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.xmd.manager">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+    <!-- ibeancon 需要蓝牙权限 -->
+    <!--
+<uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    -->
+    <!-- 支持个推3.0 电子围栏功能 -->
+    <!--
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    -->
+    <application
+        android:name=".ManagerApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="PUSH_MASTERSECRET"
+            android:value="${GETUI_MASTER_SECRET}" />
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="${UMENG_APPKEY_VALUE}" />
+        <meta-data
+            android:name="CHANNEL"
+            android:value="${CHANNEL_VALUE}" />
+
+        <!-- 设置环信应用的appkey -->
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="${EASEMOB_APPKEY_VALUE}" />
+        <!-- 声明sdk所需的service SDK核心功能 -->
+        <service
+            android:name="com.hyphenate.chat.EMChatService"
+            android:exported="true" />
+        <!-- 声明sdk所需的receiver -->
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+            <!-- 可选filter -->
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+            -->
+        </receiver>
+
+        <activity
+            android:name=".window.WelcomeActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".window.LoginActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".window.MainActivity"
+            android:exported="true"
+            android:label="@string/main_activity_title"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".window.CaptureActivity"
+            android:label="@string/capture_activity_title"
+            android:screenOrientation="portrait" />
+        <!--<activity-->
+        <!--android:name=".window.UserCouponListActivity"-->
+        <!--android:label="@string/user_coupon_list_activity_title"-->
+        <!--android:screenOrientation="portrait"/>-->
+        <activity
+            android:name=".verification.VerificationListActivity"
+            android:label="@string/customer_coupon_list_title"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".verification.VerificationActivity"
+            android:label="@string/customer_coupon_list_title"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".window.CouponActivity"
+            android:label="@string/coupon_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CouponUseDataActivity"
+            android:label="@string/coupon_use_data_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.BrowserActivity"
+            android:label="@string/browser_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.FeedbackActivity"
+            android:label="@string/feedback_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.AboutUsActivity"
+            android:label="@string/about_us_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/wx_entry_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.SettingActivity"
+            android:label="@string/setting_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.ConfigurationMonitorActivity"
+            android:label="@string/configuration_monitor_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CustomerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.ConversationListActivity"
+            android:label="@string/conversation_list_activity_title"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".window.ChatActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.ShowBigImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CustomerCommentsActivity"
+            android:label="@string/customer_comments_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CustomerOrdersActivity"
+            android:label="@string/customer_orders_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CustomerCouponsActivity"
+            android:label="@string/customer_coupons_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.StatisticsActivity"
+            android:label="@string/statistics_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.DeliveryCouponActivity"
+            android:label="@string/deliver_coupon_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.OrdersDetailActivity"
+            android:label="@string/orders_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.RegisterDetailActivity"
+            android:label="@string/register_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CouponsDetailActivity"
+            android:label="@string/coupons_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.PaidCouponDetailActivity"
+            android:label="@string/dianzhong_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CustomerSearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".window.ClubListActivity"
+            android:label="@string/action_club_list"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.PayActivity"
+            android:label="R.string.to_pay"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.WifiReportActivity"
+            android:label="@string/layout_statistics_propagate"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.RegisterReportActivity"
+            android:label="@string/layout_statistics_new_register"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.VisitReportActivity"
+            android:label="@string/layout_statistics_visit"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CouponReportActivity"
+            android:label="@string/layout_statistics_coupon_get"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.VisitReportDetailActivity"
+            android:label="@string/layout_statistics_visit_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.SendGroupMessageActivity"
+            android:label="@string/send_group_message"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.SendCouponDetailActivity"
+            android:label="@string/send_group_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CouponListActivity"
+            android:label="@string/coupon_tips"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.ModifyPasswordActivity"
+            android:label="@string/settings_activity_modify_password"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.AllBadCommentActivity"
+            android:label="@string/all_bad_comment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.AllTechBadCommentActivity"
+            android:label="@string/all_bad_comment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.BadCommentDetailActivity"
+            android:label="@string/bad_comment_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.EditGroupActivity"
+            android:label="@string/edit_group"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.CustomerGroupListActivity"
+            android:label="@string/create_group"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.SelectGroupCustomerActivity"
+            android:label="@string/create_group"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.ManagerVerificationActivity"
+            android:label="@string/verification_default"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.AddGroupActivity"
+            android:label="@string/all_group"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.OrderSearchActivity"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name=".push.GetuiReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".journal.activity.JournalListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".journal.activity.JournalTemplateChoiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".journal.activity.JournalContentEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".journal.activity.TechnicianChoiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".journal.activity.ClubServiceChoiceActivity"
+            android:screenOrientation="portrait" />
+        <!-- 裁剪图片 -->
+        <activity
+            android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".journal.camera.CameraActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".journal.activity.VideoPlayerActivity" />
+        <activity
+            android:name=".window.RegisterReportDetailActivity"
+            android:label="@string/statistics_activity_register_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.VerificationRecordListActivity"
+            android:label="@string/verification_record"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.VerificationRecordDetailActivity"
+            android:label="@string/verification_record_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".verification.VerificationCouponsFailActivity"
+            android:label="@string/verification_coupons_fail_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.OnlinePayActivity"
+            android:label="@string/online_pay_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.MarketingIncomeActivity"
+            android:label="@string/marketing_income_activity_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.OnlinePaySearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".window.TechPKActiveActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.TechPKRankingDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.TechPersonalRankingDetailActivity"
+            android:screenOrientation="portrait" />
+
+    </application>
+
+</manifest>

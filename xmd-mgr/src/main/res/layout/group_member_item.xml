@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_marginTop="@dimen/inter_space"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="@dimen/group_add_member_view_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.xmd.manager.widget.CircularBeadImageView
+                android:id="@+id/group_member_head"
+                android:layout_width="@dimen/group_add_member_width"
+                android:layout_height="@dimen/group_add_member_width"
+                android:layout_gravity="center"
+                android:padding="@dimen/small_space"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_add"
+                app:border_radius="@dimen/small_space"
+                app:type="1" />
+
+            <TextView
+                android:id="@+id/group_member_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                tools:text="林先生" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/group_member_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_remove"
+            android:layout_gravity="right"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>

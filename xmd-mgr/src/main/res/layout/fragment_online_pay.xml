@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/time_select_view" />
+
+    <LinearLayout
+        android:id="@+id/ll_income_total_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorLineDivide"
+        android:orientation="horizontal"
+        android:paddingRight="@dimen/margin_10"
+        android:paddingLeft="@dimen/margin_10"
+        android:paddingTop="@dimen/small_space"
+        android:paddingBottom="@dimen/small_space">
+
+        <TextView
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/online_pay_income_total"
+            android:textColor="@color/colorClubItemTitle"
+            android:textSize="@dimen/large_text_size" />
+
+        <TextView
+            android:id="@+id/tv_online_pay_income_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorClubItemTitle"
+            android:textSize="@dimen/xx_large_text_size"
+            tools:text="2369.00" />
+    </LinearLayout>
+
+    <include layout="@layout/layout_swipe_refresh_list" />
+
+</LinearLayout>

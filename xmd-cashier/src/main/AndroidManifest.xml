@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.xmd.cashier">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:name=".MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="57fb0c71e0f55a73c90001dc" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${umengChannelName}" />
+
+        <activity
+            android:name=".activity.LoginActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.VerificationActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.VerificationItemDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.ConfirmActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.MemberPayActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.PointsPhoneActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.PayTypeChoiceActivity"
+            android:launchMode="singleTask" />
+
+        <!-- 交易流水及详情 -->
+        <activity
+            android:name=".activity.BillRecordActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.BillDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.BillSearchActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.VerifyCheckInfoActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.VerifyCouponActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.VerifyOrderActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.VerifyServiceActivity"
+            android:launchMode="standard" />
+        <activity
+            android:name=".activity.VerifyPrizeActivity"
+            android:launchMode="standard" />
+        <activity
+            android:name=".activity.VerifyCommonActivity"
+            android:launchMode="standard"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.VerifyConfirmActivity"
+            android:launchMode="standard" />
+        <activity
+            android:name=".activity.OrderRecordActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.OnlinePayActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.CashierActivity"
+            android:launchMode="singleTask" />
+
+        <service
+            android:name=".service.CustomService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.SettleCurrentActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.SettleRecordActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.SettleDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.RecordNavigationActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.VerifyRecordActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.VerifyRecordDetailActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.ScanPayActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.ScanPayResultActivity"
+            android:launchMode="singleTask" />
+    </application>
+
+</manifest>

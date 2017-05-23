@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ClearableEditText">
+        <attr name="bg_color_filter" format="color"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="border_overlay" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SelectorTextView">
+        <attr name="selected_background" format="color" />
+        <attr name="selected_color" format="color" />
+        <attr name="selected_width" format="dimension" />
+    </declare-styleable>
+
+    <attr name="rightPadding" format="dimension" />
+
+    <declare-styleable name="SlidingMenu">
+        <attr name="rightPadding" />
+    </declare-styleable>
+
+    <declare-styleable name="CircularBeadImageView">
+        <attr name="border_radius" format="dimension" />
+        <attr name="type" format="string" />
+        <attr name="src" format="string" />
+    </declare-styleable>
+    <declare-styleable name="RatingBar">
+        <attr format="dimension" name="starDistance" />
+        <attr format="dimension" name="starSize" />
+        <attr format="integer" name="starCount" />
+        <attr format="reference" name="starEmpty" />
+        <attr format="reference" name="starFill" />
+    </declare-styleable>
+
+</resources>

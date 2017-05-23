@@ -1,0 +1,5 @@
+PASSWORD=XmdAppSignerPass2015
+ALIAS=xmd-app
+KEYSTORE=xmd_app_key.keystore
+TO_SIGN_APK=../bin/xmd-app-release-unsigned.apk
+SIGNED_APK=../bin/xmd-app.apk

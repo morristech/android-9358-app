@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="presenter"
+            type="com.xmd.manager.journal.presenter.JournalContentImageArticlePresenter" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="选择样式"
+            android:textSize="@dimen/fontSubheading" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{!presenter.mShowLoadingTemplate &amp;&amp; presenter.mLoadTemplateError==null ?View.VISIBLE:View.GONE}" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{presenter.mLoadTemplateError}"
+                android:visibility="@{presenter.mLoadTemplateError!=null?View.VISIBLE:View.GONE}" />
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="@{presenter.mShowLoadingTemplate?View.VISIBLE:View.GONE}" />
+        </FrameLayout>
+    </LinearLayout>
+</layout>

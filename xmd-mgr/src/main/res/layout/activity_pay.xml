@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:id="@+id/user_pay_code"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_pay_code_height"
+        android:orientation="vertical"
+        android:background="@drawable/rect_no_corner_bg"
+        android:paddingLeft="@dimen/pay_margin"
+        android:paddingRight="@dimen/pay_margin"
+        android:layout_marginTop="@dimen/margin_10"
+        android:paddingTop="@dimen/pay_margin"
+        android:layout_marginRight="@dimen/pay_margin"
+        android:layout_marginLeft="@dimen/pay_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/accredit_code"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/pay_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorClubItemTitle"
+            android:textSize="@dimen/fontBig"
+            android:layout_marginTop="@dimen/margin_10"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white_p"
+            android:layout_marginBottom="@dimen/pay_margin" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pay_money_height"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/pay_margin"
+        android:paddingRight="@dimen/pay_margin"
+        android:gravity="left"
+        android:paddingTop="@dimen/pay_margin"
+        android:layout_marginRight="@dimen/pay_margin"
+        android:layout_marginLeft="@dimen/pay_margin"
+        android:layout_marginTop="@dimen/margin_10">
+
+        <TextView
+            android:id="@+id/spend_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fontTitle"
+            android:text="@string/spend_sum"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fontNormal"
+            android:layout_toRightOf="@id/spend_sum"
+            android:layout_alignBottom="@id/spend_sum"
+            android:layout_marginLeft="@dimen/coupons_margin_top"
+            android:layout_marginBottom="2dp"
+            android:text="（元）"
+            android:textColor="@color/desc_color" />
+
+        <TextView
+            android:id="@+id/money_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fontTitle"
+            android:textColor="@color/colorClubItemTitle"
+            android:layout_above="@+id/divide_line"
+            android:text="￥"
+            android:gravity="bottom"
+            android:layout_marginBottom="@dimen/margin_10" />
+
+        <EditText
+            android:id="@+id/edit_Pay_money"
+            android:layout_toRightOf="@id/money_sign"
+            android:layout_below="@id/spend_sum"
+            android:background="@null"
+            android:hint="0"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:textSize="@dimen/fontBiggest"
+            android:inputType="number"
+            android:textColor="@color/colorClubItemTitle"
+            android:textColorHint="@color/colorRemark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/money_sign"
+            android:layout_marginBottom="-8dp"
+            android:maxLength="7"
+
+            android:numeric="decimal" />
+
+        <View
+            android:id="@+id/divide_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white_p"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="38dp"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fontBody"
+            android:text="@string/customer_spend_sum"
+            android:textColor="@color/colorRemark"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/pay_money_margin_bottom" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_pay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:background="@drawable/sure_pay"
+        android:layout_marginRight="@dimen/pay_margin"
+        android:layout_marginLeft="@dimen/pay_margin"
+        android:text="@string/btn_pay"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/fontBig"
+        android:enabled="false" />
+
+</LinearLayout>

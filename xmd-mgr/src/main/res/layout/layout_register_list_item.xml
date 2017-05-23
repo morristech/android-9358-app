@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/inter_space"
+    android:layout_marginRight="@dimen/inter_space"
+    android:layout_marginTop="@dimen/margin_10"
+    android:clickable="false"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="@dimen/list_item_card_corner_radius"
+    app:cardPreventCornerOverlap="false"
+    app:elevation="@dimen/list_item_card_elevation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_club_list_item_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/large_space">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+
+            <com.xmd.manager.widget.CircleImageView
+                android:id="@+id/user_head"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/icon22" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin_10"
+                android:textColor="@color/colorClubItemTitle"
+                android:textSize="@dimen/fontBig" />
+
+            <TextView
+                android:id="@+id/user_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/inter_space"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_user_tech"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_belonged_technician"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody" />
+
+            <TextView
+                android:id="@+id/user_tech"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/inter_space"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody" />
+
+            <TextView
+                android:id="@+id/user_tech_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/inter_space"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/dialog_button_row_padding"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_time"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody" />
+
+            <TextView
+                android:id="@+id/user_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontBody" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

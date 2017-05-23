@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EFEFF4"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/inter_space"
+        android:layout_marginRight="@dimen/inter_space"
+        android:layout_marginTop="@dimen/inter_space"
+        android:background="@color/white"
+        android:orientation="vertical"
+
+        android:paddingTop="@dimen/small_space">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space">
+
+            <com.xmd.manager.widget.CircleImageView
+                android:id="@+id/customer_head"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/icon22" />
+
+            <TextView
+                android:id="@+id/tv_customer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:textColor="@color/value_color"
+                android:textSize="@dimen/large_text_size"
+                tools:text="周先生" />
+
+            <TextView
+                android:id="@+id/tv_customer_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/inter_space"
+                android:textColor="@color/value_color"
+                android:textSize="@dimen/large_text_size"
+                tools:text="13137558109" />
+
+            <TextView
+                android:id="@+id/tv_online_pay_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:paddingBottom="@dimen/margin_2"
+                android:paddingRight="@dimen/small_space"
+                android:textSize="@dimen/fontMiddle"
+                tools:text="已确认" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_space"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/online_pay_money"
+                android:textColor="@color/colorRemark"
+                android:textSize="@dimen/inter_text_size" />
+
+            <TextView
+                android:id="@+id/customer_pay_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="@dimen/inter_space"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/inter_text_size"
+                tools:text="80.00" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_space"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/online_pay_time"
+                android:textColor="@color/colorRemark"
+                android:textSize="@dimen/inter_text_size" />
+
+            <TextView
+                android:id="@+id/customer_pay_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="@dimen/inter_space"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/inter_text_size"
+                tools:text="80.00" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_space"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="买单技师："
+                android:textColor="@color/colorRemark"
+                android:textSize="@dimen/inter_text_size" />
+
+            <TextView
+                android:id="@+id/customer_pay_tech_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingLeft="@dimen/inter_space"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/inter_text_size"
+                tools:text="张三[123]" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_combine_tech_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_space"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="合并技师："
+                android:textColor="@color/colorRemark"
+                android:textSize="@dimen/inter_text_size" />
+
+            <TextView
+                android:id="@+id/customer_pay_combine_tech_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingLeft="@dimen/inter_space"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/inter_text_size"
+                tools:text="张三[123]" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_customer_remark_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_space"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="备        注："
+                android:textColor="@color/colorRemark"
+                android:textSize="@dimen/inter_text_size" />
+
+            <com.ms.square.android.expandabletextview.ExpandableTextView
+                android:id="@+id/expand_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                expandableTextView:animAlphaStart="1"
+                expandableTextView:maxCollapsedLines="1">
+
+                <TextView
+                    android:id="@id/expandable_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/inter_text_size"
+                    android:paddingLeft="@dimen/inter_space" />
+
+                <ImageButton
+                    android:id="@id/expand_collapse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|bottom"
+                    android:background="@android:color/transparent" />
+            </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/small_space"
+            android:background="@drawable/comment_detail_div_line"
+            android:layerType="software"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fafafc"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/small_space"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingTop="@dimen/small_space">
+
+            <TextView
+                android:id="@+id/tv_online_pay_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_time"
+                android:drawablePadding="@dimen/small_space"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontCaption"
+                tools:text="2017-01-01 16:10:00" />
+
+            <TextView
+                android:id="@+id/tv_online_pay_handler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:drawableLeft="@drawable/icon_person"
+                android:drawablePadding="@dimen/small_space"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontCaption"
+                tools:text="李先生" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

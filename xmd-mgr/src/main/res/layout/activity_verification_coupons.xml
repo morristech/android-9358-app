@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/verification_success_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="@dimen/inter_space"
+            android:textColor="@color/colorClubItemTitle"
+            android:textSize="@dimen/font_title_medium"
+            tools:text="3张券已核销成功" />
+
+        <TextView
+            android:id="@+id/verification_failed_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="@dimen/inter_radius"
+            android:textColor="@color/colorClubItemTitle"
+            android:textSize="@dimen/font_body2_medium"
+            tools:text="以下2张券已核销失败，点击重新核销" />
+
+        <Button
+            android:id="@+id/btn_verification_again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"
+            tools:text="已选择2张，重新核销" />
+
+        <View
+            style="@style/horizontal_line"
+            android:layout_marginTop="@dimen/inter_space" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/customer_fail_coupon_list"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inter_space" />
+
+    </LinearLayout>
+</LinearLayout>

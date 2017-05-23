@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_order"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/inter_space"
+    android:layout_marginRight="@dimen/inter_space"
+    android:background="@drawable/bg_title_message"
+    android:orientation="vertical">
+
+    <RelativeLayout style="@style/relative_layout_title_style">
+
+        <TextView
+            style="@style/main_fragment_layout_title_left_style"
+            android:text="@string/statistics_fragment_coupon_detail" />
+
+        <TextView
+            style="@style/main_fragment_layout_title_right_style"
+            android:text="" />
+    </RelativeLayout>
+
+    <View style="@style/line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout style="@style/main_fragment_layout_order_section_style">
+
+            <View
+                android:id="@+id/v_submit_line"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:background="@color/main_fragment_layout_order_submit_line_color" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/inter_space">
+
+                <TextView
+                    android:id="@+id/tv_coupon_propagate"
+                    style="@style/main_fragment_layout_order_value_style"
+                    android:layout_marginBottom="5dp"
+                    android:text="0" />
+
+                <TextView
+                    style="@style/main_fragment_layout_order_label_style"
+                    android:layout_alignParentBottom="true"
+                    android:text="@string/statistics_fragment_propagate" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout style="@style/main_fragment_layout_order_section_style">
+
+            <View
+                android:id="@+id/v_accept_line"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/main_fragment_layout_order_complete_line_color" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/inter_space">
+
+                <TextView
+                    android:id="@+id/tv_coupon_delivery"
+                    style="@style/main_fragment_layout_order_value_style"
+                    android:layout_marginBottom="5dp"
+                    android:text="0" />
+
+                <TextView
+                    style="@style/main_fragment_layout_order_label_style"
+                    android:text="@string/statistics_fragment_delivery" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout style="@style/main_fragment_layout_order_section_style">
+
+            <View
+                android:id="@+id/v_coupon_share"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:background="@color/main_fragment_layout_order_accept_line_color" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/inter_space">
+
+                <TextView
+                    android:id="@+id/tv_coupon_share"
+                    style="@style/main_fragment_layout_order_value_style"
+                    android:layout_marginBottom="5dp"
+                    android:text="0" />
+
+                <TextView
+                    style="@style/main_fragment_layout_order_label_style"
+                    android:layout_toRightOf="@+id/v_coupon_share"
+                    android:text="@string/statistics_fragment_share" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout style="@style/main_fragment_layout_order_section_style">
+
+            <View
+                android:id="@+id/v_complete_line"
+                style="@style/vertical_line"
+                android:layout_width="2dp"
+                android:layout_alignParentLeft="true"
+                android:background="@color/main_fragment_layout_coupon_complete_line_color" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/inter_space">
+
+                <TextView
+                    android:id="@+id/tv_coupon_personal"
+                    style="@style/main_fragment_layout_order_value_style"
+                    android:layout_marginBottom="5dp"
+                    android:text="0" />
+
+                <TextView
+                    style="@style/main_fragment_layout_order_label_style"
+                    android:layout_toRightOf="@+id/v_complete_line"
+                    android:text="@string/statistics_fragment_to_club" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+

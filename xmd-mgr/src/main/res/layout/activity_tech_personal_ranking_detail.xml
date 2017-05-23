@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/img_pk_head_bg">
+
+        <RelativeLayout
+            android:id="@+id/rl_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_button_height">
+
+            <ImageView
+                android:id="@+id/toolbar_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:paddingLeft="@dimen/personal_margin"
+                android:paddingRight="@dimen/personal_padding"
+                android:scaleType="center"
+                android:src="@drawable/actionbar_back" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/pk_ranking_detail_title"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_pk_detail_time"
+                android:layout_width="80dp"
+                android:layout_height="28dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/small_space"
+                android:background="@drawable/bg_pk_ranking_time_filter">
+
+                <TextView
+                    android:id="@+id/pk_detail_time_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawablePadding="@dimen/small_space"
+                    android:drawableRight="@drawable/arrow_down"
+                    android:textColor="@color/white"
+                    tools:text="今天" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="85dp"
+            android:layout_height="24dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_pk_active_under_way"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/pk_active_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableLeft="@drawable/icon_underway"
+                android:drawablePadding="@dimen/small_space"
+                android:gravity="center"
+                android:text="进行中"
+                android:textColor="@color/pk_state_text_color" />
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <com.xmd.manager.widget.EmptyView
+        android:id="@+id/empty_view_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/ll_filter_selected_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary_color"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/inter_space"
+        android:paddingLeft="@dimen/personal_margin"
+        android:paddingRight="@dimen/personal_padding"
+        android:paddingTop="@dimen/inter_space"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/time_filter_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="累计"
+            android:textColor="@color/selector_time_text_bg"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_filter_by_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary_color"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/personal_margin"
+        android:paddingRight="@dimen/personal_padding">
+
+        <TextView
+
+            android:id="@+id/time_filter_before"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/icon_back_white_left"
+            android:drawablePadding="@dimen/small_space"
+            android:paddingBottom="@dimen/inter_space"
+            android:paddingTop="@dimen/inter_space"
+            android:textColor="@color/selector_time_text_bg"
+            android:textSize="@dimen/fontTitle_small"
+            tools:text="2月28日" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/time_today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="今天"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/time_filter_today"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                tools:text="2月28日" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/time_filter_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/small_space"
+            android:drawableRight="@drawable/icon_back_white_right"
+            android:gravity="right"
+            android:paddingBottom="@dimen/inter_space"
+            android:paddingTop="@dimen/inter_space"
+            android:textColor="@color/selector_time_text_bg"
+            android:textSize="@dimen/fontTitle_small"
+            tools:text="2月28日" />
+    </LinearLayout>
+
+
+    <com.xmd.manager.widget.ViewPagerTabIndicator
+        android:id="@+id/tabIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.xmd.manager.widget.ViewPagerTabIndicator>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>

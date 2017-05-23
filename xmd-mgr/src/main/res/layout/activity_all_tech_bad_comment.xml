@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/small_space">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/all_tech_bad_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:text="@string/bad_comment_ranking" />
+
+                <View style="@style/vertical_line" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="@string/bad_comment_tech"
+                    android:textColor="@color/colorBody"
+                    android:textSize="@dimen/fontBody"
+                    android:id="@+id/textView2" />
+
+                <View style="@style/vertical_line" />
+
+                <TextView
+                    android:id="@+id/bad_comment_num"
+                    style="@style/all_tech_bad_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:drawableRight="@drawable/ic_down"
+                    android:text="@string/bad_comment_num" />
+
+                <View style="@style/vertical_line" />
+
+                <TextView
+                    android:id="@+id/bad_comment_ratio"
+                    style="@style/all_tech_bad_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:drawableRight="@drawable/ic_down"
+                    android:text="@string/bad_comment_ratio" />
+            </LinearLayout>
+
+            <View style="@style/line" />
+        </LinearLayout>
+
+        <fragment
+            android:id="@+id/bad_comment_fragment"
+            android:name="com.xmd.manager.window.TechBadCommentFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

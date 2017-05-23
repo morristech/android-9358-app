@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/small_space"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="@dimen/list_item_card_corner_radius"
+    app:cardPreventCornerOverlap="true"
+    app:elevation="@dimen/list_item_card_elevation">
+
+    <LinearLayout
+        android:id="@+id/ll_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_white_pressed"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_10"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="@dimen/margin_10">
+
+        <LinearLayout
+            android:id="@+id/bad_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.xmd.manager.widget.CircleImageView
+                android:id="@+id/comment_customer_head"
+                android:layout_width="@dimen/feedback_btn_height"
+                android:layout_height="@dimen/feedback_btn_height"
+                android:background="@drawable/icon22" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/margin_10"
+                android:paddingTop="@dimen/small_space">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/customer_name"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorClubItemTitle"
+                        android:textSize="@dimen/fontBody"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        tools:text="林先生" />
+
+                    <TextView
+                        android:id="@+id/customer_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/inter_space"
+                        android:textColor="@color/colorClubItemBody"
+                        android:textSize="@dimen/fontNormal"
+                        tools:text="13137558109" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/comment_tech"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_space"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/comment_type"
+                        style="@style/bad_comment_alert_text_style"
+                        android:text="@string/comment_text" />
+
+                    <TextView
+                        android:id="@+id/comment_tech_name"
+                        style="@style/bad_comment_alert_text_style"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:maxLength="5"
+                        android:textColor="@color/color_tech_name"
+                        tools:text="你好美" />
+
+                    <TextView
+                        android:id="@+id/comment_tech_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:paddingBottom="1dp"
+                        android:paddingLeft="@dimen/small_space"
+                        android:paddingRight="@dimen/small_space"
+                        android:paddingTop="1dp"
+                        android:textColor="@color/colorChartAxis"
+                        android:textSize="@dimen/fontNormal"
+                        tools:text="12345" />
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/comment_project_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/comment_detail"
+                    style="@style/bad_comment_alert_text_style"
+                    android:layout_marginTop="@dimen/small_space"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    tools:text="技师臭脸服务态度极差，不想干了直说啊什么" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:minHeight="@dimen/feedback_btn_width">
+
+                <TextView
+                    android:id="@+id/comment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/inter_space"
+                    android:textColor="@color/colorRemark"
+                    android:textSize="@dimen/fontSmall"
+                    tools:text="13:12" />
+
+                <ImageButton
+                    android:id="@+id/img_btn_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_bad_comment_delete_selector" />
+
+                <ImageView
+                    android:id="@+id/img_delete_mark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/img_bad_deleted"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/comment_return_visit"
+                    android:layout_width="@dimen/btn_height"
+                    android:layout_height="@dimen/chat_activity_item_size"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/btn_return_visit_selector"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:text="@string/return_visit"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fontCaption" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:keyHeight="12%p"
+    android:keyWidth="25%">
+    <Row>
+        <Key
+            android:codes="49"
+            android:keyEdgeFlags="left"
+            android:keyLabel="1" />
+        <Key
+            android:codes="50"
+            android:keyLabel="2" />
+        <Key
+            android:codes="51"
+            android:keyLabel="3" />
+        <Key
+            android:codes="10002"
+            android:isRepeatable="true"
+            android:keyEdgeFlags="right"
+            android:keyIcon="@drawable/ic_key_delete"
+            android:keyLabel="delete" />
+    </Row>
+    <Row>
+        <Key
+            android:codes="52"
+            android:keyEdgeFlags="left"
+            android:keyLabel="4" />
+        <Key
+            android:codes="53"
+            android:keyLabel="5" />
+        <Key
+            android:codes="54"
+            android:keyLabel="6" />
+
+        <Key
+            android:codes="10001"
+            android:keyEdgeFlags="right"
+            android:keyLabel="清空" />
+    </Row>
+
+
+    <Row>
+        <Key
+            android:codes="55"
+            android:keyEdgeFlags="left"
+            android:keyLabel="7" />
+        <Key
+            android:codes="56"
+            android:keyLabel="8" />
+        <Key
+            android:codes="57"
+            android:keyLabel="9" />
+        <Key
+            android:codes="10003"
+            android:keyEdgeFlags="right"
+            android:keyHeight="24%p"
+            android:keyLabel="收银" />
+    </Row>
+    <Row>
+        <Key
+            android:codes="48"
+            android:keyEdgeFlags="left"
+            android:keyLabel="0"
+            android:keyWidth="50%p" />
+        <Key
+            android:codes="46"
+            android:keyLabel="." />
+
+    </Row>
+
+</Keyboard>

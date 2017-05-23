@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.xmd.manager.beans.CheckInfo" />
+
+        <variable
+            name="handler"
+            type="com.xmd.manager.verification.VerificationListener" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_bg"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar" />
+
+        <LinearLayout
+            android:id="@+id/coupon_no_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/inter_space">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="核销码"
+                android:textColor="@color/label_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/inter_space"
+                android:text="@{data.code}"
+                android:textColor="@color/number_color" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/inter_space">
+
+                <FrameLayout
+                    android:id="@+id/layout_verification_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/inter_space"
+                    android:enabled="@{data.valid}"
+                    android:onClick="@{()->handler.onVerify(data)}"
+                    android:text="@string/coupon_activity_coupon_use" />
+
+
+                <LinearLayout
+                    android:id="@+id/coupon_supplement_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/coupon_activity_coupon_desc"
+                        android:textColor="@color/coupon_activity_desc_text_color"
+                        android:visibility="gone" />
+
+                    <WebView
+                        android:id="@+id/coupon_supplement"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_space"
+                        android:visibility="gone"
+                        tools:ignore="WebViewLayout" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tip_items_limit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/white"
+                    android:padding="8dp"
+                    android:text="@string/coupon_activity_coupon_use_item_desc"
+                    android:textColor="@color/coupon_activity_desc_text_color"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/items_limit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineSpacingMultiplier="1.3"
+                    android:padding="8dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/white"
+                    android:padding="8dp"
+                    android:text="@string/coupon_activity_coupon_use_desc"
+                    android:textColor="@color/coupon_activity_desc_text_color"
+                    android:visibility="@{data.description!=null?View.VISIBLE:View.GONE}" />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineSpacingMultiplier="1.3"
+                    android:padding="8dp"
+                    android:visibility="@{data.description!=null?View.VISIBLE:View.GONE}" />
+
+                <LinearLayout
+                    android:id="@+id/coupon_commission_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/inter_space"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="@dimen/inter_space"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/coupon_activity_coupon_commission_desc"
+                        android:textColor="@color/coupon_activity_desc_text_color" />
+
+                    <TextView
+                        android:id="@+id/coupon_commission"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_space" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/coupon_use_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/inter_space"
+                    android:text="@string/coupon_activity_coupon_data_desc"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+</layout>

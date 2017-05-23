@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical"
+    android:padding="@dimen/inter_space">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white_with_border"
+        android:clickable="false"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/select_time_padding"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:padding="@dimen/select_time_padding"
+            android:text="@string/order_verification_info"
+            android:textColor="@color/order_verification_title"
+            android:textSize="@dimen/x_large_text_size" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/verification_circle_diameter"
+            android:layout_gravity="center_vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/inter_space"
+                android:layout_gravity="center"
+                android:background="@drawable/comment_detail_div_line"
+                android:layerType="software" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:layout_width="@dimen/semi_circle_radius"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/verification_torus_margin"
+                    android:background="@drawable/left_semi_circle" />
+
+                <View
+                    android:layout_width="@dimen/semi_circle_radius"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/verification_torus_margin"
+                    android:background="@drawable/right_semi_circle" />
+            </RelativeLayout>
+        </FrameLayout>
+        `
+
+        <LinearLayout
+
+            style="@style/order_verification_layout">
+
+            <TextView
+                style="@style/order_verification_title"
+                android:text="@string/verification_name" />
+
+            <TextView
+                android:id="@+id/verification_order_customer_name"
+                style="@style/order_verification_content"
+                tools:text="用户昵称" />
+        </LinearLayout>
+
+        <LinearLayout
+
+            style="@style/order_verification_layout">
+
+            <TextView
+                style="@style/order_verification_title"
+                android:text="@string/verification_start_time" />
+
+            <TextView
+                android:id="@+id/verification_order_start_time"
+                style="@style/order_verification_content"
+                tools:text="11.15 10:30" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/order_verification_layout">
+
+            <TextView
+                style="@style/order_verification_title"
+                android:text="@string/verification_end_time" />
+
+            <TextView
+                android:id="@+id/verification_order_time"
+                style="@style/order_verification_content"
+                tools:text="11.15 10:22" />
+        </LinearLayout>
+
+        <LinearLayout
+
+            style="@style/order_verification_layout">
+
+            <TextView
+                style="@style/order_verification_title"
+                android:text="@string/verification_tech_name" />
+
+            <TextView
+                android:id="@+id/verification_order_tech"
+                style="@style/order_verification_content"
+                tools:text="技师昵称" />
+        </LinearLayout>
+
+        <LinearLayout
+
+            style="@style/order_verification_layout">
+
+            <TextView
+                style="@style/order_verification_title"
+                android:text="@string/verification_pay" />
+
+            <TextView
+                android:id="@+id/verification_order_pay"
+                style="@style/order_verification_content"
+                tools:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+
+            style="@style/order_verification_layout">
+
+            <TextView
+                style="@style/order_verification_title"
+                android:text="@string/verification_state" />
+
+            <TextView
+                android:id="@+id/verification_order_state"
+                style="@style/order_verification_content"
+                tools:text="已接收" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_order_verification"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginLeft="@dimen/inter_space"
+        android:layout_marginRight="@dimen/inter_space"
+        android:layout_marginTop="@dimen/chat_activity_item_size"
+        android:background="@drawable/btn_selector"
+        android:gravity="center"
+        android:text="@string/verification_order_sure"
+        android:textColor="@color/white"
+        android:textSize="@dimen/fontTitle" />
+
+    <Button
+        android:id="@+id/btn_order_over_time"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginLeft="@dimen/inter_space"
+        android:layout_marginRight="@dimen/inter_space"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_white_with_primary_border"
+        android:gravity="center"
+        android:text="@string/verification_order_past_due"
+        android:textColor="@color/primary_color"
+        android:textSize="@dimen/fontTitle" />
+
+    <Button
+        android:id="@+id/btn_order_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginLeft="@dimen/inter_space"
+        android:layout_marginRight="@dimen/inter_space"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_white_with_primary_border"
+        android:gravity="center"
+        android:text="@string/verification_order_cancel"
+        android:textColor="@color/primary_color"
+        android:textSize="@dimen/fontTitle" />
+</LinearLayout>
