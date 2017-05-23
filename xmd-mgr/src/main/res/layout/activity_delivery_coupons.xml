@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
-
     <com.xmd.manager.widget.EmptyView
         android:id="@+id/view_empty"
         android:layout_width="match_parent"

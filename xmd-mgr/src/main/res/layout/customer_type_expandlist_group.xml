@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/customer_groups"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_10"
+        android:background="@color/app_bg" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/select_time_padding"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space"
+        android:paddingTop="@dimen/select_time_padding"
+        android:background="@drawable/main_piece_bg">
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="2dp"
+            android:layout_height="@dimen/middle_space"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_10"
+            android:background="@color/colorChartLine" />
+
+
+        <TextView
+            android:id="@+id/customer_type_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/v_line"
+            android:textColor="@color/colorFont1"
+            android:textSize="@dimen/large_text_size"
+            tools:text="按客户行为" />
+
+        <ImageView
+            android:id="@+id/image_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon_down" />
+
+    </RelativeLayout>
+</LinearLayout>

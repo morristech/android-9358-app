@@ -158,7 +158,7 @@
     <color name="colorSendGroupMessage">#FEF9EC</color>
     <color name="colorSurplusAmount">#8b6d3E</color>
     <color name="colorTimeLimit">#b2A083</color>
-    <color name="colorGroupChecked">#ff9a0c</color>
+    <color name="colorGroupChecked">#f85c5c</color>
     <color name="colorGroupNameText">#5A6c7e</color>
     <color name="colorVisitFromText">#757575</color>
 
@@ -196,5 +196,11 @@
     <color name="number_of_groups">#feb705</color>
     <color name="underway_color">#6ed745</color>
     <color name="contact_marker">#ff9a0c</color>
+    <color name="colorExpandButton">#0e7bd0</color>
+    <color name="colorTimeBg">#fbfbfb</color>
+    <color name="colorSendLimitBg">#fffae7</color>
+    <color name="colorGroupCheckedSolid">#fee7e7</color>
+    <color name="colorCustomerCount">#4b4b4b</color>
+    <color name="colorCustomerCountBg">#fff2f2</color>
 </resources>
 

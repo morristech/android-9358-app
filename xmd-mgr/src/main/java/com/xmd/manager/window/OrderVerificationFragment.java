@@ -60,6 +60,7 @@ public class OrderVerificationFragment extends BaseFragment {
     }
 
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -3,12 +3,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/register_height"
         android:padding="10dp">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -16,7 +14,6 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:textSize="@dimen/h_large_text_size" />
-
         <TextView
             android:id="@+id/totalRegister"
             android:layout_width="wrap_content"
@@ -27,9 +24,7 @@
             android:text="0"
             android:textSize="@dimen/xxx_large_text_size" />
     </RelativeLayout>
-
     <View style="@style/line" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -38,6 +38,7 @@ public class OkHttpUtil {
     private OkHttpClient mClient;
     private Map<String, String> mCommonHeader = new HashMap<>();
     private boolean mLog;
+    private RequestPreprocess mRequestPreprocess;
 
     public static void init(String cacheDirectory, long cacheSize,
                             long connectTimeout, long readTimeout, long writeTimeout) {
@@ -88,14 +89,19 @@ public class OkHttpUtil {
                     }
                     request = builder.build();
                 }
+
+                if (mRequestPreprocess != null) {
+                    request = mRequestPreprocess.preProcess(request);
+                }
+
                 if (mLog) {
-                    XLogger.d(TAG, requestToString(request));
+                    XLogger.i(TAG, requestToString(request));
                 }
 
                 Response response = chain.proceed(request);
 
                 if (mLog) {
-                    XLogger.d(TAG, "[" + (response.networkResponse() == null ? "cache" : "network") + "]"
+                    XLogger.i(TAG, "[" + (response.networkResponse() == null ? "cache" : "network") + "]"
                             + response.request().method() + "-RESPONSE:" + response.toString());
                 }
 
@@ -137,5 +143,13 @@ public class OkHttpUtil {
             }
         }
         return result;
+    }
+
+    public void setRequestPreprocess(RequestPreprocess requestPreprocess) {
+        mRequestPreprocess = requestPreprocess;
+    }
+
+    public interface RequestPreprocess {
+        Request preProcess(Request request);
     }
 }

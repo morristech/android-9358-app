@@ -42,6 +42,9 @@
     <string name="btn_confirm">确定</string>
     <string name="switch_off">已关闭</string>
     <string name="switch_on">已打开</string>
+    <string name="next_step">下一步</string>
+    <string name="previous_step">上一步</string>
+    <string name="preview">预览</string>
 
     <string name="token_expired_error_msg">账号在其他的地方登录，请重新登录</string>
     <string name="bind_client_id_failed">消息推送服务初始化失败</string>;
@@ -411,6 +414,13 @@
     <string name="all_customer">全部客户</string>
     <string name="active_customer">活跃客户</string>
     <string name="valid_customer">有效客户</string>
+    <string name="group_by_behavior">按客户行为</string>
+    <string name="group_by_tech">按拓客技师</string>
+    <string name="group_by_customize">自定义分组</string>
+    <string name="select_customize">选择客户</string>
+    <string name="select_activity">选择活动</string>
+    <string name="edit_content">编辑内容</string>
+    <string name="message_confirm">消息确认</string>
     <string name="active_customer_text">近期内消费过的客户</string>
     <string name="valid_customer_text">曾经消费过，但近期内无消费的客户</string>
     <string name="coupon_time">领券时间</string>
@@ -422,6 +432,13 @@
     <string name="send_group_detail">发送记录</string>
     <string name="send_group_total_amount">发送人数：</string>
     <string name="send_group_use_amount">核销人数：</string>
+    <string name="select_customer">选择客户</string>
+    <string name="click_expand">点击展开</string>
+    <string name="send_content">发送内容</string>
+    <string name="click_put_way">点击收起</string>
+    <string name="send_activity">发送活动</string>
+    <string name="effect_analysis">效果分析</string>
+    <string name="content_picture">图片</string>
     <string name="visit_from">来源：</string>
     <string name="visit_time">访问时间：</string>
     <string name="register_time">注册时间：</string>
@@ -431,7 +448,7 @@
     <string name="from_tech_qr_code">技师二维码</string>
     <string name="from_9358">9358公众号</string>
     <string name="time_select_alert">结束日期需大于等于开始日期</string>
-    <string name="send_group_message_alert">请选择优惠活动，或输入文本，或添加图片</string>
+    <string name="send_group_message_alert">请添加图片或文字</string>
     <string name="send_group_message_alert_enough">您本月群发消息使用次数已用完</string>
     <string name="send_group_message_limit">所选择发送人数为0</string>
     <string name="coupon_on_line">在线</string>
@@ -445,6 +462,7 @@
     <string name="default_start_time">2015-01-01</string>
     <string name="text_send_group_time_limit">(两次群发消息之间需要间隔24小时以上)</string>
     <string name="alert_message_send_group_time_limit">距离上次群发消息未超过24小时</string>
+    <string name="text_all_customer_hint">(发送至通过会所注册的全部手机用户)</string>
     <string name="club_journal">电子期刊</string>
     <string name="club_group_message">微信群发</string>
     <string name="club_coupon">优惠券</string>

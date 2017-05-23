@@ -5,13 +5,11 @@
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
-
     <com.xmd.manager.widget.EmptyView
         android:id="@+id/empty_view_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_widget"
         android:layout_width="match_parent"

@@ -56,7 +56,6 @@ public class CouponsDetailFragment extends BaseFragment {
         isVisible = true;
         return view;
     }
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

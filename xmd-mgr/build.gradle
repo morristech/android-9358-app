@@ -161,7 +161,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':xmd-app')
+    compile project(':commonlibrary')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
     compile(name: 'xmd-image-crop-1.0', ext: 'aar')
     compile 'org.greenrobot:eventbus:3.0.0'
@@ -187,5 +187,4 @@ dependencies {
     compile project(':loading-view')
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.ms-square:expandableTextView:0.1.4'
-    compile project(':commonlibrary')
 }

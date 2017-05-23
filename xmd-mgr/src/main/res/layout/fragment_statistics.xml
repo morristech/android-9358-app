@@ -89,15 +89,15 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/inter_space">
+            android:padding="@dimen/inter_space">
 
-                <TextView
-                    style="@style/statistics_activity_label_style"
-                    android:text="@string/statistics_fragment_coupon_detail" />
+            <TextView
+                style="@style/statistics_activity_label_style"
+                android:text="@string/statistics_fragment_coupon_detail" />
 
                 <ImageView style="@style/relative_layout_arrow_right" />
 
-            </RelativeLayout>
+        </RelativeLayout>
 
             <View style="@style/line" />
 
@@ -111,10 +111,10 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/statistics_fragment_propagate" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/statistics_fragment_propagate" />
 
                     <TextView
                         android:id="@+id/tv_propagate"
@@ -126,23 +126,23 @@
 
                 <View style="@style/tab_vertical_line" />
 
-                <LinearLayout
-                    style="@style/horizontal_avg_layout"
-                    android:gravity="center"
-                    android:orientation="vertical">
+            <LinearLayout
+                style="@style/horizontal_avg_layout"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/statistics_fragment_delivery" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/statistics_fragment_delivery" />
 
-                    <TextView
-                        android:id="@+id/tv_delivery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0" />
+                <TextView
+                    android:id="@+id/tv_delivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
 
-                </LinearLayout>
+            </LinearLayout>
 
                 <View style="@style/tab_vertical_line" />
 
@@ -216,7 +216,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="@string/statistics_fragment_total_income" />
 
@@ -238,14 +238,14 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="@string/statistics_fragment_tech_income" />
 
                 <TextView
                     android:id="@+id/tv_tech_income"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="0" />
 

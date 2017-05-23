@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView android:id="@+id/customer_group_name"
+    style="@style/select_customer_style"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

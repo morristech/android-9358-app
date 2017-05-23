@@ -34,7 +34,6 @@ public class SideBar extends View {
     public interface OnTouchingLetterChangedListener {
         void onTouchingLetterChanged(String s);
     }
-
     public SideBar(Context context) {
         this(context, null);
     }

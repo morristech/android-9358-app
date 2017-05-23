@@ -40,7 +40,6 @@ public class VerificationRecordAdapter extends RecyclerView.Adapter<RecyclerView
 
     public interface ClickedCallback {
         void loadMore();
-
         void onItemClicked(VerificationDetailBean bean);
     }
 
@@ -97,7 +96,7 @@ public class VerificationRecordAdapter extends RecyclerView.Adapter<RecyclerView
                 bindVerificationDetailItemViewHolder(holder, obj, position);
             }
 
-        }
+            }
 
 
     }

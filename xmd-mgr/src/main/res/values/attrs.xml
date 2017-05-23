@@ -35,4 +35,15 @@
         <attr format="reference" name="starFill" />
     </declare-styleable>
 
+    <declare-styleable name="StepView">
+        <attr name="stepRadius" format="dimension" />
+        <attr name="totalSteps" format="integer" />
+        <attr name="todoColor" format="color" />
+        <attr name="doneColor" format="color" />
+        <attr name="todoTextColor" format="color" />
+        <attr name="doneTextColor" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor" format="color" />
+    </declare-styleable>
+
 </resources>

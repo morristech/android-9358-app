@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/inter_space"
+    android:layout_marginRight="@dimen/inter_space"
+    android:layout_marginTop="@dimen/margin_10"
+    android:clickable="false"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="@dimen/list_item_card_corner_radius"
+    app:cardPreventCornerOverlap="false"
+    app:elevation="@dimen/list_item_card_elevation">
+
+    <LinearLayout
+        android:id="@+id/message_summary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_club_list_item_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/group_message_customer_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/margin_10">
+
+            <TextView
+                android:id="@+id/group_message_customer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="@dimen/middle_space"
+                android:text="@string/select_customer"
+                android:textColor="@color/colorClubItemTitle"
+                android:textSize="@dimen/large_text_size" />
+
+            <TextView
+                android:id="@+id/group_message_customer_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/group_message_customer"
+                android:layout_marginRight="@dimen/inter_space"
+                android:layout_centerVertical="true"
+                android:background="@drawable/kuohao"
+                tools:text="自定义分组"
+                android:textColor="@color/colorChartLine"
+                android:textSize="@dimen/fontMiddle" />
+
+            <TextView
+                android:id="@+id/group_message_customer_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/group_message_customer_type"
+                android:layout_centerVertical="true"
+                tools:text="80人"
+                android:textColor="@color/colorBody"
+                android:textSize="@dimen/fontMiddle" />
+
+            <TextView
+                android:id="@+id/group_message_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/click_expand"
+                android:textColor="@color/colorExpandButton"
+                android:textSize="@dimen/small_text_size" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/group_message_activity_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/select_time_padding"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/middle_space"
+                android:text="@string/send_activity"
+                android:textColor="@color/colorClubItemTitle"
+                android:textSize="@dimen/large_text_size" />
+
+            <TextView
+                android:id="@+id/group_message_activity_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/inter_space"
+                android:background="@drawable/kuohao"
+                tools:text="现金券"
+                android:textColor="@color/colorChartLine"
+                android:textSize="@dimen/fontMiddle" />
+
+            <TextView
+                android:id="@+id/group_message_activity_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="20元现金券"
+                android:textColor="@color/colorBody"
+                android:textSize="@dimen/fontMiddle" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/group_message_content_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/select_time_padding"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/middle_space"
+                android:text="@string/send_content"
+                android:textColor="@color/colorClubItemTitle"
+                android:textSize="@dimen/large_text_size" />
+
+            <TextView
+                android:id="@+id/group_message_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/inter_space"
+                android:background="@drawable/kuohao"
+                android:text="@string/content_picture"
+                android:textColor="@color/colorChartLine"
+                android:textSize="@dimen/fontMiddle" />
+
+            <TextView
+                android:id="@+id/group_message_content_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                tools:text="灰色的上帝是哦低哦是fdjfkldjfkdjgkjrtjop34i5o43i5o4i5oi345i34p5ip34i53"
+                android:textColor="@color/colorBody"
+                android:textSize="@dimen/fontMiddle" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/line"
+            android:layout_marginTop="@dimen/inter_space" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
+            android:background="@color/colorTimeBg"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/group_send_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_time"
+                android:drawablePadding="@dimen/inter_space"
+                tools:text="2017-05-16 15:46:00"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontMiddle" />
+
+            <TextView
+                android:id="@+id/group_send_operator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/service_bottom_dialog_padding"
+                android:drawableLeft="@drawable/icon_person"
+                android:drawablePadding="@dimen/inter_space"
+                tools:text="李先生"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontMiddle" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/message_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_club_list_item_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/group_detail_customer_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/margin_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="@dimen/middle_space"
+                android:text="@string/select_customer"
+                android:textColor="@color/colorClubItemTitle"
+                android:textSize="@dimen/large_text_size" />
+
+            <TextView
+                android:id="@+id/group_message_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/click_put_way"
+                android:textColor="@color/colorExpandButton"
+                android:textSize="@dimen/small_text_size" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
+            android:background="@color/colorTimeBg"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/group_detail_customer_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/middle_space"
+                android:background="@drawable/kuohao"
+                tools:text="自定义分组"
+                android:textColor="@color/colorChartLine"
+                android:textSize="@dimen/inter_text_size" />
+
+            <TextView
+                android:id="@+id/group_detail_type_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="80人"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/inter_text_size" />
+
+            <TextView
+                android:id="@+id/group_customer_detail_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="80人"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/inter_text_size" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/activity_detail_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
+            android:text="@string/send_activity"
+            android:textColor="@color/colorClubItemTitle"
+            android:textSize="@dimen/large_text_size" />
+
+        <LinearLayout
+            android:id="@+id/detail_activity_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
+            android:background="@color/colorTimeBg"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/group_detail_activity_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/middle_space"
+                android:background="@drawable/kuohao"
+                tools:text="自定义分组"
+                android:textColor="@color/colorChartLine"
+                android:textSize="@dimen/inter_text_size" />
+
+            <TextView
+                android:id="@+id/group_detail_activity_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="80人"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/inter_text_size" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
+            android:text="@string/send_content"
+            android:textColor="@color/colorClubItemTitle"
+            android:textSize="@dimen/large_text_size" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
+            android:background="@color/colorTimeBg"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/group_detail_message_image"
+                android:layout_width="63dp"
+                android:layout_height="63dp"
+                android:src="@drawable/img_group_default"
+                android:layout_marginRight="@dimen/middle_space"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/group_detail_message_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="@dimen/small_space"
+                tools:text="djsjdskjdklasjdklsajdoueu浮点反击的咖啡机看对方就浮点飞机飞技术来反馈房贷款反击的开了房间福瑞额哦cxffiuidfjkduiugifougfdgfdgf弱"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/inter_text_size" />
+
+        </LinearLayout>
+
+        <!--暂时屏蔽-->
+        <!--<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_marginTop="@dimen/group_list_margin"
+            android:text="@string/effect_analysis"
+            android:textColor="@color/colorClubItemTitle"
+            android:textSize="@dimen/large_text_size"/>-->
+
+        <View style="@style/line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
+            android:background="@color/colorTimeBg"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/group_detail_send_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_time"
+                android:drawablePadding="@dimen/inter_space"
+                tools:text="2017-05-16 15:46:00"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontMiddle" />
+
+            <TextView
+                android:id="@+id/group_detail_send_operator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/service_bottom_dialog_padding"
+                android:drawableLeft="@drawable/icon_person"
+                android:drawablePadding="@dimen/inter_space"
+                tools:text="李先生"
+                android:textColor="@color/colorVisitFromText"
+                android:textSize="@dimen/fontMiddle" />
+
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

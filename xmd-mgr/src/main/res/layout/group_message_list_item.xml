@@ -60,7 +60,6 @@
                 android:textSize="@dimen/fontBig" />
 
         </LinearLayout>
-
         <ImageView
             android:id="@+id/group_send_image"
             android:layout_width="63dp"

@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 /**
  * Created by heyangya on 16-11-15.
  */
-
+@Deprecated
 public class ImageTool {
     public static void loadImage(Context context, String url, ImageView imageView) {
         Glide.with(context).load(url).into(imageView);

@@ -360,6 +360,12 @@
         <activity
             android:name=".window.TechPersonalRankingDetailActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.GroupMessageCustomerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.GroupMessageCounponActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

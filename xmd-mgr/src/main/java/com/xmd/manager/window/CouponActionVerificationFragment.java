@@ -56,6 +56,7 @@ public class CouponActionVerificationFragment extends BaseFragment {
     TextView mCouponVerificationGetTime;
 
 
+
     private ActionCouponBean mActionBean;
     private String mCouponNo;
 

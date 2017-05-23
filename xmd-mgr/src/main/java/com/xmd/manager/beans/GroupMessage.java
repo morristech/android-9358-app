@@ -20,6 +20,7 @@ public class GroupMessage implements Serializable {
 
     public String id;
     public String clubId;
+    public String actType;
     public String actName;
     public String message;
     public String actId;
@@ -28,6 +29,7 @@ public class GroupMessage implements Serializable {
     public int verificationCount;
     public String sendDate;
     public String imageUrl;
-
-
+    public String groupType;
+    public String groupNames;
+    public String operatorName;
 }

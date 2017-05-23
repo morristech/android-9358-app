@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/primary_color" />
+    <stroke
+        android:width="@dimen/small_space"
+        android:color="@color/operation_button_negative_bg_pressed" />
+    <size
+        android:width="@dimen/operation_button_height"
+        android:height="@dimen/operation_button_height" />
+</shape>

@@ -9,6 +9,7 @@
     android:paddingRight="@dimen/small_space">
 
 
+
     <LinearLayout
         android:id="@+id/ll_star_user"
         android:layout_width="match_parent"

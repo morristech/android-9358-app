@@ -677,7 +677,8 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
     /**
      * Helper method that maps the supplied Matrix to the current Drawable
      *
-     * @param matrix - Matrix to map Drawable against
+     * @param matrix
+     *            - Matrix to map Drawable against
      * @return RectF - Displayed Rectangle
      */
     private RectF getDisplayRect(Matrix matrix) {
@@ -697,8 +698,10 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
     /**
      * Helper method that 'unpacks' a Matrix and returns the required value
      *
-     * @param matrix     - Matrix to unpack
-     * @param whichValue - Which value from Matrix.M* to return
+     * @param matrix
+     *            - Matrix to unpack
+     * @param whichValue
+     *            - Which value from Matrix.M* to return
      * @return float - returned value
      */
     private float getValue(Matrix matrix, int whichValue) {
@@ -735,7 +738,8 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
     /**
      * Calculate Matrix for FIT_CENTER
      *
-     * @param d - Drawable being displayed
+     * @param d
+     *            - Drawable being displayed
      */
     private void updateBaseMatrix(Drawable d) {
         ImageView imageView = getImageView();
@@ -809,7 +813,8 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
          * This could be because the View's bounds have changed, or the user has
          * zoomed.
          *
-         * @param rect - Rectangle displaying the Drawable's new bounds.
+         * @param rect
+         *            - Rectangle displaying the Drawable's new bounds.
          */
         void onMatrixChanged(RectF rect);
     }
@@ -827,11 +832,14 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
          * receive a callback if the user taps on the actual photo, tapping on
          * 'whitespace' will be ignored.
          *
-         * @param view - View the user tapped.
-         * @param x    - where the user tapped from the of the Drawable, as
-         *             percentage of the Drawable width.
-         * @param y    - where the user tapped from the top of the Drawable, as
-         *             percentage of the Drawable height.
+         * @param view
+         *            - View the user tapped.
+         * @param x
+         *            - where the user tapped from the of the Drawable, as
+         *            percentage of the Drawable width.
+         * @param y
+         *            - where the user tapped from the top of the Drawable, as
+         *            percentage of the Drawable height.
          */
         void onPhotoTap(View view, float x, float y);
     }
@@ -849,9 +857,12 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
          * receive a callback if the user taps anywhere on the view, tapping on
          * 'whitespace' will not be ignored.
          *
-         * @param view - View the user tapped.
-         * @param x    - where the user tapped from the left of the View.
-         * @param y    - where the user tapped from the top of the View.
+         * @param view
+         *            - View the user tapped.
+         * @param x
+         *            - where the user tapped from the left of the View.
+         * @param y
+         *            - where the user tapped from the top of the View.
          */
         void onViewTap(View view, float x, float y);
     }

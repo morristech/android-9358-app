@@ -17,19 +17,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
                 <TextView
                     android:layout_width="3dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:layout_marginLeft="@dimen/small_space"
                     android:background="@color/operation_button_negative_bg_normal" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -84,20 +81,17 @@
                     android:background="@drawable/arrow_right" />
 
             </RelativeLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/margin_10">
-
                 <TextView
                     android:layout_width="3dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:layout_marginLeft="@dimen/small_space"
                     android:background="@color/operation_button_negative_bg_normal" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -107,7 +101,6 @@
                     android:layout_marginLeft="@dimen/margin_10"
                     android:textColor="@color/colorClubItemTitle" />
             </LinearLayout>
-
             <RelativeLayout
                 android:id="@+id/marketing_journal"
                 android:layout_width="match_parent"

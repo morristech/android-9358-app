@@ -63,6 +63,7 @@
             android:background="@color/transparent"/>-->
 
 
+
     <TextView
         android:id="@+id/tv_version"
         android:layout_width="match_parent"

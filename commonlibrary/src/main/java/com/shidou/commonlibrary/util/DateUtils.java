@@ -20,6 +20,10 @@ public class DateUtils {
     public static final String DF_JUST_DAY_WITHOUT_LINE = "yyMMdd";
     public static final String DF_JUST_TIME = "HH:mm:ss";
     public static final String DF_WITH_CN_ALL = "yyyy年MM月dd日 HH:mm:ss";
+    public static final String DF_JUST_YEAR_MONTH_ZH = "yyyy年MM月";
+    public static final String DF_JUST_YEAR_MONTH = "yyyy-MM";
+    public static final String DF_JUST_DATE_TIME = "MM-dd HH:mm";
+
 
     private static final Object lockObj = new Object();
 

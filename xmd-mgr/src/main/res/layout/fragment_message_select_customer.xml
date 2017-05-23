@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_10"
+        android:paddingRight="@dimen/margin_10"
+        android:paddingTop="@dimen/margin_10">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/send_step_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/shape_doing_step"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/colorHead"
+                android:textSize="@dimen/inter_text_size" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_2"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/send_step_first"
+                android:background="@color/app_bg" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_2"
+                android:layout_centerVertical="true"
+                android:background="@color/app_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/shape_todo_step"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/colorBody"
+                android:textSize="@dimen/fontRemark" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_2"
+                android:layout_centerVertical="true"
+                android:background="@color/app_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/shape_todo_step"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/colorBody"
+                android:textSize="@dimen/fontRemark" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/send_step_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/shape_todo_step"
+                android:gravity="center"
+                android:text="4"
+                android:textColor="@color/colorBody"
+                android:textSize="@dimen/fontRemark" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_2"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/send_step_four"
+                android:background="@color/app_bg" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/select_time_padding"
+        android:paddingLeft="@dimen/margin_10"
+        android:paddingRight="@dimen/margin_10"
+        android:paddingTop="@dimen/small_space">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/select_customer"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/inter_text_size" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/select_activity"
+            android:textColor="@color/colorRemark"
+            android:textSize="@dimen/fontMiddle" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/edit_content"
+            android:textColor="@color/colorRemark"
+            android:textSize="@dimen/fontMiddle" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/message_confirm"
+            android:textColor="@color/colorRemark"
+            android:textSize="@dimen/fontMiddle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/send_limit_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSendLimitBg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/total_send_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSendGroupMessage"
+            android:drawableLeft="@drawable/icon_hint"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingTop="@dimen/small_space"
+            android:textColor="@color/colorSurplusAmount"
+            android:textSize="@dimen/inter_text_size" />
+
+        <TextView
+            android:id="@+id/total_send_time_limit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSendGroupMessage"
+            android:paddingBottom="@dimen/small_space"
+            android:paddingLeft="@dimen/dialog_content_item_height"
+            android:text="@string/text_send_group_time_limit"
+            android:textColor="@color/colorTimeLimit"
+            android:textSize="@dimen/smaller_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/inter_space"
+        android:layout_marginRight="@dimen/inter_space"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@drawable/main_piece_bg"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_10">
+
+        <TextView
+            android:id="@+id/group_all"
+            style="@style/select_customer_style"
+            android:text="@string/all_customer" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:singleLine="true"
+            android:text="@string/text_all_customer_hint"
+            android:textColor="@color/text_color_hint"
+            android:textSize="@dimen/fontMiddle" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btn_next_step"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_activity_login_button_magin_top"
+            android:layout_marginBottom="@dimen/small_space"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/select_btn_send_bg"
+            android:text="@string/next_step"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fontSubheading" />
+
+        <TextView
+            android:id="@+id/select_customer_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_10"
+            android:layout_above="@+id/btn_next_step"
+            android:background="@color/colorCustomerCountBg"
+            android:text="* 已选择80个客户"
+            android:textSize="@dimen/inter_text_size"
+            android:textColor="@color/colorCustomerCount" />
+
+        <View
+            style="@style/line"
+            android:layout_above="@+id/btn_next_step" />
+
+        <View
+            style="@style/line"
+            android:layout_above="@+id/select_customer_count" />
+
+        <ExpandableListView
+            android:id="@+id/group_customer_expand_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_marginRight="@dimen/inter_space"
+            android:layout_above="@+id/select_customer_count"
+            android:dividerHeight="0dp"
+            android:divider="@null" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -12,7 +12,6 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
-import com.xmd.app.Init;
 import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ToastUtils;
@@ -20,8 +19,6 @@ import com.xmd.manager.common.Utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by sdcm on 15-10-22.
@@ -88,10 +85,6 @@ public class ManagerApplication extends Application {
                 long start = System.currentTimeMillis();
 
                 Manager.getInstance().initialize(appContext);
-
-                Set<String> functions = new HashSet<>();
-                functions.add(Init.FUNCTION_ALIVE_REPORT);
-                Init.init(this, functions);
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");

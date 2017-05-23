@@ -102,7 +102,6 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     public void showAsDownCenter(boolean toMask) {
         showAsDown(mParentView.getWidth() / 2 - mPopupWindow.getWidth() / 2, -18);
     }
-
     public void showAsDownCenter() {
         showAsDown(mParentView.getWidth() / 2 - mPopupWindow.getWidth() / 2, 0);
     }
@@ -156,6 +155,7 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
      * @param activity
      * @param popupWindow
      * @param parent
+     *
      */
     private void showPopupWindowAsDropDown(Activity activity, PopupWindow popupWindow, View parent, int x,
                                            int y) {

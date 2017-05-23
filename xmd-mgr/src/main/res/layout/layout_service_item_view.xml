@@ -16,7 +16,6 @@
         android:textSize="@dimen/fontTitle"
 
         />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_item_view"
         android:layout_width="match_parent"
