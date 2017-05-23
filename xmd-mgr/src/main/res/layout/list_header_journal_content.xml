@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/icon_journal_sub_title"
+        android:drawablePadding="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:text="设置标题"
+        android:textColor="@color/colorFont1"
+        android:textSize="@dimen/font_subheading_regular" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_color" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="大标题："
+                android:textColor="@color/colorFont1"
+                android:textSize="@dimen/font_subheading_regular" />
+
+            <EditText
+                android:id="@+id/edt_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/stroke_light_gray_6"
+                android:hint="请输入标题（7字内）"
+                android:maxLength="7"
+                android:minHeight="36dp"
+                android:paddingLeft="8dp"
+                android:textColorHint="@color/colorHint" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="小标题："
+                android:textColor="@color/colorFont1"
+                android:textSize="@dimen/font_subheading_regular" />
+
+            <EditText
+                android:id="@+id/edt_sub_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/stroke_light_gray_6"
+                android:hint="请输入标题（15字内）"
+                android:maxLength="15"
+                android:minHeight="36dp"
+                android:paddingLeft="8dp"
+                android:textColorHint="@color/colorHint" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

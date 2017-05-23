@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收银人员："
+            android:textColor="@color/colorText4"
+            android:textSize="@dimen/font_size_16"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_settle_cashier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="zhangrong"
+            android:textColor="@color/colorText4"
+            android:textSize="@dimen/font_size_16"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_horizontal_margin">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="订单总金额"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/settle_origin_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="减免总金额"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/settle_cut_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="优惠减免"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_cut_coupon_discount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="手动减免"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_cut_user_discount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="会员折扣"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_cut_member_discount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="退款总金额"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/settle_refund_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="银行卡退款"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_refund_bank_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="现金退款"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_refund_cash"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="微信退款"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_refund_weixin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/activity_normal_margin"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="会员支付退款"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_refund_member"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="实收总金额"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/settle_pay_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="银行卡实收"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_pay_bank_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="现金实收"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_pay_cash"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="微信实收"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_pay_weixin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="会员支付实收"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/settle_pay_member"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/font_size_16" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

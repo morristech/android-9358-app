@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_bg"
+        android:gravity="center"
+        android:paddingBottom="@dimen/small_space"
+        android:paddingLeft="@dimen/login_top_margin"
+        android:paddingRight="@dimen/login_top_margin"
+        android:paddingTop="@dimen/small_space">
+
+        <Button
+            android:id="@+id/btn_wait_return_visit"
+            style="@style/all_bad_comment_text_style"
+            android:layout_marginRight="-1dp"
+            android:background="@drawable/wait_return_visit"
+            android:text="@string/wait_return_visit" />
+
+        <Button
+            android:id="@+id/btn_had_return_visited"
+            style="@style/all_bad_comment_text_style"
+            android:background="@drawable/had_return_visited"
+            android:text="@string/had_visited" />
+
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_bad_comment_contact"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/inter_space"
+        android:layout_marginRight="@dimen/inter_space"
+        android:layout_weight="1" />
+
+</LinearLayout>

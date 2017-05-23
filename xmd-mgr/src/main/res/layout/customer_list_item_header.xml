@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/customer_list_item_header_background_color"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/small_space"
+    android:paddingLeft="@dimen/inter_space"
+    android:paddingRight="@dimen/inter_space"
+    android:paddingTop="@dimen/small_space">
+
+    <TextView
+        android:id="@+id/tv_header"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:text="未归属用户"
+        android:textColor="@color/customer_list_item_header_text_color"
+        android:textSize="@dimen/customer_list_item_header_text_size" />
+
+    <TextView
+        android:id="@+id/tv_group_count"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/customer_list_item_header_text_color"
+        android:textSize="@dimen/customer_list_item_header_text_size" />
+
+</RelativeLayout>
+

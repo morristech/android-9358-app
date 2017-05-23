@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_color"
+    android:orientation="vertical">
+
+    <com.xmd.manager.widget.SmoothProgressBar
+        android:id="@+id/download_progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/browser_progress_bar_height"
+        android:max="1000"
+        android:progressDrawable="@drawable/progress_down_local" />
+
+    <WebView
+        android:id="@+id/mainwebView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/browser_progress_bar_height" />
+
+    <TextView
+        android:id="@+id/line_cut"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/title_line" />
+
+    <LinearLayout
+        android:id="@+id/menu_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="44dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/back_ImageView"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/ic_back_selector" />
+
+        <ImageView
+            android:id="@+id/refresh_ImageView"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/ic_refresh_selector" />
+
+        <ImageView
+            android:id="@+id/go_next_ImageView"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/ic_go_selector" />
+
+        <ImageView
+            android:contentDescription="@string/content_description"
+            android:id="@+id/home_ImageView"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/ic_browser_activity_home_selector" />
+    </LinearLayout>
+
+
+</LinearLayout>

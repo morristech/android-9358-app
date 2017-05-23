@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xmd.manager.widget.BlockChildLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/inter_space"
+    android:layout_marginLeft="@dimen/inter_space"
+    android:layout_marginRight="@dimen/inter_space"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        style="@style/relative_layout_title_style"
+        android:paddingBottom="@dimen/small_space"
+        android:paddingTop="0dp">
+
+        <TextView
+            android:id="@+id/main_page_pk_ranking_head"
+            style="@style/main_fragment_layout_title_left_style"
+            android:drawableLeft="@drawable/icon_main_ranking"
+            android:paddingTop="@dimen/margin_10"
+            android:text="@string/pk_ranking_head" />
+
+        <ImageView
+            android:id="@+id/pk_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_toRightOf="@id/main_page_pk_ranking_head"
+            android:paddingTop="@dimen/small_space"
+            android:src="@drawable/icon_pk" />
+
+        <TextView
+            style="@style/main_fragment_layout_title_right_style"
+
+            android:text="@string/layout_technician_ranking_check_all" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/team_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/small_space"
+            android:paddingRight="@dimen/small_space" />
+    </LinearLayout>
+</com.xmd.manager.widget.BlockChildLinearLayout>

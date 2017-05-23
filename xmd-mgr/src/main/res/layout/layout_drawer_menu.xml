@@ -1,0 +1,178 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/home_activity_drawer_width"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_setting_head"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/popup_window_button_height"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/inter_space"
+        android:text="@string/btn_setting"
+        android:textColor="@color/desc_color"
+        android:textSize="@dimen/home_activity_drawer_title_text_size" />
+
+    <RelativeLayout
+        android:id="@+id/menu_version_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_list_item_clicked"
+        android:padding="@dimen/inter_space">
+
+        <TextView
+            style="@style/drawer_menu_style"
+            android:drawableLeft="@drawable/icon_version"
+            android:text="@string/action_update" />
+
+        <TextView
+            android:id="@+id/menu_app_version"
+            style="@style/relative_layout_menu_right" />
+
+    </RelativeLayout>
+
+    <View style="@style/line" />
+
+    <RelativeLayout
+        android:id="@+id/menu_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_list_item_clicked"
+        android:padding="@dimen/inter_space">
+
+        <TextView
+            style="@style/drawer_menu_style"
+            android:drawableLeft="@drawable/icon_setting"
+            android:text="@string/action_setting" />
+
+        <TextView style="@style/relative_layout_menu_right" />
+    </RelativeLayout>
+
+    <View style="@style/line" />
+
+    <RelativeLayout
+        android:id="@+id/menu_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inter_space"
+        android:background="@drawable/selector_list_item_clicked"
+        android:padding="@dimen/inter_space">
+
+        <TextView
+            style="@style/drawer_menu_style"
+            android:drawableLeft="@drawable/icon_service"
+            android:text="@string/action_service" />
+
+        <TextView
+            android:id="@+id/menu_service_phone"
+            style="@style/relative_layout_menu_right"
+            android:text="@string/service_phone" />
+    </RelativeLayout>
+
+    <View style="@style/line" />
+
+    <RelativeLayout
+        android:id="@+id/menu_suggest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_list_item_clicked"
+        android:padding="@dimen/inter_space">
+
+        <TextView
+            style="@style/drawer_menu_style"
+            android:drawableLeft="@drawable/icon_feed_back"
+            android:text="@string/action_feedback" />
+
+        <TextView style="@style/relative_layout_menu_right" />
+    </RelativeLayout>
+
+    <View style="@style/line" />
+
+
+    <RelativeLayout
+        android:id="@+id/menu_choice_club"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inter_space"
+        android:background="@drawable/selector_list_item_clicked"
+        android:padding="@dimen/inter_space"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/drawer_menu_style"
+            android:drawableLeft="@drawable/ic_set_store"
+            android:text="@string/action_choice_club" />
+
+        <TextView
+            android:id="@+id/menu_club_name"
+            style="@style/relative_layout_menu_right"
+            android:text="水立方元" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/menu_change_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inter_space"
+        android:background="@drawable/selector_list_item_clicked"
+        android:padding="@dimen/inter_space">
+
+        <TextView
+            style="@style/drawer_menu_style"
+            android:drawableLeft="@drawable/icon_password"
+            android:text="@string/action_change_password" />
+
+        <TextView style="@style/relative_layout_menu_right" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/club_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_list_item_clicked"
+        android:padding="@dimen/inter_space"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/drawer_menu_style"
+            android:text="@string/action_club_list" />
+
+        <ImageView style="@style/relative_layout_arrow_right" />
+    </RelativeLayout>
+
+    <View style="@style/line" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/app_bg" />
+
+    <RelativeLayout
+        android:id="@+id/menu_activity_logout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/status_button_light_red"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/action_logout"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fontTitle" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,9 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/order_status"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="@dimen/popup_window_button_min_width"
+    android:background="@drawable/selector_popup_window_button_bg"
+    android:textColor="@color/selector_popup_window_button_text"
+    android:gravity="center"
+    android:padding="@dimen/small_margin" />

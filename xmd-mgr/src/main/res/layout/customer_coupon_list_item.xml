@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/ll_deliver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space"
+        android:paddingTop="@dimen/inter_space">
+
+
+        <LinearLayout
+            android:id="@+id/ll_img_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space">
+
+            <ImageView
+                android:id="@+id/img_coupon_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/selector_coupon_list_item" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/coupon_top_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/consume_activity_coupon_item_head_height"
+                android:background="@drawable/shape_coupon_list_item_head" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_coupon_list_item_content"
+                android:orientation="vertical"
+                android:padding="@dimen/inter_space">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/coupon_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Coupon Name"
+                        android:textColor="@color/value_color"
+                        android:textSize="@dimen/coupon_list_item_title_text_size" />
+
+                    <TextView
+                        android:id="@+id/coupon_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="Coupon"
+                        android:textColor="@color/colorClubItemTitle"
+                        android:textSize="@dimen/coupon_list_item_sub_title_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_item_margin_top">
+
+                    <TextView
+                        android:id="@+id/coupon_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Coupon Description"
+                        android:textColor="@color/amount_color"
+                        android:textSize="@dimen/coupon_list_item_sub_title_text_size" />
+
+                    <TextView
+                        android:id="@+id/coupon_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="status"
+                        android:textColor="@color/colorClubItemBody"
+                        android:textSize="@dimen/coupon_list_item_sub_title_text_size" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_item_margin_top"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/coupon_list_item_activity_duration_desc"
+                        android:textColor="@color/label_color"
+                        android:textSize="@dimen/coupon_list_item_text_size" />
+
+                    <TextView
+                        android:id="@+id/activity_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/inter_space"
+                        android:text="2015-12-01 ~ 2015-12-03"
+                        android:textColor="@color/value_color"
+                        android:textSize="@dimen/coupon_list_item_text_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_item_margin_top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/coupon_list_item_coupon_duration_desc"
+                        android:textColor="@color/label_color"
+                        android:textSize="@dimen/coupon_list_item_text_size" />
+
+                    <TextView
+                        android:id="@+id/coupon_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/inter_space"
+                        android:text="领取后当天生效，至2015-12-19有效"
+                        android:textColor="@color/value_color"
+                        android:textSize="@dimen/coupon_list_item_text_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_item_margin_top">
+
+                    <TextView
+                        android:id="@+id/coupon_use_duration_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/coupon_list_item_coupon_use_duration_desc"
+                        android:textColor="@color/label_color"
+                        android:textSize="@dimen/coupon_list_item_text_size" />
+
+                    <TextView
+                        android:id="@+id/coupon_use_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/inter_space"
+                        tools:text="2015-12-01 ~ 2015-12-03"
+                        android:textColor="@color/value_color"
+                        android:textSize="@dimen/coupon_list_item_text_size" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/alertTitleN0Data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/alert_no_data_margin_top"
+        android:gravity="center"
+        android:text="@string/alert_top_no_data"
+        android:textSize="@dimen/xx_large_text_size"
+        android:visibility="gone" />
+
+</FrameLayout>
+
+

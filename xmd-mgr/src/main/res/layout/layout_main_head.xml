@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/main_page_title_height"
+    android:background="@drawable/bg_top">
+
+    <LinearLayout
+        android:id="@+id/ll_verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_space">
+
+        <TextView
+            android:id="@+id/tv_qr_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:drawablePadding="@dimen/tiny_space"
+            android:drawableTop="@drawable/ic_qr_scan_selector"
+            android:padding="@dimen/small_space"
+            android:text="@string/paid_consume_activity_qrcode"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <View
+            style="@style/vertical_line"
+            android:background="@color/dialog_line_gray" />
+
+        <com.xmd.manager.widget.ClearableEditText
+            android:id="@+id/cet_paid_order_consume_code"
+            style="@style/clearable_edit_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_space"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:hint="@string/main_fragment_consume_code_hint"
+            android:inputType="number"
+            android:lines="1"
+            android:maxLength="14" />
+
+        <TextView
+            android:id="@+id/btn_consume"
+            android:layout_width="@dimen/operation_button_width"
+            android:layout_height="@dimen/operation_button_height"
+            android:background="@drawable/bg_white_border"
+            android:gravity="center"
+            android:text="@string/btn_consume"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/selector_dialog_positive_button_text" />
+
+    </LinearLayout>
+
+</RelativeLayout>

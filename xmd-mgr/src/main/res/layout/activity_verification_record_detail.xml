@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_10"
+        android:paddingBottom="15dp">
+
+        <LinearLayout style="@style/verification_record_layout_type">
+
+            <com.xmd.manager.widget.CircleImageView
+                android:id="@+id/user_head"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/icon22" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:textColor="@color/value_color"
+                android:textSize="@dimen/x_large_text_size"
+                tools:text="林先生" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/verification_record_layout_type">
+
+            <TextView
+                style="@style/verification_record_title_type"
+                android:text="@string/verification_record_phone" />
+
+            <TextView
+                android:id="@+id/user_phone"
+                style="@style/verification_record_content_type"
+                tools:text="13135448109" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/verification_record_layout_type">
+
+            <TextView
+                style="@style/verification_record_title_type"
+                android:text="@string/verification_record_type" />
+
+            <TextView
+                android:id="@+id/user_verification_type"
+                style="@style/verification_record_content_type"
+                tools:text="付费预约" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/verification_record_layout_type">
+
+            <TextView
+                style="@style/verification_record_title_type"
+                android:text="@string/verification_record_time" />
+
+            <TextView
+                android:id="@+id/user_verification_time"
+                style="@style/verification_record_content_type"
+                tools:text="2016-12-14 20:15" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/verification_record_layout_type">
+
+            <TextView
+                style="@style/verification_record_title_type"
+                android:text="@string/verification_record_handlers" />
+
+            <TextView
+                android:id="@+id/user_verification_handler"
+                style="@style/verification_record_content_type"
+                tools:text="admin" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/verification_record_layout_type">
+
+            <TextView
+                style="@style/verification_record_title_type"
+                android:text="@string/verification_record_code" />
+
+            <TextView
+                android:id="@+id/user_verification_code"
+                style="@style/verification_record_content_type"
+                tools:text="3215987126945369536" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/verification_circle_diameter"
+            android:layout_marginTop="@dimen/small_space"
+            android:layout_gravity="center_vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/inter_space"
+                android:layout_gravity="center"
+                android:background="@drawable/comment_detail_div_line"
+                android:layerType="software" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:layout_width="@dimen/semi_circle_radius"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/verification_torus_margin"
+                    android:background="@drawable/left_semi_circle" />
+
+                <View
+                    android:layout_width="@dimen/semi_circle_radius"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/verification_torus_margin"
+                    android:background="@drawable/right_semi_circle" />
+            </RelativeLayout>
+        </FrameLayout>
+
+        <ListView
+            android:id="@+id/user_verification_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null" />
+    </LinearLayout>
+
+
+</LinearLayout>

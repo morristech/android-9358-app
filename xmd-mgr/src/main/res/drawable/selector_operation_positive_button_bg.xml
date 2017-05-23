@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:drawable="@drawable/shape_operation_button_disabled_bg" />
+    <item android:drawable="@drawable/shape_operation_button_positive_pressed_bg" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/shape_operation_button_postivie_normal_bg" />
+
+</selector>

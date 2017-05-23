@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_obtain_client"
+    style="@style/main_page_margin_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_round_corner_list_item_clicked"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        style="@style/relative_layout_title_style"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:id="@+id/tv_title_client"
+            style="@style/main_fragment_layout_title_left_style"
+            android:drawableLeft="@drawable/ic_statistics"
+            android:text="@string/layout_obtain_client_title" />
+
+        <TextView
+            android:id="@+id/tv_marketing_current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_title_client"
+            android:layout_toRightOf="@id/tv_title_client"
+            android:text="@string/layout_main_publicity_yesterday"
+            android:textSize="@dimen/fontBody" />
+
+        <TextView
+            android:id="@+id/main_marketing_time_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:autoLink="all"
+            android:paddingRight="@dimen/margin_10"
+            android:text="@string/layout_main_btn_today"
+            android:textColor="@color/select_publicity_time"
+            android:textSize="@dimen/fontMiddle" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_new_register_today"
+            style="@style/main_fragment_layout_statistic_section_style">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_title_register"
+                    style="@style/main_fragment_layout_statistics_label_style"
+                    android:text="@string/layout_statistics_new_register" />
+
+                <TextView
+                    android:id="@+id/tv_new_register_today"
+                    style="@style/main_fragment_layout_statistics_value_style"
+                    android:text="0" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/main_fragment_layout_statistics_accumulate_style"
+                    android:text="@string/accumulate_with_semi_colon" />
+
+                <TextView
+                    android:id="@+id/tv_new_register_accumulate"
+                    style="@style/main_fragment_layout_statistics_accumulate_value_style"
+                    android:text="0" />
+
+                <TextView
+                    style="@style/main_fragment_layout_statistics_accumulate_value_style"
+                    android:text="@string/person_unit" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            style="@style/vertical_line"
+            android:layout_marginBottom="@dimen/inter_space"
+            android:layout_marginTop="@dimen/inter_space" />
+
+        <LinearLayout
+            android:id="@+id/ll_coupon_get_today"
+            style="@style/main_fragment_layout_statistic_section_style">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_title_coupon"
+                    style="@style/main_fragment_layout_statistics_label_style"
+                    android:text="@string/layout_statistics_coupon_get" />
+
+                <TextView
+                    android:id="@+id/tv_coupon_get_today"
+                    style="@style/main_fragment_layout_statistics_value_style"
+                    android:text="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    style="@style/main_fragment_layout_statistics_accumulate_style"
+                    android:text="@string/accumulate_with_semi_colon" />
+
+                <TextView
+                    android:id="@+id/tv_coupon_get_accumulate"
+                    style="@style/main_fragment_layout_statistics_accumulate_value_style"
+                    android:text="0" />
+
+                <TextView
+                    style="@style/main_fragment_layout_statistics_accumulate_value_style"
+                    android:text="@string/coupon_unit" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

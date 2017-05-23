@@ -1,0 +1,5 @@
+PASSWORD=93WiFiAppSignerPass2014
+ALIAS=93wifi-app
+KEYSTORE=93wifi_app_key.keystore
+TO_SIGN_APK=../bin/93wifi-app-release-unsigned.apk
+SIGNED_APK=../bin/93wifi-app.apk

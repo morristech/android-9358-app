@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/list_item_card_corner_radius"
+    app:cardUseCompatPadding="true"
+    app:elevation="@dimen/list_item_card_elevation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/list_item_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/inter_space">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.xmd.manager.widget.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/paid_consume_activity_avatar_size"
+                android:layout_height="@dimen/paid_consume_activity_avatar_size"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/custom_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/small_space"
+                android:gravity="center_vertical"
+                android:textColor="@color/value_color"
+                android:textSize="@dimen/paid_consume_activity_customer_name_text_size" />
+
+            <TextView
+                android:id="@+id/custom_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/small_space"
+                android:gravity="center_vertical"
+                android:textColor="@color/value_color"
+                android:textSize="@dimen/paid_consume_activity_customer_phone_text_size" />
+
+            <TextView
+                android:id="@+id/down_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right|center"
+                android:textColor="@color/amount_color" />
+        </LinearLayout>
+
+        <View
+            style="@style/list_item_line"
+            android:layout_marginTop="@dimen/list_item_item_margin_top" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/list_item_item_margin_top">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tech_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/order_list_item_tech_desc"
+                        android:textColor="@color/label_color" />
+
+                    <TextView
+                        android:id="@+id/tech_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/inter_space"
+                        android:textColor="@color/value_color" />
+
+                    <TextView
+                        android:id="@+id/tech_serial_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/inter_space"
+                        android:text="@string/order_list_item_tech_serial" />
+
+                    <TextView
+                        android:id="@+id/tech_serial"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/small_space"
+                        android:textColor="@color/number_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_item_margin_top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/item_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/order_list_item_item_desc"
+                        android:textColor="@color/label_color" />
+
+                    <TextView
+                        android:id="@+id/item_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/inter_space"
+                        android:textColor="@color/value_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_item_margin_top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/time_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/order_list_item_time_desc"
+                        android:textColor="@color/label_color" />
+
+                    <TextView
+                        android:id="@+id/item_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/inter_space"
+                        android:textColor="@color/value_color" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="right"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/order_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/closed_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <View style="@style/list_item_line" />
+
+        <RelativeLayout
+            android:id="@+id/operation_for_accept"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/operation_button_row_height"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/expire"
+                style="@style/operation_negative_button"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/operation_button_height"
+                android:layout_toLeftOf="@+id/verified"
+                android:text="@string/paid_order_list_item_expire" />
+
+            <Button
+                android:id="@+id/verified"
+                style="@style/operation_positive_button"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/operation_button_height"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/inter_space"
+                android:text="@string/paid_order_list_item_consume" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

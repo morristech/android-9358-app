@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ly_verify_head"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ic_verify_bg"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/activity_small_margin"
+    android:paddingRight="@dimen/activity_small_margin"
+    android:paddingTop="?attr/actionBarSize">
+
+    <TextView
+        android:id="@+id/tv_verify_code_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableTop="@drawable/ic_scan_qr"
+        android:text="扫码核销"
+        android:textColor="@color/selector_text_white_gray"
+        android:textSize="11sp" />
+
+    <com.xmd.cashier.widget.ClearableEditText
+        android:id="@+id/edt_verify_code_input"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:layout_marginRight="@dimen/activity_small_margin"
+        android:layout_weight="1"
+        android:background="@drawable/bg_area_line"
+        android:clickable="true"
+        android:focusable="true"
+        android:hint="输入手机号、核销码"
+        android:inputType="number"
+        android:lines="1"
+        android:maxLength="14"
+        android:padding="5dp"
+        android:textColorHint="@color/colorText3" />
+
+    <TextView
+        android:id="@+id/btn_verify_confirm"
+        android:layout_width="55dp"
+        android:layout_height="35dp"
+        android:background="@drawable/bg_btn_line"
+        android:gravity="center"
+        android:text="核销"
+        android:textColor="@color/selector_text_white_gray" />
+</LinearLayout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:id="@+id/layout_empty_in"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_empty_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:paddingTop="8dp"
+            android:text="@string/empty_view_empty"
+            android:textSize="@dimen/empty_view_text_size"
+            android:textColor="@color/empty_view_textview_color" />
+
+        <ImageView
+            android:id="@+id/iv_empty_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_empty_tip"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_failed" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_loading_in"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/wifi_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_loadingtip"
+            android:layout_centerHorizontal="true"
+            android:max="100000" />
+
+        <TextView
+            android:id="@+id/tv_loadingtip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/empty_view_loading"
+            android:textSize="@dimen/empty_view_text_size"
+            android:padding="@dimen/inter_space"
+            android:textColor="@color/empty_view_textview_color"
+            android:clickable="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_failed_in"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_failed_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/inter_space"
+            android:text="@string/empty_view_failed"
+            android:textSize="@dimen/empty_view_text_size"
+            android:textColor="@color/empty_view_textview_color" />
+
+        <ImageView
+            android:id="@+id/iv_failed_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_failed_tip"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_failed" />
+    </RelativeLayout>
+
+</merge>

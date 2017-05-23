@@ -1,0 +1,1165 @@
+package com.xmd.manager.window;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.crazyman.library.PermissionTool;
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.manager.AppConfig;
+import com.xmd.manager.BuildConfig;
+import com.xmd.manager.ClubData;
+import com.xmd.manager.Constant;
+import com.xmd.manager.Manager;
+import com.xmd.manager.R;
+import com.xmd.manager.SharedPreferenceHelper;
+import com.xmd.manager.adapter.MainPageBadCommentListAdapter;
+import com.xmd.manager.adapter.PKRankingAdapter;
+import com.xmd.manager.auth.AuthConstants;
+import com.xmd.manager.auth.AuthHelper;
+import com.xmd.manager.beans.AuthData;
+import com.xmd.manager.beans.BadComment;
+import com.xmd.manager.beans.IndexOrderData;
+import com.xmd.manager.beans.QrResult;
+import com.xmd.manager.beans.SwitchIndexBean;
+import com.xmd.manager.chat.EmchatUserHelper;
+import com.xmd.manager.common.DateUtil;
+import com.xmd.manager.common.ResourceUtils;
+import com.xmd.manager.common.ReturnVisitMenu;
+import com.xmd.manager.common.ToastUtils;
+import com.xmd.manager.common.Utils;
+import com.xmd.manager.common.VerificationManagementHelper;
+import com.xmd.manager.common.WidgetUtils;
+import com.xmd.manager.msgctrl.MsgDef;
+import com.xmd.manager.msgctrl.MsgDispatcher;
+import com.xmd.manager.msgctrl.RxBus;
+import com.xmd.manager.service.RequestConstant;
+import com.xmd.manager.service.response.AccountDataResult;
+import com.xmd.manager.service.response.BadCommentListResult;
+import com.xmd.manager.service.response.ChangeStatusResult;
+import com.xmd.manager.service.response.CheckVerificationTypeResult;
+import com.xmd.manager.service.response.CouponDataResult;
+import com.xmd.manager.service.response.PropagandaDataResult;
+import com.xmd.manager.service.response.RegistryDataResult;
+import com.xmd.manager.service.response.TechPKRankingResult;
+import com.xmd.manager.service.response.TechRankDataResult;
+import com.xmd.manager.service.response.VerificationSaveResult;
+import com.xmd.manager.verification.VerificationListActivity;
+import com.xmd.manager.widget.AlertDialogBuilder;
+import com.xmd.manager.widget.BottomPopupWindow;
+import com.xmd.manager.widget.CircleImageView;
+import com.xmd.manager.widget.ClearableEditText;
+import com.xmd.manager.widget.FullyGridLayoutManager;
+import com.xmd.manager.widget.SlidingMenu;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import rx.Subscription;
+
+import static android.app.Activity.RESULT_OK;
+
+/**
+ * Created by lhj on 2016/11/17.
+ */
+public class MainPageFragment extends BaseFragment implements View.OnClickListener {
+
+    @Bind(R.id.menu_app_version)
+    TextView mMenuAppVersion;
+    @Bind(R.id.menu_version_update)
+    RelativeLayout mMenuVersionUpdate;
+    @Bind(R.id.menu_setting)
+    RelativeLayout mMenuSetting;
+    @Bind(R.id.menu_service_phone)
+    TextView mMenuServicePhone;
+    @Bind(R.id.menu_service)
+    RelativeLayout mMenuService;
+    @Bind(R.id.menu_suggest)
+    RelativeLayout mMenuSuggest;
+    @Bind(R.id.menu_club_name)
+    TextView mMenuClubName;
+    @Bind(R.id.menu_choice_club)
+    RelativeLayout mMenuChoiceClub;
+    @Bind(R.id.menu_change_password)
+    RelativeLayout mMenuChangePassword;
+    @Bind(R.id.club_list)
+    RelativeLayout mClubList;
+    @Bind(R.id.menu_activity_logout)
+    RelativeLayout mSettingsActivityLogout;
+    @Bind(R.id.tv_qr_code)
+    TextView mTvQrCode;
+    @Bind(R.id.cet_paid_order_consume_code)
+    ClearableEditText mCetPaidOrderConsumeCode;
+    @Bind(R.id.btn_consume)
+    TextView mBtnConsume;
+    @Bind(R.id.ll_verify)
+    LinearLayout mVerifyLayout;
+
+    @Bind(R.id.main_bad_comment)
+    RelativeLayout mMainBadComment;
+
+    @Bind(R.id.bad_comment_finish)
+    ImageView mBadCommentFinish;
+    @Bind(R.id.main_ranking)
+    RelativeLayout mMainRanking;
+    @Bind(R.id.cv_star_register)
+    CircleImageView mCvStarRegister;
+    @Bind(R.id.tv_star_register_user)
+    TextView mTvStarRegisterUser;
+    @Bind(R.id.tv_star_register_tech_no)
+    TextView mTvStarRegisterTechNo;
+    @Bind(R.id.ll_star_user)
+    LinearLayout mLayoutStarUser;
+    @Bind(R.id.cv_star_sales)
+    CircleImageView mCvStarSales;
+    @Bind(R.id.tv_star_sales)
+    TextView mTvStarSales;
+    @Bind(R.id.tv_star_sales_tech_no)
+    TextView mTvStarSalesTechNo;
+    @Bind(R.id.ll_star_sale)
+    LinearLayout mLayoutStarSale;
+    @Bind(R.id.cv_star_service)
+    CircleImageView mCvStarService;
+    @Bind(R.id.tv_star_service)
+    TextView mTvStarService;
+    @Bind(R.id.tv_star_service_tech_no)
+    TextView mTvStarServiceTechNo;
+    @Bind(R.id.ll_star_service)
+    LinearLayout mLayoutStarService;
+    @Bind(R.id.swipe_refresh_widget)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.team_list)
+    RecyclerView mTeamList;
+    @Bind(R.id.ranking_more)
+    TextView mRankingMore;
+    @Bind(R.id.main_page_scroll)
+    NestedScrollView mMainPageScroll;
+    @Bind(R.id.sliding_menu)
+    SlidingMenu mSlidingMenu;
+
+    @Bind(R.id.layout_statistics)
+    LinearLayout mStatisticsLayout;
+    @Bind(R.id.layout_obtain_client)
+    LinearLayout mClientLayout;
+    @Bind(R.id.layout_bad_comment)
+    LinearLayout mBadCommentLayout;
+    @Bind(R.id.main_publicity_time_switch)
+    TextView mMainPublicityTimeSwitch;
+    @Bind(R.id.tv_current_time)
+    TextView mMainPublicityCurrentTime;
+
+    //Wifi//网店访客
+    @Bind(R.id.ll_wifi_today)
+    LinearLayout mWifiTodayLayout;
+    @Bind(R.id.tv_title_wifi)
+    TextView mTvTitleWifi;
+    @Bind(R.id.tv_wifi_today)
+    TextView mTvWifiToday;
+    @Bind(R.id.tv_wifi_accumulate)
+    TextView mTvWifiAccumulate;
+    @Bind(R.id.tv_title_client)
+    TextView mTvTitleClient;
+    @Bind(R.id.tv_title_statistics)
+    TextView mTvTitleStatistics;
+    @Bind(R.id.ll_visit_today)
+    LinearLayout mVisitTodayLayout;
+    @Bind(R.id.tv_title_visit)
+    TextView mTvTitleVisit;
+    @Bind(R.id.tv_visit_today)
+    TextView mTvVisitToday;
+    @Bind(R.id.tv_visit_accumulate)
+    TextView mTvVisitAccumulate;
+    @Bind(R.id.ll_propaganda_view)
+    LinearLayout mLlPropagandaView;
+    @Bind(R.id.ll_visit_view)
+    LinearLayout mLlVisitView;
+    @Bind(R.id.tv_visit_today_data)
+    TextView mTvVisitTodayData;
+    @Bind(R.id.tv_visit_yesterday_data)
+    TextView mTvVisitYesterdayData;
+    @Bind(R.id.tv_visit_accumulate_data)
+    TextView mTvVisitAccumulateData;
+    @Bind(R.id.main_marketing_time_switch)
+    TextView mMainMarketingTimeSwitch;
+    @Bind(R.id.tv_marketing_current_time)
+    TextView mMainMarketingCurrentTime;
+    //新注册用户
+    @Bind(R.id.ll_new_register_today)
+    LinearLayout mNewRegisterLayout;
+    @Bind(R.id.tv_title_register)
+    TextView mTvTitleRegister;
+    @Bind(R.id.tv_new_register_today)
+    TextView mTvNewRegisterToday;
+    @Bind(R.id.tv_new_register_accumulate)
+    TextView mTvNewRegisterAccumulate;
+
+    //领券用户
+    @Bind(R.id.ll_coupon_get_today)
+    LinearLayout mCouponGetLayout;
+    @Bind(R.id.tv_title_coupon)
+    TextView mTvTitleCoupon;
+    @Bind(R.id.tv_coupon_get_today)
+    TextView mTvCouponGetToday;
+    @Bind(R.id.tv_coupon_get_accumulate)
+    TextView mTvCouponGetAccumulate;
+
+    //订单
+    @Bind(R.id.tv_title_order)
+    TextView mTvTitleOrder;
+    @Bind(R.id.layout_order)
+    LinearLayout mOrderLayout;
+    @Bind(R.id.tv_pending_order_count)
+    TextView mTvPendingOrderCount;
+    @Bind(R.id.tv_accepted_order_count)
+    TextView mTvAcceptedOrderCount;
+    @Bind(R.id.tv_completed_order_count)
+    TextView mTvCompletedOrderCount;
+
+    @Bind(R.id.main_bad_comment_list)
+    RecyclerView badCommentList;
+    @Bind(R.id.toolbar_right_text)
+    TextView mToolbarRightText;
+    //线上流水
+    @Bind(R.id.tv_title_account)
+    TextView tvTitleAccount;
+    @Bind(R.id.tv_account_current_time)
+    TextView tvAccountCurrentTime;
+    @Bind(R.id.main_account_time_switch)
+    TextView mainAccountTimeSwitch;
+    @Bind(R.id.tv_title_paid)
+    TextView tvTitlePaid;
+    @Bind(R.id.tv_check_account)
+    TextView tvCheckAccount;
+    @Bind(R.id.tv_paid_account_total)
+    TextView tvPaidAccountTotal;
+    @Bind(R.id.ll_account_paid)
+    LinearLayout llAccountPaid;
+    @Bind(R.id.tv_title_sail)
+    TextView tvTitleSail;
+    @Bind(R.id.tv_sail_account)
+    TextView tvSailAccount;
+    @Bind(R.id.tv_sail_account_total)
+    TextView tvSailAccountTotal;
+    @Bind(R.id.ll_account_sail_view)
+    LinearLayout llAccountSailView;
+    @Bind(R.id.ll_account_view)
+    LinearLayout llAccountView;
+    @Bind(R.id.tv_once_card_title)
+    TextView tvOnceCardTitle;
+    @Bind(R.id.tv_once_card_account)
+    TextView tvOnceCardAccount;
+    @Bind(R.id.ll_once_card_view)
+    RelativeLayout llOnceCardView;
+    @Bind(R.id.tv_panic_title)
+    TextView tvPanicTitle;
+    @Bind(R.id.tv_panic_account)
+    TextView tvPanicAccount;
+    @Bind(R.id.ll_panic_view)
+    RelativeLayout llPanicView;
+    @Bind(R.id.tv_pay_for_me_title)
+    TextView tvPayForMeTitle;
+    @Bind(R.id.tv_pay_for_me_account)
+    TextView tvPayForMeAccount;
+    @Bind(R.id.ll_pay_for_me_view)
+    RelativeLayout llPayForMeView;
+    @Bind(R.id.tv_paid_title)
+    TextView tvPaidTitle;
+    @Bind(R.id.tv_paid_account)
+    TextView tvPaidAccount;
+    @Bind(R.id.ll_paid_view)
+    RelativeLayout llPaidView;
+    @Bind(R.id.tv_sail_income)
+    TextView tvSailIncome;
+    @Bind(R.id.ll_sail_view)
+    LinearLayout llSailView;
+    @Bind(R.id.layout_technician_pk_ranking)
+    LinearLayout technicianPkRanking;
+    @Bind(R.id.layout_technician_ranking)
+    LinearLayout technicianRanking;
+
+
+    private static final int REQUEST_CODE_PHONE = 0x0001;
+    private static final int REQUEST_CODE_CAMERA = 0x002;
+
+
+    private ImageView imageLeft;
+    private View view;
+    private RelativeLayout mRlToolbar;
+    private String mPhoneNoOrCouponNo;
+    private String mQrNo;
+    private String mRid;
+    private String mTime;
+    private String servicePhone;
+    private int mCurrentPublicityData = 1;
+    private int mCurrentAccountData = 1;
+    private int mCurrentMarketingData = 1;
+    private VerificationManagementHelper mVerificationHelper;
+    private MainPageBadCommentListAdapter badCommentListAdapter;
+    private List<BadComment> mBadCommentList;
+    private boolean isHasPk;
+
+    private Subscription mIndexOrderDataSubscription;
+    private Subscription mQrResultSubscription;
+    private Subscription mRegistryDataSubscription;
+    private Subscription mCouponDataSubscription;
+    private Subscription mRankingDataSubscription;
+    private Subscription mBadCommentSubscription;
+    private Subscription mBadCommentStatusSubscription;
+    private Subscription mGetVerificationTypeSubscription;
+    private Subscription mVerificationHandleSubscription;
+    private Subscription mPropagandaDataSubscription;
+    private Subscription mAccountDataSubSubscription;
+    private Subscription mTechPKRankingSubscription;
+    private Subscription mSwitchChangedSubscription;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_main_page, container, false);
+        ButterKnife.bind(this, view);
+        initView(view);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMainPageScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                onScrollChanged(scrollX, scrollY);
+            }
+        });
+    }
+
+    private void onScrollChanged(int scrollX, int scrollY) {
+        if (scrollY > Utils.dip2px(getActivity(), 100)) {
+            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.primary_color));
+        } else {
+            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mSlidingMenu.closeMenu();
+    }
+
+
+    @Override
+    protected void initView() {
+        if (Constant.MULTI_CLUB_ROLE.equals(SharedPreferenceHelper.getUserRole())) {
+            mMenuChoiceClub.setVisibility(View.VISIBLE);
+            mMenuClubName.setText(Utils.StrSubstring(8, SharedPreferenceHelper.getCurrentClubName(), true));
+        }
+        ((TextView) view.findViewById(R.id.toolbar_title)).setText(Utils.briefString(SharedPreferenceHelper.getCurrentClubName(), 6));
+        mMainPublicityTimeSwitch.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        mMainMarketingTimeSwitch.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        mainAccountTimeSwitch.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+    }
+
+    private void refreshMainPageData() {
+        getPublicityData(mCurrentPublicityData);
+        getAccountData(mCurrentAccountData);
+        getMarketingData(mCurrentMarketingData);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET__INDEX_ORDER_DATA);
+        initBadCommentData();
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_PK_RANKING);
+
+    }
+
+
+    private void initView(View view) {
+        mToolbarRightText.setText(ResourceUtils.getString(R.string.verification_record));
+        mToolbarRightText.setVisibility(View.VISIBLE);
+        servicePhone = ResourceUtils.getString(R.string.service_phone);
+        initVisibilityForViews();
+        initTitleView(view);
+        initBadCommentView();
+        mPropagandaDataSubscription = RxBus.getInstance().toObservable(PropagandaDataResult.class).subscribe(
+                result -> handlerPropagandaDataResult(result)
+        );
+        mRegistryDataSubscription = RxBus.getInstance().toObservable(RegistryDataResult.class).subscribe(
+                registryDataResult -> handlerRegistryResult(registryDataResult));
+
+        mCouponDataSubscription = RxBus.getInstance().toObservable(CouponDataResult.class).subscribe(
+                couponDataResult -> handlerCouponResult(couponDataResult));
+
+        mIndexOrderDataSubscription = RxBus.getInstance().toObservable(IndexOrderData.class).subscribe(
+                orderDataResult -> handlerIndexOrderResult(orderDataResult));
+
+        mQrResultSubscription = RxBus.getInstance().toObservable(QrResult.class).subscribe(
+                qrResult -> onScanQrCodeSuccess(qrResult));
+
+        mBadCommentSubscription = RxBus.getInstance().toObservable(BadCommentListResult.class).subscribe(
+                badCommentListResult -> handlerBadCommentList(badCommentListResult)
+        );
+
+        mBadCommentStatusSubscription = RxBus.getInstance().toObservable(ChangeStatusResult.class).subscribe(
+                changeStatusResult -> {
+                    if (changeStatusResult.statusCode == 200) {
+                        initBadCommentData();
+                    }
+                });
+
+        mGetVerificationTypeSubscription = RxBus.getInstance().toObservable(CheckVerificationTypeResult.class).subscribe(
+                resultType -> {
+                    if (resultType.statusCode == 200) {
+                        VerificationManagementHelper.handlerVerificationType(getActivity(), resultType.respData, resultType.code);
+                    } else {
+                        Utils.makeShortToast(getActivity(), resultType.msg);
+                    }
+                }
+        );
+        mVerificationHandleSubscription = RxBus.getInstance().toObservable(VerificationSaveResult.class).subscribe(saveResult -> {
+            if (saveResult.statusCode == 200) {
+                mCetPaidOrderConsumeCode.setText("");
+            }
+        });
+        mAccountDataSubSubscription = RxBus.getInstance().toObservable(AccountDataResult.class).subscribe(
+                result -> handlerAccountDataResult(result)
+        );
+        mTechPKRankingSubscription = RxBus.getInstance().toObservable(TechPKRankingResult.class).subscribe(
+                techPKRankingResult -> handleTechPKRankingView(techPKRankingResult)
+        );
+        mSwitchChangedSubscription = RxBus.getInstance().toObservable(SwitchIndexBean.class).subscribe(
+                result -> {
+                    if (result.index != 0) {
+                        mSlidingMenu.closeMenu();
+                    }
+                }
+        );
+        mRankingDataSubscription = RxBus.getInstance().toObservable(TechRankDataResult.class).subscribe(
+                rankingDataResult -> handlerRankingResult(rankingDataResult));
+        refreshMainPageData();
+        mVerificationHelper = VerificationManagementHelper.getInstance();
+        mVerificationHelper.initializeHelper(getActivity());
+    }
+
+    private void handlerAccountDataResult(AccountDataResult result) {
+        if (result.statusCode == 200) {
+            if (result.respData == null || result.respData.amountList == null) {
+                return;
+            }
+            if (result.respData.amountList.size() == 2) {
+                llAccountView.setVisibility(View.VISIBLE);
+                llSailView.setVisibility(View.GONE);
+                if (Utils.isNotEmpty(result.respData.amountList.get(0).accountTypeName)) {
+                    tvTitlePaid.setText(String.format("%s：", result.respData.amountList.get(0).accountTypeName));
+                }
+                tvCheckAccount.setText(Utils.getNumToString(result.respData.amountList.get(0).amount, false));
+                tvPaidAccountTotal.setText(Utils.getNumToString(result.respData.amountList.get(0).totalAmount, false));
+                if (Utils.isNotEmpty(result.respData.amountList.get(1).accountTypeName)) {
+                    tvTitleSail.setText(String.format("%s：", result.respData.amountList.get(1).accountTypeName));
+                }
+                tvSailAccount.setText(Utils.getNumToString(result.respData.amountList.get(1).amount, false));
+                tvSailAccountTotal.setText(Utils.getNumToString(result.respData.amountList.get(1).totalAmount, false));
+                return;
+            }
+            llAccountView.setVisibility(View.GONE);
+            llSailView.setVisibility(View.VISIBLE);
+            tvSailIncome.setText(Utils.getNumToString(result.respData.totalAmount, false));
+
+            tvOnceCardTitle.setText(result.respData.amountList.get(0).accountTypeName);
+            tvOnceCardAccount.setText(Utils.getNumToString(result.respData.amountList.get(0).amount, false));
+            tvPanicTitle.setText(result.respData.amountList.get(1).accountTypeName);
+            tvPanicAccount.setText(Utils.getNumToString(result.respData.amountList.get(1).amount, false));
+            tvPayForMeTitle.setText(result.respData.amountList.get(2).accountTypeName);
+            tvPayForMeAccount.setText(Utils.getNumToString(result.respData.amountList.get(2).amount, false));
+
+            if (result.respData.amountList.size() == 3) {
+                llPaidView.setVisibility(View.GONE);
+
+            } else if (result.respData.amountList.size() == 4) {
+                llPaidView.setVisibility(View.VISIBLE);
+                tvPaidTitle.setText(result.respData.amountList.get(3).accountTypeName);
+                tvPaidAccount.setText(Utils.getNumToString(result.respData.amountList.get(3).amount, false));
+            }
+        } else {
+            ToastUtils.showToastShort(getActivity(), result.msg);
+        }
+
+    }
+
+    private void handleTechPKRankingView(TechPKRankingResult techPKRankingResult) {
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+        if (techPKRankingResult.statusCode == 200) {
+            // 从来没有分组
+            if (techPKRankingResult.respData.count == Constant.HAS_NONE_PK_GROUP) {
+                isHasPk = false;
+                technicianPkRanking.setVisibility(View.GONE);
+                technicianRanking.setVisibility(View.VISIBLE);
+                initTechRankingView();
+                return;
+            }
+            //存在正在进行的分组
+            if (techPKRankingResult.respData.count == Constant.HAS_RUNNING_PK_GROUP) {
+                technicianPkRanking.setVisibility(View.VISIBLE);
+                technicianRanking.setVisibility(View.GONE);
+                PKRankingAdapter adapter;
+                if (Utils.isNotEmpty(techPKRankingResult.respData.categoryId)) {
+                    adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList, techPKRankingResult.respData.categoryId);
+                } else {
+                    adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList, null);
+                }
+                mTeamList.setItemAnimator(new DefaultItemAnimator());
+                mTeamList.setHasFixedSize(true);
+                mTeamList.setNestedScrollingEnabled(true);
+                mTeamList.setLayoutManager(new FullyGridLayoutManager(getActivity(), 3));
+                mTeamList.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                isHasPk = true;
+                return;
+            }
+            //曾经有现在没有
+            if (techPKRankingResult.respData.count == Constant.HAS_NONE_RUNNING_PK_GROUP) {
+                technicianRanking.setVisibility(View.VISIBLE);
+                technicianPkRanking.setVisibility(View.GONE);
+                if (techPKRankingResult.respData.count == Constant.HAS_NONE_RUNNING_PK_GROUP) {
+                    mRankingMore.setText(ResourceUtils.getString(R.string.layout_technician_ranking_check_all));
+                    isHasPk = true;
+                } else {
+                    isHasPk = false;
+                    mRankingMore.setText("");
+                }
+                initTechRankingView();
+                return;
+            }
+
+        } else {
+            initTechRankingView();
+        }
+
+
+    }
+
+    private void initBadCommentView() {
+
+        mBadCommentList = new ArrayList<>();
+
+        badCommentListAdapter = new MainPageBadCommentListAdapter(getActivity(), mBadCommentList);
+        badCommentListAdapter.setCommentClickedListener(new MainPageBadCommentListAdapter.OnCommentClickedListener() {
+            @Override
+            public void onCommentCallBackClick(BadComment badComment) {
+                showServiceOutMenu(badComment.phoneNum, badComment.userEmchatId, badComment.userName, badComment.avatarUrl, badComment.id, badComment.returnStatus);
+            }
+
+            @Override
+            public void onItemClicked(BadComment badComment) {
+                Intent intent = new Intent(getActivity(), BadCommentDetailActivity.class);
+                intent.putExtra(RequestConstant.KEY_COMMENT_ID, badComment.id);
+                startActivity(intent);
+            }
+        });
+        badCommentList.setLayoutManager(new LinearLayoutManager(getActivity()) {
+            @Override
+            public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
+                super.onMeasure(recycler, state, widthSpec, heightSpec);
+                XLogger.i("onMeasure:==" + View.MeasureSpec.getSize(widthSpec) + "x" + View.MeasureSpec.getSize(heightSpec));
+                XLogger.i("onMeasure:" + badCommentList.getMeasuredWidth() + "x" + badCommentList.getMeasuredHeight());
+            }
+
+            @Override
+            public void onLayoutCompleted(RecyclerView.State state) {
+                super.onLayoutCompleted(state);
+                XLogger.i("onLayoutCompleted:" + badCommentList.getMeasuredWidth() + "x" + badCommentList.getMeasuredHeight());
+            }
+        });
+        badCommentList.setAdapter(badCommentListAdapter);
+    }
+
+    /**
+     * When manager scan the qrcode, and return the qrcode result
+     * only for PaidOrder
+     *
+     * @param qrResult
+     */
+    private void onScanQrCodeSuccess(QrResult qrResult) {
+        if ("consume".equals(qrResult.type)) {
+            mQrNo = qrResult.qrNo;
+            mRid = qrResult.rid;
+            mTime = qrResult.time;
+            Intent intent = new Intent(getActivity(), PayActivity.class);
+            intent.putExtra(RequestConstant.KEY_PAY_QRNO, mQrNo);
+            intent.putExtra(RequestConstant.KEY_PAY_RID, mRid);
+            intent.putExtra(RequestConstant.KEY_TIME, mTime);
+            startActivity(intent);
+            return;
+        } else {
+            mPhoneNoOrCouponNo = qrResult.qrNo;
+            VerificationManagementHelper.checkVerificationType(mPhoneNoOrCouponNo);
+        }
+
+    }
+
+    private void handlerPropagandaDataResult(PropagandaDataResult result) {
+        mSwipeRefreshLayout.setRefreshing(false);
+        ((TextView) view.findViewById(R.id.toolbar_title)).setText(Utils.briefString(SharedPreferenceHelper.getCurrentClubName(), 8));
+        mMenuClubName.setText(SharedPreferenceHelper.getCurrentClubName());
+        if (result.respData == null) {
+            return;
+        }
+        if (result.statusCode == 200) {
+            if (result.respData.deviceCount.equals("0")) {
+                mTvTitleStatistics.setText("网店宣传");
+                mMainPublicityCurrentTime.setVisibility(View.GONE);
+                mMainPublicityTimeSwitch.setVisibility(View.GONE);
+                mLlPropagandaView.setVisibility(View.GONE);
+                mLlVisitView.setVisibility(View.VISIBLE);
+                mTvVisitTodayData.setText(Utils.getNumToString(Integer.parseInt(result.respData.todayUv), true));
+                mTvVisitYesterdayData.setText(Utils.getNumToString(Integer.parseInt(result.respData.yesterdayUv), true));
+                mTvVisitAccumulateData.setText(Utils.getNumToString(Integer.parseInt(result.respData.totalUv), true));
+            } else {
+                mTvTitleStatistics.setText(ResourceUtils.getString(R.string.layout_statistics_title));
+                mMainPublicityCurrentTime.setVisibility(View.VISIBLE);
+                mMainPublicityTimeSwitch.setVisibility(View.VISIBLE);
+                mLlPropagandaView.setVisibility(View.VISIBLE);
+                mLlVisitView.setVisibility(View.GONE);
+                mTvWifiToday.setText(Utils.getNumToString(Integer.parseInt(result.respData.wifiCount), true));
+                mTvWifiAccumulate.setText(Utils.getNumToString(Integer.parseInt(result.respData.totalWifiCount), true));
+                mTvVisitToday.setText(Utils.getNumToString(Integer.parseInt(result.respData.uv), true));
+                mTvVisitAccumulate.setText(Utils.getNumToString(Integer.parseInt(result.respData.totalUv), true));
+            }
+        }
+
+
+    }
+
+    private void handlerRegistryResult(RegistryDataResult registryData) {
+        if (registryData != null) {
+            mTvNewRegisterToday.setText(Utils.getNumToString(registryData.respData.userCount, true));
+            mTvNewRegisterAccumulate.setText(Utils.getNumToString(registryData.respData.totalUserCount, true));
+        }
+
+    }
+
+    private void handlerCouponResult(CouponDataResult couponData) {
+        if (couponData != null) {
+            mTvCouponGetToday.setText(Utils.getNumToString(couponData.respData.couponGetCount, true));
+            mTvCouponGetAccumulate.setText(Utils.getNumToString(couponData.respData.totalCouponGetCount, true));
+        }
+
+    }
+
+
+    private void handlerIndexOrderResult(IndexOrderData orderData) {
+        if (orderData != null) {
+            mTvPendingOrderCount.setText(orderData.respData.submitCount);
+            mTvAcceptedOrderCount.setText(Utils.getNumToString(Integer.parseInt(orderData.respData.acceptTotal), true));
+            mTvCompletedOrderCount.setText(orderData.respData.acceptCount);
+        }
+
+    }
+
+
+    private void initVisibilityForViews() {
+        if (ClubData.getInstance().getAuthDataList() == null || ClubData.getInstance().getAuthDataList().isEmpty()) {
+            return;
+        }
+        //核销
+        WidgetUtils.setViewVisibleOrGone(mVerifyLayout, AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_VERIFY) != null, true);
+        //差评
+        WidgetUtils.setViewVisibleOrGone(mBadCommentLayout, AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_BAD_COMMENT) != null, false);
+        //订单
+        WidgetUtils.setViewVisibleOrGone(mOrderLayout, AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_ORDER) != null, false);
+        //排行榜
+        //  WidgetUtils.setViewVisibleOrGone(mRankingLayout, AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_RANKING) != null, false);
+        AuthData stat = AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_STAT);
+        //网店宣传
+        WidgetUtils.setViewVisibleOrGone(mStatisticsLayout, stat != null, false);
+        AuthData client = AuthHelper.checkAuth(AuthConstants.AUTH_CODE_EXPAND_CUSTOMERS);
+        //营销数据
+        WidgetUtils.setViewVisibleOrGone(mClientLayout, client != null, true);
+        if (stat != null) {
+            mTvTitleStatistics.setText(stat.name);
+            setStatisticsTitleByAuthData(mWifiTodayLayout, mTvTitleWifi, AuthConstants.AUTH_CODE_INDEX_WIFI);
+            setStatisticsTitleByAuthData(mVisitTodayLayout, mTvTitleVisit, AuthConstants.AUTH_CODE_INDEX_ONLINE);
+        }
+        if (client != null) {
+            mTvTitleClient.setText(client.name);
+            setStatisticsTitleByAuthData(mNewRegisterLayout, mTvTitleRegister, AuthConstants.AUTH_CODE_INDEX_REGISTER);
+            setStatisticsTitleByAuthData(mCouponGetLayout, mTvTitleCoupon, AuthConstants.AUTH_CODE_INDEX_COUPON);
+        }
+
+        setStatisticsTitleByAuthData(mTvTitleOrder, AuthConstants.AUTH_CODE_INDEX_ORDER);
+    }
+
+    private void setStatisticsTitleByAuthData(TextView titleView, String authCode) {
+        AuthData authData = AuthHelper.checkAuth(authCode);
+        if (authData != null) {
+            titleView.setText(authData.name);
+        }
+    }
+
+    private void setStatisticsTitleByAuthData(LinearLayout layout, TextView titleView, String authCode) {
+        AuthData authData = AuthHelper.checkAuth(authCode);
+        WidgetUtils.setViewVisibleOrGone(layout, authData != null);
+        if (authData != null) {
+            titleView.setText(authData.name + "：");
+        }
+        if (WidgetUtils.isVisible(mWifiTodayLayout) || WidgetUtils.isVisible(mVisitTodayLayout)) {
+            mStatisticsLayout.setVisibility(View.VISIBLE);
+        } else {
+            mStatisticsLayout.setVisibility(View.GONE);
+        }
+
+        if (WidgetUtils.isVisible(mNewRegisterLayout) || WidgetUtils.isVisible(mCouponGetLayout)) {
+            mClientLayout.setVisibility(View.VISIBLE);
+        } else {
+            mClientLayout.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void initTitleView(View view) {
+        mRlToolbar = (RelativeLayout) view.findViewById(R.id.rl_toolbar);
+        mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
+        imageLeft = (ImageView) view.findViewById(R.id.toolbar_left);
+        imageLeft.setImageResource(R.drawable.mainpage_imgleft_selected);
+        imageLeft.setVisibility(View.VISIBLE);
+        imageLeft.setOnClickListener(this);
+        mMenuAppVersion.setText("v" + AppConfig.getAppVersionNameAndCode());
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.primary_color);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshMainPageData();
+            }
+        });
+    }
+
+    private void initBadCommentData() {
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_COMMENT_STATUS, RequestConstant.INDEX_COMMENT);
+        params.put(RequestConstant.KEY_PAGE, "1");
+        params.put(RequestConstant.KEY_PAGE_SIZE, "2");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_BAD_COMMENT_LIST, params);
+    }
+
+    private void handlerBadCommentList(BadCommentListResult result) {
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+        if (result.statusCode == 200 && result.commentState.equals(RequestConstant.INDEX_COMMENT)) {
+            if (result.respData == null) {
+                badCommentList.setVisibility(View.GONE);
+                mBadCommentFinish.setVisibility(View.VISIBLE);
+                return;
+            }
+            if (result.respData.size() > 0) {
+                badCommentList.setVisibility(View.VISIBLE);
+                mBadCommentFinish.setVisibility(View.GONE);
+                mBadCommentList.clear();
+                mBadCommentList.addAll(result.respData);
+                badCommentListAdapter.setData(mBadCommentList);
+
+            } else {
+                badCommentList.setVisibility(View.GONE);
+                mBadCommentFinish.setVisibility(View.VISIBLE);
+            }
+        } else if (result.statusCode != 200 && result.commentState.equals(RequestConstant.INDEX_COMMENT)) {
+            Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.abnormal_server));
+        }
+    }
+
+
+    private void initTechRankingView() {
+
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_TECH_RANK_DATA);
+    }
+
+    private void handlerRankingResult(TechRankDataResult result) {
+        if (null != result.respData.userRanking) {
+            Glide.with(getActivity()).load(result.respData.userRanking.avatarUrl).into(mCvStarRegister);
+            mTvStarRegisterUser.setText(result.respData.userRanking.name);
+            if (Utils.isNotEmpty(result.respData.userRanking.serialNo)) {
+                Spannable spanString = Utils.changeColor("[ " + result.respData.userRanking.serialNo + " ]",
+                        ResourceUtils.getColor(R.color.customer_comment_reward_text_color), 2, 2 + String.valueOf(result.respData.userRanking.serialNo).length());
+                mTvStarRegisterTechNo.setText(spanString);
+                mTvStarRegisterTechNo.setVisibility(View.VISIBLE);
+            } else {
+                mTvStarRegisterTechNo.setVisibility(View.GONE);
+            }
+        } else {
+            mTvStarRegisterUser.setText(ResourceUtils.getString(R.string.rank_null_text));
+            mTvStarRegisterTechNo.setVisibility(View.GONE);
+        }
+        if (null != result.respData.paidRanking) {
+            Glide.with(getActivity()).load(result.respData.paidRanking.avatarUrl).into(mCvStarSales);
+            mTvStarSales.setText(result.respData.paidRanking.name);
+            if (Utils.isNotEmpty(result.respData.paidRanking.serialNo)) {
+                mTvStarSalesTechNo.setText(result.respData.paidRanking.serialNo);
+            } else {
+                mTvStarSalesTechNo.setVisibility(View.GONE);
+            }
+
+        } else {
+            mTvStarSales.setText(ResourceUtils.getString(R.string.rank_null_text));
+            mTvStarSalesTechNo.setVisibility(View.GONE);
+        }
+        if (null != result.respData.commentRanking) {
+            Glide.with(getActivity()).load(result.respData.commentRanking.avatarUrl).into(mCvStarService);
+            mTvStarService.setText(result.respData.commentRanking.name);
+            if (Utils.isNotEmpty(result.respData.commentRanking.serialNo)) {
+                mTvStarServiceTechNo.setText(result.respData.commentRanking.serialNo);
+            } else {
+                mTvStarServiceTechNo.setVisibility(View.GONE);
+            }
+        } else {
+            mTvStarService.setText(ResourceUtils.getString(R.string.rank_null_text));
+            mTvStarServiceTechNo.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void showServiceOutMenu(String phone, String emChatId, String userName, String userHeadImgUrl, String commentId, String returnStatus) {
+
+
+        BottomPopupWindow popupWindow = BottomPopupWindow.getInstance(getActivity(), phone, emChatId, commentId, returnStatus, new BottomPopupWindow.OnRootSelectedListener() {
+            @Override
+            public void onItemSelected(ReturnVisitMenu rootMenu) {
+                switch (rootMenu.getType()) {
+                    case 1:
+                        PermissionTool.requestPermission(MainPageFragment.this,
+                                new String[]{Manifest.permission.CALL_PHONE},
+                                new String[]{"拨打客服电话"},
+                                REQUEST_CODE_PHONE);
+                        break;
+                    case 2:
+                        EmchatUserHelper.startToChat(emChatId, userName, userHeadImgUrl);
+                        break;
+                    case 3:
+                        doRemarkComment(commentId, RequestConstant.FINISH_COMMENT);
+                        break;
+                    case 4:
+                        doRemarkComment(commentId, RequestConstant.VALID_COMMENT);
+                        break;
+
+                }
+            }
+
+        });
+        popupWindow.show();
+    }
+
+    private void doRemarkComment(String commentId, String status) {
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_BAD_COMMENT_ID, commentId);
+        params.put(RequestConstant.KEY_COMMENT_STATUS, status);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_CHANGE_COMMENT_STATUS, params);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PHONE) {
+            if (resultCode == RESULT_OK) {
+                String callPhone = ResourceUtils.getString(R.string.service_phone);
+                if (Utils.isNotEmpty(callPhone)) {
+                    toCallPhone(callPhone);
+                } else {
+                    Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.phone_is_null));
+                }
+            } else {
+                Toast.makeText(getActivity(), "获取权限失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (requestCode == REQUEST_CODE_CAMERA) {
+            if (resultCode == RESULT_OK) {
+                startActivity(new Intent(getActivity(), CaptureActivity.class));
+            } else {
+                Toast.makeText(getActivity(), "获取权限失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void toCallPhone(String servicePhone) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        Uri data = Uri.parse("tel:" + servicePhone);
+        intent.setData(data);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        startActivity(intent);
+    }
+
+    @OnClick({R.id.tv_qr_code, R.id.btn_consume})
+    public void onMainHeadClicked(View v) {
+        switch (v.getId()) {
+            case R.id.tv_qr_code:
+                PermissionTool.requestPermission(MainPageFragment.this, new String[]{Manifest.permission.CAMERA}, new String[]{"扫描二维码"}, REQUEST_CODE_CAMERA);
+                break;
+            case R.id.btn_consume:
+                mPhoneNoOrCouponNo = mCetPaidOrderConsumeCode.getText().toString();
+                if (Utils.isEmpty(mPhoneNoOrCouponNo)) {
+                    Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.main_fragment_consume_code_hint));
+                    return;
+                }
+                if (Utils.matchPhoneNumFormat(mPhoneNoOrCouponNo)) {
+                    Intent intent = new Intent(getActivity(), VerificationListActivity.class);
+                    intent.putExtra(Constant.PARAM_PHONE_NUMBER, mPhoneNoOrCouponNo);
+                    startActivity(intent);
+                } else {
+                    VerificationManagementHelper.checkVerificationType(mPhoneNoOrCouponNo);
+                }
+
+                break;
+        }
+    }
+
+    @OnClick({R.id.main_marketing_time_switch, R.id.main_publicity_time_switch, R.id.main_account_time_switch, R.id.main_bad_comment, R.id.layout_technician_ranking, R.id.layout_technician_pk_ranking, R.id.layout_order, R.id.ll_wifi_today, R.id.ll_visit_today,
+            R.id.ll_new_register_today, R.id.ll_coupon_get_today, R.id.tv_qr_code, R.id.toolbar_right_text, R.id.ll_account_paid, R.id.ll_account_sail_view, R.id.ll_sail_view, R.id.ll_visit_view})
+    public void onClickView(View v) {
+        switch (v.getId()) {
+            case R.id.main_publicity_time_switch:
+                switchPublicityTimeData();
+                break;
+            case R.id.main_marketing_time_switch:
+                switchMainMarketingTimeData();
+                break;
+            case R.id.main_account_time_switch:
+                switchMainAccountTimeData();
+                break;
+            case R.id.layout_order:
+                Intent intentOrder = new Intent(getActivity(), OrdersDetailActivity.class);
+                intentOrder.putExtra(Constant.PARAM_RANGE, 0);
+                startActivity(intentOrder);
+                break;
+            case R.id.layout_technician_ranking:
+                if (isHasPk) {
+                    startActivity(new Intent(getActivity(), TechPKActiveActivity.class));
+                } else {
+                    Intent personalRanking = new Intent(getActivity(), TechPersonalRankingDetailActivity.class);
+                    startActivity(personalRanking);
+                }
+                break;
+            case R.id.layout_technician_pk_ranking:
+                startActivity(new Intent(getActivity(), TechPKActiveActivity.class));
+                break;
+            case R.id.ll_wifi_today:
+                Intent intentWifi = new Intent(getActivity(), WifiReportActivity.class);
+                intentWifi.putExtra(RequestConstant.KEY_MAIN_TITLE, mTvTitleWifi.getText().toString().substring(0, mTvTitleWifi.getText().toString().length() - 1));
+                startActivity(intentWifi);
+                break;
+            case R.id.ll_visit_today:
+                Intent intentVisit = new Intent(getActivity(), VisitReportActivity.class);
+                intentVisit.putExtra(RequestConstant.KEY_MAIN_TITLE, mTvTitleVisit.getText().toString().substring(0, mTvTitleVisit.getText().toString().length() - 1));
+                startActivity(intentVisit);
+                break;
+            case R.id.ll_new_register_today:
+                Intent intentRegister = new Intent(getActivity(), RegisterReportActivity.class);
+                intentRegister.putExtra(RequestConstant.KEY_MAIN_TITLE, mTvTitleRegister.getText().toString().substring(0, mTvTitleRegister.getText().toString().length() - 1));
+                startActivity(intentRegister);
+                break;
+            case R.id.ll_coupon_get_today:
+                Intent intentCoupon = new Intent(getActivity(), CouponReportActivity.class);
+                intentCoupon.putExtra(RequestConstant.KEY_MAIN_TITLE, mTvTitleCoupon.getText().toString().substring(0, mTvTitleCoupon.getText().toString().length() - 1));
+                startActivity(intentCoupon);
+                break;
+            case R.id.main_bad_comment:
+                //全部差评
+                startActivity(new Intent(getActivity(), AllBadCommentActivity.class));
+                break;
+            case R.id.toolbar_right_text:
+                startActivity(new Intent(getActivity(), VerificationRecordListActivity.class));
+                break;
+            case R.id.ll_account_paid:
+                //线上买单
+                startActivity(new Intent(getActivity(), OnlinePayActivity.class));
+                break;
+            case R.id.ll_account_sail_view:
+            case R.id.ll_sail_view:
+                //营销收入
+                startActivity(new Intent(getActivity(), MarketingIncomeActivity.class));
+                break;
+            case R.id.ll_visit_view:
+                Intent visitIntent = new Intent(getActivity(), VisitReportActivity.class);
+                visitIntent.putExtra(RequestConstant.KEY_MAIN_TITLE, mTvTitleVisit.getText().toString().substring(0, mTvTitleVisit.getText().toString().length() - 1));
+                startActivity(visitIntent);
+                break;
+
+
+        }
+    }
+
+    private void switchPublicityTimeData() {
+        if (mMainPublicityTimeSwitch.getText().equals(ResourceUtils.getString(R.string.layout_main_btn_today))) {
+            mMainPublicityTimeSwitch.setText(ResourceUtils.getString(R.string.layout_main_btn_yesterday));
+            mMainPublicityCurrentTime.setText(ResourceUtils.getString(R.string.layout_main_publicity_today));
+            getPublicityData(0);
+            mCurrentPublicityData = 0;
+        } else {
+            mMainPublicityTimeSwitch.setText(ResourceUtils.getString(R.string.layout_main_btn_today));
+            mMainPublicityCurrentTime.setText(ResourceUtils.getString(R.string.layout_main_publicity_yesterday));
+            getPublicityData(1);
+            mCurrentPublicityData = 1;
+        }
+    }
+
+    private void switchMainMarketingTimeData() {
+        if (mMainMarketingTimeSwitch.getText().equals(ResourceUtils.getString(R.string.layout_main_btn_today))) {
+            mMainMarketingTimeSwitch.setText(ResourceUtils.getString(R.string.layout_main_btn_yesterday));
+            mMainMarketingCurrentTime.setText(ResourceUtils.getString(R.string.layout_main_publicity_today));
+            getMarketingData(0);
+            mCurrentMarketingData = 0;
+        } else {
+            mMainMarketingTimeSwitch.setText(ResourceUtils.getString(R.string.layout_main_btn_today));
+            mMainMarketingCurrentTime.setText(ResourceUtils.getString(R.string.layout_main_publicity_yesterday));
+            getMarketingData(1);
+            mCurrentMarketingData = 1;
+        }
+    }
+
+    private void switchMainAccountTimeData() {
+        if (mainAccountTimeSwitch.getText().equals(ResourceUtils.getString(R.string.layout_main_btn_today))) {
+            mainAccountTimeSwitch.setText(ResourceUtils.getString(R.string.layout_main_btn_yesterday));
+            tvAccountCurrentTime.setText(ResourceUtils.getString(R.string.layout_main_publicity_today));
+            getAccountData(0);
+            mCurrentAccountData = 0;
+        } else {
+            mainAccountTimeSwitch.setText(ResourceUtils.getString(R.string.layout_main_btn_today));
+            tvAccountCurrentTime.setText(ResourceUtils.getString(R.string.layout_main_publicity_yesterday));
+            getAccountData(1);
+            mCurrentAccountData = 1;
+        }
+    }
+
+    private void getMarketingData(int i) {
+        if (i == 0) {
+            Map<String, String> params = new HashMap<>();
+            params.put(RequestConstant.KEY_DATE, "");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_DATA_INDEX, params);
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REGISTRY_DATA, params);
+
+        } else {
+            Map<String, String> params = new HashMap<>();
+            long yesterday = System.currentTimeMillis() - 24 * 60 * 60 * 1000;
+            params.put(RequestConstant.KEY_DATE, DateUtil.longToDate(yesterday));
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_DATA_INDEX, params);
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_REGISTRY_DATA, params);
+        }
+    }
+
+    private void getPublicityData(int i) {
+        Map<String, String> params = new HashMap<>();
+        if (i == 0) {
+            params.put(RequestConstant.KEY_DATE, "");
+        } else {
+            long yesterday = System.currentTimeMillis() - 24 * 60 * 60 * 1000;
+            params.put(RequestConstant.KEY_DATE, DateUtil.longToDate(yesterday));
+        }
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DATA_STATISTICS_WIFI_DATA, params);
+    }
+
+    private void getAccountData(int currentAccountData) {
+        Map<String, String> params = new HashMap<>();
+        if (currentAccountData == 0) {
+            params.put(RequestConstant.KEY_DATE, "");
+        } else {
+            long yesterday = System.currentTimeMillis() - 24 * 60 * 60 * 1000;
+            params.put(RequestConstant.KEY_DATE, DateUtil.longToDate(yesterday));
+        }
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DATA_STATISTICS_ACCOUNT_DATA, params);
+    }
+
+
+    @OnClick({R.id.tv_setting_head, R.id.menu_version_update, R.id.menu_setting, R.id.menu_service, R.id.menu_suggest, R.id.menu_choice_club, R.id.menu_change_password, R.id.menu_activity_logout})
+    public void onMenuClicked(View v) {
+        switch (v.getId()) {
+            case R.id.tv_setting_head:
+                if (BuildConfig.DEBUG) {
+                    startActivity(new Intent(getActivity(), ConfigurationMonitorActivity.class));
+                } else {
+                    mSlidingMenu.toggle();
+                }
+                break;
+            case R.id.menu_version_update:
+                startActivity(new Intent(getActivity(), AboutUsActivity.class));
+                break;
+            case R.id.menu_setting:
+                startActivity(new Intent(getActivity(), SettingActivity.class));
+                break;
+            case R.id.menu_service:
+                showServiceOutMenu(servicePhone, "", "", "", "", "");
+                break;
+            case R.id.menu_suggest:
+                startActivity(new Intent(getActivity(), FeedbackActivity.class));
+                break;
+            case R.id.menu_choice_club:
+                Intent intent = new Intent(getActivity(), ClubListActivity.class);
+                intent.putExtra(ClubListActivity.EXTRA_SHOW_LEFT, true);
+                startActivity(intent);
+                break;
+            case R.id.menu_change_password:
+                startActivity(new Intent(getActivity(), ModifyPasswordActivity.class));
+                break;
+            case R.id.menu_activity_logout:
+                doLogout();
+                break;
+        }
+
+    }
+
+    private void doLogout() {
+        new AlertDialogBuilder(getActivity())
+                .setTitle(ResourceUtils.getString(R.string.dialog_system_message))
+                .setMessage(ResourceUtils.getString(R.string.logout_confirm_message))
+                .setPositiveButton(ResourceUtils.getString(R.string.btn_confirm), v -> doInnerLogout())
+                .setNegativeButton(ResourceUtils.getString(R.string.cancel), null)
+                .show();
+    }
+
+    private void doInnerLogout() {
+        Manager.getInstance().prepareBeforeUserLogout();
+        MainActivity activity;
+        activity = (MainActivity) this.getActivity();
+        activity.gotoLoginActivity("");
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        mSlidingMenu.toggle();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        RxBus.getInstance().unsubscribe(mRegistryDataSubscription, mCouponDataSubscription, mRankingDataSubscription,
+                mBadCommentSubscription, mBadCommentStatusSubscription, mIndexOrderDataSubscription, mQrResultSubscription,
+                mGetVerificationTypeSubscription, mVerificationHandleSubscription, mPropagandaDataSubscription, mAccountDataSubSubscription,
+                mTechPKRankingSubscription, mSwitchChangedSubscription);
+        mVerificationHelper.destroySubscription();
+    }
+
+}

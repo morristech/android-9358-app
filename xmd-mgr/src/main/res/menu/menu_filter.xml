@@ -1,0 +1,40 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.xmd.manager.window.LoginActivity">
+    <item
+        android:id="@+id/action_order_filter_all"
+        android:orderInCategory="100"
+        android:title="@string/action_order_filter_all"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_order_filter_submit"
+        android:orderInCategory="100"
+        android:title="@string/action_order_filter_submit"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_order_filter_accepted"
+        android:orderInCategory="100"
+        android:title="@string/action_order_filter_accepted"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_order_filter_rejected"
+        android:orderInCategory="100"
+        android:title="@string/action_order_filter_rejected"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_order_filter_failured"
+        android:orderInCategory="100"
+        android:title="@string/action_order_filter_failured"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_order_filter_completed"
+        android:orderInCategory="100"
+        android:title="@string/action_order_filter_completed"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_order_filter_overtime"
+        android:orderInCategory="100"
+        android:title="@string/action_order_filter_overtime"
+        app:showAsAction="never" />
+</menu>

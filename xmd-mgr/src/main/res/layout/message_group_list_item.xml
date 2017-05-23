@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/inter_space"
+    android:background="@drawable/bg_white_pressed"
+    android:paddingBottom="@dimen/margin_2"
+    android:paddingLeft="@dimen/inter_space">
+
+    <TextView
+        android:id="@+id/group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="160dp"
+        android:background="@drawable/select_group_customer_bg"
+        android:clickable="true"
+        android:paddingBottom="@dimen/small_space"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space"
+        android:paddingTop="@dimen/small_space"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:ellipsize="middle"
+        android:textColor="@color/select_group_customer_text"
+        android:textSize="@dimen/fontCoupon" />
+
+    <TextView
+        android:id="@+id/group_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_space"
+        android:layout_gravity="center_vertical"
+        android:lines="1"
+        android:ellipsize="end"
+        android:padding="@dimen/margin_2" />
+</LinearLayout>

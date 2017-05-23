@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.xmd.manager.beans.CheckInfo" />
+
+        <variable
+            name="handler"
+            type="com.xmd.manager.verification.VerificationListListener" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_deliver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingTop="@dimen/inter_space">
+
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="@{data.selected}"
+                android:enabled="@{data.valid}"
+                android:onCheckedChanged="@{(view,isChecked)->handler.onItemChecked(isChecked,data)}" />
+
+            <FrameLayout
+                android:id="@+id/layout_verification_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->handler.onItemClicked(data)}" />
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>
+
+
+

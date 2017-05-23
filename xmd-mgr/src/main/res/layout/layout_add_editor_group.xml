@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/round_rect_white_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/small_space"
+        android:paddingTop="@dimen/small_space"
+        android:text="添加分组"
+        android:textColor="@color/colorClubItemTitle"
+        android:textSize="@dimen/xxx_large_text_size" />
+
+
+    <EditText
+        android:id="@+id/dialog_edit_content"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_white_with_border"
+        android:gravity="center"
+        android:hint="@string/group_input_group_name"
+        android:padding="@dimen/inter_space"
+        android:maxLength="14"
+        android:textColor="@color/colorClubItemBody"
+        android:textSize="@dimen/fontSelectGroup" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#CCCCCC" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_button_height"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dialog_negative"
+            style="@style/dialog_negative_button"
+            android:layout_width="@dimen/zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="取消" />
+
+        <View style="@style/vertical_line" />
+
+        <Button
+            android:id="@+id/dialog_positive"
+            style="@style/dialog_positive_button"
+            android:layout_width="@dimen/zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="确认添加"
+            android:textColor="@color/colorBtnSelector" />
+
+    </LinearLayout>
+
+</LinearLayout>

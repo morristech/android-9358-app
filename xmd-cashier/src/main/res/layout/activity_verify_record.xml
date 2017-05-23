@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_verify_record" />
+
+    <EditText
+        android:id="@+id/et_list_search"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_margin="@dimen/activity_normal_margin"
+        android:background="@drawable/bg_text_search"
+        android:drawablePadding="@dimen/activity_normal_margin"
+        android:drawableRight="@drawable/ic_search"
+        android:gravity="center_vertical"
+        android:hint="输入手机号进行搜索"
+        android:imeOptions="actionSearch"
+        android:inputType="phone"
+        android:maxLength="20"
+        android:paddingLeft="@dimen/activity_small_margin"
+        android:paddingRight="@dimen/activity_small_margin"
+        android:singleLine="true" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/ly_list_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.xmd.cashier.widget.CustomLoadingLayout
+            android:id="@+id/ly_load_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_data_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.xmd.cashier.widget.CustomLoadingLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

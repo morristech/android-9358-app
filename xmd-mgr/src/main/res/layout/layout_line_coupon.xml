@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xmd.manager.widget.StatisticsView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/statistics_chart_view"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="@dimen/inter_space"
+    android:layout_marginRight="@dimen/inter_space"
+    android:layout_marginTop="@dimen/inter_space"
+    android:background="@drawable/shape_club_list_item_content">
+
+    <LinearLayout
+        android:id="@+id/coupon_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingRight="@dimen/small_space"
+                android:gravity="end"
+                android:textSize="20sp"
+                android:textColor="@color/colorStatistics1" />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/line_chart"
+            android:layout_width="match_parent"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingLeft="@dimen/inter_space"
+            android:layout_height="150dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_10">
+
+        <TextView
+            android:id="@+id/tv_list_title1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="日期"
+            style="@style/statistics_list_header_text_style" />
+
+        <TextView
+            android:id="@+id/tv_list_title2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            style="@style/statistics_list_header_text_style" />
+    </LinearLayout>
+
+    <View
+        style="@style/line"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp" />
+
+    <com.xmd.manager.widget.AutoRecyclerView
+        android:id="@+id/recycleview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp" />
+</com.xmd.manager.widget.StatisticsView>

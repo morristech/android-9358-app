@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_bad_comment"
+    style="@style/main_page_margin_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/main_bad_comment"
+        style="@style/relative_layout_title_style">
+
+        <TextView
+            style="@style/main_fragment_layout_title_left_style"
+            android:drawableLeft="@drawable/img_bad_comment"
+            android:text="@string/bad_comment_manage" />
+
+        <TextView
+            style="@style/main_fragment_layout_title_right_style"
+            android:text="@string/layout_technician_ranking_check_all" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_bad_comment_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/bad_comment_finish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/chat_activity_item_size"
+        android:paddingTop="@dimen/chat_activity_item_size"
+        android:scaleType="center"
+        android:src="@drawable/img_bad_comment_default"
+        android:visibility="gone" />
+</LinearLayout>

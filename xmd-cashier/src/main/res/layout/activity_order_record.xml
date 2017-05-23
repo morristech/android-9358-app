@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_normal_margin">
+
+        <EditText
+            android:id="@+id/et_list_search"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_text_search"
+            android:drawableRight="@drawable/ic_search"
+            android:drawablePadding="@dimen/activity_small_margin"
+            android:gravity="center_vertical"
+            android:hint="技师编号或客户手机号"
+            android:imeOptions="actionSearch"
+            android:maxLength="20"
+            android:paddingLeft="@dimen/activity_small_margin"
+            android:paddingRight="@dimen/activity_small_margin"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/tv_list_filter"
+            android:layout_width="120dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:background="@drawable/bg_text_search"
+            android:drawableRight="@drawable/ic_pop_up"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/activity_normal_margin"
+            android:paddingRight="@dimen/activity_normal_margin"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/font_size_16" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/ly_list_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.xmd.cashier.widget.CustomLoadingLayout
+            android:id="@+id/ly_load_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.xmd.cashier.widget.CustomLoadingLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

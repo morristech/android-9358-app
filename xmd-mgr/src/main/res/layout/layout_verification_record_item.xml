@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_record_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:background="@color/colorLineDivide"
+        android:padding="@dimen/margin_10">
+
+        <TextView
+            android:id="@+id/record_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorClubItemBody"
+            android:textSize="@dimen/fontBody"
+            tools:text="2016年12月" />
+
+        <TextView
+            android:id="@+id/record_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorClubItemBody"
+            android:textSize="@dimen/fontBody"
+            tools:text="核销数：30" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_record_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:background="@drawable/bg_white_pressed"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.xmd.manager.widget.CircleImageView
+                android:id="@+id/record_head"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/icon22" />
+
+            <TextView
+                android:id="@+id/record_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:ellipsize="middle"
+                android:lines="1"
+                android:maxWidth="160dp"
+                android:textColor="@color/value_color"
+                android:textSize="@dimen/x_large_text_size"
+                tools:text="林先生" />
+
+            <TextView
+                android:id="@+id/record_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/value_color"
+                android:textSize="@dimen/x_large_text_size"
+                tools:text="13137558109" />
+
+            <TextView
+                android:id="@+id/record_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:gravity="right"
+                android:lines="1"
+                android:textColor="@color/label_color"
+                android:textSize="@dimen/fontCaption"
+                tools:text="11-21 11:56" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/verification_record_layout_type">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="30dp"
+                android:text="详情"
+                android:textColor="@color/light_gray"
+                android:textSize="@dimen/fontBody" />
+
+            <TextView
+                android:id="@+id/record_coupon_name"
+                style="@style/verification_record_content_type"
+                tools:text="80元现金抵用券" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/verification_record_layout_type"
+            android:paddingBottom="@dimen/small_space">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                android:text="核销人"
+                android:textColor="@color/light_gray"
+                android:textSize="@dimen/fontBody" />
+
+            <TextView
+                android:id="@+id/record_holder"
+                style="@style/verification_record_content_type"
+                tools:text="admin" />
+
+            <TextView
+                android:id="@+id/record_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="付费预约"
+                android:textColor="@color/colorClubItemBody"
+                android:textSize="@dimen/fontBody" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

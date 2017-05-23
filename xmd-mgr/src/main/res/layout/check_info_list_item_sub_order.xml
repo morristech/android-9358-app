@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.xmd.manager.beans.PayOrderDetailBean" />
+
+        <variable
+            name="data"
+            type="com.xmd.manager.beans.CheckInfo" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/coupon_top_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/consume_activity_coupon_item_head_height"
+            android:background="@drawable/shape_coupon_list_item_head" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_coupon_list_item_content"
+            android:orientation="vertical"
+            android:padding="@dimen/inter_space">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/coupon_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:maxLength="16"
+                    android:text="@{data.title}"
+                    android:textColor="@color/value_color"
+                    android:textSize="@dimen/coupon_list_item_title_text_size" />
+
+                <TextView
+                    android:id="@+id/coupon_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@{data.typeName}"
+                    android:textColor="@color/colorClubItemTitle"
+                    android:textSize="@dimen/coupon_list_item_sub_title_text_size" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/list_item_item_margin_top">
+
+                <TextView
+                    android:id="@+id/coupon_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/amount_color"
+                    android:textSize="@dimen/coupon_list_item_sub_title_text_size"
+                    app:front_money="@{((PayOrderDetailBean)data.info).downPayment}" />
+
+                <TextView
+                    android:id="@+id/coupon_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/colorClubItemBody"
+                    android:textSize="@dimen/coupon_list_item_sub_title_text_size"
+                    app:status="@{data.valid}" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/list_item_item_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="到店时间"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/coupon_list_item_text_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/inter_space"
+                    android:text="@{((PayOrderDetailBean)data.info).appointTime}"
+                    android:textColor="@color/value_color"
+                    android:textSize="@dimen/coupon_list_item_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/list_item_item_margin_top">
+
+                <TextView
+                    android:id="@+id/coupon_use_duration_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预约技师"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/coupon_list_item_text_size" />
+
+                <TextView
+                    android:id="@+id/coupon_use_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/inter_space"
+                    android:textColor="@color/value_color"
+                    android:textSize="@dimen/coupon_list_item_text_size"
+                    app:tech_info="@{((PayOrderDetailBean)data.info)}" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/list_item_item_margin_top"
+                android:orientation="horizontal"
+                android:visibility="@{data.showDetail?View.VISIBLE:View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预约时间"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/coupon_list_item_text_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/inter_space"
+                    android:text="@{((PayOrderDetailBean)data.info).createdAt}"
+                    android:textColor="@color/value_color"
+                    android:textSize="@dimen/coupon_list_item_text_size" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

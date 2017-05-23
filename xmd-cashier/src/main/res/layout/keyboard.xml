@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xmd.cashier.widget.CustomKeyboardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/keyboardview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="#808080"
+    custom:keyBackground="@drawable/state_keyboard"
+    custom:keyPreviewLayout="@null"
+    custom:keyTextColor="@color/colorTextKey"
+    custom:keyTextSize="@dimen/big_font_size"
+    custom:labelTextSize="@dimen/head_font_size" />
+
+    <!--<com.xmd.cashier.widget.CustomKeyboardView--><!--xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:id="@+id/keyboardview"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:keyBackground="@drawable/state_keyboard"--><!--android:background="#808080"--><!--android:keyPreviewLayout="@null"--><!--android:layout_alignParentBottom="true"--><!--android:keyTextColor="@color/colorTextKey"--><!--android:keyTextSize="48sp"--><!--/>-->

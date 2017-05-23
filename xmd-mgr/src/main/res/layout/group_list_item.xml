@@ -1,0 +1,69 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/inter_space"
+    android:layout_marginRight="@dimen/inter_space"
+    android:layout_marginTop="@dimen/margin_10"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="@dimen/list_item_card_corner_radius"
+    app:cardPreventCornerOverlap="false"
+    app:elevation="@dimen/list_item_card_elevation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/inter_space">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/group_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:ellipsize="middle"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:textColor="@color/colorClubItemTitle"
+                android:textSize="@dimen/fontSubheading"
+                tools:text="老客户" />
+
+            <TextView
+                android:id="@+id/group_member_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="@dimen/small_space"
+                android:layout_toRightOf="@id/group_name"
+                android:gravity="center_vertical"
+                tools:text="(80)"
+                android:textColor="@color/colorClubItemTitle"
+                android:textSize="@dimen/fontSubheading" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/group_member"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/group_name"
+            android:ellipsize="end"
+            android:lines="1"
+            android:paddingTop="@dimen/small_space" />
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+
+

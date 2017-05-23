@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/primary_color"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/toolbar_img_width"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:contentDescription="@string/content_description"
+            android:scaleType="center"
+            android:src="@drawable/actionbar_back" />
+
+        <com.xmd.manager.widget.ClearableEditText
+            android:id="@+id/search_word"
+            style="@style/clearable_edit_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/small_space"
+            android:layout_weight="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/search_customer_activity_search_hint"
+            android:singleLine="true" />
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/content_description"
+            android:scaleType="center"
+            android:src="@drawable/ic_search_selector" />
+
+    </LinearLayout>
+
+
+    <include layout="@layout/layout_swipe_refresh_list" />
+
+
+</LinearLayout>

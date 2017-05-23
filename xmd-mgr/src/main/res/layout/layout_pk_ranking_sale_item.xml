@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/small_space"
+    android:paddingLeft="@dimen/small_space"
+    android:paddingRight="@dimen/small_space">
+
+
+    <LinearLayout
+        android:id="@+id/ll_star_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="0dp">
+
+        <FrameLayout
+            android:layout_width="50dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@drawable/bg_ranking_sale" />
+
+            <com.xmd.manager.widget.CircleImageView
+                android:id="@+id/pk_active_user_head"
+                style="@style/main_fragment_layout_technician_ranking_avatar_style" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/small_space"
+                android:src="@drawable/img_pk_sale" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_pk_active_team_name"
+            style="@style/main_fragment_layout_technician_pk_ranking_value_style"
+            tools:text="小二黑小队" />
+
+        <TextView
+            android:id="@+id/tv_pk_active_team_member"
+            style="@style/main_fragment_layout_technician_pk_ranking_label_style"
+            tools:text="289人" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
