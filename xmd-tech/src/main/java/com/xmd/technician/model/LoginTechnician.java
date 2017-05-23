@@ -376,9 +376,7 @@ public class LoginTechnician {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT_EMCHAT);
     }
 
-    public void onLogout() {
 
-    }
 
     //获取技师当前数据，包括账户金额，所有评论数，积分，订单数量，状态，状态描述，未读评论
     public void getTechPersonalData() {

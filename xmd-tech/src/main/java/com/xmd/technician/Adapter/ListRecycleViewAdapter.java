@@ -112,7 +112,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_COUPON_INFO_ITEM_CASH = 11;
     private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
     private static final int TYPE_COUPON_INFO_ITEM_FAVORABLE = 13;
-    private static final int TYPE_ONCE_CARD_ITEM = 14;
+  //  private static final int TYPE_ONCE_CARD_ITEM = 14;
     private static final int TYPE_LIMIT_GRAB_ITEM = 15;
     private static final int TYPE_REWARD_ACTIVITY_ITEM = 16;
     private static final int TYPE_CLUB_JOURNAL_ITEM = 17;
@@ -188,8 +188,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 } else {
                     return TYPE_DYNAMIC_COLLECT_ITEM;
                 }
-            } else if (mData.get(position) instanceof OnceCardItemBean) {
-                return TYPE_ONCE_CARD_ITEM;
             } else if (mData.get(position) instanceof LimitGrabBean) {
                 return TYPE_LIMIT_GRAB_ITEM;
             } else if (mData.get(position) instanceof RewardBean) {
@@ -255,9 +253,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_DYNAMIC_COLLECT_ITEM:
                 View viewCollect = LayoutInflater.from(parent.getContext()).inflate(R.layout.dynamic_collect_item, parent, false);
                 return new DynamicItemViewHolder(viewCollect);
-            case TYPE_ONCE_CARD_ITEM:
-                View viewOnceCard = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_once_card_item, parent, false);
-                return new OnceCardItemViewHolder(viewOnceCard);
             case TYPE_LIMIT_GRAB_ITEM:
                 View viewLimitGrab = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_limit_grab_item, parent, false);
                 return new LimitGrabItemViewHolder(viewLimitGrab);
@@ -511,7 +506,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                         String nickName = lastOtherMessage.getStringAttribute(ChatConstant.KEY_NAME);
                         String isTech = lastOtherMessage.getStringAttribute(ChatConstant.KEY_TECH_ID,"");
                         String isManager = lastOtherMessage.getStringAttribute(ChatConstant.KEY_CLUB_ID,"");
-                        String userType = "";
+                        String userType ;
                         if(Utils.isNotEmpty(isTech)&&Utils.isNotEmpty(isManager)){
                             userType = ChatConstant.TO_CHAT_USER_TYPE_TECH;
                         }else if(Utils.isNotEmpty(isManager)&&Utils.isEmpty(isTech)){
@@ -699,40 +694,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
             return;
         }
-        if (holder instanceof OnceCardItemViewHolder) {
-            Object obj = mData.get(position);
-            if (!(obj instanceof OnceCardItemBean)) {
-                return;
-            }
-            final OnceCardItemBean onceCard = (OnceCardItemBean) obj;
-            OnceCardItemViewHolder cardItemViewHolder = (OnceCardItemViewHolder) holder;
-            Glide.with(mContext).load(onceCard.imageUrl).into(cardItemViewHolder.mOnceCardHead);
-            cardItemViewHolder.mOnceCardTitle.setText(onceCard.name);
-            cardItemViewHolder.mOnceCardCredit.setText(Utils.StrSubstring(13, onceCard.comboDescription, true).trim());
-            cardItemViewHolder.mOnceCardMoney.setText(onceCard.techRoyalty);
-            cardItemViewHolder.mOnceCardPrice.setText(onceCard.price);
-            cardItemViewHolder.mOnceCardShare.setOnClickListener(v -> mCallback.onShareClicked(onceCard));
-            cardItemViewHolder.itemView.setOnClickListener(v -> {
-                try {
-                    mCallback.onItemClicked(onceCard);
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-            });
-            if (position == 0) {
-                cardItemViewHolder.mOnceCardMarkNew.setVisibility(View.VISIBLE);
-                cardItemViewHolder.mOnceCardMarkFavorable.setVisibility(View.GONE);
-            } else {
-                cardItemViewHolder.mOnceCardMarkNew.setVisibility(View.GONE);
-                if (onceCard.isPreferential) {
-                    cardItemViewHolder.mOnceCardMarkFavorable.setVisibility(View.VISIBLE);
-                } else {
-                    cardItemViewHolder.mOnceCardMarkFavorable.setVisibility(View.GONE);
-                }
-            }
-            cardItemViewHolder.mShowCode.setOnClickListener(v -> mCallback.onPositiveButtonClicked(onceCard));
-            return;
-        }
+
         if (holder instanceof LimitGrabItemViewHolder) {
             Object obj = mData.get(position);
             if (!(obj instanceof LimitGrabBean)) {
@@ -1246,32 +1208,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView btnThanks;
 
         public DynamicItemViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-    }
-
-    static class OnceCardItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.once_card_head)
-        RoundImageView mOnceCardHead;
-        @Bind(R.id.once_card_mark_new)
-        TextView mOnceCardMarkNew;
-        @Bind(R.id.once_card_mark_favorable)
-        TextView mOnceCardMarkFavorable;
-        @Bind(R.id.once_card_title)
-        TextView mOnceCardTitle;
-        @Bind(R.id.once_card_credit)
-        TextView mOnceCardCredit;
-        @Bind(R.id.once_card_money)
-        TextView mOnceCardMoney;
-        @Bind(R.id.once_card_price)
-        TextView mOnceCardPrice;
-        @Bind(R.id.once_card_share)
-        Button mOnceCardShare;
-        @Bind(R.id.ll_show_code)
-        LinearLayout mShowCode;
-
-        public OnceCardItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

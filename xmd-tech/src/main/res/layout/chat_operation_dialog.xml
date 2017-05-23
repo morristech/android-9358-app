@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="240dp"
+              android:layout_width="230dp"
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
     <ListView
         android:id="@+id/operation_list"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="#e0e0e0"
+        android:dividerHeight="1dp"
+        android:listSelector="#e0e0e0"
+        android:drawSelectorOnTop="false"
+        android:background="@drawable/round_rect_white_bg">
 
     </ListView>
 

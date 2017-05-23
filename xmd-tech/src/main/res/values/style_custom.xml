@@ -439,6 +439,7 @@
         <item name="android:layout_width">70dp</item>
         <item name="android:layout_height">25dp</item>
         <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
         <item name="android:background">@drawable/share_button_selector_bg</item>
         <item name="android:text">@string/coupon_fragment_share</item>
         <item name="android:textColor">@color/color_white</item>

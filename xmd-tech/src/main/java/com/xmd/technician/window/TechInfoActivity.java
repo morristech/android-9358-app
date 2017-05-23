@@ -192,7 +192,7 @@ public class TechInfoActivity extends BaseActivity {
         if (!mViewInitialized) {
             mViewInitialized = true;
             mUserName.setText(mTechInfo.name);
-            mPhoneNumber.setText(mTechInfo.phoneNum);
+            mPhoneNumber.setText(String.format("%s (仅做登录帐号，不对客户显示)",mTechInfo.phoneNum));
             mDescription.setText(mTechInfo.description);
 
             if (TextUtils.isEmpty(mTechInfo.province) || mTechInfo.province.equals("null")) {

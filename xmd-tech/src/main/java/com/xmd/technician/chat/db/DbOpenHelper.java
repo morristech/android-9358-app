@@ -22,30 +22,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             + UserDao.COLUMN_NAME_AVATAR + " TEXT, "
             + UserDao.COLUMN_NAME_TYPE + " TEXT, "
             + UserDao.COLUMN_NAME_ID + " TEXT PRIMARY KEY);";
-//
-//    private static final String INIVTE_MESSAGE_TABLE_CREATE = "CREATE TABLE "
-//            + InviteMessageDao.TABLE_NAME + " ("
-//            + InviteMessageDao.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-//            + InviteMessageDao.COLUMN_NAME_FROM + " TEXT, "
-//            + InviteMessageDao.COLUMN_NAME_GROUP_ID + " TEXT, "
-//            + InviteMessageDao.COLUMN_NAME_GROUP_Name + " TEXT, "
-//            + InviteMessageDao.COLUMN_NAME_REASON + " TEXT, "
-//            + InviteMessageDao.COLUMN_NAME_STATUS + " INTEGER, "
-//            + InviteMessageDao.COLUMN_NAME_ISINVITEFROMME + " INTEGER, "
-//            + InviteMessageDao.COLUMN_NAME_UNREAD_MSG_COUNT + " INTEGER, "
-//            + InviteMessageDao.COLUMN_NAME_TIME + " TEXT, "
-//            + InviteMessageDao.COLUMN_NAME_GROUPINVITER + " TEXT); ";
-//
-//    private static final String ROBOT_TABLE_CREATE = "CREATE TABLE "
-//            + UserDao.ROBOT_TABLE_NAME + " ("
-//            + UserDao.ROBOT_COLUMN_NAME_ID + " TEXT PRIMARY KEY, "
-//            + UserDao.ROBOT_COLUMN_NAME_NICK + " TEXT, "
-//            + UserDao.ROBOT_COLUMN_NAME_AVATAR + " TEXT);";
-//
-//    private static final String CREATE_PREF_TABLE = "CREATE TABLE "
-//            + UserDao.PREF_TABLE_NAME + " ("
-//            + UserDao.COLUMN_NAME_DISABLED_GROUPS + " TEXT, "
-//            + UserDao.COLUMN_NAME_DISABLED_IDS + " TEXT);";
+
 
     private DbOpenHelper(Context context) {
         super(context, getUserDatabaseName(), null, DATABASE_VERSION);
@@ -59,39 +36,23 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     }
 
     private static String getUserDatabaseName() {
-        return  ChatHelper.getInstance().getCurrentUsernName() + "_demo.db";
+        return ChatHelper.getInstance().getCurrentUserName() + "_demo.db";
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-            db.execSQL(USERNAME_TABLE_CREATE);
-//        db.execSQL(INIVTE_MESSAGE_TABLE_CREATE);
-//        db.execSQL(CREATE_PREF_TABLE);
-//        db.execSQL(ROBOT_TABLE_CREATE);
-
+        db.execSQL(USERNAME_TABLE_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Logger.i(">>>","db_onUpgrade>"+"oldVersion>>>=="+oldVersion+"newVersion"+newVersion);
-        if(oldVersion < 2){
-            db.execSQL("ALTER TABLE "+ UserDao.TABLE_NAME +" ADD COLUMN "+
+
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE " + UserDao.TABLE_NAME + " ADD COLUMN " +
                     UserDao.COLUMN_NAME_AVATAR + " TEXT ;");
         }
-//
-//        if(oldVersion < 3){
-//            db.execSQL(CREATE_PREF_TABLE);
-//        }
-//        if(oldVersion < 4){
-//            db.execSQL(ROBOT_TABLE_CREATE);
-//        }
-//        if(oldVersion < 5){
-//            db.execSQL("ALTER TABLE " + InviteMessageDao.TABLE_NAME + " ADD COLUMN " +
-//                    InviteMessageDao.COLUMN_NAME_UNREAD_MSG_COUNT + " INTEGER ;");
-//        }
         if (oldVersion < 7) {
-            db.execSQL("ALTER TABLE "+ UserDao.TABLE_NAME +" ADD COLUMN "+
+            db.execSQL("ALTER TABLE " + UserDao.TABLE_NAME + " ADD COLUMN " +
                     UserDao.COLUMN_NAME_TYPE + " TEXT ;");
         }
     }

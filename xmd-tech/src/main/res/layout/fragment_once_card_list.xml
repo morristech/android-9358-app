@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorMain"
+              android:orientation="vertical"
+    >
+
+    <com.xmd.technician.widget.EmptyView
+        android:id="@+id/empty_view_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/color_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_once_card_table"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/small_space"
+            android:drawableTop="@drawable/selector_share_once_card"
+            android:gravity="center"
+            android:text="单项次卡"
+            android:textColor="@color/selector_share_text_table"
+            android:textSize="@dimen/fontCaption"/>
+
+        <View
+            style="@style/vertical_divider_line"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:id="@+id/tv_package_table"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/small_space"
+            android:drawableTop="@drawable/selector_share_package"
+            android:gravity="center"
+            android:text="超值套餐"
+            android:textColor="@color/selector_share_text_table"
+            android:textSize="@dimen/fontCaption"/>
+
+        <View
+            style="@style/vertical_divider_line"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:id="@+id/tv_credit_gift_table"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/small_space"
+            android:drawableTop="@drawable/selector_share_credit_gift"
+            android:gravity="center"
+            android:text="积分礼物"
+            android:textColor="@color/selector_share_text_table"
+            android:textSize="@dimen/fontCaption"/>
+    </LinearLayout>
+
+    <View
+        style="@style/horizontal_divider_line"></View>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

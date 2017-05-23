@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
+import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
@@ -52,6 +53,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ChatUI.getInstance().getNotifier().reset();
         MobclickAgent.onResume(this);
     }
 

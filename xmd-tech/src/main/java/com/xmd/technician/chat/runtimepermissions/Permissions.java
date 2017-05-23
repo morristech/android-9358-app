@@ -10,7 +10,7 @@ package com.xmd.technician.chat.runtimepermissions;
  * has a granted and denied state.
  */
 enum Permissions {
-    GRANTED,
-    DENIED,
-    NOT_FOUND
+    GRANTED, //授予
+    DENIED,//拒绝
+    NOT_FOUND//未找到
 }

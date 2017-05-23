@@ -17,21 +17,16 @@ import com.hyphenate.EMContactListener;
 import com.hyphenate.EMError;
 import com.hyphenate.EMGroupChangeListener;
 import com.hyphenate.EMMessageListener;
-import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.chat.EMTextMessageBody;
-import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.chat.db.ChatDBManager;
-import com.xmd.technician.chat.db.InviteMessageDao;
 import com.xmd.technician.chat.db.UserDao;
-import com.xmd.technician.chat.domain.InviteMessage;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.chat.event.ReceiveMessage;
 import com.xmd.technician.chat.model.ChatModel;
@@ -39,7 +34,9 @@ import com.xmd.technician.chat.model.EaseNotifier;
 import com.xmd.technician.chat.receiver.CallReceiver;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.chat.utils.PreferenceManager;
+import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.TechChatActivity;
@@ -56,9 +53,7 @@ import java.util.UUID;
  * Created by Lhj on 17-4-6.
  */
 
-public class ChatHelper{
-
-
+public class ChatHelper {
     /**
      * data sync listener
      */
@@ -77,44 +72,18 @@ public class ChatHelper{
 
     private Map<String, ChatUser> contactList;
 
-    private Map<String, RobotUser> robotList;
-
     private static ChatHelper instance = null;
 
     private ChatModel ChatModel = null;
-
-    /**
-     * sync groups status listener
-     */
-    private List<DataSyncListener> syncGroupsListeners;
-    /**
-     * sync contacts status listener
-     */
-    private List<DataSyncListener> syncContactsListeners;
     /**
      * sync blacklist status listener
      */
     private List<DataSyncListener> syncBlackListListeners;
 
-    private boolean isSyncingGroupsWithServer = false;
-    private boolean isSyncingContactsWithServer = false;
-    private boolean isSyncingBlackListWithServer = false;
-    private boolean isGroupsSyncedWithServer = false;
-    private boolean isContactsSyncedWithServer = false;
-    private boolean isBlackListSyncedWithServer = false;
-
-    public boolean isVoiceCalling;
-    public boolean isVideoCalling;
-
     private String username;
-
     private Context appContext;
-
     private CallReceiver callReceiver;
-
-    private com.xmd.technician.chat.db.InviteMessageDao InviteMessageDao;
     private UserDao userDao;
-
     private LocalBroadcastManager broadcastManager;
 
     private boolean isGroupAndContactListenerRegisted;
@@ -140,12 +109,9 @@ public class ChatHelper{
         //use default options if options is null
         if (ChatUI.getInstance().init(context, options)) {
             appContext = context;
-
-            //debug mode, you'd better set it to false, if you want release your App officially.
-            EMClient.getInstance().setDebugMode(false);
-            //get ChatUI instance
+            //调试模式时为true，release模式时为false
+            EMClient.getInstance().setDebugMode(true);
             easeUI = ChatUI.getInstance();
-            //to set user's profile and avatar
             setEaseUIProviders();
             //initialize preference manager
             PreferenceManager.init(context);
@@ -221,11 +187,11 @@ public class ChatHelper{
 
         EMOptions options = new EMOptions();
         // set if accept the invitation automatically
-        options.setAcceptInvitationAlways(false);
+        options.setAcceptInvitationAlways(true);
         // set if you need read ack
         options.setRequireAck(true);
         // set if you need delivery ack
-        options.setRequireDeliveryAck(false);
+        options.setRequireDeliveryAck(true);
 
         //you need apply & set your own id if you want to use google cloud messaging.
 //        options.setGCMNumber("324169311137");
@@ -256,7 +222,6 @@ public class ChatHelper{
     }
 
     protected void setEaseUIProviders() {
-        // set profile provider if you want easeUI to handle avatar and nickname
 
         easeUI.setUserProfileProvider(new ChatUI.EaseUserProfileProvider() {
             @Override
@@ -298,7 +263,7 @@ public class ChatHelper{
                         notNotifyIds = ChatModel.getDisabledIds();
                     } else {
                         chatUsename = message.getTo();
-                       // notNotifyIds = ChatModel.getDisabledGroups();
+                        // notNotifyIds = ChatModel.getDisabledGroups();
                     }
 
                     if (notNotifyIds == null || !notNotifyIds.contains(chatUsename)) {
@@ -361,14 +326,25 @@ public class ChatHelper{
 
             @Override
             public String getLatestText(EMMessage message, int fromUsersNum, int messageNum) {
-                // here you can customize the text.
-                // return fromUsersNum + "contacts send " + messageNum + "messages to you";
+
                 return null;
             }
 
             @Override
             public Intent getLaunchIntent(EMMessage message) {
                 //点击通知消息跳转
+                if (!UserUtils.userExisted(message.getFrom())) {
+                    ChatUser user = new ChatUser(message.getFrom());
+                    user.setAvatar(message.getStringAttribute(ChatConstant.KEY_NAME, "匿名"));
+                    user.setNick(message.getStringAttribute(ChatConstant.KEY_HEADER, ""));
+                    if (Utils.isEmpty(message.getStringAttribute(ChatConstant.KEY_TECH_ID, ""))) {
+                        user.setUserType(ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER);
+                    } else {
+                        user.setUserType(ChatConstant.TO_CHAT_USER_TYPE_TECH);
+                    }
+
+                    saveContact(user);
+                }
                 Intent intent = new Intent(appContext, TechChatActivity.class);
                 intent.putExtra(ChatConstant.TO_CHAT_USER_ID, message.getFrom());
                 return intent;
@@ -382,46 +358,25 @@ public class ChatHelper{
      * set global listener
      */
     protected void setGlobalListeners() {
-        syncGroupsListeners = new ArrayList<DataSyncListener>();
-        syncContactsListeners = new ArrayList<DataSyncListener>();
+
         syncBlackListListeners = new ArrayList<DataSyncListener>();
-
-        isGroupsSyncedWithServer = ChatModel.isGroupsSynced();
-        isContactsSyncedWithServer = ChatModel.isContactSynced();
-        isBlackListSyncedWithServer = ChatModel.isBacklistSynced();
-
         // create the global connection listener
         connectionListener = new EMConnectionListener() {
             @Override
             public void onDisconnected(int error) {
                 EMLog.d("global listener", "onDisconnect" + error);
                 if (error == EMError.USER_REMOVED) {
-                    onUserException(Constant.ACCOUNT_REMOVED);
+                    onUserException(ChatConstant.ACCOUNT_REMOVED);
                 } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
-                    onUserException(Constant.ACCOUNT_CONFLICT);
+                    onUserException(ChatConstant.ACCOUNT_CONFLICT);
                 } else if (error == EMError.SERVER_SERVICE_RESTRICTED) {
-                    onUserException(Constant.ACCOUNT_FORBIDDEN);
+                    onUserException(ChatConstant.ACCOUNT_FORBIDDEN);
                 }
             }
 
             @Override
             public void onConnected() {
-                // in case group and contact were already synced, we supposed to notify sdk we are ready to receive the events
-                if (isGroupsSyncedWithServer && isContactsSyncedWithServer) {
-                    EMLog.d(TAG, "group and contact already synced with servre");
-                } else {
-                    if (!isGroupsSyncedWithServer) {
-                        asyncFetchGroupsFromServer(null);
-                    }
 
-                    if (!isContactsSyncedWithServer) {
-                        asyncFetchContactsFromServer(null);
-                    }
-
-                    if (!isBlackListSyncedWithServer) {
-                        asyncFetchBlackListFromServer(null);
-                    }
-                }
             }
         };
 
@@ -442,7 +397,6 @@ public class ChatHelper{
     }
 
     private void initDbDao() {
-        InviteMessageDao = new InviteMessageDao(appContext);
         userDao = new UserDao(appContext);
     }
 
@@ -466,108 +420,35 @@ public class ChatHelper{
         @Override
         public void onInvitationReceived(String groupId, String groupName, String inviter, String reason) {
 
-            new InviteMessageDao(appContext).deleteMessage(groupId);
-
-            // user invite you to join group
-            InviteMessage msg = new InviteMessage();
-            msg.setFrom(groupId);
-            msg.setTime(System.currentTimeMillis());
-            msg.setGroupId(groupId);
-            msg.setGroupName(groupName);
-            msg.setReason(reason);
-            msg.setGroupInviter(inviter);
-            Log.d(TAG, "receive invitation to join the group：" + groupName);
-            msg.setStatus(InviteMessage.InviteMesageStatus.GROUPINVITATION);
-            notifyNewInviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
         public void onInvitationAccepted(String groupId, String invitee, String reason) {
 
-            new InviteMessageDao(appContext).deleteMessage(groupId);
 
-            //user accept your invitation
-            boolean hasGroup = false;
-            EMGroup _group = null;
-            for (EMGroup group : EMClient.getInstance().groupManager().getAllGroups()) {
-                if (group.getGroupId().equals(groupId)) {
-                    hasGroup = true;
-                    _group = group;
-                    break;
-                }
-            }
-            if (!hasGroup)
-                return;
-
-            InviteMessage msg = new InviteMessage();
-            msg.setFrom(groupId);
-            msg.setTime(System.currentTimeMillis());
-            msg.setGroupId(groupId);
-            msg.setGroupName(_group == null ? groupId : _group.getGroupName());
-            msg.setReason(reason);
-            msg.setGroupInviter(invitee);
-            Log.d(TAG, invitee + "Accept to join the group：" + _group == null ? groupId : _group.getGroupName());
-            msg.setStatus(InviteMessage.InviteMesageStatus.GROUPINVITATION_ACCEPTED);
-            notifyNewInviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
         public void onInvitationDeclined(String groupId, String invitee, String reason) {
 
-            new InviteMessageDao(appContext).deleteMessage(groupId);
 
-            //user declined your invitation
-            EMGroup group = null;
-            for (EMGroup _group : EMClient.getInstance().groupManager().getAllGroups()) {
-                if (_group.getGroupId().equals(groupId)) {
-                    group = _group;
-                    break;
-                }
-            }
-            if (group == null)
-                return;
-
-            InviteMessage msg = new InviteMessage();
-            msg.setFrom(groupId);
-            msg.setTime(System.currentTimeMillis());
-            msg.setGroupId(groupId);
-            msg.setGroupName(group.getGroupName());
-            msg.setReason(reason);
-            msg.setGroupInviter(invitee);
-            Log.d(TAG, invitee + "Declined to join the group：" + group.getGroupName());
-            msg.setStatus(InviteMessage.InviteMesageStatus.GROUPINVITATION_DECLINED);
-            notifyNewInviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
         public void onUserRemoved(String groupId, String groupName) {
             //user is removed from group
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(ChatConstant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
         public void onGroupDestroyed(String groupId, String groupName) {
             // group is dismissed,
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(ChatConstant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
         public void onRequestToJoinReceived(String groupId, String groupName, String applyer, String reason) {
 
-            // user apply to join group
-            InviteMessage msg = new InviteMessage();
-            msg.setFrom(applyer);
-            msg.setTime(System.currentTimeMillis());
-            msg.setGroupId(groupId);
-            msg.setGroupName(groupName);
-            msg.setReason(reason);
-            Log.d(TAG, applyer + " Apply to join group：" + groupName);
-            msg.setStatus(InviteMessage.InviteMesageStatus.BEAPPLYED);
-            notifyNewInviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
@@ -587,7 +468,7 @@ public class ChatHelper{
             // notify the accept message
             getNotifier().vibrateAndPlayTone(msg);
 
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(ChatConstant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
@@ -611,7 +492,7 @@ public class ChatHelper{
             // notify invitation message
             getNotifier().vibrateAndPlayTone(msg);
             EMLog.d(TAG, "onAutoAcceptInvitationFromGroup groupId:" + groupId);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(ChatConstant.ACTION_GROUP_CHANAGED));
         }
 
         // ============================= group_reform new add api begin
@@ -683,7 +564,7 @@ public class ChatHelper{
             toAddUsers.put(username, user);
             localUsers.putAll(toAddUsers);
 
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(ChatConstant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
@@ -691,73 +572,24 @@ public class ChatHelper{
             Map<String, ChatUser> localUsers = ChatHelper.getInstance().getContactList();
             localUsers.remove(username);
             userDao.deleteContact(username);
-            InviteMessageDao.deleteMessage(username);
-
             EMClient.getInstance().chatManager().deleteConversation(username, false);
-
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(ChatConstant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
         public void onContactInvited(String username, String reason) {
-            List<InviteMessage> msgs = InviteMessageDao.getMessagesList();
 
-            for (InviteMessage inviteMessage : msgs) {
-                if (inviteMessage.getGroupId() == null && inviteMessage.getFrom().equals(username)) {
-                    InviteMessageDao.deleteMessage(username);
-                }
-            }
-            // save invitation as message
-            InviteMessage msg = new InviteMessage();
-            msg.setFrom(username);
-            msg.setTime(System.currentTimeMillis());
-            msg.setReason(reason);
-            Log.d(TAG, username + "apply to be your friend,reason: " + reason);
-            // set invitation status
-            msg.setStatus(InviteMessage.InviteMesageStatus.BEINVITEED);
-            notifyNewInviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
         public void onFriendRequestAccepted(String username) {
-            List<InviteMessage> msgs = InviteMessageDao.getMessagesList();
-            for (InviteMessage inviteMessage : msgs) {
-                if (inviteMessage.getFrom().equals(username)) {
-                    return;
-                }
-            }
-            // save invitation as message
-            InviteMessage msg = new InviteMessage();
-            msg.setFrom(username);
-            msg.setTime(System.currentTimeMillis());
-            Log.d(TAG, username + "accept your request");
-            msg.setStatus(InviteMessage.InviteMesageStatus.BEAGREED);
-            notifyNewInviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+
         }
 
         @Override
         public void onFriendRequestDeclined(String username) {
-            // your request was refused
-            Log.d(username, username + " refused to your request");
-        }
-    }
 
-    /**
-     * save and notify invitation message
-     *
-     * @param msg
-     */
-    private void notifyNewInviteMessage(InviteMessage msg) {
-        if (InviteMessageDao == null) {
-            InviteMessageDao = new InviteMessageDao(appContext);
         }
-        InviteMessageDao.saveMessage(msg);
-        //increase the unread message count
-        InviteMessageDao.saveUnreadMessageCount(1);
-        // notify there is new message
-        getNotifier().vibrateAndPlayTone(null);
     }
 
     /**
@@ -772,17 +604,8 @@ public class ChatHelper{
     }
 
     private ChatUser getUserInfo(String username) {
-        // To get instance of EaseUser, here we get it from the user list in memory
-        // You'd better cache it if you get it from your server
         ChatUser user = null;
-//        if (username.equals(EMClient.getInstance().getCurrentUser()))
-//            return getUserProfileManager().getCurrentUserInfo();
         user = getContactList().get(username);
-//        if (user == null && getRobotList() != null) {
-//            user = getRobotList().get(username);
-//        }
-
-        // if user is not in your contacts, set inital letter for him/her
         if (user == null) {
             user = new ChatUser(username);
             EaseCommonUtils.setUserInitialLetter(user);
@@ -803,8 +626,8 @@ public class ChatHelper{
             public void onMessageReceived(List<EMMessage> messages) {
                 for (EMMessage message : messages) {
                     EMLog.d(TAG, "onMessageReceived id : " + message.getMsgId());
-                    Logger.i(">>>","接收到消息...");
-             //       RxBus.getInstance().post(new EventReceiveMessage(messages));
+                    Logger.i(">>>", "接收到消息...");
+                    //       RxBus.getInstance().post(new EventReceiveMessage(messages));
                     postUnReadMessageCount();
 
                     if (!easeUI.hasForegroundActivities()) {
@@ -954,15 +777,11 @@ public class ChatHelper{
     /**
      * get current user's id
      */
-    public String getCurrentUsernName() {
+    public String getCurrentUserName() {
         if (username == null) {
             username = ChatModel.getCurrentUsernName();
         }
         return username;
-    }
-
-    public void setRobotList(Map<String, RobotUser> robotList) {
-        this.robotList = robotList;
     }
 
 
@@ -989,244 +808,6 @@ public class ChatHelper{
         }
     }
 
-    public void addSyncGroupListener(DataSyncListener listener) {
-        if (listener == null) {
-            return;
-        }
-        if (!syncGroupsListeners.contains(listener)) {
-            syncGroupsListeners.add(listener);
-        }
-    }
-
-    public void removeSyncGroupListener(DataSyncListener listener) {
-        if (listener == null) {
-            return;
-        }
-        if (syncGroupsListeners.contains(listener)) {
-            syncGroupsListeners.remove(listener);
-        }
-    }
-
-    public void addSyncContactListener(DataSyncListener listener) {
-        if (listener == null) {
-            return;
-        }
-        if (!syncContactsListeners.contains(listener)) {
-            syncContactsListeners.add(listener);
-        }
-    }
-
-    public void removeSyncContactListener(DataSyncListener listener) {
-        if (listener == null) {
-            return;
-        }
-        if (syncContactsListeners.contains(listener)) {
-            syncContactsListeners.remove(listener);
-        }
-    }
-
-    public void addSyncBlackListListener(DataSyncListener listener) {
-        if (listener == null) {
-            return;
-        }
-        if (!syncBlackListListeners.contains(listener)) {
-            syncBlackListListeners.add(listener);
-        }
-    }
-
-    public void removeSyncBlackListListener(DataSyncListener listener) {
-        if (listener == null) {
-            return;
-        }
-        if (syncBlackListListeners.contains(listener)) {
-            syncBlackListListeners.remove(listener);
-        }
-    }
-
-    /**
-     * Get group list from server
-     * This method will save the sync state
-     *
-     * @throws HyphenateException
-     */
-    public synchronized void asyncFetchGroupsFromServer(final EMCallBack callback) {
-        if (isSyncingGroupsWithServer) {
-            return;
-        }
-
-        isSyncingGroupsWithServer = true;
-
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    EMClient.getInstance().groupManager().getJoinedGroupsFromServer();
-
-                    // in case that logout already before server returns, we should return immediately
-                    if (!isLoggedIn()) {
-                        isGroupsSyncedWithServer = false;
-                        isSyncingGroupsWithServer = false;
-                        noitifyGroupSyncListeners(false);
-                        return;
-                    }
-
-                    ChatModel.setGroupsSynced(true);
-
-                    isGroupsSyncedWithServer = true;
-                    isSyncingGroupsWithServer = false;
-
-                    //notify sync group list success
-                    noitifyGroupSyncListeners(true);
-
-                    if (callback != null) {
-                        callback.onSuccess();
-                    }
-                } catch (HyphenateException e) {
-                    ChatModel.setGroupsSynced(false);
-                    isGroupsSyncedWithServer = false;
-                    isSyncingGroupsWithServer = false;
-                    noitifyGroupSyncListeners(false);
-                    if (callback != null) {
-                        callback.onError(e.getErrorCode(), e.toString());
-                    }
-                }
-
-            }
-        }.start();
-    }
-
-    public void noitifyGroupSyncListeners(boolean success) {
-        for (DataSyncListener listener : syncGroupsListeners) {
-            listener.onSyncComplete(success);
-        }
-    }
-
-    public void asyncFetchContactsFromServer(final EMValueCallBack<List<String>> callback) {
-        if (isSyncingContactsWithServer) {
-            return;
-        }
-
-        isSyncingContactsWithServer = true;
-
-        new Thread() {
-            @Override
-            public void run() {
-                List<String> usernames = null;
-                try {
-                    usernames = EMClient.getInstance().contactManager().getAllContactsFromServer();
-                    // in case that logout already before server returns, we should return immediately
-                    if (!isLoggedIn()) {
-                        isContactsSyncedWithServer = false;
-                        isSyncingContactsWithServer = false;
-                        notifyContactsSyncListener(false);
-                        return;
-                    }
-
-                    Map<String, ChatUser> userlist = new HashMap<String, ChatUser>();
-                    for (String username : usernames) {
-                        ChatUser user = new ChatUser(username);
-                        EaseCommonUtils.setUserInitialLetter(user);
-                        userlist.put(username, user);
-                    }
-                    // save the contact list to cache
-                    getContactList().clear();
-                    getContactList().putAll(userlist);
-                    // save the contact list to database
-                    UserDao dao = new UserDao(appContext);
-                    List<ChatUser> users = new ArrayList<ChatUser>(userlist.values());
-                    dao.saveContactList(users);
-
-                    ChatModel.setContactSynced(true);
-                    EMLog.d(TAG, "set contact syn status to true");
-
-                    isContactsSyncedWithServer = true;
-                    isSyncingContactsWithServer = false;
-
-                    //notify sync success
-                    notifyContactsSyncListener(true);
-//Error:(102, 15) 错误: 无法访问Task找不到bolts.Task的类文件
-//                    getUserProfileManager().asyncFetchContactInfosFromServer(usernames, new EMValueCallBack<List<ChatUser>>() {
-//
-//                        @Override
-//                        public void onSuccess(List<ChatUser> uList) {
-//                            updateContactList(uList);
-//                            getUserProfileManager().notifyContactInfosSyncListener(true);
-//                        }
-//
-//                        @Override
-//                        public void onError(int error, String errorMsg) {
-//                        }
-//                    });
-                    if (callback != null) {
-                        callback.onSuccess(usernames);
-                    }
-                } catch (HyphenateException e) {
-                    ChatModel.setContactSynced(false);
-                    isContactsSyncedWithServer = false;
-                    isSyncingContactsWithServer = false;
-                    notifyContactsSyncListener(false);
-                    e.printStackTrace();
-                    if (callback != null) {
-                        callback.onError(e.getErrorCode(), e.toString());
-                    }
-                }
-
-            }
-        }.start();
-    }
-
-    public void notifyContactsSyncListener(boolean success) {
-        for (DataSyncListener listener : syncContactsListeners) {
-            listener.onSyncComplete(success);
-        }
-    }
-
-    public void asyncFetchBlackListFromServer(final EMValueCallBack<List<String>> callback) {
-
-        if (isSyncingBlackListWithServer) {
-            return;
-        }
-
-        isSyncingBlackListWithServer = true;
-
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    List<String> usernames = EMClient.getInstance().contactManager().getBlackListFromServer();
-
-                    // in case that logout already before server returns, we should return immediately
-                    if (!isLoggedIn()) {
-                        isBlackListSyncedWithServer = false;
-                        isSyncingBlackListWithServer = false;
-                        notifyBlackListSyncListener(false);
-                        return;
-                    }
-
-                    ChatModel.setBlacklistSynced(true);
-
-                    isBlackListSyncedWithServer = true;
-                    isSyncingBlackListWithServer = false;
-
-                    notifyBlackListSyncListener(true);
-                    if (callback != null) {
-                        callback.onSuccess(usernames);
-                    }
-                } catch (HyphenateException e) {
-                    ChatModel.setBlacklistSynced(false);
-
-                    isBlackListSyncedWithServer = false;
-                    isSyncingBlackListWithServer = true;
-                    e.printStackTrace();
-
-                    if (callback != null) {
-                        callback.onError(e.getErrorCode(), e.toString());
-                    }
-                }
-
-            }
-        }.start();
-    }
 
     public void notifyBlackListSyncListener(boolean success) {
         for (DataSyncListener listener : syncBlackListListeners) {
@@ -1234,47 +815,13 @@ public class ChatHelper{
         }
     }
 
-    public boolean isSyncingGroupsWithServer() {
-        return isSyncingGroupsWithServer;
-    }
-
-    public boolean isSyncingContactsWithServer() {
-        return isSyncingContactsWithServer;
-    }
-
-    public boolean isSyncingBlackListWithServer() {
-        return isSyncingBlackListWithServer;
-    }
-
-    public boolean isGroupsSyncedWithServer() {
-        return isGroupsSyncedWithServer;
-    }
-
-    public boolean isContactsSyncedWithServer() {
-        return isContactsSyncedWithServer;
-    }
-
-    public boolean isBlackListSyncedWithServer() {
-        return isBlackListSyncedWithServer;
-    }
-
     synchronized void reset() {
-        isSyncingGroupsWithServer = false;
-        isSyncingContactsWithServer = false;
-        isSyncingBlackListWithServer = false;
 
         ChatModel.setGroupsSynced(false);
         ChatModel.setContactSynced(false);
         ChatModel.setBlacklistSynced(false);
-
-        isGroupsSyncedWithServer = false;
-        isContactsSyncedWithServer = false;
-        isBlackListSyncedWithServer = false;
-
         isGroupAndContactListenerRegisted = false;
-
         setContactList(null);
-        setRobotList(null);
         ChatDBManager.getInstance().closeDB();
     }
 
@@ -1337,13 +884,15 @@ public class ChatHelper{
     }
 
 
-    public void postUnReadMessageCount(){
+    public void postUnReadMessageCount() {
         RxBus.getInstance().post(new ReceiveMessage());
         RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
     }
+
     public int getUnreadMessageCount() {
         return EMClient.getInstance().chatManager().getUnreadMessageCount();
     }
+
     public boolean isConnected() {
         return EMClient.getInstance().isConnected();
     }

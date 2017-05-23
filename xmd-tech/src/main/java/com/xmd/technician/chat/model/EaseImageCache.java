@@ -4,13 +4,12 @@ import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
 /**
- * Created by sdcm on 17-4-5.
+ * Created by Lhj on 17-4-5.
  */
 
 public class EaseImageCache {
 
     private EaseImageCache() {
-        // use 1/8 of available heap size
         cache = new LruCache<String, Bitmap>((int) (Runtime.getRuntime().maxMemory() / 8)) {
             @Override
             protected int sizeOf(String key, Bitmap value) {

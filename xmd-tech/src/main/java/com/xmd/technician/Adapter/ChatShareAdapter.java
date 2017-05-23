@@ -116,7 +116,7 @@ public class ChatShareAdapter<T> extends RecyclerView.Adapter {
             final OnceCardItemBean onceCard = (OnceCardItemBean) obj;
             OnceCardItemViewHolder cardItemViewHolder = (OnceCardItemViewHolder) holder;
             Glide.with(mContext).load(onceCard.imageUrl).into(cardItemViewHolder.onceCardHead);
-            cardItemViewHolder.onceCardTitle.setText(onceCard.name);
+            cardItemViewHolder.onceCardTitle.setText(Utils.StrSubstring(6,onceCard.name,true));
             cardItemViewHolder.onceCardCredit.setMText(Utils.StrSubstring(12, onceCard.comboDescription, true).trim());
             cardItemViewHolder.onceCardCredit.setTextColor(Color.parseColor("#666666"));
             cardItemViewHolder.onceCardMoney.setMText(onceCard.techRoyalty);
@@ -128,17 +128,17 @@ public class ChatShareAdapter<T> extends RecyclerView.Adapter {
                 cardItemViewHolder.onceCardSelect.setSelected(true);
                 cardItemViewHolder.itemView.setOnClickListener(v -> mOnItemClick.onItemCheck(onceCard, position, true));
             }
-            if (position == 0) {
-                cardItemViewHolder.onceCardMarkNew.setVisibility(View.VISIBLE);
-                cardItemViewHolder.onceCardMarkFavorable.setVisibility(View.GONE);
-            } else {
-                cardItemViewHolder.onceCardMarkNew.setVisibility(View.GONE);
-                if (onceCard.isPreferential) {
-                    cardItemViewHolder.onceCardMarkFavorable.setVisibility(View.VISIBLE);
-                } else {
-                    cardItemViewHolder.onceCardMarkFavorable.setVisibility(View.GONE);
-                }
-            }
+//            if (position == 0) {
+//                cardItemViewHolder.onceCardMarkNew.setVisibility(View.VISIBLE);
+//                cardItemViewHolder.onceCardMarkFavorable.setVisibility(View.GONE);
+//            } else {
+//                cardItemViewHolder.onceCardMarkNew.setVisibility(View.GONE);
+//                if (onceCard.isPreferential) {
+//                    cardItemViewHolder.onceCardMarkFavorable.setVisibility(View.VISIBLE);
+//                } else {
+//                    cardItemViewHolder.onceCardMarkFavorable.setVisibility(View.GONE);
+//                }
+//            }
             return;
         }
 

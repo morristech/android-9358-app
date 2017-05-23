@@ -34,13 +34,7 @@ import java.util.Locale;
 public class EaseNotifier {
     private final static String TAG = "notify";
     Ringtone ringtone = null;
-    public static final int CHAT_TEXT = 0;
-    public static final int CHAT_PIC = 1;
-    public static final int CHAT_VOICE = 2;
-    public static final int CHAT_LOCATION = 3;
-    public static final int CHAT_ORDER = 4;
-    public static final int CHAT_PAID_COUPON = 5;
-    public static final int CHAT_REWARD = 6;
+
     public static final int CHAT_HELLO_REPLY = 7;
 
     protected final static String[] msg_eng = {"sent a message", "sent a picture", "sent a voice",
@@ -78,14 +72,12 @@ public class EaseNotifier {
     public EaseNotifier init(Context context) {
         appContext = context;
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
         packageName = appContext.getApplicationInfo().packageName;
         if (Locale.getDefault().getLanguage().equals("zh")) {
             msgs = msg_ch;
         } else {
             msgs = msg_eng;
         }
-
         audioManager = (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
         vibrator = (Vibrator) appContext.getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -108,83 +100,16 @@ public class EaseNotifier {
 
     void cancelNotification() {
         if (notificationManager != null){
-            //    notificationManager.cancel(notifyID);
-            notificationManager.cancelAll();
+            notificationManager.cancel(notifyID);
+           // notificationManager.cancelAll();
         }
     }
-
-
 
     /**
      * 发送通知栏提示
      * This can be override by subclass to provide customer implementation
      *
      * @param
-     */
-    protected void sendNotification(int msgType, String emchatId, String nick) {
-        try {
-            String username = nick;
-            if (TextUtils.isEmpty(nick)) username = UserUtils.getUserNick(emchatId);
-            ChatUser user = UserUtils.getUserInfo(emchatId);
-            if(user != null){
-                username = user.getNick();
-            }
-            CharSequence notifyText;
-            if (msgType == CHAT_HELLO_REPLY) {
-                notifyText = username + " 回复了您的招呼";
-            } else {
-                notifyText = TextUtils.concat(username, " ", msgs[msgType % msgs.length]);
-            }
-
-            PackageManager packageManager = appContext.getPackageManager();
-            // notification titile
-            String contentTitle = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
-
-            // create and send notificaiton
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(appContext)
-                    .setSmallIcon(appContext.getApplicationInfo().icon)
-                    .setWhen(System.currentTimeMillis())
-                    .setAutoCancel(true);
-
-            Intent msgIntent = defaultLaunchIntent(emchatId);
-            PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            notificationNum++;
-            fromUsers.add(emchatId);
-
-            int fromUsersNum = fromUsers.size();
-            String summaryBody;
-            if (msgType == CHAT_HELLO_REPLY) {
-                summaryBody = username + " 回复了您的招呼";
-            } else {
-                summaryBody = msgs[msgs.length - 1].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2", Integer.toString(notificationNum));
-            }
-
-            mBuilder.setContentTitle(contentTitle);
-            mBuilder.setTicker(notifyText);
-            mBuilder.setContentText(summaryBody);
-            mBuilder.setContentIntent(pendingIntent);
-            // mBuilder.setNumber(notificationNum);
-            Notification notification = mBuilder.build();
-
-            notificationManager.notify(notifyID, notification);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    Intent defaultLaunchIntent(String emchatId) {
-        Intent intent = new Intent("com.xmd.technician.action.START_CHAT");
-        intent.putExtra(ChatConstant.TO_CHAT_USER_ID, emchatId);
-        return intent;
-    }
-
-    /**
-     * handle the new message
-     * this function can be override
-     *
-     * @param message
      */
     public synchronized void onNewMsg(EMMessage message) {
         if (EaseCommonUtils.isSilentMessage(message)) {
@@ -246,10 +171,10 @@ public class EaseNotifier {
     }
 
     /**
-     * send it to notification bar
+     * 发送通知栏提示
      * This can be override by subclass to provide customer implementation
      *
-     * @param message
+     * @param
      */
     protected void sendNotification(EMMessage message, boolean isForeground, boolean numIncrease) {
         String username = message.getFrom();
@@ -334,7 +259,7 @@ public class EaseNotifier {
             mBuilder.setTicker(notifyText);
             mBuilder.setContentText(summaryBody);
             mBuilder.setContentIntent(pendingIntent);
-            // mBuilder.setNumber(notificationNum);
+            mBuilder.setNumber(notificationNum);
             Notification notification = mBuilder.build();
 
             if (isForeground) {

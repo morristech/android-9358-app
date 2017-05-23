@@ -187,7 +187,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         chatUserType = UserProfileProvider.getInstance().getChatUserInfo(toChatUserId).getUserChatType();
         mSwipeRefreshLayout = messageList.getSwipeRefreshLayout();
         mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.primary_button_color_normal));
-        inputManager = (InputMethodManager) TechChatActivity.this.getSystemService((Context.INPUT_METHOD_SERVICE));
+       // inputManager = (InputMethodManager) TechChatActivity.this.getSystemService((Context.INPUT_METHOD_SERVICE));
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         inputMenu.setFragmentManager(getSupportFragmentManager());
@@ -277,14 +277,12 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public void onMarketClicked() {
-                Logger.i(">>>", "market");
                 Intent marketIntent = new Intent(TechChatActivity.this, MarketingChatShareActivity.class);
                 startActivityForResult(marketIntent, GET_MARKETING_CODE);
             }
 
             @Override
             public void periodicalClicked() {
-                Logger.i(">>>", "periodical");
                 Intent journalIntent = new Intent(TechChatActivity.this, ClubJournalChatShareActivity.class);
                 startActivityForResult(journalIntent, GET_JOURNAL_CODE);
             }
@@ -296,14 +294,13 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public void onPreferenceClicked() {
-                Logger.i(">>>", "preference");
                 Intent journalIntent = new Intent(TechChatActivity.this, MallDiscountChatShareActivity.class);
                 startActivityForResult(journalIntent, GET_PREFERENTIAL_CODE);
             }
 
             @Override
             public void onCouponClicked() {
-                AvailableCouponListActivity.setData(mCouponList);
+               // AvailableCouponListActivity.setData(mCouponList);
                 Intent intent = new Intent(TechChatActivity.this, AvailableCouponListActivity.class);
                 startActivityForResult(intent, GET_COUPON_CODE);
             }
@@ -366,7 +363,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     private void onConversationInit() {
         mConversation = EMClient.getInstance().chatManager().getConversation(toChatUserId, EaseCommonUtils.getConversationType(chatType), true);
         mConversation.markAllMessagesAsRead();
-        // emchatManager.clearUnreadMessage(mConversation);
         // 初始化db时，每个conversation加载数目是getChatOptions().getNumberOfMessagesLoaded
         // 这个数目如果比用户期望进入会话界面时显示的个数不一样，就多加载一些
         final List<EMMessage> msgs = mConversation.getAllMessages();

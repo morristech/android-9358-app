@@ -141,6 +141,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             mChildViewHolder.marketingMoney.setText(String.valueOf(bean.amount));
             mChildViewHolder.unit.setVisibility(View.VISIBLE);
             mChildViewHolder.marketingMoney.setVisibility(View.VISIBLE);
+            mChildViewHolder.marketingMoneyMark.setVisibility(View.GONE);
             if (bean.credits > 0) {
                 mChildViewHolder.marketingCredit.setVisibility(View.VISIBLE);
                 String des = String.format("（或%s积分）", bean.credits);
@@ -171,15 +172,23 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             mChildViewHolder.marketingTitleMark.setVisibility(View.GONE);
             mChildViewHolder.marketingMoney.setVisibility(View.GONE);
             mChildViewHolder.unit.setVisibility(View.GONE);
+            mChildViewHolder.marketingMoneyMark.setVisibility(View.GONE);
 
         } else {//谁替我买单
             Glide.with(mContext).load(bean.image).into(mChildViewHolder.marketingHead);
-            mChildViewHolder.marketingTitle.setText(bean.actName);
+            if (bean.maxPeriod == 0) { //无限连期
+                mChildViewHolder.marketingTitle.setText(bean.actName + String.format("(%s/%s)", String.valueOf(bean.currentPeriod), "无限期"));
+            } else {
+                mChildViewHolder.marketingTitle.setText(bean.actName + String.format("(%s/%s期)", String.valueOf(bean.currentPeriod), String.valueOf(bean.maxPeriod)));
+            }
+           // String price = String.format("单价：%s", );
             mChildViewHolder.marketingMoney.setText(String.valueOf(bean.unitPrice));
             mChildViewHolder.unit.setVisibility(View.VISIBLE);
             mChildViewHolder.marketingMoney.setVisibility(View.VISIBLE);
             mChildViewHolder.marketingCredit.setVisibility(View.GONE);
-            mChildViewHolder.marketingDetail.setVisibility(View.GONE);
+            mChildViewHolder.marketingMoneyMark.setVisibility(View.VISIBLE);
+            mChildViewHolder.marketingDetail.setVisibility(View.VISIBLE);
+            mChildViewHolder.marketingDetail.setText(String.format("已售：%s/%s", String.valueOf(bean.paidCount), String.valueOf(bean.totalPaidCount)));
             mChildViewHolder.marketingTitleMark.setVisibility(View.GONE);
             if (bean.unitPrice == 1) {
                 mChildViewHolder.marketingMark.setVisibility(View.VISIBLE);
@@ -223,6 +232,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         TextView marketingSelect;
         @Bind(R.id.ll_view)
         LinearLayout llView;
+        @Bind(R.id.marketing_money_mark)
+         TextView marketingMoneyMark;
 
         ViewChildViewHolder(View view) {
             ButterKnife.bind(this, view);

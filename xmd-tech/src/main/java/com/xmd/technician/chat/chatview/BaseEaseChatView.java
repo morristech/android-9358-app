@@ -301,7 +301,6 @@ public abstract class BaseEaseChatView extends LinearLayout {
     protected void updateView(final int errorCode, final String desc) {
         mActivity.runOnUiThread(new Runnable() {
             public void run() {
-
                 Logger.e("9358","errorCode>>"+errorCode);
                 if(errorCode == EMError.USER_NOT_LOGIN){
                     Utils.makeShortToast(mContext, ResourceUtils.getString(R.string.user_not_login));

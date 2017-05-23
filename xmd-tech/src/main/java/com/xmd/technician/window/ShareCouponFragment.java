@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -217,7 +220,10 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                             mPayTicketsTitle.setText(cardShareListResult.respData.get(i).count);
                             mPaidAmount = Integer.parseInt(cardShareListResult.respData.get(i).count);
                         } else if (cardShareListResult.respData.get(i).couponType.equals(Constant.ONCE_TYPE)) {
-                            mOnceCardName.setText(cardShareListResult.respData.get(i).couponName);
+                            String onceCardName = cardShareListResult.respData.get(i).couponName;
+                            SpannableString spannableString = new SpannableString(onceCardName);
+                            spannableString.setSpan(new TextAppearanceSpan(getActivity(),R.style.text_credit),4,onceCardName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            mOnceCardName.setText(spannableString);
                             mOnceCardTitle.setText(cardShareListResult.respData.get(i).count);
                             mOnceCardAmount = Integer.parseInt(cardShareListResult.respData.get(i).count);
                         }
@@ -301,7 +307,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                 ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.NORMAL_COUPON, mCouponName.getText().toString(), mNormalCouponAmount);
                 break;
             case R.id.rl_once_card:
-                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.ONCE_CARD, mOnceCardName.getText().toString(), mOnceCardAmount);
+                ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.ONCE_CARD, "特惠商城", mOnceCardAmount);
                 break;
             case R.id.rl_limit_grab:
                 ShareDetailListActivity.startShareDetailListActivity(getActivity(), ShareDetailListActivity.LIMIT_GRAB, mLimitName.getText().toString(), mLimitGrabAmount);

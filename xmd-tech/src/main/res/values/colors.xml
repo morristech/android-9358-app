@@ -175,4 +175,5 @@
     <color name="number_of_groups">#feb705</color>
     <color name="underway_color">#6ed745</color>
     <color name="bg_btn_color">#FEFEFE</color>
+    <color name="chat_share_text">#757575</color>
 </resources>

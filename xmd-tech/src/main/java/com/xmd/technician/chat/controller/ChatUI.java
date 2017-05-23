@@ -34,38 +34,37 @@ public class ChatUI {
 
     private List<Activity> activityList = new ArrayList<Activity>();
 
-    public void pushActivity(Activity activity){
-        if(!activityList.contains(activity)){
-            activityList.add(0,activity);
+    public void pushActivity(Activity activity) {
+        if (!activityList.contains(activity)) {
+            activityList.add(0, activity);
         }
     }
 
-    public void popActivity(Activity activity){
+    public void popActivity(Activity activity) {
         activityList.remove(activity);
     }
 
 
-    private ChatUI(){}
-    public synchronized static ChatUI getInstance(){
-        if(instance == null){
+    private ChatUI() {
+    }
+
+    public synchronized static ChatUI getInstance() {
+        if (instance == null) {
             instance = new ChatUI();
         }
         return instance;
     }
 
 
-
     /**
-     *this function will initialize the SDK and easeUI kit
-     *
-     * @return boolean true if caller can continue to call SDK related APIs after calling onInit, otherwise false.
+     * this function will initialize the SDK and easeUI kit
      *
      * @param context
      * @param options use default if options is null
      * @return
      */
-    public synchronized boolean init(Context context, EMOptions options){
-        if(sdkInited){
+    public synchronized boolean init(Context context, EMOptions options) {
+        if (sdkInited) {
             return true;
         }
         appContext = context;
@@ -82,61 +81,60 @@ public class ChatUI {
             Log.e(TAG, "enter the service process!");
             return false;
         }
-        if(options == null){
+        if (options == null) {
             EMClient.getInstance().init(context, initChatOptions());
-        }else{
+        } else {
             EMClient.getInstance().init(context, options);
         }
-      //  EMClient.getInstance().init(context, initChatOptions());
         initNotifier();
         registerMessageListener();
 
-        if(settingsProvider == null){
+        if (settingsProvider == null) {
             settingsProvider = new DefaultSettingsProvider();
         }
-
         sdkInited = true;
         return true;
     }
 
 
-    protected EMOptions initChatOptions(){
+    protected EMOptions initChatOptions() {
         Log.d(TAG, "init HuanXin Options");
-
         EMOptions options = new EMOptions();
-        // change to need confirm contact invitation
-      //  options.setAcceptInvitationAlways(false);
-        // set if need read ack
         options.setRequireAck(true);
         // set if need delivery ack
-        options.setRequireDeliveryAck(false);
+        options.setRequireDeliveryAck(true);
 
         return options;
     }
 
-    void initNotifier(){
+    void initNotifier() {
         notifier = createNotifier();
         notifier.init(appContext);
     }
 
     private void registerMessageListener() {
+
         EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
 
             @Override
             public void onMessageReceived(List<EMMessage> messages) {
-              //  EaseAtMessageHelper.get().parseMessages(messages);
+
             }
+
             @Override
             public void onMessageRead(List<EMMessage> messages) {
 
             }
+
             @Override
             public void onMessageDelivered(List<EMMessage> messages) {
             }
+
             @Override
             public void onMessageChanged(EMMessage message, Object change) {
 
             }
+
             @Override
             public void onCmdMessageReceived(List<EMMessage> messages) {
 
@@ -144,45 +142,48 @@ public class ChatUI {
         });
     }
 
-    protected EaseNotifier createNotifier(){
+    protected EaseNotifier createNotifier() {
         return new EaseNotifier();
     }
 
-    public EaseNotifier getNotifier(){
+    public EaseNotifier getNotifier() {
         return notifier;
     }
 
-    public boolean hasForegroundActivities(){
+    public boolean hasForegroundActivities() {
         return activityList.size() != 0;
     }
 
     /**
      * set user profile provider
+     *
      * @param
      */
-    public void setUserProfileProvider(EaseUserProfileProvider userProvider){
+    public void setUserProfileProvider(EaseUserProfileProvider userProvider) {
         this.userProvider = userProvider;
     }
 
     /**
      * get user profile provider
+     *
      * @return
      */
-    public EaseUserProfileProvider getUserProfileProvider(){
+    public EaseUserProfileProvider getUserProfileProvider() {
         return userProvider;
     }
 
-    public void setSettingsProvider(EaseSettingsProvider settingsProvider){
+    public void setSettingsProvider(EaseSettingsProvider settingsProvider) {
         this.settingsProvider = settingsProvider;
     }
 
-    public EaseSettingsProvider getSettingsProvider(){
+    public EaseSettingsProvider getSettingsProvider() {
         return settingsProvider;
     }
 
 
     /**
      * check the application process name if process name is not qualified, then we think it is a service process and we will not init SDK
+     *
      * @param pID
      * @return
      */
@@ -212,8 +213,6 @@ public class ChatUI {
 
     /**
      * User profile provider
-     * @author wei
-     *
      */
     public interface EaseUserProfileProvider {
         /**
@@ -226,7 +225,6 @@ public class ChatUI {
 
     /**
      * Emojicon provider
-     *
      */
     public interface EaseEmojiconInfoProvider {
 
@@ -238,28 +236,31 @@ public class ChatUI {
     private EaseEmojiconInfoProvider emojiconInfoProvider;
 
 
-    public EaseEmojiconInfoProvider getEmojiconInfoProvider(){
+    public EaseEmojiconInfoProvider getEmojiconInfoProvider() {
         return emojiconInfoProvider;
     }
 
 
-    public void setEmojiconInfoProvider(EaseEmojiconInfoProvider emojiconInfoProvider){
+    public void setEmojiconInfoProvider(EaseEmojiconInfoProvider emojiconInfoProvider) {
         this.emojiconInfoProvider = emojiconInfoProvider;
     }
 
 
     public interface EaseSettingsProvider {
+
         boolean isMsgNotifyAllowed(EMMessage message);
+
         boolean isMsgSoundAllowed(EMMessage message);
+
         boolean isMsgVibrateAllowed(EMMessage message);
+
         boolean isSpeakerOpened();
     }
 
     /**
-     * default settings provider
-     *
+     * 默认设置
      */
-    protected class DefaultSettingsProvider implements EaseSettingsProvider{
+    protected class DefaultSettingsProvider implements EaseSettingsProvider {
 
         @Override
         public boolean isMsgNotifyAllowed(EMMessage message) {
@@ -283,7 +284,7 @@ public class ChatUI {
         }
     }
 
-    public Context getContext(){
+    public Context getContext() {
         return appContext;
     }
 }

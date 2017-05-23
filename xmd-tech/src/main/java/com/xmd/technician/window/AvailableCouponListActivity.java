@@ -3,26 +3,22 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.xmd.technician.Adapter.ChatCouponAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.bean.CheckedCoupon;
 import com.xmd.technician.bean.CouponInfo;
+import com.xmd.technician.bean.CouponType;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.EmptyView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,16 +31,23 @@ import rx.Subscription;
 /**
  * Created by Lhj on 2016/8/3.
  */
-public class AvailableCouponListActivity extends BaseActivity implements View.OnClickListener, ChatCouponAdapter.OnItemClickListener {
-    private static List<CouponInfo> couponInfoList;
-    @Bind(R.id.list)
-    RecyclerView mListView;
+public class AvailableCouponListActivity extends BaseActivity implements View.OnClickListener {
+
     @Bind(R.id.toolbar_right_share)
     TextView toolbarRightShare;
+    @Bind(R.id.view_emptyView)
+    EmptyView viewEmptyView;
+    @Bind(R.id.expandable_list_view)
+    ExpandableListView expandableListView;
+
     private ChatCouponAdapter adapter;
     private List<CouponInfo> mSelectedCouponInfo;
-    protected LinearLayoutManager mLayoutManager;
-    private Subscription mGetRedpacklistSubscription;
+    private List<CouponType> mCouponTypes;
+    private List<CouponInfo> mPaidCoupons;
+    private List<CouponInfo> mCashAndFavourables;
+    private List<List<CouponInfo>> mCouponInfos;
+
+    private Subscription mGetCouponListSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,85 +57,85 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
         initView();
     }
 
-    protected void initView() {
+    private void initView() {
         setTitle(ResourceUtils.getString(R.string.check_coupon));
         toolbarRightShare.setVisibility(View.VISIBLE);
         toolbarRightShare.setEnabled(false);
         toolbarRightShare.setOnClickListener(this);
         setBackVisible(true);
-        mGetRedpacklistSubscription = RxBus.getInstance().toObservable(CouponListResult.class).subscribe(
-                redpackResult -> getRedpackListResult(redpackResult));
+        viewEmptyView.setStatus(EmptyView.Status.Loading);
         mSelectedCouponInfo = new ArrayList<>();
-        mLayoutManager = new LinearLayoutManager(this);
-        mListView.setLayoutManager(mLayoutManager);
-        mListView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new ChatCouponAdapter(AvailableCouponListActivity.this, couponInfoList);
-        adapter.setOnItemClickListener(this);
-        mListView.setAdapter(adapter);
+        mCouponTypes = new ArrayList<>();
+        mCouponInfos = new ArrayList<>();
+        mPaidCoupons = new ArrayList<>();
+        mCashAndFavourables = new ArrayList<>();
+        adapter = new ChatCouponAdapter(this);
+        adapter.setChildrenClickedInterface(new ChatCouponAdapter.OnChildrenClicked() {
+            @Override
+            public void onChildrenClickedListener(CouponInfo bean, int groupPosition, int childPosition, boolean isSelected) {
+                if (isSelected) {
+                    mSelectedCouponInfo.add(bean);
+                    mCouponInfos.get(groupPosition).get(childPosition).selectedStatus = 1;
+                    adapter.refreshChildData(mCouponInfos);
+                } else {
+                    mCouponInfos.get(groupPosition).get(childPosition).selectedStatus = 0;
+                    adapter.refreshChildData(mCouponInfos);
+                    mSelectedCouponInfo.remove(bean);
+                }
+                if (mSelectedCouponInfo.size() > 0) {
+                    toolbarRightShare.setEnabled(true);
+                    toolbarRightShare.setText(String.format("分享(%s)", mSelectedCouponInfo.size()));
+                } else {
+                    toolbarRightShare.setEnabled(false);
+                    toolbarRightShare.setText("分享");
+                }
+
+            }
+
+        });
+        expandableListView.setDivider(null);
+        expandableListView.setAdapter(adapter);
+        mGetCouponListSubscription = RxBus.getInstance().toObservable(CouponListResult.class).subscribe(
+                couponResult -> getCouponListResult(couponResult));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_LIST);
     }
 
-    public static void setData(List<CouponInfo> couponInfo) {
-        couponInfoList = couponInfo;
-    }
-
-    @Override
-    public void onItemCheck(CouponInfo info, int position, boolean isChecked) {
-        if (isChecked) {
-            for (int i = 0; i < mSelectedCouponInfo.size(); i++) {
-                if (mSelectedCouponInfo.get(i).actId.equals(info.actId)) {
-                    mSelectedCouponInfo.remove(mSelectedCouponInfo.get(i));
-                    break;
-                }
-            }
-            info.selectedStatus = 1;
-            couponInfoList.set(position, info);
-        } else {
-            info.selectedStatus = 2;
-            couponInfoList.set(position, info);
-            mSelectedCouponInfo.add(info);
-        }
-        if (mSelectedCouponInfo.size() > 0) {
-            toolbarRightShare.setEnabled(true);
-            toolbarRightShare.setText(String.format("分享(%s)", String.valueOf(mSelectedCouponInfo.size())));
-        } else {
-            toolbarRightShare.setEnabled(false);
-            toolbarRightShare.setText("分享");
-        }
-        adapter.notifyItemChanged(position);
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.toolbar_right_share) {
-            Intent resultIntent = new Intent();
-            resultIntent.putParcelableArrayListExtra(TechChatActivity.REQUEST_COUPON_TYPE, (ArrayList<? extends Parcelable>) mSelectedCouponInfo);
-            setResult(RESULT_OK, resultIntent);
-            this.finish();
-        }
-    }
-
-
-    private void getRedpackListResult(CouponListResult result) {
+    private void getCouponListResult(CouponListResult result) {
         Collections.sort(result.respData.coupons, (lhs, rhs) -> {
-            if (Constant.COUPON_TYPE_PAID.equals(rhs.couponType)) return 1;
-            else if (Constant.COUPON_TYPE_PAID.equals(lhs.couponType)) return -1;
+            if (Constant.COUPON_TYPE_PAID.equals(rhs.couponType)) {
+                return 1;
+            } else if (Constant.COUPON_TYPE_PAID.equals(lhs.couponType)) return -1;
             return 0;
         });
-        if (result.respData.coupons != null) {
-            couponInfoList.clear();
-
+        if (result.respData.coupons != null && result.respData.coupons.size()>0) {
+            viewEmptyView.setStatus(EmptyView.Status.Gone);
+            mCouponTypes.clear();
+            mPaidCoupons.clear();
+            mCashAndFavourables.clear();
             for (CouponInfo info : result.respData.coupons) {
-                info.selectedStatus = 1;
-                couponInfoList.add(info);
+                info.selectedStatus = 0;
+                if(info.useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))){
+                    mPaidCoupons.add(info);
+                }else{
+                    mCashAndFavourables.add(info);
+                }
             }
-            if (couponInfoList != null) {
-                adapter.setCouponInfoData(couponInfoList);
+            if(mPaidCoupons.size()>0){
+                mCouponTypes.add(new CouponType("点钟券"));
+                mCouponInfos.add(mPaidCoupons);
+            }
+            if(mCashAndFavourables.size()>0){
+                mCouponTypes.add(new CouponType("优惠券"));
+                mCouponInfos.add(mCashAndFavourables);
             }
 
+            adapter.setData(mCouponTypes,mCouponInfos);
+            for (int i = 0; i < adapter.getGroupCount(); i++) {
+                expandableListView.expandGroup(i, true);
+            }
+        }else{
+            viewEmptyView.setStatus(EmptyView.Status.Empty);
         }
-
 
     }
 
@@ -145,8 +148,17 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription);
+        RxBus.getInstance().unsubscribe(mGetCouponListSubscription);
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.toolbar_right_share) {
+            Intent resultIntent = new Intent();
+            resultIntent.putParcelableArrayListExtra(TechChatActivity.REQUEST_COUPON_TYPE, (ArrayList<? extends Parcelable>) mSelectedCouponInfo);
+            setResult(RESULT_OK, resultIntent);
+            this.finish();
+        }
+    }
 }

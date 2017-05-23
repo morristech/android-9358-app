@@ -12,7 +12,6 @@ import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.db.ChatDBManager;
 import com.xmd.technician.chat.db.DbOpenHelper;
 import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.msgctrl.RxBus;
 
@@ -20,7 +19,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
- * Created by sdcm on 16-4-12.
+ * Created by Lhj on 16-4-12.
  */
 public class UserProfileProvider {
 
@@ -74,6 +73,9 @@ public class UserProfileProvider {
             return getCurrentUserInfo();
         }
         ChatUser user = getChatUserList().get(username);
+        if (user == null) {
+            user = new ChatUser(username);
+        }
 
         return user;
     }
@@ -103,9 +105,9 @@ public class UserProfileProvider {
         return getChatUserList().containsKey(username);
     }
 
-    public void deleteChatUser(String username){
-        if(userExisted(username)){
-           ChatDBManager.getInstance().deleteContact(username);
+    public void deleteChatUser(String username) {
+        if (userExisted(username)) {
+            ChatDBManager.getInstance().deleteContact(username);
         }
     }
 
@@ -118,8 +120,6 @@ public class UserProfileProvider {
                 }
             });
         }
-
-        // return a empty non-null object to avoid app crash
         if (mLocalUsers == null) {
             mLocalUsers = new Hashtable<String, ChatUser>();
         }
@@ -133,7 +133,6 @@ public class UserProfileProvider {
      * @param user
      */
     synchronized private void saveContact(ChatUser user) {
-        Logger.i(">>>","保存联系人>>"+"name>>"+user.getNick()+"type"+user);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_ID, user.getUsername());
@@ -141,9 +140,9 @@ public class UserProfileProvider {
             values.put(COLUMN_NAME_NICK, user.getNick());
         if (user.getAvatar() != null)
             values.put(COLUMN_NAME_AVATAR, user.getAvatar());
-        if(user.getAvatar()!= null){
+        if (user.getAvatar() != null) {
             values.put(COLUMN_NAME_TYPE, user.getAvatar());
-        }else{
+        } else {
             values.put(COLUMN_NAME_TYPE, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER);
         }
         if (db.isOpen()) {
@@ -157,7 +156,6 @@ public class UserProfileProvider {
      * @param user
      */
     public void saveContactInfo(ChatUser user) {
-        Logger.i(">>>","保存联系人Info>>"+"name>>"+user.getNick()+"type"+user);
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if (chatUser == null || !chatUser.equals(user)) {
             getChatUserList().put(user.getUsername(), user);
@@ -178,7 +176,6 @@ public class UserProfileProvider {
      * @param user
      */
     public void updateContactInfo(ChatUser user) {
-        Logger.i(">>>","更新联系人>>"+"name>>"+user.getNick()+"type"+user.getUserType());
         ChatUser chatUser = getChatUserList().get(user.getUsername());
         if (chatUser == null || !chatUser.exactlyEquals(user)) {
             getChatUserList().put(user.getUsername(), user);
@@ -200,7 +197,7 @@ public class UserProfileProvider {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Map<String, ChatUser> users = new Hashtable<String, ChatUser>();
         if (db.isOpen()) {
-            Cursor cursor = db.rawQuery("select * from " + TABLE_NAME /* + " desc" */, null);
+            Cursor cursor = db.rawQuery("select * from " + TABLE_NAME, null);
             while (cursor.moveToNext()) {
                 String username = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID));
                 String nick = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NICK));

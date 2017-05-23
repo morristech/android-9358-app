@@ -21,7 +21,7 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
- * Created by sdcm on 17-5-10.
+ * Created by Lhj on 17-5-10.
  */
 
 public class ChatOperationDialog extends Dialog {

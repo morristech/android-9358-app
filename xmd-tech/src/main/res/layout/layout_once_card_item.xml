@@ -4,58 +4,36 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/color_white"
+
               android:layout_marginTop="@dimen/inter_space"
               android:orientation="vertical"
     >
 
+    <ImageView
+        android:id="@+id/iv_once_card_title"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/inter_space"
+        android:src="@drawable/img_credit_gift"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_white"
         android:orientation="horizontal"
         android:padding="@dimen/inter_space">
 
-        <FrameLayout
-            android:layout_width="@dimen/limit_grab_item_img_width"
-            android:layout_height="@dimen/limit_grab_item_img_width">
 
-            <com.xmd.technician.widget.RoundImageView
-                android:id="@+id/once_card_head"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:background="@drawable/img_default_square"
-                app:borderRadius="@dimen/limit_grab_item_img_radius"
-                app:type="round"/>
+        <com.xmd.technician.widget.RoundImageView
+            android:id="@+id/once_card_head"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/img_default_square"
+            app:borderRadius="@dimen/limit_grab_item_img_radius"
+            app:type="round"/>
 
-            <TextView
-                android:id="@+id/once_card_mark_new"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/once_card_mark_new"
-                android:paddingBottom="2dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:paddingTop="2dp"
-                android:text="最新"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/fontRemark"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/once_card_mark_favorable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/once_card_mark_favorable"
-                android:paddingBottom="2dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:paddingTop="2dp"
-                android:text="最优惠"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/fontRemark"
-                android:visibility="visible"/>
-        </FrameLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -76,6 +54,21 @@
                     android:textColor="@color/colorHead"
                     android:textSize="@dimen/fontSize"
                     tools:text="泰式按摩"/>
+                <TextView
+                    android:id="@+id/once_card_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_once_card_discount"
+                    android:text="7折"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp"
+                    android:paddingRight="2dp"
+                    android:paddingLeft="2dp"
+                    android:textColor="@color/primary_color"
+                    android:textSize="12sp"
+                    android:lines="1"
+                    android:layout_marginLeft="@dimen/small_space"
+                    />
 
 
             </LinearLayout>
@@ -108,8 +101,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
             android:orientation="vertical">
 
             <TextView
@@ -117,16 +111,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/small_space"
                 android:gravity="center"
-                android:textColor="@color/colorBody"
+                android:textColor="@color/colorMainBtn"
+                android:paddingTop="@dimen/small_space"
                 android:textSize="@dimen/fontTitle_small"
                 tools:text="66元"/>
 
             <Button
                 android:id="@+id/once_card_share"
                 style="@style/share_btn_style"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
                 />
         </LinearLayout>
     </LinearLayout>

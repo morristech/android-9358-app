@@ -134,7 +134,7 @@ public class ClubJournalChatShareActivity extends BaseActivity implements View.O
     private void getClubJournalData() {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PAGE, String.valueOf(1));
-        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(20));
+        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(200));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_JOURNAL_LIST, params);
     }
 

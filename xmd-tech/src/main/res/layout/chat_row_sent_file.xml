@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/small_space"
+        android:paddingRight="@dimen/chat_head_padding"
         android:paddingLeft="20dp">
 
         <com.xmd.technician.widget.CircleImageView

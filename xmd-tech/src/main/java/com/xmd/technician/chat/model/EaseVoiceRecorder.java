@@ -42,8 +42,6 @@ public class EaseVoiceRecorder {
     public String startRecording(Context appContext) {
         file = null;
         try {
-            // need to create recorder every time, otherwise, will got exception
-            // from setOutputFile when try to reuse
             if (recorder != null) {
                 recorder.release();
                 recorder = null;
@@ -55,9 +53,6 @@ public class EaseVoiceRecorder {
             recorder.setAudioChannels(1); // MONO
             recorder.setAudioSamplingRate(8000); // 8000Hz
             recorder.setAudioEncodingBitRate(64); // seems if change this to
-            // 128, still got same file
-            // size.
-            // one easy way is to use temp file
             // file = File.createTempFile(PREFIX + userId, EXTENSION,
             // User.getVoicePath());
             voiceFileName = getVoiceFileName(EMClient.getInstance().getCurrentUser());

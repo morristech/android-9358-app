@@ -282,10 +282,16 @@ public class Constant {
     public static final String KEY_CATEGORY_COMMENT_TYPE = "03";
     public static final String KEY_CATEGORY_PAID_TYPE = "04";
 
-
     /**
      * 推送
      */
     public static final String PUSH_MESSAGE_BUSINESS_PAY_NOTIFY = "fast_pay";
+    /**
+     * 混合套餐
+     */
+    public static final String ITEM_CARD_TYPE = "item_card"; //单项次卡
+    public static final String ITEM_PACKAGE_TYPE = "item_package"; //混合套餐\
+    public static final String CREDIT_GIFT_TYPE = "credit_gift"; //积分礼物
+
 }
 

@@ -5,9 +5,9 @@
               android:id="@+id/ll_view"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:paddingTop="@dimen/inter_space"
               android:orientation="horizontal"
-    android:touchscreenBlocksFocus="true">
+              android:paddingTop="@dimen/inter_space"
+              android:touchscreenBlocksFocus="true">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -61,6 +61,8 @@
                     android:id="@+id/marketing_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:textColor="@color/colorHead"
                     android:textSize="@dimen/fontSize"
                     tools:text="泰式按摩"/>
@@ -91,6 +93,15 @@
                 >
 
                 <TextView
+                    android:id="@+id/marketing_money_mark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="单价："
+                    android:textColor="#757575"
+                    android:textSize="@dimen/fontBody"
+                    android:visibility="gone"/>
+
+                <TextView
                     android:id="@+id/marketing_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -103,6 +114,7 @@
                     android:id="@+id/unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_2"
                     android:text="元"
                     android:textColor="@color/colorBtnChecked"
                     android:textSize="@dimen/fontNormal"/>

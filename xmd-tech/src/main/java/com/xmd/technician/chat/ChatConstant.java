@@ -157,9 +157,20 @@ public class ChatConstant {
     public static final String KEY_CHAT_GIFT_TYPE = "gift";
     public static final String KEY_CHAT_LOCATION_TYPE = "clubLocation";
     public static final String KEY_SUB_TYPE = "subType";
+    public static final String KEY_CURRENT_USER_ID = "userId";
 
 
     public static final String KEY_CHAT_CMD_REVOKE_ACTION = "revoke";
 
+    public static final String NEW_FRIENDS_USERNAME = "item_new_friends";
+    public static final String GROUP_USERNAME = "item_groups";
+    public static final String CHAT_ROOM = "item_chatroom";
+    public static final String ACCOUNT_REMOVED = "account_removed";
+    public static final String ACCOUNT_CONFLICT = "conflict";
+    public static final String ACCOUNT_FORBIDDEN = "user_forbidden";
+    public static final String CHAT_ROBOT = "item_robots";
+    public static final String MESSAGE_ATTR_ROBOT_MSGTYPE = "msgtype";
+    public static final String ACTION_GROUP_CHANAGED = "action_group_changed";
+    public static final String ACTION_CONTACT_CHANAGED = "action_contact_changed";
 
 }

@@ -16,6 +16,7 @@ import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadPoolManager;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.AbstractController;
@@ -56,7 +57,7 @@ public class ChatController extends AbstractController {
                 doDeleteConversation(conversation.conversationId(), true);
                 break;
             case MsgDef.MSG_DEF_LOGOUT_EMCHAT:
-                doLogOutEmchat();
+                doLogOutEmChat();
                 break;
         }
 
@@ -108,35 +109,34 @@ public class ChatController extends AbstractController {
         UserUtils.deleteUser(userName);
     }
 
-    private void doLogOutEmchat() {
-        EMClient.getInstance().logout(true, new EMCallBack() {
+    private void doLogOutEmChat() {
+        ChatHelper.getInstance().logout(false, new EMCallBack() {
             @Override
             public void onSuccess() {
-                Logger.i(">>>", "退出登录成功");
+                Logger.v("成功退出");
             }
 
             @Override
             public void onError(int i, String s) {
-                Logger.i(">>>", "退出登录错误");
+                Logger.v("退出失败");
             }
 
             @Override
             public void onProgress(int i, String s) {
-                Logger.i(">>>", "退出登录进行中");
+
             }
         });
     }
 
     private void doLoginEmchat(Object runnable) {
 
-        if (!TextUtils.isEmpty(SharedPreferenceHelper.getEmchatId())
-                && !TextUtils.isEmpty(SharedPreferenceHelper.getEMchatPassword())) {
+        if (Utils.isNotEmpty(SharedPreferenceHelper.getEmchatId())
+                && Utils.isNotEmpty(SharedPreferenceHelper.getEMchatPassword())) {
             try {
                 EMClient.getInstance().login(SharedPreferenceHelper.getEmchatId(),
                         SharedPreferenceHelper.getEMchatPassword(), new EMCallBack() {
                             @Override
                             public void onSuccess() {
-
                                 UserProfileProvider.getInstance().initContactList();
                                 Logger.v("ChatController.doLoginEmchat : success");
                                 // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick

@@ -100,7 +100,7 @@ public class ChatCategoryManager {
         switch (userType) {
             case 1: //技师,楼面
                 for (int i = 0; i < mCategoryListResults.size(); i++) {
-                    if (mCategoryListResults.get(i).constKey== "09") {
+                    if (mCategoryListResults.get(i).constKey.equals("09") ) {
                         mMoreMenu.add(mCategoryListResults.get(i));
                     }
                 }

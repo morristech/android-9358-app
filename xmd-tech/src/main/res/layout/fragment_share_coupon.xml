@@ -200,7 +200,7 @@
                                     android:id="@+id/img_once_card"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/img_multi_card"/>
+                                    android:src="@drawable/ic_supermarket"/>
 
                                 <TextView
                                     android:id="@+id/once_card_name"
@@ -213,7 +213,7 @@
                                     style="@style/coupon_total_style"
                                     android:layout_below="@id/once_card_name"
                                     android:layout_toRightOf="@id/img_once_card"
-                                    android:text="会所在线次卡："/>
+                                    android:text="会所在线活动数："/>
 
                                 <TextView
                                     android:id="@+id/once_card_title"

@@ -8,32 +8,36 @@ import java.util.List;
 
 public class OnceCardBean {
 
-
     /**
-     * id : 37
-     * name : 单项次卡_02101629
+     * id : 158
+     * name : 1
+     * type : 2
      * startTime : null
      * endTime : null
-     * totalCount : 0
+     * totalCount : 1
      * personalLimit : 0
-     * paidCount : 13
-     * itemId : 628751936601989120
-     * itemName : 其他理疗_1
+     * paidCount : 0
+     * itemId : 751224719469977600
+     * itemName : 8888
      * status : 1
      * subStatus : 2
-     * itemCardPlans : [{"id":81,"activityId":37,"clubId":"601578932046667776","name":"A","actAmount":1500,"paidCount":15,"giveCount":1,"itemId":"628751936601989120","optimal":"N","itemAmount":100,"techAmount":100},{"id":82,"activityId":37,"clubId":"601578932046667776","name":"B","actAmount":100,"paidCount":1,"giveCount":200,"itemId":"628751936601989120","optimal":"Y","itemAmount":100,"techAmount":100},{"id":83,"activityId":37,"clubId":"601578932046667776","name":"C","actAmount":2300,"paidCount":23,"giveCount":3,"itemId":"628751936601989120","optimal":"N","itemAmount":100,"techAmount":400}]
-     * shareUrl : http://w.url.cn/s/At96zZL
+     * image : 159848
+     * itemCardPlans : [{"id":288,"activityId":158,"clubId":"601679316694081536","name":"A","type":2,"actAmount":1000,"credits":0,"originalAmount":1100,"paidCount":11,"giveCount":0,"itemId":"751224719469977600","itemName":"8888","optimal":"N","itemAmount":100,"techAmount":100},{"id":289,"activityId":158,"clubId":"601679316694081536","name":"B","type":2,"actAmount":11000,"credits":0,"originalAmount":11100,"paidCount":111,"giveCount":0,"itemId":"751224719469977600","itemName":"8888","optimal":"N","itemAmount":100,"techAmount":200},{"id":290,"activityId":158,"clubId":"601679316694081536","name":"C","type":2,"actAmount":1000,"credits":0,"originalAmount":1200,"paidCount":12,"giveCount":0,"itemId":"751224719469977600","itemName":"8888","optimal":"Y","itemAmount":100,"techAmount":300}]
+     * shareUrl : http://w.url.cn/s/AD1i4NP
      * period : 1Y
-     * description :
-     * image : 159454
-     * imageUrl : http://sdcm103.stonebean.com:8489/s/group00/M00/00/02/ooYBAFideeWASFs6AAAl_gWJGeY974.jpg?st=vQDdGtwnlblHxIg4ulucwA&e=1488358167
+     * description : good
+     nihas
+     okokk
+     * cardType : item_card
+     * imageUrl : http://sdcm103.stonebean.com:8489/s/group00/M00/01/22/oIYBAFi07MuAb0q0AAAwrHBtAI05788325?st=JiyQWmAbb8gOx8Y7rQ_kEA&e=1497759643
      * statusName : 进行中
      */
 
     public String id;
     public String name;
-    public Object startTime;
-    public Object endTime;
+    public int type; //	1-单项购买赠数;2-单项购买直减;3-混合购买赠送;4-混合购买直减;5-积分礼品
+    public String startTime;
+    public String endTime;
     public int totalCount;
     public int personalLimit;
     public int paidCount;
@@ -41,25 +45,29 @@ public class OnceCardBean {
     public String itemName;
     public int status;
     public int subStatus;
+    public String image;
     public String shareUrl;
     public String period;
     public String description;
-    public String image;
+    public String cardType; //tem_card-单项次卡;item_package-混合套餐；credit_gift-积分礼品
     public String imageUrl;
     public String statusName;
-    public int type;
     public List<ItemCardPlansBeanX> itemCardPlans;
 
     public static class ItemCardPlansBeanX {
         /**
-         * id : 81
-         * activityId : 37
-         * clubId : 601578932046667776
+         * id : 288
+         * activityId : 158
+         * clubId : 601679316694081536
          * name : A
-         * actAmount : 1500
-         * paidCount : 15
-         * giveCount : 1
-         * itemId : 628751936601989120
+         * type : 2
+         * actAmount : 1000
+         * credits : 0
+         * originalAmount : 1100
+         * paidCount : 11
+         * giveCount : 0
+         * itemId : 751224719469977600
+         * itemName : 8888
          * optimal : N
          * itemAmount : 100
          * techAmount : 100
@@ -69,14 +77,17 @@ public class OnceCardBean {
         public int activityId;
         public String clubId;
         public String name;
-        public int actAmount;
+        public int type;  //	1-单项购买赠数;2-单项购买直减;3-混合购买赠送;4-混合购买直减;5-积分礼品
+        public int actAmount; //优惠后套餐价
+        public int credits;
+        public int originalAmount;
         public int paidCount;
         public int giveCount;
         public String itemId;
+        public String itemName;
         public String optimal;
-        public int itemAmount;
-        public int techAmount;
-        public int type;
+        public int itemAmount;  //项目原价
+        public int techAmount; //技师提成
     }
 
 

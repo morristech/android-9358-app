@@ -4,17 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by sdcm on 17-5-15.
+ * Created by Lhj on 17-5-15.
  */
 
 public class MarketingChatShareBean implements Parcelable{
+
         /**
-         * actId : 859972404716269569
-         * actName : 推背
+         * actId : 864036373772922881
+         * actName : 8888
          * actPrice : 1
          * unitPrice : 1
-         * image : http://sdcm103.stonebean.com:8489/s/group00/M00/00/2D/oIYBAFW_PuiAcSQSAABGkNm4MAw061.jpg?st=msbhQNb2LbTQ6HMVB8ebLQ&e=1497168703
-         * shareUrl : http://t.cn/RaaGyBO
+         * image : http://sdcm103.stonebean.com:8489/s/group00/M00/00/40/oYYBAFW1-XKAQMNXAABcSndzckM882.jpg?st=UEPgQH0BKbjiL52YsWGI8w&e=1497769029
+         * shareUrl : http://w.url.cn/s/AQI09c3
+         * maxPeriod : 0
+         * currentPeriod : 1
+         * totalPaidCount : 1
+         * canPaidCount : 1
+         * paidCount : 0
          */
         /**
          * amount : 1
@@ -55,8 +61,12 @@ public class MarketingChatShareBean implements Parcelable{
         public String firstPrizeName;
         public String image;
         public String shareUrl;
+        public int maxPeriod; //总连期数，1表示不连期，0表示无限
+        public int currentPeriod; //当前期数
+        public int totalPaidCount; //总期数
+        public int canPaidCount; //可购买次数
+        public int paidCount; //购买次数
         public int selectedStatus; //1可被选中且未被选中，2，可被选中且已被选中
-
 
         @Override
         public int describeContents() {
@@ -82,6 +92,11 @@ public class MarketingChatShareBean implements Parcelable{
                 dest.writeString(this.firstPrizeName);
                 dest.writeString(this.image);
                 dest.writeString(this.shareUrl);
+                dest.writeInt(this.maxPeriod);
+                dest.writeInt(this.currentPeriod);
+                dest.writeInt(this.totalPaidCount);
+                dest.writeInt(this.canPaidCount);
+                dest.writeInt(this.paidCount);
                 dest.writeInt(this.selectedStatus);
         }
 
@@ -106,6 +121,11 @@ public class MarketingChatShareBean implements Parcelable{
                 this.firstPrizeName = in.readString();
                 this.image = in.readString();
                 this.shareUrl = in.readString();
+                this.maxPeriod = in.readInt();
+                this.currentPeriod = in.readInt();
+                this.totalPaidCount = in.readInt();
+                this.canPaidCount = in.readInt();
+                this.paidCount = in.readInt();
                 this.selectedStatus = in.readInt();
         }
 

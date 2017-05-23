@@ -20,14 +20,13 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import java.io.File;
 
 /**
- * Created by sdcm on 17-4-1.
+ * Created by Lhj on 17-4-1.
  */
 
 public class ChatSentMessageHelper {
 
     public Context mContext;
     public String mToChatEmchatId;
-
     public EaseChatMessageList messageList;
     public boolean isMessageListInited;
     public boolean inUserBlacklist;
@@ -45,12 +44,6 @@ public class ChatSentMessageHelper {
 
 
     public void sendTextMessage(String content) {
-    /*    if (EaseAtMessageHelper.get().containsAtUsername(content)) {
-            sendAtMessage(content);
-        } else {
-            EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
-            sendMessage(message);
-        }*/
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
         sendMessage(message);
     }
@@ -164,19 +157,6 @@ public class ChatSentMessageHelper {
         sendMessage(message);
     }
 
-//    private void sendAtMessage(String content) {
-//
-//        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
-//        EMGroup group = EMClient.getInstance().groupManager().getGroup(mToChatEmchatId);
-//        if (EMClient.getInstance().getCurrentUser().equals(group.getOwner()) && EaseAtMessageHelper.get().containsAtAll(content)) {
-//            message.setAttribute(ChatConstant.MESSAGE_ATTR_AT_MSG, ChatConstant.MESSAGE_ATTR_VALUE_AT_MSG_ALL);
-//        } else {
-//            message.setAttribute(ChatConstant.MESSAGE_ATTR_AT_MSG,
-//                    EaseAtMessageHelper.get().atListToJsonArray(EaseAtMessageHelper.get().getAtMessageUsernames(content)));
-//        }
-//        sendMessage(message);
-//
-//    }
 
     public void sendCmdMessage(String messageId, Long time) {
         String action = ChatConstant.KEY_CHAT_CMD_REVOKE_ACTION;
@@ -237,6 +217,7 @@ public class ChatSentMessageHelper {
         message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
         message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
         message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
+        message.setAttribute(ChatConstant.KEY_CURRENT_USER_ID,SharedPreferenceHelper.getUserId());
         if (inUserBlacklist) {
             message.setAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_IN_BLACKLIST);
         }

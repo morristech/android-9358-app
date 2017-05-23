@@ -16,6 +16,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingRight="@dimen/chat_head_padding"
         android:layout_marginTop="@dimen/small_space">
 
         <com.xmd.technician.widget.CircleImageView
@@ -28,7 +29,7 @@
 
         <RelativeLayout
             android:id="@+id/bubble"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/bubble_width"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/small_space"
             android:layout_toLeftOf="@id/avatar"
