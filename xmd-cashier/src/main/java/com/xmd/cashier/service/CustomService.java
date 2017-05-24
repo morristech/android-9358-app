@@ -33,7 +33,7 @@ import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.StringResult;
+import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.exceptions.ServerException;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.NotifyManager;
@@ -356,9 +356,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_ACCEPT, info.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<StringResult>() {
+                        .subscribe(new NetworkSubscriber<BaseResult>() {
                             @Override
-                            public void onCallbackSuccess(StringResult result) {
+                            public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单成功", Toast.LENGTH_SHORT).show();
                                 if (adapter.getItemCount() == 0) {
@@ -374,7 +374,11 @@ public class CustomService extends Service {
                             public void onCallbackError(Throwable e) {
                                 e.printStackTrace();
                                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
-                                    adapter.updateError(position, e.getLocalizedMessage());
+                                    String tempStr = e.getLocalizedMessage();
+                                    if (tempStr.contains("处理")) {
+                                        tempStr = "订单已被处理，详情请查看付费预约列表";
+                                    }
+                                    adapter.updateError(position, tempStr);
                                 } else {
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
@@ -387,9 +391,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_REJECT, info.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<StringResult>() {
+                        .subscribe(new NetworkSubscriber<BaseResult>() {
                             @Override
-                            public void onCallbackSuccess(StringResult result) {
+                            public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝成功", Toast.LENGTH_SHORT).show();
                                 if (adapter.getItemCount() == 0) {
@@ -404,7 +408,11 @@ public class CustomService extends Service {
                                 e.printStackTrace();
                                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
                                     // status=400
-                                    adapter.updateError(position, e.getLocalizedMessage());
+                                    String tempStr = e.getLocalizedMessage();
+                                    if (tempStr.contains("处理")) {
+                                        tempStr = "订单已被处理，详情请查看付费预约列表";
+                                    }
+                                    adapter.updateError(position, tempStr);
                                 } else {
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
@@ -450,9 +458,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_PASS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<StringResult>() {
+                        .subscribe(new NetworkSubscriber<BaseResult>() {
                             @Override
-                            public void onCallbackSuccess(StringResult result) {
+                            public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认成功", Toast.LENGTH_SHORT).show();
                                 if (adapter.getItemCount() == 0) {
@@ -469,7 +477,11 @@ public class CustomService extends Service {
                                 e.printStackTrace();
                                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
                                     // status = 400
-                                    adapter.updateError(position, e.getLocalizedMessage());
+                                    String tempStr = e.getLocalizedMessage();
+                                    if (tempStr.contains("处理")) {
+                                        tempStr = "买单已被处理，详情请查看在线买单列表";
+                                    }
+                                    adapter.updateError(position, tempStr);
                                 } else {
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
@@ -482,9 +494,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<StringResult>() {
+                        .subscribe(new NetworkSubscriber<BaseResult>() {
                             @Override
-                            public void onCallbackSuccess(StringResult result) {
+                            public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "已通知请到前台", Toast.LENGTH_SHORT).show();
                                 if (adapter.getItemCount() == 0) {
@@ -499,7 +511,11 @@ public class CustomService extends Service {
                                 e.printStackTrace();
                                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
                                     // status = 400
-                                    adapter.updateError(position, e.getLocalizedMessage());
+                                    String tempStr = e.getLocalizedMessage();
+                                    if (tempStr.contains("处理")) {
+                                        tempStr = "买单已被处理，详情请查看在线买单列表";
+                                    }
+                                    adapter.updateError(position, tempStr);
                                 } else {
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "请到前台失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }

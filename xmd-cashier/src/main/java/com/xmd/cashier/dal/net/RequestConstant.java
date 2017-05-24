@@ -206,6 +206,7 @@ public class RequestConstant {
     public static final int RESP_OK_NO_CONTENT = 204;
     public static final int RESP_TOKEN_EXPIRED = 401;
     public static final int RESP_ERROR = 400;
+    public static final int RESP_EXCEPTION = 404;
 
     public static final int RESP_ERROR_CODE_FOR_LOCAL = 9999;
     public static final int PAY_RESULT_ERROR_CODE = 500;
