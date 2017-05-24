@@ -1,12 +1,12 @@
 package com.xmd.technician.permission;
 
+import com.xmd.app.event.EventLogout;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.event.EventExitClub;
 import com.xmd.technician.event.EventJoinedClub;
-import com.xmd.technician.event.EventLogout;
 import com.xmd.technician.http.gson.RolePermissionListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;

@@ -3,13 +3,13 @@ package com.xmd.technician.onlinepaynotify.model;
 
 import android.text.TextUtils;
 
+import com.xmd.app.event.EventLogout;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.event.EventLogout;
 import com.xmd.technician.http.RetrofitServiceFactory;
 import com.xmd.technician.http.gson.CheckPayNotifyResult;
 import com.xmd.technician.http.gson.GetPayNotifyListResult;

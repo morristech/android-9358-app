@@ -1,4 +1,4 @@
-package com.xmd.app.aliveReport;
+package com.xmd.app.alive;
 
 import android.content.Context;
 import android.content.Intent;

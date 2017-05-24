@@ -2,7 +2,9 @@ package com.xmd.technician.model;
 
 import android.text.TextUtils;
 
-import com.xmd.app.aliveReport.Event;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
+import com.xmd.app.event.EventTokenExpired;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.DataRefreshService;
@@ -16,9 +18,6 @@ import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.event.EventExitClub;
 import com.xmd.technician.event.EventJoinedClub;
-import com.xmd.technician.event.EventLogin;
-import com.xmd.technician.event.EventLogout;
-import com.xmd.technician.event.EventTokenExpired;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.JoinClubResult;
@@ -86,6 +85,8 @@ public class LoginTechnician {
     private int orderCount;
 
     private String roles;
+
+    private boolean needSendLoginEvent = true;
 
 
     private LoginTechnician() {
@@ -156,7 +157,6 @@ public class LoginTechnician {
         setNickName(loginResult.name);
         setAvatarUrl(loginResult.avatarUrl);
         setRoles(loginResult.roles);
-        RxBus.getInstance().post(new EventLogin(loginResult.token, loginResult.userId));
     }
 
     //备用技师编号登录成功
@@ -227,7 +227,11 @@ public class LoginTechnician {
         loginEmChatAccount();
 
         //开始汇报状态
-        EventBus.getDefault().post(new Event(Event.CMD_START, getToken()));
+        if (needSendLoginEvent) {
+            needSendLoginEvent = false;
+            EventBus.getDefault().post(new EventLogin(getToken(), getUserId()));
+            RxBus.getInstance().post(new EventLogin(getToken(), getUserId()));
+        }
     }
 
     //登录聊天账号
@@ -350,6 +354,12 @@ public class LoginTechnician {
             //已经登出了，不再次调用
             return;
         }
+
+        //发送登出事件
+        needSendLoginEvent = true;
+        EventBus.getDefault().post(new EventLogout(getToken(), getUserId()));
+        RxBus.getInstance().post(new EventLogout(getToken(), getUserId()));
+
         //停止刷新个人数据
         DataRefreshService.refreshPersonalData(false);
         //停止刷新买单通知
@@ -362,20 +372,15 @@ public class LoginTechnician {
 
         UserProfileProvider.getInstance().reset();
 
-        //发送登出事件
-        RxBus.getInstance().post(new EventLogout(getToken(), getUserId()));
-
-        //停止汇报状态
-        EventBus.getDefault().post(new Event(Event.CMD_STOP, getToken()));
 
         //清空token
         setToken(null);
 
         ActivityHelper.getInstance().removeAllActivities();
         UINavigation.gotoLogin(TechApplication.getAppContext());
+
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT_EMCHAT);
     }
-
 
 
     //获取技师当前数据，包括账户金额，所有评论数，积分，订单数量，状态，状态描述，未读评论
