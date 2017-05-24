@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class OrderRecordInfo implements Serializable {
     public String id;    //订单ID
-    public String status;    //订单状态
+    public String status;    //订单状态         temp:error
     public String orderType;    //订单类型
     public boolean isExpire;    //是否过期
 
@@ -32,4 +32,5 @@ public class OrderRecordInfo implements Serializable {
     public int downPayment;
 
     public int tempNo;  //用来标识item为此次列表中的第几个元素
+    public String tempErrMsg;
 }

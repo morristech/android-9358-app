@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.R;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 
@@ -80,6 +82,19 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
 
         holder.mPayDown.setText("￥" + Utils.moneyToStringEx(info.payAmount));
         holder.mCreateTime.setText(info.createTime);
+
+        if (AppConstants.STATUS_ERROR.equals(info.status)) {
+            // error
+            holder.mTipText.setVisibility(View.VISIBLE);
+            holder.mTipText.setText(info.tempErrMsg);
+            holder.mTipBtn.setVisibility(View.VISIBLE);
+            holder.mOperateLayout.setVisibility(View.GONE);
+        } else {
+            holder.mTipText.setVisibility(View.GONE);
+            holder.mTipBtn.setVisibility(View.GONE);
+            holder.mOperateLayout.setVisibility(View.VISIBLE);
+        }
+
         holder.mImageOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,11 +113,23 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
                 mCallBack.onUnpass(info, position);
             }
         });
+        holder.mTipBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallBack.onClose(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public void updateError(int position, String error) {
+        mData.get(position).status = AppConstants.STATUS_ERROR;
+        mData.get(position).tempErrMsg = error;
+        notifyItemChanged(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -117,6 +144,9 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
         private TextView mCreateTime;
         private Button mPassBtn;
         private Button mUnpassBtn;
+        private LinearLayout mOperateLayout;
+        private Button mTipBtn;
+        private TextView mTipText;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -131,6 +161,9 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
             mCreateTime = (TextView) itemView.findViewById(R.id.notify_online_pay_create_time);
             mPassBtn = (Button) itemView.findViewById(R.id.notify_online_pay_pass);
             mUnpassBtn = (Button) itemView.findViewById(R.id.notify_online_pay_unpass);
+            mOperateLayout = (LinearLayout) itemView.findViewById(R.id.notify_online_pay_ly_operate);
+            mTipBtn = (Button) itemView.findViewById(R.id.notify_online_pay_btn_tip);
+            mTipText = (TextView) itemView.findViewById(R.id.notify_online_pay_tip);
         }
     }
 

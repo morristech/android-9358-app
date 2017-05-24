@@ -13,9 +13,9 @@ import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
+import com.xmd.cashier.dal.net.response.StringResult;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -64,15 +64,15 @@ public class NotifyManager {
     }
 
     // 接受订单
-    public Subscription acceptOrder(String orderId, final Callback<BaseResult> callback) {
+    public Subscription acceptOrder(String orderId, final Callback<StringResult> callback) {
         return SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(),
                 AppConstants.SESSION_TYPE,
                 AppConstants.ORDER_RECORD_STATUS_ACCEPT, orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<StringResult>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(StringResult result) {
                         callback.onSuccess(result);
                     }
 
@@ -84,15 +84,15 @@ public class NotifyManager {
     }
 
     // 拒绝订单
-    public Subscription rejectOrder(String orderId, final Callback<BaseResult> callback) {
+    public Subscription rejectOrder(String orderId, final Callback<StringResult> callback) {
         return SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(),
                 AppConstants.SESSION_TYPE,
                 AppConstants.ORDER_RECORD_STATUS_REJECT, orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<StringResult>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(StringResult result) {
                         callback.onSuccess(result);
                     }
 
@@ -123,14 +123,14 @@ public class NotifyManager {
     }
 
     // 确认买单
-    public Subscription passOnlinePay(String orderId, String status, final Callback<BaseResult> callback) {
+    public Subscription passOnlinePay(String orderId, String status, final Callback<StringResult> callback) {
         return SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(),
                 orderId, status)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<StringResult>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(StringResult result) {
                         callback.onSuccess(result);
                     }
 
@@ -142,14 +142,14 @@ public class NotifyManager {
     }
 
     // 请到前台
-    public Subscription unPassOnlinePay(String orderId, String status, final Callback<BaseResult> callback) {
+    public Subscription unPassOnlinePay(String orderId, String status, final Callback<StringResult> callback) {
         return SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(),
                 orderId, status)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<StringResult>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(StringResult result) {
                         callback.onSuccess(result);
                     }
 

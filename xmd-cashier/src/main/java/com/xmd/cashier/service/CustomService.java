@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.R;
 import com.xmd.cashier.adapter.OnlinePayNotifyAdapter;
@@ -32,8 +31,10 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.net.NetworkSubscriber;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.BaseResult;
+import com.xmd.cashier.dal.net.response.StringResult;
+import com.xmd.cashier.exceptions.ServerException;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.widget.CustomNotifyLayoutManager;
@@ -131,7 +132,6 @@ public class CustomService extends Service {
     private Runnable notifyOnlinePay = new Runnable() {
         @Override
         public void run() {
-            XLogger.d("online pay sound & light ...");
             textToSound("客户已买单,请尽快处理");
             wakeupScreen();
             mOnlinePayHandler.postDelayed(this, ONLINE_PAY_INTERVAL);
@@ -140,7 +140,6 @@ public class CustomService extends Service {
     private Runnable notifyOrderRecord = new Runnable() {
         @Override
         public void run() {
-            XLogger.d("order record sound & light ...");
             textToSound("您有新的小摩豆预约订单");
             wakeupScreen();
             mOrderRecordHandler.postDelayed(this, ORDER_RECORD_INTERVAL);
@@ -357,9 +356,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_ACCEPT, info.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
+                        .subscribe(new NetworkSubscriber<StringResult>() {
                             @Override
-                            public void onCallbackSuccess(BaseResult result) {
+                            public void onCallbackSuccess(StringResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单成功", Toast.LENGTH_SHORT).show();
                                 if (adapter.getItemCount() == 0) {
@@ -374,7 +373,11 @@ public class CustomService extends Service {
                             @Override
                             public void onCallbackError(Throwable e) {
                                 e.printStackTrace();
-                                Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                                    adapter.updateError(position, e.getLocalizedMessage());
+                                } else {
+                                    Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
             }
@@ -384,9 +387,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_REJECT, info.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
+                        .subscribe(new NetworkSubscriber<StringResult>() {
                             @Override
-                            public void onCallbackSuccess(BaseResult result) {
+                            public void onCallbackSuccess(StringResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝成功", Toast.LENGTH_SHORT).show();
                                 if (adapter.getItemCount() == 0) {
@@ -399,7 +402,12 @@ public class CustomService extends Service {
                             @Override
                             public void onCallbackError(Throwable e) {
                                 e.printStackTrace();
-                                Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                                    // status=400
+                                    adapter.updateError(position, e.getLocalizedMessage());
+                                } else {
+                                    Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
             }
@@ -442,9 +450,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_PASS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
+                        .subscribe(new NetworkSubscriber<StringResult>() {
                             @Override
-                            public void onCallbackSuccess(BaseResult result) {
+                            public void onCallbackSuccess(StringResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认成功", Toast.LENGTH_SHORT).show();
                                 if (adapter.getItemCount() == 0) {
@@ -459,7 +467,12 @@ public class CustomService extends Service {
                             @Override
                             public void onCallbackError(Throwable e) {
                                 e.printStackTrace();
-                                Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                                    // status = 400
+                                    adapter.updateError(position, e.getLocalizedMessage());
+                                } else {
+                                    Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
             }
@@ -469,9 +482,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
+                        .subscribe(new NetworkSubscriber<StringResult>() {
                             @Override
-                            public void onCallbackSuccess(BaseResult result) {
+                            public void onCallbackSuccess(StringResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "已通知请到前台", Toast.LENGTH_SHORT).show();
                                 if (adapter.getItemCount() == 0) {
@@ -484,7 +497,12 @@ public class CustomService extends Service {
                             @Override
                             public void onCallbackError(Throwable e) {
                                 e.printStackTrace();
-                                Toast.makeText(MainApplication.getInstance().getApplicationContext(), "请到前台失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                                    // status = 400
+                                    adapter.updateError(position, e.getLocalizedMessage());
+                                } else {
+                                    Toast.makeText(MainApplication.getInstance().getApplicationContext(), "请到前台失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
             }

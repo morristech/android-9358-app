@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.R;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 
@@ -68,6 +70,19 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
         holder.mTechNo.setText(info.techSerialNo);
         holder.mServiceItem.setText(TextUtils.isEmpty(info.itemName) ? "到店选择" : info.itemName);
         holder.mPayDown.setText("￥" + info.downPayment);
+
+        if (AppConstants.STATUS_ERROR.equals(info.status)) {
+            //error
+            holder.mTipText.setVisibility(View.VISIBLE);
+            holder.mTipBtn.setVisibility(View.VISIBLE);
+            holder.mOperateLayout.setVisibility(View.GONE);
+            holder.mTipText.setText(info.tempErrMsg);
+        } else {
+            holder.mTipText.setVisibility(View.GONE);
+            holder.mTipBtn.setVisibility(View.GONE);
+            holder.mOperateLayout.setVisibility(View.VISIBLE);
+        }
+
         holder.mImageOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,11 +101,23 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
                 mCallBack.onReject(info, position);
             }
         });
+        holder.mTipBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallBack.onClose(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public void updateError(int position, String error) {
+        mData.get(position).status = AppConstants.STATUS_ERROR;
+        mData.get(position).tempErrMsg = error;
+        notifyItemChanged(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -105,6 +132,9 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
         private TextView mPayDown;
         private Button mAcceptBtn;
         private Button mRejectBtn;
+        private LinearLayout mOperateLayout;
+        private Button mTipBtn;
+        private TextView mTipText;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -119,6 +149,9 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
             mPayDown = (TextView) itemView.findViewById(R.id.notify_order_pay_down);
             mAcceptBtn = (Button) itemView.findViewById(R.id.notify_order_accept);
             mRejectBtn = (Button) itemView.findViewById(R.id.notify_order_reject);
+            mOperateLayout = (LinearLayout) itemView.findViewById(R.id.notify_order_ly_operate);
+            mTipBtn = (Button) itemView.findViewById(R.id.notify_order_btn_tip);
+            mTipText = (TextView) itemView.findViewById(R.id.notify_order_tip);
         }
     }
 

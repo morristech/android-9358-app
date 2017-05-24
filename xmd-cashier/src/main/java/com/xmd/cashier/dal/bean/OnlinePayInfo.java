@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class OnlinePayInfo implements Serializable {
     public String id;       //买单记录ID
-    public String status;   //确认状态:paid-未确认;pass-确认通过;unpass-确认异常
+    public String status;   //确认状态:paid-未确认;pass-确认通过;unpass-确认异常  temp:error
     public String payId;    //交易支付号
 
     public String userAvatarUrl;    //用户头像
@@ -34,4 +34,5 @@ public class OnlinePayInfo implements Serializable {
     // TODO 实收金额 优惠金额 实收金额
 
     public int tempNo;   //用来标识是此次列表中的第几个元素
+    public String tempErrMsg;
 }

@@ -75,7 +75,7 @@ public class OrderRecordActivity extends BaseActivity implements OrderRecordCont
         showToolbar(R.id.toolbar, R.string.title_order_record);
         mSearchInput = (EditText) findViewById(R.id.et_list_search);  //搜索
         mFilterText = (TextView) findViewById(R.id.tv_list_filter); //筛选
-        mFilterText.setText(AppConstants.STATUS_ALL);
+        mFilterText.setText(AppConstants.STATUS_ALL_TEXT);
         mPopFilter = new ArrayPopupWindow<>(this, mFilterText, null,
                 getWindowManager().getDefaultDisplay().getWidth() / 3,
                 R.style.anim_top_to_bottom_style,
@@ -137,8 +137,8 @@ public class OrderRecordActivity extends BaseActivity implements OrderRecordCont
             public void onRefresh() {
                 mSearchInput.setText(null);
                 mPresenter.setSearch(null);
-                mFilterText.setText(AppConstants.STATUS_ALL);
-                mPresenter.setFilter(AppConstants.ORDER_RECORD_STATUS_FILTER.get(AppConstants.STATUS_ALL));
+                mFilterText.setText(AppConstants.STATUS_ALL_TEXT);
+                mPresenter.setFilter(AppConstants.ORDER_RECORD_STATUS_FILTER.get(AppConstants.STATUS_ALL_TEXT));
                 mPresenter.load(false);
             }
         });
@@ -216,8 +216,8 @@ public class OrderRecordActivity extends BaseActivity implements OrderRecordCont
         if (TextUtils.isEmpty(search)) {
             showToast("请输入搜索条件");
         } else {
-            mFilterText.setText(AppConstants.STATUS_ALL);
-            mPresenter.setFilter(AppConstants.ORDER_RECORD_STATUS_FILTER.get(AppConstants.STATUS_ALL));
+            mFilterText.setText(AppConstants.STATUS_ALL_TEXT);
+            mPresenter.setFilter(AppConstants.ORDER_RECORD_STATUS_FILTER.get(AppConstants.STATUS_ALL_TEXT));
             mPresenter.setSearch(search);
             mPresenter.load(false);
         }

@@ -123,17 +123,18 @@ public class AppConstants {
     public static final String ONLINE_PAY_STATUS_UNPASS = "unpass";
     public static final String ONLINE_PAY_STATUS_UNPASS_TEXT = "到前台";
 
-    public static final String STATUS_ALL = "全部";
+    public static final String STATUS_ALL_TEXT = "全部";
+    public static final String STATUS_ERROR = "error";
 
     public static final Map<String, String> ONLINE_PAY_STATUS_FILTER = new LinkedHashMap<String, String>() {{
-        put(STATUS_ALL, null);
+        put(STATUS_ALL_TEXT, null);
         put(ONLINE_PAY_STATUS_PAID_TEXT, ONLINE_PAY_STATUS_PAID);
         put(ONLINE_PAY_STATUS_PASS_TEXT, ONLINE_PAY_STATUS_PASS);
         put(ONLINE_PAY_STATUS_UNPASS_TEXT, ONLINE_PAY_STATUS_UNPASS);
     }};
 
     public static final Map<String, String> ORDER_RECORD_STATUS_FILTER = new LinkedHashMap<String, String>() {{
-        put(STATUS_ALL, null);
+        put(STATUS_ALL_TEXT, null);
         put(ORDER_RECORD_STATUS_SUBMIT_TEXT, ORDER_RECORD_STATUS_SUBMIT);
         put(ORDER_RECORD_STATUS_ACCEPT_TEXT, ORDER_RECORD_STATUS_ACCEPT);
         put(ORDER_RECORD_STATUS_REJECT_TEXT, ORDER_RECORD_STATUS_REJECT);
