@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.xmd.app.event.EventLogout;
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.event.EventLogout;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;

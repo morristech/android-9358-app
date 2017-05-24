@@ -1,14 +1,15 @@
-package com.xmd.technician.event;
+package com.xmd.app.event;
 
 /**
- * Created by heyangya on 17-2-8.
+ * Created by heyangya on 17-5-24.
+ * 登录事件，每次重新启动时也算一次登录
  */
 
-public class EventLogout {
+public class EventLogin {
     private String token;
     private String userId;
 
-    public EventLogout(String token, String userId) {
+    public EventLogin(String token, String userId) {
         this.token = token;
         this.userId = userId;
     }
@@ -27,5 +28,13 @@ public class EventLogout {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "EventLogin{" +
+                "token='" + token + '\'' +
+                ", userId='" + userId + '\'' +
+                '}';
     }
 }

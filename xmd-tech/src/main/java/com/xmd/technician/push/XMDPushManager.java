@@ -4,10 +4,10 @@ import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.common.DESede;
-import com.xmd.technician.event.EventLogin;
-import com.xmd.technician.event.EventLogout;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.model.LoginTechnician;

@@ -1,4 +1,4 @@
-package com.xmd.app.aliveReport;
+package com.xmd.app.alive;
 
 import android.app.Notification;
 import android.app.Service;
@@ -15,6 +15,8 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.xmd.app.Init;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,7 +46,7 @@ public class AliveReportService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        XLogger.i(">>> AliveReportService--start---");
+        XLogger.i(">>> AliveReportService--create---");
         EventBus.getDefault().register(this);
         mWorkThread = new HandlerThread("AliveReportService");
         mWorkThread.start();
@@ -61,21 +63,21 @@ public class AliveReportService extends Service {
             mRequestCall = null;
         }
         mWorkThread.quit();
-        XLogger.i("<<< AliveReportService--end---");
+        XLogger.i("<<< AliveReportService--destroy---");
     }
 
     @Subscribe
-    public void onEvent(Event event) {
-        XLogger.d("---AliveReportService event:" + event);
-        switch (event.getCmd()) {
-            case Event.CMD_START:
-                mHandler.removeMessages(MSG_REPORT);
-                mHandler.sendMessage(createStartMessage(event.getToken()));
-                break;
-            case Event.CMD_STOP:
-                mHandler.removeMessages(MSG_REPORT);
-                break;
-        }
+    public void onLogin(EventLogin event) {
+        XLogger.i(">>> AliveReportService--start---");
+        mHandler.removeMessages(MSG_REPORT);
+        mHandler.sendMessage(createStartMessage(event.getToken()));
+    }
+
+    @Subscribe
+    public void onLogout(EventLogout event) {
+        mHandler.removeMessages(MSG_REPORT);
+        mLastReportTime = 0;
+        XLogger.i("<<< AliveReportService--stop---");
     }
 
     private static Message createStartMessage(String token) {
@@ -96,9 +98,10 @@ public class AliveReportService extends Service {
             switch (msg.what) {
                 case MSG_REPORT:
                     if (!mLastReportSuccess || System.currentTimeMillis() - REPORT_INTERVAL > mLastReportTime) {
+                        mLastReportTime = System.currentTimeMillis();
                         reportAlive((String) msg.obj);
                     }
-                    sendMessageDelayed(createStartMessage((String) msg.obj), 3000);
+                    sendMessageDelayed(createStartMessage((String) msg.obj), 30000);
                     break;
             }
         }
@@ -125,7 +128,6 @@ public class AliveReportService extends Service {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 mLastReportSuccess = response.isSuccessful();
-                mLastReportTime = System.currentTimeMillis();
                 XLogger.i("<<<reportAlive: " + token + (mLastReportSuccess ? " sucess" : " failed"));
             }
         });
