@@ -20,7 +20,8 @@ public class OnceCardItemBean implements Parcelable{
     public String shareDescription; //分享描述语言
     public String sellingPrice; //销售价格
     public String depositRate;//折扣率
-    public int type;
+    public String discountPrice;//特卖价
+    public int type;  //1-单项购买赠数;2-单项购买直减;3-混合购买赠送;4-混合购买直减;5-积分礼品
     public int position;
     public int selectedStatus;
 
@@ -28,7 +29,7 @@ public class OnceCardItemBean implements Parcelable{
 
     }
 
-    public OnceCardItemBean(String id,String cardType,int type,int position,String name,String imageUrl,String comboDescription,String shareDescription,String techRoyalty,String shareUrl,String sellingPrice,String depositRate) {
+    public OnceCardItemBean(String id,String cardType,int type,int position,String name,String imageUrl,String comboDescription,String shareDescription,String techRoyalty,String shareUrl,String sellingPrice,String discountPrice,String depositRate,int selectedStatus) {
         this.id = id;
         this.cardType = cardType;
         this.type = type;
@@ -40,7 +41,9 @@ public class OnceCardItemBean implements Parcelable{
         this.shareUrl = shareUrl;
         this.shareDescription = shareDescription;
         this.sellingPrice = sellingPrice;
+        this.discountPrice = discountPrice;
         this.depositRate = depositRate;
+        this.selectedStatus = selectedStatus;
     }
 
 
@@ -61,6 +64,7 @@ public class OnceCardItemBean implements Parcelable{
         dest.writeString(this.shareDescription);
         dest.writeString(this.sellingPrice);
         dest.writeString(this.depositRate);
+        dest.writeString(this.discountPrice);
         dest.writeInt(this.type);
         dest.writeInt(this.position);
         dest.writeInt(this.selectedStatus);
@@ -77,6 +81,7 @@ public class OnceCardItemBean implements Parcelable{
         this.shareDescription = in.readString();
         this.sellingPrice = in.readString();
         this.depositRate = in.readString();
+        this.discountPrice = in.readString();
         this.type = in.readInt();
         this.position = in.readInt();
         this.selectedStatus = in.readInt();

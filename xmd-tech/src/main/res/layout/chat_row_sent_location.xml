@@ -28,7 +28,7 @@
 
         <LinearLayout
             android:id="@+id/bubble"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/bubble_width"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/small_space"
             android:layout_toLeftOf="@id/avatar"
@@ -36,7 +36,7 @@
 
             <TextView
                 android:id="@+id/tv_location"
-                android:layout_width="140dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ease_location_msg"
                 android:gravity="center|left"

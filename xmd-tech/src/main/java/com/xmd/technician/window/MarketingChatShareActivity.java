@@ -104,9 +104,12 @@ public class MarketingChatShareActivity extends BaseActivity implements View.OnC
                 marketingList.add(result.respData.get(i).list);
             }
             expandableAdapter.setData(result.respData, marketingList);
-            for (int i = 0; i < expandableAdapter.getGroupCount(); i++) {
-                expandableListView.expandGroup(i, true);
+            if(marketingList.size()>0){
+                expandableListView.expandGroup(0, true);
+            }else{
+                viewEmptyView.setStatus(EmptyView.Status.Empty);
             }
+
 
         }else{
             viewEmptyView.setStatus(EmptyView.Status.Failed);

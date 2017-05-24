@@ -109,7 +109,13 @@ public class OnceCardListFragment extends BaseFragment {
                 params.put(Constant.PARAM_SHARE_DESCRIPTION, bean.shareDescription);
                 params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_COUPON);
                 params.put(Constant.PARAM_ACT_ID, "");
-                params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "次卡");
+                if(bean.cardType.equals(Constant.ITEM_CARD_TYPE)){
+                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "单项次卡");
+                }else if(bean.cardType.equals(Constant.ITEM_PACKAGE_TYPE)){
+                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "超值套餐");
+                }else{
+                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "积分礼品");
+                }
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
             }
         });
