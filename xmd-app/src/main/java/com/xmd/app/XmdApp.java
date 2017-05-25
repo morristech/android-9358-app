@@ -5,6 +5,7 @@ import android.content.Context;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.alive.InitAliveReport;
 import com.xmd.app.appointment.InitAppointment;
+import com.xmd.app.net.RetrofitFactory;
 
 import java.util.Set;
 
@@ -23,6 +24,13 @@ public class XmdApp {
     private static Context sApplicationContext;
     private static String sServer;
 
+    /**
+     * 初始化模块
+     *
+     * @param applicationContext app application contex
+     * @param server             服务器地址 ， http://xxx
+     * @param functions          需要初始化的功能模块
+     */
     public static void init(Context applicationContext, String server, Set<String> functions) {
         sApplicationContext = applicationContext;
         sServer = server;
@@ -42,8 +50,17 @@ public class XmdApp {
         }
     }
 
+    /**
+     * 切换服务器环境时调用
+     * @param server 服务器地址 : http://xxx
+     */
     public static void setServer(String server) {
-        sServer = server;
+        if (sServer != null && !sServer.equals(server)) {
+            sServer = server;
+            RetrofitFactory.clear();
+        } else {
+            sServer = server;
+        }
     }
 
 
