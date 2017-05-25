@@ -9,8 +9,7 @@ import rx.schedulers.Schedulers;
  * Created by heyangya on 17-5-25.
  */
 
-public class NetworkTool {
-
+public class NetworkEngine {
     public static <T> Subscription doRequest(Observable<T> observable, NetworkSubscriber<T> subscriber) {
         return observable
                 .subscribeOn(Schedulers.io())

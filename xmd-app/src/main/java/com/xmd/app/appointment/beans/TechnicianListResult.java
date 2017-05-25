@@ -9,5 +9,5 @@ import java.util.List;
  * 技师信息接口返回
  */
 
-public class TechnicianResult extends BaseBean<List<Technician>> {
+public class TechnicianListResult extends BaseBean<List<Technician>> {
 }

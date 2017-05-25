@@ -17,8 +17,8 @@ import com.xmd.app.XmdApp;
 import com.xmd.app.beans.BaseBean;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.app.net.NetworkEngine;
 import com.xmd.app.net.NetworkSubscriber;
-import com.xmd.app.net.NetworkTool;
 import com.xmd.app.net.RetrofitFactory;
 
 import org.greenrobot.eventbus.EventBus;
@@ -112,7 +112,7 @@ public class AliveReportService extends Service {
     private static void reportAlive(final String token) {
         XLogger.i(">>>reportAlive: " + token);
         mRequestSubscription =
-                NetworkTool.doRequest(
+                NetworkEngine.doRequest(
                         RetrofitFactory.getService(NetService.class).reportAlive(token, DeviceInfoUtils.getDeviceId(XmdApp.getContext())),
                         new NetworkSubscriber<BaseBean>() {
                             @Override

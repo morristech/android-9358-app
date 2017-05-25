@@ -15,7 +15,6 @@ import com.xmd.technician.chat.event.DeleteConversionResult;
 import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.model.LoginTechnician;
@@ -155,18 +154,12 @@ public class ChatController extends AbstractController {
                                     if(technician.isLogin()){
                                         RxBus.getInstance().post(new EventEmChatLoginSuccess(false));
                                     }else{
-                                        XToast.show("无法初始化聊天系统:" + i + "," + s);
+                                        XToast.showInNotUI("无法初始化聊天系统:" + i + "," + s);
                                         return;
                                     }
 
                                 }
-                                ThreadPoolManager.postToUI(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        XToast.show("初始化聊天系统失败:" + i + "," + s);
-                                    }
-                                });
-
+                                XToast.showInNotUI("初始化聊天系统失败:" + i + "," + s);
                             }
 
                             @Override
