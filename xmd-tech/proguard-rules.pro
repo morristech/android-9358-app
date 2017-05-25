@@ -85,8 +85,8 @@
 -keep class javax.annotation.** { *; }
 
 # rx bus
--keep class com.xmd.technician.onlinepaynotify.event.** {*;}
--keep class com.xmd.technician.event.** {*;}
+-keep class com.xmd.technician.onlinepaynotify.appointmentEvent.** {*;}
+-keep class com.xmd.technician.appointmentEvent.** {*;}
 
 # Weixin
 -keep class com.tencent.mm.sdk.** {

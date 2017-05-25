@@ -1,5 +1,9 @@
 package com.xmd.app.appointment;
 
+import android.databinding.BindingAdapter;
+import android.text.TextUtils;
+import android.widget.TextView;
+
 import java.io.Serializable;
 
 /**
@@ -7,7 +11,7 @@ import java.io.Serializable;
  */
 
 public class AppointmentData implements Serializable {
-    private String serviceItem; //预约项目
+    private String serviceName; //预约项目
     private Integer servicePrice; //项目价格
     private String time; //到店时间
     private int duration; //持续时间，分钟
@@ -15,14 +19,18 @@ public class AppointmentData implements Serializable {
     private String customerPhone;//客户电话
     private Integer fontMoney; //订金
 
+    private String techName;
+    private String techAvatar;
+    private String techNo;
+
     private String token; //订单生成者token
 
-    public String getServiceItem() {
-        return serviceItem;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public void setServiceItem(String serviceItem) {
-        this.serviceItem = serviceItem;
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public Integer getServicePrice() {
@@ -81,17 +89,49 @@ public class AppointmentData implements Serializable {
         this.token = token;
     }
 
-    @Override
-    public String toString() {
-        return "AppointmentData{" +
-                "serviceItem='" + serviceItem + '\'' +
-                ", servicePrice=" + servicePrice +
-                ", time='" + time + '\'' +
-                ", duration=" + duration +
-                ", customerName='" + customerName + '\'' +
-                ", customerPhone='" + customerPhone + '\'' +
-                ", fontMoney=" + fontMoney +
-                ", token='" + token + '\'' +
-                '}';
+    public String getTechName() {
+        return techName;
+    }
+
+    public void setTechName(String techName) {
+        this.techName = techName;
+    }
+
+    public String getTechAvatar() {
+        return techAvatar;
+    }
+
+    public void setTechAvatar(String techAvatar) {
+        this.techAvatar = techAvatar;
+    }
+
+    public String getTechNo() {
+        return techNo;
+    }
+
+    public void setTechNo(String techNo) {
+        this.techNo = techNo;
+    }
+
+    @BindingAdapter("techName")
+    public static void setTechName(TextView view, AppointmentData data) {
+        if (TextUtils.isEmpty(data.getTechName())) {
+            view.setText("技师待定");
+            return;
+        }
+        if (TextUtils.isEmpty(data.getTechNo())) {
+            view.setText(data.getTechName());
+        } else {
+            view.setText(data.getTechName() + "[" + data.getTechNo() + "]");
+        }
+    }
+
+    @BindingAdapter("servicePrice")
+    public static void setServicePrice(TextView view, AppointmentData data) {
+        if (data.getServicePrice() == null) {
+            view.setText("待定");
+        } else {
+            view.setText(data.getServicePrice() + "元");
+        }
     }
 }

@@ -1,37 +1,49 @@
 package com.xmd.app.appointment;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
+import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
 import com.xmd.app.R;
-import com.xmd.app.event.EventTokenExpired;
+import com.xmd.app.databinding.ActivityAppointmentBinding;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
-public class AppointmentActivity extends AppCompatActivity {
+public class AppointmentActivity extends BaseActivity {
 
+    private ActivityAppointmentBinding mBinding;
     private AppointmentData mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_appointment);
-        EventBus.getDefault().register(this);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_appointment);
 
         mData = (AppointmentData) getIntent().getSerializableExtra(Constants.EXTRA_DATA);
+        mBinding.setData(mData);
+        mBinding.setHandler(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        EventBus.getDefault().post(new Event(Event.CMD_HIDE, mData));
+        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, mData));
     }
 
-    @Subscribe
-    public void onTokenExpired(EventTokenExpired event) {
-        finish();
+    public void onClickSelectTech() {
+
+    }
+
+    public void onClickSelectService() {
+
+    }
+
+    public void onClickSelectTime() {
+
+    }
+
+    public void onClickSubmit() {
+
     }
 }

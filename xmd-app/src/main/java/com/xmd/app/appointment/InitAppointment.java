@@ -22,9 +22,9 @@ public class InitAppointment implements IInit {
     }
 
     @Subscribe
-    public void onEvent(Event event) {
+    public void onEvent(AppointmentEvent event) {
         switch (event.getCmd()) {
-            case Event.CMD_SHOW:
+            case AppointmentEvent.CMD_SHOW:
                 Intent intent = new Intent(Init.getContext(), AppointmentActivity.class);
                 intent.putExtra(Constants.EXTRA_DATA, event.getData());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

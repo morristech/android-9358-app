@@ -1,17 +1,14 @@
-package com.xmd.app.appointment;
+package com.xmd.app.event;
 
 /**
- * Created by heyangya on 17-5-23.
+ * Created by heyangya on 17-5-24.
  */
 
-public class Event {
-    public static final int CMD_SHOW = 1;
-    public static final int CMD_HIDE = 2;
-
+public class EventCommon<T> {
     private int cmd;
-    private AppointmentData data;
+    private T data;
 
-    public Event(int cmd, AppointmentData data) {
+    public EventCommon(int cmd, T data) {
         this.cmd = cmd;
         this.data = data;
     }
@@ -24,17 +21,17 @@ public class Event {
         this.cmd = cmd;
     }
 
-    public AppointmentData getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(AppointmentData data) {
+    public void setData(T data) {
         this.data = data;
     }
 
     @Override
     public String toString() {
-        return "Event{" +
+        return "AppointmentEvent{" +
                 "cmd=" + cmd +
                 ", data=" + data +
                 '}';

@@ -129,8 +129,10 @@ public class TechApplication extends MultiDexApplication {
                 DataRefreshService.start();
                 HelloReplyService.start();
 
+                //模块功能初始化
                 Set<String> functions = new HashSet<>();
                 functions.add(Init.FUNCTION_ALIVE_REPORT);
+                functions.add(Init.FUNCTION_APPOINTMENT);
                 Init.init(this, functions);
 
                 long end = System.currentTimeMillis();
