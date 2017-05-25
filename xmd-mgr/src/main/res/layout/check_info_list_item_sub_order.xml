@@ -138,6 +138,30 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="所选项目"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/coupon_list_item_text_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/inter_space"
+                    android:text="@{((PayOrderDetailBean)data.info).serviceItemName}"
+                    android:textColor="@color/value_color"
+                    android:textSize="@dimen/coupon_list_item_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/list_item_item_margin_top"
+                android:orientation="horizontal"
+                android:visibility="@{data.showDetail?View.VISIBLE:View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="预约时间"
                     android:textColor="@color/label_color"
                     android:textSize="@dimen/coupon_list_item_text_size" />
@@ -151,7 +175,6 @@
                     android:textSize="@dimen/coupon_list_item_text_size" />
 
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 

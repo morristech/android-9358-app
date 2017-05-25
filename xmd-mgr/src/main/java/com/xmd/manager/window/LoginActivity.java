@@ -10,6 +10,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.shidou.commonlibrary.network.OkHttpUtil;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
@@ -25,6 +27,8 @@ import com.xmd.manager.service.RetrofitServiceFactory;
 import com.xmd.manager.service.response.LoginResult;
 import com.xmd.manager.widget.ClearableEditText;
 import com.xmd.manager.widget.LoadingDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -151,6 +155,10 @@ public class LoginActivity extends BaseActivity {
             OkHttpUtil.getInstance().setCommonHeader("token", loginResult.token);
             SharedPreferenceHelper.saveUser(loginResult);
             SharedPreferenceHelper.setMultiClubToken(loginResult.token);
+
+            EventBus.getDefault().removeStickyEvent(EventLogout.class);
+            EventBus.getDefault().postSticky(new EventLogin(loginResult.token, loginResult.userId));
+
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID);
             if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles)) {
                 startActivity(new Intent(LoginActivity.this, ClubListActivity.class));

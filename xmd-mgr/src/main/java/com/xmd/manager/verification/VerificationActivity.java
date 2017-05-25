@@ -124,16 +124,6 @@ public class VerificationActivity extends BaseActivity implements VerificationLi
                 mBinding.itemsLimit.setText(itemsBuild.toString());
             }
         }
-
-        if (mData.getInfo() instanceof PayOrderDetailBean) {
-            PayOrderDetailBean info = (PayOrderDetailBean) mData.getInfo();
-
-            if (!TextUtils.isEmpty(info.serviceItemName)) {
-                mBinding.tipItemsLimit.setVisibility(View.VISIBLE);
-                mBinding.itemsLimit.setVisibility(View.VISIBLE);
-                mBinding.itemsLimit.setText(info.serviceItemName);
-            }
-        }
     }
 
     @Override

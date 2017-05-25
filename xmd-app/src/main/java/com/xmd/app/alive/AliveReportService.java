@@ -14,7 +14,7 @@ import android.support.annotation.Nullable;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
-import com.xmd.app.Init;
+import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 
@@ -39,7 +39,8 @@ public class AliveReportService extends Service {
     private CmdHandler mHandler;
     private static Call mRequestCall;
     private static final int MSG_REPORT = 1;
-    private static final int REPORT_INTERVAL = 10 * 60 * 1000;
+    private static final int REPORT_INTERVAL = 5 * 60 * 1000;
+    private static final int CHECK_INTERVAL = 30000;
     private static long mLastReportTime;
     private static boolean mLastReportSuccess;
 
@@ -47,10 +48,10 @@ public class AliveReportService extends Service {
     public void onCreate() {
         super.onCreate();
         XLogger.i(">>> AliveReportService--create---");
-        EventBus.getDefault().register(this);
         mWorkThread = new HandlerThread("AliveReportService");
         mWorkThread.start();
         mHandler = new CmdHandler(mWorkThread.getLooper());
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -66,17 +67,21 @@ public class AliveReportService extends Service {
         XLogger.i("<<< AliveReportService--destroy---");
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     public void onLogin(EventLogin event) {
         XLogger.i(">>> AliveReportService--start---");
         mHandler.removeMessages(MSG_REPORT);
         mHandler.sendMessage(createStartMessage(event.getToken()));
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     public void onLogout(EventLogout event) {
         mHandler.removeMessages(MSG_REPORT);
         mLastReportTime = 0;
+        if (mRequestCall != null) {
+            mRequestCall.cancel();
+            mRequestCall = null;
+        }
         XLogger.i("<<< AliveReportService--stop---");
     }
 
@@ -101,7 +106,7 @@ public class AliveReportService extends Service {
                         mLastReportTime = System.currentTimeMillis();
                         reportAlive((String) msg.obj);
                     }
-                    sendMessageDelayed(createStartMessage((String) msg.obj), 30000);
+                    sendMessageDelayed(createStartMessage((String) msg.obj), CHECK_INTERVAL);
                     break;
             }
         }
@@ -111,10 +116,10 @@ public class AliveReportService extends Service {
         XLogger.i(">>>reportAlive: " + token);
         FormBody formBody = new FormBody.Builder()
                 .add("token", token)
-                .add("deviceId", DeviceInfoUtils.getDeviceId(Init.getContext()))
+                .add("deviceId", DeviceInfoUtils.getDeviceId(XmdApp.getContext()))
                 .build();
         Request request = new Request.Builder()
-                .url("http://www.baidu.com/") //FIXME
+                .url(XmdApp.getServer() + "/api/v2/app/heartbeat")
                 .post(formBody)
                 .build();
         mRequestCall = OkHttpUtil.getInstance().getClient().newCall(request);

@@ -215,6 +215,7 @@ public class VerificationListActivity extends BaseActivity implements Verificati
         mVerifying = true;
         verificationSuccess = 0;
         verificationFail = 0;
+        mFailedVerificationList.clear();
         verificationCount = mSelectedVerificationList.size();
         for (int i = 0; i < mSelectedVerificationList.size(); i++) {
             Map<String, String> params = new HashMap<>();

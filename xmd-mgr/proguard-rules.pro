@@ -149,3 +149,9 @@
 -keep class com.tencent.**{*;}
 -dontwarn FileCloud.**
 -keep class FileCloud.**{*;}
+
+-dontwarn com.xmd.app.**
+-keep class com.xmd.app.** {*;}
+
+-dontwarn org.greenrobot.**
+-keep class org.greenrobot.** {*;}

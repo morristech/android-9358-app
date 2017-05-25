@@ -12,6 +12,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.XmdApp;
 import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ToastUtils;
@@ -19,6 +20,8 @@ import com.xmd.manager.common.Utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by sdcm on 15-10-22.
@@ -85,6 +88,11 @@ public class ManagerApplication extends Application {
                 long start = System.currentTimeMillis();
 
                 Manager.getInstance().initialize(appContext);
+
+                //模块功能初始化
+                Set<String> functions = new HashSet<>();
+                functions.add(XmdApp.FUNCTION_ALIVE_REPORT);
+                XmdApp.init(this, SharedPreferenceHelper.getServerHost(), functions);
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");

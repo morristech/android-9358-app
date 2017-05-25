@@ -141,3 +141,8 @@
 -dontwarn com.iboxpay.**
 -keep class com.iboxpay.**{*;}
 
+-dontwarn com.xmd.app.**
+-keep class com.xmd.app.** {*;}
+
+-dontwarn org.greenrobot.**
+-keep class org.greenrobot.** {*;}

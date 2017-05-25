@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.BuildConfig;
 import com.xmd.manager.ClubData;
@@ -579,20 +578,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 startActivity(intent);
             }
         });
-        badCommentList.setLayoutManager(new LinearLayoutManager(getActivity()) {
-            @Override
-            public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-                super.onMeasure(recycler, state, widthSpec, heightSpec);
-                XLogger.i("onMeasure:==" + View.MeasureSpec.getSize(widthSpec) + "x" + View.MeasureSpec.getSize(heightSpec));
-                XLogger.i("onMeasure:" + badCommentList.getMeasuredWidth() + "x" + badCommentList.getMeasuredHeight());
-            }
-
-            @Override
-            public void onLayoutCompleted(RecyclerView.State state) {
-                super.onLayoutCompleted(state);
-                XLogger.i("onLayoutCompleted:" + badCommentList.getMeasuredWidth() + "x" + badCommentList.getMeasuredHeight());
-            }
-        });
+        badCommentList.setLayoutManager(new LinearLayoutManager(getActivity()));
         badCommentList.setAdapter(badCommentListAdapter);
     }
 

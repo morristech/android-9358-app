@@ -3,6 +3,7 @@ package com.xmd.manager;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
+import com.xmd.app.XmdApp;
 import com.xmd.manager.service.response.LoginResult;
 
 /**
@@ -151,6 +152,7 @@ public class SharedPreferenceHelper {
     }
 
     public static void setServerHost(String serverHost) {
+        XmdApp.setServer(serverHost);
         mSettingPreference.edit().putString(KEY_SERVER_HOST, serverHost).apply();
     }
 

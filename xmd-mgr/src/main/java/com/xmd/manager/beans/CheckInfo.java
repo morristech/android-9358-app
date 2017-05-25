@@ -104,7 +104,7 @@ public class CheckInfo implements Parcelable {
     }
 
     public Boolean getValid() {
-        return valid == null ? false : valid;
+        return getCode() != null && (valid == null ? false : valid);
     }
 
     public void setValid(Boolean valid) {

@@ -3,7 +3,7 @@ package com.xmd.app.alive;
 import android.content.Context;
 import android.content.Intent;
 
-import com.xmd.app.IInit;
+import com.xmd.app.IFunctionInit;
 
 /**
  * Created by heyangya on 17-5-23.
@@ -13,7 +13,7 @@ import com.xmd.app.IInit;
  * 2.停止汇报
  */
 
-public class InitAliveReport implements IInit {
+public class InitAliveReport implements IFunctionInit {
     @Override
     public void init(Context context) {
         Intent service = new Intent(context, AliveReportService.class);
