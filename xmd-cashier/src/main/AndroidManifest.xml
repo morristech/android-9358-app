@@ -132,6 +132,10 @@
         <activity
             android:name=".activity.ScanPayResultActivity"
             android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.SettingActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

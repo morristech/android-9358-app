@@ -19,6 +19,10 @@ public interface MainContract {
 
         void onClickLogout();
 
+        void onClickSetting();
+
+        void onClickVersion();
+
         void onCashierLayoutClick();
 
         void onOrderLayoutClick();

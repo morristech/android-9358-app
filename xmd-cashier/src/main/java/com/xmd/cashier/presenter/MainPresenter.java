@@ -107,6 +107,16 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
+    public void onClickSetting() {
+        UiNavigation.gotoSettingActivity(mContext);
+    }
+
+    @Override
+    public void onClickVersion() {
+        // do nothing
+    }
+
+    @Override
     public void onCashierLayoutClick() {
         UiNavigation.gotoCashierActivity(mContext);
     }

@@ -8,7 +8,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,6 +42,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private RelativeLayout mMainRecordLayout;
 
     private NestedScrollView mScrollView;
+
+    private CircleImageView mDrawerAvatar;
+    private TextView mDrawerName;
+    private TextView mDrawerClubName;
+    private TextView mDrawerVersion;
 
     private int mHeadHeight;
 
@@ -104,6 +108,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mMainOrderLayout = (RelativeLayout) findViewById(R.id.layout_main_order);
         mMainOnlinePayLayout = (RelativeLayout) findViewById(R.id.layout_main_online_pay);
         mMainRecordLayout = (RelativeLayout) findViewById(R.id.layout_main_record);
+
+        mDrawerAvatar = (CircleImageView) findViewById(R.id.imv_club_icon);
+        mDrawerClubName = (TextView) findViewById(R.id.tv_club_name);
+        mDrawerName = (TextView) findViewById(R.id.tv_userName);
+        mDrawerVersion = (TextView) findViewById(R.id.tv_versionName);
 
         mScrollView = (NestedScrollView) findViewById(R.id.scroll_main);
 
@@ -184,6 +193,14 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mPresenter.onClickLogout();
     }
 
+    public void onClickSetting(View view) {
+        mPresenter.onClickSetting();
+    }
+
+    public void onClickVersion(View view) {
+        mPresenter.onClickVersion();
+    }
+
     @Override
     public void onNavigationMenu() {
         mDrawerLayoutView.openDrawer(GravityCompat.START);
@@ -196,23 +213,23 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void showVersionName(String versionName) {
-        ((TextView) findViewById(R.id.tv_versionName)).setText(versionName);
+        mDrawerVersion.setText("版本 " + versionName);
     }
 
     @Override
     public void showUserName(String userName) {
-        ((TextView) findViewById(R.id.tv_userName)).setText(userName);
+        mDrawerName.setText(userName);
     }
 
     @Override
     public void showClubName(String clubName) {
-        ((TextView) findViewById(R.id.tv_club_name)).setText(clubName);
+        mDrawerClubName.setText(clubName);
         mToolBarTitle.setText(clubName);
     }
 
     @Override
     public void showClubIcon(String clubIcon) {
-        Glide.with(this).load(clubIcon).placeholder(R.drawable.ic_club).into((ImageView) findViewById(R.id.imv_club_icon));
+        Glide.with(this).load(clubIcon).dontAnimate().placeholder(R.drawable.ic_club).into(mDrawerAvatar);
         Glide.with(this).load(clubIcon).dontAnimate().placeholder(R.drawable.ic_club).into(mToolBarAvatar);
     }
 

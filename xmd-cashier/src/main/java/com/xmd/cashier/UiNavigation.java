@@ -22,6 +22,7 @@ import com.xmd.cashier.activity.PointsPhoneActivity;
 import com.xmd.cashier.activity.RecordNavigationActivity;
 import com.xmd.cashier.activity.ScanPayActivity;
 import com.xmd.cashier.activity.ScanPayResultActivity;
+import com.xmd.cashier.activity.SettingActivity;
 import com.xmd.cashier.activity.SettleCurrentActivity;
 import com.xmd.cashier.activity.SettleDetailActivity;
 import com.xmd.cashier.activity.SettleRecordActivity;
@@ -222,6 +223,12 @@ public class UiNavigation {
     public static void gotoScanPayResultActivity(Context context, OnlinePayInfo info) {
         Intent intent = new Intent(context, ScanPayResultActivity.class);
         intent.putExtra(AppConstants.EXTRA_ONLINE_PAY_INFO, info);
+        context.startActivity(intent);
+    }
+
+    // 系统设置
+    public static void gotoSettingActivity(Context context) {
+        Intent intent = new Intent(context, SettingActivity.class);
         context.startActivity(intent);
     }
 }
