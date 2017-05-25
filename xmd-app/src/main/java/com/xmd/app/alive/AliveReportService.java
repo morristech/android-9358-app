@@ -12,22 +12,19 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 
 import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.xmd.app.XmdApp;
+import com.xmd.app.beans.BaseBean;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.app.net.NetworkSubscriber;
+import com.xmd.app.net.NetworkTool;
+import com.xmd.app.net.RetrofitFactory;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.Request;
-import okhttp3.Response;
+import rx.Subscription;
 
 /**
  * Created by heyangya on 17-5-23.
@@ -37,7 +34,7 @@ import okhttp3.Response;
 public class AliveReportService extends Service {
     private HandlerThread mWorkThread;
     private CmdHandler mHandler;
-    private static Call mRequestCall;
+    private static Subscription mRequestSubscription;
     private static final int MSG_REPORT = 1;
     private static final int REPORT_INTERVAL = 5 * 60 * 1000;
     private static final int CHECK_INTERVAL = 30000;
@@ -59,9 +56,9 @@ public class AliveReportService extends Service {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         mHandler.removeMessages(MSG_REPORT);
-        if (mRequestCall != null) {
-            mRequestCall.cancel();
-            mRequestCall = null;
+        if (mRequestSubscription != null) {
+            mRequestSubscription.unsubscribe();
+            mRequestSubscription = null;
         }
         mWorkThread.quit();
         XLogger.i("<<< AliveReportService--destroy---");
@@ -78,9 +75,9 @@ public class AliveReportService extends Service {
     public void onLogout(EventLogout event) {
         mHandler.removeMessages(MSG_REPORT);
         mLastReportTime = 0;
-        if (mRequestCall != null) {
-            mRequestCall.cancel();
-            mRequestCall = null;
+        if (mRequestSubscription != null) {
+            mRequestSubscription.unsubscribe();
+            mRequestSubscription = null;
         }
         XLogger.i("<<< AliveReportService--stop---");
     }
@@ -114,28 +111,22 @@ public class AliveReportService extends Service {
 
     private static void reportAlive(final String token) {
         XLogger.i(">>>reportAlive: " + token);
-        FormBody formBody = new FormBody.Builder()
-                .add("token", token)
-                .add("deviceId", DeviceInfoUtils.getDeviceId(XmdApp.getContext()))
-                .build();
-        Request request = new Request.Builder()
-                .url(XmdApp.getServer() + "/api/v2/app/heartbeat")
-                .post(formBody)
-                .build();
-        mRequestCall = OkHttpUtil.getInstance().getClient().newCall(request);
-        mRequestCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                mLastReportSuccess = false;
-                XLogger.i("<<<reportAlive: " + token + " failed");
-            }
+        mRequestSubscription =
+                NetworkTool.doRequest(
+                        RetrofitFactory.getService(NetService.class).reportAlive(token, DeviceInfoUtils.getDeviceId(XmdApp.getContext())),
+                        new NetworkSubscriber<BaseBean>() {
+                            @Override
+                            public void onCallbackSuccess(BaseBean result) {
+                                mLastReportSuccess = true;
+                                XLogger.i("<<<reportAlive: " + token + " sucess");
+                            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                mLastReportSuccess = response.isSuccessful();
-                XLogger.i("<<<reportAlive: " + token + (mLastReportSuccess ? " sucess" : " failed"));
-            }
-        });
+                            @Override
+                            public void onCallbackError(Throwable e) {
+                                mLastReportSuccess = false;
+                                XLogger.e("<<<reportAlive: " + token + " failed:" + e.getLocalizedMessage());
+                            }
+                        });
     }
 
 
