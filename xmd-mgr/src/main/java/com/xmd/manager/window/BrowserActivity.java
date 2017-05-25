@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -211,9 +212,10 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void onDestroy() {
-        if (mainWebView != null) {
-
-            // mainWebView.destroy();
+        if (mainWebView != null && mainWebView.getParent() != null) {
+            mainWebView.setVisibility(View.GONE);
+            ((ViewGroup) mainWebView.getParent()).removeView(mainWebView);
+            mainWebView.destroy();
             mainWebView = null;
         }
         super.onDestroy();

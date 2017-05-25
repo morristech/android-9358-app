@@ -26,7 +26,7 @@ public class JournalItemActivity extends JournalItemBase {
                 endTime = datas[1];
             }
             if (datas.length >= 3) {
-                content = datas[2];
+                content = data.substring(startTime.length() + endTime.length() + 2);
             }
         } else {
             content = "";
