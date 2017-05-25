@@ -229,7 +229,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mBottomBarButtonList.get(index).setSelected(true);
         mCurrentTabIndex = index;
 
-        testAppointment();
+//        testAppointment();
     }
 
     private void testAppointment() {
