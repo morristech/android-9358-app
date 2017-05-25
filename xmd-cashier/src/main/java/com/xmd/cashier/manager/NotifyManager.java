@@ -211,7 +211,9 @@ public class NotifyManager {
         if (!TextUtils.isEmpty(status)) {
             mPos.printText("订单状态: ", status);
         }
-        // TODO 收银员 下一版:接单和拒绝的操作人
+        if (!TextUtils.isEmpty(info.receiverName)) {
+            mPos.printText("接单员: ", info.receiverName);
+        }
         mPos.printText("收银员: ", AccountManager.getInstance().getUser().userName);
         mPos.printText("\n", IPos.GRAVITY_CENTER);
         mPos.printEnd();

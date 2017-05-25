@@ -38,7 +38,7 @@ public class OrderInfo implements Parcelable {
 
     public String serviceItemId;
     public String description;
-    public String expire;
+    public boolean expire;
 
     public OrderInfo() {
 
@@ -66,7 +66,7 @@ public class OrderInfo implements Parcelable {
         userId = in.readString();
         serviceItemId = in.readString();
         description = in.readString();
-        expire = in.readString();
+        expire = in.readByte() != 0;
     }
 
     public static final Creator<OrderInfo> CREATOR = new Creator<OrderInfo>() {
@@ -128,6 +128,6 @@ public class OrderInfo implements Parcelable {
         dest.writeString(userId);
         dest.writeString(serviceItemId);
         dest.writeString(description);
-        dest.writeString(expire);
+        dest.writeByte((byte) (expire ? 1 : 0));
     }
 }

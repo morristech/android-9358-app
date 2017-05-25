@@ -11,12 +11,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
+import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.widget.CircleImageView;
 
 import java.util.ArrayList;
@@ -205,6 +207,13 @@ public class OrderRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             itemViewHolder.mArriveTime.setText(info.appointTime);
             itemViewHolder.mAlreadyPay.setText(info.downPayment + "元");
 
+            if (TextUtils.isEmpty(info.receiverName)) {
+                itemViewHolder.mReceiveRow.setVisibility(View.GONE);
+            } else {
+                itemViewHolder.mReceiveRow.setVisibility(View.VISIBLE);
+                itemViewHolder.mReceiveName.setText(info.receiverName);
+            }
+
             itemViewHolder.mOrderTime.setText(info.createdAt);
             itemViewHolder.mPrintBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -232,6 +241,10 @@ public class OrderRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void updateItemStatus(String status, int position) {
         // 更新状态
         mData.get(position).status = status;
+        if (AppConstants.ORDER_RECORD_STATUS_ACCEPT.equals(status)) {
+            // 如果接受订单成功,暂时更新接单人信息为当前收银员
+            mData.get(position).receiverName = AccountManager.getInstance().getUser().userName;
+        }
         notifyItemChanged(position);
     }
 
@@ -286,6 +299,9 @@ public class OrderRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public Button mAcceptBtn;
         public Button mRejectBtn;
 
+        public TableRow mReceiveRow;
+        public TextView mReceiveName;
+
         public ItemViewHolder(View itemView) {
             super(itemView);
             mStatusText = (TextView) itemView.findViewById(R.id.item_status_desc);
@@ -307,6 +323,9 @@ public class OrderRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mOperateLayout = (LinearLayout) itemView.findViewById(R.id.item_layout_operate);
             mAcceptBtn = (Button) itemView.findViewById(R.id.item_btn_accept);
             mRejectBtn = (Button) itemView.findViewById(R.id.item_btn_reject);
+
+            mReceiveRow = (TableRow) itemView.findViewById(R.id.row_receive_personal);
+            mReceiveName = (TextView) itemView.findViewById(R.id.item_receive_personal);
         }
     }
 
