@@ -6,8 +6,8 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.OnlinePayContract;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
+import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
-import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.NotifyManager;
@@ -206,9 +206,9 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
             mPassOnlinePaySubscription.unsubscribe();
         }
 
-        mPassOnlinePaySubscription = NotifyManager.getInstance().passOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_PASS, new Callback<StringResult>() {
+        mPassOnlinePaySubscription = NotifyManager.getInstance().passOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_PASS, new Callback<BaseResult>() {
             @Override
-            public void onSuccess(StringResult o) {
+            public void onSuccess(BaseResult o) {
                 mView.hideLoading();
                 mView.updateDataStatus(AppConstants.ONLINE_PAY_STATUS_PASS, position);
                 mView.showToast("买单成功");
@@ -237,9 +237,9 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
         if (mUnpassOnlinePaySubscription != null) {
             mUnpassOnlinePaySubscription.unsubscribe();
         }
-        mUnpassOnlinePaySubscription = NotifyManager.getInstance().unPassOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS, new Callback<StringResult>() {
+        mUnpassOnlinePaySubscription = NotifyManager.getInstance().unPassOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS, new Callback<BaseResult>() {
             @Override
-            public void onSuccess(StringResult o) {
+            public void onSuccess(BaseResult o) {
                 mView.hideLoading();
                 mView.updateDataStatus(AppConstants.ONLINE_PAY_STATUS_UNPASS, position);
                 mView.showToast("已通知请到前台");

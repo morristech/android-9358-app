@@ -24,12 +24,15 @@ public class VerifyOrderActivity extends BaseActivity implements VerifyOrderCont
 
     private OrderInfo mOrder;
 
+    private TextView mOrderNo;
     private TextView mCustomerName;
     private TextView mArriveTime;
     private TextView mCreateTime;
     private TextView mTechName;
+    private TextView mOrderServiceItem;
     private TextView mOrderPay;
     private TextView mOrderStatus;
+    private TextView mOrderDescription;
 
     private Button mVerifyBtn;
     private Button mExpireBtn;
@@ -50,16 +53,27 @@ public class VerifyOrderActivity extends BaseActivity implements VerifyOrderCont
     }
 
     private void initView() {
-        showToolbar(R.id.toolbar, "预约订单");
+        showToolbar(R.id.toolbar, "付费预约");
+
+        mOrderNo = (TextView) findViewById(R.id.tv_order_no);
         mCustomerName = (TextView) findViewById(R.id.tv_customer_name);
         mArriveTime = (TextView) findViewById(R.id.tv_order_arrive_time);
         mCreateTime = (TextView) findViewById(R.id.tv_order_create_time);
         mTechName = (TextView) findViewById(R.id.tv_order_tech_name);
         mOrderPay = (TextView) findViewById(R.id.tv_order_pay_money);
         mOrderStatus = (TextView) findViewById(R.id.tv_order_status);
+        mOrderServiceItem = (TextView) findViewById(R.id.tv_order_service_item);
         mVerifyBtn = (Button) findViewById(R.id.btn_order_verify);
         mExpireBtn = (Button) findViewById(R.id.btn_order_expire);
         mCancelBtn = (Button) findViewById(R.id.btn_order_cancel);
+        mOrderDescription = (TextView) findViewById(R.id.tv_order_description);
+
+        if (TextUtils.isEmpty(mOrder.orderNo)) {
+            mOrderNo.setVisibility(View.GONE);
+        } else {
+            mOrderNo.setVisibility(View.VISIBLE);
+            mOrderNo.setText(mOrder.orderNo);
+        }
 
         if (TextUtils.isEmpty(mOrder.phoneNum)) {
             mCustomerName.setText(mOrder.customerName);
@@ -69,10 +83,26 @@ public class VerifyOrderActivity extends BaseActivity implements VerifyOrderCont
         mArriveTime.setText(mOrder.appointTime);
         mCreateTime.setText(mOrder.createdAt);
         if (!TextUtils.isEmpty(mOrder.techName)) {
-            mTechName.setText(mOrder.techName);
+            if (TextUtils.isEmpty(mOrder.techNo)) {
+                mTechName.setText(mOrder.techName);
+            } else {
+                mTechName.setText(String.format("%s[%s]", mOrder.techName, mOrder.techNo));
+            }
         }
         mOrderPay.setText(Utils.moneyToStringEx(mOrder.downPayment) + "元");
         mOrderStatus.setText(mOrder.statusName);
+
+        if (TextUtils.isEmpty(mOrder.description)) {
+            mOrderDescription.setText("无");
+        } else {
+            mOrderDescription.setText(mOrder.description);
+        }
+
+        if (TextUtils.isEmpty(mOrder.serviceItemName)) {
+            mOrderServiceItem.setText("到店选择");
+        } else {
+            mOrderServiceItem.setText(mOrder.serviceItemName);
+        }
 
         mVerifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override

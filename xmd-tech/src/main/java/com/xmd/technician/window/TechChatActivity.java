@@ -685,7 +685,12 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                                     chatSentMessageHelper.sendCmdMessage(message.getMsgId(), messageTime);
 
                                 } else {
-                                    Utils.makeShortToast(TechChatActivity.this, "发送时间大于2分钟，无法撤回");
+                                    new RewardConfirmDialog(TechChatActivity.this, "", "发送时间超过2分钟的消息,不能被撤回", "确认",false) {
+                                        @Override
+                                        public void onConfirmClick() {
+                                            this.dismiss();
+                                        }
+                                    }.show();
                                 }
 
 

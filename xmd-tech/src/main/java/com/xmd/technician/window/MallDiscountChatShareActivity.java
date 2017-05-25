@@ -1,19 +1,21 @@
 package com.xmd.technician.window;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.annotation.RequiresApi;
+
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.xmd.technician.Adapter.ChatShareAdapter;
+import com.xmd.technician.Adapter.ExpandableMarketListViewAdapter;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.OnceCardItemBean;
+import com.xmd.technician.bean.OnceCardType;
 import com.xmd.technician.common.OnceCardHelper;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
@@ -30,34 +32,30 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.Subscription;
 
 /**
  * Created by Lhj on 17-5-15.
  */
 
-public class MallDiscountChatShareActivity extends BaseActivity implements View.OnClickListener, ChatShareAdapter.OnItemClickListener {
+public class MallDiscountChatShareActivity extends BaseActivity implements View.OnClickListener {
 
-    @Bind(R.id.img_index)
-    ImageView imgIndex;
-    @Bind(R.id.ll_title_view)
-    LinearLayout llTitleView;
     @Bind(R.id.view_emptyView)
     EmptyView viewEmptyView;
     @Bind(R.id.list)
-    RecyclerView mListView;
+    ExpandableListView mListView;
 
-    private static List<OnceCardItemBean> OnceCardItemBeanList;
 
-    private ChatShareAdapter adapter;
-    private List<OnceCardItemBean> mSelectedOnceCardItemBean;
+    private ExpandableMarketListViewAdapter marketAdapter;
+    private List<OnceCardItemBean> mSelectedBeans;
     private TextView sentMessage;
-    private OnceCardItemBean info;
-    protected LinearLayoutManager mLayoutManager;
     private OnceCardHelper mOnceCardHelper;
     private Subscription mOnceCardListSubscription;
-    private boolean isOpen;
+    private List<OnceCardType> mOnceCardTypes;
+    private List<List<OnceCardItemBean>> onceCardItemBeanList;
+    private List<OnceCardItemBean> mOnceCardList;
+    private List<OnceCardItemBean> mPackageList;
+    private List<OnceCardItemBean> mCreditGiftList;
 
 
     @Override
@@ -72,32 +70,55 @@ public class MallDiscountChatShareActivity extends BaseActivity implements View.
         initView();
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     protected void initView() {
         setTitle(ResourceUtils.getString(R.string.mall_discount_title));
         setBackVisible(true);
         mOnceCardListSubscription = RxBus.getInstance().toObservable(OnceCardResult.class).subscribe(
                 onceCardResult -> handleOnceCardListResult(onceCardResult)
         );
-        isOpen = true;
-        OnceCardItemBeanList = new ArrayList<>();
-        mSelectedOnceCardItemBean = new ArrayList<>();
-        mLayoutManager = new LinearLayoutManager(this);
-        mListView.setLayoutManager(mLayoutManager);
-        mListView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new ChatShareAdapter(MallDiscountChatShareActivity.this, OnceCardItemBeanList);
-        adapter.setOnItemClickListener(this);
-        mListView.setAdapter(adapter);
+
+        mSelectedBeans = new ArrayList<>();
+        mOnceCardTypes = new ArrayList<>();
+        onceCardItemBeanList = new ArrayList<>();
+        mOnceCardList = new ArrayList<>();
+        mPackageList = new ArrayList<>();
+        mCreditGiftList = new ArrayList<>();
+        marketAdapter = new ExpandableMarketListViewAdapter(this);
+        marketAdapter.setOnChildrenItemClicked(new ExpandableMarketListViewAdapter.OnChildrenItemClickedInterface() {
+            @Override
+            public void onChildrenClickedListener(OnceCardItemBean bean, int groupPosition, int childPosition, boolean isSelected) {
+                if (isSelected) {
+                    mSelectedBeans.add(bean);
+                    onceCardItemBeanList.get(groupPosition).get(childPosition).selectedStatus = 0;
+                    marketAdapter.refreshChildData(onceCardItemBeanList);
+                } else {
+                    onceCardItemBeanList.get(groupPosition).get(childPosition).selectedStatus = 1;
+                    marketAdapter.refreshChildData(onceCardItemBeanList);
+                    mSelectedBeans.remove(bean);
+                }
+                if (mSelectedBeans.size() > 0) {
+                    sentMessage.setEnabled(true);
+                    sentMessage.setText(String.format("分享(%s)", mSelectedBeans.size()));
+                } else {
+                    sentMessage.setEnabled(false);
+                    sentMessage.setText("分享");
+                }
+            }
+        });
+        mListView.setAdapter(marketAdapter);
+        mListView.setDivider(null);
         viewEmptyView.setStatus(EmptyView.Status.Loading);
+
         getOnceCardListData();
     }
 
 
     @Override
     public void onClick(View v) {
-
         if (v.getId() == R.id.toolbar_right_share) {
             Intent resultIntent = new Intent();
-            resultIntent.putParcelableArrayListExtra(TechChatActivity.REQUEST_PREFERENTIAL_TYPE, (ArrayList<? extends Parcelable>) mSelectedOnceCardItemBean);
+            resultIntent.putParcelableArrayListExtra(TechChatActivity.REQUEST_PREFERENTIAL_TYPE, (ArrayList<? extends Parcelable>) mSelectedBeans);
             setResult(RESULT_OK, resultIntent);
         }
         this.finish();
@@ -105,21 +126,34 @@ public class MallDiscountChatShareActivity extends BaseActivity implements View.
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void handleOnceCardListResult(OnceCardResult onceCardResult) {
-        if (mOnceCardHelper == null) {
-            mOnceCardHelper = new OnceCardHelper();
-        }
+        mOnceCardHelper = OnceCardHelper.getInstance();
+        viewEmptyView.setStatus(EmptyView.Status.Gone);
 
         if (onceCardResult.statusCode == 200) {
-            if (onceCardResult.respData.activityList.size() == 0) {
+            mOnceCardHelper.getCardItemBeanList(onceCardResult);
+            mOnceCardList = mOnceCardHelper.getOnceCardList();
+            mPackageList = mOnceCardHelper.getPackageList();
+            mCreditGiftList = mOnceCardHelper.getCreditList();
+            if (mOnceCardList.size() > 0) {
+                mOnceCardTypes.add(new OnceCardType(Constant.ITEM_CARD_TYPE, "单项次卡"));
+                onceCardItemBeanList.add(mOnceCardList);
+            }
+            if (mPackageList.size() > 0) {
+                mOnceCardTypes.add(new OnceCardType(Constant.ITEM_PACKAGE_TYPE, "超值套餐"));
+                onceCardItemBeanList.add(mPackageList);
+            }
+            if (mCreditGiftList.size() > 0) {
+                mOnceCardTypes.add(new OnceCardType(Constant.CREDIT_GIFT_TYPE, "积分礼物"));
+                onceCardItemBeanList.add(mCreditGiftList);
+            }
+            if (onceCardItemBeanList.size() > 0) {
+                marketAdapter.setData(mOnceCardTypes, onceCardItemBeanList);
+                mListView.expandGroup(0, true);
+            } else {
                 viewEmptyView.setStatus(EmptyView.Status.Empty);
             }
-            viewEmptyView.setStatus(EmptyView.Status.Gone);
-            OnceCardItemBeanList = mOnceCardHelper.getCardItemBeanList(onceCardResult);
-            for (OnceCardItemBean info : OnceCardItemBeanList) {
-                info.selectedStatus = 1;
-            }
-            adapter.setData(OnceCardItemBeanList);
         } else {
             viewEmptyView.setStatus(EmptyView.Status.Failed);
         }
@@ -142,48 +176,9 @@ public class MallDiscountChatShareActivity extends BaseActivity implements View.
     private void getOnceCardListData() {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PAGE, String.valueOf(1));
-        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(50));
+        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(100));
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ONCE_CARD_LIST_DETAIL, params);
     }
 
-    @Override
-    public void onItemCheck(Object bean, int position, boolean isChecked) {
-        info = (OnceCardItemBean) bean;
-        if (isChecked) {
-            for (int i = 0; i < mSelectedOnceCardItemBean.size(); i++) {
-                if (mSelectedOnceCardItemBean.get(i).id.equals(info.id)) {
-                    mSelectedOnceCardItemBean.remove(mSelectedOnceCardItemBean.get(i));
-                    break;
-                }
-            }
-            info.selectedStatus = 1;
-            OnceCardItemBeanList.set(position, info);
-        } else {
-            info.selectedStatus = 2;
-            OnceCardItemBeanList.set(position, info);
-            mSelectedOnceCardItemBean.add(info);
-        }
-        if (mSelectedOnceCardItemBean.size() > 0) {
-            sentMessage.setEnabled(true);
-            sentMessage.setText(String.format("分享(%s)", String.valueOf(mSelectedOnceCardItemBean.size())));
-        } else {
-            sentMessage.setEnabled(false);
-            sentMessage.setText("分享");
-        }
-        adapter.notifyItemChanged(position);
-    }
 
-    @OnClick(R.id.ll_title_view)
-    public void onViewClicked() {
-        if (isOpen) {
-            mListView.setVisibility(View.INVISIBLE);
-            imgIndex.setImageResource(R.drawable.icon_up);
-            isOpen = false;
-        } else {
-            mListView.setVisibility(View.VISIBLE);
-            imgIndex.setImageResource(R.drawable.arrow_down);
-            isOpen = true;
-
-        }
-    }
 }

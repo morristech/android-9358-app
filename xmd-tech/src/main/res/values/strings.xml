@@ -360,7 +360,7 @@
     <string name="coupon_code_item">(优惠券)</string>
     <string name="user_time">使用时间段</string>
     <string name="wx_bind_failed_alert">绑定微信失败，请重新绑定</string>
-    <string name="check_coupon">券</string>
+    <string name="check_coupon">卡券分享</string>
     <string name="cash_coupon">现金券</string>
     <string name="delivery_coupon">点钟券</string>
     <string name="credit_now">现有积分</string>

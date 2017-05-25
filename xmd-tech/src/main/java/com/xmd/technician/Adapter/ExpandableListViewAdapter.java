@@ -163,7 +163,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                 mChildViewHolder.marketingDetail.setVisibility(View.GONE);
             }
         } else if (Utils.isNotEmpty(bean.startTime)) {//大转盘
-            Glide.with(mContext).load(bean.image).into(mChildViewHolder.marketingHead);
+            Glide.with(mContext).load(R.drawable.image_prize).into(mChildViewHolder.marketingHead);
             mChildViewHolder.marketingTitle.setText(bean.actName);
             mChildViewHolder.marketingCredit.setText(String.format("赢取%s", bean.firstPrizeName));
             mChildViewHolder.marketingMark.setVisibility(View.GONE);
@@ -181,7 +181,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             } else {
                 mChildViewHolder.marketingTitle.setText(bean.actName + String.format("(%s/%s期)", String.valueOf(bean.currentPeriod), String.valueOf(bean.maxPeriod)));
             }
-           // String price = String.format("单价：%s", );
             mChildViewHolder.marketingMoney.setText(String.valueOf(bean.unitPrice));
             mChildViewHolder.unit.setVisibility(View.VISIBLE);
             mChildViewHolder.marketingMoney.setVisibility(View.VISIBLE);
@@ -233,7 +232,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         @Bind(R.id.ll_view)
         LinearLayout llView;
         @Bind(R.id.marketing_money_mark)
-         TextView marketingMoneyMark;
+        TextView marketingMoneyMark;
 
         ViewChildViewHolder(View view) {
             ButterKnife.bind(this, view);

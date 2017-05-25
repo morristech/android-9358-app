@@ -36,6 +36,8 @@ public class OrderInfo implements Parcelable {
     public String userId;       //用户ID
     // -------------------------end------------------------
 
+    public String description;
+
     public OrderInfo() {
 
     }
@@ -60,6 +62,7 @@ public class OrderInfo implements Parcelable {
         statusName = in.readString();
         technicianId = in.readString();
         userId = in.readString();
+        description = in.readString();
     }
 
     public static final Creator<OrderInfo> CREATOR = new Creator<OrderInfo>() {
@@ -100,6 +103,7 @@ public class OrderInfo implements Parcelable {
         dest.writeString(statusName);
         dest.writeString(technicianId);
         dest.writeString(userId);
+        dest.writeString(description);
     }
 
     @Override

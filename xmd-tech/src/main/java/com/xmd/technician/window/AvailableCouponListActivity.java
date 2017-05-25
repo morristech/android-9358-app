@@ -128,11 +128,12 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
                 mCouponTypes.add(new CouponType("优惠券"));
                 mCouponInfos.add(mCashAndFavourables);
             }
-
             adapter.setData(mCouponTypes,mCouponInfos);
-            for (int i = 0; i < adapter.getGroupCount(); i++) {
-                expandableListView.expandGroup(i, true);
-            }
+           if(mCouponInfos.size()>0){
+               expandableListView.expandGroup(0,true);
+           }else{
+               viewEmptyView.setStatus(EmptyView.Status.Empty);
+           }
         }else{
             viewEmptyView.setStatus(EmptyView.Status.Empty);
         }

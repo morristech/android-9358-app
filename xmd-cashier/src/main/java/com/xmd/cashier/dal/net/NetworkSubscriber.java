@@ -46,7 +46,7 @@ public abstract class NetworkSubscriber<T> extends Subscriber<T> {
         if (result instanceof LoginResult) {
             //由于历史原因，登录接口返回的结果代码为0时表示成功，所以需要特殊处理
             LoginResult loginResult = (LoginResult) result;
-            if (loginResult.statusCode == 0 || !loginResult.status.equals("fail")) {
+            if (loginResult.statusCode == 0 || !RequestConstant.RESP_STATUS_FAIL.equals(loginResult.status)) {
                 onCallbackSuccess(result);
             } else {
                 onCallbackError(new ServerException(loginResult.message, loginResult.statusCode));
@@ -81,7 +81,7 @@ public abstract class NetworkSubscriber<T> extends Subscriber<T> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            onCallbackError(new ServerException("网络结果处理错误", 404));
+            onCallbackError(new ServerException("网络结果处理错误", RequestConstant.RESP_EXCEPTION));
         }
     }
 

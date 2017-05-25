@@ -6,8 +6,8 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.OrderRecordContract;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
+import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
-import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.NotifyManager;
 
@@ -197,9 +197,9 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
         if (mAcceptOrderRecordSubscription != null) {
             mAcceptOrderRecordSubscription.unsubscribe();
         }
-        mAcceptOrderRecordSubscription = NotifyManager.getInstance().acceptOrder(info.id, new Callback<StringResult>() {
+        mAcceptOrderRecordSubscription = NotifyManager.getInstance().acceptOrder(info.id, new Callback<BaseResult>() {
             @Override
-            public void onSuccess(StringResult o) {
+            public void onSuccess(BaseResult o) {
                 mView.hideLoading();
                 mView.showToast("订单接受成功");
                 mView.updateDataStatus(AppConstants.ORDER_RECORD_STATUS_ACCEPT, position);
@@ -227,9 +227,9 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
         if (mRejectOrderRecordSubscription != null) {
             mRejectOrderRecordSubscription.unsubscribe();
         }
-        mRejectOrderRecordSubscription = NotifyManager.getInstance().rejectOrder(info.id, new Callback<StringResult>() {
+        mRejectOrderRecordSubscription = NotifyManager.getInstance().rejectOrder(info.id, new Callback<BaseResult>() {
             @Override
-            public void onSuccess(StringResult o) {
+            public void onSuccess(BaseResult o) {
                 mView.hideLoading();
                 mView.showToast("订单拒绝成功");
                 mView.updateDataStatus(AppConstants.ORDER_RECORD_STATUS_REJECT, position);
