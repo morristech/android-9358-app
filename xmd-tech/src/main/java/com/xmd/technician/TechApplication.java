@@ -17,7 +17,7 @@ import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
-import com.xmd.app.Init;
+import com.xmd.app.XmdApp;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
@@ -131,9 +131,9 @@ public class TechApplication extends MultiDexApplication {
 
                 //模块功能初始化
                 Set<String> functions = new HashSet<>();
-                functions.add(Init.FUNCTION_ALIVE_REPORT);
-                functions.add(Init.FUNCTION_APPOINTMENT);
-                Init.init(this, functions);
+                functions.add(XmdApp.FUNCTION_ALIVE_REPORT);
+                functions.add(XmdApp.FUNCTION_APPOINTMENT);
+                XmdApp.init(this, SharedPreferenceHelper.getServerHost(), functions);
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");

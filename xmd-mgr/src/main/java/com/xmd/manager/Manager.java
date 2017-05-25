@@ -8,6 +8,8 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.exceptions.HyphenateException;
 import com.igexin.sdk.PushManager;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.manager.beans.EmchatMsgResult;
 import com.xmd.manager.chat.EmchatConstant;
 import com.xmd.manager.chat.EmchatUser;
@@ -19,6 +21,8 @@ import com.xmd.manager.msgctrl.ControllerRegister;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -90,6 +94,8 @@ public class Manager {
     }
 
     public void prepareBeforeUserLogout() {
+        EventBus.getDefault().removeStickyEvent(EventLogin.class);
+        EventBus.getDefault().postSticky(new EventLogout(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserId()));
         EmchatUserHelper.logout();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT);

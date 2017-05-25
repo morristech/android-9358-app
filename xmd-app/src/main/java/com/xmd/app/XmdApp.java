@@ -13,7 +13,7 @@ import java.util.Set;
  * 模块初始化入口
  */
 
-public class Init {
+public class XmdApp {
     public static final String FUNCTION_ALIVE_REPORT = "function_alive_report";//在线汇报
     private static boolean FUNCTION_ALIVE_REPORT_INIT;
 
@@ -21,9 +21,11 @@ public class Init {
     private static boolean FUNCTION_APPOINTMENT_INIT;
 
     private static Context sApplicationContext;
+    private static String sServer;
 
-    public static void init(Context applicationContext, Set<String> functions) {
+    public static void init(Context applicationContext, String server, Set<String> functions) {
         sApplicationContext = applicationContext;
+        sServer = server;
 
         //初始化心跳功能
         if (functions.contains(FUNCTION_ALIVE_REPORT) && !FUNCTION_ALIVE_REPORT_INIT) {
@@ -40,8 +42,16 @@ public class Init {
         }
     }
 
+    public static void setServer(String server) {
+        sServer = server;
+    }
+
 
     public static Context getContext() {
         return sApplicationContext;
+    }
+
+    public static String getServer() {
+        return sServer;
     }
 }

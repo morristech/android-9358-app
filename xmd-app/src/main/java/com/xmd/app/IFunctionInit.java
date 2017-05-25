@@ -7,6 +7,6 @@ import android.content.Context;
  * 功能初始化接口
  */
 
-public interface IInit {
+public interface IFunctionInit {
     void init(Context context);
 }

@@ -6,12 +6,16 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.network.OkHttpUtil;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ThreadManager;
 import com.xmd.manager.common.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by sdcm on 15-10-26.
@@ -51,6 +55,8 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
             });
 
+            EventBus.getDefault().removeStickyEvent(EventLogout.class);
+            EventBus.getDefault().postSticky(new EventLogin(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserId()));
             // Switch to MainActivity
             if (Constant.MULTI_CLUB_ROLE.equals(SharedPreferenceHelper.getUserRole())) {
                 startActivity(new Intent(WelcomeActivity.this, ClubListActivity.class));

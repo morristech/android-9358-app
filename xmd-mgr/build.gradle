@@ -58,8 +58,9 @@ android {
         // 3.6.8 : bug fix
         // 3.7.0 : verification record
         // 3.7.2 : mainPage data show,Tech Pk,verification by telephone,evaluation label
-        versionCode 44
-        versionName "3.7.2"
+        // 3.7.4 : add verify by phone number
+        versionCode 46
+        versionName "3.7.4"
 
         multiDexEnabled true
 
@@ -162,6 +163,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':commonlibrary')
+    compile project(':xmd-app')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
     compile(name: 'xmd-image-crop-1.0', ext: 'aar')
     compile 'org.greenrobot:eventbus:3.0.0'
@@ -187,4 +189,5 @@ dependencies {
     compile project(':loading-view')
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.ms-square:expandableTextView:0.1.4'
+    compile project(path: ':xmd-app')
 }
