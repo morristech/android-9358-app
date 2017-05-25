@@ -36,7 +36,9 @@ public class OrderInfo implements Parcelable {
     public String userId;       //用户ID
     // -------------------------end------------------------
 
+    public String serviceItemId;
     public String description;
+    public String expire;
 
     public OrderInfo() {
 
@@ -62,7 +64,9 @@ public class OrderInfo implements Parcelable {
         statusName = in.readString();
         technicianId = in.readString();
         userId = in.readString();
+        serviceItemId = in.readString();
         description = in.readString();
+        expire = in.readString();
     }
 
     public static final Creator<OrderInfo> CREATOR = new Creator<OrderInfo>() {
@@ -76,6 +80,25 @@ public class OrderInfo implements Parcelable {
             return new OrderInfo[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        // TODO
+        if (this == o) {
+            return true;
+        }
+        if (o == null || !(o instanceof OrderInfo)) {
+            return false;
+        }
+        OrderInfo that = (OrderInfo) o;
+        return id.equals(that.id) && orderNo.equals(that.orderNo);
+    }
+
+    @Override
+    public int hashCode() {
+        // TODO
+        return Integer.valueOf(orderNo.substring(orderNo.length() - 8, orderNo.length()));
+    }
 
     @Override
     public int describeContents() {
@@ -103,25 +126,8 @@ public class OrderInfo implements Parcelable {
         dest.writeString(statusName);
         dest.writeString(technicianId);
         dest.writeString(userId);
+        dest.writeString(serviceItemId);
         dest.writeString(description);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        // TODO
-        if (this == o) {
-            return true;
-        }
-        if (o == null || !(o instanceof OrderInfo)) {
-            return false;
-        }
-        OrderInfo that = (OrderInfo) o;
-        return id.equals(that.id) && orderNo.equals(that.orderNo);
-    }
-
-    @Override
-    public int hashCode() {
-        // TODO
-        return Integer.valueOf(orderNo.substring(orderNo.length() - 8, orderNo.length()));
+        dest.writeString(expire);
     }
 }

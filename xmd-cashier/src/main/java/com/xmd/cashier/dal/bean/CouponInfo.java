@@ -7,6 +7,7 @@ import com.shidou.commonlibrary.util.DateUtils;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by sdcm on 15-10-27.
@@ -58,9 +59,14 @@ public class CouponInfo implements Parcelable {
     public int consumeAmount;   //可核销金额	单位为分
     // -----------------------------end---------------------------------
 
+    public String paidType;
+    public String endUseDate;
+    public List<String> itemNames;
+
     public CouponInfo() {
 
     }
+
 
     protected CouponInfo(Parcel in) {
         suaId = in.readString();
@@ -90,6 +96,9 @@ public class CouponInfo implements Parcelable {
         creditAmount = in.readInt();
         actAmount = in.readInt();
         consumeAmount = in.readInt();
+        paidType = in.readString();
+        endUseDate = in.readString();
+        itemNames = in.createStringArrayList();
     }
 
     public static final Creator<CouponInfo> CREATOR = new Creator<CouponInfo>() {
@@ -103,43 +112,6 @@ public class CouponInfo implements Parcelable {
             return new CouponInfo[size];
         }
     };
-
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(suaId);
-        dest.writeString(actId);
-        dest.writeString(couponNo);
-        dest.writeString(actTitle);
-        dest.writeString(couponType);
-        dest.writeString(actContent);
-        dest.writeString(couponPeriod);
-        dest.writeString(useTimePeriod);
-        dest.writeString(consumeMoneyDescription);
-        dest.writeString(useTypeName);
-        dest.writeString(endDate);
-        dest.writeString(getDate);
-        dest.writeString(startDate);
-        dest.writeString(useType);
-        dest.writeString(couponTypeName);
-        dest.writeString(actStatus);
-        dest.writeString(actStatusName);
-        dest.writeString(actSubTitle);
-        dest.writeInt(actValue);
-        dest.writeInt(consumeMoney);
-        dest.writeString(useStartDate);
-        dest.writeString(useEndDate);
-        dest.writeString(modifyDate);
-        dest.writeString(couponPaid);
-        dest.writeInt(creditAmount);
-        dest.writeInt(actAmount);
-        dest.writeInt(consumeAmount);
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -262,5 +234,44 @@ public class CouponInfo implements Parcelable {
                 return actValue;
             }
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(suaId);
+        dest.writeString(actId);
+        dest.writeString(couponNo);
+        dest.writeString(actTitle);
+        dest.writeString(couponType);
+        dest.writeString(actContent);
+        dest.writeString(couponPeriod);
+        dest.writeString(useTimePeriod);
+        dest.writeString(consumeMoneyDescription);
+        dest.writeString(useTypeName);
+        dest.writeString(endDate);
+        dest.writeString(getDate);
+        dest.writeString(startDate);
+        dest.writeString(useType);
+        dest.writeString(couponTypeName);
+        dest.writeString(actStatus);
+        dest.writeString(actStatusName);
+        dest.writeString(actSubTitle);
+        dest.writeInt(actValue);
+        dest.writeInt(consumeMoney);
+        dest.writeString(useStartDate);
+        dest.writeString(useEndDate);
+        dest.writeString(modifyDate);
+        dest.writeString(couponPaid);
+        dest.writeInt(creditAmount);
+        dest.writeInt(actAmount);
+        dest.writeInt(consumeAmount);
+        dest.writeString(paidType);
+        dest.writeString(endUseDate);
+        dest.writeStringList(itemNames);
     }
 }
