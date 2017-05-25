@@ -135,9 +135,14 @@
 #image
 -dontwarn com.soundcloud.**
 -keep class com.soundcloud.**{*;}
--dontwarn org.greenrobot.**
--keep class org.greenrobot.**{*;}
+
 -dontwarn me.nereo.**
 -keep class me.nereo.**{*;}
 -dontwarn com.xmd.image_tool.**
 -keep class com.xmd.image_tool.**{*;}
+
+-dontwarn com.xmd.app.**
+-keep class com.xmd.app.** {*;}
+
+-dontwarn org.greenrobot.**
+-keep class org.greenrobot.** {*;}
