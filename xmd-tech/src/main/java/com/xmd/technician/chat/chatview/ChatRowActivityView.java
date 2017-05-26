@@ -93,7 +93,7 @@ public class ChatRowActivityView extends BaseEaseChatView {
         EMTextMessageBody txtBody = (EMTextMessageBody) mEMMessage.getBody();
         Spannable span = SmileUtils.getSmiledText(mContext, txtBody.getMessage());
         // 设置内容
-        String subType = mEMMessage.getStringAttribute(ChatConstant.KEY_SUB_TYPE, "");
+        String subType = mEMMessage.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE, "");
         String content;
         String title;
         switch (subType) {
@@ -117,21 +117,24 @@ public class ChatRowActivityView extends BaseEaseChatView {
                 title = ResourceUtils.getString(R.string.chat_journal_message_type);
                 activityIcon.setImageResource(R.drawable.icon_journal);
                 break;
-            case ChatConstant.KEY_SUB_TYPE_TIMES_SCARD:
-                content = ResourceUtils.getString(R.string.chat_timescard_message_des);
-                title = ResourceUtils.getString(R.string.chat_timescard_message_type);
-                activityIcon.setImageResource(R.drawable.icon_oncecard);
+            case ChatConstant.KEY_ACTIVITY_ITEM_CARD_TYPE:
+                String itemCardType = mEMMessage.getStringAttribute(ChatConstant.KEY_SUB_CARD_TYPE,"");
+                if(itemCardType.equals("item_package")){
+                    content = ResourceUtils.getString(R.string.chat_package_message_des);
+                    title = ResourceUtils.getString(R.string.chat_package_message_type);
+                    activityIcon.setImageResource(R.drawable.icon_package);
+                }else if(itemCardType.equals("credit_gift")){
+                    content = ResourceUtils.getString(R.string.chat_gift_message_des);
+                    title = ResourceUtils.getString(R.string.chat_gift_message_type);
+                    activityIcon.setImageResource(R.drawable.icon_credit_gift);
+                }else{
+                    content = ResourceUtils.getString(R.string.chat_timescard_message_des);
+                    title = ResourceUtils.getString(R.string.chat_timescard_message_type);
+                    activityIcon.setImageResource(R.drawable.icon_oncecard);
+                }
+
                 break;
-            case ChatConstant.KEY_SUB_TYPE_PACKAGE:
-                content = ResourceUtils.getString(R.string.chat_package_message_des);
-                title = ResourceUtils.getString(R.string.chat_package_message_type);
-                activityIcon.setImageResource(R.drawable.icon_package);
-                break;
-            case ChatConstant.KEY_SUB_TYPE_GIFT:
-                content = ResourceUtils.getString(R.string.chat_gift_message_des);
-                title = ResourceUtils.getString(R.string.chat_gift_message_type);
-                activityIcon.setImageResource(R.drawable.icon_credit_gift);
-                break;
+
             default:
                 content = ResourceUtils.getString(R.string.chat_timescard_message_des);
                 activityIcon.setImageResource(R.drawable.icon_credit_gift);

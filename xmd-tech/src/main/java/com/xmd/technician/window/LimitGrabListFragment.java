@@ -97,7 +97,7 @@ public class LimitGrabListFragment extends BaseListFragment<LimitGrabBean> {
     public void onShareClicked(LimitGrabBean bean) {
         super.onShareClicked(bean);
         ShareController.doShare(bean.image, bean.shareUrl, SharedPreferenceHelper.getUserClubName() + "-" + bean.itemName + "限时抢购就等你来",
-                ResourceUtils.getString(R.string.limit_grab_share_description), Constant.SHARE_COUPON, "");
+                ResourceUtils.getString(R.string.limit_grab_share_description), Constant.SHARE_TYPE_LIMIT_GRAB, "");
     }
 
     @Override
@@ -114,8 +114,8 @@ public class LimitGrabListFragment extends BaseListFragment<LimitGrabBean> {
         params.put(Constant.PARAM_SHARE_URL, bean.shareUrl);
         params.put(Constant.PARAM_SHARE_TITLE, SharedPreferenceHelper.getUserClubName() + "-" + bean.itemName + "限时抢购就等你来");
         params.put(Constant.PARAM_SHARE_DESCRIPTION, ResourceUtils.getString(R.string.limit_grab_share_description));
-        params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_COUPON);
-        params.put(Constant.PARAM_ACT_ID, "");
+        params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_TYPE_LIMIT_GRAB);
+        params.put(Constant.PARAM_ACT_ID, bean.itemId);
         params.put(Constant.PARAM_SHARE_DIALOG_TITLE,"限时抢");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
     }

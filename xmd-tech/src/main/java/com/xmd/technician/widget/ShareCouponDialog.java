@@ -73,7 +73,7 @@ public class ShareCouponDialog extends Dialog {
         btnDismiss.setOnClickListener(v -> this.dismiss());
         mButtonShare.setOnClickListener(v -> {
             ShareController.doShare(shareThumbnail, shareUrl, shareTitle,
-                    ShareDescription, type, "");
+                    ShareDescription, type, actId);
             this.dismiss();
         });
 

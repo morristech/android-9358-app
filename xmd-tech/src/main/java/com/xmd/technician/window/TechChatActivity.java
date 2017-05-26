@@ -832,9 +832,9 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
     }
 
-//    public String getTochatUserId() {
-//        return toChatUserId;
-//    }
+    public String getTochatUserId() {
+        return toChatUserId;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

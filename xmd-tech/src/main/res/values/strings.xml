@@ -578,7 +578,7 @@
     <string name="chat_seckill_message_type">一元夺</string>
     <string name="chat_turntable_message_type">大转盘</string>
     <string name="chat_journal_message_type">电子期刊</string>
-    <string name="chat_timescard_message_type">次卡</string>
-    <string name="chat_package_message_type">混合套餐</string>
-    <string name="chat_gift_message_type">积分礼物</string>
+    <string name="chat_timescard_message_type">单项次卡</string>
+    <string name="chat_package_message_type">超值套餐</string>
+    <string name="chat_gift_message_type">积分礼品</string>
 </resources>
