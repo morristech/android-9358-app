@@ -645,10 +645,16 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_comment));
                 if (Utils.isNotEmpty(textDescription)) {
+                    viewHolder.dynamicItemCommentDetail.setVisibility(View.VISIBLE);
                     viewHolder.dynamicItemCommentDetail.setText(textDescription);
+                }else{
+                    viewHolder.dynamicItemCommentDetail.setVisibility(View.INVISIBLE);
                 }
                 if (Utils.isNotEmpty(textRemark)) {
+                    viewHolder.dynamicItemRemark.setVisibility(View.VISIBLE);
                     viewHolder.dynamicItemRemark.setText("#" + textRemark.replaceAll("、", " #"));
+                }else{
+                    viewHolder.dynamicItemRemark.setVisibility(View.GONE);
                 }
                 if (commentScore > 0) {
                     viewHolder.dynamicItemCommentStarts.setVisibility(View.VISIBLE);
@@ -668,10 +674,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_collect));
                 viewHolder.dynamicItemCommentDetail.setText(textDescription);
                 viewHolder.dynamicItemRemark.setVisibility(View.GONE);
+                viewHolder.dynamicItemCommentStarts.setVisibility(View.GONE);
+                viewHolder.dynamicItemCommentReward.setVisibility(View.GONE);
             } else if (dynamicDetail.bizType == 3) {
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_coupon));
                 viewHolder.dynamicItemCommentDetail.setText(textDescription);
+                viewHolder.dynamicItemCommentStarts.setVisibility(View.GONE);
+                viewHolder.dynamicItemCommentReward.setVisibility(View.GONE);
                 if (Utils.isNotEmpty(textRemark)) {
+                    viewHolder.dynamicItemRemark.setVisibility(View.VISIBLE);
                     viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
                 } else {
                     viewHolder.dynamicItemRemark.setVisibility(View.GONE);
@@ -680,13 +691,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else if (dynamicDetail.bizType == 4) {
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_paid));
                 viewHolder.dynamicItemCommentDetail.setText(textDescription);
+                viewHolder.dynamicItemCommentStarts.setVisibility(View.GONE);
+                viewHolder.dynamicItemCommentReward.setVisibility(View.GONE);
                 if (Utils.isNotEmpty(textDescription)) {
+                    viewHolder.dynamicItemRemark.setVisibility(View.VISIBLE);
                     viewHolder.dynamicItemRemark.setText("(" + textRemark + ")");
                 } else {
                     viewHolder.dynamicItemRemark.setVisibility(View.GONE);
                 }
 
             } else if (dynamicDetail.bizType == 5) {
+                viewHolder.dynamicItemCommentStarts.setVisibility(View.GONE);
+                viewHolder.dynamicItemCommentReward.setVisibility(View.GONE);
+                viewHolder.dynamicItemRemark.setVisibility(View.GONE);
                 viewHolder.dynamicItemType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.img_to_reward));
                 viewHolder.dynamicItemCommentDetail.setText(Utils.changeStringNumColor(textDescription, ResourceUtils.getColor(R.color.colorMainBtn)));
             }
