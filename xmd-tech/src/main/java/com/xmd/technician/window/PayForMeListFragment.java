@@ -98,7 +98,7 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
     public void onShareClicked(PayForMeBean bean) {
         super.onShareClicked(bean);
         ShareController.doShare(bean.image, bean.shareUrl, bean.actName,
-                ResourceUtils.getString(R.string.pay_for_me_share_description), Constant.SHARE_COUPON, "");
+                ResourceUtils.getString(R.string.pay_for_me_share_description), Constant.SHARE_TYPE_PAY_FOR_ME, "");
     }
 
     @Override
@@ -116,8 +116,8 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
         params.put(Constant.PARAM_SHARE_URL, bean.shareUrl);
         params.put(Constant.PARAM_SHARE_TITLE, bean.actName);
         params.put(Constant.PARAM_SHARE_DESCRIPTION, ResourceUtils.getString(R.string.pay_for_me_share_description));
-        params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_COUPON);
-        params.put(Constant.PARAM_ACT_ID, "");
+        params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_TYPE_PAY_FOR_ME);
+        params.put(Constant.PARAM_ACT_ID, bean.actId);
         params.put(Constant.PARAM_SHARE_DIALOG_TITLE,"谁替我买单");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
     }

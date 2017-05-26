@@ -237,7 +237,6 @@ public class ChatSentMessageHelper {
             message.setAttribute(ChatConstant.KEY_SUB_CARD_TYPE, cardType);
         }
         message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
-        message.setAttribute(ChatConstant.KEY_SUB_TYPE, subType);
         sendMessage(message);
     }
 

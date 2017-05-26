@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Adapter.MallPackageListAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.OnceCardItemBean;
 import com.xmd.technician.common.OnceCardHelper;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.OnceCardResult;
@@ -96,7 +96,7 @@ public class OnceCardListFragment extends BaseFragment {
             @Override
             public void onShareClicked(OnceCardItemBean bean) {
                 ShareController.doShare(bean.imageUrl, bean.shareUrl, bean.name,
-                        bean.shareDescription, Constant.SHARE_COUPON, "");
+                        bean.shareDescription, Constant.SHARE_TYPE_ONCE_CARD, bean.id);
             }
 
             @Override
@@ -107,14 +107,14 @@ public class OnceCardListFragment extends BaseFragment {
                 params.put(Constant.PARAM_SHARE_URL, bean.shareUrl);
                 params.put(Constant.PARAM_SHARE_TITLE, bean.name);
                 params.put(Constant.PARAM_SHARE_DESCRIPTION, bean.shareDescription);
-                params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_COUPON);
-                params.put(Constant.PARAM_ACT_ID, "");
+                params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_TYPE_ONCE_CARD);
+                params.put(Constant.PARAM_ACT_ID, bean.id);
                 if(bean.cardType.equals(Constant.ITEM_CARD_TYPE)){
-                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "单项次卡");
+                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.chat_timescard_message_type));
                 }else if(bean.cardType.equals(Constant.ITEM_PACKAGE_TYPE)){
-                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "超值套餐");
+                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.chat_package_message_type));
                 }else{
-                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "积分礼品");
+                    params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.chat_gift_message_type));
                 }
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
             }

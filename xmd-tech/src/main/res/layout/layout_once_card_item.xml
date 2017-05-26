@@ -38,7 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/small_space"
-            android:layout_marginRight="85dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -123,24 +122,34 @@
                 android:textSize="@dimen/fontBiggerThanNormal"
                 tools:text="特卖价：150元、259元"/>
 
-            <TextView
-                android:id="@+id/once_card_money"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBtnChecked"
-                android:textSize="@dimen/fontBiggerThanNormal"
-                android:visibility="visible"
-                tools:text="提成：1元、5元"/>
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/once_card_money"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBtnChecked"
+                    android:textSize="@dimen/fontBiggerThanNormal"
+                    android:visibility="visible"
+                    android:paddingLeft="@dimen/small_space"
+                    tools:text="提成：1元、5元"/>
+                <Button
+                    android:id="@+id/once_card_share"
+                    style="@style/share_btn_style"
+                    android:layout_gravity="bottom"
+
+                    />
+            </LinearLayout>
 
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/once_card_share"
-            style="@style/share_btn_style"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="-70dp"
-            />
+
     </LinearLayout>
 
 
