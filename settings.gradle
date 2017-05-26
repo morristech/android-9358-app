@@ -1,1 +1,1 @@
-include ':xmd-tech', ':commonlibrary', ':xmd-app', ':loading-view', ':xmd-cashier', ':xmd-mgr'
+include ':xmd-tech', ':commonlibrary', ':xmd-app', ':loading-view', ':xmd-cashier', ':xmd-mgr', ':xmd-m-appointment'
