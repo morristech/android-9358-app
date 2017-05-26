@@ -100,7 +100,7 @@ class XMDPushManager {
         try {
             Response<BaseResult> response = mBindCall.execute();
             BaseResult result = response.body();
-            if (!response.isSuccess() || result == null || result.statusCode != 200) {
+            if (!response.isSuccessful() || result == null || result.statusCode != 200) {
                 XLogger.e(TAG, "bind failed:" + response.code() + "," + response.message());
                 return false;
             }

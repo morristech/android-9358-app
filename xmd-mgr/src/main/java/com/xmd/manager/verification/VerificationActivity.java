@@ -61,7 +61,7 @@ public class VerificationActivity extends BaseActivity implements VerificationLi
         mData.setShowDetail(true);
         //设置显示信息
         int layoutId;
-        switch (CommonUtils.verifyTypeToViewType(mData.getType())) {
+        switch (CommonUtils.verifyInfoTypeToViewType(mData.getInfoType())) {
             case Constant.VERIFICATION_VIEW_ORDER:
                 layoutId = R.layout.check_info_list_item_sub_order;
                 mData.setInfo(new Gson().fromJson((String) mData.getInfo(), PayOrderDetailBean.class));

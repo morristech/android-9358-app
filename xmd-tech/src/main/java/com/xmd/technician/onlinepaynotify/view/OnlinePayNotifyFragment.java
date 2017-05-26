@@ -237,7 +237,7 @@ public class OnlinePayNotifyFragment extends BaseFragment {
         }
         int position = 0;
         for (; position < mAdapter.getDataList().size(); position++) {
-            if (mAdapter.getData(position).id == info.id) {
+            if (mAdapter.getData(position).id .equals(info.id) ) {
                 if (mOnlyNotArchived) {
                     mAdapter.getDataList().remove(position);
                     if (position <= mLimitCount) {

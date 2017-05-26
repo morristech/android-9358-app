@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.hyphenate.chat.EMClient;
-import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.manager.Constant;
@@ -45,7 +44,6 @@ public class WelcomeActivity extends AppCompatActivity {
 //            EMClient.getInstance().groupManager().loadAllGroups();
 //            EmchatManager.getInstance().loadConversationList();
             // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
-            OkHttpUtil.getInstance().setCommonHeader("token", SharedPreferenceHelper.getUserToken());
             ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
                 @Override
                 public void run() {

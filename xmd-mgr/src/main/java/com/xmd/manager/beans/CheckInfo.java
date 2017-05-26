@@ -14,12 +14,16 @@ import com.xmd.manager.common.ResourceUtils;
  * 核销信息
  */
 public class CheckInfo implements Parcelable {
+    public static final int INFO_TYPE_TICKET = 1;
+    public static final int INFO_TYPE_ORDER = 2;
+
     private String typeName; //业务名称
     private String type; //业务类型,paid_coupon-点钟券,coupon-优惠券,service_item_coupon-项目券,order-付费预约
     private String title;
     private String description; //描述
     private String code; //核销码
     private Boolean valid; //当前能否使用（时间限制）
+    private Integer infoType; // 1--券，2--订单
     private Object info;
     private Boolean selected;
 
@@ -37,6 +41,8 @@ public class CheckInfo implements Parcelable {
         description = in.readString();
         code = in.readString();
         valid = in.readByte() == 1;
+
+        infoType = in.readInt();
         String infoString = in.readString();
         if (!infoString.equals("null")) {
             info = infoString;
@@ -65,6 +71,14 @@ public class CheckInfo implements Parcelable {
 
     public String getType() {
         return type;
+    }
+
+    public Integer getInfoType() {
+        return infoType;
+    }
+
+    public void setInfoType(Integer infoType) {
+        this.infoType = infoType;
     }
 
     public void setType(String type) {
@@ -104,7 +118,7 @@ public class CheckInfo implements Parcelable {
     }
 
     public Boolean getValid() {
-        return getCode() != null && (valid == null ? false : valid);
+        return valid == null ? false : valid;
     }
 
     public void setValid(Boolean valid) {
@@ -154,6 +168,7 @@ public class CheckInfo implements Parcelable {
         dest.writeString(description);
         dest.writeString(code);
         dest.writeByte((byte) (valid ? 1 : 0));
+        dest.writeInt(infoType);
         String infoString = "null";
         if (info != null) {
             infoString = new Gson().toJson(info);

@@ -10,7 +10,7 @@ public class GetPayNotifyListResult extends BaseResult {
     public List<Item> respData;
 
     public static class Item {
-        public long id;
+        public String id;
         public String createTime; //yyyy-MM-dd HH:mm:ss
         public String otherTechNames;
         public int payAmount;

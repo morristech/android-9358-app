@@ -140,12 +140,22 @@ public class ChatConstant {
     public static final String KEY_LOCATION_STATIC_MAP = "staticMap";
     public static final String KEY_MESSAGE_ID = "messageId";
     public static final String KEY_REVOKE_TYPE = "mark";
-    public static final String KEY_ACTITY_TYPE = "activity";
     public static final String KEY_SUB_TYPE_INDIANA = "indiana";//一元夺
     public static final String KEY_SUB_TYPE_SECKILL = "seckill";//抢项目
     public static final String KEY_SUB_TYPE_TURNTABLE = "turntable";//转盘
     public static final String KEY_SUB_TYPE_TIMES_SCARD = "timescard";//次卡
+    public static final String KEY_SUB_TYPE_PACKAGE = "package"; //混合套餐
+    public static final String KEY_SUB_TYPE_GIFT = "creditGift"; //积分礼品
     public static final String KEY_SUB_TYPE_JOURNAL = "journal";//电子期刊
+    public static final String KEY_SUB_TEMPLATE_ID = "templateId";
+    public static final String KEY_SUB_CARD_TYPE = "cardType";
+    public static final String KEY_ACTIVITY_TIME_LIMIT_TYPE = "timeLimit";
+    public static final String KEY_ACTIVITY_ONE_YUAN_TYPE ="oneYuan";
+    public static final String KEY_ACTIVITY_LUCKY_WHEEL_TYPE = "luckyWheel";
+    public static final String KEY_ACTIVITY_JOURNAL_TYPE ="journal";
+    public static final String KEY_ACTIVITY_ITEM_CARD_TYPE = "itemCard";
+
+
 
     public static final String KEY_CHAT_SENT_REWARD_TYPE = "begReward";//技师求打赏
     public static final String KEY_CHAT_RECEIVE_REWARD = "reward"; //用户打赏
@@ -169,7 +179,6 @@ public class ChatConstant {
     public static final String ACCOUNT_CONFLICT = "conflict";
     public static final String ACCOUNT_FORBIDDEN = "user_forbidden";
     public static final String CHAT_ROBOT = "item_robots";
-    public static final String MESSAGE_ATTR_ROBOT_MSGTYPE = "msgtype";
     public static final String ACTION_GROUP_CHANAGED = "action_group_changed";
     public static final String ACTION_CONTACT_CHANAGED = "action_contact_changed";
 

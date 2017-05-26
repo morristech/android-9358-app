@@ -572,9 +572,13 @@
     <string name="chat_turntable_message_des">那一世转山转水，只为相见</string>
     <string name="chat_journal_message_des">有美女、有福利，你就是我的VIP</string>
     <string name="chat_timescard_message_des">品质服务，畅快享受</string>
+    <string name="chat_package_message_des">特惠套餐,超越期待~</string>
+    <string name="chat_gift_message_des">会员积分超值兑换!!</string>
     <string name="chat_indiana_message_type">限时抢</string>
     <string name="chat_seckill_message_type">一元夺</string>
     <string name="chat_turntable_message_type">大转盘</string>
     <string name="chat_journal_message_type">电子期刊</string>
     <string name="chat_timescard_message_type">次卡</string>
+    <string name="chat_package_message_type">混合套餐</string>
+    <string name="chat_gift_message_type">积分礼物</string>
 </resources>

@@ -124,7 +124,7 @@ public class PayNotifyInfoManager extends Observable {
             //检查一次数据，早于限制时间时自动归档，并且从最近归档列表中移除
             if (info.payTime < limitTime) {
                 info.isArchived = true;
-                mRecentArchivedMaps.remove(String.valueOf(info.id));
+                mRecentArchivedMaps.remove(info.id);
                 needSaveArchived = true;
             }
             if (info.payTime >= startTime && info.payTime < endTime
@@ -166,7 +166,7 @@ public class PayNotifyInfoManager extends Observable {
                     SimpleDateFormat sdf = DateUtils.getSdf("yyyy-MM-dd HH:mm:ss");
                     for (GetPayNotifyListResult.Item item : response.body().respData) {
                         PayNotifyInfo info = new PayNotifyInfo();
-                        info.id = item.id;
+                       info.id = item.id;
                         try {
                             info.payTime = sdf.parse(item.createTime).getTime();
                         } catch (ParseException e) {
@@ -245,7 +245,7 @@ public class PayNotifyInfoManager extends Observable {
             int insetPosition = -1;
             for (int i = 0; i < originData.size(); i++) {
                 PayNotifyInfo originInfo = originData.get(i);
-                if (info.id == originInfo.id) {
+                if (info.id .equals(originInfo.id) ) {
                     //原始数据中有这一项
                     if (info.status != originInfo.status) {
                         statusChanged = true;
@@ -276,12 +276,12 @@ public class PayNotifyInfoManager extends Observable {
 
     public void setPayNotifyInfoArchived(PayNotifyInfo info) {
         for (PayNotifyInfo notifyInfo : mData) {
-            if (notifyInfo.id == info.id) {
+            if (notifyInfo.id .equals(info.id) ) {
                 notifyInfo.isArchived = info.isArchived;
                 if (notifyInfo.isArchived) {
                     //保存归档数据到本地
-                    mRecentArchivedMaps.put(String.valueOf(notifyInfo.id),
-                            new ArchiveData(String.valueOf(notifyInfo.id), notifyInfo.payTime, notifyInfo.status));
+                    mRecentArchivedMaps.put(notifyInfo.id,
+                            new ArchiveData(notifyInfo.id, notifyInfo.payTime, notifyInfo.status));
                     saveArchivedIds();
                 }
             }

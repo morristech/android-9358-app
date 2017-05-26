@@ -5,8 +5,6 @@ import com.xmd.app.event.EventTokenExpired;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.net.SocketTimeoutException;
-
 import retrofit2.HttpException;
 import rx.Subscriber;
 
@@ -28,10 +26,8 @@ public abstract class NetworkSubscriber<T> extends Subscriber<T> {
             if (httpException.code() == 401) {
                 EventBus.getDefault().post(new EventTokenExpired("server return 401"));
             }
-            onCallbackError(new ServerException(e.getLocalizedMessage(), httpException.code()));
-        } else if (e instanceof SocketTimeoutException) {
-            onCallbackError(new NetworkException("服务器请求错误：" + e.getLocalizedMessage()));
         }
+        onCallbackError(e);
     }
 
     @Override

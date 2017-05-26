@@ -141,17 +141,17 @@ public class OnceCardHelper {
     private String getComboDescription(OnceCardBean bean) {
         List<String> mCombo = new ArrayList<>();
         if (bean.cardType.equals(Constant.ITEM_CARD_TYPE))  {
-          if(bean.type == 1){ //购买赠送
-              for (int i = 0; i < bean.itemCardPlans.size(); i++) {
-                  mCombo.add(String.format("买%s送%s", bean.itemCardPlans.get(i).paidCount, bean.itemCardPlans.get(i).giveCount));
-              }
-              return  Utils.listToString(mCombo);
-          }else{//直减
-              for (int i = 0; i < bean.itemCardPlans.size(); i++) {
-                  mCombo.add(String.format("%s*%s次",bean.itemCardPlans.get(i).itemName , bean.itemCardPlans.get(i).paidCount));
-              }
-              return Utils.listToString(mCombo);
-          }
+            if(bean.type == 1){ //购买赠送
+                for (int i = 0; i < bean.itemCardPlans.size(); i++) {
+                    mCombo.add(String.format("买%s送%s", bean.itemCardPlans.get(i).paidCount, bean.itemCardPlans.get(i).giveCount));
+                }
+                return  String.format("(%s)%s",bean.itemCardPlans.get(0).itemName,Utils.listToString(mCombo));
+            }else{//直减
+                for (int i = 0; i < bean.itemCardPlans.size(); i++) {
+                    mCombo.add(String.format("%s次", bean.itemCardPlans.get(i).paidCount));
+                }
+                return String.format("(%s)%s",bean.itemCardPlans.get(0).itemName,Utils.listToString(mCombo));
+            }
         } else if(bean.cardType.equals(Constant.ITEM_PACKAGE_TYPE)) {
             if(bean.type == 3){//混合购买赠送
                 for (int i = 0; i < bean.itemCardPlans.size(); i++) {
