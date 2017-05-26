@@ -138,6 +138,7 @@
         <Button
             android:id="@+id/once_card_share"
             style="@style/share_btn_style"
+            android:layout_gravity="bottom"
             android:layout_marginLeft="-70dp"
             />
     </LinearLayout>

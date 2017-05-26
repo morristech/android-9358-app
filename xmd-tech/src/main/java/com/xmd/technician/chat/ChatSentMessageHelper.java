@@ -32,7 +32,7 @@ public class ChatSentMessageHelper {
     public boolean inUserBlacklist;
 
 
-    public ChatSentMessageHelper(Context context, String toChatId,  EaseChatMessageList messageList, boolean isMessageListInited, boolean inUserBlacklist) {
+    public ChatSentMessageHelper(Context context, String toChatId, EaseChatMessageList messageList, boolean isMessageListInited, boolean inUserBlacklist) {
         this.mContext = context;
         this.mToChatEmchatId = toChatId;
 
@@ -185,21 +185,57 @@ public class ChatSentMessageHelper {
         return message;
     }
 
-    public void sendActivityMessage(String actId, String subType) {
+    public void sendActivityMessage(String actId, String subType, String templateId) {
+
         String content;
-        if (subType.equals(ChatConstant.KEY_SUB_TYPE_INDIANA)) {
-            content = ResourceUtils.getString(R.string.chat_indiana_message_des);
-        } else if (subType.equals(ChatConstant.KEY_SUB_TYPE_SECKILL)) {
-            content = ResourceUtils.getString(R.string.chat_seckill_message_des);
-        } else if (subType.equals(ChatConstant.KEY_SUB_TYPE_TURNTABLE)) {
-            content = ResourceUtils.getString(R.string.chat_turntable_message_des);
-        } else if (subType.equals(ChatConstant.KEY_SUB_TYPE_JOURNAL)) {
-            content = ResourceUtils.getString(R.string.chat_journal_message_des);
-        } else {
-            content = ResourceUtils.getString(R.string.chat_timescard_message_des);
+        String activityType = "";
+        String cardType = "";
+        switch (subType) {
+            case ChatConstant.KEY_SUB_TYPE_INDIANA:
+                content = ResourceUtils.getString(R.string.chat_indiana_message_des);
+                activityType = ChatConstant.KEY_ACTIVITY_TIME_LIMIT_TYPE;
+                break;
+            case ChatConstant.KEY_SUB_TYPE_SECKILL:
+                content = ResourceUtils.getString(R.string.chat_seckill_message_des);
+                activityType = ChatConstant.KEY_ACTIVITY_ONE_YUAN_TYPE;
+                break;
+            case ChatConstant.KEY_SUB_TYPE_TURNTABLE:
+                content = ResourceUtils.getString(R.string.chat_turntable_message_des);
+                activityType = ChatConstant.KEY_ACTIVITY_LUCKY_WHEEL_TYPE;
+                break;
+            case ChatConstant.KEY_SUB_TYPE_JOURNAL:
+                content = ResourceUtils.getString(R.string.chat_journal_message_des);
+                activityType = ChatConstant.KEY_ACTIVITY_JOURNAL_TYPE;
+                break;
+            case ChatConstant.KEY_SUB_TYPE_TIMES_SCARD:
+                content = ResourceUtils.getString(R.string.chat_timescard_message_des);
+                activityType = ChatConstant.KEY_ACTIVITY_ITEM_CARD_TYPE;
+                cardType = "item_card";
+                break;
+            case ChatConstant.KEY_SUB_TYPE_PACKAGE:
+                content = ResourceUtils.getString(R.string.chat_package_message_des);
+                activityType = ChatConstant.KEY_ACTIVITY_ITEM_CARD_TYPE;
+                cardType = "item_package";
+                break;
+            case ChatConstant.KEY_SUB_TYPE_GIFT:
+                content = ResourceUtils.getString(R.string.chat_gift_message_des);
+                activityType = ChatConstant.KEY_ACTIVITY_ITEM_CARD_TYPE;
+                cardType = "credit_gift";
+                break;
+            default:
+                content = ResourceUtils.getString(R.string.chat_timescard_message_des);
+                activityType = ChatConstant.KEY_ACTIVITY_ITEM_CARD_TYPE;
+                cardType = "item_card";
         }
+
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
-        message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, "activity");
+        message.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, activityType);
+        if (activityType.equals(ChatConstant.KEY_ACTIVITY_JOURNAL_TYPE)) {
+            message.setAttribute(ChatConstant.KEY_SUB_TEMPLATE_ID, templateId);
+        }
+        if (activityType.equals(ChatConstant.KEY_ACTIVITY_ITEM_CARD_TYPE)) {
+            message.setAttribute(ChatConstant.KEY_SUB_CARD_TYPE, cardType);
+        }
         message.setAttribute(ChatConstant.KEY_ACT_ID, actId);
         message.setAttribute(ChatConstant.KEY_SUB_TYPE, subType);
         sendMessage(message);
@@ -209,15 +245,14 @@ public class ChatSentMessageHelper {
         if (message == null) {
             return;
         }
-
         message.setAttribute(ChatConstant.KEY_CLUB_NAME, SharedPreferenceHelper.getUserClubName());
         message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
-        message.setAttribute(ChatConstant.KEY_CLUB_ID,SharedPreferenceHelper.getUserClubId());
+        message.setAttribute(ChatConstant.KEY_CLUB_ID, SharedPreferenceHelper.getUserClubId());
         message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
         message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
         message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
         message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
-        message.setAttribute(ChatConstant.KEY_CURRENT_USER_ID,SharedPreferenceHelper.getUserId());
+        message.setAttribute(ChatConstant.KEY_CURRENT_USER_ID, SharedPreferenceHelper.getUserId());
         if (inUserBlacklist) {
             message.setAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_IN_BLACKLIST);
         }

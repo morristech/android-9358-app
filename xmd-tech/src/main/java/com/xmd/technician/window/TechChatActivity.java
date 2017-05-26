@@ -23,6 +23,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EasyUtils;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.AcceptOrRejectGame;
@@ -596,13 +597,13 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             chatSentMessageHelper.sendPaidCouponMessage(String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", result.actValue, result.couponPeriod), result.actId, mTechCode);
         }
     }
-
-    private void handlerCheckedActivity(String actId, String subType) {
-        chatSentMessageHelper.sendActivityMessage(actId, subType);
+    //特惠商城,电子期刊
+    private void handlerCheckedActivity(String actId, String subType,String jounrlId) {
+        chatSentMessageHelper.sendActivityMessage(actId, subType,jounrlId);
     }
-
+    //营销活动
     private void handlerCheckedMarketing(String actId, String subType) {
-        chatSentMessageHelper.sendActivityMessage(actId, subType);
+        chatSentMessageHelper.sendActivityMessage(actId, subType,"");
     }
 
 
@@ -955,7 +956,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 }
                 mSelectedJournal = (List<ClubJournalBean>) data.getSerializableExtra(REQUEST_JOURNAL_TYPE);
                 for (int i = 0; i < mSelectedJournal.size(); i++) {
-                    handlerCheckedActivity(mSelectedJournal.get(i).journalId, ChatConstant.KEY_SUB_TYPE_JOURNAL);
+                    handlerCheckedActivity(mSelectedJournal.get(i).journalId, ChatConstant.KEY_SUB_TYPE_JOURNAL,String.valueOf(mSelectedJournal.get(i).templateId));
                 }
                 break;
             case GET_PREFERENTIAL_CODE://特惠商城
@@ -966,7 +967,14 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 }
                 mSelectedOnceCard = (List<OnceCardItemBean>) data.getSerializableExtra(REQUEST_PREFERENTIAL_TYPE);
                 for (int i = 0; i < mSelectedOnceCard.size(); i++) {
-                    handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_TIMES_SCARD);
+                    if(mSelectedOnceCard.get(i).cardType.equals(Constant.ITEM_CARD_TYPE)){
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_TIMES_SCARD,"");
+                    }else if(mSelectedOnceCard.get(i).cardType.equals(Constant.ITEM_PACKAGE_TYPE)){
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_PACKAGE,"");
+                    }else{
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_GIFT,"");
+                    }
+
                 }
                 break;
             case REQUEST_CODE_LOCAL://位置

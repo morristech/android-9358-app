@@ -389,7 +389,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     // 打招呼
     private void sayHello(String customerId) {
         if (!EMClient.getInstance().isConnected()) {
-            showToast("当前已经离线，请稍后再试!");
+            showToast("当前已经离线，请重新登录!");
             return;
         }
         Map<String, String> params = new HashMap<>();
@@ -408,8 +408,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
             showToast("打招呼成功");
             HelloSettingManager.getInstance().sendHelloTemplate(emChatName, emChatId, result.userAvatar, result.userType);
             saveChatContact(emChatId);
-//            btnEmHello.setEnabled(false);
-//            btnEmHello.setText(R.string.had_say_hi);
         } else {
             showToast("打招呼失败:" + result.msg);
         }

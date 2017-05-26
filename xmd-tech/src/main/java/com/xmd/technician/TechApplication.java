@@ -114,7 +114,6 @@ public class TechApplication extends MultiDexApplication {
                 ThreadManager.initialize();
                 ControllerRegister.initialize();
 
-
                 //初始化消息推送
                 initGeiTuiPush();
 

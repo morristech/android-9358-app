@@ -259,43 +259,45 @@ public class EaseCommonUtils {
         int type = 0;
         if (message.getType() == EMMessage.Type.TXT) {
             String msgType = message.getStringAttribute("msgType", "");
-            if (msgType.equals("reward")) {
-                type = ChatConstant.MESSAGE_RECEIVE_REWARD_TYPE;
-            } else if (msgType.equals("begReward")) {
-                type = ChatConstant.MESSAGE_SENT_REWARD_TYPE;
-            } else if (msgType.equals("order")) {
-                type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_ORDER_TYPE : ChatConstant.MESSAGE_SENT_ORDER_TYPE;
-            } else if (msgType.equals("paidCouponTip")) {
-                type = ChatConstant.MESSAGE_RECEIVE_PAID_COUPON_TYPE;
-            } else if (msgType.equals("paidCoupon")) {
-                type = ChatConstant.MESSAGE_SENT_PAID_PAID_COUPON_TYPE;
-            } else if (msgType.equals("ordinaryCoupon")) {
-                type = ChatConstant.MESSAGE_SENT_COUPON_TYPE;
-            } else if (msgType.equals("couponTip")) {
-                type = ChatConstant.MESSAGE_RECEIVE_COUPON_TYPE;
-            } else if (msgType.equals("diceGame")) {
-                String gameStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS, "");
-                if (gameStatus.equals(ChatConstant.KEY_REQUEST_GAME)) {
-                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_REQUEST_TYPE : ChatConstant.MESSAGE_SENT_GAME_REQUEST_TYPE);
-                } else if (gameStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)) {
-                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_CANCEL_TYPE : ChatConstant.MESSAGE_SENT_GAME_CANCEL_TYPE);
-                } else if (gameStatus.equals(ChatConstant.KEY_ACCEPT_GAME)) {
-                    type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_ACCEPT_TYPE : ChatConstant.MESSAGE_SENT_GAME_ACCEPT_TYPE;
-                } else if (gameStatus.equals(ChatConstant.KEY_REFUSED_GAME) || gameStatus.equals(ChatConstant.KEY_GAME_REJECT)) {
-                    type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_REFUSED_TYPE : ChatConstant.MESSAGE_SENT_GAME_REFUSED_TYPE;
-                } else if (gameStatus.equals(ChatConstant.KEY_OVERTIME_GAME)) {
-                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_OVER_TIME_TYPE : ChatConstant.MESSAGE_SENT_GAME_OVER_TIME_TYPE);
-                } else if (gameStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
-                    type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_OVER_TYPE : ChatConstant.MESSAGE_SENT_GAME_OVER_TYPE);
+            if(Utils.isNotEmpty(msgType)){
+                if (msgType.equals("reward")) {
+                    type = ChatConstant.MESSAGE_RECEIVE_REWARD_TYPE;
+                } else if (msgType.equals("begReward")) {
+                    type = ChatConstant.MESSAGE_SENT_REWARD_TYPE;
+                } else if (msgType.equals("order")) {
+                    type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_ORDER_TYPE : ChatConstant.MESSAGE_SENT_ORDER_TYPE;
+                } else if (msgType.equals("paidCouponTip")) {
+                    type = ChatConstant.MESSAGE_RECEIVE_PAID_COUPON_TYPE;
+                } else if (msgType.equals("paidCoupon")) {
+                    type = ChatConstant.MESSAGE_SENT_PAID_PAID_COUPON_TYPE;
+                } else if (msgType.equals("ordinaryCoupon")) {
+                    type = ChatConstant.MESSAGE_SENT_COUPON_TYPE;
+                } else if (msgType.equals("couponTip")) {
+                    type = ChatConstant.MESSAGE_RECEIVE_COUPON_TYPE;
+                } else if (msgType.equals("diceGame")) {
+                    String gameStatus = message.getStringAttribute(ChatConstant.KEY_GAME_STATUS, "");
+                    if (gameStatus.equals(ChatConstant.KEY_REQUEST_GAME)) {
+                        type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_REQUEST_TYPE : ChatConstant.MESSAGE_SENT_GAME_REQUEST_TYPE);
+                    } else if (gameStatus.equals(ChatConstant.KEY_CANCEL_GAME_TYPE)) {
+                        type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_CANCEL_TYPE : ChatConstant.MESSAGE_SENT_GAME_CANCEL_TYPE);
+                    } else if (gameStatus.equals(ChatConstant.KEY_ACCEPT_GAME)) {
+                        type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_ACCEPT_TYPE : ChatConstant.MESSAGE_SENT_GAME_ACCEPT_TYPE;
+                    } else if (gameStatus.equals(ChatConstant.KEY_REFUSED_GAME) || gameStatus.equals(ChatConstant.KEY_GAME_REJECT)) {
+                        type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_REFUSED_TYPE : ChatConstant.MESSAGE_SENT_GAME_REFUSED_TYPE;
+                    } else if (gameStatus.equals(ChatConstant.KEY_OVERTIME_GAME)) {
+                        type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_OVER_TIME_TYPE : ChatConstant.MESSAGE_SENT_GAME_OVER_TIME_TYPE);
+                    } else if (gameStatus.equals(ChatConstant.KEY_OVER_GAME_TYPE)) {
+                        type = (message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_GAME_OVER_TYPE : ChatConstant.MESSAGE_SENT_GAME_OVER_TYPE);
+                    }
+                } else if (msgType.equals("gift")) {
+                    type = ChatConstant.MESSAGE_CREDIT_GIFT_TYPE;
+                } else if (msgType.equals("clubLocation")) {
+                    type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_LOCATION_TYPE : ChatConstant.MESSAGE_SENT_LOCATION_TYPE;
+                } else if (msgType.equals("mark")) {
+                    type = ChatConstant.MESSAGE_SENT_REVOKE_MESSAGE_TYPE;
+                } else  {
+                    type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_ACTIVITY_TYPE : ChatConstant.MESSAGE_SENT_ACTIVITY_TYPE;
                 }
-            } else if (msgType.equals("gift")) {
-                type = ChatConstant.MESSAGE_CREDIT_GIFT_TYPE;
-            } else if (msgType.equals("clubLocation")) {
-                type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_LOCATION_TYPE : ChatConstant.MESSAGE_SENT_LOCATION_TYPE;
-            } else if (msgType.equals("mark")) {
-                type = ChatConstant.MESSAGE_SENT_REVOKE_MESSAGE_TYPE;
-            } else if (msgType.equals("activity")) {
-                type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_ACTIVITY_TYPE : ChatConstant.MESSAGE_SENT_ACTIVITY_TYPE;
             }
         }
         return type;
@@ -342,7 +344,7 @@ public class EaseCommonUtils {
                 chatRow = message.direct() == EMMessage.Direct.RECEIVE ? new ChatRowLocationView(context, message, position, adapter) : new ChatRowLocationView(context, message, position, adapter);
             } else if (messageCustomType.equals(ChatConstant.KEY_REVOKE_TYPE)) {
                 chatRow = new ChatRowWithdrawView(context, message, position, adapter);
-            }else if(messageCustomType.equals(ChatConstant.KEY_ACTITY_TYPE) ){
+            }else{
                 chatRow = new ChatRowActivityView(context,message,position,adapter);
             }
         } else {

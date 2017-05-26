@@ -159,7 +159,7 @@ public class HelloSettingManager {
         ChatUser chatUser = new ChatUser(userEmchatId);
         chatUser.setNickname(userName);
         chatUser.setAvatar(userAvatar);
-        chatUser.setUserType("");
+        chatUser.setUserType(ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER);
         UserUtils.saveUser(chatUser);
         // 招呼文本
         EMMessage txtMessage = EMMessage.createTxtSendMessage(templateContentText.replace(TechApplication.getAppContext().getResources().getString(R.string.hello_setting_content_replace), userName), userEmchatId);
@@ -172,11 +172,14 @@ public class HelloSettingManager {
     }
 
     private void emSendMessage(EMMessage message) {
+        message.setAttribute(ChatConstant.KEY_CLUB_NAME, SharedPreferenceHelper.getUserClubName());
         message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
+        message.setAttribute(ChatConstant.KEY_CLUB_ID,SharedPreferenceHelper.getUserClubId());
         message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
         message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
         message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
         message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
+        message.setAttribute(ChatConstant.KEY_CURRENT_USER_ID,SharedPreferenceHelper.getUserId());
         EMClient.getInstance().chatManager().sendMessage(message);
     }
 
