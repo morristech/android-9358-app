@@ -2,7 +2,6 @@ package com.xmd.manager.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -239,7 +238,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_VISIT_ITEM:
                 return new VisitListItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.visit_list_item, parent, false));
             case TYPE_GROUP_MESSAGE_ITEM:
-                return new GroupMessageItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.group_message_list_item_detail, parent, false));
+                return new GroupMessageItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.group_message_list_item, parent, false));
             case TYPE_BAD_COMMENT_ITEM:
                 return new BadCommentItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.bad_comment_list_item, parent, false));
             case TYPE_BAD_COMMENT_TECH_ITEM:
@@ -761,82 +760,38 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         GroupMessageItemViewHolder groupHolder = (GroupMessageItemViewHolder) holder;
         GroupMessage groupMessage = (GroupMessage) obj;
 
-        //消息内容
         if (Utils.isNotEmpty(groupMessage.message)) {
-            groupHolder.contentInfoSummary.setText(groupMessage.message);
-            groupHolder.contentInfoDetail.setText(groupMessage.message);
-        }
-
-        //消息中的优惠活动
-        if (Utils.isNotEmpty(groupMessage.actName)) {
-            groupHolder.activitySummaryContainer.setVisibility(View.VISIBLE);
-            groupHolder.activityDetailContainer.setVisibility(View.VISIBLE);
-            groupHolder.activityDetailTip.setVisibility(View.VISIBLE);
-            groupHolder.activityTitleSummary.setText(groupMessage.actType);
-            groupHolder.activityInfoSummary.setText(groupMessage.actName);
-            groupHolder.activityTitleDetail.setText(groupMessage.actType);
-            groupHolder.activityInfoDetail.setText(groupMessage.actName);
+            groupHolder.llGroupMessage.setVisibility(View.VISIBLE);
+            groupHolder.groupCouponMessage.setText(groupMessage.message);
         } else {
-            groupHolder.activitySummaryContainer.setVisibility(View.GONE);
-            groupHolder.activityDetailContainer.setVisibility(View.GONE);
-            groupHolder.activityDetailTip.setVisibility(View.GONE);
+            groupHolder.llGroupMessage.setVisibility(View.GONE);
+        }
+        if (Utils.isNotEmpty(groupMessage.actName)) {
+            groupHolder.llGroupName.setVisibility(View.VISIBLE);
+            groupHolder.groupCouponName.setText(groupMessage.actName);
+        } else {
+            groupHolder.llGroupName.setVisibility(View.GONE);
         }
         if (Utils.isNotEmpty(String.valueOf(groupMessage.sendCount))) {
-            groupHolder.customerCountSummary.setText(String.valueOf(groupMessage.sendCount) + "人");
-            groupHolder.customerCountDetail.setText(String.valueOf(groupMessage.sendCount) + "人");
+            groupHolder.groupSendTotal.setText(String.valueOf(groupMessage.sendCount) + "人");
         }
-
-        //消息发送的用户群
-        if (Utils.isNotEmpty(groupMessage.groupType)) {
-            groupHolder.typeTitleSummary.setVisibility(View.VISIBLE);
-            groupHolder.typeTitleDetail.setVisibility(View.VISIBLE);
-            groupHolder.typeTitleSummary.setText(groupMessage.groupType);
-            groupHolder.typeTitleDetail.setText(groupMessage.groupType);
+        if (Utils.isNotEmpty(String.valueOf(groupMessage.verificationCount)) && Utils.isNotEmpty(groupMessage.actName) && groupMessage.msgType.equals(RequestConstant.KEY_MESSAGE_TYPE_ORDINARY_COUPON)) {
+            groupHolder.llVerification.setVisibility(View.VISIBLE);
+            groupHolder.groupVerificationTotal.setText(String.valueOf(groupMessage.verificationCount) + "人");
         } else {
-            groupHolder.typeTitleSummary.setVisibility(View.GONE);
-            groupHolder.typeTitleDetail.setVisibility(View.GONE);
+            groupHolder.llVerification.setVisibility(View.GONE);
         }
-        if (Utils.isNotEmpty(groupMessage.groupNames)) {
-            groupHolder.customerTypeDetail.setVisibility(View.VISIBLE);
-            groupHolder.customerTypeDetail.setText(groupMessage.groupNames);
-        } else {
-            groupHolder.customerTypeDetail.setVisibility(View.GONE);
-        }
-
-        //消息发送时间
         if (Utils.isNotEmpty(groupMessage.sendDate)) {
-            groupHolder.sendTimeSummary.setText(groupMessage.sendDate);
-            groupHolder.sendTimeDetail.setText(groupMessage.sendDate);
+            groupHolder.groupSendTime.setText(groupMessage.sendDate);
         }
 
-        //消息操作人
-        if (Utils.isNotEmpty(groupMessage.operatorName)) {
-            groupHolder.sendOperatorSummary.setText(groupMessage.operatorName);
-            groupHolder.sendOperatorDetail.setText(groupMessage.operatorName);
-        }
-
-        //消息图片
         if (Utils.isNotEmpty(groupMessage.imageUrl)) {
-            groupHolder.contentImage.setVisibility(View.VISIBLE);
-            groupHolder.contentTitleSummary.setVisibility(View.VISIBLE);
-            Glide.with(mContext).load(groupMessage.imageUrl).into(groupHolder.contentImage);
+            groupHolder.groupSendImage.setVisibility(View.VISIBLE);
+            Glide.with(mContext).load(groupMessage.imageUrl).into(groupHolder.groupSendImage);
         } else {
-            groupHolder.contentImage.setVisibility(View.GONE);
-            groupHolder.contentTitleSummary.setVisibility(View.GONE);
+            groupHolder.groupSendImage.setVisibility(View.GONE);
         }
 
-        groupHolder.expandButton.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        groupHolder.putWayButton.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-
-        groupHolder.expandButton.setOnClickListener(v -> {
-            groupHolder.meeageSummaryContainer.setVisibility(View.GONE);
-            groupHolder.meeageDetailContainer.setVisibility(View.VISIBLE);
-        });
-
-        groupHolder.putWayButton.setOnClickListener(v -> {
-            groupHolder.meeageSummaryContainer.setVisibility(View.VISIBLE);
-            groupHolder.meeageDetailContainer.setVisibility(View.GONE);
-        });
     }
 
     private void bindBadCommentItemViewHolder(RecyclerView.ViewHolder holder, Object obj) {
@@ -1340,60 +1295,24 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class GroupMessageItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.group_message_customer_type)
-        TextView typeTitleSummary;
-        @Bind(R.id.group_detail_customer_type)
-        TextView typeTitleDetail;
-        @Bind(R.id.group_message_customer_count)
-        TextView customerCountSummary;
-        @Bind(R.id.group_customer_detail_count)
-        TextView customerCountDetail;
-        @Bind(R.id.group_detail_type_detail)
-        TextView customerTypeDetail;
-
-        @Bind(R.id.group_message_activity_container)
-        LinearLayout activitySummaryContainer;
-        @Bind(R.id.detail_activity_container)
-        LinearLayout activityDetailContainer;
-        @Bind(R.id.group_message_activity_title)
-        TextView activityTitleSummary;
-        @Bind(R.id.group_detail_activity_title)
-        TextView activityTitleDetail;
-        @Bind(R.id.group_message_activity_info)
-        TextView activityInfoSummary;
-        @Bind(R.id.group_detail_activity_info)
-        TextView activityInfoDetail;
-        @Bind(R.id.activity_detail_tip)
-        TextView activityDetailTip;
-
-        @Bind(R.id.group_message_content)
-        TextView contentTitleSummary;
-        @Bind(R.id.group_detail_message_content)
-        TextView contentInfoSummary;
-        @Bind(R.id.group_message_content_detail)
-        TextView contentInfoDetail;
-        @Bind(R.id.group_detail_message_image)
-        ImageView contentImage;
-
+        @Bind(R.id.group_coupon_message)
+        TextView groupCouponMessage;
+        @Bind(R.id.ll_group_message)
+        LinearLayout llGroupMessage;
+        @Bind(R.id.group_coupon_name)
+        TextView groupCouponName;
+        @Bind(R.id.group_send_total)
+        TextView groupSendTotal;
+        @Bind(R.id.group_verification_total)
+        TextView groupVerificationTotal;
+        @Bind(R.id.ll_verification)
+        LinearLayout llVerification;
         @Bind(R.id.group_send_time)
-        TextView sendTimeSummary;
-        @Bind(R.id.group_detail_send_time)
-        TextView sendTimeDetail;
-
-        @Bind(R.id.group_send_operator)
-        TextView sendOperatorSummary;
-        @Bind(R.id.group_detail_send_operator)
-        TextView sendOperatorDetail;
-
-        @Bind(R.id.group_message_summary)
-        TextView putWayButton;
-        @Bind(R.id.group_message_detail)
-        TextView expandButton;
-
-        @Bind(R.id.message_summary)
-        LinearLayout meeageSummaryContainer;
-        @Bind(R.id.message_detail)
-        LinearLayout meeageDetailContainer;
+        TextView groupSendTime;
+        @Bind(R.id.ll_coupon_name)
+        LinearLayout llGroupName;
+        @Bind(R.id.group_send_image)
+        ImageView groupSendImage;
 
         public GroupMessageItemViewHolder(View itemView) {
             super(itemView);
