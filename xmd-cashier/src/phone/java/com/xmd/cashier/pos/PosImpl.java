@@ -90,6 +90,16 @@ public class PosImpl implements IPos {
     }
 
     @Override
+    public void printText(String text) {
+
+    }
+
+    @Override
+    public void printRight(String text) {
+
+    }
+
+    @Override
     public void printText(String text, int gravity) {
 
     }
@@ -97,6 +107,11 @@ public class PosImpl implements IPos {
     // left居左 right居右
     @Override
     public void printText(String left, String right) {
+
+    }
+
+    @Override
+    public void printCenter(String text) {
 
     }
 

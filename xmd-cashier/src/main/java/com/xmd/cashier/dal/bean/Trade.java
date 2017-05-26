@@ -12,9 +12,7 @@ public class Trade {
     public static final int DISCOUNT_TYPE_COUPON = 2;
     public static final int DISCOUNT_TYPE_USER = 1;
 
-    /**
-     * 订单信息
-     **/
+    //订单信息
     public String tradeNo; //订单号
     public int tradeStatus;//订单状态
     public String tradeTime;//交易时间
@@ -69,7 +67,7 @@ public class Trade {
 
 
     /**
-     * 二纺码
+     * 二维码
      **/
     public byte[] qrCodeBytes;
 
@@ -97,7 +95,6 @@ public class Trade {
         memberPaidDiscountMoney = memberNeedPayMoney - memberPaidMoney;//计算折扣金额
     }
 
-
     public int getMemberPaidMoney() {
         return memberPaidMoney;
     }
@@ -111,7 +108,6 @@ public class Trade {
      **/
     public int getNeedPayMoney() {
         int needPayMoney = originMoney - memberPaidMoney - memberPaidDiscountMoney - willDiscountMoney;
-
         if (needPayMoney < 0) {
             needPayMoney = 0;
         }
@@ -122,7 +118,7 @@ public class Trade {
         return originMoney;
     }
 
-    //想要减免的金额
+    //将要减免的金额
     public int getWillDiscountMoney() {
         return willDiscountMoney;
     }
@@ -141,7 +137,6 @@ public class Trade {
         }
         return 0;
     }
-
 
     public int getDiscountType() {
         return discountType;
@@ -174,7 +169,6 @@ public class Trade {
     public void cleanCouponList() {
         couponList.clear();
     }
-
 
     public int getVerificationCount() {
         return verificationCount;
@@ -232,13 +226,5 @@ public class Trade {
 
     public void setVerificationNoUseTreatMoney(int verificationNoUseTreatMoney) {
         this.verificationNoUseTreatMoney = verificationNoUseTreatMoney;
-    }
-
-    public int getPosPayType() {
-        return posPayType;
-    }
-
-    public void setPosPayType(int posPayType) {
-        this.posPayType = posPayType;
     }
 }

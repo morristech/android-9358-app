@@ -12,7 +12,6 @@ import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
-import com.xmd.cashier.dal.net.response.GetTreatResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.PrizeResult;
 import com.xmd.cashier.dal.net.response.StringResult;
@@ -202,10 +201,8 @@ public class VerifyManager {
                         // 处理内容
                         Gson gson = new Gson();
                         for (CheckInfo info : result.respData) {
-                            switch (info.getType()) {
-                                case AppConstants.TYPE_COUPON:
-                                case AppConstants.TYPE_PAID_COUPON:
-                                case AppConstants.TYPE_SERVICE_ITEM_COUPON:
+                            switch (info.getInfoType()) {
+                                case AppConstants.CHECK_INFO_TYPE_COUPON:
                                     // 券
                                     if (info.getInfo() instanceof String) {
                                         info.setInfo(gson.fromJson((String) info.getInfo(), CouponInfo.class));
@@ -213,7 +210,7 @@ public class VerifyManager {
                                         info.setInfo(gson.fromJson(gson.toJson(info.getInfo()), CouponInfo.class));
                                     }
                                     break;
-                                case AppConstants.TYPE_ORDER:
+                                case AppConstants.CHECK_INFO_TYPE_ORDER:
                                     // 付费预约
                                     if (info.getInfo() instanceof String) {
                                         info.setInfo(gson.fromJson((String) info.getInfo(), OrderInfo.class));
@@ -225,6 +222,7 @@ public class VerifyManager {
                                     break;
                             }
                         }
+
                         // 排序
                         Collections.sort(result.respData, new Comparator<CheckInfo>() {
                             @Override
@@ -330,24 +328,6 @@ public class VerifyManager {
                 .subscribe(new NetworkSubscriber<CommonVerifyResult>() {
                     @Override
                     public void onCallbackSuccess(CommonVerifyResult result) {
-                        callback.onSuccess(result);
-                    }
-
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
-    }
-
-    // 获取请客授权信息  long long ago
-    public Subscription getTreatInfo(String treatNo, final Callback<GetTreatResult> callback) {
-        return SpaRetrofit.getService().getTreatInfo(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, treatNo)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<GetTreatResult>() {
-                    @Override
-                    public void onCallbackSuccess(GetTreatResult result) {
                         callback.onSuccess(result);
                     }
 
@@ -489,7 +469,6 @@ public class VerifyManager {
                 .subscribe(new Subscriber<List<CheckInfo>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override

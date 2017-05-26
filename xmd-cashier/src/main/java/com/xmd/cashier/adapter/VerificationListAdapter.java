@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
@@ -99,7 +98,6 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
             mCheckBox = (CheckBox) itemView.findViewById(R.id.checkbox);
         }
 
-
         public ViewHolder(View itemView, VerificationContract.Presenter presenter) {
             super(itemView);
             mPresenter = presenter;
@@ -128,7 +126,6 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         mCheckBox.requestFocus();
-                        XLogger.i("onCheckedChanged:" + isChecked);
                         updateCheckBox(isChecked);
                         mPresenter.onVerificationItemChecked(item, isChecked);
                     }
@@ -151,7 +148,6 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
                         }
                     }
                 });
-
             }
 
             mCheckBox.setChecked(item.selected);
@@ -164,7 +160,7 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
             mName.getPaint().setAntiAlias(true);
             mType.setText(couponInfo.useTypeName);
             mInfo.setText(couponInfo.consumeMoneyDescription);
-            mMoney.setText(String.valueOf(couponInfo.getReallyCouponMoney()));
+            mMoney.setText(Utils.moneyToString(couponInfo.getReallyCouponMoney()));
         }
 
         private void bindOrderInfo(VerificationItem item) {
@@ -174,7 +170,7 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
             } else {
                 mName.setText(order.orderNo);
             }
-            mMoney.setText(Utils.moneyToString(order.downPayment * 100));
+            mMoney.setText(Utils.moneyToString(order.downPayment));
             mInfo.setText("技师：" + order.techName);
             mType.setText("预约订单");
         }

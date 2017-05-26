@@ -127,16 +127,18 @@ public class UiNavigation {
     }
 
     // 券
-    public static void gotoVerifyNormalCouponActivity(Context context, CouponInfo info) {
+    public static void gotoVerifyNormalCouponActivity(Context context, CouponInfo info,boolean isShow) {
         Intent intent = new Intent(context, VerifyCouponActivity.class);
         intent.putExtra(AppConstants.EXTRA_NORMAL_COUPON_INFO, info);
+        intent.putExtra(AppConstants.EXTRA_IS_SHOW, isShow);
         context.startActivity(intent);
     }
 
     // 预约订单
-    public static void gotoVerifyOrderActivity(Context context, OrderInfo info) {
+    public static void gotoVerifyOrderActivity(Context context, OrderInfo info,boolean isShow) {
         Intent intent = new Intent(context, VerifyOrderActivity.class);
         intent.putExtra(AppConstants.EXTRA_ORDER_VERIFY_INFO, info);
+        intent.putExtra(AppConstants.EXTRA_IS_SHOW, isShow);
         context.startActivity(intent);
     }
 

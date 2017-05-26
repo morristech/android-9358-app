@@ -20,7 +20,6 @@ import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.Callback0;
 import com.xmd.cashier.manager.CashierManager;
 import com.xmd.cashier.manager.TradeManager;
-import com.xmd.cashier.manager.VerificationManager;
 
 import java.util.List;
 
@@ -41,7 +40,6 @@ public class CashierPresenter implements CashierContract.Presenter {
 
     private TradeManager mTradeManager = TradeManager.getInstance();
     private CashierManager mCashierManager = CashierManager.getInstance();
-    private VerificationManager mVerificationManager = VerificationManager.getInstance();
 
     public CashierPresenter(Context context, CashierContract.View view) {
         mContext = context;
@@ -195,7 +193,7 @@ public class CashierPresenter implements CashierContract.Presenter {
             @Override
             public void onSuccess(StringResult o) {
                 mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_XMD_ONLINE;
-                if (mVerificationManager.haveSelected()) {
+                if (mTradeManager.haveSelected()) {
                     processCoupon();
                 } else {
                     processPay();
@@ -222,7 +220,7 @@ public class CashierPresenter implements CashierContract.Presenter {
         }
         Trade trade = mTradeManager.getCurrentTrade();
         // 收银流程只处理消费金额有效(>0)的交易,不处理单独核销(首页核销入口处理)
-        if (trade.getOriginMoney() == 0 /*&& (trade.getVerificationMoney() == 0 || mVerificationManager.onlyHaveTreat())*/) {
+        if (trade.getOriginMoney() == 0 /*&& (trade.getVerificationMoney() == 0 || mTradeManager.onlyHaveTreat())*/) {
             mView.showToast("请先输入收款信息");
             return false;
         }
@@ -240,7 +238,7 @@ public class CashierPresenter implements CashierContract.Presenter {
         mGetTradeNoSubscription = mTradeManager.fetchTradeNo(new Callback<GetTradeNoResult>() {
             @Override
             public void onSuccess(GetTradeNoResult o) {
-                if (mVerificationManager.haveSelected()) {
+                if (mTradeManager.haveSelected()) {
                     //处理优惠券信息
                     processCoupon();
                 } else {
@@ -266,14 +264,14 @@ public class CashierPresenter implements CashierContract.Presenter {
             mVerificationSubscription.unsubscribe();
         }
         final Trade trade = mTradeManager.getCurrentTrade();
-        mVerificationSubscription = mVerificationManager.verificationCoupon(
+        mVerificationSubscription = mTradeManager.doVerify(
                 mTradeManager.getCurrentTrade().getOriginMoney(),
                 new Callback<List<VerificationItem>>() {
                     @Override
                     public void onSuccess(List<VerificationItem> o) {
                         //核销成功，计算成功核销的金额
-                        mVerificationManager.calculateSuccessVerificationValue();
-                        if (mVerificationManager.haveFailed()) {
+                        mTradeManager.calculateSuccessVerificationValue();
+                        if (mTradeManager.haveFailed()) {
                             //有失败的情况，需要进入错误处理页面
                             mView.hideLoading();
                             trade.setWillDiscountMoney(trade.getVerificationSuccessfulMoney());

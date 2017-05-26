@@ -59,7 +59,6 @@
             android:name=".activity.PayTypeChoiceActivity"
             android:launchMode="singleTask" />
 
-        <!-- 交易流水及详情 -->
         <activity
             android:name=".activity.BillRecordActivity"
             android:launchMode="singleTask" />

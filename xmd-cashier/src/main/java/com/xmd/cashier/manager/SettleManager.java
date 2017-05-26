@@ -113,10 +113,10 @@ public class SettleManager {
         List<SettleSummaryInfo> list = respData.recordDetailList;
 
         if (info != null) {
-            mPos.printText(AccountManager.getInstance().getClubName(), IPos.GRAVITY_CENTER);
-            mPos.printText("(结算清单)", IPos.GRAVITY_CENTER);
+            mPos.printCenter(AccountManager.getInstance().getClubName());
+            mPos.printCenter("(结算清单)");
             if (retry) {
-                mPos.printText("--重打小票--", IPos.GRAVITY_CENTER);
+                mPos.printCenter("--重打小票--");
             }
             mPos.printDivide();
 
@@ -134,20 +134,20 @@ public class SettleManager {
             mPos.printText("    会员支付实收：", "￥" + Utils.moneyToStringEx(info.memberPayIncome) + "  ");
             mPos.printDivide();
 
-            mPos.printText("共" + info.orderCount + "笔", IPos.GRAVITY_RIGHT);
-            mPos.printText("开始时间：" + info.startTime, IPos.GRAVITY_RIGHT);
-            mPos.printText("截止时间：" + info.endTime, IPos.GRAVITY_RIGHT);
-            mPos.printText("结算人员：" + (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().userName : info.operatorName), IPos.GRAVITY_RIGHT);
-            mPos.printText("结算时间：" + (TextUtils.isEmpty(info.createTime) ? Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT) : info.createTime), IPos.GRAVITY_RIGHT);
+            mPos.printRight("共" + info.orderCount + "笔");
+            mPos.printRight("开始时间：" + info.startTime);
+            mPos.printRight("截止时间：" + info.endTime);
+            mPos.printRight("结算人员：" + (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().userName : info.operatorName));
+            mPos.printRight("结算时间：" + (TextUtils.isEmpty(info.createTime) ? Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT) : info.createTime));
             if (!TextUtils.isEmpty(info.cashierName)) {
-                mPos.printText("收款人员：" + info.cashierName, IPos.GRAVITY_RIGHT);
+                mPos.printRight("收款人员：" + info.cashierName);
             }
         }
         mPos.printDivide();
 
         if (list != null) {
             for (SettleSummaryInfo subInfo : list) {
-                mPos.printText("收款人员：" + subInfo.cashierName, IPos.GRAVITY_LEFT);
+                mPos.printText("收款人员：" + subInfo.cashierName);
                 mPos.printText("订单总金额", "￥" + Utils.moneyToStringEx(subInfo.orderTotalMoney));
                 mPos.printText("减免总金额", "￥" + Utils.moneyToStringEx(subInfo.deductTotalMoney));
                 mPos.printText("    优惠减免：", "￥" + Utils.moneyToStringEx(subInfo.preferentialDeduct) + "  ");

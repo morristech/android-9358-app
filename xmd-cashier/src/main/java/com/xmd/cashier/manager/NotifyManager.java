@@ -160,115 +160,6 @@ public class NotifyManager {
                 });
     }
 
-    // 打印预约订单小票
-    public void print(OrderRecordInfo info, boolean retry) {
-        mPos.printText("小摩豆预约订单", IPos.GRAVITY_CENTER);
-        if (retry) {
-            mPos.printText("--重打小票--", IPos.GRAVITY_CENTER);
-        }
-        mPos.printText("\n", IPos.GRAVITY_CENTER);
-        mPos.printDivide();
-        mPos.printText("客户: ", (TextUtils.isEmpty(info.phoneNum) ? info.customerName : String.format("%s(%s)", info.customerName, info.phoneNum)));
-        mPos.printText("技师: ", TextUtils.isEmpty(info.techSerialNo) ? info.techName : String.format("%s[%s]", info.techName, info.techSerialNo));
-        mPos.printText("项目: ", TextUtils.isEmpty(info.itemName) ? "到店选择" : info.itemName);
-        mPos.printDivide();
-        mPos.printText("到店: ", info.appointTime);
-        mPos.printText("已付: ", Utils.moneyToStringEx(info.downPayment) + "元");
-        mPos.printDivide();
-        mPos.printText("订单编号: ", info.id);
-        mPos.printText("下单时间: ", info.createdAt);
-        mPos.printText("打印时间: ", Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT));
-        String status = null;
-        switch (info.status) {
-            case AppConstants.ORDER_RECORD_STATUS_ACCEPT:
-                status = AppConstants.ORDER_RECORD_STATUS_ACCEPT_TEXT;
-                break;
-            case AppConstants.ORDER_RECORD_STATUS_CANCEL:
-                status = AppConstants.ORDER_RECORD_STATUS_CANCEL_TEXT;
-                break;
-            case AppConstants.ORDER_RECORD_STATUS_COMPLETE:
-                if (info.downPayment > 0) {
-                    status = AppConstants.ORDER_RECORD_STATUS_COMPLETE_TEXT;
-                } else {
-                    status = AppConstants.ORDER_RECORD_STATUS_DONE_TEXT;
-                }
-                break;
-            case AppConstants.ORDER_RECORD_STATUS_FAILURE:
-                status = AppConstants.ORDER_RECORD_STATUS_FAILURE_TEXT;
-                break;
-            case AppConstants.ORDER_RECORD_STATUS_OVERTIME:
-                status = AppConstants.ORDER_RECORD_STATUS_OVERTIME_TEXT;
-                break;
-            case AppConstants.ORDER_RECORD_STATUS_REJECT:
-                status = AppConstants.ORDER_RECORD_STATUS_REJECT_TEXT;
-                break;
-            case AppConstants.ORDER_RECORD_STATUS_SUBMIT:
-                status = AppConstants.ORDER_RECORD_STATUS_SUBMIT_TEXT;
-                break;
-            default:
-                break;
-        }
-        if (!TextUtils.isEmpty(status)) {
-            mPos.printText("订单状态: ", status);
-        }
-        if (!TextUtils.isEmpty(info.receiverName)) {
-            mPos.printText("接单员: ", info.receiverName);
-        }
-        mPos.printText("收银员: ", AccountManager.getInstance().getUser().userName);
-        mPos.printText("\n", IPos.GRAVITY_CENTER);
-        mPos.printEnd();
-    }
-
-    // 打印在线买单小票 带二维码
-    public void print(OnlinePayInfo info, boolean retry) {
-        mPos.printText(AccountManager.getInstance().getClubName(), IPos.GRAVITY_CENTER);
-        mPos.printText("(结账单)", IPos.GRAVITY_CENTER);
-        if (retry) {
-            mPos.printText("--重打小票--", IPos.GRAVITY_CENTER);
-        }
-
-        mPos.printDivide();
-        mPos.printText("消费", Utils.moneyToStringEx(info.originalAmount) + " 元");
-        mPos.printText("减免", Utils.moneyToStringEx(info.originalAmount - info.payAmount) + " 元");
-        mPos.printDivide();
-        mPos.printText("实收 " + Utils.moneyToStringEx(info.payAmount) + " 元", IPos.GRAVITY_RIGHT);
-        mPos.printDivide();
-        mPos.printText("交易号: ", info.payId);
-        mPos.printText("付款方式: ", "小摩豆在线买单");
-        if (!TextUtils.isEmpty(info.techName)) {
-            mPos.printText("技师: ", TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo));
-        }
-        if (!TextUtils.isEmpty(info.otherTechNames)) {
-            String[] otherNames = info.otherTechNames.split(",|，");
-            for (String name : otherNames) {
-                mPos.printText(name, IPos.GRAVITY_RIGHT);
-            }
-        }
-        mPos.printText("交易时间: ", info.createTime);
-        mPos.printText("打印时间: ", Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT));
-        String status = null;
-        switch (info.status) {
-            case AppConstants.ONLINE_PAY_STATUS_PAID:
-                status = AppConstants.ONLINE_PAY_STATUS_PAID_TEXT;
-                break;
-            case AppConstants.ONLINE_PAY_STATUS_PASS:
-                status = AppConstants.ONLINE_PAY_STATUS_PASS_TEXT;
-                break;
-            case AppConstants.ONLINE_PAY_STATUS_UNPASS:
-                status = AppConstants.ONLINE_PAY_STATUS_UNPASS_TEXT;
-                break;
-            default:
-                break;
-        }
-        if (!TextUtils.isEmpty(status)) {
-            mPos.printText("买单状态: ", status);
-        }
-        mPos.printText("操作人: ", TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().userName : info.operatorName);
-        mPos.printBitmap(TradeManager.getInstance().getClubQRCodeSync());
-        mPos.printText("--- 微信扫码，选技师，享优惠 ---", IPos.GRAVITY_CENTER);
-        mPos.printEnd();
-    }
-
     public void refreshOrderRecordNotify() {
         SpaRetrofit.getService().getOrderRecordList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT)
                 .subscribeOn(Schedulers.io())
@@ -323,5 +214,113 @@ public class NotifyManager {
                         XLogger.i(e.getLocalizedMessage());
                     }
                 });
+    }
+
+    // 打印预约订单小票
+    public void print(OrderRecordInfo info, boolean retry) {
+        mPos.printCenter("小摩豆预约订单");
+        if (retry) {
+            mPos.printCenter("--重打小票--");
+        }
+        mPos.printCenter("\n");
+        mPos.printDivide();
+        mPos.printText("客户: ", (TextUtils.isEmpty(info.phoneNum) ? info.customerName : String.format("%s(%s)", info.customerName, info.phoneNum)));
+        mPos.printText("技师: ", TextUtils.isEmpty(info.techSerialNo) ? info.techName : String.format("%s[%s]", info.techName, info.techSerialNo));
+        mPos.printText("项目: ", TextUtils.isEmpty(info.itemName) ? "到店选择" : info.itemName);
+        mPos.printDivide();
+        mPos.printText("到店: ", info.appointTime);
+        mPos.printText("已付: ", Utils.moneyToStringEx(info.downPayment) + "元");
+        mPos.printDivide();
+        mPos.printText("订单编号: ", info.id);
+        mPos.printText("下单时间: ", info.createdAt);
+        mPos.printText("打印时间: ", Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT));
+        String status = null;
+        switch (info.status) {
+            case AppConstants.ORDER_RECORD_STATUS_ACCEPT:
+                status = AppConstants.ORDER_RECORD_STATUS_ACCEPT_TEXT;
+                break;
+            case AppConstants.ORDER_RECORD_STATUS_CANCEL:
+                status = AppConstants.ORDER_RECORD_STATUS_CANCEL_TEXT;
+                break;
+            case AppConstants.ORDER_RECORD_STATUS_COMPLETE:
+                if (info.downPayment > 0) {
+                    status = AppConstants.ORDER_RECORD_STATUS_COMPLETE_TEXT;
+                } else {
+                    status = AppConstants.ORDER_RECORD_STATUS_DONE_TEXT;
+                }
+                break;
+            case AppConstants.ORDER_RECORD_STATUS_FAILURE:
+                status = AppConstants.ORDER_RECORD_STATUS_FAILURE_TEXT;
+                break;
+            case AppConstants.ORDER_RECORD_STATUS_OVERTIME:
+                status = AppConstants.ORDER_RECORD_STATUS_OVERTIME_TEXT;
+                break;
+            case AppConstants.ORDER_RECORD_STATUS_REJECT:
+                status = AppConstants.ORDER_RECORD_STATUS_REJECT_TEXT;
+                break;
+            case AppConstants.ORDER_RECORD_STATUS_SUBMIT:
+                status = AppConstants.ORDER_RECORD_STATUS_SUBMIT_TEXT;
+                break;
+            default:
+                break;
+        }
+        if (!TextUtils.isEmpty(status)) {
+            mPos.printText("订单状态: ", status);
+        }
+        if (!TextUtils.isEmpty(info.receiverName)) {
+            mPos.printText("接单员: ", info.receiverName);
+        }
+        mPos.printText("收银员: ", AccountManager.getInstance().getUser().userName);
+        mPos.printEnd();
+    }
+
+    // 打印在线买单小票 带二维码
+    public void print(OnlinePayInfo info, boolean retry) {
+        mPos.printCenter(AccountManager.getInstance().getClubName());
+        mPos.printCenter("(结账单)");
+        if (retry) {
+            mPos.printCenter("--重打小票--");
+        }
+
+        mPos.printDivide();
+        mPos.printText("消费", Utils.moneyToStringEx(info.originalAmount) + " 元");
+        mPos.printText("减免", Utils.moneyToStringEx(info.originalAmount - info.payAmount) + " 元");
+        mPos.printDivide();
+        mPos.printRight("实收 " + Utils.moneyToStringEx(info.payAmount) + " 元");
+        mPos.printDivide();
+        mPos.printText("交易号: ", info.payId);
+        mPos.printText("付款方式: ", "小摩豆在线买单");
+        if (!TextUtils.isEmpty(info.techName)) {
+            mPos.printText("技师: ", TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo));
+        }
+        if (!TextUtils.isEmpty(info.otherTechNames)) {
+            String[] otherNames = info.otherTechNames.split(",|，");
+            for (String name : otherNames) {
+                mPos.printRight(name);
+            }
+        }
+        mPos.printText("交易时间: ", info.createTime);
+        mPos.printText("打印时间: ", Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT));
+        String status = null;
+        switch (info.status) {
+            case AppConstants.ONLINE_PAY_STATUS_PAID:
+                status = AppConstants.ONLINE_PAY_STATUS_PAID_TEXT;
+                break;
+            case AppConstants.ONLINE_PAY_STATUS_PASS:
+                status = AppConstants.ONLINE_PAY_STATUS_PASS_TEXT;
+                break;
+            case AppConstants.ONLINE_PAY_STATUS_UNPASS:
+                status = AppConstants.ONLINE_PAY_STATUS_UNPASS_TEXT;
+                break;
+            default:
+                break;
+        }
+        if (!TextUtils.isEmpty(status)) {
+            mPos.printText("买单状态: ", status);
+        }
+        mPos.printText("操作人: ", TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().userName : info.operatorName);
+        mPos.printBitmap(TradeManager.getInstance().getClubQRCodeSync());
+        mPos.printCenter("--- 微信扫码，选技师，享优惠 ---");
+        mPos.printEnd();
     }
 }

@@ -15,16 +15,15 @@ public class VerificationItem implements Parcelable {
     public int errorCode;
     public String errorMsg;
 
-
+    public String code;
     //券信息
     public String type;
     //以下信息根据type类型设置
     public CouponInfo couponInfo;//优惠券
     public OrderInfo order; //订单
-    public TreatInfo treatInfo;//请客授权码
+    public TreatInfo treatInfo;//请客
 
     public VerificationItem() {
-
     }
 
     protected VerificationItem(Parcel in) {
@@ -32,6 +31,7 @@ public class VerificationItem implements Parcelable {
         success = in.readByte() != 0;
         errorCode = in.readInt();
         errorMsg = in.readString();
+        code = in.readString();
         type = in.readString();
         couponInfo = in.readParcelable(CouponInfo.class.getClassLoader());
         order = in.readParcelable(OrderInfo.class.getClassLoader());
@@ -90,6 +90,7 @@ public class VerificationItem implements Parcelable {
         dest.writeByte((byte) (success ? 1 : 0));
         dest.writeInt(errorCode);
         dest.writeString(errorMsg);
+        dest.writeString(code);
         dest.writeString(type);
         dest.writeParcelable(couponInfo, flags);
         dest.writeParcelable(order, flags);
