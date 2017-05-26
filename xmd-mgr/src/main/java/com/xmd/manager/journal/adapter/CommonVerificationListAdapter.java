@@ -32,7 +32,7 @@ public class CommonVerificationListAdapter extends RecyclerView.Adapter<CommonVe
 
     @Override
     public int getItemViewType(int position) {
-        return CommonUtils.verifyTypeToViewType(mData.get(position).getType());
+        return CommonUtils.verifyInfoTypeToViewType(mData.get(position).getInfoType());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CommonVerificationListAdapter extends RecyclerView.Adapter<CommonVe
         //处理数据
         Gson gson = new Gson();
         for (CheckInfo checkInfo : mData) {
-            switch (CommonUtils.verifyTypeToViewType(checkInfo.getType())) {
+            switch (CommonUtils.verifyInfoTypeToViewType(checkInfo.getInfoType())) {
                 case Constant.VERIFICATION_VIEW_COUPON:
                     if (checkInfo.getInfo() instanceof String) {
                         checkInfo.setInfo(gson.fromJson((String) checkInfo.getInfo(), VerificationCouponDetailBean.class));

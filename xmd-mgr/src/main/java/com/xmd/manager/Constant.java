@@ -317,12 +317,7 @@ public class Constant {
     /**
      * 核销类型定义
      */
-    public static final String VERIFICATION_PAID_COUPON = "paid_coupon";
-    public static final String VERIFICATION_COUPON = "coupon";
-    public static final String VERIFICATION_SERVICE_ITEM = "service_item_coupon";
-    public static final String VERIFICATION_ORDER = "order";
-
-    public static final int VERIFICATION_VIEW_COMMOM = 1;
+    public static final int VERIFICATION_VIEW_COMMON = 1;
     public static final int VERIFICATION_VIEW_COUPON = 2;
     public static final int VERIFICATION_VIEW_ORDER = 3;
 }
