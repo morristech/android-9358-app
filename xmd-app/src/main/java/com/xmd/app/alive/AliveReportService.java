@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 
+import com.google.gson.stream.MalformedJsonException;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.xmd.app.XmdApp;
@@ -123,6 +124,11 @@ public class AliveReportService extends Service {
 
                             @Override
                             public void onCallbackError(Throwable e) {
+                                if (e instanceof MalformedJsonException) {
+                                    mLastReportSuccess = true;
+                                    XLogger.i("<<<reportAlive: " + token + " sucess");
+                                    return;
+                                }
                                 mLastReportSuccess = false;
                                 XLogger.e("<<<reportAlive: " + token + " failed:" + e.getLocalizedMessage());
                             }

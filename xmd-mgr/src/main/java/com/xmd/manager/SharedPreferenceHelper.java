@@ -3,6 +3,7 @@ package com.xmd.manager;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
+import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.xmd.app.XmdApp;
 import com.xmd.manager.service.response.LoginResult;
 
@@ -67,6 +68,7 @@ public class SharedPreferenceHelper {
     }
 
     public static void setUserToken(String userToken) {
+        OkHttpUtil.getInstance().setCommonHeader("token", userToken);
         mSettingPreference.edit().putString(KEY_USER_TOKEN, userToken).apply();
     }
 
@@ -100,7 +102,9 @@ public class SharedPreferenceHelper {
      * @return
      */
     public static String getUserToken() {
-        return mSettingPreference.getString(KEY_USER_TOKEN, "");
+        String token = mSettingPreference.getString(KEY_USER_TOKEN, "");
+        OkHttpUtil.getInstance().setCommonHeader("token", token);
+        return token;
     }
 
     public static void setUserName(String username) {
@@ -140,7 +144,9 @@ public class SharedPreferenceHelper {
     }
 
     public static String getMultiClubToken() {
-        return mSettingPreference.getString(KEY_MULTI_CLUB_TOKEN, "");
+        String token = mSettingPreference.getString(KEY_MULTI_CLUB_TOKEN, "");
+        OkHttpUtil.getInstance().setCommonHeader("token", token);
+        return token;
     }
 
     public static void setUserId(String userId) {

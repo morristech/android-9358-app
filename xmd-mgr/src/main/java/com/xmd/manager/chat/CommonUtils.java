@@ -16,6 +16,7 @@ import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
+import com.xmd.manager.beans.CheckInfo;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.service.RequestConstant;
@@ -169,16 +170,14 @@ public class CommonUtils {
     }
 
 
-    public static int verifyTypeToViewType(String verifyType) {
-        switch (verifyType) {
-            case Constant.VERIFICATION_PAID_COUPON:
-            case Constant.VERIFICATION_COUPON:
-            case Constant.VERIFICATION_SERVICE_ITEM:
+    public static int verifyInfoTypeToViewType(int infoType) {
+        switch (infoType) {
+            case CheckInfo.INFO_TYPE_TICKET:
                 return Constant.VERIFICATION_VIEW_COUPON;
-            case Constant.VERIFICATION_ORDER:
+            case CheckInfo.INFO_TYPE_ORDER:
                 return Constant.VERIFICATION_VIEW_ORDER;
             default:
-                return Constant.VERIFICATION_VIEW_COMMOM;
+                return Constant.VERIFICATION_VIEW_COMMON;
         }
     }
 }
