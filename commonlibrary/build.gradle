@@ -28,5 +28,10 @@ dependencies {
     compile "com.android.support:design:${rootProject.ext.supportLibraryVersion}"
 
     testCompile 'junit:junit:4.12'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+
+    compile "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"
+    compile "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${rootProject.ext.retrofitVersion}"
+    compile 'io.reactivex:rxandroid:1.2.1'
 }
