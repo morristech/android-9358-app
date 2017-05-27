@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.xmd.manager.R;
+import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.ItemBean;
 import com.xmd.manager.common.ChartUtils;
 import com.xmd.manager.common.DateUtil;
@@ -86,7 +87,8 @@ public class VisitReportActivity extends BaseActivity {
 
     private void initView() {
         isItemCanClick = true;
-        initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
+      //  initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
+        initStartDateTime = SharedPreferenceHelper.getCurrentClubCreateTime();
         initEndDateTime = DateUtil.getCurrentDate();
         mStartTime.setText(initStartDateTime);
         mEndTime.setText(initEndDateTime);

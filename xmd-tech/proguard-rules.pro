@@ -115,7 +115,8 @@
 -keepattributes Exceptions
 
 #RxJava
--dontwarn rx.internal.util.**
+-dontwarn rx.**
+-keep class rx.**{*;}
 
 #升级
 -dontwarn com.shidou.update.**

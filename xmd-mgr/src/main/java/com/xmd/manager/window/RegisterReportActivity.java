@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xmd.manager.R;
+import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.ItemBean;
 import com.xmd.manager.common.ChartUtils;
 import com.xmd.manager.common.DateUtil;
@@ -85,7 +86,8 @@ public class RegisterReportActivity extends BaseActivity {
 
 
     private void initView() {
-        initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
+     //   initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
+        initStartDateTime = SharedPreferenceHelper.getCurrentClubCreateTime();
         initEndDateTime = DateUtil.getCurrentDate();
         mStartTime.setText(initStartDateTime);
         mEndTime.setText(initEndDateTime);

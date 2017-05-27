@@ -10,6 +10,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xmd.manager.R;
+import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.adapter.StatisticsDataRecycleViewAdapter;
 import com.xmd.manager.common.ChartUtils;
 import com.xmd.manager.common.DateUtil;
@@ -110,7 +111,8 @@ public class CouponReportActivity extends BaseActivity {
     }
 
     private void initView() {
-        initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
+      //  initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
+        initStartDateTime = SharedPreferenceHelper.getCurrentClubCreateTime();
         initEndDateTime = DateUtil.getCurrentDate();
         mStartTime.setText(initStartDateTime);
         mEndTime.setText(initEndDateTime);
