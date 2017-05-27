@@ -1,17 +1,21 @@
 package com.xmd.appointment;
 
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.BaseDialogFragment;
@@ -41,10 +45,19 @@ public class TechSelectFragment extends BaseDialogFragment {
     private FragmentTechSelectBinding mBinding;
     private CommonRecyclerViewAdapter<Technician> mAdapter;
     private Technician mSelectedTechnician;
-
+    private String mSelectedTechId;
+    private String mEmptyTechId = "notSure";
 
     public ObservableBoolean loading = new ObservableBoolean();
     public ObservableField<String> loadingError = new ObservableField<>();
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!(context instanceof Listener)) {
+            throw new RuntimeException("activity must implement interface Listener!");
+        }
+    }
 
     @Nullable
     @Override
@@ -52,10 +65,18 @@ public class TechSelectFragment extends BaseDialogFragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_tech_select, container, false);
         mBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.set(0, 0, 0, 1);
+            }
+        });
         mAdapter = new CommonRecyclerViewAdapter<>();
         mAdapter.setHandler(BR.handler, this);
-
         mBinding.recyclerView.setAdapter(mAdapter);
+
+        mBinding.setHandler(this);
         return mBinding.getRoot();
     }
 
@@ -63,15 +84,31 @@ public class TechSelectFragment extends BaseDialogFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getDialog().setTitle("选择技师");
+        getDialog().setCancelable(false);
         loading.set(true);
         loadingError.set(null);
-        DataManager.getInstance().getTechnicianList(new NetworkSubscriber<TechnicianListResult>() {
+        DataManager.getInstance().loadTechnicianList(new NetworkSubscriber<TechnicianListResult>() {
             @Override
             public void onCallbackSuccess(TechnicianListResult result) {
                 loading.set(false);
                 loadingError.set(null);
+                //增加到店选择数据
+                Technician mock = new Technician();
+                mock.setId(mEmptyTechId);
+                mock.setName("到店选择");
+                result.getRespData().add(0, mock);
                 mAdapter.setData(R.layout.list_item_technician, BR.data, result.getRespData());
                 mAdapter.notifyDataSetChanged();
+                //检查是否需要选中技师
+                if (mSelectedTechId != null) {
+                    for (Technician technician : result.getRespData()) {
+                        if (technician.getId() != null && technician.getId().equals(mSelectedTechId)) {
+                            mSelectedTechnician = technician;
+                            mSelectedTechnician.viewSelected.set(true);
+                            break;
+                        }
+                    }
+                }
             }
 
             @Override
@@ -82,26 +119,39 @@ public class TechSelectFragment extends BaseDialogFragment {
                 mAdapter.notifyDataSetChanged();
             }
         });
+
+        mSelectedTechId = (String) getArguments().get(Constants.EXTRA_DATA);
+        if (mSelectedTechId == null) {
+            mSelectedTechId = mEmptyTechId;
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Window window = getDialog().getWindow();
         ScreenUtils.initScreenSize(getActivity().getWindowManager());
-        window.setLayout(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() * 4 / 5);
+        Window window = getDialog().getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = ScreenUtils.getScreenHeight() * 4 / 5;
+            window.setAttributes(lp);
+        }
     }
 
     public void onClickOK() {
-
-    }
-
-    public void onClickClean() {
-
+        if (mSelectedTechnician == null || mSelectedTechnician.getId().equals(mEmptyTechId)) {
+            ((Listener) getActivity()).onCleanTechnician();
+        } else {
+            ((Listener) getActivity()).onSelectTechnician(mSelectedTechnician);
+        }
+        DataManager.getInstance().cancelLoadTechnicianList();
+        getDialog().dismiss();
     }
 
     public void onClickCancel() {
-
+        DataManager.getInstance().cancelLoadTechnicianList();
+        getDialog().dismiss();
     }
 
     public void onClickTechnician(Technician technician) {
@@ -113,5 +163,11 @@ public class TechSelectFragment extends BaseDialogFragment {
         }
         mSelectedTechnician = technician;
         mSelectedTechnician.viewSelected.set(true);
+    }
+
+    public interface Listener {
+        void onSelectTechnician(Technician technician);
+
+        void onCleanTechnician();
     }
 }

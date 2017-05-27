@@ -112,8 +112,8 @@
 -keep class retrofit2.** { *; }
 -keepattributes Exceptions
 
-#RxJava
--dontwarn rx.internal.util.**
+
+
 
 #easemobe
 -keep class com.hyphenate.** {*;}
@@ -127,6 +127,7 @@
 -dontwarn com.google.**
 -keep class com.google.**{*;}
 
+#RxJava
 -dontwarn rx.**
 -keep class rx.**{*;}
 

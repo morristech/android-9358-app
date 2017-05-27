@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.xmd.appointment.beans.ServiceData" />
+
+        <variable
+            name="handler"
+            type="com.xmd.appointment.ServiceItemSelectFragment" />
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="54dp"
+        android:onClick="@{()->handler.onClickCategory(data.categoryBean)}"
+        android:text="@{data.categoryBean.name}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/font_size_16" />
+</layout>

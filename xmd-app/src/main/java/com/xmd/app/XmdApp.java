@@ -30,8 +30,7 @@ public class XmdApp {
     private XmdApp() {
     }
 
-    
-    
+
     public static final String FUNCTION_ALIVE_REPORT = "function_alive_report";//在线汇报
     private static boolean FUNCTION_ALIVE_REPORT_INIT;
 
@@ -65,6 +64,7 @@ public class XmdApp {
 
     /**
      * 切换服务器环境时调用
+     *
      * @param server 服务器地址 : http://xxx
      */
     public void setServer(String server) {
@@ -85,13 +85,15 @@ public class XmdApp {
         return mServer;
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     public void onLogin(EventLogin eventLogin) {
+        XLogger.i("event login, set token " + eventLogin.getToken());
         OkHttpUtil.getInstance().setCommonHeader("token", eventLogin.getToken());
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     public void onLogout(EventLogout eventLogout) {
+        XLogger.i("event logout, clear token ");
         OkHttpUtil.getInstance().setCommonHeader("token", "");
     }
 }

@@ -2,7 +2,14 @@ package com.xmd.appointment.beans;
 
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.xmd.app.Constants;
+import com.xmd.appointment.R;
 
 import java.io.Serializable;
 import java.util.List;
@@ -151,7 +158,34 @@ public class Technician implements Serializable {
     }
 
     @BindingAdapter("avatar")
-    public static void bindAvatar(ImageView imageView, String url) {
+    public static void bindAvatar(ImageView imageView, Technician technician) {
+        if (technician != null && !TextUtils.isEmpty(technician.getAvatarUrl())) {
+            Glide.with(imageView.getContext()).load(technician.getAvatarUrl()).placeholder(R.drawable.img_avatar_placeholder).into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.img_avatar_placeholder);
+        }
+    }
 
+    @BindingAdapter("tech_status")
+    public static void bindTechStatus(ImageView imageView, String status) {
+        if (Constants.TECH_STATUS_FREE.equals(status)) {
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageResource(R.drawable.ic_status_free);
+        } else if (Constants.TECH_STATUS_BUSY.equals(status)) {
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageResource(R.drawable.ic_status_busy);
+        } else {
+            imageView.setVisibility(View.GONE);
+        }
+    }
+
+    @BindingAdapter("tech_no")
+    public static void bindTechNo(TextView view, String serialNo) {
+        if (TextUtils.isEmpty(serialNo)) {
+            view.setVisibility(View.GONE);
+        } else {
+            view.setVisibility(View.VISIBLE);
+            view.setText("[" + serialNo + "]");
+        }
     }
 }

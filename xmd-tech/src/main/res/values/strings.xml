@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">9358技师</string>
+    <string name="app_name">9358服务</string>
     <string name="app_version_code">v1.5.2</string>
     <string name="token_expired_error_msg">账号在其他的地方登录，请重新登录</string>
     <string name="login_activity_input_username">请输入账号</string>

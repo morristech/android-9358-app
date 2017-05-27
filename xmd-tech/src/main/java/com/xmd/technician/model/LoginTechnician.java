@@ -229,7 +229,8 @@ public class LoginTechnician {
         //开始汇报状态
         if (needSendLoginEvent) {
             needSendLoginEvent = false;
-            EventBus.getDefault().post(new EventLogin(getToken(), getUserId()));
+            EventBus.getDefault().removeStickyEvent(EventLogout.class);
+            EventBus.getDefault().postSticky(new EventLogin(getToken(), getUserId()));
             RxBus.getInstance().post(new EventLogin(getToken(), getUserId()));
         }
     }
@@ -357,7 +358,7 @@ public class LoginTechnician {
 
         //发送登出事件
         needSendLoginEvent = true;
-        EventBus.getDefault().post(new EventLogout(getToken(), getUserId()));
+        EventBus.getDefault().postSticky(new EventLogout(getToken(), getUserId()));
         RxBus.getInstance().post(new EventLogout(getToken(), getUserId()));
 
         //停止刷新个人数据

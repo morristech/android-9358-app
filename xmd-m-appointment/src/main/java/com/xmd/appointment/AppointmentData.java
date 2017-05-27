@@ -4,6 +4,8 @@ import android.databinding.BindingAdapter;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.xmd.appointment.beans.Technician;
+
 import java.io.Serializable;
 
 /**
@@ -20,9 +22,7 @@ public class AppointmentData implements Serializable {
     private String customerPhone;//客户电话
     private Integer fontMoney; //订金
 
-    private String techName;
-    private String techAvatar;
-    private String techNo;
+    private Technician technician;
 
     private String token; //订单生成者token
 
@@ -90,40 +90,24 @@ public class AppointmentData implements Serializable {
         this.token = token;
     }
 
-    public String getTechName() {
-        return techName;
+    public Technician getTechnician() {
+        return technician;
     }
 
-    public void setTechName(String techName) {
-        this.techName = techName;
-    }
-
-    public String getTechAvatar() {
-        return techAvatar;
-    }
-
-    public void setTechAvatar(String techAvatar) {
-        this.techAvatar = techAvatar;
-    }
-
-    public String getTechNo() {
-        return techNo;
-    }
-
-    public void setTechNo(String techNo) {
-        this.techNo = techNo;
+    public void setTechnician(Technician technician) {
+        this.technician = technician;
     }
 
     @BindingAdapter("techName")
     public static void setTechName(TextView view, AppointmentData data) {
-        if (TextUtils.isEmpty(data.getTechName())) {
+        if (data.getTechnician() == null) {
             view.setText("技师待定");
             return;
         }
-        if (TextUtils.isEmpty(data.getTechNo())) {
-            view.setText(data.getTechName());
+        if (TextUtils.isEmpty(data.getTechnician().getSerialNo())) {
+            view.setText(data.getTechnician().getName());
         } else {
-            view.setText(data.getTechName() + "[" + data.getTechNo() + "]");
+            view.setText(data.getTechnician().getName() + "[" + data.getTechnician().getSerialNo() + "]");
         }
     }
 

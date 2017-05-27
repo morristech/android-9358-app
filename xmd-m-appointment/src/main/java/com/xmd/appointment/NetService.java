@@ -1,5 +1,6 @@
 package com.xmd.appointment;
 
+import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.TechnicianListResult;
 
 import retrofit2.http.GET;
@@ -19,8 +20,14 @@ public interface NetService {
      * @param techName 技师名称	string	非必填
      */
     @GET("/spa-manager/api/v2/tech/order/technician/list")
-    Observable<TechnicianListResult> getTechnicianList(@Query("itemId") String itemId,
+    Observable<TechnicianListResult> getTechnicianList(@Query("page") int page,
+                                                       @Query("pageSize") int pageSize,
+                                                       @Query("itemId") String itemId,
                                                        @Query("sortId") String sortId,
                                                        @Query("status") String status,
                                                        @Query("techName") String techName);
+
+
+    @GET("/spa-manager/api/v2/tech/order/serviceItem/list")
+    Observable<ServiceListResult> getServiceList();
 }

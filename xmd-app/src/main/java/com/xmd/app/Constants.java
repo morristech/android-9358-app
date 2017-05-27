@@ -6,4 +6,11 @@ package com.xmd.app;
 
 public class Constants {
     public static final String EXTRA_DATA = "extra_data";
+
+    //技师状态
+    public static final String TECH_STATUS_VALID = "valid"; //未加入会所
+    public static final String TECH_STATUS_REJECT = "reject";//加入会所后被会所拒绝
+    public static final String TECH_STATUS_UNCERT = "uncert";//等待会所审核
+    public static final String TECH_STATUS_BUSY = "busy";//已成功加入会所，忙状态
+    public static final String TECH_STATUS_FREE = "free";//已成功加入会所，休状态
 }

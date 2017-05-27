@@ -2,17 +2,20 @@ package com.xmd.appointment;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
+import com.xmd.appointment.beans.ServiceItem;
+import com.xmd.appointment.beans.Technician;
 import com.xmd.appointment.databinding.ActivityAppointmentBinding;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class AppointmentActivity extends BaseActivity {
+public class AppointmentActivity extends BaseActivity implements TechSelectFragment.Listener, ServiceItemSelectFragment.Listener {
 
     private ActivityAppointmentBinding mBinding;
     private AppointmentData mData;
@@ -41,11 +44,20 @@ public class AppointmentActivity extends BaseActivity {
             ft.remove(prev);
         }
         TechSelectFragment fragment = TechSelectFragment.newInstance(null);
+        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme);
         fragment.show(ft, "TechSelectFragment");
     }
 
     public void onClickSelectService() {
-
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment prev = fm.findFragmentByTag("ServiceItemSelectFragment");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ServiceItemSelectFragment fragment = ServiceItemSelectFragment.newInstance(null);
+        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme);
+        fragment.show(ft, "ServiceItemSelectFragment");
     }
 
     public void onClickSelectTime() {
@@ -53,6 +65,28 @@ public class AppointmentActivity extends BaseActivity {
     }
 
     public void onClickSubmit() {
+
+    }
+
+    @Override
+    public void onSelectTechnician(Technician technician) {
+        mData.setTechnician(technician);
+        mBinding.setData(mData);
+    }
+
+    @Override
+    public void onCleanTechnician() {
+        mData.setTechnician(null);
+        mBinding.setData(mData);
+    }
+
+    @Override
+    public void onSelectServiceItem(ServiceItem serviceItem) {
+
+    }
+
+    @Override
+    public void onCleanServiceItem() {
 
     }
 }
