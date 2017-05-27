@@ -157,13 +157,13 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
                     mName.setText(couponInfo.actTitle);
                     mType.setText(couponInfo.useTypeName);
                     mInfo.setText(couponInfo.consumeMoneyDescription);
-                    mMoney.setText(String.valueOf(couponInfo.getReallyCouponMoney()));
+                    mMoney.setText(Utils.moneyToString(couponInfo.getReallyCouponMoney()));
                     break;
                 case AppConstants.TYPE_ORDER:
-                    mName.setText(item.order.orderNo);
-                    mType.setText("预约订单");
+                    mName.setText(item.order.customerName);
+                    mType.setText("付费预约");
                     mInfo.setText("技师：" + item.order.techName);
-                    mMoney.setText(String.valueOf(item.order.downPayment));
+                    mMoney.setText(Utils.moneyToString(item.order.downPayment));
                     break;
                 case AppConstants.TYPE_PAY_FOR_OTHER:
                     (itemView.findViewById(R.id.checkbox)).setVisibility(View.GONE);

@@ -369,10 +369,22 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_VERIFY_COMMON)
+    Observable<BaseResult> verifyWithMoney(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                           @Field(RequestConstant.KEY_AMOUNT) String amount,
+                                           @Field(RequestConstant.KEY_CODE) String code,
+                                           @Field(RequestConstant.KEY_TYPE) String type);
+
+    /**
+     * 任意核销
+     *
+     * @param userToken
+     * @param code
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_VERIFY_COMMON)
     Observable<BaseResult> verifyCommon(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                        @Field(RequestConstant.KEY_AMOUNT) String amount,
-                                        @Field(RequestConstant.KEY_CODE) String code,
-                                        @Field(RequestConstant.KEY_TYPE) String type);
+                                        @Field(RequestConstant.KEY_CODE) String code);
 
 
     /*****************************************

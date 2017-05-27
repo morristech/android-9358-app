@@ -9,13 +9,43 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:background="@color/colorWhite"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_normal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_normal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="核销码"
+            android:textColor="@color/colorText2"
+            android:textSize="@dimen/small_font_size" />
+
+        <TextView
+            android:id="@+id/tv_coupon_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="123456"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/small_font_size" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorDivide" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scrollbars="none">
 
         <LinearLayout
@@ -23,73 +53,60 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <include
+                layout="@layout/item_coupon_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_normal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_normal_margin" />
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_marginBottom="@dimen/activity_small_margin"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:background="@drawable/bg_area_white"
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="核销码"
+                    android:padding="@dimen/activity_normal_margin"
+                    android:text="使用说明"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/font_size_16" />
+
+                <WebView
+                    android:id="@+id/wb_act_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    tools:ignore="WebViewLayout" />
+
+                <TextView
+                    android:id="@+id/tv_act_content_null"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_normal_margin"
+                    android:text="无"
                     android:textColor="@color/colorText2"
-                    android:textSize="@dimen/medium_font_size" />
-
-                <TextView
-                    android:id="@+id/tv_coupon_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:textColor="@color/colorText4"
-                    android:textSize="@dimen/medium_font_size" />
+                    android:textSize="@dimen/font_size_14"
+                    android:visibility="gone" />
             </LinearLayout>
-
-            <include layout="@layout/item_coupon_detail" />
-
-            <Button
-                android:id="@+id/btn_verify"
-                style="@style/AppTheme.Button"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginTop="20dp"
-                android:text="核销" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@drawable/bg_line_dot"
-                android:layerType="software" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:text="使用说明"
-                android:textColor="@color/colorText4"
-                android:textSize="16sp" />
-
-            <WebView
-                android:id="@+id/wb_act_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                tools:ignore="WebViewLayout" />
-
-            <TextView
-                android:id="@+id/tv_act_content_null"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="无"
-                android:textColor="@color/colorText2"
-                android:textSize="16sp"
-                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btn_verify"
+        style="@style/AppTheme.Button"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_normal_margin"
+        android:text="核销" />
 </LinearLayout>

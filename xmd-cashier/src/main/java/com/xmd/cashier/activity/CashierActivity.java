@@ -130,10 +130,6 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
         });
     }
 
-    public void onClickMemberPay(View view) {
-        mPresenter.onClickMemberPay();
-    }
-
     @Override
     protected void onStart() {
         super.onStart();

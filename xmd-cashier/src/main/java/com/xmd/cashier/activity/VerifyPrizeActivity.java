@@ -20,9 +20,9 @@ import com.xmd.cashier.presenter.VerifyPrizePresenter;
 
 public class VerifyPrizeActivity extends BaseActivity implements VerifyPrizeContract.View {
     private VerifyPrizeContract.Presenter mPresenter;
+    private PrizeInfo mInfo;
 
     private TextView mVerifyCode;
-    private TextView mActType;
     private TextView mActSubTitle;
     private TextView mPrizeName;
     private WebView mDescription;
@@ -35,37 +35,31 @@ public class VerifyPrizeActivity extends BaseActivity implements VerifyPrizeCont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_prize);
         mPresenter = new VerifyPrizePresenter(this, this);
-        PrizeInfo info = getIntent().getParcelableExtra(AppConstants.EXTRA_PRIZE_VERIFY_INFO);
-        if (info == null) {
+        mInfo = getIntent().getParcelableExtra(AppConstants.EXTRA_PRIZE_VERIFY_INFO);
+        if (mInfo == null) {
             showToast("无效的核销信息");
             finishSelf();
             return;
         }
 
         initView();
-        showPrizeInfo(info);
-
         mPresenter.onCreate();
     }
 
     private void initView() {
-        showToolbar(R.id.toolbar, R.string.verify_prize_title);
+        showToolbar(R.id.toolbar, mInfo.activityName);
         mVerifyCode = (TextView) findViewById(R.id.tv_verify_code);
-        mActType = (TextView) findViewById(R.id.tv_act_type);
         mActSubTitle = (TextView) findViewById(R.id.tv_act_sub_title);
         mPrizeName = (TextView) findViewById(R.id.tv_prize_name);
         mDescription = (WebView) findViewById(R.id.wb_description);
         mDescriptionNull = (TextView) findViewById(R.id.tv_description_null);
-    }
 
-    private void showPrizeInfo(PrizeInfo info) {
-        setCode(info.verifyCode);
-        mVerifyCode.setText(info.verifyCode);
-        //mActType.setText(info.activityName);
-        mActSubTitle.setText(info.activityName);
-        mPrizeName.setText(String.format("奖品名称：%s", info.prizeName));
-        if (!TextUtils.isEmpty(info.description)) {
-            mDescription.loadDataWithBaseURL(null, info.description, "text/html", "utf-8", null);
+        setCode(mInfo.verifyCode);
+        mVerifyCode.setText(mInfo.verifyCode);
+        mActSubTitle.setText(mInfo.activityName);
+        mPrizeName.setText(String.format("奖品名称：%s", mInfo.prizeName));
+        if (!TextUtils.isEmpty(mInfo.description)) {
+            mDescription.loadDataWithBaseURL(null, mInfo.description, "text/html", "utf-8", null);
             mDescription.setVisibility(View.VISIBLE);
         } else {
             mDescription.setVisibility(View.GONE);

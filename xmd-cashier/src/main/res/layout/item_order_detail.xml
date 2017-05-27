@@ -24,7 +24,7 @@
             android:textSize="@dimen/font_size_14" />
 
         <TextView
-            android:id="@+id/tv_order_name"
+            android:id="@+id/tv_order_customer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -32,7 +32,7 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_toLeftOf="@id/tv_order_type"
             android:maxLength="16"
-            android:text="order_name"
+            android:text="order_customer_name"
             android:textColor="@color/colorText4"
             android:textSize="@dimen/small_font_size" />
     </RelativeLayout>
@@ -112,6 +112,58 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_normal_margin"
             android:text="order_tech_name"
+            android:textSize="@dimen/font_size_14" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ly_order_service_item"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/activity_small_margin"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="所选项目"
+            android:textColor="@color/colorText3"
+            android:textSize="@dimen/font_size_14" />
+
+        <TextView
+            android:id="@+id/tv_order_service_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:text="order_service_item"
+            android:textSize="@dimen/font_size_14" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ly_order_create_time"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/activity_small_margin"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="预约时间"
+            android:textColor="@color/colorText3"
+            android:textSize="@dimen/font_size_14" />
+
+        <TextView
+            android:id="@+id/tv_order_create_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:text="order_create_time"
             android:textSize="@dimen/font_size_14" />
     </LinearLayout>
 </LinearLayout>

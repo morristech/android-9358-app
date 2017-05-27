@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.activity.VerifyConfirmActivity;
-import com.xmd.cashier.activity.VerifyCouponActivity;
-import com.xmd.cashier.activity.VerifyOrderActivity;
-import com.xmd.cashier.activity.VerifyServiceActivity;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyCheckInfoContract;
@@ -163,25 +161,12 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
 
     @Override
     public void onItemClick(CheckInfo info) {
-        switch (info.getType()) {
-            case AppConstants.TYPE_COUPON:
-            case AppConstants.TYPE_PAID_COUPON:
-                // 优惠券 点钟券
-                Intent couponIntent = new Intent(mContext, VerifyCouponActivity.class);
-                couponIntent.putExtra(AppConstants.EXTRA_NORMAL_COUPON_INFO, (CouponInfo) info.getInfo());
-                ((Activity) mContext).startActivityForResult(couponIntent, REQUEST_CODE_CONSUME);
+        switch (info.getInfoType()) {
+            case AppConstants.CHECK_INFO_TYPE_COUPON:
+                UiNavigation.gotoVerifyCouponActivity(mContext, (CouponInfo) info.getInfo(), true);
                 break;
-            case AppConstants.TYPE_SERVICE_ITEM_COUPON:
-                // 项目券
-                Intent serviceIntent = new Intent(mContext, VerifyServiceActivity.class);
-                serviceIntent.putExtra(AppConstants.EXTRA_SERVICE_COUPON_INFO, (CouponInfo) info.getInfo());
-                ((Activity) mContext).startActivityForResult(serviceIntent, REQUEST_CODE_CONSUME);
-                break;
-            case AppConstants.TYPE_ORDER:
-                // 付费预约
-                Intent orderIntent = new Intent(mContext, VerifyOrderActivity.class);
-                orderIntent.putExtra(AppConstants.EXTRA_ORDER_VERIFY_INFO, (OrderInfo) info.getInfo());
-                ((Activity) mContext).startActivityForResult(orderIntent, REQUEST_CODE_CONSUME);
+            case AppConstants.CHECK_INFO_TYPE_ORDER:
+                UiNavigation.gotoVerifyOrderActivity(mContext, (OrderInfo) info.getInfo(), true);
                 break;
             default:
                 break;

@@ -72,37 +72,4 @@ public class VerifyOrderPresenter implements VerifyOrderContract.Presenter {
             }
         });
     }
-
-    @Override
-    public void onExpire(OrderInfo info) {
-        mView.showLoading();
-        if (!Utils.isNetworkEnabled(mContext)) {
-            mView.hideLoading();
-            mView.showError("网络异常,请检查网络后重试");
-            return;
-        }
-        if (mModifyOrderStatusSubscription != null) {
-            mModifyOrderStatusSubscription.unsubscribe();
-        }
-        mModifyOrderStatusSubscription = VerifyManager.getInstance().verifyPaidOrder(info.orderNo, AppConstants.PAID_ORDER_OP_EXPIRE, new Callback<BaseResult>() {
-            @Override
-            public void onSuccess(BaseResult o) {
-                mView.hideLoading();
-                mView.showToast("操作成功");
-                mView.finishSelf();
-            }
-
-            @Override
-            public void onError(String error) {
-                mView.hideLoading();
-                mView.showToast("操作失败:" + error);
-            }
-        });
-    }
-
-    @Override
-    public void onCancel() {
-        mView.showToast("取消操作");
-        mView.finishSelf();
-    }
 }

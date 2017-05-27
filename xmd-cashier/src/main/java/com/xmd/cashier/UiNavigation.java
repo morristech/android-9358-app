@@ -27,7 +27,6 @@ import com.xmd.cashier.activity.SettleCurrentActivity;
 import com.xmd.cashier.activity.SettleDetailActivity;
 import com.xmd.cashier.activity.SettleRecordActivity;
 import com.xmd.cashier.activity.VerificationActivity;
-import com.xmd.cashier.activity.VerificationItemDetailActivity;
 import com.xmd.cashier.activity.VerifyCheckInfoActivity;
 import com.xmd.cashier.activity.VerifyCommonActivity;
 import com.xmd.cashier.activity.VerifyCouponActivity;
@@ -35,7 +34,6 @@ import com.xmd.cashier.activity.VerifyOrderActivity;
 import com.xmd.cashier.activity.VerifyPrizeActivity;
 import com.xmd.cashier.activity.VerifyRecordActivity;
 import com.xmd.cashier.activity.VerifyRecordDetailActivity;
-import com.xmd.cashier.activity.VerifyServiceActivity;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.dal.bean.BillInfo;
 import com.xmd.cashier.dal.bean.CommonVerifyInfo;
@@ -43,7 +41,6 @@ import com.xmd.cashier.dal.bean.CouponInfo;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.bean.PrizeInfo;
-import com.xmd.cashier.dal.bean.VerificationItem;
 
 public class UiNavigation {
     public static final int REQUEST_CODE_MEMBER_SCAN = 1;
@@ -66,12 +63,6 @@ public class UiNavigation {
 
     public static void gotoLoginActivity(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
-        context.startActivity(intent);
-    }
-
-    public static void gotoVerificationItemDetailActivity(Context context, VerificationItem item) {
-        Intent intent = new Intent(context, VerificationItemDetailActivity.class);
-        intent.putExtra(VerificationItemDetailActivity.EXTRA_VERIFICATION_ITEM, item);
         context.startActivity(intent);
     }
 
@@ -127,25 +118,18 @@ public class UiNavigation {
     }
 
     // 券
-    public static void gotoVerifyNormalCouponActivity(Context context, CouponInfo info,boolean isShow) {
+    public static void gotoVerifyCouponActivity(Context context, CouponInfo info, boolean isShow) {
         Intent intent = new Intent(context, VerifyCouponActivity.class);
-        intent.putExtra(AppConstants.EXTRA_NORMAL_COUPON_INFO, info);
+        intent.putExtra(AppConstants.EXTRA_COUPON_VERIFY_INFO, info);
         intent.putExtra(AppConstants.EXTRA_IS_SHOW, isShow);
         context.startActivity(intent);
     }
 
     // 预约订单
-    public static void gotoVerifyOrderActivity(Context context, OrderInfo info,boolean isShow) {
+    public static void gotoVerifyOrderActivity(Context context, OrderInfo info, boolean isShow) {
         Intent intent = new Intent(context, VerifyOrderActivity.class);
         intent.putExtra(AppConstants.EXTRA_ORDER_VERIFY_INFO, info);
         intent.putExtra(AppConstants.EXTRA_IS_SHOW, isShow);
-        context.startActivity(intent);
-    }
-
-    // 项目券
-    public static void gotoVerifyServiceCouponActivity(Context context, CouponInfo info) {
-        Intent intent = new Intent(context, VerifyServiceActivity.class);
-        intent.putExtra(AppConstants.EXTRA_SERVICE_COUPON_INFO, info);
         context.startActivity(intent);
     }
 

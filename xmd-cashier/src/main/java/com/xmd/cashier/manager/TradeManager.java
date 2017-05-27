@@ -465,7 +465,7 @@ public class TradeManager {
                             switch (v.type) {
                                 case AppConstants.TYPE_COUPON:
                                     // 处理券
-                                    SpaRetrofit.getService().verifyCoupon(AccountManager.getInstance().getToken(), v.couponInfo.couponNo)
+                                    SpaRetrofit.getService().verifyCoupon(AccountManager.getInstance().getToken(), v.code)
                                             .subscribe(new NetworkSubscriber<BaseResult>() {
                                                 @Override
                                                 public void onCallbackSuccess(BaseResult result) {
@@ -489,7 +489,7 @@ public class TradeManager {
                                     break;
                                 case AppConstants.TYPE_ORDER:
                                     // 处理预约
-                                    SpaRetrofit.getService().verifyPaidOrder(AccountManager.getInstance().getToken(), v.order.orderNo, AppConstants.PAID_ORDER_OP_VERIFIED)
+                                    SpaRetrofit.getService().verifyPaidOrder(AccountManager.getInstance().getToken(), v.code, AppConstants.PAID_ORDER_OP_VERIFIED)
                                             .subscribe(new NetworkSubscriber<BaseResult>() {
                                                 @Override
                                                 public void onCallbackSuccess(BaseResult result) {
@@ -529,7 +529,7 @@ public class TradeManager {
                                     v.success = true;
                                     continue;
                                 }
-                                SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), String.valueOf(v.treatInfo.useMoney), v.treatInfo.authorizeCode, v.type)
+                                SpaRetrofit.getService().verifyWithMoney(AccountManager.getInstance().getToken(), String.valueOf(v.treatInfo.useMoney), v.treatInfo.authorizeCode, v.type)
                                         .subscribe(new NetworkSubscriber<BaseResult>() {
                                             @Override
                                             public void onCallbackSuccess(BaseResult result) {

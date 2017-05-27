@@ -95,7 +95,7 @@ public class CheckInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             final CouponViewHolder couponViewHolder = (CouponViewHolder) holder;
             couponViewHolder.mCouponName.setText(info.getTitle());
             couponViewHolder.mCouponTypeName.setText(info.getTypeName());
-            couponViewHolder.mCouponDescription.setText(coupon.useTypeName);
+            couponViewHolder.mCouponDescription.setText(coupon.consumeMoneyDescription);
             if (info.getValid()) {
                 couponViewHolder.mCouponStatus.setText("可用");
                 couponViewHolder.mCouponStatus.setTextColor(mContext.getResources().getColor(R.color.colorText4));
@@ -104,7 +104,7 @@ public class CheckInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 couponViewHolder.mCouponStatus.setTextColor(mContext.getResources().getColor(R.color.colorPink));
             }
             couponViewHolder.mCouponEnableTime.setText(coupon.couponPeriod);
-            couponViewHolder.mCouponUseTime.setText(coupon.useTimePeriod);
+            couponViewHolder.mCouponUseTime.setText(Utils.getTimePeriodDes(coupon.useTimePeriod));
             couponViewHolder.mCouponInfoLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -204,7 +204,7 @@ public class CheckInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(itemView);
             mSelect = (ImageView) itemView.findViewById(R.id.img_check_info_select);
             mOrderInfoLayout = (LinearLayout) itemView.findViewById(R.id.layout_order_info);
-            mOrderName = (TextView) itemView.findViewById(R.id.tv_order_name);
+            mOrderName = (TextView) itemView.findViewById(R.id.tv_order_customer_name);
             mOrderTypeName = (TextView) itemView.findViewById(R.id.tv_order_type);
             mOrderDownPay = (TextView) itemView.findViewById(R.id.tv_order_down_pay);
             mOrderStatus = (TextView) itemView.findViewById(R.id.tv_order_status);

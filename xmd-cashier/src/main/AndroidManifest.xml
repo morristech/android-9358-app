@@ -43,9 +43,6 @@
             android:name=".activity.VerificationActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.VerificationItemDetailActivity"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".activity.ConfirmActivity"
             android:launchMode="singleTask" />
         <activity
@@ -78,9 +75,6 @@
         <activity
             android:name=".activity.VerifyOrderActivity"
             android:launchMode="singleTask" />
-        <activity
-            android:name=".activity.VerifyServiceActivity"
-            android:launchMode="standard" />
         <activity
             android:name=".activity.VerifyPrizeActivity"
             android:launchMode="standard" />

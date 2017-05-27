@@ -11,10 +11,6 @@ import com.xmd.cashier.dal.bean.OrderInfo;
 public interface VerifyOrderContract {
     interface Presenter extends BasePresenter {
         void onVerify(OrderInfo info);
-
-        void onExpire(OrderInfo info);
-
-        void onCancel();
     }
 
     interface View extends BaseView<Presenter> {

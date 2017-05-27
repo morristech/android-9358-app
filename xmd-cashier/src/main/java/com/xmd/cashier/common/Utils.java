@@ -262,4 +262,14 @@ public class Utils {
         calendar.set(Calendar.SECOND, calendar.getActualMaximum(Calendar.SECOND));
         return com.shidou.commonlibrary.util.DateUtils.doDate2String(calendar.getTime(), com.shidou.commonlibrary.util.DateUtils.DF_DEFAULT);
     }
+
+    public static String getTimePeriodDes(String useTimePeriod) {
+        if (useTimePeriod.equals("周一，周二，周三，周四，周五，周六，周日")) {
+            return "不限";
+        } else if (useTimePeriod.contains("周一，周二，周三，周四，周五，周六，周日") && useTimePeriod.contains("00")) {
+            return useTimePeriod.replace("周一，周二，周三，周四，周五，周六，周日", "每天 ");
+        } else {
+            return useTimePeriod;
+        }
+    }
 }

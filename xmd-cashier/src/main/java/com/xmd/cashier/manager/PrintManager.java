@@ -31,7 +31,7 @@ public class PrintManager {
     private PrintManager() {
         mPos = PosFactory.getCurrentCashier();
     }
-    
+
     // 打印在线买单交易信息
     public void printOnlinePay(Trade trade) {
         if (trade.tradeStatus != AppConstants.TRADE_STATUS_SUCCESS) {

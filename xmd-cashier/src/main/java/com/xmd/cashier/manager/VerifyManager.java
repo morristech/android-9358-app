@@ -411,9 +411,28 @@ public class VerifyManager {
                 });
     }
 
-    // ---核销：默认---
-    public Subscription verifyCommon(int amount, String code, String type, final Callback<BaseResult> callback) {
-        return SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), String.valueOf(amount), code, type)
+
+    // ---核销：withMoney---
+    public Subscription verifyWithMoney(int amount, String code, String type, final Callback<BaseResult> callback) {
+        return SpaRetrofit.getService().verifyWithMoney(AccountManager.getInstance().getToken(), String.valueOf(amount), code, type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new NetworkSubscriber<BaseResult>() {
+                    @Override
+                    public void onCallbackSuccess(BaseResult result) {
+                        callback.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        callback.onError(e.getLocalizedMessage());
+                    }
+                });
+    }
+
+    // ---核销：任意---
+    public Subscription verifyCommon(String code, final Callback<BaseResult> callback) {
+        return SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new NetworkSubscriber<BaseResult>() {
@@ -440,25 +459,53 @@ public class VerifyManager {
                             if (!info.getSelected() || info.getSuccess()) {
                                 continue;
                             }
-                            SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), null, info.getCode(), null).subscribe(new NetworkSubscriber<BaseResult>() {
-                                @Override
-                                public void onCallbackSuccess(BaseResult result) {
-                                    info.setErrorCode(result.statusCode);
-                                    info.setSuccess(true);
-                                    info.setErrorMsg(AppConstants.APP_REQUEST_YES);
-                                }
+                            switch (info.getInfoType()) {
+                                case AppConstants.CHECK_INFO_TYPE_COUPON:
+                                    SpaRetrofit.getService().verifyCoupon(AccountManager.getInstance().getToken(), info.getCode()).subscribe(new NetworkSubscriber<BaseResult>() {
+                                        @Override
+                                        public void onCallbackSuccess(BaseResult result) {
+                                            info.setErrorCode(result.statusCode);
+                                            info.setSuccess(true);
+                                            info.setErrorMsg(AppConstants.APP_REQUEST_YES);
+                                        }
 
-                                @Override
-                                public void onCallbackError(Throwable e) {
-                                    info.setSuccess(false);
-                                    info.setErrorMsg(e.getLocalizedMessage());
-                                    if (e instanceof NetworkException) {
-                                        info.setErrorCode(ErrCode.ERRCODE_NETWORK);
-                                    } else if (e instanceof ServerException) {
-                                        info.setErrorCode(ErrCode.ERRCODE_SERVER);
-                                    }
-                                }
-                            });
+                                        @Override
+                                        public void onCallbackError(Throwable e) {
+                                            info.setSuccess(false);
+                                            info.setErrorMsg(e.getLocalizedMessage());
+                                            if (e instanceof NetworkException) {
+                                                info.setErrorCode(ErrCode.ERRCODE_NETWORK);
+                                            } else if (e instanceof ServerException) {
+                                                info.setErrorCode(ErrCode.ERRCODE_SERVER);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case AppConstants.CHECK_INFO_TYPE_ORDER:
+                                    SpaRetrofit.getService().verifyPaidOrder(AccountManager.getInstance().getToken(), info.getCode(), AppConstants.PAID_ORDER_OP_VERIFIED).subscribe(new NetworkSubscriber<BaseResult>() {
+                                        @Override
+                                        public void onCallbackSuccess(BaseResult result) {
+                                            info.setErrorCode(result.statusCode);
+                                            info.setSuccess(true);
+                                            info.setErrorMsg(AppConstants.APP_REQUEST_YES);
+                                        }
+
+                                        @Override
+                                        public void onCallbackError(Throwable e) {
+                                            info.setSuccess(false);
+                                            info.setErrorMsg(e.getLocalizedMessage());
+                                            if (e instanceof NetworkException) {
+                                                info.setErrorCode(ErrCode.ERRCODE_NETWORK);
+                                            } else if (e instanceof ServerException) {
+                                                info.setErrorCode(ErrCode.ERRCODE_SERVER);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                default:
+                                    break;
+                            }
+
                         }
                         subscriber.onNext(infos);
                         subscriber.onCompleted();

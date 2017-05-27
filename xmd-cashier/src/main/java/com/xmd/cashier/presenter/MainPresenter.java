@@ -251,7 +251,7 @@ public class MainPresenter implements MainContract.Presenter {
             @Override
             public void onSuccess(CouponResult o) {
                 mView.hideLoading();
-                UiNavigation.gotoVerifyNormalCouponActivity(mContext, o.respData, true);
+                UiNavigation.gotoVerifyCouponActivity(mContext, o.respData, true);
             }
 
             @Override
@@ -307,7 +307,7 @@ public class MainPresenter implements MainContract.Presenter {
             @Override
             public void onSuccess(CouponResult o) {
                 mView.hideLoading();
-                UiNavigation.gotoVerifyServiceCouponActivity(mContext, o.respData);
+                UiNavigation.gotoVerifyCouponActivity(mContext, o.respData, true);
             }
 
             @Override

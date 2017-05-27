@@ -40,7 +40,7 @@ public class VerifyCommonPresenter implements VerifyCommonContract.Presenter {
             mVerifyCommonSubscription.unsubscribe();
         }
         mView.showLoadingView();
-        mVerifyCommonSubscription = VerifyManager.getInstance().verifyCommon(Utils.stringToMoney(mView.getAmount()), mView.getCode(), mView.getType(), new Callback<BaseResult>() {
+        mVerifyCommonSubscription = VerifyManager.getInstance().verifyWithMoney(Utils.stringToMoney(mView.getAmount()), mView.getCode(), mView.getType(), new Callback<BaseResult>() {
             @Override
             public void onSuccess(BaseResult o) {
                 mView.hideLoadingView();

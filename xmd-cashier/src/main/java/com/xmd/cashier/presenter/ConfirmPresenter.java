@@ -174,6 +174,15 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
     @Override
     public void onVerificationItemClicked(VerificationItem item) {
         mView.hideKeyboard();
-        UiNavigation.gotoVerificationItemDetailActivity(mContext, item);
+        switch (item.type) {
+            case AppConstants.TYPE_COUPON:
+                UiNavigation.gotoVerifyCouponActivity(mContext, item.couponInfo, false);
+                break;
+            case AppConstants.TYPE_ORDER:
+                UiNavigation.gotoVerifyOrderActivity(mContext, item.order, false);
+                break;
+            default:
+                break;
+        }
     }
 }
