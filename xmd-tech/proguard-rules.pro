@@ -146,3 +146,6 @@
 
 -dontwarn org.greenrobot.**
 -keep class org.greenrobot.** {*;}
+
+-dontwarn com.xmd.appointment.**
+-keep class com.xmd.appointment.** {*;}

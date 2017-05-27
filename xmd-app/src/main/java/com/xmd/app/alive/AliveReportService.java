@@ -114,7 +114,7 @@ public class AliveReportService extends Service {
         XLogger.i(">>>reportAlive: " + token);
         mRequestSubscription =
                 NetworkEngine.doRequest(
-                        RetrofitFactory.getService(NetService.class).reportAlive(token, DeviceInfoUtils.getDeviceId(XmdApp.getContext())),
+                        RetrofitFactory.getService(NetService.class).reportAlive(token, DeviceInfoUtils.getDeviceId(XmdApp.getInstance().getContext())),
                         new NetworkSubscriber<BaseBean>() {
                             @Override
                             public void onCallbackSuccess(BaseBean result) {

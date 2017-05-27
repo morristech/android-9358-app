@@ -1,6 +1,6 @@
-package com.xmd.app.appointment;
+package com.xmd.appointment;
 
-import com.xmd.app.appointment.beans.TechnicianListResult;
+import com.xmd.appointment.beans.TechnicianListResult;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

@@ -3,9 +3,14 @@ package com.xmd.app;
 import android.content.Context;
 
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.xmd.app.alive.InitAliveReport;
-import com.xmd.app.appointment.InitAppointment;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.app.net.RetrofitFactory;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Set;
 
@@ -15,14 +20,24 @@ import java.util.Set;
  */
 
 public class XmdApp {
+
+    private static final XmdApp ourInstance = new XmdApp();
+
+    public static XmdApp getInstance() {
+        return ourInstance;
+    }
+
+    private XmdApp() {
+    }
+
+    
+    
     public static final String FUNCTION_ALIVE_REPORT = "function_alive_report";//在线汇报
     private static boolean FUNCTION_ALIVE_REPORT_INIT;
 
-    public static final String FUNCTION_APPOINTMENT = "function_appointment"; //预约
-    private static boolean FUNCTION_APPOINTMENT_INIT;
-
-    private static Context sApplicationContext;
-    private static String sServer;
+    private boolean MODULE_INIT; //模块初始化
+    private Context mApplicationContext;
+    private String mServer;
 
     /**
      * 初始化模块
@@ -31,22 +46,20 @@ public class XmdApp {
      * @param server             服务器地址 ， http://xxx
      * @param functions          需要初始化的功能模块
      */
-    public static void init(Context applicationContext, String server, Set<String> functions) {
-        sApplicationContext = applicationContext;
-        sServer = server;
+    public void init(Context applicationContext, String server, Set<String> functions) {
+        mApplicationContext = applicationContext;
+        mServer = server;
+
+        if (!MODULE_INIT) {
+            MODULE_INIT = true;
+            EventBus.getDefault().register(this);
+        }
 
         //初始化心跳功能
         if (functions.contains(FUNCTION_ALIVE_REPORT) && !FUNCTION_ALIVE_REPORT_INIT) {
             XLogger.i("---init " + FUNCTION_ALIVE_REPORT);
-            new InitAliveReport().init(sApplicationContext);
+            new InitAliveReport().init(mApplicationContext);
             FUNCTION_ALIVE_REPORT_INIT = true;
-        }
-
-        //初始化预约功能
-        if (functions.contains(FUNCTION_APPOINTMENT) && !FUNCTION_APPOINTMENT_INIT) {
-            XLogger.i("---init " + FUNCTION_APPOINTMENT);
-            new InitAppointment().init(sApplicationContext);
-            FUNCTION_APPOINTMENT_INIT = true;
         }
     }
 
@@ -54,21 +67,31 @@ public class XmdApp {
      * 切换服务器环境时调用
      * @param server 服务器地址 : http://xxx
      */
-    public static void setServer(String server) {
-        if (sServer != null && !sServer.equals(server)) {
-            sServer = server;
+    public void setServer(String server) {
+        if (mServer != null && !mServer.equals(server)) {
+            mServer = server;
             RetrofitFactory.clear();
         } else {
-            sServer = server;
+            mServer = server;
         }
     }
 
 
-    public static Context getContext() {
-        return sApplicationContext;
+    public Context getContext() {
+        return mApplicationContext;
     }
 
-    public static String getServer() {
-        return sServer;
+    public String getServer() {
+        return mServer;
+    }
+
+    @Subscribe
+    public void onLogin(EventLogin eventLogin) {
+        OkHttpUtil.getInstance().setCommonHeader("token", eventLogin.getToken());
+    }
+
+    @Subscribe
+    public void onLogout(EventLogout eventLogout) {
+        OkHttpUtil.getInstance().setCommonHeader("token", "");
     }
 }

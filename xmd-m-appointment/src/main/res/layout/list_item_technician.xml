@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.xmd.appointment.beans.Technician" />
+
+        <variable
+            name="handler"
+            type="com.xmd.appointment.TechSelectFragment" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:onClick="@{()->handler.onClickTechnician(data)}">
+
+        <RadioButton
+            android:id="@+id/img_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:clickable="false"
+            android:checked="@{data.viewSelected}" />
+
+        <ImageView
+            android:id="@+id/img_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginLeft="8dp"
+            android:scaleType="centerCrop"
+            app:avatar="@{data.avatarUrl}" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.name}"
+                android:textSize="@dimen/medium_font_size" />
+
+            <TextView
+                android:id="@+id/tv_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"["+data.serialNo+"]"}'
+                android:visibility="@{data.serialNo!=null?View.VISIBLE:View.GONE}" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

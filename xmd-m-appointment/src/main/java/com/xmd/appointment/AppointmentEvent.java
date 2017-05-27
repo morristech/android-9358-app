@@ -1,4 +1,4 @@
-package com.xmd.app.appointment;
+package com.xmd.appointment;
 
 import com.xmd.app.event.EventCommon;
 

@@ -1,4 +1,4 @@
-package com.xmd.app.appointment.beans;
+package com.xmd.appointment.beans;
 
 import com.xmd.app.beans.BaseBean;
 

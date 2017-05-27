@@ -1,12 +1,14 @@
-package com.xmd.app.appointment;
+package com.xmd.appointment;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
-import com.xmd.app.R;
-import com.xmd.app.databinding.ActivityAppointmentBinding;
+import com.xmd.appointment.databinding.ActivityAppointmentBinding;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,7 +34,14 @@ public class AppointmentActivity extends BaseActivity {
     }
 
     public void onClickSelectTech() {
-
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment prev = fm.findFragmentByTag("TechSelectFragment");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        TechSelectFragment fragment = TechSelectFragment.newInstance(null);
+        fragment.show(ft, "TechSelectFragment");
     }
 
     public void onClickSelectService() {

@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme">
         <service android:name=".alive.AliveReportService" />
 
-        <activity android:name=".appointment.AppointmentActivity"></activity>
+
     </application>
 
 </manifest>

@@ -174,7 +174,7 @@ public class SharedPreferenceHelper {
     }
 
     public static void setServerHost(String serverHost) {
-        XmdApp.setServer(serverHost);
+        XmdApp.getInstance().setServer(serverHost);
         mSettingPreference.edit().putString(KEY_SERVER_HOST, serverHost).apply();
     }
 

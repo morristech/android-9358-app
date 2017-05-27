@@ -1,4 +1,4 @@
-package com.xmd.app.appointment;
+package com.xmd.appointment;
 
 /**
  * Created by heyangya on 17-5-24.

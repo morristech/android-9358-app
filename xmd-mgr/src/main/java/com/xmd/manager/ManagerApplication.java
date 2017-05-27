@@ -92,7 +92,7 @@ public class ManagerApplication extends Application {
                 //模块功能初始化
                 Set<String> functions = new HashSet<>();
                 functions.add(XmdApp.FUNCTION_ALIVE_REPORT);
-                XmdApp.init(this, SharedPreferenceHelper.getServerHost(), functions);
+                XmdApp.getInstance().init(this, SharedPreferenceHelper.getServerHost(), functions);
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");

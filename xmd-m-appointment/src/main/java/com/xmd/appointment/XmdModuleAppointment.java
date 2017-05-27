@@ -1,4 +1,4 @@
-package com.xmd.app.appointment;
+package com.xmd.appointment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,17 @@ import org.greenrobot.eventbus.Subscribe;
  * 初始化预约功能
  */
 
-public class InitAppointment implements IFunctionInit {
+public class XmdModuleAppointment implements IFunctionInit {
+    private static final XmdModuleAppointment ourInstance = new XmdModuleAppointment();
+
+    public static XmdModuleAppointment getInstance() {
+        return ourInstance;
+    }
+
+    private XmdModuleAppointment() {
+
+    }
+
     @Override
     public void init(Context context) {
         EventBus.getDefault().register(this);
@@ -25,10 +35,10 @@ public class InitAppointment implements IFunctionInit {
     public void onEvent(AppointmentEvent event) {
         switch (event.getCmd()) {
             case AppointmentEvent.CMD_SHOW:
-                Intent intent = new Intent(XmdApp.getContext(), AppointmentActivity.class);
+                Intent intent = new Intent(XmdApp.getInstance().getContext(), AppointmentActivity.class);
                 intent.putExtra(Constants.EXTRA_DATA, event.getData());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                XmdApp.getContext().startActivity(intent);
+                XmdApp.getInstance().getContext().startActivity(intent);
                 break;
         }
     }

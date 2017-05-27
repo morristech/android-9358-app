@@ -7,11 +7,11 @@
 
         <variable
             name="data"
-            type="com.xmd.app.appointment.AppointmentData" />
+            type="com.xmd.appointment.AppointmentData" />
 
         <variable
             name="handler"
-            type="com.xmd.app.appointment.AppointmentActivity" />
+            type="com.xmd.appointment.AppointmentActivity" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

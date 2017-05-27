@@ -1,4 +1,4 @@
-package com.xmd.app.appointment;
+package com.xmd.appointment;
 
 import android.databinding.BindingAdapter;
 import android.text.TextUtils;
@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 /**
  * Created by heyangya on 17-5-23.
+ * 预约数据
  */
 
 public class AppointmentData implements Serializable {

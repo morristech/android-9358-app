@@ -32,4 +32,5 @@ ext {
     supportLibraryVersion = "25.3.0"
     retrofitVersion = '2.3.0'
     eventbusVersion = '3.0.0'
+    glideVersion = '3.7.0'
 }

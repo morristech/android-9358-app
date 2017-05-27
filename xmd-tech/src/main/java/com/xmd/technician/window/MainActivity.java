@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.xmd.app.appointment.AppointmentData;
-import com.xmd.app.appointment.AppointmentEvent;
+import com.xmd.appointment.AppointmentData;
+import com.xmd.appointment.AppointmentEvent;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -229,7 +229,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mBottomBarButtonList.get(index).setSelected(true);
         mCurrentTabIndex = index;
 
-       // testAppointment();
+        testAppointment();
 
     }
 

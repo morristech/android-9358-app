@@ -21,7 +21,7 @@ public class RetrofitFactory {
         Object service = mServiceMap.get(serviceClass.getName());
         if (service == null) {
             service = new Retrofit.Builder()
-                    .baseUrl(XmdApp.getServer())
+                    .baseUrl(XmdApp.getInstance().getServer())
                     .client(OkHttpUtil.getInstance().getClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
