@@ -159,7 +159,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
         // 根据不同的类型跳转到相应的详情页
         switch (item.type) {
             case AppConstants.TYPE_COUPON:
-                UiNavigation.gotoVerifyNormalCouponActivity(mContext, item.couponInfo, false);
+                UiNavigation.gotoVerifyCouponActivity(mContext, item.couponInfo, false);
                 break;
             case AppConstants.TYPE_ORDER:
                 UiNavigation.gotoVerifyOrderActivity(mContext, item.order, false);

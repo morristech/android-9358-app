@@ -148,9 +148,8 @@ public class AppConstants {
 
     public static final String EXTRA_BILL_INFO = "extra_bill_info";
     public static final String EXTRA_PHONE_VERIFY = "extra_phone_verify";
-    public static final String EXTRA_NORMAL_COUPON_INFO = "extra_normal_coupon_info";
+    public static final String EXTRA_COUPON_VERIFY_INFO = "extra_coupon_info";
     public static final String EXTRA_ORDER_VERIFY_INFO = "extra_order_verify_info";
-    public static final String EXTRA_SERVICE_COUPON_INFO = "extra_service_coupon_info";
     public static final String EXTRA_PRIZE_VERIFY_INFO = "extra_prize_verify_info";
     public static final String EXTRA_COMMON_VERIFY_INFO = "extra_common_verify_info";
     public static final String EXTRA_ONLINE_PAY_INFO = "extra_online_pay_info";

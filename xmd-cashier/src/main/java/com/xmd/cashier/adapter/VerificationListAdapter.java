@@ -165,14 +165,12 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
 
         private void bindOrderInfo(VerificationItem item) {
             OrderInfo order = item.order;
-            if (!TextUtils.isEmpty(order.serviceItemName)) {
-                mName.setText(order.serviceItemName);
-            } else {
-                mName.setText(order.orderNo);
-            }
+            mName.setText(order.customerName);
+            mName.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+            mName.getPaint().setAntiAlias(true);
             mMoney.setText(Utils.moneyToString(order.downPayment));
             mInfo.setText("技师：" + order.techName);
-            mType.setText("预约订单");
+            mType.setText("付费预约");
         }
 
         private void bindTreatInfo(VerificationItem item) {
