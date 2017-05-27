@@ -26,6 +26,10 @@ public class OrderRecordInfo implements Serializable {
     public String createdAt;    //创建时间  展示格式yyyy-mm-dd hh:mm
     public String serviceTime;
 
+    public String receiverId;   //接单人信息
+    public String receiverName;
+    public String receiverNo;
+
     public String itemId;    //项目ID
     public String itemName;    //项目名称
 

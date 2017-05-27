@@ -17,6 +17,7 @@ public class CheckInfo implements Parcelable {
     private String code; //核销码
     private Boolean valid; //当前能否使用（时间限制）
     private Object info;
+    private int infoType; // 1--券，2--订单
 
     //核销结果
     private Boolean selected;
@@ -34,6 +35,7 @@ public class CheckInfo implements Parcelable {
         selected = in.readByte() == 0;
         success = in.readByte() == 0;
         errorCode = in.readInt();
+        infoType = in.readInt();
         errorMsg = in.readString();
         String infoString = in.readString();
         if (!infoString.equals("null")) {
@@ -133,6 +135,14 @@ public class CheckInfo implements Parcelable {
         this.errorCode = errorCode;
     }
 
+    public int getInfoType() {
+        return infoType;
+    }
+
+    public void setInfoType(int infoType){
+        this.infoType = infoType;
+    }
+
     public String getErrorMsg() {
         return errorMsg;
     }
@@ -156,6 +166,7 @@ public class CheckInfo implements Parcelable {
         dest.writeByte((byte) (valid ? 1 : 0));
         dest.writeByte((byte) (success ? 1 : 0));
         dest.writeByte((byte) (selected ? 1 : 0));
+        dest.writeInt(infoType);
         dest.writeInt(errorCode);
         dest.writeString(errorMsg);
         String infoString = "null";

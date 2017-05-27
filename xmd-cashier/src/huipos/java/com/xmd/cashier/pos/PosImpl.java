@@ -284,6 +284,21 @@ public class PosImpl implements IPos {
     }
 
     @Override
+    public void printText(String text) {
+        printText(text, GRAVITY_LEFT);
+    }
+
+    @Override
+    public void printRight(String text) {
+        printText(text, GRAVITY_RIGHT);
+    }
+
+    @Override
+    public void printCenter(String text) {
+        printText(text, GRAVITY_CENTER);
+    }
+
+    @Override
     public void printText(String text, int gravity) {
         if (!text.endsWith("\n")) {
             text += "\n";

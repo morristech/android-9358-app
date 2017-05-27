@@ -26,6 +26,9 @@ public class AppConstants {
     public static final int MAX_MONEY_INT_BIT = 7;
     public static final int MAX_COUPON_NUMBER_LENGTH = 19;
 
+    public static final int CHECK_INFO_TYPE_COUPON = 1;
+    public static final int CHECK_INFO_TYPE_ORDER = 2;
+
     // 会员支付
     public static final int CASHIER_TYPE_MEMBER = 0;
     // 普通支付
@@ -156,6 +159,7 @@ public class AppConstants {
     public static final String EXTRA_NOTIFY_TYPE_ORDER_RECORD = "order_record";
     public static final String EXTRA_NOTIFY_TYPE_ONLINE_PAY = "online_pay";
     public static final String EXTRA_RECORD_ID = "record_id";
+    public static final String EXTRA_IS_SHOW = "is_show";
 
     public static final String APP_REQUEST_YES = "Y";
     public static final String APP_REQUEST_NO = "N";

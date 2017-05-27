@@ -38,6 +38,16 @@ public interface IPos {
 
     void printBitmap(byte[] bitmap);
 
+    // 默认居左
+    void printText(String text);
+
+    // 居右
+    void printRight(String text);
+
+    // 居中
+    void printCenter(String text);
+
+    // 通用
     void printText(String text, int gravity);
 
     // 效果:left居左 right居右 huipos未实现

@@ -65,6 +65,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     RelativeLayout mContactVisitor;
     @Bind(R.id.recently_visitor)
     TextView mRecentlyVisitor;
+
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
     private int mCurrentPage;
     private int screenWidth;

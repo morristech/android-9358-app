@@ -26,6 +26,7 @@
             android:drawableLeft="@drawable/ic_search"
             android:drawablePadding="4dp"
             android:hint="输入交易号"
+            android:textColorHint="@color/colorText3"
             android:textSize="@dimen/small_font_size" />
 
         <Button

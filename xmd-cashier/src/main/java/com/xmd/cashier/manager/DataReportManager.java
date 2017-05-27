@@ -53,9 +53,9 @@ public class DataReportManager {
         params.put(RequestConstant.KEY_STATUS, String.valueOf(trade.tradeStatus));
         params.put(RequestConstant.KEY_ORIGIN_MONEY, String.valueOf(trade.getOriginMoney()));
 
-        if (VerificationManager.getInstance().haveSelected()) {
-            params.put(RequestConstant.KEY_COUPON_LIST, VerificationManager.formatCouponList(trade.getCouponList()));
-            params.put(RequestConstant.KEY_COUPON_RESULT, VerificationManager.formatCouponResult(trade.getCouponList()));
+        if (TradeManager.getInstance().haveSelected()) {
+            params.put(RequestConstant.KEY_COUPON_LIST, TradeManager.formatCouponList(trade.getCouponList()));
+            params.put(RequestConstant.KEY_COUPON_RESULT, TradeManager.formatCouponResult(trade.getCouponList()));
             params.put(RequestConstant.KEY_COUPON_MONEY, String.valueOf(trade.getVerificationMoney()));
         }
 

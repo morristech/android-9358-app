@@ -8,6 +8,7 @@ import com.xmd.cashier.contract.OnlinePayContract;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.NotifyManager;
@@ -214,7 +215,10 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 mView.showToast("买单成功");
                 info.status = AppConstants.ONLINE_PAY_STATUS_PASS;
                 info.operatorName = AccountManager.getInstance().getUser().userName;
-                print(info, false);
+
+                if (SPManager.getInstance().getOnlinePassSwitch()) {
+                    print(info, false);
+                }
             }
 
             @Override
@@ -226,7 +230,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
     }
 
     @Override
-    public void unpass(OnlinePayInfo info, final int position) {
+    public void unpass(final OnlinePayInfo info, final int position) {
         // 请到前台
         mView.showLoading();
         if (!Utils.isNetworkEnabled(mContext)) {
@@ -243,6 +247,12 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                 mView.hideLoading();
                 mView.updateDataStatus(AppConstants.ONLINE_PAY_STATUS_UNPASS, position);
                 mView.showToast("已通知请到前台");
+                info.status = AppConstants.ONLINE_PAY_STATUS_PASS;
+                info.operatorName = AccountManager.getInstance().getUser().userName;
+
+                if (SPManager.getInstance().getOnlineUnpassSwitch()) {
+                    print(info, false);
+                }
             }
 
             @Override

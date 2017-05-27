@@ -8,6 +8,8 @@ import com.xmd.cashier.contract.OrderRecordContract;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
+import com.xmd.cashier.dal.sp.SPManager;
+import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.NotifyManager;
 
@@ -204,7 +206,11 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
                 mView.showToast("订单接受成功");
                 mView.updateDataStatus(AppConstants.ORDER_RECORD_STATUS_ACCEPT, position);
                 info.status = AppConstants.ORDER_RECORD_STATUS_ACCEPT;
-                print(info, false);
+                info.receiverName = AccountManager.getInstance().getUser().userName;
+
+                if (SPManager.getInstance().getOrderAcceptSwitch()) {
+                    print(info, false);
+                }
             }
 
             @Override
@@ -216,7 +222,7 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
     }
 
     @Override
-    public void reject(OrderRecordInfo info, final int position) {
+    public void reject(final OrderRecordInfo info, final int position) {
         // 拒绝
         mView.showLoading();
         if (!Utils.isNetworkEnabled(mContext)) {
@@ -233,6 +239,11 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
                 mView.hideLoading();
                 mView.showToast("订单拒绝成功");
                 mView.updateDataStatus(AppConstants.ORDER_RECORD_STATUS_REJECT, position);
+                info.status = AppConstants.ORDER_RECORD_STATUS_ACCEPT;
+
+                if (SPManager.getInstance().getOrderRejectSwitch()) {
+                    print(info, false);
+                }
             }
 
             @Override

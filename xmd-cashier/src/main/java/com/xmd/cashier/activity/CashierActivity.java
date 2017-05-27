@@ -10,10 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.xmd.cashier.R;
-import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.CashierContract;
 import com.xmd.cashier.presenter.CashierPresenter;
-import com.xmd.cashier.widget.ActionSheetDialog;
 import com.xmd.cashier.widget.CustomKeyboardView;
 import com.xmd.cashier.widget.CustomMoneyEditText;
 import com.xmd.cashier.widget.OnMyKeyboardCallback;
@@ -54,35 +52,37 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
             @Override
             public boolean onKeyEnter() {
                 if (mPresenter.checkInput()) {
-                    ActionSheetDialog dialog = new ActionSheetDialog(CashierActivity.this);
-                    dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_MEMBER_TEXT, AppConstants.CASHIER_TYPE_POS_TEXT});
-                    dialog.setCancelText("取消");
-                    dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
-                        @Override
-                        public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
-                            switch (item) {
-                                case AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT:
-                                    mPresenter.onClickXMDOnlinePay();
-                                    break;
-                                case AppConstants.CASHIER_TYPE_MEMBER_TEXT:
-                                    mPresenter.onClickMemberPay();
-                                    break;
-                                case AppConstants.CASHIER_TYPE_POS_TEXT:
-                                    mPresenter.onClickCashier();
-                                    break;
-                                default:
-                                    break;
-                            }
-                            dialog.dismiss();
-                        }
-
-                        @Override
-                        public void onCancelItemClick(ActionSheetDialog dialog) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
+//                    ActionSheetDialog dialog = new ActionSheetDialog(CashierActivity.this);
+//                    dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_MEMBER_TEXT, AppConstants.CASHIER_TYPE_POS_TEXT});
+//                    dialog.setCancelText("取消");
+//                    dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
+//                        @Override
+//                        public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
+//                            switch (item) {
+//                                case AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT:
+//                                    mPresenter.onClickXMDOnlinePay();
+//                                    break;
+//                                case AppConstants.CASHIER_TYPE_MEMBER_TEXT:
+//                                    mPresenter.onClickMemberPay();
+//                                    break;
+//                                case AppConstants.CASHIER_TYPE_POS_TEXT:
+//                                    mPresenter.onClickCashier();
+//                                    break;
+//                                default:
+//                                    break;
+//                            }
+//                            dialog.dismiss();
+//                        }
+//
+//                        @Override
+//                        public void onCancelItemClick(ActionSheetDialog dialog) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    dialog.setCanceledOnTouchOutside(false);
+//                    dialog.show();
+                    // 屏蔽会员支付以及Pos支付 仅支持小摩豆在线买单微信支付
+                    mPresenter.onClickXMDOnlinePay();
                 }
                 return true;
             }

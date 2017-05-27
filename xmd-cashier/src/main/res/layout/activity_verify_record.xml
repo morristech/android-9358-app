@@ -21,6 +21,7 @@
         android:imeOptions="actionSearch"
         android:inputType="phone"
         android:maxLength="20"
+        android:textSize="@dimen/font_size_16"
         android:paddingLeft="@dimen/activity_small_margin"
         android:paddingRight="@dimen/activity_small_margin"
         android:singleLine="true" />

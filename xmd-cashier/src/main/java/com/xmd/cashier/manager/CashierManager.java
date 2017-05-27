@@ -94,40 +94,6 @@ public class CashierManager {
         mCashierManagerHandler.obtainMessage(PayHandler.MSG_PAY_CREATE, mPayInfo).sendToTarget();
     }
 
-    public void printBitmap(byte[] bitmap) {
-        mCashier.printBitmap(bitmap);
-    }
-
-    public void printText(String text) {
-        XLogger.i(text);
-        mCashier.printText(text, IPos.GRAVITY_LEFT);
-    }
-
-    public void printTextCenter(String text) {
-        XLogger.i(text);
-        mCashier.printText(text, IPos.GRAVITY_CENTER);
-    }
-
-    public void printTextRight(String text) {
-        XLogger.i(text);
-        mCashier.printText(text, IPos.GRAVITY_RIGHT);
-    }
-
-    public void printEnd() {
-        XLogger.i(" ");
-        mCashier.printEnd();
-    }
-
-    public void printText(String left, String right) {
-        XLogger.i(left + right);
-        mCashier.printText(left, right);
-    }
-
-    public void printDivide() {
-        XLogger.i("------");
-        mCashier.printDivide();
-    }
-
     public String getTradeNo(Object o) {
         if (o instanceof PayInfo) {
             PayInfo payInfo = ((PayInfo) o);

@@ -7,7 +7,9 @@ import android.os.Parcelable;
  * Created by heyangya on 16-9-7.
  */
 
-//请客授权信息
+/**
+ * 请客授权信息
+ */
 public class TreatInfo implements Parcelable {
     public int amount;//授权金额,以分为单位
     public String authorizeCode;//授权码
@@ -15,7 +17,6 @@ public class TreatInfo implements Parcelable {
     public int useMoney; //实际使用金额，需要计算
 
     public TreatInfo() {
-
     }
 
     protected TreatInfo(Parcel in) {

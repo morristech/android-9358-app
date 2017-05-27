@@ -22,6 +22,7 @@ import com.xmd.cashier.activity.PointsPhoneActivity;
 import com.xmd.cashier.activity.RecordNavigationActivity;
 import com.xmd.cashier.activity.ScanPayActivity;
 import com.xmd.cashier.activity.ScanPayResultActivity;
+import com.xmd.cashier.activity.SettingActivity;
 import com.xmd.cashier.activity.SettleCurrentActivity;
 import com.xmd.cashier.activity.SettleDetailActivity;
 import com.xmd.cashier.activity.SettleRecordActivity;
@@ -126,16 +127,18 @@ public class UiNavigation {
     }
 
     // 券
-    public static void gotoVerifyNormalCouponActivity(Context context, CouponInfo info) {
+    public static void gotoVerifyNormalCouponActivity(Context context, CouponInfo info,boolean isShow) {
         Intent intent = new Intent(context, VerifyCouponActivity.class);
         intent.putExtra(AppConstants.EXTRA_NORMAL_COUPON_INFO, info);
+        intent.putExtra(AppConstants.EXTRA_IS_SHOW, isShow);
         context.startActivity(intent);
     }
 
     // 预约订单
-    public static void gotoVerifyOrderActivity(Context context, OrderInfo info) {
+    public static void gotoVerifyOrderActivity(Context context, OrderInfo info,boolean isShow) {
         Intent intent = new Intent(context, VerifyOrderActivity.class);
         intent.putExtra(AppConstants.EXTRA_ORDER_VERIFY_INFO, info);
+        intent.putExtra(AppConstants.EXTRA_IS_SHOW, isShow);
         context.startActivity(intent);
     }
 
@@ -222,6 +225,12 @@ public class UiNavigation {
     public static void gotoScanPayResultActivity(Context context, OnlinePayInfo info) {
         Intent intent = new Intent(context, ScanPayResultActivity.class);
         intent.putExtra(AppConstants.EXTRA_ONLINE_PAY_INFO, info);
+        context.startActivity(intent);
+    }
+
+    // 系统设置
+    public static void gotoSettingActivity(Context context) {
+        Intent intent = new Intent(context, SettingActivity.class);
         context.startActivity(intent);
     }
 }

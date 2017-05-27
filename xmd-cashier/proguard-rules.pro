@@ -35,6 +35,8 @@
 -keep public class com.android.vending.licensing.ILicensingService
 -dontnote com.android.vending.licensing.ILicensingService
 
+-keep class android.app.** {*;}
+
 #保留资源
 -keepclasseswithmembers class **.R$* {
   public static <fields>;
@@ -85,13 +87,11 @@
 -keep class sun.misc.Unsafe { *; }
 
 #保留所有bean包中的类和公开变量名,用于gson解析
--keepclasseswithmembernames class **.bean.**{
-  public <fields>;
-}
--keepclasseswithmembernames class **.bean.**$*{
-  public <fields>;
-}
+-keepclasseswithmembernames class **.bean.**{*;}
+-keepclasseswithmembernames class **.bean.**$*{*;}
 
+-keep class com.xmd.cashier.dal.**{*;}
+-keep class com.xmd.cashier.dal.**$*{*;}
 
 #网络返回
 -keep class com.xmd.cashier.dal.net.response.** {
@@ -118,6 +118,7 @@
 
 -dontwarn com.google.**
 -keep class com.google.**{*;}
+-keep class com.google.gson.** { *; }
 
 -dontwarn com.github.**
 -keep class com.github.**{*;}

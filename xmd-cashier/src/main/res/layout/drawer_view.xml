@@ -2,74 +2,97 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="#eeeeee"
     android:clickable="true"
-    android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imv_club_icon"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_marginTop="96dp"
-        android:src="@drawable/ic_club" />
-
-    <TextView
-        android:id="@+id/tv_club_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="皇朝休闲娱乐好玩会所"
-        android:textSize="@dimen/medium_font_size" />
+        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:background="@drawable/ic_bg_set"
+        android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:background="@color/colorDivide" />
+        <com.xmd.cashier.widget.CircleImageView
+            android:id="@+id/imv_club_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="56dp"
+            android:src="@drawable/ic_club" />
+
+        <TextView
+            android:id="@+id/tv_club_name"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|top"
+            android:text="小摩豆会所"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/medium_font_size" />
+
+        <TextView
+            android:id="@+id/tv_userName"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:drawableLeft="@drawable/ic_set_user"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:singleLine="true"
+            android:text="小摩豆"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_16" />
+    </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="收银员：" />
-
-    <TextView
-        android:id="@+id/tv_userName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_area_item"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_set_setting"
+        android:drawablePadding="@dimen/activity_horizontal_margin"
+        android:gravity="left|center_vertical"
+        android:onClick="onClickSetting"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="系统设置"
         android:textColor="@color/colorText2"
-        android:textSize="@dimen/medium_font_size" />
+        android:textSize="@dimen/font_size_16" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:background="@color/colorDivide" />
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <TextView
+        android:id="@+id/tv_versionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_area_item"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_set_version"
+        android:drawablePadding="@dimen/activity_horizontal_margin"
+        android:gravity="left|center_vertical"
+        android:onClick="onClickVersion"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:textColor="@color/colorText2"
+        android:textSize="@dimen/font_size_16" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/tv_versionName"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:gravity="center" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#CDCDCD"
+        android:background="@color/colorDivide"
         android:gravity="center">
 
         <TextView
@@ -81,5 +104,4 @@
             android:onClick="onClickLogout"
             android:text="@string/cashier_logout" />
     </LinearLayout>
-
 </LinearLayout>

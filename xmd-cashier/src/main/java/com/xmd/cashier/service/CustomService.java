@@ -34,6 +34,7 @@ import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaRetrofit;
 import com.xmd.cashier.dal.net.response.BaseResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.exceptions.ServerException;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.NotifyManager;
@@ -361,13 +362,16 @@ public class CustomService extends Service {
                             public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单成功", Toast.LENGTH_SHORT).show();
+                                info.status = AppConstants.ORDER_RECORD_STATUS_ACCEPT;
+                                info.receiverName = AccountManager.getInstance().getUser().userName;
+                                if (SPManager.getInstance().getOrderAcceptSwitch()) {
+                                    posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD, info);
+                                }
                                 if (adapter.getItemCount() == 0) {
                                     mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
                                     hide();
                                     refreshOrderRecordNotify(true);
                                 }
-                                info.status = AppConstants.ORDER_RECORD_STATUS_ACCEPT;
-                                posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD, info);
                             }
 
                             @Override
@@ -387,7 +391,7 @@ public class CustomService extends Service {
             }
 
             @Override
-            public void onReject(OrderRecordInfo info, final int position) {
+            public void onReject(final OrderRecordInfo info, final int position) {
                 SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_REJECT, info.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -396,6 +400,10 @@ public class CustomService extends Service {
                             public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝成功", Toast.LENGTH_SHORT).show();
+                                info.status = AppConstants.ORDER_RECORD_STATUS_REJECT;
+                                if (SPManager.getInstance().getOrderRejectSwitch()) {
+                                    posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD, info);
+                                }
                                 if (adapter.getItemCount() == 0) {
                                     mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
                                     hide();
@@ -463,13 +471,16 @@ public class CustomService extends Service {
                             public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认成功", Toast.LENGTH_SHORT).show();
+                                info.status = AppConstants.ONLINE_PAY_STATUS_PASS;
+                                info.operatorName = AccountManager.getInstance().getUser().userName;
+                                if (SPManager.getInstance().getOnlinePassSwitch()) {
+                                    posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY, info);
+                                }
                                 if (adapter.getItemCount() == 0) {
                                     mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
                                     hide();
                                     refreshOnlinePayNotify(true);
                                 }
-                                info.status = AppConstants.ONLINE_PAY_STATUS_PASS;
-                                posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY, info);
                             }
 
                             @Override
@@ -490,7 +501,7 @@ public class CustomService extends Service {
             }
 
             @Override
-            public void onUnpass(OnlinePayInfo info, final int position) {
+            public void onUnpass(final OnlinePayInfo info, final int position) {
                 SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -499,6 +510,11 @@ public class CustomService extends Service {
                             public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "已通知请到前台", Toast.LENGTH_SHORT).show();
+                                info.status = AppConstants.ONLINE_PAY_STATUS_UNPASS;
+                                info.operatorName = AccountManager.getInstance().getUser().userName;
+                                if (SPManager.getInstance().getOnlineUnpassSwitch()) {
+                                    posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY, info);
+                                }
                                 if (adapter.getItemCount() == 0) {
                                     mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
                                     hide();

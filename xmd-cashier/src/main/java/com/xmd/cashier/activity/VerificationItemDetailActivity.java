@@ -63,7 +63,7 @@ public class VerificationItemDetailActivity extends BaseActivity implements Veri
         if (item.type.equals(AppConstants.TYPE_COUPON)) {
             mNumberView.setText(getFormatNumber(item.couponInfo.couponNo));
             mValidTimeView.setText(item.couponInfo.couponPeriod);
-            mObtainTimeView.setText(item.couponInfo.modifyDate);
+            mObtainTimeView.setText(item.couponInfo.getDate);
             ((WebView) findViewById(R.id.webview)).loadDataWithBaseURL(null, item.couponInfo.actContent, "text/html", "utf-8", null);
         }
 

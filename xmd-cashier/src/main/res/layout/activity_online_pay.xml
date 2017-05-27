@@ -24,15 +24,16 @@
             android:layout_height="32dp"
             android:layout_weight="1"
             android:background="@drawable/bg_text_search"
-            android:drawableRight="@drawable/ic_search"
             android:drawablePadding="@dimen/activity_small_margin"
+            android:drawableRight="@drawable/ic_search"
             android:gravity="center_vertical"
             android:hint="技师编号或客户手机号"
             android:imeOptions="actionSearch"
             android:maxLength="20"
             android:paddingLeft="@dimen/activity_small_margin"
             android:paddingRight="@dimen/activity_small_margin"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textSize="@dimen/font_size_16" />
 
         <TextView
             android:id="@+id/tv_list_filter"
