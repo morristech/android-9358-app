@@ -972,7 +972,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         OnlinePayBean onLinePay = (OnlinePayBean) obj;
         Glide.with(mContext).load(onLinePay.avatarUrl).into(viewHolder.customerHead);
         if (Utils.isNotEmpty(onLinePay.userName)) {
-            viewHolder.tvCustomerName.setText(onLinePay.userName);
+            Utils.briefString(onLinePay.userName, 6);
         } else {
             viewHolder.tvCustomerName.setText("匿名用户");
         }
