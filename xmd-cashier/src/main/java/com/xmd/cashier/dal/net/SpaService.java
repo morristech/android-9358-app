@@ -8,20 +8,17 @@ import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
-import com.xmd.cashier.dal.net.response.GetTreatResult;
 import com.xmd.cashier.dal.net.response.LoginResult;
 import com.xmd.cashier.dal.net.response.LogoutResult;
 import com.xmd.cashier.dal.net.response.MemberPayResult;
 import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
-import com.xmd.cashier.dal.net.response.OrderOrCouponResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.PrizeResult;
 import com.xmd.cashier.dal.net.response.SettleRecordResult;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
 import com.xmd.cashier.dal.net.response.StringResult;
-import com.xmd.cashier.dal.net.response.UserCouponListResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordResult;
 import com.xmd.cashier.dal.net.response.VerifyTypeResult;
@@ -86,25 +83,6 @@ public interface SpaService {
     Observable<StringResult> getClubWXQrcode(@Field(RequestConstant.KEY_CLUB_ID) String userToken,
                                              @Field(RequestConstant.KEY_TRADE_NO) String tradeNo);
 
-
-    /**
-     * 使用手机号，获取用户的所有优惠券信息
-     * 核销时使用该接口
-     * ------------------------------------   old   --------------------------------------
-     *
-     * @param userToken
-     * @param sessionType
-     * @param phoneNumber
-     * @param couponType  券类型:默认优惠券+项目券,coupon:优惠券(包含点钟券),service_item:项目券;
-     * @return
-     */
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_USER_COUPON_LIST)
-    Observable<UserCouponListResult> listUserCoupons(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                     @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                                     @Field(RequestConstant.KEY_PHONE_NUMBER) String phoneNumber,
-                                                     @Field(RequestConstant.KEY_COUPON_TYPE) String couponType);
-
     /**
      * 获取核销列表: 券+付费预约
      *
@@ -115,37 +93,6 @@ public interface SpaService {
     @GET(RequestConstant.URL_USER_CHECK_INFO_LIST)
     Observable<CheckInfoListResult> getCheckInfoList(@Path(RequestConstant.KEY_NUMBER) String number,
                                                      @Query(RequestConstant.KEY_TOKEN) String userToken);
-
-
-    /**
-     * 获取请客详情
-     * 收银时使用
-     *
-     * @param userToken   用户token
-     * @param sessionType 会话类型
-     * @param treatNo     请客授权码
-     * @return
-     */
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TREAT_INFO)
-    Observable<GetTreatResult> getTreatInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                            @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                            @Field(RequestConstant.KEY_CODE) String treatNo);
-
-    /**
-     * 获取优惠券或者付费预约详情
-     * 收银时使用
-     *
-     * @param userToken
-     * @param sessionType
-     * @param orderNo
-     * @return
-     */
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_ORDER_COUPON_VIEW)
-    Observable<OrderOrCouponResult> getOrderOrCouponView(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                         @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                                         @Field(RequestConstant.KEY_ORDER_NO) String orderNo);
 
     /**
      * 获取订单号

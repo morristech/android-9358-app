@@ -139,7 +139,7 @@ public class CheckInfo implements Parcelable {
         return infoType;
     }
 
-    public void setInfoType(int infoType){
+    public void setInfoType(int infoType) {
         this.infoType = infoType;
     }
 
@@ -174,17 +174,5 @@ public class CheckInfo implements Parcelable {
             infoString = new Gson().toJson(info);
         }
         dest.writeString(infoString);
-    }
-
-    @Override
-    public int hashCode() {
-        // TODO
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        // TODO
-        return super.equals(o);
     }
 }

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.shidou.commonlibrary.util.DateUtils;
+import com.xmd.cashier.common.AppConstants;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -55,6 +56,9 @@ public class CouponInfo implements Parcelable {
     public String paidType;
     public List<String> itemNames;
 
+    public String userName; //用户名
+    public String userPhone;//用户手机
+
     public CouponInfo() {
     }
 
@@ -62,27 +66,29 @@ public class CouponInfo implements Parcelable {
         suaId = in.readString();
         actId = in.readString();
         couponNo = in.readString();
-        actTitle = in.readString();
-        couponType = in.readString();
-        actContent = in.readString();
         couponPeriod = in.readString();
         useTimePeriod = in.readString();
+        actContent = in.readString();
         consumeMoneyDescription = in.readString();
+        useType = in.readString();
         useTypeName = in.readString();
         endDate = in.readString();
         getDate = in.readString();
         startDate = in.readString();
-        useType = in.readString();
+        endUseDate = in.readString();
+        couponType = in.readString();
         couponTypeName = in.readString();
         actStatus = in.readString();
         actStatusName = in.readString();
+        actTitle = in.readString();
         actSubTitle = in.readString();
         creditAmount = in.readInt();
         actAmount = in.readInt();
         consumeAmount = in.readInt();
         paidType = in.readString();
-        endUseDate = in.readString();
         itemNames = in.createStringArrayList();
+        userName = in.readString();
+        userPhone = in.readString();
     }
 
     public static final Creator<CouponInfo> CREATOR = new Creator<CouponInfo>() {
@@ -99,7 +105,6 @@ public class CouponInfo implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        // TODO
         if (this == o) {
             return true;
         }
@@ -112,13 +117,11 @@ public class CouponInfo implements Parcelable {
 
     @Override
     public int hashCode() {
-        // TODO
         return Integer.valueOf(couponNo.substring(couponNo.length() - 8, couponNo.length()));
     }
 
     //判断优惠券是否有效
     public boolean isTimeValid() {
-        // TODO
         long now = System.currentTimeMillis();
         if (startDate != null && !startDate.equals("")) {
             try {
@@ -211,6 +214,15 @@ public class CouponInfo implements Parcelable {
         }
     }
 
+    // 区分点钟券和优惠券
+    public String getCustomType() {
+        if ("paid".equals(couponType)) {
+            return AppConstants.TYPE_PAID_COUPON;
+        } else {
+            return AppConstants.TYPE_COUPON;
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -221,26 +233,28 @@ public class CouponInfo implements Parcelable {
         dest.writeString(suaId);
         dest.writeString(actId);
         dest.writeString(couponNo);
-        dest.writeString(actTitle);
-        dest.writeString(couponType);
-        dest.writeString(actContent);
         dest.writeString(couponPeriod);
         dest.writeString(useTimePeriod);
+        dest.writeString(actContent);
         dest.writeString(consumeMoneyDescription);
+        dest.writeString(useType);
         dest.writeString(useTypeName);
         dest.writeString(endDate);
         dest.writeString(getDate);
         dest.writeString(startDate);
-        dest.writeString(useType);
+        dest.writeString(endUseDate);
+        dest.writeString(couponType);
         dest.writeString(couponTypeName);
         dest.writeString(actStatus);
         dest.writeString(actStatusName);
+        dest.writeString(actTitle);
         dest.writeString(actSubTitle);
         dest.writeInt(creditAmount);
         dest.writeInt(actAmount);
         dest.writeInt(consumeAmount);
         dest.writeString(paidType);
-        dest.writeString(endUseDate);
         dest.writeStringList(itemNames);
+        dest.writeString(userName);
+        dest.writeString(userPhone);
     }
 }

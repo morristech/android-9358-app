@@ -19,9 +19,9 @@ import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.bean.TreatInfo;
 import com.xmd.cashier.dal.bean.VerificationItem;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
+import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponQRCodeScanResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
-import com.xmd.cashier.dal.net.response.GetTreatResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.manager.Callback;
@@ -364,10 +364,14 @@ public class VerificationPresenter implements VerificationContract.Presenter {
         if (mGetVerifyTreatSubscription != null) {
             mGetVerifyTreatSubscription.unsubscribe();
         }
-        mGetVerifyTreatSubscription = mTradeManager.getVerifyTreat(treatNo, new Callback<GetTreatResult>() {
+        mGetVerifyTreatSubscription = mTradeManager.getVerifyTreat(treatNo, new Callback<CommonVerifyResult>() {
             @Override
-            public void onSuccess(GetTreatResult o) {
-                TreatInfo info = o.respData;
+            public void onSuccess(CommonVerifyResult o) {
+                TreatInfo info = new TreatInfo();
+                info.authorizeCode = o.respData.code;
+                info.amount = Integer.parseInt(o.respData.info.amount);
+                info.userName = o.respData.userName;
+                info.userPhone = o.respData.userPhone;
                 VerificationItem item = new VerificationItem();
                 item.code = info.authorizeCode;
                 item.type = type;

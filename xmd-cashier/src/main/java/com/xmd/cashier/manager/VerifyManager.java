@@ -1,11 +1,19 @@
 package com.xmd.cashier.manager;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
+import com.shidou.commonlibrary.util.DateUtils;
+import com.xmd.cashier.cashier.IPos;
+import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.ErrCode;
+import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.CheckInfo;
 import com.xmd.cashier.dal.bean.CouponInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
+import com.xmd.cashier.dal.bean.PrizeInfo;
+import com.xmd.cashier.dal.bean.TreatInfo;
 import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.SpaRetrofit;
 import com.xmd.cashier.dal.net.response.BaseResult;
@@ -18,12 +26,14 @@ import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordResult;
 import com.xmd.cashier.dal.net.response.VerifyTypeResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.exceptions.NetworkException;
 import com.xmd.cashier.exceptions.ServerException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import rx.Observable;
@@ -37,6 +47,8 @@ import rx.schedulers.Schedulers;
  */
 
 public class VerifyManager {
+    private IPos mPos;
+
     private List<CheckInfo> mVerifyList;
 
     private static VerifyManager mInstance = new VerifyManager();
@@ -46,6 +58,7 @@ public class VerifyManager {
     }
 
     private VerifyManager() {
+        mPos = PosFactory.getCurrentCashier();
         mVerifyList = new ArrayList<>();
     }
 
@@ -464,6 +477,7 @@ public class VerifyManager {
                                     SpaRetrofit.getService().verifyCoupon(AccountManager.getInstance().getToken(), info.getCode()).subscribe(new NetworkSubscriber<BaseResult>() {
                                         @Override
                                         public void onCallbackSuccess(BaseResult result) {
+                                            print(info.getType(), info);
                                             info.setErrorCode(result.statusCode);
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
@@ -485,6 +499,7 @@ public class VerifyManager {
                                     SpaRetrofit.getService().verifyPaidOrder(AccountManager.getInstance().getToken(), info.getCode(), AppConstants.PAID_ORDER_OP_VERIFIED).subscribe(new NetworkSubscriber<BaseResult>() {
                                         @Override
                                         public void onCallbackSuccess(BaseResult result) {
+                                            print(info.getType(), info);
                                             info.setErrorCode(result.statusCode);
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
@@ -528,5 +543,149 @@ public class VerifyManager {
                         callback.onSuccess(list);
                     }
                 });
+    }
+
+    public void print(final String type, final Object obj) {
+        // 核销成功的打印开关关闭,则不打印
+        if (!SPManager.getInstance().getVerifySuccessSwitch()) {
+            return;
+        }
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        printSync(type, obj);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    private void printSync(String type, Object obj) {
+        mPos.printCenter(AccountManager.getInstance().getClubName());
+        mPos.printCenter("(核销小票)");
+        mPos.printCenter("\n");
+
+        switch (type) {
+            case AppConstants.TYPE_COUPON:
+                // 优惠券
+                CouponInfo coupon = (CouponInfo) obj;
+                mPos.printText("客户:", coupon.userName);
+                mPos.printText("手机:", coupon.userPhone);
+                mPos.printText("核销类型:", "优惠券");
+                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
+                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
+                mPos.printText("核销码:", coupon.couponNo);
+                mPos.printDivide();
+                mPos.printText("优惠券名称:", coupon.actTitle);
+                mPos.printText("优惠券详情:", coupon.consumeMoneyDescription);
+                mPos.printText("优惠券类型:", coupon.useTypeName + "(" + coupon.useTypeName + ")");
+                mPos.printText("有效期:", coupon.couponPeriod);
+                mPos.printEnd();
+                break;
+            case AppConstants.TYPE_PAID_COUPON:
+                // 点钟券
+                CouponInfo paidCoupon = (CouponInfo) obj;
+                mPos.printText("客户:", paidCoupon.userName);
+                mPos.printText("手机:", paidCoupon.userPhone);
+                mPos.printText("核销类型:", "点钟券");
+                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
+                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
+                mPos.printText("核销码:", paidCoupon.couponNo);
+                mPos.printDivide();
+                mPos.printText("点钟券名称:", paidCoupon.actTitle);
+                mPos.printText("点钟券详情:", paidCoupon.consumeMoneyDescription);
+                mPos.printText("有效期:", paidCoupon.couponPeriod);
+                mPos.printEnd();
+                break;
+            case AppConstants.TYPE_SERVICE_ITEM_COUPON:
+                // 项目券
+                CouponInfo serviceCoupon = (CouponInfo) obj;
+                mPos.printText("客户:", serviceCoupon.userName);
+                mPos.printText("手机:", serviceCoupon.userPhone);
+                mPos.printText("核销类型:", "项目券");
+                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
+                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
+                mPos.printText("核销码:", serviceCoupon.couponNo);
+                mPos.printDivide();
+                mPos.printText("活动名称:", serviceCoupon.actSubTitle);
+                if (serviceCoupon.itemNames != null && !serviceCoupon.itemNames.isEmpty()) {
+                    StringBuilder itemsBuild = new StringBuilder();
+                    for (String item : serviceCoupon.itemNames) {
+                        itemsBuild.append(item).append(",");
+                    }
+                    itemsBuild.setLength(itemsBuild.length() - 1);
+                    mPos.printText("项目名称:", itemsBuild.toString());
+                }
+                mPos.printText("原价:", Utils.moneyToStringEx(serviceCoupon.consumeAmount) + "元");
+                switch (serviceCoupon.paidType) {
+                    case AppConstants.TYPE_PAID_AMOUNT:
+                        mPos.printText("实收:", Utils.moneyToStringEx(serviceCoupon.actAmount) + "元");
+                        break;
+                    case AppConstants.TYPE_PAID_CREDITS:
+                        mPos.printText("实收:", serviceCoupon.creditAmount + "积分");
+                        break;
+                    case AppConstants.TYPE_PAID_FREE:
+                        mPos.printText("实收:", "免费");
+                        break;
+                    default:
+                        break;
+                }
+                mPos.printEnd();
+                break;
+            case AppConstants.TYPE_ORDER:
+                // 付费预约
+                OrderInfo orderInfo = (OrderInfo) obj;
+                mPos.printText("客户:", orderInfo.customerName);
+                mPos.printText("手机:", orderInfo.phoneNum);
+                mPos.printText("核销类型:", "付费预约");
+                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
+                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
+                mPos.printText("核销码:", orderInfo.orderNo);
+                mPos.printDivide();
+                mPos.printText("预约定金:", Utils.moneyToStringEx(orderInfo.downPayment) + "元");
+                if (TextUtils.isEmpty(orderInfo.techNo)) {
+                    mPos.printText("预约技师:", orderInfo.techName);
+                } else {
+                    mPos.printText("预约技师:", orderInfo.techName + "[" + orderInfo.techNo + "]");
+                }
+                mPos.printText("预约项目:", (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName));
+                mPos.printText("下单时间:", orderInfo.createdAt);
+                mPos.printText("预约时间:", orderInfo.appointTime);
+                mPos.printEnd();
+                break;
+            case AppConstants.TYPE_LUCKY_WHEEL:
+                // 转盘奖品
+                PrizeInfo prizeInfo = (PrizeInfo) obj;
+                mPos.printText("客户:", prizeInfo.userName);
+                mPos.printText("手机:", prizeInfo.telephone);
+                mPos.printText("核销类型:", "奖品");
+                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
+                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
+                mPos.printText("核销码:", prizeInfo.verifyCode);
+                mPos.printDivide();
+                mPos.printText("活动名称:", prizeInfo.activityName);
+                mPos.printText("奖品:", prizeInfo.prizeName);
+                mPos.printEnd();
+                break;
+            case AppConstants.TYPE_PAY_FOR_OTHER:
+                // 会员请客
+                TreatInfo treatInfo = (TreatInfo) obj;
+                mPos.printText("客户:", treatInfo.userName);
+                mPos.printText("手机:", treatInfo.userPhone);
+                mPos.printText("核销类型:", "会员请客");
+                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
+                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
+                mPos.printText("核销码:", treatInfo.authorizeCode);
+                mPos.printDivide();
+                mPos.printText("抵扣金额:", Utils.moneyToStringEx(treatInfo.useMoney) + "元");
+                mPos.printEnd();
+                break;
+            default:
+                break;
+        }
     }
 }

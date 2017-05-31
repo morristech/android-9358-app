@@ -77,7 +77,6 @@ public class OrderInfo implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        // TODO
         if (this == o) {
             return true;
         }
@@ -90,7 +89,6 @@ public class OrderInfo implements Parcelable {
 
     @Override
     public int hashCode() {
-        // TODO
         return Integer.valueOf(orderNo.substring(orderNo.length() - 8, orderNo.length()));
     }
 

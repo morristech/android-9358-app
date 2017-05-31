@@ -45,7 +45,7 @@ public class VerifyOrderPresenter implements VerifyOrderContract.Presenter {
     }
 
     @Override
-    public void onVerify(OrderInfo info) {
+    public void onVerify(final OrderInfo info) {
         mView.showLoading();
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
@@ -60,6 +60,7 @@ public class VerifyOrderPresenter implements VerifyOrderContract.Presenter {
         mModifyOrderStatusSubscription = VerifyManager.getInstance().verifyPaidOrder(info.orderNo, AppConstants.PAID_ORDER_OP_VERIFIED, new Callback<BaseResult>() {
             @Override
             public void onSuccess(BaseResult o) {
+                VerifyManager.getInstance().print(AppConstants.TYPE_ORDER, info);
                 mView.hideLoading();
                 mView.showToast("核销成功");
                 mView.finishSelf();

@@ -62,12 +62,10 @@ public class CheckInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        switch (mData.get(position).getType()) {
-            case AppConstants.TYPE_COUPON:
-            case AppConstants.TYPE_PAID_COUPON:
-            case AppConstants.TYPE_SERVICE_ITEM_COUPON:
+        switch (mData.get(position).getInfoType()) {
+            case AppConstants.CHECK_INFO_TYPE_COUPON:
                 return TYPE_ITEM_COUPON;
-            case AppConstants.TYPE_ORDER:
+            case AppConstants.CHECK_INFO_TYPE_ORDER:
                 return TYPE_ITEM_ORDER;
             default:
                 return TYPE_ITEM_UNKNOW;
