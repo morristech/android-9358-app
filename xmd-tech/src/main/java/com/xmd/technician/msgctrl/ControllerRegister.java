@@ -130,7 +130,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_TECH_PK_ACTIVITY_LIST,
                 MsgDef.MSG_DEF_TECH_PK_TEAM_RANKING_LIST,
                 MsgDef.MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST,
-                MsgDef.MSG_DEF_TECH_RANKING_LIST,
 
                 //-------------------------------------> 聊天黑名单 <---------------------------------
                 MsgDef.MSG_DEF_ADD_TO_BLACKLIST,
