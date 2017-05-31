@@ -55,7 +55,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:textSize="@dimen/medium_font_size"
+                            android:textSize="@dimen/fontSubheading"
                             app:techName='@{data}' />
 
                         <TextView
@@ -90,7 +90,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text='@{data.serviceName ?? "到店选择"}' />
+                        android:text='@{data.serviceItem.name ?? "到店选择"}' />
 
                     <ImageView
                         android:layout_width="wrap_content"

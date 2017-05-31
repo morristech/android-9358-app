@@ -6,9 +6,38 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:textSize">@dimen/small_font_size</item>
+        <item name="android:textSize">@dimen/fontBody</item>
         <item name="android:textColor">@color/colorText</item>
         <item name="android:windowBackground">@color/colorWindowBackground</item>
     </style>
 
+    <style name="AppTheme.Dialog">
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 背景透明 -->
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+        <!-- 模糊 -->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!-- 按钮样式 -->
+    <style name="AppTheme.Button" parent="Base.Widget.AppCompat.Button">
+
+    </style>
+
+    <style name="AppTheme.Button.Main">
+        <item name="android:background">@drawable/btn_main</item>
+        <item name="android:textColor">@color/colorBtnMainText</item>
+    </style>
+
+    <style name="AppTheme.Button.Plain">
+        <item name="android:background">@drawable/btn_plain</item>
+        <item name="android:textColor">@color/colorBtnPlainText</item>
+    </style>
 </resources>

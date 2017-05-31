@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.app.Constants;
+import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.appointment.R;
 
 import java.io.Serializable;
@@ -160,9 +161,13 @@ public class Technician implements Serializable {
     @BindingAdapter("avatar")
     public static void bindAvatar(ImageView imageView, Technician technician) {
         if (technician != null && !TextUtils.isEmpty(technician.getAvatarUrl())) {
-            Glide.with(imageView.getContext()).load(technician.getAvatarUrl()).placeholder(R.drawable.img_avatar_placeholder).into(imageView);
+            Glide.with(imageView.getContext())
+                    .load(technician.getAvatarUrl())
+                    .transform(new GlideCircleTransform(imageView.getContext()))
+                    .placeholder(R.drawable.img_default_avatar)
+                    .into(imageView);
         } else {
-            imageView.setImageResource(R.drawable.img_avatar_placeholder);
+            imageView.setImageResource(R.drawable.img_default_avatar);
         }
     }
 

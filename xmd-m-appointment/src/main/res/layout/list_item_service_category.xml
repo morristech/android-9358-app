@@ -19,8 +19,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minHeight="54dp"
-        android:onClick="@{()->handler.onClickCategory(data.categoryBean)}"
+        android:onClick="@{()->handler.onClickCategory(data)}"
         android:text="@{data.categoryBean.name}"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/font_size_16" />
+        android:textColor="#212121"
+        android:background="@{data.viewSelected?@color/colorSelected:@color/colorWhite}" />
 </layout>

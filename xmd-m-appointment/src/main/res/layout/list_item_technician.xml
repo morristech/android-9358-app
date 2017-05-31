@@ -38,7 +38,6 @@
             android:id="@+id/tv_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_16"
             android:visibility="@{data.serialNo!=null?View.VISIBLE:View.GONE}"
             app:tech_no='@{data.serialNo}' />
 
@@ -48,7 +47,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:maxLength="10"
-            android:text="@{data.name}"
-            android:textSize="@dimen/font_size_16" />
+            android:text="@{data.name}" />
     </LinearLayout>
 </layout>

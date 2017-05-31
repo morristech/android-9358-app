@@ -4,6 +4,8 @@ import android.databinding.BindingAdapter;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.xmd.appointment.beans.AppointmentExt;
+import com.xmd.appointment.beans.ServiceItem;
 import com.xmd.appointment.beans.Technician;
 
 import java.io.Serializable;
@@ -14,32 +16,24 @@ import java.io.Serializable;
  */
 
 public class AppointmentData implements Serializable {
-    private String serviceName; //预约项目
-    private Integer servicePrice; //项目价格
     private String time; //到店时间
     private int duration; //持续时间，分钟
     private String customerName;//客户名称
     private String customerPhone;//客户电话
     private Integer fontMoney; //订金
 
-    private Technician technician;
+    private Technician technician; //技师信息
+    private ServiceItem serviceItem; //服务信息
+    private AppointmentExt appointmentExt; //额外信息
 
     private String token; //订单生成者token
 
-    public String getServiceName() {
-        return serviceName;
+    public ServiceItem getServiceItem() {
+        return serviceItem;
     }
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public Integer getServicePrice() {
-        return servicePrice;
-    }
-
-    public void setServicePrice(Integer servicePrice) {
-        this.servicePrice = servicePrice;
+    public void setServiceItem(ServiceItem serviceItem) {
+        this.serviceItem = serviceItem;
     }
 
     public String getTime() {
@@ -98,6 +92,14 @@ public class AppointmentData implements Serializable {
         this.technician = technician;
     }
 
+    public AppointmentExt getAppointmentExt() {
+        return appointmentExt;
+    }
+
+    public void setAppointmentExt(AppointmentExt appointmentExt) {
+        this.appointmentExt = appointmentExt;
+    }
+
     @BindingAdapter("techName")
     public static void setTechName(TextView view, AppointmentData data) {
         if (data.getTechnician() == null) {
@@ -113,10 +115,10 @@ public class AppointmentData implements Serializable {
 
     @BindingAdapter("servicePrice")
     public static void setServicePrice(TextView view, AppointmentData data) {
-        if (data.getServicePrice() == null) {
+        if (data.getServiceItem() == null || data.getServiceItem().getPrice() == null) {
             view.setText("待定");
         } else {
-            view.setText(data.getServicePrice() + "元");
+            view.setText(data.getServiceItem().getPrice() + "元");
         }
     }
 }
