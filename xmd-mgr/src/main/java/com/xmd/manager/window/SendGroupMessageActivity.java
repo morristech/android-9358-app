@@ -276,7 +276,7 @@ public class SendGroupMessageActivity extends BaseActivity implements TextWatche
 
     private void handleFavourableActivityResult(FavourableActivityListResult result) {
         if (result.statusCode == 200) {
-            mList.addAll(result.respData);
+            //mList.addAll(result.respData);
             mList.add(0, new FavourableActivityBean(ResourceUtils.getString(R.string.no_data), "-1"));
         }
     }

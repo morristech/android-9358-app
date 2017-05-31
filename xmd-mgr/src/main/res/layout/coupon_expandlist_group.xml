@@ -13,31 +13,31 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/select_time_padding"
+        android:paddingBottom="@dimen/x_large_space"
         android:paddingLeft="@dimen/inter_space"
         android:paddingRight="@dimen/inter_space"
-        android:paddingTop="@dimen/select_time_padding"
+        android:paddingTop="@dimen/x_large_space"
         android:background="@drawable/main_piece_bg">
 
-        <View
-            android:id="@+id/v_line"
-            android:layout_width="2dp"
-            android:layout_height="@dimen/middle_space"
+        <ImageView
+            android:id="@+id/coupon_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_10"
-            android:background="@color/colorChartLine" />
+            android:background="@drawable/icon_coupon" />
 
 
         <TextView
-            android:id="@+id/customer_type_group"
+            android:id="@+id/coupon_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/v_line"
+            android:layout_toRightOf="@+id/coupon_icon"
             android:textColor="@color/colorFont1"
             android:textSize="@dimen/large_text_size"
-            tools:text="按客户行为" />
+            tools:text="优惠券" />
 
         <ImageView
             android:id="@+id/image_arrow"

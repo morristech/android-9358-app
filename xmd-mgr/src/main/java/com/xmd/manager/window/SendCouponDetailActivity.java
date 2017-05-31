@@ -8,17 +8,23 @@ import com.xmd.manager.beans.GroupMessage;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
+import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.GroupMessageResult;
+import com.xmd.manager.service.response.SendGroupMessageResult;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import rx.Subscription;
 
 /**
  * Created by lhj on 2016/9/26.
  */
 public class SendCouponDetailActivity extends BaseListActivity<GroupMessage, GroupMessageResult> {
 
+
+    private Subscription mSendGroupMessageResultSubscription;
 
     @Override
     protected void dispatchRequest() {
@@ -41,6 +47,8 @@ public class SendCouponDetailActivity extends BaseListActivity<GroupMessage, Gro
 //        setRightVisible(false, -1, null);
         setRightVisible(true, ResourceUtils.getString(R.string.new_create), view -> startActivity(new Intent(this, GroupMessageCustomerActivity.class)));
         setTitle(ResourceUtils.getString(R.string.send_group_detail));
+        mSendGroupMessageResultSubscription = RxBus.getInstance().toObservable(SendGroupMessageResult.class).subscribe(
+                sendResult -> onRefresh());
 
     }
 
@@ -48,7 +56,7 @@ public class SendCouponDetailActivity extends BaseListActivity<GroupMessage, Gro
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        RxBus.getInstance().unsubscribe(mSendGroupMessageResultSubscription);
     }
 
 }

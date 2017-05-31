@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/shape_club_list_item_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/group_message_customer_container"
@@ -104,6 +104,7 @@
                 android:id="@+id/group_message_activity_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 tools:text="20元现金券"
                 android:textColor="@color/colorBody"
                 android:textSize="@dimen/fontMiddle" />
@@ -179,6 +180,7 @@
                 android:layout_marginLeft="@dimen/service_bottom_dialog_padding"
                 android:drawableLeft="@drawable/icon_person"
                 android:drawablePadding="@dimen/inter_space"
+                android:singleLine="true"
                 tools:text="李先生"
                 android:textColor="@color/colorVisitFromText"
                 android:textSize="@dimen/fontMiddle" />
@@ -193,7 +195,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/shape_club_list_item_content"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/group_detail_customer_container"
@@ -246,14 +248,6 @@
 
             <TextView
                 android:id="@+id/group_detail_type_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="80人"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/inter_text_size" />
-
-            <TextView
-                android:id="@+id/group_customer_detail_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="80人"
@@ -345,16 +339,156 @@
 
         </LinearLayout>
 
-        <!--暂时屏蔽-->
-        <!--<TextView
+        <!--效果分析暂时屏蔽-->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/inter_space"
             android:layout_marginRight="@dimen/inter_space"
             android:layout_marginTop="@dimen/group_list_margin"
+            android:layout_marginBottom="@dimen/margin_10"
             android:text="@string/effect_analysis"
             android:textColor="@color/colorClubItemTitle"
-            android:textSize="@dimen/large_text_size"/>-->
+            android:textSize="@dimen/large_text_size"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="@dimen/select_time_padding"
+                android:paddingBottom="@dimen/select_time_padding"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorClubItemBody"
+                    android:textSize="@dimen/inter_text_size"
+                    android:text="发送" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="@dimen/pay_margin"
+                    android:textColor="@color/colorClubItemTitle"
+                    android:textSize="@dimen/large_text_size"
+                    tools:text="100" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:background="@color/colorLineDivide" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="@dimen/select_time_padding"
+                android:paddingBottom="@dimen/select_time_padding"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorClubItemBody"
+                    android:textSize="@dimen/inter_text_size"
+                    android:text="查看" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="@dimen/pay_margin"
+                    android:textColor="@color/colorClubItemTitle"
+                    android:textSize="@dimen/large_text_size"
+                    tools:text="80" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:background="@color/colorLineDivide" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="@dimen/select_time_padding"
+                android:paddingBottom="@dimen/select_time_padding"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorClubItemBody"
+                    android:textSize="@dimen/inter_text_size"
+                    android:text="参与" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="@dimen/pay_margin"
+                    android:textColor="@color/colorClubItemTitle"
+                    android:textSize="@dimen/large_text_size"
+                    tools:text="70" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:background="@color/colorLineDivide" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="@dimen/select_time_padding"
+                android:paddingBottom="@dimen/select_time_padding"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorClubItemBody"
+                    android:textSize="@dimen/inter_text_size"
+                    android:text="到店" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="@dimen/pay_margin"
+                    android:textColor="@color/colorClubItemTitle"
+                    android:textSize="@dimen/large_text_size"
+                    tools:text="60" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <!--效果分析暂时屏蔽-->
 
         <View style="@style/line" />
 
@@ -385,6 +519,7 @@
                 android:layout_marginLeft="@dimen/service_bottom_dialog_padding"
                 android:drawableLeft="@drawable/icon_person"
                 android:drawablePadding="@dimen/inter_space"
+                android:singleLine="true"
                 tools:text="李先生"
                 android:textColor="@color/colorVisitFromText"
                 android:textSize="@dimen/fontMiddle" />

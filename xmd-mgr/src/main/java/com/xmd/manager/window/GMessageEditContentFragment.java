@@ -31,6 +31,7 @@ import butterknife.OnClick;
  */
 public class GMessageEditContentFragment extends BaseFragment implements TextWatcher {
 
+    public final static String EXTRA_LIMIT_SIZE = "image_limit_size";
     @Bind(R.id.group_add_pic)
     CircularBeadImageView groupAddPic;
     @Bind(R.id.image_delete)
@@ -44,7 +45,6 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
 
     private ImageTool mImageTool = new ImageTool();
     private String imageUrl;
-    private String imageId;
     private int mLimitImageSize;
     private String mMessageContent;
 
@@ -59,14 +59,15 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
     @Override
     protected void initView() {
         mEditContent.addTextChangedListener(this);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_GROUP_INFO);
+        mLimitImageSize = getArguments().getInt(EXTRA_LIMIT_SIZE);
+        limitImageSize.setText(String.format("上传图片大小需小于%sM", String.valueOf(mLimitImageSize)));
     }
 
     @OnClick({R.id.group_add_pic, R.id.image_delete, R.id.btn_previous_step, R.id.btn_preview})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.group_add_pic:
-                mImageTool.onlyPick(true).start(getActivity(), (s, uri, bitmap) -> {
+                mImageTool.onlyPick(true).start(this, (s, uri, bitmap) -> {
                     if (s == null && uri != null) {
                         imageUrl = uri.getPath();
                         Glide.with(getActivity()).load(imageUrl).into(groupAddPic);
@@ -77,7 +78,7 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
             case R.id.image_delete:
                 Glide.with(getActivity()).load(R.drawable.img_group_add_img).into(groupAddPic);
                 imageDelete.setVisibility(View.GONE);
-                imageId = "";
+                imageUrl = "";
                 break;
             case R.id.btn_previous_step:
                 ((GroupMessageCustomerActivity) getActivity()).gotoCouponFragment();
@@ -124,10 +125,11 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
         mMessageContent = mEditContent.getText().toString();
     }
 
-    public void handlerGroupInfoResult(GroupInfoResult result) {
-        if (result.statusCode == 200) {
-            mLimitImageSize = result.respData.imageSize;
-            limitImageSize.setText(String.format("上传图片大小需小于%sM", String.valueOf(mLimitImageSize)));
-        }
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getMessageContent() {
+        return mMessageContent;
     }
 }

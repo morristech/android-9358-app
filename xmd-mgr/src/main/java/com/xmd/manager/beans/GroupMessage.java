@@ -30,6 +30,6 @@ public class GroupMessage implements Serializable {
     public String sendDate;
     public String imageUrl;
     public String groupType;
-    public String groupNames;
+    public String subGroupLabels;
     public String operatorName;
 }
