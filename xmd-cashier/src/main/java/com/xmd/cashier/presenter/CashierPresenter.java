@@ -299,7 +299,6 @@ public class CashierPresenter implements CashierContract.Presenter {
         int needPayMoney = trade.getNeedPayMoney();
         if (needPayMoney == 0) {
             //当前不需要支付
-            mTradeManager.printVerificationList();
             mView.hideLoading();
             mView.showToast("支付成功！");
             mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {

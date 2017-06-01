@@ -238,6 +238,7 @@ public class TradeManager {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
+                        printVerificationList();
                         mTrade.setCouponDiscountMoney(mTrade.getVerificationSuccessfulMoney());
                         //设置减扣类型
                         if (mTrade.getWillDiscountMoney() == 0) {
@@ -250,7 +251,6 @@ public class TradeManager {
                                 mTrade.setDiscountType(Trade.DISCOUNT_TYPE_COUPON);
                             }
                         }
-
                         switch (mTrade.currentCashier) {
                             case AppConstants.CASHIER_TYPE_XMD_ONLINE:
                                 mTrade.tradeStatus = tradeStatus;
