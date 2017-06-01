@@ -19,6 +19,10 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
     protected int mHeaderBR;
     protected Object mHeader;
 
+    protected int mFooterLayout;
+    protected int mFooterBR;
+    protected Object mFooter;
+
     protected int mDataBR;
     protected int mDataLayout;
     protected List<T> mData;
@@ -28,6 +32,7 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
 
     protected static final int VIEW_TYPE_HEADER = 1;
     protected static final int VIEW_TYPE_DATA = 2;
+    protected static final int VIEW_TYPE_FOOTER = 3;
 
     protected boolean mInvert;
 
@@ -35,6 +40,13 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         mHeaderLayout = layoutId;
         mHeaderBR = br;
         mHeader = data;
+        return this;
+    }
+
+    public CommonRecyclerViewAdapter setFooter(int layoutId, int br, Object data) {
+        mFooterLayout = layoutId;
+        mFooterBR = br;
+        mFooter = data;
         return this;
     }
 
@@ -65,6 +77,8 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         ViewDataBinding binding;
         if (viewType == VIEW_TYPE_HEADER) {
             binding = DataBindingUtil.inflate(layoutInflater, mHeaderLayout, parent, false);
+        } else if (viewType == VIEW_TYPE_FOOTER) {
+            binding = DataBindingUtil.inflate(layoutInflater, mFooterLayout, parent, false);
         } else {
             binding = DataBindingUtil.inflate(layoutInflater, mDataLayout, parent, false);
         }
@@ -84,6 +98,8 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         }
         if (holder.getItemViewType() == VIEW_TYPE_HEADER) {
             binding.setVariable(mHeaderBR, mHeader);
+        } else if (holder.getItemViewType() == VIEW_TYPE_FOOTER) {
+            binding.setVariable(mFooterBR, mFooter);
         } else {
             if (mInvert) {
                 position = mData.size() - position - 1;
@@ -102,6 +118,9 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         if (mHeaderLayout != 0) {
             count++;
         }
+        if (mFooterLayout != 0) {
+            count++;
+        }
         if (mData != null) {
             count += mData.size();
         }
@@ -112,6 +131,8 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
     public int getItemViewType(int position) {
         if (mHeaderLayout != 0 && position == 0) {
             return VIEW_TYPE_HEADER;
+        } else if (mFooterLayout != 0 && position == getItemCount() - 1) {
+            return VIEW_TYPE_FOOTER;
         } else {
             return VIEW_TYPE_DATA;
         }

@@ -189,8 +189,6 @@ public class NewOrderFragment extends BaseFragment implements SwipeRefreshLayout
             getData();
 
         }
-
-
     }
 
     @Override

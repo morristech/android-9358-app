@@ -1,6 +1,6 @@
 package com.xmd.appointment;
 
-import com.xmd.appointment.beans.AppointmentExtResult;
+import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.TechnicianListResult;
 
@@ -43,6 +43,6 @@ public interface NetService {
      * @param userId 预约用户ID	string	必填
      */
     @GET("/spa-manager/api/v2/tech/order/edit")
-    Observable<AppointmentExtResult> getAppointmentExt(@Query("techId") String techId,
-                                                       @Query("userId") String userId);
+    Observable<AppointmentSettingResult> getAppointmentExt(@Query("techId") String techId,
+                                                           @Query("userId") String userId);
 }

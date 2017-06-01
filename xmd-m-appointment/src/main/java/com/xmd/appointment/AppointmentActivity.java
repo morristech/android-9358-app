@@ -11,7 +11,8 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
 import com.xmd.app.net.NetworkSubscriber;
-import com.xmd.appointment.beans.AppointmentExtResult;
+import com.xmd.appointment.beans.AppointmentSetting;
+import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceItem;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.appointment.databinding.ActivityAppointmentBinding;
@@ -20,7 +21,10 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
-public class AppointmentActivity extends BaseActivity implements TechSelectFragment.Listener, ServiceItemSelectFragment.Listener {
+public class AppointmentActivity extends BaseActivity
+        implements TechSelectFragment.Listener,
+        ServiceItemSelectFragment.Listener,
+        TimeSelectFragment.Listener {
 
     private ActivityAppointmentBinding mBinding;
     private AppointmentData mData;
@@ -61,15 +65,15 @@ public class AppointmentActivity extends BaseActivity implements TechSelectFragm
     }
 
     public void onClickSelectService() {
-        if (mData.getTechnician() != null && mData.getAppointmentExt() == null) {
+        if (mData.getTechnician() != null && mData.getAppointmentSetting() == null) {
             //未加载到技师项目数据，这里需要再次加载
             showLoading();
-            DataManager.getInstance().loadAppointmentExt(mData.getTechnician().getId(), null, new NetworkSubscriber<AppointmentExtResult>() {
+            DataManager.getInstance().loadAppointmentExt(mData.getTechnician().getId(), null, new NetworkSubscriber<AppointmentSettingResult>() {
                 @Override
-                public void onCallbackSuccess(AppointmentExtResult result) {
+                public void onCallbackSuccess(AppointmentSettingResult result) {
                     hideLoading();
                     XLogger.i("appointment ext:" + result.getRespData());
-                    mData.setAppointmentExt(result.getRespData());
+                    mData.setAppointmentSetting(result.getRespData());
                     gotoServiceSelect();
                 }
 
@@ -90,8 +94,8 @@ public class AppointmentActivity extends BaseActivity implements TechSelectFragm
         if (mData.getServiceItem() != null) {
             selectedItemId = mData.getServiceItem().getId();
         }
-        if (mData.getAppointmentExt() != null) {
-            showItemIdList = (ArrayList<String>) mData.getAppointmentExt().getTechItemIds();
+        if (mData.getAppointmentSetting() != null) {
+            showItemIdList = (ArrayList<String>) mData.getAppointmentSetting().getTechItemIds();
         }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -105,7 +109,42 @@ public class AppointmentActivity extends BaseActivity implements TechSelectFragm
     }
 
     public void onClickSelectTime() {
+        if (mData.getAppointmentSetting() == null) {
+            showLoading();
+            DataManager.getInstance().loadAppointmentExt(mData.getTechnician() == null ? null : mData.getTechnician().getId(),
+                    null, new NetworkSubscriber<AppointmentSettingResult>() {
+                        @Override
+                        public void onCallbackSuccess(AppointmentSettingResult result) {
+                            hideLoading();
+                            XLogger.i("appointment ext:" + result.getRespData());
+                            mData.setAppointmentSetting(result.getRespData());
+                            gotoTimeSelect();
+                        }
 
+                        @Override
+                        public void onCallbackError(Throwable e) {
+                            hideLoading();
+                            showError("加载预约配置信息失败:" + e.getLocalizedMessage());
+                        }
+                    });
+        } else {
+            gotoTimeSelect();
+        }
+    }
+
+    private void gotoTimeSelect() {
+        if (mData.getAppointmentSetting() == null) {
+            return;
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment prev = fm.findFragmentByTag("TimeSelectFragment");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        TimeSelectFragment fragment = TimeSelectFragment.newInstance(mData.getTimeSection(), mData.getAppointmentSetting());
+        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog);
+        fragment.show(ft, "TimeSelectFragment");
     }
 
     public void onClickSubmit() {
@@ -116,11 +155,11 @@ public class AppointmentActivity extends BaseActivity implements TechSelectFragm
     public void onSelectTechnician(Technician technician) {
         if (mData.getTechnician() == null || !mData.getTechnician().getId().equals(technician.getId())) {
             //获取项目和时间信息
-            mData.setAppointmentExt(null);
-            DataManager.getInstance().loadAppointmentExt(technician.getId(), null, new NetworkSubscriber<AppointmentExtResult>() {
+            mData.setAppointmentSetting(null);
+            DataManager.getInstance().loadAppointmentExt(technician.getId(), null, new NetworkSubscriber<AppointmentSettingResult>() {
                 @Override
-                public void onCallbackSuccess(AppointmentExtResult result) {
-                    mData.setAppointmentExt(result.getRespData());
+                public void onCallbackSuccess(AppointmentSettingResult result) {
+                    mData.setAppointmentSetting(result.getRespData());
                 }
 
                 @Override
@@ -136,7 +175,7 @@ public class AppointmentActivity extends BaseActivity implements TechSelectFragm
     @Override
     public void onCleanTechnician() {
         mData.setTechnician(null);
-        mData.setAppointmentExt(null);
+        mData.setAppointmentSetting(null);
         mBinding.setData(mData);
     }
 
@@ -150,5 +189,10 @@ public class AppointmentActivity extends BaseActivity implements TechSelectFragm
     public void onCleanServiceItem() {
         mData.setServiceItem(null);
         mBinding.setData(mData);
+    }
+
+    @Override
+    public void onSelectTime(AppointmentSetting.TimeSection timeSection) {
+
     }
 }

@@ -3,7 +3,7 @@ package com.xmd.appointment;
 import com.xmd.app.net.NetworkEngine;
 import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.app.net.RetrofitFactory;
-import com.xmd.appointment.beans.AppointmentExtResult;
+import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.TechnicianListResult;
 
@@ -58,7 +58,7 @@ class DataManager {
     }
 
     //加载额外预约信息，包括技师预约时间，技师项目信息
-    public void loadAppointmentExt(String techId, String userId, final NetworkSubscriber<AppointmentExtResult> listener) {
+    public void loadAppointmentExt(String techId, String userId, final NetworkSubscriber<AppointmentSettingResult> listener) {
         cancelLoadAppointmentExt();
         mLoadAppointmentExt = NetworkEngine.doRequest(
                 RetrofitFactory.getService(NetService.class).getAppointmentExt(techId, userId), listener);

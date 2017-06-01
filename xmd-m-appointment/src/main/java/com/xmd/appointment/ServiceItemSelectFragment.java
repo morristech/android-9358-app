@@ -35,7 +35,7 @@ import java.util.List;
 
 /**
  * Created by heyangya on 17-5-24.
- * 技师选择界面
+ * 项目选择界面
  */
 
 public class ServiceItemSelectFragment extends BaseDialogFragment {

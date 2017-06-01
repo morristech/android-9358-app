@@ -4,7 +4,7 @@ import android.databinding.BindingAdapter;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.xmd.appointment.beans.AppointmentExt;
+import com.xmd.appointment.beans.AppointmentSetting;
 import com.xmd.appointment.beans.ServiceItem;
 import com.xmd.appointment.beans.Technician;
 
@@ -24,9 +24,30 @@ public class AppointmentData implements Serializable {
 
     private Technician technician; //技师信息
     private ServiceItem serviceItem; //服务信息
-    private AppointmentExt appointmentExt; //额外信息
+    private AppointmentSetting appointmentSetting; //额外信息
+    private AppointmentSetting.TimeSection timeSection; //时间信息
 
-    private String token; //订单生成者token
+    @BindingAdapter("techName")
+    public static void setTechName(TextView view, AppointmentData data) {
+        if (data.getTechnician() == null) {
+            view.setText("技师待定");
+            return;
+        }
+        if (TextUtils.isEmpty(data.getTechnician().getSerialNo())) {
+            view.setText(data.getTechnician().getName());
+        } else {
+            view.setText(data.getTechnician().getName() + "[" + data.getTechnician().getSerialNo() + "]");
+        }
+    }
+
+    @BindingAdapter("servicePrice")
+    public static void setServicePrice(TextView view, AppointmentData data) {
+        if (data.getServiceItem() == null || data.getServiceItem().getPrice() == null) {
+            view.setText("待定");
+        } else {
+            view.setText(data.getServiceItem().getPrice() + "元");
+        }
+    }
 
     public ServiceItem getServiceItem() {
         return serviceItem;
@@ -76,14 +97,6 @@ public class AppointmentData implements Serializable {
         this.fontMoney = fontMoney;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public Technician getTechnician() {
         return technician;
     }
@@ -92,33 +105,19 @@ public class AppointmentData implements Serializable {
         this.technician = technician;
     }
 
-    public AppointmentExt getAppointmentExt() {
-        return appointmentExt;
+    public AppointmentSetting getAppointmentSetting() {
+        return appointmentSetting;
     }
 
-    public void setAppointmentExt(AppointmentExt appointmentExt) {
-        this.appointmentExt = appointmentExt;
+    public void setAppointmentSetting(AppointmentSetting appointmentSetting) {
+        this.appointmentSetting = appointmentSetting;
     }
 
-    @BindingAdapter("techName")
-    public static void setTechName(TextView view, AppointmentData data) {
-        if (data.getTechnician() == null) {
-            view.setText("技师待定");
-            return;
-        }
-        if (TextUtils.isEmpty(data.getTechnician().getSerialNo())) {
-            view.setText(data.getTechnician().getName());
-        } else {
-            view.setText(data.getTechnician().getName() + "[" + data.getTechnician().getSerialNo() + "]");
-        }
+    public AppointmentSetting.TimeSection getTimeSection() {
+        return timeSection;
     }
 
-    @BindingAdapter("servicePrice")
-    public static void setServicePrice(TextView view, AppointmentData data) {
-        if (data.getServiceItem() == null || data.getServiceItem().getPrice() == null) {
-            view.setText("待定");
-        } else {
-            view.setText(data.getServiceItem().getPrice() + "元");
-        }
+    public void setTimeSection(AppointmentSetting.TimeSection timeSection) {
+        this.timeSection = timeSection;
     }
 }

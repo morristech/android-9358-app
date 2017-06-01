@@ -18,7 +18,6 @@ import java.util.Locale;
  */
 public class DateUtils extends com.hyphenate.util.DateUtils {
     private static final long INTERVAL_IN_MILLISECONDS = 30000L;
-
     public DateUtils() {
 
     }
@@ -217,10 +216,6 @@ public class DateUtils extends com.hyphenate.util.DateUtils {
         var8.setStartTime(var2);
         var8.setEndTime(var6);
         return var8;
-    }
-
-    public static String getTimestampStr() {
-        return Long.toString(System.currentTimeMillis());
     }
 }
 

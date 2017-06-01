@@ -14,6 +14,10 @@ import java.util.Map;
  * 用来处理时间的工具类
  */
 public class DateUtils {
+    public static final long DAY_TIME_MS = 24 * 3600 * 1000L;
+
+    private static final String WEEK_ZH = "日一二三四五六";
+
     public static final String DF_DEFAULT = "yyyy-MM-dd HH:mm:ss";
     public static final String DF_JUST_DAY = "yyyy-MM-dd";
     public static final String DF_DEFAULT_ZH = "yyyy年MM月dd日 HH:mm:ss";
@@ -137,5 +141,20 @@ public class DateUtils {
 
     public static String doString2StringZH(String date) {
         return doString2String(date, DF_DEFAULT, "yyyy年MM月dd日 HH:mm:ss");
+    }
+
+
+    public static String getTimestampStr() {
+        return Long.toString(System.currentTimeMillis());
+    }
+
+    /**
+     * 数字周转到为中文的周
+     *
+     * @param week 1-7
+     * @return 日一二三四五六
+     */
+    public static String weekNumberToZh(int week) {
+        return WEEK_ZH.charAt(week - 1) + "";
     }
 }

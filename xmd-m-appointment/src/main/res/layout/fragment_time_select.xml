@@ -7,7 +7,7 @@
 
         <variable
             name="handler"
-            type="com.xmd.appointment.ServiceItemSelectFragment" />
+            type="com.xmd.appointment.TimeSelectFragment" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
@@ -31,7 +31,11 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@{handler.selectedTime}"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="@dimen/fontTitle" />
         </LinearLayout>
 
 
@@ -41,6 +45,7 @@
             android:background="#cccccc" />
 
         <FrameLayout
+            android:id="@+id/layout_time"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
@@ -58,17 +63,24 @@
                     android:layout_weight="1">
 
                     <android.support.v7.widget.RecyclerView
-                        android:id="@+id/categoryRecyclerView"
+                        android:id="@+id/dayRecyclerView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="2" />
 
                     <android.support.v7.widget.RecyclerView
-                        android:id="@+id/itemRecyclerView"
+                        android:id="@+id/hourRecyclerView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="2dp"
-                        android:layout_weight="2" />
+                        android:layout_weight="1" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/minuteRecyclerView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1" />
                 </LinearLayout>
 
                 <TextView
@@ -76,39 +88,41 @@
                     android:layout_height="1dp"
                     android:background="#c6c6c6" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
-                    android:padding="@dimen/activity_vertical_margin">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="预约项目："
-                        android:textColor="#4d4d4d" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{handler.selectedItemName}"
-                        android:textColor="#ff6666" />
-                </LinearLayout>
             </LinearLayout>
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="@{handler.loading?View.VISIBLE:View.GONE}" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:text="@{handler.loadingError}"
-                android:visibility="@{handler.loadingError==null?View.GONE:View.VISIBLE}" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="#80ffffff" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#cccccc" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#cccccc" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="#80ffffff" />
+            </LinearLayout>
         </FrameLayout>
 
 
@@ -118,24 +132,32 @@
             android:background="@color/colorWhite">
 
             <TextView
-                style="@style/AppTheme.Button.Plain"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:onClick="@{()->handler.onClickCancel()}"
                 android:padding="8dp"
-                android:text="取消" />
+                android:text="取消"
+                android:textSize="@dimen/fontSubheading" />
 
             <TextView
-                style="@style/AppTheme.Button.Main"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#cccccc" />
+
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:layout_weight="2"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:onClick="@{()->handler.onClickOK()}"
                 android:padding="8dp"
-                android:text="确定" />
+                android:text="确定"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="@dimen/fontSubheading" />
         </LinearLayout>
     </LinearLayout>
 </layout>
