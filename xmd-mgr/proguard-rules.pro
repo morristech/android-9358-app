@@ -23,6 +23,9 @@
 -verbose
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service

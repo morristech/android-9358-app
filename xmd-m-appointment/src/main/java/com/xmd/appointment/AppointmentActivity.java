@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
 import com.xmd.app.net.NetworkSubscriber;
@@ -67,6 +68,7 @@ public class AppointmentActivity extends BaseActivity implements TechSelectFragm
                 @Override
                 public void onCallbackSuccess(AppointmentExtResult result) {
                     hideLoading();
+                    XLogger.i("appointment ext:" + result.getRespData());
                     mData.setAppointmentExt(result.getRespData());
                     gotoServiceSelect();
                 }
