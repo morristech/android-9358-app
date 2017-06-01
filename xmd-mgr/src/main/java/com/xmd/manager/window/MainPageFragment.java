@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -68,7 +69,6 @@ import com.xmd.manager.widget.AlertDialogBuilder;
 import com.xmd.manager.widget.BottomPopupWindow;
 import com.xmd.manager.widget.CircleImageView;
 import com.xmd.manager.widget.ClearableEditText;
-import com.xmd.manager.widget.FullyGridLayoutManager;
 import com.xmd.manager.widget.SlidingMenu;
 
 import java.util.ArrayList;
@@ -532,7 +532,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 mTeamList.setItemAnimator(new DefaultItemAnimator());
                 mTeamList.setHasFixedSize(true);
                 mTeamList.setNestedScrollingEnabled(true);
-                mTeamList.setLayoutManager(new FullyGridLayoutManager(getActivity(), 3));
+                mTeamList.setLayoutManager(new GridLayoutManager(getActivity(),3));
                 mTeamList.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 isHasPk = true;
