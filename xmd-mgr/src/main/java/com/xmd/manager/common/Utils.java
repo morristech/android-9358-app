@@ -622,7 +622,7 @@ public class Utils {
     }
 
     public static String getNumToString(int num, boolean isElement) {
-        float moneyFloat = 0.0f;
+        float moneyFloat = 0.00f;
         int moneyInt = 0;
         if (isElement) {
             moneyInt = num;
