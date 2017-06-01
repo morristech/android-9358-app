@@ -14,4 +14,12 @@ public class ServiceData {
     public List<ServiceItem> itemList;
 
     public ObservableBoolean viewSelected = new ObservableBoolean();
+
+    @Override
+    public String toString() {
+        return "ServiceData{" +
+                "categoryBean=" + categoryBean +
+                ", itemList=" + itemList +
+                '}';
+    }
 }

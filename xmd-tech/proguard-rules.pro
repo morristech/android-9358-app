@@ -33,6 +33,9 @@
 -keep public class * extends android.preference.Preference
 -keep public class com.android.vending.licensing.ILicensingService
 
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
 -keep class android.app.** {*;}
 
 -keepattributes LineNumberTable,SourceFile

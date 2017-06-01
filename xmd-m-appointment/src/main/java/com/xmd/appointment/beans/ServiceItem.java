@@ -35,6 +35,17 @@ public class ServiceItem implements Serializable {
 
     public ObservableBoolean viewSelected = new ObservableBoolean();
 
+    @BindingAdapter("image")
+    public static void bindImage(ImageView imageView, String url) {
+        if (!TextUtils.isEmpty(url)) {
+            Glide.with(imageView.getContext()).load(url).placeholder(R.drawable.img_default_service).into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.img_default_service);
+        }
+    }
+
+
+
     public String getCategoryId() {
         return categoryId;
     }
@@ -147,12 +158,24 @@ public class ServiceItem implements Serializable {
         this.pricePlus = pricePlus;
     }
 
-    @BindingAdapter("image")
-    public static void bindImage(ImageView imageView, String url) {
-        if (!TextUtils.isEmpty(url)) {
-            Glide.with(imageView.getContext()).load(url).placeholder(R.drawable.img_default_service).into(imageView);
-        } else {
-            imageView.setImageResource(R.drawable.img_default_service);
-        }
+    @Override
+    public String toString() {
+        return "ServiceItem{" +
+                "categoryId='" + categoryId + '\'' +
+                ", categoryName='" + categoryName + '\'' +
+                ", clubId='" + clubId + '\'' +
+                ", description='" + description + '\'' +
+                ", duration='" + duration + '\'' +
+                ", durationPlus='" + durationPlus + '\'' +
+                ", durationUnit='" + durationUnit + '\'' +
+                ", durationUnitPlus='" + durationUnitPlus + '\'' +
+                ", id='" + id + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", itemCode='" + itemCode + '\'' +
+                ", name='" + name + '\'' +
+                ", price='" + price + '\'' +
+                ", pricePlus='" + pricePlus + '\'' +
+                ", viewSelected=" + viewSelected +
+                '}';
     }
 }
