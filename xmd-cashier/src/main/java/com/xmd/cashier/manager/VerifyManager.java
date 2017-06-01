@@ -222,6 +222,7 @@ public class VerifyManager {
                                     } else {
                                         info.setInfo(gson.fromJson(gson.toJson(info.getInfo()), CouponInfo.class));
                                     }
+                                    ((CouponInfo) info.getInfo()).valid = info.getValid();
                                     break;
                                 case AppConstants.CHECK_INFO_TYPE_ORDER:
                                     // 付费预约

@@ -138,4 +138,30 @@ public class DateUtils {
     public static String doString2StringZH(String date) {
         return doString2String(date, DF_DEFAULT, "yyyy年MM月dd日 HH:mm:ss");
     }
+
+    public static Long doDate2Long(String date) {
+        Date mDate = stringToDateMinute(date);
+        Long longTime = mDate.getTime();
+        return longTime;
+    }
+
+    public static Date stringToDateMinute(String str) {
+        //str =  " 2008-07-10 19:20:00 " 格式
+        SimpleDateFormat format;
+        if (str.length() == 10) {
+            format = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        }
+
+        if (str == null || str.length() == 0) {
+            str = "1970-01-01 00:00:00";
+        }
+        try {
+            return format.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new Date();
+    }
 }

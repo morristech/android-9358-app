@@ -3,11 +3,8 @@ package com.xmd.cashier.dal.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.common.AppConstants;
 
-import java.text.ParseException;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -59,6 +56,8 @@ public class CouponInfo implements Parcelable {
     public String userName; //用户名
     public String userPhone;//用户手机
 
+    public boolean valid;
+
     public CouponInfo() {
     }
 
@@ -89,6 +88,7 @@ public class CouponInfo implements Parcelable {
         itemNames = in.createStringArrayList();
         userName = in.readString();
         userPhone = in.readString();
+        valid = in.readByte() != 0;
     }
 
     public static final Creator<CouponInfo> CREATOR = new Creator<CouponInfo>() {
@@ -118,85 +118,6 @@ public class CouponInfo implements Parcelable {
     @Override
     public int hashCode() {
         return Integer.valueOf(couponNo.substring(couponNo.length() - 8, couponNo.length()));
-    }
-
-    //判断优惠券是否有效
-    public boolean isTimeValid() {
-        long now = System.currentTimeMillis();
-        if (startDate != null && !startDate.equals("")) {
-            try {
-                long start = DateUtils.getSdf("yyyy-MM-dd HH:mm").parse(startDate).getTime();
-                if (now < start) {
-                    return false;
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        if (endDate != null && !endDate.equals("")) {
-            try {
-                long end = DateUtils.getSdf("yyyy-MM-dd HH:mm").parse(endDate).getTime();
-                if (now > end) {
-                    return false;
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (useTimePeriod != null) {
-            if (useTimePeriod.equals("不限")) {
-                return true;
-            }
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(now);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-            if (!useTimePeriod.contains(getWeekInZh(dayOfWeek))) {
-                return false;
-            }
-            String[] times = useTimePeriod.split(" ");
-            String startTime = null;
-            String endTime = null;
-            for (String s : times) {
-                if (s.contains(":")) {
-                    if (startTime == null) {
-                        startTime = s;
-                    } else {
-                        endTime = s;
-                        break;
-                    }
-                }
-            }
-            if (startTime != null && endTime != null) {
-                int nowHour = calendar.get(Calendar.HOUR_OF_DAY);
-                int nowMinute = calendar.get(Calendar.MINUTE);
-                String nowHM = nowHour + ":" + nowMinute;
-                if (nowHM.compareTo(startTime) < 0 || nowHM.compareTo(endTime) > 0) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private String getWeekInZh(int dayOfWeek) {
-        switch (dayOfWeek) {
-            case Calendar.SUNDAY:
-                return "周日";
-            case Calendar.MONDAY:
-                return "周一";
-            case Calendar.TUESDAY:
-                return "周二";
-            case Calendar.WEDNESDAY:
-                return "周三";
-            case Calendar.THURSDAY:
-                return "周四";
-            case Calendar.FRIDAY:
-                return "周五";
-            case Calendar.SATURDAY:
-                return "周六";
-        }
-        return "错误";
     }
 
     //返回实际的减扣金额
@@ -256,5 +177,6 @@ public class CouponInfo implements Parcelable {
         dest.writeStringList(itemNames);
         dest.writeString(userName);
         dest.writeString(userPhone);
+        dest.writeByte((byte) (valid ? 1 : 0));
     }
 }

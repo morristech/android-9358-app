@@ -265,10 +265,12 @@ public class VerificationPresenter implements VerificationContract.Presenter {
                                 } else {
                                     info.setInfo(gson.fromJson(gson.toJson(info.getInfo()), CouponInfo.class));
                                 }
+                                CouponInfo couponInfo = (CouponInfo) info.getInfo();
+                                couponInfo.valid = info.getValid();
                                 VerificationItem couponItem = new VerificationItem();
                                 couponItem.code = info.getCode();
                                 couponItem.type = AppConstants.TYPE_COUPON;
-                                couponItem.couponInfo = (CouponInfo) info.getInfo();
+                                couponItem.couponInfo = couponInfo;
                                 mTradeManager.addVerificationInfo(couponItem);
                                 break;
                             case AppConstants.TYPE_ORDER:
@@ -310,16 +312,14 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             @Override
             public void onSuccess(CouponResult o) {
                 CouponInfo info = o.respData;
-                if (info.isTimeValid()) {
-                    VerificationItem item = new VerificationItem();
-                    item.code = info.couponNo;
-                    item.type = type;
-                    item.couponInfo = info;
-                    item.selected = true;
-                    mTradeManager.addVerificationInfo(item);
-                } else {
-                    mView.showError("该优惠券当前不可用");
-                }
+                info.valid = Utils.getCouponValid(info.startDate, info.endUseDate, info.useTimePeriod);
+                VerificationItem item = new VerificationItem();
+                item.code = info.couponNo;
+                item.type = type;
+                item.couponInfo = info;
+                item.selected = true;
+                mTradeManager.addVerificationInfo(item);
+
                 mView.hideLoadingView();
                 mView.hideKeyboard();
                 mView.showVerificationData(mTradeManager.getVerificationList());
