@@ -527,7 +527,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 if (Utils.isNotEmpty(techPKRankingResult.respData.categoryId)) {
                     adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList, techPKRankingResult.respData.categoryId);
                 } else {
-                    adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList, null);
+                    adapter = new PKRankingAdapter(getActivity(), techPKRankingResult.respData.rankingList, "");
                 }
                 mTeamList.setItemAnimator(new DefaultItemAnimator());
                 mTeamList.setHasFixedSize(true);
