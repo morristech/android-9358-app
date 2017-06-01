@@ -546,10 +546,6 @@ public class VerifyManager {
     }
 
     public void print(final String type, final Object obj) {
-        // 核销成功的打印开关关闭,则不打印
-        if (!SPManager.getInstance().getVerifySuccessSwitch()) {
-            return;
-        }
         Observable
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
@@ -564,7 +560,11 @@ public class VerifyManager {
                 .subscribe();
     }
 
-    private void printSync(String type, Object obj) {
+    public void printSync(String type, Object obj) {
+        // 核销成功的打印开关关闭,则不打印
+        if (!SPManager.getInstance().getVerifySuccessSwitch()) {
+            return;
+        }
         switch (type) {
             case AppConstants.TYPE_COUPON:
                 // 优惠券
