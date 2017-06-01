@@ -163,7 +163,7 @@ public class AppConstants {
     public static final String APP_REQUEST_YES = "Y";
     public static final String APP_REQUEST_NO = "N";
 
-    public static final String CASHIER_TYPE_POS_TEXT = "银行卡支付";
+    public static final String CASHIER_TYPE_POS_TEXT = "银行卡或现金";
     public static final String CASHIER_TYPE_MEMBER_TEXT = "会员支付";
     public static final String CASHIER_TYPE_XMD_ONLINE_TEXT = "微信支付";
 
