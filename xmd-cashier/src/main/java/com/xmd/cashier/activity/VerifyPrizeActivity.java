@@ -68,7 +68,7 @@ public class VerifyPrizeActivity extends BaseActivity implements VerifyPrizeCont
     }
 
     public void onClickVerify(View view) {
-        mPresenter.onClickVerify();
+        mPresenter.onClickVerify(mInfo);
     }
 
     @Override

@@ -41,21 +41,23 @@ public class VerifyCommonActivity extends BaseActivity implements VerifyCommonCo
     private LinearLayout mNeedAmountLayout;
     private CustomKeyboardView mKeyboardView;
 
+    private CommonVerifyInfo mInfo;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_common);
         mPresenter = new VerifyCommonPresenter(this, this);
-        CommonVerifyInfo info = (CommonVerifyInfo) getIntent().getSerializableExtra(AppConstants.EXTRA_COMMON_VERIFY_INFO);
-        if (info == null) {
+        mInfo = (CommonVerifyInfo) getIntent().getSerializableExtra(AppConstants.EXTRA_COMMON_VERIFY_INFO);
+        if (mInfo == null) {
             showToast("无效的核销信息");
             finishSelf();
             return;
         }
 
-        showToolbar(R.id.toolbar, info.title);
+        showToolbar(R.id.toolbar, mInfo.title);
         initView();
-        showVerifyInfo(info);
+        showVerifyInfo(mInfo);
 
         mPresenter.onCreate();
     }
@@ -125,11 +127,7 @@ public class VerifyCommonActivity extends BaseActivity implements VerifyCommonCo
     }
 
     public void onClickVerify(View view) {
-        mPresenter.onClickVerify();
-    }
-
-    public void onClickCancel(View view) {
-        mPresenter.onClickCancel();
+        mPresenter.onClickVerify(mInfo);
     }
 
     private void showKeyboard() {

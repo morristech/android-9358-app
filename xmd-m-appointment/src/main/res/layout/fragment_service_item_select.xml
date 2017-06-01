@@ -16,12 +16,21 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_service"
+            android:drawablePadding="4dp"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="8dp"
             android:text="选择服务项目"
-            android:textSize="@dimen/head_font_size" />
+            android:textColor="#212121"
+            android:textSize="@dimen/fontTitle" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -31,19 +40,52 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="@{(handler.loading || handler.loadingError!=null)?View.GONE:View.VISIBLE}">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/categoryRecyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/itemRecyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2" />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/categoryRecyclerView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/itemRecyclerView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="2" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#c6c6c6" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="预约项目："
+                        android:textColor="#4d4d4d" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{handler.selectedItemName}"
+                        android:textColor="#ff6666" />
+                </LinearLayout>
             </LinearLayout>
 
             <ProgressBar
@@ -61,40 +103,28 @@
                 android:visibility="@{handler.loadingError==null?View.GONE:View.VISIBLE}" />
         </FrameLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="预约项目：" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:background="@color/colorWhite">
 
-            <Button
+            <TextView
+                style="@style/AppTheme.Button.Plain"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:onClick="@{()->handler.onClickCancel()}"
                 android:padding="8dp"
                 android:text="取消" />
 
-            <Button
+            <TextView
+                style="@style/AppTheme.Button.Main"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:layout_weight="2"
                 android:onClick="@{()->handler.onClickOK()}"
                 android:padding="8dp"
                 android:text="确定" />

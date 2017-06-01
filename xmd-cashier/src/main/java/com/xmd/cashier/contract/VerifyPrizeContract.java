@@ -2,6 +2,7 @@ package com.xmd.cashier.contract;
 
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
+import com.xmd.cashier.dal.bean.PrizeInfo;
 
 /**
  * Created by zr on 16-12-12.
@@ -9,7 +10,7 @@ import com.xmd.cashier.BaseView;
 
 public interface VerifyPrizeContract {
     interface Presenter extends BasePresenter {
-        void onClickVerify();
+        void onClickVerify(PrizeInfo info);
     }
 
     interface View extends BaseView<Presenter> {

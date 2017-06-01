@@ -9,6 +9,10 @@ import java.util.List;
  */
 
 public class CommonVerifyInfo implements Serializable {
+
+    public String userName;
+    public String userPhone;
+
     // 核销码
     public String code;
     // 核销类型标题

@@ -6,11 +6,14 @@
     <dimen name="activity_small_margin">8dp</dimen>
     <dimen name="activity_little_margin">5dp</dimen>
 
-    <dimen name="font_size_13">13sp</dimen>
-    <dimen name="font_size_14">14sp</dimen>
-    <dimen name="font_size_16">16sp</dimen>
-    <dimen name="small_font_size">18sp</dimen>
-    <dimen name="medium_font_size">20sp</dimen>
-    <dimen name="head_font_size">24sp</dimen>
-    <dimen name="big_font_size">32sp</dimen>
+    <dimen name="fontDisplay4">112sp</dimen>
+    <dimen name="fontDisplay3">56sp</dimen>
+    <dimen name="fontDisplay2">45sp</dimen>
+    <dimen name="fontDisplay1">34sp</dimen>
+    <dimen name="fontHeadline">24sp</dimen>
+    <dimen name="fontTitle">21sp</dimen>
+    <dimen name="fontSubheading">17sp</dimen>
+    <dimen name="fontBody">15sp</dimen>
+    <dimen name="fontButton">15sp</dimen>
+    <dimen name="fontCaption">13sp</dimen>
 </resources>

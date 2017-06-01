@@ -1,5 +1,6 @@
 package com.xmd.app;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -48,6 +49,12 @@ public class BaseActivity extends AppCompatActivity {
     public void showError(String error) {
         new AlertDialog.Builder(this)
                 .setMessage(error)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
                 .create()
                 .show();
     }

@@ -41,4 +41,18 @@
     <color name="colorStatusGray">#999999</color>
     <color name="colorStatusGreen">#66cc66</color>
     <color name="colorStatusDark">#2a3141</color>
+
+    <!--按钮颜色-->
+    <color name="colorBtnDisableBackground">#888888</color>
+    <color name="colorBtnDisableStoke">#888888</color>
+
+    <color name="colorBtnMainBackground">@color/colorPrimary</color>
+    <color name="colorBtnMainStoke">@color/colorPrimary</color>
+    <color name="colorBtnMainPress">@color/colorPrimaryDark</color>
+    <color name="colorBtnMainText">@color/colorWhite</color>
+
+    <color name="colorBtnPlainBackground">@android:color/white</color>
+    <color name="colorBtnPlainStoke">@color/colorPrimary</color>
+    <color name="colorBtnPlainPress">@android:color/darker_gray</color>
+    <color name="colorBtnPlainText">@color/colorPrimary</color>
 </resources>

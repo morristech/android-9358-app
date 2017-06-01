@@ -3,6 +3,7 @@ package com.xmd.appointment;
 import com.xmd.app.net.NetworkEngine;
 import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.app.net.RetrofitFactory;
+import com.xmd.appointment.beans.AppointmentExtResult;
 import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.TechnicianListResult;
 
@@ -25,11 +26,13 @@ class DataManager {
 
     private Subscription mLoadTechnicianList;
     private Subscription mLoadServiceList;
+    private Subscription mLoadAppointmentExt;
 
     //加载技师列表
-    public void loadTechnicianList(final NetworkSubscriber<TechnicianListResult> listener) {
+    public void loadTechnicianList(String serviceItemId, final NetworkSubscriber<TechnicianListResult> listener) {
+        cancelLoadTechnicianList();
         mLoadTechnicianList = NetworkEngine.doRequest(
-                RetrofitFactory.getService(NetService.class).getTechnicianList(1, Integer.MAX_VALUE, null, null, null, null), listener);
+                RetrofitFactory.getService(NetService.class).getTechnicianList(1, Integer.MAX_VALUE, serviceItemId, null, null, null), listener);
     }
 
     public void cancelLoadTechnicianList() {
@@ -42,6 +45,7 @@ class DataManager {
 
     //加载服务列表
     public void loadServiceList(final NetworkSubscriber<ServiceListResult> listener) {
+        cancelLoadServiceList();
         mLoadServiceList = NetworkEngine.doRequest(
                 RetrofitFactory.getService(NetService.class).getServiceList(), listener);
     }
@@ -50,6 +54,20 @@ class DataManager {
         if (mLoadServiceList != null) {
             mLoadServiceList.unsubscribe();
             mLoadServiceList = null;
+        }
+    }
+
+    //加载额外预约信息，包括技师预约时间，技师项目信息
+    public void loadAppointmentExt(String techId, String userId, final NetworkSubscriber<AppointmentExtResult> listener) {
+        cancelLoadAppointmentExt();
+        mLoadAppointmentExt = NetworkEngine.doRequest(
+                RetrofitFactory.getService(NetService.class).getAppointmentExt(techId, userId), listener);
+    }
+
+    public void cancelLoadAppointmentExt() {
+        if (mLoadAppointmentExt != null) {
+            mLoadAppointmentExt.unsubscribe();
+            mLoadAppointmentExt = null;
         }
     }
 }

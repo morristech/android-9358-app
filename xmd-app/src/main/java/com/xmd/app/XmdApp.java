@@ -37,6 +37,7 @@ public class XmdApp {
     private boolean MODULE_INIT; //模块初始化
     private Context mApplicationContext;
     private String mServer;
+    private String mToken;
 
     /**
      * 初始化模块
@@ -95,5 +96,9 @@ public class XmdApp {
     public void onLogout(EventLogout eventLogout) {
         XLogger.i("event logout, clear token ");
         OkHttpUtil.getInstance().setCommonHeader("token", "");
+    }
+
+    public void setToken(String token) {
+        this.mToken = token;
     }
 }

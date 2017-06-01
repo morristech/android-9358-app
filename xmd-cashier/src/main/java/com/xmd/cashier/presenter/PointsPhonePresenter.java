@@ -6,7 +6,6 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.PointsPhoneContract;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.manager.Callback;
-import com.xmd.cashier.manager.PrintManager;
 import com.xmd.cashier.manager.TradeManager;
 
 import rx.Observable;
@@ -63,7 +62,6 @@ public class PointsPhonePresenter implements PointsPhoneContract.Presenter {
             @Override
             public void onSuccess(Void o) {
                 mTradeManager.getCurrentTrade().posPointsPhone = phone;
-                mTradeManager.getCurrentTrade().qrCodeBytes = mTradeManager.getQRCodeSync();
                 printInfo();
             }
 
@@ -86,7 +84,7 @@ public class PointsPhonePresenter implements PointsPhoneContract.Presenter {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        PrintManager.getInstance().print(mTradeManager.getCurrentTrade());
+                        mTradeManager.print();
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }

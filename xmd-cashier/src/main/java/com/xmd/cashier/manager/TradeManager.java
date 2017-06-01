@@ -12,6 +12,8 @@ import com.google.zxing.client.android.MyQrEncoder;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.UiNavigation;
+import com.xmd.cashier.cashier.IPos;
+import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.ErrCode;
 import com.xmd.cashier.common.Utils;
@@ -26,10 +28,10 @@ import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.net.SpaRetrofit;
 import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
+import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
-import com.xmd.cashier.dal.net.response.GetTreatResult;
 import com.xmd.cashier.dal.net.response.MemberPayResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.StringResult;
@@ -54,6 +56,7 @@ import rx.schedulers.Schedulers;
 
 public class TradeManager {
     private Trade mTrade;
+    private IPos mPos;
     public AtomicBoolean mInPosPay = new AtomicBoolean(false);
     private static TradeManager mInstance = new TradeManager();
 
@@ -62,6 +65,7 @@ public class TradeManager {
     }
 
     private TradeManager() {
+        mPos = PosFactory.getCurrentCashier();
         newTrade();
     }
 
@@ -250,8 +254,7 @@ public class TradeManager {
                         switch (mTrade.currentCashier) {
                             case AppConstants.CASHIER_TYPE_XMD_ONLINE:
                                 mTrade.tradeStatus = tradeStatus;
-                                mTrade.qrCodeBytes = getClubQRCodeSync();
-                                PrintManager.getInstance().printOnlinePay(mTrade);  // 打印
+                                printOnlinePay(); // 打印
                                 newTrade();         // 重置
                                 break;
                             case AppConstants.CASHIER_TYPE_POS:
@@ -261,8 +264,7 @@ public class TradeManager {
                                 if (mTrade.posPoints > 0) {
                                     UiNavigation.gotoPointsPhoneActivity(context);
                                 } else {
-                                    mTrade.qrCodeBytes = getQRCodeSync();
-                                    PrintManager.getInstance().print(mTrade);
+                                    print();
                                     newTrade();
                                 }
                                 break;
@@ -434,13 +436,13 @@ public class TradeManager {
     }
 
     // 根据核销码获取请客信息
-    public Subscription getVerifyTreat(String treatNo, final Callback<GetTreatResult> callback) {
-        return SpaRetrofit.getService().getTreatInfo(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, treatNo)
+    public Subscription getVerifyTreat(String treatNo, final Callback<CommonVerifyResult> callback) {
+        return SpaRetrofit.getService().getCommonVerifyInfo(AccountManager.getInstance().getToken(), treatNo, AppConstants.TYPE_PAY_FOR_OTHER)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<GetTreatResult>() {
+                .subscribe(new NetworkSubscriber<CommonVerifyResult>() {
                     @Override
-                    public void onCallbackSuccess(GetTreatResult result) {
+                    public void onCallbackSuccess(CommonVerifyResult result) {
                         callback.onSuccess(result);
                     }
 
@@ -584,6 +586,28 @@ public class TradeManager {
     // 清空核销列表
     public void cleanVerificationList() {
         mTrade.cleanCouponList();
+    }
+
+    public void printVerificationList() {
+        List<VerificationItem> verificationItems = mTrade.getCouponList();
+        for (VerificationItem item : verificationItems) {
+            if (item.selected && item.success) {
+                // 需要根据不同的类型进行打印
+                switch (item.type) {
+                    case AppConstants.TYPE_COUPON:
+                        VerifyManager.getInstance().print(item.couponInfo.getCustomType(), item.couponInfo);
+                        break;
+                    case AppConstants.TYPE_ORDER:
+                        VerifyManager.getInstance().print(item.type, item.order);
+                        break;
+                    case AppConstants.TYPE_PAY_FOR_OTHER:
+                        VerifyManager.getInstance().print(item.type, item.treatInfo);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     // 添加优惠券
@@ -770,5 +794,84 @@ public class TradeManager {
         } else {
             return null;
         }
+    }
+
+    /*********************************************打印相关******************************************/
+    // 打印在线买单交易信息
+    public void printOnlinePay() {
+        if (mTrade.tradeStatus != AppConstants.TRADE_STATUS_SUCCESS) {
+            return;
+        }
+        mPos.printCenter(AccountManager.getInstance().getClubName());
+        mPos.printCenter("(结账单)");
+        mPos.printDivide();
+
+        mPos.printText("消费", Utils.moneyToStringEx(mTrade.getOriginMoney()) + " 元");
+        mPos.printText("减免", Utils.moneyToStringEx(mTrade.getCouponDiscountMoney() + mTrade.getUserDiscountMoney()) + " 元");
+
+        mPos.printDivide();
+        mPos.printRight("实收 " + Utils.moneyToStringEx(mTrade.getOnlinePayPaidMoney()) + " 元");
+        mPos.printDivide();
+
+        mPos.printText("交易号:", mTrade.tradeNo);
+        mPos.printText("付款方式:", "小摩豆在线买单");
+        mPos.printText("交易时间:", mTrade.tradeTime);
+        mPos.printText("打印时间:", DateUtils.doDate2String(new Date()));
+        mPos.printText("收银员:", AccountManager.getInstance().getUser().userName);
+
+        if (mTrade.qrCodeBytes != null) {
+            mPos.printBitmap(mTrade.qrCodeBytes);
+        }
+        mPos.printCenter("-- 微信扫码，选技师，抢优惠 --");
+        mPos.printEnd();
+    }
+
+    // 打印交易信息
+    public void print() {
+        if (mTrade.tradeStatus != AppConstants.TRADE_STATUS_SUCCESS) {
+            return;
+        }
+        XLogger.i("print trade info ....");
+        mTrade.qrCodeBytes = getQRCodeSync(); //获取二维码
+        mPos.printText("交易号 ：" + mTrade.tradeNo);
+        mPos.printText("订单金额：", "￥" + Utils.moneyToStringEx(mTrade.getOriginMoney()));
+        mPos.printText("减免金额：", "￥" + Utils.moneyToStringEx(mTrade.getReallyDiscountMoney() + mTrade.getMemberPaidDiscountMoney()));
+        XLogger.i("减扣类型：" + mTrade.getDiscountType());
+        switch (mTrade.getDiscountType()) {
+            case Trade.DISCOUNT_TYPE_COUPON:
+                mPos.printText("|--优惠金额：", "￥" + Utils.moneyToStringEx(mTrade.getCouponDiscountMoney()));
+                break;
+            case Trade.DISCOUNT_TYPE_USER:
+                mPos.printText("|--手动减免：", "￥" + Utils.moneyToStringEx(mTrade.getUserDiscountMoney()));
+                break;
+            case Trade.DISCOUNT_TYPE_NONE:
+                mPos.printText("|--其他优惠：", "￥" + Utils.moneyToStringEx(mTrade.getCouponDiscountMoney() + mTrade.getUserDiscountMoney()));
+            default:
+                break;
+        }
+        mPos.printText("|--会员折扣：", "￥" + Utils.moneyToStringEx(mTrade.getMemberPaidDiscountMoney()));
+        mPos.printText("实收金额：", "￥" + Utils.moneyToStringEx(mTrade.getPosMoney() + mTrade.getMemberPaidMoney()));
+        mPos.printText("|--" + (TextUtils.isEmpty(mTrade.getPosPayTypeString()) ? "其他支付" : mTrade.getPosPayTypeString()) + "：", "￥" + Utils.moneyToStringEx(mTrade.getPosMoney()));
+        mPos.printText("|--会员支付：", "￥" + Utils.moneyToStringEx(mTrade.getMemberPaidMoney()));
+
+        if (mTrade.memberPoints > 0) {
+            mPos.printText("获赠会员积分：" + mTrade.memberPoints);
+        }
+        mPos.printText("交易时间：" + mTrade.tradeTime);
+        mPos.printText("收银员  ：" + AccountManager.getInstance().getUser().userName);
+        if (mTrade.qrCodeBytes != null) {
+            mPos.printBitmap(mTrade.qrCodeBytes);
+        }
+        if (mTrade.posPoints > 0) {
+            if (mTrade.posPointsPhone == null) {
+                mPos.printCenter("微信扫描二维码，立即领取" + mTrade.posPoints + "积分");
+            } else {
+                mPos.printCenter("已赠送" + mTrade.posPoints + "积分到"
+                        + Utils.getSecretFormatPhoneNumber(mTrade.posPointsPhone) + ",关注9358立即查看");
+            }
+        } else {
+            mPos.printCenter("扫一扫，关注9358，约技师，享优惠");
+        }
+        mPos.printEnd();
     }
 }

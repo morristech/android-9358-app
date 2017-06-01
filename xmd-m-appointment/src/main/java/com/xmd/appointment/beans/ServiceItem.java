@@ -2,7 +2,11 @@ package com.xmd.appointment.beans;
 
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
+import android.text.TextUtils;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.xmd.appointment.R;
 
 import java.io.Serializable;
 
@@ -145,6 +149,10 @@ public class ServiceItem implements Serializable {
 
     @BindingAdapter("image")
     public static void bindImage(ImageView imageView, String url) {
-
+        if (!TextUtils.isEmpty(url)) {
+            Glide.with(imageView.getContext()).load(url).placeholder(R.drawable.img_default_service).into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.img_default_service);
+        }
     }
 }

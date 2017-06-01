@@ -83,6 +83,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
                 .setNegativeButton("退出交易", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
+                        mTradeManager.printVerificationList();
                         //取消支付，汇报数据
                         mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_CANCEL, new Callback0<Void>() {
                             @Override
@@ -130,6 +131,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         }
         if (money == 0) {
             //不需要支付
+            mTradeManager.printVerificationList();
             mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
                 @Override
                 public void onFinished(Void result) {
@@ -141,6 +143,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         mTradeManager.posPay(mContext, money, new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
+                mTradeManager.printVerificationList();
                 mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
                     @Override
                     public void onFinished(Void result) {

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.xmd.cashier.contract.BillDetailContract;
 import com.xmd.cashier.dal.bean.BillInfo;
-import com.xmd.cashier.manager.PrintManager;
+import com.xmd.cashier.manager.BillManager;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -52,7 +52,7 @@ public class BillDetailPresenter implements BillDetailContract.Presenter {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        PrintManager.getInstance().print(info);
+                        BillManager.getInstance().print(info);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }

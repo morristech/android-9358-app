@@ -239,8 +239,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         data.setCustomerPhone("13265401346");
         data.setTime("2017-05-24 12:22");
         data.setDuration(45);
-        data.setServiceName("按脚");
-        data.setServicePrice(888);
         EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
     }
 

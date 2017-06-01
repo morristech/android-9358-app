@@ -20,7 +20,6 @@ import android.view.WindowManager;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.BaseDialogFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
-import com.xmd.app.Constants;
 import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.appointment.beans.TechnicianListResult;
@@ -34,10 +33,14 @@ import java.util.ArrayList;
  */
 
 public class TechSelectFragment extends BaseDialogFragment {
-    public static TechSelectFragment newInstance(String techId) {
+    private static final String EXTRA_SELECTED_TECH_ID = "extra_selected_tech_id";
+    private static final String EXTRA_SELECTED_ITEM_ID = "extra_selected_item_id";
+
+    public static TechSelectFragment newInstance(String techId, String itemId) {
         TechSelectFragment fragment = new TechSelectFragment();
         Bundle args = new Bundle();
-        args.putString(Constants.EXTRA_DATA, techId);
+        args.putString(EXTRA_SELECTED_TECH_ID, techId);
+        args.putString(EXTRA_SELECTED_ITEM_ID, itemId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,6 +49,7 @@ public class TechSelectFragment extends BaseDialogFragment {
     private CommonRecyclerViewAdapter<Technician> mAdapter;
     private Technician mSelectedTechnician;
     private String mSelectedTechId;
+    private String mSelectedItemId;
     private String mEmptyTechId = "notSure";
 
     public ObservableBoolean loading = new ObservableBoolean();
@@ -85,9 +89,16 @@ public class TechSelectFragment extends BaseDialogFragment {
         super.onActivityCreated(savedInstanceState);
         getDialog().setTitle("选择技师");
         getDialog().setCancelable(false);
+
+        mSelectedTechId = (String) getArguments().get(EXTRA_SELECTED_TECH_ID);
+        if (mSelectedTechId == null) {
+            mSelectedTechId = mEmptyTechId;
+        }
+        mSelectedItemId = (String) getArguments().get(EXTRA_SELECTED_ITEM_ID);
+
         loading.set(true);
         loadingError.set(null);
-        DataManager.getInstance().loadTechnicianList(new NetworkSubscriber<TechnicianListResult>() {
+        DataManager.getInstance().loadTechnicianList(mSelectedItemId, new NetworkSubscriber<TechnicianListResult>() {
             @Override
             public void onCallbackSuccess(TechnicianListResult result) {
                 loading.set(false);
@@ -120,10 +131,7 @@ public class TechSelectFragment extends BaseDialogFragment {
             }
         });
 
-        mSelectedTechId = (String) getArguments().get(Constants.EXTRA_DATA);
-        if (mSelectedTechId == null) {
-            mSelectedTechId = mEmptyTechId;
-        }
+
     }
 
     @Override

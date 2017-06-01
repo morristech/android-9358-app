@@ -15,8 +15,9 @@ public class TreatInfo implements Parcelable {
     public String authorizeCode;//授权码
 
     public int useMoney; //实际使用金额，需要计算
-    public String telephone;    // 手机号
-    public String createDate;   // 创建时间
+
+    public String userName;
+    public String userPhone;
 
     public TreatInfo() {
     }
@@ -25,8 +26,8 @@ public class TreatInfo implements Parcelable {
         amount = in.readInt();
         authorizeCode = in.readString();
         useMoney = in.readInt();
-        telephone = in.readString();
-        createDate = in.readString();
+        userName = in.readString();
+        userPhone = in.readString();
     }
 
     public static final Creator<TreatInfo> CREATOR = new Creator<TreatInfo>() {
@@ -51,7 +52,7 @@ public class TreatInfo implements Parcelable {
         dest.writeInt(amount);
         dest.writeString(authorizeCode);
         dest.writeInt(useMoney);
-        dest.writeString(telephone);
-        dest.writeString(createDate);
+        dest.writeString(userName);
+        dest.writeString(userPhone);
     }
 }

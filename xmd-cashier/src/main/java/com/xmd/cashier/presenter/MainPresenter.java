@@ -220,8 +220,6 @@ public class MainPresenter implements MainContract.Presenter {
                         // 大转盘
                         getPrizeInfo(code);
                         break;
-                    case AppConstants.TYPE_PAY_FOR_OTHER:   //请客
-                    case AppConstants.TYPE_PAID_SERVICE_ITEM:   //抢项目
                     default:
                         // 通用
                         getCommonVerifyInfo(code);
