@@ -120,7 +120,6 @@ public class ScanPayPresenter implements Presenter {
                         if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(result.respData.status)) {
                             // 支付成功
                             PosFactory.getCurrentCashier().textToSound("买单成功");
-                            mTradeManager.printVerificationList();
                             mTradeManager.getCurrentTrade().tradeTime = result.respData.createTime;
                             mTradeManager.getCurrentTrade().setOnlinePayPaidMoney(result.respData.payAmount);
                             UiNavigation.gotoScanPayResultActivity(mContext, result.respData);
@@ -278,7 +277,6 @@ public class ScanPayPresenter implements Presenter {
     }
 
     private void doFinish() {
-        mTradeManager.printVerificationList();
         mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_CANCEL, new Callback0<Void>() {
             @Override
             public void onFinished(Void result) {
