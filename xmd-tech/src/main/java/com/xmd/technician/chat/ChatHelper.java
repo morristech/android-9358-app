@@ -677,7 +677,7 @@ public class ChatHelper {
      * @param callback          callback
      */
     public void logout(boolean unbindDeviceToken, final EMCallBack callback) {
-        endCall();
+     //   endCall();
         Log.d(TAG, "logout: " + unbindDeviceToken);
         EMClient.getInstance().logout(unbindDeviceToken, new EMCallBack() {
 
@@ -800,13 +800,13 @@ public class ChatHelper {
     }
 
 
-    void endCall() {
-        try {
-            EMClient.getInstance().callManager().endCall();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    void endCall() {
+//        try {
+//            EMClient.getInstance().callManager().endCall();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     public void notifyBlackListSyncListener(boolean success) {

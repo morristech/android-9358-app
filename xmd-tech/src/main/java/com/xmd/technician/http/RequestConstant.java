@@ -57,11 +57,11 @@ public class RequestConstant {
     public static final String URL_GET_MANAGER_INFO_DETAIL = BASE_URL + "/v2/tech/customer/manager/view";
     public static final String URL_GET_RECENTLY_VISITOR_LIST = BASE_URL + "/v2/tech/customer/recent/list";
     public static final String URL_DELETE_CONTACT = BASE_URL + "/v2/tech/customer/delete";
-   // public static final String URL_GET_USER_IS_BIND_WX = BASE_URL + "/v2/tech/is_bind_wx";
+    // public static final String URL_GET_USER_IS_BIND_WX = BASE_URL + "/v2/tech/is_bind_wx";
     public static final String URL_GAME_DICE_SUBMIT = BASE_URL + "/v2/credit/game/dice/submit";
     public static final String URL_GAME_DICE_ACCEPT_OR_REJECT = BASE_URL + "/v2/credit/game/dice/accept";
     public static final String URL_GET_CREDIT_GIFT_LIST = BASE_URL + "/v2/credit/gift/list";
-   // public static final String URL_CUSTOMER_SAY_HI = BASE_URL + "/v2/tech/customer/sayhi";
+    // public static final String URL_CUSTOMER_SAY_HI = BASE_URL + "/v2/tech/customer/sayhi";
     public static final String URL_CUSTOMER_VIEW_VISIT = BASE_URL + "/v2/tech/customer/user/view/visit";
 
 
@@ -106,6 +106,8 @@ public class RequestConstant {
 
     //技师功能权限
     public static final String URL_GET_SWITCH_STATUS = BASE_URL + "/v1/club/switch/status/get";
+    public static final String URL_ROLE_PERMISSION = BASE_URL + "/v2/tech/menu/list"; //权限
+    public static final String URL_ROLE_LIST = BASE_URL + "/v2/tech/role/list"; //角色列表
     /**
      * 营销列表
      */
@@ -127,8 +129,7 @@ public class RequestConstant {
     public static final String URL_GET_PK_TEAM_RANKING_LIST = BASE_URL + "/v1/tech/pk/activity/team/ranking/list";
     public static final String URL_GET_PK_PERSONAL_RANKING_LIST = BASE_URL + "/v1/tech/pk/activity/personal/ranking/list";
     public static final String URL_GET_PERSONAL_RANKING_LIST = BASE_URL + "/v2/manager/ranking_list";
-    public static final String URL_ROLE_PERMISSION = BASE_URL + "/v2/tech/menu/list"; //权限
-    public static final String URL_ROLE_LIST = BASE_URL + "/v2/tech/role/list"; //角色列表
+
 
     /**
      * --------------------------------------> 附近的人:url <----------------------------------------
