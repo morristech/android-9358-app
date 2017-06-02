@@ -467,7 +467,7 @@ public class TradeManager {
                             switch (v.type) {
                                 case AppConstants.TYPE_COUPON:
                                     // 处理券
-                                    SpaRetrofit.getService().verifyCoupon(AccountManager.getInstance().getToken(), v.code)
+                                    SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), v.code)
                                             .subscribe(new NetworkSubscriber<BaseResult>() {
                                                 @Override
                                                 public void onCallbackSuccess(BaseResult result) {
@@ -595,13 +595,13 @@ public class TradeManager {
                 // 需要根据不同的类型进行打印
                 switch (item.type) {
                     case AppConstants.TYPE_COUPON:
-                        VerifyManager.getInstance().print(item.couponInfo.getCustomType(), item.couponInfo);
+                        VerifyManager.getInstance().printSync(item.couponInfo.customType, item.couponInfo);
                         break;
                     case AppConstants.TYPE_ORDER:
-                        VerifyManager.getInstance().print(item.type, item.order);
+                        VerifyManager.getInstance().printSync(item.type, item.order);
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
-                        VerifyManager.getInstance().print(item.type, item.treatInfo);
+                        VerifyManager.getInstance().printSync(item.type, item.treatInfo);
                         break;
                     default:
                         break;
@@ -802,6 +802,7 @@ public class TradeManager {
         if (mTrade.tradeStatus != AppConstants.TRADE_STATUS_SUCCESS) {
             return;
         }
+        mTrade.qrCodeBytes = getClubQRCodeSync();
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(结账单)");
         mPos.printDivide();

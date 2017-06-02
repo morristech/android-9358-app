@@ -1,5 +1,6 @@
 package com.xmd.technician.window;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.crazyman.library.PermissionTool;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
@@ -111,10 +113,12 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     private static final int GET_PREFERENTIAL_CODE = 0x003;
     private static final int GET_JOURNAL_CODE = 0x004;
     private static final int REQUEST_CODE_LOCAL = 0x005;
+    private static final int REQUEST_RECORD_AUDIO = 0x006;
     public static final String REQUEST_COUPON_TYPE = "coupon";
     public static final String REQUEST_MARKETING_TYPE = "marketing";
     public static final String REQUEST_PREFERENTIAL_TYPE = "preferential";
     public static final String REQUEST_JOURNAL_TYPE = "journal";
+
 
     private int chatType = 1; //单聊，群聊，聊天室
     private int chatUserType = 3;//1管理者，2技师，3普通客户
@@ -166,6 +170,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     private Subscription mChatCategorySubscription;//显示的列表
     //技师在用户黑名单中
     private boolean mInUserBlacklist = false;
+    private String[] permission = {Manifest.permission.RECORD_AUDIO};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +193,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         chatUserType = UserProfileProvider.getInstance().getChatUserInfo(toChatUserId).getUserChatType();
         mSwipeRefreshLayout = messageList.getSwipeRefreshLayout();
         mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.primary_button_color_normal));
-       // inputManager = (InputMethodManager) TechChatActivity.this.getSystemService((Context.INPUT_METHOD_SERVICE));
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         inputMenu.setFragmentManager(getSupportFragmentManager());
@@ -248,9 +252,14 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public boolean onPressToSpeakBtnTouch(View v, MotionEvent event) {
-                return voiceRecorderView.onPressToSpeakBtnTouch(v, event, (voiceFilePath, voiceTimeLength) -> {
-                    chatSentMessageHelper.sendVoiceMessage(voiceFilePath, voiceTimeLength);
-                });
+                if (PermissionTool.hasPermissions(TechChatActivity.this, new String[]{Manifest.permission.RECORD_AUDIO})) {
+                    return voiceRecorderView.onPressToSpeakBtnTouch(v, event, (voiceFilePath, voiceTimeLength) -> {
+                        chatSentMessageHelper.sendVoiceMessage(voiceFilePath, voiceTimeLength);
+                    });
+                } else {
+                    PermissionTool.requestPermission(TechChatActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, new String[]{"录音"}, REQUEST_RECORD_AUDIO);
+                    return false;
+                }
             }
         };
         specialInputListener = new EaseChatInputMenu.ChatSentSpecialListener() {
@@ -301,7 +310,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public void onCouponClicked() {
-               // AvailableCouponListActivity.setData(mCouponList);
                 Intent intent = new Intent(TechChatActivity.this, AvailableCouponListActivity.class);
                 startActivityForResult(intent, GET_COUPON_CODE);
             }
@@ -597,13 +605,15 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             chatSentMessageHelper.sendPaidCouponMessage(String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", result.actValue, result.couponPeriod), result.actId, mTechCode);
         }
     }
+
     //特惠商城,电子期刊
-    private void handlerCheckedActivity(String actId, String subType,String jounrlId) {
-        chatSentMessageHelper.sendActivityMessage(actId, subType,jounrlId);
+    private void handlerCheckedActivity(String actId, String subType, String jounrlId) {
+        chatSentMessageHelper.sendActivityMessage(actId, subType, jounrlId);
     }
+
     //营销活动
     private void handlerCheckedMarketing(String actId, String subType) {
-        chatSentMessageHelper.sendActivityMessage(actId, subType,"");
+        chatSentMessageHelper.sendActivityMessage(actId, subType, "");
     }
 
 
@@ -686,7 +696,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                                     chatSentMessageHelper.sendCmdMessage(message.getMsgId(), messageTime);
 
                                 } else {
-                                    new RewardConfirmDialog(TechChatActivity.this, "", "发送时间超过2分钟的消息,不能被撤回", "确认",false) {
+                                    new RewardConfirmDialog(TechChatActivity.this, "", "发送时间超过2分钟的消息,不能被撤回", "确认", false) {
                                         @Override
                                         public void onConfirmClick() {
                                             this.dismiss();
@@ -916,6 +926,14 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             return;
         }
         switch (requestCode) {
+            case REQUEST_RECORD_AUDIO:
+                if (resultCode == RESULT_OK) {
+
+                } else {
+                    Toast.makeText(this, "获取权限失败", Toast.LENGTH_SHORT).show();
+                }
+                return;
+
             case GET_COUPON_CODE://优惠券
                 if (null == mSelectedCouponInfo) {
                     mSelectedCouponInfo = new ArrayList<>();
@@ -956,7 +974,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 }
                 mSelectedJournal = (List<ClubJournalBean>) data.getSerializableExtra(REQUEST_JOURNAL_TYPE);
                 for (int i = 0; i < mSelectedJournal.size(); i++) {
-                    handlerCheckedActivity(mSelectedJournal.get(i).journalId, ChatConstant.KEY_SUB_TYPE_JOURNAL,String.valueOf(mSelectedJournal.get(i).templateId));
+                    handlerCheckedActivity(mSelectedJournal.get(i).journalId, ChatConstant.KEY_SUB_TYPE_JOURNAL, String.valueOf(mSelectedJournal.get(i).templateId));
                 }
                 break;
             case GET_PREFERENTIAL_CODE://特惠商城
@@ -967,12 +985,12 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 }
                 mSelectedOnceCard = (List<OnceCardItemBean>) data.getSerializableExtra(REQUEST_PREFERENTIAL_TYPE);
                 for (int i = 0; i < mSelectedOnceCard.size(); i++) {
-                    if(mSelectedOnceCard.get(i).cardType.equals(Constant.ITEM_CARD_TYPE)){
-                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_TIMES_SCARD,"");
-                    }else if(mSelectedOnceCard.get(i).cardType.equals(Constant.ITEM_PACKAGE_TYPE)){
-                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_PACKAGE,"");
-                    }else{
-                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_GIFT,"");
+                    if (mSelectedOnceCard.get(i).cardType.equals(Constant.ITEM_CARD_TYPE)) {
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_TIMES_SCARD, "");
+                    } else if (mSelectedOnceCard.get(i).cardType.equals(Constant.ITEM_PACKAGE_TYPE)) {
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_PACKAGE, "");
+                    } else {
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_GIFT, "");
                     }
 
                 }

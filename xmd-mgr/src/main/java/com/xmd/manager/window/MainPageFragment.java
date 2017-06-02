@@ -532,7 +532,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 mTeamList.setItemAnimator(new DefaultItemAnimator());
                 mTeamList.setHasFixedSize(true);
                 mTeamList.setNestedScrollingEnabled(true);
-                mTeamList.setLayoutManager(new GridLayoutManager(getActivity(),3));
+                mTeamList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
                 mTeamList.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 isHasPk = true;

@@ -1,7 +1,9 @@
 package com.xmd.technician.widget.chatview;
 
 
+import android.Manifest;
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -22,15 +24,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crazyman.library.PermissionTool;
 import com.hyphenate.util.EMLog;
 import com.xmd.technician.Adapter.ChatGridViewAdapter;
+
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CategoryBean;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
+import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.utils.SmileUtils;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadPoolManager;
+
 import com.xmd.technician.widget.EmojiconMenu;
 import com.xmd.technician.window.CommonMsgFragmentOne;
 import com.xmd.technician.window.CommonMsgFragmentTwo;
@@ -69,7 +76,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
     private ImageView inputImagePhoto, inputImageFace, inputImageCommonMsg, inputImageCoupon, inputImageMore;
     private List<CategoryBean> moreMenuList;
     private List<ImageView> imageList;
-
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
     public EaseChatInputMenu(Context context) {
         this(context, null);
         init(context, null);
@@ -184,7 +191,8 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         buttonPressToSpeak.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (inputMenuListener != null) {
+
+                if (inputMenuListener != null ) {
                     return inputMenuListener.onPressToSpeakBtnTouch(v, event);
                 }
                 return false;

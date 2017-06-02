@@ -17,6 +17,7 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MainContract;
+import com.xmd.cashier.dal.bean.CouponInfo;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponQRCodeScanResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
@@ -249,7 +250,10 @@ public class MainPresenter implements MainContract.Presenter {
             @Override
             public void onSuccess(CouponResult o) {
                 mView.hideLoading();
-                UiNavigation.gotoVerifyCouponActivity(mContext, o.respData, true);
+                CouponInfo couponInfo = o.respData;
+                couponInfo.customType = ("paid".equals(couponInfo.couponType) ? AppConstants.TYPE_PAID_COUPON : AppConstants.TYPE_COUPON);
+                couponInfo.valid = Utils.getCouponValid(couponInfo.startDate, couponInfo.endUseDate, couponInfo.useTimePeriod);
+                UiNavigation.gotoVerifyCouponActivity(mContext, couponInfo, true);
             }
 
             @Override
@@ -305,7 +309,10 @@ public class MainPresenter implements MainContract.Presenter {
             @Override
             public void onSuccess(CouponResult o) {
                 mView.hideLoading();
-                UiNavigation.gotoVerifyCouponActivity(mContext, o.respData, true);
+                CouponInfo couponInfo = o.respData;
+                couponInfo.customType = AppConstants.TYPE_SERVICE_ITEM_COUPON;
+                couponInfo.valid = Utils.getCouponValid(couponInfo.startDate, couponInfo.endUseDate, couponInfo.useTimePeriod);
+                UiNavigation.gotoVerifyCouponActivity(mContext, couponInfo, true);
             }
 
             @Override

@@ -16,7 +16,7 @@
         android:gravity="center"
         android:padding="@dimen/small_space"
         android:text="@string/pk_personal_ranking_title"
-        android:textColor="#f98100"
+        android:textColor="#fa4724"
         android:textSize="@dimen/fontSize"/>
 
     <LinearLayout

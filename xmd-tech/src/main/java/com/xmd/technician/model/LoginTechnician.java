@@ -16,6 +16,7 @@ import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.UINavigation;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.event.EventExitClub;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.http.RequestConstant;
@@ -187,7 +188,7 @@ public class LoginTechnician {
         TechInfo techInfo = result.respData;
 
         setPhoneNumber(phoneNumber);
-        if (!TextUtils.isEmpty(techInfo.imageUrl)) {
+        if (Utils.isNotEmpty(techInfo.imageUrl)) {
             setAvatarUrl(techInfo.imageUrl);
         } else {
             setAvatarUrl(techInfo.avatar);

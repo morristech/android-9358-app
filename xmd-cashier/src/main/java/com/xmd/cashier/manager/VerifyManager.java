@@ -222,6 +222,9 @@ public class VerifyManager {
                                     } else {
                                         info.setInfo(gson.fromJson(gson.toJson(info.getInfo()), CouponInfo.class));
                                     }
+                                    CouponInfo couponInfo = (CouponInfo) info.getInfo();
+                                    couponInfo.valid = info.getValid();
+                                    couponInfo.customType = info.getType();
                                     break;
                                 case AppConstants.CHECK_INFO_TYPE_ORDER:
                                     // 付费预约
@@ -474,7 +477,7 @@ public class VerifyManager {
                             }
                             switch (info.getInfoType()) {
                                 case AppConstants.CHECK_INFO_TYPE_COUPON:
-                                    SpaRetrofit.getService().verifyCoupon(AccountManager.getInstance().getToken(), info.getCode()).subscribe(new NetworkSubscriber<BaseResult>() {
+                                    SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), info.getCode()).subscribe(new NetworkSubscriber<BaseResult>() {
                                         @Override
                                         public void onCallbackSuccess(BaseResult result) {
                                             print(info.getType(), info.getInfo());
@@ -546,10 +549,6 @@ public class VerifyManager {
     }
 
     public void print(final String type, final Object obj) {
-        // 核销成功的打印开关关闭,则不打印
-        if (!SPManager.getInstance().getVerifySuccessSwitch()) {
-            return;
-        }
         Observable
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
@@ -564,7 +563,11 @@ public class VerifyManager {
                 .subscribe();
     }
 
-    private void printSync(String type, Object obj) {
+    public void printSync(String type, Object obj) {
+        // 核销成功的打印开关关闭,则不打印
+        if (!SPManager.getInstance().getVerifySuccessSwitch()) {
+            return;
+        }
         switch (type) {
             case AppConstants.TYPE_COUPON:
                 // 优惠券

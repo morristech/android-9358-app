@@ -272,4 +272,85 @@ public class Utils {
             return useTimePeriod;
         }
     }
+
+    public static boolean getCouponValid(String useStartDate, String useEndDate, String useTimePeriod) {
+        long now = System.currentTimeMillis();
+        if (useStartDate != null && useStartDate.length() != 0) {
+            long startDate = com.shidou.commonlibrary.util.DateUtils.doDate2Long(useStartDate);
+            if (now < startDate) {
+                return false;
+            }
+        }
+        if (useEndDate != null && useEndDate.length() != 0) {
+            long endDate = com.shidou.commonlibrary.util.DateUtils.doDate2Long(useEndDate);
+            if (now > endDate) {
+                return false;
+            }
+        }
+        if (useTimePeriod != null) {
+            if (useTimePeriod.equals("不限")) {
+                return true;
+            }
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(now);
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            if (!useTimePeriod.contains(getWeekInZh(dayOfWeek))) {
+                return false;
+            }
+            String[] times = useTimePeriod.split(" ");
+            String startTime = null;
+            String endTime = null;
+            for (String s : times) {
+                if (s.contains(":")) {
+                    if (startTime == null) {
+                        startTime = s;
+                    } else {
+                        endTime = s;
+                        break;
+                    }
+                }
+            }
+            if (startTime != null && endTime != null) {
+                int nowHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int nowMinute = calendar.get(Calendar.MINUTE);
+                String nowHM = nowHour + ":" + nowMinute;
+                startTime = formatTime(startTime);
+                endTime = formatTime(endTime);
+                if (nowHM.compareTo(startTime) < 0 || nowHM.compareTo(endTime) > 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static String formatTime(String time) {
+        if (time.contains(":")) {
+            String hh = time.substring(0, time.lastIndexOf(":"));
+            if (hh.length() < 2) {
+                return "0" + time;
+            }
+        }
+        return time;
+    }
+
+    private static String getWeekInZh(int dayOfWeek) {
+        switch (dayOfWeek) {
+            case Calendar.SUNDAY:
+                return "周日";
+            case Calendar.MONDAY:
+                return "周一";
+            case Calendar.TUESDAY:
+                return "周二";
+            case Calendar.WEDNESDAY:
+                return "周三";
+            case Calendar.THURSDAY:
+                return "周四";
+            case Calendar.FRIDAY:
+                return "周五";
+            case Calendar.SATURDAY:
+                return "周六";
+        }
+        return "错误";
+    }
 }

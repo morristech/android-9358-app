@@ -76,6 +76,7 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
 
             if (position == 0 || position == mTeamNumber) {
                 detailViewHolder.teamRankingTitle.setVisibility(View.VISIBLE);
+
             } else {
                 detailViewHolder.teamRankingTitle.setVisibility(View.GONE);
             }

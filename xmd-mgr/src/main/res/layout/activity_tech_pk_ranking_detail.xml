@@ -60,7 +60,15 @@
 
             </RelativeLayout>
         </RelativeLayout>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:paddingBottom="10dp"
+            android:paddingLeft="16dp"
+            android:text="* 整点刷新排行榜"
+            android:textColor="#fff83b"
+            android:textSize="16sp"/>
         <RelativeLayout
             android:layout_width="85dp"
             android:layout_height="24dp"
@@ -79,6 +87,7 @@
                 android:text="进行中"
                 android:textColor="@color/pk_state_text_color" />
         </RelativeLayout>
+
 
     </FrameLayout>
 

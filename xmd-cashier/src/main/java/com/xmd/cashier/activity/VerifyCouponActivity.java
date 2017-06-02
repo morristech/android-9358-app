@@ -88,11 +88,12 @@ public class VerifyCouponActivity extends BaseActivity implements VerifyCouponCo
 
         if (isShow) {
             mVerifyBtn.setVisibility(View.VISIBLE);
-            mVerifyBtn.setEnabled(mInfo.isTimeValid());
+            mVerifyBtn.setEnabled(mInfo.valid);
         } else {
             mVerifyBtn.setVisibility(View.GONE);
         }
-        mCouponStatus.setText(mInfo.isTimeValid() ? "可用" : "不可用");
+        mCouponStatus.setText(mInfo.valid ? "可用" : "不可用");
+        mCouponStatus.setTextColor(mInfo.valid ? getResources().getColor(R.color.colorText4) : getResources().getColor(R.color.colorPink));
 
         // 限定项目
         if (mInfo.itemNames != null && !mInfo.itemNames.isEmpty()) {

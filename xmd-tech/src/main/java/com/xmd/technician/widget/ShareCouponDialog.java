@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,12 +15,12 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.share.ShareController;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by sdcm on 17-3-16.
@@ -69,7 +68,12 @@ public class ShareCouponDialog extends Dialog {
         mDialogTitle = (TextView) findViewById(R.id.dialog_title_text);
         mDialogDes = (TextView) findViewById(R.id.des_share_text);
         mDialogTitle.setText(String.format("%s二维码",dialogTitle));
-        mDialogDes.setText(String.format("扫码关注9358,购买%s",dialogTitle));
+        if(dialogTitle.equals(ResourceUtils.getString(R.string.chat_gift_message_type))){
+            mDialogDes.setText(String.format("扫码关注9358,兑换%s",dialogTitle));
+        }else{
+            mDialogDes.setText(String.format("扫码关注9358,购买%s",dialogTitle));
+        }
+
         btnDismiss.setOnClickListener(v -> this.dismiss());
         mButtonShare.setOnClickListener(v -> {
             ShareController.doShare(shareThumbnail, shareUrl, shareTitle,
