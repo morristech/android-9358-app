@@ -222,7 +222,9 @@ public class VerifyManager {
                                     } else {
                                         info.setInfo(gson.fromJson(gson.toJson(info.getInfo()), CouponInfo.class));
                                     }
-                                    ((CouponInfo) info.getInfo()).valid = info.getValid();
+                                    CouponInfo couponInfo = (CouponInfo) info.getInfo();
+                                    couponInfo.valid = info.getValid();
+                                    couponInfo.customType = info.getType();
                                     break;
                                 case AppConstants.CHECK_INFO_TYPE_ORDER:
                                     // 付费预约
@@ -475,7 +477,7 @@ public class VerifyManager {
                             }
                             switch (info.getInfoType()) {
                                 case AppConstants.CHECK_INFO_TYPE_COUPON:
-                                    SpaRetrofit.getService().verifyCoupon(AccountManager.getInstance().getToken(), info.getCode()).subscribe(new NetworkSubscriber<BaseResult>() {
+                                    SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), info.getCode()).subscribe(new NetworkSubscriber<BaseResult>() {
                                         @Override
                                         public void onCallbackSuccess(BaseResult result) {
                                             print(info.getType(), info.getInfo());

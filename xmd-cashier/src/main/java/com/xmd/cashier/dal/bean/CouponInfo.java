@@ -3,8 +3,6 @@ package com.xmd.cashier.dal.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.xmd.cashier.common.AppConstants;
-
 import java.util.List;
 
 /**
@@ -57,6 +55,7 @@ public class CouponInfo implements Parcelable {
     public String userPhone;//用户手机
 
     public boolean valid;
+    public String customType;
 
     public CouponInfo() {
     }
@@ -89,6 +88,7 @@ public class CouponInfo implements Parcelable {
         userName = in.readString();
         userPhone = in.readString();
         valid = in.readByte() != 0;
+        customType = in.readString();
     }
 
     public static final Creator<CouponInfo> CREATOR = new Creator<CouponInfo>() {
@@ -135,15 +135,6 @@ public class CouponInfo implements Parcelable {
         }
     }
 
-    // 区分点钟券和优惠券
-    public String getCustomType() {
-        if ("paid".equals(couponType)) {
-            return AppConstants.TYPE_PAID_COUPON;
-        } else {
-            return AppConstants.TYPE_COUPON;
-        }
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -178,5 +169,6 @@ public class CouponInfo implements Parcelable {
         dest.writeString(userName);
         dest.writeString(userPhone);
         dest.writeByte((byte) (valid ? 1 : 0));
+        dest.writeString(customType);
     }
 }

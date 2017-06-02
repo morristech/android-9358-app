@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.activity.VerifyConfirmActivity;
+import com.xmd.cashier.activity.VerifyCouponActivity;
+import com.xmd.cashier.activity.VerifyOrderActivity;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyCheckInfoContract;
@@ -163,10 +164,16 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
     public void onItemClick(CheckInfo info) {
         switch (info.getInfoType()) {
             case AppConstants.CHECK_INFO_TYPE_COUPON:
-                UiNavigation.gotoVerifyCouponActivity(mContext, (CouponInfo) info.getInfo(), true);
+                Intent couponIntent = new Intent(mContext, VerifyCouponActivity.class);
+                couponIntent.putExtra(AppConstants.EXTRA_COUPON_VERIFY_INFO, (CouponInfo) info.getInfo());
+                couponIntent.putExtra(AppConstants.EXTRA_IS_SHOW, true);
+                ((Activity) mContext).startActivityForResult(couponIntent, REQUEST_CODE_CONSUME);
                 break;
             case AppConstants.CHECK_INFO_TYPE_ORDER:
-                UiNavigation.gotoVerifyOrderActivity(mContext, (OrderInfo) info.getInfo(), true);
+                Intent orderIntent = new Intent(mContext, VerifyOrderActivity.class);
+                orderIntent.putExtra(AppConstants.EXTRA_ORDER_VERIFY_INFO, (OrderInfo) info.getInfo());
+                orderIntent.putExtra(AppConstants.EXTRA_IS_SHOW, true);
+                ((Activity) mContext).startActivityForResult(orderIntent, REQUEST_CODE_CONSUME);
                 break;
             default:
                 break;

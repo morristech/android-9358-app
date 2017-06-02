@@ -266,6 +266,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
                                     info.setInfo(gson.fromJson(gson.toJson(info.getInfo()), CouponInfo.class));
                                 }
                                 CouponInfo couponInfo = (CouponInfo) info.getInfo();
+                                couponInfo.customType = info.getType();
                                 couponInfo.valid = info.getValid();
                                 VerificationItem couponItem = new VerificationItem();
                                 couponItem.code = info.getCode();
@@ -312,6 +313,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             @Override
             public void onSuccess(CouponResult o) {
                 CouponInfo info = o.respData;
+                info.customType = ("paid".equals(info.couponType) ? AppConstants.TYPE_PAID_COUPON : AppConstants.TYPE_COUPON);
                 info.valid = Utils.getCouponValid(info.startDate, info.endUseDate, info.useTimePeriod);
                 VerificationItem item = new VerificationItem();
                 item.code = info.couponNo;
