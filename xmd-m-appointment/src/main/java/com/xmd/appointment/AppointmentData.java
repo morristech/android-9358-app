@@ -4,11 +4,13 @@ import android.databinding.BindingAdapter;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.appointment.beans.AppointmentSetting;
 import com.xmd.appointment.beans.ServiceItem;
 import com.xmd.appointment.beans.Technician;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by heyangya on 17-5-23.
@@ -16,7 +18,7 @@ import java.io.Serializable;
  */
 
 public class AppointmentData implements Serializable {
-    private String time; //到店时间
+    private Date time; //到店时间
     private int duration; //持续时间，分钟
     private String customerName;//客户名称
     private String customerPhone;//客户电话
@@ -25,7 +27,6 @@ public class AppointmentData implements Serializable {
     private Technician technician; //技师信息
     private ServiceItem serviceItem; //服务信息
     private AppointmentSetting appointmentSetting; //额外信息
-    private AppointmentSetting.TimeSection timeSection; //时间信息
 
     @BindingAdapter("techName")
     public static void setTechName(TextView view, AppointmentData data) {
@@ -57,11 +58,11 @@ public class AppointmentData implements Serializable {
         this.serviceItem = serviceItem;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
@@ -113,11 +114,12 @@ public class AppointmentData implements Serializable {
         this.appointmentSetting = appointmentSetting;
     }
 
-    public AppointmentSetting.TimeSection getTimeSection() {
-        return timeSection;
-    }
-
-    public void setTimeSection(AppointmentSetting.TimeSection timeSection) {
-        this.timeSection = timeSection;
+    @BindingAdapter("appointmentTime")
+    public static void bindAppointmentTime(TextView view, Date date) {
+        if (date != null) {
+            view.setText(DateUtils.getSdf("yyyy-MM-dd HH:mm").format(date));
+        } else {
+            view.setText("--:--");
+        }
     }
 }

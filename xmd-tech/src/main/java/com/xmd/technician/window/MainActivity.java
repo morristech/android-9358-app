@@ -31,6 +31,7 @@ import com.xmd.technician.permission.PermissionConstants;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -229,7 +230,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mBottomBarButtonList.get(index).setSelected(true);
         mCurrentTabIndex = index;
 
-//        testAppointment();
+        testAppointment();
 
     }
 
@@ -237,7 +238,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         AppointmentData data = new AppointmentData();
         data.setCustomerName("客户甲");
         data.setCustomerPhone("13265401346");
-        data.setTime("2017-05-24 12:22");
+        data.setTime(new Date());
         data.setDuration(45);
         EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
     }

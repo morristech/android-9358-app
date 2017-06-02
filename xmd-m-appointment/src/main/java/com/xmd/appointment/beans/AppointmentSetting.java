@@ -152,6 +152,19 @@ public class AppointmentSetting implements Serializable {
             }
         }
 
+        public Long getMillisTime() {
+            Integer h = getHour();
+            Integer m = getMinute();
+            Long t = 0L;
+            if (h != null) {
+                t += h * 3600 * 1000;
+            }
+            if (m != null) {
+                t += m * 60 * 1000;
+            }
+            return t;
+        }
+
         @Override
         public String toString() {
             return "TimeInfo{" +
@@ -259,26 +272,31 @@ public class AppointmentSetting implements Serializable {
                 '}';
     }
 
-    public static long getTime(TimeInfo timeInfo) {
+    public static long getDayMillis(TimeInfo timeInfo) {
+        Calendar calendar = Calendar.getInstance();
         List<TimeSection> hourInfoList = timeInfo.getTime();
         if (hourInfoList != null && hourInfoList.size() > 0) {
-            return System.currentTimeMillis() + hourInfoList.get(0).day * DateUtils.DAY_TIME_MS;
+            calendar.setTimeInMillis(System.currentTimeMillis() + hourInfoList.get(0).day * DateUtils.DAY_TIME_MS);
         } else {
             if ("今天".equals(timeInfo.day)) {
-                return System.currentTimeMillis();
+                calendar.setTimeInMillis(System.currentTimeMillis());
             } else if ("明天".equals(timeInfo.day)) {
-                return System.currentTimeMillis() + DateUtils.DAY_TIME_MS;
+                calendar.setTimeInMillis(System.currentTimeMillis() + DateUtils.DAY_TIME_MS);
             } else if ("后天".equals(timeInfo.day)) {
-                return System.currentTimeMillis() + DateUtils.DAY_TIME_MS * 2;
+                calendar.setTimeInMillis(System.currentTimeMillis() + DateUtils.DAY_TIME_MS * 2);
             }
         }
-        return 0;
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
     }
 
     @BindingAdapter("dayInfo")
     public static void bindDayInfo(TextView view, TimeInfo timeInfo) {
         if (timeInfo != null) {
-            long dayTime = getTime(timeInfo);
+            long dayTime = getDayMillis(timeInfo);
             if (dayTime > 0) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(dayTime);

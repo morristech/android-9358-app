@@ -5,7 +5,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -27,6 +26,8 @@ import com.xmd.appointment.beans.AppointmentSetting;
 import com.xmd.appointment.databinding.FragmentTimeSelectBinding;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class TimeSelectFragment extends BaseDialogFragment {
     private final static String EXTRA_SELECTED_DATA = "extra_selected_data";
     private final static String EXTRA_DATA = "extra_data";
 
-    public static TimeSelectFragment newInstance(AppointmentSetting.TimeSection selected, AppointmentSetting ext) {
+    public static TimeSelectFragment newInstance(Date selected, AppointmentSetting ext) {
         TimeSelectFragment fragment = new TimeSelectFragment();
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_SELECTED_DATA, selected);
@@ -58,10 +59,10 @@ public class TimeSelectFragment extends BaseDialogFragment {
     public ObservableBoolean loading = new ObservableBoolean();
     public ObservableField<String> loadingError = new ObservableField<>();
 
-    private AppointmentSetting.TimeSection mArgumentTimeSection;
+    private Date mArgumentTime;
     private AppointmentSetting mArgumentSetting;
 
-    private AppointmentSetting.TimeSection mSelectedTime;
+    private Date mSelectedTime;
 
     private List<AppointmentSetting.TimeInfo> mDayData;
     private List<AppointmentSetting.TimeSection> mHourData;
@@ -102,13 +103,13 @@ public class TimeSelectFragment extends BaseDialogFragment {
     private void initRecyclerView(final RecyclerView recyclerView, CommonRecyclerViewAdapter adapter) {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                super.getItemOffsets(outRect, view, parent, state);
-                outRect.set(0, 0, 0, ScreenUtils.dpToPx(1));
-            }
-        });
+//        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+//            @Override
+//            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+//                super.getItemOffsets(outRect, view, parent, state);
+//                outRect.set(0, 0, 0, ScreenUtils.dpToPx(TIME_ITEM_DILIVER_HEIGHT_DP));
+//            }
+//        });
         adapter.setHandler(BR.handler, this);
         adapter.setHeader(R.layout.list_item_time_day, BR.data, null);
         adapter.setFooter(R.layout.list_item_time_day, BR.data, null);
@@ -131,12 +132,12 @@ public class TimeSelectFragment extends BaseDialogFragment {
                     if (recyclerView == mBinding.dayRecyclerView) {
                         if (mDayPosition != position) {
                             mDayPosition = position;
-                            updateHourData(mDayData.get(mDayPosition - 1).getValidHourList());
+                            updateHourData();
                         }
                     } else if (recyclerView == mBinding.hourRecyclerView) {
                         if (mHourPosition != position) {
                             mHourPosition = position;
-                            updateMinuteData(mDayData.get(mHourPosition - 1).getValidMinuteList(mHourData.get(0).getHour()));
+                            updateMinuteData();
                         }
                     } else if (recyclerView == mBinding.minuteRecyclerView) {
                         if (mMinutePosition != position) {
@@ -149,29 +150,24 @@ public class TimeSelectFragment extends BaseDialogFragment {
         });
     }
 
-    private void updateHourData(List<AppointmentSetting.TimeSection> list) {
-        mHourPosition = 1;
-        mHourData = list;
+    private void updateHourData() {
+        mHourData = mDayData.get(mDayPosition - 1).getValidHourList();
         mHourAdapter.setData(R.layout.list_item_time_hour, BR.data, mHourData);
         mHourAdapter.notifyDataSetChanged();
 
-        updateMinuteData(mDayData.get(mDayPosition - 1).getValidMinuteList(mHourData.get(0).getHour()));
+        updateMinuteData();
     }
 
-    private void updateMinuteData(List<AppointmentSetting.TimeSection> list) {
-        mMinutePosition = 1;
-        mMinuteData = list;
+    private void updateMinuteData() {
+        mMinuteData = mDayData.get(mDayPosition - 1).getValidMinuteList(mHourData.get(mHourPosition - 1).getHour());
         mMinuteAdapter.setData(R.layout.list_item_time_minute, BR.data, mMinuteData);
         mMinuteAdapter.notifyDataSetChanged();
         updateSelectedData();
     }
 
     private void updateSelectedData() {
-        if (mMinuteData == null) {
-            return;
-        }
-        mSelectedTime = mMinuteData.get(mMinutePosition - 1);
-        selectedTime.set(DateUtils.getSdf("yyyy-MM-dd ").format(AppointmentSetting.getTime(mDayData.get(mDayPosition - 1))) + mSelectedTime.getTimeStr());
+        mSelectedTime = new Date(AppointmentSetting.getDayMillis(mDayData.get(mDayPosition - 1)) + mMinuteData.get(mMinutePosition - 1).getMillisTime());
+        selectedTime.set(DateUtils.getSdf("yyyy-MM-dd HH:mm").format(mSelectedTime));
     }
 
     @Override
@@ -180,7 +176,7 @@ public class TimeSelectFragment extends BaseDialogFragment {
         getDialog().setTitle("选择技师");
 
         mArgumentSetting = (AppointmentSetting) getArguments().getSerializable(EXTRA_DATA);
-        mArgumentTimeSection = (AppointmentSetting.TimeSection) getArguments().getSerializable(EXTRA_SELECTED_DATA);
+        mArgumentTime = (Date) getArguments().getSerializable(EXTRA_SELECTED_DATA);
 
         mDayData = new ArrayList<>();
         mDayData.addAll(mArgumentSetting.getTimeList());
@@ -188,7 +184,53 @@ public class TimeSelectFragment extends BaseDialogFragment {
         mDayAdapter.setData(R.layout.list_item_time_day, BR.data, mDayData);
         mDayAdapter.notifyDataSetChanged();
 
-        updateHourData(mDayData.get(0).getValidHourList());
+        mDayPosition = 1;
+        mHourPosition = 1;
+        mMinutePosition = 1;
+        //根据参数滚动到正确位置
+        if (mArgumentTime != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(mArgumentTime.getTime());
+            //计算天列表滚动位置
+            mDayPosition = 1;
+            for (int i = 0; i < mDayData.size(); i++) {
+                long dayTime = AppointmentSetting.getDayMillis(mDayData.get(i));
+                if (calendar.getTimeInMillis() >= dayTime && calendar.getTimeInMillis() < dayTime + DateUtils.DAY_TIME_MS) {
+                    mDayPosition = i + 1;
+                    break;
+                }
+            }
+            mBinding.dayRecyclerView.scrollToPosition(mDayPosition - 1);
+            //更新小时列表数据
+            updateHourData();
+            //计算小时列表滚动位置
+            int newHourPosition = -1;
+            for (int i = 0; i < mHourData.size(); i++) {
+                if (calendar.get(Calendar.HOUR_OF_DAY) == mHourData.get(i).getHour()) {
+                    newHourPosition = i + 1;
+                    break;
+                }
+            }
+            if (newHourPosition > 0 && newHourPosition != mHourPosition) {
+                mHourPosition = newHourPosition;
+                mBinding.hourRecyclerView.scrollToPosition(mHourPosition - 1);
+                updateMinuteData(); //更新分钟列表数据
+            }
+            //计算分钟列表滚动位置
+            int newMinutePosition = -1;
+            for (int i = 0; i < mMinuteData.size(); i++) {
+                if (calendar.get(Calendar.MINUTE) == mMinuteData.get(i).getMinute()) {
+                    newMinutePosition = i + 1;
+                    break;
+                }
+            }
+            if (newMinutePosition > 0 && newMinutePosition != mMinutePosition) {
+                mMinutePosition = newMinutePosition;
+                mBinding.minuteRecyclerView.scrollToPosition(mMinutePosition - 1);
+            }
+        } else {
+            updateHourData();
+        }
     }
 
     private void filterDayData(List<AppointmentSetting.TimeInfo> list) {
@@ -208,13 +250,13 @@ public class TimeSelectFragment extends BaseDialogFragment {
         if (window != null) {
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.width = ScreenUtils.getScreenWidth() * 4 / 5;
-            lp.height = ScreenUtils.getScreenHeight() * 2 / 5;
             window.setAttributes(lp);
         }
     }
 
     public void onClickOK() {
         getDialog().dismiss();
+        ((Listener) getActivity()).onSelectTime(mSelectedTime);
     }
 
     public void onClickCancel() {
@@ -222,6 +264,6 @@ public class TimeSelectFragment extends BaseDialogFragment {
     }
 
     public interface Listener {
-        void onSelectTime(AppointmentSetting.TimeSection timeSection);
+        void onSelectTime(Date time);
     }
 }

@@ -11,7 +11,6 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
 import com.xmd.app.net.NetworkSubscriber;
-import com.xmd.appointment.beans.AppointmentSetting;
 import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceItem;
 import com.xmd.appointment.beans.Technician;
@@ -20,6 +19,7 @@ import com.xmd.appointment.databinding.ActivityAppointmentBinding;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AppointmentActivity extends BaseActivity
         implements TechSelectFragment.Listener,
@@ -142,7 +142,7 @@ public class AppointmentActivity extends BaseActivity
         if (prev != null) {
             ft.remove(prev);
         }
-        TimeSelectFragment fragment = TimeSelectFragment.newInstance(mData.getTimeSection(), mData.getAppointmentSetting());
+        TimeSelectFragment fragment = TimeSelectFragment.newInstance(mData.getTime(), mData.getAppointmentSetting());
         fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog);
         fragment.show(ft, "TimeSelectFragment");
     }
@@ -192,7 +192,8 @@ public class AppointmentActivity extends BaseActivity
     }
 
     @Override
-    public void onSelectTime(AppointmentSetting.TimeSection timeSection) {
-
+    public void onSelectTime(Date time) {
+        mData.setTime(time);
+        mBinding.setData(mData);
     }
 }
