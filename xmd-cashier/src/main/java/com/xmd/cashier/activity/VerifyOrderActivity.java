@@ -147,6 +147,7 @@ public class VerifyOrderActivity extends BaseActivity implements VerifyOrderCont
 
     @Override
     public void finishSelf() {
+        setResult(RESULT_OK);
         finish();
     }
 }
