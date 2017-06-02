@@ -46,7 +46,6 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 
 
-
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.chat.utils.SmileUtils;
 import com.xmd.technician.chat.utils.UserUtils;
@@ -112,7 +111,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_COUPON_INFO_ITEM_CASH = 11;
     private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
     private static final int TYPE_COUPON_INFO_ITEM_FAVORABLE = 13;
-  //  private static final int TYPE_ONCE_CARD_ITEM = 14;
+    //  private static final int TYPE_ONCE_CARD_ITEM = 14;
     private static final int TYPE_LIMIT_GRAB_ITEM = 15;
     private static final int TYPE_REWARD_ACTIVITY_ITEM = 16;
     private static final int TYPE_CLUB_JOURNAL_ITEM = 17;
@@ -208,7 +207,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 return TYPE_TECH_PK_ACTIVITY_ITEM;
             } else if (mData.get(position) instanceof TechRankingBean) {
                 return TYPE_TECH_PERSONAL_RANKING;
-            } else if(mData.get(position) instanceof CustomerInfo){
+            } else if (mData.get(position) instanceof CustomerInfo) {
                 return TYPE_TECH_BLACKLIST;
             } else {
                 return TYPE_FOOTER;
@@ -504,14 +503,14 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                         ChatUser user = new ChatUser(conversation.conversationId());
                         String avatar = lastOtherMessage.getStringAttribute(ChatConstant.KEY_HEADER);
                         String nickName = lastOtherMessage.getStringAttribute(ChatConstant.KEY_NAME);
-                        String isTech = lastOtherMessage.getStringAttribute(ChatConstant.KEY_TECH_ID,"");
-                        String isManager = lastOtherMessage.getStringAttribute(ChatConstant.KEY_CLUB_ID,"");
-                        String userType ;
-                        if(Utils.isNotEmpty(isTech)&&Utils.isNotEmpty(isManager)){
+                        String isTech = lastOtherMessage.getStringAttribute(ChatConstant.KEY_TECH_ID, "");
+                        String isManager = lastOtherMessage.getStringAttribute(ChatConstant.KEY_CLUB_ID, "");
+                        String userType;
+                        if (Utils.isNotEmpty(isTech) && Utils.isNotEmpty(isManager)) {
                             userType = ChatConstant.TO_CHAT_USER_TYPE_TECH;
-                        }else if(Utils.isNotEmpty(isManager)&&Utils.isEmpty(isTech)){
+                        } else if (Utils.isNotEmpty(isManager) && Utils.isEmpty(isTech)) {
                             userType = ChatConstant.TO_CHAT_USER_TYPE_MANAGER;
-                        }else{
+                        } else {
                             userType = ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER;
                         }
                         if (!TextUtils.isEmpty(SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom()))) {
@@ -647,13 +646,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 if (Utils.isNotEmpty(textDescription)) {
                     viewHolder.dynamicItemCommentDetail.setVisibility(View.VISIBLE);
                     viewHolder.dynamicItemCommentDetail.setText(textDescription);
-                }else{
+                } else {
                     viewHolder.dynamicItemCommentDetail.setVisibility(View.INVISIBLE);
                 }
                 if (Utils.isNotEmpty(textRemark)) {
                     viewHolder.dynamicItemRemark.setVisibility(View.VISIBLE);
                     viewHolder.dynamicItemRemark.setText("#" + textRemark.replaceAll("、", " #"));
-                }else{
+                } else {
                     viewHolder.dynamicItemRemark.setVisibility(View.GONE);
                 }
                 if (commentScore > 0) {
@@ -904,7 +903,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 techRankingViewHolder.rankingTitle.setVisibility(View.GONE);
             }
             if (position == 0) {
-
                 Glide.with(mContext).load(R.drawable.icon_nub_01).into(techRankingViewHolder.imgRankingNumber);
                 techRankingViewHolder.imgRankingNumber.setVisibility(View.VISIBLE);
                 techRankingViewHolder.textRankingNumber.setVisibility(View.GONE);
@@ -936,7 +934,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             Glide.with(mContext).load(techBean.avatarUrl).into(techRankingViewHolder.imgTechHead);
 
         }
-        if(holder instanceof EmchatBlacklistListItemViewHolder){
+        if (holder instanceof EmchatBlacklistListItemViewHolder) {
             Object obj = mData.get(position);
             if (!(obj instanceof CustomerInfo)) {
                 return;

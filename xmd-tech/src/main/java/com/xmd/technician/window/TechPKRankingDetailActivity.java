@@ -169,6 +169,7 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
         viewPager.setOffscreenPageLimit(itemList.size());
         viewPager.setAdapter(mPageFragmentPagerAdapter);
         tabIndicator.setTabTexts(tabTexts);
+        tabIndicator.setTabTextSize(16);
         tabIndicator.setWithIndicator(true);
         tabIndicator.setIndicatorGravity(ViewPagerTabIndicator.INDICATOR_BOTTOM);
         tabIndicator.setViewPager(viewPager);

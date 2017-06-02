@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -46,14 +47,18 @@ public class ViewPagerTabIndicator extends FrameLayout {
         void onTabClick(int position);
     }
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @IntDef({INDICATOR_TOP, INDICATOR_BOTTOM})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface IndicatorGravityMode {}
+    public @interface IndicatorGravityMode {
+    }
 
     @IntDef({DRAWABLE_LEFT, DRAWABLE_TOP, DRAWABLE_RIGHT, DRAWABLE_BOTTOM})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface DrawableDirectionMode {}
+    public @interface DrawableDirectionMode {
+    }
 
     private IOnTabClickListener mOnTabclickListener;
     private IOnPageChangeListener mOnPageChangeListener;
@@ -104,17 +109,21 @@ public class ViewPagerTabIndicator extends FrameLayout {
 
     private boolean mWithDivider = true;
     private boolean mWithIndicator = false;
+    private Context mContext;
 
     public ViewPagerTabIndicator(Context context) {
         this(context, null);
+        this.mContext = context;
     }
 
     public ViewPagerTabIndicator(Context context, AttributeSet attrs) {
         this(context, attrs, -1);
+        this.mContext = context;
     }
 
     public ViewPagerTabIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.mContext = context;
         init();
     }
 
@@ -136,7 +145,7 @@ public class ViewPagerTabIndicator extends FrameLayout {
         mNoticeSize = ResourceUtils.getDimenInt(R.dimen.tab_notice_size);
         mNoticeTextSize = ResourceUtils.getDimenInt(R.dimen.tab_notice_text_size);
         mNoticeTextColor = ResourceUtils.getColor(R.color.color_white);
-      //  mNoticeBg = ResourceUtils.getDrawable(R.drawable.shape_tab_unread_msg);
+        //  mNoticeBg = ResourceUtils.getDrawable(R.drawable.shape_tab_unread_msg);
         mNoticeMarginTop = ResourceUtils.getDimenInt(R.dimen.tab_notice_margin_top);
         mNoticeMarginRight = ResourceUtils.getDimenInt(R.dimen.tab_notice_margin_right);
 
@@ -227,6 +236,10 @@ public class ViewPagerTabIndicator extends FrameLayout {
         this.mTabTexts = tabTexts;
     }
 
+    public void setTabTextSize(int textSize) {
+        this.mTextSize = Utils.dip2px(mContext,textSize);
+    }
+
     public void setWithIndicator(boolean withIndicator) {
         mWithIndicator = withIndicator;
     }
@@ -258,11 +271,11 @@ public class ViewPagerTabIndicator extends FrameLayout {
         FrameLayout.LayoutParams tabContainerParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, mTabHeight);
         addView(tabContainer, tabContainerParams);
 
-        for(int i = 0; i < mTabCount; i++) {
+        for (int i = 0; i < mTabCount; i++) {
             //LinearLayout >> FrameLayout
             tabContainer.addView(createTabItem(i), createTabItemParams());
             //Linearlayout >> View (line)
-            if (i < mTabCount -1 && mWithDivider) {
+            if (i < mTabCount - 1 && mWithDivider) {
                 tabContainer.addView(createVerticalLine(), createVerticalLineParams());
             }
         }
@@ -275,7 +288,6 @@ public class ViewPagerTabIndicator extends FrameLayout {
     }
 
     /**
-     *
      * @param index the position of the item
      * @return the FrameLayout containing the text and notices
      */
@@ -301,7 +313,7 @@ public class ViewPagerTabIndicator extends FrameLayout {
 
         if (mTabIcons != null && mTabIcons.length > 0) {
             mTabIcons[index].setBounds(0, 0, mTabIcons[index].getIntrinsicWidth(), mTabIcons[index].getIntrinsicHeight());
-            switch(mDrawableDirection){
+            switch (mDrawableDirection) {
                 case DRAWABLE_LEFT:
                     textView.setCompoundDrawables(mTabIcons[index], null, null, null);
                     break;
@@ -327,7 +339,6 @@ public class ViewPagerTabIndicator extends FrameLayout {
     }
 
     /**
-     *
      * @param position
      * @param count
      */
@@ -375,18 +386,18 @@ public class ViewPagerTabIndicator extends FrameLayout {
 
     /**
      * update the selected text view
+     *
      * @param position the position
      */
     public void updateSelectedPosition(int position) {
         mViewPager.setCurrentItem(position);
-        for(int i = 0 ; i < mTextViewList.size(); i++) {
+        for (int i = 0; i < mTextViewList.size(); i++) {
             TextView textView = mTextViewList.get(i);
             textView.setSelected(i == position);
         }
     }
 
     /**
-     *
      * @param position
      * @return the FrameLayout tabItem
      */
@@ -397,7 +408,7 @@ public class ViewPagerTabIndicator extends FrameLayout {
         LinearLayout tabContainer = (LinearLayout) getChildAt(0);
         int childCount = tabContainer.getChildCount();
         int index = 0;
-        for(int i = 0; i < childCount; i++) {
+        for (int i = 0; i < childCount; i++) {
             View view = tabContainer.getChildAt(i);
             if (view instanceof FrameLayout) {
                 if (index == position) {
