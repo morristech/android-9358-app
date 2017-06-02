@@ -38,8 +38,8 @@ public class SendCouponDetailActivity extends BaseListActivity<GroupMessage, Gro
     protected void initOtherViews() {
 
         super.initOtherViews();
-        setRightVisible(false, -1, null);
- //       setRightVisible(true, ResourceUtils.getString(R.string.new_create), view -> startActivity(new Intent(this, GroupMessageCustomerActivity.class)));
+     //   setRightVisible(false, -1, null);
+        setRightVisible(true, ResourceUtils.getString(R.string.new_create), view -> startActivity(new Intent(this, GroupMessageCustomerActivity.class)));
         setTitle(ResourceUtils.getString(R.string.send_group_detail));
 
     }
