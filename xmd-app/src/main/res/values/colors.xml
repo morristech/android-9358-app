@@ -7,7 +7,9 @@
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
-
+    <color name="colorGray">#CCCCCC</color>
+    <color name="colorGreen">#80dd80</color>
+    <color name="colorGreenDark">#4CAF50</color>
 
     <color name="colorDivide">#CDCDCD</color>
 
@@ -55,4 +57,9 @@
     <color name="colorBtnPlainStoke">@color/colorPrimary</color>
     <color name="colorBtnPlainPress">@android:color/darker_gray</color>
     <color name="colorBtnPlainText">@color/colorPrimary</color>
+
+    <!-- editbox -->
+    <color name="colorEditBoxBackground">#dddddd</color>
+
+
 </resources>

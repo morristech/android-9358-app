@@ -141,8 +141,8 @@ public class TechSelectFragment extends BaseDialogFragment {
         Window window = getDialog().getWindow();
         if (window != null) {
             WindowManager.LayoutParams lp = window.getAttributes();
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-            lp.height = ScreenUtils.getScreenHeight() * 4 / 5;
+            lp.width = ScreenUtils.getScreenWidth() * 5 / 6;
+            lp.height = ScreenUtils.getScreenHeight() * 3 / 5;
             window.setAttributes(lp);
         }
     }

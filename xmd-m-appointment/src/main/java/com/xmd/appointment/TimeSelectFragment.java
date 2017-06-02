@@ -103,13 +103,6 @@ public class TimeSelectFragment extends BaseDialogFragment {
     private void initRecyclerView(final RecyclerView recyclerView, CommonRecyclerViewAdapter adapter) {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-//            @Override
-//            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-//                super.getItemOffsets(outRect, view, parent, state);
-//                outRect.set(0, 0, 0, ScreenUtils.dpToPx(TIME_ITEM_DILIVER_HEIGHT_DP));
-//            }
-//        });
         adapter.setHandler(BR.handler, this);
         adapter.setHeader(R.layout.list_item_time_day, BR.data, null);
         adapter.setFooter(R.layout.list_item_time_day, BR.data, null);
@@ -151,17 +144,26 @@ public class TimeSelectFragment extends BaseDialogFragment {
     }
 
     private void updateHourData() {
+        int prevLength = mHourData == null ? -1 : mHourData.size();
         mHourData = mDayData.get(mDayPosition - 1).getValidHourList();
         mHourAdapter.setData(R.layout.list_item_time_hour, BR.data, mHourData);
         mHourAdapter.notifyDataSetChanged();
-
+        if (mHourData.size() < mHourPosition || (prevLength > 0 && prevLength != mHourData.size())) {
+            mHourPosition = 1;
+            mBinding.hourRecyclerView.scrollToPosition(0);
+        }
         updateMinuteData();
     }
 
     private void updateMinuteData() {
+        int prevLength = mMinuteData == null ? -1 : mMinuteData.size();
         mMinuteData = mDayData.get(mDayPosition - 1).getValidMinuteList(mHourData.get(mHourPosition - 1).getHour());
         mMinuteAdapter.setData(R.layout.list_item_time_minute, BR.data, mMinuteData);
         mMinuteAdapter.notifyDataSetChanged();
+        if (mMinuteData.size() < mMinutePosition || (prevLength > 0 && prevLength != mMinuteData.size())) {
+            mMinutePosition = 1;
+            mBinding.minuteRecyclerView.scrollToPosition(0);
+        }
         updateSelectedData();
     }
 

@@ -1,9 +1,11 @@
 package com.xmd.appointment;
 
 import android.databinding.BindingAdapter;
+import android.databinding.ObservableBoolean;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.util.CodeUtils;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.appointment.beans.AppointmentSetting;
 import com.xmd.appointment.beans.ServiceItem;
@@ -28,6 +30,10 @@ public class AppointmentData implements Serializable {
     private ServiceItem serviceItem; //服务信息
     private AppointmentSetting appointmentSetting; //额外信息
 
+    private String userId;
+
+    public ObservableBoolean submitEnable = new ObservableBoolean();
+
     @BindingAdapter("techName")
     public static void setTechName(TextView view, AppointmentData data) {
         if (data.getTechnician() == null) {
@@ -50,6 +56,12 @@ public class AppointmentData implements Serializable {
         }
     }
 
+    private void checkCanSubmit() {
+        submitEnable.set(!TextUtils.isEmpty(getCustomerName())
+                && CodeUtils.matchPhoneNumFormat(getCustomerPhone())
+                && getTime() != null);
+    }
+
     public ServiceItem getServiceItem() {
         return serviceItem;
     }
@@ -64,6 +76,7 @@ public class AppointmentData implements Serializable {
 
     public void setTime(Date time) {
         this.time = time;
+        checkCanSubmit();
     }
 
     public int getDuration() {
@@ -80,6 +93,7 @@ public class AppointmentData implements Serializable {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+        checkCanSubmit();
     }
 
     public String getCustomerPhone() {
@@ -88,6 +102,7 @@ public class AppointmentData implements Serializable {
 
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
+        checkCanSubmit();
     }
 
     public Integer getFontMoney() {
@@ -112,6 +127,17 @@ public class AppointmentData implements Serializable {
 
     public void setAppointmentSetting(AppointmentSetting appointmentSetting) {
         this.appointmentSetting = appointmentSetting;
+        if (appointmentSetting != null) {
+            setFontMoney(appointmentSetting.getDownPayment());
+        }
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @BindingAdapter("appointmentTime")

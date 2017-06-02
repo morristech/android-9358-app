@@ -286,7 +286,7 @@ public class AppointmentSetting implements Serializable {
                 calendar.setTimeInMillis(System.currentTimeMillis() + DateUtils.DAY_TIME_MS * 2);
             }
         }
-        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);

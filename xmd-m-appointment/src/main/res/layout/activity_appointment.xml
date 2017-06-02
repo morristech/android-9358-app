@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -14,7 +15,7 @@
             type="com.xmd.appointment.AppointmentActivity" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -23,7 +24,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,41 +81,53 @@
                     android:layout_marginTop="8dp"
                     android:background="@color/colorWhite"
                     android:onClick="@{()->handler.onClickSelectService()}"
+                    android:orientation="horizontal"
                     android:padding="8dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="项目名称：" />
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text='@{data.serviceItem.name ?? "到店选择"}' />
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="项目名称：" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text='@{data.serviceItem.name ?? "到店选择"}' />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="项目价格：" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                app:servicePrice='@{data}' />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
                         android:src="@drawable/icon_right" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="项目价格：" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:servicePrice='@{data}' />
                 </LinearLayout>
 
                 <!-- 时间信息 -->
@@ -155,24 +169,16 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:text="45分钟" />
+                        android:layout_height="wrap_content"
+                        android:text='@{data.serviceItem==null?null:data.serviceItem.duration+"分钟"}'
+                        android:visibility="@{data.serviceItem==null?View.GONE:View.VISIBLE}" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/durationRecyclerView"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:text="1小时" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:text="1.5小时" />
+                        android:layout_weight="1"
+                        android:visibility="@{data.serviceItem==null?View.VISIBLE:View.GONE}" />
                 </LinearLayout>
 
                 <!-- 客户信息 -->
@@ -191,16 +197,17 @@
                         android:text="联系人：" />
 
                     <EditText
+                        style="@style/AppTheme.EditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:afterTextChanged="@{(e)->handler.onCustomerNameChange(e)}"
                         android:text='@{data.customerName}' />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:background="@color/colorWhite"
                     android:padding="8dp">
 
@@ -210,9 +217,11 @@
                         android:text="手机号码：" />
 
                     <EditText
+                        style="@style/AppTheme.EditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:afterTextChanged="@{(e)->handler.onCustomerPhoneChange(e)}"
                         android:text='@{data.customerPhone}' />
                 </LinearLayout>
 
@@ -222,7 +231,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@color/colorWhite"
-                    android:padding="8dp">
+                    android:padding="8dp"
+                    android:visibility="@{data.fontMoney==null?View.GONE:View.VISIBLE}">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -236,17 +246,32 @@
                         android:text='@{data.fontMoney+"元"}' />
                 </LinearLayout>
 
-                <!-- 提交 -->
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp"
-                    android:onClick="@{()->handler.onClickSubmit()}"
-                    android:text="提交预约" />
             </LinearLayout>
         </ScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+            <!-- 提交 -->
+            <Button
+                style="@style/AppTheme.Button.Main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:enabled="@{data.submitEnable}"
+                android:onClick="@{()->handler.onClickSubmit()}"
+                android:text="提交预约" />
+        </LinearLayout>
+
     </LinearLayout>
 </layout>
 
