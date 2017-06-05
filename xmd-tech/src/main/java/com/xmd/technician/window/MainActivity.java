@@ -1,5 +1,6 @@
 package com.xmd.technician.window;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
+import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
+import com.xmd.technician.chat.runtimepermissions.PermissionsResultAction;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.UINavigation;
@@ -100,8 +103,24 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 result -> handlerIsBindResult(result)
         );
 
+        requestPermissions();
         //检查更新
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
+    }
+
+    @TargetApi(23)
+    private void requestPermissions() {
+        PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
+            @Override
+            public void onGranted() {
+
+            }
+
+            @Override
+            public void onDenied(String permission) {
+
+            }
+        });
     }
 
     @Override
@@ -229,7 +248,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mBottomBarButtonList.get(index).setSelected(true);
         mCurrentTabIndex = index;
 
-     //   testAppointment();
+        testAppointment();
 
     }
 
@@ -237,7 +256,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         AppointmentData data = new AppointmentData();
         data.setCustomerName("客户甲");
         data.setCustomerPhone("13265401346");
-        data.setTime("2017-05-24 12:22");
         data.setDuration(45);
         EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
     }

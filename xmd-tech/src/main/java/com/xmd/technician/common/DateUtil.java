@@ -1,7 +1,5 @@
 package com.xmd.technician.common;
 
-import android.content.Intent;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -133,7 +131,7 @@ public class DateUtil {
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         int day = cal.get(Calendar.DAY_OF_WEEK);
         cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);
-        //String impTimeBegin = sdf.format(cal.getTime());
+        //String impTimeBegin = sdf.format(cal.getDayMillis());
         cal.add(Calendar.DATE, 6);
         String impTimeEnd = sdf.format(cal.getTime());
         return impTimeEnd;

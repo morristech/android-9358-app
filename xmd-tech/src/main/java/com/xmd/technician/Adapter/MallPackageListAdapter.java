@@ -15,6 +15,7 @@ import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.OnceCardItemBean;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.widget.RoundImageView;
 
 import java.util.List;
@@ -72,20 +73,29 @@ public class MallPackageListAdapter extends RecyclerView.Adapter {
             if (onceCard.cardType.equals(Constant.ITEM_CARD_TYPE) && onceCard.position == 0) {
                 cardItemViewHolder.mIvOnceCardTitle.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(R.drawable.img_once_card).into(cardItemViewHolder.mIvOnceCardTitle);
+
             } else if (onceCard.cardType.equals(Constant.ITEM_PACKAGE_TYPE) && onceCard.position == 0) {
                 cardItemViewHolder.mIvOnceCardTitle.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(R.drawable.img_package).into(cardItemViewHolder.mIvOnceCardTitle);
+
             } else if (onceCard.cardType.equals(Constant.CREDIT_GIFT_TYPE) && onceCard.position == 0) {
                 cardItemViewHolder.mIvOnceCardTitle.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(R.drawable.img_credit_gift).into(cardItemViewHolder.mIvOnceCardTitle);
             } else {
                 cardItemViewHolder.mIvOnceCardTitle.setVisibility(View.GONE);
+
             }
             if (onceCard.cardType.equals(Constant.ITEM_PACKAGE_TYPE)) {
                 cardItemViewHolder.mOnceCardDiscount.setVisibility(View.VISIBLE);
                 cardItemViewHolder.mOnceCardDiscount.setText(onceCard.depositRate);
             } else {
                 cardItemViewHolder.mOnceCardDiscount.setVisibility(View.GONE);
+            }
+
+            if(onceCard.cardType.equals(Constant.CREDIT_GIFT_TYPE)){
+                cardItemViewHolder.tvShowCodeText.setText(ResourceUtils.getString(R.string.scan_code_to_exchange));
+            }else{
+                cardItemViewHolder.tvShowCodeText.setText(ResourceUtils.getString(R.string.scan_code_to_buy));
             }
             Glide.with(mContext).load(onceCard.imageUrl).into(cardItemViewHolder.mOnceCardHead);
             cardItemViewHolder.mOnceCardTitle.setText(onceCard.name);
@@ -123,6 +133,8 @@ public class MallPackageListAdapter extends RecyclerView.Adapter {
         TextView mOnceCardDiscount;
         @Bind(R.id.ll_show_code)
         LinearLayout mShowCode;
+        @Bind(R.id.tv_show_code_text)
+        TextView tvShowCodeText;
 
 
         MallPackageViewHolder(View view) {

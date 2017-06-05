@@ -1,9 +1,11 @@
 package com.xmd.appointment;
 
+import com.shidou.commonlibrary.util.DateUtils;
+import com.xmd.app.beans.BaseBean;
 import com.xmd.app.net.NetworkEngine;
 import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.app.net.RetrofitFactory;
-import com.xmd.appointment.beans.AppointmentExtResult;
+import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.TechnicianListResult;
 
@@ -58,7 +60,7 @@ class DataManager {
     }
 
     //加载额外预约信息，包括技师预约时间，技师项目信息
-    public void loadAppointmentExt(String techId, String userId, final NetworkSubscriber<AppointmentExtResult> listener) {
+    public void loadAppointmentExt(String techId, String userId, final NetworkSubscriber<AppointmentSettingResult> listener) {
         cancelLoadAppointmentExt();
         mLoadAppointmentExt = NetworkEngine.doRequest(
                 RetrofitFactory.getService(NetService.class).getAppointmentExt(techId, userId), listener);
@@ -69,5 +71,21 @@ class DataManager {
             mLoadAppointmentExt.unsubscribe();
             mLoadAppointmentExt = null;
         }
+    }
+
+
+    //创建订单
+    public void submitAppointment(AppointmentData data, NetworkSubscriber<BaseBean> listener) {
+        int dateId = (int) ((data.getTime().getTime() - data.getAppointmentSetting().getNowTime()) / DateUtils.DAY_TIME_MS);
+        NetworkEngine.doRequest(
+                RetrofitFactory.getService(NetService.class).submitAppointment(
+                        data.getCustomerName(),
+                        data.getCustomerPhone(),
+                        dateId,
+                        DateUtils.getSdf("HH:mm").format(data.getTime()),
+                        data.getTechnician() == null ? null : data.getTechnician().getId(),
+                        data.getUserId(),
+                        data.getServiceItem() == null ? null : data.getServiceItem().getId(),
+                        data.getDuration()), listener);
     }
 }

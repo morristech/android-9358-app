@@ -222,6 +222,9 @@ public class VerifyManager {
                                     } else {
                                         info.setInfo(gson.fromJson(gson.toJson(info.getInfo()), CouponInfo.class));
                                     }
+                                    CouponInfo couponInfo = (CouponInfo) info.getInfo();
+                                    couponInfo.valid = info.getValid();
+                                    couponInfo.customType = info.getType();
                                     break;
                                 case AppConstants.CHECK_INFO_TYPE_ORDER:
                                     // 付费预约
@@ -474,10 +477,10 @@ public class VerifyManager {
                             }
                             switch (info.getInfoType()) {
                                 case AppConstants.CHECK_INFO_TYPE_COUPON:
-                                    SpaRetrofit.getService().verifyCoupon(AccountManager.getInstance().getToken(), info.getCode()).subscribe(new NetworkSubscriber<BaseResult>() {
+                                    SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), info.getCode()).subscribe(new NetworkSubscriber<BaseResult>() {
                                         @Override
                                         public void onCallbackSuccess(BaseResult result) {
-                                            print(info.getType(), info);
+                                            print(info.getType(), info.getInfo());
                                             info.setErrorCode(result.statusCode);
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
@@ -499,7 +502,7 @@ public class VerifyManager {
                                     SpaRetrofit.getService().verifyPaidOrder(AccountManager.getInstance().getToken(), info.getCode(), AppConstants.PAID_ORDER_OP_VERIFIED).subscribe(new NetworkSubscriber<BaseResult>() {
                                         @Override
                                         public void onCallbackSuccess(BaseResult result) {
-                                            print(info.getType(), info);
+                                            print(info.getType(), info.getInfo());
                                             info.setErrorCode(result.statusCode);
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
@@ -546,10 +549,6 @@ public class VerifyManager {
     }
 
     public void print(final String type, final Object obj) {
-        // 核销成功的打印开关关闭,则不打印
-        if (!SPManager.getInstance().getVerifySuccessSwitch()) {
-            return;
-        }
         Observable
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
@@ -564,15 +563,18 @@ public class VerifyManager {
                 .subscribe();
     }
 
-    private void printSync(String type, Object obj) {
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(核销小票)");
-        mPos.printCenter("\n");
-
+    public void printSync(String type, Object obj) {
+        // 核销成功的打印开关关闭,则不打印
+        if (!SPManager.getInstance().getVerifySuccessSwitch()) {
+            return;
+        }
         switch (type) {
             case AppConstants.TYPE_COUPON:
                 // 优惠券
                 CouponInfo coupon = (CouponInfo) obj;
+                mPos.printCenter(AccountManager.getInstance().getClubName());
+                mPos.printCenter("(核销小票)");
+                mPos.printCenter("\n");
                 mPos.printText("客户:", coupon.userName);
                 mPos.printText("手机:", coupon.userPhone);
                 mPos.printText("核销类型:", "优惠券");
@@ -589,6 +591,9 @@ public class VerifyManager {
             case AppConstants.TYPE_PAID_COUPON:
                 // 点钟券
                 CouponInfo paidCoupon = (CouponInfo) obj;
+                mPos.printCenter(AccountManager.getInstance().getClubName());
+                mPos.printCenter("(核销小票)");
+                mPos.printCenter("\n");
                 mPos.printText("客户:", paidCoupon.userName);
                 mPos.printText("手机:", paidCoupon.userPhone);
                 mPos.printText("核销类型:", "点钟券");
@@ -604,6 +609,9 @@ public class VerifyManager {
             case AppConstants.TYPE_SERVICE_ITEM_COUPON:
                 // 项目券
                 CouponInfo serviceCoupon = (CouponInfo) obj;
+                mPos.printCenter(AccountManager.getInstance().getClubName());
+                mPos.printCenter("(核销小票)");
+                mPos.printCenter("\n");
                 mPos.printText("客户:", serviceCoupon.userName);
                 mPos.printText("手机:", serviceCoupon.userPhone);
                 mPos.printText("核销类型:", "项目券");
@@ -639,6 +647,9 @@ public class VerifyManager {
             case AppConstants.TYPE_ORDER:
                 // 付费预约
                 OrderInfo orderInfo = (OrderInfo) obj;
+                mPos.printCenter(AccountManager.getInstance().getClubName());
+                mPos.printCenter("(核销小票)");
+                mPos.printCenter("\n");
                 mPos.printText("客户:", orderInfo.customerName);
                 mPos.printText("手机:", orderInfo.phoneNum);
                 mPos.printText("核销类型:", "付费预约");
@@ -660,6 +671,9 @@ public class VerifyManager {
             case AppConstants.TYPE_LUCKY_WHEEL:
                 // 转盘奖品
                 PrizeInfo prizeInfo = (PrizeInfo) obj;
+                mPos.printCenter(AccountManager.getInstance().getClubName());
+                mPos.printCenter("(核销小票)");
+                mPos.printCenter("\n");
                 mPos.printText("客户:", prizeInfo.userName);
                 mPos.printText("手机:", prizeInfo.telephone);
                 mPos.printText("核销类型:", "奖品");
@@ -674,6 +688,9 @@ public class VerifyManager {
             case AppConstants.TYPE_PAY_FOR_OTHER:
                 // 会员请客
                 TreatInfo treatInfo = (TreatInfo) obj;
+                mPos.printCenter(AccountManager.getInstance().getClubName());
+                mPos.printCenter("(核销小票)");
+                mPos.printCenter("\n");
                 mPos.printText("客户:", treatInfo.userName);
                 mPos.printText("手机:", treatInfo.userPhone);
                 mPos.printText("核销类型:", "会员请客");

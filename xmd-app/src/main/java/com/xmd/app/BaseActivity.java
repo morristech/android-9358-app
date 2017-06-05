@@ -46,7 +46,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void showError(String error) {
+    public void showDialog(String error) {
         new AlertDialog.Builder(this)
                 .setMessage(error)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {

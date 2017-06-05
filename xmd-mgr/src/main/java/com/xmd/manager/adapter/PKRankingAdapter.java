@@ -117,7 +117,7 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s人", bean.statValue));
             } else if (mCategoryId.equals(Constant.KEY_CATEGORY_SAIL_TYPE)) {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.statValue / 100f));
-            } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)) {
+            } else if (mCategoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)) {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s张", bean.statValue));
             } else {
                 teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s个", bean.statValue));

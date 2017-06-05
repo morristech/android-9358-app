@@ -13,6 +13,7 @@ import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.appointment.R;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -192,5 +193,26 @@ public class Technician implements Serializable {
             view.setVisibility(View.VISIBLE);
             view.setText("[" + serialNo + "]");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Technician{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", status='" + status + '\'' +
+                ", phoneNum='" + phoneNum + '\'' +
+                ", gender='" + gender + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", description='" + description + '\'' +
+                ", commentCount=" + commentCount +
+                ", inviteCode='" + inviteCode + '\'' +
+                ", serialNo='" + serialNo + '\'' +
+                ", star=" + star +
+                ", techTags=" + techTags +
+                ", impressions=" + Arrays.toString(impressions) +
+                ", viewAlbumType=" + viewAlbumType +
+                ", viewSelected=" + viewSelected +
+                '}';
     }
 }

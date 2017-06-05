@@ -44,7 +44,7 @@ public class VerifyCouponPresenter implements VerifyCouponContract.Presenter {
     }
 
     @Override
-    public void onVerify(CouponInfo info) {
+    public void onVerify(final CouponInfo info) {
         mView.showLoading();
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
@@ -55,9 +55,10 @@ public class VerifyCouponPresenter implements VerifyCouponContract.Presenter {
             mVerifyNormalCouponSubscription.unsubscribe();
         }
 
-        mVerifyNormalCouponSubscription = VerifyManager.getInstance().verifyCoupon(info.couponNo, new Callback<BaseResult>() {
+        mVerifyNormalCouponSubscription = VerifyManager.getInstance().verifyCommon(info.couponNo, new Callback<BaseResult>() {
             @Override
             public void onSuccess(BaseResult o) {
+                VerifyManager.getInstance().print(info.customType, info);
                 mView.showToast("核销成功");
                 mView.hideLoading();
                 mView.finishSelf();

@@ -2,6 +2,7 @@ package com.xmd.technician.chat.runtimepermissions;
 
 /**
  * Created by Lhj on 17-3-31.
+ * 拷贝环信
  */
 
 import android.content.pm.PackageManager;

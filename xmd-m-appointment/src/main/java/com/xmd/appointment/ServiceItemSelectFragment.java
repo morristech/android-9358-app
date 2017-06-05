@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.BaseDialogFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
@@ -34,7 +35,7 @@ import java.util.List;
 
 /**
  * Created by heyangya on 17-5-24.
- * 技师选择界面
+ * 项目选择界面
  */
 
 public class ServiceItemSelectFragment extends BaseDialogFragment {
@@ -117,6 +118,7 @@ public class ServiceItemSelectFragment extends BaseDialogFragment {
         DataManager.getInstance().loadServiceList(new NetworkSubscriber<ServiceListResult>() {
             @Override
             public void onCallbackSuccess(ServiceListResult result) {
+                XLogger.i("service data:" + result.getRespData());
                 loading.set(false);
                 loadingError.set(null);
                 //过滤数据

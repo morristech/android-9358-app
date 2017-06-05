@@ -105,7 +105,6 @@ public class MemberPayPresenter implements MemberPayContract.Presenter {
                 if (trade.getNeedPayMoney() > 0) {
                     cashierPay();
                 } else {
-                    mTradeManager.printVerificationList();
                     mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
                         @Override
                         public void onFinished(Void result) {
@@ -168,7 +167,6 @@ public class MemberPayPresenter implements MemberPayContract.Presenter {
         mTradeManager.posPay(mContext, mTradeManager.getCurrentTrade().getNeedPayMoney(), new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
-                mTradeManager.printVerificationList();
                 mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
                     @Override
                     public void onFinished(Void o) {

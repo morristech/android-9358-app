@@ -179,7 +179,9 @@ public class NewOrderFragment extends BaseFragment implements SwipeRefreshLayout
 
         super.setUserVisibleHint(isVisibleToUser);
         if (getUserVisibleHint() && isVisible) {
-            mSwipeRefreshWidget.setRefreshing(true);
+            if (mSwipeRefreshWidget != null) {
+                mSwipeRefreshWidget.setRefreshing(true);
+            }
             TextView tvStart = (TextView) getActivity().findViewById(R.id.startTime);
             TextView tvEnd = (TextView) getActivity().findViewById(R.id.endTime);
             startDate = tvStart.getText().toString();
@@ -187,8 +189,6 @@ public class NewOrderFragment extends BaseFragment implements SwipeRefreshLayout
             getData();
 
         }
-
-
     }
 
     @Override

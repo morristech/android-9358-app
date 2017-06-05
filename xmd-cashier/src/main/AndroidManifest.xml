@@ -71,10 +71,10 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.VerifyCouponActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="standard" />
         <activity
             android:name=".activity.VerifyOrderActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="standard" />
         <activity
             android:name=".activity.VerifyPrizeActivity"
             android:launchMode="standard" />

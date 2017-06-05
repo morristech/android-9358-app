@@ -13,19 +13,26 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/ic_service"
-            android:drawablePadding="4dp"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="选择服务项目"
-            android:textColor="#212121"
-            android:textSize="@dimen/fontTitle" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_service"
+                android:drawablePadding="4dp"
+                android:text="选择服务项目"
+                android:textColor="#212121"
+                android:textSize="@dimen/fontTitle" />
+        </FrameLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -53,14 +60,16 @@
                         android:id="@+id/categoryRecyclerView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:background="#f1f1f1" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/itemRecyclerView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="2dp"
-                        android:layout_weight="2" />
+                        android:layout_weight="2"
+                        android:background="#f1f1f1" />
                 </LinearLayout>
 
                 <TextView

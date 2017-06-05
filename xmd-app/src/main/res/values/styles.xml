@@ -9,6 +9,8 @@
         <item name="android:textSize">@dimen/fontBody</item>
         <item name="android:textColor">@color/colorText</item>
         <item name="android:windowBackground">@color/colorWindowBackground</item>
+
+        <item name="android:editTextStyle">@style/AppTheme.EditText</item>
     </style>
 
     <style name="AppTheme.Dialog">
@@ -21,13 +23,13 @@
         <!-- 无标题 -->
         <item name="android:windowNoTitle">true</item>
         <!-- 背景透明 -->
-        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+        <item name="android:windowBackground">@android:color/transparent</item>
         <!-- 模糊 -->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
     <!-- 按钮样式 -->
-    <style name="AppTheme.Button" parent="Base.Widget.AppCompat.Button">
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
 
     </style>
 
@@ -39,5 +41,32 @@
     <style name="AppTheme.Button.Plain">
         <item name="android:background">@drawable/btn_plain</item>
         <item name="android:textColor">@color/colorBtnPlainText</item>
+    </style>
+
+    <style name="AppTheme.Button.Mini">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingTop">1dp</item>
+        <item name="android:paddingBottom">1dp</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+    </style>
+
+    <style name="AppTheme.Button.Mini.Green">
+        <item name="android:background">@drawable/btn_mini_green</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="AppTheme.Button.Mini.Check">
+        <item name="android:background">@drawable/btn_check_gray_green</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:button">@null</item>
+    </style>
+
+    <!-- edit text -->
+    <style name="AppTheme.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:padding">4dp</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="android:background">@drawable/shape_bg_edit_text</item>
     </style>
 </resources>

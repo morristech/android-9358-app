@@ -94,7 +94,7 @@ public class CheckInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             couponViewHolder.mCouponName.setText(info.getTitle());
             couponViewHolder.mCouponTypeName.setText(info.getTypeName());
             couponViewHolder.mCouponDescription.setText(coupon.consumeMoneyDescription);
-            if (info.getValid()) {
+            if (coupon.valid) {
                 couponViewHolder.mCouponStatus.setText("可用");
                 couponViewHolder.mCouponStatus.setTextColor(mContext.getResources().getColor(R.color.colorText4));
             } else {
