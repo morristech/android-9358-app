@@ -761,6 +761,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         GroupMessageItemViewHolder groupHolder = (GroupMessageItemViewHolder) holder;
         GroupMessage groupMessage = (GroupMessage) obj;
 
+        groupHolder.meeageSummaryContainer.setVisibility(View.VISIBLE);
+        groupHolder.meeageDetailContainer.setVisibility(View.GONE);
+
         //消息内容
         if (Utils.isNotEmpty(groupMessage.message)) {
             groupHolder.contentInfoSummary.setText(groupMessage.message);
