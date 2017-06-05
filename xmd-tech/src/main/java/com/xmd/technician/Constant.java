@@ -298,5 +298,7 @@ public class Constant {
     public static final String ITEM_PACKAGE_TYPE = "item_package"; //混合套餐\
     public static final String CREDIT_GIFT_TYPE = "credit_gift"; //积分礼物
 
+
+    public static final String CHAT_MENU_APPOINTMENT = "11";
 }
 

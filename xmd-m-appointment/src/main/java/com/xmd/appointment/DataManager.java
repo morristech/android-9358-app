@@ -1,7 +1,7 @@
 package com.xmd.appointment;
 
 import com.shidou.commonlibrary.util.DateUtils;
-import com.xmd.app.beans.BaseBean;
+import com.xmd.app.net.BaseBean;
 import com.xmd.app.net.NetworkEngine;
 import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.app.net.RetrofitFactory;

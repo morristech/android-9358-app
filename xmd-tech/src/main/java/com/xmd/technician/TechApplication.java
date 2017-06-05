@@ -132,6 +132,7 @@ public class TechApplication extends MultiDexApplication {
                 //模块功能初始化
                 Set<String> functions = new HashSet<>();
                 functions.add(XmdApp.FUNCTION_ALIVE_REPORT);
+                functions.add(XmdApp.FUNCTION_USER_INFO);
                 XmdApp.getInstance().init(this, SharedPreferenceHelper.getServerHost(), functions);
                 XmdModuleAppointment.getInstance().init(this);
 

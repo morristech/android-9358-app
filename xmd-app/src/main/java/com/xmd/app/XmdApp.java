@@ -8,6 +8,7 @@ import com.xmd.app.alive.InitAliveReport;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.net.RetrofitFactory;
+import com.xmd.app.user.UserInfoServiceImpl;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -33,6 +34,9 @@ public class XmdApp {
 
     public static final String FUNCTION_ALIVE_REPORT = "function_alive_report";//在线汇报
     private static boolean FUNCTION_ALIVE_REPORT_INIT;
+
+    public static final String FUNCTION_USER_INFO = "function_user_info";//用户信息
+    private static boolean FUNCTION_USER_INFO_INIT;
 
     private boolean MODULE_INIT; //模块初始化
     private Context mApplicationContext;
@@ -60,6 +64,13 @@ public class XmdApp {
             XLogger.i("---init " + FUNCTION_ALIVE_REPORT);
             new InitAliveReport().init(mApplicationContext);
             FUNCTION_ALIVE_REPORT_INIT = true;
+        }
+
+        //初始化用户信息
+        if (functions.contains(FUNCTION_USER_INFO) && !FUNCTION_USER_INFO_INIT) {
+            XLogger.i("---init " + FUNCTION_USER_INFO);
+            UserInfoServiceImpl.getInstance().init(mApplicationContext);
+            FUNCTION_USER_INFO_INIT = true;
         }
     }
 

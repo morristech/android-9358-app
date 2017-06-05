@@ -1,11 +1,11 @@
 package com.shidou.commonlibrary.helper;
 
 import com.shidou.commonlibrary.util.DiskLruCache;
-import com.shidou.commonlibrary.util.MD5Utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 /**
@@ -32,15 +32,12 @@ public class DiskCacheManager {
         return instance;
     }
 
-    private String getRealKey(String key) {
-        return MD5Utils.MD5(key);
-    }
-
-    private void put(String key, String value) {
+    //缓存对像
+    public void put(String key, Object value) {
         try {
-            DiskLruCache.Editor editor = mDiskLruCache.edit(getRealKey(key));
-            OutputStream outputStream = editor.newOutputStream(0);
-            outputStream.write(value.getBytes());
+            DiskLruCache.Editor editor = mDiskLruCache.edit(key);
+            ObjectOutputStream outputStream = new ObjectOutputStream(editor.newOutputStream(0));
+            outputStream.writeObject(value);
             editor.commit();
             mDiskLruCache.flush();
         } catch (IOException e) {
@@ -48,24 +45,17 @@ public class DiskCacheManager {
         }
     }
 
-    private String get(String key) {
+    public Object get(String key) {
         try {
-            DiskLruCache.Snapshot snapshot = mDiskLruCache.get(getRealKey(key));
+            DiskLruCache.Snapshot snapshot = mDiskLruCache.get(key);
             if (snapshot != null) {
-                return snapshot.getString(0);
+                ObjectInputStream objectInputStream = new ObjectInputStream(snapshot.getInputStream(0));
+                return objectInputStream.readObject();
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             XLogger.e("DiskCacheManager.get [" + key + "] error:" + e.getMessage());
         }
         return null;
-    }
-
-    public synchronized String getCache(String key) {
-        return get(KEY_DEFAULT + key);
-    }
-
-    public synchronized void putCache(String key, String value) {
-        put(KEY_DEFAULT + key, value);
     }
 }
 

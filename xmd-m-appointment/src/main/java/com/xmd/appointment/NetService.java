@@ -1,6 +1,6 @@
 package com.xmd.appointment;
 
-import com.xmd.app.beans.BaseBean;
+import com.xmd.app.net.BaseBean;
 import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.TechnicianListResult;

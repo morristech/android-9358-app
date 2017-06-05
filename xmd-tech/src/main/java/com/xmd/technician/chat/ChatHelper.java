@@ -23,6 +23,9 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.util.EMLog;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.chat.ChatMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.chat.db.ChatDBManager;
@@ -178,6 +181,21 @@ public class ChatHelper {
             initDbDao();
             //注册登录/登出事件监听器
 
+
+            //初始化用户信息,后期版本可以移除 -- FIXME
+            EMClient.getInstance().chatManager().loadAllConversations();
+            for (EMConversation conversation : getAllConversationList()) {
+                EMMessage emMessage = conversation.getLatestMessageFromOthers();
+                if (emMessage != null) {
+                    ChatMessage chatMessage = new ChatMessage(emMessage);
+                    User user = new User();
+                    user.setId(chatMessage.getUserId());
+                    user.setName(chatMessage.getUserName());
+                    user.setAvatar(chatMessage.getUserAvatar());
+                    user.setChatId(chatMessage.getEmMessage().getTo());
+                    UserInfoServiceImpl.getInstance().saveUser(user);
+                }
+            }
         }
     }
 

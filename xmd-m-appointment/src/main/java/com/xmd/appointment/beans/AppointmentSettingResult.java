@@ -1,6 +1,6 @@
 package com.xmd.appointment.beans;
 
-import com.xmd.app.beans.BaseBean;
+import com.xmd.app.net.BaseBean;
 
 /**
  * Created by heyangya on 17-5-31.

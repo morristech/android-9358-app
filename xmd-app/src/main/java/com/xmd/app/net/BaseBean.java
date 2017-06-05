@@ -1,4 +1,4 @@
-package com.xmd.app.beans;
+package com.xmd.app.net;
 
 /**
  * Created by heyangya on 17-5-24.

@@ -25,6 +25,8 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EasyUtils;
+import com.xmd.appointment.AppointmentData;
+import com.xmd.appointment.AppointmentEvent;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -48,14 +50,13 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.ChatSentMessageHelper;
 import com.xmd.technician.chat.ChatUser;
-
 import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.chat.event.CancelGame;
 import com.xmd.technician.chat.chatrow.EaseCustomChatRowProvider;
 import com.xmd.technician.chat.chatview.BaseEaseChatView;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.chat.chatview.EaseChatMessageList;
 import com.xmd.technician.chat.controller.ChatUI;
+import com.xmd.technician.chat.event.CancelGame;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.chat.utils.UserUtils;
@@ -83,6 +84,8 @@ import com.xmd.technician.widget.chatview.EaseChatInputMenu;
 import com.xmd.technician.widget.chatview.EaseChatInputMenu.ChatInputMenuListener;
 import com.xmd.technician.widget.chatview.EaseChatInputMenu.ChatSentSpecialListener;
 import com.xmd.technician.widget.chatview.EaseVoiceRecorderView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -172,6 +175,8 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     private boolean mInUserBlacklist = false;
     private String[] permission = {Manifest.permission.RECORD_AUDIO};
 
+    private ChatUser mUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +188,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         initOrderManager();
         initPlayCreditGame();
         initGoldAnimationView();
+        initAppointment();
     }
 
     private void initView() {
@@ -205,10 +211,8 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         initProvider();
         categoryManager = ChatCategoryManager.getInstance();
         if (UserUtils.getUserInfo(toChatUserId) != null) {
-            ChatUser user = UserUtils.getUserInfo(toChatUserId);
-            if (user != null) {
-                setTitle(user.getNick());
-            }
+            mUser = UserUtils.getUserInfo(toChatUserId);
+            setTitle(mUser.getNick());
         }
         adverseName = mAppTitle.getText().toString();
         if (chatType != ChatConstant.CHAT_TYPE_CHATROOM) {
@@ -243,6 +247,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MARK_CHAT_TO_USER);
     }
 
+    //初始化消息菜单事件监听
     private void initListener() {
         inputMenuListener = new EaseChatInputMenu.ChatInputMenuListener() {
             @Override
@@ -345,6 +350,13 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             }
 
+            //预约
+            @Override
+            public void onAppointmentClicked() {
+                AppointmentData data = new AppointmentData();
+                EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
+            }
+
         };
         inputMenu.setChatInputMenuListener(inputMenuListener);
         inputMenu.setChatSentSpecialListener(specialInputListener);
@@ -400,6 +412,11 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         });
 
         isMessageListInited = true;
+    }
+
+    //初始化预约信息
+    private void initAppointment() {
+
     }
 
     @Override

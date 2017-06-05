@@ -15,7 +15,7 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.Constants;
-import com.xmd.app.beans.BaseBean;
+import com.xmd.app.net.BaseBean;
 import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceItem;

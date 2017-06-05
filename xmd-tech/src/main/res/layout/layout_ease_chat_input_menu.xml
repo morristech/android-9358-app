@@ -183,6 +183,22 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btn_appointment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/input_img_appointment"
+                    android:layout_width="@dimen/personal_item_icon_height"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_menu_appointment"
+                    android:scaleType="fitCenter" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/btn_more"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
