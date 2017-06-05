@@ -1,16 +1,19 @@
 package com.xmd.appointment;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
+import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.Constants;
 import com.xmd.app.beans.BaseBean;
 import com.xmd.app.net.NetworkSubscriber;
@@ -23,6 +26,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class AppointmentActivity extends BaseActivity
         implements TechSelectFragment.Listener,
@@ -31,6 +36,7 @@ public class AppointmentActivity extends BaseActivity
 
     private ActivityAppointmentBinding mBinding;
     private AppointmentData mData;
+    private ServiceItemDuration mSelectedDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,33 @@ public class AppointmentActivity extends BaseActivity
         mData = (AppointmentData) getIntent().getSerializableExtra(Constants.EXTRA_DATA);
         mBinding.setData(mData);
         mBinding.setHandler(this);
+
+        setTitle("完善预约");
+
+        //初始化服务时长选择列表
+        mBinding.durationRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        CommonRecyclerViewAdapter<ServiceItemDuration> durationAdapter = new CommonRecyclerViewAdapter<>();
+        List<ServiceItemDuration> durations = new ArrayList<>();
+        durations.add(new ServiceItemDuration(45));
+        durations.add(new ServiceItemDuration(60));
+        durations.add(new ServiceItemDuration(90));
+        durations.add(new ServiceItemDuration(120));
+        durationAdapter.setData(R.layout.list_item_service_duration, BR.data, durations);
+        durationAdapter.setHandler(BR.handler, this);
+        mBinding.durationRecyclerView.setAdapter(durationAdapter);
+
+        if (mData.getDuration() == 0) {
+            mSelectedDuration = durations.get(1);
+            mSelectedDuration.viewSelected.set(true);
+            mData.setDuration(mSelectedDuration.duration);
+        } else {
+            for (ServiceItemDuration duration : durations) {
+                if (duration.getDuration() == mData.getDuration()) {
+                    mSelectedDuration = duration;
+                    mSelectedDuration.viewSelected.set(true);
+                }
+            }
+        }
     }
 
     @Override
@@ -205,6 +238,15 @@ public class AppointmentActivity extends BaseActivity
         mBinding.setData(mData);
     }
 
+    public void onClickServiceDuration(ServiceItemDuration duration) {
+        if (mSelectedDuration != duration) {
+            mSelectedDuration.viewSelected.set(false);
+            mSelectedDuration = duration;
+            mSelectedDuration.viewSelected.set(true);
+            mData.setDuration(mSelectedDuration.getDuration());
+        }
+    }
+
     /***************联系人信息*******************/
 
     public void onCustomerNameChange(Editable e) {
@@ -233,5 +275,42 @@ public class AppointmentActivity extends BaseActivity
                 showDialog("创建预约失败：" + e.getLocalizedMessage());
             }
         });
+    }
+
+
+    public static class ServiceItemDuration {
+        private int duration;
+        private String name;
+        public ObservableBoolean viewSelected;
+
+        public ServiceItemDuration(int duration) {
+            viewSelected = new ObservableBoolean();
+            this.duration = duration;
+            if (duration < 60) {
+                name = duration + "分钟";
+            } else {
+                if (duration % 60 == 0) {
+                    name = duration / 60 + "小时";
+                } else {
+                    name = String.format(Locale.getDefault(), "%.1f小时", duration / 60.0);
+                }
+            }
+        }
+
+        public int getDuration() {
+            return duration;
+        }
+
+        public void setDuration(int duration) {
+            this.duration = duration;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }
