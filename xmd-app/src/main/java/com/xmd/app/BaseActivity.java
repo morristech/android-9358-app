@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XProgressDialog;
 import com.shidou.commonlibrary.widget.XToast;
@@ -61,5 +62,25 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showToast(String toast) {
         XToast.showLong(toast);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        TextView titleView = (TextView) findViewById(R.id.tv_title);
+        if (titleView != null) {
+            titleView.setText(title);
+        } else {
+            super.setTitle(title);
+        }
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        TextView titleView = (TextView) findViewById(R.id.tv_title);
+        if (titleView != null) {
+            titleView.setText(titleId);
+        } else {
+            super.setTitle(titleId);
+        }
     }
 }
