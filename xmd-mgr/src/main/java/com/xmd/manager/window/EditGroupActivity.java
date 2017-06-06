@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -27,8 +28,6 @@ import com.xmd.manager.service.response.DeleteGroupResult;
 import com.xmd.manager.service.response.UserGroupDetailListResult;
 import com.xmd.manager.widget.AlertDialogBuilder;
 import com.xmd.manager.widget.ClearableEditText;
-import com.xmd.manager.widget.FullyGridLayoutManager;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +77,6 @@ public class EditGroupActivity extends BaseActivity implements View.OnClickListe
     private String initUserIds;
     private String mGroupName = "";
     private String mGroupDescription = "";
-    private FullyGridLayoutManager mLayoutManager;
 
 
     public static void starEditGroupActivity(Activity activity, String groupId) {
@@ -111,7 +109,6 @@ public class EditGroupActivity extends BaseActivity implements View.OnClickListe
         }
         toolbarLeft.setOnClickListener(leftClick);
 
-        mLayoutManager = new FullyGridLayoutManager(this, 4);
         Utils.hideKeyboard(this);
         toolbarTitle.setVisibility(View.VISIBLE);
         mToolbarRight.setVisibility(View.VISIBLE);
@@ -121,7 +118,7 @@ public class EditGroupActivity extends BaseActivity implements View.OnClickListe
         mMembers = new ArrayList<>();
         groupMemberRecyclerView.setHasFixedSize(true);
         groupMemberRecyclerView.setNestedScrollingEnabled(true);
-        groupMemberRecyclerView.setLayoutManager(mLayoutManager);
+        groupMemberRecyclerView.setLayoutManager(new GridLayoutManager(EditGroupActivity.this,4));
         groupMemberRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mAdapter = new GroupMemberAdapter(this, new GroupMemberAdapter.OnItemClickListener() {

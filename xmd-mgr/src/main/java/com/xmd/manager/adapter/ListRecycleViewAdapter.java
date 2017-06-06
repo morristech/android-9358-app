@@ -63,8 +63,6 @@ import com.xmd.manager.common.WidgetUtils;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.widget.BlockChildLinearLayout;
 import com.xmd.manager.widget.CircleImageView;
-import com.xmd.manager.widget.FullyGridLayoutManager;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -860,6 +858,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         badHolder.commentTime.setText(DateUtils.getTimestampString(new Date(badComment.createdAt)));
         if (Utils.isNotEmpty(badComment.phoneNum)) {
             badHolder.customerPhone.setText(badComment.phoneNum);
+        }else{
+            badHolder.customerPhone.setText("");
         }
         if (badComment.commentType.equals(RequestConstant.COMMENT_TYPE_ORDER) || badComment.commentType.equals(RequestConstant.COMMENT_TYPE_TECH)) {
             badHolder.commentType.setText(ResourceUtils.getString(R.string.comment_text));
@@ -895,7 +895,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         if (badComment.commentRateList != null && badComment.commentRateList.size() > 0) {
             badHolder.commentProjectList.setVisibility(View.VISIBLE);
             CommentDetailItemAdapter<BadCommentRateListBean> adapter = new CommentDetailItemAdapter(mContext, badComment.commentRateList);
-            badHolder.commentProjectList.setLayoutManager(new FullyGridLayoutManager(mContext, 2));
+            badHolder.commentProjectList.setLayoutManager(new GridLayoutManager(mContext,2));
             badHolder.commentProjectList.setAdapter(adapter);
         } else {
             badHolder.commentProjectList.setVisibility(View.GONE);
@@ -1071,7 +1071,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 adapter = new PKRankingAdapter(mContext, activityBean.rankingList, activityBean.categoryId);
             }
-            rankingViewHolder.teamList.setLayoutManager(new FullyGridLayoutManager(mContext, 3));
+            rankingViewHolder.teamList.setLayoutManager(new GridLayoutManager(mContext,3));
             rankingViewHolder.teamList.setAdapter(adapter);
         }
         rankingViewHolder.layoutTechnicianRanking.setOnClickListener(v -> {
