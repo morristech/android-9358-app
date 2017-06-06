@@ -171,7 +171,7 @@ public class MarketingFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), JournalListActivity.class));
                 break;
             case R.id.marketing_group_message:
-                startActivity(new Intent(getActivity(), SendGroupMessageActivity.class));
+                startActivity(new Intent(getActivity(), SendCouponDetailActivity.class));
                 break;
             case R.id.marketing_reward:
 

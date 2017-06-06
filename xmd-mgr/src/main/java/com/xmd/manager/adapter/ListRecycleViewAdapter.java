@@ -761,6 +761,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         GroupMessageItemViewHolder groupHolder = (GroupMessageItemViewHolder) holder;
         GroupMessage groupMessage = (GroupMessage) obj;
 
+        groupHolder.meeageSummaryContainer.setVisibility(View.VISIBLE);
+        groupHolder.meeageDetailContainer.setVisibility(View.GONE);
+
         //消息内容
         if (Utils.isNotEmpty(groupMessage.message)) {
             groupHolder.contentInfoSummary.setText(groupMessage.message);
@@ -772,10 +775,21 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             groupHolder.activitySummaryContainer.setVisibility(View.VISIBLE);
             groupHolder.activityDetailContainer.setVisibility(View.VISIBLE);
             groupHolder.activityDetailTip.setVisibility(View.VISIBLE);
-            groupHolder.activityTitleSummary.setText(groupMessage.actType);
+
             groupHolder.activityInfoSummary.setText(groupMessage.actName);
-            groupHolder.activityTitleDetail.setText(groupMessage.actType);
             groupHolder.activityInfoDetail.setText(groupMessage.actName);
+
+            if(Utils.isNotEmpty(groupMessage.msgType)){
+                groupHolder.activityTitleSummary.setVisibility(View.VISIBLE);
+                groupHolder.activityTitleDetail.setVisibility(View.VISIBLE);
+
+                groupHolder.activityTitleSummary.setText(Constant.MESSAGE_ACTIVITY_LABELS.get(groupMessage.msgType));
+                groupHolder.activityTitleDetail.setText(Constant.MESSAGE_ACTIVITY_LABELS.get(groupMessage.msgType));
+            }else {
+                groupHolder.activityTitleSummary.setVisibility(View.GONE);
+                groupHolder.activityTitleDetail.setVisibility(View.GONE);
+            }
+
         } else {
             groupHolder.activitySummaryContainer.setVisibility(View.GONE);
             groupHolder.activityDetailContainer.setVisibility(View.GONE);
@@ -783,24 +797,25 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
         if (Utils.isNotEmpty(String.valueOf(groupMessage.sendCount))) {
             groupHolder.customerCountSummary.setText(String.valueOf(groupMessage.sendCount) + "人");
-            groupHolder.customerCountDetail.setText(String.valueOf(groupMessage.sendCount) + "人");
         }
 
         //消息发送的用户群
-        if (Utils.isNotEmpty(groupMessage.groupType)) {
+        if (groupMessage.groupType != null && Utils.isNotEmpty(Constant.USE_GROUP_LABELS.get(groupMessage.groupType))) {
             groupHolder.typeTitleSummary.setVisibility(View.VISIBLE);
             groupHolder.typeTitleDetail.setVisibility(View.VISIBLE);
-            groupHolder.typeTitleSummary.setText(groupMessage.groupType);
-            groupHolder.typeTitleDetail.setText(groupMessage.groupType);
+            groupHolder.typeTitleSummary.setText(Constant.USE_GROUP_LABELS.get(groupMessage.groupType));
+            groupHolder.typeTitleDetail.setText(Constant.USE_GROUP_LABELS.get(groupMessage.groupType));
         } else {
             groupHolder.typeTitleSummary.setVisibility(View.GONE);
             groupHolder.typeTitleDetail.setVisibility(View.GONE);
         }
-        if (Utils.isNotEmpty(groupMessage.groupNames)) {
-            groupHolder.customerTypeDetail.setVisibility(View.VISIBLE);
-            groupHolder.customerTypeDetail.setText(groupMessage.groupNames);
+
+        if (Utils.isNotEmpty(groupMessage.subGroupLabels)) {
+            String s = String.format("%s，共%d人",groupMessage.subGroupLabels, groupMessage.sendCount);
+            groupHolder.customerTypeDetail.setText(Utils.changeColor(s, ResourceUtils.getColor(R.color.colorMain), groupMessage.subGroupLabels.length()+2,s.length()-1));
         } else {
-            groupHolder.customerTypeDetail.setVisibility(View.GONE);
+            String s = String.format("共%d人",groupMessage.sendCount);
+            groupHolder.customerTypeDetail.setText(Utils.changeColor(s, ResourceUtils.getColor(R.color.colorMain), 1,s.length()-1));
         }
 
         //消息发送时间
@@ -1346,8 +1361,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView typeTitleDetail;
         @Bind(R.id.group_message_customer_count)
         TextView customerCountSummary;
-        @Bind(R.id.group_customer_detail_count)
-        TextView customerCountDetail;
         @Bind(R.id.group_detail_type_detail)
         TextView customerTypeDetail;
 

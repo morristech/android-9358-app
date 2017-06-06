@@ -18,6 +18,8 @@ public class FavourableActivityBean {
     public String actName;
     public String msg;
     public String msgType;
+    public String description;
+    public String actTypeName;
 
     public FavourableActivityBean(String name, String id) {
         this.name = name;

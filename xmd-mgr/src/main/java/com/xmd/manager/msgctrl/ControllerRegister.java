@@ -106,6 +106,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_ClUB_GROUP_LIST,
                 MsgDef.MSG_DEF_DO_GROUP_SAVE,
                 MsgDef.MSG_DEF_GET_GROUP_USER_LIST,
+                MsgDef.MSG_DEF_GET_GROUP_TAG_LIST,
                 MsgDef.MSG_DEF_DO_GROUP_DELETE,
                 MsgDef.MSG_DEF_GET_GROUP_DETAILS,
                 MsgDef.MSG_DEF_DO_USER_ADD_GROUP,

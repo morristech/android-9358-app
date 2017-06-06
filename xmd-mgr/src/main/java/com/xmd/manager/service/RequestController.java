@@ -58,6 +58,7 @@ import com.xmd.manager.service.response.FeedbackResult;
 import com.xmd.manager.service.response.GroupInfoResult;
 import com.xmd.manager.service.response.GroupListResult;
 import com.xmd.manager.service.response.GroupMessageResult;
+import com.xmd.manager.service.response.GroupTagListResult;
 import com.xmd.manager.service.response.GroupUserListResult;
 import com.xmd.manager.service.response.LineChartDataResult;
 import com.xmd.manager.service.response.LoginResult;
@@ -373,6 +374,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_GET_ClUB_GROUP_LIST:
                 getClubGroupList();
+                break;
+            case MsgDef.MSG_DEF_GET_GROUP_TAG_LIST:
+                getGroupTagList(msg.obj.toString());
                 break;
             case MsgDef.MSG_DEF_DO_GROUP_SAVE:
                 doGroupSave((Map<String, String>) msg.obj);
@@ -1568,7 +1572,7 @@ public class RequestController extends AbstractController {
         Call<SendGroupMessageResult> call = getSpaService().doSendMessage(SharedPreferenceHelper.getUserToken(),
                 params.get(RequestConstant.KEY_GROUP_ACT_ID), params.get(RequestConstant.KEY_GROUP_ACT_NAME),
                 params.get(RequestConstant.KEY_GROUP_COUPON_CONTENT), params.get(RequestConstant.KEY_GROUP_IDS), params.get(RequestConstant.KEY_GROUP_IMAGE_ID), params.get(RequestConstant.KEY_GROUP_MESSAGE_CONTENT),
-                params.get(RequestConstant.KEY_GROUP_USER_GROUP_TYPE), params.get(RequestConstant.KEY_GROUP_MESSAGE_TYEP));
+                params.get(RequestConstant.KEY_GROUP_USER_GROUP_TYPE), params.get(RequestConstant.KEY_GROUP_SUB_GROUP_LABELS), params.get(RequestConstant.KEY_GROUP_MESSAGE_TYEP));
 
         call.enqueue(new TokenCheckedCallback<SendGroupMessageResult>() {
             @Override
@@ -2614,5 +2618,22 @@ public class RequestController extends AbstractController {
         });
     }
 
+    //会所标签
+    private void getGroupTagList(String clubId){
+        Call<GroupTagListResult> call = getSpaService().getGroupTagList(clubId, SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
+        call.enqueue(new TokenCheckedCallback<GroupTagListResult>() {
+            @Override
+            protected void postResult(GroupTagListResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+                GroupTagListResult result = new GroupTagListResult();
+                result.msg = errorMsg;
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
 }

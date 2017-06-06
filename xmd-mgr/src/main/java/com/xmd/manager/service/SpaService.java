@@ -40,6 +40,7 @@ import com.xmd.manager.service.response.FavourableActivityListResult;
 import com.xmd.manager.service.response.GroupInfoResult;
 import com.xmd.manager.service.response.GroupListResult;
 import com.xmd.manager.service.response.GroupMessageResult;
+import com.xmd.manager.service.response.GroupTagListResult;
 import com.xmd.manager.service.response.GroupUserListResult;
 import com.xmd.manager.service.response.JournalArticleDetailResult;
 import com.xmd.manager.service.response.JournalArticlesResult;
@@ -667,6 +668,7 @@ public interface SpaService {
                                                @Field(RequestConstant.KEY_GROUP_IMAGE_ID) String imageId,
                                                @Field(RequestConstant.KEY_GROUP_MESSAGE_CONTENT) String messageContent,
                                                @Field(RequestConstant.KEY_GROUP_USER_GROUP_TYPE) String userGroupType,
+                                               @Field(RequestConstant.KEY_GROUP_SUB_GROUP_LABELS) String subGroupLabels,
                                                @Field(RequestConstant.KEY_GROUP_MESSAGE_TYEP) String msgType);
 
     @FormUrlEncoded
@@ -1150,5 +1152,11 @@ public interface SpaService {
                                            @Field(RequestConstant.KEY_CHAT_MSG_ID) String msgId,
                                            @Field(RequestConstant.KEY_FRIEND_MESSAGE_TYPE) String msgType
     );
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_GROUP_TAG_LIST)
+    Call<GroupTagListResult> getGroupTagList(@Field(RequestConstant.KEY_CLUB_ID) String clubId,
+                                              @Field(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 }
 

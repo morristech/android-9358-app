@@ -212,33 +212,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btn_next_step"
+        <LinearLayout
+            android:id="@+id/button_container"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/login_activity_login_button_magin_top"
-            android:layout_marginBottom="@dimen/small_space"
-            android:layout_marginLeft="@dimen/margin_10"
-            android:layout_marginRight="@dimen/margin_10"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/select_btn_send_bg"
-            android:text="@string/next_step"
-            android:textColor="@color/white"
-            android:textSize="@dimen/fontSubheading" />
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/inter_space"
+            android:paddingRight="@dimen/inter_space"
+            android:paddingBottom="@dimen/small_space"
+            android:paddingTop="@dimen/small_space"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btn_next_step"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_activity_login_button_magin_top"
+                android:background="@drawable/select_btn_send_bg"
+                android:text="@string/next_step"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fontSubheading" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/select_customer_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_10"
-            android:layout_above="@+id/btn_next_step"
+            android:layout_above="@+id/button_container"
             android:background="@color/colorCustomerCountBg"
+            android:drawableLeft="@drawable/dot_emojicon_unselected"
+            android:drawablePadding="@dimen/margin_10"
             android:text="* 已选择80个客户"
             android:textSize="@dimen/inter_text_size"
             android:textColor="@color/colorCustomerCount" />
 
         <View
             style="@style/line"
-            android:layout_above="@+id/btn_next_step" />
+            android:layout_above="@+id/button_container" />
 
         <View
             style="@style/line"

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/select_time_padding"
+    android:paddingLeft="@dimen/inter_space"
+    android:paddingRight="@dimen/inter_space"
+    android:background="@color/colorTimeBg">
+
+    <ImageView
+        android:id="@+id/check_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/select_time_padding"
+        android:background="@drawable/icon_checkbox"/>
+
+    <TextView
+        android:id="@+id/coupon_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/check_image"
+        tools:text="20元现金券"
+        android:textSize="@dimen/middle_text_size"
+        android:textColor="@color/colorCustomerCount"/>
+
+    <TextView
+        android:id="@+id/coupon_type_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        tools:text="20元现金券"
+        android:textSize="@dimen/fontNormal"
+        android:textColor="@color/light_red"/>
+
+    <TextView
+        android:id="@+id/coupon_remark_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/search_margin"
+        android:layout_marginBottom="@dimen/select_time_padding"
+        android:layout_alignLeft="@+id/coupon_name_text"
+        android:layout_below="@+id/coupon_name_text"
+        tools:text="20元现金券"
+        android:textSize="@dimen/fontMiddle"
+        android:textColor="@color/colorBody"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/dash_line_bg"
+        android:layerType="software"/>
+</RelativeLayout>

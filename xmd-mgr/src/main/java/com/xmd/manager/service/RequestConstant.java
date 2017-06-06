@@ -142,6 +142,7 @@ public class RequestConstant {
     public static final String URL_DO_USER_ADD_GROUP = BASE_URL + "/v2/manager/group/user/addGroup";
     public static final String URL_DO_GROUP_USER_EDIT_GROUP = BASE_URL + "/v2/manager/group/user/editGroup";
     public static final String URL_DO_GROUP_MESSAGE_ALBUM_UPLOAD = BASE_URL + "/v2/manager/group/message/album/upload";
+    public static final String URL_GET_GROUP_TAG_LIST = BASE_URL + "/v2/manager/group/tags";
     /**
      * 自动领取优惠券
      */
@@ -268,6 +269,7 @@ public class RequestConstant {
     public static final String KEY_GROUP_COUPON_CONTENT = "couponContent";
     public static final String KEY_GROUP_MESSAGE_CONTENT = "messageContent";
     public static final String KEY_GROUP_USER_GROUP_TYPE = "userGroupType";
+    public static final String KEY_GROUP_SUB_GROUP_LABELS = "subGroupLabels";
     public static final String KEY_GROUP_MESSAGE_TYEP = "msgType";
     public static final String VALUE_TYPE_ACTIVE = "active";
     public static final String VALUE_TYPE_UNATIVE = "unactive";

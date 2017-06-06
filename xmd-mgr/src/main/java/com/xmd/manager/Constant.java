@@ -320,5 +320,41 @@ public class Constant {
     public static final int VERIFICATION_VIEW_COMMON = 1;
     public static final int VERIFICATION_VIEW_COUPON = 2;
     public static final int VERIFICATION_VIEW_ORDER = 3;
+
+        /*---------------------------------------- 群发信息　----------------------------------------*/
+    /**
+     * 会所群发消息选择的参数: 指定用户
+     */
+    public static final String USER_GROUP_TYPE_SPECIFIED = "specified";
+    /**
+     * 会所群发消息选择的参数: 按拓客技师分组
+     */
+    public static final String USER_GROUP_TYPE_TECH = "tech";
+    /**
+     * 会所群发消息选择的参数: 按客户行为分组
+     */
+    public static final String USER_GROUP_TYPE_BEHAVIOR = "behavior";
+
+    public static final Map<String, String> USE_GROUP_LABELS = new LinkedHashMap<String, String>() {{
+        put(USER_GROUP_TYPE_BEHAVIOR, ResourceUtils.getString(R.string.group_by_behavior));
+        put(USER_GROUP_TYPE_TECH, ResourceUtils.getString(R.string.group_by_tech));
+        put(USER_GROUP_TYPE_SPECIFIED, ResourceUtils.getString(R.string.group_by_customize));
+        put("", ResourceUtils.getString(R.string.all_customer));
+    }};
+
+    public static final String MSG_TYPE_COUPON = "ordinaryCoupon";
+    public static final String MSG_TYPE_LUCKY_WHEEL = "luckyWheel";
+    public static final String MSG_TYPE_TIME_LIMIT = "timeLimit";
+    public static final String MSG_TYPE_ONE_YUAN = "oneYuan";
+    public static final String MSG_TYPE_JOURNAL = "journal";
+
+    public static final Map<String, String> MESSAGE_ACTIVITY_LABELS = new LinkedHashMap<String, String>() {{
+        put(MSG_TYPE_COUPON, ResourceUtils.getString(R.string.club_coupon));
+        put(MSG_TYPE_TIME_LIMIT, ResourceUtils.getString(R.string.club_time_limit));
+        put(MSG_TYPE_LUCKY_WHEEL, ResourceUtils.getString(R.string.club_lucky_wheel));
+        put(MSG_TYPE_ONE_YUAN, ResourceUtils.getString(R.string.club_one_yuan));
+        put(MSG_TYPE_JOURNAL, ResourceUtils.getString(R.string.club_journal));
+    }};
+
 }
 

@@ -188,4 +188,7 @@ public class MsgDef {
 
     //使用手机号查询核销信息
     public static final int MSG_DEF_GET_CHECK_INFO = 0x0127;
+
+    //会所分组标签列表
+    public static final int MSG_DEF_GET_GROUP_TAG_LIST = 0x0128;
 }

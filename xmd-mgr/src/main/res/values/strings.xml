@@ -463,9 +463,13 @@
     <string name="text_send_group_time_limit">(两次群发消息之间需要间隔24小时以上)</string>
     <string name="alert_message_send_group_time_limit">距离上次群发消息未超过24小时</string>
     <string name="text_all_customer_hint">(发送至通过会所注册的全部手机用户)</string>
+    <string name="text_no_activity_selected">未选择任何活动</string>
     <string name="club_journal">电子期刊</string>
     <string name="club_group_message">微信群发</string>
     <string name="club_coupon">优惠券</string>
+    <string name="club_time_limit">限时抢</string>
+    <string name="club_lucky_wheel">大转盘</string>
+    <string name="club_one_yuan">谁替我买单</string>
     <string name="club_contain_paid_coupon">(含点钟券)</string>
     <string name="club_reward">抽奖大转盘</string>
     <string name="club_purchase">限时抢购</string>
