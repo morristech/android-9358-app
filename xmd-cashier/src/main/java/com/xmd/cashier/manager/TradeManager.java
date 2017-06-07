@@ -35,6 +35,7 @@ import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.MemberPayResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.StringResult;
+import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.exceptions.NetworkException;
 import com.xmd.cashier.exceptions.ServerException;
 
@@ -799,6 +800,10 @@ public class TradeManager {
     /*********************************************打印相关******************************************/
     // 打印在线买单交易信息
     public void printOnlinePay() {
+        if (!SPManager.getInstance().getOnlinePaySwitch()) {
+            return;
+        }
+
         if (mTrade.tradeStatus != AppConstants.TRADE_STATUS_SUCCESS) {
             return;
         }
