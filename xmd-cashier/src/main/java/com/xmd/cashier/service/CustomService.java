@@ -385,6 +385,7 @@ public class CustomService extends Service {
                                     }
                                     adapter.updateError(position, tempStr);
                                 } else {
+                                    adapter.updateNormal(position);
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -424,6 +425,7 @@ public class CustomService extends Service {
                                     }
                                     adapter.updateError(position, tempStr);
                                 } else {
+                                    adapter.updateNormal(position);
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -497,6 +499,7 @@ public class CustomService extends Service {
                                     }
                                     adapter.updateError(position, tempStr);
                                 } else {
+                                    adapter.updateNormal(position);
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -537,6 +540,7 @@ public class CustomService extends Service {
                                     }
                                     adapter.updateError(position, tempStr);
                                 } else {
+                                    adapter.updateNormal(position);
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "请到前台失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }

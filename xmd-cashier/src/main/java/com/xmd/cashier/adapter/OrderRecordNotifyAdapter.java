@@ -43,11 +43,6 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
         this.mCallBack = callBack;
     }
 
-    public void removeItem(int position) {
-        mData.remove(position);
-        notifyItemRemoved(position);
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order_record_notify, parent, false));
@@ -85,6 +80,7 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
                 holder.mRejectBtn.setEnabled(false);
                 holder.mAcceptBtn.setEnabled(false);
                 break;
+            case AppConstants.STATUS_NORMAL:
             default:
                 holder.mTipText.setVisibility(View.GONE);
                 holder.mTipBtn.setVisibility(View.GONE);
@@ -134,6 +130,16 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
         mData.get(position).status = AppConstants.STATUS_ERROR;
         mData.get(position).tempErrMsg = error;
         notifyItemChanged(position);
+    }
+
+    public void updateNormal(int position) {
+        mData.get(position).status = AppConstants.STATUS_NORMAL;
+        notifyItemChanged(position);
+    }
+
+    public void removeItem(int position) {
+        mData.remove(position);
+        notifyItemRemoved(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

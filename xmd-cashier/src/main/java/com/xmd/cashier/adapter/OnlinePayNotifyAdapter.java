@@ -97,6 +97,7 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
                 holder.mPassBtn.setEnabled(false);
                 holder.mUnpassBtn.setEnabled(false);
                 break;
+            case AppConstants.STATUS_NORMAL:
             default:
                 holder.mTipText.setVisibility(View.GONE);
                 holder.mTipBtn.setVisibility(View.GONE);
@@ -145,6 +146,11 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
 
     public void updateDisable(int position) {
         mData.get(position).status = AppConstants.STATUS_DISABLE;
+        notifyItemChanged(position);
+    }
+
+    public void updateNormal(int position) {
+        mData.get(position).status = AppConstants.STATUS_NORMAL;
         notifyItemChanged(position);
     }
 
