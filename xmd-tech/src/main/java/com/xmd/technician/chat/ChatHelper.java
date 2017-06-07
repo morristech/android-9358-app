@@ -98,6 +98,12 @@ public class ChatHelper {
         return instance;
     }
 
+    public static Map<String, String> orderMap = new HashMap<>();
+
+    public static Map<String, String> getOrderMap() {
+        return orderMap;
+    }
+
     /**
      * init helper
      *
@@ -626,7 +632,6 @@ public class ChatHelper {
             public void onMessageReceived(List<EMMessage> messages) {
                 for (EMMessage message : messages) {
                     EMLog.d(TAG, "onMessageReceived id : " + message.getMsgId());
-                    Logger.i(">>>", "接收到消息...");
                     //       RxBus.getInstance().post(new EventReceiveMessage(messages));
                     postUnReadMessageCount();
 
@@ -677,7 +682,7 @@ public class ChatHelper {
      * @param callback          callback
      */
     public void logout(boolean unbindDeviceToken, final EMCallBack callback) {
-     //   endCall();
+        //   endCall();
         Log.d(TAG, "logout: " + unbindDeviceToken);
         EMClient.getInstance().logout(unbindDeviceToken, new EMCallBack() {
 
