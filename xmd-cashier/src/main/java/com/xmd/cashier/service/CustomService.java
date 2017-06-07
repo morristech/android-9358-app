@@ -354,6 +354,7 @@ public class CustomService extends Service {
         adapter.setCallBack(new OrderRecordNotifyAdapter.OrderRecordNotifyCallBack() {
             @Override
             public void onAccept(final OrderRecordInfo info, final int position) {
+                adapter.updateDisable(position);    // 更新处理时的状态
                 SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_ACCEPT, info.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -384,6 +385,7 @@ public class CustomService extends Service {
                                     }
                                     adapter.updateError(position, tempStr);
                                 } else {
+                                    adapter.updateNormal(position);
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -392,6 +394,7 @@ public class CustomService extends Service {
 
             @Override
             public void onReject(final OrderRecordInfo info, final int position) {
+                adapter.updateDisable(position);    // 更新处理时的状态
                 SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_REJECT, info.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -422,6 +425,7 @@ public class CustomService extends Service {
                                     }
                                     adapter.updateError(position, tempStr);
                                 } else {
+                                    adapter.updateNormal(position);
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -463,6 +467,7 @@ public class CustomService extends Service {
         adapter.setCallBack(new OnlinePayNotifyAdapter.OnlinePayNotifyCallBack() {
             @Override
             public void onPass(final OnlinePayInfo info, final int position) {
+                adapter.updateDisable(position);
                 SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_PASS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -494,6 +499,7 @@ public class CustomService extends Service {
                                     }
                                     adapter.updateError(position, tempStr);
                                 } else {
+                                    adapter.updateNormal(position);
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -502,6 +508,7 @@ public class CustomService extends Service {
 
             @Override
             public void onUnpass(final OnlinePayInfo info, final int position) {
+                adapter.updateDisable(position);
                 SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -533,6 +540,7 @@ public class CustomService extends Service {
                                     }
                                     adapter.updateError(position, tempStr);
                                 } else {
+                                    adapter.updateNormal(position);
                                     Toast.makeText(MainApplication.getInstance().getApplicationContext(), "请到前台失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }

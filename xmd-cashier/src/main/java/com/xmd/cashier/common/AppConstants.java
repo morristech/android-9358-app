@@ -128,6 +128,8 @@ public class AppConstants {
 
     public static final String STATUS_ALL_TEXT = "全部";
     public static final String STATUS_ERROR = "error";
+    public static final String STATUS_DISABLE = "disable";
+    public static final String STATUS_NORMAL = "normal";
 
     public static final Map<String, String> ONLINE_PAY_STATUS_FILTER = new LinkedHashMap<String, String>() {{
         put(STATUS_ALL_TEXT, null);

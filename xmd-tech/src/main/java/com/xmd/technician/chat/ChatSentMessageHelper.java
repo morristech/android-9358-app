@@ -32,14 +32,17 @@ public class ChatSentMessageHelper {
     public boolean inUserBlacklist;
 
 
-    public ChatSentMessageHelper(Context context, String toChatId, EaseChatMessageList messageList, boolean isMessageListInited, boolean inUserBlacklist) {
+    public ChatSentMessageHelper(Context context, String toChatId, EaseChatMessageList messageList, boolean isMessageListInited) {
         this.mContext = context;
         this.mToChatEmchatId = toChatId;
-
         this.messageList = messageList;
         this.isMessageListInited = isMessageListInited;
-        this.inUserBlacklist = inUserBlacklist;
 
+
+    }
+
+    public void setInUserBlackList(boolean inUserBlacklist){
+        this.inUserBlacklist = inUserBlacklist;
     }
 
 

@@ -43,11 +43,6 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
         this.mCallBack = callBack;
     }
 
-    public void removeItem(int position) {
-        mData.remove(position);
-        notifyItemRemoved(position);
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order_record_notify, parent, false));
@@ -71,16 +66,28 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
         holder.mServiceItem.setText(TextUtils.isEmpty(info.itemName) ? "到店选择" : info.itemName);
         holder.mPayDown.setText("￥" + info.downPayment);
 
-        if (AppConstants.STATUS_ERROR.equals(info.status)) {
-            //error
-            holder.mTipText.setVisibility(View.VISIBLE);
-            holder.mTipBtn.setVisibility(View.VISIBLE);
-            holder.mOperateLayout.setVisibility(View.GONE);
-            holder.mTipText.setText(info.tempErrMsg);
-        } else {
-            holder.mTipText.setVisibility(View.GONE);
-            holder.mTipBtn.setVisibility(View.GONE);
-            holder.mOperateLayout.setVisibility(View.VISIBLE);
+        switch (info.status) {
+            case AppConstants.STATUS_ERROR:
+                holder.mTipText.setVisibility(View.VISIBLE);
+                holder.mTipBtn.setVisibility(View.VISIBLE);
+                holder.mOperateLayout.setVisibility(View.GONE);
+                holder.mTipText.setText(info.tempErrMsg);
+                break;
+            case AppConstants.STATUS_DISABLE:
+                holder.mTipText.setVisibility(View.GONE);
+                holder.mTipBtn.setVisibility(View.GONE);
+                holder.mOperateLayout.setVisibility(View.VISIBLE);
+                holder.mRejectBtn.setEnabled(false);
+                holder.mAcceptBtn.setEnabled(false);
+                break;
+            case AppConstants.STATUS_NORMAL:
+            default:
+                holder.mTipText.setVisibility(View.GONE);
+                holder.mTipBtn.setVisibility(View.GONE);
+                holder.mOperateLayout.setVisibility(View.VISIBLE);
+                holder.mRejectBtn.setEnabled(true);
+                holder.mAcceptBtn.setEnabled(true);
+                break;
         }
 
         holder.mImageOff.setOnClickListener(new View.OnClickListener() {
@@ -114,10 +121,25 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
         return mData.size();
     }
 
+    public void updateDisable(int position) {
+        mData.get(position).status = AppConstants.STATUS_DISABLE;
+        notifyItemChanged(position);
+    }
+
     public void updateError(int position, String error) {
         mData.get(position).status = AppConstants.STATUS_ERROR;
         mData.get(position).tempErrMsg = error;
         notifyItemChanged(position);
+    }
+
+    public void updateNormal(int position) {
+        mData.get(position).status = AppConstants.STATUS_NORMAL;
+        notifyItemChanged(position);
+    }
+
+    public void removeItem(int position) {
+        mData.remove(position);
+        notifyItemRemoved(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

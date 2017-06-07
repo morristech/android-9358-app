@@ -202,6 +202,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         inputMenu.setFragmentManager(getSupportFragmentManager());
+
         setUpView();
     }
 
@@ -243,6 +244,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         );
 
         categoryManager.getChatManagerData();
+        chatSentMessageHelper = new ChatSentMessageHelper(TechChatActivity.this, toChatUserId, messageList, true);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_IN_USER_BLACKLIST, toChatUserId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MARK_CHAT_TO_USER);
     }
@@ -669,7 +671,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public boolean onBubbleClick(EMMessage message) {
-                Logger.i(">>>>", "点击了内容");
                 return false;
             }
 
@@ -843,7 +844,10 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         if (result.statusCode == 200) {
             mInUserBlacklist = result.respData;
         }
-        chatSentMessageHelper = new ChatSentMessageHelper(TechChatActivity.this, toChatUserId, messageList, true, mInUserBlacklist);
+        if(null != chatSentMessageHelper){
+            chatSentMessageHelper.setInUserBlackList(result.respData);
+        }
+
     }
 
 

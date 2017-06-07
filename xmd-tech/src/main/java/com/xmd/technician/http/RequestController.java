@@ -701,7 +701,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {
-                RxBus.getInstance().post(new OrderManageResult(params.get(RequestConstant.KEY_ID)));
+                RxBus.getInstance().post(new OrderManageResult(params.get(RequestConstant.KEY_ID),params.get(RequestConstant.KEY_REASON)));
             }
 
             /*@Override

@@ -13,7 +13,8 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.common.Logger;
+import com.xmd.technician.chat.ChatHelper;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -41,14 +42,7 @@ public class ChatRowOrderView extends BaseEaseChatView {
 
     @Override
     protected void onInflateView() {
-        if(mEMMessage.direct() == EMMessage.Direct.RECEIVE){
-            Logger.i(">>>","messageReceived");
-        }else{
-            Logger.i(">>>","send");
-        }
-
-       mInflater.inflate(mEMMessage.direct() == EMMessage.Direct.RECEIVE? R.layout.chat_row_received_order: R.layout.chat_row_sent_order,this);
-     //   mInflater.inflate(R.layout.chat_row_sent_order,this);
+        mInflater.inflate(mEMMessage.direct() == EMMessage.Direct.RECEIVE ? R.layout.chat_row_received_order : R.layout.chat_row_sent_order, this);
     }
 
     @Override
@@ -76,10 +70,10 @@ public class ChatRowOrderView extends BaseEaseChatView {
                     break;
                 case FAIL:
                     String errorCode = mEMMessage.getStringAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_SERVER_NOT_REACHABLE);
-                    if(ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)){
+                    if (ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)) {
                         mProgressBar.setVisibility(View.GONE);
                         mStatusView.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         mProgressBar.setVisibility(View.GONE);
                         mProgressBar.setVisibility(View.VISIBLE);
                     }
@@ -111,48 +105,47 @@ public class ChatRowOrderView extends BaseEaseChatView {
     protected void onSetUpView() {
         EMTextMessageBody body = (EMTextMessageBody) mEMMessage.getBody();
         String content = body.getMessage();
-        Logger.i("order>>>","content>>"+content);
-        if(content.contains("发起预约")){
+        String orderId = mEMMessage.getStringAttribute(ChatConstant.KEY_ORDER_ID, "");
+        if (Utils.isNotEmpty(orderId)) {
+            if (Utils.isNotEmpty(ChatHelper.getOrderMap().get(orderId))) {
+                mAcceptOrder.setEnabled(false);
+                mRefuseOrder.setEnabled(false);
+            } else {
+                mAcceptOrder.setEnabled(true);
+                mRefuseOrder.setEnabled(true);
+            }
+        } else if (content.contains("发起预约")) {
             mAcceptOrder.setEnabled(true);
             mRefuseOrder.setEnabled(true);
-        }else {
+        } else {
             mAcceptOrder.setEnabled(false);
             mRefuseOrder.setEnabled(false);
         }
+
         String[] str = content.split("<b>|<span>|</span>|<br>|</b>");
 
         try {
-
             mTitle.setText(str[1]);
             mTimeHint.setText(str[3]);
             mTime.setText(str[4]);
             mServiceHint.setText(str[6]);
             mServiceItem.setText(str[7]);
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
 
         }
         mAcceptOrder.setOnClickListener(v -> {
-           Logger.i("order>>","accept");
             String orderContent = content.replace("发起预约", "接受预约");
-           mEMMessage.addBody(new EMTextMessageBody(orderContent));
-            try {
-                String orderId = mEMMessage.getStringAttribute(ChatConstant.KEY_ORDER_ID);
-                doManageOrder(orderId, Constant.ORDER_STATUS_ACCEPT,orderContent);
-            } catch (HyphenateException e) {
-                e.printStackTrace();
-            }
+            mEMMessage.addBody(new EMTextMessageBody(orderContent));
+            ChatHelper.getOrderMap().put(orderId, orderContent);
+            doManageOrder(orderId, Constant.ORDER_STATUS_ACCEPT, orderContent);
             mAdapter.notifyDataSetInvalidated();
         });
         mRefuseOrder.setOnClickListener(v -> {
-            Logger.i("order>>","refuse");
             String orderContent = content.replace("发起预约", "拒绝预约");
             mEMMessage.addBody(new EMTextMessageBody(orderContent));
-            try {
-                String orderId = mEMMessage.getStringAttribute(ChatConstant.KEY_ORDER_ID);
-                doManageOrder(orderId, Constant.ORDER_STATUS_REJECTED,orderContent);
-            } catch (HyphenateException e) {
-                e.printStackTrace();
-            }
+            ChatHelper.getOrderMap().put(orderId, orderContent);
+            doManageOrder(orderId, Constant.ORDER_STATUS_REJECTED, orderContent);
+
             mAdapter.notifyDataSetInvalidated();
         });
         handleTextMessage();
@@ -162,6 +155,11 @@ public class ChatRowOrderView extends BaseEaseChatView {
     protected void onBubbleClick() {
 
     }
+
+    private void handleMessage() {
+
+    }
+
     private void doManageOrder(String orderId, String type, String reason) {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PROCESS_TYPE, type);

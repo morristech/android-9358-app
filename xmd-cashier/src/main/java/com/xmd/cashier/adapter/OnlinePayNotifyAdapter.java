@@ -83,16 +83,28 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
         holder.mPayDown.setText("￥" + Utils.moneyToStringEx(info.payAmount));
         holder.mCreateTime.setText(info.createTime);
 
-        if (AppConstants.STATUS_ERROR.equals(info.status)) {
-            // error
-            holder.mTipText.setVisibility(View.VISIBLE);
-            holder.mTipText.setText(info.tempErrMsg);
-            holder.mTipBtn.setVisibility(View.VISIBLE);
-            holder.mOperateLayout.setVisibility(View.GONE);
-        } else {
-            holder.mTipText.setVisibility(View.GONE);
-            holder.mTipBtn.setVisibility(View.GONE);
-            holder.mOperateLayout.setVisibility(View.VISIBLE);
+        switch (info.status) {
+            case AppConstants.STATUS_ERROR:
+                holder.mTipText.setVisibility(View.VISIBLE);
+                holder.mTipText.setText(info.tempErrMsg);
+                holder.mTipBtn.setVisibility(View.VISIBLE);
+                holder.mOperateLayout.setVisibility(View.GONE);
+                break;
+            case AppConstants.STATUS_DISABLE:
+                holder.mTipText.setVisibility(View.GONE);
+                holder.mTipBtn.setVisibility(View.GONE);
+                holder.mOperateLayout.setVisibility(View.VISIBLE);
+                holder.mPassBtn.setEnabled(false);
+                holder.mUnpassBtn.setEnabled(false);
+                break;
+            case AppConstants.STATUS_NORMAL:
+            default:
+                holder.mTipText.setVisibility(View.GONE);
+                holder.mTipBtn.setVisibility(View.GONE);
+                holder.mOperateLayout.setVisibility(View.VISIBLE);
+                holder.mPassBtn.setEnabled(true);
+                holder.mUnpassBtn.setEnabled(true);
+                break;
         }
 
         holder.mImageOff.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +141,16 @@ public class OnlinePayNotifyAdapter extends RecyclerView.Adapter<OnlinePayNotify
     public void updateError(int position, String error) {
         mData.get(position).status = AppConstants.STATUS_ERROR;
         mData.get(position).tempErrMsg = error;
+        notifyItemChanged(position);
+    }
+
+    public void updateDisable(int position) {
+        mData.get(position).status = AppConstants.STATUS_DISABLE;
+        notifyItemChanged(position);
+    }
+
+    public void updateNormal(int position) {
+        mData.get(position).status = AppConstants.STATUS_NORMAL;
         notifyItemChanged(position);
     }
 

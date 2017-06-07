@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.view.View;
@@ -35,7 +36,6 @@ import com.xmd.manager.service.response.BadCommentResult;
 import com.xmd.manager.service.response.ChangeStatusResult;
 import com.xmd.manager.widget.BottomPopupWindow;
 import com.xmd.manager.widget.CircleImageView;
-import com.xmd.manager.widget.FullyGridLayoutManager;
 import com.xmd.manager.widget.StarBar;
 
 import java.util.ArrayList;
@@ -125,7 +125,7 @@ public class BadCommentDetailActivity extends BaseActivity {
         }
         mCommentRateList = new ArrayList<>();
         mDetailItemAdapter = new CommentDetailItemAdapter(BadCommentDetailActivity.this, mCommentRateList);
-        badCommentDetail.setLayoutManager(new FullyGridLayoutManager(BadCommentDetailActivity.this, 2));
+        badCommentDetail.setLayoutManager(new GridLayoutManager(BadCommentDetailActivity.this,2));
         badCommentDetail.setAdapter(mDetailItemAdapter);
 
         getCommentDetailSubscription = RxBus.getInstance().toObservable(BadCommentResult.class).subscribe(
