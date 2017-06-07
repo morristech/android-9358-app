@@ -1,5 +1,6 @@
 package com.xmd.technician.chat;
 
+import com.xmd.technician.Constant;
 import com.xmd.technician.bean.CategoryBean;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -67,23 +68,26 @@ public class ChatCategoryManager {
             case ChatConstant.CHAT_USER_TYPE_CUSTOMER: //普通用户
                 for (int j = 0; j < mCategoryListResults.size(); j++) {
 
-                        if (mCategoryListResults.get(j).constKey.equals("01")) {
-                            mCommentMenu.add(mCategoryListResults.get(j));
-                            continue;
-                        }
-                        if (mCategoryListResults.get(j).constKey.equals("02")) {
-                            mCommentMenu.add(mCategoryListResults.get(j));
-                            continue;
-                        }
-                        if (mCategoryListResults.get(j).constKey.equals("03")) {
-                            mCommentMenu.add(mCategoryListResults.get(j));
-                            continue;
-                        }
-                        if (mCategoryListResults.get(j).constKey .equals("04")) {
-                            mCommentMenu.add(mCategoryListResults.get(j));
-                            continue;
-                        }
-
+                    if (mCategoryListResults.get(j).constKey.equals("01")) {
+                        mCommentMenu.add(mCategoryListResults.get(j));
+                        continue;
+                    }
+                    if (mCategoryListResults.get(j).constKey.equals("02")) {
+                        mCommentMenu.add(mCategoryListResults.get(j));
+                        continue;
+                    }
+                    if (mCategoryListResults.get(j).constKey.equals("03")) {
+                        mCommentMenu.add(mCategoryListResults.get(j));
+                        continue;
+                    }
+                    if (mCategoryListResults.get(j).constKey.equals("04")) {
+                        mCommentMenu.add(mCategoryListResults.get(j));
+                        continue;
+                    }
+                    if (mCategoryListResults.get(j).constKey.equals(Constant.CHAT_MENU_APPOINTMENT)) {
+                        mCommentMenu.add(mCategoryListResults.get(j));
+                        continue;
+                    }
                 }
 
                 break;
@@ -100,7 +104,7 @@ public class ChatCategoryManager {
         switch (userType) {
             case 1: //技师,楼面
                 for (int i = 0; i < mCategoryListResults.size(); i++) {
-                    if (mCategoryListResults.get(i).constKey.equals("09") ) {
+                    if (mCategoryListResults.get(i).constKey.equals("09")) {
                         mMoreMenu.add(mCategoryListResults.get(i));
                     }
                 }

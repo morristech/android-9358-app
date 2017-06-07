@@ -14,6 +14,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.Adapter.EaseMessageAdapter;
 import com.xmd.technician.R;
+import com.xmd.technician.chat.ChatSentMessageHelper;
 import com.xmd.technician.chat.chatrow.EaseCustomChatRowProvider;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 
@@ -66,7 +67,7 @@ public class EaseChatMessageList extends RelativeLayout {
      * @param chatType
      * @param customChatRowProvider
      */
-    public void init(String toChatUsername, int chatType, EaseCustomChatRowProvider customChatRowProvider) {
+    public void init(String toChatUsername, int chatType, EaseCustomChatRowProvider customChatRowProvider, ChatSentMessageHelper sentMessageHelper) {
         this.chatType = chatType;
         this.toChatUsername = toChatUsername;
 
@@ -77,6 +78,7 @@ public class EaseChatMessageList extends RelativeLayout {
         messageAdapter.setMyBubbleBg(myBubbleBg);
         messageAdapter.setOtherBuddleBg(otherBuddleBg);
         messageAdapter.setCustomChatRowProvider(customChatRowProvider);
+        messageAdapter.setSentMessageHelper(sentMessageHelper);
         // set message adapter
         listView.setAdapter(messageAdapter);
 

@@ -10,10 +10,24 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable {
+    private static final long serialVersionUID = 88750009432710L;
+    public final static int USER_TYPE_UNKNOWN = 0;
+    public final static int USER_TYPE_CUSTOMER = 1;
+    public final static int USER_TYPE_TECH = 2;
+    public final static int USER_TYPE_MANAGER = 3;
+
     private String id; //用户ID
     private String avatar; //用户头像
     private String name; //用户名称
     private String chatId; //用户聊天ID
+
+    private int type; //用户类型
+
+    private String markName;
+
+    public User(String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;
@@ -48,6 +62,40 @@ public class User implements Serializable {
         this.chatId = chatId;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getMarkName() {
+        return markName;
+    }
+
+    public void setMarkName(String markName) {
+        this.markName = markName;
+    }
+
+    public User update(User n) {
+        if (n.chatId != null) {
+            chatId = n.chatId;
+        }
+        if (n.name != null) {
+            name = n.name;
+        }
+        if (n.avatar != null) {
+            avatar = n.avatar;
+        }
+        if (n.markName != null) {
+            markName = n.markName;
+        }
+        if (n.type != USER_TYPE_UNKNOWN) {
+            type = n.type;
+        }
+        return this;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -58,7 +106,9 @@ public class User implements Serializable {
         return TextUtils.equals(id, o.id)
                 && TextUtils.equals(avatar, o.avatar)
                 && TextUtils.equals(name, o.name)
-                && TextUtils.equals(chatId, o.chatId);
+                && TextUtils.equals(chatId, o.chatId)
+                && type == o.type
+                && TextUtils.equals(markName, o.markName);
     }
 
     @Override
@@ -68,6 +118,8 @@ public class User implements Serializable {
         h += name == null ? 0 : name.hashCode();
         h += avatar == null ? 0 : avatar.hashCode();
         h += chatId == null ? 0 : chatId.hashCode();
+        h += type;
+        h += markName == null ? 0 : markName.hashCode();
         return h;
     }
 
@@ -78,6 +130,8 @@ public class User implements Serializable {
                 ", avatar='" + avatar + '\'' +
                 ", name='" + name + '\'' +
                 ", chatId='" + chatId + '\'' +
+                ", type=" + type +
+                ", markName='" + markName + '\'' +
                 '}';
     }
 }

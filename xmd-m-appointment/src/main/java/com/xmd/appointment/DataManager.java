@@ -84,7 +84,7 @@ class DataManager {
                         dateId,
                         DateUtils.getSdf("HH:mm").format(data.getTime()),
                         data.getTechnician() == null ? null : data.getTechnician().getId(),
-                        data.getUserId(),
+                        data.getCustomerId(),
                         data.getServiceItem() == null ? null : data.getServiceItem().getId(),
                         data.getDuration()), listener);
     }

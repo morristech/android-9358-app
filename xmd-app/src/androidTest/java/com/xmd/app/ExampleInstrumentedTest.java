@@ -38,7 +38,7 @@ public class ExampleInstrumentedTest {
 
         Assert.assertNotNull(userService.getUserByChatId("chat_1"));
 
-        User user1 = new User();
+        User user1 = new User("1");
         user1.setId("1");
         user1.setName("用户1");
         user1.setChatId("chat_1");

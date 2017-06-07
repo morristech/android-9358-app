@@ -156,7 +156,7 @@
     <orderEntry type="library" exported="" name="shidou-updater-1.7-" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="expandableTextView-0.1.4" level="project" />
-    <orderEntry type="library" exported="" name="analytics-6.1.0" level="project" />
+    <orderEntry type="library" exported="" name="analytics-6.1.1" level="project" />
     <orderEntry type="library" exported="" name="okio-1.13.0" level="project" />
     <orderEntry type="library" exported="" name="retrofit-2.3.0" level="project" />
     <orderEntry type="library" exported="" name="adapter-rxjava-2.3.0" level="project" />

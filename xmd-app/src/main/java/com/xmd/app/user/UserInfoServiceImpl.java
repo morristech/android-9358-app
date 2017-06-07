@@ -19,6 +19,7 @@ import java.util.Map;
  */
 
 public class UserInfoServiceImpl implements UserInfoService {
+    private static final String TAG = "userService";
     private static final UserInfoServiceImpl ourInstance = new UserInfoServiceImpl();
 
     public static UserInfoServiceImpl getInstance() {
@@ -61,6 +62,8 @@ public class UserInfoServiceImpl implements UserInfoService {
                 if (!TextUtils.isEmpty(user.getChatId())) {
                     mChatIdMap.put(user.getChatId(), user);
                 }
+
+                XLogger.i(TAG, "find user: " + user);
             }
         }
     }
@@ -82,12 +85,13 @@ public class UserInfoServiceImpl implements UserInfoService {
             return;
         }
         User old = mUserIdMap.get(user.getId());
-        if (old == null) {
-            old = mChatIdMap.get(user.getChatId());
-        }
 
         if (old == null || !user.equals(old)) {
             //保存信息
+            if (old != null) {
+                user = old.update(user);
+            }
+            XLogger.i(TAG, "save user: " + user);
             DiskCacheManager.getInstance().put(user.getId(), user);
             if (!mUserIdList.contains(user.getId())) {
                 mUserIdList.add(user.getId());

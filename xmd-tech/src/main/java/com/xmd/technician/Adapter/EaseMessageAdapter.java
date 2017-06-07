@@ -1,6 +1,5 @@
 package com.xmd.technician.Adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -12,7 +11,10 @@ import android.widget.ListView;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatSentMessageHelper;
 import com.xmd.technician.chat.chatrow.EaseCustomChatRowProvider;
 import com.xmd.technician.chat.chatview.BaseEaseChatView;
 import com.xmd.technician.chat.chatview.ChatRowBigExpressionView;
@@ -23,6 +25,7 @@ import com.xmd.technician.chat.chatview.ChatRowVideoView;
 import com.xmd.technician.chat.chatview.ChatRowVoiceView;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
+import com.xmd.technician.model.LoginTechnician;
 
 
 /**
@@ -68,10 +71,14 @@ public class EaseMessageAdapter extends BaseAdapter {
 
     private ListView listView;
 
+    private User mRemoteUser;
+    private ChatSentMessageHelper mSentMessageHelper;
+
     public EaseMessageAdapter(Context context, String username, int chatType, ListView listView) {
         this.context = context;
         this.listView = listView;
         toChatUsername = username;
+        mRemoteUser = UserInfoServiceImpl.getInstance().getUserByChatId(toChatUsername);
         this.conversation = EMClient.getInstance().chatManager().getConversation(username, EaseCommonUtils.getConversationType(chatType), true);
     }
 
@@ -157,17 +164,20 @@ public class EaseMessageAdapter extends BaseAdapter {
     /**
      * get number of message type, here 14 = (EMMessage.Type) * 2
      */
+    @Override
     public int getViewTypeCount() {
-        if (customRowProvider != null && customRowProvider.getCustomChatRowTypeCount() > 0) {
-            return customRowProvider.getCustomChatRowTypeCount() + 14;
-        }
-        return 14;
+//        if (customRowProvider != null && customRowProvider.getCustomChatRowTypeCount() > 0) {
+//            return customRowProvider.getCustomChatRowTypeCount() + 14;
+//        }
+//        return 14;
+        return 0x2400;
     }
 
 
     /**
      * get type of item
      */
+    @Override
     public int getItemViewType(int position) {
         EMMessage message = getItem(position);
         if (message == null) {
@@ -216,7 +226,6 @@ public class EaseMessageAdapter extends BaseAdapter {
                 } else {
                     chatRow = new ChatRowTextView(context, message, position, this);
                 }
-
                 break;
             case VIDEO:
                 chatRow = new ChatRowVideoView(context, message, position, this);
@@ -242,7 +251,7 @@ public class EaseMessageAdapter extends BaseAdapter {
     }
 
 
-    @SuppressLint("NewApi")
+    @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         EMMessage message = getItem(position);
 
@@ -250,7 +259,16 @@ public class EaseMessageAdapter extends BaseAdapter {
             convertView = createChatRow(context, message, position);
         }
         //refresh ui with messages
-        ((BaseEaseChatView) convertView).setUpView(message, position, itemClickListener);
+        String remoteUserAvatar = null;
+        if (mRemoteUser != null) {
+            remoteUserAvatar = mRemoteUser.getAvatar();
+        }
+        ((BaseEaseChatView) convertView).setUpView(
+                LoginTechnician.getInstance().getAvatarUrl(),
+                remoteUserAvatar,
+                message,
+                position,
+                itemClickListener);
 
         return convertView;
     }
@@ -309,4 +327,11 @@ public class EaseMessageAdapter extends BaseAdapter {
         return otherBuddleBg;
     }
 
+    public ChatSentMessageHelper getSentMessageHelper() {
+        return mSentMessageHelper;
+    }
+
+    public void setSentMessageHelper(ChatSentMessageHelper sentMessageHelper) {
+        this.mSentMessageHelper = sentMessageHelper;
+    }
 }

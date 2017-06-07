@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMMessage;
+import com.xmd.chat.ChatMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.chatview.EaseChatMessageList;
@@ -37,8 +38,6 @@ public class ChatSentMessageHelper {
         this.mToChatEmchatId = toChatId;
         this.messageList = messageList;
         this.isMessageListInited = isMessageListInited;
-
-
     }
 
     public void setInUserBlackList(boolean inUserBlacklist){
@@ -47,8 +46,12 @@ public class ChatSentMessageHelper {
 
 
     public void sendTextMessage(String content) {
+//        //FIXME
+//        OrderChatMessage chatMessage = new OrderChatMessage(EMMessage.createTxtSendMessage(content, mToChatEmchatId), ChatMessage.MSG_TYPE_ORDER_START);
+//        XLogger.d(chatMessage.getMsgType());
+//        sendMessage(chatMessage);
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
-        sendMessage(message);
+        sendMessage(new ChatMessage(message, null));
     }
 
 
@@ -243,23 +246,59 @@ public class ChatSentMessageHelper {
         sendMessage(message);
     }
 
+    @Deprecated
     public void sendMessage(EMMessage message) {
         if (message == null) {
             return;
         }
-        message.setAttribute(ChatConstant.KEY_CLUB_NAME, SharedPreferenceHelper.getUserClubName());
-        message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
-        message.setAttribute(ChatConstant.KEY_CLUB_ID, SharedPreferenceHelper.getUserClubId());
+
+        message.setAttribute(ChatConstant.KEY_USER_ID, SharedPreferenceHelper.getUserId());
         message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
         message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
         message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
+
+        message.setAttribute(ChatConstant.KEY_CLUB_ID, SharedPreferenceHelper.getUserClubId());
+        message.setAttribute(ChatConstant.KEY_CLUB_NAME, SharedPreferenceHelper.getUserClubName());
         message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
-        message.setAttribute(ChatConstant.KEY_CURRENT_USER_ID, SharedPreferenceHelper.getUserId());
+
+        //TODO REMOVE
+        message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
+
         if (inUserBlacklist) {
             message.setAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_IN_BLACKLIST);
         }
         //send message
         EMClient.getInstance().chatManager().sendMessage(message);
+        //refresh ui
+        if (isMessageListInited) {
+            messageList.refreshSelectLast();
+        }
+    }
+
+
+    public void sendMessage(ChatMessage message) {
+        if (message == null) {
+            return;
+        }
+
+        message.setUserId(SharedPreferenceHelper.getUserId());
+        message.setUserName(SharedPreferenceHelper.getUserName());
+        message.setUserAvatar(SharedPreferenceHelper.getUserAvatar());
+        message.setTime(String.valueOf(System.currentTimeMillis()));
+
+        message.setClubId(SharedPreferenceHelper.getUserClubId());
+        message.setClubName(SharedPreferenceHelper.getUserClubName());
+        message.setTechNo(SharedPreferenceHelper.getSerialNo());
+
+        //TODO REMOVE
+        message.setTechId(SharedPreferenceHelper.getUserId());
+
+        //FIXME
+        if (inUserBlacklist) {
+            message.getEmMessage().setAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_IN_BLACKLIST);
+        }
+        //send message
+        EMClient.getInstance().chatManager().sendMessage(message.getEmMessage());
         //refresh ui
         if (isMessageListInited) {
             messageList.refreshSelectLast();

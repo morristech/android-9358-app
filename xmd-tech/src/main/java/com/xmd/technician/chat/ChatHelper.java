@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.Pair;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.hyphenate.util.EMLog;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatMessage;
+import com.xmd.chat.ChatMessageFactory;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.chat.db.ChatDBManager;
@@ -38,7 +40,6 @@ import com.xmd.technician.chat.receiver.CallReceiver;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.chat.utils.PreferenceManager;
 import com.xmd.technician.chat.utils.UserUtils;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.window.MainActivity;
@@ -189,19 +190,20 @@ public class ChatHelper {
 
 
             //初始化用户信息,后期版本可以移除 -- FIXME
-            EMClient.getInstance().chatManager().loadAllConversations();
-            for (EMConversation conversation : getAllConversationList()) {
-                EMMessage emMessage = conversation.getLatestMessageFromOthers();
-                if (emMessage != null) {
-                    ChatMessage chatMessage = new ChatMessage(emMessage);
-                    User user = new User();
-                    user.setId(chatMessage.getUserId());
-                    user.setName(chatMessage.getUserName());
-                    user.setAvatar(chatMessage.getUserAvatar());
-                    user.setChatId(chatMessage.getEmMessage().getTo());
-                    UserInfoServiceImpl.getInstance().saveUser(user);
-                }
-            }
+//            EMClient.getInstance().chatManager().loadAllConversations();
+//            for (EMConversation conversation : getAllConversationList()) {
+//                EMMessage emMessage = conversation.getLatestMessageFromOthers();
+//                if (emMessage != null) {
+//                    ChatMessage chatMessage = new ChatMessage(emMessage);
+//                    if (chatMessage.getUserId() != null) {
+//                        User user = new User(chatMessage.getUserId());
+//                        user.setName(chatMessage.getUserName());
+//                        user.setAvatar(chatMessage.getUserAvatar());
+//                        user.setChatId(chatMessage.getEmMessage().getTo());
+//                        UserInfoServiceImpl.getInstance().saveUser(user);
+//                    }
+//                }
+//            }
         }
     }
 
@@ -655,6 +657,15 @@ public class ChatHelper {
 
                     if (!easeUI.hasForegroundActivities()) {
                         getNotifier().onNewMsg(message);
+                    }
+
+                    ChatMessage chatMessage = ChatMessageFactory.get(message);
+                    if (!TextUtils.isEmpty(chatMessage.getUserId())) {
+                        User user = new User(chatMessage.getUserId());
+                        user.setChatId(chatMessage.getEmMessage().getFrom());
+                        user.setName(chatMessage.getUserName());
+                        user.setAvatar(chatMessage.getUserAvatar());
+                        UserInfoServiceImpl.getInstance().saveUser(user);
                     }
                 }
             }

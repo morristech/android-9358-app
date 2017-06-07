@@ -83,6 +83,7 @@ public class ChatConstant {
     public static final int MESSAGE_SENT_ACTIVITY_TYPE = 0x27;
     public static final int MESSAGE_RECEIVE_ACTIVITY_TYPE = 0x28;
 
+    public static final int CHAT_VIEW_TYPE_ORDER = 0x1100; //view 类型
 
 
     public static final String KEY_CUSTOM_TYPE = "msgType";
@@ -167,7 +168,7 @@ public class ChatConstant {
     public static final String KEY_CHAT_GIFT_TYPE = "gift";
     public static final String KEY_CHAT_LOCATION_TYPE = "clubLocation";
     public static final String KEY_SUB_TYPE = "subType";
-    public static final String KEY_CURRENT_USER_ID = "userId";
+    public static final String KEY_USER_ID = "userId";
 
 
     public static final String KEY_CHAT_CMD_REVOKE_ACTION = "revoke";

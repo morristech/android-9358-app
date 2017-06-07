@@ -79,7 +79,7 @@ class XMDPushManager {
             mUnBindCall.cancel();
         }
         mRunBind = true;
-        RetryPool.getInstance().postWork(new RetryPool.RetryRunnable(1000, 1, new RetryPool.RetryExecutor() {
+        RetryPool.getInstance().postWork(new RetryPool.RetryRunnable(1000, 1.1f, new RetryPool.RetryExecutor() {
             @Override
             public boolean run() {
                 return !mRunBind || bind(token);

@@ -20,17 +20,20 @@ import java.util.Date;
  */
 
 public class AppointmentData implements Serializable {
+    private boolean needSubmit; //是否直接提交
+
     private Date time; //到店时间
     private int duration; //持续时间，分钟
-    private String customerName;//客户名称
-    private String customerPhone;//客户电话
+
     private Integer fontMoney; //订金
 
     private Technician technician; //技师信息
     private ServiceItem serviceItem; //服务信息
     private AppointmentSetting appointmentSetting; //额外信息
 
-    private String userId;
+    private String customerId;
+    private String customerName;//客户名称
+    private String customerPhone;//客户电话
 
     public ObservableBoolean submitEnable = new ObservableBoolean();
 
@@ -127,17 +130,25 @@ public class AppointmentData implements Serializable {
 
     public void setAppointmentSetting(AppointmentSetting appointmentSetting) {
         this.appointmentSetting = appointmentSetting;
-        if (appointmentSetting != null && appointmentSetting.getDownPayment() > 0) {
-            setFontMoney(appointmentSetting.getDownPayment());
+        if (appointmentSetting != null) {
+            if (appointmentSetting.getDownPayment() > 0) {
+                setFontMoney(appointmentSetting.getDownPayment());
+            }
+            if (customerPhone == null) {
+                customerPhone = appointmentSetting.getPhoneNum();
+            }
+            if (customerName == null) {
+                customerName = appointmentSetting.getUserName();
+            }
         }
     }
 
-    public String getUserId() {
-        return userId;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     @BindingAdapter("appointmentTime")
@@ -147,5 +158,13 @@ public class AppointmentData implements Serializable {
         } else {
             view.setText("--:--");
         }
+    }
+
+    public boolean isNeedSubmit() {
+        return needSubmit;
+    }
+
+    public void setNeedSubmit(boolean needSubmit) {
+        this.needSubmit = needSubmit;
     }
 }

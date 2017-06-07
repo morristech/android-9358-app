@@ -1,5 +1,6 @@
 package com.xmd.appointment;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.os.Bundle;
@@ -7,8 +8,10 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
+import android.view.KeyEvent;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
@@ -73,12 +76,35 @@ public class AppointmentActivity extends BaseActivity
                 }
             }
         }
+
+        //若有用户ID，加载预约数据
+        if (mData.getCustomerId() != null && mData.getCustomerPhone() == null) {
+            loadSetting();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, mData));
+    }
+
+    private void loadSetting() {
+        showLoading();
+        DataManager.getInstance().loadAppointmentExt(mData.getTechnician() == null ? null : mData.getTechnician().getId(),
+                mData.getCustomerId(), new NetworkSubscriber<AppointmentSettingResult>() {
+                    @Override
+                    public void onCallbackSuccess(AppointmentSettingResult result) {
+                        hideLoading();
+                        mData.setAppointmentSetting(result.getRespData());
+                        mBinding.setData(mData);
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        hideLoading();
+                        showDialog("加载配置失败：" + e.getLocalizedMessage());
+                    }
+                });
     }
 
     /************************技师选择***********************/
@@ -260,23 +286,55 @@ public class AppointmentActivity extends BaseActivity
 
     /***************提交*******************/
     public void onClickSubmit() {
-        showLoading();
-        DataManager.getInstance().submitAppointment(mData, new NetworkSubscriber<BaseBean>() {
-            @Override
-            public void onCallbackSuccess(BaseBean result) {
-                hideLoading();
-                XToast.show("创建预约成功！");
-                finish();
-            }
+        if (mData.isNeedSubmit()) {
+            showLoading();
+            DataManager.getInstance().submitAppointment(mData, new NetworkSubscriber<BaseBean>() {
+                @Override
+                public void onCallbackSuccess(BaseBean result) {
+                    hideLoading();
+                    XToast.show("创建预约成功！");
+                    EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, mData));
+                    finish();
+                }
 
-            @Override
-            public void onCallbackError(Throwable e) {
-                hideLoading();
-                showDialog("创建预约失败：" + e.getLocalizedMessage());
-            }
-        });
+                @Override
+                public void onCallbackError(Throwable e) {
+                    hideLoading();
+                    showDialog("创建预约失败：" + e.getLocalizedMessage());
+                }
+            });
+        } else {
+            EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, mData));
+            finish();
+        }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mData.isNeedSubmit()) {
+                new AlertDialog.Builder(this)
+                        .setMessage("确定退出？")
+                        .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setNegativeButton("退出", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, null));
+                                finish();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     public static class ServiceItemDuration {
         private int duration;

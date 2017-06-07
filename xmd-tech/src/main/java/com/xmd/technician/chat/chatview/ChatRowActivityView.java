@@ -94,55 +94,71 @@ public class ChatRowActivityView extends BaseEaseChatView {
         Spannable span = SmileUtils.getSmiledText(mContext, txtBody.getMessage());
         // 设置内容
         String subType = mEMMessage.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE, "");
-        String content;
-        String title;
+        String content = null;
+        String title = null;
+        int iconRes = -1;
         switch (subType) {
             case ChatConstant.KEY_SUB_TYPE_INDIANA:
                 content = ResourceUtils.getString(R.string.chat_indiana_message_des);
                 title = ResourceUtils.getString(R.string.chat_indiana_message_type);
-                activityIcon.setImageResource(R.drawable.icon_indiana);
+                iconRes = R.drawable.icon_indiana;
                 break;
             case ChatConstant.KEY_SUB_TYPE_SECKILL:
                 content = ResourceUtils.getString(R.string.chat_seckill_message_des);
                 title = ResourceUtils.getString(R.string.chat_seckill_message_type);
-                activityIcon.setImageResource(R.drawable.icon_seckill);
+                iconRes = R.drawable.icon_seckill;
                 break;
             case ChatConstant.KEY_SUB_TYPE_TURNTABLE:
                 content = ResourceUtils.getString(R.string.chat_turntable_message_des);
                 title = ResourceUtils.getString(R.string.chat_turntable_message_type);
-                activityIcon.setImageResource(R.drawable.icon_turntalbel);
+                iconRes = R.drawable.icon_turntalbel;
                 break;
             case ChatConstant.KEY_SUB_TYPE_JOURNAL:
                 content = ResourceUtils.getString(R.string.chat_journal_message_des);
                 title = ResourceUtils.getString(R.string.chat_journal_message_type);
-                activityIcon.setImageResource(R.drawable.icon_journal);
+                iconRes = R.drawable.icon_journal;
                 break;
             case ChatConstant.KEY_ACTIVITY_ITEM_CARD_TYPE:
-                String itemCardType = mEMMessage.getStringAttribute(ChatConstant.KEY_SUB_CARD_TYPE,"");
-                if(itemCardType.equals("item_package")){
+                String itemCardType = mEMMessage.getStringAttribute(ChatConstant.KEY_SUB_CARD_TYPE, "");
+                if (itemCardType.equals("item_package")) {
                     content = ResourceUtils.getString(R.string.chat_package_message_des);
                     title = ResourceUtils.getString(R.string.chat_package_message_type);
-                    activityIcon.setImageResource(R.drawable.icon_package);
-                }else if(itemCardType.equals("credit_gift")){
+                    iconRes = R.drawable.icon_package;
+                } else if (itemCardType.equals("credit_gift")) {
                     content = ResourceUtils.getString(R.string.chat_gift_message_des);
                     title = ResourceUtils.getString(R.string.chat_gift_message_type);
-                    activityIcon.setImageResource(R.drawable.icon_credit_gift);
-                }else{
+                    iconRes = R.drawable.icon_credit_gift;
+                } else {
                     content = ResourceUtils.getString(R.string.chat_timescard_message_des);
                     title = ResourceUtils.getString(R.string.chat_timescard_message_type);
-                    activityIcon.setImageResource(R.drawable.icon_oncecard);
+                    iconRes = R.drawable.icon_oncecard;
                 }
-
+                break;
+            case ChatConstant.KEY_ACTIVITY_ONE_YUAN_TYPE:
+                title = ResourceUtils.getString(R.string.chat_indiana_message_type);
+                content = ResourceUtils.getString(R.string.chat_indiana_message_des);
+                iconRes = R.drawable.icon_indiana;
                 break;
 
             default:
-                content = ResourceUtils.getString(R.string.chat_timescard_message_des);
-                activityIcon.setImageResource(R.drawable.icon_credit_gift);
-                title = "活动";
-
+                content = span.toString();
+                title = null;
+                break;
         }
         activityContent.setText(content);
-        activityTitle.setText(title);
+        if (iconRes > 0) {
+            activityIcon.setVisibility(VISIBLE);
+            activityIcon.setImageResource(iconRes);
+        } else {
+            activityIcon.setVisibility(GONE);
+        }
+
+        if (title != null) {
+            activityTitle.setText(title);
+            activityTitle.setVisibility(VISIBLE);
+        } else {
+            activityTitle.setVisibility(GONE);
+        }
         handleActivityMessage();
     }
 

@@ -25,8 +25,16 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EasyUtils;
+import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
+import com.xmd.chat.ChatConstants;
+import com.xmd.chat.ChatMessage;
+import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.ChatRowViewFactory;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -49,7 +57,6 @@ import com.xmd.technician.chat.ChatCategoryManager;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.ChatSentMessageHelper;
-import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.chat.chatrow.EaseCustomChatRowProvider;
 import com.xmd.technician.chat.chatview.BaseEaseChatView;
@@ -59,8 +66,6 @@ import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.chat.event.CancelGame;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
-import com.xmd.technician.chat.utils.UserUtils;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
@@ -175,13 +180,22 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     private boolean mInUserBlacklist = false;
     private String[] permission = {Manifest.permission.RECORD_AUDIO};
 
-    private ChatUser mUser;
+    private UserInfoService userService = UserInfoServiceImpl.getInstance();
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tech_chat);
         ButterKnife.bind(this);
+
+        toChatUserId = getIntent().getStringExtra(ChatConstant.TO_CHAT_USER_ID);
+        mUser = userService.getUserByChatId(toChatUserId);
+        if (mUser == null) {
+            XToast.show("无法找到用户：" + toChatUserId);
+            finish();
+            return;
+        }
 
         initView();
         initSendCoupon();
@@ -195,7 +209,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         setBackVisible(true);
         mListView = messageList.getListView();
         chatType = ChatConstant.CHAT_TYPE_SINGLE;
-        toChatUserId = getIntent().getStringExtra(ChatConstant.TO_CHAT_USER_ID);
+
         chatUserType = UserProfileProvider.getInstance().getChatUserInfo(toChatUserId).getUserChatType();
         mSwipeRefreshLayout = messageList.getSwipeRefreshLayout();
         mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.primary_button_color_normal));
@@ -203,18 +217,16 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         inputMenu.setFragmentManager(getSupportFragmentManager());
 
+
+        chatSentMessageHelper = new ChatSentMessageHelper(TechChatActivity.this, toChatUserId, messageList, true);
         setUpView();
     }
 
     private void setUpView() {
-        setTitle(toChatUserId);
+        setTitle(mUser.getName());
         initListener();
         initProvider();
         categoryManager = ChatCategoryManager.getInstance();
-        if (UserUtils.getUserInfo(toChatUserId) != null) {
-            mUser = UserUtils.getUserInfo(toChatUserId);
-            setTitle(mUser.getNick());
-        }
         adverseName = mAppTitle.getText().toString();
         if (chatType != ChatConstant.CHAT_TYPE_CHATROOM) {
             onConversationInit();
@@ -244,7 +256,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         );
 
         categoryManager.getChatManagerData();
-        chatSentMessageHelper = new ChatSentMessageHelper(TechChatActivity.this, toChatUserId, messageList, true);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_IN_USER_BLACKLIST, toChatUserId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MARK_CHAT_TO_USER);
     }
@@ -356,6 +367,8 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             @Override
             public void onAppointmentClicked() {
                 AppointmentData data = new AppointmentData();
+                data.setCustomerId(mUser.getId());
+                data.setCustomerName(mUser.getName());
                 EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
             }
 
@@ -373,7 +386,13 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public int getCustomChatRowType(EMMessage message) {
-                return EaseCommonUtils.getCustomChatType(message);
+                ChatMessage chatMessage = ChatMessageFactory.get(message);
+                int viewType = ChatRowViewFactory.getViewType(chatMessage);
+                if (viewType == ChatConstants.CHAT_ROW_VIEW_DEFAULT) {
+                    return EaseCommonUtils.getCustomChatType(message);
+                } else {
+                    return viewType;
+                }
             }
 
             @Override
@@ -400,7 +419,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     }
 
     private void onMessageListInit() {
-        messageList.init(toChatUserId, chatType, chatRowProvider);
+        messageList.init(toChatUserId, chatType, chatRowProvider, chatSentMessageHelper);
         setListItemClickListener();
 
         messageList.getListView().setOnTouchListener(new View.OnTouchListener() {
@@ -876,17 +895,17 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     @Override
     public void onMessageReceived(List<EMMessage> list) {
         for (EMMessage message : list) {
-            String username = null;
+            String chatId = null;
             // group message
             if (message.getChatType() == EMMessage.ChatType.GroupChat || message.getChatType() == EMMessage.ChatType.ChatRoom) {
-                username = message.getTo();
+                chatId = message.getTo();
             } else {
                 // single chat message
-                username = message.getFrom();
+                chatId = message.getFrom();
             }
 
             // if the message is for current conversation
-            if (username.equals(toChatUserId) || message.getTo().equals(toChatUserId)) {
+            if (chatId.equals(toChatUserId) || message.getTo().equals(toChatUserId)) {
                 messageList.refreshSelectLast();
                 ChatUI.getInstance().getNotifier().vibrateAndPlayTone(message);
                 mConversation.markMessageAsRead(message.getMsgId());
