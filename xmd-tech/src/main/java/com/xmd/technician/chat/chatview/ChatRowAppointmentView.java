@@ -3,6 +3,7 @@ package com.xmd.technician.chat.chatview;
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.shidou.commonlibrary.util.DateUtils;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentData;
@@ -47,9 +49,13 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
 
     public boolean operateVisible;
 
+    private AppointmentData mAppointmentData;
+
+    private boolean isRegisterEvent;
+    public ObservableBoolean inProgress = new ObservableBoolean();
+
     public ChatRowAppointmentView(Context context, EMMessage message, int position, BaseAdapter adapter) {
         super(context, message, position, adapter);
-
     }
 
     @Override
@@ -81,8 +87,11 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
                     operateRefuseAndAccept = true;
                     break;
                 case ChatMessage.MSG_TYPE_ORDER_CONFIRM:
-                    operateChangeAndConfirm = true;
-                    operateCancel = true;
+                    if (isFreeAppointment()) {
+                        //免费预约才显示操作按钮
+                        operateChangeAndConfirm = true;
+                        operateCancel = true;
+                    }
                     break;
                 case ChatMessage.MSG_TYPE_ORDER_SUCCESS:
                 case ChatMessage.MSG_TYPE_ORDER_CANCEL:
@@ -172,53 +181,91 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
         }
     }
 
+    private void registerEvent() {
+        if (!isRegisterEvent) {
+            EventBus.getDefault().register(this);
+            isRegisterEvent = true;
+        }
+    }
 
-    public void onClickCreateOrder() {
-        AppointmentData data = parseMessage(mChatMessage);
-        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
-        EventBus.getDefault().register(this);
+    private void unRegisterEvent() {
+        EventBus.getDefault().unregister(this);
+        isRegisterEvent = false;
     }
 
     @Subscribe
     public void onAppointmentEvent(AppointmentEvent event) {
         if (event.getCmd() == AppointmentEvent.CMD_HIDE) {
+            unRegisterEvent();
             AppointmentData data = event.getData();
             if (data != null) {
+                mAppointmentData = data;
                 //发送预约确定
                 mChatMessage.setInnerProcessed("已处理");
-                String remoteChatId = mChatMessage.getToChatId();//FIXME
-                String msgType = ChatMessage.MSG_TYPE_ORDER_CONFIRM;
-                String content = getMsgTypeText(msgType);
-                OrderChatMessage newMessage = new OrderChatMessage(EMMessage.createTxtSendMessage(content, remoteChatId), msgType);
-                fillMessageWithAppointmentData(newMessage, data);
-                ((EaseMessageAdapter) mAdapter).getSentMessageHelper().sendMessage(newMessage);
+                if (isFreeAppointment()) {
+                    sendMessage(ChatMessage.MSG_TYPE_ORDER_CONFIRM);
+                } else {
+                    onClickSubmitOrder();
+                }
             }
-            EventBus.getDefault().unregister(this);
+        } else if (event.getCmd() == AppointmentEvent.CMD_SUBMIT_RESULT) {
+            unRegisterEvent();
+            inProgress.set(false);
+            if (event.getData().isSubmitSuccess()) {
+                if (isFreeAppointment()) {
+                    mChatMessage.setInnerProcessed("已下单");
+                    sendMessage(ChatMessage.MSG_TYPE_ORDER_SUCCESS);
+                } else {
+                    sendMessage(ChatMessage.MSG_TYPE_ORDER_CONFIRM);
+                }
+            } else {
+                XToast.show("下单失败：" + event.getData().getSubmitErrorString());
+            }
         }
     }
 
+
+    //点击完善信息
+    public void onClickCreateOrder() {
+        AppointmentData data = parseMessage(mChatMessage);
+        registerEvent();
+        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
+    }
+
+    //点击拒绝
     public void onClickRefuseOrder() {
         //发送拒绝消息
         mChatMessage.setInnerProcessed("已拒绝");
-        sendEmptyMessage(ChatMessage.MSG_TYPE_ORDER_REFUSE);
+        sendMessage(ChatMessage.MSG_TYPE_ORDER_REFUSE);
     }
 
+    //点击取消
     public void onClickCancelOrder() {
+        if (inProgress.get()) {
+            return;
+        }
         mChatMessage.setInnerProcessed("已取消");
-        sendEmptyMessage(ChatMessage.MSG_TYPE_ORDER_CANCEL);
+        sendMessage(ChatMessage.MSG_TYPE_ORDER_CANCEL);
     }
 
+    //点击修改
     public void onClickChangeOrder() {
+        if (inProgress.get()) {
+            return;
+        }
         AppointmentData data = parseMessage(mChatMessage);
-        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
         EventBus.getDefault().register(this);
+        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
     }
 
-
+    //点击下单
     public void onClickSubmitOrder() {
-        //TODO
-        mChatMessage.setInnerProcessed("已下单");
-        sendEmptyMessage(ChatMessage.MSG_TYPE_ORDER_SUCCESS);
+        if (inProgress.get()) {
+            return;
+        }
+        inProgress.set(true);
+        EventBus.getDefault().register(this);
+        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT, mAppointmentData));
     }
 
     private AppointmentData parseMessage(OrderChatMessage chatMessage) {
@@ -244,8 +291,6 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
         //设置技师信息
         if (chatMessage.getOrderTechId() != null) {
             Technician technician = new Technician();
-//        technician.setId(LoginTechnician.getInstance().getUserId());
-//        technician.setName(LoginTechnician.getInstance().getNickName());
             technician.setId(chatMessage.getOrderTechId());
             technician.setName(chatMessage.getOrderTechName());
             technician.setAvatarUrl(chatMessage.getOrderTechAvatar());
@@ -263,6 +308,11 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
         //设置服务时长
         if (chatMessage.getOrderServiceDuration() != null) {
             data.setDuration(chatMessage.getOrderServiceDuration());
+        }
+
+        //设置支付信息
+        if (chatMessage.getOrderPayMoney() != null) {
+            data.setFontMoney(chatMessage.getOrderPayMoney());
         }
         return data;
     }
@@ -283,6 +333,9 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
         if (data.getDuration() > 0) {
             chatMessage.setOrderServiceDuration(data.getDuration());
         }
+        if (data.getFontMoney() > 0) {
+            chatMessage.setOrderPayMoney(data.getFontMoney());
+        }
     }
 
     private static String getMsgTypeText(String msgType) {
@@ -301,10 +354,21 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
         return "预约消息";
     }
 
-    private void sendEmptyMessage(String msgType) {
+    private void sendMessage(String msgType) {
         String remoteChatId = mChatMessage.getToChatId();//FIXME
         String content = getMsgTypeText(msgType);
-        OrderChatMessage refuseMessage = new OrderChatMessage(EMMessage.createTxtSendMessage(content, remoteChatId), msgType);
-        ((EaseMessageAdapter) mAdapter).getSentMessageHelper().sendMessage(refuseMessage);
+        OrderChatMessage msg = new OrderChatMessage(EMMessage.createTxtSendMessage(content, remoteChatId), msgType);
+        if (mAppointmentData != null) {
+            fillMessageWithAppointmentData(msg, mAppointmentData);
+        }
+        ((EaseMessageAdapter) mAdapter).getSentMessageHelper().sendMessage(msg);
+    }
+
+    private boolean isFreeAppointment() {
+        if (mAppointmentData != null) {
+            return mAppointmentData.getFontMoney() == null || mAppointmentData.getFontMoney() == 0;
+        } else {
+            return mChatMessage.getOrderPayMoney() == null || mChatMessage.getOrderPayMoney() == 0;
+        }
     }
 }

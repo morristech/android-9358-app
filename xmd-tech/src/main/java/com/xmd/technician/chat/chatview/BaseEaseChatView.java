@@ -115,9 +115,7 @@ public abstract class BaseEaseChatView extends LinearLayout {
                     timestamp.setText(DateUtils.getTimestampString(new Date(mEMMessage.getMsgTime())));
                     timestamp.setVisibility(View.VISIBLE);
                 }
-
             }
-
         }
         //设置头像和nick
         if (mEMMessage.direct() == EMMessage.Direct.SEND) {

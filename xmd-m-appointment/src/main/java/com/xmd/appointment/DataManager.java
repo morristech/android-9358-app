@@ -23,7 +23,6 @@ class DataManager {
     }
 
     private DataManager() {
-
     }
 
     private Subscription mLoadTechnicianList;

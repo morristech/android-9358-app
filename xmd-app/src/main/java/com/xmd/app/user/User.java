@@ -25,6 +25,14 @@ public class User implements Serializable {
 
     private String markName;
 
+    //返回显示的名字，优先显示备注名
+    public String getShowName() {
+        if (!TextUtils.isEmpty(markName)) {
+            return markName;
+        }
+        return name;
+    }
+
     public User(String id) {
         this.id = id;
     }

@@ -46,9 +46,8 @@ public class ChatSentMessageHelper {
 
 
     public void sendTextMessage(String content) {
-//        //FIXME
+        //FIXME
 //        OrderChatMessage chatMessage = new OrderChatMessage(EMMessage.createTxtSendMessage(content, mToChatEmchatId), ChatMessage.MSG_TYPE_ORDER_START);
-//        XLogger.d(chatMessage.getMsgType());
 //        sendMessage(chatMessage);
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
         sendMessage(new ChatMessage(message, null));

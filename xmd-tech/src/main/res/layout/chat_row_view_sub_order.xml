@@ -67,6 +67,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:text="待定"
+                android:textColor="#212121"
+                android:textSize="@dimen/fontCaption"
                 app:order_service_time="@{data}" />
         </LinearLayout>
 
@@ -85,7 +87,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text='@{data.orderServiceName??"到店选择"}' />
+                android:text='@{data.orderServiceName??"到店选择"}'
+                android:textColor="#212121"
+                android:textSize="@dimen/fontCaption" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +107,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text='@{data.orderTechName??"到店选择"}' />
+                android:text='@{data.orderTechName??"到店选择"}'
+                android:textColor="#212121"
+                android:textSize="@dimen/fontCaption" />
         </LinearLayout>
 
         <LinearLayout
@@ -123,6 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:textColor="#ff6666"
+                android:textSize="@dimen/fontCaption"
                 app:order_pay_money='@{data}' />
         </LinearLayout>
 
@@ -137,7 +144,7 @@
         <!-- 接受或拒绝 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:visibility="@{handler.operateRefuseAndAccept?View.VISIBLE:View.GONE}">
 
             <TextView
@@ -171,7 +178,7 @@
         <!-- 修改和确定 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:visibility="@{handler.operateChangeAndConfirm?View.VISIBLE:View.GONE}">
 
             <TextView
@@ -190,21 +197,34 @@
                 android:layout_height="match_parent"
                 android:background="#dddddd" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center"
-                android:onClick="@{()->handler.onClickSubmitOrder()}"
-                android:padding="8dp"
-                android:text="确定下单"
-                android:textColor="#ff6666" />
+                android:layout_weight="1">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:visibility="@{handler.inProgress?View.VISIBLE:View.GONE}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="@{()->handler.onClickSubmitOrder()}"
+                    android:padding="8dp"
+                    android:text="确定下单"
+                    android:textColor="#ff6666" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/ic_ok"
+            android:drawablePadding="8dp"
             android:gravity="center"
             android:padding="8dp"
             android:text="@{data.innerProcessed}"

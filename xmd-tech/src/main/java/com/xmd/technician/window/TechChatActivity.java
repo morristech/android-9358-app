@@ -863,7 +863,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         if (result.statusCode == 200) {
             mInUserBlacklist = result.respData;
         }
-        if(null != chatSentMessageHelper){
+        if (null != chatSentMessageHelper) {
             chatSentMessageHelper.setInUserBlackList(result.respData);
         }
 

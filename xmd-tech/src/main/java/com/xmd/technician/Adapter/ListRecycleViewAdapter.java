@@ -527,21 +527,16 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 //                }
 //                UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
 //                UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
-                User user = null;
-                EMMessage lastFromOtherMessage = conversation.getLatestMessageFromOthers();
-                if (lastFromOtherMessage != null) {
-                    String remoteChatId = lastFromOtherMessage.getFrom();
-                    user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
-                }
+                String remoteChatId = lastMessage.direct() == EMMessage.Direct.SEND ? lastMessage.getTo() : lastMessage.getFrom();
+                User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
                 if (user != null) {
                     if (!TextUtils.isEmpty(user.getAvatar())) {
                         Glide.with(mContext)
                                 .load(user.getAvatar())
                                 .transform(new GlideCircleTransform(mContext))
-                                .placeholder(com.xmd.appointment.R.drawable.img_default_avatar)
                                 .into(conversationHolder.mAvatar);
                     }
-                    conversationHolder.mName.setText(user.getName());
+                    conversationHolder.mName.setText(user.getShowName());
                 } else {
                     conversationHolder.mAvatar.setImageResource(com.xmd.appointment.R.drawable.img_default_avatar);
                     conversationHolder.mName.setText("匿名用户");

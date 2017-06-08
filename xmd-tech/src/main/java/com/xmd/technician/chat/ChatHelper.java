@@ -190,20 +190,21 @@ public class ChatHelper {
 
 
             //初始化用户信息,后期版本可以移除 -- FIXME
-//            EMClient.getInstance().chatManager().loadAllConversations();
-//            for (EMConversation conversation : getAllConversationList()) {
-//                EMMessage emMessage = conversation.getLatestMessageFromOthers();
-//                if (emMessage != null) {
-//                    ChatMessage chatMessage = new ChatMessage(emMessage);
-//                    if (chatMessage.getUserId() != null) {
-//                        User user = new User(chatMessage.getUserId());
-//                        user.setName(chatMessage.getUserName());
-//                        user.setAvatar(chatMessage.getUserAvatar());
-//                        user.setChatId(chatMessage.getEmMessage().getTo());
-//                        UserInfoServiceImpl.getInstance().saveUser(user);
-//                    }
-//                }
-//            }
+            EMClient.getInstance().chatManager().loadAllConversations();
+            for (EMConversation conversation : getAllConversationList()) {
+                EMMessage emMessage = conversation.getLatestMessageFromOthers();
+                if (emMessage != null) {
+                    ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
+                    if (chatMessage.getUserId() != null) {
+                        User user = new User(chatMessage.getUserId());
+                        user.setName(chatMessage.getUserName());
+                        user.setAvatar(chatMessage.getUserAvatar());
+                        user.setChatId(chatMessage.getEmMessage().getTo());
+                        UserInfoServiceImpl.getInstance().saveUser(user);
+                    }
+                }
+                conversation.clear();
+            }
         }
     }
 

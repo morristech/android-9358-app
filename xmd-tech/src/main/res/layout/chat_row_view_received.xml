@@ -9,10 +9,10 @@
 
         <TextView
             android:id="@+id/timestamp"
+            style="@style/chat_text_date_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12:08"
-            android:paddingLeft="@dimen/chat_head_padding" />
+            android:layout_gravity="center" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,13 +31,12 @@
 
             <FrameLayout
                 android:id="@+id/bubble"
-                android:layout_width="@dimen/bubble_width"
+                android:minWidth="@dimen/bubble_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_userid"
                 android:layout_marginLeft="@dimen/small_space"
-                android:layout_toRightOf="@id/avatar">
-
-            </FrameLayout>
+                android:layout_toRightOf="@id/avatar" />
 
 
             <TextView

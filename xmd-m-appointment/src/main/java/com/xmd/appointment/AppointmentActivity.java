@@ -312,25 +312,23 @@ public class AppointmentActivity extends BaseActivity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mData.isNeedSubmit()) {
-                new AlertDialog.Builder(this)
-                        .setMessage("确定退出？")
-                        .setPositiveButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+            new AlertDialog.Builder(this)
+                    .setMessage("确定退出？")
+                    .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                            }
-                        })
-                        .setNegativeButton("退出", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, null));
-                                finish();
-                            }
-                        })
-                        .create()
-                        .show();
-            }
+                        }
+                    })
+                    .setNegativeButton("退出", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, null));
+                            finish();
+                        }
+                    })
+                    .create()
+                    .show();
             return true;
         }
         return super.onKeyDown(keyCode, event);
