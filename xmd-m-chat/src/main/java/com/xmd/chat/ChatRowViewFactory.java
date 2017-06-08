@@ -1,5 +1,7 @@
 package com.xmd.chat;
 
+import com.xmd.chat.message.ChatMessage;
+
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_DEFAULT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER;
 

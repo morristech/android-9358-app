@@ -5,6 +5,7 @@ package com.xmd.app.event;
  */
 
 public class EventCommon<T> {
+    private String tag;
     private int cmd;
     private T data;
 
@@ -29,10 +30,19 @@ public class EventCommon<T> {
         this.data = data;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     @Override
     public String toString() {
-        return "AppointmentEvent{" +
-                "cmd=" + cmd +
+        return "EventCommon{" +
+                "tag=" + tag +
+                ", cmd=" + cmd +
                 ", data=" + data +
                 '}';
     }

@@ -26,15 +26,17 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EasyUtils;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
 import com.xmd.chat.ChatConstants;
-import com.xmd.chat.ChatMessage;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.ChatRowViewFactory;
+import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.order.ChatOrderManager;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -91,6 +93,7 @@ import com.xmd.technician.widget.chatview.EaseChatInputMenu.ChatSentSpecialListe
 import com.xmd.technician.widget.chatview.EaseVoiceRecorderView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -107,6 +110,7 @@ import rx.Subscription;
  */
 
 public class TechChatActivity extends BaseActivity implements EMMessageListener {
+    private static final String TAG = "TechChatActivity";
     @Bind(R.id.message_list_view)
     EaseChatMessageList messageList;
     @Bind(R.id.voice_recorder)
@@ -183,6 +187,8 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     private UserInfoService userService = UserInfoServiceImpl.getInstance();
     private User mUser;
 
+    private boolean isInSubmitAppointment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,7 +229,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     }
 
     private void setUpView() {
-        setTitle(mUser.getName());
+        setTitle(mUser.getShowName());
         initListener();
         initProvider();
         categoryManager = ChatCategoryManager.getInstance();
@@ -360,21 +366,59 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 if (null != locationBean) {
                     chatSentMessageHelper.sendLocationMessage(locationBean.lat, locationBean.lng, locationBean.address, locationBean.staticMap);
                 }
-
             }
 
             //预约
             @Override
             public void onAppointmentClicked() {
+                if (isInSubmitAppointment) {
+                    XToast.show("正在处理，请稍后");
+                    return;
+                }
+                isInSubmitAppointment = true;
+                EventBusSafeRegister.register(TechChatActivity.this);
                 AppointmentData data = new AppointmentData();
                 data.setCustomerId(mUser.getId());
                 data.setCustomerName(mUser.getName());
-                EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
+                EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, TAG, data));
             }
 
         };
         inputMenu.setChatInputMenuListener(inputMenuListener);
         inputMenu.setChatSentSpecialListener(specialInputListener);
+    }
+
+    //处理预约界面返回的数据
+    @Subscribe
+    public void onAppointmentEvent(AppointmentEvent event) {
+        if (!TAG.equals(event.getTag())) {
+            return;
+        }
+        if (event.getCmd() == AppointmentEvent.CMD_HIDE) {
+            EventBusSafeRegister.unregister(this);
+            if (event.getData() != null) {
+                if (ChatOrderManager.isFreeAppointment(event.getData(), null)) {
+                    //免费预约，发送确认消息
+                    isInSubmitAppointment = false;
+                    chatSentMessageHelper.sendMessage(ChatOrderManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
+                } else {
+                    //付费预约，先生成订单，然后发送确认消息
+                    EventBusSafeRegister.register(this);
+                    EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT, TAG, event.getData()));
+                }
+            } else {
+                isInSubmitAppointment = false;
+            }
+        } else if (event.getCmd() == AppointmentEvent.CMD_SUBMIT_RESULT) {
+            isInSubmitAppointment = false;
+            EventBusSafeRegister.unregister(this);
+            if (event.getData().isSubmitSuccess()) {
+                //生成订单成功，发送确认消息
+                chatSentMessageHelper.sendMessage(ChatOrderManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
+            } else {
+                XToast.show("生成订单失败：" + event.getData().getSubmitErrorString());
+            }
+        }
     }
 
     private void initProvider() {

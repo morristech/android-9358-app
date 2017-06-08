@@ -25,6 +25,10 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 repositories {
@@ -37,6 +41,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':xmd-app')
     compile project(':commonlibrary')
+    compile project(':xmd-m-appointment')
     compile "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"
     compile "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"

@@ -66,8 +66,7 @@ public interface NetService {
     @FormUrlEncoded
     Observable<BaseBean> submitAppointment(@Field("customerName") String customerName,
                                            @Field("phoneNum") String customerPhone,
-                                           @Field("dateId") Integer dateId,
-                                           @Field("time") String time,
+                                           @Field("appointTime") Long time,
                                            @Field("techId") String techId,
                                            @Field("userId") String userId,
                                            @Field("itemId") String serviceId,

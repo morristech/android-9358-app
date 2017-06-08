@@ -40,35 +40,45 @@ public class XmdModuleAppointment implements IFunctionInit {
             case AppointmentEvent.CMD_SHOW:
                 Intent intent = new Intent(XmdApp.getInstance().getContext(), AppointmentActivity.class);
                 intent.putExtra(Constants.EXTRA_DATA, event.getData());
+                intent.putExtra(Constants.EXTAR_EVENT_TAG, event.getTag());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 XmdApp.getInstance().getContext().startActivity(intent);
                 break;
             case AppointmentEvent.CMD_SUBMIT:
-                submitAppointment(event.getData());
+                submitAppointment(event);
                 break;
         }
     }
 
-    private void submitAppointment(final AppointmentData data) {
-        if (data == null) {
+    private void submitAppointment(final AppointmentEvent event) {
+        if (event.getData() == null) {
             XLogger.e("submitAppointment data is null!");
+            postSubmitError(event, "submitAppointment data is null!");
             return;
         }
-        XLogger.i("submitAppointment: " + data);
-        DataManager.getInstance().submitAppointment(data, new NetworkSubscriber<BaseBean>() {
+        XLogger.i("submitAppointment: " + event.getData());
+        DataManager.getInstance().submitAppointment(event.getData(), new NetworkSubscriber<BaseBean>() {
             @Override
             public void onCallbackSuccess(BaseBean result) {
-                data.setSubmitSuccess(true);
-                data.setSubmitOrderId((String) result.getRespData());
-                EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT_RESULT, data));
+                event.getData().setSubmitSuccess(true);
+                event.getData().setSubmitOrderId((String) result.getRespData());
+                AppointmentEvent backEvent = new AppointmentEvent(AppointmentEvent.CMD_SUBMIT_RESULT, event.getData());
+                backEvent.setTag(event.getTag());
+                EventBus.getDefault().post(backEvent);
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                data.setSubmitSuccess(false);
-                data.setSubmitErrorString(e.getMessage());
-                EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT_RESULT, data));
+                postSubmitError(event, e.getLocalizedMessage());
             }
         });
+    }
+
+    private void postSubmitError(AppointmentEvent event, String error) {
+        event.getData().setSubmitSuccess(false);
+        event.getData().setSubmitErrorString(error);
+        AppointmentEvent backEvent = new AppointmentEvent(AppointmentEvent.CMD_SUBMIT_RESULT, event.getData());
+        backEvent.setTag(event.getTag());
+        EventBus.getDefault().post(backEvent);
     }
 }

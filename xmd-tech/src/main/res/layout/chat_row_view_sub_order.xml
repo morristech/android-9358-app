@@ -5,11 +5,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.xmd.chat.ChatMessage" />
+        <import type="com.xmd.chat.message.ChatMessage" />
 
         <variable
             name="data"
-            type="com.xmd.chat.OrderChatMessage" />
+            type="com.xmd.chat.message.OrderChatMessage" />
 
         <variable
             name="handler"
@@ -214,7 +214,7 @@
                     android:gravity="center"
                     android:onClick="@{()->handler.onClickSubmitOrder()}"
                     android:padding="8dp"
-                    android:text="确定下单"
+                    android:text="生成订单"
                     android:textColor="#ff6666" />
             </LinearLayout>
         </LinearLayout>
@@ -229,5 +229,10 @@
             android:padding="8dp"
             android:text="@{data.innerProcessed}"
             android:visibility="@{data.innerProcessed==null?View.GONE:View.VISIBLE}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:debug_info="@{handler.mAppointmentData}" />
     </LinearLayout>
 </layout>

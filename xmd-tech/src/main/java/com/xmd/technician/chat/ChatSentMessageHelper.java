@@ -9,7 +9,7 @@ import android.provider.MediaStore;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMMessage;
-import com.xmd.chat.ChatMessage;
+import com.xmd.chat.message.ChatMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.chatview.EaseChatMessageList;

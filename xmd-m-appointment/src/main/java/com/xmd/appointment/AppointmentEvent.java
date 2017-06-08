@@ -15,4 +15,9 @@ public class AppointmentEvent extends EventCommon<AppointmentData> {
     public AppointmentEvent(int cmd, AppointmentData data) {
         super(cmd, data);
     }
+
+    public AppointmentEvent(int cmd, String tag, AppointmentData data) {
+        super(cmd, data);
+        setTag(tag);
+    }
 }

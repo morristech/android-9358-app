@@ -196,4 +196,22 @@ public class AppointmentData implements Serializable {
     public void setSubmitOrderId(String submitOrderId) {
         this.submitOrderId = submitOrderId;
     }
+
+    @Override
+    public String toString() {
+        return "AppointmentData{" +
+                "needSubmit=" + needSubmit +
+                ", time=" + time +
+                ", duration=" + duration +
+                ", fontMoney=" + fontMoney +
+                ", technician=" + (technician == null ? "null" : technician.getId()) +
+                ", serviceItem=" + (serviceItem == null ? "null" : serviceItem.getId()) +
+                ", customerId='" + customerId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", submitSuccess=" + submitSuccess +
+                ", submitErrorString='" + submitErrorString + '\'' +
+                ", submitOrderId='" + submitOrderId + '\'' +
+                '}';
+    }
 }

@@ -1,4 +1,4 @@
-package com.xmd.chat;
+package com.xmd.chat.message;
 
 import com.hyphenate.chat.EMMessage;
 
@@ -26,7 +26,6 @@ public class OrderChatMessage extends ChatMessage {
     public OrderChatMessage(EMMessage emMessage, String msgType) {
         super(emMessage, msgType);
     }
-
 
     public String getOrderTechId() {
         return getSafeStringAttribute(ATTR_ORDER_TECH_ID);

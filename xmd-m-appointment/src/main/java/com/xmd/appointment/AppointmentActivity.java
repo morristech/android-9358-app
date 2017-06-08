@@ -21,7 +21,9 @@ import com.xmd.app.Constants;
 import com.xmd.app.net.BaseBean;
 import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.appointment.beans.AppointmentSettingResult;
+import com.xmd.appointment.beans.ServiceData;
 import com.xmd.appointment.beans.ServiceItem;
+import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.appointment.databinding.ActivityAppointmentBinding;
 
@@ -41,11 +43,14 @@ public class AppointmentActivity extends BaseActivity
     private AppointmentData mData;
     private ServiceItemDuration mSelectedDuration;
 
+    private String eventTag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_appointment);
 
+        eventTag = getIntent().getStringExtra(Constants.EXTAR_EVENT_TAG);
         mData = (AppointmentData) getIntent().getSerializableExtra(Constants.EXTRA_DATA);
         mBinding.setData(mData);
         mBinding.setHandler(this);
@@ -86,6 +91,7 @@ public class AppointmentActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        hideLoading();
     }
 
     private void loadSetting() {
@@ -97,6 +103,9 @@ public class AppointmentActivity extends BaseActivity
                         hideLoading();
                         mData.setAppointmentSetting(result.getRespData());
                         mBinding.setData(mData);
+                        if (mData.getServiceItem() != null) {
+                            loadServiceInfo(mData.getServiceItem().getId());
+                        }
                     }
 
                     @Override
@@ -105,6 +114,34 @@ public class AppointmentActivity extends BaseActivity
                         showDialog("加载配置失败：" + e.getLocalizedMessage());
                     }
                 });
+    }
+
+    private void loadServiceInfo(final String serviceId) {
+        showLoading();
+        DataManager.getInstance().loadServiceList(new NetworkSubscriber<ServiceListResult>() {
+            @Override
+            public void onCallbackSuccess(ServiceListResult result) {
+                hideLoading();
+                for (ServiceData data : result.getRespData()) {
+                    if (data.itemList == null || data.itemList.size() == 0) {
+                        continue;
+                    }
+                    for (ServiceItem item : data.itemList) {
+                        if (item.getId().equals(serviceId)) {
+                            mData.setServiceItem(item);
+                            mBinding.setData(mData);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                hideLoading();
+                mData.setServiceItem(null);
+            }
+        });
     }
 
     /************************技师选择***********************/
@@ -293,7 +330,7 @@ public class AppointmentActivity extends BaseActivity
                 public void onCallbackSuccess(BaseBean result) {
                     hideLoading();
                     XToast.show("创建预约成功！");
-                    EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, mData));
+                    EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, mData));
                     finish();
                 }
 
@@ -304,7 +341,7 @@ public class AppointmentActivity extends BaseActivity
                 }
             });
         } else {
-            EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, mData));
+            EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, mData));
             finish();
         }
     }
@@ -323,7 +360,7 @@ public class AppointmentActivity extends BaseActivity
                     .setNegativeButton("退出", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, null));
+                            EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, null));
                             finish();
                         }
                     })

@@ -1,4 +1,4 @@
-package com.xmd.chat;
+package com.xmd.chat.message;
 
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;

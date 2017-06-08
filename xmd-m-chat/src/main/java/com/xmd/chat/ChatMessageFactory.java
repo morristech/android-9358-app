@@ -1,6 +1,8 @@
 package com.xmd.chat;
 
 import com.hyphenate.chat.EMMessage;
+import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.message.OrderChatMessage;
 
 /**
  * Created by heyangya on 17-6-7.
