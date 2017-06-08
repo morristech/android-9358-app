@@ -14,6 +14,7 @@ public class ChatMessage {
     public static final String MSG_TYPE_ORDER_CONFIRM = "order_confirm";
     public static final String MSG_TYPE_ORDER_CANCEL = "order_cancel";
     public static final String MSG_TYPE_ORDER_SUCCESS = "order_success";
+    public static final String MSG_TYPE_ORDER_REQUEST = "order_request"; //求预约
 
     public static final String ATTRIBUTE_MESSAGE_TYPE = "msgType";
 

@@ -15,13 +15,16 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.HanziToPinyin;
 import com.hyphenate.util.PathUtil;
+import com.xmd.chat.ChatConstants;
 import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.ChatRowViewFactory;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.chatview.BaseEaseChatView;
 import com.xmd.technician.chat.chatview.ChatRowActivityView;
+import com.xmd.technician.chat.chatview.ChatRowAppointmentRequestView;
 import com.xmd.technician.chat.chatview.ChatRowAppointmentView;
 import com.xmd.technician.chat.chatview.ChatRowBegRewardView;
 import com.xmd.technician.chat.chatview.ChatRowCouponView;
@@ -259,6 +262,11 @@ public class EaseCommonUtils {
     }
 
     public static int getCustomChatType(EMMessage message) {
+        ChatMessage chatMessage = ChatMessageFactory.get(message);
+        int viewType = ChatRowViewFactory.getViewType(chatMessage);
+        if (viewType != ChatConstants.CHAT_ROW_VIEW_DEFAULT) {
+            return viewType;
+        }
         int type = 0;
         if (message.getType() == EMMessage.Type.TXT) {
             String msgType = message.getStringAttribute("msgType", "");
@@ -316,6 +324,8 @@ public class EaseCommonUtils {
             case ChatMessage.MSG_TYPE_ORDER_CANCEL:
             case ChatMessage.MSG_TYPE_ORDER_SUCCESS:
                 return new ChatRowAppointmentView(context, chatMessage.getEmMessage(), position, adapter);
+            case ChatMessage.MSG_TYPE_ORDER_REQUEST:
+                return new ChatRowAppointmentRequestView(context, chatMessage.getEmMessage(), position, adapter);
             default:
                 break;
         }

@@ -11,4 +11,5 @@ public class ChatConstants {
     //视图定义
     public static final int CHAT_ROW_VIEW_DEFAULT = 0x2300;
     public static final int CHAT_ROW_VIEW_TYPE_ORDER = 0x2301;
+    public static final int CHAT_ROW_VIEW_TYPE_ORDER_REQUEST = 0x2302;
 }

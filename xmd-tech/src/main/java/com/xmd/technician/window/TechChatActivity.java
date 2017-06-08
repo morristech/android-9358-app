@@ -32,9 +32,6 @@ import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
-import com.xmd.chat.ChatConstants;
-import com.xmd.chat.ChatMessageFactory;
-import com.xmd.chat.ChatRowViewFactory;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.order.ChatOrderManager;
 import com.xmd.technician.Constant;
@@ -383,6 +380,11 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, TAG, data));
             }
 
+            @Override
+            public void onAppointmentRequestClicked() {
+                EMMessage message = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", toChatUserId);
+                chatSentMessageHelper.sendMessage(new ChatMessage(message, ChatMessage.MSG_TYPE_ORDER_REQUEST));
+            }
         };
         inputMenu.setChatInputMenuListener(inputMenuListener);
         inputMenu.setChatSentSpecialListener(specialInputListener);
@@ -430,13 +432,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public int getCustomChatRowType(EMMessage message) {
-                ChatMessage chatMessage = ChatMessageFactory.get(message);
-                int viewType = ChatRowViewFactory.getViewType(chatMessage);
-                if (viewType == ChatConstants.CHAT_ROW_VIEW_DEFAULT) {
-                    return EaseCommonUtils.getCustomChatType(message);
-                } else {
-                    return viewType;
-                }
+                return EaseCommonUtils.getCustomChatType(message);
             }
 
             @Override

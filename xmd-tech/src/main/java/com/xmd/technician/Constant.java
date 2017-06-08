@@ -300,5 +300,6 @@ public class Constant {
 
 
     public static final String CHAT_MENU_APPOINTMENT = "11";
+    public static final String CHAT_MENU_APPOINTMENT_REQUEST = "12";
 }
 

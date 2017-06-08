@@ -253,7 +253,9 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 initIconImageView(null, null);
 
-                if ((moreMenuList.get(position).constKey).equals("05")) {
+                if ((moreMenuList.get(position).constKey).equals(Constant.CHAT_MENU_APPOINTMENT_REQUEST)) {
+                    specialListener.onAppointmentRequestClicked();
+                } else if ((moreMenuList.get(position).constKey).equals("05")) {
                     specialListener.onBegRewordClicked();
                 } else if ((moreMenuList.get(position).constKey).equals("06")) {
                     specialListener.onMarketClicked();
@@ -613,6 +615,11 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
          * 预约信息
          */
         void onAppointmentClicked();
+
+        /**
+         * 求预约
+         */
+        void onAppointmentRequestClicked();
     }
 
 }

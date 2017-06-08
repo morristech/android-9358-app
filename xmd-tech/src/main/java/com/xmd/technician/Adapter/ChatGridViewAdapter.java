@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CategoryBean;
 
@@ -63,7 +64,9 @@ public class ChatGridViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        if ((mCategoryBeanList.get(position).constKey).equals("05")) {
+        if ((mCategoryBeanList.get(position).constKey).equals(Constant.CHAT_MENU_APPOINTMENT_REQUEST)) {
+            viewHolder.mImageView.setImageResource(R.drawable.ic_order_request);
+        } else if ((mCategoryBeanList.get(position).constKey).equals("05")) {
             viewHolder.mImageView.setImageResource(R.drawable.chat_pay_icon_bg);
         } else if ((mCategoryBeanList.get(position).constKey).equals("06")) {
             viewHolder.mImageView.setImageResource(R.drawable.chat_market_icon_bg);
