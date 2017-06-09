@@ -83,11 +83,8 @@ public class ScanPayPresenter implements Presenter {
                                     // 已经扫码:获取买单详情
                                     isScan = true;
                                     mView.updateScanStatus();
-                                    handleDetail();
-                                } else {
-                                    // 需要重试
-                                    mHandler.postDelayed(mRunnable, INTERVAL);
                                 }
+                                handleDetail();
                             }
 
                             @Override
