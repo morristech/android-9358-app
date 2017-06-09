@@ -23,10 +23,11 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.DateUtils;
-import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ActivityRankingBean;
 import com.xmd.technician.bean.ApplicationBean;
 import com.xmd.technician.bean.ClubJournalBean;
@@ -35,7 +36,6 @@ import com.xmd.technician.bean.CreditDetailBean;
 import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.bean.LimitGrabBean;
-import com.xmd.technician.bean.OnceCardItemBean;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.PaidCouponUserDetail;
 import com.xmd.technician.bean.PayForMeBean;
@@ -43,12 +43,8 @@ import com.xmd.technician.bean.RewardBean;
 import com.xmd.technician.bean.ShareCouponBean;
 import com.xmd.technician.bean.TechRankingBean;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.ChatUser;
-
-
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.chat.utils.SmileUtils;
-import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -497,40 +493,54 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 Spannable span = SmileUtils.getSmiledText(mContext, EaseCommonUtils.getMessageDigest(lastMessage, mContext));
                 conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
                 conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
-                try {
-                    EMMessage lastOtherMessage = conversation.getLatestMessageFromOthers();
-                    if (lastOtherMessage != null) {
-                        ChatUser user = new ChatUser(conversation.conversationId());
-                        String avatar = lastOtherMessage.getStringAttribute(ChatConstant.KEY_HEADER);
-                        String nickName = lastOtherMessage.getStringAttribute(ChatConstant.KEY_NAME);
-                        String isTech = lastOtherMessage.getStringAttribute(ChatConstant.KEY_TECH_ID, "");
-                        String isManager = lastOtherMessage.getStringAttribute(ChatConstant.KEY_CLUB_ID, "");
-                        String userType;
-                        if (Utils.isNotEmpty(isTech) && Utils.isNotEmpty(isManager)) {
-                            userType = ChatConstant.TO_CHAT_USER_TYPE_TECH;
-                        } else if (Utils.isNotEmpty(isManager) && Utils.isEmpty(isTech)) {
-                            userType = ChatConstant.TO_CHAT_USER_TYPE_MANAGER;
-                        } else {
-                            userType = ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER;
-                        }
-                        if (!TextUtils.isEmpty(SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom()))) {
-                            nickName = SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom());
-                        }
-                        boolean needUpdate = !TextUtils.isEmpty(avatar) && !avatar.equals(user.getAvatar());
-                        needUpdate |= !TextUtils.isEmpty(nickName) && !nickName.equals(user.getNickname());
-                        if (needUpdate) {
-                            XLogger.i("update user info-> nickName:" + nickName + ",avatar:" + avatar);
-                            user.setAvatar(avatar);
-                            user.setNickname(nickName);
-                            user.setUserType(userType);
-                            UserUtils.updateUser(user);
-                        }
+//                try {
+//                    EMMessage lastOtherMessage = conversation.getLatestMessageFromOthers();
+//                    if (lastOtherMessage != null) {
+//                        ChatUser user = new ChatUser(conversation.conversationId());
+//                        String avatar = lastOtherMessage.getStringAttribute(ChatConstant.KEY_HEADER);
+//                        String nickName = lastOtherMessage.getStringAttribute(ChatConstant.KEY_NAME);
+//                        String isTech = lastOtherMessage.getStringAttribute(ChatConstant.KEY_TECH_ID, "");
+//                        String isManager = lastOtherMessage.getStringAttribute(ChatConstant.KEY_CLUB_ID, "");
+//                        String userType;
+//                        if (Utils.isNotEmpty(isTech) && Utils.isNotEmpty(isManager)) {
+//                            userType = ChatConstant.TO_CHAT_USER_TYPE_TECH;
+//                        } else if (Utils.isNotEmpty(isManager) && Utils.isEmpty(isTech)) {
+//                            userType = ChatConstant.TO_CHAT_USER_TYPE_MANAGER;
+//                        } else {
+//                            userType = ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER;
+//                        }
+//                        if (!TextUtils.isEmpty(SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom()))) {
+//                            nickName = SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom());
+//                        }
+//                        boolean needUpdate = !TextUtils.isEmpty(avatar) && !avatar.equals(user.getAvatar());
+//                        needUpdate |= !TextUtils.isEmpty(nickName) && !nickName.equals(user.getNickname());
+//                        if (needUpdate) {
+//                            XLogger.i("update user info-> nickName:" + nickName + ",avatar:" + avatar);
+//                            user.setAvatar(avatar);
+//                            user.setNickname(nickName);
+//                            user.setUserType(userType);
+//                            UserUtils.updateUser(user);
+//                        }
+//                    }
+//                } catch (HyphenateException e) {
+//                    e.printStackTrace();
+//                }
+//                UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
+//                UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
+                String remoteChatId = lastMessage.direct() == EMMessage.Direct.SEND ? lastMessage.getTo() : lastMessage.getFrom();
+                User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
+                if (user != null) {
+                    if (!TextUtils.isEmpty(user.getAvatar())) {
+                        Glide.with(mContext)
+                                .load(user.getAvatar())
+                                .transform(new GlideCircleTransform(mContext))
+                                .into(conversationHolder.mAvatar);
                     }
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
+                    conversationHolder.mName.setText(user.getShowName());
+                } else {
+                    conversationHolder.mAvatar.setImageResource(com.xmd.appointment.R.drawable.img_default_avatar);
+                    conversationHolder.mName.setText("匿名用户");
                 }
-                UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
-                UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
             }
 
             holder.itemView.setOnClickListener(v -> {

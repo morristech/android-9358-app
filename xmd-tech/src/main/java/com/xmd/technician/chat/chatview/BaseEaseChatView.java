@@ -10,15 +10,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.DateUtils;
+import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.technician.Adapter.EaseMessageAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -56,6 +58,9 @@ public abstract class BaseEaseChatView extends LinearLayout {
 
     protected EMessageListItemClickListener itemClickListener;
 
+    protected String localUserAvatar;
+    protected String remoteUserAvatar;
+
     public BaseEaseChatView(Context context, EMMessage message, int position, BaseAdapter adapter) {
         super(context);
         this.mContext = context;
@@ -83,14 +88,17 @@ public abstract class BaseEaseChatView extends LinearLayout {
 
     }
 
-    public void setUpView(EMMessage message, int position, EMessageListItemClickListener itemClickListener) {
+    public void setUpView(String localUserAvatar, String remoteUserAvatar, EMMessage message, int position, EMessageListItemClickListener itemClickListener) {
         this.mEMMessage = message;
         this.mPosition = position;
         this.itemClickListener = itemClickListener;
+        this.localUserAvatar = localUserAvatar;
+        this.remoteUserAvatar = remoteUserAvatar;
 
         setUpBaseView();
-        onSetUpView();
         setClickListener();
+        onSetUpView();//FIXME  这里message更新了，但是没有传递到子视图
+        onSetUpView(message);
     }
 
     private void setUpBaseView() {
@@ -107,15 +115,21 @@ public abstract class BaseEaseChatView extends LinearLayout {
                     timestamp.setText(DateUtils.getTimestampString(new Date(mEMMessage.getMsgTime())));
                     timestamp.setVisibility(View.VISIBLE);
                 }
-
             }
-
         }
         //设置头像和nick
         if (mEMMessage.direct() == EMMessage.Direct.SEND) {
-            UserUtils.setUserAvatar(mContext, EMClient.getInstance().getCurrentUser(), mUserAvatarView);
+            Glide.with(mContext)
+                    .load(localUserAvatar)
+                    .placeholder(R.drawable.img_default_avatar)
+                    .transform(new GlideCircleTransform(mContext))
+                    .into(mUserAvatarView);
         } else {
-            UserUtils.setUserAvatar(mContext, mEMMessage.getFrom(), mUserAvatarView);
+            Glide.with(mContext)
+                    .load(remoteUserAvatar)
+                    .placeholder(R.drawable.img_default_avatar)
+                    .transform(new GlideCircleTransform(mContext))
+                    .into(mUserAvatarView);
         }
         if (mDeliveredView != null) {
             if (mEMMessage.isDelivered()) {
@@ -328,8 +342,15 @@ public abstract class BaseEaseChatView extends LinearLayout {
     /**
      * setup view
      */
-    protected abstract void onSetUpView();
+    @Deprecated
+    protected void onSetUpView() {
+    }
 
+    ;
+
+    protected void onSetUpView(EMMessage message) {
+
+    }
     /**
      * on bubble clicked
      */

@@ -1,5 +1,6 @@
 package com.xmd.technician.chat;
 
+import com.xmd.technician.Constant;
 import com.xmd.technician.bean.CategoryBean;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -20,6 +21,8 @@ public class ChatCategoryManager {
     private List<CategoryBean> mMoreMenu;
     private static ChatCategoryManager chatManagerInstance = new ChatCategoryManager();
 
+    private List<String> mCustomMoreMenuShowList;
+
     public static ChatCategoryManager getInstance() {
         return chatManagerInstance;
     }
@@ -36,6 +39,15 @@ public class ChatCategoryManager {
         mCategoryListResults = new ArrayList<>();
         mCommentMenu = new ArrayList<>();
         mMoreMenu = new ArrayList<>();
+
+        mCustomMoreMenuShowList = new ArrayList<>();
+        mCustomMoreMenuShowList.add("05");
+        mCustomMoreMenuShowList.add("06");
+        mCustomMoreMenuShowList.add("07");
+        mCustomMoreMenuShowList.add("08");
+        mCustomMoreMenuShowList.add("09");
+        mCustomMoreMenuShowList.add("10");
+        mCustomMoreMenuShowList.add(Constant.CHAT_MENU_APPOINTMENT_REQUEST);
     }
 
     public List<CategoryBean> getCommentMenu(int toChatUserType) {
@@ -67,23 +79,26 @@ public class ChatCategoryManager {
             case ChatConstant.CHAT_USER_TYPE_CUSTOMER: //普通用户
                 for (int j = 0; j < mCategoryListResults.size(); j++) {
 
-                        if (mCategoryListResults.get(j).constKey.equals("01")) {
-                            mCommentMenu.add(mCategoryListResults.get(j));
-                            continue;
-                        }
-                        if (mCategoryListResults.get(j).constKey.equals("02")) {
-                            mCommentMenu.add(mCategoryListResults.get(j));
-                            continue;
-                        }
-                        if (mCategoryListResults.get(j).constKey.equals("03")) {
-                            mCommentMenu.add(mCategoryListResults.get(j));
-                            continue;
-                        }
-                        if (mCategoryListResults.get(j).constKey .equals("04")) {
-                            mCommentMenu.add(mCategoryListResults.get(j));
-                            continue;
-                        }
-
+                    if (mCategoryListResults.get(j).constKey.equals("01")) {
+                        mCommentMenu.add(mCategoryListResults.get(j));
+                        continue;
+                    }
+                    if (mCategoryListResults.get(j).constKey.equals("02")) {
+                        mCommentMenu.add(mCategoryListResults.get(j));
+                        continue;
+                    }
+                    if (mCategoryListResults.get(j).constKey.equals("03")) {
+                        mCommentMenu.add(mCategoryListResults.get(j));
+                        continue;
+                    }
+                    if (mCategoryListResults.get(j).constKey.equals("04")) {
+                        mCommentMenu.add(mCategoryListResults.get(j));
+                        continue;
+                    }
+                    if (mCategoryListResults.get(j).constKey.equals(Constant.CHAT_MENU_APPOINTMENT)) {
+                        mCommentMenu.add(mCategoryListResults.get(j));
+                        continue;
+                    }
                 }
 
                 break;
@@ -100,7 +115,7 @@ public class ChatCategoryManager {
         switch (userType) {
             case 1: //技师,楼面
                 for (int i = 0; i < mCategoryListResults.size(); i++) {
-                    if (mCategoryListResults.get(i).constKey.equals("09") ) {
+                    if (mCategoryListResults.get(i).constKey.equals("09")) {
                         mMoreMenu.add(mCategoryListResults.get(i));
                     }
                 }
@@ -110,32 +125,33 @@ public class ChatCategoryManager {
                 break;
             case 3: //普通用户
                 for (int j = 0; j < mCategoryListResults.size(); j++) {
-
-                    if (mCategoryListResults.get(j).constKey.equals("05")) {
+                    if (mCustomMoreMenuShowList.contains(mCategoryListResults.get(j).constKey)) {
                         mMoreMenu.add(mCategoryListResults.get(j));
-                        continue;
                     }
-                    if (mCategoryListResults.get(j).constKey.equals("06")) {
-                        mMoreMenu.add(mCategoryListResults.get(j));
-                        continue;
-                    }
-                    if (mCategoryListResults.get(j).constKey.equals("07")) {
-                        mMoreMenu.add(mCategoryListResults.get(j));
-                        continue;
-                    }
-                    if (mCategoryListResults.get(j).constKey.equals("08")) {
-                        mMoreMenu.add(mCategoryListResults.get(j));
-                        continue;
-                    }
-                    if (mCategoryListResults.get(j).constKey.equals("09")) {
-                        mMoreMenu.add(mCategoryListResults.get(j));
-                        continue;
-                    }
-                    if (mCategoryListResults.get(j).constKey.equals("10")) {
-                        mMoreMenu.add(mCategoryListResults.get(j));
-                        continue;
-                    }
-
+//                    if (mCategoryListResults.get(j).constKey.equals("05")) {
+//                        mMoreMenu.add(mCategoryListResults.get(j));
+//                        continue;
+//                    }
+//                    if (mCategoryListResults.get(j).constKey.equals("06")) {
+//                        mMoreMenu.add(mCategoryListResults.get(j));
+//                        continue;
+//                    }
+//                    if (mCategoryListResults.get(j).constKey.equals("07")) {
+//                        mMoreMenu.add(mCategoryListResults.get(j));
+//                        continue;
+//                    }
+//                    if (mCategoryListResults.get(j).constKey.equals("08")) {
+//                        mMoreMenu.add(mCategoryListResults.get(j));
+//                        continue;
+//                    }
+//                    if (mCategoryListResults.get(j).constKey.equals("09")) {
+//                        mMoreMenu.add(mCategoryListResults.get(j));
+//                        continue;
+//                    }
+//                    if (mCategoryListResults.get(j).constKey.equals("10")) {
+//                        mMoreMenu.add(mCategoryListResults.get(j));
+//                        continue;
+//                    }
                 }
 
         }

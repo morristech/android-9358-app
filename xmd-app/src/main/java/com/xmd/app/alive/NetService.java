@@ -1,6 +1,6 @@
 package com.xmd.app.alive;
 
-import com.xmd.app.beans.BaseBean;
+import com.xmd.app.net.BaseBean;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

@@ -43,7 +43,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void hideLoading() {
         if (progressDialog != null) {
-            progressDialog.hide();
+            progressDialog.dismiss();
         }
     }
 

@@ -22,6 +22,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
 import com.hyphenate.chat.EMClient;
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -192,10 +196,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private Map<String, String> params = new HashMap<>();
 
 
-
     private boolean showOperationButtons;
 
     private String[] mContactMoreItems;
+
+    private UserInfoService userService = UserInfoServiceImpl.getInstance();
+
+    private User mUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -392,6 +399,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
             showToast("当前已经离线，请重新登录!");
             return;
         }
+        if (mUser == null) {
+            showToast("没有用户信息!");
+            return;
+        }
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_DETAIL);
         params.put(RequestConstant.KEY_USERNAME, emChatName);
@@ -406,7 +417,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void handleSayHiDetailResult(SayHiBaseResult result) {
         if (result.statusCode == 200) {
             showToast("打招呼成功");
-            HelloSettingManager.getInstance().sendHelloTemplate(emChatName, emChatId, result.userAvatar, result.userType);
+            HelloSettingManager.getInstance().sendHelloTemplate(mUser);
             saveChatContact(emChatId);
         } else {
             showToast("打招呼失败:" + result.msg);
@@ -640,6 +651,16 @@ public class ContactInformationDetailActivity extends BaseActivity {
             contactMore.setVisibility(View.VISIBLE);
         }
 
+        XLogger.d("userService", "update by customer detail data");
+        if (!TextUtils.isEmpty(mCustomerInfo.id)) {
+            mUser = new User(mCustomerInfo.userId);
+            mUser.setName(mCustomerInfo.userName);
+            mUser.setChatId(mCustomerInfo.emchatId);
+            mUser.setAvatar(mCustomerInfo.avatarUrl);
+            mUser.setMarkName(mCustomerInfo.userNoteName);
+            userService.saveUser(mUser);
+        }
+
         emChatId = mCustomerInfo.emchatId;
         chatHeadUrl = mCustomerInfo.avatarUrl;
         chatType = mCustomerInfo.customerType;
@@ -670,7 +691,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             belongTechName.setText("-");
         }
 
-        if(TextUtils.isEmpty(mCustomerInfo.emchatId) || mCustomerInfo.customerType.equals(RequestConstant.TECH_ADD)){
+        if (TextUtils.isEmpty(mCustomerInfo.emchatId) || mCustomerInfo.customerType.equals(RequestConstant.TECH_ADD)) {
             mContactMoreItems = new String[]{ResourceUtils.getString(R.string.delete_contact), ResourceUtils.getString(R.string.add_remark)};
         }
 

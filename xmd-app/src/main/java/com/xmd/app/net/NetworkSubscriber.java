@@ -1,6 +1,5 @@
 package com.xmd.app.net;
 
-import com.xmd.app.beans.BaseBean;
 import com.xmd.app.event.EventTokenExpired;
 
 import org.greenrobot.eventbus.EventBus;

@@ -3,7 +3,6 @@ package com.xmd.technician.widget.chatview;
 
 import android.Manifest;
 import android.content.Context;
-import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -24,20 +23,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.crazyman.library.PermissionTool;
 import com.hyphenate.util.EMLog;
 import com.xmd.technician.Adapter.ChatGridViewAdapter;
-
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CategoryBean;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
-import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.utils.SmileUtils;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadPoolManager;
-
 import com.xmd.technician.widget.EmojiconMenu;
 import com.xmd.technician.window.CommonMsgFragmentOne;
 import com.xmd.technician.window.CommonMsgFragmentTwo;
@@ -58,7 +53,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
     private View buttonSetModeKeyBoard;
     private LinearLayout editTextLayout;
     private View buttonSetModeVoice, buttonSend, buttonPressToSpeak;
-    private View btnPhoto, btnFace, btnCommonMsg, btnCommonCoupon, buttonMore;
+    private View btnPhoto, btnFace, btnCommonMsg, btnCommonCoupon, btnAppointment, buttonMore;
     private boolean ctrlPress = false;
     private ChatInputMenuListener inputMenuListener;
     private ChatSentSpecialListener specialListener;
@@ -73,10 +68,11 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
     private GridView chatGridView;
     private ChatGridViewAdapter mGridViewAdapter;
 
-    private ImageView inputImagePhoto, inputImageFace, inputImageCommonMsg, inputImageCoupon, inputImageMore;
+    private ImageView inputImagePhoto, inputImageFace, inputImageCommonMsg, inputImageCoupon, inputImageAppointment, inputImageMore;
     private List<CategoryBean> moreMenuList;
     private List<ImageView> imageList;
     private String[] permissions = {Manifest.permission.RECORD_AUDIO};
+
     public EaseChatInputMenu(Context context) {
         this(context, null);
         init(context, null);
@@ -108,6 +104,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         btnPhoto = mView.findViewById(R.id.btn_photo);
         btnCommonMsg = mView.findViewById(R.id.btn_common_msg);
         btnCommonCoupon = mView.findViewById(R.id.btn_common_coupon);
+        btnAppointment = mView.findViewById(R.id.btn_appointment);
         btnFace = mView.findViewById(R.id.rl_face);
         commentMessageView = (ViewPager) findViewById(R.id.comment_msg_view);
         indicatorRight = (ImageView) findViewById(R.id.round_indicator_right);
@@ -118,6 +115,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         inputImageFace = (ImageView) findViewById(R.id.input_img_face);
         inputImageCommonMsg = (ImageView) findViewById(R.id.input_img_common_msg);
         inputImageCoupon = (ImageView) findViewById(R.id.input_img_coupon);
+        inputImageAppointment = (ImageView) findViewById(R.id.input_img_appointment);
         inputImageMore = (ImageView) findViewById(R.id.input_img_more);
         imageList.clear();
         imageList.add(inputImagePhoto);
@@ -134,6 +132,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         btnPhoto.setOnClickListener(this);
         btnCommonMsg.setOnClickListener(this);
         btnCommonCoupon.setOnClickListener(this);
+        btnAppointment.setOnClickListener(this);
         btnFace.setOnClickListener(this);
         mEditText.requestFocus();
         initEmojicon();
@@ -192,7 +191,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-                if (inputMenuListener != null ) {
+                if (inputMenuListener != null) {
                     return inputMenuListener.onPressToSpeakBtnTouch(v, event);
                 }
                 return false;
@@ -216,19 +215,20 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
             for (int i = 0; i < commentView.size(); i++) {
 
                 if ((commentView.get(i).constKey).equals("01")) {
-                    btnPhoto.setVisibility(View.VISIBLE);
+                    btnPhoto.setVisibility(VISIBLE);
                 }
                 if ((commentView.get(i).constKey).equals("02")) {
-                    btnFace.setVisibility(View.VISIBLE);
+                    btnFace.setVisibility(VISIBLE);
                 }
                 if ((commentView.get(i).constKey).equals("03")) {
-                    btnCommonMsg.setVisibility(View.VISIBLE);
+                    btnCommonMsg.setVisibility(VISIBLE);
                 }
                 if ((commentView.get(i).constKey).equals("04")) {
-                    btnCommonCoupon.setVisibility(View.VISIBLE);
+                    btnCommonCoupon.setVisibility(VISIBLE);
                 }
-
-
+                if ((commentView.get(i).constKey).equals(Constant.CHAT_MENU_APPOINTMENT)) {
+                    btnAppointment.setVisibility(VISIBLE);
+                }
             }
         }
 
@@ -253,7 +253,9 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 initIconImageView(null, null);
 
-                if ((moreMenuList.get(position).constKey).equals("05")) {
+                if ((moreMenuList.get(position).constKey).equals(Constant.CHAT_MENU_APPOINTMENT_REQUEST)) {
+                    specialListener.onAppointmentRequestClicked();
+                } else if ((moreMenuList.get(position).constKey).equals("05")) {
                     specialListener.onBegRewordClicked();
                 } else if ((moreMenuList.get(position).constKey).equals("06")) {
                     specialListener.onMarketClicked();
@@ -398,6 +400,11 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
                     specialListener.onCouponClicked();
                 }
                 initIconImageView(btnCommonCoupon, inputImageCoupon);
+                break;
+            case R.id.btn_appointment:
+                if (specialListener != null) {
+                    specialListener.onAppointmentClicked();
+                }
                 break;
             case R.id.btn_more:
                 initIconImageView(buttonMore, inputImageMore);
@@ -604,7 +611,15 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
          */
         void onLocationClicked();
 
+        /**
+         * 预约信息
+         */
+        void onAppointmentClicked();
 
+        /**
+         * 求预约
+         */
+        void onAppointmentRequestClicked();
     }
 
 }

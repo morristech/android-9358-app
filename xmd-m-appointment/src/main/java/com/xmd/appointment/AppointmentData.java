@@ -20,19 +20,27 @@ import java.util.Date;
  */
 
 public class AppointmentData implements Serializable {
+    private boolean needSubmit; //是否直接提交
+
     private Date time; //到店时间
     private int duration; //持续时间，分钟
-    private String customerName;//客户名称
-    private String customerPhone;//客户电话
-    private Integer fontMoney; //订金
+
+    private Integer fontMoney; //订金，单位分
 
     private Technician technician; //技师信息
     private ServiceItem serviceItem; //服务信息
     private AppointmentSetting appointmentSetting; //额外信息
 
-    private String userId;
+    private String customerId;
+    private String customerName;//客户名称
+    private String customerPhone;//客户电话
 
     public ObservableBoolean submitEnable = new ObservableBoolean();
+
+
+    private boolean submitSuccess; //预约结果
+    private String submitErrorString; //失败原因
+    private String submitOrderId; //预约成功返回的订单ID
 
     @BindingAdapter("techName")
     public static void setTechName(TextView view, AppointmentData data) {
@@ -127,17 +135,25 @@ public class AppointmentData implements Serializable {
 
     public void setAppointmentSetting(AppointmentSetting appointmentSetting) {
         this.appointmentSetting = appointmentSetting;
-        if (appointmentSetting != null && appointmentSetting.getDownPayment() > 0) {
-            setFontMoney(appointmentSetting.getDownPayment());
+        if (appointmentSetting != null) {
+            if (appointmentSetting.getDownPayment() > 0) {
+                setFontMoney(appointmentSetting.getDownPayment() * 100);
+            }
+            if (customerPhone == null) {
+                customerPhone = appointmentSetting.getPhoneNum();
+            }
+            if (customerName == null) {
+                customerName = appointmentSetting.getUserName();
+            }
         }
     }
 
-    public String getUserId() {
-        return userId;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     @BindingAdapter("appointmentTime")
@@ -147,5 +163,55 @@ public class AppointmentData implements Serializable {
         } else {
             view.setText("--:--");
         }
+    }
+
+    public boolean isNeedSubmit() {
+        return needSubmit;
+    }
+
+    public void setNeedSubmit(boolean needSubmit) {
+        this.needSubmit = needSubmit;
+    }
+
+    public boolean isSubmitSuccess() {
+        return submitSuccess;
+    }
+
+    public void setSubmitSuccess(boolean submitSuccess) {
+        this.submitSuccess = submitSuccess;
+    }
+
+    public String getSubmitErrorString() {
+        return submitErrorString;
+    }
+
+    public void setSubmitErrorString(String submitErrorString) {
+        this.submitErrorString = submitErrorString;
+    }
+
+    public String getSubmitOrderId() {
+        return submitOrderId;
+    }
+
+    public void setSubmitOrderId(String submitOrderId) {
+        this.submitOrderId = submitOrderId;
+    }
+
+    @Override
+    public String toString() {
+        return "AppointmentData{" +
+                "needSubmit=" + needSubmit +
+                ", time=" + time +
+                ", duration=" + duration +
+                ", fontMoney=" + fontMoney +
+                ", technician=" + (technician == null ? "null" : technician.getId()) +
+                ", serviceItem=" + (serviceItem == null ? "null" : serviceItem.getId()) +
+                ", customerId='" + customerId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", submitSuccess=" + submitSuccess +
+                ", submitErrorString='" + submitErrorString + '\'' +
+                ", submitOrderId='" + submitOrderId + '\'' +
+                '}';
     }
 }

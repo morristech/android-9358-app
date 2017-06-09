@@ -1,7 +1,6 @@
 package com.xmd.appointment;
 
-import com.shidou.commonlibrary.util.DateUtils;
-import com.xmd.app.beans.BaseBean;
+import com.xmd.app.net.BaseBean;
 import com.xmd.app.net.NetworkEngine;
 import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.app.net.RetrofitFactory;
@@ -23,7 +22,6 @@ class DataManager {
     }
 
     private DataManager() {
-
     }
 
     private Subscription mLoadTechnicianList;
@@ -73,18 +71,15 @@ class DataManager {
         }
     }
 
-
     //创建订单
     public void submitAppointment(AppointmentData data, NetworkSubscriber<BaseBean> listener) {
-        int dateId = (int) ((data.getTime().getTime() - data.getAppointmentSetting().getNowTime()) / DateUtils.DAY_TIME_MS);
         NetworkEngine.doRequest(
                 RetrofitFactory.getService(NetService.class).submitAppointment(
                         data.getCustomerName(),
                         data.getCustomerPhone(),
-                        dateId,
-                        DateUtils.getSdf("HH:mm").format(data.getTime()),
+                        data.getTime().getTime(),
                         data.getTechnician() == null ? null : data.getTechnician().getId(),
-                        data.getUserId(),
+                        data.getCustomerId(),
                         data.getServiceItem() == null ? null : data.getServiceItem().getId(),
                         data.getDuration()), listener);
     }

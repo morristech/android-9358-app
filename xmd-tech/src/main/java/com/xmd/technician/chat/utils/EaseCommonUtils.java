@@ -15,11 +15,17 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.HanziToPinyin;
 import com.hyphenate.util.PathUtil;
+import com.xmd.chat.ChatConstants;
+import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.ChatRowViewFactory;
+import com.xmd.chat.message.ChatMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.chatview.BaseEaseChatView;
 import com.xmd.technician.chat.chatview.ChatRowActivityView;
+import com.xmd.technician.chat.chatview.ChatRowAppointmentRequestView;
+import com.xmd.technician.chat.chatview.ChatRowAppointmentView;
 import com.xmd.technician.chat.chatview.ChatRowBegRewardView;
 import com.xmd.technician.chat.chatview.ChatRowCouponView;
 import com.xmd.technician.chat.chatview.ChatRowGameReceivedAcceptOrRefusedView;
@@ -256,10 +262,15 @@ public class EaseCommonUtils {
     }
 
     public static int getCustomChatType(EMMessage message) {
+        ChatMessage chatMessage = ChatMessageFactory.get(message);
+        int viewType = ChatRowViewFactory.getViewType(chatMessage);
+        if (viewType != ChatConstants.CHAT_ROW_VIEW_DEFAULT) {
+            return viewType;
+        }
         int type = 0;
         if (message.getType() == EMMessage.Type.TXT) {
             String msgType = message.getStringAttribute("msgType", "");
-            if(Utils.isNotEmpty(msgType)){
+            if (Utils.isNotEmpty(msgType)) {
                 if (msgType.equals("reward")) {
                     type = ChatConstant.MESSAGE_RECEIVE_REWARD_TYPE;
                 } else if (msgType.equals("begReward")) {
@@ -295,7 +306,7 @@ public class EaseCommonUtils {
                     type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_LOCATION_TYPE : ChatConstant.MESSAGE_SENT_LOCATION_TYPE;
                 } else if (msgType.equals("mark")) {
                     type = ChatConstant.MESSAGE_SENT_REVOKE_MESSAGE_TYPE;
-                } else  {
+                } else {
                     type = message.direct() == EMMessage.Direct.RECEIVE ? ChatConstant.MESSAGE_RECEIVE_ACTIVITY_TYPE : ChatConstant.MESSAGE_SENT_ACTIVITY_TYPE;
                 }
             }
@@ -305,6 +316,19 @@ public class EaseCommonUtils {
 
     public static BaseEaseChatView getCustomChatView(Context context, EMMessage message, int position, BaseAdapter adapter) {
         BaseEaseChatView chatRow = null;
+        ChatMessage chatMessage = ChatMessageFactory.get(message);
+        switch (chatMessage.getMsgType()) {
+            case ChatMessage.MSG_TYPE_ORDER_START:
+            case ChatMessage.MSG_TYPE_ORDER_REFUSE:
+            case ChatMessage.MSG_TYPE_ORDER_CONFIRM:
+            case ChatMessage.MSG_TYPE_ORDER_CANCEL:
+            case ChatMessage.MSG_TYPE_ORDER_SUCCESS:
+                return new ChatRowAppointmentView(context, chatMessage.getEmMessage(), position, adapter);
+            case ChatMessage.MSG_TYPE_ORDER_REQUEST:
+                return new ChatRowAppointmentRequestView(context, chatMessage.getEmMessage(), position, adapter);
+            default:
+                break;
+        }
         String messageCustomType = message.getStringAttribute(ChatConstant.KEY_CUSTOM_TYPE, "");
         if (Utils.isNotEmpty(messageCustomType)) {
             if (messageCustomType.equals(ChatConstant.KEY_CHAT_RECEIVE_REWARD) || messageCustomType.equals(ChatConstant.KEY_CHAT_SENT_REWARD_TYPE)) {
@@ -344,8 +368,8 @@ public class EaseCommonUtils {
                 chatRow = message.direct() == EMMessage.Direct.RECEIVE ? new ChatRowLocationView(context, message, position, adapter) : new ChatRowLocationView(context, message, position, adapter);
             } else if (messageCustomType.equals(ChatConstant.KEY_REVOKE_TYPE)) {
                 chatRow = new ChatRowWithdrawView(context, message, position, adapter);
-            }else{
-                chatRow = new ChatRowActivityView(context,message,position,adapter);
+            } else {
+                chatRow = new ChatRowActivityView(context, message, position, adapter);
             }
         } else {
             Logger.e("9358", "未获取的类型");

@@ -5,6 +5,7 @@ package com.xmd.app;
  */
 
 public class Constants {
+    public static final String EXTAR_EVENT_TAG = "extra_event_tag";
     public static final String EXTRA_DATA = "extra_data";
 
     //技师状态

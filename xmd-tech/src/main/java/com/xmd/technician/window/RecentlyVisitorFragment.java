@@ -12,7 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.technician.Adapter.RecentlyVisitorAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -22,7 +25,6 @@ import com.xmd.technician.bean.SayHiVisitorResult;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.ChatUser;
-
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -137,7 +139,7 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
             }
 
             // 环信打招呼
-            HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId, result.userAvatar, result.userType);
+            HelloSettingManager.getInstance().sendHelloTemplate(UserInfoServiceImpl.getInstance().getUserByChatId(result.userEmchatId));
 
             Map<String, String> saveParams = new HashMap<>();
             saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, result.userEmchatId);
@@ -175,6 +177,16 @@ public class RecentlyVisitorFragment extends BaseFragment implements SwipeRefres
                 mVisitors.addAll(result.respData);
                 adapter.setIsNoMore(currentGetSize < pageSize);
                 adapter.setData(mVisitors);
+
+                XLogger.d("userService", "update by recently visitor data");
+                for (RecentlyVisitorBean visitor : result.respData) {
+                    User user = new User(visitor.userId);
+                    user.setChatId(visitor.emchatId);
+                    user.setName(visitor.userName);
+                    user.setMarkName(visitor.userNoteName);
+                    user.setAvatar(visitor.avatarUrl);
+                    UserInfoServiceImpl.getInstance().saveUser(user);
+                }
             }
         }
         isRefresh = false;

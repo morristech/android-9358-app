@@ -7,6 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.technician.Adapter.NearbyCusAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -15,7 +18,6 @@ import com.xmd.technician.bean.SayHiNearbyResult;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.ChatUser;
-
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -209,6 +211,16 @@ public class NearbyActivity extends BaseActivity {
             }
             mAdapterList.addAll(result.respData);
             mCusAdapter.setData(mAdapterList);
+
+            //缓存用户基本信息
+            XLogger.d("userService", "update by nearby data");
+            for (NearbyCusInfo info : result.respData) {
+                User user = new User(info.userId);
+                user.setName(info.userName);
+                user.setAvatar(info.userAvatar);
+                user.setChatId(info.userEmchatId);
+                UserInfoServiceImpl.getInstance().saveUser(user);
+            }
         } else {
             makeShortToast(result.msg);
         }
@@ -218,7 +230,7 @@ public class NearbyActivity extends BaseActivity {
     private void handleSayHiNearbyResult(SayHiNearbyResult result) {
         if (result != null && result.statusCode == 200) {
             //环信招呼
-            HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId, result.userAvatar, result.userType);
+            HelloSettingManager.getInstance().sendHelloTemplate(UserInfoServiceImpl.getInstance().getUserByChatId(result.userEmchatId));
             //刷新打招呼次数
             updateHelloLeftCount(result.respData.technicianLeft);
             //保存用户好友关系链

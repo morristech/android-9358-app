@@ -82,7 +82,7 @@
                     android:background="@color/colorWhite"
                     android:onClick="@{()->handler.onClickSelectService()}"
                     android:orientation="horizontal"
-                    android:padding="8dp">
+                    android:padding="16dp">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -137,7 +137,7 @@
                     android:layout_marginTop="8dp"
                     android:background="@color/colorWhite"
                     android:onClick="@{()->handler.onClickSelectTime()}"
-                    android:padding="8dp">
+                    android:padding="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -160,7 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
-                    android:padding="8dp">
+                    android:padding="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -243,7 +243,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text='@{data.fontMoney+"元"}' />
+                        android:text='@{data.fontMoney/100+"元"}' />
                 </LinearLayout>
 
             </LinearLayout>
@@ -269,7 +269,7 @@
                 android:layout_marginTop="8dp"
                 android:enabled="@{data.submitEnable}"
                 android:onClick="@{()->handler.onClickSubmit()}"
-                android:text="提交预约" />
+                android:text='@{data.needSubmit?"提交预约":"发回客户进行确认"}' />
         </LinearLayout>
 
     </LinearLayout>

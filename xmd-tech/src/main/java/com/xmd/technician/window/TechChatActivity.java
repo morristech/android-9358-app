@@ -25,6 +25,15 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EasyUtils;
+import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.appointment.AppointmentData;
+import com.xmd.appointment.AppointmentEvent;
+import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.order.ChatOrderManager;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -47,19 +56,15 @@ import com.xmd.technician.chat.ChatCategoryManager;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.ChatSentMessageHelper;
-import com.xmd.technician.chat.ChatUser;
-
 import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.chat.event.CancelGame;
 import com.xmd.technician.chat.chatrow.EaseCustomChatRowProvider;
 import com.xmd.technician.chat.chatview.BaseEaseChatView;
 import com.xmd.technician.chat.chatview.EMessageListItemClickListener;
 import com.xmd.technician.chat.chatview.EaseChatMessageList;
 import com.xmd.technician.chat.controller.ChatUI;
+import com.xmd.technician.chat.event.CancelGame;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
-import com.xmd.technician.chat.utils.UserUtils;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
@@ -84,6 +89,9 @@ import com.xmd.technician.widget.chatview.EaseChatInputMenu.ChatInputMenuListene
 import com.xmd.technician.widget.chatview.EaseChatInputMenu.ChatSentSpecialListener;
 import com.xmd.technician.widget.chatview.EaseVoiceRecorderView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,6 +107,7 @@ import rx.Subscription;
  */
 
 public class TechChatActivity extends BaseActivity implements EMMessageListener {
+    private static final String TAG = "TechChatActivity";
     @Bind(R.id.message_list_view)
     EaseChatMessageList messageList;
     @Bind(R.id.voice_recorder)
@@ -172,24 +181,38 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     private boolean mInUserBlacklist = false;
     private String[] permission = {Manifest.permission.RECORD_AUDIO};
 
+    private UserInfoService userService = UserInfoServiceImpl.getInstance();
+    private User mUser;
+
+    private boolean isInSubmitAppointment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tech_chat);
         ButterKnife.bind(this);
 
+        toChatUserId = getIntent().getStringExtra(ChatConstant.TO_CHAT_USER_ID);
+        mUser = userService.getUserByChatId(toChatUserId);
+        if (mUser == null) {
+            XToast.show("无法找到用户：" + toChatUserId);
+            finish();
+            return;
+        }
+
         initView();
         initSendCoupon();
         initOrderManager();
         initPlayCreditGame();
         initGoldAnimationView();
+        initAppointment();
     }
 
     private void initView() {
         setBackVisible(true);
         mListView = messageList.getListView();
         chatType = ChatConstant.CHAT_TYPE_SINGLE;
-        toChatUserId = getIntent().getStringExtra(ChatConstant.TO_CHAT_USER_ID);
+
         chatUserType = UserProfileProvider.getInstance().getChatUserInfo(toChatUserId).getUserChatType();
         mSwipeRefreshLayout = messageList.getSwipeRefreshLayout();
         mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.primary_button_color_normal));
@@ -197,20 +220,16 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         inputMenu.setFragmentManager(getSupportFragmentManager());
 
+
+        chatSentMessageHelper = new ChatSentMessageHelper(TechChatActivity.this, toChatUserId, messageList, true);
         setUpView();
     }
 
     private void setUpView() {
-        setTitle(toChatUserId);
+        setTitle(mUser.getShowName());
         initListener();
         initProvider();
         categoryManager = ChatCategoryManager.getInstance();
-        if (UserUtils.getUserInfo(toChatUserId) != null) {
-            ChatUser user = UserUtils.getUserInfo(toChatUserId);
-            if (user != null) {
-                setTitle(user.getNick());
-            }
-        }
         adverseName = mAppTitle.getText().toString();
         if (chatType != ChatConstant.CHAT_TYPE_CHATROOM) {
             onConversationInit();
@@ -240,11 +259,11 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         );
 
         categoryManager.getChatManagerData();
-        chatSentMessageHelper = new ChatSentMessageHelper(TechChatActivity.this, toChatUserId, messageList, true);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_IN_USER_BLACKLIST, toChatUserId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MARK_CHAT_TO_USER);
     }
 
+    //初始化消息菜单事件监听
     private void initListener() {
         inputMenuListener = new EaseChatInputMenu.ChatInputMenuListener() {
             @Override
@@ -344,12 +363,64 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 if (null != locationBean) {
                     chatSentMessageHelper.sendLocationMessage(locationBean.lat, locationBean.lng, locationBean.address, locationBean.staticMap);
                 }
-
             }
 
+            //预约
+            @Override
+            public void onAppointmentClicked() {
+                if (isInSubmitAppointment) {
+                    XToast.show("正在处理，请稍后");
+                    return;
+                }
+                isInSubmitAppointment = true;
+                EventBusSafeRegister.register(TechChatActivity.this);
+                AppointmentData data = new AppointmentData();
+                data.setCustomerId(mUser.getId());
+                data.setCustomerName(mUser.getName());
+                EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, TAG, data));
+            }
+
+            @Override
+            public void onAppointmentRequestClicked() {
+                EMMessage message = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", toChatUserId);
+                chatSentMessageHelper.sendMessage(new ChatMessage(message, ChatMessage.MSG_TYPE_ORDER_REQUEST));
+            }
         };
         inputMenu.setChatInputMenuListener(inputMenuListener);
         inputMenu.setChatSentSpecialListener(specialInputListener);
+    }
+
+    //处理预约界面返回的数据
+    @Subscribe
+    public void onAppointmentEvent(AppointmentEvent event) {
+        if (!TAG.equals(event.getTag())) {
+            return;
+        }
+        if (event.getCmd() == AppointmentEvent.CMD_HIDE) {
+            EventBusSafeRegister.unregister(this);
+            if (event.getData() != null) {
+                if (ChatOrderManager.isFreeAppointment(event.getData(), null)) {
+                    //免费预约，发送确认消息
+                    isInSubmitAppointment = false;
+                    chatSentMessageHelper.sendMessage(ChatOrderManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
+                } else {
+                    //付费预约，先生成订单，然后发送确认消息
+                    EventBusSafeRegister.register(this);
+                    EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT, TAG, event.getData()));
+                }
+            } else {
+                isInSubmitAppointment = false;
+            }
+        } else if (event.getCmd() == AppointmentEvent.CMD_SUBMIT_RESULT) {
+            isInSubmitAppointment = false;
+            EventBusSafeRegister.unregister(this);
+            if (event.getData().isSubmitSuccess()) {
+                //生成订单成功，发送确认消息
+                chatSentMessageHelper.sendMessage(ChatOrderManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
+            } else {
+                XToast.show("生成订单失败：" + event.getData().getSubmitErrorString());
+            }
+        }
     }
 
     private void initProvider() {
@@ -388,7 +459,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     }
 
     private void onMessageListInit() {
-        messageList.init(toChatUserId, chatType, chatRowProvider);
+        messageList.init(toChatUserId, chatType, chatRowProvider, chatSentMessageHelper);
         setListItemClickListener();
 
         messageList.getListView().setOnTouchListener(new View.OnTouchListener() {
@@ -402,6 +473,11 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         });
 
         isMessageListInited = true;
+    }
+
+    //初始化预约信息
+    private void initAppointment() {
+
     }
 
     @Override
@@ -827,7 +903,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         if (result.statusCode == 200) {
             mInUserBlacklist = result.respData;
         }
-        if(null != chatSentMessageHelper){
+        if (null != chatSentMessageHelper) {
             chatSentMessageHelper.setInUserBlackList(result.respData);
         }
 
@@ -859,17 +935,17 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     @Override
     public void onMessageReceived(List<EMMessage> list) {
         for (EMMessage message : list) {
-            String username = null;
+            String chatId = null;
             // group message
             if (message.getChatType() == EMMessage.ChatType.GroupChat || message.getChatType() == EMMessage.ChatType.ChatRoom) {
-                username = message.getTo();
+                chatId = message.getTo();
             } else {
                 // single chat message
-                username = message.getFrom();
+                chatId = message.getFrom();
             }
 
             // if the message is for current conversation
-            if (username.equals(toChatUserId) || message.getTo().equals(toChatUserId)) {
+            if (chatId.equals(toChatUserId) || message.getTo().equals(toChatUserId)) {
                 messageList.refreshSelectLast();
                 ChatUI.getInstance().getNotifier().vibrateAndPlayTone(message);
                 mConversation.markMessageAsRead(message.getMsgId());
