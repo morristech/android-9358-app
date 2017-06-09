@@ -229,7 +229,7 @@ public class NotifyManager {
         mPos.printText("项目: ", TextUtils.isEmpty(info.itemName) ? "到店选择" : info.itemName);
         mPos.printDivide();
         mPos.printText("到店: ", info.appointTime);
-        mPos.printText("已付: ", Utils.moneyToStringEx(info.downPayment) + "元");
+        mPos.printText("已付: ", info.downPayment + "元");
         mPos.printDivide();
         mPos.printText("订单编号: ", info.id);
         mPos.printText("下单时间: ", info.createdAt);
