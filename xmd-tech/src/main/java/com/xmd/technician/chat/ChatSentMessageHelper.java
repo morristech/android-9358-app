@@ -10,7 +10,6 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.chat.chatview.EaseChatMessageList;
@@ -48,10 +47,10 @@ public class ChatSentMessageHelper {
 
     public void sendTextMessage(String content) {
         //FIXME
-        OrderChatMessage chatMessage = new OrderChatMessage(EMMessage.createTxtSendMessage(content, mToChatEmchatId), ChatMessage.MSG_TYPE_ORDER_START);
-        sendMessage(chatMessage);
-//        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
-//        sendMessage(new ChatMessage(message, null));
+//        OrderChatMessage chatMessage = new OrderChatMessage(EMMessage.createTxtSendMessage(content, mToChatEmchatId), ChatMessage.MSG_TYPE_ORDER_START);
+//        sendMessage(chatMessage);
+        EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
+        sendMessage(new ChatMessage(message, null));
     }
 
 
