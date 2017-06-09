@@ -11,22 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
-
-
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.chat.event.DeleteConversionResult;
 import com.xmd.technician.chat.ChatConstant;
-
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.UserProfileProvider;
+import com.xmd.technician.chat.event.DeleteConversionResult;
 import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.chat.event.ReceiveMessage;
 import com.xmd.technician.chat.utils.UserUtils;
@@ -34,9 +33,11 @@ import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ContactPermissionChatResult;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.ChatMessageManagerDialog;
 import com.xmd.technician.widget.EmptyView;
 
@@ -74,6 +75,46 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.message_fragment_title);
         return view;
+    }
+
+    private void initToolBarCustomerService() {
+        LinearLayout container = (LinearLayout) getView().findViewById(R.id.contact_more);
+        container.setVisibility(View.VISIBLE);
+        ImageView imageView = (ImageView) getView().findViewById(R.id.toolbar_right_img);
+        imageView.setImageResource(R.drawable.ic_customer_service);
+        TextView checkBox = new TextView(getContext());
+        boolean open = true;
+        if (open) {
+            checkBox.setTag("checked");
+            checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);
+        } else {
+            checkBox.setTag(null);
+            checkBox.setBackgroundResource(R.drawable.ic_checkbox_close);
+        }
+        container.addView(checkBox);
+        ((LinearLayout.LayoutParams) checkBox.getLayoutParams()).leftMargin = 16;
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkBox.getTag() == null) {
+                    checkBox.setTag("checked");
+                    checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);
+                } else {
+                    new AlertDialogBuilder(getContext())
+                            .setTitle("提示")
+                            .setMessage("关闭后，收到客服消息后不会进行提醒，不影响接收其他消息，12小时后会自动开启，是否要关闭？")
+                            .setPositiveButton("取消", null)
+                            .setNegativeButton("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    checkBox.setTag(null);
+                                    checkBox.setBackgroundResource(R.drawable.ic_checkbox_close);
+                                }
+                            })
+                            .show();
+                }
+            }
+        });
     }
 
     @Override
@@ -122,7 +163,11 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         );
 
         //监听新的消息，刷新
-        mNewMessageSubscription = RxBus.getInstance().toObservable(ReceiveMessage.class).subscribe(receiveMessage ->onRefresh() );
+        mNewMessageSubscription = RxBus.getInstance().toObservable(ReceiveMessage.class).subscribe(receiveMessage -> onRefresh());
+
+        if (true || LoginTechnician.getInstance().getRoles() != null && LoginTechnician.getInstance().getRoles().contains(Constant.ROLE_CUSTOMER_SERVICE)) {
+            initToolBarCustomerService();
+        }
     }
 
     @Override
@@ -208,18 +253,18 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             intent.putExtra(ChatConstant.EMCHAT_ID, username);
             startActivity(intent);
         } else {
-            if(conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())){
+            if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
                 tochat = conversation.getLastMessage().getTo();
-            }else{
+            } else {
                 tochat = conversation.getLastMessage().getFrom();
             }
-            if(null != UserProfileProvider.getInstance().getChatUserInfo(tochat) ){
+            if (null != UserProfileProvider.getInstance().getChatUserInfo(tochat)) {
                 mMessageFrom = UserProfileProvider.getInstance().getChatUserInfo(tochat).getUserType();
             }
 
-            if(Utils.isEmpty(mMessageFrom)||mMessageFrom.equals(ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)){
+            if (Utils.isEmpty(mMessageFrom) || mMessageFrom.equals(ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)) {
                 getContactPermissionChat(conversation);
-            }else{
+            } else {
                 Intent intent = new Intent(getContext(), TechChatActivity.class);
                 intent.putExtra(ChatConstant.TO_CHAT_USER_ID, tochat);
                 getActivity().startActivity(intent);

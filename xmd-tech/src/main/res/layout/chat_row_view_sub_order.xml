@@ -75,7 +75,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="4dp"
+            android:visibility="@{handler.serviceVisible?View.VISIBLE:View.GONE}">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,7 +96,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="4dp"
+            android:visibility="@{handler.techVisible?View.VISIBLE:View.GONE}">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -229,10 +231,5 @@
             android:padding="8dp"
             android:text="@{data.innerProcessed}"
             android:visibility="@{data.innerProcessed==null?View.GONE:View.VISIBLE}" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:debug_info="@{handler.mAppointmentData}" />
     </LinearLayout>
 </layout>

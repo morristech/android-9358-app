@@ -33,7 +33,7 @@ import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.chat.order.ChatOrderManager;
+import com.xmd.chat.order.OrderChatManager;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -52,7 +52,6 @@ import com.xmd.technician.bean.PlayDiceGame;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserWin;
-import com.xmd.technician.chat.ChatCategoryManager;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.ChatSentMessageHelper;
@@ -70,7 +69,6 @@ import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.CategoryListResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.InUserBlacklistResult;
 import com.xmd.technician.http.gson.MarkChatToUserResult;
@@ -153,7 +151,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     private GameSettingDialog mGameSettingDialog;
     private FlowerAnimation animation;
     private MarkChatToUserBean locationBean;
-    private ChatCategoryManager categoryManager;
 
     private List<CouponInfo> mCouponList; //
     private List<CouponInfo> mSelectedCouponInfo;//选中的优惠券列表
@@ -229,7 +226,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         setTitle(mUser.getShowName());
         initListener();
         initProvider();
-        categoryManager = ChatCategoryManager.getInstance();
         adverseName = mAppTitle.getText().toString();
         if (chatType != ChatConstant.CHAT_TYPE_CHATROOM) {
             onConversationInit();
@@ -254,11 +250,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         );
         mInUserBlacklistSubscription = RxBus.getInstance().toObservable(InUserBlacklistResult.class).subscribe(
                 result -> handlerUserInBlacklist(result));
-        mChatCategorySubscription = RxBus.getInstance().toObservable(CategoryListResult.class).subscribe(
-                result -> handlerCategoryList(result)
-        );
 
-        categoryManager.getChatManagerData();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_IN_USER_BLACKLIST, toChatUserId);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MARK_CHAT_TO_USER);
     }
@@ -307,13 +299,13 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             }
 
             @Override
-            public void onMarketClicked() {
+            public void onActivityClicked() {
                 Intent marketIntent = new Intent(TechChatActivity.this, MarketingChatShareActivity.class);
                 startActivityForResult(marketIntent, GET_MARKETING_CODE);
             }
 
             @Override
-            public void periodicalClicked() {
+            public void sendJournalClicked() {
                 Intent journalIntent = new Intent(TechChatActivity.this, ClubJournalChatShareActivity.class);
                 startActivityForResult(journalIntent, GET_JOURNAL_CODE);
             }
@@ -324,7 +316,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             }
 
             @Override
-            public void onPreferenceClicked() {
+            public void onSendMallInfoClicked() {
                 Intent journalIntent = new Intent(TechChatActivity.this, MallDiscountChatShareActivity.class);
                 startActivityForResult(journalIntent, GET_PREFERENTIAL_CODE);
             }
@@ -399,10 +391,10 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         if (event.getCmd() == AppointmentEvent.CMD_HIDE) {
             EventBusSafeRegister.unregister(this);
             if (event.getData() != null) {
-                if (ChatOrderManager.isFreeAppointment(event.getData(), null)) {
+                if (OrderChatManager.isFreeAppointment(event.getData(), null)) {
                     //免费预约，发送确认消息
                     isInSubmitAppointment = false;
-                    chatSentMessageHelper.sendMessage(ChatOrderManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
+                    chatSentMessageHelper.sendMessage(OrderChatManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
                 } else {
                     //付费预约，先生成订单，然后发送确认消息
                     EventBusSafeRegister.register(this);
@@ -416,7 +408,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             EventBusSafeRegister.unregister(this);
             if (event.getData().isSubmitSuccess()) {
                 //生成订单成功，发送确认消息
-                chatSentMessageHelper.sendMessage(ChatOrderManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
+                chatSentMessageHelper.sendMessage(OrderChatManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
             } else {
                 XToast.show("生成订单失败：" + event.getData().getSubmitErrorString());
             }
@@ -505,16 +497,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 mSendDiceGameSubscription, mAcceptGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription
                 , mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription, mCreditStatusSubscription,
                 mGiftResultSubscription, mClubUserGetCouponSubscription, mClubPositionSubscription, mInUserBlacklistSubscription, mChatCategorySubscription);
-    }
-
-
-    private void handlerCategoryList(CategoryListResult result) {
-        if (result.statusCode == 200) {
-            categoryManager.initial();
-            categoryManager.setCategoryList(result.respData);
-            inputMenu.setCommentMenuView(categoryManager.getCommentMenu(chatUserType));
-            inputMenu.setMoreMenuView(categoryManager.getMoreMenu(chatUserType));
-        }
     }
 
 

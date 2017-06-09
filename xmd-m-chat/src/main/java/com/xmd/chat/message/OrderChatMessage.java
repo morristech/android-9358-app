@@ -8,12 +8,14 @@ import com.hyphenate.chat.EMMessage;
  */
 
 public class OrderChatMessage extends ChatMessage {
-
+    private final static String ATTR_ORDER_CUSTOMER_PHONE = "orderCustomerPhone"; //客户手机
+    private final static String ATTR_ORDER_CUSTOMER_NAME = "orderCustomerName"; //客户名称
     private final static String ATTR_ORDER_TECH_ID = "orderTechId"; //技师ID
     private final static String ATTR_ORDER_TECH_NAME = "orderTechName";//技师名字
     private final static String ATTR_ORDER_TECH_AVATAR = "orderTechAvatar"; //技师头像
     private final static String ATTR_ORDER_SERVICE_ID = "orderServiceId";//项目ID
     private final static String ATTR_ORDER_SERVICE_NAME = "orderServiceName";//项目名字
+    private final static String ATTR_ORDER_SERVICE_PRICE = "orderServicePrice"; //项目价格
     private final static String ATTR_ORDER_SERVICE_TIME = "orderServiceTime";// 到店时间
     private final static String ATTR_ORDER_SERVICE_DURATION = "orderServiceDuration";//服务时长，单位分钟
     private final static String ATTR_ORDER_ID = "orderId";//订单ID
@@ -25,6 +27,22 @@ public class OrderChatMessage extends ChatMessage {
 
     public OrderChatMessage(EMMessage emMessage, String msgType) {
         super(emMessage, msgType);
+    }
+
+    public String getCustomerName() {
+        return getSafeStringAttribute(ATTR_ORDER_CUSTOMER_NAME);
+    }
+
+    public void setCustomerName(String customerName) {
+        setAttr(ATTR_ORDER_CUSTOMER_NAME, customerName);
+    }
+
+    public String getCustomerPhone() {
+        return getSafeStringAttribute(ATTR_ORDER_CUSTOMER_PHONE);
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        setAttr(ATTR_ORDER_CUSTOMER_PHONE, customerPhone);
     }
 
     public String getOrderTechId() {
@@ -65,6 +83,14 @@ public class OrderChatMessage extends ChatMessage {
 
     public void setOrderServiceName(String orderServiceName) {
         setAttr(ATTR_ORDER_SERVICE_NAME, orderServiceName);
+    }
+
+    public Integer getOrderServicePrice() {
+        return getSafeIntergeAttribute(ATTR_ORDER_SERVICE_PRICE);
+    }
+
+    public void setOrderServicePrice(Integer orderServicePrice) {
+        setAttr(ATTR_ORDER_SERVICE_PRICE, orderServicePrice);
     }
 
     public Long getOrderServiceTime() {

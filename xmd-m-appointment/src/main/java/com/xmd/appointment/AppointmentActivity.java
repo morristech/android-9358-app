@@ -21,9 +21,7 @@ import com.xmd.app.Constants;
 import com.xmd.app.net.BaseBean;
 import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.appointment.beans.AppointmentSettingResult;
-import com.xmd.appointment.beans.ServiceData;
 import com.xmd.appointment.beans.ServiceItem;
-import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.appointment.databinding.ActivityAppointmentBinding;
 
@@ -103,9 +101,6 @@ public class AppointmentActivity extends BaseActivity
                         hideLoading();
                         mData.setAppointmentSetting(result.getRespData());
                         mBinding.setData(mData);
-                        if (mData.getServiceItem() != null) {
-                            loadServiceInfo(mData.getServiceItem().getId());
-                        }
                     }
 
                     @Override
@@ -116,33 +111,33 @@ public class AppointmentActivity extends BaseActivity
                 });
     }
 
-    private void loadServiceInfo(final String serviceId) {
-        showLoading();
-        DataManager.getInstance().loadServiceList(new NetworkSubscriber<ServiceListResult>() {
-            @Override
-            public void onCallbackSuccess(ServiceListResult result) {
-                hideLoading();
-                for (ServiceData data : result.getRespData()) {
-                    if (data.itemList == null || data.itemList.size() == 0) {
-                        continue;
-                    }
-                    for (ServiceItem item : data.itemList) {
-                        if (item.getId().equals(serviceId)) {
-                            mData.setServiceItem(item);
-                            mBinding.setData(mData);
-                            return;
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                hideLoading();
-                mData.setServiceItem(null);
-            }
-        });
-    }
+//    private void loadServiceInfo(final String serviceId) {
+//        showLoading();
+//        DataManager.getInstance().loadServiceList(new NetworkSubscriber<ServiceListResult>() {
+//            @Override
+//            public void onCallbackSuccess(ServiceListResult result) {
+//                hideLoading();
+//                for (ServiceData data : result.getRespData()) {
+//                    if (data.itemList == null || data.itemList.size() == 0) {
+//                        continue;
+//                    }
+//                    for (ServiceItem item : data.itemList) {
+//                        if (item.getId().equals(serviceId)) {
+//                            mData.setServiceItem(item);
+//                            mBinding.setData(mData);
+//                            return;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCallbackError(Throwable e) {
+//                hideLoading();
+//                mData.setServiceItem(null);
+//            }
+//        });
+//    }
 
     /************************技师选择***********************/
     //点击选择技师

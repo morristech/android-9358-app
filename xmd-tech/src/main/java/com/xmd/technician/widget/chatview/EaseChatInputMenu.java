@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -25,14 +24,14 @@ import android.widget.TextView;
 
 import com.hyphenate.util.EMLog;
 import com.xmd.technician.Adapter.ChatGridViewAdapter;
-import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.bean.CategoryBean;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.utils.SmileUtils;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
 import com.xmd.technician.common.ThreadPoolManager;
+import com.xmd.technician.permission.CheckBusinessPermission;
+import com.xmd.technician.permission.PermissionConstants;
 import com.xmd.technician.widget.EmojiconMenu;
 import com.xmd.technician.window.CommonMsgFragmentOne;
 import com.xmd.technician.window.CommonMsgFragmentTwo;
@@ -69,7 +68,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
     private ChatGridViewAdapter mGridViewAdapter;
 
     private ImageView inputImagePhoto, inputImageFace, inputImageCommonMsg, inputImageCoupon, inputImageAppointment, inputImageMore;
-    private List<CategoryBean> moreMenuList;
+    private List<MoreMenuItem> moreMenuList = new ArrayList<>();
     private List<ImageView> imageList;
     private String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
@@ -101,15 +100,19 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         buttonMore = mView.findViewById(R.id.btn_more);
         editTextLayout = (LinearLayout) mView.findViewById(R.id.edit_text_layout);
         emojiconMenu = (EmojiconMenu) mView.findViewById(R.id.emojicon_menu_container);
+
         btnPhoto = mView.findViewById(R.id.btn_photo);
+        btnFace = mView.findViewById(R.id.rl_face);
         btnCommonMsg = mView.findViewById(R.id.btn_common_msg);
         btnCommonCoupon = mView.findViewById(R.id.btn_common_coupon);
         btnAppointment = mView.findViewById(R.id.btn_appointment);
-        btnFace = mView.findViewById(R.id.rl_face);
+
+
+        mCommonMsgLayout = findViewById(R.id.common_msg_layout);
         commentMessageView = (ViewPager) findViewById(R.id.comment_msg_view);
         indicatorRight = (ImageView) findViewById(R.id.round_indicator_right);
         indicatorLeft = (ImageView) findViewById(R.id.round_indicator_left);
-        mCommonMsgLayout = findViewById(R.id.common_msg_layout);
+
         chatGridView = (GridView) findViewById(R.id.chat_grid_view);
         inputImagePhoto = (ImageView) findViewById(R.id.input_img_photo);
         inputImageFace = (ImageView) findViewById(R.id.input_img_face);
@@ -129,14 +132,10 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         buttonSend.setOnClickListener(this);
         buttonMore.setOnClickListener(this);
         mEditText.setOnClickListener(this);
-        btnPhoto.setOnClickListener(this);
-        btnCommonMsg.setOnClickListener(this);
-        btnCommonCoupon.setOnClickListener(this);
-        btnAppointment.setOnClickListener(this);
-        btnFace.setOnClickListener(this);
+
+
         mEditText.requestFocus();
-        initEmojicon();
-        initChatGridView();
+
 
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -198,78 +197,157 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
             }
         });
 
+        initMenuPicture();
+        initMenuEmoji();
+        initMenuFastReply();
+        initMenuCoupon();
+        initMenuOrder();
 
+        initMenuOrderRequst();
+        initMenuRewardRequest();
+        initMenuActivity();
+        initMenuJournal();
+        initMenuMall();
+        initMenuCreditGames();
+        initMenuLocation();
+
+        initMoreMenu();
     }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_PICTURE)
+    public void initMenuPicture() {
+        btnPhoto.setVisibility(VISIBLE);
+        btnPhoto.setOnClickListener(this);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_EMOJI)
+    public void initMenuEmoji() {
+        btnFace.setVisibility(VISIBLE);
+        btnFace.setOnClickListener(this);
+        emojiconMenu.setEmojiconMenuListener(new EmojiconMenu.EmojiconMenuListener() {
+            @Override
+            public void onEmojiconClicked(Emojicon emojicon) {
+                int index = mEditText.getSelectionStart();
+                Editable edit = mEditText.getEditableText();
+                edit.insert(index, SmileUtils.getSmiledText(mContext, emojicon.getEmojiText()));
+            }
+        });
+        emojiconMenu.init(Arrays.asList(DefaultEmojiconDatas.getData()));
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_FAST_REPLY)
+    public void initMenuFastReply() {
+        btnCommonMsg.setVisibility(VISIBLE);
+        btnCommonMsg.setOnClickListener(this);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_COUPON)
+    public void initMenuCoupon() {
+        btnCommonCoupon.setVisibility(VISIBLE);
+        btnCommonCoupon.setOnClickListener(this);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER)
+    public void initMenuOrder() {
+        btnAppointment.setVisibility(VISIBLE);
+        btnAppointment.setOnClickListener(this);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER_REQUEST)
+    public void initMenuOrderRequst() {
+        moreMenuList.add(new MoreMenuItem("求预约", R.drawable.ic_order_request, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                specialListener.onAppointmentRequestClicked();
+            }
+        }));
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_REWARD)
+    public void initMenuRewardRequest() {
+        moreMenuList.add(new MoreMenuItem("求打赏", R.drawable.chat_pay_icon_bg, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                specialListener.onBegRewordClicked();
+            }
+        }));
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ACTIVITY)
+    public void initMenuActivity() {
+        moreMenuList.add(new MoreMenuItem("营销活动", R.drawable.chat_market_icon_bg, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                specialListener.onActivityClicked();
+            }
+        }));
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_JOURNAL)
+    public void initMenuJournal() {
+        moreMenuList.add(new MoreMenuItem("电子期刊", R.drawable.chat_periodical_icon_bg, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                specialListener.sendJournalClicked();
+            }
+        }));
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_MALL_INFO)
+    public void initMenuMall() {
+        moreMenuList.add(new MoreMenuItem("特惠商城", R.drawable.chat_preference_icon_bg, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                specialListener.onSendMallInfoClicked();
+            }
+        }));
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_PLAY_CREDIT_GAME)
+    public void initMenuCreditGames() {
+        moreMenuList.add(new MoreMenuItem("积分游戏", R.drawable.chat_game_icon_bg, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                specialListener.onGameClicked();
+            }
+        }));
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_LOCATION)
+    public void initMenuLocation() {
+        moreMenuList.add(new MoreMenuItem("会所位置", R.drawable.chat_position_icon_bg, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                specialListener.onLocationClicked();
+            }
+        }));
+    }
+
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
-    public void setCommentMenuView(List<CategoryBean> commentView) {
+    public static class MoreMenuItem {
+        public String name;
+        public int iconId;
+        public OnClickListener listener;
 
-        if (commentView.size() == 0) {
-            btnPhoto.setVisibility(View.VISIBLE);
-            btnFace.setVisibility(View.VISIBLE);
-            buttonMore.setVisibility(View.GONE);
-        } else {
-            for (int i = 0; i < commentView.size(); i++) {
-
-                if ((commentView.get(i).constKey).equals("01")) {
-                    btnPhoto.setVisibility(VISIBLE);
-                }
-                if ((commentView.get(i).constKey).equals("02")) {
-                    btnFace.setVisibility(VISIBLE);
-                }
-                if ((commentView.get(i).constKey).equals("03")) {
-                    btnCommonMsg.setVisibility(VISIBLE);
-                }
-                if ((commentView.get(i).constKey).equals("04")) {
-                    btnCommonCoupon.setVisibility(VISIBLE);
-                }
-                if ((commentView.get(i).constKey).equals(Constant.CHAT_MENU_APPOINTMENT)) {
-                    btnAppointment.setVisibility(VISIBLE);
-                }
-            }
+        public MoreMenuItem(String name, int iconId, OnClickListener listener) {
+            this.name = name;
+            this.iconId = iconId;
+            this.listener = listener;
         }
-
     }
 
-    public void setMoreMenuView(List<CategoryBean> moreView) {
-        this.moreMenuList = moreView;
-        if (moreView.size() == 0) {
+    public void initMoreMenu() {
+        if (moreMenuList.size() == 0) {
             buttonMore.setVisibility(View.GONE);
         } else {
             buttonMore.setVisibility(View.VISIBLE);
-            this.moreMenuList = moreView;
-            mGridViewAdapter.setData(moreMenuList);
+            mGridViewAdapter = new ChatGridViewAdapter(mContext, moreMenuList);
+            chatGridView.setAdapter(mGridViewAdapter);
         }
-    }
-
-    private void initChatGridView() {
-        mGridViewAdapter = new ChatGridViewAdapter(mContext, moreMenuList);
-        chatGridView.setAdapter(mGridViewAdapter);
-        chatGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                initIconImageView(null, null);
-
-                if ((moreMenuList.get(position).constKey).equals(Constant.CHAT_MENU_APPOINTMENT_REQUEST)) {
-                    specialListener.onAppointmentRequestClicked();
-                } else if ((moreMenuList.get(position).constKey).equals("05")) {
-                    specialListener.onBegRewordClicked();
-                } else if ((moreMenuList.get(position).constKey).equals("06")) {
-                    specialListener.onMarketClicked();
-                } else if ((moreMenuList.get(position).constKey).equals("07")) {
-                    specialListener.periodicalClicked();
-                } else if ((moreMenuList.get(position).constKey).equals("08")) {
-                    specialListener.onPreferenceClicked();
-                } else if ((moreMenuList.get(position).constKey).equals("09")) {
-                    specialListener.onGameClicked();
-                } else {
-                    specialListener.onLocationClicked();
-                }
-            }
-        });
     }
 
     private void initCommentMessageView(View view) {
@@ -351,18 +429,6 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         });
     }
 
-    private void initEmojicon() {
-        emojiconMenu.setEmojiconMenuListener(new EmojiconMenu.EmojiconMenuListener() {
-            @Override
-            public void onEmojiconClicked(Emojicon emojicon) {
-                int index = mEditText.getSelectionStart();
-                Editable edit = mEditText.getEditableText();
-                edit.insert(index, SmileUtils.getSmiledText(mContext, emojicon.getEmojiText()));
-            }
-        });
-        emojiconMenu.init(Arrays.asList(DefaultEmojiconDatas.getData()));
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -415,7 +481,6 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
     }
 
     public void initIconImageView(View parentView, View childrenView) {
-
         if (parentView == null || childrenView == null) {
             for (int i = 0; i < imageList.size(); i++) {
                 imageList.get(i).setSelected(false);
@@ -584,12 +649,12 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         /**
          * 营销活动
          */
-        void onMarketClicked();
+        void onActivityClicked();
 
         /**
          * 电子期刊
          */
-        void periodicalClicked();
+        void sendJournalClicked();
 
         /**
          * 个人名片(不用)
@@ -599,7 +664,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         /**
          * 特惠商城
          */
-        void onPreferenceClicked();
+        void onSendMallInfoClicked();
 
         /**
          * 游戏

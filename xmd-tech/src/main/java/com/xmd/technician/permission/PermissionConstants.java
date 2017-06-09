@@ -27,13 +27,24 @@ public class PermissionConstants {
     public final static String MOMENT = "moment";//动态
     public final static String NEARBY_USER = "nearby_user";//附近的人
     public final static String RANKING_TECHNICIAN = "ranking_technician";//技师排行榜
+
+    public final static String MESSAGE_SEND_PICTURE = "message_send_picture";//发送图片
+    public final static String MESSAGE_SEND_EMOJI = "message_send_emoji";//发送表情
     public final static String MESSAGE_FAST_REPLY = "message_fast_reply";//快速回复
-    public final static String MESSAGE_SEND_REWARD = "message_send_reward";//打赏
+    public final static String MESSAGE_SEND_ORDER = "message_send_order"; //发送预约
     public final static String MESSAGE_SEND_COUPON = "message_send_coupon";//发送优惠券
+    public final static String MESSAGE_SEND_ORDER_REQUEST = "message_send_order_request";//求预约
+    public final static String MESSAGE_SEND_REWARD = "message_send_reward";//求打赏
+    public final static String MESSAGE_SEND_ACTIVITY = "message_send_activity";//发送营销活动
+    public final static String MESSAGE_SEND_JOURNAL = "message_send_journal";//发送电子期刊
+    public final static String MESSAGE_SEND_MALL_INFO = "message_send_mall_info";//发送商城信息
+    public final static String MESSAGE_SEND_LOCATION = "message_send_location"; //发送位置
     public final static String MESSAGE_PLAY_CREDIT_GAME = "message_play_credit_game";//积分游戏
+
     public final static String CONTACTS_VISITOR = "contacts_visitor";//最近访客
     public final static String CONTACTS_CUSTOMER = "contacts_customer";//全部客户
     public final static String CONTACTS_ADD_CUSTOMER = "contacts_add_customer";//添加客户
     public final static String CONTACTS_MY_CLUB = "contacts_my_club";//本店
+
 
 }

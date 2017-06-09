@@ -398,7 +398,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void initTitleView(View view) {
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_page);
         ((TextView) view.findViewById(R.id.toolbar_title)).setTextColor(Color.WHITE);
-        view.findViewById(R.id.divide_line).setVisibility(View.GONE);
         mContactMore = (LinearLayout) view.findViewById(R.id.contact_more);
         mContactMore.setVisibility(View.VISIBLE);
         mContactMore.setOnClickListener(this);

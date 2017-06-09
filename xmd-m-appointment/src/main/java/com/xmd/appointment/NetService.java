@@ -20,6 +20,7 @@ import rx.Observable;
 public interface NetService {
     /**
      * 获取技师列表
+     *
      * @param itemId   项目ID	string	非必填
      * @param sortId   排序ID	string	非必填，0-按星级；1-按评论数排序,
      * @param status   技师状态	string	非必填,free-只查空闲
@@ -55,7 +56,6 @@ public interface NetService {
      *
      * @param customerName    顾客名称	string	必填
      * @param customerPhone   顾客手机	string	必填
-     * @param dateId          预约指定的天	number	必填, 从0开始 ， 0代表当天， 1代表明天，以处类推
      * @param time            预约时间	string	必填, 格式HH:mm
      * @param techId          被预约技师ID	string	非必填
      * @param userId          预约用户ID	string	非必填
@@ -64,11 +64,14 @@ public interface NetService {
      */
     @POST("/spa-manager/api/v2/tech/order/save")
     @FormUrlEncoded
-    Observable<BaseBean> submitAppointment(@Field("customerName") String customerName,
-                                           @Field("phoneNum") String customerPhone,
-                                           @Field("appointTime") Long time,
-                                           @Field("techId") String techId,
-                                           @Field("userId") String userId,
-                                           @Field("itemId") String serviceId,
-                                           @Field("serviceDuration") Integer serviceDuration);
+    Observable<BaseBean> submitAppointment(
+            @Field("orderId") String orderId,
+            @Field("customerName") String customerName,
+            @Field("phoneNum") String customerPhone,
+            @Field("appointTime") Long time,
+            @Field("userId") String userId,
+            @Field("cardNo") String cardNo,
+            @Field("techId") String techId,
+            @Field("itemId") String serviceId,
+            @Field("serviceDuration") String serviceDuration);
 }

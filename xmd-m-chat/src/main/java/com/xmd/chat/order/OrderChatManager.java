@@ -16,14 +16,14 @@ import java.util.Date;
  * 聊天创建或者管理订单
  */
 
-public class ChatOrderManager {
-    private static final ChatOrderManager ourInstance = new ChatOrderManager();
+public class OrderChatManager {
+    private static final OrderChatManager ourInstance = new OrderChatManager();
 
-    public static ChatOrderManager getInstance() {
+    public static OrderChatManager getInstance() {
         return ourInstance;
     }
 
-    private ChatOrderManager() {
+    private OrderChatManager() {
     }
 
 
@@ -39,13 +39,9 @@ public class ChatOrderManager {
         }
         if (user != null) {
             data.setCustomerId(user.getId());
-            data.setCustomerName(user.getName());
         }
-
-        //设置到店时间
-        if (chatMessage.getOrderServiceTime() != null) {
-            data.setTime(new Date(chatMessage.getOrderServiceTime()));
-        }
+        data.setCustomerName(chatMessage.getCustomerName());
+        data.setCustomerPhone(chatMessage.getCustomerPhone());
 
         //设置技师信息
         if (chatMessage.getOrderTechId() != null) {
@@ -61,9 +57,16 @@ public class ChatOrderManager {
             ServiceItem serviceItem = new ServiceItem();
             serviceItem.setId(chatMessage.getOrderServiceId());
             serviceItem.setName(chatMessage.getOrderServiceName());
+            if (chatMessage.getOrderServicePrice() != null) {
+                serviceItem.setPrice(String.valueOf(chatMessage.getOrderServicePrice()));
+            }
             data.setServiceItem(serviceItem);
         }
 
+        //设置到店时间
+        if (chatMessage.getOrderServiceTime() != null) {
+            data.setTime(new Date(chatMessage.getOrderServiceTime()));
+        }
         //设置服务时长
         if (chatMessage.getOrderServiceDuration() != null) {
             data.setDuration(chatMessage.getOrderServiceDuration());
@@ -73,10 +76,23 @@ public class ChatOrderManager {
         if (chatMessage.getOrderPayMoney() != null) {
             data.setFontMoney(chatMessage.getOrderPayMoney());
         }
+
+        //设置订单信息
+        if (chatMessage.getOrderId() != null) {
+            data.setSubmitSuccess(true);
+            data.setSubmitErrorString(null);
+            data.setSubmitOrderId(chatMessage.getOrderId());
+        }
         return data;
     }
 
-    public static void fillMessageWithAppointmentData(OrderChatMessage chatMessage, AppointmentData data) {
+    public static void fillMessage(OrderChatMessage chatMessage, AppointmentData data) {
+        if (data.getCustomerName() != null) {
+            chatMessage.setCustomerName(data.getCustomerName());
+        }
+        if (data.getCustomerPhone() != null) {
+            chatMessage.setCustomerPhone(data.getCustomerPhone());
+        }
         if (data.getTime() != null) {
             chatMessage.setOrderServiceTime(data.getTime().getTime());
         }
@@ -88,6 +104,9 @@ public class ChatOrderManager {
         if (data.getServiceItem() != null) {
             chatMessage.setOrderServiceId(data.getServiceItem().getId());
             chatMessage.setOrderServiceName(data.getServiceItem().getName());
+            if (data.getServiceItem().getPrice() != null) {
+                chatMessage.setOrderServicePrice(Integer.parseInt(data.getServiceItem().getPrice()));
+            }
         }
         if (data.getDuration() > 0) {
             chatMessage.setOrderServiceDuration(data.getDuration());
@@ -122,7 +141,7 @@ public class ChatOrderManager {
         String content = getMsgTypeText(msgType);
         OrderChatMessage msg = new OrderChatMessage(EMMessage.createTxtSendMessage(content, toChatId), msgType);
         if (data != null) {
-            fillMessageWithAppointmentData(msg, data);
+            fillMessage(msg, data);
         }
         return msg;
     }

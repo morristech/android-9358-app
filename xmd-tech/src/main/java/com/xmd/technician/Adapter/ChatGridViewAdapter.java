@@ -8,9 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.bean.CategoryBean;
+import com.xmd.technician.widget.chatview.EaseChatInputMenu;
 
 import java.util.List;
 
@@ -20,31 +19,31 @@ import java.util.List;
 
 public class ChatGridViewAdapter extends BaseAdapter {
 
-    private List<CategoryBean> mCategoryBeanList;
+    private List<EaseChatInputMenu.MoreMenuItem> mDataList;
     private Context mContext;
 
-    public ChatGridViewAdapter(Context contexts, List<CategoryBean> mCategoryBeans) {
+    public ChatGridViewAdapter(Context contexts, List<EaseChatInputMenu.MoreMenuItem> dataList) {
         super();
         mContext = contexts;
-        this.mCategoryBeanList = mCategoryBeans;
+        this.mDataList = dataList;
     }
 
-    public void setData(List<CategoryBean> categoryBeans) {
-        this.mCategoryBeanList = categoryBeans;
+    public void setData(List<EaseChatInputMenu.MoreMenuItem> dataList) {
+        this.mDataList = dataList;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        if (null != mCategoryBeanList) {
-            return mCategoryBeanList.size();
+        if (null != mDataList) {
+            return mDataList.size();
         }
         return 0;
     }
 
     @Override
     public Object getItem(int position) {
-        return mCategoryBeanList.get(position);
+        return mDataList.get(position);
     }
 
     @Override
@@ -64,22 +63,9 @@ public class ChatGridViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        if ((mCategoryBeanList.get(position).constKey).equals(Constant.CHAT_MENU_APPOINTMENT_REQUEST)) {
-            viewHolder.mImageView.setImageResource(R.drawable.ic_order_request);
-        } else if ((mCategoryBeanList.get(position).constKey).equals("05")) {
-            viewHolder.mImageView.setImageResource(R.drawable.chat_pay_icon_bg);
-        } else if ((mCategoryBeanList.get(position).constKey).equals("06")) {
-            viewHolder.mImageView.setImageResource(R.drawable.chat_market_icon_bg);
-        } else if ((mCategoryBeanList.get(position).constKey).equals("07")) {
-            viewHolder.mImageView.setImageResource(R.drawable.chat_periodical_icon_bg);
-        } else if ((mCategoryBeanList.get(position).constKey).equals("08")) {
-            viewHolder.mImageView.setImageResource(R.drawable.chat_preference_icon_bg);
-        } else if ((mCategoryBeanList.get(position).constKey).equals("09")) {
-            viewHolder.mImageView.setImageResource(R.drawable.chat_game_icon_bg);
-        } else {
-            viewHolder.mImageView.setImageResource(R.drawable.chat_position_icon_bg);
-        }
-        viewHolder.mTextView.setText(mCategoryBeanList.get(position).constValue);
+        viewHolder.mImageView.setImageResource(mDataList.get(position).iconId);
+        viewHolder.mTextView.setText(mDataList.get(position).name);
+        viewHolder.mImageView.setOnClickListener(mDataList.get(position).listener);
         return convertView;
     }
 

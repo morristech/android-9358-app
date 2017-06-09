@@ -74,13 +74,18 @@ class DataManager {
     //创建订单
     public void submitAppointment(AppointmentData data, NetworkSubscriber<BaseBean> listener) {
         NetworkEngine.doRequest(
-                RetrofitFactory.getService(NetService.class).submitAppointment(
-                        data.getCustomerName(),
-                        data.getCustomerPhone(),
-                        data.getTime().getTime(),
-                        data.getTechnician() == null ? null : data.getTechnician().getId(),
-                        data.getCustomerId(),
-                        data.getServiceItem() == null ? null : data.getServiceItem().getId(),
-                        data.getDuration()), listener);
+                RetrofitFactory
+                        .getService(NetService.class)
+                        .submitAppointment(
+                                null,
+                                data.getCustomerName(),
+                                data.getCustomerPhone(),
+                                data.getTime().getTime(),
+                                data.getCustomerId(),
+                                null,
+                                data.getTechnician() == null ? null : data.getTechnician().getId(),
+                                data.getServiceItem() == null ? null : data.getServiceItem().getId(),
+                                String.valueOf(data.getDuration())),
+                listener);
     }
 }

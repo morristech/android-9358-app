@@ -74,7 +74,9 @@ public class BaseFragment extends Fragment {
         }
     }
 
-    /**                         Interface                           **/
+    /**
+     * Interface
+     **/
     public interface IFragmentCallback {
         //void handleBackPressed();
     }
