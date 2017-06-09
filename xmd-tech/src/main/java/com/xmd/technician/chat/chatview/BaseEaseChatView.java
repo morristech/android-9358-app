@@ -320,6 +320,8 @@ public abstract class BaseEaseChatView extends LinearLayout {
                     Utils.makeShortToast(mContext, ResourceUtils.getString(R.string.user_not_login));
                 }else if(errorCode ==EMError.USER_LOGIN_ANOTHER_DEVICE){
                     Utils.makeShortToast(mContext, ResourceUtils.getString(R.string.user_login_on_another_device));
+                }else if(errorCode == EMError.USER_PERMISSION_DENIED){
+                //    Utils.makeShortToast(mContext, ResourceUtils.getString(R.string.permission_anomaly));
                 }else{
                     Utils.makeShortToast(mContext, ResourceUtils.getString(R.string.network_anomaly));
                 }

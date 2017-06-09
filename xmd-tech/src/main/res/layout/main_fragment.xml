@@ -35,57 +35,66 @@
                     android:layout_height="wrap_content"
                     android:fillViewport="true"
                     android:scrollbars="none">
-
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/app_bg"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/app_bg"
+                            android:orientation="vertical">
 
-                        <include layout="@layout/layout_main_head" />
+                            <include layout="@layout/layout_main_head" />
 
-                        <include
-                            android:id="@+id/statistic_layout"
-                            layout="@layout/layout_main_tech_work_item"
-                            android:visibility="gone" />
+                            <include
+                                android:id="@+id/statistic_layout"
+                                layout="@layout/layout_main_tech_work_item"
+                                android:visibility="gone" />
 
-                        <include
-                            android:id="@+id/online_pay_notify_layout"
-                            layout="@layout/layout_main_pay_notify"
-                            android:visibility="gone" />
+                            <include
+                                android:id="@+id/online_pay_notify_layout"
+                                layout="@layout/layout_main_pay_notify"
+                                android:visibility="gone" />
 
-                        <include
-                            android:id="@+id/order_layout"
-                            layout="@layout/layout_main_tech_order"
-                            android:visibility="gone" />
+                            <include
+                                android:id="@+id/order_layout"
+                                layout="@layout/layout_main_tech_order"
+                                android:visibility="gone" />
 
-                        <include
-                            android:id="@+id/visitor_layout"
-                            layout="@layout/layout_main_who_care_me"
-                            android:visibility="gone" />
+                            <include
+                                android:id="@+id/visitor_layout"
+                                layout="@layout/layout_main_who_care_me"
+                                android:visibility="gone" />
 
-                        <include
-                            android:id="@+id/moment_layout"
-                            layout="@layout/layout_main_new_dynamic"
-                            android:visibility="gone" />
+                            <include
+                                android:id="@+id/moment_layout"
+                                layout="@layout/layout_main_new_dynamic"
+                                android:visibility="gone" />
 
-                        <include
-                            android:id="@+id/nearby_layout"
-                            layout="@layout/layout_main_nearby"
-                            android:visibility="gone"/>
+                            <include
+                                android:id="@+id/nearby_layout"
+                                layout="@layout/layout_main_nearby"
+                                android:visibility="gone"/>
 
-                        <include
-                            android:id="@+id/layout_technician_ranking"
-                            layout="@layout/layout_technician_ranking"
-                            android:visibility="gone" />
-                        <include
-                            android:id="@+id/layout_technician_pk_ranking"
-                            layout="@layout/layout_team_pk_item"
-                            android:visibility="gone"/>
+                            <include
+                                android:id="@+id/layout_technician_ranking"
+                                layout="@layout/layout_technician_ranking"
+                                android:visibility="gone" />
+                            <include
+                                android:id="@+id/layout_technician_pk_ranking"
+                                layout="@layout/layout_team_pk_item"
+                                android:visibility="gone"/>
 
-                        <include layout="@layout/layout_main_bottom" />
+                            <include layout="@layout/layout_main_bottom" />
 
-                    </LinearLayout>
+                        </LinearLayout>
+                        <View
+                            android:id="@+id/view_transparent"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#00FFFFFF"/>
+                    </FrameLayout>
+
                 </android.support.v4.widget.NestedScrollView>
             </android.support.v4.widget.SwipeRefreshLayout>
 

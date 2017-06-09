@@ -207,7 +207,6 @@ public class TechShareCardActivity extends BaseActivity {
         String filePath = Environment.getExternalStorageDirectory()+"/"+ResourceUtils.getString(R.string.save_tech_card_path)+".jpg";
         if(FileUtils.checkFileExist(filePath,false)){
             makeShortToast(ResourceUtils.getString(R.string.had_saved_tech_card));
-
         }else{
             ThreadPoolManager.run(new Runnable() {
                 @Override

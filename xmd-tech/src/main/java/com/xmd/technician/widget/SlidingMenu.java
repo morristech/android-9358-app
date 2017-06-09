@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.nineoldandroids.view.ViewHelper;
 import com.xmd.technician.R;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.Utils;
 
 /**
@@ -37,7 +38,15 @@ public class SlidingMenu extends HorizontalScrollView {
 
     private ViewGroup mMenu;
     private ViewGroup mContent;
+    private CloseOrOpenListener mcloseOrOpenListener;
 
+    public interface CloseOrOpenListener{
+        void isOpen(boolean isOpen);
+    }
+
+    public void setOnCloseOrOpenListener(CloseOrOpenListener statusChangedListener){
+        this.mcloseOrOpenListener = statusChangedListener;
+    }
     public SlidingMenu(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         this.setFocusable(true);
@@ -111,10 +120,12 @@ public class SlidingMenu extends HorizontalScrollView {
                     this.smoothScrollTo(mMenuWidth, 0);
                     mContent.setAlpha(1.0f);
                     isOpen = false;
+                    mcloseOrOpenListener.isOpen(false);
                 } else {
                     this.smoothScrollTo(0, 0);
                     mContent.setAlpha(0.7f);
                     isOpen = true;
+                    mcloseOrOpenListener.isOpen(true);
                 }
 
                 return true;
@@ -133,6 +144,7 @@ public class SlidingMenu extends HorizontalScrollView {
         this.smoothScrollTo(0, 0);
         mContent.setAlpha(0.7f);
         isOpen = true;
+        mcloseOrOpenListener.isOpen(true);
     }
 
 
@@ -144,6 +156,7 @@ public class SlidingMenu extends HorizontalScrollView {
             mContent.setAlpha(1.0f);
             this.smoothScrollTo(mMenuWidth, 0);
             isOpen = false;
+            mcloseOrOpenListener.isOpen(false);
         }
     }
 

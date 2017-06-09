@@ -38,7 +38,7 @@
             android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:background="@drawable/icon22"
+            android:background="@drawable/img_default_update_head"
             android:onClick="@{()->presenter.onClickAvatar()}"
             app:borderRadius="@dimen/search_margin"
             app:type="round" />

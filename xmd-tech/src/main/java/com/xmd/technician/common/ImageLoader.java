@@ -1,6 +1,7 @@
 package com.xmd.technician.common;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -225,9 +227,19 @@ public class ImageLoader {
         try {
             MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), "code", null);
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file)));
-            Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show();
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Utils.makeShortToast(context,"保存成功");
+                }
+            });
         } catch (FileNotFoundException e) {
-            Toast.makeText(context, "保存失败", Toast.LENGTH_SHORT).show();
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Utils.makeShortToast(context,"保存失败");
+                }
+            });
             e.printStackTrace();
         }
     }
