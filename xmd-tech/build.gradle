@@ -41,9 +41,9 @@ android {
                 UMENG_CHANNEL_VALUE: "xiaomodo-tech",
         ]
 
-//        ndk {
-//            abiFilters "armeabi", "armeabi-v7a"
-//        }
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
     }
 
     lintOptions {
