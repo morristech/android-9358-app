@@ -51,6 +51,7 @@
                     android:inputType="phone"
                     android:maxLength="11"
                     android:padding="@dimen/padding_10"
+                    android:textSize="@dimen/fontHead"
                     android:textColorHint="@color/colorRemarkText" />
 
                 <Button

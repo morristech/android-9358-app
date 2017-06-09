@@ -826,6 +826,15 @@ public class ContactInformationDetailActivity extends BaseActivity {
             if (Utils.isNotEmpty(tech.respData.serialNo)) {
                 SharedPreferenceHelper.setTechNoOld(tech.respData.id, tech.respData.serialNo);
             }
+            XLogger.d("userService", "update by customer detail data");
+            if (Utils.isNotEmpty(tech.respData.id)) {
+                mUser = new User(tech.respData.id);
+                mUser.setName(tech.respData.name);
+                mUser.setChatId(tech.respData.emchatId);
+                mUser.setAvatar(tech.respData.avatarUrl);
+                mUser.setMarkName(tech.respData.name);
+                userService.saveUser(mUser);
+            }
             btnEmChat.setEnabled(true);
             contactPhone = tech.respData.phoneNum;
             emChatId = tech.respData.emchatId;
@@ -860,6 +869,15 @@ public class ContactInformationDetailActivity extends BaseActivity {
             chatHeadUrl = manager.respData.avatarUrl;
             contactPhone = manager.respData.phoneNum;
             emChatId = manager.respData.emchatId;
+            XLogger.d("userService", "update by customer detail data");
+            if (Utils.isNotEmpty(manager.respData.id)) {
+                mUser = new User(manager.respData.id);
+                mUser.setName(manager.respData.name);
+                mUser.setChatId(manager.respData.emchatId);
+                mUser.setAvatar(manager.respData.avatarUrl);
+                mUser.setMarkName(manager.respData.name);
+                userService.saveUser(mUser);
+            }
             if (Utils.isNotEmpty(emChatId)) {
                 btnEmChat.setEnabled(true);
             }

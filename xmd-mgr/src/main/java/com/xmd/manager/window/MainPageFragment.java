@@ -561,6 +561,9 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initBadCommentView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setSmoothScrollbarEnabled(true);
+        layoutManager.setAutoMeasureEnabled(true);
 
         mBadCommentList = new ArrayList<>();
 
@@ -578,7 +581,9 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 startActivity(intent);
             }
         });
-        badCommentList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        badCommentList.setLayoutManager(layoutManager);
+        badCommentList.setHasFixedSize(true);
+        badCommentList.setNestedScrollingEnabled(false);
         badCommentList.setAdapter(badCommentListAdapter);
     }
 

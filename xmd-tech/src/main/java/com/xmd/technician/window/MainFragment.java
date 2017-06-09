@@ -228,6 +228,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     SwitchButton mSwitchSound;
     @Bind(R.id.switch_vibrate)
     SwitchButton mSwitchVibrate;
+    //空View
+    @Bind(R.id.view_transparent)
+    View mViewTransparent;
 
     private OnlinePayNotifyFragment mPayNotifyFragment;
 
@@ -302,44 +305,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mChatModel.setSettingMsgSound(true);
         mChatModel.setSettingMsgSpeaker(true);
     }
-//    private void initSettingMenuView() {
-//        // sound notification is switched on or not?
-//        if (mChatModel.getSettingMsgSound()) {
-//            mSwitchSound.openSwitch();
-//        } else {
-//            mSwitchSound.closeSwitch();
-//        }
-//
-//        // vibrate notification is switched on or not?
-//        if (mChatModel.getSettingMsgVibrate()) {
-//            mSwitchVibrate.openSwitch();
-//        } else {
-//            mSwitchVibrate.closeSwitch();
-//        }
-//    }
-//    @OnClick({R.id.switch_sound,R.id.switch_vibrate})
-//    public void onSwitchSetting(View v){
-//        switch (v.getId()){
-//            case R.id.switch_sound:
-//                if (mSwitchSound.isSwitchOpen()) {
-//                    mSwitchSound.closeSwitch();
-//                    mChatModel.setSettingMsgSound(false);
-//                } else {
-//                    mSwitchSound.openSwitch();
-//                    mChatModel.setSettingMsgSound(true);
-//                }
-//                break;
-//            case R.id.switch_vibrate:
-//                if (mSwitchVibrate.isSwitchOpen()) {
-//                    mSwitchVibrate.closeSwitch();
-//                    mChatModel.setSettingMsgVibrate(false);
-//                } else {
-//                    mSwitchVibrate.openSwitch();
-//                    mChatModel.setSettingMsgVibrate(true);
-//                }
-//                break;
-//        }
- //   }
 
     @Override
     public void onDestroy() {
@@ -374,6 +339,16 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 onScrollViewChanged(scrollX, scrollY);
+            }
+        });
+        mMainSlidingLayout.setOnCloseOrOpenListener(new SlidingMenu.CloseOrOpenListener() {
+            @Override
+            public void isOpen(boolean isOpen) {
+                    if(isOpen){
+                        mViewTransparent.setVisibility(View.VISIBLE);
+                    }else {
+                        mViewTransparent.setVisibility(View.GONE);
+                    }
             }
         });
     }
@@ -819,7 +794,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     @OnClick({R.id.menu_work_time, R.id.menu_work_project, R.id.menu_about_us, R.id.menu_suggest, R.id.settings_activity_modify_pw, R.id.settings_activity_join_club,
-            R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout})
+            R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout,R.id.view_transparent})
     public void onMainMenuSettingClicked(View view) {
         switch (view.getId()) {
             case R.id.menu_work_time:
@@ -869,6 +844,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         super.onConfirmClick();
                     }
                 }.show();
+                break;
+            case R.id.view_transparent:
+                mMainSlidingLayout.closeMenu();
                 break;
         }
     }
