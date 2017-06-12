@@ -63,6 +63,7 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
     private int unactiveCount = 0;
     private List<GroupTagList> couponGroupList = new ArrayList<>();
     private List<List<GroupTagBean>> couponChildList = new ArrayList<>();
+    private boolean sendIntervalReasonable = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -128,6 +129,7 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
 
     public void handlerGroupInfoResult(GroupInfoResult result) {
         if (result.statusCode == 200) {
+            sendIntervalReasonable = result.respData.sendIntervalReasonable;
             String s = " 本月剩余发送次数  " + String.valueOf(result.respData.limitNumber) + " 次";
             limitSendAmount.setText(Utils.changeColor(s, ResourceUtils.getColor(R.color.colorMain), 10, s.length() - 1));
             if (Utils.isNotEmpty(result.respData.sendInterval)) {
@@ -158,6 +160,10 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
                 }
                 break;
             case R.id.btn_next_step:
+                if(!sendIntervalReasonable){
+                    Utils.makeShortToast(getActivity(),"还没到下一次发送的时间哦");
+                    return;
+                }
                 if (selectCustomerCount == 0) {
                     Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.send_group_message_limit));
                     return;

@@ -861,14 +861,14 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         groupHolder.expandButton.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         groupHolder.putWayButton.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        groupHolder.expandButton.setOnClickListener(v -> {
-            groupHolder.meeageSummaryContainer.setVisibility(View.GONE);
-            groupHolder.meeageDetailContainer.setVisibility(View.VISIBLE);
-        });
-
-        groupHolder.putWayButton.setOnClickListener(v -> {
-            groupHolder.meeageSummaryContainer.setVisibility(View.VISIBLE);
-            groupHolder.meeageDetailContainer.setVisibility(View.GONE);
+        groupHolder.itemView.setOnClickListener(v -> {
+            if(groupHolder.meeageSummaryContainer.getVisibility()==View.VISIBLE){
+                groupHolder.meeageSummaryContainer.setVisibility(View.GONE);
+                groupHolder.meeageDetailContainer.setVisibility(View.VISIBLE);
+            }else {
+                groupHolder.meeageSummaryContainer.setVisibility(View.VISIBLE);
+                groupHolder.meeageDetailContainer.setVisibility(View.GONE);
+            }
         });
     }
 
