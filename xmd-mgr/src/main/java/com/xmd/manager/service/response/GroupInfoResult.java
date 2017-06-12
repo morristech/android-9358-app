@@ -27,7 +27,6 @@ public class GroupInfoResult extends BaseResult {
         public String switchX;
         public int unactiveCount;
         public int imageSize;
-
-
+        public boolean sendIntervalReasonable;
     }
 }
