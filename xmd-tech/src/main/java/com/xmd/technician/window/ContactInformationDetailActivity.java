@@ -41,6 +41,7 @@ import com.xmd.technician.bean.VisitBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.ScreenUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
@@ -54,6 +55,7 @@ import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.DropDownMenuDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.RoundImageView;
@@ -225,6 +227,24 @@ public class ContactInformationDetailActivity extends BaseActivity {
         isMyCustomer = intent.getBooleanExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
 
         initView();
+
+        ScreenUtils.initScreenSize(getWindowManager());
+
+        mContactHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (chatHeadUrl != null) {
+                    ImageView imageView = new ImageView(v.getContext());
+                    imageView.setMaxWidth(ScreenUtils.getScreenWidth() * 4 / 5);
+                    imageView.setMaxHeight(ScreenUtils.getScreenWidth() * 4 / 5);
+                    new AlertDialogBuilder(v.getContext())
+                            .setCustomView(imageView)
+                            .show();
+                    imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    Glide.with(v.getContext()).load(chatHeadUrl).into(imageView);
+                }
+            }
+        });
     }
 
     private void initView() {
@@ -456,8 +476,15 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
         if (permissionInfo != null) {
             boolean showOperation = permissionInfo.call || permissionInfo.hello || permissionInfo.sms || permissionInfo.echat;
-            btnOperation.setVisibility(showOperation ? View.VISIBLE : View.GONE);
-            layoutOperationButtons.setVisibility(showOperation ? View.VISIBLE : View.GONE);
+            if (showOperation && !permissionInfo.sms) {
+                btnOperation.setVisibility(View.GONE);
+                layoutOperationButtons.setVisibility(View.VISIBLE);
+                layoutOperationButtons.setAlpha(1.0f);
+            } else {
+                btnOperation.setVisibility(showOperation ? View.VISIBLE : View.GONE);
+                layoutOperationButtons.setVisibility(showOperation ? View.VISIBLE : View.GONE);
+            }
+
             // 更新按钮状态
             btnEmHello.setVisibility(permissionInfo.hello ? View.VISIBLE : View.GONE);
             btnEmChat.setVisibility(permissionInfo.echat ? View.VISIBLE : View.GONE);

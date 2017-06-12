@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.technician.Adapter.NearbyCusAdapter;
@@ -103,6 +104,12 @@ public class NearbyActivity extends BaseActivity {
         mFixSnapHelper = new FixPagerSnapHelper();
         mCusAdapter = new NearbyCusAdapter(this);
         mCusAdapter.setCallback((info, position) -> {
+            if (HelloSettingManager.getInstance().getTemplateId() <= 3) {
+                Intent intent = new Intent(NearbyActivity.this, HelloSettingActivity.class);
+                startActivity(intent);
+                XToast.show("请先设置打招呼模板！");
+                return;
+            }
             if (!ChatHelper.getInstance().isConnected()) {
                 showToast("当前已经离线，请稍后再试!");
                 return;

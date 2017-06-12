@@ -49,8 +49,6 @@ public class HelloSettingActivity extends BaseActivity {
     CheckBox mCustomCheck;  // 选择自定义招呼内容
     @Bind(R.id.et_custom_text_content)
     EditText mCustomText;   // 自定义内容
-    @Bind(R.id.cb_image_enable)
-    CheckBox mImageCheck;   // 选择图片
     @Bind(R.id.img_need_upload)
     RoundImageView mUploadImage;
     @Bind(R.id.btn_add_image)
@@ -133,12 +131,10 @@ public class HelloSettingActivity extends BaseActivity {
     private void initImage() {
         if (!TextUtils.isEmpty(mHelloSettingManager.getTemplateImageId()) && !TextUtils.isEmpty(mHelloSettingManager.getTemplateImageUrl())) {
             mImageId = mHelloSettingManager.getTemplateImageId();
-            mImageCheck.setChecked(true);
             mAddImgBtn.setVisibility(View.GONE);
             mUploadImage.setVisibility(View.VISIBLE);
             Glide.with(this).load(mHelloSettingManager.getTemplateImageUrl()).into(mUploadImage);
         } else {
-            mImageCheck.setChecked(false);
             mAddImgBtn.setVisibility(View.VISIBLE);
             mUploadImage.setVisibility(View.GONE);
         }
@@ -219,10 +215,6 @@ public class HelloSettingActivity extends BaseActivity {
             showToast("请输入打招呼的内容");
             return;
         }
-        if (mImageCheck.isChecked() && TextUtils.isEmpty(mImageId)) {
-            showToast("请添加打招呼的图片");
-            return;
-        }
 
         // 即将保存的内容
         if (mCustomCheck.isChecked()) {
@@ -236,7 +228,7 @@ public class HelloSettingActivity extends BaseActivity {
         }
 
         showLoading("正在提交...");
-        saveHelloTemplate(mTemplateContent, (mImageCheck.isChecked() ? mImageId : null), mTemplateId);
+        saveHelloTemplate(mTemplateContent, (mImageId != null ? mImageId : null), mTemplateId);
     }
 
     private void uploadHelloImage(String imageFile) {
