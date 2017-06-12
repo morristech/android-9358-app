@@ -14,6 +14,7 @@ import com.xmd.manager.R;
 import com.xmd.manager.adapter.CustomerTypeExpandableAdapter;
 import com.xmd.manager.beans.GroupBean;
 import com.xmd.manager.beans.GroupTagBean;
+import com.xmd.manager.beans.GroupTagList;
 import com.xmd.manager.beans.Technician;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
@@ -60,6 +61,8 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
     private int allCustomerCount = 0;
     private int activeCount = 0;
     private int unactiveCount = 0;
+    private List<GroupTagList> couponGroupList = new ArrayList<>();
+    private List<List<GroupTagBean>> couponChildList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -91,7 +94,7 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
                 Constant.USER_GROUP_TYPE_TECH,
                 Constant.USER_GROUP_TYPE_SPECIFIED};
 
-        customerExpandAdapter = new CustomerTypeExpandableAdapter(Arrays.asList(group), this);
+        customerExpandAdapter = new CustomerTypeExpandableAdapter(couponGroupList, couponChildList,CustomerTypeExpandableAdapter.GROUP_TYPE_CUSTOMER_GROUP,this);
         customerGroupListView.setAdapter(customerExpandAdapter);
 
         customerGroupListView.setOnGroupExpandListener(groupPosition -> {
@@ -105,24 +108,21 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
 
     private void initData() {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_GROUP_INFO);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ClUB_GROUP_LIST);
-        //技师列表
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_PAGE, "1");
-        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(1000));
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_TECH_LIST, params);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_GROUP_TAG_LIST, ClubData.getInstance().getClubInfo().clubId);
-    }
-
-    public void handlerGroupList(GroupListResult groupListResult) {
-        if (groupListResult.statusCode == 200) {
-            customerExpandAdapter.setChildData(2, groupListResult.respData);
-        }
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_GROUP_TAG_LIST);
     }
 
     public void handlerGroupTagList(GroupTagListResult result) {
         if (result.statusCode == 200) {
-            customerExpandAdapter.setChildData(0, result.respData);
+            couponChildList.clear();
+            couponGroupList.clear();
+            for (int i = 0; i < result.respData.size(); i++) {
+                if(result.respData.get(i).list != null){
+                    couponChildList.add(result.respData.get(i).list);
+                    couponGroupList.add(result.respData.get(i));
+                }
+            }
+
+            customerExpandAdapter.setData(couponGroupList, couponChildList);
         }
     }
 
@@ -141,12 +141,6 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
             unactiveCount = result.respData.unactiveCount;
         }
 
-    }
-
-    public void handleTechsResult(TechListResult result) {
-        if (result.statusCode == 200) {
-            customerExpandAdapter.setChildData(1, result.respData);
-        }
     }
 
     @OnClick({R.id.btn_next_step, R.id.group_all})
@@ -226,14 +220,14 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
     }
 
     public String getSelectCustomerGroupType(){
-        if(checkedGroupPosition == -1){
+        if((checkedGroupPosition == -1) || (checkedIdMap.size() == 0)){
             return "";
         }
-        return (String) customerExpandAdapter.getGroup(checkedGroupPosition);
+        return ((GroupTagList)customerExpandAdapter.getGroup(checkedGroupPosition)).category;
     }
 
     public String getSelectCustomerGroupIds(){
-        if(checkedGroupPosition == -1){
+        if((checkedGroupPosition == -1) || (checkedIdMap.size() == 0)){
             return "";
         }
 
@@ -245,7 +239,7 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
             } else if(bean instanceof GroupBean){
                 buffer.append(((GroupBean) bean).id + ",");
             } else if(bean instanceof GroupTagBean){
-                buffer.append(((GroupTagBean) bean).id + ",");
+                buffer.append(((GroupTagBean) bean).tagId + ",");
             }
         }
         return buffer.toString().substring(0, buffer.length() - 1);

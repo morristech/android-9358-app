@@ -628,4 +628,9 @@ public class CustMgmtDetailListFragment extends BaseFragment implements ListRecy
     public void onLongClicked(Customer bean) {
 
     }
+
+    @Override
+    public boolean showStatData() {
+        return false;
+    }
 }

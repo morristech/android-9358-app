@@ -106,6 +106,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         void onLongClicked(T bean);
 
         boolean isSlideable();
+
+        /**
+         * Whether to display data statistics
+         * @return
+         */
+        boolean showStatData();
     }
 
     private static final int TYPE_ORDER_ITEM = 0;
@@ -838,6 +844,20 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             groupHolder.contentTitleSummary.setVisibility(View.GONE);
         }
 
+        //效果分析数据
+        groupHolder.sendCount.setText(String.valueOf(groupMessage.sendCount));
+        groupHolder.viewCount.setText(String.valueOf(groupMessage.viewCount));
+        groupHolder.joinCount.setText(String.valueOf(groupMessage.joinCount));
+        groupHolder.shopCount.setText(String.valueOf(groupMessage.verificationCount));
+        if(mCallback.showStatData()){
+            groupHolder.stattHintText.setVisibility(View.VISIBLE);
+            groupHolder.statViewContainer.setVisibility(View.VISIBLE);
+        }else {
+            groupHolder.stattHintText.setVisibility(View.GONE);
+            groupHolder.statViewContainer.setVisibility(View.GONE);
+        }
+
+        //展开收起文字加下划线
         groupHolder.expandButton.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         groupHolder.putWayButton.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
@@ -1407,6 +1427,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         LinearLayout meeageSummaryContainer;
         @Bind(R.id.message_detail)
         LinearLayout meeageDetailContainer;
+
+        @Bind(R.id.effect_analysis_hint)
+        TextView stattHintText;
+        @Bind(R.id.effect_analysis_container)
+        LinearLayout statViewContainer;
+        @Bind(R.id.send_count_text)
+        TextView sendCount;
+        @Bind(R.id.view_count_text)
+        TextView viewCount;
+        @Bind(R.id.join_count_text)
+        TextView joinCount;
+        @Bind(R.id.shop_count_text)
+        TextView shopCount;
 
         public GroupMessageItemViewHolder(View itemView) {
             super(itemView);

@@ -256,4 +256,9 @@ public abstract class BaseListActivity<T, S extends BaseListResult> extends Base
     public void onLongClicked(T bean) {
 
     }
+
+    @Override
+    public boolean showStatData() {
+        return false;
+    }
 }

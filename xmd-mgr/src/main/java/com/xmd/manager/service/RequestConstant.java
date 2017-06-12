@@ -75,6 +75,7 @@ public class RequestConstant {
     public static final String URL_GET_GROUP_MESSAGE_LIST = BASE_URL + "/v2/manager/group/message/list";
     public static final String URL_GET_GROUP_MESSAGE_EDIT_INFO = BASE_URL + "/v2/manager/group/message/edit/info";
     public static final String URL_GROUP_MESSAGE_SEND = BASE_URL + "/v2/manager/group/message/send";
+    public static final String URL_GROUP_MESSAGE_STAT_SWITCH = BASE_URL + "/v2/manager/group/message/stat/switch";
     public static final String URL_GET_USER_REGISTER_LIST = BASE_URL + "/v2/manager/user/customer/list";
     /**
      * 电子期刊
@@ -95,7 +96,7 @@ public class RequestConstant {
     public static final String URL_GET_STATISTICS_ORDER_DATA = BASE_URL + "/v2/manager/datastatistics/order_data";
     public static final String URL_GET_CUSTOMER_VIEW = BASE_URL + "/v2/manager/user/view";
     public static final String URL_GET_CLUB_TECH_LIST = BASE_URL + "/v2/manager/club/tech/list";
-    public static final String URL_GET_CLUB_FAVOURABLE_ACTIVITY = BASE_URL + "/v2/manager/group/message/activities";
+    public static final String URL_GET_CLUB_FAVOURABLE_ACTIVITY = BASE_URL + "/v2/manager/group/message/activity/list";
 
 
     public static final String URL_TECHNICIAN_RANKING_LIST = BASE_URL + "/v2/manager/ranking_list";
@@ -142,7 +143,7 @@ public class RequestConstant {
     public static final String URL_DO_USER_ADD_GROUP = BASE_URL + "/v2/manager/group/user/addGroup";
     public static final String URL_DO_GROUP_USER_EDIT_GROUP = BASE_URL + "/v2/manager/group/user/editGroup";
     public static final String URL_DO_GROUP_MESSAGE_ALBUM_UPLOAD = BASE_URL + "/v2/manager/group/message/album/upload";
-    public static final String URL_GET_GROUP_TAG_LIST = BASE_URL + "/v2/manager/group/tags";
+    public static final String URL_GET_GROUP_TAG_LIST = BASE_URL + "/v2/manager/group/message/tag/list";
     /**
      * 自动领取优惠券
      */

@@ -17,7 +17,8 @@
         android:layout_marginRight="@dimen/inter_space"
         android:textColor="@color/colorFont2"
         android:textSize="@dimen/small_text_size"
-        android:text="推荐分类"
+        android:hint="推荐分类"
+        android:textColorHint="@color/colorFont2"
         android:visibility="gone"/>
 
     <com.xmd.manager.widget.FlowLayout

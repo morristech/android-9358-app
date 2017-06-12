@@ -191,4 +191,7 @@ public class MsgDef {
 
     //会所分组标签列表
     public static final int MSG_DEF_GET_GROUP_TAG_LIST = 0x0128;
+
+    //群发效果分析显示开关
+    public static final int MSG_DEF_GET_GROUP_STAT_SWITCH = 0x0129;
 }

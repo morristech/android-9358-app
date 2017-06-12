@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/shape_club_list_item_content"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/group_message_customer_container"
@@ -195,7 +195,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/shape_club_list_item_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/group_detail_customer_container"
@@ -341,6 +341,7 @@
 
         <!--效果分析暂时屏蔽-->
         <TextView
+            android:id="@+id/effect_analysis_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/inter_space"
@@ -353,10 +354,11 @@
             android:visibility="gone"/>
 
         <LinearLayout
+            android:id="@+id/effect_analysis_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -375,10 +377,11 @@
                     android:text="发送" />
 
                 <TextView
+                    android:id="@+id/send_count_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="@dimen/pay_margin"
+                    android:layout_marginTop="@dimen/inter_space"
                     android:textColor="@color/colorClubItemTitle"
                     android:textSize="@dimen/large_text_size"
                     tools:text="100" />
@@ -409,10 +412,11 @@
                     android:text="查看" />
 
                 <TextView
+                    android:id="@+id/view_count_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="@dimen/pay_margin"
+                    android:layout_marginTop="@dimen/inter_space"
                     android:textColor="@color/colorClubItemTitle"
                     android:textSize="@dimen/large_text_size"
                     tools:text="80" />
@@ -443,10 +447,11 @@
                     android:text="参与" />
 
                 <TextView
+                    android:id="@+id/join_count_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="@dimen/pay_margin"
+                    android:layout_marginTop="@dimen/inter_space"
                     android:textColor="@color/colorClubItemTitle"
                     android:textSize="@dimen/large_text_size"
                     tools:text="70" />
@@ -477,10 +482,11 @@
                     android:text="到店" />
 
                 <TextView
+                    android:id="@+id/shop_count_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="@dimen/pay_margin"
+                    android:layout_marginTop="@dimen/inter_space"
                     android:textColor="@color/colorClubItemTitle"
                     android:textSize="@dimen/large_text_size"
                     tools:text="60" />

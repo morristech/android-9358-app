@@ -10,6 +10,7 @@ import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
+import com.xmd.manager.service.response.GMessageStatSwitchResult;
 import com.xmd.manager.service.response.GroupMessageResult;
 import com.xmd.manager.service.response.SendGroupMessageResult;
 
@@ -25,6 +26,8 @@ public class SendCouponDetailActivity extends BaseListActivity<GroupMessage, Gro
 
 
     private Subscription mSendGroupMessageResultSubscription;
+    private Subscription mGetStatShowSwitchSubscription;
+    private boolean mIsShowStat = false;
 
     @Override
     protected void dispatchRequest() {
@@ -50,13 +53,21 @@ public class SendCouponDetailActivity extends BaseListActivity<GroupMessage, Gro
         mSendGroupMessageResultSubscription = RxBus.getInstance().toObservable(SendGroupMessageResult.class).subscribe(
                 sendResult -> onRefresh());
 
+        mGetStatShowSwitchSubscription = RxBus.getInstance().toObservable(GMessageStatSwitchResult.class).subscribe(
+                result -> mIsShowStat = result.respData);
+
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_GROUP_STAT_SWITCH);
     }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mSendGroupMessageResultSubscription);
+        RxBus.getInstance().unsubscribe(mSendGroupMessageResultSubscription,mGetStatShowSwitchSubscription);
     }
 
+    @Override
+    public boolean showStatData() {
+        return mIsShowStat;
+    }
 }

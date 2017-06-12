@@ -37,6 +37,7 @@ import com.xmd.manager.service.response.CustomerSearchListResult;
 import com.xmd.manager.service.response.DefaultVerificationDetailResult;
 import com.xmd.manager.service.response.DeleteGroupResult;
 import com.xmd.manager.service.response.FavourableActivityListResult;
+import com.xmd.manager.service.response.GMessageStatSwitchResult;
 import com.xmd.manager.service.response.GroupInfoResult;
 import com.xmd.manager.service.response.GroupListResult;
 import com.xmd.manager.service.response.GroupMessageResult;
@@ -654,6 +655,11 @@ public interface SpaService {
                                           @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize);
 
     @FormUrlEncoded
+    @POST(RequestConstant.URL_GROUP_MESSAGE_STAT_SWITCH)
+    Call<GMessageStatSwitchResult> getGMessageStatSwitch(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                         @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
+
+    @FormUrlEncoded
     @POST(RequestConstant.URL_GET_GROUP_MESSAGE_EDIT_INFO)
     Call<GroupInfoResult> getGroupInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
@@ -1155,8 +1161,7 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_GROUP_TAG_LIST)
-    Call<GroupTagListResult> getGroupTagList(@Field(RequestConstant.KEY_CLUB_ID) String clubId,
-                                              @Field(RequestConstant.KEY_TOKEN) String userToken,
+    Call<GroupTagListResult> getGroupTagList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                               @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
 }
 

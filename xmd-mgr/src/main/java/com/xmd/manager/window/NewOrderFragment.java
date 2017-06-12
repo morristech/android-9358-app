@@ -283,4 +283,9 @@ public class NewOrderFragment extends BaseFragment implements SwipeRefreshLayout
     public void onLongClicked(Object bean) {
 
     }
+
+    @Override
+    public boolean showStatData() {
+        return false;
+    }
 }

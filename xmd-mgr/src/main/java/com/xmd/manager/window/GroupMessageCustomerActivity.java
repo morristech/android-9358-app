@@ -20,6 +20,7 @@ import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
+import com.xmd.manager.service.response.AddGroupResult;
 import com.xmd.manager.service.response.AlbumUploadResult;
 import com.xmd.manager.service.response.FavourableActivityListResult;
 import com.xmd.manager.service.response.GroupInfoResult;
@@ -52,9 +53,8 @@ public class GroupMessageCustomerActivity extends BaseActivity {
     private GMessageEditContentFragment mEditContentFragment;
     private GMessageConfirmFragment mConfirmFragment;
 
-    private Subscription mGroupListSubscription;
+    private Subscription mGroupSaveEditSubscription;
     private Subscription mGetGroupInfoSubscription;
-    private Subscription mGetClubTechsSubscription;
     private Subscription mGetCouponListSubscription;
     private Subscription mGroupMessageAlbumUploadSubscription;
     private Subscription mSendGroupMessageResultSubscription;
@@ -74,8 +74,8 @@ public class GroupMessageCustomerActivity extends BaseActivity {
 
         initView();
 
-        mGroupListSubscription = RxBus.getInstance().toObservable(GroupListResult.class).subscribe(
-                groupListResult -> mCustomerFragment.handlerGroupList(groupListResult));
+        mGroupSaveEditSubscription = RxBus.getInstance().toObservable(AddGroupResult.class).subscribe(
+                result -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_GROUP_TAG_LIST));
         mGetGroupInfoSubscription = RxBus.getInstance().toObservable(GroupInfoResult.class).subscribe(
                 groupInfoResult -> {
                     if(groupInfoResult.statusCode == 200){
@@ -85,8 +85,6 @@ public class GroupMessageCustomerActivity extends BaseActivity {
 
                     mCustomerFragment.handlerGroupInfoResult(groupInfoResult);
                 });
-        mGetClubTechsSubscription = RxBus.getInstance().toObservable(TechListResult.class).subscribe(
-                result -> mCustomerFragment.handleTechsResult(result));
         mGetCouponListSubscription = RxBus.getInstance().toObservable(FavourableActivityListResult.class).subscribe(
                 activityResult -> mCouponFragment.handleFavourableActivityResult(activityResult));
         mGroupMessageAlbumUploadSubscription = RxBus.getInstance().toObservable(AlbumUploadResult.class).subscribe(
@@ -190,8 +188,8 @@ public class GroupMessageCustomerActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGroupListSubscription, mGetGroupInfoSubscription,mGetGroupTagListSubscription,
-                mGetClubTechsSubscription, mGetCouponListSubscription, mGroupMessageAlbumUploadSubscription,mSendGroupMessageResultSubscription);
+        RxBus.getInstance().unsubscribe(mGroupSaveEditSubscription, mGetGroupInfoSubscription,mGetGroupTagListSubscription,
+                 mGetCouponListSubscription, mGroupMessageAlbumUploadSubscription,mSendGroupMessageResultSubscription);
     }
 
     public void gotoEditContentFragment() {

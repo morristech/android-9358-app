@@ -55,6 +55,7 @@ import com.xmd.manager.service.response.DefaultVerificationDetailResult;
 import com.xmd.manager.service.response.DeleteGroupResult;
 import com.xmd.manager.service.response.FavourableActivityListResult;
 import com.xmd.manager.service.response.FeedbackResult;
+import com.xmd.manager.service.response.GMessageStatSwitchResult;
 import com.xmd.manager.service.response.GroupInfoResult;
 import com.xmd.manager.service.response.GroupListResult;
 import com.xmd.manager.service.response.GroupMessageResult;
@@ -288,6 +289,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_GROUP_LIST:
                 doGetGroupList((Map<String, String>) msg.obj);
                 break;
+            case MsgDef.MSG_DEF_GET_GROUP_STAT_SWITCH:
+                getGMessageStatSwitch();
+                break;
             case MsgDef.MSG_DEF_GET_GROUP_INFO:
                 doGetGroupInfo((Map<String, String>) msg.obj);
                 break;
@@ -376,7 +380,7 @@ public class RequestController extends AbstractController {
                 getClubGroupList();
                 break;
             case MsgDef.MSG_DEF_GET_GROUP_TAG_LIST:
-                getGroupTagList(msg.obj.toString());
+                getGroupTagList();
                 break;
             case MsgDef.MSG_DEF_DO_GROUP_SAVE:
                 doGroupSave((Map<String, String>) msg.obj);
@@ -1536,6 +1540,17 @@ public class RequestController extends AbstractController {
         });
     }
 
+    private void getGMessageStatSwitch(){
+        Call<GMessageStatSwitchResult> call = getSpaService().getGMessageStatSwitch(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+
+        call.enqueue(new TokenCheckedCallback<GMessageStatSwitchResult>() {
+            @Override
+            protected void postResult(GMessageStatSwitchResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
     /**
      * 群消息剩余发送次数
      *
@@ -2619,8 +2634,8 @@ public class RequestController extends AbstractController {
     }
 
     //会所标签
-    private void getGroupTagList(String clubId){
-        Call<GroupTagListResult> call = getSpaService().getGroupTagList(clubId, SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
+    private void getGroupTagList(){
+        Call<GroupTagListResult> call = getSpaService().getGroupTagList(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<GroupTagListResult>() {
             @Override

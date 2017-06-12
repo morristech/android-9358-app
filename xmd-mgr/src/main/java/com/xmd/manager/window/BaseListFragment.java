@@ -180,4 +180,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     public void onLongClicked(T bean) {
 
     }
+
+    @Override
+    public boolean showStatData() {
+        return false;
+    }
 }

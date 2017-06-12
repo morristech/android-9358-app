@@ -32,4 +32,6 @@ public class GroupMessage implements Serializable {
     public String groupType;
     public String subGroupLabels;
     public String operatorName;
+    public int viewCount;
+    public int joinCount;
 }

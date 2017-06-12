@@ -15,6 +15,7 @@ import com.xmd.manager.beans.FavourableActivityBean;
 import com.xmd.manager.beans.FavourableActivityGroup;
 import com.xmd.manager.beans.GroupBean;
 import com.xmd.manager.beans.GroupTagBean;
+import com.xmd.manager.beans.GroupTagList;
 import com.xmd.manager.beans.Technician;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
@@ -49,33 +50,11 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
     private Callback mCallback;
     private int mGroupType = GROUP_TYPE_CUSTOMER_GROUP;
 
-    public CustomerTypeExpandableAdapter(List<T> groupArray, @NonNull Callback callback) {
-        mCallback = callback;
-
-        if (groupArray == null || groupArray.isEmpty()) {
-            return;
-        }
-
-        this.groupArray = groupArray;
-        this.childArray = new ArrayList<>();
-        for (int i = 0; i < groupArray.size(); i++) {
-            this.childArray.add(new ArrayList<T>());
-        }
-    }
-
     public CustomerTypeExpandableAdapter(List<T> groupArray, List<List<T>> childArray, int type, @NonNull Callback callback) {
         this.mCallback = callback;
         this.mGroupType = type;
         this.groupArray = groupArray;
         this.childArray = childArray;
-    }
-
-    public void setChildData(int groupPosition, List<T> child) {
-        if (child != null) {
-            childArray.get(groupPosition).clear();
-            childArray.get(groupPosition).addAll(child);
-            notifyDataSetChanged();
-        }
     }
 
     public void setData(List<T> groupArray, List<List<T>> childArray) {
@@ -181,8 +160,7 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
                 } else {
                     holder.arrowImage.setBackgroundResource(R.drawable.icon_down);
                 }
-
-                holder.customerTypeGroup.setText(Constant.USE_GROUP_LABELS.get(groupArray.get(groupPosition)));
+                holder.customerTypeGroup.setText(Constant.USE_GROUP_LABELS.get(((GroupTagList) groupArray.get(groupPosition)).category));
                 break;
             case GROUP_TYPE_ACTIVITY_GROUP:
                 CouponGroupHolder couponHolder = (CouponGroupHolder) view.getTag();
@@ -324,7 +302,7 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
                     mCallback.onItemClicked(groupPosition, finalI);
                     textView.setSelected(mCallback.isChecked(groupPosition, finalI));
                     if(bean instanceof GroupTagBean){
-                        groupTagDetail.setText(((GroupTagBean) bean).ruleDetail);
+                        groupTagDetail.setText(((GroupTagBean) bean).description);
                     }
                 });
                 customerTypeChildListView.addView(v, lp);

@@ -5,9 +5,9 @@ package com.xmd.manager.beans;
  */
 public class GroupTagBean {
     /*标签id*/
-    public int id;
+    public String tagId;
     /*标签描述*/
-    public String ruleDetail;
+    public String description;
     /*标签名称*/
     public String tagName;
     /*用户数*/
