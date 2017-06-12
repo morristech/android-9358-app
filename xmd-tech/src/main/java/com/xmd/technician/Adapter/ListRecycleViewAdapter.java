@@ -49,6 +49,7 @@ import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.BlockChildLinearLayout;
@@ -527,7 +528,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 //                }
 //                UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
 //                UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
-                String remoteChatId = lastMessage.direct() == EMMessage.Direct.SEND ? lastMessage.getTo() : lastMessage.getFrom();
+                String remoteChatId = lastMessage.getFrom();
+                if (remoteChatId != null && remoteChatId.equals(LoginTechnician.getInstance().getEmchatId())) {
+                    remoteChatId = lastMessage.getTo();
+                }
                 User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
                 if (user != null) {
                     if (!TextUtils.isEmpty(user.getAvatar())) {

@@ -78,6 +78,7 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.permission.CheckBusinessPermission;
 import com.xmd.technician.permission.PermissionConstants;
+import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.FlowerAnimation;
 import com.xmd.technician.widget.GameSettingDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
@@ -374,8 +375,18 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public void onAppointmentRequestClicked() {
-                EMMessage message = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", toChatUserId);
-                chatSentMessageHelper.sendMessage(new ChatMessage(message, ChatMessage.MSG_TYPE_ORDER_REQUEST));
+                new AlertDialogBuilder(TechChatActivity.this)
+                        .setTitle("求预约")
+                        .setMessage("确定发送求预约信息?")
+                        .setPositiveButton("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                EMMessage message = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", toChatUserId);
+                                chatSentMessageHelper.sendMessage(new ChatMessage(message, ChatMessage.MSG_TYPE_ORDER_REQUEST));
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
             }
         };
         inputMenu.setChatInputMenuListener(inputMenuListener);

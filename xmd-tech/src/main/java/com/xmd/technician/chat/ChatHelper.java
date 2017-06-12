@@ -199,7 +199,7 @@ public class ChatHelper {
                         User user = new User(chatMessage.getUserId());
                         user.setName(chatMessage.getUserName());
                         user.setAvatar(chatMessage.getUserAvatar());
-                        user.setChatId(chatMessage.getEmMessage().getTo());
+                        user.setChatId(chatMessage.getEmMessage().getFrom());
                         UserInfoServiceImpl.getInstance().saveUser(user);
                     }
                 }
