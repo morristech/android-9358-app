@@ -523,8 +523,7 @@ public class JournalContentEditPresenter implements JournalContentEditContract.P
     public void onImageArticleImageClicked(JournalContent content, int index) {
         mContentImageArticle = content;
         mContentImageArticleIndex = index;
-//        ImageSelectAndCropActivity.pickAndCrop((Activity) mContext, UINavigation.REQUEST_CODE_CHOICE_IMAGE_ARTICLE_IMAGE);
-        xmdImageTool.start((Activity) mContext, new com.xmd.image_tool.ImageTool.ResultListener() {
+        xmdImageTool.onlyPick(true).start((Activity) mContext, new com.xmd.image_tool.ImageTool.ResultListener() {
             @Override
             public void onResult(String s, Uri uri, Bitmap bitmap) {
                 if (s == null && uri != null) {
