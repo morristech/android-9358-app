@@ -681,4 +681,8 @@ public class LoginTechnician {
         this.customerServiceDisableTime = customerServiceDisableTime;
         SharedPreferenceHelper.setCustomerServiceDisableTime(customerServiceDisableTime);
     }
+
+    public boolean isCustomerServiceTimeValid() {
+        return System.currentTimeMillis() - getCustomerServiceDisableTime() >= Constant.CUSTOMER_SERVICE_DISABLE_DURATION;
+    }
 }

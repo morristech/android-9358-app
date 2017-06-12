@@ -20,7 +20,11 @@ public class ChatMessage {
     public static final String MSG_TYPE_ORDER_SUCCESS = "order_success";
     public static final String MSG_TYPE_ORDER_REQUEST = "order_request"; //求预约
 
+    public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";
+
+
     public static final String ATTRIBUTE_MESSAGE_TYPE = "msgType";
+    private static final String ATTRIBUTE_TAG = "xmd_tag";
 
     private static final String ATTRIBUTE_USER_ID = "userId";
     private static final String ATTRIBUTE_USER_NAME = "name";
@@ -45,6 +49,14 @@ public class ChatMessage {
     public String getMsgType() {
         String msgType = getSafeStringAttribute(ATTRIBUTE_MESSAGE_TYPE);
         return msgType == null ? "none" : msgType;
+    }
+
+    public String getTag() {
+        return getSafeStringAttribute(ATTRIBUTE_TAG);
+    }
+
+    public void setTag(String tag) {
+        setAttr(ATTRIBUTE_TAG, tag);
     }
 
     public String getToChatId() {
@@ -174,5 +186,9 @@ public class ChatMessage {
 
     public void setEmMessage(EMMessage emMessage) {
         this.emMessage = emMessage;
+    }
+
+    public boolean isCustomerService() {
+        return getTag() != null && getTag().contains(MSG_TAG_CUSTOMER_SERVICE);
     }
 }

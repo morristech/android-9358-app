@@ -87,7 +87,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         ImageView imageView = (ImageView) getView().findViewById(R.id.toolbar_right_img);
         imageView.setImageResource(R.drawable.ic_customer_service);
         TextView checkBox = new TextView(getContext());
-        boolean open = System.currentTimeMillis() - technician.getCustomerServiceDisableTime() >= Constant.CUSTOMER_SERVICE_DISABLE_DURATION;
+        boolean open = technician.isCustomerServiceTimeValid();
         if (open) {
             checkBox.setTag("checked");
             checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);

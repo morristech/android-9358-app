@@ -945,6 +945,8 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             } else {
                 ChatUI.getInstance().getNotifier().onNewMsg(message);
             }
+
+            ChatHelper.getInstance().clearUnreadMessage(mConversation);
         }
     }
 

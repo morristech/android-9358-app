@@ -22,6 +22,7 @@ import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.common.AppUtils;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.event.EventJoinedClub;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.window.MainActivity;
 
@@ -162,6 +163,10 @@ public class NotificationCenter {
                     notify(TYPE_ORDER, null, userName + ":" + EaseCommonUtils.getMessageDigest(message, sContext), bundle);
                 } else {
                     //其他消息
+                    if (chatMessage.isCustomerService() && !LoginTechnician.getInstance().isCustomerServiceTimeValid()) {
+                        //关闭客服消息提醒时，收到客服消息不提醒
+                        return;
+                    }
                     if (AppUtils.isBackground()) {
                         notify(TYPE_CHAT_MESSAGE, null, userName + ":" + EaseCommonUtils.getMessageDigest(message, sContext), bundle);
                     } else {
