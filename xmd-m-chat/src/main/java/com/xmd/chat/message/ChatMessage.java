@@ -9,6 +9,10 @@ import com.hyphenate.exceptions.HyphenateException;
  */
 
 public class ChatMessage {
+
+    //订单
+    public static final String MSG_TYPE_ORDER = "order";
+
     public static final String MSG_TYPE_ORDER_START = "order_start";
     public static final String MSG_TYPE_ORDER_REFUSE = "order_refuse";
     public static final String MSG_TYPE_ORDER_CONFIRM = "order_confirm";

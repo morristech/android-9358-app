@@ -68,6 +68,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private String mMessageFrom;
     private ChatHelper emchat;
 
+    private LoginTechnician technician = LoginTechnician.getInstance();
 
     @Nullable
     @Override
@@ -78,12 +79,15 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     }
 
     private void initToolBarCustomerService() {
+        if (!"Y".equals(technician.getCustomerService())) {
+            return;
+        }
         LinearLayout container = (LinearLayout) getView().findViewById(R.id.contact_more);
         container.setVisibility(View.VISIBLE);
         ImageView imageView = (ImageView) getView().findViewById(R.id.toolbar_right_img);
         imageView.setImageResource(R.drawable.ic_customer_service);
         TextView checkBox = new TextView(getContext());
-        boolean open = true;
+        boolean open = System.currentTimeMillis() - technician.getCustomerServiceDisableTime() >= Constant.CUSTOMER_SERVICE_DISABLE_DURATION;
         if (open) {
             checkBox.setTag("checked");
             checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);
@@ -99,16 +103,18 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 if (checkBox.getTag() == null) {
                     checkBox.setTag("checked");
                     checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);
+                    technician.setCustomerServiceDisableTime(0L);
                 } else {
                     new AlertDialogBuilder(getContext())
                             .setTitle("提示")
                             .setMessage("关闭后，收到客服消息后不会进行提醒，不影响接收其他消息，12小时后会自动开启，是否要关闭？")
-                            .setPositiveButton("取消", null)
-                            .setNegativeButton("确定", new View.OnClickListener() {
+                            .setNegativeButton("取消", null)
+                            .setPositiveButton("确定", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     checkBox.setTag(null);
                                     checkBox.setBackgroundResource(R.drawable.ic_checkbox_close);
+                                    technician.setCustomerServiceDisableTime(System.currentTimeMillis());
                                 }
                             })
                             .show();
@@ -165,9 +171,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         //监听新的消息，刷新
         mNewMessageSubscription = RxBus.getInstance().toObservable(ReceiveMessage.class).subscribe(receiveMessage -> onRefresh());
 
-        if (true || LoginTechnician.getInstance().getRoles() != null && LoginTechnician.getInstance().getRoles().contains(Constant.ROLE_CUSTOMER_SERVICE)) {
-            initToolBarCustomerService();
-        }
+        initToolBarCustomerService();
     }
 
     @Override
@@ -222,6 +226,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 EMConversation conversation = result.emConversation;
                 Intent intent = new Intent(getContext(), TechChatActivity.class);
                 intent.putExtra(ChatConstant.TO_CHAT_USER_ID, conversation.conversationId());
+                ChatHelper.getInstance().clearUnreadMessage(conversation);
                 startActivity(intent);
             } else {
                 // 跳转详情

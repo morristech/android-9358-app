@@ -190,7 +190,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         setContentView(R.layout.activity_tech_chat);
         ButterKnife.bind(this);
 
-        toChatUserId = getIntent().getStringExtra(ChatConstant.TO_CHAT_USER_ID);
+        toChatUserId = getIntent().getStringExtra(ChatConstant.TO_CHAT_USER_ID); //对方环信ID
         mUser = userService.getUserByChatId(toChatUserId);
         if (mUser == null) {
             XToast.show("无法找到用户：" + toChatUserId);
@@ -459,6 +459,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             }
             mConversation.loadMoreMsgFromDB(msgId, pagesSize - msgCount);
         }
+        ChatHelper.getInstance().clearUnreadMessage(mConversation);
     }
 
     private void onMessageListInit() {
@@ -856,7 +857,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                     Intent intent = new Intent(TechChatActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
-                ChatHelper.getInstance().postUnReadMessageCount();
                 this.finish();
                 break;
             case R.id.toolbar_right:

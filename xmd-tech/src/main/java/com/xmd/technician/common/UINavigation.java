@@ -116,7 +116,7 @@ public class UINavigation {
         switch (notifyId) {
             case NotificationCenter.TYPE_ORDER:
             case NotificationCenter.TYPE_CHAT_MESSAGE:
-                Intent intent = new Intent(context, MainActivity.class);
+                Intent intent = new Intent(context, TechChatActivity.class);
                 intent.putExtras(extraData);
                 context.startActivity(intent);
                 return true;

@@ -32,8 +32,8 @@ import com.xmd.technician.R;
 import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.chat.db.ChatDBManager;
 import com.xmd.technician.chat.db.UserDao;
+import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
-import com.xmd.technician.chat.event.ReceiveMessage;
 import com.xmd.technician.chat.model.ChatModel;
 import com.xmd.technician.chat.model.EaseNotifier;
 import com.xmd.technician.chat.receiver.CallReceiver;
@@ -653,13 +653,12 @@ public class ChatHelper {
             public void onMessageReceived(List<EMMessage> messages) {
                 for (EMMessage message : messages) {
                     EMLog.d(TAG, "onMessageReceived id : " + message.getMsgId());
-                    //       RxBus.getInstance().post(new EventReceiveMessage(messages));
-                    postUnReadMessageCount();
 
-                    if (!easeUI.hasForegroundActivities()) {
-                        getNotifier().onNewMsg(message);
-                    }
+                    //发送消息通知
+                    RxBus.getInstance().post(new EventReceiveMessage(messages));
+                    RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
 
+                    //更新用户信息
                     ChatMessage chatMessage = ChatMessageFactory.get(message);
                     if (!TextUtils.isEmpty(chatMessage.getUserId())) {
                         User user = new User(chatMessage.getUserId());
@@ -918,18 +917,17 @@ public class ChatHelper {
         return list;
     }
 
-
-    public void postUnReadMessageCount() {
-        RxBus.getInstance().post(new ReceiveMessage());
-        RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
-    }
-
     public int getUnreadMessageCount() {
         return EMClient.getInstance().chatManager().getUnreadMessageCount();
     }
 
     public boolean isConnected() {
         return EMClient.getInstance().isConnected();
+    }
+
+    public void clearUnreadMessage(EMConversation conversation) {
+        conversation.markAllMessagesAsRead();
+        RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
     }
 
 }

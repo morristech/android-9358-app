@@ -43,4 +43,6 @@ public class TechInfo {
     public String shareUrl;
 
     public String clubPosition;     // add ZR
+
+    public String serviceStatus; //Y-是客服；N-非客服
 }

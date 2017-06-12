@@ -13,7 +13,8 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 
 import com.hyphenate.chat.EMMessage;
-import com.hyphenate.exceptions.HyphenateException;
+import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.message.ChatMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.event.EventReceiveMessage;
@@ -152,17 +153,11 @@ public class NotificationCenter {
         List<EMMessage> list = eventReceiveMessage.getList();
         if (list != null && list.size() > 0) {
             for (EMMessage message : list) {
-                String userName = "客户";
-                try {
-                    userName = message.getStringAttribute(ChatConstant.KEY_NAME);
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
+                ChatMessage chatMessage = ChatMessageFactory.get(message);
+                String userName = chatMessage.getUserName();
                 Bundle bundle = new Bundle();
-                bundle.putString(ChatConstant.EMCHAT_ID, message.getFrom());
-                bundle.putString(ChatConstant.EMCHAT_NICKNAME, EaseCommonUtils.getMessageStringAttribute(message, ChatConstant.EMCHAT_NICKNAME));
-                bundle.putString(ChatConstant.EMCHAT_AVATAR, EaseCommonUtils.getMessageStringAttribute(message, ChatConstant.EMCHAT_AVATAR));
-                if (EaseCommonUtils.getCustomChatType(message) == ChatConstant.MESSAGE_RECEIVE_ORDER_TYPE) {
+                bundle.putString(ChatConstant.TO_CHAT_USER_ID, message.getFrom());
+                if (ChatMessage.MSG_TYPE_ORDER.equals(chatMessage.getMsgType())) {
                     //订单消息
                     notify(TYPE_ORDER, null, userName + ":" + EaseCommonUtils.getMessageDigest(message, sContext), bundle);
                 } else {
