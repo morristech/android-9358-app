@@ -224,7 +224,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     }
 
     private void setUpView() {
-        setTitle(mUser.getShowName());
+        setTitle(Utils.briefString(mUser.getShowName(),10));
         initListener();
         initProvider();
         adverseName = mAppTitle.getText().toString();
@@ -375,18 +375,15 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public void onAppointmentRequestClicked() {
-                new AlertDialogBuilder(TechChatActivity.this)
-                        .setTitle("求预约")
-                        .setMessage("确定发送求预约信息?")
-                        .setPositiveButton("确定", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                EMMessage message = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", toChatUserId);
-                                chatSentMessageHelper.sendMessage(new ChatMessage(message, ChatMessage.MSG_TYPE_ORDER_REQUEST));
-                            }
-                        })
-                        .setNegativeButton("取消", null)
-                        .show();
+
+                new RewardConfirmDialog(TechChatActivity.this, "求预约", "确定发送求预约信息?", "") {
+                    @Override
+                    public void onConfirmClick() {
+                        super.onConfirmClick();
+                        EMMessage message = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", toChatUserId);
+                        chatSentMessageHelper.sendMessage(new ChatMessage(message, ChatMessage.MSG_TYPE_ORDER_REQUEST));
+                    }
+                }.show();
             }
         };
         inputMenu.setChatInputMenuListener(inputMenuListener);

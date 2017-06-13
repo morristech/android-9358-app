@@ -14,6 +14,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -74,15 +77,23 @@ public class OrderDetailActivity extends BaseActivity {
     TextView mActionChat;
     @Bind(R.id.operation)
     LinearLayout mOperationLayout;
-    @Bind(R.id.comment_section) LinearLayout mCommentSection;
-    @Bind(R.id.remain_time_section) LinearLayout mRemainTimeSection;
-    @Bind(R.id.paid_order_amount_container) View mPaidAmountContainer;
-    @Bind(R.id.paid_amount_line) View mPaidAmountLine;
+    @Bind(R.id.comment_section)
+    LinearLayout mCommentSection;
+    @Bind(R.id.remain_time_section)
+    LinearLayout mRemainTimeSection;
+    @Bind(R.id.paid_order_amount_container)
+    View mPaidAmountContainer;
+    @Bind(R.id.paid_amount_line)
+    View mPaidAmountLine;
 
-    @Bind(R.id.negative)     Button mNegative;
-    @Bind(R.id.positive) Button mPositive;
+    @Bind(R.id.negative)
+    Button mNegative;
+    @Bind(R.id.positive)
+    Button mPositive;
 
     private Order mOrder;
+    private User mUser;
+    private UserInfoService userService = UserInfoServiceImpl.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +125,14 @@ public class OrderDetailActivity extends BaseActivity {
 
         setupStepView();
         setupButtons();
+        if (!TextUtils.isEmpty(mOrder.emchatId)) {
+            mUser = new User(mOrder.emchatId);
+            mUser.setName(mOrder.userName);
+            mUser.setChatId(mOrder.emchatId);
+            mUser.setAvatar(mOrder.headImgUrl);
+            mUser.setMarkName(Utils.isEmpty(mOrder.customerName) ? mOrder.userName : mOrder.customerName);
+            userService.saveUser(mUser);
+        }
 
         //Avatar
         Glide.with(this).load(mOrder.headImgUrl).placeholder(R.drawable.icon22).error(R.drawable.icon22).into(mAvatar);
@@ -127,17 +146,17 @@ public class OrderDetailActivity extends BaseActivity {
         mOrderTime.setText(mOrder.formatAppointTime);
 
         mOrderService.setText(mOrder.serviceName);
-        mServicePrice.setText(TextUtils.isEmpty(mOrder.servicePrice)?getString(R.string.order_detail_service_price_pending) : mOrder.servicePrice);
+        mServicePrice.setText(TextUtils.isEmpty(mOrder.servicePrice) ? getString(R.string.order_detail_service_price_pending) : mOrder.servicePrice);
         mCreateTime.setText(mOrder.formatCreateTime);
 
         if (Constant.ORDER_STATUS_COMPLETE.equals(mOrder.status)) {
 
             mOrderComment.setText(mOrder.comment);
             mOrderRatings.setRating(mOrder.rating);
-            if(mOrder.rewardAmount>0){
-                float reward = mOrder.rewardAmount/100f;
-                mOrderReward.setText(String.format("%1.2f元",reward));
-            }else{
+            if (mOrder.rewardAmount > 0) {
+                float reward = mOrder.rewardAmount / 100f;
+                mOrderReward.setText(String.format("%1.2f元", reward));
+            } else {
                 mOrderReward.setText("0.0");
             }
 
@@ -145,7 +164,7 @@ public class OrderDetailActivity extends BaseActivity {
             mCommentSection.setVisibility(View.GONE);
         }
 
-        if(!Constant.ORDER_TYPE_PAID.equals(mOrder.orderType)){
+        if (!Constant.ORDER_TYPE_PAID.equals(mOrder.orderType)) {
             mPaidAmountContainer.setVisibility(View.GONE);
             mPaidAmountLine.setVisibility(View.GONE);
         }
@@ -182,7 +201,7 @@ public class OrderDetailActivity extends BaseActivity {
         } else if (Constant.ORDER_STATUS_ACCEPT.equals(mOrder.status)) {
             mNegative.setText(ResourceUtils.getString(R.string.order_status_operation_expire));
             mPositive.setText(ResourceUtils.getString(R.string.order_status_operation_complete));
-            if(Constant.ORDER_TYPE_PAID.equals(mOrder.orderType)){
+            if (Constant.ORDER_TYPE_PAID.equals(mOrder.orderType)) {
                 mNegative.setVisibility(View.GONE);
                 mPositive.setVisibility(View.GONE);
             }
@@ -216,13 +235,14 @@ public class OrderDetailActivity extends BaseActivity {
                 doMakeCall();
                 break;
             case R.id.action_chat:
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl,ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(mOrder.emchatId, mOrder.userName, mOrder.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
                 break;
         }
     }
 
     /**
      * 删除订单，退出此界面
+     *
      * @param type
      * @param order
      * @param reason
@@ -230,7 +250,7 @@ public class OrderDetailActivity extends BaseActivity {
     private void doNegativeOrder(String description, String type, Order order, String reason) {
         new AlertDialogBuilder(this)
                 .setMessage(description)
-                .setPositiveButton(ResourceUtils.getString(R.string.confirm), v -> doManageOrder(type, order,reason))
+                .setPositiveButton(ResourceUtils.getString(R.string.confirm), v -> doManageOrder(type, order, reason))
                 .setNegativeButton(ResourceUtils.getString(R.string.cancel), null)
                 .show();
     }
@@ -248,6 +268,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     /**
      * 操作订单
+     *
      * @param type
      * @param order
      * @param reason
@@ -274,7 +295,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     private void doInternalMakeCall() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CALL_PHONE}, Constant.REQUEST_CODE_FOR_ORDER_DETAIL_ACTIVITY);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, Constant.REQUEST_CODE_FOR_ORDER_DETAIL_ACTIVITY);
             return;
         } else {
             startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mOrder.phoneNum)));

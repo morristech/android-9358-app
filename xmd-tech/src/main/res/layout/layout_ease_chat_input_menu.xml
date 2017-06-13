@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="visible">
 
-                <EditText
+                <com.xmd.technician.widget.ClearableEditText
                     android:id="@+id/edit_message"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

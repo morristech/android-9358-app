@@ -101,6 +101,10 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
     }
 
     private void getCouponListResult(CouponListResult result) {
+        if(result.respData == null){
+            viewEmptyView.setStatus(EmptyView.Status.Empty);
+            return;
+        }
         Collections.sort(result.respData.coupons, (lhs, rhs) -> {
             if (Constant.COUPON_TYPE_PAID.equals(rhs.couponType)) {
                 return 1;
@@ -130,7 +134,10 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
             }
             adapter.setData(mCouponTypes,mCouponInfos);
            if(mCouponInfos.size()>0){
-               expandableListView.expandGroup(0,true);
+               for (int i = 0; i < mCouponInfos.size(); i++) {
+                   expandableListView.expandGroup(i,false);
+               }
+
            }else{
                viewEmptyView.setStatus(EmptyView.Status.Empty);
            }

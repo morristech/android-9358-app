@@ -9,19 +9,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.hyphenate.util.EMLog;
 import com.xmd.technician.Adapter.ChatGridViewAdapter;
 import com.xmd.technician.R;
@@ -30,8 +26,10 @@ import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.utils.SmileUtils;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
 import com.xmd.technician.common.ThreadPoolManager;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.permission.CheckBusinessPermission;
 import com.xmd.technician.permission.PermissionConstants;
+import com.xmd.technician.widget.ClearableEditText;
 import com.xmd.technician.widget.EmojiconMenu;
 import com.xmd.technician.window.CommonMsgFragmentOne;
 import com.xmd.technician.window.CommonMsgFragmentTwo;
@@ -48,7 +46,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
 
     private Context mContext;
     private View mView;
-    private EditText mEditText;
+    private ClearableEditText mEditText;
     private View buttonSetModeKeyBoard;
     private LinearLayout editTextLayout;
     private View buttonSetModeVoice, buttonSend, buttonPressToSpeak;
@@ -95,7 +93,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         buttonSetModeVoice = mView.findViewById(R.id.btn_set_mode_voice);
         buttonSetModeKeyBoard = mView.findViewById(R.id.btn_set_mode_keyboard);
         buttonPressToSpeak = mView.findViewById(R.id.btn_press_to_speak);
-        mEditText = (EditText) mView.findViewById(R.id.edit_message);
+        mEditText = (ClearableEditText) mView.findViewById(R.id.edit_message);
         buttonSend = mView.findViewById(R.id.btn_send);
         buttonMore = mView.findViewById(R.id.btn_more);
         editTextLayout = (LinearLayout) mView.findViewById(R.id.edit_text_layout);
@@ -137,22 +135,22 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         mEditText.requestFocus();
 
 
-        mEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+//        mEditText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
         mEditText.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -169,23 +167,6 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
             }
         });
 
-        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                EMLog.d("key", "keyCode:" + event.getKeyCode() + " action" + event.getAction() + " ctrl:" + ctrlPress);
-                if (actionId == EditorInfo.IME_ACTION_SEND ||
-                        (event.getKeyCode() == KeyEvent.KEYCODE_ENTER &&
-                                event.getAction() == KeyEvent.ACTION_DOWN &&
-                                ctrlPress == true)) {
-                    String s = mEditText.getText().toString();
-                    mEditText.setText("");
-                    inputMenuListener.onSendMessage(s);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
         buttonPressToSpeak.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -435,9 +416,13 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         switch (v.getId()) {
             case R.id.btn_send:
                 if (inputMenuListener != null) {
-                    String s = mEditText.getText().toString();
-                    mEditText.setText("");
-                    inputMenuListener.onSendMessage(s);
+                    String s = mEditText.getText().toString().trim();
+                    if (TextUtils.isEmpty(s)) {
+                        Utils.makeShortToast(mContext, "发送内容不能为空");
+                    } else {
+                        inputMenuListener.onSendMessage(s);
+                        mEditText.setText("");
+                    }
                 }
                 break;
             case R.id.btn_set_mode_voice:

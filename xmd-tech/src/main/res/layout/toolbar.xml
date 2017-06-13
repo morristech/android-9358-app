@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="?android:attr/actionBarSize"
-    android:orientation="vertical"
-    android:background="@color/colorPrimary">
+                                   android:id="@+id/toolbar"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="@dimen/home_button_height"
+                                   android:background="@color/appColorTable"
+                                   android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="@dimen/home_button_height">
 
         <ImageView
             android:id="@+id/toolbar_back"
@@ -21,7 +21,7 @@
             android:paddingLeft="@dimen/personal_margin"
             android:paddingRight="@dimen/personal_padding"
             android:scaleType="center"
-            android:src="@drawable/icon_back_white"
+            android:src="@drawable/icon_back"
             android:visibility="gone" />
 
         <TextView
@@ -31,13 +31,13 @@
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/fontTitle2"
-            android:maxLines="1" />
+            android:singleLine="true"
+            android:textColor="@color/colorHead"
+            android:textSize="@dimen/fontHead" />
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:paddingLeft="@dimen/personal_padding"
@@ -47,9 +47,9 @@
                 android:id="@+id/toolbar_right"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:background="@drawable/toolbar_text_bg"
                 android:clickable="true"
                 android:text="right"
-                android:textColor="@android:color/white"
                 android:visibility="gone" />
             <TextView
                 android:id="@+id/toolbar_right_share"
@@ -66,12 +66,14 @@
 
             <LinearLayout
                 android:id="@+id/contact_more"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:gravity="right|center"
                 android:orientation="horizontal"
                 android:paddingRight="@dimen/margin_5"
-                android:visibility="gone">
+                android:visibility="gone"
+
+                >
 
                 <ImageView
                     android:id="@+id/toolbar_right_img"
@@ -81,6 +83,11 @@
 
             </LinearLayout>
         </FrameLayout>
+
+        <View
+            android:id="@+id/divide_line"
+            style="@style/horizontal_divider_line_title"
+            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 
