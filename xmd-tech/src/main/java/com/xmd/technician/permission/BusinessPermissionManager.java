@@ -134,6 +134,7 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
     @Override
     public boolean containPermission(String[] permissions) {
         boolean pass = true;
+
         for (String permissionCode : permissions) {
             if (!mPermissionList.contains(permissionCode)) {
                 pass = false;
@@ -144,7 +145,9 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
 //        return true;
     }
 
-    /******************其他模块调用***********************************/
+    /******************
+     * 其他模块调用
+     ***********************************/
     //从缓存或网络加载权限
     @Override
     public void loadPermissions(Callback<Void> callback) {

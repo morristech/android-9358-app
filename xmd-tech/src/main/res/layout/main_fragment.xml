@@ -92,7 +92,8 @@
                             android:id="@+id/view_transparent"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#00FFFFFF"/>
+                            android:background="#00FFFFFF"
+                            android:visibility="gone"/>
                     </FrameLayout>
 
                 </android.support.v4.widget.NestedScrollView>

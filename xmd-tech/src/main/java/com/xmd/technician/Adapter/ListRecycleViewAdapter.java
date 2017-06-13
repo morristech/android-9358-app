@@ -467,7 +467,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             itemHolder.mAvatar.setOnClickListener(
                     v -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT,
                             Utils.wrapChatParams(paidCouponUserDetail.emchatId, paidCouponUserDetail.userName, paidCouponUserDetail.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)));
-            itemHolder.mTvCustomerName.setText(paidCouponUserDetail.userName);
+            itemHolder.mTvCustomerName.setText(Utils.StrSubstring(8, paidCouponUserDetail.userName, true));
             itemHolder.mTvGetDate.setText(paidCouponUserDetail.getDate);
             itemHolder.mTvTelephone.setText(paidCouponUserDetail.telephone);
             itemHolder.mTvCouponStatusDescription.setText(paidCouponUserDetail.couponStatusDescription);
@@ -534,12 +534,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 }
                 User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
                 if (user != null) {
-                    if (!TextUtils.isEmpty(user.getAvatar())) {
-                        Glide.with(mContext)
-                                .load(user.getAvatar())
-                                .transform(new GlideCircleTransform(mContext))
-                                .into(conversationHolder.mAvatar);
-                    }
+                    Glide.with(mContext).load(user.getAvatar()).into(conversationHolder.mAvatar);
                     conversationHolder.mName.setText(user.getShowName());
                 } else {
                     conversationHolder.mAvatar.setImageResource(com.xmd.appointment.R.drawable.img_default_avatar);

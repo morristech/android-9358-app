@@ -29,7 +29,7 @@ import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.chat.event.DeleteConversionResult;
 import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
-import com.xmd.technician.chat.event.ReceiveMessage;
+import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -85,7 +85,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             return;
         }
         LinearLayout container = (LinearLayout) getView().findViewById(R.id.contact_more);
-        container.setVisibility(View.VISIBLE);
+        container.setVisibility(View.GONE);
         ImageView imageView = (ImageView) getView().findViewById(R.id.toolbar_right_img);
         imageView.setImageResource(R.drawable.ic_customer_service);
         TextView checkBox = new TextView(getContext());
@@ -170,11 +170,16 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 result -> dispatchRequest()
         );
 
-        //监听新的消息，刷新
-        mNewMessageSubscription = RxBus.getInstance().toObservable(ReceiveMessage.class).subscribe(receiveMessage -> onRefresh());
 
         initToolBarCustomerService();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        RxBus.getInstance().unsubscribe(mNewMessageSubscription);
+    }
+
 
     @Override
     protected void dispatchRequest() {
@@ -203,9 +208,11 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(
                 mLoginStatusSubscription,
-                mNewMessageSubscription,
                 mContactPermissionChatSubscription,
                 mDeleteConversionSubscription);
+        if (mNewMessageSubscription != null) {
+            RxBus.getInstance().unsubscribe(mNewMessageSubscription);
+        }
     }
 
     @Override
@@ -214,6 +221,8 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         if (mSearchView != null && !TextUtils.isEmpty(mSearchView.getText()))
             mSearchView.setText("");
         onRefresh();
+        //监听新的消息，刷新  result -> onRefresh()
+        mNewMessageSubscription = RxBus.getInstance().toObservable(EventReceiveMessage.class).subscribe(result -> onRefresh());
     }
 
     @Override

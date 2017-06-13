@@ -296,7 +296,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -344,11 +343,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mMainSlidingLayout.setOnCloseOrOpenListener(new SlidingMenu.CloseOrOpenListener() {
             @Override
             public void isOpen(boolean isOpen) {
-                    if(isOpen){
-                        mViewTransparent.setVisibility(View.VISIBLE);
-                    }else {
-                        mViewTransparent.setVisibility(View.GONE);
-                    }
+                if (isOpen) {
+                    mViewTransparent.setVisibility(View.VISIBLE);
+                } else {
+                    mViewTransparent.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -373,6 +372,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void initTitleView(View view) {
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_page);
         ((TextView) view.findViewById(R.id.toolbar_title)).setTextColor(Color.WHITE);
+        view.findViewById(R.id.divide_line).setVisibility(View.GONE);
         mContactMore = (LinearLayout) view.findViewById(R.id.contact_more);
         mContactMore.setVisibility(View.VISIBLE);
         mContactMore.setOnClickListener(this);
@@ -794,7 +794,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     @OnClick({R.id.menu_work_time, R.id.menu_work_project, R.id.menu_about_us, R.id.menu_suggest, R.id.settings_activity_modify_pw, R.id.settings_activity_join_club,
-            R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout,R.id.view_transparent})
+            R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout, R.id.view_transparent})
     public void onMainMenuSettingClicked(View view) {
         switch (view.getId()) {
             case R.id.menu_work_time:
