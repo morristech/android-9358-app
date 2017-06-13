@@ -18,7 +18,9 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.hyphenate.util.EMLog;
+import com.xmd.chat.ChatConstants;
 import com.xmd.technician.Adapter.ChatGridViewAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
@@ -170,28 +172,40 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         buttonPressToSpeak.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 if (inputMenuListener != null) {
                     return inputMenuListener.onPressToSpeakBtnTouch(v, event);
                 }
                 return false;
             }
         });
+    }
 
-        initMenuPicture();
-        initMenuEmoji();
-        initMenuFastReply();
-        initMenuCoupon();
-        initMenuOrder();
-
-        initMenuOrderRequst();
-        initMenuRewardRequest();
-        initMenuActivity();
-        initMenuJournal();
-        initMenuMall();
-        initMenuCreditGames();
-        initMenuLocation();
-
+    public void initWidthChatRole(String role) {
+        switch (role) {
+            case ChatConstants.CHAT_ROLE_MGR:
+                initMenuPicture();
+                initMenuEmoji();
+                break;
+            case ChatConstants.CHAT_ROLE_TECH:
+                initMenuPicture();
+                initMenuEmoji();
+                initMenuCreditGames();
+                break;
+            default:
+                initMenuPicture();
+                initMenuEmoji();
+                initMenuFastReply();
+                initMenuCoupon();
+                initMenuOrder();
+                initMenuOrderRequst();
+                initMenuRewardRequest();
+                initMenuActivity();
+                initMenuJournal();
+                initMenuMall();
+                initMenuCreditGames();
+                initMenuLocation();
+                break;
+        }
         initMoreMenu();
     }
 

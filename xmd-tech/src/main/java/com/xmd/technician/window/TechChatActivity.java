@@ -33,6 +33,7 @@ import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
+import com.xmd.chat.ChatConstants;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.order.OrderChatManager;
 import com.xmd.technician.Constant;
@@ -79,7 +80,6 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.permission.CheckBusinessPermission;
 import com.xmd.technician.permission.PermissionConstants;
-import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.FlowerAnimation;
 import com.xmd.technician.widget.GameSettingDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
@@ -101,6 +101,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
+
+import static com.xmd.technician.chat.ChatConstant.CHAT_USER_TYPE_MANAGER;
+import static com.xmd.technician.chat.ChatConstant.CHAT_USER_TYPE_TECH;
 
 /**
  * Created by Lhj on 17-3-31.
@@ -222,6 +225,20 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         mSwipeRefreshLayout.setColorSchemeColors(ResourceUtils.getColor(R.color.primary_button_color_normal));
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        //初始化聊天菜单
+        String role;
+        switch (chatUserType) {
+            case CHAT_USER_TYPE_MANAGER:
+                role = ChatConstants.CHAT_ROLE_MGR;
+                break;
+            case CHAT_USER_TYPE_TECH:
+                role = ChatConstants.CHAT_ROLE_TECH;
+                break;
+            default:
+                role = ChatConstants.CHAT_ROLE_USER;
+        }
+        inputMenu.initWidthChatRole(role);
         inputMenu.setFragmentManager(getSupportFragmentManager());
 
 
@@ -230,7 +247,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     }
 
     private void setUpView() {
-        setTitle(Utils.briefString(mUser.getShowName(),10));
+        setTitle(Utils.briefString(mUser.getShowName(), 10));
         initListener();
         initProvider();
         adverseName = mAppTitle.getText().toString();

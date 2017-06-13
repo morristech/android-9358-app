@@ -233,8 +233,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
         mContactHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (chatHeadUrl != null) {
+                if (!TextUtils.isEmpty(managerHeadUrl) || !TextUtils.isEmpty(chatHeadUrl)) {
                     ImageView imageView = new ImageView(v.getContext());
+                    imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     AlertDialog dialog = new AlertDialog
                             .Builder(v.getContext())
                             .setView(imageView)
@@ -246,7 +247,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     dialog.getWindow().setAttributes(lp);
                     imageView.getLayoutParams().width = lp.width;
                     imageView.getLayoutParams().height = lp.height;
-                    Glide.with(v.getContext()).load(chatHeadUrl).fitCenter().into(imageView);
+                    Glide.with(v.getContext()).load(chatHeadUrl).into(imageView);
                 }
             }
         });
