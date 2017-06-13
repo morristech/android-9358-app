@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
@@ -76,7 +77,7 @@ public class HelloTemplateAdapter extends RecyclerView.Adapter<RecyclerView.View
         SystemViewHolder systemViewHolder = (SystemViewHolder) holder;
         systemViewHolder.mSystemContent.setText(info.contentText);
         systemViewHolder.mSystemCheck.setImageResource(info.isSelected() ? R.drawable.select : R.drawable.radio);
-        systemViewHolder.mSystemCheck.setOnClickListener(v -> {
+        systemViewHolder.rlView.setOnClickListener(v -> {
             notifyCheckItem(position);
             mCheckId = info.id;
             mListener.onTemplateItemClick(info);
@@ -103,11 +104,13 @@ public class HelloTemplateAdapter extends RecyclerView.Adapter<RecyclerView.View
     public class SystemViewHolder extends RecyclerView.ViewHolder {
         public ImageView mSystemCheck;
         public TextView mSystemContent;
+        public RelativeLayout rlView;
 
         public SystemViewHolder(View itemView) {
             super(itemView);
             mSystemCheck = (ImageView) itemView.findViewById(R.id.img_system_check);
             mSystemContent = (TextView) itemView.findViewById(R.id.tv_system_content);
+            rlView = (RelativeLayout) itemView.findViewById(R.id.rl_view);
         }
     }
 

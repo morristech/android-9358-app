@@ -80,7 +80,7 @@ public class SmileUtils {
             addPattern(emojicons[i].getEmojiText(), emojicons[i].getIcon());
         }
         /*EaseUI.EaseEmojiconInfoProvider emojiconInfoProvider = EaseUI.getInstance().getEmojiconInfoProvider();
-	    if(emojiconInfoProvider != null && emojiconInfoProvider.getTextEmojiconMapping() != null){
+        if(emojiconInfoProvider != null && emojiconInfoProvider.getTextEmojiconMapping() != null){
 	        for(Entry<String, Object> entry : emojiconInfoProvider.getTextEmojiconMapping().entrySet()){
 	            addPattern(entry.getKey(), entry.getValue());
 	        }
@@ -129,11 +129,11 @@ public class SmileUtils {
                         }
                         spannable.setSpan(new ImageSpan(context, Uri.fromFile(file)),
                                 matcher.start(), matcher.end(),
-                                Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     } else {
                         spannable.setSpan(new ImageSpan(context, (Integer) value),
                                 matcher.start(), matcher.end(),
-                                Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                 }
             }

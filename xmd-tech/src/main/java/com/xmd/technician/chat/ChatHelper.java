@@ -672,9 +672,7 @@ public class ChatHelper {
 
             @Override
             public void onCmdMessageReceived(List<EMMessage> messages) {
-                for (EMMessage message : messages) {
-                    EMLog.d(TAG, "receive command message");
-                }
+
             }
 
             @Override

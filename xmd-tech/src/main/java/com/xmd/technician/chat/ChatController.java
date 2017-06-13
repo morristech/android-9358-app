@@ -13,6 +13,7 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.event.DeleteConversionResult;
 import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
+import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.Utils;
@@ -105,6 +106,7 @@ public class ChatController extends AbstractController {
         EMClient.getInstance().chatManager().deleteConversation(userName, deleteMessages);
         // MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
         RxBus.getInstance().post(new DeleteConversionResult());
+        RxBus.getInstance().post(new EventUnreadMessageCount(ChatHelper.getInstance().getUnreadMessageCount()));
         UserUtils.deleteUser(userName);
     }
 

@@ -76,11 +76,11 @@
                     android:background="@drawable/bg_white_rectangle_with_rounded_corners"
                     android:gravity="center_vertical"
                     android:hint="在此输入..."
-                    android:imeOptions="actionSend"
                     android:maxLines="3"
                     android:minHeight="35dp"
                     android:paddingLeft="3dp"
                     android:paddingRight="3dp"
+                    android:textColor="@color/colorHead"
                     android:textColorHint="#c3c3c3"
                     android:textSize="18sp"/>
 
@@ -195,7 +195,7 @@
                     android:layout_width="@dimen/personal_item_icon_height"
                     android:layout_height="match_parent"
                     android:background="@drawable/ic_menu_appointment"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="fitCenter"/>
             </LinearLayout>
 
             <LinearLayout

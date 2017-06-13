@@ -96,7 +96,7 @@ public class OrderFragment extends BaseListFragment<Order> {
     private void handleGetOrderListResult(OrderListResult result) {
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             onGetListFailed(result.msg);
-        } else {
+        } else if(result.isIndexPage.equals("N")){
             onGetListSucceeded(result.pageCount, result.respData);
         }
     }
@@ -164,6 +164,7 @@ public class OrderFragment extends BaseListFragment<Order> {
         Map<String,String> params = new HashMap<>();
         params.put(RequestConstant.KEY_ORDER_STATUS, mFilterOrder);
         params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
+        params.put(RequestConstant.KEY_IS_INDEX_PAGE, "N");
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, params);
     }
@@ -174,6 +175,7 @@ public class OrderFragment extends BaseListFragment<Order> {
         Map<String,String> params = new HashMap<>();
         params.put(RequestConstant.KEY_ORDER_STATUS, mFilterOrder);
         params.put(RequestConstant.KEY_PAGE, "1");
+        params.put(RequestConstant.KEY_IS_INDEX_PAGE, "N");
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(mListAdapter.getItemCount() - 1));
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_ORDER_LIST, params);
     }
