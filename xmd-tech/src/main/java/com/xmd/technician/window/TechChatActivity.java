@@ -196,10 +196,11 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
         toChatUserId = getIntent().getStringExtra(ChatConstant.TO_CHAT_USER_ID); //对方环信ID
         if (TextUtils.isEmpty(toChatUserId)) {
-            XToast.show("无法找到用户：chatId=" + toChatUserId);
+            XToast.show("无法创建聊天，用户聊天ID为空!");
             finish();
             return;
         }
+
         mUser = userService.getUserByChatId(toChatUserId);
         if (mUser == null) {
             XToast.show("无法找到用户：chatId=" + toChatUserId);

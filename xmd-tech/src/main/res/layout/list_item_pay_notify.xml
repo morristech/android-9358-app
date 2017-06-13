@@ -31,7 +31,8 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/temporary_user"
-                app:avatar="@{payNotify.info.userAvatar}" />
+                app:avatar="@{payNotify.info.userAvatar}"
+                android:onClick="@{(v)->payNotify.onClickCustomerHeader(v,payNotify.info)}" />
 
             <TextView
                 android:layout_width="0dp"

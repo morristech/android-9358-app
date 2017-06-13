@@ -33,7 +33,8 @@
             android:minWidth="@dimen/bubble_width"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/avatar" />
+            android:layout_toLeftOf="@+id/avatar"
+            android:background="@drawable/sent_text_white" />
 
         <ImageView
             android:id="@+id/msg_status"

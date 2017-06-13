@@ -18,6 +18,7 @@ import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.widget.CircleImageView;
@@ -83,6 +84,9 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         holder.mPosition.setText(info.userPosition);    // 位置
         holder.mDistance.setText("距离" + Math.round(info.userClubDistance) + "m");   // 距离
         Glide.with(mContext).load(info.userAvatar).into(holder.mAvatar);    //头像
+        holder.mAvatar.setOnClickListener((v) -> {
+            UINavigation.gotoCustomerDetailAcivity(v.getContext(), info.userId);
+        });
         holder.mNickName.setText(info.userName);    // 名称
 
         // 用户类型

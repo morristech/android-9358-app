@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/view_margin_left"
-            android:paddingLeft="@dimen/chat_head_padding"
-            android:layout_marginTop="@dimen/small_space">
+            android:layout_marginTop="@dimen/small_space"
+            android:paddingLeft="@dimen/chat_head_padding">
 
             <com.xmd.technician.widget.CircleImageView
                 android:id="@+id/avatar"
@@ -31,12 +31,13 @@
 
             <FrameLayout
                 android:id="@+id/bubble"
-                android:minWidth="@dimen/bubble_width"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_userid"
                 android:layout_marginLeft="@dimen/small_space"
-                android:layout_toRightOf="@id/avatar" />
+                android:layout_toRightOf="@id/avatar"
+                android:background="@drawable/recv_order_bg"
+                android:minWidth="@dimen/bubble_width" />
 
 
             <TextView
@@ -46,9 +47,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/inter_space"
                 android:layout_toRightOf="@id/avatar"
+                android:text="xxxx"
                 android:textSize="@dimen/fontBody"
-                android:visibility="gone"
-                android:text="xxxx" />
+                android:visibility="gone" />
         </RelativeLayout>
 
     </LinearLayout>

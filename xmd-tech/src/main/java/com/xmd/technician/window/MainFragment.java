@@ -1116,7 +1116,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     private void initRecentlyViewView(RecentlyVisitorResult result) {
         if (null != result.respData && result.respData.size() > 0) {
-
             mAllTechVisitor.clear();
             for (int i = 0; i < result.respData.size(); i++) {
                 if (null != result.respData.get(i).emchatId) {
@@ -1134,10 +1133,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
             if (mTechVisitor.size() > 0) {
                 llHorizontalList.setVisibility(View.VISIBLE);
-
                 initVisitAvatar(mTechVisitor);
             }
-
         } else {
             llHorizontalList.setVisibility(View.GONE);
             for (int i = 0; i < visitViewList.size(); i++) {
@@ -1152,13 +1149,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             Glide.with(mContext).load(visitList.get(i).avatarUrl).into((CircleImageView) visitViewList.get(i));
             final int finalI = i;
             visitViewList.get(i).setOnClickListener(v -> {
-                RecentlyVisitorBean bean = visitList.get(finalI);
-                Map<String, Object> params = new HashMap<>();
-                params.put(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG, Constant.REQUEST_CONTACT_PERMISSION_VISITOR);
-                params.put(RequestConstant.KEY_ID, bean.userId);
-                params.put(RequestConstant.KEY_CONTACT_ID_TYPE, Constant.REQUEST_CONTACT_ID_TYPE_CUSTOMER);
-                params.put(RequestConstant.KEY_RECENTLY_VISITOR_BEAN, bean);
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
+                UINavigation.gotoCustomerDetailAcivity(v.getContext(), visitList.get(finalI).userId);
             });
         }
     }

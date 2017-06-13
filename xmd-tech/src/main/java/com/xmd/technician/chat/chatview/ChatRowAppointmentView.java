@@ -54,6 +54,8 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
 
     public ObservableBoolean inProgress = new ObservableBoolean();
 
+    private String remoteChatId;
+
     public ChatRowAppointmentView(Context context, EMMessage message, int position, BaseAdapter adapter) {
         super(context, message, position, adapter);
     }
@@ -129,6 +131,8 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
         mBinding.setHandler(this);
         mBinding.setData(mChatMessage);
         mBinding.executePendingBindings();
+
+        remoteChatId = message.direct() == EMMessage.Direct.RECEIVE ? message.getFrom() : message.getTo();
 
         if (mEMMessage.direct() == EMMessage.Direct.SEND) {
             setMessageSendCallback();
@@ -284,7 +288,7 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
     private void sendMessage(String msgType) {
         ((EaseMessageAdapter) mAdapter)
                 .getSentMessageHelper()
-                .sendMessage(OrderChatManager.createMessage(mChatMessage.getToChatId(), msgType, mAppointmentData));
+                .sendMessage(OrderChatManager.createMessage(remoteChatId, msgType, mAppointmentData));
     }
 
     private boolean isFreeAppointment() {

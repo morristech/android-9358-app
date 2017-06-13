@@ -79,14 +79,12 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
 
     public EaseChatInputMenu(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
     }
 
     public EaseChatInputMenu(Context context, AttributeSet attrs) {
         this(context, attrs, -1);
         init(context, attrs);
     }
-
 
     private void init(final Context context, AttributeSet attrs) {
         mContext = context;

@@ -2,6 +2,7 @@ package com.xmd.technician.onlinepaynotify.viewmodel;
 
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -84,5 +85,9 @@ public class PayNotifyInfoViewModel {
         isArchived.set(true);
         info.isArchived = true;
         PayNotifyInfoManager.getInstance().setPayNotifyInfoArchived(info);
+    }
+
+    public void onClickCustomerHeader(View v, PayNotifyInfo info) {
+//        UINavigation.gotoCustomerDetailAcivity(v.getContext(),info.userName);
     }
 }
