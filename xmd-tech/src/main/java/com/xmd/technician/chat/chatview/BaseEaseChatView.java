@@ -24,9 +24,14 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.CircleImageView;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Lhj on 17-3-30.
@@ -175,6 +180,13 @@ public abstract class BaseEaseChatView extends LinearLayout {
         }
 
     }
+    private void saveChatContact(String chatId,String msgId) {
+        Map<String, String> saveParams = new HashMap<>();
+        saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, chatId);
+        saveParams.put(RequestConstant.KEY_CHAT_MSG_ID, msgId);
+        saveParams.put(RequestConstant.KEY_SEND_POST, "0");
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
+    }
 
     /**
      * set callback for sending message
@@ -185,6 +197,7 @@ public abstract class BaseEaseChatView extends LinearLayout {
 
                 @Override
                 public void onSuccess() {
+                    saveChatContact(mEMMessage.getTo(),mEMMessage.getMsgId());
                     updateView();
                 }
 
