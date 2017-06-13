@@ -178,7 +178,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     private Subscription mClubUserGetCouponSubscription;//优惠券自动领取
     private Subscription mClubPositionSubscription;//会所位置
     private Subscription mInUserBlacklistSubscription;//黑名单
-    private Subscription mChatCategorySubscription;//显示的列表
+
     //技师在用户黑名单中
     private boolean mInUserBlacklist = false;
     private String[] permission = {Manifest.permission.RECORD_AUDIO};
@@ -529,7 +529,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription,
                 mSendDiceGameSubscription, mAcceptGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription
                 , mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription, mCreditStatusSubscription,
-                mGiftResultSubscription, mClubUserGetCouponSubscription, mClubPositionSubscription, mInUserBlacklistSubscription, mChatCategorySubscription);
+                mGiftResultSubscription, mClubUserGetCouponSubscription, mClubPositionSubscription, mInUserBlacklistSubscription);
     }
 
 
