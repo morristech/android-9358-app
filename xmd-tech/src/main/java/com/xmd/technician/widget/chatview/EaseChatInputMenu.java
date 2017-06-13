@@ -53,7 +53,6 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
     private LinearLayout editTextLayout;
     private View buttonSetModeVoice, buttonSend, buttonPressToSpeak;
     private View btnPhoto, btnFace, btnCommonMsg, btnCommonCoupon, btnAppointment, buttonMore;
-    private boolean ctrlPress = false;
     private ChatInputMenuListener inputMenuListener;
     private ChatSentSpecialListener specialListener;
     private EmojiconMenu emojiconMenu;
@@ -133,41 +132,6 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         buttonMore.setOnClickListener(this);
         mEditText.setOnClickListener(this);
 
-
-        mEditText.requestFocus();
-
-
-//        mEditText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-        mEditText.setOnKeyListener(new OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                EMLog.d("key", "keyCode:" + keyCode + " action:" + event.getAction());
-                // test on Mac virtual machine: ctrl map to KEYCODE_UNKNOWN
-                if (keyCode == KeyEvent.KEYCODE_UNKNOWN) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                        ctrlPress = true;
-                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                        ctrlPress = false;
-                    }
-                }
-                return false;
-            }
-        });
 
         buttonPressToSpeak.setOnTouchListener(new OnTouchListener() {
             @Override

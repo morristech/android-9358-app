@@ -1465,6 +1465,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<OrderListResult>() {
             @Override
             protected void postResult(OrderListResult result) {
+                result.isIndexPage = params.get(RequestConstant.KEY_IS_INDEX_PAGE);
                 RxBus.getInstance().post(result);
             }
         });
