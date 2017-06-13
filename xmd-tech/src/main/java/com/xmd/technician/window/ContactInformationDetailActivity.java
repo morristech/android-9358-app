@@ -9,8 +9,10 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -48,14 +50,12 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AddToBlacklistResult;
 import com.xmd.technician.http.gson.ContactPermissionResult;
-import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
 import com.xmd.technician.http.gson.InBlacklistResult;
 import com.xmd.technician.http.gson.RemoveFromBlacklistResult;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.DropDownMenuDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.RoundImageView;
@@ -235,13 +235,18 @@ public class ContactInformationDetailActivity extends BaseActivity {
             public void onClick(View v) {
                 if (chatHeadUrl != null) {
                     ImageView imageView = new ImageView(v.getContext());
-                    imageView.setMaxWidth(ScreenUtils.getScreenWidth() * 4 / 5);
-                    imageView.setMaxHeight(ScreenUtils.getScreenWidth() * 4 / 5);
-                    new AlertDialogBuilder(v.getContext())
-                            .setCustomView(imageView)
-                            .show();
-                    imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                    Glide.with(v.getContext()).load(chatHeadUrl).into(imageView);
+                    AlertDialog dialog = new AlertDialog
+                            .Builder(v.getContext())
+                            .setView(imageView)
+                            .create();
+                    dialog.show();
+                    WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+                    lp.width = ScreenUtils.getScreenWidth() * 4 / 5;
+                    lp.height = ScreenUtils.getScreenWidth() * 4 / 5;
+                    dialog.getWindow().setAttributes(lp);
+                    imageView.getLayoutParams().width = lp.width;
+                    imageView.getLayoutParams().height = lp.height;
+                    Glide.with(v.getContext()).load(chatHeadUrl).fitCenter().into(imageView);
                 }
             }
         });
@@ -273,12 +278,12 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 break;
             case Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER:
             case Constant.CONTACT_INFO_DETAIL_TYPE_TECH:
-                layoutOperationButtons.setVisibility(View.VISIBLE);
-                btnOperation.setVisibility(View.VISIBLE);
+                mContactTelephone.setVisibility(View.GONE);
                 btnEmHello.setVisibility(View.GONE);
                 btnEmChat.setVisibility(View.VISIBLE);
                 btnCallPhone.setVisibility(View.GONE);
                 btnChat.setVisibility(View.GONE);
+                showOperationButtonsLessThanThree();
                 break;
             default:
                 layoutOperationButtons.setVisibility(View.VISIBLE);
@@ -305,10 +310,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 doShowVisitViewSubscription = RxBus.getInstance().toObservable(VisitBean.class).subscribe(
                         visitBean -> handlerVisitView(visitBean)
                 );
-                // 处理打招呼状态
-                getSayHiStatusSubscription = RxBus.getInstance().toObservable(HelloCheckRecentlyResult.class).subscribe(result -> {
-                    handleSayHiStatus(result);
-                });
 
                 // 处理打招呼结果
                 sayHiDetailSubscription = RxBus.getInstance().toObservable(SayHiBaseResult.class).subscribe(result -> {
@@ -369,13 +370,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
         }
     }
 
-    private void getSayHiStatus(String userId) {
-        if (Utils.isNotEmpty(userId)) {
-            Map<String, String> params = new HashMap<>();
-            params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, userId);
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_CHECK_HELLO_RECENTLY, params);
-        }
-    }
+//    private void getSayHiStatus(String userId) {
+//        if (Utils.isNotEmpty(userId)) {
+//            Map<String, String> params = new HashMap<>();
+//            params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, userId);
+//            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_CHECK_HELLO_RECENTLY, params);
+//        }
+//    }
 
     private void inBlacklist(String userId) {
         if (Utils.isNotEmpty(userId)) {
@@ -389,16 +390,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
         saveParams.put(RequestConstant.KEY_CHAT_MSG_ID, "");
         saveParams.put(RequestConstant.KEY_SEND_POST, "1");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
-    }
-
-    private void handleSayHiStatus(HelloCheckRecentlyResult result) {
-        if (result != null && result.statusCode == 200 && "Y".equals(result.respData)) {
-//            btnEmHello.setEnabled(false);
-//            btnEmHello.setText(R.string.had_say_hi);
-        } else {
-//            btnEmHello.setEnabled(true);
-//            btnEmHello.setText(R.string.to_say_hi);
-        }
     }
 
     private void handlerVisitView(VisitBean bean) {
@@ -477,9 +468,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
         if (permissionInfo != null) {
             boolean showOperation = permissionInfo.call || permissionInfo.hello || permissionInfo.sms || permissionInfo.echat;
             if (showOperation && !permissionInfo.sms) {
-                btnOperation.setVisibility(View.GONE);
-                layoutOperationButtons.setVisibility(View.VISIBLE);
-                layoutOperationButtons.setAlpha(1.0f);
+                showOperationButtonsLessThanThree();
             } else {
                 btnOperation.setVisibility(showOperation ? View.VISIBLE : View.GONE);
                 layoutOperationButtons.setVisibility(showOperation ? View.VISIBLE : View.GONE);
@@ -491,6 +480,13 @@ public class ContactInformationDetailActivity extends BaseActivity {
             btnCallPhone.setVisibility(permissionInfo.call ? View.VISIBLE : View.GONE);
             btnChat.setVisibility(permissionInfo.sms ? View.VISIBLE : View.GONE);
         }
+    }
+
+    private void showOperationButtonsLessThanThree() {
+        btnOperation.setVisibility(View.GONE);
+        showOperationButtons = true;
+        layoutOperationButtons.setVisibility(View.VISIBLE);
+        layoutOperationButtons.setAlpha(1.0f);
     }
 
     public void toCallPhone() {

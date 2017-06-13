@@ -1,5 +1,7 @@
 package com.xmd.chat.message;
 
+import android.text.TextUtils;
+
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 
@@ -20,8 +22,8 @@ public class ChatMessage {
     public static final String MSG_TYPE_ORDER_SUCCESS = "order_success";
     public static final String MSG_TYPE_ORDER_REQUEST = "order_request"; //求预约
 
-    public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";
-
+    public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";//客服消息
+    public static final String MSG_TAG_HELLO = "hello"; //打招呼消息
 
     public static final String ATTRIBUTE_MESSAGE_TYPE = "msgType";
     private static final String ATTRIBUTE_TAG = "xmd_tag";
@@ -55,8 +57,12 @@ public class ChatMessage {
         return getSafeStringAttribute(ATTRIBUTE_TAG);
     }
 
-    public void setTag(String tag) {
-        setAttr(ATTRIBUTE_TAG, tag);
+    public void addTag(String tag) {
+        setAttr(ATTRIBUTE_TAG, TextUtils.isEmpty(getTag()) ? tag : getTag() + "," + tag);
+    }
+
+    public void clearTag() {
+        setAttr(ATTRIBUTE_TAG, "");
     }
 
     public String getToChatId() {

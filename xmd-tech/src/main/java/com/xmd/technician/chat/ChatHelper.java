@@ -887,6 +887,7 @@ public class ChatHelper {
          */
         List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
         synchronized (conversations) {
+
             for (EMConversation conversation : conversations.values()) {
                 if (conversation.getAllMsgCount() > 0) {
                     sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));

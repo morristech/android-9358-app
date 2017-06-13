@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.widget.XToast;
@@ -26,13 +27,13 @@ import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.RoundImageView;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Subscription;
 
 /**
@@ -49,8 +50,10 @@ public class HelloSettingActivity extends BaseActivity {
     CheckBox mCustomCheck;  // 选择自定义招呼内容
     @Bind(R.id.et_custom_text_content)
     EditText mCustomText;   // 自定义内容
+    @Bind(R.id.layout_image)
+    View mLayoutImage;
     @Bind(R.id.img_need_upload)
-    RoundImageView mUploadImage;
+    ImageView mHelloImageView;
     @Bind(R.id.btn_add_image)
     Button mAddImgBtn;      // 添加图片
     @Bind(R.id.btn_template_confirm)
@@ -101,7 +104,7 @@ public class HelloSettingActivity extends BaseActivity {
             handleSaveHelloTemplateResult(result);
         });
 
-        mUploadImage.setOnClickListener(v -> selectHelloPicture());
+        mHelloImageView.setOnClickListener(v -> selectHelloPicture());
 
         // 获取系统模版列表
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_SYS_TEMPLATE_LIST);
@@ -132,11 +135,11 @@ public class HelloSettingActivity extends BaseActivity {
         if (!TextUtils.isEmpty(mHelloSettingManager.getTemplateImageId()) && !TextUtils.isEmpty(mHelloSettingManager.getTemplateImageUrl())) {
             mImageId = mHelloSettingManager.getTemplateImageId();
             mAddImgBtn.setVisibility(View.GONE);
-            mUploadImage.setVisibility(View.VISIBLE);
-            Glide.with(this).load(mHelloSettingManager.getTemplateImageUrl()).into(mUploadImage);
+            mLayoutImage.setVisibility(View.VISIBLE);
+            Glide.with(this).load(mHelloSettingManager.getTemplateImageUrl()).into(mHelloImageView);
         } else {
             mAddImgBtn.setVisibility(View.VISIBLE);
-            mUploadImage.setVisibility(View.GONE);
+            mLayoutImage.setVisibility(View.GONE);
         }
     }
 
@@ -153,10 +156,9 @@ public class HelloSettingActivity extends BaseActivity {
         if (result != null && result.statusCode == 200 && result.respData != null) {
             // 上传成功:保存打招呼内容
             mImageId = result.respData.imageId;
-
+            mLayoutImage.setVisibility(View.VISIBLE);
             mAddImgBtn.setVisibility(View.GONE);        //隐藏添加图片按钮
-            mUploadImage.setVisibility(View.VISIBLE);   //显示图片
-            mUploadImage.setImageBitmap(mHelloBitmap);    //加载缩略图
+            mHelloImageView.setImageBitmap(mHelloBitmap);    //加载缩略图
         } else {
             // 上传失败
             showToast("上传失败，请稍候重试");
@@ -201,6 +203,13 @@ public class HelloSettingActivity extends BaseActivity {
     private void uploadHelloPicture() {
         showLoading("正在上传图片...");
         ImageUploader.getInstance().upload(ImageUploader.TYPE_HELLO, mHelloBitmap);
+    }
+
+    @OnClick(R.id.btn_clear_image)
+    public void clearImage() {
+        mImageId = null;
+        mAddImgBtn.setVisibility(View.VISIBLE);
+        mLayoutImage.setVisibility(View.GONE);
     }
 
     @Override

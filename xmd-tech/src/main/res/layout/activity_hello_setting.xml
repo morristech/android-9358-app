@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -92,50 +91,50 @@
                 android:textColor="@color/text_index"
                 android:textSize="@dimen/fontBody" />
 
-            <RelativeLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:background="@color/color_white">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentTop="true"
-                    android:background="@color/indicator_normal_color" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/indicator_normal_color" />
-
-
-                <com.xmd.technician.widget.RoundImageView
-                    android:id="@+id/img_need_upload"
-                    android:layout_width="74dp"
-                    android:layout_height="74dp"
-                    android:layout_centerVertical="true"
+                <FrameLayout
+                    android:id="@+id/layout_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/padding_10"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/icon22"
-                    android:visibility="gone"
-                    app:borderRadius="@dimen/search_margin"
-                    app:type="round"
-                    android:layout_centerInParent="true" />
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <ImageView
+                        android:id="@+id/img_need_upload"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="8dp"
+                        android:scaleType="fitCenter" />
+
+                    <ImageView
+                        android:id="@+id/btn_clear_image"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="top|right"
+                        android:src="@drawable/close"
+                        android:alpha="0.8" />
+                </FrameLayout>
+
 
                 <Button
                     android:id="@+id/btn_add_image"
                     android:layout_width="160dp"
                     android:layout_height="34dp"
-                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
                     android:background="@drawable/bg_journal_mark"
                     android:onClick="onAddBtnClick"
                     android:padding="0dp"
                     android:text="选择图片"
                     android:textColor="@color/colorMainBtn"
                     android:textSize="@dimen/fontTitle" />
-            </RelativeLayout>
+            </FrameLayout>
 
             <Button
                 android:id="@+id/btn_template_confirm"

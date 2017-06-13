@@ -9,12 +9,13 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
+import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.message.ChatMessage;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.HelloTemplateInfo;
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.http.RetrofitServiceFactory;
@@ -162,16 +163,22 @@ public class HelloSettingManager {
         }
     }
 
-    private void emSendMessage(EMMessage message) {
-        message.setAttribute(ChatConstant.KEY_CLUB_NAME, SharedPreferenceHelper.getUserClubName());
-        message.setAttribute(ChatConstant.KEY_TECH_ID, SharedPreferenceHelper.getUserId());
-        message.setAttribute(ChatConstant.KEY_CLUB_ID, SharedPreferenceHelper.getUserClubId());
-        message.setAttribute(ChatConstant.KEY_NAME, SharedPreferenceHelper.getUserName());
-        message.setAttribute(ChatConstant.KEY_HEADER, SharedPreferenceHelper.getUserAvatar());
-        message.setAttribute(ChatConstant.KEY_TIME, String.valueOf(System.currentTimeMillis()));
-        message.setAttribute(ChatConstant.KEY_SERIAL_NO, SharedPreferenceHelper.getSerialNo());
-        message.setAttribute(ChatConstant.KEY_USER_ID, SharedPreferenceHelper.getUserId());
-        EMClient.getInstance().chatManager().sendMessage(message);
+    private void emSendMessage(EMMessage msg) {
+        ChatMessage message = ChatMessageFactory.get(msg);
+        message.addTag(ChatMessage.MSG_TAG_HELLO);
+        message.setUserId(SharedPreferenceHelper.getUserId());
+        message.setUserName(SharedPreferenceHelper.getUserName());
+        message.setUserAvatar(SharedPreferenceHelper.getUserAvatar());
+        message.setTime(String.valueOf(System.currentTimeMillis()));
+
+        message.setClubId(SharedPreferenceHelper.getUserClubId());
+        message.setClubName(SharedPreferenceHelper.getUserClubName());
+        message.setTechNo(SharedPreferenceHelper.getSerialNo());
+
+        //TODO REMOVE
+        message.setTechId(SharedPreferenceHelper.getUserId());
+
+        EMClient.getInstance().chatManager().sendMessage(message.getEmMessage());
     }
 
     public void checkHelloReply() {

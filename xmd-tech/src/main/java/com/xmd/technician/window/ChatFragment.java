@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
+import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.message.ChatMessage;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -177,9 +179,23 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Override
     protected void dispatchRequest() {
         List<EMConversation> list = emchat.getAllConversationList();
+        //不显示无法聊天的用户
         mConversationList.clear();
-        mConversationList.addAll(list);
-        onGetListSucceeded(0, list);
+        for (EMConversation conversation : list) {
+            ChatMessage lastMessage = ChatMessageFactory.get(conversation.getLastMessage());
+            if (lastMessage == null) {
+                continue;
+            }
+            boolean lastIsHello = lastMessage.getTag() != null && lastMessage.getTag().contains(ChatMessage.MSG_TAG_HELLO);
+            if (conversation.getLatestMessageFromOthers() == null && lastIsHello) {
+                conversation.clear();
+                continue;
+            }
+            conversation.clear();
+            mConversationList.add(conversation);
+        }
+
+        onGetListSucceeded(0, mConversationList);
     }
 
     @Override

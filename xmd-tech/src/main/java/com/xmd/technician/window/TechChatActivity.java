@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -191,9 +192,14 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         ButterKnife.bind(this);
 
         toChatUserId = getIntent().getStringExtra(ChatConstant.TO_CHAT_USER_ID); //对方环信ID
+        if (TextUtils.isEmpty(toChatUserId)) {
+            XToast.show("无法找到用户：chatId=" + toChatUserId);
+            finish();
+            return;
+        }
         mUser = userService.getUserByChatId(toChatUserId);
         if (mUser == null) {
-            XToast.show("无法找到用户：" + toChatUserId);
+            XToast.show("无法找到用户：chatId=" + toChatUserId);
             finish();
             return;
         }

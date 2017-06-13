@@ -12,8 +12,10 @@ import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.utils.UserUtils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.notify.NotificationCenter;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
+import com.xmd.technician.window.ContactInformationDetailActivity;
 import com.xmd.technician.window.JoinClubActivity;
 import com.xmd.technician.window.LoginActivity;
 import com.xmd.technician.window.MainActivity;
@@ -127,5 +129,12 @@ public class UINavigation {
                 break;
         }
         return false;
+    }
+
+    public static void gotoCustomerDetailAcivity(Context context, String customerId) {
+        Intent intent = new Intent(context, ContactInformationDetailActivity.class);
+        intent.putExtra(RequestConstant.KEY_USER_ID, customerId);
+        intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
+        context.startActivity(intent);
     }
 }
