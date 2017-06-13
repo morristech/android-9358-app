@@ -33,6 +33,7 @@ import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
+import com.xmd.appointment.beans.Technician;
 import com.xmd.chat.ChatConstants;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.order.OrderChatManager;
@@ -75,6 +76,7 @@ import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.InUserBlacklistResult;
 import com.xmd.technician.http.gson.MarkChatToUserResult;
 import com.xmd.technician.http.gson.OrderManageResult;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
@@ -187,6 +189,8 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     private User mUser;
 
     private boolean isInSubmitAppointment;
+
+    private LoginTechnician technician = LoginTechnician.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -394,6 +398,15 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 AppointmentData data = new AppointmentData();
                 data.setCustomerId(mUser.getId());
                 data.setCustomerName(mUser.getName());
+                boolean fixTech = technician.getRoles() != null && !technician.getRoles().contains(User.ROLE_FLOOR);
+                if (fixTech) {
+                    Technician tech = new Technician();
+                    tech.setId(technician.getUserId());
+                    tech.setAvatarUrl(technician.getAvatarUrl());
+                    tech.setName(technician.getNickName());
+                    data.setTechnician(tech);
+                    data.setFixTechnician(true);
+                }
                 EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, TAG, data));
             }
 

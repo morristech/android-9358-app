@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
+import com.shidou.commonlibrary.helper.XLogger;
 
 /**
  * Created by heyangya on 17-6-5.
@@ -11,7 +12,7 @@ import com.hyphenate.exceptions.HyphenateException;
  */
 
 public class ChatMessage {
-
+    private static final String TAG = "ChatMessage";
     //订单
     public static final String MSG_TYPE_ORDER = "order";
 
@@ -75,7 +76,9 @@ public class ChatMessage {
 
     public String getSafeStringAttribute(String key) {
         try {
-            return emMessage.getStringAttribute(key);
+            String value = emMessage.getStringAttribute(key);
+            XLogger.d(TAG, "get key=" + key + ",value=" + value);
+            return value;
         } catch (HyphenateException e) {
             return null;
         }
@@ -83,7 +86,9 @@ public class ChatMessage {
 
     public Integer getSafeIntergeAttribute(String key) {
         try {
-            return emMessage.getIntAttribute(key);
+            Integer value = emMessage.getIntAttribute(key);
+            XLogger.d(TAG, "get key=" + key + ",value=" + value);
+            return value;
         } catch (HyphenateException e) {
             return null;
         }
@@ -91,15 +96,9 @@ public class ChatMessage {
 
     public Long getSafeLongAttribute(String key) {
         try {
-            return emMessage.getLongAttribute(key);
-        } catch (HyphenateException e) {
-            return null;
-        }
-    }
-
-    public Boolean getSafeBooleanAttribute(String key) {
-        try {
-            return emMessage.getBooleanAttribute(key);
+            Long value = emMessage.getLongAttribute(key);
+            XLogger.d(TAG, "get key=" + key + ",value=" + value);
+            return value;
         } catch (HyphenateException e) {
             return null;
         }

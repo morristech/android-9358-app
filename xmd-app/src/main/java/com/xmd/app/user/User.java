@@ -16,6 +16,9 @@ public class User implements Serializable {
     public final static int USER_TYPE_TECH = 2;
     public final static int USER_TYPE_MANAGER = 3;
 
+    public final static String ROLE_TECH = "tech";//技师
+    public final static String ROLE_FLOOR = "floor_staff";//楼面
+
     private String id; //用户ID
     private String avatar; //用户头像
     private String name; //用户名称

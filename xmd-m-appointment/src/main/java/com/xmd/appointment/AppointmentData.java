@@ -21,6 +21,7 @@ import java.util.Date;
 
 public class AppointmentData implements Serializable {
     private boolean needSubmit; //是否直接提交
+    private boolean fixTechnician; //是否固定技师
 
     private Date time; //到店时间
     private int duration; //持续时间，分钟
@@ -195,6 +196,14 @@ public class AppointmentData implements Serializable {
 
     public void setSubmitOrderId(String submitOrderId) {
         this.submitOrderId = submitOrderId;
+    }
+
+    public boolean isFixTechnician() {
+        return fixTechnician;
+    }
+
+    public void setFixTechnician(boolean fixTechnician) {
+        this.fixTechnician = fixTechnician;
     }
 
     @Override

@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseDialogFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.appointment.beans.AppointmentSetting;
@@ -28,7 +29,6 @@ import com.xmd.appointment.databinding.FragmentTimeSelectBinding;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -181,8 +181,17 @@ public class TimeSelectFragment extends BaseDialogFragment {
         mArgumentTime = (Date) getArguments().getSerializable(EXTRA_SELECTED_DATA);
 
         mDayData = new ArrayList<>();
-        mDayData.addAll(mArgumentSetting.getTimeList());
-        filterDayData(mDayData);
+        for (AppointmentSetting.TimeInfo timeInfo : mArgumentSetting.getTimeList()) {
+            if (timeInfo.getValidHourList().size() == 0) {
+                continue;
+            }
+            mDayData.add(timeInfo);
+        }
+        if (mDayData.size() == 0) {
+            XToast.show("没有可预约的时间！");
+            onClickCancel();
+            return;
+        }
         mDayAdapter.setData(R.layout.list_item_time_day, BR.data, mDayData);
         mDayAdapter.notifyDataSetChanged();
 
@@ -232,16 +241,6 @@ public class TimeSelectFragment extends BaseDialogFragment {
             }
         } else {
             updateHourData();
-        }
-    }
-
-    private void filterDayData(List<AppointmentSetting.TimeInfo> list) {
-        Iterator<AppointmentSetting.TimeInfo> iterator = list.iterator();
-        while (iterator.hasNext()) {
-            List<AppointmentSetting.TimeSection> hourData = iterator.next().getTime();
-            if (hourData == null || hourData.size() == 0) {
-                iterator.remove();
-            }
         }
     }
 

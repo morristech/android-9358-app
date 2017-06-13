@@ -52,15 +52,17 @@ public interface NetService {
                                                            @Query("userId") String userId);
 
     /**
-     * 生成预约
-     *
-     * @param customerName    顾客名称	string	必填
-     * @param customerPhone   顾客手机	string	必填
-     * @param time            预约时间	string	必填, 格式HH:mm
-     * @param techId          被预约技师ID	string	非必填
-     * @param userId          预约用户ID	string	非必填
-     * @param serviceId       预约项目ID	string	非必填
-     * @param serviceDuration 预约服务时长	number	单位为分
+     * 生成或者查询预约
+     * @param orderId 订单ID
+     * @param customerName 客户名 必填
+     * @param customerPhone 客户手机 必填
+     * @param time 预约时间 utc_ms 必填
+     * @param userId 预约用户ID
+     * @param cardNo
+     * @param techId 预约技师ID
+     * @param serviceId 项目ID
+     * @param serviceDuration 项目时长
+     * @return 订单ID
      */
     @POST("/spa-manager/api/v2/tech/order/save")
     @FormUrlEncoded

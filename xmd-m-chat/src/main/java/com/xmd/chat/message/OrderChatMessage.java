@@ -21,7 +21,6 @@ public class OrderChatMessage extends ChatMessage {
     private final static String ATTR_ORDER_ID = "orderId";//订单ID
     private final static String ATTR_ORDER_PAY_MONEY = "orderPayMoney";////支付金额，单位为分 Integer
 
-
     //内部是否已处理此消息
     private static final String ATTR_INNER_PROCESSED = "inner_processed";
 

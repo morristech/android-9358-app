@@ -75,9 +75,12 @@ public class AppointmentActivity extends BaseActivity
             for (ServiceItemDuration duration : durations) {
                 if (duration.getDuration() == mData.getDuration()) {
                     mSelectedDuration = duration;
-                    mSelectedDuration.viewSelected.set(true);
                 }
             }
+            if (mSelectedDuration == null) {
+                mSelectedDuration = durations.get(0);
+            }
+            mSelectedDuration.viewSelected.set(true);
         }
 
         //若有用户ID，加载预约数据
@@ -111,37 +114,12 @@ public class AppointmentActivity extends BaseActivity
                 });
     }
 
-//    private void loadServiceInfo(final String serviceId) {
-//        showLoading();
-//        DataManager.getInstance().loadServiceList(new NetworkSubscriber<ServiceListResult>() {
-//            @Override
-//            public void onCallbackSuccess(ServiceListResult result) {
-//                hideLoading();
-//                for (ServiceData data : result.getRespData()) {
-//                    if (data.itemList == null || data.itemList.size() == 0) {
-//                        continue;
-//                    }
-//                    for (ServiceItem item : data.itemList) {
-//                        if (item.getId().equals(serviceId)) {
-//                            mData.setServiceItem(item);
-//                            mBinding.setData(mData);
-//                            return;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCallbackError(Throwable e) {
-//                hideLoading();
-//                mData.setServiceItem(null);
-//            }
-//        });
-//    }
-
     /************************技师选择***********************/
     //点击选择技师
     public void onClickSelectTech() {
+        if (mData.isFixTechnician()) {
+            return;
+        }
         String techId = null;
         String itemId = null;
         if (mData.getTechnician() != null) {

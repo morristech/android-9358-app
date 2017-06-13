@@ -17,8 +17,10 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.user.User;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
+import com.xmd.appointment.beans.Technician;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
@@ -27,6 +29,7 @@ import com.xmd.technician.Adapter.EaseMessageAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.databinding.ChatRowViewSubOrderBinding;
+import com.xmd.technician.model.LoginTechnician;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -246,6 +249,16 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
     //点击完善信息
     public void onClickCreateOrder() {
         EventBusSafeRegister.register(this);
+        LoginTechnician technician = LoginTechnician.getInstance();
+        boolean fixTech = technician.getRoles() != null && !technician.getRoles().contains(User.ROLE_FLOOR);
+        if (fixTech) {
+            Technician tech = new Technician();
+            tech.setId(technician.getUserId());
+            tech.setAvatarUrl(technician.getAvatarUrl());
+            tech.setName(technician.getNickName());
+            mAppointmentData.setTechnician(tech);
+            mAppointmentData.setFixTechnician(true);
+        }
         EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, TAG, mAppointmentData));
     }
 

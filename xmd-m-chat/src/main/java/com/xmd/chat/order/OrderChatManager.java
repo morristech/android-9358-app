@@ -1,5 +1,7 @@
 package com.xmd.chat.order;
 
+import android.text.TextUtils;
+
 import com.hyphenate.chat.EMMessage;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -44,7 +46,7 @@ public class OrderChatManager {
         data.setCustomerPhone(chatMessage.getCustomerPhone());
 
         //设置技师信息
-        if (chatMessage.getOrderTechId() != null) {
+        if (!TextUtils.isEmpty(chatMessage.getOrderTechId())) {
             Technician technician = new Technician();
             technician.setId(chatMessage.getOrderTechId());
             technician.setName(chatMessage.getOrderTechName());
@@ -53,7 +55,7 @@ public class OrderChatManager {
         }
 
         //设置项目信息
-        if (chatMessage.getOrderServiceId() != null) {
+        if (!TextUtils.isEmpty(chatMessage.getOrderServiceId())) {
             ServiceItem serviceItem = new ServiceItem();
             serviceItem.setId(chatMessage.getOrderServiceId());
             serviceItem.setName(chatMessage.getOrderServiceName());

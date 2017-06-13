@@ -1,5 +1,7 @@
 package com.shidou.commonlibrary.network;
 
+import android.text.TextUtils;
+
 import com.shidou.commonlibrary.helper.XLogger;
 
 import java.io.File;
@@ -129,6 +131,9 @@ public class OkHttpUtil {
 
     private String requestToString(Request request) {
         String result = request.method() + ":" + request.url().toString();
+        if (!TextUtils.isEmpty(mCommonHeader.get("token"))) {
+            result += "&token=" + mCommonHeader.get("token");
+        }
         RequestBody requestBody = request.body();
         if (requestBody != null) {
             if (requestBody instanceof FormBody) {
