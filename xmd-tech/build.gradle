@@ -32,8 +32,8 @@ android {
         //1.6.2 附近的人，打招呼
         // 1.6.4Pk分组，修复已知bug
         //1.6.8 聊天优化,黑名单
-        versionCode 36
-        versionName "1.6.8"
+        versionCode 38
+        versionName "1.7.0"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
