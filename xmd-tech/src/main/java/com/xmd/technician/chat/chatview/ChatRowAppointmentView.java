@@ -191,7 +191,7 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
 
     @BindingAdapter("order_service_time")
     public static void bindServiceTime(TextView view, OrderChatMessage data) {
-        if (data != null && data.getOrderServiceTime() != null) {
+        if (data != null && data.getOrderServiceTime() != null && data.getOrderServiceTime() > 0) {
             view.setText(DateUtils.getSdf("MM月dd日 EEEE HH:mm").format(data.getOrderServiceTime()));
         } else {
             view.setText("待定");
@@ -215,13 +215,13 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
             AppointmentData data = event.getData();
             if (data != null) {
                 mAppointmentData = data;
-                OrderChatManager.fillMessage(mChatMessage, mAppointmentData);
                 mChatMessage.setInnerProcessed("已处理");
                 if (isFreeAppointment()) {
                     //免费预约时，先发送预约确定，客服点击之后才生成订单
                     sendMessage(ChatMessage.MSG_TYPE_ORDER_CONFIRM);
                 } else {
                     //付费预约，直接生成订单
+                    OrderChatManager.fillMessage(mChatMessage, mAppointmentData);
                     onClickSubmitOrder();
                 }
             }

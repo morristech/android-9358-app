@@ -259,10 +259,17 @@
                         android:text="预约现金：" />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text='@{data.fontMoney/100+"元"}' />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="此定金可在结账时抵扣消费"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="#ff6666" />
                 </LinearLayout>
 
             </LinearLayout>

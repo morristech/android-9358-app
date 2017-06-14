@@ -229,28 +229,27 @@ public class ContactInformationDetailActivity extends BaseActivity {
         initView();
 
         ScreenUtils.initScreenSize(getWindowManager());
-            //临时屏蔽
-//        mContactHead.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!TextUtils.isEmpty(managerHeadUrl) || !TextUtils.isEmpty(chatHeadUrl)) {
-//                    ImageView imageView = new ImageView(v.getContext());
-//                    imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-//                    AlertDialog dialog = new AlertDialog
-//                            .Builder(v.getContext())
-//                            .setView(imageView)
-//                            .create();
-//                    dialog.show();
-//                    WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-//                    lp.width = ScreenUtils.getScreenWidth() * 4 / 5;
-//                    lp.height = ScreenUtils.getScreenWidth() * 4 / 5;
-//                    dialog.getWindow().setAttributes(lp);
-//                    imageView.getLayoutParams().width = lp.width;
-//                    imageView.getLayoutParams().height = lp.height;
-//                    Glide.with(v.getContext()).load(chatHeadUrl).into(imageView);
-//                }
-//            }
-//        });
+        mContactHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(managerHeadUrl) || !TextUtils.isEmpty(chatHeadUrl)) {
+                    ImageView imageView = new ImageView(v.getContext());
+                    imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    AlertDialog dialog = new AlertDialog
+                            .Builder(v.getContext())
+                            .setView(imageView)
+                            .create();
+                    dialog.show();
+                    WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+                    lp.width = ScreenUtils.getScreenWidth() * 4 / 5;
+                    lp.height = ScreenUtils.getScreenWidth() * 4 / 5;
+                    dialog.getWindow().setAttributes(lp);
+                    imageView.getLayoutParams().width = lp.width;
+                    imageView.getLayoutParams().height = lp.height;
+                    Glide.with(v.getContext()).load(chatHeadUrl).into(imageView);
+                }
+            }
+        });
     }
 
     private void initView() {
