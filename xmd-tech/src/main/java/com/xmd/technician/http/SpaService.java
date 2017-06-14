@@ -29,12 +29,17 @@ import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.CategoryListResult;
 import com.xmd.technician.http.gson.CheckPayNotifyResult;
+import com.xmd.technician.http.gson.ClubEmployeeDetailResult;
+import com.xmd.technician.http.gson.ClubEmployeeListResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
+import com.xmd.technician.http.gson.ContactAllListResult;
 import com.xmd.technician.http.gson.ContactPermissionResult;
+import com.xmd.technician.http.gson.ContactRegisterListResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
+import com.xmd.technician.http.gson.CustomerUserRecentListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.GetPayNotifyListResult;
 import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
@@ -857,17 +862,47 @@ public interface SpaService {
     @GET(RequestConstant.URL_IN_USER_BLACKLIST)
     Call<InUserBlacklistResult> inUserBlacklist(@Query(RequestConstant.KEY_FRIEND_CHAT_ID) String friendChatId,
                                                 @Query(RequestConstant.KEY_TOKEN) String userToken);
+
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_MARK_CHAT_TO_USER)
     Call<MarkChatToUserResult> markChatToUser(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                               @Field(RequestConstant.KEY_ID) String id,
-                                             @Field(RequestConstant.KEY_MAP_SIZE) String size);
+                                              @Field(RequestConstant.KEY_MAP_SIZE) String size);
+
     //categoryList
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_TECH_CHAT_CATEGORY_LIST)
-    Call<CategoryListResult> categoryList (@Field(RequestConstant.KEY_TOKEN) String userToken);
+    Call<CategoryListResult> categoryList(@Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_TECH_MARKETING_ITEM_LIST)
-    Call<MarketingListResult> techMarketingList (@Field(RequestConstant.KEY_TOKEN) String userToken);
+    Call<MarketingListResult> techMarketingList(@Field(RequestConstant.KEY_TOKEN) String userToken);
+    // ------------------------------------------> 联系人优化 <----------------------------------------
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TECH_CUSTOMER_USER_ALL_LIST)
+    Call<ContactAllListResult> techCustomerAllList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                   @Field(RequestConstant.KEY_PAGE) String page,
+                                                   @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                                   @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
+                                                   @Field(RequestConstant.KEY_USER_NAME) String userName);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_TECH_CUSTOMER_USER_REGISTER_LIST)
+    Call<ContactRegisterListResult> techCustomerRegisterList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                             @Field(RequestConstant.KEY_PAGE) String page,
+                                                             @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                                             @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
+                                                             @Field(RequestConstant.KEY_USER_NAME) String userName);
+
+    @GET(RequestConstant.URL_GET_CLUB_EMPLOYEE_LIST)
+    Call<ClubEmployeeListResult> clubEmployeeList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @GET(RequestConstant.URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST)
+    Call<CustomerUserRecentListResult> clubCustomerUserRecentList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+    //clubEmployeeDetail
+
+    @GET(RequestConstant.URL_CLUB_COLLEAGUE_DETAIL)
+    Call<ClubEmployeeDetailResult> clubEmployeeDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                      @Query(RequestConstant.KEY_EMP_ID) String empId);
 }

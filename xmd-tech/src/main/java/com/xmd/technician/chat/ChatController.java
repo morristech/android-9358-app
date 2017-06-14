@@ -150,12 +150,13 @@ public class ChatController extends AbstractController {
 
                             @Override
                             public void onError(int i, String s) {
+                                Logger.v("ChatController.doLoginEmchat : fail");
                                 Logger.e("onError:" + i + ", " + s);
 
-                                if(i != EMError.USER_ALREADY_LOGIN){
-                                    if(technician.isLogin()){
+                                if (i != EMError.USER_ALREADY_LOGIN) {
+                                    if (technician.isLogin()) {
                                         RxBus.getInstance().post(new EventEmChatLoginSuccess(false));
-                                    }else{
+                                    } else {
                                         XToast.showInNotUI("无法初始化聊天系统:" + i + "," + s);
                                         return;
                                     }

@@ -61,7 +61,10 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mThrowableSubscription.unsubscribe();
+        if (mThrowableSubscription != null) {
+            mThrowableSubscription.unsubscribe();
+        }
+
     }
 
     private void initContent() {

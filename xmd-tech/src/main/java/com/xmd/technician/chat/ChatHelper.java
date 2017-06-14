@@ -120,7 +120,7 @@ public class ChatHelper {
         if (ChatUI.getInstance().init(context, options)) {
             appContext = context;
             //调试模式时为true，release模式时为false
-            EMClient.getInstance().setDebugMode(false);
+            EMClient.getInstance().setDebugMode(true);
             easeUI = ChatUI.getInstance();
             setEaseUIProviders();
             //initialize preference manager

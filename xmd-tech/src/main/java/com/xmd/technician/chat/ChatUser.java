@@ -83,6 +83,7 @@ public class ChatUser extends EMContact {
 
     /**
      * 用户名相同即为同一用户
+     *
      * @param o
      * @return
      */
@@ -96,12 +97,13 @@ public class ChatUser extends EMContact {
 
     /**
      * 用户所有信息都一致才为同一用户
+     *
      * @param o
      * @return
      */
     public boolean exactlyEquals(Object o) {
         boolean result = false;
-        if(userType == null || !userType.equals(((ChatUser) o).getUserType())){
+        if (Utils.isEmpty(userType) || !userType.equals(((ChatUser) o).getUserType())) {
             return false;
         }
         if (o == null || !(o instanceof ChatUser)) {
@@ -126,13 +128,13 @@ public class ChatUser extends EMContact {
         return nick == null ? username : nick;
     }
 
-    public int getUserChatType(){
-        if(Utils.isNotEmpty(userType)){
-            if(userType.equals(ChatConstant.TO_CHAT_USER_TYPE_MANAGER)){
+    public int getUserChatType() {
+        if (Utils.isNotEmpty(userType)) {
+            if (userType.equals(ChatConstant.TO_CHAT_USER_TYPE_MANAGER)) {
                 return ChatConstant.CHAT_USER_TYPE_MANAGER;
-            }else if(userType.equals(ChatConstant.TO_CHAT_USER_TYPE_TECH)){
+            } else if (userType.equals(ChatConstant.TO_CHAT_USER_TYPE_TECH)) {
                 return ChatConstant.CHAT_USER_TYPE_TECH;
-            }else{
+            } else {
                 return ChatConstant.CHAT_USER_TYPE_CUSTOMER;
             }
         }

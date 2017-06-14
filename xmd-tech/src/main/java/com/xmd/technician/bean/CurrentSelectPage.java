@@ -5,7 +5,9 @@ package com.xmd.technician.bean;
  */
 public class CurrentSelectPage {
     public  int selectType ;
-    public CurrentSelectPage(int type){
+    public  int selectItem;
+    public CurrentSelectPage(int type,int selectItem){
         this.selectType = type;
+        this.selectItem = selectItem;
     }
 }

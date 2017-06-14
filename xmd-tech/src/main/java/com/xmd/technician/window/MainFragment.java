@@ -16,6 +16,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -877,7 +878,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             case R.id.main_tech_who_care_all:
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(2);
-                MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 0);
+                Map<String, Integer> params = new HashMap<String, Integer>();
+                params.put(Constant.SWITCH_FRAGMENT_INDEX, 2);
+                params.put(Constant.SWITCH_FRAGMENT_ITEM_INDEX, 2);
+                MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, params);
                 break;
             case R.id.layout_technician_ranking:
                 if (isHasPk) {
@@ -906,7 +910,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
                     @Override
                     public void run() {
-                        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, 1);
+                        Map<String, Integer> params = new HashMap<String, Integer>();
+                        params.put(Constant.SWITCH_FRAGMENT_INDEX, 2);
+                        params.put(Constant.SWITCH_FRAGMENT_ITEM_INDEX, 1);
+                        MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, params);
                     }
                 }, 300);
                 break;

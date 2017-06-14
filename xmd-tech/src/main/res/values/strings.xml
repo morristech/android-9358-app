@@ -311,7 +311,7 @@
     <string name="contact_description_remark_empty">该用户尚未添加个人简介信息...</string>
     <string name="contact_customer">客户</string>
     <string name="contact_club">本店</string>
-    <string name="contact_manager">店长</string>
+
     <string name="add_ontact_successed">添加联系人成功</string>
     <string name="toast_useful_telephone">请输入正确的手机号</string>
     <string name="contact_hint_phone">请输入手机号</string>
@@ -583,4 +583,25 @@
     <string name="chat_timescard_message_type">单项次卡</string>
     <string name="chat_package_message_type">超值套餐</string>
     <string name="chat_gift_message_type">积分礼品</string>
+
+    <!--联系人改版-->
+    <string name="contact_all">全部客户</string>
+    <string name="contact_register">我的拓客</string>
+    <string name="contact_recently_visitor">最近访客</string>
+    <string name="contact_club_colleague">本店同事</string>
+    <string name="contact_manager">店长</string>
+    <string name="contact_cashier">收银员</string>
+    <string name="contact_technician">技师</string>
+    <string name="contact_mark_tech_add">通讯录</string>
+    <string name="contact_mark_new_add">新客</string>
+    <string name="contact_mark_activation">待激活</string>
+    <string name="contact_mark_big">大客</string>
+    <string name="contact_mark_normal">普客</string>
+    <string name="contact_search_is_null_alter">搜索内容不能为空</string>
+    <string name="contact_recent_default_name">游客</string>
+    <string name="contact_has_no_information_alter">该用户无详情信息</string>
+    <string name="contact_add_contact">添加客户</string>
+    <string name="contact_blacklist_manager">黑名单管理</string>
+    <string name="contact_to_develop_customer">去拓客吧</string>
+    <string name="contact_to_nearby_people">查看附近的人</string>
 </resources>

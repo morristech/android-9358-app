@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_5"
+        android:background="@android:drawable/editbox_background_normal"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.xmd.technician.widget.ClearableEditText
+            android:id="@+id/ed_search_contact"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/search_view_height"
+            android:layout_weight="1"
+            android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/search_hint"
+            android:paddingLeft="@dimen/search_padding_left"
+            android:paddingRight="@dimen/inter_space"
+            android:singleLine="true"
+            android:textColor="@color/colorBody"
+            android:textColorHint="@color/colorRemarkText"
+            android:textSize="@dimen/fontTitle"/>
+
+        <View
+            style="@style/vertical_divider_line"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_marginRight="@dimen/small_space"
+            android:layout_marginTop="@dimen/margin_5"
+            android:background="@color/button_border"/>
+
+        <ImageView
+            android:id="@+id/img_btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_marginRight="@dimen/small_space"
+            android:clickable="true"
+            android:src="@drawable/icon_sech"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/margin_10"
+        android:paddingTop="@dimen/margin_10">
+
+        <TextView
+            android:id="@+id/tv_customer_all"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/small_space"
+            android:drawableTop="@drawable/selector_contact_all"
+            android:gravity="center"
+            android:text="@string/contact_all"
+            android:textColor="@color/selector_contact_text_table"
+            android:textSize="@dimen/fontCaption"/>
+
+        <TextView
+            android:id="@+id/tv_customer_register"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/small_space"
+            android:drawableTop="@drawable/selector_contact_register"
+            android:gravity="center"
+            android:text="@string/contact_register"
+            android:textColor="@color/selector_contact_text_table"
+            android:textSize="@dimen/fontCaption"/>
+
+        <TextView
+            android:id="@+id/tv_customer_visitor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/small_space"
+            android:drawableTop="@drawable/selector_contact_visitor"
+            android:gravity="center"
+            android:text="@string/contact_recently_visitor"
+            android:textColor="@color/selector_contact_text_table"
+            android:textSize="@dimen/fontCaption"/>
+
+        <TextView
+            android:id="@+id/tv_customer_technician"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/small_space"
+            android:drawableTop="@drawable/selector_contact_technician"
+            android:gravity="center"
+            android:text="@string/contact_club_colleague"
+            android:textColor="@color/selector_contact_text_table"
+            android:textSize="@dimen/fontCaption"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/contact_fragment_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

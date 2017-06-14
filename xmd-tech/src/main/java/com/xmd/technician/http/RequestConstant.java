@@ -182,6 +182,20 @@ public class RequestConstant {
     public static final String URL_GET_MARK_CHAT_TO_USER = BASE_URL + "/v2/club/location/staticmap";
     public static final String URL_GET_TECH_CHAT_CATEGORY_LIST = BASE_URL + "/v2/tech/chat/category/list";
     public static final String URL_GET_TECH_MARKETING_ITEM_LIST = BASE_URL + "/v2/tech/marketing_item/list";
+
+    /**
+     * --------------------------------------> 联系人改版 <----------------------------------------
+     */
+    //技师全部联系人
+    public static final String URL_GET_TECH_CUSTOMER_USER_ALL_LIST = BASE_URL + "/v2/tech/customer/user/all/list";
+    //技师拓客联系人
+    public static final String URL_GET_TECH_CUSTOMER_USER_REGISTER_LIST = BASE_URL + "/v2/tech/customer/user/register/list";
+    //本店同事列表
+    public static final String URL_GET_CLUB_EMPLOYEE_LIST = BASE_URL + "/v2//tech/colleague/list";
+    //最近访客
+    public static final String URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST = BASE_URL + "/v2/tech/customer/user/recent/list";
+    //本店同事详情
+    public static final String URL_CLUB_COLLEAGUE_DETAIL = BASE_URL + "/v2/tech/colleague/detail";
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -270,12 +284,12 @@ public class RequestConstant {
     public static final String KEY_MARK_IMPRESSION = "impression";
     public static final String KEY_CUSTOMER_TYPE = "customerType";
     public static final String TYPE_CUSTOMER = "customer";
-    public static final String TECH_ADD = "tech_add";
-    public static final String FANS_USER = "fans_user";
+
+
     public static final String TEMP_USER = "temp_user";
     public static final String CONTACT_TYPE = "type";
-    public static final String WX_USER = "wx_user";
-    public static final String FANS_WX_USER = "fans_wx_user";
+
+
     public static final String COUPON_USER = "coupon_user";
     public static final String KEY_APPROVE = "approve";
     public static final String KEY_TIMEOUT = "timeout";
@@ -394,6 +408,14 @@ public class RequestConstant {
     public static final String KEY_PLATFORM = "platform";
     public static final String VALUE_PLATFORM_TECH = "TECH_APP";
     public static final String KEY_MAP_SIZE = "size";
+    // -----------------------------------------> 技师联系人 <-----------------------------------------
+    public static final String KEY_USER_NAME = "userName";
+    public static final String WX_USER = "wx_user";
+    public static final String FANS_USER = "fans_user";
+    public static final String FANS_WX_USER = "fans_wx_user";
+    public static final String TECH_ADD = "tech_add";
+    public static final String ALL_USER = "";
+    public static final String KEY_EMP_ID = "empId";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

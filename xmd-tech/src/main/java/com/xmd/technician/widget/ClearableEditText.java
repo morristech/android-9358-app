@@ -31,6 +31,17 @@ public class ClearableEditText extends EditText {
 
     private int mBgColorFilter;
 
+    private  CleanTextListener cleanText;
+
+    public interface CleanTextListener{
+        void cleanText();
+    }
+
+    public void setCleanTextListener(CleanTextListener cleanListener){
+        this.cleanText = cleanListener;
+    }
+
+
     public ClearableEditText(Context context) {
         super(context);
         init();
@@ -80,6 +91,10 @@ public class ClearableEditText extends EditText {
                 if (touchable) {
                     this.setText("");
                     this.setTag(null);
+                    if(cleanText != null){
+                        cleanText.cleanText();
+                    }
+
                 }
             }
         }

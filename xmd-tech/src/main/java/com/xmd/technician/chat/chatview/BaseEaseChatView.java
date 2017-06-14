@@ -178,7 +178,8 @@ public abstract class BaseEaseChatView extends LinearLayout {
         }
 
     }
-    private void saveChatContact(String chatId,String msgId) {
+
+    protected void saveChatContact(String chatId, String msgId) {
         Map<String, String> saveParams = new HashMap<>();
         saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, chatId);
         saveParams.put(RequestConstant.KEY_CHAT_MSG_ID, msgId);
@@ -192,10 +193,9 @@ public abstract class BaseEaseChatView extends LinearLayout {
     protected void setMessageSendCallback() {
         if (mMessageSendCallBack == null) {
             mMessageSendCallBack = new EMCallBack() {
-
                 @Override
                 public void onSuccess() {
-                    saveChatContact(mEMMessage.getTo(),mEMMessage.getMsgId());
+                    saveChatContact(mEMMessage.getTo(), mEMMessage.getMsgId());
                     updateView();
                 }
 
@@ -216,6 +216,8 @@ public abstract class BaseEaseChatView extends LinearLayout {
                     updateView(code, error);
                 }
             };
+        } else {
+                saveChatContact(mEMMessage.getTo(), mEMMessage.getMsgId());
         }
         mEMMessage.setMessageStatusCallback(mMessageSendCallBack);
     }
@@ -252,13 +254,13 @@ public abstract class BaseEaseChatView extends LinearLayout {
         mEMMessage.setMessageStatusCallback(mMessageReceiveCallBack);
     }
 
-    private void setClickListener(){
-        if(mBubbleLayout != null){
+    private void setClickListener() {
+        if (mBubbleLayout != null) {
             mBubbleLayout.setOnClickListener(v -> {
-                if(itemClickListener != null){
-                 if(!itemClickListener.onBubbleClick(mEMMessage)){
-                     onBubbleClick();
-                 }
+                if (itemClickListener != null) {
+                    if (!itemClickListener.onBubbleClick(mEMMessage)) {
+                        onBubbleClick();
+                    }
 
                 }
             });
@@ -275,20 +277,20 @@ public abstract class BaseEaseChatView extends LinearLayout {
             });
 
         }
-        if(mStatusView != null){
+        if (mStatusView != null) {
             mStatusView.setOnClickListener(v -> {
-                if(itemClickListener != null){
+                if (itemClickListener != null) {
                     itemClickListener.onResendClick(mEMMessage);
                 }
             });
         }
 
-        if(mUserAvatarView != null){
+        if (mUserAvatarView != null) {
             mUserAvatarView.setOnClickListener(v -> {
-                if(itemClickListener != null){
-                    if(mEMMessage.direct() == EMMessage.Direct.SEND){
+                if (itemClickListener != null) {
+                    if (mEMMessage.direct() == EMMessage.Direct.SEND) {
                         itemClickListener.onUserAvatarClick(EMClient.getInstance().getCurrentUser());
-                    }else{
+                    } else {
                         itemClickListener.onUserAvatarClick(mEMMessage.getFrom());
                     }
                 }
@@ -298,7 +300,7 @@ public abstract class BaseEaseChatView extends LinearLayout {
 
                 @Override
                 public boolean onLongClick(View v) {
-                    if(itemClickListener != null){
+                    if (itemClickListener != null) {
                         if (mEMMessage.direct() == EMMessage.Direct.SEND) {
                             itemClickListener.onUserAvatarLongClick(EMClient.getInstance().getCurrentUser());
                         } else {
@@ -311,6 +313,7 @@ public abstract class BaseEaseChatView extends LinearLayout {
             });
         }
     }
+
     protected void updateView() {
         mActivity.runOnUiThread(new Runnable() {
             public void run() {
@@ -323,23 +326,25 @@ public abstract class BaseEaseChatView extends LinearLayout {
             }
         });
     }
+
     protected void updateView(final int errorCode, final String desc) {
         mActivity.runOnUiThread(new Runnable() {
             public void run() {
-                Logger.e("9358","errorCode>>"+errorCode);
-                if(errorCode == EMError.USER_NOT_LOGIN){
+                Logger.e("9358", "errorCode>>" + errorCode);
+                if (errorCode == EMError.USER_NOT_LOGIN) {
                     Utils.makeShortToast(mContext, ResourceUtils.getString(R.string.user_not_login));
-                }else if(errorCode ==EMError.USER_LOGIN_ANOTHER_DEVICE){
+                } else if (errorCode == EMError.USER_LOGIN_ANOTHER_DEVICE) {
                     Utils.makeShortToast(mContext, ResourceUtils.getString(R.string.user_login_on_another_device));
-                }else if(errorCode == EMError.USER_PERMISSION_DENIED){
-                //    Utils.makeShortToast(mContext, ResourceUtils.getString(R.string.permission_anomaly));
-                }else{
+                } else if (errorCode == EMError.USER_PERMISSION_DENIED) {
+                    //    Utils.makeShortToast(mContext, ResourceUtils.getString(R.string.permission_anomaly));
+                } else {
                     Utils.makeShortToast(mContext, ResourceUtils.getString(R.string.network_anomaly));
                 }
                 onUpdateView();
             }
         });
     }
+
     protected abstract void onInflateView();
 
     /**
@@ -364,6 +369,7 @@ public abstract class BaseEaseChatView extends LinearLayout {
     protected void onSetUpView(EMMessage message) {
 
     }
+
     /**
      * on bubble clicked
      */

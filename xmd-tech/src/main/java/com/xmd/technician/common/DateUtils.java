@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/11/1.
  */
-public class DateUtils extends com.hyphenate.util.DateUtils{
+public class DateUtils extends com.hyphenate.util.DateUtils {
     private static final long INTERVAL_IN_MILLISECONDS = 30000L;
 
     public static final long DAY_MILLIS_SECOND = 24 * 3600 * 1000;
@@ -29,26 +29,26 @@ public class DateUtils extends com.hyphenate.util.DateUtils{
         String var2 = Locale.getDefault().getLanguage();
         boolean var3 = var2.startsWith("zh");
         long var4 = var0.getTime();
-        if(isSameDay(var4)) {
+        if (isSameDay(var4)) {
             var1 = "HH:mm";
-        } else if(isYesterday(var4)) {
-            if(!var3) {
+        } else if (isYesterday(var4)) {
+            if (!var3) {
                 return "Yesterday " + (new SimpleDateFormat("HH:mm", Locale.ENGLISH)).format(var0);
             }
 
-            var1 = "昨天 ";
-        } else if(var3) {
-            var1 = "M月d日";
+            var1 = "昨天 " + (new SimpleDateFormat("HH:mm", Locale.ENGLISH)).format(var0);
+        } else if (var3) {
+            var1 = "M月d日" + (new SimpleDateFormat("HH:mm", Locale.ENGLISH)).format(var0);
         } else {
             var1 = "MMM dd HH:mm";
         }
 
-        return var3?(new SimpleDateFormat(var1, Locale.CHINESE)).format(var0):(new SimpleDateFormat(var1, Locale.ENGLISH)).format(var0);
+        return var3 ? (new SimpleDateFormat(var1, Locale.CHINESE)).format(var0) : (new SimpleDateFormat(var1, Locale.ENGLISH)).format(var0);
     }
 
     public static boolean isCloseEnough(long var0, long var2) {
         long var4 = var0 - var2;
-        if(var4 < 0L) {
+        if (var4 < 0L) {
             var4 = -var4;
         }
 
@@ -82,7 +82,7 @@ public class DateUtils extends com.hyphenate.util.DateUtils{
         var0 /= 1000;
         int var1 = var0 / 60;
         boolean var2 = false;
-        if(var1 >= 60) {
+        if (var1 >= 60) {
             int var4 = var1 / 60;
             var1 %= 60;
         }
@@ -94,7 +94,7 @@ public class DateUtils extends com.hyphenate.util.DateUtils{
     public static String toTimeBySecond(int var0) {
         int var1 = var0 / 60;
         boolean var2 = false;
-        if(var1 >= 60) {
+        if (var1 >= 60) {
             int var4 = var1 / 60;
             var1 %= 60;
         }
@@ -246,7 +246,6 @@ public class DateUtils extends com.hyphenate.util.DateUtils{
         }
         return tl.get();
     }
-
 
 
 }

@@ -23,8 +23,6 @@
         android:orientation="horizontal"
         android:padding="@dimen/inter_space"
         >
-
-
         <com.xmd.technician.widget.RoundImageView
             android:id="@+id/once_card_head"
             android:layout_width="70dp"
