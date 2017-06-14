@@ -109,11 +109,15 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> {
     }
 
     private void handlerContactAllListResult(ContactAllListResult result) {
+
         if (result.statusCode == 200) {
+            if (result.respData == null) {
+                return;
+            }
             contacts.clear();
             mTotalCount = result.respData.totalCount;
             mBlackListCount = result.respData.blackListCount;
-            if (Utils.isEmpty(mCurrentFilterType) && Utils.isEmpty(mUserName) && mTotalCount == 0) {
+            if (Utils.isEmpty(mCurrentFilterType) && Utils.isEmpty(mUserName) && result.respData.userList.size()==0) {
                 llContactNone.setVisibility(View.VISIBLE);
                 imgScreenContact.setVisibility(View.GONE);
             } else {
@@ -125,7 +129,7 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> {
             } else {
                 mListAdapter.SetDataLoadCompleteDes("");
             }
-            if (result.respData.serviceStatus.equals("Y")) {
+            if (Utils.isNotEmpty(result.respData.serviceStatus) && result.respData.serviceStatus.equals("Y")) {
                 for (int i = 0; i < result.respData.userList.size(); i++) {
                     result.respData.userList.get(i).isService = true;
                     contacts.add(result.respData.userList.get(i));

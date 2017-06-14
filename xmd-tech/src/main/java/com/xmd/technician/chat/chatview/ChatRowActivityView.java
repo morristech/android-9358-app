@@ -2,6 +2,7 @@ package com.xmd.technician.chat.chatview;
 
 import android.content.Context;
 import android.text.Spannable;
+import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -98,7 +99,7 @@ public class ChatRowActivityView extends BaseEaseChatView {
         String title = null;
         int iconRes = -1;
         switch (subType) {
-            case ChatConstant.KEY_SUB_TYPE_INDIANA:
+            case ChatConstant.KEY_ACTIVITY_TIME_LIMIT_TYPE:
                 content = ResourceUtils.getString(R.string.chat_indiana_message_des);
                 title = ResourceUtils.getString(R.string.chat_indiana_message_type);
                 iconRes = R.drawable.icon_indiana;
@@ -108,12 +109,12 @@ public class ChatRowActivityView extends BaseEaseChatView {
                 title = ResourceUtils.getString(R.string.chat_seckill_message_type);
                 iconRes = R.drawable.icon_seckill;
                 break;
-            case ChatConstant.KEY_SUB_TYPE_TURNTABLE:
+            case ChatConstant.KEY_ACTIVITY_LUCKY_WHEEL_TYPE:
                 content = ResourceUtils.getString(R.string.chat_turntable_message_des);
                 title = ResourceUtils.getString(R.string.chat_turntable_message_type);
                 iconRes = R.drawable.icon_turntalbel;
                 break;
-            case ChatConstant.KEY_SUB_TYPE_JOURNAL:
+            case ChatConstant.KEY_ACTIVITY_JOURNAL_TYPE:
                 content = ResourceUtils.getString(R.string.chat_journal_message_des);
                 title = ResourceUtils.getString(R.string.chat_journal_message_type);
                 iconRes = R.drawable.icon_journal;

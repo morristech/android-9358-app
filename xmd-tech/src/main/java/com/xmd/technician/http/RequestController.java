@@ -8,7 +8,6 @@ import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.AddOrEditResult;
-import com.xmd.technician.bean.ClubContactResult;
 import com.xmd.technician.bean.CreditAccountDetailResult;
 import com.xmd.technician.bean.CreditAccountResult;
 import com.xmd.technician.bean.CreditApplicationsResult;
@@ -20,7 +19,6 @@ import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.DeleteContactResult;
 import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.GiftListResult;
-import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
@@ -29,7 +27,6 @@ import com.xmd.technician.bean.SayHiBaseResult;
 import com.xmd.technician.bean.SayHiNearbyResult;
 import com.xmd.technician.bean.SayHiVisitorResult;
 import com.xmd.technician.bean.SendGameResult;
-import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
@@ -60,7 +57,6 @@ import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.CustomerUserRecentListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
-import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.HelloLeftCountResult;
 import com.xmd.technician.http.gson.HelloRecordListResult;
@@ -260,18 +256,19 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL:
                 doGetCustomerInfoDetail((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL:
-                doGetTechInfoDetail((Map<String, String>) msg.obj);
-                break;
-            case MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL:
-                doGetManagerInfoDetail((Map<String, String>) msg.obj);
-                break;
+//            case MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL:
+//                doGetTechInfoDetail((Map<String, String>) msg.obj);
+//                break;
+//            case MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL:
+//                doGetManagerInfoDetail((Map<String, String>) msg.obj);
+//                break;
+//            case MsgDef.MSG_DEF_GET_CLUB_LIST:
+//                doGetClubList();
+//                break;
             case MsgDef.MSG_DEF_ADD_OR_EDIT_CUSTOMER:
                 doAddOrEditCustomer((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_GET_CLUB_LIST:
-                doGetClubList();
-                break;
+
             case MsgDef.MSG_DEF_DELETE_CONTACT:
                 doDeleteContact((Map<String, String>) msg.obj);
                 break;
@@ -1197,51 +1194,51 @@ public class RequestController extends AbstractController {
         });
     }
 
-    /**
-     * 获取技师联系人详情
-     *
-     * @param
-     */
-    private void doGetTechInfoDetail(Map<String, String> params) {
-        Call<TechDetailResult> call = getSpaService().getTechInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
-        call.enqueue(new TokenCheckedCallback<TechDetailResult>() {
-            @Override
-            protected void postResult(TechDetailResult result) {
+//    /**
+//     * 获取技师联系人详情
+//     *
+//     * @param
+//     */
+//    private void doGetTechInfoDetail(Map<String, String> params) {
+//        Call<TechDetailResult> call = getSpaService().getTechInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
+//        call.enqueue(new TokenCheckedCallback<TechDetailResult>() {
+//            @Override
+//            protected void postResult(TechDetailResult result) {
+//
+//                RxBus.getInstance().post(result);
+//            }
+//        });
+//    }
 
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    /**
-     * 获取管理者联系人详情
-     *
-     * @param
-     */
-    private void doGetManagerInfoDetail(Map<String, String> params) {
-        Call<ManagerDetailResult> call = getSpaService().getManagerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
-        call.enqueue(new TokenCheckedCallback<ManagerDetailResult>() {
-            @Override
-            protected void postResult(ManagerDetailResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    /**
-     * 获取俱乐部联系人列表
-     *
-     * @param
-     */
-    private void doGetClubList() {
-        Call<ClubContactResult> call = getSpaService().getClubList(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken());
-        call.enqueue(new TokenCheckedCallback<ClubContactResult>() {
-            @Override
-            protected void postResult(ClubContactResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
+//    /**
+//     * 获取管理者联系人详情
+//     *
+//     * @param
+//     */
+//    private void doGetManagerInfoDetail(Map<String, String> params) {
+//        Call<ManagerDetailResult> call = getSpaService().getManagerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
+//        call.enqueue(new TokenCheckedCallback<ManagerDetailResult>() {
+//            @Override
+//            protected void postResult(ManagerDetailResult result) {
+//                RxBus.getInstance().post(result);
+//            }
+//        });
+//    }
+//
+//    /**
+//     * 获取俱乐部联系人列表
+//     *
+//     * @param
+//     */
+//    private void doGetClubList() {
+//        Call<ClubContactResult> call = getSpaService().getClubList(RequestConstant.SESSION_TYPE, LoginTechnician.getInstance().getToken());
+//        call.enqueue(new TokenCheckedCallback<ClubContactResult>() {
+//            @Override
+//            protected void postResult(ClubContactResult result) {
+//                RxBus.getInstance().post(result);
+//            }
+//        });
+//    }
 
     /**
      * 删除联系人

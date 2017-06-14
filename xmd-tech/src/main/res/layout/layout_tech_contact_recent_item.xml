@@ -89,7 +89,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -116,7 +116,7 @@
                 android:paddingTop="@dimen/margin_2"
                 android:text="27分钟前"
                 android:textColor="#777777"
-                android:textSize="12sp"/>
+                android:textSize="11sp"/>
         </LinearLayout>
 
     </LinearLayout>

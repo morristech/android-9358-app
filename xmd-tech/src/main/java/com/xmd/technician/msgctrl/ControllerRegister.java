@@ -68,10 +68,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_ADD_OR_EDIT_CUSTOMER,
                 MsgDef.MSG_DEF_GET_CUSTOMER_LIST,
                 MsgDef.MSG_DEF_GET_CUSTOMER_INFO_DETAIL,
-                MsgDef.MSG_DEF_GET_CLUB_LIST,
                 MsgDef.MSG_DEF_GET_APP_UPDATE_CONFIG,
-                MsgDef.MSG_DEF_GET_TECH_INFO_DETAIL,
-                MsgDef.MSG_DEF_GET_MANAGER_INFO_DETAIL,
                 MsgDef.MSG_DEF_DELETE_CONTACT,
                 MsgDef.MSG_DEF_DO_DRAW_MONEY,
                 MsgDef.MSG_DEF_GET_USER_RECORDE,
@@ -129,7 +126,7 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_TECH_PK_ACTIVITY_LIST,
                 MsgDef.MSG_DEF_TECH_PK_TEAM_RANKING_LIST,
                 MsgDef.MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST,
-
+                MsgDef.MSG_DEF_TECH_RANKING_LIST,
                 //-------------------------------------> 聊天黑名单 <---------------------------------
                 MsgDef.MSG_DEF_ADD_TO_BLACKLIST,
                 MsgDef.MSG_DEF_REMOVE_FROM_BLACKLIST,

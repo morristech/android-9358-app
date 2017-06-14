@@ -1024,12 +1024,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 viewHolder.contactServiceTime.setVisibility(View.GONE);
             }
-            if (Utils.isNotEmpty(contactBean.remark)) {
-                viewHolder.contactTypeView.setTechCustomerType(contactBean.remark);
-            } else {
-                viewHolder.contactTypeView.setTechCustomerType("");
-
-            }
+            viewHolder.contactTypeView.setTechCustomerType(contactBean.remark);
             if (contactBean.customerType.equals(Constant.USER_FANS)) {
                 viewHolder.ivContactTypeFans.setVisibility(View.VISIBLE);
                 viewHolder.ivContactTypeWx.setVisibility(View.GONE);

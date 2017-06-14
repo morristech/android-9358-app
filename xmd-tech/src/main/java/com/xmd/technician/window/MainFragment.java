@@ -756,6 +756,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void initMenu() {
         initMenuWorkTime();
         initMenuWorkProject();
+        initMenuHelloSetting();
         initMenuAbout();
         initMenuSuggest();
         initMenuChangePassword();
@@ -770,6 +771,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.WORK_PROJECT)
     public void initMenuWorkProject() {
         initMenuItem(R.id.menu_work_project);
+    }
+    @CheckBusinessPermission(PermissionConstants.NEARBY_USER)
+    public void initMenuHelloSetting(){
+        initMenuItem(R.id.menu_hello_setting);
     }
 
     public void initMenuAbout() {
@@ -794,19 +799,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
-    @OnClick({R.id.menu_work_time, R.id.menu_work_project, R.id.menu_about_us, R.id.menu_suggest, R.id.settings_activity_modify_pw, R.id.settings_activity_join_club,
+    @OnClick({R.id.menu_work_time, R.id.menu_work_project, R.id.menu_hello_setting,R.id.menu_about_us, R.id.menu_suggest, R.id.settings_activity_modify_pw, R.id.settings_activity_join_club,
             R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout, R.id.view_transparent})
     public void onMainMenuSettingClicked(View view) {
         switch (view.getId()) {
             case R.id.menu_work_time:
-
                 Intent intent = new Intent(getActivity(), WorkTimeActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_work_project:
-
                 Intent intentProject = new Intent(getActivity(), ServiceItemActivity.class);
                 startActivity(intentProject);
+                break;
+            case R.id.menu_hello_setting:
+                Intent intentHelloSetting = new Intent(getActivity(), HelloSettingActivity.class);
+                startActivity(intentHelloSetting);
                 break;
             case R.id.menu_about_us:
                 startActivity(new Intent(getActivity(), AppInfoActivity.class));
