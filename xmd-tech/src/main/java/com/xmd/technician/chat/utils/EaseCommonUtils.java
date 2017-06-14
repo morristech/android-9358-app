@@ -264,7 +264,8 @@ public class EaseCommonUtils {
     public static int getCustomChatType(EMMessage message) {
         ChatMessage chatMessage = ChatMessageFactory.get(message);
         int viewType = ChatRowViewFactory.getViewType(chatMessage);
-        if (viewType != ChatConstants.CHAT_ROW_VIEW_DEFAULT) {
+        if (viewType != ChatRowViewFactory.sendType(ChatConstants.CHAT_ROW_VIEW_DEFAULT)
+                && viewType != ChatRowViewFactory.receiveType(ChatConstants.CHAT_ROW_VIEW_DEFAULT)) {
             return viewType;
         }
         int type = 0;

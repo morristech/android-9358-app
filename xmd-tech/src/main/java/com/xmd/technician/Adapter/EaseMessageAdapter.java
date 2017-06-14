@@ -13,6 +13,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.chat.ChatConstants;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatSentMessageHelper;
 import com.xmd.technician.chat.chatrow.EaseCustomChatRowProvider;
@@ -170,7 +171,7 @@ public class EaseMessageAdapter extends BaseAdapter {
 //            return customRowProvider.getCustomChatRowTypeCount() + 14;
 //        }
 //        return 14;
-        return 0x2400;
+        return ChatConstants.CHAT_ROW_VIEW_TYPE_MAX;
     }
 
 
