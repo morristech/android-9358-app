@@ -1,12 +1,12 @@
 package com.xmd.technician.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -132,21 +132,30 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
             holder.mLastHelloDynamic.setText(RelativeDateFormatUtil.formatModify(DateUtils.StringToDate(info.lastTechHelloTime, Constant.FORMAT_DATE_TIME).getTime()) + "打过招呼");  //打招呼动态
         }
 
+        Drawable drawable;
         if (info.techHelloRecently) {
             // 近期已招呼
             holder.mSayHello.setText("已招呼");
-            holder.mSayHello.setEnabled(false);
-            holder.mSayHello.setOnClickListener(null);
+            holder.mSayHello.setTextColor(0xffff6666);
+            holder.mLayoutSayHello.setEnabled(false);
+            drawable = mContext.getResources().getDrawable(R.drawable.ic_hi_red);
+            holder.mLayoutSayHello.setOnClickListener(null);
         } else if (info.userLeftHelloCount <= 0) {
             // 客户被招呼次数用完
             holder.mSayHello.setText("不可招呼");
-            holder.mSayHello.setEnabled(false);
-            holder.mSayHello.setOnClickListener(null);
+            holder.mSayHello.setTextColor(0xffff6666);
+            holder.mLayoutSayHello.setEnabled(false);
+            drawable = mContext.getResources().getDrawable(R.drawable.ic_hi_red);
+            holder.mLayoutSayHello.setOnClickListener(null);
         } else {
             holder.mSayHello.setText("打招呼");
-            holder.mSayHello.setEnabled(true);
-            holder.mSayHello.setOnClickListener(v -> mCallback.onBtnClick(info, position));
+            holder.mSayHello.setTextColor(0xffffffff);
+            holder.mLayoutSayHello.setEnabled(true);
+            drawable = mContext.getResources().getDrawable(R.drawable.ic_hi_white);
+            holder.mLayoutSayHello.setOnClickListener(v -> mCallback.onBtnClick(info, position));
         }
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        holder.mSayHello.setCompoundDrawables(drawable, null, null, null);
     }
 
     @Override
@@ -178,7 +187,10 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         @Bind(R.id.cus_item_last_hello_dynamic)
         TextView mLastHelloDynamic;
         @Bind(R.id.cus_item_btn_hello)
-        Button mSayHello;
+        TextView mSayHello;
+
+        @Bind(R.id.layout_btn_say_hi)
+        View mLayoutSayHello;
 
         public ViewHolder(View itemView) {
             super(itemView);

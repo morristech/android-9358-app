@@ -80,6 +80,7 @@ public class ChatMessage {
             XLogger.d(TAG, "get key=" + key + ",value=" + value);
             return value;
         } catch (HyphenateException e) {
+            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
             return null;
         }
     }
@@ -90,6 +91,7 @@ public class ChatMessage {
             XLogger.d(TAG, "get key=" + key + ",value=" + value);
             return value;
         } catch (HyphenateException e) {
+            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
             return null;
         }
     }
@@ -100,6 +102,7 @@ public class ChatMessage {
             XLogger.d(TAG, "get key=" + key + ",value=" + value);
             return value;
         } catch (HyphenateException e) {
+            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
             return null;
         }
     }

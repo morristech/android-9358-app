@@ -126,13 +126,11 @@ public abstract class BaseEaseChatView extends LinearLayout {
         if (mEMMessage.direct() == EMMessage.Direct.SEND) {
             Glide.with(mContext)
                     .load(localUserAvatar)
-                    .placeholder(R.drawable.img_default_avatar)
                     .transform(new GlideCircleTransform(mContext))
                     .into(mUserAvatarView);
         } else {
             Glide.with(mContext)
                     .load(remoteUserAvatar)
-                    .placeholder(R.drawable.img_default_avatar)
                     .transform(new GlideCircleTransform(mContext))
                     .into(mUserAvatarView);
         }

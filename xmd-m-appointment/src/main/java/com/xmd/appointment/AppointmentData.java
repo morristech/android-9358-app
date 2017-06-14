@@ -5,6 +5,7 @@ import android.databinding.ObservableBoolean;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.CodeUtils;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.appointment.beans.AppointmentSetting;
@@ -77,6 +78,11 @@ public class AppointmentData implements Serializable {
 
     public void setServiceItem(ServiceItem serviceItem) {
         this.serviceItem = serviceItem;
+        try {
+            setDuration(Integer.parseInt(serviceItem.getDuration()));
+        } catch (Exception e) {
+            XLogger.e("parseInt(serviceItem.getDuration()) error: " + e.getMessage());
+        }
     }
 
     public Date getTime() {

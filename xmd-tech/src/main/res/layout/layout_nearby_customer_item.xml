@@ -125,17 +125,24 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <Button
-        android:id="@+id/cus_item_btn_hello"
-        android:layout_width="190dp"
-        android:layout_height="40dp"
+    <FrameLayout
+        android:id="@+id/layout_btn_say_hi"
+        android:layout_width="188dp"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/inter_space"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_near_hello_btn"
-        android:gravity="center"
-        android:padding="0dp"
-        android:text="@string/to_say_hi"
-        android:textColor="@color/selector_txt_near_hello_btn"
-        android:textSize="@dimen/fontTitle"
-        android:visibility="visible" />
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/cus_item_btn_hello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/to_say_hi"
+            android:textColor="@color/selector_txt_near_hello_btn"
+            android:padding="8dp"
+            android:drawablePadding="8dp"
+            android:textSize="@dimen/fontTitle" />
+    </FrameLayout>
+
 </LinearLayout>

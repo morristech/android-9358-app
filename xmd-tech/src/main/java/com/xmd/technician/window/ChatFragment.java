@@ -31,7 +31,6 @@ import com.xmd.technician.chat.event.DeleteConversionResult;
 import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.utils.UserUtils;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -86,17 +85,17 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             return;
         }
         LinearLayout container = (LinearLayout) getView().findViewById(R.id.contact_more);
-        container.setVisibility(View.GONE);
+        container.setVisibility(View.VISIBLE);
         ImageView imageView = (ImageView) getView().findViewById(R.id.toolbar_right_img);
-        imageView.setImageResource(R.drawable.ic_customer_service);
+        imageView.setImageResource(R.drawable.ic_service);
         TextView checkBox = new TextView(getContext());
         boolean open = technician.isCustomerServiceTimeValid();
         if (open) {
             checkBox.setTag("checked");
-            checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);
+            checkBox.setBackgroundResource(R.drawable.ic_checkbox_close);
         } else {
             checkBox.setTag(null);
-            checkBox.setBackgroundResource(R.drawable.ic_checkbox_close);
+            checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);
         }
         container.addView(checkBox);
         ((LinearLayout.LayoutParams) checkBox.getLayoutParams()).leftMargin = 16;
@@ -105,18 +104,18 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             public void onClick(View v) {
                 if (checkBox.getTag() == null) {
                     checkBox.setTag("checked");
-                    checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);
+                    checkBox.setBackgroundResource(R.drawable.ic_checkbox_close);
                     technician.setCustomerServiceDisableTime(0L);
                 } else {
                     new AlertDialogBuilder(getContext())
                             .setTitle("提示")
-                            .setMessage("关闭后，收到客服消息后不会进行提醒，不影响接收其他消息，12小时后会自动开启，是否要关闭？")
+                            .setMessage("关闭后，收到客服消息后不会进行提醒，12小时后会自动开启，是否要关闭？")
                             .setNegativeButton("取消", null)
                             .setPositiveButton("确定", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     checkBox.setTag(null);
-                                    checkBox.setBackgroundResource(R.drawable.ic_checkbox_close);
+                                    checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);
                                     technician.setCustomerServiceDisableTime(System.currentTimeMillis());
                                 }
                             })
