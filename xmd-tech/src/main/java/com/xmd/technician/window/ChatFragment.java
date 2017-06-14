@@ -31,7 +31,6 @@ import com.xmd.technician.chat.event.DeleteConversionResult;
 import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.utils.UserUtils;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -110,7 +109,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 } else {
                     new AlertDialogBuilder(getContext())
                             .setTitle("提示")
-                            .setMessage("关闭后，收到客服消息后不会进行提醒，不影响接收其他消息，12小时后会自动开启，是否要关闭？")
+                            .setMessage("关闭后，收到客服消息后不会进行提醒，12小时后会自动开启，是否要关闭？")
                             .setNegativeButton("取消", null)
                             .setPositiveButton("确定", new View.OnClickListener() {
                                 @Override

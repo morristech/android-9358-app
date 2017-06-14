@@ -423,7 +423,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
                     btnCallPhone.setVisibility(View.GONE);
                 }
                 btnChat.setVisibility(View.GONE);
-                //showOperationButtonsLessThanThree();
                 break;
             default:
                 layoutOperationButtons.setVisibility(View.VISIBLE);
