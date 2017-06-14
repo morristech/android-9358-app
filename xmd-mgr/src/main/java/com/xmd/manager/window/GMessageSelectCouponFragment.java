@@ -46,7 +46,6 @@ public class GMessageSelectCouponFragment extends BaseFragment implements Custom
 
     private CustomerTypeExpandableAdapter couponAdapter;
 
-    private List<FavourableActivityBean> mList = new ArrayList<>();
     private List<FavourableActivityGroup> couponGroupList = new ArrayList<>();
     private List<List<FavourableActivityBean>> couponChildList = new ArrayList<>();
     private int checkedGroupPosition = -1;
@@ -101,12 +100,22 @@ public class GMessageSelectCouponFragment extends BaseFragment implements Custom
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_previous_step:
+                clear();
                 ((GroupMessageCustomerActivity) getActivity()).gotoCustomerFragment();
                 break;
             case R.id.btn_next_step:
                 ((GroupMessageCustomerActivity) getActivity()).gotoEditContentFragment();
                 break;
         }
+    }
+
+    private void clear(){
+        checkedGroupPosition = -1;
+        checkedChildPosition = -1;
+        for (int i = 0; i < couponAdapter.getGroupCount(); i++) {
+            couponListView.collapseGroup(i);
+        }
+        initHintView();
     }
 
     public void handleFavourableActivityResult(FavourableActivityListResult result) {

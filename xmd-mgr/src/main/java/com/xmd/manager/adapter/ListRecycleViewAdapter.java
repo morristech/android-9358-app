@@ -772,6 +772,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         if (Utils.isNotEmpty(groupMessage.message)) {
             groupHolder.contentInfoSummary.setText(groupMessage.message);
             groupHolder.contentInfoDetail.setText(groupMessage.message);
+        }else {
+            groupHolder.contentInfoSummary.setText("");
+            groupHolder.contentInfoDetail.setText("");
         }
 
         //消息中的优惠活动
@@ -799,6 +802,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             groupHolder.activityDetailContainer.setVisibility(View.GONE);
             groupHolder.activityDetailTip.setVisibility(View.GONE);
         }
+
         if (Utils.isNotEmpty(String.valueOf(groupMessage.sendCount))) {
             groupHolder.customerCountSummary.setText(String.valueOf(groupMessage.sendCount) + "人");
         }
@@ -847,8 +851,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         //效果分析数据
         groupHolder.sendCount.setText(String.valueOf(groupMessage.sendCount));
         groupHolder.viewCount.setText(String.valueOf(groupMessage.viewCount));
-        groupHolder.joinCount.setText(String.valueOf(groupMessage.joinCount));
-        groupHolder.shopCount.setText(String.valueOf(groupMessage.verificationCount));
+
+        if(Constant.MSG_TYPE_JOURNAL.equals(groupMessage.msgType)){
+            groupHolder.joinCount.setText("-");
+        }else {
+            groupHolder.joinCount.setText(String.valueOf(groupMessage.joinCount));
+        }
+
+        if(Constant.MSG_TYPE_JOURNAL.equals(groupMessage.msgType)||Constant.MSG_TYPE_LUCKY_WHEEL.equals(groupMessage.msgType)){
+            groupHolder.shopCount.setText("-");
+        }else {
+            groupHolder.shopCount.setText(String.valueOf(groupMessage.verificationCount));
+        }
+
         if(mCallback.showStatData()){
             groupHolder.stattHintText.setVisibility(View.VISIBLE);
             groupHolder.statViewContainer.setVisibility(View.VISIBLE);

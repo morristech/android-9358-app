@@ -248,50 +248,47 @@ public class GroupMessageCustomerActivity extends BaseActivity {
     }
 
     public void send(){
-        ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
-            @Override
-            public void run() {
-                if (mLimitAmount > 0) {
-                    if (Utils.isEmpty(mEditContentFragment.getImageUrl())) {
-                        sendGroupMessage();
-                    } else {
-                        try {
+        ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> {
+            if (mLimitAmount > 0) {
+                if (Utils.isEmpty(mEditContentFragment.getImageUrl())) {
+                    sendGroupMessage();
+                } else {
+                    try {
 
-                            if (FileSizeUtil.getFileOrFilesSize(mEditContentFragment.getImageUrl(), FileSizeUtil.SIZE_TYPE_KB) > 1024 * mLimitImageSize) {
-                                new AlertDialogBuilder(GroupMessageCustomerActivity.this).setTitle("温馨提示").setMessage("图片大小超过" + mLimitImageSize + "M,继续发送将压缩该图片发送。是否确认发送？").setCancelable(true).setNegativeButton("取消", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
+                        if (FileSizeUtil.getFileOrFilesSize(mEditContentFragment.getImageUrl(), FileSizeUtil.SIZE_TYPE_KB) > 1024 * mLimitImageSize) {
+                            new AlertDialogBuilder(GroupMessageCustomerActivity.this).setTitle("温馨提示").setMessage("图片大小超过" + mLimitImageSize + "M,继续发送将压缩该图片发送。是否确认发送？").setCancelable(true).setNegativeButton("取消", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
 
-                                    }
-                                }).setPositiveButton("发送", v -> {
-                                    mDialog = new LoadingDialog(GroupMessageCustomerActivity.this);
-                                    mDialog.show("正在上传图片");
-                                    try {
-                                        uploadImage(mEditContentFragment.getImageUrl());
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                        makeShortToast("图片上传失败，请重新选择");
-                                        mDialog.dismiss();
-                                        e.printStackTrace();
-                                    }
-                                }).show();
-                            } else {
+                                }
+                            }).setPositiveButton("发送", v -> {
                                 mDialog = new LoadingDialog(GroupMessageCustomerActivity.this);
                                 mDialog.show("正在上传图片");
-                                uploadImage(mEditContentFragment.getImageUrl());
-                            }
-
-                        } catch (IOException e) {
-                            makeShortToast("图片上传失败，请重新选择");
-                            mDialog.dismiss();
-                            e.printStackTrace();
+                                try {
+                                    uploadImage(mEditContentFragment.getImageUrl());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    makeShortToast("图片上传失败，请重新选择");
+                                    mDialog.dismiss();
+                                    e.printStackTrace();
+                                }
+                            }).show();
+                        } else {
+                            mDialog = new LoadingDialog(GroupMessageCustomerActivity.this);
+                            mDialog.show("正在上传图片");
+                            uploadImage(mEditContentFragment.getImageUrl());
                         }
+
+                    } catch (IOException e) {
+                        makeShortToast("图片上传失败，请重新选择");
+                        mDialog.dismiss();
+                        e.printStackTrace();
                     }
-                } else {
-                    Utils.makeShortToast(GroupMessageCustomerActivity.this, ResourceUtils.getString(R.string.send_group_message_alert_enough));
                 }
+            } else {
+                Utils.makeShortToast(GroupMessageCustomerActivity.this, ResourceUtils.getString(R.string.send_group_message_alert_enough));
             }
-        }, 1000);
+        });
     }
 
     private void uploadImage(String imageUrl) throws IOException {
