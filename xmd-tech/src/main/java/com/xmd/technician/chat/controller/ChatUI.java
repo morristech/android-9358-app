@@ -217,6 +217,7 @@ public class ChatUI {
     public interface EaseUserProfileProvider {
         /**
          * return EaseUser for input username
+         *
          * @param username
          * @return
          */

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_bg"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg"
+              android:orientation="vertical">
 
     <include layout="@layout/toolbar"></include>
 
@@ -39,9 +39,9 @@
                         android:layout_width="@dimen/photo_head_big"
                         android:layout_height="@dimen/photo_head_big"
                         android:layout_marginRight="@dimen/search_margin"
+                        android:background="@drawable/img_default_square"
                         app:borderRadius="@dimen/search_margin"
-                        app:src="@drawable/icon22"
-                        app:type="round" />
+                        app:type="round"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
                                 android:ellipsize="end"
                                 android:maxLength="16"
                                 android:textColor="@color/contact_item_name_text_color"
-                                android:textSize="@dimen/fontSize" />
+                                android:textSize="@dimen/fontSize"/>
 
                             <ImageView
                                 android:id="@+id/customer_type"
@@ -69,7 +69,7 @@
                                 android:layout_marginLeft="@dimen/margin_5"
                                 android:layout_marginTop="@dimen/margin_2"
                                 android:src="@drawable/icon_weixin"
-                                android:visibility="gone" />
+                                android:visibility="gone"/>
 
                             <ImageView
                                 android:id="@+id/customer_other_type"
@@ -78,7 +78,7 @@
                                 android:layout_marginLeft="@dimen/margin_5"
                                 android:layout_marginTop="@dimen/margin_2"
                                 android:src="@drawable/icon_weixin"
-                                android:visibility="gone" />
+                                android:visibility="gone"/>
 
                             <LinearLayout
                                 android:id="@+id/ll_tech_number"
@@ -94,20 +94,20 @@
                                     android:layout_height="wrap_content"
                                     android:text="["
 
-                                    android:textSize="@dimen/fontTitle" />
+                                    android:textSize="@dimen/fontTitle"/>
 
                                 <TextView
                                     android:id="@+id/tech_number"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textColor="@color/text_color_yellow"
-                                    android:textSize="@dimen/fontTitle" />
+                                    android:textSize="@dimen/fontTitle"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="]"
-                                    android:textSize="@dimen/fontTitle" />
+                                    android:textSize="@dimen/fontTitle"/>
 
                             </LinearLayout>
 
@@ -120,18 +120,18 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/search_margin"
                             android:textColor="@color/phone_number_text_color"
-                            android:textSize="@dimen/fontTitle" />
+                            android:textSize="@dimen/fontTitle"/>
 
                         <TextView
                             android:id="@+id/tv_customer_nick_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/phone_number_text_color"
-                            android:textSize="@dimen/fontTitle" />
+                            android:textSize="@dimen/fontTitle"/>
                     </LinearLayout>
                 </LinearLayout>
 
-                <View style="@style/horizontal_divider_line" />
+                <View style="@style/horizontal_divider_line"/>
 
                 <!-- 备注信息 -->
                 <LinearLayout
@@ -148,7 +148,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/contact_remark" />
+                        android:src="@drawable/contact_remark"/>
 
                     <TextView
                         android:id="@+id/text_contact_marker"
@@ -177,7 +177,7 @@
                         android:text="备注："
                         android:textColor="@color/phone_number_text_color"
                         android:textSize="@dimen/fontTitle"
-                        android:visibility="gone" />
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/tv_customer_remark"
@@ -188,7 +188,7 @@
                         android:paddingRight="@dimen/padding_15"
                         android:paddingTop="@dimen/padding_10"
                         android:textColor="@color/contact_remark_text_color"
-                        android:textSize="@dimen/fontTitle" />
+                        android:textSize="@dimen/fontTitle"/>
 
                 </LinearLayout>
 
@@ -224,7 +224,7 @@
                             android:paddingLeft="@dimen/margin_15"
                             android:text="@string/belong_tech"
                             android:textColor="@color/colorBody"
-                            android:textSize="@dimen/fontHead" />
+                            android:textSize="@dimen/fontHead"/>
 
                         <TextView
                             android:id="@+id/belong_tech_name"
@@ -233,7 +233,7 @@
                             android:layout_marginLeft="@dimen/margin_25"
                             android:layout_toRightOf="@id/belong_tech"
                             android:textColor="@color/text_index"
-                            android:textSize="@dimen/fontSize" />
+                            android:textSize="@dimen/fontSize"/>
 
                         <TextView
                             android:id="@+id/belong_tech_num"
@@ -243,7 +243,7 @@
                             android:layout_marginTop="@dimen/margin_2"
                             android:layout_toRightOf="@id/belong_tech_name"
                             android:textColor="@color/contact_marker"
-                            android:textSize="@dimen/fontBody" />
+                            android:textSize="@dimen/fontBody"/>
 
                         <View
                             style="@style/horizontal_divider_line"
@@ -266,7 +266,7 @@
                             android:layout_marginLeft="45dp"
                             android:text="@string/nearly_visit"
                             android:textColor="@color/colorBody"
-                            android:textSize="@dimen/fontHead" />
+                            android:textSize="@dimen/fontHead"/>
 
                         <TextView
                             android:id="@+id/belong_tech_day"
@@ -276,7 +276,7 @@
                             android:layout_toRightOf="@id/belong_tech_times"
                             android:text="-"
                             android:textColor="@color/text_index"
-                            android:textSize="@dimen/fontSize" />
+                            android:textSize="@dimen/fontSize"/>
 
                         <TextView
                             android:id="@+id/belong_tech_visit"
@@ -289,7 +289,7 @@
                             android:paddingBottom="@dimen/margin_5"
                             android:text="共访问我 - 次，平均 - 天访问一次"
                             android:textColor="@color/colorRemark"
-                            android:textSize="@dimen/fontNormal" />
+                            android:textSize="@dimen/fontNormal"/>
                     </RelativeLayout>
 
 
@@ -333,13 +333,13 @@
                                     android:paddingLeft="@dimen/margin_5"
                                     android:text="@string/order_info"
                                     android:textColor="@color/contact_info_order"
-                                    android:textSize="@dimen/fontHead" />
+                                    android:textSize="@dimen/fontHead"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/order_info_unit_time"
-                                    android:textSize="@dimen/fontTitle" />
+                                    android:textSize="@dimen/fontTitle"/>
 
                             </LinearLayout>
 
@@ -349,14 +349,14 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:textSize="@dimen/fontBig" />
+                                android:textSize="@dimen/fontBig"/>
                         </LinearLayout>
 
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:background="#55C3C3C3" />
+                            android:background="#55C3C3C3"/>
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -380,13 +380,13 @@
                                     android:drawablePadding="@dimen/padding_15"
                                     android:text="@string/reward_info"
                                     android:textColor="@color/contact_info_order"
-                                    android:textSize="@dimen/fontHead" />
+                                    android:textSize="@dimen/fontHead"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/order_info_unit_yuan"
-                                    android:textSize="@dimen/fontTitle" />
+                                    android:textSize="@dimen/fontTitle"/>
                             </LinearLayout>
 
                             <TextView
@@ -395,7 +395,7 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:textSize="@dimen/fontBig" />
+                                android:textSize="@dimen/fontBig"/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -405,7 +405,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/margin_15"
-                        android:background="@color/app_bg" />
+                        android:background="@color/app_bg"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -416,12 +416,12 @@
                         android:gravity="center_vertical"
                         android:text="@string/nearly_order"
                         android:textColor="@color/contact_info_order"
-                        android:textSize="@dimen/fontHead" />
+                        android:textSize="@dimen/fontHead"/>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
-                        android:background="@color/app_bg" />
+                        android:background="@color/app_bg"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -443,7 +443,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/order_detail_order_time"
-                                android:textSize="@dimen/fontTitle" />
+                                android:textSize="@dimen/fontTitle"/>
 
                             <TextView
                                 android:id="@+id/order_time"
@@ -452,7 +452,7 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_toRightOf="@+id/order"
                                 android:textColor="@color/contact_item_name_text_color"
-                                android:textSize="@dimen/fontTitle" />
+                                android:textSize="@dimen/fontTitle"/>
 
                             <TextView
                                 android:id="@+id/order_state"
@@ -461,7 +461,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_marginRight="10dp"
                                 android:textColor="@color/order_state"
-                                android:textSize="@dimen/fontTitle" />
+                                android:textSize="@dimen/fontTitle"/>
 
                             <TextView
                                 android:id="@+id/order_item"
@@ -483,7 +483,7 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_toRightOf="@id/order_item"
                                 android:textColor="@color/contact_item_name_text_color"
-                                android:textSize="@dimen/fontTitle" />
+                                android:textSize="@dimen/fontTitle"/>
                         </RelativeLayout>
 
                         <View
@@ -491,7 +491,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
                             android:background="@color/app_bg"
-                            android:visibility="gone" />
+                            android:visibility="gone"/>
 
                         <RelativeLayout
                             android:id="@+id/rl_order2"
@@ -507,7 +507,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/order_detail_order_time"
-                                android:textSize="@dimen/fontTitle" />
+                                android:textSize="@dimen/fontTitle"/>
 
                             <TextView
                                 android:id="@+id/order2_time"
@@ -516,7 +516,7 @@
                                 android:layout_marginLeft="@dimen/margin_right_10"
                                 android:layout_toRightOf="@+id/order2"
                                 android:textColor="@color/contact_item_name_text_color"
-                                android:textSize="@dimen/fontTitle" />
+                                android:textSize="@dimen/fontTitle"/>
 
                             <TextView
                                 android:id="@+id/order2_state"
@@ -525,7 +525,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_marginRight="@dimen/margin_right_10"
                                 android:textColor="@color/order_state"
-                                android:textSize="@dimen/fontTitle" />
+                                android:textSize="@dimen/fontTitle"/>
 
                             <TextView
                                 android:id="@+id/order2_item"
@@ -534,7 +534,7 @@
                                 android:layout_below="@+id/order2"
                                 android:layout_marginTop="@dimen/margin_5"
                                 android:text="@string/order_detail_order_service"
-                                android:textSize="@dimen/fontTitle" />
+                                android:textSize="@dimen/fontTitle"/>
 
                             <TextView
                                 android:id="@+id/order2_item_detail"
@@ -545,7 +545,7 @@
                                 android:layout_marginTop="@dimen/margin_5"
                                 android:layout_toRightOf="@id/order2_item"
                                 android:textColor="@color/contact_item_name_text_color"
-                                android:textSize="@dimen/fontTitle" />
+                                android:textSize="@dimen/fontTitle"/>
                         </RelativeLayout>
 
                         <TextView
@@ -556,7 +556,7 @@
                             android:paddingLeft="@dimen/padding_15"
                             android:paddingTop="@dimen/padding_10"
                             android:text="@string/customer_order_empty"
-                            android:visibility="gone" />
+                            android:visibility="gone"/>
 
 
                     </LinearLayout>
@@ -566,7 +566,7 @@
 
                 <View
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/margin_15" />
+                    android:layout_height="@dimen/margin_15"/>
 
                 <TextView
                     android:id="@+id/register_alert"
@@ -577,7 +577,7 @@
                     android:text="@string/register_alert"
                     android:textColor="@color/phone_number_text_color"
                     android:textSize="@dimen/fontTitle"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/btn_rm_blacklist"
@@ -590,7 +590,7 @@
                     android:text="@string/remove_from_blacklist"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/fontHead"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
             </LinearLayout>
         </ScrollView>
 
@@ -617,7 +617,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_phone"
-                    android:visibility="visible" />
+                    android:visibility="visible"/>
 
                 <ImageButton
                     android:id="@+id/btn_EmChat"
@@ -625,7 +625,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_chat"
-                    android:visibility="visible" />
+                    android:visibility="visible"/>
 
                 <ImageButton
                     android:id="@+id/btn_chat"
@@ -633,7 +633,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_message"
-                    android:visibility="visible" />
+                    android:visibility="visible"/>
 
 
                 <ImageButton
@@ -642,7 +642,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_hello"
-                    android:visibility="visible" />
+                    android:visibility="visible"/>
 
 
             </LinearLayout>
@@ -652,7 +652,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:src="@drawable/transition_btn_contact" />
+                android:src="@drawable/transition_btn_contact"/>
         </LinearLayout>
 
     </RelativeLayout>

@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xmd.appointment.AppointmentData;
+import com.xmd.appointment.AppointmentEvent;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -30,6 +32,8 @@ import com.xmd.technician.permission.CheckBusinessPermission;
 import com.xmd.technician.permission.IBusinessPermissionManager;
 import com.xmd.technician.permission.PermissionConstants;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,7 +51,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     private MainFragment mHomeFragment;
     private ChatFragment mChatFragment;
-    private ContactsFragment mContactsFragment;
+    private ContactsSummaryFragment mContactsSummaryFragment;
     private ShareCouponFragment mMarketingFragment;
 
 
@@ -174,7 +178,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @CheckBusinessPermission(PermissionConstants.CONTACTS)
     public void addFragmentContacts() {
-        mContactsFragment = (ContactsFragment) addFragment(R.id.main_button_contacts, ContactsFragment.class);
+        mContactsSummaryFragment = (ContactsSummaryFragment) addFragment(R.id.main_button_contacts, ContactsSummaryFragment.class);
+
     }
 
     @CheckBusinessPermission(PermissionConstants.MARKETING)
@@ -243,6 +248,17 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         // 把当前tab设为选中状态
         mBottomBarButtonList.get(index).setSelected(true);
         mCurrentTabIndex = index;
+
+        //    testAppointment();
+
+    }
+
+    private void testAppointment() {
+        AppointmentData data = new AppointmentData();
+        data.setCustomerName("客户甲");
+        data.setCustomerPhone("13265401346");
+        data.setDuration(45);
+        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, data));
     }
 
     /**
@@ -268,6 +284,10 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
             SharedPreferenceHelper.setBindSuccess(false);
         }
 
+    }
+
+    public int getFragmentSize() {
+        return mFragmentList.size();
     }
 
     @Override

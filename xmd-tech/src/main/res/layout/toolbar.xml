@@ -23,6 +23,16 @@
             android:scaleType="center"
             android:src="@drawable/icon_back"
             android:visibility="gone" />
+        <com.xmd.technician.widget.CircleImageView
+            android:id="@+id/toolbar_left_head"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:clickable="true"
+            android:src="@drawable/icon22"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/toolbar_title"

@@ -415,25 +415,6 @@ public class DateUtil {
         }
     }
 
-//    public static String getFirstDayOfLastMonth(String str,String formatDay) {
-//        String format = "";
-//        if(Utils.isNotEmpty(formatDay)){
-//            format = formatDay;
-//        }else {
-//            format = FORMAT;
-//        }
-//        SimpleDateFormat df = new SimpleDateFormat(format);
-//        Date date = null;
-//        try {
-//            date = df.parse(str);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//            date = new Date();
-//        }
-//        Map<String, String> map = DateUtil.getFirstDayAndLastDayMonth(date);
-//        return map.get("first");
-//    }
-
     public static String getLastDayOfLastMonth(String dateString, String formatDay) {
         String format = "";
         if (Utils.isNotEmpty(formatDay)) {
@@ -712,6 +693,12 @@ public class DateUtil {
                 break;
         }
         return season;
+    }
+
+    public static String getYestData() {
+        long time = System.currentTimeMillis();
+
+        return longToDate(time - 24 * 60 * 60 * 1000);
     }
 
 }

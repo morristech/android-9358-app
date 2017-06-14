@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
+import com.xmd.technician.bean.ContactHandlerBean;
 import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.RequestConstant;
@@ -20,9 +21,10 @@ import rx.Subscription;
 /**
  * Created by sdcm on 17-5-5.
  */
-public class EmchatBlacklistActivity extends BaseListActivity<CustomerInfo>{
+public class EmchatBlacklistActivity extends BaseListActivity<CustomerInfo> {
 
     private Subscription mGetBlacklistSubscription;
+    private Subscription mContactHandlerSubscription; // 对用户进行了操作
 
     @Override
     protected void dispatchRequest() {
@@ -40,6 +42,14 @@ public class EmchatBlacklistActivity extends BaseListActivity<CustomerInfo>{
         mGetBlacklistSubscription = RxBus.getInstance().toObservable(TechBlacklistResult.class).subscribe(
                 result -> handlerGetBlacklistResult(result)
         );
+        mContactHandlerSubscription = RxBus.getInstance().toObservable(ContactHandlerBean.class).subscribe(
+                result -> handlerContact()
+        );
+    }
+
+    //技师对用户进行了操作,刷新相关列表
+    private void handlerContact() {
+        onRefresh();
     }
 
     @Override
@@ -50,10 +60,10 @@ public class EmchatBlacklistActivity extends BaseListActivity<CustomerInfo>{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGetBlacklistSubscription);
+        RxBus.getInstance().unsubscribe(mGetBlacklistSubscription, mContactHandlerSubscription);
     }
 
-    private void handlerGetBlacklistResult(TechBlacklistResult result){
+    private void handlerGetBlacklistResult(TechBlacklistResult result) {
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             onGetListFailed(result.msg);
         } else {
@@ -67,15 +77,9 @@ public class EmchatBlacklistActivity extends BaseListActivity<CustomerInfo>{
         intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, bean.id);
         intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
         intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
-        //intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER,true);
-        startActivityForResult(intent, 0);
+        intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, true);
+        startActivity(intent);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            onRefresh();
-        }
-    }
+
 }

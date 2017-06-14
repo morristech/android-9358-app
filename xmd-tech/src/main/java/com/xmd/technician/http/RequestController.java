@@ -45,14 +45,19 @@ import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.CardShareListResult;
 import com.xmd.technician.http.gson.CategoryListResult;
+import com.xmd.technician.http.gson.ClubEmployeeDetailResult;
+import com.xmd.technician.http.gson.ClubEmployeeListResult;
 import com.xmd.technician.http.gson.ClubPositionResult;
 import com.xmd.technician.http.gson.CommentResult;
 import com.xmd.technician.http.gson.ConsumeDetailResult;
+import com.xmd.technician.http.gson.ContactAllListResult;
 import com.xmd.technician.http.gson.ContactPermissionChatResult;
 import com.xmd.technician.http.gson.ContactPermissionResult;
 import com.xmd.technician.http.gson.ContactPermissionVisitorResult;
+import com.xmd.technician.http.gson.ContactRegisterListResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
+import com.xmd.technician.http.gson.CustomerUserRecentListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
 import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
@@ -327,7 +332,7 @@ public class RequestController extends AbstractController {
                 getDynamicList((Map<String, String>) msg.obj);
                 break;
             case MsgDef.MSF_DEF_SET_PAGE_SELECTED:
-                setPageSelected((int) msg.obj);
+                setPageSelected((Map<String, Integer>) msg.obj);
                 break;
             case MsgDef.MSG_DEF_ORDER_INNER_READ:
                 setOrderInnerRead((Map<String, String>) msg.obj);
@@ -397,9 +402,9 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_TECH_SAY_HELLO:
                 techSayHi((Map<String, String>) msg.obj);
                 break;
-            case MsgDef.MSG_DEF_CHECK_HELLO_RECENTLY:
-                checkHelloRecently((Map<String, String>) msg.obj);
-                break;
+//            case MsgDef.MSG_DEF_CHECK_HELLO_RECENTLY:
+//                checkHelloRecently((Map<String, String>) msg.obj);
+//                break;
             case MsgDef.MSG_DEF_GET_CONTACT_PERMISSION:
                 getContactPermission((Map<String, Object>) msg.obj);
                 break;
@@ -449,6 +454,7 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_IN_USER_BLACKLIST:
                 inUserBlacklist(msg.obj.toString());
                 break;
+            // --------------------------------------> 聊天优化 <------------------------------------
             case MsgDef.MSG_DEF_MARK_CHAT_TO_USER:
                 getMarkChatToUser();
                 break;
@@ -458,11 +464,27 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_GET_TECH_MARKETING_LIST:
                 getTechMarketingList();
                 break;
+            // --------------------------------------> 联系人列表优化 <------------------------------------
+            case MsgDef.MSG_DEF_TECH_CUSTOMER_USER_ALL_LIST:
+                getTechCustomerAllList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_TECH_CUSTOMER_USER_REGISTER_LIST:
+                getTechCustomerRegisterList((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_CLUB_EMPLOYEE_LIST:
+                getClubEmployeeList();
+                break;
+            case MsgDef.MSG_DEF_CLUB_CUSTOMER_RECENT_LIST:
+                getClubCustomerRecentList();
+                break;
+            case MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL:
+                getCLubEmployeeDetail(msg.obj.toString());
 
         }
 
         return true;
     }
+
 
     /**************************************** Called By Activities  *****************************/
 
@@ -701,7 +723,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<BaseResult>() {
             @Override
             protected void postResult(BaseResult result) {
-                RxBus.getInstance().post(new OrderManageResult(params.get(RequestConstant.KEY_ID),params.get(RequestConstant.KEY_REASON)));
+                RxBus.getInstance().post(new OrderManageResult(params.get(RequestConstant.KEY_ID), params.get(RequestConstant.KEY_REASON)));
             }
 
             /*@Override
@@ -1420,10 +1442,7 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<SaveChatUserResult>() {
             @Override
             protected void postResult(SaveChatUserResult result) {
-                if (!params.get(RequestConstant.KEY_SEND_POST).equals("0")) {
-                    RxBus.getInstance().post(result);
-                }
-
+                RxBus.getInstance().post(result);
             }
         });
     }
@@ -1532,8 +1551,8 @@ public class RequestController extends AbstractController {
         }
     }
 
-    private void setPageSelected(int obj) {
-        RxBus.getInstance().post(new CurrentSelectPage(obj));
+    private void setPageSelected(Map<String, Integer> params) {
+        RxBus.getInstance().post(new CurrentSelectPage(params.get(Constant.SWITCH_FRAGMENT_INDEX), params.get(Constant.SWITCH_FRAGMENT_ITEM_INDEX)));
     }
 
     private void setOrderInnerRead(Map<String, String> params) {
@@ -1998,17 +2017,17 @@ public class RequestController extends AbstractController {
         });
     }
 
-    // 查询同某个客户是否打过招呼
-    private void checkHelloRecently(Map<String, String> params) {
-        Call<HelloCheckRecentlyResult> call = getSpaService().checkHelloRecently(params.get(RequestConstant.KEY_NEW_CUSTOMER_ID),
-                SharedPreferenceHelper.getUserToken());
-        call.enqueue(new TokenCheckedCallback<HelloCheckRecentlyResult>() {
-            @Override
-            protected void postResult(HelloCheckRecentlyResult result) {
-                RxBus.getInstance().post(result);
-            }
-        });
-    }
+//    // 查询同某个客户是否打过招呼
+//    private void checkHelloRecently(Map<String, String> params) {
+//        Call<HelloCheckRecentlyResult> call = getSpaService().checkHelloRecently(params.get(RequestConstant.KEY_NEW_CUSTOMER_ID),
+//                SharedPreferenceHelper.getUserToken());
+//        call.enqueue(new TokenCheckedCallback<HelloCheckRecentlyResult>() {
+//            @Override
+//            protected void postResult(HelloCheckRecentlyResult result) {
+//                RxBus.getInstance().post(result);
+//            }
+//        });
+//    }
 
     // 查询同客户的联系
     private void getContactPermission(Map<String, Object> params) {
@@ -2154,7 +2173,7 @@ public class RequestController extends AbstractController {
 
     //消息发送成功后回执
     private void getMarkChatToUser() {
-        Call<MarkChatToUserResult> call = getSpaService().markChatToUser(SharedPreferenceHelper.getUserToken(),SharedPreferenceHelper.getUserClubId(),"");
+        Call<MarkChatToUserResult> call = getSpaService().markChatToUser(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserClubId(), "");
         call.enqueue(new TokenCheckedCallback<MarkChatToUserResult>() {
             @Override
             protected void postResult(MarkChatToUserResult result) {
@@ -2162,8 +2181,9 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
     //获取聊天显示内容列表
-    private void getCategoryList(){
+    private void getCategoryList() {
         Call<CategoryListResult> call = getSpaService().categoryList(SharedPreferenceHelper.getUserToken());
         call.enqueue(new TokenCheckedCallback<CategoryListResult>() {
             @Override
@@ -2172,12 +2192,70 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
     //各营销活动列表
-    private void getTechMarketingList(){
+    private void getTechMarketingList() {
         Call<MarketingListResult> call = getSpaService().techMarketingList(SharedPreferenceHelper.getUserToken());
         call.enqueue(new TokenCheckedCallback<MarketingListResult>() {
             @Override
             protected void postResult(MarketingListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取技师所有联系人列表
+    private void getTechCustomerAllList(Map<String, String> params) {
+        Call<ContactAllListResult> call = getSpaService().techCustomerAllList(LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
+                params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_USER_NAME));
+        call.enqueue(new TokenCheckedCallback<ContactAllListResult>() {
+            @Override
+            protected void postResult(ContactAllListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取技师拓客列表
+    private void getTechCustomerRegisterList(Map<String, String> params) {
+        Call<ContactRegisterListResult> call = getSpaService().techCustomerRegisterList(LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
+                params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_USER_NAME));
+        call.enqueue(new TokenCheckedCallback<ContactRegisterListResult>() {
+            @Override
+            protected void postResult(ContactRegisterListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取会所联系人
+    private void getClubEmployeeList() {
+        Call<ClubEmployeeListResult> call = getSpaService().clubEmployeeList(LoginTechnician.getInstance().getToken());
+        call.enqueue(new TokenCheckedCallback<ClubEmployeeListResult>() {
+            @Override
+            protected void postResult(ClubEmployeeListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //最近访客列表clubCustomerUserRecentList
+    private void getClubCustomerRecentList() {
+        Call<CustomerUserRecentListResult> call = getSpaService().clubCustomerUserRecentList(LoginTechnician.getInstance().getToken());
+        call.enqueue(new TokenCheckedCallback<CustomerUserRecentListResult>() {
+            @Override
+            protected void postResult(CustomerUserRecentListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //本店联系人详情
+    private void getCLubEmployeeDetail(String param) {
+        Call<ClubEmployeeDetailResult> call = getSpaService().clubEmployeeDetail(LoginTechnician.getInstance().getToken(), param);
+        call.enqueue(new TokenCheckedCallback<ClubEmployeeDetailResult>() {
+            @Override
+            protected void postResult(ClubEmployeeDetailResult result) {
                 RxBus.getInstance().post(result);
             }
         });

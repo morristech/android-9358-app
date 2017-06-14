@@ -117,7 +117,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_HELLO_LEFT_COUNT,
                 MsgDef.MSG_DEF_TECH_SAY_HELLO,
                 MsgDef.MSG_DEF_GET_HELLO_RECORD_LIST,
-                MsgDef.MSG_DEF_CHECK_HELLO_RECENTLY,
                 MsgDef.MSG_DEF_GET_CONTACT_PERMISSION,
                 MsgDef.MSG_DEF_GET_SET_TEMPLATE,
                 MsgDef.MSG_DEF_SAVE_SET_TEMPLATE,
@@ -137,11 +136,17 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_IN_BLACKLIST,
                 MsgDef.MSG_DEF_IN_USER_BLACKLIST,
                 MsgDef.MSG_DEF_GET_TECH_BLACKLIST,
-                MsgDef.MSG_DEF_TECH_RANKING_LIST,
+
                 //---------聊天优化---
                 MsgDef.MSG_DEF_MARK_CHAT_TO_USER,
                 MsgDef.MSG_DEF_GET_CHAT_CATEGORY_LIST,
-                MsgDef.MSG_DEF_GET_TECH_MARKETING_LIST
+                MsgDef.MSG_DEF_GET_TECH_MARKETING_LIST,
+                //-------------------------------------> 联系人列表优化 <---------------------------------
+                MsgDef.MSG_DEF_TECH_CUSTOMER_USER_ALL_LIST,
+                MsgDef.MSG_DEF_TECH_CUSTOMER_USER_REGISTER_LIST,
+                MsgDef.MSG_DEF_CLUB_EMPLOYEE_LIST,
+                MsgDef.MSG_DEF_CLUB_CUSTOMER_RECENT_LIST,
+                MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

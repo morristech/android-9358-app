@@ -300,6 +300,48 @@ public class Constant {
     public static final String ITEM_CARD_TYPE = "item_card"; //单项次卡
     public static final String ITEM_PACKAGE_TYPE = "item_package"; //混合套餐\
     public static final String CREDIT_GIFT_TYPE = "credit_gift"; //积分礼物
+    /**
+     * 联系人优化
+     */
+    public static final int FILTER_ALL_CONTACT = 0; //所有联系人
+    public static final int FILTER_WX_CONTACT = 1;//wx联系人
+    public static final int FILTER_FANS_CONTACT = 2;//粉丝用户/手机用户
+    public static final int FILTER_FANS_AND_WX_CONTACT = 3;//粉丝用户+wx用户
+    public static final int FILTER_PHONE_CONTACT = 4;//手机联系人
+    public static final String USER_WX = "wx_user";
+    public static final String USER_FANS = "fans_user";
+    public static final String USER_FANS_WX = "fans_wx_user";
+    public static final String USER_TECH_ADD = "tech_add";
+    public static final String USER_ALL = "";
+    public static final String USER_MARK_TECH_ADD = "通讯录";//通讯录
+    public static final String USER_MARK_NEW_ADD = "新客";//新客
+    public static final String USER_MARK_ACTIVATION = "待激活";//待激活
+    public static final String USER_MARK_BIG = "大客";//大客
+    public static final String USER_MARK_NORMAL = "普客";//普客
+    public static final int CONTACT_ALL_INDEX = 0;
+    public static final int CONTACT_REGISTER_INDEX = 1;
+    public static final int CONTACT_VISITOR_INDEX = 2;
+    public static final int CONTACT_CLUB_INDEX = 3;
+    public static final String ROLE_TYPE_MANAGER = "club_manager"; //店长
+    public static final String ROLE_TYPE_OP_MANAGER = "op_manager";//运营专员
+    public static final String ROLE_TYPE_TECH = "tech";//技师
+    public static final String ROLE_TYPE_CASHIER = "cashier";//收银员
+    public static final String ROLE_TYPE_FLOOR_STAFF = "floor_staff";//楼面
+    public static final String CLUB_EMPLOYEE_TYPE_TECH = "tech";
+    public static final String CLUB_EMPLOYEE_TYPE_MANAGER = "manager";
+    public static final String CLUB_EMPLOYEE_HAS_NONE_GROUP = "has_none_group";//会所用户未进行分组
+    public static final String CLUB_EMPLOYEE_DEFAULT_GROUP = "未分组";//会所用户未进行分组名称
+    public static final int CLUB_EMPLOYEE_DEFAULT_GROUP_ID = 999;//会所用户未进行分组ID
+    public static final int CONTACT_RECENT_TYPE_NORMAL = 0;
+    public static final int CONTACT_RECENT_TYPE_COMMENT = 1;
+    public static final int CONTACT_RECENT_TYPE_COLLECTION = 2;
+    public static final int CONTACT_RECENT_TYPE_COUPON = 3;
+    public static final int CONTACT_RECENT_TYPE_PAID_COUPON = 4;
+    public static final int CONTACT_RECENT_TYPE_REWARD = 5;
+    public static final String SWITCH_FRAGMENT_INDEX = "selectType";
+    public static final String SWITCH_FRAGMENT_ITEM_INDEX = "selectItem";
+
+
 
 
     public static final String CHAT_MENU_APPOINTMENT = "11";

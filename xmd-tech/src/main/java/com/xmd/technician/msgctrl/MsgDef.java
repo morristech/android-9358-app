@@ -168,7 +168,7 @@ public class MsgDef {
     public static final int MSG_DEF_GET_HELLO_LEFT_COUNT = 0x0093;      // 获取剩余打招呼次数
     public static final int MSG_DEF_TECH_SAY_HELLO = 0x0094;            // 打招呼
     public static final int MSG_DEF_GET_HELLO_RECORD_LIST = 0x0095;     // 获取打招呼记录
-    public static final int MSG_DEF_CHECK_HELLO_RECENTLY = 0x0096;          // 查询是否打过招呼
+    //    public static final int MSG_DEF_CHECK_HELLO_RECENTLY = 0x0096;          // 查询是否打过招呼
     public static final int MSG_DEF_GET_CONTACT_PERMISSION = 0x0097;     // 查询同客户关系
     public static final int MSG_DEF_GET_SET_TEMPLATE = 0x0098;          // 获取打招呼内容
     public static final int MSG_DEF_SAVE_SET_TEMPLATE = 0x0099;         // 保存打招呼内容
@@ -195,8 +195,13 @@ public class MsgDef {
     public static final int MSG_DEF_MARK_CHAT_TO_USER = 0x0115;
     public static final int MSG_DEF_LOGOUT_EMCHAT = 0x0116;
     public static final int MSG_DEF_GET_CHAT_CATEGORY_LIST = 0x0117;
-    public static final int MSG_DEF_GET_TECH_MARKETING_LIST = 0x118;
-
+    public static final int MSG_DEF_GET_TECH_MARKETING_LIST = 0x0118;
+    //------------------------------------------> 联系人列表优化 <-----------------------------------------
+    public static final int MSG_DEF_TECH_CUSTOMER_USER_ALL_LIST = 0x0119;
+    public static final int MSG_DEF_TECH_CUSTOMER_USER_REGISTER_LIST = 0x0120;
+    public static final int MSG_DEF_CLUB_EMPLOYEE_LIST = 0x0121;
+    public static final int MSG_DEF_CLUB_CUSTOMER_RECENT_LIST = 0x0122;
+    public static final int MSG_DEF_CLUB_EMPLOYEE_DETAIL = 0x0123;
 
 
 }
