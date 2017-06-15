@@ -16,7 +16,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,6 +30,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.technician.Adapter.MainPageTechOrderListAdapter;
 import com.xmd.technician.Adapter.PKRankingAdapter;
 import com.xmd.technician.AppConfig;
@@ -74,6 +74,7 @@ import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyFragment;
 import com.xmd.technician.permission.BusinessPermissionManager;
 import com.xmd.technician.permission.CheckBusinessPermission;
 import com.xmd.technician.permission.PermissionConstants;
+import com.xmd.technician.widget.CircleAvatarView;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.SlidingMenu;
@@ -129,7 +130,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Bind(R.id.main_order_list)
     ListView mMainOrderList;
     @Bind(R.id.main_dynamic_avatar1)
-    CircleImageView mMainDynamicAvatar1;
+    CircleAvatarView mMainDynamicAvatar1;
     @Bind(R.id.main_dynamic_name1)
     TextView mMainDynamicName1;
     @Bind(R.id.main_dynamic_describe1)
@@ -137,7 +138,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Bind(R.id.main_dynamic_time1)
     TextView mMainDynamicTime1;
     @Bind(R.id.main_dynamic_avatar2)
-    CircleImageView mMainDynamicAvatar2;
+    CircleAvatarView mMainDynamicAvatar2;
     @Bind(R.id.main_dynamic_name2)
     TextView mMainDynamicName2;
     @Bind(R.id.main_dynamic_describe2)
@@ -145,7 +146,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Bind(R.id.main_dynamic_time2)
     TextView mMainDynamicTime2;
     @Bind(R.id.main_dynamic_avatar3)
-    CircleImageView mMainDynamicAvatar3;
+    CircleAvatarView mMainDynamicAvatar3;
     @Bind(R.id.main_dynamic_name3)
     TextView mMainDynamicName3;
     @Bind(R.id.main_dynamic_describe3)
@@ -154,8 +155,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     TextView mMainDynamicTime3;
     @Bind(R.id.main_who_care_total)
     TextView mMainWhoCareTotal;
-    @Bind(R.id.ll_horizontalList)
-    LinearLayout llHorizontalList;
+    @Bind(R.id.layout_visitor_list)
+    LinearLayout layoutVisitorList;
     @Bind(R.id.cv_star_register)
     CircleImageView mCvStarRegister;
     @Bind(R.id.tv_star_register_user)
@@ -184,16 +185,16 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     LinearLayout mMainDynamic2;
     @Bind(R.id.main_dynamic3)
     LinearLayout mMainDynamic3;
-    @Bind(R.id.main_visit_avatar1)
-    CircleImageView visitAvatar1;
-    @Bind(R.id.main_visit_avatar2)
-    CircleImageView visitAvatar2;
-    @Bind(R.id.main_visit_avatar3)
-    CircleImageView visitAvatar3;
-    @Bind(R.id.main_visit_avatar4)
-    CircleImageView visitAvatar4;
-    @Bind(R.id.main_visit_avatar5)
-    CircleImageView visitAvatar5;
+    //    @Bind(R.id.main_visit_avatar1)
+//    CircleImageView visitAvatar1;
+//    @Bind(R.id.main_visit_avatar2)
+//    CircleImageView visitAvatar2;
+//    @Bind(R.id.main_visit_avatar3)
+//    CircleImageView visitAvatar3;
+//    @Bind(R.id.main_visit_avatar4)
+//    CircleImageView visitAvatar4;
+//    @Bind(R.id.main_visit_avatar5)
+//    CircleImageView visitAvatar5;
     @Bind(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.rl_visit_null)
@@ -502,11 +503,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.VISITOR)
     public void initVisitor() {
         mRootView.findViewById(R.id.visitor_layout).setVisibility(View.VISIBLE);
-        visitViewList.add(visitAvatar1);
-        visitViewList.add(visitAvatar2);
-        visitViewList.add(visitAvatar3);
-        visitViewList.add(visitAvatar4);
-        visitViewList.add(visitAvatar5);
+//        visitViewList.add(visitAvatar1);
+//        visitViewList.add(visitAvatar2);
+//        visitViewList.add(visitAvatar3);
+//        visitViewList.add(visitAvatar4);
+//        visitViewList.add(visitAvatar5);
         if (mGetRecentlyVisitorSubscription == null) {
             mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
                     this::initRecentlyViewView);
@@ -1058,39 +1059,26 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             hasDynamic = true;
             mDynamicList.clear();
             mDynamicList.addAll(result.respData);
-            if (mDynamicList.size() == 1) {
+            if (mDynamicList.size() > 0) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
+                mMainDynamicAvatar1.setUserInfo(mDynamicList.get(0).userId, Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl);
                 mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
                 mMainDynamic2.setVisibility(View.GONE);
                 mMainDynamic3.setVisibility(View.GONE);
-            } else if (mDynamicList.size() == 2) {
-                mMainDynamic1.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
-                mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
-                mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
-                mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
+            }
+            if (mDynamicList.size() > 1) {
                 mMainDynamic2.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(1).avatarUrl) ? mDynamicList.get(1).avatarUrl : mDynamicList.get(1).imageUrl).into(mMainDynamicAvatar2);
+                mMainDynamicAvatar2.setUserInfo(mDynamicList.get(1).userId, Utils.isNotEmpty(mDynamicList.get(1).avatarUrl) ? mDynamicList.get(1).avatarUrl : mDynamicList.get(1).imageUrl);
                 mMainDynamicName2.setText(Utils.StrSubstring(6, mDynamicList.get(1).userName, true));
                 mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
                 mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
                 mMainDynamic3.setVisibility(View.GONE);
-            } else if (mDynamicList.size() == 3) {
-                mMainDynamic1.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl).into(mMainDynamicAvatar1);
-                mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
-                mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
-                mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
-                mMainDynamic2.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(1).avatarUrl) ? mDynamicList.get(1).avatarUrl : mDynamicList.get(1).imageUrl).into(mMainDynamicAvatar2);
-                mMainDynamicName2.setText(Utils.StrSubstring(6, mDynamicList.get(1).userName, true));
-                mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
-                mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
+            }
+            if (mDynamicList.size() > 2) {
                 mMainDynamic3.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(Utils.isNotEmpty(mDynamicList.get(2).avatarUrl) ? mDynamicList.get(2).avatarUrl : mDynamicList.get(2).imageUrl).into(mMainDynamicAvatar3);
+                mMainDynamicAvatar3.setUserInfo(mDynamicList.get(2).userId, Utils.isNotEmpty(mDynamicList.get(2).avatarUrl) ? mDynamicList.get(2).avatarUrl : mDynamicList.get(2).imageUrl);
                 mMainDynamicName3.setText(Utils.StrSubstring(6, mDynamicList.get(2).userName, true));
                 mMainDynamicDescribe3.setText(getRecentStatusDes(mDynamicList.get(2).bizType));
                 mMainDynamicTime3.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(2).createTime)));
@@ -1123,42 +1111,33 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     private void initRecentlyViewView(RecentlyVisitorResult result) {
         if (null != result.respData && result.respData.size() > 0) {
+            layoutVisitorList.removeAllViews();
+            layoutVisitorList.setVisibility(View.VISIBLE);
             mAllTechVisitor.clear();
             for (int i = 0; i < result.respData.size(); i++) {
-                if (null != result.respData.get(i).emchatId) {
+                if (result.respData.get(i).emchatId != null) {
                     mAllTechVisitor.add(result.respData.get(i));
                 }
             }
-            if (mAllTechVisitor.size() > 5) {
-                mTechVisitor.clear();
-                for (int i = 0; i < 5; i++) {
-                    mTechVisitor.add(mAllTechVisitor.get(i));
+            int count = 0;
+            for (RecentlyVisitorBean visitor : mAllTechVisitor) {
+                addVisitor(visitor);
+                if (count++ == 4) {
+                    break;
                 }
-            } else {
-                mTechVisitor.clear();
-                mTechVisitor.addAll(mAllTechVisitor);
-            }
-            if (mTechVisitor.size() > 0) {
-                llHorizontalList.setVisibility(View.VISIBLE);
-                initVisitAvatar(mTechVisitor);
             }
         } else {
-            llHorizontalList.setVisibility(View.GONE);
-            for (int i = 0; i < visitViewList.size(); i++) {
-                visitViewList.get(i).setVisibility(View.INVISIBLE);
-            }
+            layoutVisitorList.setVisibility(View.GONE);
         }
     }
 
-    private void initVisitAvatar(List<RecentlyVisitorBean> visitList) {
-        for (int i = 0; i < visitList.size(); i++) {
-            visitViewList.get(i).setVisibility(View.VISIBLE);
-            Glide.with(mContext).load(visitList.get(i).avatarUrl).into((CircleImageView) visitViewList.get(i));
-            final int finalI = i;
-            visitViewList.get(i).setOnClickListener(v -> {
-                UINavigation.gotoCustomerDetailAcivity(v.getContext(), visitList.get(finalI).userId);
-            });
-        }
+    private void addVisitor(RecentlyVisitorBean visitor) {
+        CircleAvatarView avatarView = new CircleAvatarView(getContext());
+        layoutVisitorList.addView(avatarView);
+        avatarView.getLayoutParams().width = 0;
+        avatarView.getLayoutParams().height = ScreenUtils.dpToPx(45);
+        ((LinearLayout.LayoutParams) avatarView.getLayoutParams()).weight = 1;
+        avatarView.setUserInfo(visitor.userId, visitor.avatarUrl);
     }
 
     // 最近访客:跳转聊天或者详情

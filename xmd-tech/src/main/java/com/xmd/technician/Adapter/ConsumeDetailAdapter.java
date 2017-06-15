@@ -7,12 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
-import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.bean.ConsumeInfo;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.widget.CircleImageView;
+import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,7 +152,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
                     viewHolder.mAvatar.setVisibility(View.GONE);
                 } else {
                     viewHolder.mAvatar.setVisibility(View.VISIBLE);
-                    Glide.with(mContext).load(info.headImgUrl).into(viewHolder.mAvatar);
+                    viewHolder.mAvatar.setUserInfo(info.userId, info.headImgUrl);
                 }
             }
         } else if (holder instanceof FooterViewHolder) {
@@ -184,7 +183,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
     public class DetailViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.avatar)
-        CircleImageView mAvatar;
+        CircleAvatarView mAvatar;
         @Bind(R.id.title)
         TextView mTitle;
         @Bind(R.id.remark)

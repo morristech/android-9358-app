@@ -131,7 +131,7 @@ public class UINavigation {
         return false;
     }
 
-    public static void gotoCustomerDetailAcivity(Context context, String customerId) {
+    public static void gotoCustomerDetailActivity(Context context, String customerId) {
         Intent intent = new Intent(context, ContactInformationDetailActivity.class);
         intent.putExtra(RequestConstant.KEY_USER_ID, customerId);
         intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);

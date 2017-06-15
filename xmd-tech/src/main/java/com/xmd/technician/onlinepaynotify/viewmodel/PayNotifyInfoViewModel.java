@@ -2,15 +2,13 @@ package com.xmd.technician.onlinepaynotify.viewmodel;
 
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
 import com.xmd.technician.common.DateUtils;
-import com.xmd.technician.common.ImageTool;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
+import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.Locale;
 
@@ -77,17 +75,15 @@ public class PayNotifyInfoViewModel {
     }
 
     @BindingAdapter("avatar")
-    public static void setAvatar(ImageView view, String url) {
-        ImageTool.loadCircleImage(view.getContext(), url, view);
+    public static void setAvatar(CircleAvatarView view, PayNotifyInfo data) {
+        if (data != null) {
+            view.setUserInfo(data.userId, data.userAvatar);
+        }
     }
 
     public void setArchived() {
         isArchived.set(true);
         info.isArchived = true;
         PayNotifyInfoManager.getInstance().setPayNotifyInfoArchived(info);
-    }
-
-    public void onClickCustomerHeader(View v, PayNotifyInfo info) {
-//        UINavigation.gotoCustomerDetailAcivity(v.getContext(),info.userName);
     }
 }

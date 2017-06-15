@@ -13,6 +13,7 @@ public class PayNotifyInfo {
     public static final int STATUS_ALL = STATUS_UNVERIFIED | STATUS_ACCEPTED | STATUS_REJECTED;
 
     public String id;
+    public String userId;
     public String userName;
     public String userAvatar;
     public long amount;

@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,6 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ActivityRankingBean;
@@ -57,6 +55,7 @@ import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.BlockChildLinearLayout;
+import com.xmd.technician.widget.CircleAvatarView;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RoundImageView;
 import com.xmd.technician.widget.TechCustomerTypeView;
@@ -652,7 +651,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
-            Glide.with(mContext).load(Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl).error(R.drawable.icon22).into(viewHolder.dynamicItemAvatar);
+            viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl);
             viewHolder.dynamicItemName.setText(dynamicDetail.userName);
             if (Utils.isNotEmpty(dynamicDetail.userEmchatId)) {
                 viewHolder.btnThanks.setVisibility(View.VISIBLE);
@@ -1373,7 +1372,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class DynamicItemViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.dynamic_item_avatar)
-        CircleImageView dynamicItemAvatar;
+        CircleAvatarView dynamicItemAvatar;
         @Bind(R.id.dynamic_item_type)
         ImageView dynamicItemType;
         @Bind(R.id.dynamic_item_name)

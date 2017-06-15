@@ -9,16 +9,14 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.Order;
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
-import com.xmd.technician.widget.CircleImageView;
+import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,32 +65,31 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Glide.with(mContext).load(order.headImgUrl).into(viewHolder.mainOrderAvatar);
-        if(Utils.isNotEmpty(order.customerName)){
+        if (Utils.isNotEmpty(order.customerName)) {
             viewHolder.orderName.setText(order.customerName);
-        }else{
+        } else {
             viewHolder.orderName.setText(order.userName);
         }
 
         viewHolder.orderPhoneDetail.setText(order.phoneNum);
         viewHolder.orderTimeDetail.setText(order.formatAppointTime);
-        if(order.orderType.equals(RequestConstant.ORDER_TYPE_APPOINT)){
+        if (order.orderType.equals(RequestConstant.ORDER_TYPE_APPOINT)) {
             viewHolder.orderMoney.setVisibility(View.GONE);
             viewHolder.orderMoneyDetail.setVisibility(View.GONE);
-        }else{
+        } else {
             viewHolder.orderMoney.setVisibility(View.VISIBLE);
             viewHolder.orderMoneyDetail.setVisibility(View.VISIBLE);
-            String orderMoney = order.downPayment+"元";
-            viewHolder.orderMoneyDetail.setText(Utils.changeColor(orderMoney,ResourceUtils.getColor(R.color.colorMainBtn),0,orderMoney.length()-1));
-            if(order.payType == 2){
+            String orderMoney = order.downPayment + "元";
+            viewHolder.orderMoneyDetail.setText(Utils.changeColor(orderMoney, ResourceUtils.getColor(R.color.colorMainBtn), 0, orderMoney.length() - 1));
+            if (order.payType == 2) {
                 viewHolder.mPaidMark.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 viewHolder.mPaidMark.setVisibility(View.GONE);
             }
         }
 
         viewHolder.mainTechOrderSurplusTimeDetail.setText(order.remainTime + "");
-        if(Utils.isEmpty(order.innerProvider)){
+        if (Utils.isEmpty(order.innerProvider)) {
             if (order.status.equals(RequestConstant.KEY_ORDER_STATUS_SUBMIT)) {
                 viewHolder.mainTechOrderBtnAccept.setText(ResourceUtils.getString(R.string.accept));
                 viewHolder.mainHandle.setVisibility(View.VISIBLE);
@@ -106,24 +103,21 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
                     doManageOrder(RequestConstant.KEY_ORDER_STATUS_COMPLETE, order.orderId, "");
                 });
             }
-        }else{
+        } else {
             viewHolder.mainHandle.setVisibility(View.GONE);
             viewHolder.mainTechOrderBtnAccept.setText(ResourceUtils.getString(R.string.know));
             viewHolder.mainTechOrderBtnAccept.setOnClickListener(v1 -> {
                 doManageOrderDisappear(order.orderId);
             });
         }
-        viewHolder.mainOrderAvatar.setOnClickListener(v -> {
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(order.emchatId, Utils.isEmpty(order.customerName) ? order.customerName : order.userName,
-                    order.headImgUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
-        });
+        viewHolder.mainOrderAvatar.setUserInfo(order.userId, order.headImgUrl);
         return convertView;
     }
 
     private void doManageOrderDisappear(String orderId) {
-        Map<String,String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_ORDER_ID,orderId);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ORDER_INNER_READ,params);
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_ORDER_ID, orderId);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ORDER_INNER_READ, params);
     }
 
     private void doManageOrder(String type, String orderId, String reason) {
@@ -136,7 +130,7 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
 
     final static class ViewHolder {
         @Bind(R.id.main_order_avatar)
-        CircleImageView mainOrderAvatar;
+        CircleAvatarView mainOrderAvatar;
         @Bind(R.id.order_name)
         TextView orderName;
         @Bind(R.id.order_phone_detail)

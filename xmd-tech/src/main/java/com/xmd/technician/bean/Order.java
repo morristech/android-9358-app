@@ -15,6 +15,8 @@ public class Order implements Serializable {
 
     public String headImgUrl;
 
+    public String userId;
+
     public String customerName;
 
     public String userName;

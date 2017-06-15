@@ -9,13 +9,12 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CommentInfo;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.widget.CircleImageView;
+import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,12 +100,8 @@ public class CommentAdapter extends RecyclerView.Adapter {
                 commentViewHolder.mRewardAmount.setText("");
             }
 
-            if (Utils.isNotEmpty(commentInfo.userInfo.avatarUrl)) {
-                Glide.with(mContext).load(commentInfo.userInfo.avatarUrl).into(commentViewHolder.mAvatar);
-            } else {
-                Glide.with(mContext).load(commentInfo.userInfo.headimgurl).into(commentViewHolder.mAvatar);
-            }
-
+            commentViewHolder.mAvatar.setUserInfo(commentInfo.userId,
+                    TextUtils.isEmpty(commentInfo.userInfo.avatarUrl) ? commentInfo.userInfo.headimgurl : commentInfo.userInfo.avatarUrl);
         } else if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);
@@ -143,7 +138,7 @@ public class CommentAdapter extends RecyclerView.Adapter {
     public class CommentViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.avatar)
-        CircleImageView mAvatar;
+        CircleAvatarView mAvatar;
         @Bind(R.id.name)
         TextView mName;
         @Bind(R.id.ratings)

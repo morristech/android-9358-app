@@ -14,7 +14,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.xmd.technician.widget.CircleImageView
+        <com.xmd.technician.widget.CircleAvatarView
             android:id="@+id/main_order_avatar"
             android:layout_width="@dimen/home_button_height"
             android:layout_height="@dimen/home_button_height"

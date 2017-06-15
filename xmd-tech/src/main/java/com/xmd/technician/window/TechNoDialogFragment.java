@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.technician.Adapter.TechNoRecyclerViewAdapter;
 import com.xmd.technician.R;
-import com.xmd.technician.common.ScreenUtils;
 import com.xmd.technician.contract.JoinClubContract;
 import com.xmd.technician.databinding.FragmentTechNoBinding;
 import com.xmd.technician.http.gson.UnusedTechNoListResult;

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.NearbyCusInfo;
@@ -18,10 +17,9 @@ import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.RelativeDateFormatUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.widget.CircleImageView;
+import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,10 +81,7 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         NearbyCusInfo info = getItem(position);
         holder.mPosition.setText(info.userPosition);    // 位置
         holder.mDistance.setText("距离" + Math.round(info.userClubDistance) + "m");   // 距离
-        Glide.with(mContext).load(info.userAvatar).into(holder.mAvatar);    //头像
-        holder.mAvatar.setOnClickListener((v) -> {
-            UINavigation.gotoCustomerDetailAcivity(v.getContext(), info.userId);
-        });
+        holder.mAvatar.setUserInfo(info.userId, info.userAvatar);
         holder.mNickName.setText(info.userName);    // 名称
 
         // 用户类型
@@ -169,7 +164,7 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         @Bind(R.id.cus_item_distance)
         TextView mDistance;
         @Bind(R.id.cus_item_avatar)
-        CircleImageView mAvatar;
+        CircleAvatarView mAvatar;
         @Bind(R.id.cus_item_nickname)
         TextView mNickName;
         @Bind(R.id.cus_item_type)

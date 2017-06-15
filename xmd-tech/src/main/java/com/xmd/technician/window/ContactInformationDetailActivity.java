@@ -9,8 +9,10 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -195,6 +198,25 @@ public class ContactInformationDetailActivity extends BaseActivity {
         mContext = this;
         getIntentData();
         initView();
+
+        mContactHead.setOnClickListener((v) -> {
+            if (!TextUtils.isEmpty(chatHeadUrl)) {
+                ImageView imageView = new ImageView(v.getContext());
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                AlertDialog dialog = new AlertDialog
+                        .Builder(v.getContext())
+                        .setView(imageView)
+                        .create();
+                dialog.show();
+                WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+                lp.width = ScreenUtils.getScreenWidth() * 4 / 5;
+                lp.height = ScreenUtils.getScreenWidth() * 4 / 5;
+                dialog.getWindow().setAttributes(lp);
+                imageView.getLayoutParams().width = lp.width;
+                imageView.getLayoutParams().height = lp.height;
+                Glide.with(v.getContext()).load(chatHeadUrl).into(imageView);
+            }
+        });
     }
 
     public void getIntentData() {

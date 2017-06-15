@@ -18,7 +18,7 @@
             android:text="@string/main_tech_order_all" />
     </RelativeLayout>
     <LinearLayout
-        android:id="@+id/ll_horizontalList"
+        android:id="@+id/layout_visitor_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -26,59 +26,59 @@
         android:paddingRight="@dimen/inter_space"
         android:visibility="gone"
         >
-        <com.xmd.technician.widget.CircleImageView
-            android:id="@+id/main_visit_avatar1"
-            android:layout_width="@dimen/contact_list_item_btn_width"
-            android:layout_height="@dimen/contact_list_item_btn_width"
-            android:background="@drawable/icon22"
-            android:visibility="invisible" />
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="match_parent">
-            <com.xmd.technician.widget.CircleImageView
-                android:id="@+id/main_visit_avatar2"
-                android:layout_width="@dimen/contact_list_item_btn_width"
-                android:layout_height="@dimen/contact_list_item_btn_width"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/icon22"
-                android:visibility="invisible"/>
+        <!--<com.xmd.technician.widget.CircleImageView-->
+        <!--android:id="@+id/main_visit_avatar1"-->
+        <!--android:layout_width="@dimen/contact_list_item_btn_width"-->
+        <!--android:layout_height="@dimen/contact_list_item_btn_width"-->
+        <!--android:background="@drawable/icon22"-->
+        <!--android:visibility="invisible" />-->
+        <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<com.xmd.technician.widget.CircleImageView-->
+        <!--android:id="@+id/main_visit_avatar2"-->
+        <!--android:layout_width="@dimen/contact_list_item_btn_width"-->
+        <!--android:layout_height="@dimen/contact_list_item_btn_width"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:background="@drawable/icon22"-->
+        <!--android:visibility="invisible"/>-->
 
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <com.xmd.technician.widget.CircleImageView
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/main_visit_avatar3"
-                android:layout_centerHorizontal="true"
-                android:layout_width="@dimen/contact_list_item_btn_width"
-                android:layout_height="@dimen/contact_list_item_btn_width"
-                android:background="@drawable/icon22"
-                android:visibility="invisible" />
+        <!--</RelativeLayout>-->
+        <!--<RelativeLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<com.xmd.technician.widget.CircleImageView-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:id="@+id/main_visit_avatar3"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_width="@dimen/contact_list_item_btn_width"-->
+        <!--android:layout_height="@dimen/contact_list_item_btn_width"-->
+        <!--android:background="@drawable/icon22"-->
+        <!--android:visibility="invisible" />-->
 
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
-            <com.xmd.technician.widget.CircleImageView
-                android:id="@+id/main_visit_avatar4"
-                android:layout_width="@dimen/contact_list_item_btn_width"
-                android:layout_height="@dimen/contact_list_item_btn_width"
-                android:background="@drawable/icon22"
-                android:layout_centerHorizontal="true"
-                android:visibility="invisible"/>
+        <!--</RelativeLayout>-->
+        <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<com.xmd.technician.widget.CircleImageView-->
+        <!--android:id="@+id/main_visit_avatar4"-->
+        <!--android:layout_width="@dimen/contact_list_item_btn_width"-->
+        <!--android:layout_height="@dimen/contact_list_item_btn_width"-->
+        <!--android:background="@drawable/icon22"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:visibility="invisible"/>-->
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
-        <com.xmd.technician.widget.CircleImageView
-            android:id="@+id/main_visit_avatar5"
-            android:layout_width="@dimen/contact_list_item_btn_width"
-            android:layout_height="@dimen/contact_list_item_btn_width"
-            android:background="@drawable/icon22"
-            android:visibility="invisible"/>
+        <!--<com.xmd.technician.widget.CircleImageView-->
+        <!--android:id="@+id/main_visit_avatar5"-->
+        <!--android:layout_width="@dimen/contact_list_item_btn_width"-->
+        <!--android:layout_height="@dimen/contact_list_item_btn_width"-->
+        <!--android:background="@drawable/icon22"-->
+        <!--android:visibility="invisible"/>-->
 
     </LinearLayout>
 

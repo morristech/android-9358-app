@@ -166,7 +166,8 @@ public class PayNotifyInfoManager extends Observable {
                     SimpleDateFormat sdf = DateUtils.getSdf("yyyy-MM-dd HH:mm:ss");
                     for (GetPayNotifyListResult.Item item : response.body().respData) {
                         PayNotifyInfo info = new PayNotifyInfo();
-                       info.id = item.id;
+
+                        info.id = item.id;
                         try {
                             info.payTime = sdf.parse(item.createTime).getTime();
                         } catch (ParseException e) {
@@ -175,6 +176,7 @@ public class PayNotifyInfoManager extends Observable {
                             Logger.e("parse time error:" + item.createTime);
                         }
                         info.amount = item.payAmount;
+                        info.userId = item.userId;
                         info.userName = item.userName;
                         info.userAvatar = item.userAvatarUrl;
                         info.combineTechs = new ArrayList<>();
@@ -245,7 +247,7 @@ public class PayNotifyInfoManager extends Observable {
             int insetPosition = -1;
             for (int i = 0; i < originData.size(); i++) {
                 PayNotifyInfo originInfo = originData.get(i);
-                if (info.id .equals(originInfo.id) ) {
+                if (info.id.equals(originInfo.id)) {
                     //原始数据中有这一项
                     if (info.status != originInfo.status) {
                         statusChanged = true;
@@ -276,7 +278,7 @@ public class PayNotifyInfoManager extends Observable {
 
     public void setPayNotifyInfoArchived(PayNotifyInfo info) {
         for (PayNotifyInfo notifyInfo : mData) {
-            if (notifyInfo.id .equals(info.id) ) {
+            if (notifyInfo.id.equals(info.id)) {
                 notifyInfo.isArchived = info.isArchived;
                 if (notifyInfo.isArchived) {
                     //保存归档数据到本地

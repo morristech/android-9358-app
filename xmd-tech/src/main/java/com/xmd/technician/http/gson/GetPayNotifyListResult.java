@@ -17,5 +17,6 @@ public class GetPayNotifyListResult extends BaseResult {
         public String status; //paid-未确认;pass-确认通过;unpass-确认异常
         public String userAvatarUrl;
         public String userName;
+        public String userId;
     }
 }
