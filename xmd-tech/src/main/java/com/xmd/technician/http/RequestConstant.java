@@ -52,9 +52,9 @@ public class RequestConstant {
     public static final String URL_ADD_CUSTOMER = BASE_URL + "/v2/tech/customer/edit";
     public static final String URL_GET_CUSTOMER_LIST = BASE_URL + "/v2/tech/customer/user/list";
     public static final String URL_GET_CUSTOMER_INFO_DETAIL = BASE_URL + "/v2/tech/customer/user/view";
-    public static final String URL_GET_CLUB_LIST = BASE_URL + "/v2/tech/customer/tech/list";
-    public static final String URL_GET_TECH_INFO_DETAIL = BASE_URL + "/v2/tech/customer/tech/view";
-    public static final String URL_GET_MANAGER_INFO_DETAIL = BASE_URL + "/v2/tech/customer/manager/view";
+    public static final String URL_GET_CLUB_LIST = BASE_URL + "/v2/tech/customer/tech/list";//1.7.1版本废弃
+    public static final String URL_GET_TECH_INFO_DETAIL = BASE_URL + "/v2/tech/customer/tech/view"; //1.7.1版本废弃
+    public static final String URL_GET_MANAGER_INFO_DETAIL = BASE_URL + "/v2/tech/customer/manager/view"; //1.7.1版本废弃
     public static final String URL_GET_RECENTLY_VISITOR_LIST = BASE_URL + "/v2/tech/customer/recent/list";
     public static final String URL_DELETE_CONTACT = BASE_URL + "/v2/tech/customer/delete";
     // public static final String URL_GET_USER_IS_BIND_WX = BASE_URL + "/v2/tech/is_bind_wx";

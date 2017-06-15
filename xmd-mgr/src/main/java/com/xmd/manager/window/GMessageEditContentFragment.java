@@ -76,11 +76,11 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
                 });
                 break;
             case R.id.image_delete:
-                Glide.with(getActivity()).load(R.drawable.img_group_add_img).into(groupAddPic);
-                imageDelete.setVisibility(View.GONE);
-                imageUrl = "";
+                deleteImage();
                 break;
             case R.id.btn_previous_step:
+                deleteImage();
+                clearMessageContent();
                 ((GroupMessageCustomerActivity) getActivity()).gotoCouponFragment();
                 break;
             case R.id.btn_preview:
@@ -91,6 +91,18 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
                 ((GroupMessageCustomerActivity) getActivity()).gotoConfirmFragment();
                 break;
         }
+    }
+
+    private void deleteImage(){
+        Glide.with(getActivity()).load(R.drawable.img_group_add_img).into(groupAddPic);
+        imageDelete.setVisibility(View.GONE);
+        imageUrl = "";
+    }
+
+    private void clearMessageContent(){
+        mEditAbleAmount.setText("100");
+        mEditContent.setText("");
+        mMessageContent="";
     }
 
     @Override

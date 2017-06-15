@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -89,7 +90,8 @@ public class HelloSettingActivity extends BaseActivity {
             mCustomCheck.setEnabled(true);
         });
         mTemplateListView.setNestedScrollingEnabled(false);
-        mTemplateListView.setLayoutManager(new FullyGridLayoutManager(HelloSettingActivity.this, 1));
+       // mTemplateListView.setLayoutManager(new FullyGridLayoutManager(HelloSettingActivity.this, 1));
+        mTemplateListView.setLayoutManager(new GridLayoutManager(HelloSettingActivity.this,1));
         mTemplateListView.setAdapter(mAdapter);
         initCustom();
         initImage();

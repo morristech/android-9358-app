@@ -52,23 +52,32 @@ public class TechCustomerTypeView extends LinearLayout {
     public void setTechCustomerType(String mark) {
         if (Utils.isEmpty(mark)) {
             normalCustomer.setVisibility(View.VISIBLE);
-        } else {
+            techAddCustomer.setVisibility(View.GONE);
+            newAddCustomer.setVisibility(View.GONE);
+            bigCustomer.setVisibility(View.GONE);
+            activationCustomer.setVisibility(View.GONE);
+            return;
+        }
+
+        if (mark.contains(Constant.USER_MARK_TECH_ADD)) {
+            techAddCustomer.setVisibility(View.VISIBLE);
             normalCustomer.setVisibility(View.GONE);
-            if (mark.contains(Constant.USER_MARK_TECH_ADD)) {
-                techAddCustomer.setVisibility(View.VISIBLE);
-            }
-            if (mark.contains(Constant.USER_MARK_NEW_ADD)) {
-                newAddCustomer.setVisibility(View.VISIBLE);
-            }
-            if (mark.contains(Constant.USER_MARK_BIG)) {
-                bigCustomer.setVisibility(View.VISIBLE);
-            }
-            if (mark.contains(Constant.USER_MARK_NORMAL)) {
-                normalCustomer.setVisibility(View.VISIBLE);
-            }
-            if (mark.contains(Constant.USER_MARK_ACTIVATION)) {
-                activationCustomer.setVisibility(View.VISIBLE);
-            }
+        }
+        if (mark.contains(Constant.USER_MARK_NEW_ADD)) {
+            normalCustomer.setVisibility(View.GONE);
+            newAddCustomer.setVisibility(View.VISIBLE);
+        }
+        if (mark.contains(Constant.USER_MARK_BIG)) {
+            normalCustomer.setVisibility(View.GONE);
+            bigCustomer.setVisibility(View.VISIBLE);
+        }
+        if (mark.contains(Constant.USER_MARK_NORMAL)) {
+            normalCustomer.setVisibility(View.GONE);
+            normalCustomer.setVisibility(View.VISIBLE);
+        }
+        if (mark.contains(Constant.USER_MARK_ACTIVATION)) {
+            normalCustomer.setVisibility(View.GONE);
+            activationCustomer.setVisibility(View.VISIBLE);
         }
 
 

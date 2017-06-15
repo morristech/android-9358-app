@@ -1,6 +1,5 @@
 package com.xmd.technician.http;
 
-import com.xmd.technician.bean.ClubContactResult;
 import com.xmd.technician.bean.CreditAccountDetailResult;
 import com.xmd.technician.bean.CreditAccountResult;
 import com.xmd.technician.bean.CreditApplicationsResult;
@@ -10,13 +9,11 @@ import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.GiftListResult;
-import com.xmd.technician.bean.ManagerDetailResult;
 import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SaveChatUserResult;
 import com.xmd.technician.bean.SayHiBaseResult;
 import com.xmd.technician.bean.SendGameResult;
-import com.xmd.technician.bean.TechDetailResult;
 import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
@@ -402,17 +399,21 @@ public interface SpaService {
                                                      @Field(RequestConstant.KEY_ID) String id,
                                                      @Field(RequestConstant.KEY_TOKEN) String userToken);
 
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_TECH_INFO_DETAIL)
-    Call<TechDetailResult> getTechInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                             @Field(RequestConstant.KEY_ID) String id,
-                                             @Field(RequestConstant.KEY_TOKEN) String userToken);
-
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_MANAGER_INFO_DETAIL)
-    Call<ManagerDetailResult> getManagerInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                                   @Field(RequestConstant.KEY_ID) String id,
-                                                   @Field(RequestConstant.KEY_TOKEN) String userToken);
+//    @FormUrlEncoded
+//    @POST(RequestConstant.URL_GET_TECH_INFO_DETAIL)
+//    Call<TechDetailResult> getTechInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+//                                             @Field(RequestConstant.KEY_ID) String id,
+//                                             @Field(RequestConstant.KEY_TOKEN) String userToken);
+//
+//    @FormUrlEncoded
+//    @POST(RequestConstant.URL_GET_MANAGER_INFO_DETAIL)
+//    Call<ManagerDetailResult> getManagerInfoDetail(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+//                                                   @Field(RequestConstant.KEY_ID) String id,
+//                                                   @Field(RequestConstant.KEY_TOKEN) String userToken);
+//@FormUrlEncoded
+//@POST(RequestConstant.URL_GET_CLUB_LIST)
+//Call<ClubContactResult> getClubList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
+//                                    @Field(RequestConstant.KEY_TOKEN) String userToken);
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_DELETE_CONTACT)
@@ -555,10 +556,7 @@ public interface SpaService {
                                   @Field(RequestConstant.KEY_NOTE_NAME) String noteName,
                                   @Field(RequestConstant.KEY_MARK_IMPRESSION) String impression);
 
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_GET_CLUB_LIST)
-    Call<ClubContactResult> getClubList(@Field(RequestConstant.KEY_USER_TYPE) String userType,
-                                        @Field(RequestConstant.KEY_TOKEN) String userToken);
+
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_TECH_INFO)

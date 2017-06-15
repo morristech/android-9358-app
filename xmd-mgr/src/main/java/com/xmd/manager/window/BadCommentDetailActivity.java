@@ -103,6 +103,7 @@ public class BadCommentDetailActivity extends BaseActivity {
     private Subscription mBadCommentStatusSubscription;
     private CommentDetailItemAdapter mDetailItemAdapter;
     private List<CommentRateListBean> mCommentRateList;
+    private boolean isAnonymous;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +126,7 @@ public class BadCommentDetailActivity extends BaseActivity {
         }
         mCommentRateList = new ArrayList<>();
         mDetailItemAdapter = new CommentDetailItemAdapter(BadCommentDetailActivity.this, mCommentRateList);
-        badCommentDetail.setLayoutManager(new GridLayoutManager(BadCommentDetailActivity.this,2));
+        badCommentDetail.setLayoutManager(new GridLayoutManager(BadCommentDetailActivity.this, 2));
         badCommentDetail.setAdapter(mDetailItemAdapter);
 
         getCommentDetailSubscription = RxBus.getInstance().toObservable(BadCommentResult.class).subscribe(
@@ -152,8 +153,10 @@ public class BadCommentDetailActivity extends BaseActivity {
                 return;
             }
             if (badComment.isAnonymous.equals("Y")) {
+                isAnonymous = true;
                 buttonReturnVisit.setVisibility(View.GONE);
             } else {
+                isAnonymous = false;
                 buttonReturnVisit.setVisibility(View.VISIBLE);
             }
             mUserId = badComment.userId;
@@ -248,9 +251,14 @@ public class BadCommentDetailActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.customer_info:
-                Intent intent = new Intent(BadCommentDetailActivity.this, CustomerActivity.class);
-                intent.putExtra(RequestConstant.COMMENT_USER_ID, mUserId);
-                startActivity(intent);
+                if (isAnonymous) {
+                    makeShortToast("匿名用户无法查看详情");
+                } else {
+                    Intent intent = new Intent(BadCommentDetailActivity.this, CustomerActivity.class);
+                    intent.putExtra(RequestConstant.COMMENT_USER_ID, mUserId);
+                    startActivity(intent);
+                }
+
                 break;
             case R.id.button_return_visit:
                 showServiceOutMenu(badComment.phoneNum, badComment.userEmchatId, badComment.userName, badComment.avatarUrl, badComment.id, badComment.returnStatus);

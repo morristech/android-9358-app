@@ -43,7 +43,7 @@
     <RelativeLayout
         android:id="@+id/menu_work_project"
         style="@style/menu_setting_relative_style"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="@dimen/personal_item_icon_height"
@@ -54,6 +54,25 @@
         <TextView
             style="@style/menu_setting_text_style"
             android:text="@string/settings_activity_project"/>
+    </RelativeLayout>
+
+    <View style="@style/horizontal_divider_line"/>
+
+    <RelativeLayout
+        android:id="@+id/menu_hello_setting"
+        style="@style/menu_setting_relative_style"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="@dimen/personal_item_icon_height"
+            android:layout_height="@dimen/personal_item_icon_height"
+            android:paddingLeft="@dimen/margin_2"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_setting_menu"/>
+
+        <TextView
+            style="@style/menu_setting_text_style"
+            android:text="@string/settings_hello"/>
     </RelativeLayout>
 
     <RelativeLayout
