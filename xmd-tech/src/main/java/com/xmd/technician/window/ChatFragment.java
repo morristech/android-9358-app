@@ -14,16 +14,20 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
+import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.net.NetworkSubscriber;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
+import com.xmd.technician.bean.ContactPermissionInfo;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.UserProfileProvider;
@@ -32,21 +36,19 @@ import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Utils;
-import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.http.gson.ContactPermissionChatResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.permission.contact.ContactPermissionManager;
 import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.ChatMessageManagerDialog;
 import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import rx.Subscription;
@@ -64,13 +66,13 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private Filter mFilter;
     private Subscription mLoginStatusSubscription;
     private Subscription mNewMessageSubscription;
-    private Subscription mContactPermissionChatSubscription;
     private Subscription mDeleteConversionSubscription;
     private TextView mSearchView;
     private String mMessageFrom;
     private ChatHelper emchat;
 
     private LoginTechnician technician = LoginTechnician.getInstance();
+    private int mWaitProcessCount;
 
     @Nullable
     @Override
@@ -153,11 +155,6 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         mEmptyView.setEmptyPic(R.drawable.empty);
         mEmptyView.setEmptyTip("");
 
-        //监听获取联系人权限消息
-        mContactPermissionChatSubscription = RxBus.getInstance()
-                .toObservable(ContactPermissionChatResult.class)
-                .subscribe(this::handleContactPermissionChat);
-
         //监听登录消息
         mLoginStatusSubscription = RxBus.getInstance().toObservable(EventEmChatLoginSuccess.class).subscribe(
                 eventEmChatLogin -> {
@@ -186,21 +183,60 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         List<EMConversation> list = emchat.getAllConversationList();
         //不显示无法聊天的用户
         mConversationList.clear();
+        mWaitProcessCount = list.size();
         for (EMConversation conversation : list) {
             ChatMessage lastMessage = ChatMessageFactory.get(conversation.getLastMessage());
             if (lastMessage == null) {
                 continue;
             }
-            boolean lastIsHello = lastMessage.getTag() != null && lastMessage.getTag().contains(ChatMessage.MSG_TAG_HELLO);
-            if (conversation.getLatestMessageFromOthers() == null && lastIsHello) {
-                conversation.clear();
+            String remoteChatId = lastMessage.getFromChatId();
+            if (remoteChatId != null && remoteChatId.equals(LoginTechnician.getInstance().getEmchatId())) {
+                remoteChatId = lastMessage.getToChatId();
+            }
+            User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
+            if (user == null) {
+                XLogger.e("没有用户信息： chatId=" + remoteChatId);
                 continue;
             }
-            conversation.clear();
-            mConversationList.add(conversation);
-        }
+            ContactPermissionManager.getInstance().getPermission(user.getId(), new NetworkSubscriber<ContactPermissionInfo>() {
+                @Override
+                public void onCallbackSuccess(ContactPermissionInfo result) {
+                    if (result.echat) {
+                        mConversationList.add(conversation);
+                    }
+                    onLoadPermissionFinish();
+                }
 
-        onGetListSucceeded(0, mConversationList);
+                @Override
+                public void onCallbackError(Throwable e) {
+                    onLoadPermissionFinish();
+                }
+            });
+        }
+    }
+
+    private void onLoadPermissionFinish() {
+        mWaitProcessCount--;
+        if (mWaitProcessCount == 0) {
+            Collections.sort(mConversationList, new Comparator<EMConversation>() {
+                @Override
+                public int compare(EMConversation o1, EMConversation o2) {
+                    EMMessage last1 = o1.getLastMessage();
+                    EMMessage last2 = o2.getLastMessage();
+                    if (last1 == null && last2 == null) {
+                        return 0;
+                    }
+                    if (last1 == null) {
+                        return 1;
+                    }
+                    if (last2 == null) {
+                        return -1;
+                    }
+                    return (int) -(last1.getMsgTime() - last2.getMsgTime());
+                }
+            });
+            onGetListSucceeded(0, mConversationList);
+        }
     }
 
     @Override
@@ -208,7 +244,6 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(
                 mLoginStatusSubscription,
-                mContactPermissionChatSubscription,
                 mDeleteConversionSubscription);
         if (mNewMessageSubscription != null) {
             RxBus.getInstance().unsubscribe(mNewMessageSubscription);
@@ -235,42 +270,6 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         }
     }
 
-    private void getContactPermissionChat(EMConversation conversation) {
-        Map<String, Object> params = new HashMap<>();
-        params.put(RequestConstant.KEY_REQUEST_CONTACT_PERMISSION_TAG, Constant.REQUEST_CONTACT_PERMISSION_EMCHAT);
-        params.put(RequestConstant.KEY_ID, conversation.conversationId());
-        params.put(RequestConstant.KEY_CONTACT_ID_TYPE, Constant.REQUEST_CONTACT_ID_TYPE_EMCHAT);
-        params.put(RequestConstant.KEY_CHAT_CONVERSATION_BEAN, conversation);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONTACT_PERMISSION, params);
-    }
-
-    private void handleContactPermissionChat(ContactPermissionChatResult result) {
-        if (result != null && result.statusCode == 200) {
-            if (result.respData.echat) {
-                // 跳转聊天
-                EMConversation conversation = result.emConversation;
-                Intent intent = new Intent(getContext(), TechChatActivity.class);
-                intent.putExtra(ChatConstant.TO_CHAT_USER_ID, conversation.conversationId());
-                ChatHelper.getInstance().clearUnreadMessage(conversation);
-                startActivity(intent);
-            } else {
-                // 跳转详情
-                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-                intent.putExtra(RequestConstant.KEY_USER_ID, result.respData.customerId);
-                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(RequestConstant.KEY_CONTACT_PERMISSION_INFO, result.respData);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        } else {
-            if (getActivity() != null) {
-                Toast.makeText(getActivity(), result.msg, Toast.LENGTH_SHORT).show();
-
-            }
-        }
-    }
-
     @Override
     public void onItemClicked(EMConversation conversation) {
         String username = conversation.conversationId();
@@ -292,14 +291,10 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 mMessageFrom = UserProfileProvider.getInstance().getChatUserInfo(tochat).getUserType();
             }
 
-            if (Utils.isEmpty(mMessageFrom) || mMessageFrom.equals(ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER)) {
-                getContactPermissionChat(conversation);
-            } else {
-                Intent intent = new Intent(getContext(), TechChatActivity.class);
-                intent.putExtra(ChatConstant.TO_CHAT_USER_ID, tochat);
-                getActivity().startActivity(intent);
-            }
-
+            Intent intent = new Intent(getContext(), TechChatActivity.class);
+            intent.putExtra(ChatConstant.TO_CHAT_USER_ID, tochat);
+            getActivity().startActivity(intent);
+            ChatHelper.getInstance().clearUnreadMessage(conversation);
         }
     }
 

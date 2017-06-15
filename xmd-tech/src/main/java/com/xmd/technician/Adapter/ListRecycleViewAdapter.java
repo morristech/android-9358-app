@@ -522,6 +522,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     conversationHolder.mAvatar.setUserInfo(user.getId(), user.getAvatar());
                     conversationHolder.mName.setText(user.getShowName());
                 } else {
+                    conversationHolder.mAvatar.setUserInfo(null, null);
                     conversationHolder.mName.setText("匿名用户");
                 }
             }

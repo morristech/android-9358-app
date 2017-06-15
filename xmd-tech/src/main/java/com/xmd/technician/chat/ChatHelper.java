@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -46,7 +45,6 @@ import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.TechChatActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -883,36 +881,38 @@ public class ChatHelper {
          * 保证Conversation在Sort过程中最后一条消息的时间不变
          * 避免并发问题
          */
-        List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
-        synchronized (conversations) {
+//        List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
 
-            for (EMConversation conversation : conversations.values()) {
-                if (conversation.getAllMsgCount() > 0) {
-                    sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
-                } else {
-                    sortList.add(new Pair<>(0L, conversation));
-                }
-            }
-        }
-        try {
-            // 根据最后一条消息的时间排序
-            Collections.sort(sortList, (con1, con2) -> {
-                        if (con1.first.equals(con2.first)) {
-                            return 0;
-                        } else if (con2.first > con1.first) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    }
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        synchronized (conversations) {
+//
+//            for (EMConversation conversation : conversations.values()) {
+//                if (conversation.getAllMsgCount() > 0) {
+//                    sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
+//                } else {
+//                    sortList.add(new Pair<>(0L, conversation));
+//                }
+//            }
+//        }
+//        try {
+//            // 根据最后一条消息的时间排序
+//            Collections.sort(sortList, (con1, con2) -> {
+//                        if (con1.first.equals(con2.first)) {
+//                            return 0;
+//                        } else if (con2.first > con1.first) {
+//                            return 1;
+//                        } else {
+//                            return -1;
+//                        }
+//                    }
+//            );
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         List<EMConversation> list = new ArrayList<EMConversation>();
-        for (Pair<Long, EMConversation> sortItem : sortList) {
-            list.add(sortItem.second);
-        }
+        list.addAll(conversations.values());
+//        for (Pair<Long, EMConversation> sortItem : sortList) {
+//            list.add(sortItem.second);
+//        }
         return list;
     }
 
