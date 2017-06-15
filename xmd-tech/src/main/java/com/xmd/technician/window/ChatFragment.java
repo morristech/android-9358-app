@@ -127,6 +127,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         });
     }
 
+
     @Override
     protected void initView() {
         initTitleView(ResourceUtils.getString(R.string.message_fragment_title));
