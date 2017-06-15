@@ -21,11 +21,10 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/small_space">
 
-                <com.xmd.technician.widget.CircleImageView
+                <com.xmd.technician.widget.CircleAvatarView
                     android:id="@+id/avatar"
                     android:layout_width="@dimen/avatar_head"
-                    android:layout_height="@dimen/avatar_head"
-                    android:background="@drawable/icon22" />
+                    android:layout_height="@dimen/avatar_head" />
 
                 <TextView
                     android:id="@+id/unread"

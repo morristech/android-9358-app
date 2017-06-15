@@ -44,7 +44,6 @@ import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.chat.utils.SmileUtils;
-import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.DateUtil;
 import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.ItemSlideHelper;
@@ -514,54 +513,17 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 Spannable span = SmileUtils.getSmiledText(mContext, EaseCommonUtils.getMessageDigest(lastMessage, mContext));
                 conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
                 conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
-//                try {
-//                    EMMessage lastOtherMessage = conversation.getLatestMessageFromOthers();
-//                    if (lastOtherMessage != null) {
-//                        ChatUser user = new ChatUser(conversation.conversationId());
-//                        String avatar = lastOtherMessage.getStringAttribute(ChatConstant.KEY_HEADER);
-//                        String nickName = lastOtherMessage.getStringAttribute(ChatConstant.KEY_NAME);
-//                        String isTech = lastOtherMessage.getStringAttribute(ChatConstant.KEY_TECH_ID, "");
-//                        String isManager = lastOtherMessage.getStringAttribute(ChatConstant.KEY_CLUB_ID, "");
-//                        String userType;
-//                        if (Utils.isNotEmpty(isTech) && Utils.isNotEmpty(isManager)) {
-//                            userType = ChatConstant.TO_CHAT_USER_TYPE_TECH;
-//                        } else if (Utils.isNotEmpty(isManager) && Utils.isEmpty(isTech)) {
-//                            userType = ChatConstant.TO_CHAT_USER_TYPE_MANAGER;
-//                        } else {
-//                            userType = ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER;
-//                        }
-//                        if (!TextUtils.isEmpty(SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom()))) {
-//                            nickName = SharedPreferenceHelper.getUserRemark(lastOtherMessage.getFrom());
-//                        }
-//                        boolean needUpdate = !TextUtils.isEmpty(avatar) && !avatar.equals(user.getAvatar());
-//                        needUpdate |= !TextUtils.isEmpty(nickName) && !nickName.equals(user.getNickname());
-//                        if (needUpdate) {
-//                            XLogger.i("update user info-> nickName:" + nickName + ",avatar:" + avatar);
-//                            user.setAvatar(avatar);
-//                            user.setNickname(nickName);
-//                            user.setUserType(userType);
-//                            UserUtils.updateUser(user);
-//                        }
-//                    }
-//                } catch (HyphenateException e) {
-//                    e.printStackTrace();
-//                }
-//                UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
-//                UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
                 String remoteChatId = lastMessage.getFrom();
                 if (remoteChatId != null && remoteChatId.equals(LoginTechnician.getInstance().getEmchatId())) {
                     remoteChatId = lastMessage.getTo();
                 }
                 User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
                 if (user != null) {
-                    Glide.with(mContext).load(user.getAvatar()).into(conversationHolder.mAvatar);
+                    conversationHolder.mAvatar.setUserInfo(user.getId(), user.getAvatar());
                     conversationHolder.mName.setText(user.getShowName());
                 } else {
-                    conversationHolder.mAvatar.setImageResource(com.xmd.appointment.R.drawable.img_default_avatar);
                     conversationHolder.mName.setText("匿名用户");
                 }
-                UserUtils.setUserAvatar(mContext, conversation.conversationId(), conversationHolder.mAvatar);
-                UserUtils.setUserNick(conversation.conversationId(), conversationHolder.mName);
             }
 
             holder.itemView.setOnClickListener(v -> {
@@ -1312,7 +1274,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     static class ConversationViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.avatar)
-        ImageView mAvatar;
+        CircleAvatarView mAvatar;
         @Bind(R.id.name)
         TextView mName;
         @Bind(R.id.content)

@@ -11,13 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.DateUtils;
-import com.xmd.app.widget.GlideCircleTransform;
+import com.xmd.chat.ChatMessageFactory;
 import com.xmd.technician.Adapter.EaseMessageAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
@@ -27,7 +25,7 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
-import com.xmd.technician.widget.CircleImageView;
+import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -46,7 +44,7 @@ public abstract class BaseEaseChatView extends LinearLayout {
     protected int mPosition;
 
     protected TextView mTimeStampView;
-    protected CircleImageView mUserAvatarView;
+    protected CircleAvatarView mUserAvatarView;
     protected View mBubbleLayout;
     protected TextView mUserNickView;
 
@@ -80,7 +78,7 @@ public abstract class BaseEaseChatView extends LinearLayout {
     void initView() {
         onInflateView();
         mTimeStampView = (TextView) findViewById(R.id.timestamp);
-        mUserAvatarView = (CircleImageView) findViewById(R.id.avatar);
+        mUserAvatarView = (CircleAvatarView) findViewById(R.id.avatar);
         mBubbleLayout = findViewById(R.id.bubble);
         mUserNickView = (TextView) findViewById(R.id.tv_userid);
 
@@ -124,16 +122,11 @@ public abstract class BaseEaseChatView extends LinearLayout {
         }
         //设置头像和nick
         if (mEMMessage.direct() == EMMessage.Direct.SEND) {
-            Glide.with(mContext)
-                    .load(localUserAvatar)
-                    .transform(new GlideCircleTransform(mContext))
-                    .into(mUserAvatarView);
+            mUserAvatarView.setUserInfo(null, localUserAvatar);
         } else {
-            Glide.with(mContext)
-                    .load(remoteUserAvatar)
-                    .transform(new GlideCircleTransform(mContext))
-                    .into(mUserAvatarView);
+            mUserAvatarView.setUserInfo(ChatMessageFactory.get(mEMMessage).getUserId(), remoteUserAvatar);
         }
+
         if (mDeliveredView != null) {
             if (mEMMessage.isDelivered()) {
                 mDeliveredView.setVisibility(View.VISIBLE);
@@ -285,33 +278,33 @@ public abstract class BaseEaseChatView extends LinearLayout {
             });
         }
 
-        if (mUserAvatarView != null) {
-            mUserAvatarView.setOnClickListener(v -> {
-                if (itemClickListener != null) {
-                    if (mEMMessage.direct() == EMMessage.Direct.SEND) {
-                        itemClickListener.onUserAvatarClick(EMClient.getInstance().getCurrentUser());
-                    } else {
-                        itemClickListener.onUserAvatarClick(mEMMessage.getFrom());
-                    }
-                }
-            });
-
-            mUserAvatarView.setOnLongClickListener(new OnLongClickListener() {
-
-                @Override
-                public boolean onLongClick(View v) {
-                    if (itemClickListener != null) {
-                        if (mEMMessage.direct() == EMMessage.Direct.SEND) {
-                            itemClickListener.onUserAvatarLongClick(EMClient.getInstance().getCurrentUser());
-                        } else {
-                            itemClickListener.onUserAvatarLongClick(mEMMessage.getFrom());
-                        }
-                        return true;
-                    }
-                    return false;
-                }
-            });
-        }
+//        if (mUserAvatarView != null) {
+//            mUserAvatarView.setOnClickListener(v -> {
+//                if (itemClickListener != null) {
+//                    if (mEMMessage.direct() == EMMessage.Direct.SEND) {
+//                        itemClickListener.onUserAvatarClick(EMClient.getInstance().getCurrentUser());
+//                    } else {
+//                        itemClickListener.onUserAvatarClick(mEMMessage.getFrom());
+//                    }
+//                }
+//            });
+//
+//            mUserAvatarView.setOnLongClickListener(new OnLongClickListener() {
+//
+//                @Override
+//                public boolean onLongClick(View v) {
+//                    if (itemClickListener != null) {
+//                        if (mEMMessage.direct() == EMMessage.Direct.SEND) {
+//                            itemClickListener.onUserAvatarLongClick(EMClient.getInstance().getCurrentUser());
+//                        } else {
+//                            itemClickListener.onUserAvatarLongClick(mEMMessage.getFrom());
+//                        }
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            });
+//        }
     }
 
     protected void updateView() {

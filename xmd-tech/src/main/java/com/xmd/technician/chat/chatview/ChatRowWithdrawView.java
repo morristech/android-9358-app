@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.widget.CircleImageView;
+import com.xmd.technician.widget.CircleAvatarView;
 
 /**
  * Created by Lhj on 17-5-11.
@@ -15,7 +15,7 @@ import com.xmd.technician.widget.CircleImageView;
 
 public class ChatRowWithdrawView extends BaseEaseChatView {
     TextView withDrawText;
-    CircleImageView avatar;
+    CircleAvatarView avatar;
 
     public ChatRowWithdrawView(Context context, EMMessage message, int position, BaseAdapter adapter) {
         super(context, message, position, adapter);
@@ -24,13 +24,12 @@ public class ChatRowWithdrawView extends BaseEaseChatView {
     @Override
     protected void onInflateView() {
         mInflater.inflate(R.layout.chat_row_withdraw_view,this);
-
     }
 
     @Override
     protected void onFindViewById() {
         withDrawText = (TextView) findViewById(R.id.tv_withdraw);
-        avatar = (CircleImageView) findViewById(R.id.avatar);
+        avatar = (CircleAvatarView) findViewById(R.id.avatar);
     }
 
     @Override
