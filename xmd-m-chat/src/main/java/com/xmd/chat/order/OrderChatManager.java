@@ -68,7 +68,7 @@ public class OrderChatManager {
 
         //设置到店时间
         if (chatMessage.getOrderServiceTime() != null && chatMessage.getOrderServiceTime() != 0) {
-            data.setTime(new Date(chatMessage.getOrderServiceTime()));
+            data.setAppointmentTime(new Date(chatMessage.getOrderServiceTime()));
         }
         //设置服务时长
         if (chatMessage.getOrderServiceDuration() != null && chatMessage.getOrderServiceDuration() != 0) {
@@ -96,8 +96,8 @@ public class OrderChatManager {
         if (data.getCustomerPhone() != null) {
             chatMessage.setCustomerPhone(data.getCustomerPhone());
         }
-        if (data.getTime() != null) {
-            chatMessage.setOrderServiceTime(data.getTime().getTime());
+        if (data.getAppointmentTime() != null) {
+            chatMessage.setOrderServiceTime(data.getAppointmentTime().getTime());
         }
         if (data.getTechnician() != null) {
             chatMessage.setOrderTechId(data.getTechnician().getId());

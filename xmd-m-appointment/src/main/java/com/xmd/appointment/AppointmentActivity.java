@@ -103,6 +103,10 @@ public class AppointmentActivity extends BaseActivity
                     public void onCallbackSuccess(AppointmentSettingResult result) {
                         hideLoading();
                         mData.setAppointmentSetting(result.getRespData());
+                        //检查客户预约时间是否有效
+                        if (mData.getAppointmentTime() != null && !AppointmentData.isTimeSuitable(mData.getAppointmentTime(), mData.getAppointmentSetting())) {
+                            mData.setAppointmentTime(null);
+                        }
                         mBinding.setData(mData);
                     }
 
@@ -144,11 +148,13 @@ public class AppointmentActivity extends BaseActivity
         if (mData.getTechnician() == null || !mData.getTechnician().getId().equals(technician.getId())) {
             //获取项目和时间信息
             mData.setAppointmentSetting(null);
-            mData.setTime(null);
             DataManager.getInstance().loadAppointmentExt(technician.getId(), null, new NetworkSubscriber<AppointmentSettingResult>() {
                 @Override
                 public void onCallbackSuccess(AppointmentSettingResult result) {
                     mData.setAppointmentSetting(result.getRespData());
+                    if (!AppointmentData.isTimeSuitable(mData.getAppointmentTime(), mData.getAppointmentSetting())) {
+                        mData.setAppointmentTime(null);
+                    }
                 }
 
                 @Override
@@ -263,14 +269,14 @@ public class AppointmentActivity extends BaseActivity
         if (prev != null) {
             ft.remove(prev);
         }
-        TimeSelectFragment fragment = TimeSelectFragment.newInstance(mData.getTime(), mData.getAppointmentSetting());
+        TimeSelectFragment fragment = TimeSelectFragment.newInstance(mData.getAppointmentTime(), mData.getAppointmentSetting());
         fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Alert);
         fragment.show(ft, "TimeSelectFragment");
     }
 
     @Override
     public void onSelectTime(Date time) {
-        mData.setTime(time);
+        mData.setAppointmentTime(time);
         mBinding.setData(mData);
     }
 

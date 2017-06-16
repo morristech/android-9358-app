@@ -24,8 +24,8 @@ public class AppointmentData implements Serializable {
     private boolean needSubmit; //是否直接提交
     private boolean fixTechnician; //是否固定技师
 
-    private Date time; //到店时间
-    private int duration; //持续时间，分钟
+    private Date appointmentTime; //到店时间
+    private int serviceDuration; //持续时间，分钟
 
     private Integer fontMoney; //订金，单位分
 
@@ -69,9 +69,29 @@ public class AppointmentData implements Serializable {
     private void checkCanSubmit() {
         submitEnable.set(!TextUtils.isEmpty(getCustomerName())
                 && CodeUtils.matchPhoneNumFormat(getCustomerPhone())
-                && getTime() != null
+                && getAppointmentTime() != null
                 && getAppointmentSetting() != null
                 && (!getAppointmentSetting().isFullAppointment() || getFontMoney() != null));
+    }
+
+    //检查预约时间和可选时间是否匹配
+    public static boolean isTimeSuitable(Date appointTime, AppointmentSetting setting) {
+        if (appointTime == null || setting == null) {
+            return true;
+        }
+        long nowTime = setting.getNowTime() != null ? setting.getNowTime() : System.currentTimeMillis();
+        int dayDiff = (int) ((appointTime.getTime() - nowTime) / 24 / 3600 / 1000);
+        if (dayDiff < 0 || setting.getTimeList().size() < dayDiff) {
+            return false;
+        }
+        AppointmentSetting.TimeInfo timeInfo = setting.getTimeList().get(dayDiff);
+        String appointmentHourMinute = DateUtils.getSdf("HH:mm").format(appointTime);
+        for (AppointmentSetting.TimeSection section : timeInfo.getTime()) {
+            if (section.getTimeStr() != null && "Y".equals(section.getStatus()) && section.getTimeStr().equals(appointmentHourMinute)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ServiceItem getServiceItem() {
@@ -101,21 +121,21 @@ public class AppointmentData implements Serializable {
         }
     }
 
-    public Date getTime() {
-        return time;
+    public Date getAppointmentTime() {
+        return appointmentTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setAppointmentTime(Date appointmentTime) {
+        this.appointmentTime = appointmentTime;
         checkCanSubmit();
     }
 
     public int getDuration() {
-        return duration;
+        return serviceDuration;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setDuration(int serviceDuration) {
+        this.serviceDuration = serviceDuration;
     }
 
     public String getCustomerName() {
@@ -156,6 +176,7 @@ public class AppointmentData implements Serializable {
         return appointmentSetting;
     }
 
+    //预约设置
     public void setAppointmentSetting(AppointmentSetting appointmentSetting) {
         this.appointmentSetting = appointmentSetting;
         if (appointmentSetting != null) {
@@ -235,8 +256,8 @@ public class AppointmentData implements Serializable {
     public String toString() {
         return "AppointmentData{" +
                 "needSubmit=" + needSubmit +
-                ", time=" + time +
-                ", duration=" + duration +
+                ", appointmentTime=" + appointmentTime +
+                ", serviceDuration=" + serviceDuration +
                 ", fontMoney=" + fontMoney +
                 ", technician=" + (technician == null ? "null" : technician.getId()) +
                 ", serviceItem=" + (serviceItem == null ? "null" : serviceItem.getId()) +

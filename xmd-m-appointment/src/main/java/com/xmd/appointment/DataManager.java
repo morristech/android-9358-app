@@ -80,7 +80,7 @@ class DataManager {
                                 null,
                                 data.getCustomerName(),
                                 data.getCustomerPhone(),
-                                data.getTime().getTime(),
+                                data.getAppointmentTime().getTime(),
                                 data.getCustomerId(),
                                 null,
                                 data.getTechnician() == null ? null : data.getTechnician().getId(),
