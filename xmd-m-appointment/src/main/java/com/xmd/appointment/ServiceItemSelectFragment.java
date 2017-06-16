@@ -71,7 +71,6 @@ public class ServiceItemSelectFragment extends BaseDialogFragment {
         if (!(context instanceof Listener)) {
             throw new RuntimeException("activity must implement interface Listener!");
         }
-        ScreenUtils.initScreenSize(getActivity().getWindowManager());
     }
 
     @Nullable

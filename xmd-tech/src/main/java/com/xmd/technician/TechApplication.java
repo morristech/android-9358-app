@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.multidex.MultiDexApplication;
+import android.view.WindowManager;
 
 import com.igexin.sdk.PushManager;
 import com.shidou.commonlibrary.helper.CrashHandler;
@@ -15,6 +16,7 @@ import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.FloatNotifyManager;
@@ -61,6 +63,9 @@ public class TechApplication extends MultiDexApplication {
             } else {
                 Logger.v("Technician initialize !");
                 appContext = getApplicationContext();
+
+                WindowManager windowManager = (WindowManager) appContext.getSystemService(WINDOW_SERVICE);
+                ScreenUtils.initScreenSize(windowManager);
 
                 //SP初始化
                 SharedPreferenceHelper.initialize();

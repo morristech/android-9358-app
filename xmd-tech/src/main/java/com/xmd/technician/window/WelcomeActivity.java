@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
-import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.technician.R;
@@ -27,7 +26,6 @@ public class WelcomeActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        ScreenUtils.initScreenSize(getWindowManager());
 
         if (TextUtils.isEmpty(LoginTechnician.getInstance().getToken())) {
             ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {

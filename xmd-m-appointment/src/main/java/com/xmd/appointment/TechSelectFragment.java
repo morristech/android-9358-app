@@ -137,7 +137,6 @@ public class TechSelectFragment extends BaseDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ScreenUtils.initScreenSize(getActivity().getWindowManager());
         Window window = getDialog().getWindow();
         if (window != null) {
             WindowManager.LayoutParams lp = window.getAttributes();

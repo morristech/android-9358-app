@@ -80,7 +80,6 @@ public class TechNoDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         Window window = getDialog().getWindow();
-        ScreenUtils.initScreenSize(getActivity().getWindowManager());
         window.setLayout(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2);
     }
 

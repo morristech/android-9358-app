@@ -80,7 +80,6 @@ public class TimeSelectFragment extends BaseDialogFragment {
         if (!(context instanceof Listener)) {
             throw new RuntimeException("activity must implement interface Listener!");
         }
-        ScreenUtils.initScreenSize(getActivity().getWindowManager());
     }
 
     @Nullable
