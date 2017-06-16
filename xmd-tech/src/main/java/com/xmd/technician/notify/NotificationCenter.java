@@ -68,7 +68,7 @@ public class NotificationCenter {
         settingMap.put(TYPE_PAY_NOTIFY, new NotifySetting(TYPE_PAY_NOTIFY, NotificationCompat.PRIORITY_MAX, true, true, true, "买单通知", "您有新的买单通知，请点击查看", MainActivity.class));
         settingMap.put(TYPE_CLUB_VERIFY, new NotifySetting(TYPE_CLUB_VERIFY, NotificationCompat.PRIORITY_MAX, true, true, true, "审核", "", MainActivity.class));
 
-        NotifySetting messageSetting = new NotifySetting(TYPE_CHAT_MESSAGE, NotificationCompat.PRIORITY_HIGH, true, true, false, "新消息", "", MainActivity.class);
+        NotifySetting messageSetting = new NotifySetting(TYPE_CHAT_MESSAGE, NotificationCompat.PRIORITY_HIGH, true, true, true, "新消息", "", MainActivity.class);
         settingMap.put(TYPE_CHAT_MESSAGE, messageSetting);
 
         NotifySetting orderSetting = new NotifySetting(TYPE_CHAT_MESSAGE, NotificationCompat.PRIORITY_MAX, true, true, true, "新订单", "", MainActivity.class);
