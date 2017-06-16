@@ -1023,8 +1023,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final UserRecentBean userRecent = (UserRecentBean) obj;
             userRecent.intListPosition = position;
             ContactRecentListItemViewHolder viewHolder = (ContactRecentListItemViewHolder) holder;
-            if (Utils.isNotEmpty(userRecent.id)) {
-                if (Long.parseLong(userRecent.id) > 0) {
+            if (Utils.isNotEmpty(userRecent.userId)) {
+                if (!userRecent.userId.equals("-1")) {
                     viewHolder.contactRecentName.setText(Utils.isNotEmpty(userRecent.userNoteName) ? userRecent.userNoteName : userRecent.name);
                     viewHolder.visitorToChat.setVisibility(View.VISIBLE);
                 } else {

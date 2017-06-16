@@ -772,6 +772,11 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void handlerInBlacklist(InBlacklistResult result) {
         if (result.statusCode == 200) {
             inBlacklist = result.respData;
+            if(inBlacklist){
+                contactMore.setVisibility(View.GONE);
+            }else{
+                contactMore.setVisibility(View.VISIBLE);
+            }
         }
         // 更新按钮状态
         showButton();

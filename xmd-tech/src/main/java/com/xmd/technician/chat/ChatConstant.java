@@ -141,8 +141,8 @@ public class ChatConstant {
     public static final String KEY_LOCATION_STATIC_MAP = "staticMap";
     public static final String KEY_MESSAGE_ID = "messageId";
     public static final String KEY_REVOKE_TYPE = "mark";
-    public static final String KEY_SUB_TYPE_INDIANA = "indiana";//一元夺
-    public static final String KEY_SUB_TYPE_SECKILL = "seckill";//抢项目
+    public static final String KEY_SUB_TYPE_INDIANA = "indiana";//限时抢
+    public static final String KEY_SUB_TYPE_SECKILL = "seckill";//一元夺
     public static final String KEY_SUB_TYPE_TURNTABLE = "turntable";//转盘
     public static final String KEY_SUB_TYPE_TIMES_SCARD = "timescard";//次卡
     public static final String KEY_SUB_TYPE_PACKAGE = "package"; //混合套餐
@@ -155,6 +155,7 @@ public class ChatConstant {
     public static final String KEY_ACTIVITY_LUCKY_WHEEL_TYPE = "luckyWheel";
     public static final String KEY_ACTIVITY_JOURNAL_TYPE ="journal";
     public static final String KEY_ACTIVITY_ITEM_CARD_TYPE = "itemCard";
+    public static final String KEY_ACTIVITY_ACT_NAME = "actName";
 
 
 
