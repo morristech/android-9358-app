@@ -184,35 +184,39 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         List<EMConversation> list = emchat.getAllConversationList();
         //不显示无法聊天的用户
         mConversationList.clear();
-        mWaitProcessCount = list.size();
-        for (EMConversation conversation : list) {
-            ChatMessage lastMessage = ChatMessageFactory.get(conversation.getLastMessage());
-            if (lastMessage == null) {
-                continue;
-            }
-            String remoteChatId = lastMessage.getFromChatId();
-            if (remoteChatId != null && remoteChatId.equals(LoginTechnician.getInstance().getEmchatId())) {
-                remoteChatId = lastMessage.getToChatId();
-            }
-            User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
-            if (user == null) {
-                XLogger.e("没有用户信息： chatId=" + remoteChatId);
-                continue;
-            }
-            ContactPermissionManager.getInstance().getPermission(user.getId(), new NetworkSubscriber<ContactPermissionInfo>() {
-                @Override
-                public void onCallbackSuccess(ContactPermissionInfo result) {
-                    if (result.echat) {
-                        mConversationList.add(conversation);
+        if (list.size() > 0) {
+            mWaitProcessCount = list.size();
+            for (EMConversation conversation : list) {
+                ChatMessage lastMessage = ChatMessageFactory.get(conversation.getLastMessage());
+                if (lastMessage == null) {
+                    continue;
+                }
+                String remoteChatId = lastMessage.getFromChatId();
+                if (remoteChatId != null && remoteChatId.equals(LoginTechnician.getInstance().getEmchatId())) {
+                    remoteChatId = lastMessage.getToChatId();
+                }
+                User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
+                if (user == null) {
+                    XLogger.e("没有用户信息： chatId=" + remoteChatId);
+                    continue;
+                }
+                ContactPermissionManager.getInstance().getPermission(user.getId(), new NetworkSubscriber<ContactPermissionInfo>() {
+                    @Override
+                    public void onCallbackSuccess(ContactPermissionInfo result) {
+                        if (result.echat) {
+                            mConversationList.add(conversation);
+                        }
+                        onLoadPermissionFinish();
                     }
-                    onLoadPermissionFinish();
-                }
 
-                @Override
-                public void onCallbackError(Throwable e) {
-                    onLoadPermissionFinish();
-                }
-            });
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        onLoadPermissionFinish();
+                    }
+                });
+            }
+        } else {
+            onGetListSucceeded(0, mConversationList);
         }
     }
 
