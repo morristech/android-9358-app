@@ -765,8 +765,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         GroupMessageItemViewHolder groupHolder = (GroupMessageItemViewHolder) holder;
         GroupMessage groupMessage = (GroupMessage) obj;
 
-        groupHolder.meeageSummaryContainer.setVisibility(View.VISIBLE);
-        groupHolder.meeageDetailContainer.setVisibility(View.GONE);
+        groupHolder.messageSummaryContainer.setVisibility(View.VISIBLE);
+        groupHolder.messageDetailContainer.setVisibility(View.GONE);
 
         //消息内容
         if (Utils.isNotEmpty(groupMessage.message)) {
@@ -775,6 +775,26 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }else {
             groupHolder.contentInfoSummary.setText("");
             groupHolder.contentInfoDetail.setText("");
+        }
+
+        //消息图片
+        if (Utils.isNotEmpty(groupMessage.imageUrl)) {
+            groupHolder.contentImage.setVisibility(View.VISIBLE);
+            groupHolder.contentTitleSummary.setVisibility(View.VISIBLE);
+            Glide.with(mContext).load(groupMessage.imageUrl).into(groupHolder.contentImage);
+        } else {
+            groupHolder.contentImage.setVisibility(View.GONE);
+            groupHolder.contentTitleSummary.setVisibility(View.GONE);
+        }
+
+        if(Utils.isNotEmpty(groupMessage.imageUrl) || Utils.isNotEmpty(groupMessage.message)){
+            groupHolder.msgContentTip.setVisibility(View.VISIBLE);
+            groupHolder.msgDetailContainer.setVisibility(View.VISIBLE);
+            groupHolder.msgSummaryContainer.setVisibility(View.VISIBLE);
+        }else {
+            groupHolder.msgContentTip.setVisibility(View.GONE);
+            groupHolder.msgDetailContainer.setVisibility(View.GONE);
+            groupHolder.msgSummaryContainer.setVisibility(View.GONE);
         }
 
         //消息中的优惠活动
@@ -838,16 +858,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             groupHolder.sendOperatorDetail.setText(groupMessage.operatorName);
         }
 
-        //消息图片
-        if (Utils.isNotEmpty(groupMessage.imageUrl)) {
-            groupHolder.contentImage.setVisibility(View.VISIBLE);
-            groupHolder.contentTitleSummary.setVisibility(View.VISIBLE);
-            Glide.with(mContext).load(groupMessage.imageUrl).into(groupHolder.contentImage);
-        } else {
-            groupHolder.contentImage.setVisibility(View.GONE);
-            groupHolder.contentTitleSummary.setVisibility(View.GONE);
-        }
-
         //效果分析数据
         groupHolder.sendCount.setText(String.valueOf(groupMessage.sendCount));
         groupHolder.viewCount.setText(String.valueOf(groupMessage.viewCount));
@@ -865,10 +875,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
 
         if(mCallback.showStatData()){
-            groupHolder.stattHintText.setVisibility(View.VISIBLE);
+            groupHolder.statHintText.setVisibility(View.VISIBLE);
             groupHolder.statViewContainer.setVisibility(View.VISIBLE);
         }else {
-            groupHolder.stattHintText.setVisibility(View.GONE);
+            groupHolder.statHintText.setVisibility(View.GONE);
             groupHolder.statViewContainer.setVisibility(View.GONE);
         }
 
@@ -877,12 +887,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         groupHolder.putWayButton.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         groupHolder.itemView.setOnClickListener(v -> {
-            if(groupHolder.meeageSummaryContainer.getVisibility()==View.VISIBLE){
-                groupHolder.meeageSummaryContainer.setVisibility(View.GONE);
-                groupHolder.meeageDetailContainer.setVisibility(View.VISIBLE);
+            if(groupHolder.messageSummaryContainer.getVisibility()==View.VISIBLE){
+                groupHolder.messageSummaryContainer.setVisibility(View.GONE);
+                groupHolder.messageDetailContainer.setVisibility(View.VISIBLE);
             }else {
-                groupHolder.meeageSummaryContainer.setVisibility(View.VISIBLE);
-                groupHolder.meeageDetailContainer.setVisibility(View.GONE);
+                groupHolder.messageSummaryContainer.setVisibility(View.VISIBLE);
+                groupHolder.messageDetailContainer.setVisibility(View.GONE);
             }
         });
     }
@@ -1439,12 +1449,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView expandButton;
 
         @Bind(R.id.message_summary)
-        LinearLayout meeageSummaryContainer;
+        LinearLayout messageSummaryContainer;
         @Bind(R.id.message_detail)
-        LinearLayout meeageDetailContainer;
+        LinearLayout messageDetailContainer;
 
         @Bind(R.id.effect_analysis_hint)
-        TextView stattHintText;
+        TextView statHintText;
         @Bind(R.id.effect_analysis_container)
         LinearLayout statViewContainer;
         @Bind(R.id.send_count_text)
@@ -1455,6 +1465,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView joinCount;
         @Bind(R.id.shop_count_text)
         TextView shopCount;
+
+        @Bind(R.id.message_content_tip)
+        TextView msgContentTip;
+        @Bind(R.id.message_content_detail_container)
+        LinearLayout msgDetailContainer;
+        @Bind(R.id.group_message_content_container)
+        LinearLayout msgSummaryContainer;
 
         public GroupMessageItemViewHolder(View itemView) {
             super(itemView);
