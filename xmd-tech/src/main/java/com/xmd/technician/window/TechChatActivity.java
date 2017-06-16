@@ -136,7 +136,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
     private int chatType = 1; //单聊，群聊，聊天室
     private int chatUserType = 3;//1管理者，2技师，3普通客户
-    private String toChatUserId;//对方环信ID
+    private static String toChatUserId;//对方环信ID
     private EMConversation mConversation;
     private InputMethodManager inputManager;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -505,7 +505,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 hideKeyboard();
-                inputMenu.initIconImageView(null, null);
+                inputMenu.showSubMenu(null);
                 return false;
             }
         });
@@ -539,6 +539,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     protected void onDestroy() {
         super.onDestroy();
         activityInstance = null;
+        toChatUserId = null;
         RxBus.getInstance().unsubscribe(mGetRedpacklistSubscription, mManagerOrderSubscription,
                 mSendDiceGameSubscription, mAcceptGameResultSubscription, mAcceptOrRejectGameSubscription, mUserAvailableCreditSubscription
                 , mUserWinSubscription, mCancelGameSubscription, mPlayGameAgainSubscription, mCreditStatusSubscription,
@@ -974,10 +975,11 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             // if the message is for current conversation
             if (chatId.equals(toChatUserId) || message.getTo().equals(toChatUserId)) {
                 messageList.refreshSelectLast();
-                ChatUI.getInstance().getNotifier().vibrateAndPlayTone(message);
-                mConversation.markMessageAsRead(message.getMsgId());
+//                ChatUI.getInstance().getNotifier().vibrateAndPlayTone(message);
+//                mConversation.markMessageAsRead(message.getMsgId());
+                ChatHelper.getInstance().clearUnreadMessage(mConversation);
             } else {
-                ChatUI.getInstance().getNotifier().onNewMsg(message);
+//                ChatUI.getInstance().getNotifier().onNewMsg(message);
             }
 
             ChatHelper.getInstance().clearUnreadMessage(mConversation);
@@ -1029,7 +1031,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        inputMenu.initIconImageView(null, null);
+        inputMenu.showSubMenu(null);
         //发送本地图片
         if (resultCode != RESULT_OK) {
             return;
@@ -1115,6 +1117,10 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         }
 
 
+    }
+
+    public static String getRemoteChatId() {
+        return toChatUserId;
     }
 
 }

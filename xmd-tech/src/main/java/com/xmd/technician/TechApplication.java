@@ -17,6 +17,7 @@ import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.technician.chat.ChatHelper;
@@ -86,6 +87,7 @@ public class TechApplication extends MultiDexApplication {
                 });
 
                 XToast.init(this, -1);
+                FloatNotifyManager.getInstance().init(this);
 
                 //初始化磁盘缓存模块
                 try {
@@ -135,7 +137,6 @@ public class TechApplication extends MultiDexApplication {
 
                 DataRefreshService.start();
                 HelloReplyService.start();
-
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");

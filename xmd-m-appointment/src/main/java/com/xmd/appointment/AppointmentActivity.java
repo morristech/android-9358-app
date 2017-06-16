@@ -135,7 +135,7 @@ public class AppointmentActivity extends BaseActivity
             ft.remove(prev);
         }
         TechSelectFragment fragment = TechSelectFragment.newInstance(techId, itemId);
-        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog);
+        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Alert);
         fragment.show(ft, "TechSelectFragment");
     }
 
@@ -211,7 +211,7 @@ public class AppointmentActivity extends BaseActivity
             ft.remove(prev);
         }
         ServiceItemSelectFragment fragment = ServiceItemSelectFragment.newInstance(selectedItemId, showItemIdList);
-        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog);
+        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Alert);
         fragment.show(ft, "ServiceItemSelectFragment");
     }
 
@@ -264,7 +264,7 @@ public class AppointmentActivity extends BaseActivity
             ft.remove(prev);
         }
         TimeSelectFragment fragment = TimeSelectFragment.newInstance(mData.getTime(), mData.getAppointmentSetting());
-        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog);
+        fragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Alert);
         fragment.show(ft, "TimeSelectFragment");
     }
 

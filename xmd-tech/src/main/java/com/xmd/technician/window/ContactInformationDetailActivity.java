@@ -814,7 +814,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 mUser.setName(employeeDetail.respData.name);
                 mUser.setChatId(employeeDetail.respData.emchatId);
                 mUser.setAvatar(employeeDetail.respData.avatarUrl);
-                mUser.setMarkName(employeeDetail.respData.name);
                 userService.saveUser(mUser);
             }
             if (Utils.isNotEmpty(employeeDetail.respData.techNo)) {

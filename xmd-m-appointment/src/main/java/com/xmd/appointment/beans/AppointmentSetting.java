@@ -18,6 +18,10 @@ import java.util.TreeMap;
  */
 
 public class AppointmentSetting implements Serializable {
+    public static final String APPOINT_TYPE_FREE = "free";
+    public static final String APPOINT_TYPE_FONT = "free";
+    public static final String APPOINT_TYPE_FONT_FULL = "paid_full";
+
     private String appointDescription;//	预约描述
     private String appointType;//	预约类型
     private Integer downPayment;//	预约定金
@@ -325,5 +329,9 @@ public class AppointmentSetting implements Serializable {
         } else {
             view.setText("");
         }
+    }
+
+    public boolean isFullAppointment() {
+        return APPOINT_TYPE_FONT_FULL.equals(appointType);
     }
 }

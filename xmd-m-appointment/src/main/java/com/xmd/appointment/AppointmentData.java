@@ -38,7 +38,7 @@ public class AppointmentData implements Serializable {
     private String customerPhone;//客户电话
 
     public ObservableBoolean submitEnable = new ObservableBoolean();
-
+    public ObservableBoolean needSetService = new ObservableBoolean();
 
     private boolean submitSuccess; //预约结果
     private String submitErrorString; //失败原因
@@ -69,7 +69,9 @@ public class AppointmentData implements Serializable {
     private void checkCanSubmit() {
         submitEnable.set(!TextUtils.isEmpty(getCustomerName())
                 && CodeUtils.matchPhoneNumFormat(getCustomerPhone())
-                && getTime() != null);
+                && getTime() != null
+                && getAppointmentSetting() != null
+                && (!getAppointmentSetting().isFullAppointment() || getFontMoney() != null));
     }
 
     public ServiceItem getServiceItem() {
@@ -82,6 +84,20 @@ public class AppointmentData implements Serializable {
             setDuration(Integer.parseInt(serviceItem.getDuration()));
         } catch (Exception e) {
             XLogger.e("parseInt(serviceItem.getDuration()) error: " + e.getMessage());
+        }
+        updateFontMoneyWhenFullAppointment();
+        checkCanSubmit();
+    }
+
+    private void updateFontMoneyWhenFullAppointment() {
+        if (getServiceItem() != null && getAppointmentSetting() != null && getAppointmentSetting().isFullAppointment()) {
+            int fontMoney = 0;
+            try {
+                fontMoney = Integer.parseInt(getServiceItem().getPrice()) * 100;
+            } catch (Exception ignore) {
+
+            }
+            setFontMoney(fontMoney);
         }
     }
 
@@ -152,6 +168,9 @@ public class AppointmentData implements Serializable {
             if (customerName == null) {
                 customerName = appointmentSetting.getUserName();
             }
+
+            updateFontMoneyWhenFullAppointment();
+            needSetService.set(appointmentSetting.isFullAppointment());
         }
     }
 

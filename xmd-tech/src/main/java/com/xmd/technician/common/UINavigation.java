@@ -90,6 +90,13 @@ public class UINavigation {
         context.startActivity(intent);
     }
 
+    public static void gotoChatActivity(Context context, String remoteChatId) {
+        Intent intent = new Intent(context, TechChatActivity.class);
+        intent.putExtra(ChatConstant.TO_CHAT_USER_ID, remoteChatId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        TechApplication.getAppContext().startActivity(intent);
+    }
+
     public static void gotoChatActivity(Context context, Map<String, Object> params) {
         String emchatId = (String) params.get(ChatConstant.EMCHAT_ID);
         String emchatNickname = (String) params.get(ChatConstant.EMCHAT_NICKNAME);

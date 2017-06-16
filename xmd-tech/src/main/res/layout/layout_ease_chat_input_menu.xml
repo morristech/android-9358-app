@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#C3C3C3"/>
+        android:background="#C3C3C3" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +28,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="6dp"
                 android:background="@drawable/ease_chatting_setmode_voice_btn"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <Button
                 android:id="@+id/btn_set_mode_keyboard"
@@ -38,7 +37,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="6dp"
                 android:background="@drawable/ease_chatting_setmode_keyboard_btn"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/btn_press_to_speak"
@@ -57,7 +56,7 @@
                     android:layout_marginLeft="5dp"
                     android:text="@string/button_pushtotalk"
                     android:textColor="#666666"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -82,7 +81,7 @@
                     android:paddingRight="3dp"
                     android:textColor="@color/colorHead"
                     android:textColorHint="#c3c3c3"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/btn_send"
@@ -97,7 +96,7 @@
                     android:text="@string/button_send"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/fontBody"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -108,111 +107,62 @@
             android:id="@+id/menu_layout"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="@dimen/margin_25"
-            android:layout_marginRight="@dimen/margin_25"
             android:orientation="horizontal"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:visibility="visible">
 
 
-            <LinearLayout
-                android:id="@+id/btn_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="left"
-                android:paddingRight="@dimen/margin_25"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/input_img_photo"
-                    android:layout_width="@dimen/personal_item_icon_height"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/chat_image_icon_bg"
-                    android:scaleType="fitCenter"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/rl_face"
+            <ImageView
+                android:id="@+id/input_img_photo"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:visibility="gone"
-                >
+                android:scaleType="centerInside"
+                android:src="@drawable/chat_image_icon_bg" />
 
-                <ImageView
-                    android:id="@+id/input_img_face"
-                    android:layout_width="@dimen/personal_item_icon_height"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/chat_expression_icon_bg"
-                    android:scaleType="fitCenter"/>
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/btn_common_msg"
+            <ImageView
+                android:id="@+id/input_img_face"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/input_img_common_msg"
-                    android:layout_width="@dimen/personal_item_icon_height"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/chat_information_icon_bg"
-                    android:scaleType="fitCenter"/>
-            </LinearLayout>
+                android:scaleType="centerInside"
+                android:src="@drawable/chat_expression_icon_bg" />
 
 
-            <LinearLayout
-                android:id="@+id/btn_common_coupon"
+            <ImageView
+                android:id="@+id/input_img_common_msg"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:visibility="gone">
+                android:scaleType="centerInside"
+                android:src="@drawable/chat_information_icon_bg" />
 
-                <ImageView
-                    android:id="@+id/input_img_coupon"
-                    android:layout_width="@dimen/personal_item_icon_height"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/chat_ticket_icon_bg"
-                    android:scaleType="fitCenter"/>
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/btn_appointment"
+            <ImageView
+                android:id="@+id/input_img_coupon"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:visibility="gone">
+                android:scaleType="centerInside"
+                android:src="@drawable/chat_ticket_icon_bg" />
 
-                <ImageView
-                    android:id="@+id/input_img_appointment"
-                    android:layout_width="@dimen/personal_item_icon_height"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/ic_menu_appointment"
-                    android:scaleType="fitCenter"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btn_more"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/input_img_appointment"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/margin_25"
-                android:visibility="visible">
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_menu_appointment" />
 
-                <ImageView
-                    android:id="@+id/input_img_more"
-                    android:layout_width="@dimen/personal_item_icon_height"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/chat_more_icon_bg"
-                    android:scaleType="fitCenter"/>
-            </LinearLayout>
-
+            <ImageView
+                android:id="@+id/input_img_more"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/chat_more_icon_bg" />
 
         </LinearLayout>
 
@@ -222,7 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/menu_layout"
             android:layout_marginTop="@dimen/search_margin"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <GridView
             android:id="@+id/chat_grid_view"
@@ -234,7 +184,7 @@
             android:paddingTop="@dimen/small_space"
             android:stretchMode="columnWidth"
             android:verticalSpacing="@dimen/inter_space"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/common_msg_layout"
@@ -250,7 +200,7 @@
                 android:id="@+id/comment_msg_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <RelativeLayout
                 android:id="@+id/indicator_view"
@@ -263,7 +213,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_indicator_bg"
-                    android:clickable="true"/>
+                    android:clickable="true" />
 
                 <ImageView
                     android:id="@+id/round_indicator_right"
@@ -271,7 +221,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/tab_indicator_text_padding"
                     android:layout_toRightOf="@id/round_indicator_left"
-                    android:background="@drawable/round_indicator_bg"/>
+                    android:background="@drawable/round_indicator_bg" />
             </RelativeLayout>
         </LinearLayout>
 

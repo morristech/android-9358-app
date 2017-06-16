@@ -83,10 +83,18 @@
                     android:background="@color/colorWhite"
                     android:onClick="@{()->handler.onClickSelectService()}"
                     android:orientation="horizontal"
+                    android:paddingBottom="16dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp">
+                    android:paddingTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="* "
+                        android:textColor="@android:color/holo_red_light"
+                        android:visibility="@{data.needSetService?View.VISIBLE:View.GONE}" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -141,15 +149,21 @@
                     android:layout_marginTop="8dp"
                     android:background="@color/colorWhite"
                     android:onClick="@{()->handler.onClickSelectTime()}"
+                    android:paddingBottom="8dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="8dp">
+                    android:paddingTop="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="*到店时间：" />
+                        android:text="* "
+                        android:textColor="@android:color/holo_red_light" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="到店时间：" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -167,10 +181,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
+                    android:paddingBottom="16dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="16dp">
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="* "
+                        android:textColor="@android:color/holo_red_light" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -199,15 +219,21 @@
                     android:background="@color/colorWhite"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:paddingBottom="8dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="8dp">
+                    android:paddingTop="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="*联系人：" />
+                        android:text="* "
+                        android:textColor="@android:color/holo_red_light" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="联系人：" />
 
                     <EditText
                         style="@style/AppTheme.EditText"
@@ -222,15 +248,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
+                    android:paddingBottom="16dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="16dp">
+                    android:paddingTop="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="*手机号码：" />
+                        android:text="* "
+                        android:textColor="@android:color/holo_red_light" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="手机号码：" />
 
                     <EditText
                         style="@style/AppTheme.EditText"
@@ -247,10 +279,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@color/colorWhite"
+                    android:paddingBottom="16dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
                     android:visibility="@{data.fontMoney==null?View.GONE:View.VISIBLE}">
 
                     <TextView
@@ -266,9 +298,9 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="8dp"
                         android:layout_weight="1"
                         android:text="此定金可在结账时抵扣消费"
-                        android:layout_marginLeft="8dp"
                         android:textColor="#ff6666" />
                 </LinearLayout>
 

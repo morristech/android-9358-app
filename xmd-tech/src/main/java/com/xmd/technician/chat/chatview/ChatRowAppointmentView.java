@@ -215,9 +215,9 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
             AppointmentData data = event.getData();
             if (data != null) {
                 mAppointmentData = data;
-                mChatMessage.setInnerProcessed("已处理");
                 if (isFreeAppointment()) {
                     //免费预约时，先发送预约确定，客服点击之后才生成订单
+                    mChatMessage.setInnerProcessed("已处理");
                     sendMessage(ChatMessage.MSG_TYPE_ORDER_CONFIRM);
                 } else {
                     //付费预约，直接生成订单
@@ -237,6 +237,7 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
                     sendMessage(ChatMessage.MSG_TYPE_ORDER_SUCCESS);
                 } else {
                     //付费预约，生成订单后，发送预约确定信息给对方支付
+                    mChatMessage.setInnerProcessed("已处理");
                     sendMessage(ChatMessage.MSG_TYPE_ORDER_CONFIRM);
                 }
             } else {

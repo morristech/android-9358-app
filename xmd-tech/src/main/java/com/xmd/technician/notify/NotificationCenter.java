@@ -11,8 +11,11 @@ import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.SparseArray;
+import android.view.View;
 
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.widget.ScreenUtils;
+import com.xmd.app.FloatNotifyManager;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.technician.R;
@@ -25,6 +28,7 @@ import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.window.MainActivity;
+import com.xmd.technician.window.TechChatActivity;
 
 import java.util.List;
 
@@ -170,6 +174,18 @@ public class NotificationCenter {
                     if (AppUtils.isBackground()) {
                         notify(TYPE_CHAT_MESSAGE, null, userName + ":" + EaseCommonUtils.getMessageDigest(message, sContext), bundle);
                     } else {
+                        if (chatMessage.isCustomerService() && !chatMessage.getFromChatId().equals(TechChatActivity.getRemoteChatId())) {
+                            FloatNotifyManager.getInstance()
+                                    .setIcon(R.drawable.ic_service_white)
+                                    .setClickableMessage("客服消息：您收到一条客服消息，", null, "点击查看", chatMessage.getFromChatId(), new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            UINavigation.gotoChatActivity(sContext, (String) v.getTag());
+                                            FloatNotifyManager.getInstance().hide();
+                                        }
+                                    })
+                                    .show(0, ScreenUtils.getScreenHeight() / 8, 3000);
+                        }
                         Ringtone rt = RingtoneManager.getRingtone(sContext, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                         rt.play();
                     }

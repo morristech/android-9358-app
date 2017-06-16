@@ -94,10 +94,10 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         boolean open = technician.isCustomerServiceTimeValid();
         if (open) {
             checkBox.setTag("checked");
-            checkBox.setBackgroundResource(R.drawable.ic_checkbox_close);
+            checkBox.setBackgroundResource(R.drawable.nav_top_open);
         } else {
             checkBox.setTag(null);
-            checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);
+            checkBox.setBackgroundResource(R.drawable.nav_top_close);
         }
         container.addView(checkBox);
         ((LinearLayout.LayoutParams) checkBox.getLayoutParams()).leftMargin = 16;
@@ -106,7 +106,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             public void onClick(View v) {
                 if (checkBox.getTag() == null) {
                     checkBox.setTag("checked");
-                    checkBox.setBackgroundResource(R.drawable.ic_checkbox_close);
+                    checkBox.setBackgroundResource(R.drawable.nav_top_open);
                     technician.setCustomerServiceDisableTime(0L);
                 } else {
                     new AlertDialogBuilder(getContext())
@@ -117,7 +117,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                                 @Override
                                 public void onClick(View v) {
                                     checkBox.setTag(null);
-                                    checkBox.setBackgroundResource(R.drawable.ic_checkbox_open);
+                                    checkBox.setBackgroundResource(R.drawable.nav_top_close);
                                     technician.setCustomerServiceDisableTime(System.currentTimeMillis());
                                 }
                             })

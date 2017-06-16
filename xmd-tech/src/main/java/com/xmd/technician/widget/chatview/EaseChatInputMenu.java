@@ -19,7 +19,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.hyphenate.util.EMLog;
 import com.xmd.chat.ChatConstants;
 import com.xmd.technician.Adapter.ChatGridViewAdapter;
 import com.xmd.technician.R;
@@ -52,7 +51,6 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
     private View buttonSetModeKeyBoard;
     private LinearLayout editTextLayout;
     private View buttonSetModeVoice, buttonSend, buttonPressToSpeak;
-    private View btnPhoto, btnFace, btnCommonMsg, btnCommonCoupon, btnAppointment, buttonMore;
     private ChatInputMenuListener inputMenuListener;
     private ChatSentSpecialListener specialListener;
     private EmojiconMenu emojiconMenu;
@@ -94,15 +92,8 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         buttonPressToSpeak = mView.findViewById(R.id.btn_press_to_speak);
         mEditText = (ClearableEditText) mView.findViewById(R.id.edit_message);
         buttonSend = mView.findViewById(R.id.btn_send);
-        buttonMore = mView.findViewById(R.id.btn_more);
         editTextLayout = (LinearLayout) mView.findViewById(R.id.edit_text_layout);
         emojiconMenu = (EmojiconMenu) mView.findViewById(R.id.emojicon_menu_container);
-
-        btnPhoto = mView.findViewById(R.id.btn_photo);
-        btnFace = mView.findViewById(R.id.rl_face);
-        btnCommonMsg = mView.findViewById(R.id.btn_common_msg);
-        btnCommonCoupon = mView.findViewById(R.id.btn_common_coupon);
-        btnAppointment = mView.findViewById(R.id.btn_appointment);
 
 
         mCommonMsgLayout = findViewById(R.id.common_msg_layout);
@@ -127,7 +118,6 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         buttonSetModeVoice.setOnClickListener(this);
         buttonSetModeKeyBoard.setOnClickListener(this);
         buttonSend.setOnClickListener(this);
-        buttonMore.setOnClickListener(this);
         mEditText.setOnClickListener(this);
 
 
@@ -173,14 +163,14 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_PICTURE)
     public void initMenuPicture() {
-        btnPhoto.setVisibility(VISIBLE);
-        btnPhoto.setOnClickListener(this);
+        inputImagePhoto.setVisibility(VISIBLE);
+        inputImagePhoto.setOnClickListener(this);
     }
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_EMOJI)
     public void initMenuEmoji() {
-        btnFace.setVisibility(VISIBLE);
-        btnFace.setOnClickListener(this);
+        inputImageFace.setVisibility(VISIBLE);
+        inputImageFace.setOnClickListener(this);
         emojiconMenu.setEmojiconMenuListener(new EmojiconMenu.EmojiconMenuListener() {
             @Override
             public void onEmojiconClicked(Emojicon emojicon) {
@@ -194,20 +184,20 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE_FAST_REPLY)
     public void initMenuFastReply() {
-        btnCommonMsg.setVisibility(VISIBLE);
-        btnCommonMsg.setOnClickListener(this);
+        inputImageCommonMsg.setVisibility(VISIBLE);
+        inputImageCommonMsg.setOnClickListener(this);
     }
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_COUPON)
     public void initMenuCoupon() {
-        btnCommonCoupon.setVisibility(VISIBLE);
-        btnCommonCoupon.setOnClickListener(this);
+        inputImageCoupon.setVisibility(VISIBLE);
+        inputImageCoupon.setOnClickListener(this);
     }
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER)
     public void initMenuOrder() {
-        btnAppointment.setVisibility(VISIBLE);
-        btnAppointment.setOnClickListener(this);
+        inputImageAppointment.setVisibility(VISIBLE);
+        inputImageAppointment.setOnClickListener(this);
     }
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER_REQUEST)
@@ -298,10 +288,11 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
     }
 
     public void initMoreMenu() {
+        inputImageMore.setOnClickListener(this);
         if (moreMenuList.size() == 0) {
-            buttonMore.setVisibility(View.GONE);
+            inputImageMore.setVisibility(View.GONE);
         } else {
-            buttonMore.setVisibility(View.VISIBLE);
+            inputImageMore.setVisibility(View.VISIBLE);
             mGridViewAdapter = new ChatGridViewAdapter(mContext, moreMenuList);
             chatGridView.setAdapter(mGridViewAdapter);
         }
@@ -408,41 +399,41 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
                 setModeKeyboard();
                 break;
             case R.id.edit_message:
-                initIconImageView(null, null);
+                showSubMenu(null);
                 break;
-            case R.id.btn_photo:
+            case R.id.input_img_photo:
                 if (specialListener != null) {
                     specialListener.onPickPictureClicked();
                 }
-                initIconImageView(btnPhoto, inputImagePhoto);
+                showSubMenu(inputImagePhoto);
                 break;
-            case R.id.rl_face:
-                initIconImageView(btnFace, inputImageFace);
+            case R.id.input_img_face:
+                showSubMenu(inputImageFace);
                 break;
-            case R.id.btn_common_msg:
-                initIconImageView(btnCommonMsg, inputImageCommonMsg);
+            case R.id.input_img_common_msg:
+                showSubMenu(inputImageCommonMsg);
                 break;
-            case R.id.btn_common_coupon:
+            case R.id.input_img_coupon:
                 if (specialListener != null) {
                     specialListener.onCouponClicked();
                 }
-                initIconImageView(btnCommonCoupon, inputImageCoupon);
+                showSubMenu(inputImageCoupon);
                 break;
-            case R.id.btn_appointment:
+            case R.id.input_img_appointment:
                 if (specialListener != null) {
                     specialListener.onAppointmentClicked();
                 }
                 break;
-            case R.id.btn_more:
-                initIconImageView(buttonMore, inputImageMore);
+            case R.id.input_img_more:
+                showSubMenu(inputImageMore);
                 break;
 
         }
 
     }
 
-    public void initIconImageView(View parentView, View childrenView) {
-        if (parentView == null || childrenView == null) {
+    public void showSubMenu(View menuView) {
+        if (menuView == null) {
             for (int i = 0; i < imageList.size(); i++) {
                 imageList.get(i).setSelected(false);
             }
@@ -452,61 +443,59 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
             return;
         }
         hideKeyboard();
-        if (childrenView.isSelected()) {
+        if (menuView.isSelected()) {
             for (int i = 0; i < imageList.size(); i++) {
                 imageList.get(i).setSelected(false);
             }
+            menuView.setSelected(false);
         } else {
             for (int i = 0; i < imageList.size(); i++) {
                 imageList.get(i).setSelected(false);
             }
-            if (null != childrenView) {
-                childrenView.setSelected(true);
-            }
+            menuView.setSelected(true);
         }
 
-        switch (parentView.getId()) {
-            case R.id.btn_photo:
+        switch (menuView.getId()) {
+            case R.id.input_img_photo:
                 emojiconMenu.setVisibility(View.GONE);
                 chatGridView.setVisibility(View.GONE);
                 mCommonMsgLayout.setVisibility(View.GONE);
                 break;
-            case R.id.rl_face:
+            case R.id.input_img_face:
                 chatGridView.setVisibility(View.GONE);
                 mCommonMsgLayout.setVisibility(View.GONE);
-                if (childrenView.isSelected()) {
+                if (menuView.isSelected()) {
                     emojiconMenu.setVisibility(View.VISIBLE);
                 } else {
                     emojiconMenu.setVisibility(View.GONE);
                 }
                 break;
-            case R.id.btn_common_msg:
+            case R.id.input_img_common_msg:
                 hideKeyboard();
                 emojiconMenu.setVisibility(View.GONE);
                 chatGridView.setVisibility(View.GONE);
-                if (childrenView.isSelected()) {
+                if (menuView.isSelected()) {
                     mCommonMsgLayout.setVisibility(View.VISIBLE);
                     initCommentMessageView(inputImageCommonMsg);
                 } else {
                     mCommonMsgLayout.setVisibility(View.GONE);
                 }
                 break;
-            case R.id.btn_common_coupon:
+            case R.id.input_img_coupon:
                 emojiconMenu.setVisibility(View.GONE);
                 chatGridView.setVisibility(View.GONE);
                 mCommonMsgLayout.setVisibility(View.GONE);
                 break;
-            case R.id.btn_more:
+            case R.id.input_img_more:
                 emojiconMenu.setVisibility(View.GONE);
                 mCommonMsgLayout.setVisibility(View.GONE);
-                if (childrenView.isSelected()) {
+                if (menuView.isSelected()) {
                     chatGridView.setVisibility(View.VISIBLE);
                 } else {
                     chatGridView.setVisibility(View.GONE);
                 }
                 break;
         }
-
     }
 
     @Override
@@ -542,7 +531,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
      */
     protected void setModeVoice() {
         hideKeyboard();
-        initIconImageView(null, null);
+        showSubMenu(null);
         editTextLayout.setVisibility(View.GONE);
         buttonSetModeVoice.setVisibility(View.GONE);
         buttonSetModeKeyBoard.setVisibility(View.VISIBLE);
@@ -550,7 +539,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
     }
 
     protected void setModeKeyboard() {
-        initIconImageView(null, null);
+        showSubMenu(null);
         editTextLayout.setVisibility(View.VISIBLE);
         buttonSetModeVoice.setVisibility(View.VISIBLE);
         buttonSetModeKeyBoard.setVisibility(View.GONE);
