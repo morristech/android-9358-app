@@ -102,6 +102,7 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
     }
 
     private void handlerContactRegisterListResult(ContactRegisterListResult result) {
+        mSwipeRefreshLayout.setRefreshing(false);
         if (result.statusCode == 200) {
             mTotalCount = result.respData.totalCount;
             mBlackListCount = result.respData.blackListCount;

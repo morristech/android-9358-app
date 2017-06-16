@@ -95,7 +95,7 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
 
 
     private void handlerRecentUserList(CustomerUserRecentListResult result) {
-
+        mSwipeRefreshLayout.setRefreshing(false);
         if (result.statusCode == 200) {
             mVisitors.clear();
             if(result.respData.userList.size() == 0 && Utils.isEmpty(mUserName)){

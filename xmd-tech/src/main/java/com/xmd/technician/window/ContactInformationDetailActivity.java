@@ -288,6 +288,24 @@ public class ContactInformationDetailActivity extends BaseActivity {
         DropDownMenuDialog.getDropDownMenuDialog(ContactInformationDetailActivity.this, mContactMoreItems, (index -> {
             switch (index) {
                 case 0:
+                    Intent intent = new Intent(ContactInformationDetailActivity.this, EditContactInformation.class);
+                    intent.putExtra(RequestConstant.KEY_ID, contactId);
+                    intent.putExtra(RequestConstant.KEY_NOTE_NAME, mContactName.getText().toString());
+                    intent.putExtra(RequestConstant.KEY_USERNAME, mContactNickName.getText().toString());
+                    intent.putExtra(RequestConstant.KEY_MARK_IMPRESSION, contactMark.getText().toString());
+                    if (!remarkIsNotEmpty && mContactRemark.getText().toString().equals(ResourceUtils.getString(R.string.customer_remark_empty))) {
+                        textRemarkAlert.setVisibility(View.VISIBLE);
+                        intent.putExtra(RequestConstant.KEY_REMARK, "");
+                    } else {
+                        intent.putExtra(RequestConstant.KEY_REMARK, mContactRemark.getText().toString());
+                    }
+                    if (Utils.isNotEmpty(contactPhone) && Utils.matchPhoneNumFormat(contactPhone)) {
+                        intent.putExtra(RequestConstant.KEY_PHONE_NUMBER, contactPhone);
+                    }
+
+                    startActivityForResult(intent, REQUEST_CODE_SET_REMARK);
+                    break;
+                case 1:
                     if (mContactMoreItems[1].equals(ResourceUtils.getString(R.string.delete_contact))) {
                         new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_delete_contact), getString(R.string.alert_delete_contact_message), "") {
                             @Override
@@ -299,36 +317,19 @@ public class ContactInformationDetailActivity extends BaseActivity {
                             }
                         }.show();
                     } else {
-                        Intent intent = new Intent(ContactInformationDetailActivity.this, EditContactInformation.class);
-                        intent.putExtra(RequestConstant.KEY_ID, contactId);
-                        intent.putExtra(RequestConstant.KEY_NOTE_NAME, mContactName.getText().toString());
-                        intent.putExtra(RequestConstant.KEY_USERNAME, mContactNickName.getText().toString());
-                        intent.putExtra(RequestConstant.KEY_MARK_IMPRESSION, contactMark.getText().toString());
-                        if (!remarkIsNotEmpty && mContactRemark.getText().toString().equals(ResourceUtils.getString(R.string.customer_remark_empty))) {
-                            textRemarkAlert.setVisibility(View.VISIBLE);
-                            intent.putExtra(RequestConstant.KEY_REMARK, "");
-                        } else {
-                            intent.putExtra(RequestConstant.KEY_REMARK, mContactRemark.getText().toString());
-                        }
-                        intent.putExtra(RequestConstant.KEY_PHONE_NUMBER, contactPhone);
-                        startActivityForResult(intent, REQUEST_CODE_SET_REMARK);
 
-                    }
-
-                    break;
-                case 1:
-                    new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_add_to_blacklist), getString(R.string.alert_add_to_blacklist_message), "") {
-                        @Override
-                        public void onConfirmClick() {
-                            if (Utils.isEmpty(userId)) {
-                                ContactInformationDetailActivity.this.makeShortToast(getString(R.string.add_to_blacklist_failed));
-                            } else if (!inBlacklist) {
-                                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_TO_BLACKLIST, userId);
+                        new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_add_to_blacklist), getString(R.string.alert_add_to_blacklist_message), "") {
+                            @Override
+                            public void onConfirmClick() {
+                                if (Utils.isEmpty(userId)) {
+                                    ContactInformationDetailActivity.this.makeShortToast(getString(R.string.add_to_blacklist_failed));
+                                } else if (!inBlacklist) {
+                                    MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_TO_BLACKLIST, userId);
+                                }
+                                super.onConfirmClick();
                             }
-                            super.onConfirmClick();
-                        }
-                    }.show();
-
+                        }.show();
+                    }
                     break;
 
             }
@@ -342,7 +343,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             return;
         }
         // 判断客户号码是否可用
-        if (TextUtils.isEmpty(contactPhone)) {
+        if (TextUtils.isEmpty(contactPhone) || !Utils.matchPhoneNumFormat(contactPhone)) {
             this.makeShortToast("手机号码不存在");
             return;
         }
@@ -356,7 +357,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
             return;
         }
         // 判断客户号码是否可用
-        if (TextUtils.isEmpty(contactPhone)) {
+        if (TextUtils.isEmpty(contactPhone) || !Utils.matchPhoneNumFormat(contactPhone)) {
             this.makeShortToast("手机号码不存在");
             return;
         }
@@ -440,7 +441,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 mContactTelephone.setVisibility(View.GONE);
                 btnEmHello.setVisibility(View.GONE);
                 btnEmChat.setVisibility(View.VISIBLE);
-                if (Utils.isNotEmpty(contactPhone)) {
+                if (Utils.isNotEmpty(contactPhone) && Utils.matchPhoneNumFormat(contactPhone)) {
                     btnCallPhone.setVisibility(View.VISIBLE);
                 } else {
                     btnCallPhone.setVisibility(View.GONE);
@@ -460,7 +461,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     @CheckBusinessPermission((PermissionConstants.CONTACTS_EMP_PHONE))
     public void showEmployeePhone() {
-        if (Utils.isNotEmpty(contactPhone)) {
+        if (Utils.isNotEmpty(contactPhone) && Utils.matchPhoneNumFormat(contactPhone)) {
             mContactTelephone.setVisibility(View.VISIBLE);
             mContactTelephone.setText("电话：" + contactPhone);
             btnEmChat.setVisibility(View.VISIBLE);
@@ -532,7 +533,10 @@ public class ContactInformationDetailActivity extends BaseActivity {
             contactPhone = mCustomerInfo.userLoginName;
             emChatId = "";
             mContactName.setText(mCustomerInfo.userNoteName);
-            mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + contactPhone);
+            if (Utils.isNotEmpty(contactPhone) && Utils.matchPhoneNumFormat(contactPhone)) {
+                mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + contactPhone);
+            }
+
             mContactNickName.setVisibility(View.GONE);
             if (TextUtils.isEmpty(mCustomerInfo.remark)) {
                 mContactRemark.setText(ResourceUtils.getString(R.string.customer_remark_empty));

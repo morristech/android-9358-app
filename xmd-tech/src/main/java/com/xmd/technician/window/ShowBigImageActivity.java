@@ -18,6 +18,7 @@ import com.hyphenate.util.ImageUtils;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.model.EaseImageCache;
 import com.xmd.technician.chat.utils.EaseLoadLocalBigImgTask;
+import com.xmd.technician.widget.scaleview.PhotoViewAttacher;
 import com.xmd.technician.widget.scaleview.ScaleView;
 
 import java.io.File;
@@ -70,10 +71,10 @@ public class ShowBigImageActivity extends BaseActivity {
             image.setImageResource(default_res);
         }
 
-        image.setOnClickListener(new View.OnClickListener() {
+        image.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
             @Override
-            public void onClick(View v) {
-                finish();
+            public void onViewTap(View view, float x, float y) {
+                ShowBigImageActivity.this.finish();
             }
         });
     }
@@ -171,4 +172,5 @@ public class ShowBigImageActivity extends BaseActivity {
             setResult(RESULT_OK);
         finish();
     }
+
 }

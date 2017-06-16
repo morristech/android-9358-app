@@ -33,7 +33,10 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
+
+import com.xmd.technician.common.Logger;
 
 public class ScaleView extends ImageView implements IPhotoView {
 

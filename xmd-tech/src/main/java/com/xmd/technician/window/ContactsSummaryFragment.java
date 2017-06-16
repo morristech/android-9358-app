@@ -22,6 +22,7 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ContactHandlerBean;
 import com.xmd.technician.bean.CurrentSelectPage;
 import com.xmd.technician.common.FragmentController;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.TechInfoResult;
@@ -58,14 +59,15 @@ public class ContactsSummaryFragment extends BaseFragment {
     TextView tvCustomerTechnician;
     @Bind(R.id.contact_fragment_view)
     FrameLayout contactFragmentView;
-    @Bind(R.id.toolbar_left_head)
-    CircleImageView techHead;
+
+
     @Bind(R.id.contact_more)
     LinearLayout llContactMore;
 
     private List<View> tableViews;
     private FragmentController mFragmentController;
     private View view;
+    private  CircleImageView techHead;
 
     private Subscription mGetTechCurrentInfoSubscription;
     private Subscription getCurrentSelectedPageSubscription;
@@ -86,8 +88,14 @@ public class ContactsSummaryFragment extends BaseFragment {
     }
 
     private void initView() {
+
+        techHead = (CircleImageView) view.findViewById(R.id.toolbar_left_head);
         techHead.setVisibility(View.VISIBLE);
-        Glide.with(getActivity()).load(SharedPreferenceHelper.getUserAvatar()).error(R.drawable.icon22).into(techHead);
+        if(Utils.isNotEmpty(SharedPreferenceHelper.getUserAvatar())){
+            Glide.with(getActivity()).load(SharedPreferenceHelper.getUserAvatar()).placeholder(R.drawable.icon22).error(R.drawable.icon22).into(techHead);
+        }else{
+           Glide.with(getActivity()).load(R.drawable.icon22).into(techHead);
+        }
         view.findViewById(R.id.contact_more).setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_conversion);
         tableViews = new ArrayList<>();
