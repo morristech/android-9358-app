@@ -615,7 +615,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
             viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl);
-            viewHolder.dynamicItemName.setText(dynamicDetail.userName);
+            viewHolder.dynamicItemName.setText(Utils.StrSubstring(6,dynamicDetail.userName,true));
             if (Utils.isNotEmpty(dynamicDetail.userEmchatId)) {
                 viewHolder.btnThanks.setVisibility(View.VISIBLE);
                 viewHolder.btnThanks.setClickable(true);
@@ -970,7 +970,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.contactServiceTime.setVisibility(View.VISIBLE);
                 if (position == 0) {
                     viewHolder.contactServiceTime.setVisibility(View.VISIBLE);
-                    viewHolder.contactServiceTime.setText("今天新增");
+                    if (contactBean.createTime.substring(0, 10).equals(DateUtil.getCurrentDate())) {
+                        viewHolder.contactServiceTime.setText("今天新增");
+                    } else if (contactBean.createTime.substring(0, 10).equals(DateUtil.getYestData())) {
+                        viewHolder.contactServiceTime.setText("昨天新增");
+                    } else {
+                        viewHolder.contactServiceTime.setText(String.format("%s新增", contactBean.createTime.substring(5, 10)));
+                    }
                 } else {
                     if (Utils.StrSubstring(10, contactBean.createTime, false).equals(Utils.StrSubstring(10, ((ContactAllBean) mData.get(position - 1)).createTime, false))) {
                         viewHolder.contactServiceTime.setVisibility(View.GONE);
@@ -1017,13 +1023,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final UserRecentBean userRecent = (UserRecentBean) obj;
             userRecent.intListPosition = position;
             ContactRecentListItemViewHolder viewHolder = (ContactRecentListItemViewHolder) holder;
-            if (Long.parseLong(userRecent.userId) > 0) {
-                viewHolder.contactRecentName.setText(Utils.isNotEmpty(userRecent.userNoteName) ? userRecent.userNoteName : userRecent.name);
-                viewHolder.visitorToChat.setVisibility(View.VISIBLE);
+            if (Utils.isNotEmpty(userRecent.id)) {
+                if (Long.parseLong(userRecent.id) > 0) {
+                    viewHolder.contactRecentName.setText(Utils.isNotEmpty(userRecent.userNoteName) ? userRecent.userNoteName : userRecent.name);
+                    viewHolder.visitorToChat.setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.contactRecentName.setText(Utils.isNotEmpty(userRecent.name) ? userRecent.name : ResourceUtils.getString(R.string.contact_recent_default_name));
+                    viewHolder.visitorToChat.setVisibility(View.INVISIBLE);
+                }
             } else {
                 viewHolder.contactRecentName.setText(Utils.isNotEmpty(userRecent.name) ? userRecent.name : ResourceUtils.getString(R.string.contact_recent_default_name));
                 viewHolder.visitorToChat.setVisibility(View.INVISIBLE);
             }
+
             Glide.with(mContext).load(userRecent.avatarUrl).into(viewHolder.contactRecentAvatar);
             viewHolder.contactRecentRemark.setText(userRecent.remark);
             switch (userRecent.visitType) {

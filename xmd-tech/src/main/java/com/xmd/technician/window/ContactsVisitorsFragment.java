@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.hyphenate.exceptions.HyphenateException;
 import com.shidou.commonlibrary.helper.XLogger;
@@ -14,22 +16,20 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.SayHiVisitorResult;
 import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.CharacterParser;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CustomerUserRecentListResult;
+import com.xmd.technician.http.gson.NearbyCusCountResult;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +38,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Subscription;
 
 /**
@@ -46,16 +47,22 @@ import rx.Subscription;
 
 public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
 
-    @Bind(R.id.contact_all_emptyView)
-    EmptyView contactAllEmptyView;
+
+    @Bind(R.id.btn_nearby_people)
+    Button btnNearbyPeople;
+    @Bind(R.id.ll_visitor_none)
+    LinearLayout llVisitorNone;
 
     private Subscription mContactRecentUserListSubscription;
     private Subscription mSayHiVisitorResultSubscription;
+    private Subscription mGetNearbyCusCountSubscription;    // 附近的人:获取会所附近客户数量;
     private List<UserRecentBean> mVisitors;
     private List<UserRecentBean> mFilterVisitors;
     private Map<String, String> mSayHiParams = new HashMap<>();
     private int position;
+    private String mUserName;
     private CharacterParser characterParser;
+    private boolean hasNearbyPeople;
 
     @Nullable
     @Override
@@ -74,20 +81,29 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
     protected void initView() {
         mVisitors = new ArrayList<>();
         characterParser = CharacterParser.getInstance();
+        mUserName = "";
+        btnNearbyPeople.setText(ResourceUtils.getString(R.string.contact_to_develop_customer));
         mContactRecentUserListSubscription = RxBus.getInstance().toObservable(CustomerUserRecentListResult.class).subscribe(
                 result -> handlerRecentUserList(result)
         );
         mSayHiVisitorResultSubscription = RxBus.getInstance().toObservable(SayHiVisitorResult.class).subscribe(
                 result -> handlerSayHiVisitorResult(result)
         );
+        mGetNearbyCusCountSubscription = RxBus.getInstance().toObservable(NearbyCusCountResult.class).subscribe(
+                this::handleNearbyStatus);
     }
+
 
     private void handlerRecentUserList(CustomerUserRecentListResult result) {
 
         if (result.statusCode == 200) {
             mVisitors.clear();
+            if(result.respData.userList.size() == 0 && Utils.isEmpty(mUserName)){
+                llVisitorNone.setVisibility(View.VISIBLE);
+            }else{
+                llVisitorNone.setVisibility(View.GONE);
+            }
             if (result.respData.userList.size() > 0) {
-                contactAllEmptyView.setStatus(EmptyView.Status.Gone);
                 mVisitors.addAll(result.respData.userList);
                 onGetListSucceeded(1, mVisitors);
                 XLogger.d("userService", "update by recently visitor data");
@@ -99,12 +115,10 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
                     user.setAvatar(visitor.avatarUrl);
                     UserInfoServiceImpl.getInstance().saveUser(user);
                 }
-            } else {
-                contactAllEmptyView.setStatus(EmptyView.Status.Empty);
             }
 
         } else {
-            contactAllEmptyView.setStatus(EmptyView.Status.Failed);
+            //contactAllEmptyView.setStatus(EmptyView.Status.Failed);
             onGetListFailed(result.msg);
         }
 
@@ -117,9 +131,7 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
                 mVisitors.get(position).canSayHello = "N";
                 mListAdapter.notifyItemChanged(position);
             }
-
             // 环信打招呼
-            // HelloSettingManager.getInstance().sendHelloTemplate(result.userName, result.userEmchatId, result.userAvatar, result.userType);
             HelloSettingManager.getInstance().sendHelloTemplate(UserInfoServiceImpl.getInstance().getUserByChatId(result.userEmchatId));
             Map<String, String> saveParams = new HashMap<>();
             saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, result.userEmchatId);
@@ -127,6 +139,20 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
         }
 
+    }
+
+    // 附近的人
+    private void handleNearbyStatus(NearbyCusCountResult result) {
+
+        if (result.statusCode == 200) {
+            if (result.respData <= 0) {
+                hasNearbyPeople = false;
+                btnNearbyPeople.setText(ResourceUtils.getString(R.string.contact_to_develop_customer));
+            } else {
+                hasNearbyPeople = true;
+                btnNearbyPeople.setText(ResourceUtils.getString(R.string.contact_to_nearby_people));
+            }
+        }
     }
 
     @Override
@@ -156,7 +182,22 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
         }
     }
 
+    @OnClick({R.id.btn_nearby_people})
+    public void onViewClicked() {
+        // 打开附近的人
+        if (hasNearbyPeople) {
+            Intent intent = new Intent(getActivity(), NearbyActivity.class);
+            startActivity(intent);
+        } else {
+            // 跳转到营销页面
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.switchFragment(mainActivity.getFragmentSize() - 1);
+        }
+
+    }
+
     public void filterCustomer(String searchName) {
+        mUserName = searchName;
         if (Utils.isNotEmpty(searchName)) {
             if (mFilterVisitors == null) {
                 mFilterVisitors = new ArrayList<>();
@@ -164,6 +205,9 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
                 mFilterVisitors.clear();
             }
             for (UserRecentBean recentBean : mVisitors) {
+                if(Utils.isEmpty(recentBean.name)){
+                    recentBean.name = ResourceUtils.getString(R.string.contact_recent_default_name);
+                }
                 if ((recentBean.name.indexOf(searchName.toString())) != -1 || characterParser.getSelling(recentBean.name).startsWith(searchName.toString())) {
                     mFilterVisitors.add(recentBean);
                 }
@@ -186,7 +230,7 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mContactRecentUserListSubscription, mSayHiVisitorResultSubscription);
+        RxBus.getInstance().unsubscribe(mContactRecentUserListSubscription, mSayHiVisitorResultSubscription, mGetNearbyCusCountSubscription);
     }
 
     @Override

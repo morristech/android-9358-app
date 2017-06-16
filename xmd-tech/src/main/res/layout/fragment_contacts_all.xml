@@ -9,18 +9,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.xmd.technician.widget.EmptyView
-            android:id="@+id/contact_all_emptyView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-        </com.xmd.technician.widget.EmptyView>
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_widget"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/header_container"
             android:layout_marginTop="@dimen/margin_10">
 
             <LinearLayout

@@ -16,14 +16,15 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ContactAllBean;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ContactRegisterListResult;
+import com.xmd.technician.http.gson.NearbyCusCountResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.BottomContactFilterPopupWindow;
-import com.xmd.technician.widget.EmptyView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,12 +42,10 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
 
     @Bind(R.id.btn_nearby_people)
     Button btnNearbyPeople;
-    @Bind(R.id.ll_contact_none)
-    LinearLayout llContactNone;
-    @Bind(R.id.contact_all_emptyView)
-    EmptyView contactAllEmptyView;
     @Bind(R.id.img_screen_contact)
     ImageView imgScreenContact;
+    @Bind(R.id.ll_register_none)
+    LinearLayout llRegisterNone;
 
     private Map<String, String> params;
     private String mUserName;
@@ -55,6 +54,8 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
     private BottomContactFilterPopupWindow contactFilter;
     private String mCurrentFilterType;
     private Subscription mContactsRegisterSubscription;
+    private Subscription mGetNearbyCusCountSubscription;    // 附近的人:获取会所附近客户数量;
+    private boolean hasNearbyPeople;
 
     @Nullable
     @Override
@@ -78,9 +79,26 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
     protected void initView() {
         params = new HashMap<>();
         mUserName = "";
+        btnNearbyPeople.setText(ResourceUtils.getString(R.string.contact_to_develop_customer));
         mContactsRegisterSubscription = RxBus.getInstance().toObservable(ContactRegisterListResult.class).subscribe(
                 result -> handlerContactRegisterListResult(result)
         );
+        mGetNearbyCusCountSubscription = RxBus.getInstance().toObservable(NearbyCusCountResult.class).subscribe(
+                this::handleNearbyStatus);
+    }
+
+    // 附近的人
+    private void handleNearbyStatus(NearbyCusCountResult result) {
+
+        if (result.statusCode == 200) {
+            if (result.respData <= 0) {
+                hasNearbyPeople = false;
+                btnNearbyPeople.setText(ResourceUtils.getString(R.string.contact_to_develop_customer));
+            } else {
+                hasNearbyPeople = true;
+                btnNearbyPeople.setText(ResourceUtils.getString(R.string.contact_to_nearby_people));
+            }
+        }
     }
 
     private void handlerContactRegisterListResult(ContactRegisterListResult result) {
@@ -88,13 +106,15 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
             mTotalCount = result.respData.totalCount;
             mBlackListCount = result.respData.blackListCount;
             if (mTotalCount > 0 && Utils.isEmpty(mCurrentFilterType) && Utils.isEmpty(mUserName)) {
-                mListAdapter.SetDataLoadCompleteDes(String.format("共%s名客户,已拉黑%s人", mTotalCount, mBlackListCount));
+                mListAdapter.SetDataLoadCompleteDes(String.format("共%s名拓客,已拉黑%s人", mTotalCount, mBlackListCount));
             } else {
                 mListAdapter.SetDataLoadCompleteDes("");
             }
-            if (result.respData.userList.size() == 0) {
+            if (result.respData.userList.size() == 0 && Utils.isEmpty(mUserName) && Utils.isEmpty(mCurrentFilterType)) {
                 imgScreenContact.setVisibility(View.GONE);
+                llRegisterNone.setVisibility(View.VISIBLE);
             } else {
+                llRegisterNone.setVisibility(View.GONE);
                 imgScreenContact.setVisibility(View.VISIBLE);
             }
             onGetListSucceeded(result.pageCount, result.respData.userList);
@@ -128,13 +148,29 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
         startActivity(intent);
     }
 
-    @OnClick(R.id.img_screen_contact)
-    public void onViewClicked() {
-        if (null == contactFilter) {
-            initPopupWindow();
-            contactFilter.show();
-        } else {
-            contactFilter.show();
+    @OnClick({R.id.img_screen_contact, R.id.btn_nearby_people})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_screen_contact:
+                if (null == contactFilter) {
+                    initPopupWindow();
+                    contactFilter.show();
+                } else {
+                    contactFilter.show();
+                }
+                break;
+            case R.id.btn_nearby_people:
+                // 打开附近的人
+                if (hasNearbyPeople) {
+                    Intent intent = new Intent(getActivity(), NearbyActivity.class);
+                    startActivity(intent);
+                } else {
+                    // 跳转到营销页面
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.switchFragment(mainActivity.getFragmentSize() - 1);
+                }
+
+                break;
         }
     }
 
@@ -204,7 +240,7 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mContactsRegisterSubscription);
+        RxBus.getInstance().unsubscribe(mContactsRegisterSubscription, mGetNearbyCusCountSubscription);
     }
 
 

@@ -50,6 +50,7 @@ public class TechCustomerTypeView extends LinearLayout {
     }
 
     public void setTechCustomerType(String mark) {
+
         if (Utils.isEmpty(mark)) {
             normalCustomer.setVisibility(View.VISIBLE);
             techAddCustomer.setVisibility(View.GONE);
@@ -62,22 +63,32 @@ public class TechCustomerTypeView extends LinearLayout {
         if (mark.contains(Constant.USER_MARK_TECH_ADD)) {
             techAddCustomer.setVisibility(View.VISIBLE);
             normalCustomer.setVisibility(View.GONE);
+        } else {
+            techAddCustomer.setVisibility(View.GONE);
         }
         if (mark.contains(Constant.USER_MARK_NEW_ADD)) {
             normalCustomer.setVisibility(View.GONE);
             newAddCustomer.setVisibility(View.VISIBLE);
+        } else {
+            newAddCustomer.setVisibility(View.GONE);
         }
         if (mark.contains(Constant.USER_MARK_BIG)) {
             normalCustomer.setVisibility(View.GONE);
             bigCustomer.setVisibility(View.VISIBLE);
+        } else {
+            bigCustomer.setVisibility(View.GONE);
         }
         if (mark.contains(Constant.USER_MARK_NORMAL)) {
             normalCustomer.setVisibility(View.GONE);
             normalCustomer.setVisibility(View.VISIBLE);
+        } else {
+            normalCustomer.setVisibility(View.GONE);
         }
         if (mark.contains(Constant.USER_MARK_ACTIVATION)) {
             normalCustomer.setVisibility(View.GONE);
             activationCustomer.setVisibility(View.VISIBLE);
+        } else {
+            activationCustomer.setVisibility(View.GONE);
         }
 
 

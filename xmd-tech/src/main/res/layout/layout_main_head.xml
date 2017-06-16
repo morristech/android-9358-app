@@ -19,7 +19,7 @@
             android:id="@+id/main_head_avatar"
             android:layout_width="@dimen/main_head_avatar_height"
             android:layout_height="@dimen/main_head_avatar_height"
-            android:background="@drawable/icon22" />
+            android:src="@drawable/icon22" />
 
     </RelativeLayout>
 

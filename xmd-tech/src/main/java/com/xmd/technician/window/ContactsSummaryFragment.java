@@ -87,7 +87,7 @@ public class ContactsSummaryFragment extends BaseFragment {
 
     private void initView() {
         techHead.setVisibility(View.VISIBLE);
-        Glide.with(getActivity()).load(SharedPreferenceHelper.getUserAvatar()).into(techHead);
+        Glide.with(getActivity()).load(SharedPreferenceHelper.getUserAvatar()).error(R.drawable.icon22).into(techHead);
         view.findViewById(R.id.contact_more).setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_conversion);
         tableViews = new ArrayList<>();

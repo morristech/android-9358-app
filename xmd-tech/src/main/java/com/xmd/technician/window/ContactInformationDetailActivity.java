@@ -288,20 +288,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
         DropDownMenuDialog.getDropDownMenuDialog(ContactInformationDetailActivity.this, mContactMoreItems, (index -> {
             switch (index) {
                 case 0:
-                    new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_add_to_blacklist), getString(R.string.alert_add_to_blacklist_message), "") {
-                        @Override
-                        public void onConfirmClick() {
-                            if (Utils.isEmpty(userId)) {
-                                ContactInformationDetailActivity.this.makeShortToast(getString(R.string.add_to_blacklist_failed));
-                            } else if (!inBlacklist) {
-                                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_TO_BLACKLIST, userId);
-                            }
-                            super.onConfirmClick();
-                        }
-                    }.show();
-
-                    break;
-                case 1:
                     if (mContactMoreItems[1].equals(ResourceUtils.getString(R.string.delete_contact))) {
                         new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_delete_contact), getString(R.string.alert_delete_contact_message), "") {
                             @Override
@@ -326,10 +312,25 @@ public class ContactInformationDetailActivity extends BaseActivity {
                         }
                         intent.putExtra(RequestConstant.KEY_PHONE_NUMBER, contactPhone);
                         startActivityForResult(intent, REQUEST_CODE_SET_REMARK);
-                        break;
+
                     }
 
                     break;
+                case 1:
+                    new RewardConfirmDialog(ContactInformationDetailActivity.this, getString(R.string.alert_add_to_blacklist), getString(R.string.alert_add_to_blacklist_message), "") {
+                        @Override
+                        public void onConfirmClick() {
+                            if (Utils.isEmpty(userId)) {
+                                ContactInformationDetailActivity.this.makeShortToast(getString(R.string.add_to_blacklist_failed));
+                            } else if (!inBlacklist) {
+                                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_ADD_TO_BLACKLIST, userId);
+                            }
+                            super.onConfirmClick();
+                        }
+                    }.show();
+
+                    break;
+
             }
         })).show(contactMore);
     }
