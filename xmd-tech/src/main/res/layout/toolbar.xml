@@ -60,6 +60,7 @@
                 android:background="@drawable/toolbar_text_bg"
                 android:clickable="true"
                 android:text="right"
+                android:layout_gravity="center_vertical"
                 android:visibility="gone" />
 
             <TextView
@@ -68,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_rectangle_with_rounded_corners"
                 android:gravity="center"
+                android:layout_gravity="center_vertical"
                 android:paddingBottom="@dimen/small_space"
                 android:paddingTop="@dimen/small_space"
                 android:text="分享"

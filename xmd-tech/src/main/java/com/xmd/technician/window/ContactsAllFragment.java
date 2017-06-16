@@ -46,8 +46,6 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> {
     Button btnNearbyPeople;
     @Bind(R.id.ll_contact_none)
     LinearLayout llContactNone;
-    @Bind(R.id.contact_all_emptyView)
-    EmptyView contactAllEmptyView;
     @Bind(R.id.img_screen_contact)
     ImageView imgScreenContact;
 

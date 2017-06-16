@@ -64,9 +64,9 @@ public class ShowBigImageActivity extends BaseActivity {
             } else {
                 image.setImageBitmap(bitmap);
             }
-        } else if(msgId != null) {
+        } else if (msgId != null) {
             downloadImage(msgId);
-        }else {
+        } else {
             image.setImageResource(default_res);
         }
 
@@ -96,7 +96,7 @@ public class ShowBigImageActivity extends BaseActivity {
         final String tempPath = temp.getParent() + "/temp_" + temp.getName();
         final EMCallBack callback = new EMCallBack() {
             public void onSuccess() {
-                EMLog.e(TAG, "onSuccess" );
+                EMLog.e(TAG, "onSuccess");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -128,7 +128,7 @@ public class ShowBigImageActivity extends BaseActivity {
             public void onError(int error, String msg) {
                 EMLog.e(TAG, "offline file transfer error:" + msg);
                 File file = new File(tempPath);
-                if (file.exists()&&file.isFile()) {
+                if (file.exists() && file.isFile()) {
                     file.delete();
                 }
                 runOnUiThread(new Runnable() {
