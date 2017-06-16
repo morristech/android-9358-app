@@ -107,7 +107,7 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> {
     }
 
     private void handlerContactAllListResult(ContactAllListResult result) {
-
+        mSwipeRefreshLayout.setRefreshing(false);
         if (result.statusCode == 200) {
             if (result.respData == null) {
                 return;

@@ -31,7 +31,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/inter_space"
             android:clickable="true"
-            android:src="@drawable/icon22"
+            android:background="@drawable/icon22"
             android:visibility="gone" />
 
         <TextView
@@ -60,6 +60,9 @@
                 android:background="@drawable/toolbar_text_bg"
                 android:clickable="true"
                 android:text="right"
+                android:paddingLeft="@dimen/inter_space"
+                android:paddingRight="@dimen/inter_space"
+                android:gravity="center"
                 android:layout_gravity="center_vertical"
                 android:visibility="gone" />
 
@@ -70,7 +73,6 @@
                 android:background="@drawable/btn_rectangle_with_rounded_corners"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
-                android:layout_gravity="center_vertical"
                 android:paddingBottom="@dimen/small_space"
                 android:paddingTop="@dimen/small_space"
                 android:text="分享"
