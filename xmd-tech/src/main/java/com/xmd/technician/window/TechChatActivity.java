@@ -67,6 +67,7 @@ import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.chat.event.CancelGame;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
+import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
@@ -714,13 +715,13 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     }
 
     //特惠商城,电子期刊
-    private void handlerCheckedActivity(String actId, String subType, String jounrlId) {
-        chatSentMessageHelper.sendActivityMessage(actId, subType, jounrlId);
+    private void handlerCheckedActivity(String actId, String subType, String jounrlId,String actName) {
+        chatSentMessageHelper.sendActivityMessage(actId, subType, jounrlId,actName);
     }
 
     //营销活动
-    private void handlerCheckedMarketing(String actId, String subType) {
-        chatSentMessageHelper.sendActivityMessage(actId, subType, "");
+    private void handlerCheckedMarketing(String actId, String subType,String actName) {
+        chatSentMessageHelper.sendActivityMessage(actId, subType, "",actName);
     }
 
 
@@ -1066,6 +1067,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 for (int i = 0; i < mChatShareBeans.size(); i++) {
                     String actId;
                     String activityType;
+                    String actName;
                     actId = Utils.isEmpty(mChatShareBeans.get(i).actId) ? mChatShareBeans.get(i).id : mChatShareBeans.get(i).actId;
                     if (Utils.isNotEmpty(mChatShareBeans.get(i).itemName)) {
                         activityType = ChatConstant.KEY_SUB_TYPE_INDIANA;
@@ -1074,7 +1076,9 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                     } else {
                         activityType = ChatConstant.KEY_SUB_TYPE_SECKILL;
                     }
-                    handlerCheckedMarketing(actId, activityType);
+                    actName = Utils.isEmpty(mChatShareBeans.get(i).actName) ? mChatShareBeans.get(i).itemName : mChatShareBeans.get(i).actName;
+
+                    handlerCheckedMarketing(actId, activityType,actName);
                 }
                 break;
             case GET_JOURNAL_CODE://电子期刊
@@ -1085,7 +1089,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 }
                 mSelectedJournal = (List<ClubJournalBean>) data.getSerializableExtra(REQUEST_JOURNAL_TYPE);
                 for (int i = 0; i < mSelectedJournal.size(); i++) {
-                    handlerCheckedActivity(mSelectedJournal.get(i).journalId, ChatConstant.KEY_SUB_TYPE_JOURNAL, String.valueOf(mSelectedJournal.get(i).templateId));
+                    handlerCheckedActivity(mSelectedJournal.get(i).journalId, ChatConstant.KEY_SUB_TYPE_JOURNAL, String.valueOf(mSelectedJournal.get(i).templateId),mSelectedJournal.get(i).title);
                 }
                 break;
             case GET_PREFERENTIAL_CODE://特惠商城
@@ -1097,11 +1101,11 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 mSelectedOnceCard = (List<OnceCardItemBean>) data.getSerializableExtra(REQUEST_PREFERENTIAL_TYPE);
                 for (int i = 0; i < mSelectedOnceCard.size(); i++) {
                     if (mSelectedOnceCard.get(i).cardType.equals(Constant.ITEM_CARD_TYPE)) {
-                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_TIMES_SCARD, "");
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_TIMES_SCARD, "",mSelectedOnceCard.get(i).name);
                     } else if (mSelectedOnceCard.get(i).cardType.equals(Constant.ITEM_PACKAGE_TYPE)) {
-                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_PACKAGE, "");
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_PACKAGE, "",mSelectedOnceCard.get(i).name);
                     } else {
-                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_GIFT, "");
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_GIFT, "",mSelectedOnceCard.get(i).name);
                     }
 
                 }

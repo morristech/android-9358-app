@@ -190,11 +190,12 @@ public class ChatSentMessageHelper {
         return message;
     }
 
-    public void sendActivityMessage(String actId, String subType, String templateId) {
+    public void sendActivityMessage(String actId, String subType, String templateId,String actName) {
 
         String content;
         String activityType = "";
         String cardType = "";
+        String actShareName = actName;
         switch (subType) {
             case ChatConstant.KEY_SUB_TYPE_INDIANA:
                 content = ResourceUtils.getString(R.string.chat_indiana_message_des);
@@ -238,6 +239,12 @@ public class ChatSentMessageHelper {
         if (activityType.equals(ChatConstant.KEY_ACTIVITY_JOURNAL_TYPE)) {
             message.setAttribute(ChatConstant.KEY_SUB_TEMPLATE_ID, templateId);
         }
+        if(Utils.isNotEmpty(actShareName)){
+            message.setAttribute(ChatConstant.KEY_ACTIVITY_ACT_NAME,actShareName);
+        }else{
+            message.setAttribute(ChatConstant.KEY_ACTIVITY_ACT_NAME,"");
+        }
+
         if (activityType.equals(ChatConstant.KEY_ACTIVITY_ITEM_CARD_TYPE)) {
             message.setAttribute(ChatConstant.KEY_SUB_CARD_TYPE, cardType);
         }
