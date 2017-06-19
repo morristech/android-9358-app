@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,6 +32,12 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
     private RelativeLayout mScanStatusLayout;
     private TextView mCancelText;
 
+    private LinearLayout mQRCodeLoadingLayout;
+    private LinearLayout mQRCodeErrorLayout;
+    private TextView mQRCodeRefreshText;
+    private TextView mQRCodeErrorText;
+    private TextView mQRCodeExpireText;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +55,19 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
         mDiscountText = (TextView) findViewById(R.id.tv_pay_discount_money);
         mPaidText = (TextView) findViewById(R.id.tv_pay_paid_money);
 
+        mQRCodeLoadingLayout = (LinearLayout) findViewById(R.id.layout_qrcode_loading);
+        mQRCodeErrorLayout = (LinearLayout) findViewById(R.id.layout_qrcode_error);
+        mQRCodeRefreshText = (TextView) findViewById(R.id.tv_qrcode_refresh);
+        mQRCodeErrorText = (TextView) findViewById(R.id.tv_qrcode_error);
         mQRCodeImg = (ImageView) findViewById(R.id.img_scan_qrcode);
+        mQRCodeExpireText = (TextView) findViewById(R.id.tv_qrcode_expire_tip);
+        mQRCodeRefreshText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 刷新二维码URL接口
+                mPresenter.getQrcode();
+            }
+        });
 
         mScanTipText = (TextView) findViewById(R.id.tv_scan_tip);
         mScanStatusLayout = (RelativeLayout) findViewById(R.id.ly_scan_status);
@@ -105,6 +124,29 @@ public class ScanPayActivity extends BaseActivity implements ScanPayContract.Vie
     public void updateScanStatus() {
         mScanStatusLayout.setVisibility(View.VISIBLE);
         mScanTipText.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showQrLoading() {
+        mQRCodeLoadingLayout.setVisibility(View.VISIBLE);
+        mQRCodeErrorLayout.setVisibility(View.GONE);
+        mQRCodeImg.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showQrError(String error) {
+        mQRCodeLoadingLayout.setVisibility(View.GONE);
+        mQRCodeErrorLayout.setVisibility(View.VISIBLE);
+        mQRCodeImg.setVisibility(View.GONE);
+        mQRCodeErrorText.setText(error);
+    }
+
+    @Override
+    public void showQrSuccess() {
+        mQRCodeLoadingLayout.setVisibility(View.GONE);
+        mQRCodeErrorLayout.setVisibility(View.GONE);
+        mQRCodeImg.setVisibility(View.VISIBLE);
+        mQRCodeExpireText.setVisibility(View.VISIBLE);
     }
 
     @Override
