@@ -95,6 +95,7 @@ public class RequestConstant {
     public static final String URL_GET_XMD_ONLINE_ORDER_ID = SPA_SERVICE_BASE + "/v2/manager/order/id/get";
     public static final String URL_GET_XMD_ONLINE_ORDER_DETAIL = SPA_SERVICE_BASE + "/v2/manager/fastpay/order/detail";
     public static final String URL_GET_XMD_ONLINE_SCAN_STATUS = SPA_SERVICE_BASE + "/v2/manager/order/id/status";
+    public static final String URL_GET_XMD_ONLINE_QRCODE_URL = SPA_SERVICE_BASE + "/v2/manager/fast_pay/url/get";
 
     /*********************************************************************************************/
     /*                                           keys                                            */
@@ -195,6 +196,9 @@ public class RequestConstant {
     public static final String KEY_SETTLE_RECORD = "settleRecord";
     public static final String KEY_SETTLE_YEAR_MONTH = "settleYm";
     public static final String KEY_RECORD_ID = "recordId";
+
+    public static final String KEY_TOTAL = "total";
+    public static final String KEY_DISCOUNT = "discount";
 
     /*********************************************************************************************/
     /*                                        configs                                            */
