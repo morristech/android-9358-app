@@ -772,9 +772,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
     private void handlerInBlacklist(InBlacklistResult result) {
         if (result.statusCode == 200) {
             inBlacklist = result.respData;
-            if(inBlacklist){
+            if (inBlacklist) {
                 contactMore.setVisibility(View.GONE);
-            }else{
+            } else {
                 contactMore.setVisibility(View.VISIBLE);
             }
         }
@@ -851,6 +851,16 @@ public class ContactInformationDetailActivity extends BaseActivity {
             mContactOrderLayout.setVisibility(View.GONE);
             linearBelongTech.setVisibility(View.GONE);
             mContactNickName.setVisibility(View.GONE);
+            if (Utils.isEmpty(emChatId)) {
+                btnEmChat.setVisibility(View.GONE);
+            } else {
+                btnEmChat.setVisibility(View.VISIBLE);
+            }
+            if(Utils.isEmpty(emChatId) && Utils.isEmpty(contactPhone)){
+                btnOperation.setVisibility(View.GONE);
+            }else{
+                btnOperation.setVisibility(View.VISIBLE);
+            }
 
         } else {
             showToast(employeeDetail.msg);
