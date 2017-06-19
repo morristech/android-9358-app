@@ -14,6 +14,7 @@ import android.util.SparseArray;
 import android.view.View;
 
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.util.AppUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.FloatNotifyManager;
 import com.xmd.chat.ChatMessageFactory;
@@ -22,7 +23,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
-import com.xmd.technician.common.AppUtils;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.model.LoginTechnician;
@@ -136,7 +136,7 @@ public class NotificationCenter {
     }
 
     private void notifyWhenBackground(int type, CharSequence title, CharSequence message, Bundle extraData) {
-        if (AppUtils.isBackground()) {
+        if (AppUtils.isBackground(sContext)) {
             notify(type, title, message, extraData);
         }
     }
@@ -171,7 +171,7 @@ public class NotificationCenter {
                         //关闭客服消息提醒时，收到客服消息不提醒
                         return;
                     }
-                    if (AppUtils.isBackground()) {
+                    if (AppUtils.isBackground(sContext)) {
                         notify(TYPE_CHAT_MESSAGE, null, userName + ":" + EaseCommonUtils.getMessageDigest(message, sContext), bundle);
                     } else {
                         if (chatMessage.isCustomerService() && !chatMessage.getFromChatId().equals(TechChatActivity.getRemoteChatId())) {
