@@ -27,6 +27,7 @@ import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.widget.CircleAvatarView;
 import com.xmd.technician.widget.CircleImageView;
 
 /**
@@ -39,7 +40,7 @@ public class ChatRowGameSentResultView extends BaseEaseChatView {
     private ImageView mAdverseDice, mUserDice, mAdverseWin, mUserWin, mUserResult;
     private LinearLayout diceResult;
     private int adverseDice, userDice;
-    private CircleImageView avatar;
+    private CircleAvatarView avatar;
 
 
     public ChatRowGameSentResultView(Context context, EMMessage message, int position, BaseAdapter adapter, String gameStaus) {
@@ -63,7 +64,7 @@ public class ChatRowGameSentResultView extends BaseEaseChatView {
         mUserWin = (ImageView) findViewById(R.id.img_user_win);
         mUserResult = (ImageView) findViewById(R.id.user_win_or_lose);
         diceResult = (LinearLayout) findViewById(R.id.dice_game_result);
-        avatar = (CircleImageView) findViewById(R.id.avatar);
+        avatar = (CircleAvatarView) findViewById(R.id.avatar);
     }
 
     @Override

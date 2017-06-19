@@ -19,6 +19,7 @@ import com.xmd.chat.ChatMessageFactory;
 import com.xmd.technician.Adapter.EaseMessageAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -189,6 +190,7 @@ public abstract class BaseEaseChatView extends LinearLayout {
                 @Override
                 public void onSuccess() {
                     saveChatContact(mEMMessage.getTo(), mEMMessage.getMsgId());
+                    ChatHelper.getMessageSeting().add(mEMMessage.getMsgId());
                     updateView();
                 }
 
@@ -210,7 +212,11 @@ public abstract class BaseEaseChatView extends LinearLayout {
                 }
             };
         } else {
-                saveChatContact(mEMMessage.getTo(), mEMMessage.getMsgId());
+                if(!ChatHelper.getMessageSeting().contains(mEMMessage.getMsgId())){
+                    saveChatContact(mEMMessage.getTo(), mEMMessage.getMsgId());
+                    ChatHelper.getMessageSeting().add(mEMMessage.getMsgId());
+                }
+
         }
         mEMMessage.setMessageStatusCallback(mMessageSendCallBack);
     }
