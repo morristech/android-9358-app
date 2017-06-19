@@ -45,8 +45,8 @@
     <color name="colorStatusDark">#2a3141</color>
 
     <!--按钮颜色-->
-    <color name="colorBtnDisableBackground">#888888</color>
-    <color name="colorBtnDisableStoke">#888888</color>
+    <color name="colorBtnDisableBackground">#A0A0A0</color>
+    <color name="colorBtnDisableStoke">#A0A0A0</color>
 
     <color name="colorBtnMainBackground">@color/colorPrimary</color>
     <color name="colorBtnMainStoke">@color/colorPrimary</color>

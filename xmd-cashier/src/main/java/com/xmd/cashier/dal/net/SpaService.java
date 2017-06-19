@@ -13,6 +13,7 @@ import com.xmd.cashier.dal.net.response.LogoutResult;
 import com.xmd.cashier.dal.net.response.MemberPayResult;
 import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
+import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.PrizeResult;
@@ -532,4 +533,17 @@ public interface SpaService {
     @GET(RequestConstant.URL_GET_XMD_ONLINE_ORDER_DETAIL)
     Observable<OnlinePayDetailResult> getXMDOnlinePayDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                             @Query(RequestConstant.KEY_ORDER_ID) String orderId);
+
+
+    /**
+     * 扫码买单二维码URL
+     *
+     * @param userToken
+     * @return
+     */
+    @GET(RequestConstant.URL_GET_XMD_ONLINE_QRCODE_URL)
+    Observable<OnlinePayUrlResult> getXMDOnlineQrcodeUrl(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                         @Query(RequestConstant.KEY_ORDER_ID) String orderId,
+                                                         @Query(RequestConstant.KEY_TOTAL) String total,
+                                                         @Query(RequestConstant.KEY_DISCOUNT) String discount);
 }

@@ -18,9 +18,10 @@ import java.util.TreeMap;
  */
 
 public class AppointmentSetting implements Serializable {
-    public static final String APPOINT_TYPE_FREE = "free";
-    public static final String APPOINT_TYPE_FONT = "free";
-    public static final String APPOINT_TYPE_FONT_FULL = "paid_full";
+    public static final String APPOINT_TYPE_CALL = "phone"; //电话预约
+    public static final String APPOINT_TYPE_FREE = "appoint";//免费预约
+    public static final String APPOINT_TYPE_FONT = "paid";//订金预约
+    public static final String APPOINT_TYPE_FONT_FULL = "paid_full";//全额预约
 
     private String appointDescription;//	预约描述
     private String appointType;//	预约类型

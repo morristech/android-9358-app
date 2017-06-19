@@ -12,6 +12,8 @@ import com.xmd.cashier.BaseView;
 public interface ScanPayContract {
     interface Presenter extends BasePresenter {
         void onCancel();
+
+        void getQrcode();
     }
 
     interface View extends BaseView<Presenter> {
@@ -32,5 +34,11 @@ public interface ScanPayContract {
         void setQRCode(Bitmap bitmap);
 
         void updateScanStatus();
+
+        void showQrLoading();
+
+        void showQrError(String error);
+
+        void showQrSuccess();
     }
 }

@@ -14,7 +14,6 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
-import com.xmd.cashier.BuildConfig;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.cashier.PosFactory;
@@ -22,11 +21,13 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.ScanPayContract;
 import com.xmd.cashier.contract.ScanPayContract.Presenter;
+import com.xmd.cashier.dal.bean.OnlinePayUrlInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaRetrofit;
 import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
+import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.exceptions.ServerException;
 import com.xmd.cashier.manager.AccountManager;
@@ -53,13 +54,13 @@ public class ScanPayPresenter implements Presenter {
     private Context mContext;
     private ScanPayContract.View mView;
 
-    private String mContent;
     private Bitmap mQRBitmap;
     private TradeManager mTradeManager;
 
     private boolean isScan = false;
     private Subscription mGetXMDScanStatusSubscription;
     private Subscription mGetXMDOnlinePayDetailSubscription;
+    private Subscription mGetXMDOnlineQrcodeUrlSubscription;
     private Handler mHandler;
     private Runnable mRunnable = new Runnable() {
         @Override
@@ -160,20 +161,8 @@ public class ScanPayPresenter implements Presenter {
         mView.setDiscount("- " + Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getWillDiscountMoney()));
         mView.setPaid(String.format(mContext.getResources().getString(R.string.cashier_money),
                 Utils.moneyToStringEx(mTradeManager.getCurrentTrade().getOriginMoney() - mTradeManager.getCurrentTrade().getWillDiscountMoney())));
-        mContent = getContentLink(mTradeManager.getCurrentTrade().getOriginMoney(), mTradeManager.getCurrentTrade().getWillDiscountMoney());
-        XLogger.e(mContent);
-        try {
-            mQRBitmap = getQRBitmap(mContent);
-        } catch (Exception e) {
-            mQRBitmap = null;
-        }
-        if (mQRBitmap == null) {
-            mView.showError("生成二维码失败，请重新支付");
-        } else {
-            mView.setQRCode(mQRBitmap);
-        }
 
-        mHandler.postDelayed(mRunnable, INTERVAL);
+        getQrcode();
     }
 
     @Override
@@ -189,18 +178,10 @@ public class ScanPayPresenter implements Presenter {
         if (mGetXMDScanStatusSubscription != null) {
             mGetXMDScanStatusSubscription.unsubscribe();
         }
+        if (mGetXMDOnlineQrcodeUrlSubscription != null) {
+            mGetXMDOnlineQrcodeUrlSubscription.unsubscribe();
+        }
         mQRBitmap = null;
-        mContent = null;
-    }
-
-    private String getContentLink(int total, int discount) {
-        return "http://" + BuildConfig.ONLINE_PAY_HOST
-                + "/spa-manager/spa2/?"
-                + "club=" + AccountManager.getInstance().getClubId() + "#posPay"
-                + "&total=" + total
-                + "&discount=" + discount
-                + "&techId=" + AccountManager.getInstance().getUserId()
-                + "&orderId=" + mTradeManager.getCurrentTrade().tradeNo;
     }
 
     private Bitmap getQRBitmap(String content) throws WriterException {
@@ -256,6 +237,45 @@ public class ScanPayPresenter implements Presenter {
                 })
                 .create()
                 .show();
+    }
+
+    @Override
+    public void getQrcode() {
+        mView.showQrLoading();
+        mGetXMDOnlineQrcodeUrlSubscription = SpaRetrofit.getService().getXMDOnlineQrcodeUrl(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo, String.valueOf(mTradeManager.getCurrentTrade().getOriginMoney()), String.valueOf(mTradeManager.getCurrentTrade().getWillDiscountMoney()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new NetworkSubscriber<OnlinePayUrlResult>() {
+                    @Override
+                    public void onCallbackSuccess(OnlinePayUrlResult result) {
+                        OnlinePayUrlInfo info = result.respData;
+                        if (info == null || TextUtils.isEmpty(info.url)) {
+                            mView.showQrError("获取二维码数据异常");
+                            return;
+                        }
+                        XLogger.d(info.orderId + " --- " + info.url);
+                        // 获取二维码成功
+                        try {
+                            mQRBitmap = getQRBitmap(info.url);
+                        } catch (Exception e) {
+                            mQRBitmap = null;
+                        }
+                        if (mQRBitmap == null) {
+                            // 解析失败
+                            mView.showQrError("解析二维码链接失败");
+                        } else {
+                            mView.showQrSuccess();
+                            mView.setQRCode(mQRBitmap);
+                            mHandler.postDelayed(mRunnable, INTERVAL);
+                        }
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        // 获取失败
+                        mView.showQrError(e.getLocalizedMessage());
+                    }
+                });
     }
 
     private boolean isCodeExpire() {
