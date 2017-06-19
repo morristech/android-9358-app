@@ -204,6 +204,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     @Override
                     public void onCallbackSuccess(ContactPermissionInfo result) {
                         if (result.echat) {
+
                             mConversationList.add(conversation);
                         }
                         onLoadPermissionFinish();

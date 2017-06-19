@@ -93,7 +93,7 @@
 
             <TextView
                 style="@style/marketing_income_name_type"
-                android:text="谁替我买单" />
+                android:text="夺宝" />
 
             <TextView
                 android:id="@+id/tv_pay_for_me_income"

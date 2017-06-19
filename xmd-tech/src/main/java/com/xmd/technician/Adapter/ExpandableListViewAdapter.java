@@ -174,7 +174,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             mChildViewHolder.unit.setVisibility(View.GONE);
             mChildViewHolder.marketingMoneyMark.setVisibility(View.GONE);
 
-        } else {//谁替我买单
+        } else {//夺宝
             Glide.with(mContext).load(bean.image).into(mChildViewHolder.marketingHead);
             if (bean.maxPeriod == 0) { //无限连期
                 mChildViewHolder.marketingTitle.setText(bean.actName + String.format("(%s/%s)", String.valueOf(bean.currentPeriod), "无限期"));

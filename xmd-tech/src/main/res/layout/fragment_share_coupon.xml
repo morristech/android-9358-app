@@ -319,7 +319,7 @@
                                 android:id="@+id/pay_for_me_name"
                                 style="@style/coupon_type_style"
                                 android:layout_toRightOf="@id/img_pay_for_me"
-                                android:text="谁替我买单"/>
+                                android:text="夺宝" />
 
                             <TextView
                                 android:id="@+id/pay_for_me_text"

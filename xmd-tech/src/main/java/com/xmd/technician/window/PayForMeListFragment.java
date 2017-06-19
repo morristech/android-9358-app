@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.PayForMeBean;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.PayForMeListResult;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -118,7 +116,7 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
         params.put(Constant.PARAM_SHARE_DESCRIPTION, ResourceUtils.getString(R.string.pay_for_me_share_description));
         params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_TYPE_PAY_FOR_ME);
         params.put(Constant.PARAM_ACT_ID, bean.actId);
-        params.put(Constant.PARAM_SHARE_DIALOG_TITLE,"谁替我买单");
+        params.put(Constant.PARAM_SHARE_DIALOG_TITLE, "夺宝");
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
     }
 

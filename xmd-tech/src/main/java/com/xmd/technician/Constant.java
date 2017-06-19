@@ -48,7 +48,7 @@ public class Constant {
      */
     public static final String ONCE_TYPE = "once";
     /**
-     * 谁替我买单
+     * 夺宝
      */
     public static final String PAID_ITEM_TYPE = "paidItem";
     /**

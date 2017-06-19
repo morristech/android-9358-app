@@ -25,7 +25,7 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
     public static final int NORMAL_COUPON = 0x002;//普通券
     public static final int ONCE_CARD = 0x003;//次卡
     public static final int LIMIT_GRAB = 0x004;//限时抢
-    public static final int PAY_FOR_ME = 0x005;//谁替我买单
+    public static final int PAY_FOR_ME = 0x005;//夺宝
     public static final int CLUB_JOURNAL = 0x006;//会所期刊
     public static final int REWARD_ACTIVITY = 0x007;//抽奖活动
     //   public static final int OFFLINE_ACTIVITY = 0x008;//线下活动
