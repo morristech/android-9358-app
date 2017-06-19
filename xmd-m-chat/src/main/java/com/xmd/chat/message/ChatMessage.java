@@ -2,6 +2,7 @@ package com.xmd.chat.message;
 
 import android.text.TextUtils;
 
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.shidou.commonlibrary.helper.XLogger;
@@ -174,18 +175,22 @@ public class ChatMessage {
 
     protected void setAttr(String key, String value) {
         emMessage.setAttribute(key, value);
+        EMClient.getInstance().chatManager().updateMessage(emMessage);
     }
 
     protected void setAttr(String attrKey, Long attr) {
         emMessage.setAttribute(attrKey, attr);
+        EMClient.getInstance().chatManager().updateMessage(emMessage);
     }
 
     protected void setAttr(String attrKey, Integer attr) {
         emMessage.setAttribute(attrKey, attr);
+        EMClient.getInstance().chatManager().updateMessage(emMessage);
     }
 
     protected void setAttr(String attrKey, Boolean attr) {
         emMessage.setAttribute(attrKey, attr);
+        EMClient.getInstance().chatManager().updateMessage(emMessage);
     }
 
     public EMMessage getEmMessage() {
