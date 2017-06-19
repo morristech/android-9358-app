@@ -13,7 +13,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="#f1f1ef"
         android:orientation="vertical">
 
         <FrameLayout
@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:drawableLeft="@drawable/ic_service"
+                android:drawableLeft="@drawable/m_ic_service"
                 android:drawablePadding="4dp"
                 android:text="选择服务项目"
                 android:textColor="#212121"
@@ -60,16 +60,15 @@
                         android:id="@+id/categoryRecyclerView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="#f1f1f1" />
+                        android:layout_weight="1" />
+
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/itemRecyclerView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="2dp"
-                        android:layout_weight="2"
-                        android:background="#f1f1f1" />
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="2" />
                 </LinearLayout>
 
                 <TextView
@@ -80,7 +79,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
                     android:padding="@dimen/activity_vertical_margin">
 
                     <TextView
@@ -115,8 +113,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorWhite">
+            android:layout_height="wrap_content">
 
             <TextView
                 style="@style/AppTheme.Button.Plain"

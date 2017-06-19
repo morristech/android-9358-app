@@ -20,6 +20,7 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
+import com.xmd.appointment.beans.AppointmentSetting;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.message.ChatMessage;
@@ -87,6 +88,9 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
         operateRefuseAndAccept = false;
         operateChangeAndConfirm = false;
         operateCancel = false;
+        if (AppointmentSetting.APPOINT_TYPE_CALL.equals(mChatMessage.getOrderType())) {
+            return;
+        }
         if (TextUtils.isEmpty(mChatMessage.getInnerProcessed())) {
             switch (mChatMessage.getMsgType()) {
                 case ChatMessage.MSG_TYPE_ORDER_START:

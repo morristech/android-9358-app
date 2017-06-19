@@ -41,7 +41,6 @@ public class NotificationCenter {
     private static NotificationCenter ourInstance = new NotificationCenter();
     private static SparseArray<NotifySetting> settingMap = new SparseArray<>();
 
-
     public static final int TYPE_DEFAULT = 0x7601;
     public static final int TYPE_PAY_NOTIFY = 0x7602; //客户买单
     public static final int TYPE_CLUB_VERIFY = 0x7603; // 申请加入会所审核

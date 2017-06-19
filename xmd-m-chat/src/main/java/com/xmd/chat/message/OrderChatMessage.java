@@ -8,6 +8,7 @@ import com.hyphenate.chat.EMMessage;
  */
 
 public class OrderChatMessage extends ChatMessage {
+    private final static String ATTR_ORDER_TYPE = "orderAppointType"; //预约类型,电话，免费，订金，全额
     private final static String ATTR_ORDER_CUSTOMER_PHONE = "orderCustomerPhone"; //客户手机
     private final static String ATTR_ORDER_CUSTOMER_NAME = "orderCustomerName"; //客户名称
     private final static String ATTR_ORDER_TECH_ID = "orderTechId"; //技师ID
@@ -130,5 +131,13 @@ public class OrderChatMessage extends ChatMessage {
 
     public void setInnerProcessed(String processedDesc) {
         setAttr(ATTR_INNER_PROCESSED, processedDesc);
+    }
+
+    public String getOrderType() {
+        return getSafeStringAttribute(ATTR_ORDER_TYPE);
+    }
+
+    public void setOrderType(String type) {
+        setAttr(ATTR_ORDER_TYPE, type);
     }
 }
