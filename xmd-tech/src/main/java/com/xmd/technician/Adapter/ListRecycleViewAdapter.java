@@ -615,7 +615,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
             viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl);
-            viewHolder.dynamicItemName.setText(Utils.StrSubstring(6,dynamicDetail.userName,true));
+            viewHolder.dynamicItemName.setText(Utils.StrSubstring(6, dynamicDetail.userName, true));
             if (Utils.isNotEmpty(dynamicDetail.userEmchatId)) {
                 viewHolder.btnThanks.setVisibility(View.VISIBLE);
                 viewHolder.btnThanks.setClickable(true);
