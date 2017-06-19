@@ -2,6 +2,7 @@ package com.xmd.technician.window;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -25,6 +26,7 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ContactPermissionInfo;
@@ -74,6 +76,8 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private LoginTechnician technician = LoginTechnician.getInstance();
     private int mWaitProcessCount;
 
+    private Handler mHandler = new Handler();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,6 +102,14 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         } else {
             checkBox.setTag(null);
             checkBox.setBackgroundResource(R.drawable.nav_top_close);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    checkBox.setTag("checked");
+                    checkBox.setBackgroundResource(R.drawable.nav_top_open);
+                    technician.setCustomerServiceDisableTime(0L);
+                }
+            }, Constant.CUSTOMER_SERVICE_DISABLE_DURATION + technician.getCustomerServiceDisableTime() - System.currentTimeMillis());
         }
         container.addView(checkBox);
         ((LinearLayout.LayoutParams) checkBox.getLayoutParams()).leftMargin = 16;
@@ -108,6 +120,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                     checkBox.setTag("checked");
                     checkBox.setBackgroundResource(R.drawable.nav_top_open);
                     technician.setCustomerServiceDisableTime(0L);
+                    mHandler.removeCallbacksAndMessages(null);
                 } else {
                     new AlertDialogBuilder(getContext())
                             .setTitle("提示")
@@ -119,6 +132,14 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                                     checkBox.setTag(null);
                                     checkBox.setBackgroundResource(R.drawable.nav_top_close);
                                     technician.setCustomerServiceDisableTime(System.currentTimeMillis());
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            checkBox.setTag("checked");
+                                            checkBox.setBackgroundResource(R.drawable.nav_top_open);
+                                            technician.setCustomerServiceDisableTime(0L);
+                                        }
+                                    }, Constant.CUSTOMER_SERVICE_DISABLE_DURATION);
                                 }
                             })
                             .show();
@@ -170,6 +191,12 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
 
 
         initToolBarCustomerService();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
