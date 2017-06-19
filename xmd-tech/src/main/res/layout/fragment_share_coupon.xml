@@ -131,8 +131,9 @@
 
                             <ImageView
                                 android:id="@+id/img_pay_ticket"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:scaleType="fitCenter"
                                 android:src="@drawable/img_pay_tickets"/>
 
                             <TextView
@@ -168,8 +169,9 @@
 
                             <ImageView
                                 android:id="@+id/img_coupon"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:scaleType="fitCenter"
                                 android:src="@drawable/img_coupon_share"/>
 
                             <TextView
@@ -205,8 +207,9 @@
 
                             <ImageView
                                 android:id="@+id/img_once_card"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:scaleType="fitCenter"
                                 android:src="@drawable/ic_supermarket"/>
 
                             <TextView
@@ -274,8 +277,9 @@
 
                             <ImageView
                                 android:id="@+id/img_limit_grab"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:scaleType="fitCenter"
                                 android:src="@drawable/img_limit_grab"/>
 
                             <TextView
@@ -311,8 +315,9 @@
 
                             <ImageView
                                 android:id="@+id/img_pay_for_me"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:scaleType="fitCenter"
                                 android:src="@drawable/img_pay_for_me"/>
 
                             <TextView
@@ -348,8 +353,9 @@
 
                             <ImageView
                                 android:id="@+id/img_reward"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:scaleType="fitCenter"
                                 android:src="@drawable/img_reward_share"/>
 
                             <TextView
@@ -386,8 +392,9 @@
 
                             <ImageView
                                 android:id="@+id/img_not_online"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:scaleType="fitCenter"
                                 android:src="@drawable/img_line_share"/>
 
                             <TextView
@@ -455,8 +462,9 @@
 
                             <ImageView
                                 android:id="@+id/img_publication"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:scaleType="fitCenter"
                                 android:src="@drawable/img_publication"/>
 
                             <TextView

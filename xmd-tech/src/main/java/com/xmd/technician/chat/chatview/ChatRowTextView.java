@@ -89,7 +89,6 @@ public class ChatRowTextView extends BaseEaseChatView {
         Spannable span = SmileUtils.getSmiledText(mContext, txtBody.getMessage().toString().trim());
         // 设置内容
         contentView.setText(span, TextView.BufferType.EDITABLE);
-
         handleTextMessage();
     }
 

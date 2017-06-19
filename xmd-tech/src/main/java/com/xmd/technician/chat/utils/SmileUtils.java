@@ -15,6 +15,7 @@ package com.xmd.technician.chat.utils;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.Spannable.Factory;
 import android.text.style.ImageSpan;
@@ -90,8 +91,9 @@ public class SmileUtils {
 
     /**
      * 添加文字表情mapping
+     *
      * @param emojiText emoji文本内容
-     * @param icon 图片资源id或者本地路径
+     * @param icon      图片资源id或者本地路径
      */
     public static void addPattern(String emojiText, Object icon) {
         emoticons.put(Pattern.compile(Pattern.quote(emojiText)), icon);
@@ -100,6 +102,7 @@ public class SmileUtils {
 
     /**
      * replace existing spannable with smiles
+     *
      * @param context
      * @param spannable
      * @return
@@ -143,7 +146,7 @@ public class SmileUtils {
     }
 
     public static Spannable getSmiledText(Context context, CharSequence text) {
-        Spannable spannable = spannableFactory.newSpannable(text.toString().replace("&nbsp;", "").trim());
+        Spannable spannable = spannableFactory.newSpannable(Html.fromHtml(text.toString().trim()));
         addSmiles(context, spannable);
         return spannable;
     }
