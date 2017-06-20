@@ -347,6 +347,7 @@ public class Constant {
     public static final String MSG_TYPE_TIME_LIMIT = "timeLimit";
     public static final String MSG_TYPE_ONE_YUAN = "oneYuan";
     public static final String MSG_TYPE_JOURNAL = "journal";
+    public static final String MSG_TYPE_PLUM_FLOWER = "plumFlower";
 
     public static final Map<String, String> MESSAGE_ACTIVITY_LABELS = new LinkedHashMap<String, String>() {{
         put(MSG_TYPE_COUPON, ResourceUtils.getString(R.string.club_coupon));
@@ -354,6 +355,7 @@ public class Constant {
         put(MSG_TYPE_LUCKY_WHEEL, ResourceUtils.getString(R.string.club_lucky_wheel));
         put(MSG_TYPE_ONE_YUAN, ResourceUtils.getString(R.string.club_one_yuan));
         put(MSG_TYPE_JOURNAL, ResourceUtils.getString(R.string.club_journal));
+        put(MSG_TYPE_PLUM_FLOWER, ResourceUtils.getString(R.string.club_one_yuan));
     }};
 
 }
