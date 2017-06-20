@@ -106,11 +106,12 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
         if (result.statusCode == 200) {
             mTotalCount = result.respData.totalCount;
             mBlackListCount = result.respData.blackListCount;
-            if (mTotalCount > 0 && Utils.isEmpty(mCurrentFilterType) && Utils.isEmpty(mUserName)) {
-                mListAdapter.SetDataLoadCompleteDes(String.format("共%s名拓客,已拉黑%s人", mTotalCount, mBlackListCount));
-            } else {
-                mListAdapter.SetDataLoadCompleteDes("");
-            }
+//            if (mTotalCount > 0 && Utils.isEmpty(mCurrentFilterType) && Utils.isEmpty(mUserName)) {
+//                //mListAdapter.SetDataLoadCompleteDes(String.format("共%s名拓客,已拉黑%s人", mTotalCount, mBlackListCount));
+//                mListAdapter.SetDataLoadCompleteDes(String.format("微信用户绑定手机后将合并为一个用户，\n故可能出现用户数与拓客统计不一致的情况"));
+//            } else {
+//                mListAdapter.SetDataLoadCompleteDes("");
+//            }
             if (result.respData.userList.size() == 0 && Utils.isEmpty(mUserName) && Utils.isEmpty(mCurrentFilterType)) {
                 imgScreenContact.setVisibility(View.GONE);
                 llRegisterNone.setVisibility(View.VISIBLE);

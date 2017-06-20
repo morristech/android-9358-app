@@ -122,11 +122,11 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> {
                 llContactNone.setVisibility(View.GONE);
                 imgScreenContact.setVisibility(View.VISIBLE);
             }
-            if (mTotalCount > 0 && Utils.isEmpty(mCurrentFilterType) && Utils.isEmpty(mUserName)) {
-                mListAdapter.SetDataLoadCompleteDes(String.format("共%s名客户,已拉黑%s人", mTotalCount, mBlackListCount));
-            } else {
-                mListAdapter.SetDataLoadCompleteDes("");
-            }
+//            if (mTotalCount > 0 && Utils.isEmpty(mCurrentFilterType) && Utils.isEmpty(mUserName)) {
+//                mListAdapter.SetDataLoadCompleteDes(String.format("共%s名客户,已拉黑%s人", mTotalCount, mBlackListCount));
+//            } else {
+//                mListAdapter.SetDataLoadCompleteDes("");
+//            }
             if (Utils.isNotEmpty(result.respData.serviceStatus) && result.respData.serviceStatus.equals("Y")) {
                 for (int i = 0; i < result.respData.userList.size(); i++) {
                     result.respData.userList.get(i).isService = true;
