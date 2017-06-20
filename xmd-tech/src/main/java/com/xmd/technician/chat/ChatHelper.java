@@ -33,6 +33,7 @@ import com.xmd.technician.chat.db.ChatDBManager;
 import com.xmd.technician.chat.db.UserDao;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
+import com.xmd.technician.chat.event.ReceiveMessage;
 import com.xmd.technician.chat.model.ChatModel;
 import com.xmd.technician.chat.model.EaseNotifier;
 import com.xmd.technician.chat.receiver.CallReceiver;
@@ -46,9 +47,11 @@ import com.xmd.technician.window.TechChatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -927,6 +930,11 @@ public class ChatHelper {
     public void clearUnreadMessage(EMConversation conversation) {
         conversation.markAllMessagesAsRead();
         RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
+    }
+    public static Set<String> messageSetting = new HashSet<>();
+    public static  Set<String> getMessageSeting(){
+
+        return messageSetting;
     }
 
 }
