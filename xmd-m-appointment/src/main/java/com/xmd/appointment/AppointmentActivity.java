@@ -20,6 +20,7 @@ import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.Constants;
 import com.xmd.app.net.BaseBean;
 import com.xmd.app.net.NetworkSubscriber;
+import com.xmd.appointment.beans.AppointmentSetting;
 import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceItem;
 import com.xmd.appointment.beans.Technician;
@@ -102,6 +103,12 @@ public class AppointmentActivity extends BaseActivity
                     @Override
                     public void onCallbackSuccess(AppointmentSettingResult result) {
                         hideLoading();
+                        if (AppointmentSetting.APPOINT_TYPE_CALL.equals(result.getRespData().getAppointType())) {
+                            XToast.show("会所开启的是电话预约！");
+                            EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, null));
+                            finish();
+                            return;
+                        }
                         mData.setAppointmentSetting(result.getRespData());
                         //检查客户预约时间是否有效
                         if (mData.getAppointmentTime() != null && !AppointmentData.isTimeSuitable(mData.getAppointmentTime(), mData.getAppointmentSetting())) {
