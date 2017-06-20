@@ -23,7 +23,7 @@ public class DynamicDetail {
      * avatarUrl : http://sdcm210:8489/s/group00/M00/00/58/oIYBAFdzd5mAJuaBAAAlTUOLJII772.png?st=udTPwlEKBD50QLs543XMXQ&e=1477579362
      */
 
-    public int id;
+    public String id;
     public String userId;
     public String userName;
     public String phoneNum;

@@ -560,19 +560,19 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 mContactName.setText(ResourceUtils.getString(R.string.default_user_name));
             }
             if (mCustomerInfo.customerType.equals(RequestConstant.TECH_ADD)) {
-                customerType.setVisibility(View.VISIBLE);
+                customerType.setVisibility(View.GONE);
                 customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_contacts));
             } else if (mCustomerInfo.customerType.equals(RequestConstant.TEMP_USER)) {
                 customerType.setVisibility(View.VISIBLE);
                 customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.temporary_user));
             } else if (mCustomerInfo.customerType.equals(RequestConstant.FANS_USER)) {
                 customerType.setVisibility(View.VISIBLE);
-                customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
+                customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_contacts));
             } else if (mCustomerInfo.customerType.equals(RequestConstant.FANS_WX_USER)) {
                 customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_weixin));
                 customerOtherType.setVisibility(View.VISIBLE);
                 customerType.setVisibility(View.VISIBLE);
-                customerOtherType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_fans));
+                customerOtherType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_contacts));
             } else {
                 mContactTelephone.setText(ResourceUtils.getString(R.string.contact_telephone) + "未知");
                 customerType.setVisibility(View.VISIBLE);
