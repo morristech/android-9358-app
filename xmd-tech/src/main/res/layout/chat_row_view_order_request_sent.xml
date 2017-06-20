@@ -35,14 +35,15 @@
             android:layout_toLeftOf="@+id/avatar"
             android:background="@drawable/img_order_request"
             android:minWidth="@dimen/bubble_width"
-            android:padding="8dp">
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp">
 
             <TextView
                 android:id="@+id/content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
                 android:textColor="@android:color/white" />
         </FrameLayout>
 
