@@ -375,7 +375,7 @@ public class EaseCommonUtils {
             }
         } else {
             Logger.e("9358", "未获取的类型");
-            chatRow = new ChatRowTextView(context, message, position, adapter);
+        //    chatRow = new ChatRowTextView(context, message, position, adapter);
         }
         return chatRow;
     }
