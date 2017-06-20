@@ -58,7 +58,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
-                                android:maxLength="16"
+                                android:maxLength="10"
                                 android:textColor="@color/contact_item_name_text_color"
                                 android:textSize="@dimen/fontSize"/>
 
