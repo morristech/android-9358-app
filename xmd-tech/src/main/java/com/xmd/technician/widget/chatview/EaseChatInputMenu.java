@@ -115,6 +115,13 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
         imageList.add(inputImageCoupon);
         imageList.add(inputImageMore);
 
+        inputImagePhoto.setVisibility(GONE);
+        inputImageFace.setVisibility(GONE);
+        inputImageCommonMsg.setVisibility(GONE);
+        inputImageCoupon.setVisibility(GONE);
+        inputImageAppointment.setVisibility(GONE);
+        inputImageMore.setVisibility(GONE);
+
         buttonSetModeVoice.setOnClickListener(this);
         buttonSetModeKeyBoard.setOnClickListener(this);
         buttonSend.setOnClickListener(this);

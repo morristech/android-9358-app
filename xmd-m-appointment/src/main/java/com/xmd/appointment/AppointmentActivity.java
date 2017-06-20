@@ -104,7 +104,7 @@ public class AppointmentActivity extends BaseActivity
                     public void onCallbackSuccess(AppointmentSettingResult result) {
                         hideLoading();
                         if (AppointmentSetting.APPOINT_TYPE_CALL.equals(result.getRespData().getAppointType())) {
-                            XToast.show("会所开启的是电话预约！");
+                            XToast.show("抱歉，会所已开通电话预约，该功能暂时无法使用。");
                             EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, null));
                             finish();
                             return;
