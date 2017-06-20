@@ -2,7 +2,6 @@ package com.xmd.cashier.pos;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
@@ -121,8 +120,6 @@ public class PosImpl implements IPos {
             cashierReq.params = WeiPosCashierSign.sign(WeiPosCashierSign.InvokeCashier_BPID, WeiPosCashierSign.InvokeCashier_KEY, "POS",
                     "10004", tradeNo, "水疗项目", null, "1", String.valueOf(money), context.getPackageName(), WeiposResultActivity.class.getName());
             cashierReq.seqNo = "1";
-            RequestResult request = mBizServiceInvoker.request(cashierReq);
-            Log.i("requestCashier", request.token + "," + request.seqNo + "," + request.result);
 
             // 设置结果回调
             mBizServiceInvoker.setOnResponseListener(new BizServiceInvoker.OnResponseListener() {
@@ -164,11 +161,10 @@ public class PosImpl implements IPos {
 
                 }
             });
-            // 发送调用请求
-            RequestResult r = mBizServiceInvoker.request(cashierReq);
-            if (r != null) {
-                Log.d("requestCashier", "request result:" + r.result + "|launchType:" + cashierReq.launchType);
-                switch (r.result) {
+
+            RequestResult request = mBizServiceInvoker.request(cashierReq);
+            if (request != null) {
+                switch (request.result) {
                     case BizServiceInvoker.REQ_SUCCESS: {
                         break;
                     }
@@ -189,10 +185,11 @@ public class PosImpl implements IPos {
                         break;
                     }
                 }
+            } else {
+                callback.onResult("Pos收银回调结果异常", payResult);
             }
-
         } catch (Exception e) {
-            callback.onResult(e.getLocalizedMessage(), payResult);
+            callback.onResult("支付流程异常:" + e.getLocalizedMessage(), payResult);
         }
     }
 
