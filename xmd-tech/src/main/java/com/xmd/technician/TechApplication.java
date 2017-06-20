@@ -102,7 +102,7 @@ public class TechApplication extends MultiDexApplication {
                 }
 
                 //打开友盟错误统计,可以和全局错误拦截器共存
-                MobclickAgent.setCatchUncaughtExceptions(false);
+                MobclickAgent.setCatchUncaughtExceptions(true);
 
                 // 应用入口，禁止默认的页面统计方式
                 MobclickAgent.openActivityDurationTrack(false);

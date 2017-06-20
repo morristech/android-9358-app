@@ -1,13 +1,19 @@
 package com.xmd.technician.window;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.DynamicListResult;
@@ -34,7 +40,8 @@ public class DynamicDetailActivity extends BaseListActivity<DynamicDetail> {
     @Bind(R.id.contact_more)
     LinearLayout toolbarMore;
 
-
+    private UserInfoService userService = UserInfoServiceImpl.getInstance();
+    private User mUser;
     private Subscription mGetRecentlyStatusListSubscription;
     private int mCurrentType = 0;
 
@@ -59,6 +66,20 @@ public class DynamicDetailActivity extends BaseListActivity<DynamicDetail> {
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             onGetListFailed(result.msg);
         } else {
+            XLogger.d("userService", "update by customer detail data");
+            for (DynamicDetail dynamic : result.respData) {
+                if (!TextUtils.isEmpty(dynamic.id)) {
+                    if (Utils.isNotEmpty(dynamic.userId)) {
+                        mUser = new User(dynamic.userId);
+                        mUser.setName(dynamic.userName);
+                        mUser.setChatId(dynamic.userEmchatId);
+                        mUser.setAvatar(dynamic.avatarUrl);
+                        mUser.setMarkName("");
+                        userService.saveUser(mUser);
+                    }
+                }
+            }
+
             onGetListSucceeded(result.pageCount, result.respData);
         }
     }
