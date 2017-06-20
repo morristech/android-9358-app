@@ -374,8 +374,8 @@ public class EaseCommonUtils {
                 chatRow = new ChatRowActivityView(context, message, position, adapter);
             }
         } else {
+            //非自定义消息类型，继续向下执行，不做操作
             Logger.e("9358", "未获取的类型");
-        //    chatRow = new ChatRowTextView(context, message, position, adapter);
         }
         return chatRow;
     }
