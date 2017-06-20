@@ -217,5 +217,13 @@
     <orderEntry type="module" module-name="xmd-m-chat" exported="" />
     <orderEntry type="module" module-name="commonlibrary" exported="" />
     <orderEntry type="module" module-name="xmd-app" exported="" />
+    <orderEntry type="module" module-name="xmd-m-appointment" exported="" />
+    <orderEntry type="module" module-name="xmd-m-chat" exported="" />
+    <orderEntry type="module" module-name="commonlibrary" exported="" />
+    <orderEntry type="module" module-name="xmd-app" exported="" />
+    <orderEntry type="module" module-name="xmd-m-appointment" exported="" />
+    <orderEntry type="module" module-name="xmd-m-chat" exported="" />
+    <orderEntry type="module" module-name="commonlibrary" exported="" />
+    <orderEntry type="module" module-name="xmd-app" exported="" />
   </component>
 </module>

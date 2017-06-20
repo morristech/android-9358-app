@@ -62,7 +62,7 @@ public class ContactPermissionManager {
         ContactPermissionInfo info = mPermissionMap.get(customerId);
         if (info != null && info.hello) {
             //具有全部权限，直接返回
-            XLogger.d("get permission from cache, customerId:" + customerId);
+//            XLogger.d("get permission from cache, customerId:" + customerId);
             listener.onCallbackSuccess(info);
         } else {
             //从网上加载

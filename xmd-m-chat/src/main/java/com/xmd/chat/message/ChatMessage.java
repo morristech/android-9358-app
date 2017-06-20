@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
-import com.shidou.commonlibrary.helper.XLogger;
 
 /**
  * Created by heyangya on 17-6-5.
@@ -78,10 +77,10 @@ public class ChatMessage {
     public String getSafeStringAttribute(String key) {
         try {
             String value = emMessage.getStringAttribute(key);
-            XLogger.d(TAG, "get key=" + key + ",value=" + value);
+//            XLogger.d(TAG, "get key=" + key + ",value=" + value);
             return value;
         } catch (HyphenateException e) {
-            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
+//            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
             return null;
         }
     }
@@ -89,10 +88,10 @@ public class ChatMessage {
     public Integer getSafeIntergeAttribute(String key) {
         try {
             Integer value = emMessage.getIntAttribute(key);
-            XLogger.d(TAG, "get key=" + key + ",value=" + value);
+//            XLogger.d(TAG, "get key=" + key + ",value=" + value);
             return value;
         } catch (HyphenateException e) {
-            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
+//            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
             return null;
         }
     }
@@ -100,10 +99,10 @@ public class ChatMessage {
     public Long getSafeLongAttribute(String key) {
         try {
             Long value = emMessage.getLongAttribute(key);
-            XLogger.d(TAG, "get key=" + key + ",value=" + value);
+//            XLogger.d(TAG, "get key=" + key + ",value=" + value);
             return value;
         } catch (HyphenateException e) {
-            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
+//            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
             return null;
         }
     }

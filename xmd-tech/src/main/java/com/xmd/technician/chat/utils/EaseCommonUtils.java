@@ -36,6 +36,7 @@ import com.xmd.technician.chat.chatview.ChatRowGiftView;
 import com.xmd.technician.chat.chatview.ChatRowLocationView;
 import com.xmd.technician.chat.chatview.ChatRowOrderView;
 import com.xmd.technician.chat.chatview.ChatRowPaidCouponView;
+import com.xmd.technician.chat.chatview.ChatRowTextView;
 import com.xmd.technician.chat.chatview.ChatRowWithdrawView;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
@@ -374,6 +375,7 @@ public class EaseCommonUtils {
             }
         } else {
             Logger.e("9358", "未获取的类型");
+            chatRow = new ChatRowTextView(context, message, position, adapter);
         }
         return chatRow;
     }

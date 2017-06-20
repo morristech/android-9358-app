@@ -67,7 +67,6 @@ import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.chat.event.CancelGame;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Util;
@@ -198,27 +197,29 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tech_chat);
         ButterKnife.bind(this);
-
         toChatUserId = getIntent().getStringExtra(ChatConstant.TO_CHAT_USER_ID); //对方环信ID
         if (TextUtils.isEmpty(toChatUserId)) {
             XToast.show("无法创建聊天，用户聊天ID为空!");
             finish();
             return;
         }
-
         mUser = userService.getUserByChatId(toChatUserId);
         if (mUser == null) {
             XToast.show("无法找到用户：chatId=" + toChatUserId);
             finish();
             return;
         }
-
         initView();
         initSendCoupon();
         initOrderManager();
         initPlayCreditGame();
-        initGoldAnimationView();
-        initAppointment();
+        //延时初始化，优化界面加载速度
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initGoldAnimationView();
+            }
+        }, 100);
     }
 
     private void initView() {
@@ -512,11 +513,6 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         });
 
         isMessageListInited = true;
-    }
-
-    //初始化预约信息
-    private void initAppointment() {
-
     }
 
     @Override
