@@ -27,13 +27,13 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.technician.BuildConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.chat.db.ChatDBManager;
 import com.xmd.technician.chat.db.UserDao;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.event.EventUnreadMessageCount;
-import com.xmd.technician.chat.event.ReceiveMessage;
 import com.xmd.technician.chat.model.ChatModel;
 import com.xmd.technician.chat.model.EaseNotifier;
 import com.xmd.technician.chat.receiver.CallReceiver;
@@ -121,7 +121,7 @@ public class ChatHelper {
         if (ChatUI.getInstance().init(context, options)) {
             appContext = context;
             //调试模式时为true，release模式时为false
-            EMClient.getInstance().setDebugMode(true);
+            EMClient.getInstance().setDebugMode(BuildConfig.DEBUG);
             easeUI = ChatUI.getInstance();
             setEaseUIProviders();
             //initialize preference manager

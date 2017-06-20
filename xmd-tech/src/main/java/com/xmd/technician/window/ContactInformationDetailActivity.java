@@ -546,7 +546,7 @@ public class ContactInformationDetailActivity extends BaseActivity {
                 mContactRemark.setText(mCustomerInfo.remark);
                 textRemarkAlert.setVisibility(View.VISIBLE);
             }
-            customerType.setVisibility(View.VISIBLE);
+            customerType.setVisibility(View.GONE);
             customerType.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_contacts));
         } else {
             mContactOrderLayout.setVisibility(View.VISIBLE);

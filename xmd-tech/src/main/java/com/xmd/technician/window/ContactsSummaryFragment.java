@@ -22,7 +22,6 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ContactHandlerBean;
 import com.xmd.technician.bean.CurrentSelectPage;
 import com.xmd.technician.common.FragmentController;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.TechInfoResult;
