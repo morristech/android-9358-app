@@ -216,6 +216,8 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
             for (EMConversation conversation : list) {
                 ChatMessage lastMessage = ChatMessageFactory.get(conversation.getLastMessage());
                 if (lastMessage == null) {
+                    ChatHelper.getInstance().clearUnreadMessage(conversation);
+                    onLoadPermissionFinish();
                     continue;
                 }
                 String remoteChatId = lastMessage.getFromChatId();
@@ -225,6 +227,8 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
                 if (user == null) {
                     XLogger.e("没有用户信息： chatId=" + remoteChatId);
+                    ChatHelper.getInstance().clearUnreadMessage(conversation);
+                    onLoadPermissionFinish();
                     continue;
                 }
                 ContactPermissionManager.getInstance().getPermission(user.getId(), new NetworkSubscriber<ContactPermissionInfo>() {

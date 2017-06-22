@@ -659,8 +659,13 @@ public class ChatHelper {
                     RxBus.getInstance().post(new EventReceiveMessage(messages));
                     RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
 
+
                     //更新用户信息
                     ChatMessage chatMessage = ChatMessageFactory.get(message);
+//                    XLogger.i("tag:" + chatMessage.getTag());
+//                    XLogger.i("userId:" + chatMessage.getUserId());
+//                    XLogger.i("userName:" + chatMessage.getUserName());
+//                    XLogger.i("message:" + chatMessage.getEmMessage());
                     if (!TextUtils.isEmpty(chatMessage.getUserId())) {
                         User user = new User(chatMessage.getUserId());
                         user.setChatId(chatMessage.getEmMessage().getFrom());
@@ -931,8 +936,10 @@ public class ChatHelper {
         conversation.markAllMessagesAsRead();
         RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
     }
+
     public static Set<String> messageSetting = new HashSet<>();
-    public static  Set<String> getMessageSeting(){
+
+    public static Set<String> getMessageSeting() {
 
         return messageSetting;
     }
