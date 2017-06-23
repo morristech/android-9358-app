@@ -86,8 +86,7 @@ public class LoginTechnician {
     private int orderCount;
 
     private String roles;
-    private String customerService;//Y-是客服；N-非客服
-    private long customerServiceDisableTime; //客服消息关闭时间
+    private String customerService;//rest,working
 
     private boolean needSendLoginEvent = true;
 
@@ -121,8 +120,6 @@ public class LoginTechnician {
 
         //客服消息
         customerService = SharedPreferenceHelper.getCustomerService();
-        customerServiceDisableTime = SharedPreferenceHelper.getCustomerServiceDisableTime();
-
         RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(this::onGetTechPersonalData);
 
         RxBus.getInstance().toObservable(EventTokenExpired.class).subscribe(
@@ -215,7 +212,7 @@ public class LoginTechnician {
         setStatus(techInfo.status);
         setQrCodeUrl(techInfo.qrCodeUrl);
         setShareUrl(techInfo.shareUrl);
-        setCustomerService(techInfo.serviceStatus);
+        setCustomerService(techInfo.customerService);
 
         //开始刷新个人数据
         DataRefreshService.refreshPersonalData(true);
@@ -673,16 +670,5 @@ public class LoginTechnician {
         SharedPreferenceHelper.setCustomerService(customerService);
     }
 
-    public long getCustomerServiceDisableTime() {
-        return customerServiceDisableTime;
-    }
 
-    public void setCustomerServiceDisableTime(long customerServiceDisableTime) {
-        this.customerServiceDisableTime = customerServiceDisableTime;
-        SharedPreferenceHelper.setCustomerServiceDisableTime(customerServiceDisableTime);
-    }
-
-    public boolean isCustomerServiceTimeValid() {
-        return System.currentTimeMillis() - getCustomerServiceDisableTime() >= Constant.CUSTOMER_SERVICE_DISABLE_DURATION;
-    }
 }
