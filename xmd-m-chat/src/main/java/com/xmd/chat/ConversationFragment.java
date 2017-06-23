@@ -18,7 +18,6 @@ import com.xmd.app.BaseFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.appointment.BR;
 import com.xmd.chat.databinding.FragmentConversationBinding;
 import com.xmd.chat.message.ChatMessage;
 

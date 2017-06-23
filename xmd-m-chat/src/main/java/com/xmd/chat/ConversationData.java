@@ -1,5 +1,8 @@
 package com.xmd.chat;
 
+import android.databinding.BindingAdapter;
+import android.widget.ImageView;
+
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.user.User;
 
@@ -19,6 +22,11 @@ public class ConversationData {
         avatar = user.getAvatar();
         this.message = message;
         this.time = DateUtils.getSdf("MMdd HH:mm:ss").format(time);
+    }
+
+    @BindingAdapter("avatar")
+    public static void bindAvatar(ImageView imageView, String url) {
+
     }
 
     public String getName() {
