@@ -1,4 +1,4 @@
-package com.xmd.technician.push;
+package com.xmd.m.notify;
 
 import android.app.Service;
 import android.content.Intent;

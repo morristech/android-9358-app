@@ -22,6 +22,8 @@ import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.m.network.XmdNetwork;
+import com.xmd.m.notify.GetuiPushService;
+import com.xmd.m.notify.GetuiReceiveService;
 import com.xmd.m.notify.NotificationManager;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;
@@ -32,8 +34,6 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.HelloReplyService;
 import com.xmd.technician.msgctrl.ControllerRegister;
 import com.xmd.technician.notify.NotificationCenter;
-import com.xmd.technician.push.GetuiPushService;
-import com.xmd.technician.push.GetuiReceiveService;
 import com.xmd.technician.window.WelcomeActivity;
 
 import java.io.File;

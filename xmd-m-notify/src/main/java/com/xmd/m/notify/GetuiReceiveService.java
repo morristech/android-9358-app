@@ -1,4 +1,4 @@
-package com.xmd.technician.push;
+package com.xmd.m.notify;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -11,8 +11,6 @@ import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.xmd.m.notify.NotificationManager;
-import com.xmd.m.notify.NotifyEvent;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.GetuiPayload;
@@ -23,7 +21,6 @@ import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
-import com.xmd.technician.notify.NotificationCenter;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
 
 import org.greenrobot.eventbus.EventBus;

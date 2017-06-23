@@ -12,6 +12,9 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
     }
     buildTypes {
         release {
@@ -29,12 +32,15 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':xmd-app')
     compile project(':commonlibrary')
+    compile project(':xmd-m-network')
     compile "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:support-v4:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:design:${rootProject.ext.supportLibraryVersion}"
     compile "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
+
+    compile 'com.getui:sdk:2.10.2.0'
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
