@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.shidou.commonlibrary.DataTranslator;
+
 import java.util.List;
 
 /**
@@ -14,7 +16,6 @@ import java.util.List;
  */
 
 public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRecyclerViewAdapter.ViewHolder> {
-
     protected int mHeaderLayout;
     protected int mHeaderBR;
     protected Object mHeader;
@@ -36,6 +37,7 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
 
     protected boolean mInvert;
 
+    //设置列表头
     public CommonRecyclerViewAdapter setHeader(int layoutId, int br, Object data) {
         mHeaderLayout = layoutId;
         mHeaderBR = br;
@@ -43,6 +45,7 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         return this;
     }
 
+    //设置列表尾
     public CommonRecyclerViewAdapter setFooter(int layoutId, int br, Object data) {
         mFooterLayout = layoutId;
         mFooterBR = br;
@@ -50,6 +53,7 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         return this;
     }
 
+    //设置数据
     public CommonRecyclerViewAdapter setData(int layoutId, int br, List<T> data) {
         mDataLayout = layoutId;
         mDataBR = br;
@@ -57,16 +61,19 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         return this;
     }
 
+    //设置统一处理者
     public CommonRecyclerViewAdapter setHandler(int br, Object handler) {
         mHandlerBR = br;
         mHandler = handler;
         return this;
     }
 
+    //是否反序显示
     public void setInvert(boolean invert) {
         mInvert = invert;
     }
 
+    //获取特定位置的数据，index是数据索引，非列表索引
     public T getData(int index) {
         return mData.get(index);
     }
@@ -104,7 +111,8 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
             if (mInvert) {
                 position = mData.size() - position - 1;
             }
-            binding.setVariable(mDataBR, mData.get(position));
+            Object data=mData.get(position);
+            binding.setVariable(mDataBR, data);
         }
         if (mHandler != null) {
             binding.setVariable(mHandlerBR, mHandler);
@@ -154,12 +162,11 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
         }
     }
 
-    protected ViewInflatedListener mViewInflatedListener;
-
+    //设置view在实例化时的监听
+    private ViewInflatedListener mViewInflatedListener;
     public interface ViewInflatedListener {
         void onViewInflated(int viewType, View view);
     }
-
     public void setViewInflatedListener(ViewInflatedListener listener) {
         mViewInflatedListener = listener;
     }

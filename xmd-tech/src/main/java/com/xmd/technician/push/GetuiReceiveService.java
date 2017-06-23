@@ -11,6 +11,8 @@ import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.m.notify.NotificationManager;
+import com.xmd.m.notify.NotifyEvent;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.GetuiPayload;
@@ -23,6 +25,8 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.notify.NotificationCenter;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by heyangya on 17-4-24.
@@ -116,6 +120,8 @@ public class GetuiReceiveService extends GTIntentService {
         //买单通知,获取最新数据
         PayNotifyInfoManager.getInstance().getRecentData(Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT);
         //通知栏提示
-        NotificationCenter.getInstance().notifyPayNotify(null, msg.msgContent);
+        NotifyEvent notifyEvent=new NotifyEvent(NotifyEvent.TYPE_PAY_NOTIFY);
+        notifyEvent.setMessage(msg.msgContent);
+        EventBus.getDefault().post(notifyEvent);
     }
 }

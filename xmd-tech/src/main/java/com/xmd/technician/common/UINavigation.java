@@ -31,7 +31,7 @@ import java.util.Map;
 public class UINavigation {
     public static final String EXTRA_JOIN_CLUB = "extra_join_club";
     public static final String EXTRA_OPEN_JOIN_CLUB_FROM = "extra_join_club_from";
-    public static final String EXTRA_NOTIFY_ID = "extra_notify_id";
+    public static final String EXTRA_NOTIFY_TYPE = "extra_notify_id";
 
     public static final int OPEN_JOIN_CLUB_FROM_START = 1;
     public static final int OPEN_JOIN_CLUB_FROM_MAIN = 3;

@@ -144,7 +144,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     private boolean processNotifyRoute(Intent intent) {
         //处理通知栏的跳转
-        int notifyId = intent.getIntExtra(UINavigation.EXTRA_NOTIFY_ID, -1);
+        int notifyId = intent.getIntExtra(UINavigation.EXTRA_NOTIFY_TYPE, -1);
         if (notifyId > 0) {
             return UINavigation.routeNotify(this, notifyId, intent.getExtras());
         }

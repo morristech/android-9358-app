@@ -147,6 +147,7 @@ dependencies {
     compile project(':xmd-app')
     compile project(':xmd-m-appointment')
     compile project(':xmd-m-chat')
+    compile project(':xmd-m-notify')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
     compile(name: 'permission-tool-1.0', ext: 'aar')
     compile(name: 'xmd-image-tool-1.0', ext: 'aar')

@@ -22,6 +22,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
+import com.xmd.m.notify.NotificationManager;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
@@ -108,7 +109,8 @@ public class TechApplication extends MultiDexApplication {
                 MobclickAgent.openActivityDurationTrack(false);
 
                 //初始化通知中心
-                NotificationCenter.init(this);
+                NotificationManager.getInstance().init(this);
+                NotificationCenter.getInstance().init(this);
 
                 //初始化线程池
                 ThreadPoolManager.init(this);
