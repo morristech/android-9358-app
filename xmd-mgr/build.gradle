@@ -163,6 +163,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':commonlibrary')
+    compile project(':xmd-m-network')
     compile project(':xmd-app')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
     compile(name: 'xmd-image-crop-1.0', ext: 'aar')

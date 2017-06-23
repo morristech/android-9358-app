@@ -9,9 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.m.network.OkHttpUtil;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;

@@ -1,9 +1,9 @@
 package com.xmd.appointment;
 
-import com.xmd.app.net.BaseBean;
 import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.TechnicianListResult;
+import com.xmd.m.network.BaseBean;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

@@ -1,6 +1,6 @@
 package com.xmd.manager.service;
 
-import com.shidou.commonlibrary.network.OkHttpUtil;
+import com.xmd.m.network.OkHttpUtil;
 import com.xmd.manager.SharedPreferenceHelper;
 
 import retrofit2.Retrofit;

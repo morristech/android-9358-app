@@ -3,7 +3,7 @@ package com.xmd.technician;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
-import com.xmd.app.XmdApp;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.model.LoginTechnician;
 
@@ -176,7 +176,7 @@ public class SharedPreferenceHelper {
     }
 
     public static void setServerHost(String serverHost) {
-        XmdApp.getInstance().setServer(serverHost);
+        XmdNetwork.getInstance().changeServer(serverHost);
         mSettingPreference.edit().putString(KEY_SERVER_HOST, serverHost).apply();
     }
 

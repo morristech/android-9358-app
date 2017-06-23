@@ -1,7 +1,7 @@
 package com.xmd.cashier.dal.net;
 
-import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.xmd.cashier.dal.sp.SPManager;
+import com.xmd.m.network.OkHttpUtil;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;

@@ -17,14 +17,14 @@ import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
-import com.xmd.app.net.BaseBean;
-import com.xmd.app.net.NetworkEngine;
-import com.xmd.app.net.NetworkSubscriber;
-import com.xmd.app.net.RetrofitFactory;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -112,10 +112,11 @@ public class AliveReportService extends Service {
 
     private static void reportAlive(final String token) {
         XLogger.i(">>>reportAlive: " + token);
+        Observable<BaseBean> observable = XmdNetwork.getInstance()
+                .getService(NetService.class)
+                .reportAlive(token, DeviceInfoUtils.getDeviceId(XmdApp.getInstance().getContext()));
         mRequestSubscription =
-                NetworkEngine.doRequest(
-                        RetrofitFactory.getService(NetService.class).reportAlive(token, DeviceInfoUtils.getDeviceId(XmdApp.getInstance().getContext())),
-                        new NetworkSubscriber<BaseBean>() {
+                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
                             @Override
                             public void onCallbackSuccess(BaseBean result) {
                                 mLastReportSuccess = true;

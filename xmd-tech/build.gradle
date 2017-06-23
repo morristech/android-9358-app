@@ -144,6 +144,7 @@ dependencies {
     //依赖文件
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':commonlibrary')
+    compile project(':xmd-m-network')
     compile project(':xmd-app')
     compile project(':xmd-m-appointment')
     compile project(':xmd-m-chat')

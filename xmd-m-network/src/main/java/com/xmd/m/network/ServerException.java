@@ -1,4 +1,4 @@
-package com.xmd.app.net;
+package com.xmd.m.network;
 
 /**
  * Created by heyangya on 16-8-30.

@@ -1,6 +1,6 @@
-package com.xmd.app.net;
+package com.xmd.m.network;
 
-import com.xmd.app.event.EventTokenExpired;
+import com.shidou.commonlibrary.helper.XLogger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,7 +26,8 @@ public abstract class NetworkSubscriber<T> extends Subscriber<T> {
                 EventBus.getDefault().post(new EventTokenExpired("server return 401"));
             }
         }
-        onCallbackError(e);
+        XLogger.e("", "network error:" + e.getMessage(), e);
+        onCallbackError(new NetworkException(e.getMessage()));
     }
 
     @Override

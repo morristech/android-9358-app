@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
-import com.xmd.app.event.EventTokenExpired;
+import com.xmd.m.network.EventTokenExpired;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.DataRefreshService;

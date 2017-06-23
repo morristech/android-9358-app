@@ -13,6 +13,7 @@ import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.XmdApp;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ToastUtils;
@@ -54,10 +55,12 @@ public class ManagerApplication extends Application {
                 XLogger.setGloableTag("9358");
                 printMachineInfo();
 
+                SharedPreferenceHelper.initialize();
+
                 //初始化网络库
-                com.shidou.commonlibrary.network.OkHttpUtil.init(getFilesDir() + File.separator + "networkCache", 10 * 1024 * 1024, 10000, 10000, 10000);
-                com.shidou.commonlibrary.network.OkHttpUtil.getInstance().setLog(BuildConfig.DEBUG);
-                com.shidou.commonlibrary.network.OkHttpUtil.getInstance().setCommonHeader("User-Agent", getUserAgent());
+                XmdNetwork.getInstance().init(this, getUserAgent(), SharedPreferenceHelper.getServerHost());
+                XmdNetwork.getInstance().setDebug(BuildConfig.DEBUG);
+                XmdNetwork.getInstance().setToken(SharedPreferenceHelper.getUserToken()); //处理旧的toke数据
 
                 //初始化错误拦截器
                 CrashHandler.getInstance().init(getApplicationContext(), new CrashHandler.Callback() {

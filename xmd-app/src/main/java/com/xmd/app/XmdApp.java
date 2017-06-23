@@ -3,12 +3,11 @@ package com.xmd.app;
 import android.content.Context;
 
 import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.xmd.app.alive.InitAliveReport;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
-import com.xmd.app.net.RetrofitFactory;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,17 +74,21 @@ public class XmdApp {
     }
 
     /**
-     * 切换服务器环境时调用
-     *
-     * @param server 服务器地址 : http://xxx
+     * 登录事件，设置token到header
      */
-    public void setServer(String server) {
-        if (mServer != null && !mServer.equals(server)) {
-            mServer = server;
-            RetrofitFactory.clear();
-        } else {
-            mServer = server;
-        }
+    @Subscribe(sticky = true)
+    public void onLogin(EventLogin eventLogin) {
+        XLogger.i("event login, set token " + eventLogin.getToken());
+        XmdNetwork.getInstance().setToken(eventLogin.getToken());
+    }
+
+    /**
+     * 登出事件 ，清除token
+     */
+    @Subscribe(sticky = true)
+    public void onLogout(EventLogout eventLogout) {
+        XLogger.i("event logout, clear token ");
+        XmdNetwork.getInstance().setToken(null);
     }
 
 
@@ -97,17 +100,6 @@ public class XmdApp {
         return mServer;
     }
 
-    @Subscribe(sticky = true)
-    public void onLogin(EventLogin eventLogin) {
-        XLogger.i("event login, set token " + eventLogin.getToken());
-        OkHttpUtil.getInstance().setCommonHeader("token", eventLogin.getToken());
-    }
-
-    @Subscribe(sticky = true)
-    public void onLogout(EventLogout eventLogout) {
-        XLogger.i("event logout, clear token ");
-        OkHttpUtil.getInstance().setCommonHeader("token", "");
-    }
 
     public void setToken(String token) {
         this.mToken = token;

@@ -20,10 +20,10 @@ import android.view.WindowManager;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.BaseDialogFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
-import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.appointment.beans.TechnicianListResult;
 import com.xmd.appointment.databinding.FragmentTechSelectBinding;
+import com.xmd.m.network.NetworkSubscriber;
 
 import java.util.ArrayList;
 
@@ -108,7 +108,7 @@ public class TechSelectFragment extends BaseDialogFragment {
                 mock.setId(mEmptyTechId);
                 mock.setName("到店选择");
                 result.getRespData().add(0, mock);
-                mAdapter.setData(R.layout.list_item_technician, BR.data, result.getRespData());
+                mAdapter.setData(R.layout.list_item_technician, com.xmd.appointment.BR.data, result.getRespData());
                 mAdapter.notifyDataSetChanged();
                 //检查是否需要选中技师
                 if (mSelectedTechId != null) {

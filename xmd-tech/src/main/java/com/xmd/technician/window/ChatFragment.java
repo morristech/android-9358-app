@@ -21,14 +21,13 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.app.net.BaseBean;
-import com.xmd.app.net.NetworkEngine;
-import com.xmd.app.net.NetworkSubscriber;
-import com.xmd.app.net.RetrofitFactory;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -57,6 +56,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
+import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -401,7 +401,10 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                 }
                 isChangingCustomerStatus = true;
                 if (checkBox.getTag() == null) {
-                    changeCustomerStatusSubscription = NetworkEngine.doRequest(RetrofitFactory.getService(NetService.class).changeCustomerStatus(Constant.CUSTOMER_STATUS_WORKING), new NetworkSubscriber<BaseBean>() {
+                    Observable<BaseBean> observable = XmdNetwork.getInstance()
+                            .getService(NetService.class)
+                            .changeCustomerStatus(Constant.CUSTOMER_STATUS_WORKING);
+                    changeCustomerStatusSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
                         @Override
                         public void onCallbackSuccess(BaseBean result) {
                             isChangingCustomerStatus = false;
@@ -423,20 +426,24 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
                             .setPositiveButton("确定", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    changeCustomerStatusSubscription = NetworkEngine.doRequest(RetrofitFactory.getService(NetService.class).changeCustomerStatus(Constant.CUSTOMER_STATUS_REST), new NetworkSubscriber<BaseBean>() {
-                                        @Override
-                                        public void onCallbackSuccess(BaseBean result) {
-                                            isChangingCustomerStatus = false;
-                                            checkBox.setTag(null);
-                                            checkBox.setBackgroundResource(R.drawable.nav_top_close);
-                                        }
+                                    Observable<BaseBean> observable = XmdNetwork.getInstance()
+                                            .getService(NetService.class)
+                                            .changeCustomerStatus(Constant.CUSTOMER_STATUS_REST);
+                                    changeCustomerStatusSubscription = XmdNetwork.getInstance()
+                                            .request(observable, new NetworkSubscriber<BaseBean>() {
+                                                @Override
+                                                public void onCallbackSuccess(BaseBean result) {
+                                                    isChangingCustomerStatus = false;
+                                                    checkBox.setTag(null);
+                                                    checkBox.setBackgroundResource(R.drawable.nav_top_close);
+                                                }
 
-                                        @Override
-                                        public void onCallbackError(Throwable e) {
-                                            isChangingCustomerStatus = false;
-                                            XToast.show("修改状态失败！");
-                                        }
-                                    });
+                                                @Override
+                                                public void onCallbackError(Throwable e) {
+                                                    isChangingCustomerStatus = false;
+                                                    XToast.show("修改状态失败！");
+                                                }
+                                            });
                                 }
                             })
                             .show();

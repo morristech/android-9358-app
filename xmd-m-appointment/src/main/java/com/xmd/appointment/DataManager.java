@@ -1,12 +1,11 @@
 package com.xmd.appointment;
 
-import com.xmd.app.net.BaseBean;
-import com.xmd.app.net.NetworkEngine;
-import com.xmd.app.net.NetworkSubscriber;
-import com.xmd.app.net.RetrofitFactory;
 import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.beans.TechnicianListResult;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
 import rx.Subscription;
 
@@ -31,8 +30,8 @@ class DataManager {
     //加载技师列表
     public void loadTechnicianList(String serviceItemId, final NetworkSubscriber<TechnicianListResult> listener) {
         cancelLoadTechnicianList();
-        mLoadTechnicianList = NetworkEngine.doRequest(
-                RetrofitFactory.getService(NetService.class).getTechnicianList(1, Integer.MAX_VALUE, serviceItemId, null, null, null), listener);
+        mLoadTechnicianList = XmdNetwork.getInstance().request(
+                XmdNetwork.getInstance().getService(NetService.class).getTechnicianList(1, Integer.MAX_VALUE, serviceItemId, null, null, null), listener);
     }
 
     public void cancelLoadTechnicianList() {
@@ -46,8 +45,8 @@ class DataManager {
     //加载服务列表
     public void loadServiceList(final NetworkSubscriber<ServiceListResult> listener) {
         cancelLoadServiceList();
-        mLoadServiceList = NetworkEngine.doRequest(
-                RetrofitFactory.getService(NetService.class).getServiceList(), listener);
+        mLoadServiceList = XmdNetwork.getInstance().request(
+                XmdNetwork.getInstance().getService(NetService.class).getServiceList(), listener);
     }
 
     public void cancelLoadServiceList() {
@@ -60,8 +59,8 @@ class DataManager {
     //加载额外预约信息，包括技师预约时间，技师项目信息
     public void loadAppointmentExt(String techId, String userId, final NetworkSubscriber<AppointmentSettingResult> listener) {
         cancelLoadAppointmentExt();
-        mLoadAppointmentExt = NetworkEngine.doRequest(
-                RetrofitFactory.getService(NetService.class).getAppointmentExt(techId, userId), listener);
+        mLoadAppointmentExt = XmdNetwork.getInstance().request(
+                XmdNetwork.getInstance().getService(NetService.class).getAppointmentExt(techId, userId), listener);
     }
 
     public void cancelLoadAppointmentExt() {
@@ -73,8 +72,8 @@ class DataManager {
 
     //创建订单
     public void submitAppointment(AppointmentData data, NetworkSubscriber<BaseBean> listener) {
-        NetworkEngine.doRequest(
-                RetrofitFactory
+        XmdNetwork.getInstance().request(
+                XmdNetwork.getInstance()
                         .getService(NetService.class)
                         .submitAppointment(
                                 null,

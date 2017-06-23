@@ -18,13 +18,13 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.Constants;
-import com.xmd.app.net.BaseBean;
-import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.appointment.beans.AppointmentSetting;
 import com.xmd.appointment.beans.AppointmentSettingResult;
 import com.xmd.appointment.beans.ServiceItem;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.appointment.databinding.ActivityAppointmentBinding;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
 
 import org.greenrobot.eventbus.EventBus;
 

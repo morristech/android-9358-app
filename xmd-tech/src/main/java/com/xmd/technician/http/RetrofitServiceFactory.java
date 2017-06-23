@@ -1,10 +1,9 @@
 package com.xmd.technician.http;
 
-import com.shidou.commonlibrary.network.OkHttpUtil;
+import com.xmd.m.network.OkHttpUtil;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.SharedPreferenceHelper;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
