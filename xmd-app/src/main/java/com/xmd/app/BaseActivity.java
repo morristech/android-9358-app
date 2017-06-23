@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XProgressDialog;
 import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.app.event.EventTokenExpired;
+import com.xmd.m.network.EventTokenExpired;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

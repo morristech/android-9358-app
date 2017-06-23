@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
@@ -34,6 +33,7 @@ import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
+import com.xmd.m.network.OkHttpUtil;
 
 import rx.Subscription;
 

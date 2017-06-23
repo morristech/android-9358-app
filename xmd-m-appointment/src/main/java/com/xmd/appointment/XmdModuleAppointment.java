@@ -7,8 +7,8 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.Constants;
 import com.xmd.app.IFunctionInit;
 import com.xmd.app.XmdApp;
-import com.xmd.app.net.BaseBean;
-import com.xmd.app.net.NetworkSubscriber;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

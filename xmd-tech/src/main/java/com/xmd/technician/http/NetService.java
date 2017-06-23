@@ -1,6 +1,7 @@
 package com.xmd.technician.http;
 
-import com.xmd.app.net.BaseBean;
+
+import com.xmd.m.network.BaseBean;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

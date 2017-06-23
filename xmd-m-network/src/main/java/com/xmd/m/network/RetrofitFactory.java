@@ -1,7 +1,4 @@
-package com.xmd.app.net;
-
-import com.shidou.commonlibrary.network.OkHttpUtil;
-import com.xmd.app.XmdApp;
+package com.xmd.m.network;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,16 +9,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by heyangya on 17-5-25.
+ * retrofit
  */
 
-public class RetrofitFactory {
+class RetrofitFactory {
     private static Map<String, Object> mServiceMap = new HashMap<>();
+    private static String baseUrl;
 
-    public static synchronized <T> T getService(Class<T> serviceClass) {
+    static synchronized <T> T getService(Class<T> serviceClass) {
         Object service = mServiceMap.get(serviceClass.getName());
         if (service == null) {
             service = new Retrofit.Builder()
-                    .baseUrl(XmdApp.getInstance().getServer())
+                    .baseUrl(baseUrl)
                     .client(OkHttpUtil.getInstance().getClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -32,7 +31,15 @@ public class RetrofitFactory {
         return (T) service;
     }
 
-    public static void clear() {
+    static void clear() {
         mServiceMap.clear();
+    }
+
+    public static String getBaseUrl() {
+        return baseUrl;
+    }
+
+    static void setBaseUrl(String baseUrl) {
+        RetrofitFactory.baseUrl = baseUrl;
     }
 }

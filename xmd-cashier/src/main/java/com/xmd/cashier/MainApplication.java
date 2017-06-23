@@ -7,7 +7,6 @@ import android.os.Process;
 
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.cashier.activity.BaseActivity;
@@ -19,6 +18,7 @@ import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.DataReportManager;
 import com.xmd.cashier.service.CustomService;
+import com.xmd.m.network.OkHttpUtil;
 
 import java.io.File;
 import java.util.ArrayList;

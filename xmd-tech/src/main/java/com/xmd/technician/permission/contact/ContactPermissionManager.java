@@ -2,10 +2,9 @@ package com.xmd.technician.permission.contact;
 
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.xmd.app.net.BaseBean;
-import com.xmd.app.net.NetworkEngine;
-import com.xmd.app.net.NetworkSubscriber;
-import com.xmd.app.net.RetrofitFactory;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.technician.bean.ContactPermissionInfo;
 import com.xmd.technician.http.RequestConstant;
 
@@ -71,8 +70,8 @@ public class ContactPermissionManager {
                 subscription.unsubscribe();
             }
             subscription =
-                    NetworkEngine.doRequest(
-                            RetrofitFactory.getService(ContactPermissionNet.class).getContactPermissionInfo(customerId, null),
+                    XmdNetwork.getInstance().request(
+                            XmdNetwork.getInstance().getService(ContactPermissionNet.class).getContactPermissionInfo(customerId, null),
                             new NetworkSubscriber<BaseBean<ContactPermissionInfo>>() {
                                 @Override
                                 public void onCallbackSuccess(BaseBean<ContactPermissionInfo> result) {

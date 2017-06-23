@@ -3,8 +3,8 @@ package com.xmd.manager;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
-import com.shidou.commonlibrary.network.OkHttpUtil;
-import com.xmd.app.XmdApp;
+import com.xmd.m.network.OkHttpUtil;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.manager.service.response.LoginResult;
 
 /**
@@ -158,7 +158,7 @@ public class SharedPreferenceHelper {
     }
 
     public static void setServerHost(String serverHost) {
-        XmdApp.getInstance().setServer(serverHost);
+        XmdNetwork.getInstance().changeServer(serverHost);
         mSettingPreference.edit().putString(KEY_SERVER_HOST, serverHost).apply();
     }
 

@@ -22,12 +22,12 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.BaseDialogFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
-import com.xmd.app.net.NetworkSubscriber;
 import com.xmd.appointment.beans.ServiceCategory;
 import com.xmd.appointment.beans.ServiceData;
 import com.xmd.appointment.beans.ServiceItem;
 import com.xmd.appointment.beans.ServiceListResult;
 import com.xmd.appointment.databinding.FragmentServiceItemSelectBinding;
+import com.xmd.m.network.NetworkSubscriber;
 
 import java.util.ArrayList;
 import java.util.Iterator;

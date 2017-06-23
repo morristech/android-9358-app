@@ -1,4 +1,4 @@
-package com.shidou.commonlibrary.network;
+package com.xmd.m.network;
 
 import android.text.TextUtils;
 
@@ -63,7 +63,15 @@ public class OkHttpUtil {
 
     //设置全局头部
     public void setCommonHeader(String key, String value) {
-        mCommonHeader.put(key, value);
+        if (value != null) {
+            mCommonHeader.put(key, value);
+        } else {
+            removeCommonHeader(key);
+        }
+    }
+
+    public void removeCommonHeader(String key) {
+        mCommonHeader.remove(key);
     }
 
     //返回全局client

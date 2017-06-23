@@ -95,6 +95,7 @@ android {
 dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':commonlibrary')
+    compile project(':xmd-m-network')
     compile(name: 'shidou-updater-1.3', ext: 'aar')
     compile(name: 'shidou-zxinglibrary-1.0', ext: 'aar')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"

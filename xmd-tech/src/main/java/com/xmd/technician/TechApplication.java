@@ -14,7 +14,6 @@ import com.igexin.sdk.PushManager;
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.network.OkHttpUtil;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
@@ -23,6 +22,7 @@ import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.m.notify.NotificationManager;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
@@ -80,9 +80,9 @@ public class TechApplication extends MultiDexApplication {
                 printMachineInfo();
 
                 //初始化网络库
-                OkHttpUtil.init(getFilesDir() + File.separator + "networkCache", 10 * 1024 * 1024, 10000, 10000, 10000);
-                OkHttpUtil.getInstance().setLog(BuildConfig.DEBUG);
-                OkHttpUtil.getInstance().setCommonHeader("User-Agent", getUserAgent());
+                XmdNetwork.getInstance().init(this, getUserAgent(), SharedPreferenceHelper.getServerHost());
+                XmdNetwork.getInstance().setDebug(BuildConfig.DEBUG);
+                XmdNetwork.getInstance().setToken(SharedPreferenceHelper.getUserToken()); //处理旧的toke数据
 
                 //初始化错误拦截器
                 CrashHandler.getInstance().init(getApplicationContext(), new CrashHandler.Callback() {

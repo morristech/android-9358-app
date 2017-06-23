@@ -3,16 +3,14 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-9358-app.iml" filepath="$PROJECT_DIR$/android-9358-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android-9358-tech.iml" filepath="$PROJECT_DIR$/android-9358-tech.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android-crop/android-crop.iml" filepath="$PROJECT_DIR$/android-crop/android-crop.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonlibrary/commonlibrary.iml" filepath="$PROJECT_DIR$/commonlibrary/commonlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/loading-view/loading-view.iml" filepath="$PROJECT_DIR$/loading-view/loading-view.iml" />
-      <module fileurl="file://$PROJECT_DIR$/permission-tool/permission-tool.iml" filepath="$PROJECT_DIR$/permission-tool/permission-tool.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-app/xmd-app.iml" filepath="$PROJECT_DIR$/xmd-app/xmd-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-cashier/xmd-cashier.iml" filepath="$PROJECT_DIR$/xmd-cashier/xmd-cashier.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-m-appointment/xmd-m-appointment.iml" filepath="$PROJECT_DIR$/xmd-m-appointment/xmd-m-appointment.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-m-chat/xmd-m-chat.iml" filepath="$PROJECT_DIR$/xmd-m-chat/xmd-m-chat.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-m-notify/xmd-m-notify.iml" filepath="$PROJECT_DIR$/xmd-m-notify/xmd-m-notify.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xmd-m-network/xmd-m-network.iml" filepath="$PROJECT_DIR$/xmd-m-network/xmd-m-network.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-mgr/xmd-mgr.iml" filepath="$PROJECT_DIR$/xmd-mgr/xmd-mgr.iml" />
       <module fileurl="file://$PROJECT_DIR$/xmd-tech/xmd-tech.iml" filepath="$PROJECT_DIR$/xmd-tech/xmd-tech.iml" />
     </modules>

@@ -1,6 +1,6 @@
 package com.xmd.appointment.beans;
 
-import com.xmd.app.net.BaseBean;
+import com.xmd.m.network.BaseBean;
 
 import java.util.List;
 

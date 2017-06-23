@@ -3,6 +3,7 @@ package com.xmd.chat;
 import android.content.Context;
 
 import com.hyphenate.chat.EMClient;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.IFunctionInit;
 
 /**
@@ -10,7 +11,7 @@ import com.xmd.app.IFunctionInit;
  * 聊天模块
  */
 
-public class XmdChat implements IFunctionInit{
+public class XmdChat implements IFunctionInit {
     private static final XmdChat ourInstance = new XmdChat();
 
     public static XmdChat getInstance() {
@@ -22,6 +23,7 @@ public class XmdChat implements IFunctionInit{
 
     @Override
     public void init(Context context) {
+        XLogger.i("---------聊天系统初始化---------------");
         //获取所有的会话消息
         EMClient.getInstance().groupManager().loadAllGroups();
         EMClient.getInstance().chatManager().loadAllConversations();
