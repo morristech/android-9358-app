@@ -47,6 +47,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_PERMISSION_SYNC_DATE = "5d2de249318aa422e6937cb56b8952b3";
     private static final String KEY_ROLES = "850492d1891afe4a11982b73224b7e40";
     private static final String KEY_CUSTOMER_SERVICE = "fb776cf319f0518d402d9da706264898";
+    private static final String KEY_CUSTOMER_SERVICE_DISABLE_TIME = "5bdfa871a23b791c77bc1a7f99acd710";
     /**
      * Last time to check the upgrade automatically
      */
@@ -420,5 +421,13 @@ public class SharedPreferenceHelper {
 
     public static String getCustomerService() {
         return mSettingPreference.getString(KEY_CUSTOMER_SERVICE, "");
+    }
+
+    public static Long getCustomerServiceDisableTime() {
+        return mSettingPreference.getLong(KEY_CUSTOMER_SERVICE_DISABLE_TIME, 0);
+    }
+
+    public static void setCustomerServiceDisableTime(Long time) {
+        mSettingPreference.edit().putLong(KEY_CUSTOMER_SERVICE_DISABLE_TIME, time).apply();
     }
 }

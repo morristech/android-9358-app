@@ -347,7 +347,6 @@ public class Constant {
     public static final String CHAT_MENU_APPOINTMENT = "11";
     public static final String CHAT_MENU_APPOINTMENT_REQUEST = "12";
 
-    public static final String CUSTOMER_STATUS_WORKING = "working";
-    public static final String CUSTOMER_STATUS_REST = "rest";
+    public static final long CUSTOMER_SERVICE_DISABLE_DURATION = 12 * 3600 * 1000L;
 }
 

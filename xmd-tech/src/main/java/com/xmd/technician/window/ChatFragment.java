@@ -2,6 +2,7 @@ package com.xmd.technician.window;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -20,11 +21,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.app.net.BaseBean;
-import com.xmd.app.net.NetworkEngine;
 import com.xmd.app.net.NetworkSubscriber;
-import com.xmd.app.net.RetrofitFactory;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatMessageFactory;
@@ -41,7 +38,6 @@ import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.chat.event.EventReceiveMessage;
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.http.NetService;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -80,8 +76,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     private LoginTechnician technician = LoginTechnician.getInstance();
     private int mWaitProcessCount;
 
-    private boolean isChangingCustomerStatus;
-    private Subscription changeCustomerStatusSubscription;
+    private Handler mHandler = new Handler();
 
     @Nullable
     @Override
@@ -89,6 +84,68 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.message_fragment_title);
         return view;
+    }
+
+    private void initToolBarCustomerService() {
+        if (!"Y".equals(technician.getCustomerService())) {
+            return;
+        }
+        LinearLayout container = (LinearLayout) getView().findViewById(R.id.contact_more);
+        container.setVisibility(View.VISIBLE);
+        ImageView imageView = (ImageView) getView().findViewById(R.id.toolbar_right_img);
+        imageView.setImageResource(R.drawable.ic_service);
+        TextView checkBox = new TextView(getContext());
+        boolean open = technician.isCustomerServiceTimeValid();
+        if (open) {
+            checkBox.setTag("checked");
+            checkBox.setBackgroundResource(R.drawable.nav_top_open);
+        } else {
+            checkBox.setTag(null);
+            checkBox.setBackgroundResource(R.drawable.nav_top_close);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    checkBox.setTag("checked");
+                    checkBox.setBackgroundResource(R.drawable.nav_top_open);
+                    technician.setCustomerServiceDisableTime(0L);
+                }
+            }, Constant.CUSTOMER_SERVICE_DISABLE_DURATION + technician.getCustomerServiceDisableTime() - System.currentTimeMillis());
+        }
+        container.addView(checkBox);
+        ((LinearLayout.LayoutParams) checkBox.getLayoutParams()).leftMargin = 16;
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkBox.getTag() == null) {
+                    checkBox.setTag("checked");
+                    checkBox.setBackgroundResource(R.drawable.nav_top_open);
+                    technician.setCustomerServiceDisableTime(0L);
+                    mHandler.removeCallbacksAndMessages(null);
+                } else {
+                    new AlertDialogBuilder(getContext())
+                            .setTitle("提示")
+                            .setMessage("关闭后，收到客服消息后不会进行提醒，12小时后会自动开启，是否要关闭？")
+                            .setNegativeButton("取消", null)
+                            .setPositiveButton("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    checkBox.setTag(null);
+                                    checkBox.setBackgroundResource(R.drawable.nav_top_close);
+                                    technician.setCustomerServiceDisableTime(System.currentTimeMillis());
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            checkBox.setTag("checked");
+                                            checkBox.setBackgroundResource(R.drawable.nav_top_open);
+                                            technician.setCustomerServiceDisableTime(0L);
+                                        }
+                                    }, Constant.CUSTOMER_SERVICE_DISABLE_DURATION);
+                                }
+                            })
+                            .show();
+                }
+            }
+        });
     }
 
 
@@ -139,9 +196,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (changeCustomerStatusSubscription != null) {
-            changeCustomerStatusSubscription.unsubscribe();
-        }
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -373,76 +428,5 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         return false;
     }
 
-
-    //显示客服上下线开关
-    private void initToolBarCustomerService() {
-        if (technician.getCustomerService() == null) {
-            return;
-        }
-        LinearLayout container = (LinearLayout) getView().findViewById(R.id.contact_more);
-        container.setVisibility(View.VISIBLE);
-        ImageView imageView = (ImageView) getView().findViewById(R.id.toolbar_right_img);
-        imageView.setImageResource(R.drawable.ic_service);
-        TextView checkBox = new TextView(getContext());
-        if (Constant.CUSTOMER_STATUS_WORKING.equals(technician.getCustomerService())) {
-            checkBox.setTag("checked");
-            checkBox.setBackgroundResource(R.drawable.nav_top_open);
-        } else {
-            checkBox.setTag(null);
-            checkBox.setBackgroundResource(R.drawable.nav_top_close);
-        }
-        container.addView(checkBox);
-        ((LinearLayout.LayoutParams) checkBox.getLayoutParams()).leftMargin = 16;
-        checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isChangingCustomerStatus) {
-                    return;
-                }
-                isChangingCustomerStatus = true;
-                if (checkBox.getTag() == null) {
-                    changeCustomerStatusSubscription = NetworkEngine.doRequest(RetrofitFactory.getService(NetService.class).changeCustomerStatus(Constant.CUSTOMER_STATUS_WORKING), new NetworkSubscriber<BaseBean>() {
-                        @Override
-                        public void onCallbackSuccess(BaseBean result) {
-                            isChangingCustomerStatus = false;
-                            checkBox.setTag("checked");
-                            checkBox.setBackgroundResource(R.drawable.nav_top_open);
-                        }
-
-                        @Override
-                        public void onCallbackError(Throwable e) {
-                            isChangingCustomerStatus = false;
-                            XToast.show("修改状态失败！");
-                        }
-                    });
-                } else {
-                    new AlertDialogBuilder(getContext())
-                            .setTitle("提示")
-                            .setMessage("关闭后，不再接收新客服消息，不影响其他消息的接收，是否确定关闭？")
-                            .setNegativeButton("取消", null)
-                            .setPositiveButton("确定", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    changeCustomerStatusSubscription = NetworkEngine.doRequest(RetrofitFactory.getService(NetService.class).changeCustomerStatus(Constant.CUSTOMER_STATUS_REST), new NetworkSubscriber<BaseBean>() {
-                                        @Override
-                                        public void onCallbackSuccess(BaseBean result) {
-                                            isChangingCustomerStatus = false;
-                                            checkBox.setTag(null);
-                                            checkBox.setBackgroundResource(R.drawable.nav_top_close);
-                                        }
-
-                                        @Override
-                                        public void onCallbackError(Throwable e) {
-                                            isChangingCustomerStatus = false;
-                                            XToast.show("修改状态失败！");
-                                        }
-                                    });
-                                }
-                            })
-                            .show();
-                }
-            }
-        });
-    }
 
 }
