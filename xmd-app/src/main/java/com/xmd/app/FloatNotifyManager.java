@@ -52,7 +52,6 @@ public class FloatNotifyManager {
         mWindowParams.y = 0;
         mWindowParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         mWindowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        mWindowParams.horizontalMargin = 0;
         mWindowParams.flags |= WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
         mWindowParams.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 
