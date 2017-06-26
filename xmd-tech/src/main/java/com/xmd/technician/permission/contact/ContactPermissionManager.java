@@ -59,7 +59,7 @@ public class ContactPermissionManager {
      */
     public Subscription getPermission(String customerId, NetworkSubscriber<ContactPermissionInfo> listener) {
         ContactPermissionInfo info = mPermissionMap.get(customerId);
-        if (info != null && info.hello) {
+        if (info != null && info.echat) {
             //具有全部权限，直接返回
 //            XLogger.d("get permission from cache, customerId:" + customerId);
             listener.onCallbackSuccess(info);
