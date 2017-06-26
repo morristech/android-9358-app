@@ -22,8 +22,6 @@ import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.m.network.XmdNetwork;
-import com.xmd.m.notify.GetuiPushService;
-import com.xmd.m.notify.GetuiReceiveService;
 import com.xmd.m.notify.NotificationManager;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;

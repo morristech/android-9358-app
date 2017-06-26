@@ -21,9 +21,6 @@ import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
-import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by heyangya on 17-4-24.
@@ -111,14 +108,5 @@ public class GetuiReceiveService extends GTIntentService {
     @Override
     public void onReceiveCommandResult(Context context, GTCmdMessage gtCmdMessage) {
 
-    }
-
-    public void onPayNotify(GetuiPayload msg) {
-        //买单通知,获取最新数据
-        PayNotifyInfoManager.getInstance().getRecentData(Constant.PAY_NOTIFY_MAIN_PAGE_TIME_LIMIT);
-        //通知栏提示
-        NotifyEvent notifyEvent=new NotifyEvent(NotifyEvent.TYPE_PAY_NOTIFY);
-        notifyEvent.setMessage(msg.msgContent);
-        EventBus.getDefault().post(notifyEvent);
     }
 }

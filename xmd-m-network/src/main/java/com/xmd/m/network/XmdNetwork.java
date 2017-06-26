@@ -98,6 +98,17 @@ public class XmdNetwork {
     }
 
     /**
+     * 同步网络请求,在当前线程中请求网络，并在当前线程中返回结果
+     *
+     * @param observable 使用getService返回接口调用产生
+     * @param subscriber 结果回调
+     * @return 返回调用观察对像，可用于取消网络请求操作
+     */
+    public <T> Subscription requestSync(Observable<T> observable, NetworkSubscriber<T> subscriber) {
+        return observable.subscribe(subscriber);
+    }
+
+    /**
      * 设置token到header,当有EventTokenExpired事件时，自动清除token
      */
     public void setToken(String token) {
