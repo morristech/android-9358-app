@@ -192,6 +192,8 @@ public class AppointmentData implements Serializable {
 
             updateFontMoneyWhenFullAppointment();
             needSetService.set(appointmentSetting.isFullAppointment());
+
+            checkCanSubmit();
         }
     }
 
