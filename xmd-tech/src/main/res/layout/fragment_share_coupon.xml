@@ -318,7 +318,7 @@
                                 android:layout_width="64dp"
                                 android:layout_height="64dp"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/img_pay_for_me"/>
+                                android:src="@drawable/icon_indiana"/>
 
                             <TextView
                                 android:id="@+id/pay_for_me_name"
