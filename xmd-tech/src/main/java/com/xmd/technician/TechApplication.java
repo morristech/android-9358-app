@@ -10,7 +10,6 @@ import android.os.Build;
 import android.support.multidex.MultiDexApplication;
 import android.view.WindowManager;
 
-import com.igexin.sdk.PushManager;
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
@@ -23,6 +22,8 @@ import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.NotificationManager;
+import com.xmd.m.notify.SimpleActionListener;
+import com.xmd.m.notify.XmdPush;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
@@ -197,13 +198,12 @@ public class TechApplication extends MultiDexApplication {
         try {
             PackageManager packageManager = getPackageManager();
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-            AppConfig.sGetuiAppId = applicationInfo.metaData.getString("PUSH_APPID", "");
-            AppConfig.sGetuiAppKey = applicationInfo.metaData.getString("PUSH_APPKEY", "");
-            AppConfig.sGetuiAppSecret = applicationInfo.metaData.getString("PUSH_APPSECRET", "");
-            AppConfig.sGetuiMasterSecret = applicationInfo.metaData.getString("GETUI_MASTER_SECRET", "");
+            String getuiAppId = applicationInfo.metaData.getString("PUSH_APPID", "");
+            String getuiAppKey = applicationInfo.metaData.getString("PUSH_APPKEY", "");
+            String getuiAppSecret = applicationInfo.metaData.getString("PUSH_APPSECRET", "");
+            String getuiMasterSecret = applicationInfo.metaData.getString("GETUI_MASTER_SECRET", "");
             //注意METADATA是没有办法运行时修改的，所以需要推送的测试，还是只能编译一个版本出来
-            PushManager.getInstance().initialize(this, GetuiPushService.class);
-            PushManager.getInstance().registerPushIntentService(this, GetuiReceiveService.class);
+            XmdPush.getInstance().init(this, getuiAppId, getuiAppKey, getuiAppSecret, getuiMasterSecret, new SimpleActionListener());
         } catch (PackageManager.NameNotFoundException e) {
             throw new RuntimeException("can not get meta data!");
         }

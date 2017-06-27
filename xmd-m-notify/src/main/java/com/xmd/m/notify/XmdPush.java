@@ -9,14 +9,14 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
-
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -24,11 +24,11 @@ import rx.Subscription;
  * 小摩豆推送
  */
 
-class XmdPush {
-    private final static String TAG = "XmdPush";
+public class XmdPush {
+    public final static String TAG = "XmdPush";
     private static final XmdPush ourInstance = new XmdPush();
 
-    static XmdPush getInstance() {
+    public static XmdPush getInstance() {
         return ourInstance;
     }
 
@@ -47,7 +47,9 @@ class XmdPush {
     private String clientId;
     private boolean bound; //是否绑定
     private boolean binding; //是否正在执行绑定
-    private Subscription bindSubscription;
+
+    private Call<BaseBean> bindCall;
+    private Subscription unBindSubscription;
 
     public void init(Context context, String appId, String appKey, String appSecret, String masterSecret, ActionListener listener) {
         if (context == null || appId == null || appKey == null || appSecret == null || masterSecret == null || listener == null) {
@@ -58,42 +60,62 @@ class XmdPush {
         this.getuiAppSecret = appSecret;
         this.getuiMasterSecret = masterSecret;
 
+        this.actionListener = listener;
+
         PushManager.getInstance().initialize(context, GetuiPushService.class);
         PushManager.getInstance().registerPushIntentService(context, GetuiReceiveService.class);
 
         EventBusSafeRegister.register(this);
+        XLogger.i(TAG, "XmdPush init ok!");
     }
 
-    void setClientId(String clientId) {
+    //设置clientId
+    public void setClientId(String clientId) {
         this.clientId = clientId;
         loopBind(token, clientId);
     }
 
-    void setToken(String token) {
+    //登录事件
+    @Subscribe(sticky = true)
+    public void handleLogin(EventLogin eventLogin) {
+        XLogger.d(TAG, "on event login:" + eventLogin);
+        setUserId(eventLogin.getUserId());
+        setToken(eventLogin.getToken());
+        loopBind(token, clientId);
+    }
+
+    //登出事件
+    @Subscribe(sticky = true)
+    private void handleLogout(EventLogout eventLogout) {
+        XLogger.d(TAG, "on event logout:" + eventLogout);
+        setUserId(null);
+        setToken(null);
+        unbind();
+    }
+
+    //返回是否绑定
+    public boolean isBound() {
+        return bound;
+    }
+
+
+    private void setToken(String token) {
         this.token = token;
         if (!TextUtils.isEmpty(token)) {
             loopBind(token, clientId);
         }
     }
 
-    public void setUserId(String userId) {
+    private void setUserId(String userId) {
         this.userId = userId;
     }
 
-    //登录事件
-    @Subscribe(sticky = true)
-    public void handleLogin(EventLogin eventLogin) {
-        setUserId(eventLogin.getUserId());
-        setToken(eventLogin.getToken());
-    }
-
-    //登出事件
-    @Subscribe(sticky = true)
-    private void handleLogout(EventLogout eventLogout) {
-        setUserId(null);
-        setToken(null);
-        unbind(eventLogout.getToken());
-    }
+    private RetryPool.RetryRunnable retryRunnable = new RetryPool.RetryRunnable(1000, 1.1f, new RetryPool.RetryExecutor() {
+        @Override
+        public boolean run() {
+            return !bound || bind();
+        }
+    });
 
     private void loopBind(final String token, final String clientId) {
         if (TextUtils.isEmpty(token) || TextUtils.isEmpty(clientId)) {
@@ -108,20 +130,16 @@ class XmdPush {
             XLogger.i(TAG, " already running bind!");
             return;
         }
-        XLogger.d(TAG, "start bind ... ");
-        if (mUnBindCall != null) {
-            mUnBindCall.cancel();
-        }
-        mRunBind = true;
-        RetryPool.getInstance().postWork(new RetryPool.RetryRunnable(1000, 1.1f, new RetryPool.RetryExecutor() {
-            @Override
-            public boolean run() {
-                return !mRunBind || bind(token);
-            }
-        }));
+        XLogger.d(TAG, "start loop bind ... ");
+        binding = true;
+        RetryPool.getInstance().postWork(retryRunnable);
     }
 
-    private boolean bind(String token) {
+    private boolean bind() {
+        if (!binding) {
+            return true;
+        }
+        XLogger.d(TAG, "binding ...userId:" + userId + ",clientId:" + clientId);
         String secretBefore = getuiAppId +
                 getuiAppSecret +
                 userId +
@@ -129,47 +147,46 @@ class XmdPush {
                 getuiMasterSecret +
                 clientId;
         String secret = DESede.encrypt(secretBefore);
-        mBindCall = getSpaService().bindGetuiClientId(token, userId, RequestConstant.USER_TYPE_TECH, RequestConstant.APP_TYPE_ANDROID, mClientId, secret);
-        try {
-            Response<BaseResult> response = mBindCall.execute();
-            BaseResult result = response.body();
-            if (!response.isSuccessful() || result == null || result.statusCode != 200) {
-                XLogger.e(TAG, "bind failed:" + response.code() + "," + response.message());
-                return false;
+        bindCall = XmdNetwork.getInstance()
+                .getService(NetService.class)
+                .bindGetuiClientId(token, userId, "tech", "android", clientId, secret);
+        XmdNetwork.getInstance().requestSync(bindCall, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                bound = true;
+                XLogger.i(TAG, "bind userId:" + userId + " with " + clientId + " success!");
             }
-            XLogger.i(TAG, "bind userId:" + userId + " with " + mClientId + " success!");
-            mIsBind = true;
-            mRunBind = false;
-            return true;
-        } catch (IOException e) {
-            XLogger.e(TAG, "bind failed:" + e.getLocalizedMessage());
-        }
-        return false;
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.e(TAG, "bind failed:" + e.getLocalizedMessage());
+            }
+        });
+
+        return bound;
     }
 
-    private void unbind(String token) {
+    private void unbind() {
         XLogger.i(TAG, "unbind ");
         binding = false;
-        if (mBindCall != null) {
-            mBindCall.cancel();
+        RetryPool.getInstance().removeWork(retryRunnable);
+        //取消绑定操作
+        if (bindCall != null && !bindCall.isCanceled()) {
+            bindCall.cancel();
         }
-        if (mIsBind) {
-            mIsBind = false;
-            mUnBindCall = getSpaService().unbindGetuiClientId(RequestConstant.USER_TYPE_TECH,
-                    token, RequestConstant.SESSION_TYPE, mClientId);
-            mUnBindCall.enqueue(new Callback<BaseResult>() {
-                @Override
-                public void onResponse(Call<BaseResult> call, Response<BaseResult> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<BaseResult> call, Throwable t) {
-
-                }
-            });
+        //取消解绑操作
+        if (unBindSubscription != null && !unBindSubscription.isUnsubscribed()) {
+            unBindSubscription.unsubscribe();
+        }
+        Observable<BaseBean> observable = XmdNetwork.getInstance()
+                .getService(NetService.class)
+                .unbindGetuiClientId("tech", clientId);
+        unBindSubscription = XmdNetwork.getInstance().request(observable, null);
+        if (bound) {
+            bound = false;
         }
     }
+
 
     public String getGetuiAppId() {
         return getuiAppId;

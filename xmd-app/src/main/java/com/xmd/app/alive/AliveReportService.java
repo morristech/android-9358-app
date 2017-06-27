@@ -38,7 +38,7 @@ public class AliveReportService extends Service {
     private static Subscription mRequestSubscription;
     private static final int MSG_REPORT = 1;
     private static final int REPORT_INTERVAL = 10 * 60 * 1000;
-    private static final int CHECK_INTERVAL = 30000;
+    private static final int CHECK_INTERVAL = 300000;
     private static long mLastReportTime;
     private static boolean mLastReportSuccess;
 

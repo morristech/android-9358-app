@@ -7,7 +7,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.io.IOException;
 
+import retrofit2.Call;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -87,10 +90,23 @@ public class XmdNetwork {
      * 发送网络请求
      *
      * @param observable 使用getService返回接口调用产生
-     * @param subscriber 结果回调
+     * @param subscriber 结果回调. 可以为null
      * @return 返回调用观察对像，可用于取消网络请求操作
      */
     public <T> Subscription request(Observable<T> observable, NetworkSubscriber<T> subscriber) {
+        if (subscriber == null) {
+            subscriber = new NetworkSubscriber<T>() {
+                @Override
+                public void onCallbackSuccess(T result) {
+
+                }
+
+                @Override
+                public void onCallbackError(Throwable e) {
+
+                }
+            };
+        }
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -98,14 +114,22 @@ public class XmdNetwork {
     }
 
     /**
-     * 同步网络请求,在当前线程中请求网络，并在当前线程中返回结果
+     * 同步网络请求
      *
-     * @param observable 使用getService返回接口调用产生
      * @param subscriber 结果回调
      * @return 返回调用观察对像，可用于取消网络请求操作
      */
-    public <T> Subscription requestSync(Observable<T> observable, NetworkSubscriber<T> subscriber) {
-        return observable.subscribe(subscriber);
+    public <T> void requestSync(Call<T> call, NetworkSubscriber<T> subscriber) {
+        try {
+            Response<T> response = call.execute();
+            subscriber.onNext(response.body());
+        } catch (Exception e) {
+            if (e instanceof IOException) {
+                subscriber.onCallbackError(new NetworkException(e.getMessage()));
+            } else {
+                subscriber.onCallbackError(new ServerException(e.getMessage(), 400));
+            }
+        }
     }
 
     /**
