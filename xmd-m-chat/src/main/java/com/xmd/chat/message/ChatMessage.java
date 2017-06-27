@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
 
 /**
@@ -200,7 +201,23 @@ public class ChatMessage {
         this.emMessage = emMessage;
     }
 
+    public String getContentText() {
+        if (emMessage.getType().equals(EMMessage.Type.TXT)) {
+            return ((EMTextMessageBody) emMessage.getBody()).getMessage();
+        } else {
+            return emMessage.getType().name();
+        }
+    }
+
     public boolean isCustomerService() {
         return getTag() != null && getTag().contains(MSG_TAG_CUSTOMER_SERVICE);
+    }
+
+    public String getRemoteChatId(){
+        if(getEmMessage().direct()== EMMessage.Direct.RECEIVE){
+            return getFromChatId();
+        }else{
+            return getToChatId();
+        }
     }
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -84,7 +85,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                         return;
                     }
                     switchFragment(0);
-                    processNotifyRoute(getIntent());
+                    processXmdDisplay(getIntent());
                     permissionManager.checkAndSyncPermissions();
                 } else {
                     Toast.makeText(MainActivity.this, "加载权限失败:" + error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -124,7 +125,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         super.onNewIntent(intent);
         checkLoginStatus();
 
-        if (processNotifyRoute(intent)) {
+        if (processXmdDisplay(intent)) {
             return;
         }
 
@@ -135,22 +136,21 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         }
     }
 
+    private boolean processXmdDisplay(Intent intent) {
+        XmdDisplay display = (XmdDisplay) intent.getSerializableExtra(UINavigation.EXTRA_XMD_DISPLAY);
+        if (display != null) {
+            UINavigation.processXmdDisplay(this, display);
+            return true;
+        }
+        return false;
+    }
+
     private void checkLoginStatus() {
         if (!LoginTechnician.getInstance().isLogin()) {
             UINavigation.gotoLogin(this);
             finish();
         }
     }
-
-    private boolean processNotifyRoute(Intent intent) {
-        //处理通知栏的跳转
-        int notifyId = intent.getIntExtra(UINavigation.EXTRA_NOTIFY_ID, -1);
-        if (notifyId > 0) {
-            return UINavigation.routeNotify(this, notifyId, intent.getExtras());
-        }
-        return false;
-    }
-
 
     private String getFragmentTagById(int id) {
         return "fragment_" + id;

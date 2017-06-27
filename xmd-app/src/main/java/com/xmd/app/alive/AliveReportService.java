@@ -38,7 +38,7 @@ public class AliveReportService extends Service {
     private static Subscription mRequestSubscription;
     private static final int MSG_REPORT = 1;
     private static final int REPORT_INTERVAL = 10 * 60 * 1000;
-    private static final int CHECK_INTERVAL = 30000;
+    private static final int CHECK_INTERVAL = 300000;
     private static long mLastReportTime;
     private static boolean mLastReportSuccess;
 
@@ -144,6 +144,12 @@ public class AliveReportService extends Service {
     }
 
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        setForeground();
+        return Service.START_STICKY;
+    }
+
     private static int NOTIFICATION_ID = 0x2333;
 
     void setForeground() {
@@ -151,12 +157,6 @@ public class AliveReportService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             startService(new Intent(this, InnerService.class));
         }
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        setForeground();
-        return Service.START_STICKY;
     }
 
     public static class InnerService extends Service {

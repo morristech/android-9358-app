@@ -1,4 +1,4 @@
-package com.xmd.technician.push;
+package com.xmd.m.notify.push;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import com.igexin.sdk.GTServiceManager;
 
 /**
  * Created by heyangya on 17-4-24.
+ * 个推消息推送服务
  */
 
 public class GetuiPushService extends Service {

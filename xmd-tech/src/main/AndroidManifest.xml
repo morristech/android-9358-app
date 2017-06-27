@@ -91,14 +91,6 @@
             android:name="GETUI_MASTER_SECRET"
             android:value="${GETUI_MASTER_SECRET}"/>
 
-        <service
-            android:name=".push.GetuiPushService"
-            android:exported="true"
-            android:label="PushService"
-            android:process=":pushservice">
-        </service>
-        <service android:name=".push.GetuiReceiveService"/>
-
         <activity
             android:name=".window.TechInfoActivity"
             android:screenOrientation="portrait"/>
