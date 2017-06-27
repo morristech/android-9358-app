@@ -3,7 +3,6 @@ package com.xmd.technician;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -21,14 +20,13 @@ import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.m.network.XmdNetwork;
-import com.xmd.m.notify.NotificationManager;
-import com.xmd.m.notify.SimpleActionListener;
-import com.xmd.m.notify.XmdPush;
+import com.xmd.m.notify.XmdPushModule;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.ThreadPoolManager;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.HelloReplyService;
 import com.xmd.technician.msgctrl.ControllerRegister;
@@ -108,7 +106,6 @@ public class TechApplication extends MultiDexApplication {
                 MobclickAgent.openActivityDurationTrack(false);
 
                 //初始化通知中心
-                NotificationManager.getInstance().init(this);
                 NotificationCenter.getInstance().init(this);
 
                 //初始化线程池
@@ -131,7 +128,7 @@ public class TechApplication extends MultiDexApplication {
                 ControllerRegister.initialize();
 
                 //初始化消息推送
-                initGeiTuiPush();
+                XmdPushModule.getInstance().init(this, UINavigation.xmdActionFactory, null);
 
                 //初始化环信
 //                if (SharedPreferenceHelper.isDevelopMode()) {
@@ -191,21 +188,6 @@ public class TechApplication extends MultiDexApplication {
             mAppVersionCode = packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void initGeiTuiPush() {
-        try {
-            PackageManager packageManager = getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-            String getuiAppId = applicationInfo.metaData.getString("PUSH_APPID", "");
-            String getuiAppKey = applicationInfo.metaData.getString("PUSH_APPKEY", "");
-            String getuiAppSecret = applicationInfo.metaData.getString("PUSH_APPSECRET", "");
-            String getuiMasterSecret = applicationInfo.metaData.getString("GETUI_MASTER_SECRET", "");
-            //注意METADATA是没有办法运行时修改的，所以需要推送的测试，还是只能编译一个版本出来
-            XmdPush.getInstance().init(this, getuiAppId, getuiAppKey, getuiAppSecret, getuiMasterSecret, new SimpleActionListener());
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException("can not get meta data!");
         }
     }
 

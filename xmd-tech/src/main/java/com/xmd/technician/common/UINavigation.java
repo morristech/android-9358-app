@@ -1,19 +1,20 @@
 package com.xmd.technician.common;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.m.notify.display.XmdActionFactory;
+import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.technician.Constant;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.notify.NotificationCenter;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
 import com.xmd.technician.window.ContactInformationDetailActivity;
 import com.xmd.technician.window.JoinClubActivity;
@@ -35,6 +36,9 @@ public class UINavigation {
 
     public static final int OPEN_JOIN_CLUB_FROM_START = 1;
     public static final int OPEN_JOIN_CLUB_FROM_MAIN = 3;
+
+    public static final int REQUEST_CODE_UI_ROUTE = 0x3300;
+    public static final String EXTRA_XMD_DISPLAY = "extra_xmd_display";
 
     //登录
     public static void gotoLogin(Context context) {
@@ -120,28 +124,35 @@ public class UINavigation {
     }
 
 
-    public static boolean routeNotify(Context context, int notifyId, Bundle extraData) {
-        XLogger.d("routeNotify:" + notifyId);
-        switch (notifyId) {
-            case NotificationCenter.TYPE_ORDER:
-            case NotificationCenter.TYPE_CHAT_MESSAGE:
-                Intent intent = new Intent(context, TechChatActivity.class);
-                intent.putExtras(extraData);
-                context.startActivity(intent);
-                return true;
-            case NotificationCenter.TYPE_PAY_NOTIFY:
-                gotoMainActivityIndexFragmentFromService(context, 0);
-                return true;
-            default:
-                break;
-        }
-        return false;
-    }
-
     public static void gotoCustomerDetailActivity(Context context, String customerId) {
         Intent intent = new Intent(context, ContactInformationDetailActivity.class);
         intent.putExtra(RequestConstant.KEY_USER_ID, customerId);
         intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
         context.startActivity(intent);
+    }
+
+
+    public static XmdActionFactory xmdActionFactory = new XmdActionFactory() {
+        @Override
+        public PendingIntent create(XmdDisplay display) {
+            Intent intent = new Intent(TechApplication.getAppContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(EXTRA_XMD_DISPLAY, display);
+            return PendingIntent.getActivity(TechApplication.getAppContext(), REQUEST_CODE_UI_ROUTE, intent, PendingIntent.FLAG_ONE_SHOT);
+        }
+    };
+
+    public static void processXmdDisplay(Context context, XmdDisplay display) {
+        XLogger.d("processXmdDisplay:" + display);
+        if (display.getAction() == null) {
+            return;
+        }
+        switch (display.getAction()) {
+            case XmdDisplay.ACTION_CHAT_TO:
+                gotoChatActivity(context, display.getActionData());
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -1,11 +1,14 @@
-package com.xmd.m.notify;
+package com.xmd.m.notify.push;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.m.notify.XmdPushModule;
 
 /**
  * Created by heyangya on 17-4-24.
@@ -13,6 +16,8 @@ import com.shidou.commonlibrary.helper.XLogger;
  */
 
 public class GetuiReceiveService extends GTIntentService {
+    private Gson gson = new Gson();
+
     @Override
     public void onReceiveServicePid(Context context, int i) {
 
@@ -20,8 +25,8 @@ public class GetuiReceiveService extends GTIntentService {
 
     @Override
     public void onReceiveClientId(Context context, String cid) {
-        XLogger.i(XmdPush.TAG, "onReceiveClientId:" + cid);
-        XmdPush.getInstance().setClientId(cid);
+        XLogger.i(XmdPushModule.TAG, "onReceiveClientId:" + cid);
+        XmdPushManager.getInstance().setClientId(cid);
     }
 
     @Override
@@ -29,6 +34,22 @@ public class GetuiReceiveService extends GTIntentService {
         byte[] payload = gtTransmitMessage.getPayload();
         if (payload != null) {
             String data = new String(payload);
+            XLogger.d(XmdPushModule.TAG, "onReceiveMessageData:" + data);
+            if (TextUtils.isEmpty(data)) {
+                return;
+            }
+            try {
+                XmdPushMessage message = gson.fromJson(data, XmdPushMessage.class);
+                //显示
+                message.show();
+                //传递给外界处理
+                if (XmdPushManager.getInstance().getListener() != null) {
+                    XmdPushManager.getInstance().getListener().onMessage(message);
+                }
+            } catch (Exception e) {
+                XLogger.e(XmdPushModule.TAG, "parse message error:" + e.getMessage() + ",data:" + data);
+                return;
+            }
 //            GetuiPayload wrapperMsg = new Gson().fromJson(data, GetuiPayload.class);
 //            XLogger.d("receive getui push :" + wrapperMsg);
 //            if (!TextUtils.isEmpty(wrapperMsg.msgTargetId) && !wrapperMsg.msgTargetId.equals(SharedPreferenceHelper.getUserId())) {

@@ -1,4 +1,4 @@
-package com.xmd.m.notify;
+package com.xmd.m.notify.push;
 
 import com.xmd.m.network.BaseBean;
 

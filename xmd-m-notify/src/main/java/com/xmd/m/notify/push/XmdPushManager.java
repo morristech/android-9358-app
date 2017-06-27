@@ -1,9 +1,10 @@
-package com.xmd.m.notify;
+package com.xmd.m.notify.push;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
-import com.igexin.sdk.PushManager;
 import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
@@ -20,27 +21,28 @@ import rx.Observable;
 import rx.Subscription;
 
 /**
- * Created by mo on 17-6-23.
- * 小摩豆推送
+ * Created by mo on 17-6-27.
+ * 推送管理
  */
 
-public class XmdPush {
+public class XmdPushManager {
     public final static String TAG = "XmdPush";
-    private static final XmdPush ourInstance = new XmdPush();
+    private static final XmdPushManager ourInstance = new XmdPushManager();
 
-    public static XmdPush getInstance() {
+    public static XmdPushManager getInstance() {
         return ourInstance;
     }
 
-    private XmdPush() {
+    private XmdPushManager() {
     }
 
+    private Context context;
+    private XmdPushMessageListener listener;
 
     private String getuiAppId;
     private String getuiAppKey;
     private String getuiAppSecret;
     private String getuiMasterSecret;
-    private ActionListener actionListener;
 
     private String userId;
     private String token;
@@ -51,22 +53,30 @@ public class XmdPush {
     private Call<BaseBean> bindCall;
     private Subscription unBindSubscription;
 
-    public void init(Context context, String appId, String appKey, String appSecret, String masterSecret, ActionListener listener) {
-        if (context == null || appId == null || appKey == null || appSecret == null || masterSecret == null || listener == null) {
+    public void init(Context context, XmdPushMessageListener listener) {
+        if (context == null) {
             throw new RuntimeException("参数错误");
         }
-        this.getuiAppId = appId;
-        this.getuiAppKey = appKey;
-        this.getuiAppSecret = appSecret;
-        this.getuiMasterSecret = masterSecret;
+        context = context.getApplicationContext();
+        this.context = context;
+        this.listener = listener;
 
-        this.actionListener = listener;
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            getuiAppId = applicationInfo.metaData.getString("PUSH_APPID", "");
+            getuiAppKey = applicationInfo.metaData.getString("PUSH_APPKEY", "");
+            getuiAppSecret = applicationInfo.metaData.getString("PUSH_APPSECRET", "");
+            getuiMasterSecret = applicationInfo.metaData.getString("GETUI_MASTER_SECRET", "");
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException("can not get meta data!");
+        }
 
-        PushManager.getInstance().initialize(context, GetuiPushService.class);
-        PushManager.getInstance().registerPushIntentService(context, GetuiReceiveService.class);
+        com.igexin.sdk.PushManager.getInstance().initialize(context, GetuiPushService.class);
+        com.igexin.sdk.PushManager.getInstance().registerPushIntentService(context, GetuiReceiveService.class);
 
         EventBusSafeRegister.register(this);
-        XLogger.i(TAG, "XmdPush init ok!");
+        XLogger.i(TAG, "XmdPushModule init ok!");
     }
 
     //设置clientId
@@ -98,6 +108,9 @@ public class XmdPush {
         return bound;
     }
 
+    public Context getContext() {
+        return context;
+    }
 
     private void setToken(String token) {
         this.token = token;
@@ -113,7 +126,7 @@ public class XmdPush {
     private RetryPool.RetryRunnable retryRunnable = new RetryPool.RetryRunnable(1000, 1.1f, new RetryPool.RetryExecutor() {
         @Override
         public boolean run() {
-            return !bound || bind();
+            return bind();
         }
     });
 
@@ -154,7 +167,7 @@ public class XmdPush {
             @Override
             public void onCallbackSuccess(BaseBean result) {
                 bound = true;
-                XLogger.i(TAG, "bind userId:" + userId + " with " + clientId + " success!");
+                XLogger.i(TAG, "bind userId:" + userId + " with clientId:" + clientId + " success!");
             }
 
             @Override
@@ -187,44 +200,11 @@ public class XmdPush {
         }
     }
 
-
-    public String getGetuiAppId() {
-        return getuiAppId;
+    public XmdPushMessageListener getListener() {
+        return listener;
     }
 
-    public void setGetuiAppId(String getuiAppId) {
-        this.getuiAppId = getuiAppId;
-    }
-
-    public String getGetuiAppKey() {
-        return getuiAppKey;
-    }
-
-    public void setGetuiAppKey(String getuiAppKey) {
-        this.getuiAppKey = getuiAppKey;
-    }
-
-    public String getGetuiAppSecret() {
-        return getuiAppSecret;
-    }
-
-    public void setGetuiAppSecret(String getuiAppSecret) {
-        this.getuiAppSecret = getuiAppSecret;
-    }
-
-    public String getGetuiMasterSecret() {
-        return getuiMasterSecret;
-    }
-
-    public void setGetuiMasterSecret(String getuiMasterSecret) {
-        this.getuiMasterSecret = getuiMasterSecret;
-    }
-
-    public ActionListener getActionListener() {
-        return actionListener;
-    }
-
-    public void setActionListener(ActionListener actionListener) {
-        this.actionListener = actionListener;
+    public void setListener(XmdPushMessageListener listener) {
+        this.listener = listener;
     }
 }

@@ -1,4 +1,4 @@
-package com.xmd.m.notify;
+package com.xmd.m.notify.push;
 
 /**
  * Created by sdcm on 15-11-30.
