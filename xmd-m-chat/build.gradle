@@ -12,6 +12,9 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        manifestPlaceholders = [
+                EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
+        ]
     }
     buildTypes {
         release {

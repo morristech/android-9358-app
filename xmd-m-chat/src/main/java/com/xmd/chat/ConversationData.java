@@ -6,9 +6,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.hyphenate.chat.EMConversation;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.user.User;
 import com.xmd.app.widget.GlideCircleTransform;
+import com.xmd.chat.message.ChatMessage;
 
 /**
  * Created by mo on 17-6-21.
@@ -16,16 +18,14 @@ import com.xmd.app.widget.GlideCircleTransform;
  */
 
 public class ConversationData {
-    private String name;
-    private String avatar;
-    private String message;
-    private long time;
+    private User user;
+    private EMConversation conversation;
+    private ChatMessage lastMessage;
 
-    public ConversationData(User user, String message, long time) {
-        name = user.getName();
-        avatar = user.getAvatar();
-        this.message = message;
-        this.time = time;
+    public ConversationData(User user, EMConversation conversation, ChatMessage chatMessage) {
+        this.user = user;
+        this.conversation = conversation;
+        this.lastMessage = chatMessage;
     }
 
     @BindingAdapter("avatar")
@@ -52,34 +52,26 @@ public class ConversationData {
     }
 
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return user.getName();
     }
 
     public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+        return user.getAvatar();
     }
 
     public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+        return lastMessage.getContentText();
     }
 
     public long getTime() {
-        return time;
+        return lastMessage.getEmMessage().getMsgTime();
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public int getUnReadMsgCount() {
+        return conversation.getUnreadMsgCount();
+    }
+
+    public void setLastMessage(ChatMessage lastMessage) {
+        this.lastMessage = lastMessage;
     }
 }

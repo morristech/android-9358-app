@@ -9,6 +9,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.chat.event.EventChatLoginSuccess;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -28,7 +29,7 @@ class AccountManager {
     private AccountManager() {
     }
 
-    private boolean logining;
+    private boolean isRunLogin;
     private String account;
     private String password;
 
@@ -50,10 +51,10 @@ class AccountManager {
     }
 
     private void loopLogin() {
-        if (logining) {
+        if (isRunLogin) {
             return;
         }
-        logining = true;
+        isRunLogin = true;
         mHandler.sendEmptyMessage(1);
     }
 
@@ -71,7 +72,7 @@ class AccountManager {
         EMClient.getInstance().login(account, password, new EMCallBack() {
             @Override
             public void onSuccess() {
-                logining = false;
+                isRunLogin = false;
                 XLogger.d(XmdChat.TAG, "login success!  account:" + account + ",password:" + password);
                 EMClient.getInstance().chatManager().loadAllConversations();
                 EMClient.getInstance().groupManager().loadAllGroups();
@@ -80,7 +81,7 @@ class AccountManager {
 
             @Override
             public void onError(int i, String s) {
-                logining = false;
+                isRunLogin = false;
                 if (i == 200) {
                     onSuccess();
                     return;
@@ -100,6 +101,6 @@ class AccountManager {
 
     private void logout() {
         EMClient.getInstance().logout(false);
-        logining = false;
+        isRunLogin = false;
     }
 }

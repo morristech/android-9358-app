@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
@@ -20,11 +21,14 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.databinding.FragmentConversationBinding;
+import com.xmd.chat.event.EventChatLoginSuccess;
+import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.message.ChatMessage;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,11 +42,12 @@ public class ConversationListFragment extends BaseFragment {
 
     private ConversationFilter filter;
 
+    private Map<String, ConversationData> conversationMap = new HashMap<>();
     private List<ConversationData> conversationList = new ArrayList<>();
     private CommonRecyclerViewAdapter<ConversationData> mAdapter;
 
-    public ObservableBoolean showLoading=new ObservableBoolean();
-    public ObservableField<String> showError=new ObservableField<>();
+    public ObservableBoolean showLoading = new ObservableBoolean();
+    public ObservableField<String> showError = new ObservableField<>();
 
     @Nullable
     @Override
@@ -97,17 +102,36 @@ public class ConversationListFragment extends BaseFragment {
 
     private void showData(List<EMConversation> dataList) {
         conversationList.clear();
+        conversationMap.clear();
         for (EMConversation conversation : dataList) {
-            ChatMessage chatMessage=ChatMessageFactory.get(conversation.getLastMessage());
-            String remoteId=chatMessage.getRemoteChatId();
-            User user= UserInfoServiceImpl.getInstance().getUserByChatId(remoteId);
-            if(user==null){
+            ChatMessage chatMessage = ChatMessageFactory.get(conversation.getLastMessage());
+            String remoteId = chatMessage.getRemoteChatId();
+            User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteId);
+            if (user == null) {
                 continue;
             }
-            conversationList.add(new ConversationData(user,chatMessage.getContentText(),chatMessage.getEmMessage().getMsgTime()));
+            ConversationData conversationData = new ConversationData(user, conversation, chatMessage);
+            conversationList.add(conversationData);
+            conversationMap.put(user.getChatId(), conversationData);
         }
         mAdapter.setData(R.layout.list_item_conversation, BR.data, conversationList);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void onReceiveNewMessages(EventNewMessages messages) {
+        for (EMMessage message : messages.getList()) {
+            ConversationData data = conversationMap.get(message.getFrom());
+            if (data == null) {
+                //new conversation
+                loadData(null);
+                break;
+            } else {
+                ChatMessage chatMessage = ChatMessageFactory.get(message);
+                data.setLastMessage(chatMessage);
+                mAdapter.notifyItemChanged(conversationList.indexOf(data));
+            }
+        }
     }
 
 
@@ -122,4 +146,5 @@ public class ConversationListFragment extends BaseFragment {
     public void setFilter(ConversationFilter filter) {
         this.filter = filter;
     }
+
 }

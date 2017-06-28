@@ -1,4 +1,4 @@
-package com.xmd.chat;
+package com.xmd.chat.event;
 
 /**
  * Created by mo on 17-6-28.
