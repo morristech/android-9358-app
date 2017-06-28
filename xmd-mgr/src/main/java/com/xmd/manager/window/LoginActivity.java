@@ -157,7 +157,10 @@ public class LoginActivity extends BaseActivity {
             SharedPreferenceHelper.setMultiClubToken(loginResult.token);
 
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
-            EventBus.getDefault().postSticky(new EventLogin(loginResult.token, loginResult.userId));
+            EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserId());
+            eventLogin.setChatId(SharedPreferenceHelper.getEmchatId());
+            eventLogin.setChatPassword(SharedPreferenceHelper.getEmchatPassword());
+            EventBus.getDefault().postSticky(eventLogin);
 
             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID);
             if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles)) {

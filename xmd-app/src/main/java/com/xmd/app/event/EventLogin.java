@@ -8,6 +8,8 @@ package com.xmd.app.event;
 public class EventLogin {
     private String token;
     private String userId;
+    private String chatId;
+    private String chatPassword;
 
     public EventLogin(String token, String userId) {
         this.token = token;
@@ -28,6 +30,22 @@ public class EventLogin {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
+    }
+
+    public String getChatPassword() {
+        return chatPassword;
+    }
+
+    public void setChatPassword(String chatPassword) {
+        this.chatPassword = chatPassword;
     }
 
     @Override

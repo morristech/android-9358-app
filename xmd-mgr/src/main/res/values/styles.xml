@@ -9,6 +9,10 @@
         <item name="windowActionBar">false</item>
         <item name="buttonStyle">@style/primary_button_style</item>
         <item name="android:textSize">@dimen/fontBody</item>
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme" parent="Theme.App.Base">

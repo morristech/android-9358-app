@@ -176,10 +176,10 @@ public class EmchatManager {
             List<EMConversation> list = new ArrayList<>();
             for (Pair<Long, EMConversation> sortItem : sortList) {
                 if (Utils.isNotEmpty(nickname)) {
-                    EmchatUser user = mEmchatUserDao.getById(sortItem.second.getUserName());
-                    if (user != null && user.getNick().contains(nickname)) {
-                        list.add(sortItem.second);
-                    }
+//                    EmchatUser user = mEmchatUserDao.getById(sortItem.second.getUserName());
+//                    if (user != null && user.getNick().contains(nickname)) {
+//                        list.add(sortItem.second);
+//                    }
                 } else {
                     list.add(sortItem.second);
                 }

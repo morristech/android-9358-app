@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.chat.ConversationListFragment;
 import com.xmd.manager.ClubData;
 import com.xmd.manager.Manager;
 import com.xmd.manager.R;
@@ -277,6 +278,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                         sTabCoupon = tabTexts.size() - 1;
                         break;
                     case AuthConstants.AUTH_CODE_CHAT:
+//                        mPageFragmentPagerAdapter.addFragment(new ConversationListFragment());
                         mPageFragmentPagerAdapter.addFragment(new ConversationListFragment());
                         tabTexts.add(authData.name);
                         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_chat));

@@ -3,9 +3,7 @@ package com.xmd.manager;
 import android.content.Context;
 
 import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMOptions;
 import com.hyphenate.exceptions.HyphenateException;
 import com.igexin.sdk.PushManager;
 import com.xmd.app.event.EventLogin;
@@ -55,6 +53,16 @@ public class Manager {
 
             ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> RxBus.getInstance().post(new EmchatMsgResult(list)));
         }
+
+        @Override
+        public void onMessageRead(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageDelivered(List<EMMessage> list) {
+
+        }
     };
 
     private Manager() {
@@ -86,11 +94,11 @@ public class Manager {
         PushManager.getInstance().initialize(mAppContext);
 
         // EaseMob Chatting
-        EMOptions emOptions = new EMOptions();
-        EMClient.getInstance().init(appContext, emOptions);
-        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-        EMClient.getInstance().setDebugMode(true);
-        EMClient.getInstance().chatManager().addMessageListener(mMessageListener);
+//        EMOptions emOptions = new EMOptions();
+//        EMClient.getInstance().init(appContext, emOptions);
+//        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+//        EMClient.getInstance().setDebugMode(true);
+//        EMClient.getInstance().chatManager().addMessageListener(mMessageListener);
     }
 
     public void prepareBeforeUserLogout() {

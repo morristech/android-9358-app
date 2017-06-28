@@ -63,6 +63,7 @@ import com.xmd.manager.common.WidgetUtils;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.widget.BlockChildLinearLayout;
 import com.xmd.manager.widget.CircleImageView;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -544,7 +545,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
         ConversationListItemViewHolder conversationHolder = (ConversationListItemViewHolder) holder;
         conversationHolder.itemView.scrollTo(0, 0);
-        conversationHolder.mName.setText(Utils.briefString(conversation.getUserName(), 6));
+//        conversationHolder.mName.setText(Utils.briefString(conversation.getUserName(), 6));
         if (conversation.getUnreadMsgCount() > 0) {
             conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
             conversationHolder.mUnread.setVisibility(View.VISIBLE);
@@ -572,9 +573,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     } catch (Exception e) {
 //                        Logger.v("nickname: " + nickname + " -> " + e.getMessage());
                     }
-                    EmchatUserHelper.saveUser(conversation.getUserName(), nickname, header);
+//                    EmchatUserHelper.saveUser(conversation.getUserName(), nickname, header);
                 }
-                EmchatUserHelper.setUserAvatarAndNick(mContext, conversation.getUserName(), conversationHolder.mAvatar, conversationHolder.mName);
+//                EmchatUserHelper.setUserAvatarAndNick(mContext, conversation.getUserName(), conversationHolder.mAvatar, conversationHolder.mName);
             } catch (NullPointerException e) {
                 Logger.e(e.getMessage());
             }

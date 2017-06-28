@@ -12,28 +12,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.manager.R;
-import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.ConversationListResult;
 import com.xmd.manager.beans.EmchatMsgResult;
-import com.xmd.manager.chat.EmchatConstant;
-import com.xmd.manager.chat.EmchatManager;
-import com.xmd.manager.chat.EmchatUserHelper;
 import com.xmd.manager.common.ResourceUtils;
-import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
-import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.widget.ChatMessageManagerDialog;
 import com.xmd.manager.widget.ClearableEditText;
 import com.xmd.manager.widget.DividerItemDecoration;
 
 import butterknife.Bind;
 import rx.Subscription;
-
-import static com.xmd.manager.common.Utils.makeShortToast;
 
 /**
  * Created by Administrator on 2016/11/9.
@@ -68,33 +59,33 @@ public class ConversationListFragment extends BaseListFragment<EMConversation> {
 
     @Override
     public void onItemClicked(EMConversation conversation) {
-        String username = conversation.getUserName();
-        if (username.equals(SharedPreferenceHelper.getEmchatId()))
-            makeShortToast(getActivity(), ResourceUtils.getString(R.string.cant_chat_with_yourself));
-        else if (username.equals(EmchatConstant.MESSAGE_SYSTEM_NOTICE)) {
-//            Intent intent = new Intent(this, SysNoticeListActivity.class);
-//            // it's single chat
-//            intent.putExtra(EmchatConstant.EMCHAT_ID, username);
-//            startActivity(intent);
-        } else {
-            if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
-                if (Utils.isNotEmpty(SharedPreferenceHelper.getChatUserType(conversation.getLastMessage().getTo()))) {
-                    EmchatUserHelper.startToChat(username, "", "", null, EmchatConstant.MESSAGE_TECH_TYPE);
-                } else {
-                    EmchatUserHelper.startToChat(username, "", "");
-                }
-            } else {
-                try {
-                    if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(RequestConstant.KEY_TECH_ID))) {
-                        SharedPreferenceHelper.setChatUserType(conversation.getLastMessage().getTo(), EmchatConstant.MESSAGE_TECH_TYPE);
-                        EmchatUserHelper.startToChat(username, "", "", null, EmchatConstant.MESSAGE_TECH_TYPE);
-                    }
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                    EmchatUserHelper.startToChat(username, "", "");
-                }
-            }
-        }
+//        String username = conversation.getUserName();
+//        if (username.equals(SharedPreferenceHelper.getEmchatId()))
+//            makeShortToast(getActivity(), ResourceUtils.getString(R.string.cant_chat_with_yourself));
+//        else if (username.equals(EmchatConstant.MESSAGE_SYSTEM_NOTICE)) {
+////            Intent intent = new Intent(this, SysNoticeListActivity.class);
+////            // it's single chat
+////            intent.putExtra(EmchatConstant.EMCHAT_ID, username);
+////            startActivity(intent);
+//        } else {
+//            if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
+//                if (Utils.isNotEmpty(SharedPreferenceHelper.getChatUserType(conversation.getLastMessage().getTo()))) {
+//                    EmchatUserHelper.startToChat(username, "", "", null, EmchatConstant.MESSAGE_TECH_TYPE);
+//                } else {
+//                    EmchatUserHelper.startToChat(username, "", "");
+//                }
+//            } else {
+//                try {
+//                    if (Utils.isNotEmpty(conversation.getLastMessage().getStringAttribute(RequestConstant.KEY_TECH_ID))) {
+//                        SharedPreferenceHelper.setChatUserType(conversation.getLastMessage().getTo(), EmchatConstant.MESSAGE_TECH_TYPE);
+//                        EmchatUserHelper.startToChat(username, "", "", null, EmchatConstant.MESSAGE_TECH_TYPE);
+//                    }
+//                } catch (HyphenateException e) {
+//                    e.printStackTrace();
+//                    EmchatUserHelper.startToChat(username, "", "");
+//                }
+//            }
+//        }
     }
 
     @Override
@@ -164,7 +155,7 @@ public class ConversationListFragment extends BaseListFragment<EMConversation> {
             public void onItemClicked() {
                 dialog.dismiss();
                 //  MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_DELETE_CONVERSATION_FROM_DB);
-                EmchatManager.deleteConversion(bean.getUserName(), true);
+//                EmchatManager.deleteConversion(bean.getUserName(), true);
 
             }
         });

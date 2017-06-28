@@ -13,6 +13,8 @@ import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.XmdApp;
+import com.xmd.appointment.XmdModuleAppointment;
+import com.xmd.chat.XmdChat;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.Logger;
@@ -95,7 +97,12 @@ public class ManagerApplication extends Application {
                 //模块功能初始化
                 Set<String> functions = new HashSet<>();
                 functions.add(XmdApp.FUNCTION_ALIVE_REPORT);
+                functions.add(XmdApp.FUNCTION_USER_INFO);
                 XmdApp.getInstance().init(this, SharedPreferenceHelper.getServerHost(), functions);
+                XmdModuleAppointment.getInstance().init(this);
+
+                //初始化聊天模块
+                XmdChat.getInstance().init(this, BuildConfig.DEBUG);
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");

@@ -16,10 +16,13 @@ import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.databinding.FragmentConversationBinding;
 import com.xmd.chat.message.ChatMessage;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,7 @@ import java.util.Map;
  * 会话对话框
  */
 
-public class ConversationFragment extends BaseFragment {
+public class ConversationListFragment extends BaseFragment {
     private FragmentConversationBinding mBinding;
 
     private ConversationFilter filter;
@@ -39,7 +42,6 @@ public class ConversationFragment extends BaseFragment {
     private CommonRecyclerViewAdapter<ConversationData> mAdapter;
 
     public ObservableBoolean showLoading=new ObservableBoolean();
-    public ObservableBoolean showEmpty=new ObservableBoolean();
     public ObservableField<String> showError=new ObservableField<>();
 
     @Nullable
@@ -57,10 +59,19 @@ public class ConversationFragment extends BaseFragment {
         mAdapter = new CommonRecyclerViewAdapter<>();
         mBinding.recyclerView.setAdapter(mAdapter);
         conversationList = new ArrayList<>();
-        loadData();
+
+        loadData(null);
+        EventBusSafeRegister.register(this);
     }
 
-    private void loadData() {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBusSafeRegister.unregister(this);
+    }
+
+    @Subscribe
+    public void loadData(EventChatLoginSuccess event) {
         Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
         List<EMConversation> list = new ArrayList<>();
         list.addAll(conversationMap.values());

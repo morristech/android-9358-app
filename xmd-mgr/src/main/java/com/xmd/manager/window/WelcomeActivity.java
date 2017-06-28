@@ -54,7 +54,10 @@ public class WelcomeActivity extends AppCompatActivity {
             });
 
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
-            EventBus.getDefault().postSticky(new EventLogin(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserId()));
+            EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserId());
+            eventLogin.setChatId(SharedPreferenceHelper.getEmchatId());
+            eventLogin.setChatPassword(SharedPreferenceHelper.getEmchatPassword());
+            EventBus.getDefault().postSticky(eventLogin);
             // Switch to MainActivity
             if (Constant.MULTI_CLUB_ROLE.equals(SharedPreferenceHelper.getUserRole())) {
                 startActivity(new Intent(WelcomeActivity.this, ClubListActivity.class));

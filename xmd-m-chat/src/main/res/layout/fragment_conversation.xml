@@ -3,14 +3,18 @@
     <data>
         <variable
             name="data"
-            type="com.xmd.chat.ConversationFragment"/>
+            type="com.xmd.chat.ConversationListFragment" />
     </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#eeeeee">
+
+        <include layout="@layout/layout_toolbar" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
+            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
