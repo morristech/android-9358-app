@@ -42,68 +42,14 @@ public class GetuiReceiveService extends GTIntentService {
                 XmdPushMessage message = gson.fromJson(data, XmdPushMessage.class);
                 //显示
                 message.show();
-                //传递给外界处理
-                if (XmdPushManager.getInstance().getListener() != null) {
-                    XmdPushManager.getInstance().getListener().onMessage(message);
-                }
             } catch (Exception e) {
                 XLogger.e(XmdPushModule.TAG, "parse message error:" + e.getMessage() + ",data:" + data);
                 return;
             }
-//            GetuiPayload wrapperMsg = new Gson().fromJson(data, GetuiPayload.class);
-//            XLogger.d("receive getui push :" + wrapperMsg);
-//            if (!TextUtils.isEmpty(wrapperMsg.msgTargetId) && !wrapperMsg.msgTargetId.equals(SharedPreferenceHelper.getUserId())) {
-//                Logger.d("Message is not pushed to the current Technician");
-//                return;
-//            }
-//
-//            if (!TextUtils.isEmpty(wrapperMsg.appType) && !wrapperMsg.appType.contains("android")) {
-//                Logger.d("Message is not pushed to android app");
-//                return;
-//            }
-//
-//            if (TextUtils.isEmpty(wrapperMsg.businessType)) {
-//                Logger.e("business type is empty:" + wrapperMsg);
-//                return;
-//            }
-//
-//            switch (wrapperMsg.businessType) {
-//                case Constant.PUSH_MESSAGE_BUSINESS_PAY_NOTIFY:
-//                    onPayNotify(wrapperMsg);
-//                    return;
-//            }
-//
-//            if (ChatConstant.MESSAGE_SYSTEM_NOTICE.equals(wrapperMsg.businessType)) {
-//                SystemNotice notice = new Gson().fromJson(wrapperMsg.msgContent, SystemNotice.class);
-//                EMMessage msg = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
-//                msg.setChatType(EMMessage.ChatType.Chat);
-//                msg.setTo(SharedPreferenceHelper.getEmchatId());
-//                msg.setFrom(ChatConstant.MESSAGE_SYSTEM_NOTICE);
-//                msg.addBody(new EMTextMessageBody(wrapperMsg.msgContent));
-//                msg.setAttribute(ChatConstant.KEY_CUSTOM_TYPE, wrapperMsg.msgType);
-//                msg.setAttribute(ChatConstant.KEY_TITLE, notice.title);
-//                msg.setAttribute(ChatConstant.KEY_SUMMARY, notice.content);
-//                msg.setAttribute(ChatConstant.KEY_IMAGE_URL, notice.imageUrl);
-//                msg.setAttribute(ChatConstant.KEY_LINK_URL, notice.linkUrl);
-//
-//                EMClient.getInstance().chatManager().saveMessage(msg);
-//
-//                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CONVERSATION_LIST);
-//                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SYSTEM_NOTICE_NOTIFY);
-//
-//            } else if (ChatConstant.MESSAGE_CHAT_TEXT.equals(wrapperMsg.businessType)) {
-//                ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
-//                UserUtils.saveUser(user);
-//            } else if (ChatConstant.MESSAGE_CHAT_ORDER.equals(wrapperMsg.businessType)) {
-//                ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
-//                UserUtils.saveUser(user);
-//            } else if (ChatConstant.MESSAGE_CHAT_REWARD.equals(wrapperMsg.businessType)) {
-//                ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
-//                UserUtils.saveUser(user);
-//            } else if (ChatConstant.MESSAGE_CHAT_PAID_COUPON.equals(wrapperMsg.businessType)) {
-//                ChatUser user = new Gson().fromJson(wrapperMsg.msgContent, ChatUser.class);
-//                UserUtils.saveUser(user);
-//            }
+            //传递给外界处理
+            if (XmdPushManager.getInstance().getListener() != null) {
+                XmdPushManager.getInstance().getListener().onMessage(data);
+            }
         }
     }
 
