@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_view"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:orientation="vertical"
+        >
+
+        <com.xmd.technician.widget.RoundImageView
+            android:id="@+id/img_poster_tech_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_default_square"
+            app:type="round"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/poster_flower_bg"/>
+
+        <TextView
+            android:id="@+id/tv_poster_tech_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/poster_flower_name"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:textSize="12sp"
+            tools:text="张乔乔 /Ａ００８"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="-17dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/poster_flower_bottom"/>
+
+        <ImageView
+            android:id="@+id/img_poster_qr_code"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/icon23"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="120dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_poster_primary_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"
+                tools:text="客/观/捧/捧/场"/>
+
+            <TextView
+                android:id="@+id/tv_poster_minor_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_white"
+                android:textSize="12sp"
+                tools:text="关注9358快来预约我吧"/>
+
+            <TextView
+                android:id="@+id/tv_poster_club_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_space"
+                android:paddingBottom="@dimen/small_space"
+                android:textColor="@color/color_white"
+                android:textSize="12sp"
+                tools:text="小摩豆休闲养生会所"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_poster_dismiss"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_margin="-20dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_dialog_dismiss"/>
+    </RelativeLayout>
+
+    <include layout="@layout/layout_poster_dialog_bottom_btn"/>
+</LinearLayout>
+
+
+
+
+

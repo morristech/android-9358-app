@@ -109,7 +109,6 @@ public class MsgDef {
     public static final int MSG_DEF_GET_APP_UPDATE_CONFIG = 0x0039;
 
 
-
     public static final int MSG_DEF_ADD_OR_EDIT_CUSTOMER = 0x0041;
     public static final int MSG_DEF_GET_CUSTOMER_INFO_DETAIL = 0x0042;
     public static final int MSG_DEF_GET_CUSTOMER_LIST = 0x0043;
@@ -201,6 +200,10 @@ public class MsgDef {
     public static final int MSG_DEF_CLUB_EMPLOYEE_LIST = 0x0121;
     public static final int MSG_DEF_CLUB_CUSTOMER_RECENT_LIST = 0x0122;
     public static final int MSG_DEF_CLUB_EMPLOYEE_DETAIL = 0x0123;
-
-
+    //------------------------------------------> 技师海报 <-----------------------------------------
+    public static final int MSG_DEF_TECH_POSTER_SAVE = 0x124;
+    public static final int MSG_DEF_TECH_POSTER_DELETE = 0x125;
+    public static final int MSG_DEF_TECH_POSTER_IMAGE_UPLOAD = 0x126;
+    public static final int MSG_DEF_TECH_POSTER_LIST = 0x127;
+    public static final int MSG_DEF_TECH_POSTER_DETAIL = 0x128;
 }

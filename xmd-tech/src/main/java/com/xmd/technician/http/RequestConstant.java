@@ -1,6 +1,8 @@
 package com.xmd.technician.http;
 
 
+import android.util.Base64;
+
 /**
  * Created by sdcm on 15-10-23.
  */
@@ -196,6 +198,20 @@ public class RequestConstant {
     public static final String URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST = BASE_URL + "/v2/tech/customer/user/recent/list";
     //本店同事详情
     public static final String URL_CLUB_COLLEAGUE_DETAIL = BASE_URL + "/v2/tech/colleague/detail";
+
+    /**
+     * --------------------------------------> 技师海报 <----------------------------------------
+     */
+    //创建海报
+    public static final String URL_TECH_POSTER_SAVE = BASE_URL + "/v2/tech/poster/save";
+    //删除海报
+    public static final String URL_TECH_POSTER_DELETE = BASE_URL + "/v2/tech/poster/delete";
+    //图片上传
+    public static final String URL_TECH_POSTER_IMAGE_UPLOAD = BASE_URL + "/v2/tech/poster/image/upload";
+    //海报列表
+    public static final String URL_TECH_POSTER_LIST = BASE_URL + "/v2/tech/poster/list";
+    //海报详情
+    public static final String URL_TECH_POSTER_DETAIL = BASE_URL + "/v2/tech/poster/detail";
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -391,6 +407,7 @@ public class RequestConstant {
     public static final String KEY_SELECT_BY_DAY = "day";
     public static final String KEY_SELECT_BY_WEEK = "week";
     public static final String KEY_SELECT_BY_MONTH = "month";
+    public static final String KEY_TEAM_ID = "teamId";
 
     // -----------------------------------------> 附近的人 <-----------------------------------------
     public static final String KEY_NEW_CUSTOMER_ID = "customerId";
@@ -416,7 +433,17 @@ public class RequestConstant {
     public static final String TECH_ADD = "tech_add";
     public static final String ALL_USER = "";
     public static final String KEY_EMP_ID = "empId";
-
+    // -----------------------------------------> 技师海报 <-----------------------------------------
+    public static final String KEY_POSTER_CLUB_NAME = "clubName";
+    public static final String KEY_POSTER_ID = "id";
+    public static final String KEY_POSTER_IMAGE_ID = "imageId";
+    public static final String KEY_POSTER_NAME = "name";
+    public static final String KEY_POSTER_STYLE = "style";//01-方形黑色图片/02-圆形彩色/03-花
+    public static final String KEY_POSTER_SUB_TITLE = "subTitle";
+    public static final String KEY_POSTER_TECH_NO = "techNo";
+    public static final String KEY_POSTER_TITLE = "title";
+    public static final String KEY_POSTER_IMAGE_CATEGORY = "category";
+    public static final String KEY_POSTER_IMAGE_IMG_FILE = "imgFile";
     /*********************************************************************************************/
     /*                                        configs                                            */
     /*********************************************************************************************/

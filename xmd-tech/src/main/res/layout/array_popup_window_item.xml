@@ -13,6 +13,7 @@
         android:background="@drawable/array_popup_window_item_bg"
         android:gravity="center"
         android:padding="@dimen/inter_space"
+        android:lines="1"
         android:textColor="@color/array_popup_text_color"
         android:textSize="@dimen/fontBody"/>
 

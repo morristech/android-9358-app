@@ -1037,7 +1037,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
 
             Glide.with(mContext).load(userRecent.avatarUrl).into(viewHolder.contactRecentAvatar);
-            viewHolder.contactRecentRemark.setText(userRecent.remark);
+            if (Utils.isNotEmpty(userRecent.remark)) {
+                viewHolder.contactRecentRemark.setText(userRecent.remark);
+            } else {
+                viewHolder.contactRecentRemark.setText("访问了我");
+            }
+
             switch (userRecent.visitType) {
                 case Constant.CONTACT_RECENT_TYPE_NORMAL:
                     Glide.with(mContext).load(R.drawable.icon_visit_visit).into(viewHolder.ivContactRecentVisitType);

@@ -103,6 +103,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         requestPermissions();
         //检查更新
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
+
     }
 
     @TargetApi(23)

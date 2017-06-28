@@ -605,4 +605,38 @@
     <string name="contact_blacklist_manager">黑名单管理</string>
     <string name="contact_to_develop_customer">去拓客吧</string>
     <string name="contact_to_nearby_people">查看附近的人</string>
+    <!--技师个人海报-->
+    <string name="tech_poster_title">我的海报</string>
+    <string name="tech_poster_new_add">新增</string>
+    <string name="tech_poster_create_poster">制作海报</string>
+    <string name="tech_poster_edit_poster">添加海报内容</string>
+    <string name="tech_poster_choice_poster_model">选择海报模板</string>
+    <string name="tech_poster_edit_primary_title">大标题</string>
+    <string name="tech_poster_edit_minor_title">小标题</string>
+    <string name="tech_poster_edit_nick_name">昵称</string>
+    <string name="tech_poster_edit_tech_number">工号</string>
+    <string name="tech_poster_edit_club_name">会所</string>
+    <string name="tech_poster_edit_select_photo">选择照片</string>
+    <string name="tech_poster_edit_content">填写内容</string>
+    <string name="tech_poster_edit_step_one">步骤一：</string>
+    <string name="tech_poster_edit_step_two">步骤二：选择照片</string>
+    <string name="tech_poster_edit_step_three">步骤三：填写内容</string>
+    <string name="tech_poster_edit_primary_title＿hint">标签名称，例如，欢迎语</string>
+    <string name="tech_poster_edit_minor_title_hint">关注9358，快来预约我吧</string>
+    <string name="tech_poster_edit_nick_name_hint">技师昵称</string>
+    <string name="tech_poster_edit_tech_number_hint">技师工号</string>
+    <string name="tech_poster_edit_club_name_hint">会所名称</string>
+    <string name="tech_poster_save_phone">保存至手机</string>
+    <string name="tech_poster_share">分享</string>
+    <string name="tech_poster_edit_next">下一步</string>
+    <string name="tech_poster_edit_before">上一步</string>
+    <string name="tech_poster_edit_save">保存</string>
+    <string name="tech_poster_edit">编辑</string>
+    <string name="tech_poster_save_picture">保存图片</string>
+    <string name="tech_poster_primary_title">客／官／捧／捧／场</string>
+    <string name="tech_poster_minor_title">关注9358快点来预约我吧～</string>
+    <string name="tech_poster_club_title_name">小摩豆休闲养生会所</string>
+    <string name="tech_poster_alter_message">提示</string>
+    <string name="tech_poster_alter_delete_message">删除后将无法恢复，确认删除该技师海报吗？</string>
+
 </resources>
