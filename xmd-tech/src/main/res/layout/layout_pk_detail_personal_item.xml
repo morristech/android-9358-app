@@ -3,28 +3,104 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginRight="@dimen/margin_10"
               android:layout_marginLeft="@dimen/margin_10"
+              android:layout_marginRight="@dimen/margin_10"
               android:orientation="vertical">
 
-    <TextView
+
+    <LinearLayout
         android:id="@+id/team_ranking_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_10"
-        android:background="@drawable/bg_personal_ranking_title"
-        android:gravity="center"
-        android:padding="@dimen/small_space"
-        android:text="@string/pk_personal_ranking_title"
-        android:textColor="#fa4724"
-        android:textSize="@dimen/fontSize"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@drawable/bg_personal_ranking_title"
+            android:gravity="center"
+            android:padding="@dimen/small_space"
+            android:text="@string/pk_personal_ranking_title"
+            android:textColor="#fa4724"
+            android:textSize="@dimen/fontSize"/>
+
+        <LinearLayout
+            android:id="@+id/ll_personal_ranking_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/margin_10"
+            android:paddingTop="@dimen/margin_10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="排名"
+                android:textColor="#666666"
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="姓名"
+                android:textColor="#666666"
+                android:textSize="13sp"
+                />
+
+            <LinearLayout
+                android:id="@+id/ll_team_filter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_selected_team"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/inter_space"
+                    android:text="全部队伍"
+                    android:textColor="#666666"
+                    android:textSize="13sp"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/small_space"
+                    android:src="@drawable/icon_ranking_down_filter"/>
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="战绩"
+                android:textColor="#666666"
+                android:textSize="13sp"
+                />
+        </LinearLayout>
+
+        <View
+            style="@style/line"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:orientation="horizontal"
         android:background="@color/color_white"
+        android:orientation="horizontal"
         android:padding="@dimen/margin_10">
 
         <ImageView
@@ -58,7 +134,6 @@
                 android:background="@drawable/icon22"/>
 
 
-
             <TextView
                 android:id="@+id/tv_captain_mark"
                 android:layout_width="wrap_content"
@@ -70,36 +145,38 @@
                 android:paddingLeft="6dp"
                 android:paddingRight="6dp"
                 android:paddingTop="2dp"
+                android:text="队长"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/fontRemark"
-                android:text="队长"/>
+                android:textSize="@dimen/fontRemark"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1.2"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/small_space"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_weight="1.2"
             android:gravity="center_vertical"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tv_ranking_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:paddingLeft="@dimen/small_space"
                 android:textColor="@color/colorTitle"
                 android:textSize="@dimen/fontTitle"
-                android:layout_gravity="center_vertical"
                 tools:text="李佳绩"/>
+
             <TextView
                 android:id="@+id/tv_ranking_serialNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:paddingLeft="6dp"
                 android:textColor="@color/colorTitle"
                 android:textSize="@dimen/fontNormal"
-                android:layout_gravity="center_vertical"
                 tools:text="[ 0021 ]"/>
         </LinearLayout>
 
@@ -112,9 +189,9 @@
             android:layout_marginLeft="@dimen/small_space"
             android:layout_weight="1"
             android:gravity="center"
+            android:lines="1"
             android:textColor="#757575"
             android:textSize="@dimen/fontBody"
-            android:lines="1"
             tools:text="#8队员"/>
 
         <TextView

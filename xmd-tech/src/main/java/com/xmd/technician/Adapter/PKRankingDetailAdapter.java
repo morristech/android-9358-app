@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +35,8 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
     private List<PKDetailListBean> mData;
     private int mTeamNumber;
     private String mCurrentType;
+    private TeamFilterListener mFilterListener;
+    private String mCurrentTeamFilter;
 
     public PKRankingDetailAdapter(Context context, List<PKDetailListBean> data, String currentType) {
         this.mContext = context;
@@ -41,10 +44,19 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
         this.mData = data;
     }
 
-    public void setData(List<PKDetailListBean> data, int teamNumber) {
+    public void setData(List<PKDetailListBean> data, int teamNumber,String teamFilter) {
         this.mData = data;
         this.mTeamNumber = teamNumber;
+        this.mCurrentTeamFilter = teamFilter;
         notifyDataSetChanged();
+    }
+
+    public void setTeamFilter(TeamFilterListener listener) {
+        this.mFilterListener = listener;
+    }
+
+    public interface TeamFilterListener {
+        void filterTeam(View view);
     }
 
     @Override
@@ -70,7 +82,7 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if(holder instanceof PkRankingDetailViewHolder){
+        if (holder instanceof PkRankingDetailViewHolder) {
             PkRankingDetailViewHolder detailViewHolder = (PkRankingDetailViewHolder) holder;
             PKDetailListBean bean = mData.get(position);
 
@@ -136,14 +148,20 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
             if (mCurrentType.equals(RequestConstant.KEY_SORT_BY_CUSTOMER)) {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s人", bean.customerStat));
             } else if (mCurrentType.equals(RequestConstant.KEY_SORT_BY_SALE)) {
-                detailViewHolder.tvRankingMemberNumber.setText(String.format("%1.2f元", bean.saleStat/100f));
-            }else if(mCurrentType.equals(RequestConstant.KEY_SORT_BY_COUPON)){
+                detailViewHolder.tvRankingMemberNumber.setText(String.format("%1.2f元", bean.saleStat / 100f));
+            } else if (mCurrentType.equals(RequestConstant.KEY_SORT_BY_COUPON)) {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.couponStat));
             } else {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.commentStat));
             }
+            if (null != mFilterListener) {
+                if(Utils.isNotEmpty(mCurrentTeamFilter)){
+                    detailViewHolder.tvSelectedTeam.setText(mCurrentTeamFilter);
+                }
+                detailViewHolder.llTeamFilter.setOnClickListener(v -> mFilterListener.filterTeam(detailViewHolder.llTeamFilter));
+            }
             Glide.with(mContext).load(bean.avatarUrl).into(detailViewHolder.imgRankingHead);
-        }else if(holder instanceof BottomViewHolder){
+        } else if (holder instanceof BottomViewHolder) {
 
         }
 
@@ -168,7 +186,7 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
 
     static class PkRankingDetailViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.team_ranking_title)
-        TextView teamRankingTitle;
+        LinearLayout teamRankingTitle;
         @Bind(R.id.img_ranking_number)
         ImageView imgRankingNumber;
         @Bind(R.id.text_ranking_number)
@@ -185,6 +203,10 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
         TextView tvRankingMemberNumber;
         @Bind(R.id.tv_ranking_serialNo)
         TextView tvRankingSerial;
+        @Bind(R.id.ll_team_filter)
+        LinearLayout llTeamFilter;
+        @Bind(R.id.tv_selected_team)
+        TextView tvSelectedTeam;
 
         PkRankingDetailViewHolder(View view) {
             super(view);

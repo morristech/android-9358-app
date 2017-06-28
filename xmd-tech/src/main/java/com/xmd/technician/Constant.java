@@ -29,6 +29,7 @@ public class Constant {
 
     public static final int AVATAR_MAX_SIZE = 512;
     public static final int ALBUM_MAX_SIZE = 1024;
+    public static final int POSTER_MAX_SIZE = 2048;
 
     public static final String ROLE_TECH = "tech";
     public static final String ROLE_CUSTOMER_SERVICE = "customer_service";
@@ -342,12 +343,21 @@ public class Constant {
     public static final String SWITCH_FRAGMENT_ITEM_INDEX = "selectItem";
 
 
-
-
     public static final String CHAT_MENU_APPOINTMENT = "11";
     public static final String CHAT_MENU_APPOINTMENT_REQUEST = "12";
 
     public static final String CUSTOMER_STATUS_WORKING = "working";
     public static final String CUSTOMER_STATUS_REST = "rest";
+
+    public static final String TECH_POSTER_CATEGORY_TYPE = "08";
+    public static final String TECH_POSTER_TYPE_SQUARE = "01";
+    public static final String TECH_POSTER_TYPE_CIRCULAR = "02";
+    public static final String TECH_POSTER_TYPE_FLOWER = "03";
+
+    public static final int TECH_POSTER_SQUARE_MODEL = 1;
+    public static final int TECH_POSTER_CIRCULAR_MODEL = 2;
+    public static final int TECH_POSTER_FLOWER_MODEL = 3;
+    public static final String KEY_CURRENT_POSTER = "currentPoster";
+
 }
 

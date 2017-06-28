@@ -16,6 +16,7 @@ import com.xmd.manager.R;
 import com.xmd.manager.adapter.PKRankingDetailAdapter;
 import com.xmd.manager.beans.DateChangedResult;
 import com.xmd.manager.beans.PKDetailListBean;
+import com.xmd.manager.beans.PkFilterTeamBean;
 import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.ThreadManager;
 import com.xmd.manager.common.Utils;
@@ -25,6 +26,8 @@ import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.PKPersonalListResult;
 import com.xmd.manager.service.response.PKTeamListResult;
+import com.xmd.manager.widget.ArrayBottomPopupWindow;
+import com.xmd.manager.widget.EmptyView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +41,16 @@ import rx.Subscription;
  * Created by Lhj on 17-4-9.
  */
 
-public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,PKRankingDetailAdapter.TeamFilterListener{
     public static final String BIZ_TYPE = "type";
     public static final String PK_ACTIVITY_ID = "pkActivityId";
     @Bind(R.id.ranking_recycler_view)
     RecyclerView rankingRecyclerView;
     @Bind(R.id.swipe_refresh_widget)
     SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.empty_view_widget)
+    EmptyView emptyView;
+
     private String mRange;
     private Subscription mTeamRankingSubscription;
     private Subscription mTechRankingSubscription;
@@ -59,6 +65,12 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
     private String mPage;
     private String mPageSize;
     private View rootView;
+    private String mCurrentFilterTeamId;
+    private String mCurrentFilterTeamName;
+    private List<PkFilterTeamBean> mPkFilterTeamList;
+    private List<String> mStringList;
+    private ArrayBottomPopupWindow<String> mArrayBottom;
+
 
     @Nullable
     @Override
@@ -74,6 +86,7 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
         mRange = getArguments().getString(BIZ_TYPE);
         mActivityId = getArguments().getString(PK_ACTIVITY_ID);
         mData = new ArrayList<>();
+        mPkFilterTeamList = new ArrayList<>();
         if (mRange.equals(Constant.KEY_CATEGORY_CUSTOMER_TYPE)) {
             mSortKey = RequestConstant.KEY_SORT_BY_CUSTOMER;
         } else if (mRange.equals(Constant.KEY_CATEGORY_SAIL_TYPE)) {
@@ -101,11 +114,16 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
         rankingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         rankingRecyclerView.setHasFixedSize(true);
         rankingRecyclerView.setAdapter(mDetailAdapter);
+        mDetailAdapter.setTeamFilter(this);
+        mCurrentFilterTeamId = "";
+        mCurrentFilterTeamName = "全部队伍";
         getRankingData();
     }
 
 
     private void handlePersonalResult(PKPersonalListResult personalResult) {
+        swipeRefreshLayout.setRefreshing(false);
+        emptyView.setStatus(EmptyView.Status.Gone);
         if (personalResult.statusCode == 200) {
             if (personalResult.respData == null || personalResult.respData.size() == 0) {
                 return;
@@ -115,7 +133,7 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
                     personalResult.respData.get(i).isTeam = false;
                 }
                 mData.addAll(personalResult.respData);
-                mDetailAdapter.setData(mData, mTeamNumber);
+                mDetailAdapter.setData(mData, mTeamNumber,mCurrentFilterTeamName);
             }
 
         } else {
@@ -125,17 +143,20 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
     }
 
     private void handleTeamRanking(PKTeamListResult teamResult) {
-        swipeRefreshLayout.setRefreshing(false);
+
         if (teamResult.statusCode == 200) {
             if (teamResult.respData == null || teamResult.respData.rankingList == null) {
                 return;
             }
             if (teamResult.sortType.equals(mSortKey)) {
                 mData.clear();
+                mPkFilterTeamList.clear();
                 for (int i = 0; i < teamResult.respData.rankingList.size(); i++) {
                     teamResult.respData.rankingList.get(i).isTeam = true;
+                    mPkFilterTeamList.add(new PkFilterTeamBean(teamResult.respData.rankingList.get(i).teamId, teamResult.respData.rankingList.get(i).teamName));
                 }
                 mTeamNumber = teamResult.respData.rankingList.size();
+                mPkFilterTeamList.add(0, new PkFilterTeamBean("", "全部队伍"));
                 mData.addAll(teamResult.respData.rankingList);
             }
         } else {
@@ -157,6 +178,7 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
     }
 
     public void getRankingData() {
+        emptyView.setStatus(EmptyView.Status.Loading);
         if (mParams == null) {
             mParams = new ArrayMap<>();
         } else {
@@ -174,6 +196,7 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
         ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
             @Override
             public void run() {
+                mParams.put(RequestConstant.KEY_TEAM_ID, mCurrentFilterTeamId);
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST, mParams);
             }
         }, 300);
@@ -184,5 +207,25 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
         getRankingData();
     }
 
+    @Override
+    public void filterTeam(View view) {
+        if (mStringList == null) {
+            mStringList = new ArrayList<>();
+            for (int i = 0; i < mPkFilterTeamList.size(); i++) {
+                mStringList.add(mPkFilterTeamList.get(i).teamName);
+            }
+        }
+        mArrayBottom = new ArrayBottomPopupWindow<>(view, mParams, Utils.dip2px(getActivity(), 100),true);
+        mArrayBottom.setItemClickListener((parent, itemView, position, id) -> {
+            mCurrentFilterTeamId = mPkFilterTeamList.get(position).teamId;
+            mCurrentFilterTeamName = mStringList.get(position);
+            getRankingData();
+
+        });
+        mArrayBottom.setDataSet(mStringList, mCurrentFilterTeamName);
+        mArrayBottom.showAsDropDown(0,0);
+
+
+    }
 
 }

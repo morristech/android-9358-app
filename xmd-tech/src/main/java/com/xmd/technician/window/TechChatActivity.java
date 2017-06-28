@@ -320,7 +320,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
 
             @Override
             public void onBegRewordClicked() {
-                new RewardConfirmDialog(TechChatActivity.this, getString(R.string.beg_reward), getString(R.string.send_request_user_reward), "") {
+                new RewardConfirmDialog(TechChatActivity.this, getString(R.string.tech_poster_alter_message), getString(R.string.send_request_user_reward), "") {
                     @Override
                     public void onConfirmClick() {
                         super.onConfirmClick();

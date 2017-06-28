@@ -55,6 +55,7 @@ import com.xmd.technician.http.gson.ContactRegisterListResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.CustomerUserRecentListResult;
+import com.xmd.technician.http.gson.DeleteTechPosterResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.FeedbackResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
@@ -91,6 +92,7 @@ import com.xmd.technician.http.gson.ResetPasswordResult;
 import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.http.gson.RoleListResult;
 import com.xmd.technician.http.gson.RolePermissionListResult;
+import com.xmd.technician.http.gson.SaveTechPosterResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
 import com.xmd.technician.http.gson.TechAccountListResult;
@@ -100,6 +102,8 @@ import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.http.gson.TechPKRankingResult;
 import com.xmd.technician.http.gson.TechPersonalDataResult;
+import com.xmd.technician.http.gson.TechPosterDetailResult;
+import com.xmd.technician.http.gson.TechPosterListResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechRankingListResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
@@ -108,6 +112,7 @@ import com.xmd.technician.http.gson.UpdateServiceResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
 import com.xmd.technician.http.gson.UpdateWorkStatusResult;
 import com.xmd.technician.http.gson.UpdateWorkTimeResult;
+import com.xmd.technician.http.gson.UploadTechPosterImageResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
@@ -476,7 +481,23 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL:
                 getCLubEmployeeDetail(msg.obj.toString());
-
+                break;
+            // --------------------------------------> 联系人列表优化 <------------------------------------
+            case MsgDef.MSG_DEF_TECH_POSTER_SAVE:
+                doSaveTechPoster((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_TECH_POSTER_DELETE:
+                doDeleteTechPoster(msg.obj.toString());
+                break;
+            case MsgDef.MSG_DEF_TECH_POSTER_IMAGE_UPLOAD:
+                doUploadTechPosterImage((Map<String, String>) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_TECH_POSTER_LIST:
+                getTechPosterList();
+                break;
+            case MsgDef.MSG_DEF_TECH_POSTER_DETAIL:
+                getTechPosterDetail(msg.obj.toString());
+                break;
         }
 
         return true;
@@ -1794,7 +1815,7 @@ public class RequestController extends AbstractController {
      */
     private void getTechPKPersonalList(Map<String, String> params) {
         Call<PKPersonalListResult> call = getSpaService().techPkPersonalList(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_PK_ACTIVITY_ID), params.get(RequestConstant.KEY_SORT_KEY),
-                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+                params.get(RequestConstant.KEY_TEAM_ID), params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<PKPersonalListResult>() {
             @Override
             protected void postResult(PKPersonalListResult result) {
@@ -2257,4 +2278,67 @@ public class RequestController extends AbstractController {
             }
         });
     }
+
+
+    //保存技师海报
+    private void doSaveTechPoster(Map<String, String> params) {
+        Call<SaveTechPosterResult> call = getSpaService().techPosterSave(LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_POSTER_CLUB_NAME), params.get(RequestConstant.KEY_POSTER_ID),
+                params.get(RequestConstant.KEY_POSTER_IMAGE_ID), params.get(RequestConstant.KEY_POSTER_NAME), params.get(RequestConstant.KEY_POSTER_STYLE), params.get(RequestConstant.KEY_POSTER_SUB_TITLE),
+                params.get(RequestConstant.KEY_POSTER_TECH_NO), params.get(RequestConstant.KEY_POSTER_TITLE));
+        call.enqueue(new TokenCheckedCallback<SaveTechPosterResult>() {
+            @Override
+            protected void postResult(SaveTechPosterResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+
+    //删除技师海报
+    private void doDeleteTechPoster(String param) {
+        Call<DeleteTechPosterResult> call = getSpaService().techPosterDelete(LoginTechnician.getInstance().getToken(), param);
+
+        call.enqueue(new TokenCheckedCallback<DeleteTechPosterResult>() {
+            @Override
+            protected void postResult(DeleteTechPosterResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //上传技师海报图片
+    private void doUploadTechPosterImage(Map<String, String> params) {
+        Call<UploadTechPosterImageResult> call = getSpaService().techPosterImageUpload(LoginTechnician.getInstance().getToken(), params.get(RequestConstant.KEY_POSTER_IMAGE_CATEGORY),
+                params.get(RequestConstant.KEY_POSTER_IMAGE_IMG_FILE));
+        call.enqueue(new TokenCheckedCallback<UploadTechPosterImageResult>() {
+            @Override
+            protected void postResult(UploadTechPosterImageResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取技师海报详情
+    private void getTechPosterDetail(String param) {
+        Call<TechPosterDetailResult> call = getSpaService().techPosterDetail(LoginTechnician.getInstance().getToken(), param);
+        call.enqueue(new TokenCheckedCallback<TechPosterDetailResult>() {
+            @Override
+            protected void postResult(TechPosterDetailResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    //获取技师海报列表
+    public void getTechPosterList() {
+        Call<TechPosterListResult> call = getSpaService().techPosterList(LoginTechnician.getInstance().getToken());
+        call.enqueue(new TokenCheckedCallback<TechPosterListResult>() {
+            @Override
+            protected void postResult(TechPosterListResult result) {
+                RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+
 }

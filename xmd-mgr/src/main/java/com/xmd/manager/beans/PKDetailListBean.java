@@ -21,7 +21,7 @@ public class PKDetailListBean {
      * avatarUrl : http://sdcm103.stonebean.com:8489/s/group00/M00/01/1C/oIYBAFh0R8GAD7jzAADXQ4YKfHI426.png?st=6I5hqygHTw-oUtno2h3CMQ&e=1492574479
      */
 
-    public int teamId;
+    public String teamId;
     public String teamName;
     public String leader;
     public String teamMember;

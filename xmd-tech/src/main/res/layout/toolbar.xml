@@ -65,6 +65,7 @@
                 android:paddingLeft="@dimen/inter_space"
                 android:paddingRight="@dimen/inter_space"
                 android:text="right"
+                android:textColor="@color/colorHead"
                 android:visibility="gone" />
 
             <TextView

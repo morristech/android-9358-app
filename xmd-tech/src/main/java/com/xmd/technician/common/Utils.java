@@ -4,12 +4,18 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -19,6 +25,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -28,6 +35,10 @@ import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -562,6 +573,58 @@ public class Utils {
             return "";
         }
 
+    }
+
+    public static String saveImage(Activity activity,View v){
+        Bitmap bitmap;
+        // String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File file = new File(Environment.getExternalStorageDirectory() + "/" + "ji" + ".png");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        View view  = activity.getWindow().getDecorView();
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+
+        bitmap = view.getDrawingCache();
+        Rect frame = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int[] loacation = new int[2];
+        v.getLocationOnScreen(loacation);
+        Logger.i(">>>","width"+loacation[0]);
+        try {
+            bitmap = Bitmap.createBitmap(bitmap,1,loacation[1],v.getWidth(),v.getHeight());
+            FileOutputStream fout = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,fout);
+            saveImageToGallery(activity,file);
+            return file.toString();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            Logger.e(">>>","生成图片失败");
+        }finally {
+            view.destroyDrawingCache();
+        }
+
+        return  null;
+    }
+
+    public static void saveImageToGallery(Context context,File file) {
+        // 其次把文件插入到系统图库
+        try {
+            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), "code", null);
+            // 最后通知图库更新
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"
+                    + file)));
+            Logger.i(">>>","保存成功");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
 
