@@ -41,6 +41,7 @@ public class PosterBean implements Parcelable{
     public String imageUrl;
     public String qrCodeUrl;
     public String validDate;
+    public String shareUrl;
 
 
     public PosterBean() {

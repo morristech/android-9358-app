@@ -101,7 +101,15 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
         }
 
         if (Utils.isNotEmpty(bean.title)) {
-            viewHolder.tvPosterPrimaryTitle.setText(bean.title);
+            String title = bean.title;
+            if(bean.style.equals(Constant.TECH_POSTER_TYPE_SQUARE)){
+                viewHolder.tvPosterPrimaryTitle.setText(String.format("<<%s>>",title));
+            }else if(bean.style.equals(Constant.TECH_POSTER_TYPE_FLOWER)){
+                viewHolder.tvPosterPrimaryTitle.setText(Utils.stringFormat(title));
+            }else{
+                viewHolder.tvPosterPrimaryTitle.setText(title);
+            }
+
         } else {
             viewHolder.tvPosterPrimaryTitle.setText("");
         }
@@ -117,8 +125,7 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
         } else {
             viewHolder.tvPosterClubName.setText("");
         }
-        String  url = "/storage/emulated/0/阅图/PictureUnlock_8edca6dd9f60204fdc5c665948275dba.pictureunlock.jpg";
-        Glide.with(mContext).load(url).into(viewHolder.imgPosterTechPhoto);
+        Glide.with(mContext).load(bean.imageUrl).into(viewHolder.imgPosterTechPhoto);
         Glide.with(mContext).load(bean.qrCodeUrl).into(viewHolder.imgPosterQrCode);
 
         if (mCallBack != null) {

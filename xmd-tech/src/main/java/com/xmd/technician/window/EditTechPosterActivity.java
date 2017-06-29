@@ -14,7 +14,6 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.PosterBean;
 import com.xmd.technician.common.ImageUploader;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -23,7 +22,6 @@ import com.xmd.technician.http.gson.UploadTechPosterImageResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.TechPosterDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +53,6 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
     private Subscription mTechPosterSaveSubscription;
     private String selectedImageId;
     private PosterBean mPosterBean;
-
 
 
     @Override
@@ -116,6 +113,7 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
     }
 
     private void handlerImageUploadResult(UploadTechPosterImageResult result) {
+        hideLoading();
         if (result.statusCode == 200) {
             selectedImageId = result.respData.imageId;
             creditSave();
@@ -135,13 +133,13 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
                 break;
             case R.id.btn_save_edit:
                 if (Utils.isNotEmpty(getImageUrl())) {
+                    showLoading("正在上传照片...");
                     ImageUploader.getInstance().uploadByUrl(ImageUploader.TYPE_TECH_POSTER, getImageUrl());
                 } else if (Utils.isNotEmpty(selectedImageId)) {
                     creditSave();
                 } else {
                     makeShortToast("请先添加照片");
                 }
-
                 break;
         }
     }
