@@ -112,7 +112,7 @@ android {
                 if (flavorName == "prd_") {
                     flavorName = "";
                 }
-                def fileName = "9358tech_v${defaultConfig.versionName}.${defaultConfig.versionCode}_${flavorName}xiaomodo}.apk"
+                def fileName = "9358tech_v${defaultConfig.versionName}.${defaultConfig.versionCode}_${flavorName}xiaomodo_${releaseTime()}.apk"
                 output.outputFile = new File(outputFile.parent, fileName)
             }
         }
