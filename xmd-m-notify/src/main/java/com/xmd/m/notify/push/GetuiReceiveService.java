@@ -49,7 +49,10 @@ public class GetuiReceiveService extends GTIntentService {
                 }
             } catch (JsonParseException e) {
                 XLogger.e(XmdPushModule.TAG, "parse message error:" + e.getMessage() + ",data:" + data);
-                return;
+            }
+
+            if (XmdPushManager.getInstance().getListener() != null) {
+                XmdPushManager.getInstance().getListener().onRawMessage(data);
             }
         }
     }

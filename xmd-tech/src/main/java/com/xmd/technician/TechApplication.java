@@ -21,6 +21,8 @@ import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
+import com.xmd.m.notify.push.XmdPushMessage;
+import com.xmd.m.notify.push.XmdPushMessageListener;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
@@ -213,4 +215,16 @@ public class TechApplication extends MultiDexApplication {
         XLogger.i(TAG, "APP VERSION NAME:" + mAppVersionName);
         XLogger.i(TAG, "=========================================");
     }
+
+    private XmdPushMessageListener compatListener = new XmdPushMessageListener() {
+        @Override
+        public void onMessage(XmdPushMessage message) {
+
+        }
+
+        @Override
+        public void onRawMessage(String message) {
+
+        }
+    };
 }
