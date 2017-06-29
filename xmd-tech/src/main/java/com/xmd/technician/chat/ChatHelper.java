@@ -27,19 +27,22 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.m.notify.redpoint.RedPointService;
+import com.xmd.m.notify.redpoint.RedPointServiceImpl;
 import com.xmd.technician.BuildConfig;
+import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.chat.db.ChatDBManager;
 import com.xmd.technician.chat.db.UserDao;
 import com.xmd.technician.chat.event.EventReceiveMessage;
-import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.chat.model.ChatModel;
 import com.xmd.technician.chat.model.EaseNotifier;
 import com.xmd.technician.chat.receiver.CallReceiver;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.chat.utils.PreferenceManager;
 import com.xmd.technician.chat.utils.UserUtils;
+import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.window.MainActivity;
@@ -69,6 +72,8 @@ public class ChatHelper {
     protected static final String TAG = "ChatHelper";
 
     private ChatUI easeUI;
+
+    private RedPointService redPointService = RedPointServiceImpl.getInstance();
 
     /**
      * EMEventListener
@@ -206,6 +211,7 @@ public class ChatHelper {
                 }
                 conversation.clear();
             }
+            redPointService.set(Constant.RED_POINT_CHAT_ALL_UNREAD, EMClient.getInstance().chatManager().getUnreadMessageCount());
         }
     }
 
@@ -657,7 +663,6 @@ public class ChatHelper {
 
                     //发送消息通知
                     RxBus.getInstance().post(new EventReceiveMessage(messages));
-                    RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
 
 
                     //更新用户信息
@@ -674,6 +679,12 @@ public class ChatHelper {
                         UserInfoServiceImpl.getInstance().saveUser(user);
                     }
                 }
+                ThreadPoolManager.postToUI(new Runnable() {
+                    @Override
+                    public void run() {
+                        redPointService.set(Constant.RED_POINT_CHAT_ALL_UNREAD, EMClient.getInstance().chatManager().getUnreadMessageCount());
+                    }
+                });
             }
 
             @Override
@@ -934,7 +945,8 @@ public class ChatHelper {
 
     public void clearUnreadMessage(EMConversation conversation) {
         conversation.markAllMessagesAsRead();
-        RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
+//        RxBus.getInstance().post(new EventUnreadMessageCount(getUnreadMessageCount()));
+        redPointService.set(Constant.RED_POINT_CHAT_ALL_UNREAD, EMClient.getInstance().chatManager().getUnreadMessageCount());
     }
 
     public static Set<String> messageSetting = new HashSet<>();
