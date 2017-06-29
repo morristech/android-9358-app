@@ -159,3 +159,6 @@
 
 -dontwarn org.greenrobot.**
 -keep class org.greenrobot.** {*;}
+
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
