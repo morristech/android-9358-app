@@ -52,14 +52,16 @@ public class XmdPushManager {
 
     private Call<BaseBean> bindCall;
     private Subscription unBindSubscription;
+    private String userType;
 
-    public void init(Context context, XmdPushMessageListener listener) {
+    public void init(Context context, String userType, XmdPushMessageListener listener) {
         if (context == null) {
             throw new RuntimeException("参数错误");
         }
         context = context.getApplicationContext();
         this.context = context;
         this.listener = listener;
+        this.userType = userType;
 
         try {
             PackageManager packageManager = context.getPackageManager();
@@ -162,7 +164,7 @@ public class XmdPushManager {
         String secret = DESede.encrypt(secretBefore);
         bindCall = XmdNetwork.getInstance()
                 .getService(NetService.class)
-                .bindGetuiClientId(token, userId, "tech", "android", clientId, secret);
+                .bindGetuiClientId(token, userId, userType, "android", clientId, secret);
         XmdNetwork.getInstance().requestSync(bindCall, new NetworkSubscriber<BaseBean>() {
             @Override
             public void onCallbackSuccess(BaseBean result) {
@@ -193,7 +195,7 @@ public class XmdPushManager {
         }
         Observable<BaseBean> observable = XmdNetwork.getInstance()
                 .getService(NetService.class)
-                .unbindGetuiClientId("tech", clientId);
+                .unbindGetuiClientId(userType, clientId);
         unBindSubscription = XmdNetwork.getInstance().request(observable, null);
         if (bound) {
             bound = false;

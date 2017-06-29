@@ -23,8 +23,8 @@ public class XmdPushModule {
     private XmdPushModule() {
     }
 
-    public void init(Context context, XmdActionFactory xmdActionFactory, XmdPushMessageListener listener) {
+    public void init(Context context, String userType, XmdActionFactory xmdActionFactory, XmdPushMessageListener listener) {
         XmdDisplayManager.getInstance().init(context, xmdActionFactory);
-        XmdPushManager.getInstance().init(context, listener);
+        XmdPushManager.getInstance().init(context, userType, listener);
     }
 }

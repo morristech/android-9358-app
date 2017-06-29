@@ -47,9 +47,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
-            android:name="PUSH_MASTERSECRET"
+            android:name="GETUI_MASTER_SECRET"
             android:value="${GETUI_MASTER_SECRET}" />
+
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="${UMENG_APPKEY_VALUE}" />
@@ -291,14 +293,6 @@
         <activity
             android:name=".window.OrderSearchActivity"
             android:screenOrientation="portrait" />
-
-        <receiver
-            android:name=".push.GetuiReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".journal.activity.JournalListActivity"
