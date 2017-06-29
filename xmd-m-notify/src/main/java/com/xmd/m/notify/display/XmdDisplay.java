@@ -8,7 +8,6 @@ import java.io.Serializable;
  */
 
 public class XmdDisplay implements Serializable {
-    public static final String BUSINESS_TYPE_CHAT_MESSAGE = "chatMessage";
 
     public static final String ACTION_VIEW_WEB = "viewWeb";
     public static final String ACTION_CHAT_TO = "chatTo";
@@ -35,6 +34,12 @@ public class XmdDisplay implements Serializable {
     private CharSequence audioUri;
     private String action;
     private String actionData;
+
+    public XmdDisplay() {
+        scene = SCENE_BG;
+        style = STYLE_NOTIFICATION;
+        flags = FLAG_LIGHT | FLAG_RING | FLAG_VIBRATE;
+    }
 
 
     public int getScene() {

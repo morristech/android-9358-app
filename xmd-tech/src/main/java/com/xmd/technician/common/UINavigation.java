@@ -15,6 +15,7 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
 import com.xmd.technician.window.ContactInformationDetailActivity;
 import com.xmd.technician.window.JoinClubActivity;
@@ -94,11 +95,17 @@ public class UINavigation {
         context.startActivity(intent);
     }
 
+    public static void gotoOnlinePayNotifyList(Context context) {
+        Intent intent = new Intent(context, OnlinePayNotifyActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
     public static void gotoChatActivity(Context context, String remoteChatId) {
         Intent intent = new Intent(context, TechChatActivity.class);
         intent.putExtra(ChatConstant.TO_CHAT_USER_ID, remoteChatId);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        TechApplication.getAppContext().startActivity(intent);
+        context.startActivity(intent);
     }
 
     public static void gotoChatActivity(Context context, Map<String, Object> params) {
@@ -150,6 +157,9 @@ public class UINavigation {
         switch (display.getAction()) {
             case XmdDisplay.ACTION_CHAT_TO:
                 gotoChatActivity(context, display.getActionData());
+                break;
+            case XmdDisplay.ACTION_VIEW_FAST_PAY:
+                gotoOnlinePayNotifyList(context);
                 break;
             default:
                 break;
