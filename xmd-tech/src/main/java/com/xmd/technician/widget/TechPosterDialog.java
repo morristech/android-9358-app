@@ -52,8 +52,8 @@ public class TechPosterDialog extends Dialog {
     private PosterShareOrSaveListener posterListener;
 
     public TechPosterDialog(Context context, int style, boolean isSave) {
-        super(context);
-        new TechPosterDialog(context);
+
+       super(context,R.style.default_dialog_style);
         this.mContext = context;
         this.style = style;
         this.isSave = isSave;
@@ -69,9 +69,11 @@ public class TechPosterDialog extends Dialog {
     }
 
     public TechPosterDialog(Context context) {
-        super(context);
+        this(context,-1);
 
     }
+
+
 
     public void setPosterListener(PosterShareOrSaveListener posterListener) {
         this.posterListener = posterListener;
@@ -172,7 +174,6 @@ public class TechPosterDialog extends Dialog {
                 this.dismiss();
                 break;
             case R.id.tv_save_poster:
-                this.dismiss();
 
                 if (posterListener != null) {
                     imgPosterDismiss.setVisibility(View.GONE);

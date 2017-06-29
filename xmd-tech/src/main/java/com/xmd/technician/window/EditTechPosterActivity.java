@@ -132,6 +132,9 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
                 fragmentManager(true);
                 break;
             case R.id.btn_save_edit:
+                if(null == ((TechPosterEditPosterFragment) mFragments.get(1)).getPosterInfo()){
+                    return;
+                }
                 if (Utils.isNotEmpty(getImageUrl())) {
                     showLoading("正在上传照片...");
                     ImageUploader.getInstance().uploadByUrl(ImageUploader.TYPE_TECH_POSTER, getImageUrl());

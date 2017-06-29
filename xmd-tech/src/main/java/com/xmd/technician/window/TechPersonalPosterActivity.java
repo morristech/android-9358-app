@@ -194,12 +194,14 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
     @Override
     public void posterShare() {
         StringBuilder url;
-        if (Utils.isEmpty(mPosterBean.shareUrl)) {
-            url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-            url.append(String.format("/spa-manager/tech-poster/#/%s?id=%s", mPosterBean.style, mPosterBean.id));
-        } else {
-            url = new StringBuilder(mPosterBean.shareUrl);
-        }
+//        if (Utils.isEmpty(mPosterBean.shareUrl)) {
+//            url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+//            url.append(String.format("/spa-manager/tech-poster/#/%s?id=%s", mPosterBean.style, mPosterBean.id));
+//        } else {
+//            url = new StringBuilder(mPosterBean.shareUrl);
+//        }
+        url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+        url.append(String.format("/spa-manager/tech-poster/#/%s?id=%s", mPosterBean.style, mPosterBean.id));
         ShareController.doShare("", url.toString(), Utils.isNotEmpty(mPosterBean.title)?mPosterBean.title:"欢迎您", Utils.isNotEmpty(mPosterBean.subTitle)?mPosterBean.subTitle:ResourceUtils.getString(R.string.tech_poster_minor_title), Constant.SHARE_TYPE_TECH_POSTER, "");
     }
 

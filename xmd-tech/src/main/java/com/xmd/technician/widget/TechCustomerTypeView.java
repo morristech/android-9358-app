@@ -52,7 +52,7 @@ public class TechCustomerTypeView extends LinearLayout {
     public void setTechCustomerType(String mark) {
 
         if (Utils.isEmpty(mark)) {
-            normalCustomer.setVisibility(View.VISIBLE);
+            normalCustomer.setVisibility(View.GONE);
             techAddCustomer.setVisibility(View.GONE);
             newAddCustomer.setVisibility(View.GONE);
             bigCustomer.setVisibility(View.GONE);
