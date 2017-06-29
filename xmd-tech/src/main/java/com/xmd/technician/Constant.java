@@ -245,6 +245,7 @@ public class Constant {
     public static final String SHARE_TYPE_ONCE_CARD = "onceCard";
     public static final String SHARE_TYPE_PAY_FOR_ME = "";
     public static final String SHARE_TYPE_REWARD_ACTIVITY = "";
+    public static final String SHARE_TYPE_TECH_POSTER = "";
     public static final String share_type_ = "";
 
     /**

@@ -1,15 +1,17 @@
 package com.xmd.technician.common;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import com.xmd.technician.Constant;
-import com.xmd.technician.bean.PaidCouponUserDetail;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,8 @@ import java.util.Map;
  */
 
 public class ImageUploader {
+    private static final int MAX_IMAGE_WIDTH = 1120;
+    private static final int MAX_IMAGE_HEIGHT = 1448;
     private static final ImageUploader ourInstance = new ImageUploader();
 
     public static ImageUploader getInstance() {
@@ -66,7 +70,7 @@ public class ImageUploader {
                 switch (type){
                     case TYPE_TECH_POSTER:
                         try {
-                            String baseString = DESede.base64Encode(url);
+                            String baseString = encodeFileToBase64(url);
                             Map<String, String> params = new HashMap<>();
                             params.put(RequestConstant.KEY_POSTER_IMAGE_CATEGORY, Constant.TECH_POSTER_CATEGORY_TYPE);
                             params.put(RequestConstant.KEY_POSTER_IMAGE_IMG_FILE, baseString);
@@ -80,5 +84,24 @@ public class ImageUploader {
                 }
             }
         });
+    }
+
+    public static String encodeFileToBase64(String path) throws IOException {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        options.inSampleSize = 1;
+        while (options.outWidth / options.inSampleSize > MAX_IMAGE_WIDTH || options.outHeight / options.inSampleSize > MAX_IMAGE_HEIGHT) {
+            options.inSampleSize <<= 1;
+        }
+        options.inJustDecodeBounds = false;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+        Logger.i(">>>", "image size:" + bitmap.getWidth() + "x" + bitmap.getHeight());
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        bitmap.recycle();
+        String imgFile = "data:image/jpg;base64," + Base64.encodeToString(bos.toByteArray(), Base64.DEFAULT);
+        Runtime.getRuntime().gc(); //强制释放内存
+        return imgFile;
     }
 }

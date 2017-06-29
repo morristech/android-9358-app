@@ -37,8 +37,8 @@ import com.xmd.technician.chat.ChatConstant;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -575,43 +575,6 @@ public class Utils {
 
     }
 
-    public static String saveImage(Activity activity,View v){
-        Bitmap bitmap;
-        // String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File file = new File(Environment.getExternalStorageDirectory() + "/" + "ji" + ".png");
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        View view  = activity.getWindow().getDecorView();
-        view.setDrawingCacheEnabled(true);
-        view.buildDrawingCache();
-
-        bitmap = view.getDrawingCache();
-        Rect frame = new Rect();
-        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        int[] loacation = new int[2];
-        v.getLocationOnScreen(loacation);
-        Logger.i(">>>","width"+loacation[0]);
-        try {
-            bitmap = Bitmap.createBitmap(bitmap,1,loacation[1],v.getWidth(),v.getHeight());
-            FileOutputStream fout = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG,100,fout);
-            saveImageToGallery(activity,file);
-            return file.toString();
-
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-            Logger.e(">>>","生成图片失败");
-        }finally {
-            view.destroyDrawingCache();
-        }
-
-        return  null;
-    }
 
     public static void saveImageToGallery(Context context,File file) {
         // 其次把文件插入到系统图库
@@ -625,6 +588,18 @@ public class Utils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String stringFormat(String string){
+        if(Utils.isEmpty(string)){
+            return "";
+        }
+        List<String> st = new ArrayList<>();
+        for (int i = 0; i <string.length() ; i++) {
+            st.add(string.substring(i,i+1));
+        }
+        String newString = st.toString();
+        return st.toString().substring(1,newString.length()-1).replace(",","/").trim();
     }
 }
 

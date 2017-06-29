@@ -11,15 +11,16 @@ import android.widget.TextView;
 import com.xmd.technician.Adapter.TechPosterListAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
+import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.PosterBean;
-import com.xmd.technician.bean.TechDetailInfo;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.DeleteTechPosterResult;
 import com.xmd.technician.http.gson.TechPosterListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+import com.xmd.technician.share.ShareController;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.TechPosterDialog;
 
@@ -81,9 +82,13 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 
     private void handlerTechPosterListResult(TechPosterListResult result) {
         if (result.statusCode == 200) {
-            if (null == result.respData) {
+            if (null == result.respData || result.respData.list.size() == 0) {
+                llTechPosterEmptyView.setVisibility(View.VISIBLE);
                 return;
+            }else{
+                llTechPosterEmptyView.setVisibility(View.GONE);
             }
+
             mPosterBeanList.clear();
             for (PosterBean bean : result.respData.list) {
                 bean.qrCodeUrl = result.respData.qrCodeUrl;
@@ -155,7 +160,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 
     @Override
     public void deleteClicked(PosterBean bean) {
-        new RewardConfirmDialog(TechPersonalPosterActivity.this, getString(R.string.tech_poster_alter_message), getString(R.string.tech_poster_alter_delete_message), "") {
+        new RewardConfirmDialog(TechPersonalPosterActivity.this, getString(R.string.tech_poster_alter_message), getString(R.string.tech_poster_alter_delete_message), "",true) {
             @Override
             public void onConfirmClick() {
                 super.onConfirmClick();
@@ -172,7 +177,8 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 
     @Override
     public void shareClicked(PosterBean bean) {
-        Logger.i(">>>", "点击分享");
+        mPosterBean = bean;
+        posterShare();
     }
 
     @Override
@@ -187,18 +193,17 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 
     @Override
     public void posterShare() {
-        Logger.i(">>>", "点击分享");
+        StringBuilder url;
+        if (Utils.isEmpty(mPosterBean.shareUrl)) {
+            url = new StringBuilder(SharedPreferenceHelper.getServerHost());
+            url.append(String.format("/spa-manager/tech-poster/#/%s?id=%s", mPosterBean.style, mPosterBean.id));
+        } else {
+            url = new StringBuilder(mPosterBean.shareUrl);
+        }
+        ShareController.doShare("", url.toString(), Utils.isNotEmpty(mPosterBean.title)?mPosterBean.title:"欢迎您", Utils.isNotEmpty(mPosterBean.subTitle)?mPosterBean.subTitle:ResourceUtils.getString(R.string.tech_poster_minor_title), Constant.SHARE_TYPE_TECH_POSTER, "");
     }
 
 
-    //            case R.id.btn_share_user_card:
-//                StringBuilder url;
-//                if (Utils.isEmpty(mTechInfo.shareUrl)) {
-//                    url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-//                    url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
-//                } else {
-//                    url = new StringBuilder(mTechInfo.shareUrl);
-//                }
-//                ShareController.doShare(SharedPreferenceHelper.getUserAvatar(), url.toString(), SharedPreferenceHelper.getUserName() + "欢迎您", "点我聊聊，更多优惠，更好服务！", Constant.SHARE_BUSINESS_CARD, "");
-//                break;
+
+
 }

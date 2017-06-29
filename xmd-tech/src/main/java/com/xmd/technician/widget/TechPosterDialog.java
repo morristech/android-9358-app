@@ -88,7 +88,13 @@ public class TechPosterDialog extends Dialog {
     public void setViewDate(String primaryTitle, String minorTitle, String techName, String techNo, String clubName, String image, String imageUrl) {
 
         if (Utils.isNotEmpty(primaryTitle)) {
-            tvPosterPrimaryTitle.setText(primaryTitle);
+            if(style == Constant.TECH_POSTER_SQUARE_MODEL){
+                tvPosterPrimaryTitle.setText(String.format("<<%s>>",primaryTitle));
+            }else if(style == Constant.TECH_POSTER_FLOWER_MODEL ){
+                tvPosterPrimaryTitle.setText(Utils.stringFormat(primaryTitle));
+            }else{
+                tvPosterPrimaryTitle.setText(primaryTitle);
+            }
         } else {
             tvPosterPrimaryTitle.setText("");
         }

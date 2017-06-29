@@ -509,7 +509,7 @@
     <string name="limit_grab_share_description">据说这个项目一般人抢不到，但是我觉得你可以！抢项目，约技师，享人间极乐。</string>
     <string name="pay_for_me_share_description">我和你有次夺宝约定，点我立即参与</string>
     <string name="reward_share_description">那一世转山转水，只为相见，点我立即开始</string>
-    <string name="my_share_card">我的微名片</string>
+    <string name="my_share_card">我的海报</string>
     <string name="share_coupon_dialog_title">项目二维码</string>
     <string name="share_coupon_dialog_description">扫码关注9358,购买项目</string>
     <string name="scan_code_to_buy">点击扫码可购买</string>
@@ -621,9 +621,9 @@
     <string name="tech_poster_edit_step_one">步骤一：</string>
     <string name="tech_poster_edit_step_two">步骤二：选择照片</string>
     <string name="tech_poster_edit_step_three">步骤三：填写内容</string>
-    <string name="tech_poster_edit_primary_title＿hint">标签名称，例如，欢迎语</string>
-    <string name="tech_poster_edit_minor_title_hint">关注9358，快来预约我吧</string>
-    <string name="tech_poster_edit_nick_name_hint">技师昵称</string>
+    <string name="tech_poster_edit_primary_title＿hint">标签名称，例如，欢迎语(限6字符)</string>
+    <string name="tech_poster_edit_minor_title_hint">关注9358，快来预约我吧(限12字符)</string>
+    <string name="tech_poster_edit_nick_name_hint">技师昵称（限10字符）</string>
     <string name="tech_poster_edit_tech_number_hint">技师工号</string>
     <string name="tech_poster_edit_club_name_hint">会所名称</string>
     <string name="tech_poster_save_phone">保存至手机</string>

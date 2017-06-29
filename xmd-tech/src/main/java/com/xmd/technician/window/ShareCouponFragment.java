@@ -348,8 +348,8 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
                 break;
             case R.id.ll_share_tech_card:
-//                Intent intentPoster = new Intent(getActivity(),TechPersonalPosterActivity.class);
-//                startActivity(intentPoster);
+                Intent intentPoster = new Intent(getActivity(),TechPersonalPosterActivity.class);
+                startActivity(intentPoster);
                 break;
 
 
