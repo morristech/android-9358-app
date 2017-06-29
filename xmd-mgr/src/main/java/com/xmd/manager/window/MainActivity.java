@@ -9,10 +9,12 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.manager.ClubData;
 import com.xmd.manager.Manager;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
+import com.xmd.manager.UINavigation;
 import com.xmd.manager.adapter.PageFragmentPagerAdapter;
 import com.xmd.manager.auth.AuthConstants;
 import com.xmd.manager.auth.AuthHelper;
@@ -130,6 +132,23 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                 }
         );
         loadData();
+
+        processXmdDisplay(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        processXmdDisplay(intent);
+    }
+
+    private boolean processXmdDisplay(Intent intent) {
+        XmdDisplay display = (XmdDisplay) intent.getSerializableExtra(UINavigation.EXTRA_XMD_DISPLAY);
+        if (display != null) {
+            UINavigation.processXmdDisplay(this, display);
+            return true;
+        }
+        return false;
     }
 
     private void loadData() {

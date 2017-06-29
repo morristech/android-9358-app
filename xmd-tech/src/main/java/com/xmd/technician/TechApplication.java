@@ -128,7 +128,7 @@ public class TechApplication extends MultiDexApplication {
                 ControllerRegister.initialize();
 
                 //初始化消息推送
-                XmdPushModule.getInstance().init(this, UINavigation.xmdActionFactory, new PushMessageListener());
+                XmdPushModule.getInstance().init(this, "tech", UINavigation.xmdActionFactory, new PushMessageListener());
 
                 ChatHelper.getInstance().init(getAppContext());
 

@@ -360,5 +360,9 @@ public class Constant {
     public static final int TECH_POSTER_FLOWER_MODEL = 3;
     public static final String KEY_CURRENT_POSTER = "currentPoster";
 
+
+    //小红点
+    public static final String RED_POINT_CHAT_ALL_UNREAD = "chat_all_unread";
+
 }
 

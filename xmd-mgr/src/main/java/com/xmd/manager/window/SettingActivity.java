@@ -7,8 +7,6 @@ import com.xmd.manager.R;
 import com.xmd.manager.SettingFlags;
 import com.xmd.manager.beans.SettingItemInfo;
 import com.xmd.manager.common.ResourceUtils;
-import com.xmd.manager.msgctrl.MsgDef;
-import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.widget.ISettingItem;
 import com.xmd.manager.widget.SettingItemFactory;
 
@@ -68,7 +66,8 @@ public class SettingActivity extends BaseActivity implements ISettingItem {
             case SettingFlags.ORDER_NOTIFIATION_ON:
                 boolean isOn = (boolean) value;
                 SettingFlags.setBoolean(key, isOn);
-                MsgDispatcher.dispatchMessage(isOn ? MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID : MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID);
+                //FIXME
+//                MsgDispatcher.dispatchMessage(isOn ? MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID : MsgDef.MSG_DEF_GETUI_UNBIND_CLIENT_ID);
                 break;
         }
     }

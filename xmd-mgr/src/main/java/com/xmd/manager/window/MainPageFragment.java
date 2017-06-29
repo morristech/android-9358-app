@@ -33,6 +33,7 @@ import com.xmd.manager.Constant;
 import com.xmd.manager.Manager;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
+import com.xmd.manager.UINavigation;
 import com.xmd.manager.adapter.MainPageBadCommentListAdapter;
 import com.xmd.manager.adapter.PKRankingAdapter;
 import com.xmd.manager.auth.AuthConstants;
@@ -985,7 +986,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.ll_account_paid:
                 //线上买单
-                startActivity(new Intent(getActivity(), OnlinePayActivity.class));
+                UINavigation.gotoOnlinePayNotifyList(getContext());
                 break;
             case R.id.ll_account_sail_view:
             case R.id.ll_sail_view:

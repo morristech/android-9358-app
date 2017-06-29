@@ -159,7 +159,6 @@ public class LoginActivity extends BaseActivity {
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
             EventBus.getDefault().postSticky(new EventLogin(loginResult.token, loginResult.userId));
 
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID);
             if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles)) {
                 startActivity(new Intent(LoginActivity.this, ClubListActivity.class));
                 finish();

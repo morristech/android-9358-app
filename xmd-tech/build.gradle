@@ -68,7 +68,7 @@ android {
 
         release {//发布
             buildConfigField("Boolean", "debug", "false")
-            minifyEnabled false  //混淆开启
+            minifyEnabled true  //混淆开启
             zipAlignEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

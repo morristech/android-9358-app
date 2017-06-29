@@ -160,5 +160,15 @@
 -dontwarn org.greenrobot.**
 -keep class org.greenrobot.** {*;}
 
--renamesourcefileattribute SourceFile
--keepattributes SourceFile,LineNumberTable
+-dontwarn com.xmd.appointment.**
+-keep class com.xmd.appointment.** {*;}
+
+-dontwarn com.xmd.m.network.**
+-keep class com.xmd.m.network.** {*;}
+
+-dontwarn com.xmd.m.notify.**
+-keep class com.xmd.m.notify.** {*;}
+
+-dontwarn com.xmd.chat.message.**
+-keep class com.xmd.chat.message.** {*;}
+

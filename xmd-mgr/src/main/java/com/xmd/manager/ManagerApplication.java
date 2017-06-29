@@ -14,6 +14,7 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.XmdApp;
 import com.xmd.m.network.XmdNetwork;
+import com.xmd.m.notify.XmdPushModule;
 import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ToastUtils;
@@ -96,6 +97,8 @@ public class ManagerApplication extends Application {
                 Set<String> functions = new HashSet<>();
                 functions.add(XmdApp.FUNCTION_ALIVE_REPORT);
                 XmdApp.getInstance().init(this, SharedPreferenceHelper.getServerHost(), functions);
+
+                XmdPushModule.getInstance().init(this, "manager", UINavigation.xmdActionFactory, null);
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");
