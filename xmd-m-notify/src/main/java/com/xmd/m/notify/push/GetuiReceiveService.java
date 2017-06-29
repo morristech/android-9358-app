@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
@@ -42,13 +43,13 @@ public class GetuiReceiveService extends GTIntentService {
                 XmdPushMessage message = gson.fromJson(data, XmdPushMessage.class);
                 //显示
                 message.show();
-            } catch (Exception e) {
+                //传递给外界处理
+                if (XmdPushManager.getInstance().getListener() != null) {
+                    XmdPushManager.getInstance().getListener().onMessage(message);
+                }
+            } catch (JsonParseException e) {
                 XLogger.e(XmdPushModule.TAG, "parse message error:" + e.getMessage() + ",data:" + data);
                 return;
-            }
-            //传递给外界处理
-            if (XmdPushManager.getInstance().getListener() != null) {
-                XmdPushManager.getInstance().getListener().onMessage(data);
             }
         }
     }

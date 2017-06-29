@@ -6,5 +6,5 @@ package com.xmd.m.notify.push;
  */
 
 public interface XmdPushMessageListener {
-    void onMessage(String message);
+    void onMessage(XmdPushMessage message);
 }
