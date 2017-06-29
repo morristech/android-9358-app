@@ -26,3 +26,8 @@
 
 -keep class * extends java.lang.Exception
 -keep class * extends com.shidou.commonlibrary.CommenEvent
+
+# xmd 网络库
+-keep public class ** {
+    @org.greenrobot.eventbus.Subscribe public <methods>;
+}
