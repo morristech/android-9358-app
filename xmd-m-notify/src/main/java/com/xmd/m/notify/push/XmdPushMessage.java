@@ -12,8 +12,12 @@ import java.util.List;
  */
 
 public class XmdPushMessage {
-    private String businessType;
-    private List<XmdDisplay> displayList;
+    public static final String BUSINESS_TYPE_CHAT_MESSAGE = "chat_message";
+    public static final String BUSINESS_TYPE_FAST_PAY = "fast_pay";
+
+    private String businessType; //业务类型
+    private List<XmdDisplay> displayList; //展示详情
+    private String data; //业务数据
 
     public String getBusinessType() {
         return businessType;

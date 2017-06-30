@@ -37,6 +37,7 @@ import com.xmd.technician.http.gson.ContactRegisterListResult;
 import com.xmd.technician.http.gson.CouponInfoResult;
 import com.xmd.technician.http.gson.CouponListResult;
 import com.xmd.technician.http.gson.CustomerUserRecentListResult;
+import com.xmd.technician.http.gson.DeleteTechPosterResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.GetPayNotifyListResult;
 import com.xmd.technician.http.gson.HelloCheckRecentlyResult;
@@ -72,6 +73,7 @@ import com.xmd.technician.http.gson.RemoveFromBlacklistResult;
 import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.http.gson.RoleListResult;
 import com.xmd.technician.http.gson.RolePermissionListResult;
+import com.xmd.technician.http.gson.SaveTechPosterResult;
 import com.xmd.technician.http.gson.ServiceResult;
 import com.xmd.technician.http.gson.ShareCouponResult;
 import com.xmd.technician.http.gson.TechAccountListResult;
@@ -81,11 +83,14 @@ import com.xmd.technician.http.gson.TechEditResult;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.http.gson.TechPKRankingResult;
 import com.xmd.technician.http.gson.TechPersonalDataResult;
+import com.xmd.technician.http.gson.TechPosterDetailResult;
+import com.xmd.technician.http.gson.TechPosterListResult;
 import com.xmd.technician.http.gson.TechRankDataResult;
 import com.xmd.technician.http.gson.TechRankingListResult;
 import com.xmd.technician.http.gson.TechStatisticsDataResult;
 import com.xmd.technician.http.gson.UnusedTechNoListResult;
 import com.xmd.technician.http.gson.UpdateTechInfoResult;
+import com.xmd.technician.http.gson.UploadTechPosterImageResult;
 import com.xmd.technician.http.gson.WorkTimeResult;
 
 import retrofit2.Call;
@@ -557,7 +562,6 @@ public interface SpaService {
                                   @Field(RequestConstant.KEY_MARK_IMPRESSION) String impression);
 
 
-
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_TECH_INFO)
     Call<TechInfoResult> getTechInfo(@Field(RequestConstant.KEY_TOKEN) String userToken);
@@ -819,6 +823,7 @@ public interface SpaService {
     Call<PKPersonalListResult> techPkPersonalList(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Field(RequestConstant.KEY_PK_ACTIVITY_ID) String pkActivityId,
                                                   @Field(RequestConstant.KEY_SORT_KEY) String sortKey,
+                                                  @Field(RequestConstant.KEY_TEAM_ID) String teamId,
                                                   @Field(RequestConstant.KEY_START_DATE) String startDate,
                                                   @Field(RequestConstant.KEY_END_DATE) String endDate,
                                                   @Field(RequestConstant.KEY_PAGE) String pager,
@@ -903,4 +908,36 @@ public interface SpaService {
     @GET(RequestConstant.URL_CLUB_COLLEAGUE_DETAIL)
     Call<ClubEmployeeDetailResult> clubEmployeeDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                       @Query(RequestConstant.KEY_EMP_ID) String empId);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_TECH_POSTER_SAVE)
+    Call<SaveTechPosterResult> techPosterSave(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Field(RequestConstant.KEY_POSTER_CLUB_NAME) String clubName,
+                                              @Field(RequestConstant.KEY_POSTER_ID) String id,
+                                              @Field(RequestConstant.KEY_POSTER_IMAGE_ID) String imageId,
+                                              @Field(RequestConstant.KEY_POSTER_NAME) String name,
+                                              @Field(RequestConstant.KEY_POSTER_STYLE) String style,
+                                              @Field(RequestConstant.KEY_POSTER_SUB_TITLE) String subTitle,
+                                              @Field(RequestConstant.KEY_POSTER_TECH_NO) String techNo,
+                                              @Field(RequestConstant.KEY_POSTER_TITLE) String title);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_TECH_POSTER_DELETE)
+    Call<DeleteTechPosterResult> techPosterDelete(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Field(RequestConstant.KEY_POSTER_ID) String id);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_TECH_POSTER_IMAGE_UPLOAD)
+    Call<UploadTechPosterImageResult> techPosterImageUpload(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                            @Field(RequestConstant.KEY_POSTER_IMAGE_CATEGORY) String category,
+                                                            @Field(RequestConstant.KEY_POSTER_IMAGE_IMG_FILE) String imgFile);
+
+    @GET(RequestConstant.URL_TECH_POSTER_LIST)
+    Call<TechPosterListResult> techPosterList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @GET(RequestConstant.URL_TECH_POSTER_DETAIL)
+    Call<TechPosterDetailResult> techPosterDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Query(RequestConstant.KEY_POSTER_ID) String id);
+
+
 }

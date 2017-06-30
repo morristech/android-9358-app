@@ -16,6 +16,7 @@ import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.chat.XmdChat;
 import com.xmd.m.network.XmdNetwork;
+import com.xmd.m.notify.XmdPushModule;
 import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ToastUtils;
@@ -103,6 +104,8 @@ public class ManagerApplication extends Application {
 
                 //初始化聊天模块
                 XmdChat.getInstance().init(this, BuildConfig.DEBUG);
+
+                XmdPushModule.getInstance().init(this, "manager", UINavigation.xmdActionFactory, null);
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");

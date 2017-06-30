@@ -509,7 +509,7 @@
     <string name="limit_grab_share_description">据说这个项目一般人抢不到，但是我觉得你可以！抢项目，约技师，享人间极乐。</string>
     <string name="pay_for_me_share_description">我和你有次夺宝约定，点我立即参与</string>
     <string name="reward_share_description">那一世转山转水，只为相见，点我立即开始</string>
-    <string name="my_share_card">我的微名片</string>
+    <string name="my_share_card">我的海报</string>
     <string name="share_coupon_dialog_title">项目二维码</string>
     <string name="share_coupon_dialog_description">扫码关注9358,购买项目</string>
     <string name="scan_code_to_buy">点击扫码可购买</string>
@@ -605,4 +605,41 @@
     <string name="contact_blacklist_manager">黑名单管理</string>
     <string name="contact_to_develop_customer">去拓客吧</string>
     <string name="contact_to_nearby_people">查看附近的人</string>
+    <!--技师个人海报-->
+    <string name="tech_poster_title">我的海报</string>
+    <string name="tech_poster_new_add">新增</string>
+    <string name="tech_poster_create_poster">制作海报</string>
+    <string name="tech_poster_edit_poster">添加海报内容</string>
+    <string name="tech_poster_choice_poster_model">选择海报模板</string>
+    <string name="tech_poster_edit_primary_title">大标题</string>
+    <string name="tech_poster_edit_minor_title">小标题</string>
+    <string name="tech_poster_edit_nick_name">昵称</string>
+    <string name="tech_poster_edit_tech_number">工号</string>
+    <string name="tech_poster_edit_club_name">会所</string>
+    <string name="tech_poster_edit_select_photo">选择照片</string>
+    <string name="tech_poster_edit_content">填写内容</string>
+    <string name="tech_poster_edit_step_one">步骤一：</string>
+    <string name="tech_poster_edit_step_two">步骤一：选择照片</string>
+    <string name="tech_poster_edit_step_three">步骤二：填写内容</string>
+    <string name="tech_poster_edit_primary_title＿hint">标签名称，例如，欢迎语(限6字符)</string>
+    <string name="tech_poster_edit_minor_title_hint">关注9358，快来预约我吧(限12字符)</string>
+    <string name="tech_poster_edit_nick_name_hint">技师昵称（限10字符）</string>
+    <string name="tech_poster_edit_tech_number_hint">技师工号</string>
+    <string name="tech_poster_edit_club_name_hint">会所名称</string>
+    <string name="tech_poster_save_phone">保存至手机</string>
+    <string name="tech_poster_share">分享</string>
+    <string name="tech_poster_edit_next">下一步</string>
+    <string name="tech_poster_edit_before">上一步</string>
+    <string name="tech_poster_edit_save">保存</string>
+    <string name="tech_poster_edit">编辑</string>
+    <string name="tech_poster_save_picture">保存图片</string>
+    <string name="tech_poster_primary_title">客／官／捧／捧／场</string>
+    <string name="tech_poster_minor_title">关注9358快点来预约我吧～</string>
+    <string name="tech_poster_club_title_name">小摩豆休闲养生会所</string>
+    <string name="tech_poster_alter_message">提示</string>
+    <string name="tech_poster_alter_delete_message">删除后将无法恢复，确认删除该技师海报吗？</string>
+    <string name="tech_poster_primary_title_default">欢迎您</string>
+    <string name="tech_poster_minor_title_default">关注9358，快来预约我吧～</string>
+    <string name="tech_poster_save_alter_message">保存图片后，二维码至%s前有效，图片如需下次使用，建议重新进行保存.</string>
+
 </resources>

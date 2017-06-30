@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/poster_dialog_width"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_view"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@drawable/poster_circular_bg">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_poster_primary_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_white"
+                android:textSize="26sp"
+                tools:text="客/观/捧/捧/场"/>
+
+            <TextView
+                android:id="@+id/tv_poster_minor_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_space"
+                android:textColor="@color/color_white"
+                android:textSize="14sp"
+                tools:text="关注9358快来预约我吧"/>
+
+        </LinearLayout>
+
+        <com.xmd.technician.widget.RoundImageView
+            android:id="@+id/img_poster_tech_photo"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/img_default_roundness"
+            app:type="circle"/>
+
+        <TextView
+            android:id="@+id/tv_poster_tech_name"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/poster_circular_name_bg"
+            android:gravity="center"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:textColor="@color/color_white"
+            android:textSize="12sp"
+            tools:text="张乔乔/A005"/>
+
+        <TextView
+            android:id="@+id/tv_poster_club_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/color_white"
+            android:textSize="12sp"
+            tools:text="小摩豆休闲养生会所"/>
+
+        <ImageView
+            android:id="@+id/img_poster_qr_code"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/poster_circular_qr_code_bg"
+            android:padding="5dp"
+            android:src="@drawable/icon23"
+            />
+
+        <ImageView
+            android:id="@+id/img_poster_dismiss"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_dialog_dismiss"/>
+    </RelativeLayout>
+
+    <include layout="@layout/layout_poster_dialog_bottom_btn"/>
+</LinearLayout>

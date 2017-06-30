@@ -59,8 +59,8 @@ android {
         // 3.7.0 : verification record
         // 3.7.2 : mainPage data show,Tech Pk,verification by telephone,evaluation label
         // 3.7.4 : add verify by phone number
-        versionCode 50
-        versionName "3.7.8"
+        versionCode 51
+        versionName "3.7.9"
 
         multiDexEnabled true
 
@@ -165,6 +165,7 @@ dependencies {
     compile project(':commonlibrary')
     compile project(':xmd-m-network')
     compile project(':xmd-app')
+    compile project(':xmd-m-notify')
     compile project(':xmd-m-chat')
     compile(name: 'shidou-updater-1.7', ext: 'aar')
     compile(name: 'xmd-image-crop-1.0', ext: 'aar')
@@ -177,8 +178,7 @@ dependencies {
     compile "com.android.support:support-v4:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:design:${rootProject.ext.supportLibraryVersion}"
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.igexin:sdk:2.6.1.0'
-    compile 'com.igexin:getuiext:2.0.3'
+    compile 'com.getui:sdk:2.10.2.0'
     compile 'com.jakewharton:butterknife:7.0.1'
 
     compile "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"

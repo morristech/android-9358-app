@@ -2470,7 +2470,7 @@ public class RequestController extends AbstractController {
      */
     private void getTechPKPersonalList(Map<String, String> params) {
         Call<PKPersonalListResult> call = getSpaService().techPkPersonalList(SharedPreferenceHelper.getUserToken(), RequestConstant.USER_TYPE_MANAGER, params.get(RequestConstant.KEY_PK_ACTIVITY_ID), params.get(RequestConstant.KEY_SORT_KEY),
-                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
+                params.get(RequestConstant.KEY_TEAM_ID), params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE));
         call.enqueue(new TokenCheckedCallback<PKPersonalListResult>() {
             @Override
             protected void postResult(PKPersonalListResult result) {

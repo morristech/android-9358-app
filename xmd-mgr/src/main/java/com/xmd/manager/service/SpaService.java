@@ -1133,6 +1133,7 @@ public interface SpaService {
                                                   @Field(RequestConstant.KEY_USER_TYPE) String userType,
                                                   @Field(RequestConstant.KEY_PK_ACTIVITY_ID) String pkActivityId,
                                                   @Field(RequestConstant.KEY_SORT_KEY) String sortKey,
+                                                  @Field(RequestConstant.KEY_TEAM_ID) String teamId,
                                                   @Field(RequestConstant.KEY_START_DATE) String startDate,
                                                   @Field(RequestConstant.KEY_END_DATE) String endDate,
                                                   @Field(RequestConstant.KEY_PAGE) String pager,

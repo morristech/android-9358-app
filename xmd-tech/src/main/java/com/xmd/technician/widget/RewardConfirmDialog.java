@@ -23,7 +23,7 @@ public class RewardConfirmDialog extends Dialog{
     @Bind(R.id.dialog_alert_title) TextView mTitleTxt;
     @Bind(R.id.dialog_alert_message) TextView mTipsTxt;
     @Bind(R.id.dialog_alert_ok_btn) Button mBtnOk;
-    @Bind(R.id.dialog_alert_cancel_btn) Button mBtnCancal;
+    @Bind(R.id.dialog_alert_cancel_btn) Button mBtnCancel;
 
     private String mTitle;
     private String mTipInfo;
@@ -45,12 +45,12 @@ public class RewardConfirmDialog extends Dialog{
         this.mBtnText = btnText;
     }
 
-    public RewardConfirmDialog(Context context,String title, String msg,String btnText,boolean isShowCancle){
+    public RewardConfirmDialog(Context context,String title, String msg,String btnText,boolean isShowCancel){
         this(context, R.style.default_dialog_style);
         this.mTitle = title;
         this.mTipInfo = msg;
         this.mBtnText = btnText;
-        this.isShow = isShowCancle;
+        this.isShow = isShowCancel;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class RewardConfirmDialog extends Dialog{
             mBtnOk.setText(mBtnText);
         }
         if(!isShow){
-            mBtnCancal.setVisibility(View.GONE);
+            mBtnCancel.setVisibility(View.GONE);
         }
     }
 

@@ -15,6 +15,13 @@ android {
         ndk {
             abiFilters "armeabi", "armeabi-v7a"
         }
+
+        manifestPlaceholders = [
+                GETUI_APP_ID       : "---",
+                GETUI_APP_KEY      : "---",
+                GETUI_APP_SECRET   : "---",
+                GETUI_MASTER_SECRET: "---"
+        ]
     }
     buildTypes {
         release {

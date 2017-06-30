@@ -162,7 +162,6 @@ public class LoginActivity extends BaseActivity {
             eventLogin.setChatPassword(SharedPreferenceHelper.getEmchatPassword());
             EventBus.getDefault().postSticky(eventLogin);
 
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GETUI_BIND_CLIENT_ID);
             if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles)) {
                 startActivity(new Intent(LoginActivity.this, ClubListActivity.class));
                 finish();

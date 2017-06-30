@@ -420,6 +420,7 @@ public class RequestConstant {
     public static final String KEY_SELECT_BY_DAY = "day";
     public static final String KEY_SELECT_BY_WEEK = "week";
     public static final String KEY_SELECT_BY_MONTH = "month";
+    public static final String KEY_TEAM_ID = "teamId";
     /**
      * 环信消息回调
      */

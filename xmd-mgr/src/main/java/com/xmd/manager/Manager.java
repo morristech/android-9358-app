@@ -5,7 +5,6 @@ import android.content.Context;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
-import com.igexin.sdk.PushManager;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.manager.beans.EmchatMsgResult;
@@ -90,8 +89,6 @@ public class Manager {
         ThreadManager.initialize();
 
         ControllerRegister.initialize();
-
-        PushManager.getInstance().initialize(mAppContext);
 
         // EaseMob Chatting
 //        EMOptions emOptions = new EMOptions();

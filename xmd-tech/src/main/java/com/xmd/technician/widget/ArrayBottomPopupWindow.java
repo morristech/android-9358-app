@@ -4,14 +4,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

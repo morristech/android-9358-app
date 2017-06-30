@@ -237,4 +237,6 @@
     <dimen name="view_margin_left">55dp</dimen>
     <dimen name="bubble_width">225dp</dimen>
     <dimen name="chat_head_padding">5dp</dimen>
+    <dimen name="poster_title_wight">50dp</dimen>
+    <dimen name="poster_dialog_width">280dp</dimen>
 </resources>

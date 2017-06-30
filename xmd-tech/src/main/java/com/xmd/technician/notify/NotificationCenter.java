@@ -11,6 +11,7 @@ import com.xmd.app.FloatNotifyManager;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.m.notify.display.XmdDisplay;
+import com.xmd.m.notify.push.XmdPushMessage;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.event.EventReceiveMessage;
@@ -46,11 +47,11 @@ public class NotificationCenter {
         RxBus.getInstance().toObservable(EventReceiveMessage.class).subscribe(this::onEventChatMessage);
     }
 
-    private void notify(int type, String title, String message, String chatId) {
+    private void notify(String businessType, String title, String message, String chatId) {
         XmdDisplay display = new XmdDisplay();
+        display.setBusinessType(XmdPushMessage.BUSINESS_TYPE_CHAT_MESSAGE);
         display.setScene(XmdDisplay.SCENE_BG);
         display.setStyle(XmdDisplay.STYLE_NOTIFICATION);
-        display.setBusinessType(XmdDisplay.BUSINESS_TYPE_CHAT_MESSAGE);
         display.setTitle(title);
         display.setMessage(message);
         display.setFlags(XmdDisplay.FLAG_LIGHT | XmdDisplay.FLAG_RING | XmdDisplay.FLAG_VIBRATE);
@@ -61,9 +62,10 @@ public class NotificationCenter {
 
     private void notifyForeground() {
         XmdDisplay display = new XmdDisplay();
+        display.setBusinessType(XmdPushMessage.BUSINESS_TYPE_CHAT_MESSAGE);
         display.setScene(XmdDisplay.SCENE_FG);
         display.setStyle(XmdDisplay.STYLE_NONE);
-        display.setFlags(XmdDisplay.FLAG_LIGHT | XmdDisplay.FLAG_RING | XmdDisplay.FLAG_VIBRATE);
+        display.setFlags(XmdDisplay.FLAG_RING);
         EventBus.getDefault().post(display);
     }
 
@@ -78,28 +80,22 @@ public class NotificationCenter {
                 String userName = chatMessage.getUserName();
                 Bundle bundle = new Bundle();
                 bundle.putString(ChatConstant.TO_CHAT_USER_ID, message.getFrom());
-                if (ChatMessage.MSG_TYPE_ORDER.equals(chatMessage.getMsgType())) {
-                    //订单消息
-                    notify(TYPE_ORDER, null, userName + ":" + EaseCommonUtils.getMessageDigest(message, sContext), message.getFrom());
+                if (AppUtils.isBackground(sContext)) {
+                    notify(XmdPushMessage.BUSINESS_TYPE_CHAT_MESSAGE, null, userName + ":" + EaseCommonUtils.getMessageDigest(message, sContext), message.getFrom());
                 } else {
-                    //其他消息
-                    if (AppUtils.isBackground(sContext)) {
-                        notify(TYPE_CHAT_MESSAGE, null, userName + ":" + EaseCommonUtils.getMessageDigest(message, sContext), message.getFrom());
-                    } else {
-                        if (chatMessage.isCustomerService() && !chatMessage.getFromChatId().equals(TechChatActivity.getRemoteChatId())) {
-                            FloatNotifyManager.getInstance()
-                                    .setIcon(R.drawable.ic_service_white)
-                                    .setClickableMessage("客服消息：您收到一条客服消息，", null, "点击查看", chatMessage.getFromChatId(), new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            UINavigation.gotoChatActivity(sContext, (String) v.getTag());
-                                            FloatNotifyManager.getInstance().hide();
-                                        }
-                                    })
-                                    .show(0, ScreenUtils.getScreenHeight() / 8, 3000);
-                        }
-                        notifyForeground();
+                    if (chatMessage.isCustomerService() && !chatMessage.getFromChatId().equals(TechChatActivity.getRemoteChatId())) {
+                        FloatNotifyManager.getInstance()
+                                .setIcon(R.drawable.ic_service_white)
+                                .setClickableMessage("客服消息：您收到一条客服消息，", null, "点击查看", chatMessage.getFromChatId(), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        UINavigation.gotoChatActivity(sContext, (String) v.getTag());
+                                        FloatNotifyManager.getInstance().hide();
+                                    }
+                                })
+                                .show(0, ScreenUtils.getScreenHeight() / 8, 3000);
                     }
+                    notifyForeground();
                 }
             }
         }

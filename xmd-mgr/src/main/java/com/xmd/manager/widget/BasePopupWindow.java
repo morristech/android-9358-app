@@ -160,7 +160,7 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     private void showPopupWindowAsDropDown(Activity activity, PopupWindow popupWindow, View parent, int x,
                                            int y) {
         popupWindow.showAsDropDown(parent, x, y);
-
+        Utils.maskScreen(activity, true);
     }
 
     /**
@@ -172,6 +172,8 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     private void dismissPopupWindow(Activity activity, PopupWindow pw) {
         if (pw != null && pw.isShowing()) {
             pw.dismiss();
+
         }
+        Utils.maskScreen(activity, false);
     }
 }

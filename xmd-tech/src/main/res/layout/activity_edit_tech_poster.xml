@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
+
+    <FrameLayout
+        android:id="@+id/fm_poster_edit"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:background="@color/color_white"
+        android:padding="@dimen/margin_10">
+
+        <Button
+            android:id="@+id/btn_next_step_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:background="@drawable/rect_bg"
+            android:gravity="center"
+            android:text="@string/tech_poster_edit_next"
+            android:textColor="@color/color_white"
+            android:textSize="18sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_before_step_edit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/rect_white_bg"
+                android:gravity="center"
+                android:text="@string/tech_poster_edit_before"
+                android:textColor="#FF6666"
+                android:textSize="18sp"/>
+
+            <Button
+                android:id="@+id/btn_save_edit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_weight="1"
+                android:background="@drawable/rect_bg"
+                android:gravity="center"
+                android:text="@string/tech_poster_edit_save"
+                android:textColor="@color/color_white"
+                android:textSize="18sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

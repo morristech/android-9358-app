@@ -10,18 +10,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xmd.m.notify.display.XmdDisplay;
+import com.xmd.m.notify.redpoint.RedPointService;
+import com.xmd.m.notify.redpoint.RedPointServiceImpl;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
 import com.xmd.technician.chat.ChatHelper;
-import com.xmd.technician.chat.event.EventUnreadMessageCount;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.runtimepermissions.PermissionsResultAction;
 import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.UINavigation;
-import com.xmd.technician.http.gson.SystemNoticeResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -62,6 +62,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @Bind(R.id.main_unread_message)
     TextView mUnreadMsgLabel;
 
+    private RedPointService redPointService = RedPointServiceImpl.getInstance();
+
 
     private IBusinessPermissionManager permissionManager = BusinessPermissionManager.getInstance();
 
@@ -93,8 +95,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
             }
         });
 
-        mSysNoticeNotifySubscription = RxBus.getInstance().toObservable(SystemNoticeResult.class).subscribe(
-                result -> updateUnreadMsgLabel(mChatHelper.getUnreadMessageCount()));
+//        mSysNoticeNotifySubscription = RxBus.getInstance().toObservable(SystemNoticeResult.class).subscribe(
+//                result -> updateUnreadMsgLabel(mChatHelper.getUnreadMessageCount()));
 
         mGetUserIsBindWXSubscription = RxBus.getInstance().toObservable(IsBindResult.class).subscribe(
                 result -> handlerIsBindResult(result)
@@ -103,6 +105,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         requestPermissions();
         //检查更新
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
+
+        redPointService.bind(Constant.RED_POINT_CHAT_ALL_UNREAD, mUnreadMsgLabel, RedPointService.SHOW_TYPE_DIGITAL);
     }
 
     @TargetApi(23)
@@ -164,12 +168,12 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @CheckBusinessPermission(PermissionConstants.MESSAGE)
     public void addFragmentMessage() {
         mChatFragment = (ChatFragment) addFragment(R.id.main_button_message, ChatFragment.class);
-        updateUnreadMsgLabel(mChatHelper.getUnreadMessageCount());
-        mUnreadEmchatCountSubscription = RxBus.getInstance().toObservable(EventUnreadMessageCount.class).subscribe(
-                unreadMessageCount -> {
-                    updateUnreadMsgLabel(unreadMessageCount.getUnread());
-                }
-        );
+//        updateUnreadMsgLabel(mChatHelper.getUnreadMessageCount());
+//        mUnreadEmchatCountSubscription = RxBus.getInstance().toObservable(EventUnreadMessageCount.class).subscribe(
+//                unreadMessageCount -> {
+//                    updateUnreadMsgLabel(unreadMessageCount.getUnread());
+//                }
+//        );
     }
 
     @CheckBusinessPermission(PermissionConstants.CONTACTS)
@@ -228,6 +232,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                 mSysNoticeNotifySubscription,
                 mGetUserIsBindWXSubscription,
                 mUnreadEmchatCountSubscription);
+        redPointService.unBind(Constant.RED_POINT_CHAT_ALL_UNREAD, mUnreadMsgLabel);
     }
 
     public void switchFragment(int index) {

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="@dimen/poster_dialog_width"
+              android:layout_height="wrap_content"
+              android:background="@drawable/round_rect_white_bg"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_view"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@drawable/poster_square_bg">
+
+        <RelativeLayout
+            android:layout_width="200dp"
+            android:layout_height="240dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@drawable/poster_square_phont_bg"
+            android:padding="3dp">
+
+            <com.xmd.technician.widget.RoundImageView
+                android:id="@+id/img_poster_tech_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_default_square"
+                app:borderRadius="3dp"
+                app:type="round"/>
+
+            <TextView
+                android:id="@+id/tv_poster_tech_name"
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/poster_square_name"
+                android:ems="1"
+                android:textColor="#dfc092"
+                android:textSize="12sp"
+                tools:text="张乔乔/A005"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_poster_primary_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#dfc092"
+                android:textSize="18sp"
+                tools:text="客/观/捧/捧/场"/>
+
+            <TextView
+                android:id="@+id/tv_poster_minor_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#dfc092"
+                android:textSize="14sp"
+                tools:text="关注9358快来预约我吧"/>
+
+            <TextView
+                android:id="@+id/tv_poster_club_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="@dimen/small_space"
+                android:textColor="#dfc092"
+                android:textSize="14sp"
+                tools:text="小摩豆休闲养生会所"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_poster_qr_code"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/icon23"
+            />
+
+        <ImageView
+            android:id="@+id/img_poster_dismiss"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_dialog_dismiss"/>
+    </RelativeLayout>
+
+    <include layout="@layout/layout_poster_dialog_bottom_btn"/>
+</LinearLayout>
+
+

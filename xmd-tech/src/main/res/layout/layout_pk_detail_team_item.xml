@@ -7,8 +7,14 @@
               android:layout_marginLeft="@dimen/margin_10"
               android:orientation="vertical">
 
-    <TextView
+
+    <LinearLayout
         android:id="@+id/team_ranking_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_10"
@@ -18,6 +24,73 @@
         android:text="@string/pk_team_ranking_title"
         android:textColor="#f98100"
         android:textSize="@dimen/fontSize"/>
+
+        <LinearLayout
+            android:id="@+id/ll_personal_ranking_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/margin_10"
+            android:paddingTop="@dimen/margin_10"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="排名"
+                android:textColor="#666666"
+                android:gravity="center"
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="姓名"
+                android:textColor="#666666"
+                android:gravity="center"
+                android:textSize="13sp"
+                />
+            <LinearLayout
+                android:id="@+id/ll_team_filter"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_selected_team"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/inter_space"
+                    android:text="全部队伍"
+                    android:textColor="#666666"
+                    android:textSize="13sp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/small_space"
+                    android:src="@drawable/icon_ranking_down_filter"/>
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
+                android:text="战绩"
+                android:gravity="center"
+                android:textColor="#666666"
+                android:textSize="13sp"
+                />
+        </LinearLayout>
+        <View
+            style="@style/line"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

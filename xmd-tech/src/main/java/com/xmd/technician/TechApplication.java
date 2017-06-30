@@ -128,14 +128,8 @@ public class TechApplication extends MultiDexApplication {
                 ControllerRegister.initialize();
 
                 //初始化消息推送
-                XmdPushModule.getInstance().init(this, UINavigation.xmdActionFactory, null);
+                XmdPushModule.getInstance().init(this, "tech", UINavigation.xmdActionFactory, new PushMessageListener());
 
-                //初始化环信
-//                if (SharedPreferenceHelper.isDevelopMode()) {
-//                    XMDEmChatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_DEBUG, BuildConfig.DEBUG);
-//                } else {
-//                    XMDEmChatManager.getInstance().init(this, Constant.EMCHAT_APP_KEY_RELEASE, BuildConfig.DEBUG);
-//                }
                 ChatHelper.getInstance().init(getAppContext());
 
                 DataRefreshService.start();

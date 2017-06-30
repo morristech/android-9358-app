@@ -133,7 +133,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_IN_BLACKLIST,
                 MsgDef.MSG_DEF_IN_USER_BLACKLIST,
                 MsgDef.MSG_DEF_GET_TECH_BLACKLIST,
-
                 //---------聊天优化---
                 MsgDef.MSG_DEF_MARK_CHAT_TO_USER,
                 MsgDef.MSG_DEF_GET_CHAT_CATEGORY_LIST,
@@ -143,7 +142,14 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_TECH_CUSTOMER_USER_REGISTER_LIST,
                 MsgDef.MSG_DEF_CLUB_EMPLOYEE_LIST,
                 MsgDef.MSG_DEF_CLUB_CUSTOMER_RECENT_LIST,
-                MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL
+                MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL,
+                //-------------------------------------> 技师海报 <---------------------------------
+                MsgDef.MSG_DEF_TECH_POSTER_SAVE,
+                MsgDef.MSG_DEF_TECH_POSTER_DELETE,
+                MsgDef.MSG_DEF_TECH_POSTER_IMAGE_UPLOAD,
+                MsgDef.MSG_DEF_TECH_POSTER_LIST,
+                MsgDef.MSG_DEF_TECH_POSTER_DETAIL
+
         };
         MsgDispatcher.register(controllerId, msgIds);
     }

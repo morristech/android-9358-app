@@ -118,8 +118,8 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     ImageView mImgTechHead;
     @Bind(R.id.user_name)
     TextView mUserName;
-    @Bind(R.id.btn_share_user_card)
-    Button mBtnShareUserCard;
+//    @Bind(R.id.btn_share_user_card)
+//    Button mBtnShareUserCard;
 
     private Subscription mShareCouponViewSubscription;
     private Subscription mShareActivityViewSubscription;
@@ -297,7 +297,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
 
-    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.btn_share_user_card, R.id.ll_share_view})
+    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.ll_share_view,R.id.ll_share_tech_card})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_paid_coupon:
@@ -347,16 +347,11 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                 }
 
                 break;
-            case R.id.btn_share_user_card:
-                StringBuilder url;
-                if (Utils.isEmpty(mTechInfo.shareUrl)) {
-                    url = new StringBuilder(SharedPreferenceHelper.getServerHost());
-                    url.append(String.format("/spa-manager/spa2/?club=%s#technicianDetail&id=%s&techInviteCode=%s", mTechInfo.clubId, mTechInfo.id, mTechInfo.inviteCode));
-                } else {
-                    url = new StringBuilder(mTechInfo.shareUrl);
-                }
-                ShareController.doShare(SharedPreferenceHelper.getUserAvatar(), url.toString(), SharedPreferenceHelper.getUserName() + "欢迎您", "点我聊聊，更多优惠，更好服务！", Constant.SHARE_BUSINESS_CARD, "");
+            case R.id.ll_share_tech_card:
+                Intent intentPoster = new Intent(getActivity(),TechPersonalPosterActivity.class);
+                startActivity(intentPoster);
                 break;
+
 
         }
     }
