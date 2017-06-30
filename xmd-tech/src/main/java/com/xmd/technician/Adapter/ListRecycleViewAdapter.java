@@ -992,7 +992,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 viewHolder.contactServiceTime.setVisibility(View.GONE);
             }
-            viewHolder.contactTypeView.setTechCustomerType(contactBean.remark);
+            if(Utils.isNotEmpty(contactBean.remark)){
+                viewHolder.contactTypeView.setVisibility(View.VISIBLE);
+                viewHolder.contactTypeView.setTechCustomerType(contactBean.remark);
+            }else{
+                viewHolder.contactTypeView.setVisibility(View.INVISIBLE);
+            }
+
             if (contactBean.customerType.equals(Constant.USER_FANS)) {
                 viewHolder.ivContactTypeFans.setVisibility(View.VISIBLE);
                 viewHolder.ivContactTypeWx.setVisibility(View.GONE);
@@ -1073,11 +1079,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     viewHolder.visitorToChat.setText(ResourceUtils.getString(R.string.had_say_hi));
                     viewHolder.visitorToChat.setEnabled(false);
                 }
-                viewHolder.visitorToChat.setOnClickListener(v -> mCallback.onNegativeButtonClicked(userRecent));//打招呼
+                viewHolder.llContactVisitorToChat.setOnClickListener(v -> mCallback.onNegativeButtonClicked(userRecent));//打招呼
             } else {
                 viewHolder.visitorToChat.setEnabled(true);
                 viewHolder.visitorToChat.setText(ResourceUtils.getString(R.string.recent_status_btn_text));
-                viewHolder.visitorToChat.setOnClickListener(v -> mCallback.onPositiveButtonClicked(userRecent));//感谢
+                viewHolder.llContactVisitorToChat.setOnClickListener(v -> mCallback.onPositiveButtonClicked(userRecent));//感谢
             }
             if (userRecent.customerType.equals(Constant.USER_FANS)) {
                 viewHolder.ivContactRecentTypeFans.setVisibility(View.VISIBLE);
@@ -1555,6 +1561,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView visitorToChat;
         @Bind(R.id.contact_visitor_time)
         TextView contactVisitorTime;
+        @Bind(R.id.ll_contact_visitor_to_chat)
+        LinearLayout llContactVisitorToChat;
 
 
         ContactRecentListItemViewHolder(View view) {

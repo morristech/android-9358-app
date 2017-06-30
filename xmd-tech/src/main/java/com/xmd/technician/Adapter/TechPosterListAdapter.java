@@ -14,6 +14,8 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.PosterBean;
 import com.xmd.technician.common.Utils;
+import com.xmd.technician.widget.CircleAvatarView;
+import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RoundImageView;
 
 import java.util.List;

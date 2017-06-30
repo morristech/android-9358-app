@@ -20,10 +20,16 @@ import com.xmd.image_tool.ImageTool;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.PosterBean;
+import com.xmd.technician.common.DateUtil;
+import com.xmd.technician.common.Logger;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.model.LoginTechnician;
+import com.xmd.technician.msgctrl.MsgDef;
+import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.ClearableEditText;
+import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.TechPosterDialog;
 
 import java.io.File;
@@ -68,7 +74,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     View ivPosterClubName;
     @Bind(R.id.edit_poster_club_name)
     TextView editPosterClubName;
-
+    private static final long ONE_MONTH_DAY_MILLISECOND = 30 * 24 * 60 * 60 * 1000l;
     private boolean primaryTitleIsSelected, minorTitleIsSelected, nickNameIsSelected, techNumberIsSelected, clubNameIsSelect;
     private String mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, mPosterImageUrl;
     private ImageTool mImageTool = new ImageTool();
@@ -138,6 +144,9 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
             techNumberIsSelected = true;
             ivPosterClubName.setSelected(true);
             clubNameIsSelect = true;
+            editPosterPrimaryTitle.setText(ResourceUtils.getString(R.string.tech_poster_primary_title_default));
+            editPosterMinorTitle.setText(ResourceUtils.getString(R.string.tech_poster_minor_title_default));
+            editPosterTechName.setText(LoginTechnician.getInstance().getNickName());
         }
 
         if (Utils.isNotEmpty(LoginTechnician.getInstance().getTechNo())) {
@@ -228,10 +237,8 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                 } else {
                     mPosterImageUrl = "";
                 }
-                if (mDialog == null) {
-                    mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true);
-                }
 
+                mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true);
                 mDialog.show();
                 mDialog.setViewDate(mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, imageUrl, mPosterImageUrl);
                 mDialog.setCanceledOnTouchOutside(true);
@@ -340,8 +347,8 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
 
     private String saveImage(View v) {
         Bitmap bitmap;
-        String name = "jietu.png";
-        File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + "jietu.png");
+        String name = "技师海报.png";
+        File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + "技师海报.png");
         if (!file.exists()) {
             file.mkdir();
         }
@@ -356,7 +363,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
         v.getLocationOnScreen(loacation);
         File picFile = new File(file, name);
         try {
-            bitmap = Bitmap.createBitmap(bitmap, loacation[0], loacation[1], view.getWidth(), view.getHeight() - Utils.dip2px(getActivity(), 60));
+            bitmap = Bitmap.createBitmap(bitmap, loacation[0], loacation[1], view.getWidth(), view.getHeight() - Utils.dip2px(getActivity(), 50));
             FileOutputStream fout = new FileOutputStream(picFile);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
             saveImageToGallery(picFile);
@@ -389,7 +396,22 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
 
     @Override
     public void posterSave(View view) {
-        saveImage(view);
+
+        new RewardConfirmDialog(getActivity(), getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_poster_save_alter_message),
+                DateUtil.getCurrentDate(System.currentTimeMillis()+ONE_MONTH_DAY_MILLISECOND)), "", true) {
+
+            @Override
+            //tech_poster_save_alter_message
+            public void onConfirmClick() {
+                super.onConfirmClick();
+                if (mDialog != null) {
+                    mDialog.dismiss();
+                    saveImage(view);
+                }
+
+            }
+        }.show();
+
     }
 
     @Override

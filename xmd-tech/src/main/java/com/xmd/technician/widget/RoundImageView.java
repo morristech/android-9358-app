@@ -30,6 +30,7 @@ public class RoundImageView extends ImageView {
     /**
      * 图片的类型，圆形or圆角
      */
+    private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
     private int type;
     public static final int TYPE_CIRCLE = 0;
     public static final int TYPE_ROUND = 1;
@@ -67,6 +68,7 @@ public class RoundImageView extends ImageView {
     public RoundImageView(Context context, AttributeSet attrs) {
 
         super(context, attrs);
+        super.setScaleType(SCALE_TYPE);
         mMatrix = new Matrix();
         mBitmapPaint = new Paint();
         mBitmapPaint.setAntiAlias(true);
@@ -102,6 +104,13 @@ public class RoundImageView extends ImageView {
         }
 
     }
+
+//    @Override
+//    public void setScaleType(ScaleType scaleType) {
+//        if (scaleType != SCALE_TYPE) {
+//            throw new IllegalArgumentException(String.format("ScaleType %s not supported.", scaleType));
+//        }
+//    }
 
     /**
      * 初始化BitmapShader
