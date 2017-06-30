@@ -78,7 +78,7 @@ public class RedPointServiceImpl implements RedPointService {
         if (count > 0) {
             Integer style = (Integer) textView.getTag();
             if (style == RedPointService.SHOW_TYPE_DIGITAL) {
-                textView.setText(count > 5 ? "99+" : String.valueOf(count));
+                textView.setText(count > 99 ? "99+" : String.valueOf(count));
             }
         }
     }
