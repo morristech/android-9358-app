@@ -1,10 +1,19 @@
 package com.xmd.chat;
 
+import android.text.TextUtils;
+
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.event.EventTotalUnreadMessage;
+import com.xmd.chat.message.ChatMessage;
+import com.xmd.m.notify.display.XmdDisplay;
+import com.xmd.m.notify.push.XmdPushMessage;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,12 +34,35 @@ class MessageManager {
     private MessageManager() {
     }
 
+    private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
+
     public void init() {
         EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
             @Override
-            public void onMessageReceived(List<EMMessage> list) {
-                EventBus.getDefault().post(new EventNewMessages(list));
-                EventBus.getDefault().post(new EventTotalUnreadMessage(EMClient.getInstance().chatManager().getUnreadMessageCount()));
+            public void onMessageReceived(final List<EMMessage> list) {
+
+                ThreadPoolManager.postToUI(new Runnable() {
+                    @Override
+                    public void run() {
+                        //从消息中解析更新用户信息
+                        for (EMMessage message : list) {
+                            ChatMessage chatMessage = ChatMessageFactory.get(message);
+                            if (!TextUtils.isEmpty(chatMessage.getUserId())) {
+                                User user = new User(chatMessage.getUserId());
+                                user.setChatId(chatMessage.getEmMessage().getFrom());
+                                user.setName(chatMessage.getUserName());
+                                user.setAvatar(chatMessage.getUserAvatar());
+                                userInfoService.saveUser(user);
+                            }
+                            displayNotification(chatMessage);
+                        }
+
+                        EventBus.getDefault().post(new EventNewMessages(list));
+                        EventBus.getDefault().post(new EventTotalUnreadMessage(EMClient.getInstance().chatManager().getUnreadMessageCount()));
+
+
+                    }
+                });
             }
 
             @Override
@@ -53,5 +85,25 @@ class MessageManager {
 
             }
         });
+    }
+
+    private void displayNotification(ChatMessage chatMessage) {
+        XmdDisplay display = new XmdDisplay();
+        display.setBusinessType(XmdPushMessage.BUSINESS_TYPE_CHAT_MESSAGE);
+        display.setScene(XmdDisplay.SCENE_BG);
+        display.setStyle(XmdDisplay.STYLE_NOTIFICATION);
+        display.setTitle(chatMessage.getUserName());
+        display.setMessage(chatMessage.getContentText());
+        display.setFlags(XmdDisplay.FLAG_LIGHT | XmdDisplay.FLAG_RING | XmdDisplay.FLAG_VIBRATE);
+        display.setAction(XmdDisplay.ACTION_CHAT_TO);
+        display.setActionData(chatMessage.getRemoteChatId());
+        EventBus.getDefault().post(display);
+
+        XmdDisplay fgDisplay = new XmdDisplay();
+        fgDisplay.setBusinessType(XmdPushMessage.BUSINESS_TYPE_CHAT_MESSAGE);
+        fgDisplay.setScene(XmdDisplay.SCENE_FG);
+        fgDisplay.setStyle(XmdDisplay.STYLE_NONE);
+        fgDisplay.setFlags(XmdDisplay.FLAG_LIGHT | XmdDisplay.FLAG_RING);
+        EventBus.getDefault().post(fgDisplay);
     }
 }

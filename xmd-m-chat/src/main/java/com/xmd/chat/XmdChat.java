@@ -62,6 +62,7 @@ public class XmdChat {
         }
 
         AccountManager.getInstance().init();
+        ConversationManager.getInstance().init();
         MessageManager.getInstance().init();
     }
 }

@@ -1,4 +1,4 @@
-package com.xmd.technician.common;
+package com.shidou.commonlibrary.helper;
 
 import android.content.Context;
 import android.os.Handler;
@@ -14,11 +14,9 @@ import java.util.concurrent.Future;
 public class ThreadPoolManager {
     private static ExecutorService mExecutorService = Executors.newCachedThreadPool();
     private static Handler mHandler;
-    private static Context mApplicationContext;
 
     public static void init(Context context) {
-        mApplicationContext = context.getApplicationContext();
-        mHandler = new Handler(mApplicationContext.getMainLooper());
+        mHandler = new Handler(context.getApplicationContext().getMainLooper());
     }
 
     public static Future<?> run(Runnable runnable) {

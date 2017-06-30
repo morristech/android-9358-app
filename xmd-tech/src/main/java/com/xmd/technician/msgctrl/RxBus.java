@@ -2,7 +2,7 @@ package com.xmd.technician.msgctrl;
 
 import android.os.Looper;
 
-import com.xmd.technician.common.ThreadPoolManager;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 
 import rx.Observable;
 import rx.Subscription;

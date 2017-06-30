@@ -21,13 +21,10 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.PosterBean;
 import com.xmd.technician.common.DateUtil;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.model.LoginTechnician;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.ClearableEditText;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.TechPosterDialog;
@@ -398,7 +395,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     public void posterSave(View view) {
 
         new RewardConfirmDialog(getActivity(), getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_poster_save_alter_message),
-                DateUtil.getCurrentDate(System.currentTimeMillis()+ONE_MONTH_DAY_MILLISECOND)), "", true) {
+                DateUtil.getCurrentDate(System.currentTimeMillis() + ONE_MONTH_DAY_MILLISECOND)), "", true) {
 
             @Override
             //tech_poster_save_alter_message

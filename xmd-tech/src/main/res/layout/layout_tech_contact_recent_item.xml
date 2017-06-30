@@ -98,6 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:gravity="center">
+
                 <TextView
                     android:id="@+id/contact_visitor_to_chat"
                     android:layout_width="60dp"
@@ -109,8 +110,8 @@
                     android:text="打招呼"
                     android:layout_gravity="center"
                     android:textColor="@color/color_white"
-                    android:textSize="13sp"/>
-        </LinearLayout>
+                    android:textSize="13sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/contact_visitor_time"

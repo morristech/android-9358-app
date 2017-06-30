@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginLeft="@dimen/margin_10"
-              android:layout_marginRight="@dimen/margin_10"
+    android:layout_marginRight="@dimen/margin_10"
               android:orientation="vertical">
 
 
@@ -23,7 +23,7 @@
             android:padding="@dimen/small_space"
             android:text="@string/pk_personal_ranking_title"
             android:textColor="#fa4724"
-            android:textSize="@dimen/fontSize"/>
+            android:textSize="@dimen/fontSize" />
 
         <LinearLayout
             android:id="@+id/ll_personal_ranking_detail"
@@ -41,8 +41,7 @@
                 android:gravity="center"
                 android:text="排名"
                 android:textColor="#666666"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -51,8 +50,7 @@
                 android:gravity="center"
                 android:text="姓名"
                 android:textColor="#666666"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
 
             <LinearLayout
                 android:id="@+id/ll_team_filter"
@@ -69,14 +67,13 @@
                     android:drawablePadding="@dimen/inter_space"
                     android:text="全部队伍"
                     android:textColor="#666666"
-                    android:textSize="13sp"
-                    />
+                    android:textSize="13sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/small_space"
-                    android:src="@drawable/icon_ranking_down_filter"/>
+                    android:src="@drawable/icon_ranking_down_filter" />
             </LinearLayout>
 
 
@@ -87,12 +84,10 @@
                 android:gravity="center"
                 android:text="战绩"
                 android:textColor="#666666"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
         </LinearLayout>
 
-        <View
-            style="@style/line"/>
+        <View style="@style/line" />
     </LinearLayout>
 
     <LinearLayout
@@ -147,7 +142,7 @@
                 android:paddingTop="2dp"
                 android:text="队长"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/fontRemark"/>
+                android:textSize="@dimen/fontRemark" />
         </LinearLayout>
 
         <LinearLayout

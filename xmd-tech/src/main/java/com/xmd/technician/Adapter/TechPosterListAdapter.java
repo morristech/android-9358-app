@@ -14,8 +14,6 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.PosterBean;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.widget.CircleAvatarView;
-import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RoundImageView;
 
 import java.util.List;
@@ -104,11 +102,11 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
 
         if (Utils.isNotEmpty(bean.title)) {
             String title = bean.title;
-            if(bean.style.equals(Constant.TECH_POSTER_TYPE_SQUARE)){
-                viewHolder.tvPosterPrimaryTitle.setText(String.format("<<%s>>",title));
-            }else if(bean.style.equals(Constant.TECH_POSTER_TYPE_FLOWER)){
+            if (bean.style.equals(Constant.TECH_POSTER_TYPE_SQUARE)) {
+                viewHolder.tvPosterPrimaryTitle.setText(String.format("<<%s>>", title));
+            } else if (bean.style.equals(Constant.TECH_POSTER_TYPE_FLOWER)) {
                 viewHolder.tvPosterPrimaryTitle.setText(Utils.stringFormat(title));
-            }else{
+            } else {
                 viewHolder.tvPosterPrimaryTitle.setText(title);
             }
 

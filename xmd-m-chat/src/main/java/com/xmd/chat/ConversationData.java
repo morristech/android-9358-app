@@ -1,7 +1,11 @@
 package com.xmd.chat;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.BindingAdapter;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +15,7 @@ import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.user.User;
 import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.view.ChatActivity;
 
 /**
  * Created by mo on 17-6-21.
@@ -22,10 +27,10 @@ public class ConversationData {
     private EMConversation conversation;
     private ChatMessage lastMessage;
 
-    public ConversationData(User user, EMConversation conversation, ChatMessage chatMessage) {
+    public ConversationData(User user, EMConversation conversation) {
         this.user = user;
         this.conversation = conversation;
-        this.lastMessage = chatMessage;
+        this.lastMessage = ChatMessageFactory.get(conversation.getLastMessage());
     }
 
     @BindingAdapter("avatar")
@@ -49,6 +54,31 @@ public class ConversationData {
         } else {
             textView.setText(DateUtils.doLong2String(time, "HH:mm"));
         }
+    }
+
+    public boolean onLongClick(View view) {
+        new AlertDialog.Builder(view.getContext(), R.style.Theme_AppCompat_Light_Dialog_Alert)
+                .setMessage("删除与" + user.getShowName() + "的聊天会话?")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ConversationManager.getInstance().deleteConversation(user.getChatId());
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .create()
+                .show();
+        return true;
+    }
+
+    public void onClick(View view) {
+        Intent intent = new Intent(view.getContext(), ChatActivity.class);
+        intent.putExtra(ChatActivity.EXTRA_CHAT_ID, getChatId());
+        view.getContext().startActivity(intent);
+    }
+
+    public String getChatId() {
+        return user.getChatId();
     }
 
     public String getName() {

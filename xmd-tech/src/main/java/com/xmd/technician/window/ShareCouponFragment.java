@@ -11,7 +11,6 @@ import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,7 +31,6 @@ import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.share.ShareController;
 import com.xmd.technician.widget.EmptyView;
 
 import java.util.ArrayList;
@@ -297,7 +295,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
 
-    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.ll_share_view,R.id.ll_share_tech_card})
+    @OnClick({R.id.rl_paid_coupon, R.id.rl_normal_coupon, R.id.rl_once_card, R.id.rl_limit_grab, R.id.rl_pay_for_me, R.id.rl_reward, R.id.rl_publication, R.id.ll_share_view, R.id.ll_share_tech_card})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_paid_coupon:
@@ -348,7 +346,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
                 break;
             case R.id.ll_share_tech_card:
-                Intent intentPoster = new Intent(getActivity(),TechPersonalPosterActivity.class);
+                Intent intentPoster = new Intent(getActivity(), TechPersonalPosterActivity.class);
                 startActivity(intentPoster);
                 break;
 

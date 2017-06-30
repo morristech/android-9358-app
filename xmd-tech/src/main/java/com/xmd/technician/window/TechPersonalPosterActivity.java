@@ -36,7 +36,7 @@ import rx.Subscription;
  * Created by Lhj on 17-6-20.
  */
 
-public class TechPersonalPosterActivity extends BaseActivity implements TechPosterListAdapter.PosterCallBack,TechPosterDialog.PosterShareOrSaveListener {
+public class TechPersonalPosterActivity extends BaseActivity implements TechPosterListAdapter.PosterCallBack, TechPosterDialog.PosterShareOrSaveListener {
 
     @Bind(R.id.ll_tech_poster_empty_view)
     LinearLayout llTechPosterEmptyView;
@@ -85,7 +85,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
             if (null == result.respData || result.respData.list.size() == 0) {
                 llTechPosterEmptyView.setVisibility(View.VISIBLE);
                 return;
-            }else{
+            } else {
                 llTechPosterEmptyView.setVisibility(View.GONE);
             }
 
@@ -160,7 +160,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 
     @Override
     public void deleteClicked(PosterBean bean) {
-        new RewardConfirmDialog(TechPersonalPosterActivity.this, getString(R.string.tech_poster_alter_message), getString(R.string.tech_poster_alter_delete_message), "",true) {
+        new RewardConfirmDialog(TechPersonalPosterActivity.this, getString(R.string.tech_poster_alter_message), getString(R.string.tech_poster_alter_delete_message), "", true) {
             @Override
             public void onConfirmClick() {
                 super.onConfirmClick();
@@ -202,10 +202,8 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 //        }
         url = new StringBuilder(SharedPreferenceHelper.getServerHost());
         url.append(String.format("/spa-manager/tech-poster/#/%s?id=%s", mPosterBean.style, mPosterBean.id));
-        ShareController.doShare("", url.toString(), Utils.isNotEmpty(mPosterBean.title)?mPosterBean.title:"欢迎您", Utils.isNotEmpty(mPosterBean.subTitle)?mPosterBean.subTitle:ResourceUtils.getString(R.string.tech_poster_minor_title), Constant.SHARE_TYPE_TECH_POSTER, "");
+        ShareController.doShare("", url.toString(), Utils.isNotEmpty(mPosterBean.title) ? mPosterBean.title : "欢迎您", Utils.isNotEmpty(mPosterBean.subTitle) ? mPosterBean.subTitle : ResourceUtils.getString(R.string.tech_poster_minor_title), Constant.SHARE_TYPE_TECH_POSTER, "");
     }
-
-
 
 
 }

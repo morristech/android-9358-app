@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
@@ -25,7 +26,6 @@ import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
-import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.HelloReplyService;

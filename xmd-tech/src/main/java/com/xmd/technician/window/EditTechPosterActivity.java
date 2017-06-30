@@ -132,7 +132,7 @@ public class EditTechPosterActivity extends BaseActivity implements BaseFragment
                 fragmentManager(true);
                 break;
             case R.id.btn_save_edit:
-                if(null == ((TechPosterEditPosterFragment) mFragments.get(1)).getPosterInfo()){
+                if (null == ((TechPosterEditPosterFragment) mFragments.get(1)).getPosterInfo()) {
                     return;
                 }
                 if (Utils.isNotEmpty(getImageUrl())) {

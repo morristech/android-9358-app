@@ -87,7 +87,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.chat_activity);
         setTitle("");
         mToChatUsername = getIntent().getExtras().getString(EmchatConstant.EMCHAT_ID);
         String nickname = getIntent().getExtras().getString(EmchatConstant.EMCHAT_NICKNAME);

@@ -244,12 +244,14 @@
         <activity android:name=".window.MallDiscountChatShareActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".window.MarketingChatShareActivity"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".window.TechPersonalPosterActivity"
-                  android:label="@string/tech_poster_title"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".window.EditTechPosterActivity"
-                  android:label="@string/tech_poster_choice_poster_model"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.TechPersonalPosterActivity"
+            android:label="@string/tech_poster_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.EditTechPosterActivity"
+            android:label="@string/tech_poster_choice_poster_model"
                   android:screenOrientation="portrait"/>
     </application>
 

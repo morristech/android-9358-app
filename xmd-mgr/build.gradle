@@ -70,6 +70,10 @@ android {
                 UMENG_APPKEY_VALUE: "565d57ade0f55a1504001a62",
                 CHANNEL_VALUE     : "xiaomodo",
         ]
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
     }
 
     lintOptions {
@@ -88,14 +92,6 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField "String", "DEFAULT_UPDATE_SERVER", "\"http://service.xiaomodo.com\""
-            manifestPlaceholders = [
-                    EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
-                    GETUI_APP_ID        : "8UMRKwWVdoAGROcu6riYn7",
-                    GETUI_APP_KEY       : "YMMAertL7F8HXT4aYHTWU3",
-                    GETUI_APP_SECRET    : "GQryaLLQfA8SmOoT7kHW15",
-                    GETUI_MASTER_SECRET : "O76Q0ZRN2W5OGLhPuTtqW4",
-            ]
             signingConfig signingConfigs.release
         }
 

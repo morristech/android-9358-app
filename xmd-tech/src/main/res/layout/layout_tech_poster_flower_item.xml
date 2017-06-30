@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    xmlns:tools="http://schemas.android.com/tools"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:clickable="false"
-                                    android:foreground="?android:attr/selectableItemBackground"
-                                    app:cardCornerRadius="4dp"
-                                    app:cardUseCompatPadding="true"
-                                    app:contentPadding="4dp"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="4dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,8 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <com.xmd.technician.widget.RoundImageView
                 android:id="@+id/img_poster_tech_photo"
@@ -33,14 +31,13 @@
                 android:layout_marginTop="10dp"
                 android:scaleType="center"
                 android:src="@drawable/img_default_square"
-                app:type="round"/>
-
+                app:type="round" />
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/poster_flower_bg"/>
+                android:background="@drawable/poster_flower_bg" />
 
             <TextView
                 android:id="@+id/tv_poster_tech_name"
@@ -53,7 +50,7 @@
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
                 android:textSize="8sp"
-                tools:text="张乔乔 /Ａ００８"/>
+                tools:text="张乔乔 /Ａ００８" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -63,7 +60,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginBottom="-15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/poster_flower_bottom"/>
+                android:src="@drawable/poster_flower_bottom" />
 
             <ImageView
                 android:id="@+id/img_poster_qr_code"
@@ -72,8 +69,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="5dp"
-                android:src="@drawable/icon23"
-                />
+                android:src="@drawable/icon23" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -89,7 +85,7 @@
                     android:textColor="@color/color_white"
                     android:textSize="10sp"
                     android:singleLine="true"
-                    tools:text="客/观/捧/捧/场"/>
+                    tools:text="客/观/捧/捧/场" />
 
                 <TextView
                     android:id="@+id/tv_poster_minor_title"
@@ -99,7 +95,7 @@
                     android:textColor="@color/color_white"
                     android:textSize="8sp"
                     android:singleLine="true"
-                    tools:text="关注9358快来预约我吧"/>
+                    tools:text="关注9358快来预约我吧" />
 
                 <TextView
                     android:id="@+id/tv_poster_club_name"
@@ -110,7 +106,7 @@
                     android:textColor="@color/color_white"
                     android:textSize="8sp"
                     android:singleLine="true"
-                    tools:text="小摩豆休闲养生会所"/>
+                    tools:text="小摩豆休闲养生会所" />
 
             </LinearLayout>
 
@@ -121,10 +117,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_margin="5dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_poster_delete"/>
+                android:src="@drawable/icon_poster_delete" />
         </RelativeLayout>
 
-        <include layout="@layout/layout_poster_bottom_btn"/>
+        <include layout="@layout/layout_poster_bottom_btn" />
     </LinearLayout>
 
 

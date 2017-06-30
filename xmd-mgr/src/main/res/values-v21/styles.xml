@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.App.Base">
-        <item name="android:toolbarStyle">@style/MyToolbar</item>
-        <item name="android:colorAccent">@color/primary_color</item>
-        <item name="android:colorControlNormal">@color/primary_color_normal</item>
-        <item name="android:colorControlHighlight">@color/primary_color</item>
-        <item name="android:colorControlActivated">@color/primary_color</item>
-    </style>
+    <!--<style name="AppTheme" parent="Theme.App.Base">-->
+    <!--&lt;!&ndash;<item name="android:toolbarStyle">@style/MyToolbar</item>&ndash;&gt;-->
+    <!--<item name="android:colorPrimary">@color/colorPrimary</item>-->
+    <!--<item name="android:colorAccent">@color/colorAccent</item>-->
+    <!--&lt;!&ndash;<item name="android:colorControlNormal">@color/primary_color_normal</item>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item name="android:colorControlHighlight">@color/primary_color</item>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item name="android:colorControlActivated">@color/primary_color</item>&ndash;&gt;-->
+    <!--</style>-->
 
 
 </resources>

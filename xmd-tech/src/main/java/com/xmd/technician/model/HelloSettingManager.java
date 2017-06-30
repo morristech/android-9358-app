@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.chat.ChatMessageFactory;
@@ -17,7 +18,6 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.HelloTemplateInfo;
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.http.RetrofitServiceFactory;
 import com.xmd.technician.http.gson.HelloReplyResult;
 

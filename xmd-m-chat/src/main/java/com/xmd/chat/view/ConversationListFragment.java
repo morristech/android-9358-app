@@ -1,4 +1,4 @@
-package com.xmd.chat;
+package com.xmd.chat.view;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
@@ -16,6 +16,11 @@ import com.shidou.commonlibrary.Callback;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.chat.BR;
+import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.ConversationData;
+import com.xmd.chat.ConversationManager;
+import com.xmd.chat.R;
 import com.xmd.chat.databinding.FragmentConversationBinding;
 import com.xmd.chat.event.EventChatLoginSuccess;
 import com.xmd.chat.event.EventDeleteConversation;

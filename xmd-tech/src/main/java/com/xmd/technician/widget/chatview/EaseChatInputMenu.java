@@ -19,6 +19,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.chat.ChatConstants;
 import com.xmd.technician.Adapter.ChatGridViewAdapter;
 import com.xmd.technician.R;
@@ -26,7 +27,6 @@ import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.utils.SmileUtils;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
-import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.permission.CheckBusinessPermission;
 import com.xmd.technician.permission.PermissionConstants;

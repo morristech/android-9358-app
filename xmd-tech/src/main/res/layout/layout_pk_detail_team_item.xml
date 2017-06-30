@@ -15,8 +15,8 @@
         android:orientation="vertical">
 
         <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_10"
         android:background="@drawable/bg_team_ranking_title"
         android:gravity="center"
@@ -42,8 +42,7 @@
                 android:text="排名"
                 android:textColor="#666666"
                 android:gravity="center"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -52,8 +51,8 @@
                 android:text="姓名"
                 android:textColor="#666666"
                 android:gravity="center"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
+
             <LinearLayout
                 android:id="@+id/ll_team_filter"
                 android:layout_width="0dp"
@@ -61,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/tv_selected_team"
                     android:layout_width="wrap_content"
@@ -68,13 +68,13 @@
                     android:drawablePadding="@dimen/inter_space"
                     android:text="全部队伍"
                     android:textColor="#666666"
-                    android:textSize="13sp"
-                    />
+                    android:textSize="13sp" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/small_space"
-                    android:src="@drawable/icon_ranking_down_filter"/>
+                    android:src="@drawable/icon_ranking_down_filter" />
             </LinearLayout>
 
 
@@ -85,11 +85,10 @@
                 android:text="战绩"
                 android:gravity="center"
                 android:textColor="#666666"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
         </LinearLayout>
-        <View
-            style="@style/line"/>
+
+        <View style="@style/line" />
     </LinearLayout>
 
     <LinearLayout

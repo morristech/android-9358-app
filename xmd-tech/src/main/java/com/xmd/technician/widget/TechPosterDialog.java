@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.LoginTechnician;
 
@@ -53,7 +52,7 @@ public class TechPosterDialog extends Dialog {
 
     public TechPosterDialog(Context context, int style, boolean isSave) {
 
-       super(context,R.style.default_dialog_style);
+        super(context, R.style.default_dialog_style);
         this.mContext = context;
         this.style = style;
         this.isSave = isSave;
@@ -69,10 +68,9 @@ public class TechPosterDialog extends Dialog {
     }
 
     public TechPosterDialog(Context context) {
-        this(context,-1);
+        this(context, -1);
 
     }
-
 
 
     public void setPosterListener(PosterShareOrSaveListener posterListener) {
@@ -90,11 +88,11 @@ public class TechPosterDialog extends Dialog {
     public void setViewDate(String primaryTitle, String minorTitle, String techName, String techNo, String clubName, String image, String imageUrl) {
 
         if (Utils.isNotEmpty(primaryTitle)) {
-            if(style == Constant.TECH_POSTER_SQUARE_MODEL){
-                tvPosterPrimaryTitle.setText(String.format("<<%s>>",primaryTitle));
-            }else if(style == Constant.TECH_POSTER_FLOWER_MODEL ){
+            if (style == Constant.TECH_POSTER_SQUARE_MODEL) {
+                tvPosterPrimaryTitle.setText(String.format("<<%s>>", primaryTitle));
+            } else if (style == Constant.TECH_POSTER_FLOWER_MODEL) {
                 tvPosterPrimaryTitle.setText(Utils.stringFormat(primaryTitle));
-            }else{
+            } else {
                 tvPosterPrimaryTitle.setText(primaryTitle);
             }
         } else {

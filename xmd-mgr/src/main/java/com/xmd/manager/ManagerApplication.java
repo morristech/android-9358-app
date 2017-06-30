@@ -8,6 +8,7 @@ import android.os.Build;
 
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
@@ -57,6 +58,9 @@ public class ManagerApplication extends Application {
                 XLogger.init(7, getFilesDir().getPath() + File.separator + "logs");
                 XLogger.setGloableTag("9358");
                 printMachineInfo();
+
+                //初始化线程池
+                ThreadPoolManager.init(this);
 
                 SharedPreferenceHelper.initialize();
 

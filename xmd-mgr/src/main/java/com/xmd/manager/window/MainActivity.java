@@ -9,7 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.chat.ConversationListFragment;
+import com.xmd.chat.view.ConversationListFragment;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.manager.ClubData;
 import com.xmd.manager.Manager;

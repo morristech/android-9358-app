@@ -6,8 +6,8 @@ import android.databinding.ObservableField;
 import android.text.Editable;
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.contract.RegisterContract;

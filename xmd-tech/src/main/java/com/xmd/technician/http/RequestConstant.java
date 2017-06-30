@@ -1,8 +1,6 @@
 package com.xmd.technician.http;
 
 
-import android.util.Base64;
-
 /**
  * Created by sdcm on 15-10-23.
  */

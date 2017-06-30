@@ -17,7 +17,8 @@
         android:background="@android:color/white"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:onLong>
+        android:onLongClick="@{(v)->data.onLongClick(v)}"
+        android:onClick="@{(v)->data.onClick(v)}">
 
         <ImageView
             android:layout_width="48dp"

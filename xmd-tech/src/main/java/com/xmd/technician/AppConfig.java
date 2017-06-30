@@ -4,11 +4,11 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.bean.Entry;
 import com.xmd.technician.common.FileUtils;
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
