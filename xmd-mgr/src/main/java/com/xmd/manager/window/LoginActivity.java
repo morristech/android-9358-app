@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.app.user.User;
 import com.xmd.m.network.OkHttpUtil;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
@@ -157,9 +158,13 @@ public class LoginActivity extends BaseActivity {
             SharedPreferenceHelper.setMultiClubToken(loginResult.token);
 
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
-            EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserId());
-            eventLogin.setChatId(SharedPreferenceHelper.getEmchatId());
-            eventLogin.setChatPassword(SharedPreferenceHelper.getEmchatPassword());
+            User user = new User(loginResult.userId);
+            user.setType(User.USER_TYPE_MANAGER);
+            user.setChatId(loginResult.emchatId);
+            user.setChatPassword(loginResult.emchatPassword);
+            user.setName(loginResult.name);
+            user.setAvatar(loginResult.avatarUrl);
+            EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), user);
             EventBus.getDefault().postSticky(eventLogin);
 
             if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles)) {

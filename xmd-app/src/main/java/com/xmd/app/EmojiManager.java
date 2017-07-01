@@ -1,6 +1,7 @@
 package com.xmd.app;
 
 import android.content.Context;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -77,8 +78,8 @@ public class EmojiManager {
         }
     }
 
-    public SpannableString format(CharSequence src) {
-        SpannableString s = new SpannableString(src);
+    public SpannableString format(String src) {
+        SpannableString s = new SpannableString(Html.fromHtml(src));
         for (Pattern pattern : emojiPatternMap.keySet()) {
             Matcher matcher = pattern.matcher(src);
             while (matcher.find()) {

@@ -1,4 +1,4 @@
-package com.xmd.chat;
+package com.xmd.chat.viewmodel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMConversation;
 import com.xmd.app.user.User;
 import com.xmd.app.widget.GlideCircleTransform;
+import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.ConversationManager;
+import com.xmd.chat.R;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.view.ChatActivity;
 
@@ -21,12 +24,12 @@ import com.xmd.chat.view.ChatActivity;
  * 会话数据
  */
 
-public class ConversationData {
+public class ConversationViewModel {
     private User user;
     private EMConversation conversation;
     private ChatMessage lastMessage;
 
-    public ConversationData(User user, EMConversation conversation) {
+    public ConversationViewModel(User user, EMConversation conversation) {
         this.user = user;
         this.conversation = conversation;
         this.lastMessage = ChatMessageFactory.get(conversation.getLastMessage());
@@ -45,7 +48,7 @@ public class ConversationData {
     }
 
     @BindingAdapter("time")
-    public static void bindTime(TextView textView, ConversationData data) {
+    public static void bindTime(TextView textView, ConversationViewModel data) {
         textView.setText(data.getFormatTime());
     }
 

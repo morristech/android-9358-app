@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.hyphenate.chat.EMClient;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.app.user.User;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
@@ -54,9 +55,13 @@ public class WelcomeActivity extends AppCompatActivity {
             });
 
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
-            EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserId());
-            eventLogin.setChatId(SharedPreferenceHelper.getEmchatId());
-            eventLogin.setChatPassword(SharedPreferenceHelper.getEmchatPassword());
+            User user = new User(SharedPreferenceHelper.getUserId());
+            user.setType(User.USER_TYPE_MANAGER);
+            user.setChatId(SharedPreferenceHelper.getEmchatId());
+            user.setChatPassword(SharedPreferenceHelper.getEmchatPassword());
+            user.setName(SharedPreferenceHelper.getUserName());
+            user.setAvatar(SharedPreferenceHelper.getUserAvatar());
+            EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), user);
             EventBus.getDefault().postSticky(eventLogin);
             // Switch to MainActivity
             if (Constant.MULTI_CLUB_ROLE.equals(SharedPreferenceHelper.getUserRole())) {

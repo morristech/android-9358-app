@@ -10,8 +10,14 @@ import com.xmd.chat.message.OrderChatMessage;
  */
 
 public class ChatMessageFactory {
+
+    /**
+     * 使用已有EMMessage创建一个ChatMessage, 从EMMessage中解析出类型
+     *
+     * @param message EMMessage
+     */
     public static ChatMessage get(EMMessage message) {
-        String msgType = message.getStringAttribute(ChatMessage.ATTRIBUTE_MESSAGE_TYPE, "");
+        String msgType = ChatMessage.getMsgType(message);
         switch (msgType) {
             case ChatMessage.MSG_TYPE_ORDER_START:
             case ChatMessage.MSG_TYPE_ORDER_REFUSE:

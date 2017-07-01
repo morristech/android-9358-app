@@ -1,6 +1,5 @@
-package com.xmd.chat.view;
+package com.xmd.chat.viewmodel;
 
-import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
 import android.text.TextUtils;
@@ -12,21 +11,22 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.app.widget.GlideCircleTransform;
+import com.xmd.chat.MessageManager;
 import com.xmd.chat.message.ChatMessage;
 
 /**
  * Created by mo on 17-6-30.
- * 基本聊天视图
+ * 用于绑定基本聊天视图
  */
 
-public abstract class BaseChatRowData {
+public abstract class BaseChatRowViewModel {
     protected ChatMessage chatMessage;
 
     public ObservableBoolean progress = new ObservableBoolean();
     public ObservableBoolean error = new ObservableBoolean();
     public ObservableBoolean showTime = new ObservableBoolean();
 
-    public BaseChatRowData(ChatMessage chatMessage) {
+    public BaseChatRowViewModel(ChatMessage chatMessage) {
         this.chatMessage = chatMessage;
         error.set(false);
         progress.set(false);
@@ -38,6 +38,7 @@ public abstract class BaseChatRowData {
             case FAIL:
                 error.set(true);
                 break;
+            case CREATE:
             case INPROGRESS:
                 progress.set(true);
                 break;
@@ -73,7 +74,7 @@ public abstract class BaseChatRowData {
     }
 
     @BindingAdapter("avatar")
-    public static void bindAvatar(ImageView imageView, BaseChatRowData data) {
+    public static void bindAvatar(ImageView imageView, BaseChatRowViewModel data) {
         String url = data.getChatMessage().getUserAvatar();
         if (!TextUtils.isEmpty(url)) {
             Glide.with(imageView.getContext())
@@ -86,7 +87,7 @@ public abstract class BaseChatRowData {
     }
 
     @BindingAdapter("time")
-    public static void bindTime(TextView textView, BaseChatRowData data) {
+    public static void bindTime(TextView textView, BaseChatRowViewModel data) {
         textView.setText(data.getChatMessage().getFormatTime());
     }
 
@@ -94,5 +95,11 @@ public abstract class BaseChatRowData {
         return chatMessage;
     }
 
-    public abstract View createViewAndBindData(Context context);
+    public void send() {
+        error.set(false);
+        progress.set(true);
+        MessageManager.getInstance().sendMessage(chatMessage);
+    }
+
+    public abstract void bindView(View view);
 }

@@ -86,7 +86,7 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public Integer getOrderServicePrice() {
-        return getSafeIntergeAttribute(ATTR_ORDER_SERVICE_PRICE);
+        return getSafeIntegerAttribute(ATTR_ORDER_SERVICE_PRICE);
     }
 
     public void setOrderServicePrice(Integer orderServicePrice) {
@@ -102,7 +102,7 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public Integer getOrderServiceDuration() {
-        return getSafeIntergeAttribute(ATTR_ORDER_SERVICE_DURATION);
+        return getSafeIntegerAttribute(ATTR_ORDER_SERVICE_DURATION);
     }
 
     public void setOrderServiceDuration(Integer orderServiceDuration) {
@@ -118,7 +118,7 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public Integer getOrderPayMoney() {
-        return getSafeIntergeAttribute(ATTR_ORDER_PAY_MONEY);
+        return getSafeIntegerAttribute(ATTR_ORDER_PAY_MONEY);
     }
 
     public void setOrderPayMoney(Integer orderPayMoney) {

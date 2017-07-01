@@ -9,6 +9,7 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.EmojiManager;
+import com.xmd.app.user.User;
 
 import java.util.Calendar;
 
@@ -69,10 +70,22 @@ public class ChatMessage {
         setAttr(ATTRIBUTE_MESSAGE_TYPE, msgType);
     }
 
-    //没有找到则返回 "none"字符串，方便switch判断
     public String getMsgType() {
-        String msgType = getSafeStringAttribute(ATTRIBUTE_MESSAGE_TYPE);
+        return getMsgType(emMessage);
+    }
+
+    public static String getMsgType(EMMessage emMessage) {
+        String msgType = getSafeStringAttribute(emMessage, ATTRIBUTE_MESSAGE_TYPE);
         return TextUtils.isEmpty(msgType) ? emMessage.getType().name() : msgType;
+    }
+
+    //设置用户信息，发送时设置
+    public void setUser(User user) {
+        setUserId(user.getId());
+        setUserName(user.getName());
+        setUserAvatar(user.getAvatar());
+        //TODO
+        // set clubId,clubName,TechNo
     }
 
     public String getTag() {
@@ -95,38 +108,6 @@ public class ChatMessage {
         return emMessage.getFrom();
     }
 
-    public String getSafeStringAttribute(String key) {
-        try {
-            String value = emMessage.getStringAttribute(key);
-//            XLogger.d(TAG, "get key=" + key + ",value=" + value);
-            return value;
-        } catch (HyphenateException e) {
-//            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
-            return null;
-        }
-    }
-
-    public Integer getSafeIntergeAttribute(String key) {
-        try {
-            Integer value = emMessage.getIntAttribute(key);
-//            XLogger.d(TAG, "get key=" + key + ",value=" + value);
-            return value;
-        } catch (HyphenateException e) {
-//            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
-            return null;
-        }
-    }
-
-    public Long getSafeLongAttribute(String key) {
-        try {
-            Long value = emMessage.getLongAttribute(key);
-//            XLogger.d(TAG, "get key=" + key + ",value=" + value);
-            return value;
-        } catch (HyphenateException e) {
-//            XLogger.d(TAG, "get key=" + key + ",e=" + e.getMessage());
-            return null;
-        }
-    }
 
     public String getUserId() {
         return getSafeStringAttribute(ATTRIBUTE_USER_ID);
@@ -269,5 +250,42 @@ public class ChatMessage {
             }
         }
         return formatTime;
+    }
+
+    public String getSafeStringAttribute(String key) {
+        return getSafeStringAttribute(emMessage, key);
+    }
+
+    public Integer getSafeIntegerAttribute(String key) {
+        return getSafeIntegerAttribute(emMessage, key);
+    }
+
+    public Long getSafeLongAttribute(String key) {
+        return getSafeLongAttribute(emMessage, key);
+    }
+
+
+    public static String getSafeStringAttribute(EMMessage emMessage, String key) {
+        try {
+            return emMessage.getStringAttribute(key);
+        } catch (HyphenateException e) {
+            return null;
+        }
+    }
+
+    public static Integer getSafeIntegerAttribute(EMMessage emMessage, String key) {
+        try {
+            return emMessage.getIntAttribute(key);
+        } catch (HyphenateException e) {
+            return null;
+        }
+    }
+
+    public static Long getSafeLongAttribute(EMMessage emMessage, String key) {
+        try {
+            return emMessage.getLongAttribute(key);
+        } catch (HyphenateException e) {
+            return null;
+        }
     }
 }

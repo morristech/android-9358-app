@@ -18,7 +18,6 @@ import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.chat.BR;
 import com.xmd.chat.ChatMessageFactory;
-import com.xmd.chat.ConversationData;
 import com.xmd.chat.ConversationManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.FragmentConversationBinding;
@@ -26,6 +25,7 @@ import com.xmd.chat.event.EventChatLoginSuccess;
 import com.xmd.chat.event.EventDeleteConversation;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.viewmodel.ConversationViewModel;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -38,12 +38,12 @@ import java.util.List;
 
 public class ConversationListFragment extends BaseFragment {
     private FragmentConversationBinding mBinding;
-    private CommonRecyclerViewAdapter<ConversationData> mAdapter;
+    private CommonRecyclerViewAdapter<ConversationViewModel> mAdapter;
 
     public ObservableBoolean showLoading = new ObservableBoolean();
     public ObservableField<String> showError = new ObservableField<>();
 
-    private List<ConversationData> conversationDataList;
+    private List<ConversationViewModel> conversationViewModelList;
 
     private ConversationManager conversationManager = ConversationManager.getInstance();
 
@@ -58,7 +58,7 @@ public class ConversationListFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mAdapter = new CommonRecyclerViewAdapter<ConversationData>() {
+        mAdapter = new CommonRecyclerViewAdapter<ConversationViewModel>() {
             @Override
             public void onViewRecycled(ViewHolder holder) {
                 super.onViewRecycled(holder);
@@ -81,12 +81,12 @@ public class ConversationListFragment extends BaseFragment {
     @Subscribe
     public void loadData(EventChatLoginSuccess event) {
         showLoading.set(true);
-        conversationManager.loadConversationList(new Callback<List<ConversationData>>() {
+        conversationManager.loadConversationList(new Callback<List<ConversationViewModel>>() {
             @Override
-            public void onResponse(List<ConversationData> result, Throwable error) {
+            public void onResponse(List<ConversationViewModel> result, Throwable error) {
                 showLoading.set(false);
-                conversationDataList = result;
-                mAdapter.setData(R.layout.list_item_conversation, BR.data, conversationDataList);
+                conversationViewModelList = result;
+                mAdapter.setData(R.layout.list_item_conversation, BR.data, conversationViewModelList);
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -95,7 +95,7 @@ public class ConversationListFragment extends BaseFragment {
     @Subscribe
     public void onReceiveNewMessages(EventNewMessages messages) {
         for (EMMessage message : messages.getList()) {
-            ConversationData data = conversationManager.getConversationData(message.getFrom());
+            ConversationViewModel data = conversationManager.getConversationData(message.getFrom());
             if (data == null) {
                 //new conversation,refresh all list
                 loadData(null);
@@ -105,9 +105,9 @@ public class ConversationListFragment extends BaseFragment {
                 data.setLastMessage(chatMessage);
                 int fromPosition = mAdapter.getDataList().indexOf(data);
                 mAdapter.notifyItemChanged(fromPosition);
-                conversationDataList.remove(data);
-                conversationDataList.add(0, data);
-                if (mAdapter.getDataList() != conversationDataList) {
+                conversationViewModelList.remove(data);
+                conversationViewModelList.add(0, data);
+                if (mAdapter.getDataList() != conversationViewModelList) {
                     mAdapter.getDataList().remove(fromPosition);
                     mAdapter.getDataList().add(0, data);
                 }
@@ -122,8 +122,8 @@ public class ConversationListFragment extends BaseFragment {
     @Subscribe
     public void onDeleteConversation(EventDeleteConversation event) {
         int position;
-        ConversationData data = event.getData();
-        if (mAdapter.getDataList() != conversationDataList) {
+        ConversationViewModel data = event.getData();
+        if (mAdapter.getDataList() != conversationViewModelList) {
             //当前处于搜索状态
             position = mAdapter.getDataList().indexOf(data);
             if (position >= 0) {

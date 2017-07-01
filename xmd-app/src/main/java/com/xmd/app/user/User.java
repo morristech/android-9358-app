@@ -26,6 +26,12 @@ public class User implements Serializable {
     private String avatar; //用户头像
     private String name; //用户名称
     private String chatId; //用户聊天ID
+    private String chatPassword; //聊天密码，当前登录用户设置
+
+    private String clubId;
+    private String clubName;
+
+    private String techNo;
 
     private int type; //用户类型
 
@@ -92,6 +98,38 @@ public class User implements Serializable {
         this.markName = markName;
     }
 
+    public String getChatPassword() {
+        return chatPassword;
+    }
+
+    public void setChatPassword(String chatPassword) {
+        this.chatPassword = chatPassword;
+    }
+
+    public String getClubId() {
+        return clubId;
+    }
+
+    public void setClubId(String clubId) {
+        this.clubId = clubId;
+    }
+
+    public String getClubName() {
+        return clubName;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
+    }
+
+    public String getTechNo() {
+        return techNo;
+    }
+
+    public void setTechNo(String techNo) {
+        this.techNo = techNo;
+    }
+
     public User update(User n) {
         if (n.chatId != null) {
             chatId = n.chatId;
@@ -144,6 +182,10 @@ public class User implements Serializable {
                 ", avatar='" + avatar + '\'' +
                 ", name='" + name + '\'' +
                 ", chatId='" + chatId + '\'' +
+                ", chatPassword='" + chatPassword + '\'' +
+                ", clubId='" + clubId + '\'' +
+                ", clubName='" + clubName + '\'' +
+                ", techNo='" + techNo + '\'' +
                 ", type=" + type +
                 ", markName='" + markName + '\'' +
                 '}';

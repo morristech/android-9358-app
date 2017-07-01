@@ -1,13 +1,14 @@
 package com.xmd.chat.view;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -24,9 +25,12 @@ import com.xmd.chat.BR;
 import com.xmd.chat.ChatConstants;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.ChatRowViewFactory;
+import com.xmd.chat.MessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatActivityBinding;
 import com.xmd.chat.event.EventNewMessages;
+import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.viewmodel.BaseChatRowViewModel;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -39,7 +43,7 @@ public class ChatActivity extends BaseActivity {
 
     private ChatActivityBinding mBinding;
 
-    private List<BaseChatRowData> mDataList = new ArrayList<>();
+    private List<BaseChatRowViewModel> mDataList = new ArrayList<>();
 
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
     private User mRemoteUser;
@@ -47,6 +51,8 @@ public class ChatActivity extends BaseActivity {
     private EMConversation mConversation;
     private final int PAGE_SIZE = 20;
     private int mPageIndex;
+
+    public ObservableField<String> textMessageContent = new ObservableField<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,22 +100,22 @@ public class ChatActivity extends BaseActivity {
         }
 
 
-        List<BaseChatRowData> newDataList = new ArrayList<>();
+        List<BaseChatRowViewModel> newDataList = new ArrayList<>();
         List<EMMessage> messageList = mConversation.loadMoreMsgFromDB(msgId, PAGE_SIZE);
         if (msgId != null && messageList.size() == 0) {
             XToast.show("没有更多消息了");
             return;
         }
-        BaseChatRowData beforeData = null;
+        BaseChatRowViewModel beforeData = null;
         for (EMMessage message : messageList) {
-            BaseChatRowData data = ChatRowViewFactory.createView(ChatMessageFactory.get(message));
+            BaseChatRowViewModel data = ChatRowViewFactory.createViewModel(ChatMessageFactory.get(message));
             setShowTime(beforeData, data);
             beforeData = data;
             newDataList.add(data);
         }
         if (mDataList.size() > 0 && newDataList.size() > 0) {
             beforeData = newDataList.get(newDataList.size() - 1);
-            BaseChatRowData current = mDataList.get(0);
+            BaseChatRowViewModel current = mDataList.get(0);
             setShowTime(beforeData, current);
         }
         mDataList.addAll(0, newDataList);
@@ -119,41 +125,35 @@ public class ChatActivity extends BaseActivity {
     }
 
 
-    private ExCommonRecyclerViewAdapter<BaseChatRowData> mAdapter = new ExCommonRecyclerViewAdapter<BaseChatRowData>() {
+    private ExCommonRecyclerViewAdapter<BaseChatRowViewModel> mAdapter = new ExCommonRecyclerViewAdapter<BaseChatRowViewModel>() {
         private static final int VIEW_TYPE_RECEIVE = 1;
         private static final int VIEW_TYPE_SEND = 2;
 
         @Override
         public int getViewType(int position) {
-            BaseChatRowData data = getDataList().get(position);
-            return data.getChatMessage().getEmMessage().direct().equals(EMMessage.Direct.RECEIVE) ? VIEW_TYPE_RECEIVE : VIEW_TYPE_SEND;
+            BaseChatRowViewModel data = getDataList().get(position);
+            return ChatRowViewFactory.getViewType(data.getChatMessage());
         }
 
         @Override
         public ViewDataBinding createViewDataBinding(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            switch (viewType) {
-                case VIEW_TYPE_SEND:
-                    return DataBindingUtil.inflate(layoutInflater, R.layout.list_item_message_send, parent, false);
-                case VIEW_TYPE_RECEIVE:
-                    return DataBindingUtil.inflate(layoutInflater, R.layout.list_item_message_receive, parent, false);
-                default:
-                    throw new RuntimeException("不支持的类型");
+            ViewDataBinding binding;
+            if (ChatRowViewFactory.isSendViewType(viewType)) {
+                binding = DataBindingUtil.inflate(layoutInflater, R.layout.list_item_message_send, parent, false);
+            } else {
+                binding = DataBindingUtil.inflate(layoutInflater, R.layout.list_item_message_receive, parent, false);
             }
+            FrameLayout layout = (FrameLayout) binding.getRoot().findViewById(R.id.contentView);
+            layout.addView(ChatRowViewFactory.createView(parent, viewType));
+            return binding;
         }
 
         @Override
         public void onDataBinding(ViewDataBinding binding, int position) {
-            BaseChatRowData data = getDataList().get(position);
+            BaseChatRowViewModel data = getDataList().get(position);
             FrameLayout layout = (FrameLayout) binding.getRoot().findViewById(R.id.contentView);
-            View subView = data.createViewAndBindData(binding.getRoot().getContext());
-            layout.addView(subView);
-        }
-
-        @Override
-        public void onViewRecycled(ViewHolder holder) {
-            FrameLayout layout = (FrameLayout) holder.getBinding().getRoot().findViewById(R.id.contentView);
-            layout.removeAllViews();
+            data.bindView(layout.getChildAt(0));
         }
     };
 
@@ -161,11 +161,7 @@ public class ChatActivity extends BaseActivity {
     public void onNewMessages(EventNewMessages newMessages) {
         for (EMMessage message : newMessages.getList()) {
             if (message.getFrom().equals(mRemoteUser.getChatId())) {
-                BaseChatRowData data = ChatRowViewFactory.createView(ChatMessageFactory.get(message));
-                setShowTime(mDataList.size() > 0 ? mDataList.get(mDataList.size() - 1) : null, data);
-                mDataList.add(data);
-                mAdapter.notifyItemInserted(mDataList.size() - 1);
-                mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
+                addNewChatMessageToUi(ChatMessageFactory.get(message));
             }
         }
     }
@@ -176,11 +172,32 @@ public class ChatActivity extends BaseActivity {
      * @param before  前一个汽泡
      * @param current 当前汽泡
      */
-    private void setShowTime(BaseChatRowData before, BaseChatRowData current) {
+    private void setShowTime(BaseChatRowViewModel before, BaseChatRowViewModel current) {
         if (before == null) {
             current.showTime.set(true);
             return;
         }
         current.showTime.set(current.getTime() - before.getTime() > ChatConstants.TIME_SHOW_INTERVAL);
+    }
+
+    //设置要发送的文本消息
+    public void setTextMessageContent(Editable s) {
+        textMessageContent.set(s.toString());
+    }
+
+    public void sendTextMessage() {
+        ChatMessage chatMessage = MessageManager.getInstance().sendTextMessage(mRemoteUser.getChatId(), textMessageContent.get());
+        if (chatMessage != null) {
+            addNewChatMessageToUi(chatMessage);
+            textMessageContent.set(null);
+        }
+    }
+
+    private void addNewChatMessageToUi(ChatMessage chatMessage) {
+        BaseChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
+        setShowTime(mDataList.size() > 0 ? mDataList.get(mDataList.size() - 1) : null, data);
+        mDataList.add(data);
+        mAdapter.notifyItemInserted(mDataList.size() - 1);
+        mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
     }
 }

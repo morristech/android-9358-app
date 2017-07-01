@@ -36,7 +36,6 @@ import com.xmd.technician.chat.chatview.ChatRowGiftView;
 import com.xmd.technician.chat.chatview.ChatRowLocationView;
 import com.xmd.technician.chat.chatview.ChatRowOrderView;
 import com.xmd.technician.chat.chatview.ChatRowPaidCouponView;
-import com.xmd.technician.chat.chatview.ChatRowTextView;
 import com.xmd.technician.chat.chatview.ChatRowWithdrawView;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
@@ -265,8 +264,8 @@ public class EaseCommonUtils {
     public static int getCustomChatType(EMMessage message) {
         ChatMessage chatMessage = ChatMessageFactory.get(message);
         int viewType = ChatRowViewFactory.getViewType(chatMessage);
-        if (viewType != ChatRowViewFactory.sendType(ChatConstants.CHAT_ROW_VIEW_DEFAULT)
-                && viewType != ChatRowViewFactory.receiveType(ChatConstants.CHAT_ROW_VIEW_DEFAULT)) {
+        if (viewType != ChatRowViewFactory.sendType(ChatConstants.CHAT_ROW_VIEW_TEXT)
+                && viewType != ChatRowViewFactory.receiveType(ChatConstants.CHAT_ROW_VIEW_TEXT)) {
             return viewType;
         }
         int type = 0;

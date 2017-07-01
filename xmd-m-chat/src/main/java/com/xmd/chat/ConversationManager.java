@@ -10,6 +10,7 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.event.EventDeleteConversation;
+import com.xmd.chat.viewmodel.ConversationViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -37,7 +38,7 @@ public class ConversationManager {
     }
 
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
-    private List<ConversationData> mConversationList; //会话列表，按时间倒序排列
+    private List<ConversationViewModel> mConversationList; //会话列表，按时间倒序排列
 
     private List<String> needDeleteConversationList = new ArrayList<>();
     private int needFilterCount;
@@ -47,7 +48,7 @@ public class ConversationManager {
     }
 
     //加载会话列表
-    public void loadConversationList(final Callback<List<ConversationData>> callback) {
+    public void loadConversationList(final Callback<List<ConversationViewModel>> callback) {
         mConversationList.clear();
         Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
         for (String key : conversationMap.keySet()) {
@@ -59,7 +60,7 @@ public class ConversationManager {
                     needDeleteConversationList.add(key);
                     continue;
                 }
-                ConversationData data = new ConversationData(user, conversation);
+                ConversationViewModel data = new ConversationViewModel(user, conversation);
                 mConversationList.add(data);
             }
         }
@@ -69,7 +70,7 @@ public class ConversationManager {
         //filter
         if (filter != null) {
             needFilterCount = mConversationList.size();
-            for (final ConversationData data : mConversationList) {
+            for (final ConversationViewModel data : mConversationList) {
                 filter.filter(data, new Callback<Boolean>() {
                     @Override
                     public void onResponse(Boolean result, Throwable error) {
@@ -96,8 +97,8 @@ public class ConversationManager {
     }
 
     //获取会话数据
-    public ConversationData getConversationData(String chatId) {
-        for (ConversationData data : mConversationList) {
+    public ConversationViewModel getConversationData(String chatId) {
+        for (ConversationViewModel data : mConversationList) {
             if (data.getChatId().equals(chatId)) {
                 return data;
             }
@@ -106,17 +107,17 @@ public class ConversationManager {
     }
 
     //获取会话列表
-    public List<ConversationData> listConversationData() {
+    public List<ConversationViewModel> listConversationData() {
         return mConversationList;
     }
 
     //获取会话列表，返回新的列表
-    public List<ConversationData> listConversationData(String key) {
+    public List<ConversationViewModel> listConversationData(String key) {
         if (TextUtils.isEmpty(key)) {
             return mConversationList;
         }
-        List<ConversationData> list = new ArrayList<>();
-        for (ConversationData data : mConversationList) {
+        List<ConversationViewModel> list = new ArrayList<>();
+        for (ConversationViewModel data : mConversationList) {
             if (data.getName().contains(key)) {
                 list.add(data);
             }
@@ -127,7 +128,7 @@ public class ConversationManager {
     //删除会话
     public void deleteConversation(String chatId) {
         int position = getConversationDataPosition(chatId);
-        ConversationData data = mConversationList.get(position);
+        ConversationViewModel data = mConversationList.get(position);
         EventBus.getDefault().post(new EventDeleteConversation(position, data));
         deleteConversationInner(chatId);
     }
@@ -140,7 +141,7 @@ public class ConversationManager {
 
     private int getConversationDataPosition(String chatId) {
         for (int i = 0; i < mConversationList.size(); i++) {
-            ConversationData data = mConversationList.get(i);
+            ConversationViewModel data = mConversationList.get(i);
             if (data.getChatId().equals(chatId)) {
                 return i;
             }
@@ -148,19 +149,19 @@ public class ConversationManager {
         return -1;
     }
 
-    private void sortConversationByTime(List<ConversationData> dataList) {
-        Collections.sort(dataList, new Comparator<ConversationData>() {
+    private void sortConversationByTime(List<ConversationViewModel> dataList) {
+        Collections.sort(dataList, new Comparator<ConversationViewModel>() {
             @Override
-            public int compare(ConversationData o1, ConversationData o2) {
+            public int compare(ConversationViewModel o1, ConversationViewModel o2) {
                 return (int) (o2.getTime() - o1.getTime());
             }
         });
     }
 
     private void removeConversationData(String chatId) {
-        Iterator<ConversationData> dataIterator = mConversationList.iterator();
+        Iterator<ConversationViewModel> dataIterator = mConversationList.iterator();
         while (dataIterator.hasNext()) {
-            ConversationData data = dataIterator.next();
+            ConversationViewModel data = dataIterator.next();
             if (data.getChatId().equals(chatId)) {
                 dataIterator.remove();
             }
@@ -185,7 +186,7 @@ public class ConversationManager {
     private ConversationFilter filter;
 
     interface ConversationFilter {
-        void filter(ConversationData data, Callback<Boolean> listener);
+        void filter(ConversationViewModel data, Callback<Boolean> listener);
     }
 
     public ConversationFilter getFilter() {

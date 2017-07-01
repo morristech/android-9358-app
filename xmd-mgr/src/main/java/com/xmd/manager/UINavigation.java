@@ -5,10 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.chat.view.ChatActivity;
 import com.xmd.m.notify.display.XmdActionFactory;
 import com.xmd.m.notify.display.XmdDisplay;
-import com.xmd.manager.chat.EmchatConstant;
-import com.xmd.manager.window.ChatActivity;
 import com.xmd.manager.window.MainActivity;
 import com.xmd.manager.window.OnlinePayActivity;
 
@@ -58,7 +57,7 @@ public class UINavigation {
     public static void gotoChatActivity(Context context, String chatId) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(EmchatConstant.EMCHAT_ID, chatId);
+        intent.putExtra(ChatActivity.EXTRA_CHAT_ID, chatId);
         context.startActivity(intent);
     }
 }

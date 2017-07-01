@@ -1,12 +1,14 @@
 package com.xmd.chat;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.hyphenate.chat.EMMessage;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.chat.view.BaseChatRowData;
-import com.xmd.chat.view.ChatRowDataText;
-import com.xmd.chat.view.ChatRowDataUnSupport;
+import com.xmd.chat.viewmodel.BaseChatRowViewModel;
+import com.xmd.chat.viewmodel.ChatRowViewModelText;
 
-import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_DEFAULT;
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TEXT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER_REQUEST;
 
@@ -16,37 +18,56 @@ import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER_REQUEST;
  */
 
 public class ChatRowViewFactory {
+    //获取viewType
     public static int getViewType(ChatMessage chatMessage) {
-        int inc = chatMessage.getEmMessage().direct() == EMMessage.Direct.RECEIVE ?
-                ChatConstants.CHAT_VIEW_RECEIVE_INC : ChatConstants.CHAT_VIEW_SEND_INC;
+        int baseType;
         switch (chatMessage.getMsgType()) {
+            case ChatMessage.MSG_TYPE_ORIGIN_TXT:
+                baseType = CHAT_ROW_VIEW_TEXT;
+                break;
             case ChatMessage.MSG_TYPE_ORDER_START:
             case ChatMessage.MSG_TYPE_ORDER_REFUSE:
             case ChatMessage.MSG_TYPE_ORDER_CONFIRM:
             case ChatMessage.MSG_TYPE_ORDER_CANCEL:
             case ChatMessage.MSG_TYPE_ORDER_SUCCESS:
-                return CHAT_ROW_VIEW_TYPE_ORDER + inc;
+                baseType = CHAT_ROW_VIEW_TYPE_ORDER;
+                break;
             case ChatMessage.MSG_TYPE_ORDER_REQUEST:
-                return CHAT_ROW_VIEW_TYPE_ORDER_REQUEST + inc;
+                baseType = CHAT_ROW_VIEW_TYPE_ORDER_REQUEST;
+                break;
             default:
-                return CHAT_ROW_VIEW_DEFAULT + inc;
+                baseType = CHAT_ROW_VIEW_TEXT;
         }
+
+        return chatMessage.getEmMessage().direct() == EMMessage.Direct.RECEIVE ? receiveType(baseType) : sendType(baseType);
     }
 
     public static int sendType(int baseType) {
-        return baseType + ChatConstants.CHAT_VIEW_SEND_INC;
+        return baseType | ChatConstants.CHAT_VIEW_DIRECT_SEND << 31;
     }
 
     public static int receiveType(int baseType) {
-        return baseType + ChatConstants.CHAT_VIEW_RECEIVE_INC;
+        return baseType | ChatConstants.CHAT_VIEW_DIRECT_RECEIVE << 31;
     }
 
-    public static BaseChatRowData createView(ChatMessage message) {
+    public static boolean isSendViewType(int viewType) {
+        return (viewType & (0x1 << 31)) == ChatConstants.CHAT_VIEW_DIRECT_SEND;
+    }
+
+    public static View createView(ViewGroup parent, int viewType) {
+        int baseType = viewType & ~(0x1 << 31);
+        switch (baseType) {
+            default:
+                return ChatRowViewModelText.createView(parent);
+        }
+    }
+
+    public static BaseChatRowViewModel createViewModel(ChatMessage message) {
         switch (message.getMsgType()) {
             case ChatMessage.MSG_TYPE_ORIGIN_TXT:
-                return new ChatRowDataText(message);
+                return new ChatRowViewModelText(message);
             default:
-                return new ChatRowDataUnSupport(message);
+                return new ChatRowViewModelText(message);
         }
     }
 }

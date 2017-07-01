@@ -6,6 +6,7 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -24,10 +25,10 @@ import java.util.List;
  * 消息管理
  */
 
-class MessageManager {
+public class MessageManager {
     private static final MessageManager ourInstance = new MessageManager();
 
-    static MessageManager getInstance() {
+    public static MessageManager getInstance() {
         return ourInstance;
     }
 
@@ -85,6 +86,23 @@ class MessageManager {
 
             }
         });
+    }
+
+    public ChatMessage sendTextMessage(String remoteChatId, String text) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage(text, remoteChatId);
+        ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
+        return sendMessage(chatMessage);
+    }
+
+    public ChatMessage sendMessage(ChatMessage chatMessage) {
+        User user = AccountManager.getInstance().getUser();
+        if (user == null) {
+            XToast.show("无法发送消息，没有用户信息!");
+            return null;
+        }
+        chatMessage.setUser(user);
+        EMClient.getInstance().chatManager().sendMessage(chatMessage.getEmMessage());
+        return chatMessage;
     }
 
     private void displayNotification(ChatMessage chatMessage) {

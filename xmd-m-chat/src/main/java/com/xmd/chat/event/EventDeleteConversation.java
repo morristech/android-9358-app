@@ -1,6 +1,6 @@
 package com.xmd.chat.event;
 
-import com.xmd.chat.ConversationData;
+import com.xmd.chat.viewmodel.ConversationViewModel;
 
 /**
  * Created by mo on 17-6-30.
@@ -9,14 +9,14 @@ import com.xmd.chat.ConversationData;
 
 public class EventDeleteConversation {
     private int position;
-    private ConversationData data;
+    private ConversationViewModel data;
 
-    public EventDeleteConversation(int position, ConversationData data) {
+    public EventDeleteConversation(int position, ConversationViewModel data) {
         this.position = position;
         this.data = data;
     }
 
-    public ConversationData getData() {
+    public ConversationViewModel getData() {
         return data;
     }
 
