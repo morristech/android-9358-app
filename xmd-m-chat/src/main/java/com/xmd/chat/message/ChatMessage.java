@@ -1,11 +1,16 @@
 package com.xmd.chat.message;
 
+import android.text.SpannableString;
 import android.text.TextUtils;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
+import com.shidou.commonlibrary.util.DateUtils;
+import com.xmd.app.EmojiManager;
+
+import java.util.Calendar;
 
 /**
  * Created by heyangya on 17-6-5.
@@ -17,6 +22,18 @@ public class ChatMessage {
     //订单
     public static final String MSG_TYPE_ORDER = "order";
 
+    /**
+     * 原始数据类型:
+     * TXT,IMAGE,VIDEO,LOCATION,VOICE,FILE,CMD
+     * 自定义类型:
+     */
+    public static final String MSG_TYPE_ORIGIN_TXT = "TXT";
+    public static final String MSG_TYPE_ORIGIN_IMAGE = "IMAGE";
+    public static final String MSG_TYPE_ORIGIN_VIDEO = "VIDEO";
+    public static final String MSG_TYPE_ORIGIN_LOCATION = "LOCATION";
+    public static final String MSG_TYPE_ORIGIN_VOICE = "VOICE";
+    public static final String MSG_TYPE_ORIGIN_FILE = "FILE";
+    public static final String MSG_TYPE_ORIGIN_CMD = "CMD";
     public static final String MSG_TYPE_ORDER_START = "order_start";
     public static final String MSG_TYPE_ORDER_REFUSE = "order_refuse";
     public static final String MSG_TYPE_ORDER_CONFIRM = "order_confirm";
@@ -44,6 +61,9 @@ public class ChatMessage {
     //预约消息
     private EMMessage emMessage;
 
+    private SpannableString contentText; //缓存emoji格式化后的数据
+    protected String formatTime; //缓存格式化后的时间
+
     public ChatMessage(EMMessage emMessage, String msgType) {
         this.emMessage = emMessage;
         setAttr(ATTRIBUTE_MESSAGE_TYPE, msgType);
@@ -52,7 +72,7 @@ public class ChatMessage {
     //没有找到则返回 "none"字符串，方便switch判断
     public String getMsgType() {
         String msgType = getSafeStringAttribute(ATTRIBUTE_MESSAGE_TYPE);
-        return msgType == null ? "none" : msgType;
+        return TextUtils.isEmpty(msgType) ? emMessage.getType().name() : msgType;
     }
 
     public String getTag() {
@@ -201,11 +221,23 @@ public class ChatMessage {
         this.emMessage = emMessage;
     }
 
-    public String getContentText() {
+    public CharSequence getContentText() {
+        if (contentText == null) {
+            if (emMessage.getType().equals(EMMessage.Type.TXT)) {
+                String message = ((EMTextMessageBody) emMessage.getBody()).getMessage();
+                contentText = EmojiManager.getInstance().format(message);
+            } else {
+                contentText = new SpannableString("[" + emMessage.getType().name() + "]");
+            }
+        }
+        return contentText;
+    }
+
+    public CharSequence getOriginContentText() {
         if (emMessage.getType().equals(EMMessage.Type.TXT)) {
             return ((EMTextMessageBody) emMessage.getBody()).getMessage();
         } else {
-            return emMessage.getType().name();
+            return "[" + emMessage.getType().name() + "]";
         }
     }
 
@@ -213,11 +245,29 @@ public class ChatMessage {
         return getTag() != null && getTag().contains(MSG_TAG_CUSTOMER_SERVICE);
     }
 
-    public String getRemoteChatId(){
-        if(getEmMessage().direct()== EMMessage.Direct.RECEIVE){
+    public String getRemoteChatId() {
+        if (getEmMessage().direct() == EMMessage.Direct.RECEIVE) {
             return getFromChatId();
-        }else{
+        } else {
             return getToChatId();
         }
+    }
+
+    public String getFormatTime() {
+        if (formatTime == null) {
+            long msgTime = emMessage.getMsgTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(msgTime);
+            Calendar now = Calendar.getInstance();
+            if (now.get(Calendar.YEAR) > calendar.get(Calendar.YEAR)
+                    || now.get(Calendar.DAY_OF_YEAR) - 2 >= calendar.get(Calendar.DAY_OF_YEAR)) {
+                formatTime = DateUtils.doLong2String(msgTime);
+            } else if (now.get(Calendar.DAY_OF_YEAR) - 1 >= calendar.get(Calendar.DAY_OF_YEAR)) {
+                formatTime = DateUtils.doLong2String(msgTime, "昨天 HH:mm");
+            } else {
+                formatTime = DateUtils.doLong2String(msgTime, "HH:mm");
+            }
+        }
+        return formatTime;
     }
 }

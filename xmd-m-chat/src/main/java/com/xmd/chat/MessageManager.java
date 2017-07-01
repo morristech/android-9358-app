@@ -93,7 +93,7 @@ class MessageManager {
         display.setScene(XmdDisplay.SCENE_BG);
         display.setStyle(XmdDisplay.STYLE_NOTIFICATION);
         display.setTitle(chatMessage.getUserName());
-        display.setMessage(chatMessage.getContentText());
+        display.setMessage(chatMessage.getOriginContentText());
         display.setFlags(XmdDisplay.FLAG_LIGHT | XmdDisplay.FLAG_RING | XmdDisplay.FLAG_VIBRATE);
         display.setAction(XmdDisplay.ACTION_CHAT_TO);
         display.setActionData(chatMessage.getRemoteChatId());

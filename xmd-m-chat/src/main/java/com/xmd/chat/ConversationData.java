@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMConversation;
-import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.user.User;
 import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.chat.message.ChatMessage;
@@ -46,14 +45,8 @@ public class ConversationData {
     }
 
     @BindingAdapter("time")
-    public static void bindTime(TextView textView, long time) {
-        if (System.currentTimeMillis() - time > 2 * DateUtils.DAY_TIME_MS) {
-            textView.setText(DateUtils.doLong2String(time));
-        } else if (System.currentTimeMillis() - time > DateUtils.DAY_TIME_MS) {
-            textView.setText(DateUtils.doLong2String(time, "昨天 HH:mm"));
-        } else {
-            textView.setText(DateUtils.doLong2String(time, "HH:mm"));
-        }
+    public static void bindTime(TextView textView, ConversationData data) {
+        textView.setText(data.getFormatTime());
     }
 
     public boolean onLongClick(View view) {
@@ -89,7 +82,11 @@ public class ConversationData {
         return user.getAvatar();
     }
 
-    public String getMessage() {
+    public String getFormatTime() {
+        return lastMessage.getFormatTime();
+    }
+
+    public CharSequence getMessage() {
         return lastMessage.getContentText();
     }
 

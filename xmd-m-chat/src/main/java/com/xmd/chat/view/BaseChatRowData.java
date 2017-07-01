@@ -1,9 +1,12 @@
 package com.xmd.chat.view;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.EMCallBack;
@@ -16,11 +19,12 @@ import com.xmd.chat.message.ChatMessage;
  * 基本聊天视图
  */
 
-public class BaseChatRowData {
-    private ChatMessage chatMessage;
+public abstract class BaseChatRowData {
+    protected ChatMessage chatMessage;
 
     public ObservableBoolean progress = new ObservableBoolean();
     public ObservableBoolean error = new ObservableBoolean();
+    public ObservableBoolean showTime = new ObservableBoolean();
 
     public BaseChatRowData(ChatMessage chatMessage) {
         this.chatMessage = chatMessage;
@@ -59,6 +63,15 @@ public class BaseChatRowData {
         });
     }
 
+    //是否为接收信息
+    public boolean isReceived() {
+        return chatMessage.getEmMessage().direct().equals(EMMessage.Direct.RECEIVE);
+    }
+
+    public long getTime() {
+        return chatMessage.getEmMessage().getMsgTime();
+    }
+
     @BindingAdapter("avatar")
     public static void bindAvatar(ImageView imageView, BaseChatRowData data) {
         String url = data.getChatMessage().getUserAvatar();
@@ -68,12 +81,18 @@ public class BaseChatRowData {
                     .transform(new GlideCircleTransform(imageView.getContext()))
                     .into(imageView);
         } else {
-//            imageView.setImageResource(com.xmd.app.R.drawable.img_default_avatar);
+            imageView.setImageResource(com.xmd.app.R.drawable.img_default_avatar);
         }
     }
 
+    @BindingAdapter("time")
+    public static void bindTime(TextView textView, BaseChatRowData data) {
+        textView.setText(data.getChatMessage().getFormatTime());
+    }
 
     public ChatMessage getChatMessage() {
         return chatMessage;
     }
+
+    public abstract View createViewAndBindData(Context context);
 }

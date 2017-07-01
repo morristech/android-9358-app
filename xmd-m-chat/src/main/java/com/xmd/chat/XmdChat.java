@@ -44,7 +44,7 @@ public class XmdChat {
         EMClient.getInstance().chatManager().loadAllConversations();
         EMClient.getInstance().groupManager().loadAllGroups();
 
-        //初始化用户信息,后期版本可以移除 -- FIXME
+        //初始化用户信息
         EMClient.getInstance().chatManager().loadAllConversations();
         for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
             EMMessage emMessage = conversation.getLatestMessageFromOthers();

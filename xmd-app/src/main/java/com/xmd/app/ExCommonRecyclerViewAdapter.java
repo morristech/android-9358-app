@@ -45,6 +45,8 @@ public abstract class ExCommonRecyclerViewAdapter<T> extends RecyclerView.Adapte
         Object data = mData.get(position);
         binding.setVariable(mDataBR, data);
         binding.executePendingBindings();
+
+        onDataBinding(binding, position);
     }
 
     @Override
@@ -54,6 +56,11 @@ public abstract class ExCommonRecyclerViewAdapter<T> extends RecyclerView.Adapte
             count = mData.size();
         }
         return count;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return getViewType(position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,4 +80,9 @@ public abstract class ExCommonRecyclerViewAdapter<T> extends RecyclerView.Adapte
     }
 
     public abstract ViewDataBinding createViewDataBinding(ViewGroup parent, int viewType);
+
+    public abstract int getViewType(int position);
+
+    public void onDataBinding(ViewDataBinding binding, int position) {
+    }
 }

@@ -2,6 +2,9 @@ package com.xmd.chat;
 
 import com.hyphenate.chat.EMMessage;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.view.BaseChatRowData;
+import com.xmd.chat.view.ChatRowDataText;
+import com.xmd.chat.view.ChatRowDataUnSupport;
 
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_DEFAULT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER;
@@ -36,5 +39,14 @@ public class ChatRowViewFactory {
 
     public static int receiveType(int baseType) {
         return baseType + ChatConstants.CHAT_VIEW_RECEIVE_INC;
+    }
+
+    public static BaseChatRowData createView(ChatMessage message) {
+        switch (message.getMsgType()) {
+            case ChatMessage.MSG_TYPE_ORIGIN_TXT:
+                return new ChatRowDataText(message);
+            default:
+                return new ChatRowDataUnSupport(message);
+        }
     }
 }

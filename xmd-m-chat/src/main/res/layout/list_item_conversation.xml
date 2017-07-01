@@ -61,7 +61,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="3"
-                app:time="@{data.time}" />
+                app:time="@{data}" />
 
             <FrameLayout
                 android:layout_width="match_parent"

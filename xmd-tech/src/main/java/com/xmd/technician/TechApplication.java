@@ -17,6 +17,7 @@ import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.EmojiManager;
 import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
@@ -89,6 +90,8 @@ public class TechApplication extends MultiDexApplication {
                     }
                 });
 
+                //初始化界面辅助类
+                EmojiManager.getInstance().init(this);
                 XToast.init(this, -1);
                 FloatNotifyManager.getInstance().init(this);
 

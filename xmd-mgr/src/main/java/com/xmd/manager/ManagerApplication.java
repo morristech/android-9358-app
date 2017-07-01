@@ -13,6 +13,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.EmojiManager;
 import com.xmd.app.XmdApp;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.chat.XmdChat;
@@ -77,6 +78,8 @@ public class ManagerApplication extends Application {
                     }
                 });
 
+                //界面辅助类
+                EmojiManager.getInstance().init(this);
                 XToast.init(this, -1);
 
                 //初始化磁盘缓存模块
