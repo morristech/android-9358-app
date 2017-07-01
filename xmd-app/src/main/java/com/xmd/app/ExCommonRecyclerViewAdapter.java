@@ -50,6 +50,11 @@ public abstract class ExCommonRecyclerViewAdapter<T> extends RecyclerView.Adapte
     }
 
     @Override
+    public void onViewRecycled(ViewHolder holder) {
+        onDataUnBinding(holder.getBinding(), holder.getAdapterPosition());
+    }
+
+    @Override
     public int getItemCount() {
         int count = 0;
         if (mData != null) {
@@ -84,5 +89,10 @@ public abstract class ExCommonRecyclerViewAdapter<T> extends RecyclerView.Adapte
     public abstract int getViewType(int position);
 
     public void onDataBinding(ViewDataBinding binding, int position) {
+
+    }
+
+    public void onDataUnBinding(ViewDataBinding binding, int position) {
+
     }
 }

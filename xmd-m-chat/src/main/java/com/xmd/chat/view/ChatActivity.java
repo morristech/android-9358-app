@@ -30,7 +30,7 @@ import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatActivityBinding;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.chat.viewmodel.BaseChatRowViewModel;
+import com.xmd.chat.viewmodel.ChatRowViewModel;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -43,7 +43,7 @@ public class ChatActivity extends BaseActivity {
 
     private ChatActivityBinding mBinding;
 
-    private List<BaseChatRowViewModel> mDataList = new ArrayList<>();
+    private List<ChatRowViewModel> mDataList = new ArrayList<>();
 
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
     private User mRemoteUser;
@@ -100,22 +100,22 @@ public class ChatActivity extends BaseActivity {
         }
 
 
-        List<BaseChatRowViewModel> newDataList = new ArrayList<>();
+        List<ChatRowViewModel> newDataList = new ArrayList<>();
         List<EMMessage> messageList = mConversation.loadMoreMsgFromDB(msgId, PAGE_SIZE);
         if (msgId != null && messageList.size() == 0) {
             XToast.show("没有更多消息了");
             return;
         }
-        BaseChatRowViewModel beforeData = null;
+        ChatRowViewModel beforeData = null;
         for (EMMessage message : messageList) {
-            BaseChatRowViewModel data = ChatRowViewFactory.createViewModel(ChatMessageFactory.get(message));
+            ChatRowViewModel data = ChatRowViewFactory.createViewModel(ChatMessageFactory.get(message));
             setShowTime(beforeData, data);
             beforeData = data;
             newDataList.add(data);
         }
         if (mDataList.size() > 0 && newDataList.size() > 0) {
             beforeData = newDataList.get(newDataList.size() - 1);
-            BaseChatRowViewModel current = mDataList.get(0);
+            ChatRowViewModel current = mDataList.get(0);
             setShowTime(beforeData, current);
         }
         mDataList.addAll(0, newDataList);
@@ -125,13 +125,11 @@ public class ChatActivity extends BaseActivity {
     }
 
 
-    private ExCommonRecyclerViewAdapter<BaseChatRowViewModel> mAdapter = new ExCommonRecyclerViewAdapter<BaseChatRowViewModel>() {
-        private static final int VIEW_TYPE_RECEIVE = 1;
-        private static final int VIEW_TYPE_SEND = 2;
+    private ExCommonRecyclerViewAdapter<ChatRowViewModel> mAdapter = new ExCommonRecyclerViewAdapter<ChatRowViewModel>() {
 
         @Override
         public int getViewType(int position) {
-            BaseChatRowViewModel data = getDataList().get(position);
+            ChatRowViewModel data = getDataList().get(position);
             return ChatRowViewFactory.getViewType(data.getChatMessage());
         }
 
@@ -151,9 +149,15 @@ public class ChatActivity extends BaseActivity {
 
         @Override
         public void onDataBinding(ViewDataBinding binding, int position) {
-            BaseChatRowViewModel data = getDataList().get(position);
+            ChatRowViewModel data = getDataList().get(position);
             FrameLayout layout = (FrameLayout) binding.getRoot().findViewById(R.id.contentView);
-            data.bindView(layout.getChildAt(0));
+            data.onBindView(layout.getChildAt(0));
+        }
+
+        @Override
+        public void onDataUnBinding(ViewDataBinding binding, int position) {
+//            ChatRowViewModel data = getDataList().get(position);
+//            data.onUnbindView();
         }
     };
 
@@ -172,7 +176,7 @@ public class ChatActivity extends BaseActivity {
      * @param before  前一个汽泡
      * @param current 当前汽泡
      */
-    private void setShowTime(BaseChatRowViewModel before, BaseChatRowViewModel current) {
+    private void setShowTime(ChatRowViewModel before, ChatRowViewModel current) {
         if (before == null) {
             current.showTime.set(true);
             return;
@@ -194,7 +198,7 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void addNewChatMessageToUi(ChatMessage chatMessage) {
-        BaseChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
+        ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
         setShowTime(mDataList.size() > 0 ? mDataList.get(mDataList.size() - 1) : null, data);
         mDataList.add(data);
         mAdapter.notifyItemInserted(mDataList.size() - 1);

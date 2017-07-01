@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.xmd.chat.viewmodel.BaseChatRowViewModel" />
+            type="com.xmd.chat.viewmodel.ChatRowViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

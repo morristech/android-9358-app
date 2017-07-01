@@ -14,7 +14,7 @@ import com.xmd.chat.message.ChatMessage;
  * 文本消息
  */
 
-public class ChatRowViewModelText extends BaseChatRowViewModel {
+public class ChatRowViewModelText extends ChatRowViewModel {
     public ChatRowViewModelText(ChatMessage chatMessage) {
         super(chatMessage);
     }
@@ -24,7 +24,12 @@ public class ChatRowViewModelText extends BaseChatRowViewModel {
     }
 
     @Override
-    public void bindView(View view) {
+    public void onBindView(View view) {
         ((TextView) view).setText(chatMessage.getContentText());
+    }
+
+    @Override
+    public void onUnbindView() {
+
     }
 }

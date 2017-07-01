@@ -19,14 +19,14 @@ import com.xmd.chat.message.ChatMessage;
  * 用于绑定基本聊天视图
  */
 
-public abstract class BaseChatRowViewModel {
+public abstract class ChatRowViewModel {
     protected ChatMessage chatMessage;
 
     public ObservableBoolean progress = new ObservableBoolean();
     public ObservableBoolean error = new ObservableBoolean();
     public ObservableBoolean showTime = new ObservableBoolean();
 
-    public BaseChatRowViewModel(ChatMessage chatMessage) {
+    public ChatRowViewModel(ChatMessage chatMessage) {
         this.chatMessage = chatMessage;
         error.set(false);
         progress.set(false);
@@ -74,7 +74,7 @@ public abstract class BaseChatRowViewModel {
     }
 
     @BindingAdapter("avatar")
-    public static void bindAvatar(ImageView imageView, BaseChatRowViewModel data) {
+    public static void bindAvatar(ImageView imageView, ChatRowViewModel data) {
         String url = data.getChatMessage().getUserAvatar();
         if (!TextUtils.isEmpty(url)) {
             Glide.with(imageView.getContext())
@@ -87,7 +87,7 @@ public abstract class BaseChatRowViewModel {
     }
 
     @BindingAdapter("time")
-    public static void bindTime(TextView textView, BaseChatRowViewModel data) {
+    public static void bindTime(TextView textView, ChatRowViewModel data) {
         textView.setText(data.getChatMessage().getFormatTime());
     }
 
@@ -101,5 +101,7 @@ public abstract class BaseChatRowViewModel {
         MessageManager.getInstance().sendMessage(chatMessage);
     }
 
-    public abstract void bindView(View view);
+    public abstract void onBindView(View view);
+
+    public abstract void onUnbindView();
 }

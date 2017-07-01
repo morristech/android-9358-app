@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.hyphenate.chat.EMMessage;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.chat.viewmodel.BaseChatRowViewModel;
+import com.xmd.chat.viewmodel.ChatRowViewModel;
 import com.xmd.chat.viewmodel.ChatRowViewModelText;
 
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TEXT;
@@ -62,7 +62,7 @@ public class ChatRowViewFactory {
         }
     }
 
-    public static BaseChatRowViewModel createViewModel(ChatMessage message) {
+    public static ChatRowViewModel createViewModel(ChatMessage message) {
         switch (message.getMsgType()) {
             case ChatMessage.MSG_TYPE_ORIGIN_TXT:
                 return new ChatRowViewModelText(message);
