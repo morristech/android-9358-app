@@ -21,6 +21,7 @@ import com.xmd.manager.widget.EmptyView;
 import com.xmd.manager.widget.ViewPagerTabIndicator;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,8 +69,8 @@ public class TechPersonalRankingDetailActivity extends BaseActivity {
     public static final String FORMAT_MONTH = "MM月dd日";
 
     public int mTimeFilterType = 1;
-    private final long DAY_MILLISECOND = 24 * 3600 * 1000;//24小时毫秒值
-    private final long WEEK_MILLISECOND = 7 * 24 * 3600 * 1000;//7*24小时
+    private final long DAY_MILLISECOND = 24 * 3600 * 1000l;//24小时毫秒值
+    private final long WEEK_MILLISECOND = 7 * 24 * 3600 * 1000l;//7*24小时
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
     private ArrayBottomPopupWindow<String> mTimeFilterPopupWindow;
     private long mCurrentMillisecond = 0;  //当前显示日期毫秒日
@@ -201,7 +202,7 @@ public class TechPersonalRankingDetailActivity extends BaseActivity {
                 }
                 timeFilterToday.setVisibility(View.VISIBLE);
 
-                if (mFirstWeekMillisecond == DateUtil.stringDateToLong(DateUtil.getMondayOfWeek())) {
+                if (mFirstWeekMillisecond == DateUtil.stringDateToLong(DateUtil.getFirstDayOfWeek(new Date(), "yyyy-MM-dd"))) {
                     timeToday.setText("本周");
                     timeToday.setVisibility(View.VISIBLE);
                     timeFilterBefore.setText("上周");
@@ -338,14 +339,14 @@ public class TechPersonalRankingDetailActivity extends BaseActivity {
                 mEndDate = mStartDate;
                 break;
             case 1:
-                mFirstWeekMillisecond = DateUtil.stringDateToLong(DateUtil.getMondayOfWeek());
+                mFirstWeekMillisecond = DateUtil.stringDateToLong(DateUtil.getFirstDayOfWeek(new Date(), "yyyy-MM-dd"));
                 timeToday.setText("本周");
                 timeToday.setVisibility(View.VISIBLE);
-                timeFilterToday.setText(String.format("%s-%s", DateUtil.getMondayOfWeek(FORMAT_MONTH), DateUtil.getCurrentDate(mCurrentMillisecond, FORMAT_MONTH)));
+                timeFilterToday.setText(String.format("%s-%s", DateUtil.getFirstDayOfWeek(new Date(), "MM月dd日"), DateUtil.getLastDayOfWeek(new Date(), "MM月dd日")));
                 timeFilterBefore.setText("上周");
                 timeFilterNext.setVisibility(View.INVISIBLE);
-                mStartDate = DateUtil.getMondayOfWeek(FORMAT_YEAR);
-                mEndDate = DateUtil.getCurrentDate(mCurrentMillisecond, FORMAT_YEAR);
+                mStartDate = DateUtil.getFirstDayOfWeek(new Date(), FORMAT_YEAR);
+                mEndDate = DateUtil.getLastDayOfWeek(new Date(), FORMAT_YEAR);
                 break;
             case 2:
                 mFirstMonthMillisecond = DateUtil.stringDateToLong(DateUtil.getFirstDayOfMonth());

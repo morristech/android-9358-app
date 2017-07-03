@@ -18,6 +18,7 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class TechPersonalRankingDetailFragment extends BaseListFragment<TechRank
                 break;
         }
 
-        mStartDate = DateUtil.getMondayOfWeek(TechPersonalRankingDetailActivity.FORMAT_YEAR);
+        mStartDate = DateUtil.getFirstDayOfWeek(new Date(),TechPersonalRankingDetailActivity.FORMAT_YEAR);
         mEndDate = DateUtil.getCurrentDate(System.currentTimeMillis(), TechPersonalRankingDetailActivity.FORMAT_YEAR);
     }
 

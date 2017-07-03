@@ -21,13 +21,10 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.PosterBean;
 import com.xmd.technician.common.DateUtil;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.model.LoginTechnician;
-import com.xmd.technician.msgctrl.MsgDef;
-import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.ClearableEditText;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.TechPosterDialog;
@@ -246,12 +243,21 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                 break;
             case R.id.iv_poster_primary_title:
                 primaryTitleIsSelected = changeViewState(ivPosterPrimaryTitle);
+                if(primaryTitleIsSelected && Utils.isEmpty(editPosterPrimaryTitle.getText().toString())){
+                    editPosterPrimaryTitle.setText(ResourceUtils.getString(R.string.tech_poster_primary_title_default));
+                }
                 break;
             case R.id.iv_poster_minor_title:
                 minorTitleIsSelected = changeViewState(ivPosterMinorTitle);
+                if(minorTitleIsSelected && Utils.isEmpty(editPosterMinorTitle.getText().toString())){
+                    editPosterMinorTitle.setText(ResourceUtils.getString(R.string.tech_poster_minor_title_default));
+                }
                 break;
             case R.id.iv_poster_tech_name:
                 nickNameIsSelected = changeViewState(ivPosterTechName);
+                if(nickNameIsSelected && Utils.isEmpty(editPosterTechName.getText().toString())){
+                    editPosterTechName.setText(LoginTechnician.getInstance().getNickName());
+                }
                 break;
             case R.id.iv_poster_tech_number:
                 techNumberIsSelected = changeViewState(ivPosterTechNumber);

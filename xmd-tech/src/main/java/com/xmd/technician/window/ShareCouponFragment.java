@@ -114,8 +114,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     LinearLayout mShareView;
     @Bind(R.id.ll_share_tech_card)
     LinearLayout mShareTechCard;
-    @Bind(R.id.img_tech_head)
-    ImageView mImgTechHead;
+
     @Bind(R.id.user_name)
     TextView mUserName;
 //    @Bind(R.id.btn_share_user_card)
@@ -172,7 +171,6 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
     private void handleTechCurrentResult(TechInfoResult techCurrentResult) {
         if (techCurrentResult.respData != null) {
-            Glide.with(getActivity()).load(techCurrentResult.respData.imageUrl).into(mImgTechHead);
             String userInfo;
             if (Utils.isNotEmpty(techCurrentResult.respData.serialNo)) {
                 userInfo = techCurrentResult.respData.userName + "[" + techCurrentResult.respData.serialNo + "]";

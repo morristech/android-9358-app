@@ -20,13 +20,11 @@
         android:orientation="horizontal"
         android:padding="@dimen/inter_space">
 
-        <com.xmd.technician.widget.RoundImageView
+        <ImageView
             android:id="@+id/img_tech_head"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/img_default_square"
-            app:borderRadius="@dimen/search_margin"
-            app:type="round"
+            android:src="@drawable/ic_poster"
             />
 
         <LinearLayout

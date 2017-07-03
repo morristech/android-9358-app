@@ -61,24 +61,34 @@ public class DateUtil {
         return format.format(new Date());
     }
 
-    /**
-     * Monday
-     *
-     * @return
-     */
-    public static String getMondayOfWeek() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK, 2);
-        SimpleDateFormat format = new SimpleDateFormat(FORMAT);
-        return format.format(cal.getTime());
-    }
-
-    public static String getMondayOfWeek(String formatString) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK, 2);
-        SimpleDateFormat format = new SimpleDateFormat(formatString);
-        return format.format(cal.getTime());
-    }
+//    /**
+//     * Monday
+//     *
+//     * @return
+//     */
+//    public static String getMondayOfWeek() {
+//        Calendar cal = Calendar.getInstance();
+//       // cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+//        cal.setFirstDayOfWeek(Calendar.MONDAY);
+//        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);
+//        if (1 == dayWeek) {
+//            cal.add(Calendar.DAY_OF_MONTH, -1);
+//        }
+//        SimpleDateFormat format = new SimpleDateFormat(FORMAT);
+//        return format.format(cal.getTime());
+//    }
+//
+//    public static String getMondayOfWeek(String formatString) {
+//        Calendar cal = Calendar.getInstance();
+//        //cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+//        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);
+//        if (1 == dayWeek) {
+//            cal.add(Calendar.DAY_OF_MONTH, -1);
+//        }
+//        cal.setFirstDayOfWeek(Calendar.MONDAY);
+//        SimpleDateFormat format = new SimpleDateFormat(formatString);
+//        return format.format(cal.getTime());
+//    }
 
     /**
      * @return

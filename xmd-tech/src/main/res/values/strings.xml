@@ -621,8 +621,8 @@
     <string name="tech_poster_edit_step_one">步骤一：</string>
     <string name="tech_poster_edit_step_two">步骤一：选择照片</string>
     <string name="tech_poster_edit_step_three">步骤二：填写内容</string>
-    <string name="tech_poster_edit_primary_title＿hint">标签名称，例如，欢迎语(限6字符)</string>
-    <string name="tech_poster_edit_minor_title_hint">关注9358，快来预约我吧(限12字符)</string>
+    <string name="tech_poster_edit_primary_title＿hint">标题名称(限6字符)</string>
+    <string name="tech_poster_edit_minor_title_hint">海报内容（限12字符）～</string>
     <string name="tech_poster_edit_nick_name_hint">技师昵称（限10字符）</string>
     <string name="tech_poster_edit_tech_number_hint">技师工号</string>
     <string name="tech_poster_edit_club_name_hint">会所名称</string>
