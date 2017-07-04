@@ -235,7 +235,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                     mPosterImageUrl = "";
                 }
 
-                mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true);
+                mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true,false);
                 mDialog.show();
                 mDialog.setViewDate(mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, imageUrl, mPosterImageUrl);
                 mDialog.setCanceledOnTouchOutside(true);
@@ -365,11 +365,11 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
         bitmap = view.getDrawingCache();
         Rect frame = new Rect();
         mDialog.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        int[] loacation = new int[2];
-        v.getLocationOnScreen(loacation);
+        int[] location = new int[2];
+        v.getLocationOnScreen(location);
         File picFile = new File(file, name);
         try {
-            bitmap = Bitmap.createBitmap(bitmap, loacation[0], loacation[1], view.getWidth(), view.getHeight() - Utils.dip2px(getActivity(), 50));
+            bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], view.getWidth(), view.getHeight() - Utils.dip2px(getActivity(), 45));
             FileOutputStream fout = new FileOutputStream(picFile);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
             saveImageToGallery(picFile);
@@ -401,7 +401,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
 
 
     @Override
-    public void posterSave(View view) {
+    public void posterSave(View view,View dismiss) {
 
         new RewardConfirmDialog(getActivity(), getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_poster_save_alter_message),
                 DateUtil.getCurrentDate(System.currentTimeMillis()+ONE_MONTH_DAY_MILLISECOND)), "", true) {
@@ -410,8 +410,10 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
             //tech_poster_save_alter_message
             public void onConfirmClick() {
                 super.onConfirmClick();
+
                 if (mDialog != null) {
                     mDialog.dismiss();
+                    dismiss.setVisibility(View.GONE);
                     saveImage(view);
                 }
 

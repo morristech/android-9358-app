@@ -102,6 +102,39 @@
 
         </LinearLayout>
     </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rl_poster_save_and_share"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/color_white"
+        android:gravity="center_vertical"
+        android:visibility="gone">
 
+        <TextView
+            android:id="@+id/tv_poster_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/icon_dialog_save"
+            android:drawablePadding="@dimen/small_space"
+            android:paddingLeft="20dp"
+            android:text="@string/tech_poster_save_picture"
+            android:textColor="#4d4d4d"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_share_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/icon_poster_share"
+            android:drawablePadding="@dimen/small_space"
+            android:paddingRight="20dp"
+            android:text="@string/tech_poster_share"
+            android:textColor="#FF6666"
+            android:textSize="16sp"
+            />
+
+    </RelativeLayout>
 
 </LinearLayout>

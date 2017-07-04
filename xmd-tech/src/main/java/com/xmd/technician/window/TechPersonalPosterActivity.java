@@ -1,7 +1,12 @@
 package com.xmd.technician.window;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,6 +18,7 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.PosterBean;
+import com.xmd.technician.common.DateUtil;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.DeleteTechPosterResult;
@@ -24,6 +30,9 @@ import com.xmd.technician.share.ShareController;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.TechPosterDialog;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +60,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
     private Subscription mPosterDeleterSubscription;
     private PosterBean mPosterBean;
     private TechPosterDialog mDialog;
+    private static final long ONE_MONTH_DAY_MILLISECOND = 30 * 24 * 60 * 60 * 1000l;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +160,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
                 mCurrentModel = Constant.TECH_POSTER_FLOWER_MODEL;
                 break;
         }
-        mDialog = new TechPosterDialog(this, mCurrentModel, false);
+        mDialog = new TechPosterDialog(this, mCurrentModel, true,true);
         mDialog.show();
         mDialog.setViewDate(bean.title, bean.subTitle, bean.name, bean.techNo, bean.clubName, "", bean.imageUrl);
         mDialog.setCanceledOnTouchOutside(true);
@@ -182,8 +192,22 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
     }
 
     @Override
-    public void posterSave(View view) {
+    public void posterSave(View view,View dismiss) {
+        new RewardConfirmDialog(this,ResourceUtils.getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_poster_save_alter_message),
+                DateUtil.getCurrentDate(System.currentTimeMillis()+ONE_MONTH_DAY_MILLISECOND)), "", true) {
 
+            @Override
+            //tech_poster_save_alter_message
+            public void onConfirmClick() {
+                super.onConfirmClick();
+                if (mDialog != null) {
+                    mDialog.dismiss();
+                    dismiss.setVisibility(View.GONE);
+                    saveImage(view);
+                }
+
+            }
+        }.show();
     }
 
     @Override
@@ -201,6 +225,54 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
             url = new StringBuilder(mPosterBean.shareUrl);
         }
         ShareController.doShare(mPosterBean.imageUrl, url.toString(), mPosterBean.title, mPosterBean.subTitle, Constant.SHARE_TYPE_TECH_POSTER, "");
+    }
+
+    private String saveImage(View v) {
+        Bitmap bitmap;
+        String name = "技师海报.png";
+        File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + "技师海报.png");
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        View view = mDialog.getWindow().getDecorView();
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+
+        bitmap = view.getDrawingCache();
+        Rect frame = new Rect();
+        mDialog.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int[] location = new int[2];
+        v.getLocationOnScreen(location);
+        File picFile = new File(file, name);
+        try {
+            bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], view.getWidth(), view.getHeight() - Utils.dip2px(this, 45));
+            FileOutputStream fout = new FileOutputStream(picFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
+            saveImageToGallery(picFile);
+            return file.toString();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            view.destroyDrawingCache();
+        }
+
+        return null;
+    }
+
+    public void saveImageToGallery(File file) {
+        // 其次把文件插入到系统图库
+        try {
+            MediaStore.Images.Media.insertImage(this.getContentResolver(), file.getAbsolutePath(), "code", null);
+            // 最后通知图库更新
+            this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"
+                    + file)));
+            Utils.makeShortToast(this, "保存成功，可在图库查看");
+
+        } catch (FileNotFoundException e) {
+            Utils.makeShortToast(this, "保存失败");
+            e.printStackTrace();
+        }
     }
 
 
