@@ -26,6 +26,7 @@ import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaRetrofit;
+import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
 import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
 import com.xmd.cashier.dal.net.response.StringResult;
@@ -61,6 +62,7 @@ public class ScanPayPresenter implements Presenter {
     private Subscription mGetXMDScanStatusSubscription;
     private Subscription mGetXMDOnlinePayDetailSubscription;
     private Subscription mGetXMDOnlineQrcodeUrlSubscription;
+    private Subscription mDeleteXMDOnlineOrderIdSubscription;
     private Handler mHandler;
     private Runnable mRunnable = new Runnable() {
         @Override
@@ -70,6 +72,9 @@ public class ScanPayPresenter implements Presenter {
                 handleDetail();
             } else {
                 // 尚未扫码
+                if (mGetXMDScanStatusSubscription != null) {
+                    mGetXMDScanStatusSubscription.unsubscribe();
+                }
                 mGetXMDScanStatusSubscription = SpaRetrofit.getService().getXMDOnlineScanStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -109,6 +114,9 @@ public class ScanPayPresenter implements Presenter {
 
     // 处理详情信息
     private void handleDetail() {
+        if (mGetXMDOnlinePayDetailSubscription != null) {
+            mGetXMDOnlinePayDetailSubscription.unsubscribe();
+        }
         mGetXMDOnlinePayDetailSubscription = SpaRetrofit.getService().getXMDOnlinePayDetail(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -120,6 +128,7 @@ public class ScanPayPresenter implements Presenter {
                             PosFactory.getCurrentCashier().textToSound("买单成功");
                             mTradeManager.getCurrentTrade().tradeTime = result.respData.createTime;
                             mTradeManager.getCurrentTrade().setOnlinePayPaidMoney(result.respData.payAmount);
+                            // FIXME  更新在线买单支付方式
                             UiNavigation.gotoScanPayResultActivity(mContext, result.respData);
                             mView.finishSelf();
                         } else {
@@ -181,6 +190,9 @@ public class ScanPayPresenter implements Presenter {
         if (mGetXMDOnlineQrcodeUrlSubscription != null) {
             mGetXMDOnlineQrcodeUrlSubscription.unsubscribe();
         }
+        if (mDeleteXMDOnlineOrderIdSubscription != null) {
+            mDeleteXMDOnlineOrderIdSubscription.unsubscribe();
+        }
         mQRBitmap = null;
     }
 
@@ -214,7 +226,7 @@ public class ScanPayPresenter implements Presenter {
     @Override
     public void onCancel() {
         String message;
-        Trade trade = mTradeManager.getCurrentTrade();
+        final Trade trade = mTradeManager.getCurrentTrade();
         if (trade.getVerificationSuccessfulMoney() > 0) {
             message = "选择的优惠券已经核销无法再次使用，确定退出本次交易？";
         } else {
@@ -232,16 +244,43 @@ public class ScanPayPresenter implements Presenter {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        doFinish();
+                        deleteOrderId(trade.tradeNo);
                     }
                 })
                 .create()
                 .show();
     }
 
+    // 取消交易时汇报给后台
+    private void deleteOrderId(String orderId) {
+        mView.showLoading();
+        if (mDeleteXMDOnlineOrderIdSubscription != null) {
+            mDeleteXMDOnlineOrderIdSubscription.unsubscribe();
+        }
+        mDeleteXMDOnlineOrderIdSubscription = SpaRetrofit.getService().deleteXMDOnlineOrderId(AccountManager.getInstance().getToken(), orderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new NetworkSubscriber<BaseResult>() {
+                    @Override
+                    public void onCallbackSuccess(BaseResult result) {
+                        mView.hideLoading();
+                        doFinish();
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        mView.hideLoading();
+                        mView.showToast("请求失败：" + e.getLocalizedMessage());
+                    }
+                });
+    }
+
     @Override
     public void getQrcode() {
         mView.showQrLoading();
+        if (mGetXMDOnlineQrcodeUrlSubscription != null) {
+            mGetXMDOnlineQrcodeUrlSubscription.unsubscribe();
+        }
         mGetXMDOnlineQrcodeUrlSubscription = SpaRetrofit.getService().getXMDOnlineQrcodeUrl(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo, String.valueOf(mTradeManager.getCurrentTrade().getOriginMoney()), String.valueOf(mTradeManager.getCurrentTrade().getWillDiscountMoney()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
