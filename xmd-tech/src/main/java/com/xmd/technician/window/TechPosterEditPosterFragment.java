@@ -242,8 +242,9 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                 mDialog.setPosterListener(this);
                 break;
             case R.id.iv_poster_primary_title:
-                primaryTitleIsSelected = changeViewState(ivPosterPrimaryTitle);
-                if(primaryTitleIsSelected && Utils.isEmpty(editPosterPrimaryTitle.getText().toString())){
+                primaryTitleIsSelected = true;
+                Utils.makeShortToast(getActivity(),"海报必须包含大标题，不可取消勾选");
+                if( Utils.isEmpty(editPosterPrimaryTitle.getText().toString())){
                     editPosterPrimaryTitle.setText(ResourceUtils.getString(R.string.tech_poster_primary_title_default));
                 }
                 break;
@@ -292,7 +293,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
             if (Utils.isNotEmpty(editPosterPrimaryTitle.getText().toString())) {
                 params.put(RequestConstant.KEY_POSTER_TITLE, editPosterPrimaryTitle.getText().toString());
             } else {
-                Utils.makeShortToast(getActivity(), "请输入大标题,或取消勾选");
+                Utils.makeShortToast(getActivity(), "请输入大标题");
                 return null;
             }
         } else {
