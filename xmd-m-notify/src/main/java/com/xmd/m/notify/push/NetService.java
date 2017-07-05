@@ -28,5 +28,6 @@ public interface NetService {
     @FormUrlEncoded
     @POST("/spa-manager/api/v2/push/unbind/clientid")
     Observable<BaseBean> unbindGetuiClientId(@Field("userType") String userType,
-                                             @Field("clientId") String clientId);
+                                             @Field("clientId") String clientId,
+                                             @Field("targetType") String targetType);   //对接新添加
 }
