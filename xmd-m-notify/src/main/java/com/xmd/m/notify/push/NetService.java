@@ -21,7 +21,8 @@ public interface NetService {
                                      @Field("userType") String userType,
                                      @Field("appType") String appType,
                                      @Field("clientId") String clientId,
-                                     @Field("secret") String secret);
+                                     @Field("secret") String secret,
+                                     @Field("targetType") String targetType);   // 对接新添加
 
     //解绑
     @FormUrlEncoded
