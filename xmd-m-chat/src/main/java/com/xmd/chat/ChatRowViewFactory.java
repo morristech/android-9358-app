@@ -6,8 +6,10 @@ import android.view.ViewGroup;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
+import com.xmd.chat.viewmodel.ChatRowViewModelImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelText;
 
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_IMAGE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TEXT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER_REQUEST;
@@ -25,6 +27,9 @@ public class ChatRowViewFactory {
             case ChatMessage.MSG_TYPE_ORIGIN_TXT:
                 baseType = CHAT_ROW_VIEW_TEXT;
                 break;
+            case ChatMessage.MSG_TYPE_ORIGIN_IMAGE:
+                baseType = CHAT_ROW_VIEW_IMAGE;
+                break;
             case ChatMessage.MSG_TYPE_ORDER_START:
             case ChatMessage.MSG_TYPE_ORDER_REFUSE:
             case ChatMessage.MSG_TYPE_ORDER_CONFIRM:
@@ -37,6 +42,7 @@ public class ChatRowViewFactory {
                 break;
             default:
                 baseType = CHAT_ROW_VIEW_TEXT;
+                break;
         }
 
         return chatMessage.getEmMessage().direct() == EMMessage.Direct.RECEIVE ? receiveType(baseType) : sendType(baseType);
@@ -57,6 +63,8 @@ public class ChatRowViewFactory {
     public static View createView(ViewGroup parent, int viewType) {
         int baseType = viewType & ~(0x1 << 31);
         switch (baseType) {
+            case CHAT_ROW_VIEW_IMAGE:
+                return ChatRowViewModelImage.createView(parent);
             default:
                 return ChatRowViewModelText.createView(parent);
         }
@@ -66,6 +74,8 @@ public class ChatRowViewFactory {
         switch (message.getMsgType()) {
             case ChatMessage.MSG_TYPE_ORIGIN_TXT:
                 return new ChatRowViewModelText(message);
+            case ChatMessage.MSG_TYPE_ORIGIN_IMAGE:
+                return new ChatRowViewModelImage(message);
             default:
                 return new ChatRowViewModelText(message);
         }

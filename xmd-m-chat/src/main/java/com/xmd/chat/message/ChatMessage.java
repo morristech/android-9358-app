@@ -226,6 +226,10 @@ public class ChatMessage {
         return getTag() != null && getTag().contains(MSG_TAG_CUSTOMER_SERVICE);
     }
 
+    public boolean isReceivedMessage() {
+        return emMessage.direct().equals(EMMessage.Direct.RECEIVE);
+    }
+
     public String getRemoteChatId() {
         if (getEmMessage().direct() == EMMessage.Direct.RECEIVE) {
             return getFromChatId();
