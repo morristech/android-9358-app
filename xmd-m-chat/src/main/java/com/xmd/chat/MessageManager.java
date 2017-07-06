@@ -100,6 +100,12 @@ public class MessageManager {
         return sendMessage(chatMessage);
     }
 
+    public ChatMessage sendLocationMessage(String remoteChatId, double latitude, double longitude, String address) {
+        EMMessage emMessage = EMMessage.createLocationSendMessage(latitude, longitude, address, remoteChatId);
+        ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
+        return sendMessage(chatMessage);
+    }
+
     public ChatMessage sendMessage(ChatMessage chatMessage) {
         User user = AccountManager.getInstance().getUser();
         if (user == null) {

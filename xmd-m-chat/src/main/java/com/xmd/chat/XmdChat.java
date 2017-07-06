@@ -6,10 +6,17 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
+import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.chat.beans.Location;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
+
+import rx.Observable;
 
 /**
  * Created by mo on 17-6-21.
@@ -30,6 +37,7 @@ public class XmdChat {
 
     private Context context;
     private MenuFactory menuFactory;
+    private Location location;
 
     public void init(Context context, boolean debug) {
         XLogger.i("---------聊天系统初始化---------------");
@@ -74,5 +82,27 @@ public class XmdChat {
 
     public void setMenuFactory(MenuFactory menuFactory) {
         this.menuFactory = menuFactory;
+    }
+
+    public void getClubLocation(final Callback<Location> callback) {
+        if (location != null) {
+            callback.onResponse(location, null);
+            return;
+        }
+        Observable<BaseBean<Location>> observable = XmdNetwork.getInstance()
+                .getService(NetService.class)
+                .getClubLocation();
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<Location>>() {
+            @Override
+            public void onCallbackSuccess(BaseBean<Location> result) {
+                location = result.getRespData();
+                callback.onResponse(location, null);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onResponse(null, e);
+            }
+        });
     }
 }

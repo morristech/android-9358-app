@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.view.View;
 
+import com.shidou.commonlibrary.Callback;
 import com.xmd.app.user.User;
+import com.xmd.chat.beans.Location;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.view.ChatActivity;
 import com.xmd.chat.view.SubmenuEmojiFragment;
@@ -29,6 +31,7 @@ public class MenuFactory {
 
         menus.add(createPictureMenu(activity, remoteUser));
         menus.add(createEmojiMenu(editable));
+        menus.add(createLocationMenu(activity, remoteUser));
 
         return menus;
     }
@@ -39,7 +42,7 @@ public class MenuFactory {
 
     //创建图片菜单
     public ChatMenu createPictureMenu(final ChatActivity activity, final User remoteUser) {
-        return new ChatMenu(R.drawable.chat_image_icon_bg, new View.OnClickListener() {
+        return new ChatMenu(R.drawable.chat_menu_image, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imageTool.onlyPick(true).start(activity, new ImageTool.ResultListener() {
@@ -60,6 +63,25 @@ public class MenuFactory {
         SubmenuEmojiFragment submenuEmojiFragment = new SubmenuEmojiFragment();
         submenuEmojiFragment.setOutputView(editable);
         emojiFragmentList.add(submenuEmojiFragment);
-        return new ChatMenu(R.drawable.chat_expression_icon_bg, null, emojiFragmentList);
+        return new ChatMenu(R.drawable.chat_menu_emoji, null, emojiFragmentList);
+    }
+
+    //创建位置菜单
+    public ChatMenu createLocationMenu(final ChatActivity activity, final User remoteUser) {
+        return new ChatMenu(R.drawable.chat_menu_location, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                XmdChat.getInstance().getClubLocation(new Callback<Location>() {
+                    @Override
+                    public void onResponse(Location result, Throwable error) {
+                        if (result != null) {
+                            ChatMessage chatMessage = MessageManager.getInstance()
+                                    .sendLocationMessage(remoteUser.getChatId(), result.latitude, result.longitude, result.street);
+                            activity.addNewChatMessageToUi(chatMessage);
+                        }
+                    }
+                });
+            }
+        }, null);
     }
 }

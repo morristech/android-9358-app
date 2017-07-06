@@ -1,0 +1,71 @@
+package com.xmd.chat.viewmodel;
+
+import android.databinding.BindingAdapter;
+import android.databinding.DataBindingUtil;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+
+import com.hyphenate.chat.EMLocationMessageBody;
+import com.xmd.chat.R;
+import com.xmd.chat.databinding.ChatRowLocationBinding;
+import com.xmd.chat.message.ChatMessage;
+
+import java.util.Locale;
+
+
+/**
+ * Created by mo on 17-7-1.
+ * 位置消息
+ */
+
+public class ChatRowViewModelLocation extends ChatRowViewModel {
+
+    public ChatRowViewModelLocation(ChatMessage chatMessage) {
+        super(chatMessage);
+    }
+
+    public static View createView(ViewGroup parent) {
+        ChatRowLocationBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.chat_row_location, parent, false);
+        WebSettings webSettings = binding.webView.getSettings();
+        webSettings.setSupportZoom(false);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setLoadWithOverviewMode(true);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onBindView(View view) {
+        ChatRowLocationBinding binding = DataBindingUtil.getBinding(view);
+        binding.setData(this);
+    }
+
+    @Override
+    public void onUnbindView() {
+
+    }
+
+    public String getAddress() {
+        return ((EMLocationMessageBody) chatMessage.getEmMessage().getBody()).getAddress();
+    }
+
+    @BindingAdapter("map")
+    public static void bindMap(WebView webView, ChatRowViewModelLocation data) {
+        EMLocationMessageBody body = (EMLocationMessageBody) data.getChatMessage().getEmMessage().getBody();
+        String url = "http://api.map.baidu.com/staticimage/v2?" +
+                "ak=WEwL0OXp5wo3YYNtxWAMUcTREgbSHhym" +
+                "&mcode=E6:35:E7:D6:3A:59:63:6E:9D:73:AA:20:E8:9C:A5:4C:72:84:D4:5A;com.baidu.navi.shelldemo" +
+                "&center=%f,%f&markers=%f,%f&markerStyles=l,A,0xff6666&width=%d&height=%d" +
+                "&zoom=15&copyright=1&dpiType=ph";
+        double latitude = body.getLatitude();
+        double longitude = body.getLongitude();
+        String accessUrl = String.format(Locale.getDefault(), url,
+                longitude, latitude,
+                longitude, latitude,
+                512, 256);
+        webView.loadUrl(accessUrl);
+    }
+}

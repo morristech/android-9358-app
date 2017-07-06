@@ -64,11 +64,6 @@ public abstract class ChatRowViewModel {
         });
     }
 
-    //是否为接收信息
-    public boolean isReceived() {
-        return chatMessage.getEmMessage().direct().equals(EMMessage.Direct.RECEIVE);
-    }
-
     public long getTime() {
         return chatMessage.getEmMessage().getMsgTime();
     }

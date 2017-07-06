@@ -35,7 +35,6 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
 
     public ChatRowViewModelImage(ChatMessage chatMessage) {
         super(chatMessage);
-
     }
 
     public static View createView(ViewGroup parent) {
@@ -58,6 +57,7 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
         if (loading.get()) {
             return;
         }
+        EMImageMessageBody body = (EMImageMessageBody) chatMessage.getEmMessage().getBody();
         ImageView imageView = new ImageView(v.getContext());
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         AlertDialog dialog = new AlertDialog
@@ -70,9 +70,10 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
         lp.height = ScreenUtils.getScreenHeight();
         lp.flags |= WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
         dialog.getWindow().setAttributes(lp);
+        dialog.setCanceledOnTouchOutside(true);
         imageView.getLayoutParams().width = lp.width;
         imageView.getLayoutParams().height = lp.height;
-        EMImageMessageBody body = (EMImageMessageBody) chatMessage.getEmMessage().getBody();
+
         if (new File(body.getLocalUrl()).exists()) {
             Glide.with(v.getContext()).load(body.getLocalUrl()).into(imageView);
         } else {
@@ -92,7 +93,7 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
         if (w > h && w > maxWidth) {
             h = w * h / maxWidth;
             w = maxWidth;
-        } else if (h > w && h > ScreenUtils.getScreenHeight() / 2) {
+        } else if (h > w && h > maxHeight) {
             w = w * h / maxHeight;
             h = maxHeight;
         }
