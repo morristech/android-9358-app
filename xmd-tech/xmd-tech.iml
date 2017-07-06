@@ -149,7 +149,6 @@
     <orderEntry type="library" exported="" name="support-core-utils-25.3.0" level="project" />
     <orderEntry type="library" exported="" name="support-fragment-25.3.0" level="project" />
     <orderEntry type="library" exported="" name="shidou-updater-1.7-" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="expandableTextView-0.1.4" level="project" />
     <orderEntry type="library" exported="" name="analytics-6.1.1" level="project" />
     <orderEntry type="library" exported="" name="okio-1.13.0" level="project" />
@@ -193,11 +192,5 @@
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" name="hyphenatechat_3.3.0" level="project" />
-    <orderEntry type="module" module-name="xmd-m-network" exported="" />
-    <orderEntry type="module" module-name="xmd-m-appointment" exported="" />
-    <orderEntry type="module" module-name="xmd-m-chat" exported="" />
-    <orderEntry type="module" module-name="commonlibrary" exported="" />
-    <orderEntry type="module" module-name="xmd-m-notify" exported="" />
-    <orderEntry type="module" module-name="xmd-app" exported="" />
   </component>
 </module>
