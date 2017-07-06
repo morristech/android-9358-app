@@ -146,3 +146,13 @@
 
 -dontwarn org.greenrobot.**
 -keep class org.greenrobot.** {*;}
+
+# Getui
+-dontwarn com.igexin.**
+-dontwarn android.support.**
+-keep class com.igexin.**{*;}
+-keep class android.support.v4.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep interface android.support.annotation.** { *;}
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }

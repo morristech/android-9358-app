@@ -107,7 +107,9 @@ public class CustomService extends Service {
                     e.printStackTrace();
                     break;
                 }
-                NotifyManager.getInstance().refreshOnlinePayNotify();
+                if (SPManager.getInstance().getFastPayPushTag() > 0) {
+                    NotifyManager.getInstance().refreshOnlinePayNotify();
+                }
             }
         }
     }
@@ -122,7 +124,9 @@ public class CustomService extends Service {
                     e.printStackTrace();
                     break;
                 }
-                NotifyManager.getInstance().refreshOrderRecordNotify();
+                if (SPManager.getInstance().getOrderPushTag() > 0) {
+                    NotifyManager.getInstance().refreshOrderRecordNotify();
+                }
             }
         }
     }
@@ -363,6 +367,7 @@ public class CustomService extends Service {
                             public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单成功", Toast.LENGTH_SHORT).show();
+                                SPManager.getInstance().updateOrderPushTag();
                                 info.status = AppConstants.ORDER_RECORD_STATUS_ACCEPT;
                                 info.receiverName = AccountManager.getInstance().getUser().userName;
                                 if (SPManager.getInstance().getOrderAcceptSwitch()) {
@@ -379,6 +384,7 @@ public class CustomService extends Service {
                             public void onCallbackError(Throwable e) {
                                 e.printStackTrace();
                                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                                    SPManager.getInstance().updateOrderPushTag();
                                     String tempStr = e.getLocalizedMessage();
                                     if (tempStr.contains("处理")) {
                                         tempStr = "订单已被处理，详情请查看付费预约列表";
@@ -403,6 +409,7 @@ public class CustomService extends Service {
                             public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝成功", Toast.LENGTH_SHORT).show();
+                                SPManager.getInstance().updateOrderPushTag();
                                 info.status = AppConstants.ORDER_RECORD_STATUS_REJECT;
                                 if (SPManager.getInstance().getOrderRejectSwitch()) {
                                     posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD, info);
@@ -418,6 +425,7 @@ public class CustomService extends Service {
                             public void onCallbackError(Throwable e) {
                                 e.printStackTrace();
                                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                                    SPManager.getInstance().updateOrderPushTag();
                                     // status=400
                                     String tempStr = e.getLocalizedMessage();
                                     if (tempStr.contains("处理")) {
@@ -476,6 +484,7 @@ public class CustomService extends Service {
                             public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认成功", Toast.LENGTH_SHORT).show();
+                                SPManager.getInstance().updateFastPayPushTag();
                                 info.status = AppConstants.ONLINE_PAY_STATUS_PASS;
                                 info.operatorName = AccountManager.getInstance().getUser().userName;
                                 if (SPManager.getInstance().getOnlinePassSwitch()) {
@@ -492,6 +501,7 @@ public class CustomService extends Service {
                             public void onCallbackError(Throwable e) {
                                 e.printStackTrace();
                                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                                    SPManager.getInstance().updateFastPayPushTag();
                                     // status = 400
                                     String tempStr = e.getLocalizedMessage();
                                     if (tempStr.contains("处理")) {
@@ -517,6 +527,7 @@ public class CustomService extends Service {
                             public void onCallbackSuccess(BaseResult result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "已通知请到前台", Toast.LENGTH_SHORT).show();
+                                SPManager.getInstance().updateFastPayPushTag();
                                 info.status = AppConstants.ONLINE_PAY_STATUS_UNPASS;
                                 info.operatorName = AccountManager.getInstance().getUser().userName;
                                 if (SPManager.getInstance().getOnlineUnpassSwitch()) {
@@ -533,6 +544,7 @@ public class CustomService extends Service {
                             public void onCallbackError(Throwable e) {
                                 e.printStackTrace();
                                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                                    SPManager.getInstance().updateFastPayPushTag();
                                     // status = 400
                                     String tempStr = e.getLocalizedMessage();
                                     if (tempStr.contains("处理")) {

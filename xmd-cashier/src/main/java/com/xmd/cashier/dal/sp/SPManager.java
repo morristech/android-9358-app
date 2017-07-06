@@ -88,4 +88,34 @@ public class SPManager {
     public void setOnlinePaySwitch(boolean status) {
         mSharedPreferences.edit().putBoolean(SPConstants.ONLINE_PAY_PRINT_SWITCH, status).apply();
     }
+
+    public int getFastPayPushTag() {
+        return mSharedPreferences.getInt(SPConstants.FASTPAY_PUSH_TAG, 0);
+    }
+
+    public void setFastPayPushTag(int count) {
+        mSharedPreferences.edit().putInt(SPConstants.FASTPAY_PUSH_TAG, count).apply();
+    }
+
+    public void updateFastPayPushTag() {
+        int count = getFastPayPushTag();
+        if (count > 0) {
+            setFastPayPushTag(count - 1);
+        }
+    }
+
+    public int getOrderPushTag() {
+        return mSharedPreferences.getInt(SPConstants.ORDER_PUSH_TAG, 0);
+    }
+
+    public void setOrderPushTag(int count) {
+        mSharedPreferences.edit().putInt(SPConstants.ORDER_PUSH_TAG, count).apply();
+    }
+
+    public void updateOrderPushTag() {
+        int count = getOrderPushTag();
+        if (count > 0) {
+            setOrderPushTag(count - 1);
+        }
+    }
 }

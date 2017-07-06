@@ -201,6 +201,7 @@ public class RequestConstant {
     public static final String KEY_TOTAL = "total";
     public static final String KEY_DISCOUNT = "discount";
     public static final String KEY_COUNT = "count";
+    public static final String KEY_BUSINESS_TYPE = "businessType";
 
     /*********************************************************************************************/
     /*                                        configs                                            */

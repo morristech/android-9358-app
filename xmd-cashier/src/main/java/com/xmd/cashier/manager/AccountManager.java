@@ -3,6 +3,8 @@ package com.xmd.cashier.manager;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
@@ -12,6 +14,8 @@ import com.xmd.cashier.dal.net.SpaRetrofit;
 import com.xmd.cashier.dal.net.response.ClubResult;
 import com.xmd.cashier.dal.net.response.LoginResult;
 import com.xmd.cashier.dal.net.response.LogoutResult;
+
+import org.greenrobot.eventbus.EventBus;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -104,6 +108,12 @@ public class AccountManager {
                             public void onSuccess(ClubResult o) {
                                 setClubInfo(o);
                                 callback.onSuccess(loginResult);
+
+                                // 绑定推送
+                                EventBus.getDefault().removeStickyEvent(EventLogin.class);
+                                EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), AccountManager.getInstance().getUserId()));
+                                NotifyManager.getInstance().startGetFastPayCountAsync();
+                                NotifyManager.getInstance().startGetOrderCountAsync();
                             }
 
                             @Override
@@ -138,6 +148,11 @@ public class AccountManager {
     }
 
     public Subscription logout(final Callback<LogoutResult> callback) {
+        // 解绑推送
+        NotifyManager.getInstance().stopGetFastPayCountAsync();
+        NotifyManager.getInstance().stopGetOrderCountAsync();
+        EventBus.getDefault().removeStickyEvent(EventLogin.class);
+        EventBus.getDefault().postSticky(new EventLogout(AccountManager.getInstance().getToken(), AccountManager.getInstance().getUserId()));
         Subscription subscription = SpaRetrofit.getService().logout(getToken(), AppConstants.SESSION_TYPE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -3,6 +3,7 @@ package com.xmd.cashier.manager;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.cashier.IPos;
@@ -12,10 +13,13 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.net.NetworkSubscriber;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaRetrofit;
 import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
+import com.xmd.cashier.dal.sp.SPManager;
+import com.xmd.cashier.exceptions.ServerException;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -169,6 +173,7 @@ public class NotifyManager {
                     public void onCallbackSuccess(OrderRecordListResult result) {
                         // 成功:判断列表,显示通知
                         if (result != null && result.respData != null && result.respData.size() > 0) {
+                            SPManager.getInstance().setOrderPushTag(result.respData.size());
                             for (OrderRecordInfo info : result.respData) {
                                 info.tempNo = result.respData.indexOf(info) + 1;
                             }
@@ -177,6 +182,8 @@ public class NotifyManager {
                             intent.putExtra(AppConstants.EXTRA_NOTIFY_TYPE, AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD);
                             intent.putExtra(AppConstants.EXTRA_NOTIFY_DATA, (Serializable) result.respData);
                             MainApplication.getInstance().getApplicationContext().sendBroadcast(intent);
+                        } else {
+                            SPManager.getInstance().setOrderPushTag(0);
                         }
                     }
 
@@ -197,6 +204,7 @@ public class NotifyManager {
                     public void onCallbackSuccess(OnlinePayListResult result) {
                         //成功:判断列表,显示通知
                         if (result != null && result.respData != null && result.respData.size() > 0) {
+                            SPManager.getInstance().setFastPayPushTag(result.respData.size());
                             for (OnlinePayInfo info : result.respData) {
                                 info.tempNo = result.respData.indexOf(info) + 1;
                             }
@@ -205,6 +213,8 @@ public class NotifyManager {
                             intent.putExtra(AppConstants.EXTRA_NOTIFY_TYPE, AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY);
                             intent.putExtra(AppConstants.EXTRA_NOTIFY_DATA, (Serializable) result.respData);
                             MainApplication.getInstance().getApplicationContext().sendBroadcast(intent);
+                        } else {
+                            SPManager.getInstance().setFastPayPushTag(0);
                         }
                     }
 
@@ -322,5 +332,124 @@ public class NotifyManager {
         mPos.printBitmap(TradeManager.getInstance().getClubQRCodeSync());
         mPos.printCenter("--- 微信扫码，选技师，享优惠 ---");
         mPos.printEnd();
+    }
+
+
+    /***************************买单****************************/
+    private boolean resultFastPay;
+    private RetryPool.RetryRunnable mRetryGetFastPayCount;
+    private final Object mRetryGetFastPayCountLocker = new Object();
+
+    public void startGetFastPayCountAsync() {
+        stopGetFastPayCountAsync();
+        synchronized (mRetryGetFastPayCountLocker) {
+            mRetryGetFastPayCount = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
+                @Override
+                public boolean run() {
+                    return getFastPayCount();
+                }
+            });
+            RetryPool.getInstance().postWork(mRetryGetFastPayCount);
+        }
+    }
+
+    public void stopGetFastPayCountAsync() {
+        synchronized (mRetryGetFastPayCountLocker) {
+            if (mRetryGetFastPayCount != null) {
+                RetryPool.getInstance().removeWork(mRetryGetFastPayCount);
+                mRetryGetFastPayCount = null;
+            }
+        }
+    }
+
+    private boolean getFastPayCount() {
+        XLogger.e("getFastPayCount request");
+        SpaRetrofit.getService().getOnlinePayList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), AppConstants.APP_REQUEST_YES, null, AppConstants.ONLINE_PAY_STATUS_PAID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new NetworkSubscriber<OnlinePayListResult>() {
+                    @Override
+                    public void onCallbackSuccess(OnlinePayListResult result) {
+                        XLogger.e("getFastPayCount success");
+                        //成功:判断列表,显示通知
+                        if (result != null && result.respData != null && result.respData.size() > 0) {
+                            SPManager.getInstance().setFastPayPushTag(result.respData.size());
+                        } else {
+                            SPManager.getInstance().setFastPayPushTag(0);
+                        }
+                        resultFastPay = true;
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        XLogger.e("getFastPayCount error");
+                        if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
+                            // token过期
+                            resultFastPay = true;
+                        } else {
+                            resultFastPay = false;
+                        }
+                    }
+                });
+        return resultFastPay;
+    }
+
+    /***************************订单****************************/
+    private boolean resultOrder;
+    private RetryPool.RetryRunnable mRetryGetOrderCount;
+    private final Object mRetryGetOrderCountLocker = new Object();
+
+    public void startGetOrderCountAsync() {
+        stopGetOrderCountAsync();
+        synchronized (mRetryGetOrderCountLocker) {
+            mRetryGetOrderCount = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
+                @Override
+                public boolean run() {
+                    return getOrderCount();
+                }
+            });
+            RetryPool.getInstance().postWork(mRetryGetOrderCount);
+        }
+    }
+
+    public void stopGetOrderCountAsync() {
+        synchronized (mRetryGetOrderCountLocker) {
+            if (mRetryGetOrderCount != null) {
+                RetryPool.getInstance().removeWork(mRetryGetOrderCount);
+                mRetryGetOrderCount = null;
+            }
+        }
+    }
+
+    private boolean getOrderCount() {
+        XLogger.e("getOrderCount request");
+        SpaRetrofit.getService().getOrderRecordList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new NetworkSubscriber<OrderRecordListResult>() {
+                    @Override
+                    public void onCallbackSuccess(OrderRecordListResult result) {
+                        XLogger.e("getOrderCount success");
+                        // 成功:判断列表,显示通知
+                        if (result != null && result.respData != null && result.respData.size() > 0) {
+                            SPManager.getInstance().setOrderPushTag(result.respData.size());
+                        } else {
+                            SPManager.getInstance().setOrderPushTag(0);
+                        }
+                        resultOrder = true;
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        XLogger.e("getOrderCount error");
+                        if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
+                            // token过期
+                            resultOrder = true;
+                        } else {
+                            resultOrder = false;
+                        }
+                    }
+                });
+        return resultOrder;
     }
 }

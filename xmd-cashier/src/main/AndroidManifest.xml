@@ -129,6 +129,10 @@
         <activity
             android:name=".activity.SettingActivity"
             android:launchMode="singleTask" />
+
+        <meta-data
+            android:name="GETUI_MASTER_SECRET"
+            android:value="${GETUI_MASTER_SECRET}" />
     </application>
 
 </manifest>

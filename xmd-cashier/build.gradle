@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         applicationId "com.xmd.cashier"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 25
         versionCode 12
         versionName "1.2.1"
@@ -32,6 +32,10 @@ android {
         buildConfigField "String", "SERVER_SDCM105", SERVER_SDCM105
         buildConfigField "String", "SERVER_SDCM210", SERVER_SDCM210
         buildConfigField "String", "SERVER_PUBLIC", SERVER_PUBLIC
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
     }
 
     signingConfigs {
@@ -48,6 +52,14 @@ android {
             buildConfigField "String", "SERVER_HOST", SERVER_SDCM100
             buildConfigField "String", "UPDATE_SERVER_HOST", "\"192.168.1.100:9883\""
             buildConfigField "String", "ONLINE_PAY_HOST", "\"test.xiaomodo.com\""
+
+            manifestPlaceholders = [
+                    GETUI_APP_ID        : "2EGme0wegq6E8tRnNs0GhA",
+                    GETUI_APP_KEY       : "wZgR2bW8Rv9ew0t8Fg4Hq9",
+                    GETUI_APP_SECRET    : "DQJiiS6cWT9wVuaSYOSKzA",
+                    GETUI_MASTER_SECRET : "seP9EYGdeu8jdegWDCXVt"
+            ]
+
         }
         release {
             minifyEnabled true
@@ -57,6 +69,14 @@ android {
             buildConfigField "String", "SERVER_HOST", SERVER_PUBLIC
             buildConfigField "String", "UPDATE_SERVER_HOST", "\"service.xiaomodo.com\""
             buildConfigField "String", "ONLINE_PAY_HOST", SERVER_PUBLIC
+
+            manifestPlaceholders = [
+                    GETUI_APP_ID        : "RLrQetj8Aa6HitucKiOVy5",
+                    GETUI_APP_KEY       : "7vro2q7NREAzOeco4BG4X3",
+                    GETUI_APP_SECRET    : "AqdqH9i61F6Yu5PkNUEQT1",
+                    GETUI_MASTER_SECRET : "czE4FjhBCI9eyUMNnAKEE"
+            ]
+
         }
     }
 
@@ -80,22 +100,13 @@ android {
     productFlavors.all {
         flavor -> flavor.manifestPlaceholders = [umengChannelName: name]
     }
-
-//    applicationVariants.all { variant ->
-//        variant.outputs.each { output ->
-//            def outputFile = output.outputFile
-//            if (outputFile != null && outputFile.name.endsWith("release.apk")) {
-//                def alias = "9358-cashier-${variant.productFlavors[0].name}-${defaultConfig.versionName}-${releaseTime()}.apk"
-//                output.outputFile = new File(outputFile.parent, alias)
-//            }
-//        }
-//    }
 }
 
 dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':commonlibrary')
     compile project(':xmd-m-network')
+    compile project(':xmd-m-notify')
     compile(name: 'shidou-updater-1.3', ext: 'aar')
     compile(name: 'shidou-zxinglibrary-1.0', ext: 'aar')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
@@ -118,10 +129,8 @@ dependencies {
     weiposCompile files('libs/WeiposSDKII-bin-2.0.jar')
     huiposCompile files('libs/huipos_cashbox_minisdk.jar')
     huiposCompile files('libs/huipos_print.jar')
-    //memory leak test
-    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    //    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+
+    compile 'com.getui:sdk:2.10.2.0'
 }
 
 def releaseTime() {
