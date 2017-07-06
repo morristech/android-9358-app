@@ -162,3 +162,7 @@
 
 -dontwarn com.xmd.chat.message.**
 -keep class com.xmd.chat.message.** {*;}
+
+-keep public class ** {
+    @org.greenrobot.eventbus.Subscribe public <methods>;
+}
