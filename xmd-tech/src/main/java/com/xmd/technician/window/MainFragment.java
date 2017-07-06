@@ -42,6 +42,7 @@ import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
+import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.model.ChatModel;
@@ -54,6 +55,7 @@ import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.event.EventRequestJoinClub;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ContactPermissionVisitorResult;
+import com.xmd.technician.http.gson.CustomerUserRecentListResult;
 import com.xmd.technician.http.gson.DynamicListResult;
 import com.xmd.technician.http.gson.HelloGetTemplateResult;
 import com.xmd.technician.http.gson.NearbyCusCountResult;
@@ -242,7 +244,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private List<Order> mAllTechOrderList = new ArrayList<>();
     private List<Order> mTechOrderList = new ArrayList<>();
     private List<RecentlyVisitorBean> mTechVisitor = new ArrayList<>();
-    private List<RecentlyVisitorBean> mAllTechVisitor = new ArrayList<>();
+    private List<UserRecentBean> mAllTechVisitor = new ArrayList<>();
     private List<View> visitViewList = new ArrayList<>();
     private List<DynamicDetail> mDynamicList = new ArrayList<>();
     private MainPageTechOrderListAdapter orderListAdapter;
@@ -503,25 +505,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @CheckBusinessPermission(PermissionConstants.VISITOR)
     public void initVisitor() {
         mRootView.findViewById(R.id.visitor_layout).setVisibility(View.VISIBLE);
-//        visitViewList.add(visitAvatar1);
-//        visitViewList.add(visitAvatar2);
-//        visitViewList.add(visitAvatar3);
-//        visitViewList.add(visitAvatar4);
-//        visitViewList.add(visitAvatar5);
         if (mGetRecentlyVisitorSubscription == null) {
-            mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(RecentlyVisitorResult.class).subscribe(
+            mGetRecentlyVisitorSubscription = RxBus.getInstance().toObservable(CustomerUserRecentListResult.class).subscribe(
                     this::initRecentlyViewView);
         }
     }
 
     @CheckBusinessPermission(PermissionConstants.VISITOR)
     public void loadVisitor() {
-        Map<String, String> visitParams = new HashMap<>();
-        visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
-        visitParams.put(RequestConstant.KEY_LAST_TIME, "");
-        visitParams.put(RequestConstant.KEY_PAGE_SIZE, "20");
-        visitParams.put(RequestConstant.KEY_IS_MAIN_PAGE, "Y");//Y表示首页请求最近访客
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
+//        Map<String, String> visitParams = new HashMap<>();
+//        visitParams.put(RequestConstant.KEY_CUSTOMER_TYPE, "");
+//        visitParams.put(RequestConstant.KEY_LAST_TIME, "");
+//        visitParams.put(RequestConstant.KEY_PAGE_SIZE, "20");
+//        visitParams.put(RequestConstant.KEY_IS_MAIN_PAGE, "Y");//Y表示首页请求最近访客
+//        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_RECENTLY_VISITOR, visitParams);
+//        MsgDispatcher.dispatchMessage(m);
         // 附近的人:获取会所附近客户数量(条件:技师已经加入了会所)
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT);
     }
@@ -1116,18 +1114,18 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    private void initRecentlyViewView(RecentlyVisitorResult result) {
-        if (null != result.respData && result.respData.size() > 0) {
+    private void initRecentlyViewView(CustomerUserRecentListResult result) {
+        if (null != result.respData && result.respData.userList.size() > 0) {
             layoutVisitorList.removeAllViews();
             layoutVisitorList.setVisibility(View.VISIBLE);
             mAllTechVisitor.clear();
-            for (int i = 0; i < result.respData.size(); i++) {
-                if (result.respData.get(i).emchatId != null) {
-                    mAllTechVisitor.add(result.respData.get(i));
+            for (int i = 0; i < result.respData.userList.size(); i++) {
+                if (result.respData.userList.get(i).emchatId != null) {
+                    mAllTechVisitor.add(result.respData.userList.get(i));
                 }
             }
             int count = 0;
-            for (RecentlyVisitorBean visitor : mAllTechVisitor) {
+            for (UserRecentBean visitor : mAllTechVisitor) {
                 addVisitor(visitor);
                 if (count++ == 4) {
                     break;
@@ -1138,7 +1136,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    private void addVisitor(RecentlyVisitorBean visitor) {
+    private void addVisitor(UserRecentBean visitor) {
         CircleAvatarView avatarView = new CircleAvatarView(getContext());
         layoutVisitorList.addView(avatarView);
         avatarView.getLayoutParams().width = 0;

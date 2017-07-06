@@ -64,6 +64,9 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
     }
 
     private void initViews() {
+        if(items == null){
+            return;
+        }
         for (int i = 0; i < items.length; i++) {
             String item = items[i];
             TextView textView = (TextView) inflater.inflate(R.layout.drop_down_menu_item, contentView, false);

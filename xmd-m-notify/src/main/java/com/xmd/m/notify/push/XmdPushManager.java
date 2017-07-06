@@ -98,7 +98,7 @@ public class XmdPushManager {
 
     //登出事件
     @Subscribe(sticky = true)
-    private void handleLogout(EventLogout eventLogout) {
+    public void handleLogout(EventLogout eventLogout) {
         XLogger.d(TAG, "on event logout:" + eventLogout);
         setUserId(null);
         setToken(null);
@@ -164,7 +164,7 @@ public class XmdPushManager {
         String secret = DESede.encrypt(secretBefore);
         bindCall = XmdNetwork.getInstance()
                 .getService(NetService.class)
-                .bindGetuiClientId(token, userId, userType, "android", clientId, secret);
+                .bindGetuiClientId(token, userId, userType, "android", clientId, secret, userType);
         XmdNetwork.getInstance().requestSync(bindCall, new NetworkSubscriber<BaseBean>() {
             @Override
             public void onCallbackSuccess(BaseBean result) {
@@ -195,7 +195,7 @@ public class XmdPushManager {
         }
         Observable<BaseBean> observable = XmdNetwork.getInstance()
                 .getService(NetService.class)
-                .unbindGetuiClientId(userType, clientId);
+                .unbindGetuiClientId(userType, clientId, userType);
         unBindSubscription = XmdNetwork.getInstance().request(observable, null);
         if (bound) {
             bound = false;

@@ -546,4 +546,15 @@ public interface SpaService {
                                                          @Query(RequestConstant.KEY_ORDER_ID) String orderId,
                                                          @Query(RequestConstant.KEY_TOTAL) String total,
                                                          @Query(RequestConstant.KEY_DISCOUNT) String discount);
+
+    /**
+     * 取消买单
+     * @param userToken
+     * @param orderId
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_DELETE_XMD_ONLINE_ORDER_ID)
+    Observable<BaseResult> deleteXMDOnlineOrderId(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Field(RequestConstant.KEY_ORDER_ID) String orderId);
 }

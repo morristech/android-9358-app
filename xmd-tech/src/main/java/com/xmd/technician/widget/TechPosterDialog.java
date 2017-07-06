@@ -44,22 +44,29 @@ public class TechPosterDialog extends Dialog {
     LinearLayout llPosterEditOrShare;
     @Bind(R.id.img_poster_dismiss)
     ImageView imgPosterDismiss;
+    @Bind(R.id.rl_poster_save_and_share)
+    RelativeLayout rlPosterSaveAndShare;
+    @Bind(R.id.tv_poster_save)
+    TextView tvPosterSave;
+    @Bind(R.id.tv_share_poster)
+    TextView tvSharePoster;
 
     private int style;
-    private boolean isSave;
+    private boolean isSave,isShare;
     private Context mContext;
     private PosterShareOrSaveListener posterListener;
 
-    public TechPosterDialog(Context context, int style, boolean isSave) {
+    public TechPosterDialog(Context context, int style, boolean isSave,boolean isShare) {
 
         super(context, R.style.default_dialog_style);
         this.mContext = context;
         this.style = style;
         this.isSave = isSave;
+        this.isShare = isShare;
     }
 
     public interface PosterShareOrSaveListener {
-        void posterSave(View view);
+        void posterSave(View view,View dismiss);
 
         void posterEdit();
 
@@ -155,17 +162,26 @@ public class TechPosterDialog extends Dialog {
         ButterKnife.bind(this);
         Glide.with(mContext).load(LoginTechnician.getInstance().getQrCodeUrl()).into(imgPosterQrCode);
         if (isSave) {
-            rlPosterEditOrSave.setVisibility(View.VISIBLE);
-            llPosterEditOrShare.setVisibility(View.GONE);
+            if(isShare){
+                rlPosterEditOrSave.setVisibility(View.GONE);
+                llPosterEditOrShare.setVisibility(View.GONE);
+                rlPosterSaveAndShare.setVisibility(View.VISIBLE);
+            }else{
+                rlPosterEditOrSave.setVisibility(View.VISIBLE);
+                llPosterEditOrShare.setVisibility(View.GONE);
+                rlPosterSaveAndShare.setVisibility(View.GONE);
+            }
+
         } else {
             rlPosterEditOrSave.setVisibility(View.GONE);
+            rlPosterSaveAndShare.setVisibility(View.GONE);
             llPosterEditOrShare.setVisibility(View.VISIBLE);
         }
 
     }
 
 
-    @OnClick({R.id.img_poster_dismiss, R.id.tv_save_poster, R.id.tv_edit_poster, R.id.ll_poster_edit, R.id.ll_poster_share})
+    @OnClick({R.id.img_poster_dismiss, R.id.tv_save_poster, R.id.tv_edit_poster, R.id.ll_poster_edit, R.id.ll_poster_share,R.id.tv_poster_save,R.id.tv_share_poster})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_poster_dismiss:
@@ -175,7 +191,7 @@ public class TechPosterDialog extends Dialog {
 
                 if (posterListener != null) {
                     imgPosterDismiss.setVisibility(View.GONE);
-                    posterListener.posterSave(rlView);
+                    posterListener.posterSave(rlView,imgPosterDismiss);
                     imgPosterDismiss.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -192,6 +208,19 @@ public class TechPosterDialog extends Dialog {
                 }
                 break;
             case R.id.ll_poster_share:
+                this.dismiss();
+                if (posterListener != null) {
+                    posterListener.posterShare();
+                }
+                break;
+            case R.id.tv_poster_save:
+                if (posterListener != null) {
+                    imgPosterDismiss.setVisibility(View.GONE);
+                    posterListener.posterSave(rlView,imgPosterDismiss);
+                    imgPosterDismiss.setVisibility(View.VISIBLE);
+                }
+                break;
+            case R.id.tv_share_poster:
                 this.dismiss();
                 if (posterListener != null) {
                     posterListener.posterShare();

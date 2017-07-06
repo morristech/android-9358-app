@@ -235,20 +235,30 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                     mPosterImageUrl = "";
                 }
 
-                mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true);
+                mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true,false);
                 mDialog.show();
                 mDialog.setViewDate(mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, imageUrl, mPosterImageUrl);
                 mDialog.setCanceledOnTouchOutside(true);
                 mDialog.setPosterListener(this);
                 break;
             case R.id.iv_poster_primary_title:
-                primaryTitleIsSelected = changeViewState(ivPosterPrimaryTitle);
+                primaryTitleIsSelected = true;
+                Utils.makeShortToast(getActivity(),"海报必须包含大标题，不可取消勾选");
+                if( Utils.isEmpty(editPosterPrimaryTitle.getText().toString())){
+                    editPosterPrimaryTitle.setText(ResourceUtils.getString(R.string.tech_poster_primary_title_default));
+                }
                 break;
             case R.id.iv_poster_minor_title:
                 minorTitleIsSelected = changeViewState(ivPosterMinorTitle);
+                if(minorTitleIsSelected && Utils.isEmpty(editPosterMinorTitle.getText().toString())){
+                    editPosterMinorTitle.setText(ResourceUtils.getString(R.string.tech_poster_minor_title_default));
+                }
                 break;
             case R.id.iv_poster_tech_name:
                 nickNameIsSelected = changeViewState(ivPosterTechName);
+                if(nickNameIsSelected && Utils.isEmpty(editPosterTechName.getText().toString())){
+                    editPosterTechName.setText(LoginTechnician.getInstance().getNickName());
+                }
                 break;
             case R.id.iv_poster_tech_number:
                 techNumberIsSelected = changeViewState(ivPosterTechNumber);
@@ -283,7 +293,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
             if (Utils.isNotEmpty(editPosterPrimaryTitle.getText().toString())) {
                 params.put(RequestConstant.KEY_POSTER_TITLE, editPosterPrimaryTitle.getText().toString());
             } else {
-                Utils.makeShortToast(getActivity(), "请输入大标题,或取消勾选");
+                Utils.makeShortToast(getActivity(), "请输入大标题");
                 return null;
             }
         } else {
@@ -356,11 +366,11 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
         bitmap = view.getDrawingCache();
         Rect frame = new Rect();
         mDialog.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        int[] loacation = new int[2];
-        v.getLocationOnScreen(loacation);
+        int[] location = new int[2];
+        v.getLocationOnScreen(location);
         File picFile = new File(file, name);
         try {
-            bitmap = Bitmap.createBitmap(bitmap, loacation[0], loacation[1], view.getWidth(), view.getHeight() - Utils.dip2px(getActivity(), 50));
+            bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], view.getWidth(), view.getHeight() - Utils.dip2px(getActivity(), 45));
             FileOutputStream fout = new FileOutputStream(picFile);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
             saveImageToGallery(picFile);
@@ -392,7 +402,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
 
 
     @Override
-    public void posterSave(View view) {
+    public void posterSave(View view,View dismiss) {
 
         new RewardConfirmDialog(getActivity(), getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_poster_save_alter_message),
                 DateUtil.getCurrentDate(System.currentTimeMillis() + ONE_MONTH_DAY_MILLISECOND)), "", true) {
@@ -401,8 +411,10 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
             //tech_poster_save_alter_message
             public void onConfirmClick() {
                 super.onConfirmClick();
+
                 if (mDialog != null) {
                     mDialog.dismiss();
+                    dismiss.setVisibility(View.GONE);
                     saveImage(view);
                 }
 

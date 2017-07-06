@@ -157,7 +157,6 @@
                         android:layout_marginLeft="@dimen/inter_space"
                         android:textColor="@color/contact_marker"
                         android:textSize="@dimen/fontTitle"
-
                         />
                 </LinearLayout>
 

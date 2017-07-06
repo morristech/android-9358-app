@@ -32,8 +32,9 @@ android {
         //1.6.2 附近的人，打招呼
         // 1.6.4Pk分组，修复已知bug
         //1.6.8 聊天优化,黑名单
-        versionCode 45
-        versionName "1.7.7"
+        //1.7.8技师海报
+        versionCode 49
+        versionName "1.8.1"
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
@@ -68,7 +69,7 @@ android {
 
         release {//发布
             buildConfigField("Boolean", "debug", "false")
-            minifyEnabled true  //混淆开启
+            minifyEnabled true
             zipAlignEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
