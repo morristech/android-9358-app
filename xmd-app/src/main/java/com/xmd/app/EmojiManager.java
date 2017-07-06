@@ -78,6 +78,12 @@ public class EmojiManager {
         }
     }
 
+    public Map<String, Integer> getEmojiMap() {
+        return emojiMap;
+    }
+
+
+
     public SpannableString format(String src) {
         SpannableString s = new SpannableString(Html.fromHtml(src));
         for (Pattern pattern : emojiPatternMap.keySet()) {
@@ -86,6 +92,12 @@ public class EmojiManager {
                 s.setSpan(new ImageSpan(context, emojiPatternMap.get(pattern)), matcher.start(), matcher.end(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             }
         }
+        return s;
+    }
+
+    public SpannableString getEmojiSpannableString(String emojiKey) {
+        SpannableString s = new SpannableString(emojiKey);
+        s.setSpan(new ImageSpan(context, emojiMap.get(emojiKey)), 0, emojiKey.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         return s;
     }
 }

@@ -51,6 +51,10 @@ dependencies {
     compile project(':xmd-m-network')
     compile project(':xmd-m-appointment')
     compile project(':xmd-m-notify')
+    compile(name: 'xmd-image-crop-1.0', ext: 'aar')
+    compile(name: 'xmd-image-selector-1.0', ext: 'aar')
+    compile(name: 'xmd-image-tool-1.0', ext: 'aar')
+    compile(name: 'permission-tool-1.0', ext: 'aar')
     compile "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"
     compile "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"

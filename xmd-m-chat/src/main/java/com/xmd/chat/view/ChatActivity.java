@@ -1,20 +1,28 @@
 package com.xmd.chat.view;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.ExCommonRecyclerViewAdapter;
@@ -23,10 +31,12 @@ import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.BR;
 import com.xmd.chat.ChatConstants;
+import com.xmd.chat.ChatMenu;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.ChatRowViewFactory;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.R;
+import com.xmd.chat.XmdChat;
 import com.xmd.chat.databinding.ChatActivityBinding;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.message.ChatMessage;
@@ -52,7 +62,10 @@ public class ChatActivity extends BaseActivity {
     private final int PAGE_SIZE = 20;
     private int mPageIndex;
 
+    private ImageView mFocusMenuView;
+
     public ObservableField<String> textMessageContent = new ObservableField<>();
+    public ObservableBoolean showSubMenu = new ObservableBoolean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +99,17 @@ public class ChatActivity extends BaseActivity {
         mBinding.setData(this);
 
         mConversation = EMClient.getInstance().chatManager().getConversation(chatId);
+
+        initMenu();
+
         loadData(null);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!XmdChat.getInstance().getMenuFactory().onActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void loadData(String msgId) {
@@ -194,14 +212,72 @@ public class ChatActivity extends BaseActivity {
         if (chatMessage != null) {
             addNewChatMessageToUi(chatMessage);
             textMessageContent.set(null);
+            mBinding.sendEditText.getText().clear();
         }
     }
 
-    private void addNewChatMessageToUi(ChatMessage chatMessage) {
+    public void addNewChatMessageToUi(ChatMessage chatMessage) {
         ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
         setShowTime(mDataList.size() > 0 ? mDataList.get(mDataList.size() - 1) : null, data);
         mDataList.add(data);
         mAdapter.notifyItemInserted(mDataList.size() - 1);
         mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
+    }
+
+    //初始化菜单
+    public void initMenu() {
+        List<ChatMenu> chatMenuList = XmdChat.getInstance().getMenuFactory()
+                .createMenuList(this, mRemoteUser, mBinding.sendEditText.getText());
+        for (final ChatMenu chatMenu : chatMenuList) {
+            final ImageView imageView = new ImageView(this);
+            imageView.setImageResource(chatMenu.icon);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mFocusMenuView != null) {
+                        mFocusMenuView.setSelected(false);
+                        mFocusMenuView = null;
+                    }
+                    if (chatMenu.subMenuList != null && chatMenu.subMenuList.size() > 0) {
+                        showSubMenu(imageView, chatMenu);
+                    } else {
+                        showSubMenu.set(false);
+                    }
+                    if (chatMenu.listener != null) {
+                        chatMenu.listener.onClick(v);
+                    }
+                }
+            });
+            mBinding.menuLayout.addView(imageView);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) imageView.getLayoutParams();
+            layoutParams.width = ScreenUtils.dpToPx(24);
+            layoutParams.height = ScreenUtils.dpToPx(24);
+            layoutParams.leftMargin = ScreenUtils.dpToPx(8);
+            layoutParams.rightMargin = ScreenUtils.dpToPx(8);
+        }
+    }
+
+    public void showSubMenu(ImageView menuView, final ChatMenu chatMenu) {
+        if (showSubMenu.get()) {
+            showSubMenu.set(false);
+            return;
+        }
+        mFocusMenuView = menuView;
+        mFocusMenuView.setSelected(true);
+        showSubMenu.set(true);
+
+        mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
+        mBinding.submenuLayout.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return chatMenu.subMenuList.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return chatMenu.subMenuList.size();
+            }
+        });
     }
 }

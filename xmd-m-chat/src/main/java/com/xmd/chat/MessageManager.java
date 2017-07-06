@@ -94,6 +94,12 @@ public class MessageManager {
         return sendMessage(chatMessage);
     }
 
+    public ChatMessage sendImageMessage(String remoteChatId, String filePath) {
+        EMMessage emMessage = EMMessage.createImageSendMessage(filePath, true, remoteChatId);
+        ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
+        return sendMessage(chatMessage);
+    }
+
     public ChatMessage sendMessage(ChatMessage chatMessage) {
         User user = AccountManager.getInstance().getUser();
         if (user == null) {

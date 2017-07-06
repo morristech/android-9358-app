@@ -51,7 +51,8 @@ public abstract class ExCommonRecyclerViewAdapter<T> extends RecyclerView.Adapte
 
     @Override
     public void onViewRecycled(ViewHolder holder) {
-        onDataUnBinding(holder.getBinding(), holder.getAdapterPosition());
+        holder.getBinding().unbind();
+//        onDataUnBinding(holder.getBinding(), holder.getAdapterPosition());
     }
 
     @Override

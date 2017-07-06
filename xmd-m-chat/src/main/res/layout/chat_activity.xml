@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="android.text.TextUtils" />
 
         <variable
@@ -36,6 +38,7 @@
             android:layout_height="wrap_content">
 
             <EditText
+                android:id="@+id/sendEditText"
                 style="@style/AppTheme.EditText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -52,6 +55,28 @@
                 android:onClick="@{()->data.sendTextMessage()}"
                 android:text="发送" />
         </LinearLayout>
+
+        <!-- 菜单 -->
+        <LinearLayout
+            android:id="@+id/menuLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivide" />
+
+        <com.shidou.commonlibrary.widget.AutoHeightViewPager
+            android:id="@+id/submenuLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{data.showSubMenu?View.VISIBLE:View.GONE}" />
     </LinearLayout>
 </layout>
 

@@ -88,7 +88,7 @@ public class TechPersonalRankingDetailFragment extends BaseListFragment<TechRank
                 break;
         }
 
-        mStartDate = DateUtil.getFirstDayOfWeek(new Date(),TechPersonalRankingDetailActivity.FORMAT_YEAR);
+        mStartDate = DateUtil.getFirstDayOfWeek(new Date(), TechPersonalRankingDetailActivity.FORMAT_YEAR);
         mEndDate = DateUtil.getCurrentDate(System.currentTimeMillis(), TechPersonalRankingDetailActivity.FORMAT_YEAR);
     }
 

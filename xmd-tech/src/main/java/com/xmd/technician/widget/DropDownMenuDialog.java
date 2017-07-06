@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Utils;
 
 /**
  * Created by Administrator on 2016/7/8.
@@ -64,7 +63,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
     }
 
     private void initViews() {
-        if(items == null){
+        if (items == null) {
             return;
         }
         for (int i = 0; i < items.length; i++) {

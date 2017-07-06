@@ -29,6 +29,7 @@ public class XmdChat {
 
 
     private Context context;
+    private MenuFactory menuFactory;
 
     public void init(Context context, boolean debug) {
         XLogger.i("---------聊天系统初始化---------------");
@@ -64,5 +65,14 @@ public class XmdChat {
         AccountManager.getInstance().init();
         ConversationManager.getInstance().init();
         MessageManager.getInstance().init();
+        setMenuFactory(new MenuFactory());
+    }
+
+    public MenuFactory getMenuFactory() {
+        return menuFactory;
+    }
+
+    public void setMenuFactory(MenuFactory menuFactory) {
+        this.menuFactory = menuFactory;
     }
 }

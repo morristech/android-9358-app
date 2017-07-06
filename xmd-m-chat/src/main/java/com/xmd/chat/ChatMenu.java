@@ -1,8 +1,18 @@
 package com.xmd.chat;
 
-/**
- * Created by mo on 17-7-6.
- */
+import android.support.v4.app.Fragment;
+import android.view.View;
 
-public class Menu {
+import java.util.List;
+
+public class ChatMenu {
+    public int icon;
+    public View.OnClickListener listener;
+    public List<Fragment> subMenuList;
+
+    public ChatMenu(int icon, View.OnClickListener listener, List<Fragment> subMenuList) {
+        this.icon = icon;
+        this.listener = listener;
+        this.subMenuList = subMenuList;
+    }
 }

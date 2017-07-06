@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.view.WindowManager;
 
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.EmojiManager;
@@ -79,6 +81,8 @@ public class ManagerApplication extends Application {
                 });
 
                 //界面辅助类
+                WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+                ScreenUtils.initScreenSize(windowManager);
                 EmojiManager.getInstance().init(this);
                 XToast.init(this, -1);
 

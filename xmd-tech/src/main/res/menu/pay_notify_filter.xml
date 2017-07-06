@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<chatMenu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/status_all"
         android:title="@string/online_pay_notify_status_all" />
@@ -12,4 +12,4 @@
     <item
         android:id="@+id/status_reject"
         android:title="@string/online_pay_notify_status_reject" />
-</menu>
+</chatMenu>

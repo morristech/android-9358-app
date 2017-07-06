@@ -41,7 +41,6 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
-import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;

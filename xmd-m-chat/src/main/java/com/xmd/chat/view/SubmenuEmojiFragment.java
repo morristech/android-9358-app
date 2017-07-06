@@ -4,10 +4,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,7 +25,7 @@ import java.util.List;
  * 聊天菜单--表情
  */
 
-public class SubmenuFragmentEmoji extends BaseFragment {
+public class SubmenuEmojiFragment extends BaseFragment {
     private FragmentSubmenuEmojiBinding mBinding;
     CommonRecyclerViewAdapter<SubMenuEmojiViewModel> adapter = new CommonRecyclerViewAdapter<>();
 

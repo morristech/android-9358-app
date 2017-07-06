@@ -97,6 +97,7 @@
 
         </LinearLayout>
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/rl_poster_save_and_share"
         android:layout_width="match_parent"
@@ -114,8 +115,7 @@
             android:paddingLeft="20dp"
             android:text="@string/tech_poster_save_picture"
             android:textColor="#4d4d4d"
-            android:textSize="16sp"
-            />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_share_poster"
@@ -127,8 +127,7 @@
             android:paddingRight="20dp"
             android:text="@string/tech_poster_share"
             android:textColor="#FF6666"
-            android:textSize="16sp"
-            />
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
