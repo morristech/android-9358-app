@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.widget.XToast;
@@ -14,6 +15,8 @@ import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.event.EventTotalUnreadMessage;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.message.RevokeChatMessage;
+import com.xmd.chat.message.TipChatMessage;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.m.notify.push.XmdPushMessage;
 
@@ -61,8 +64,6 @@ public class MessageManager {
 
                         EventBus.getDefault().post(new EventNewMessages(list));
                         EventBus.getDefault().post(new EventTotalUnreadMessage(EMClient.getInstance().chatManager().getUnreadMessageCount()));
-
-
                     }
                 });
             }
@@ -89,23 +90,42 @@ public class MessageManager {
         });
     }
 
+    //发送文本消息
     public ChatMessage sendTextMessage(String remoteChatId, String text) {
         EMMessage emMessage = EMMessage.createTxtSendMessage(text, remoteChatId);
         ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
         return sendMessage(chatMessage);
     }
 
+    //发送图片消息
     public ChatMessage sendImageMessage(String remoteChatId, String filePath) {
         EMMessage emMessage = EMMessage.createImageSendMessage(filePath, true, remoteChatId);
         ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
         return sendMessage(chatMessage);
     }
 
+    //发送位置消息
     public ChatMessage sendLocationMessage(String remoteChatId, Location location) {
         EMMessage emMessage = EMMessage.createLocationSendMessage(location.latitude, location.longitude, location.street, remoteChatId);
         ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
         chatMessage.setClubName(AccountManager.getInstance().getUser().getClubName());
         return sendMessage(chatMessage);
+    }
+
+    //发送撤回命令
+    public void sendRevokeMessage(String remoteChatId, String msgId) {
+        EMMessage cmdMessage = EMMessage.createSendMessage(EMMessage.Type.CMD);
+        cmdMessage.setTo(remoteChatId);
+        RevokeChatMessage chatMessage = new RevokeChatMessage(msgId, cmdMessage);
+        sendMessage(chatMessage);
+    }
+
+    //发送tip消息
+    public ChatMessage sendTipMessage(EMConversation conversation, User remoteUser, String tip) {
+        TipChatMessage tipChatMessage = TipChatMessage.create(remoteUser, tip);
+        tipChatMessage.setUser(AccountManager.getInstance().getUser());
+        conversation.appendMessage(tipChatMessage.getEmMessage());
+        return tipChatMessage;
     }
 
     public ChatMessage sendMessage(ChatMessage chatMessage) {

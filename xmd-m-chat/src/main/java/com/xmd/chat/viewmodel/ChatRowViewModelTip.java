@@ -6,28 +6,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xmd.chat.R;
-import com.xmd.chat.databinding.ChatRowTextBinding;
+import com.xmd.chat.databinding.ChatRowTipBinding;
 import com.xmd.chat.message.ChatMessage;
 
 
 /**
  * Created by mo on 17-7-1.
- * 文本消息
+ * 位置消息
  */
 
-public class ChatRowViewModelText extends ChatRowViewModel {
-    public ChatRowViewModelText(ChatMessage chatMessage) {
+public class ChatRowViewModelTip extends ChatRowViewModel {
+
+    public ChatRowViewModelTip(ChatMessage chatMessage) {
         super(chatMessage);
     }
 
     public static View createView(ViewGroup parent) {
-        ChatRowTextBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.chat_row_text, parent, false);
+        ChatRowTipBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.chat_row_tip, parent, false);
         return binding.getRoot();
     }
 
     @Override
     public void onBindView(View view) {
-        ChatRowTextBinding binding = DataBindingUtil.getBinding(view);
+        ChatRowTipBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
     }
 
@@ -36,7 +37,7 @@ public class ChatRowViewModelText extends ChatRowViewModel {
 
     }
 
-    public CharSequence getMessage() {
+    public CharSequence getTip() {
         return chatMessage.getContentText();
     }
 }

@@ -1,6 +1,7 @@
 package com.xmd.chat;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -8,13 +9,18 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.beans.Location;
+import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.view.ChatActivity;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import rx.Observable;
 
@@ -74,6 +80,8 @@ public class XmdChat {
         ConversationManager.getInstance().init();
         MessageManager.getInstance().init();
         setMenuFactory(new MenuFactory());
+
+        EventBusSafeRegister.register(this);
     }
 
     public MenuFactory getMenuFactory() {
@@ -104,5 +112,13 @@ public class XmdChat {
                 callback.onResponse(null, e);
             }
         });
+    }
+
+    @Subscribe
+    public void onStartChat(EventStartChatActivity event) {
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra(ChatActivity.EXTRA_CHAT_ID, event.getRemoteChatId());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

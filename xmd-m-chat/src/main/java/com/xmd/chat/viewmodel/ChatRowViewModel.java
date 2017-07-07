@@ -3,8 +3,10 @@ package com.xmd.chat.viewmodel;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -12,7 +14,12 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.chat.MessageManager;
+import com.xmd.chat.R;
+import com.xmd.chat.event.EventDeleteMessage;
+import com.xmd.chat.event.EventRevokeMessage;
 import com.xmd.chat.message.ChatMessage;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by mo on 17-6-30.
@@ -94,6 +101,31 @@ public abstract class ChatRowViewModel {
         error.set(false);
         progress.set(true);
         MessageManager.getInstance().sendMessage(chatMessage);
+    }
+
+    public boolean onLongClick(View view) {
+        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+        popupMenu.inflate(chatMessage.isReceivedMessage() ? R.menu.message_receive_actions : R.menu.message_send_actions);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return onClickMenu(item);
+            }
+        });
+        popupMenu.show();
+        return true;
+    }
+
+    protected boolean onClickMenu(MenuItem item) {
+        int i = item.getItemId();
+        if (i == R.id.menu_delete) {
+            EventBus.getDefault().post(new EventDeleteMessage(this));
+            return true;
+        } else if (i == R.id.menu_revoke) {
+            EventBus.getDefault().post(new EventRevokeMessage(this));
+            return true;
+        }
+        return false;
     }
 
     public abstract void onBindView(View view);

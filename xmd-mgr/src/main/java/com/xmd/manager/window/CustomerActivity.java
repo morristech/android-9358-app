@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.auth.AuthConstants;
@@ -16,7 +17,6 @@ import com.xmd.manager.auth.AuthHelper;
 import com.xmd.manager.beans.AllGroupListBean;
 import com.xmd.manager.beans.Customer;
 import com.xmd.manager.beans.UserGroupListBean;
-import com.xmd.manager.chat.EmchatUserHelper;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.common.WidgetUtils;
@@ -28,6 +28,8 @@ import com.xmd.manager.service.response.CustomerResult;
 import com.xmd.manager.service.response.UserEditGroupResult;
 import com.xmd.manager.service.response.UserGroupSaveResult;
 import com.xmd.manager.widget.CircularBeadImageView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -249,7 +251,8 @@ public class CustomerActivity extends BaseActivity {
                 intent.putExtra(DeliveryCouponActivity.KEY_FROM, mCustomer);
                 break;
             case R.id.btn_chat:
-                EmchatUserHelper.startToChat(mCustomer.emchatId, mCustomer.userName, mCustomer.userHeadimgurl);
+//                EmchatUserHelper.startToChat(mCustomer.emchatId, mCustomer.userName, mCustomer.userHeadimgurl);
+                EventBus.getDefault().post(new EventStartChatActivity(mCustomer.emchatId));
                 break;
             case R.id.btn_sms:
                 Utils.invokeAndroidSms(this, mCustomer.phoneNum, "");

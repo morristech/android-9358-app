@@ -39,6 +39,7 @@ public class ChatRowViewModelLocation extends ChatRowViewModel {
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        binding.webView.setBlockTouch(true);
         return binding.getRoot();
     }
 

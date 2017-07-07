@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ListRecycleViewAdapter;
@@ -256,6 +258,13 @@ public class CustMgmtDetailListFragment extends BaseFragment implements ListRecy
     }
 
     protected void onGetListSucceeded(int pageCount, List<Customer> list) {
+        for (Customer customer : list) {
+            User user = new User(customer.userId);
+            user.setName(customer.userName);
+            user.setChatId(customer.emchatId);
+            user.setAvatar(customer.userHeadimgurl);
+            UserInfoServiceImpl.getInstance().saveUser(user);
+        }
         mSwipeRefreshLayout.setRefreshing(false);
         mPageCount = pageCount;
         if (list != null) {

@@ -31,36 +31,45 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp">
 
-            <View
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginRight="8dp">
-
-                <ProgressBar
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:visibility="@{data.progress?View.VISIBLE:View.GONE}" />
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:onClick="@{()->data.send()}"
-                    android:src="@drawable/chat_sent_failed"
-                    android:visibility="@{data.error?View.VISIBLE:View.GONE}" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/contentView"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/sent_message" />
+                android:layout_marginRight="4dp"
+                android:layout_weight="1">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="8dp">
+
+                    <ProgressBar
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:visibility="@{data.progress?View.VISIBLE:View.GONE}" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:onClick="@{()->data.send()}"
+                        android:src="@drawable/chat_sent_failed"
+                        android:visibility="@{data.error?View.VISIBLE:View.GONE}" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/contentView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sent_message"
+                    android:onLongClick="@{(v)->data.onLongClick(v)}" />
+            </LinearLayout>
+
 
             <ImageView
                 android:layout_width="48dp"

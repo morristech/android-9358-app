@@ -26,23 +26,9 @@
             android:visibility="@{data.showTime?View.VISIBLE:View.GONE}"
             app:time="@{data}" />
 
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/contentView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp">
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                app:avatar="@{data}" />
-
-            <FrameLayout
-                android:id="@+id/contentView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/recv_message"
-                android:onLongClick="@{(v)->data.onLongClick(v)}" />
-        </LinearLayout>
-
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </layout>

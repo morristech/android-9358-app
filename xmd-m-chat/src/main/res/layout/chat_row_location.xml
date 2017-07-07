@@ -17,7 +17,7 @@
         android:layout_height="180dp"
         android:orientation="vertical">
 
-        <WebView
+        <com.shidou.commonlibrary.widget.XWebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.webkit.WebView;
 
 /**
@@ -13,6 +14,8 @@ import android.webkit.WebView;
  */
 
 public class XWebView extends WebView {
+    private boolean blockTouch;
+
     public XWebView(Context context) {
         super(context);
     }
@@ -38,7 +41,9 @@ public class XWebView extends WebView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        listener.onDrawFinish();
+        if (listener != null) {
+            listener.onDrawFinish();
+        }
     }
 
     private OnDrawFinishListener listener;
@@ -53,5 +58,22 @@ public class XWebView extends WebView {
 
     public interface OnDrawFinishListener {
         void onDrawFinish();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (blockTouch) {
+            return false;
+        } else {
+            return super.onTouchEvent(event);
+        }
+    }
+
+    public boolean isBlockTouch() {
+        return blockTouch;
+    }
+
+    public void setBlockTouch(boolean blockTouch) {
+        this.blockTouch = blockTouch;
     }
 }

@@ -1,5 +1,6 @@
 package com.xmd.chat.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -38,7 +40,9 @@ import com.xmd.chat.MessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.XmdChat;
 import com.xmd.chat.databinding.ChatActivityBinding;
+import com.xmd.chat.event.EventDeleteMessage;
 import com.xmd.chat.event.EventNewMessages;
+import com.xmd.chat.event.EventRevokeMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
 
@@ -58,7 +62,6 @@ public class ChatActivity extends BaseActivity {
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
     private User mRemoteUser;
 
-    private EMConversation mConversation;
     private final int PAGE_SIZE = 20;
 
     private ImageView mFocusMenuView;
@@ -97,13 +100,15 @@ public class ChatActivity extends BaseActivity {
 
         mBinding.setData(this);
 
-        mConversation = EMClient.getInstance().chatManager().getConversation(chatId);
-
         mBinding.pageIndicator.setViewPager(mBinding.submenuLayout, R.drawable.chat_menu_indicator_normal, R.drawable.chat_menu_indicator_focus);
         mBinding.submenuLayout.addOnPageChangeListener(mBinding.pageIndicator);
         initMenu();
 
         loadData(null);
+    }
+
+    private EMConversation getConversation() {
+        return EMClient.getInstance().chatManager().getConversation(mRemoteUser.getChatId());
     }
 
     @Override
@@ -114,13 +119,15 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void loadData(String msgId) {
-        if (mConversation.getAllMsgCount() == 0) {
+        EMConversation conversation = getConversation();
+        if (conversation == null || conversation.getAllMsgCount() == 0) {
+            mAdapter.setData(BR.data, mDataList);
+            mAdapter.notifyDataSetChanged();
             return;
         }
 
-
         List<ChatRowViewModel> newDataList = new ArrayList<>();
-        List<EMMessage> messageList = mConversation.loadMoreMsgFromDB(msgId, PAGE_SIZE);
+        List<EMMessage> messageList = conversation.loadMoreMsgFromDB(msgId, PAGE_SIZE);
         if (msgId != null && messageList.size() == 0) {
             XToast.show("没有更多消息了");
             return;
@@ -156,11 +163,7 @@ public class ChatActivity extends BaseActivity {
         public ViewDataBinding createViewDataBinding(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             ViewDataBinding binding;
-            if (ChatRowViewFactory.isSendViewType(viewType)) {
-                binding = DataBindingUtil.inflate(layoutInflater, R.layout.list_item_message_send, parent, false);
-            } else {
-                binding = DataBindingUtil.inflate(layoutInflater, R.layout.list_item_message_receive, parent, false);
-            }
+            binding = DataBindingUtil.inflate(layoutInflater, ChatRowViewFactory.getWrapperLayout(viewType), parent, false);
             FrameLayout layout = (FrameLayout) binding.getRoot().findViewById(R.id.contentView);
             layout.addView(ChatRowViewFactory.createView(parent, viewType));
             return binding;
@@ -180,6 +183,7 @@ public class ChatActivity extends BaseActivity {
         }
     };
 
+    //处理新消息
     @Subscribe
     public void onNewMessages(EventNewMessages newMessages) {
         for (EMMessage message : newMessages.getList()) {
@@ -187,6 +191,35 @@ public class ChatActivity extends BaseActivity {
                 addNewChatMessageToUi(ChatMessageFactory.get(message));
             }
         }
+    }
+
+    //处理删除消息
+    @Subscribe
+    public void onDeleteMessage(final EventDeleteMessage deleteMessage) {
+        new AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                .setMessage("删除后将不会出现在你的消息记录中，确实删除？")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getConversation().removeMessage(deleteMessage.getChatRowViewModel().getChatMessage().getEmMessage().getMsgId());
+                        removeMessageFromUi(deleteMessage.getChatRowViewModel());
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    //处理撤回消息
+    @Subscribe
+    public void onRevokeMessage(EventRevokeMessage revokeMessage) {
+        String msgId = revokeMessage.getChatRowViewModel().getChatMessage().getEmMessage().getMsgId();
+        getConversation().removeMessage(msgId);
+        removeMessageFromUi(revokeMessage.getChatRowViewModel());
+        MessageManager.getInstance().sendRevokeMessage(mRemoteUser.getChatId(), msgId);
+
+        ChatMessage chatMessage = MessageManager.getInstance().sendTipMessage(getConversation(), mRemoteUser, "你撤回了一条消息");
+        addNewChatMessageToUi(chatMessage);
     }
 
     /**
@@ -217,12 +250,23 @@ public class ChatActivity extends BaseActivity {
         }
     }
 
+    //增加一条消息到列表
     public void addNewChatMessageToUi(ChatMessage chatMessage) {
         ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
         setShowTime(mDataList.size() > 0 ? mDataList.get(mDataList.size() - 1) : null, data);
         mDataList.add(data);
         mAdapter.notifyItemInserted(mDataList.size() - 1);
         mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
+    }
+
+    //从列表删除一条消息
+    public void removeMessageFromUi(ChatRowViewModel chatRowViewModel) {
+        int index = mDataList.indexOf(chatRowViewModel);
+        mDataList.remove(index);
+        if (mDataList.size() > index) {
+            setShowTime(index - 1 >= 0 ? mDataList.get(index - 1) : null, mDataList.get(index));
+        }
+        mAdapter.notifyItemRemoved(index);
     }
 
     //初始化菜单
