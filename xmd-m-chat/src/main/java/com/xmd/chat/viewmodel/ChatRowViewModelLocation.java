@@ -8,14 +8,11 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.hyphenate.chat.EMLocationMessageBody;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowLocationBinding;
 import com.xmd.chat.message.ChatMessage;
-
-import java.util.Locale;
+import com.xmd.chat.message.CustomLocationMessage;
 
 
 /**
@@ -24,8 +21,6 @@ import java.util.Locale;
  */
 
 public class ChatRowViewModelLocation extends ChatRowViewModel {
-    private static int w;
-    private static int h;
 
     public ChatRowViewModelLocation(ChatMessage chatMessage) {
         super(chatMessage);
@@ -55,38 +50,49 @@ public class ChatRowViewModelLocation extends ChatRowViewModel {
     }
 
     public String getAddress() {
-        return ((EMLocationMessageBody) chatMessage.getEmMessage().getBody()).getAddress();
+        return ((CustomLocationMessage) chatMessage).getAddress();
     }
 
     @BindingAdapter("map")
     public static void bindMap(WebView webView, ChatRowViewModelLocation data) {
-        EMLocationMessageBody body = (EMLocationMessageBody) data.getChatMessage().getEmMessage().getBody();
-        String url = "http://api.map.baidu.com/staticimage/v2?" +
-                "ak=WEwL0OXp5wo3YYNtxWAMUcTREgbSHhym" +
-                "&mcode=E6:35:E7:D6:3A:59:63:6E:9D:73:AA:20:E8:9C:A5:4C:72:84:D4:5A;com.baidu.navi.shelldemo" +
-                "&center=%f,%f" +
-                "&markers=%f,%f" +
-                "&width=%d&height=%d" +
-                "&zoom=16&copyright=1&dpiType=ph&coordtype=gcj02ll";
-        double latitude = body.getLatitude();
-        double longitude = body.getLongitude();
-        if (w == 0) {
-            w = ScreenUtils.dpToPx(webView.getMeasuredWidth());
-            h = ScreenUtils.dpToPx(webView.getMeasuredHeight());
-            if (w > 768 || h > 768) {
-                h = 768 * h / w;
-                w = 768;
-            }
-            if (h > 768) {
-                w = 768 * w / h;
-                h = 768;
-            }
-        }
-        String accessUrl = String.format(Locale.getDefault(), url,
-                longitude, latitude,
-                longitude, latitude,
-                w, h);
-        XLogger.d("load map: " + accessUrl);
-        webView.loadUrl(accessUrl);
+        CustomLocationMessage locationMessage = (CustomLocationMessage) data.getChatMessage();
+        XLogger.d("load map: " + locationMessage.getMapUrl());
+        webView.loadUrl(locationMessage.getMapUrl());
     }
+
+//    public String getAddress() {
+//        return ((EMLocationMessageBody) chatMessage.getEmMessage().getBody()).getAddress();
+//    }
+//
+//    @BindingAdapter("map")
+//    public static void bindMap(WebView webView, ChatRowViewModelLocation data) {
+//        EMLocationMessageBody body = (EMLocationMessageBody) data.getChatMessage().getEmMessage().getBody();
+//        String url = "http://api.map.baidu.com/staticimage/v2?" +
+//                "ak=WEwL0OXp5wo3YYNtxWAMUcTREgbSHhym" +
+//                "&mcode=E6:35:E7:D6:3A:59:63:6E:9D:73:AA:20:E8:9C:A5:4C:72:84:D4:5A;com.baidu.navi.shelldemo" +
+//                "&center=%f,%f" +
+//                "&markers=%f,%f" +
+//                "&width=%d&height=%d" +
+//                "&zoom=16&copyright=1&dpiType=ph&coordtype=gcj02ll";
+//        double latitude = body.getLatitude();
+//        double longitude = body.getLongitude();
+//        if (w == 0) {
+//            w = ScreenUtils.dpToPx(webView.getMeasuredWidth());
+//            h = ScreenUtils.dpToPx(webView.getMeasuredHeight());
+//            if (w > 768 || h > 768) {
+//                h = 768 * h / w;
+//                w = 768;
+//            }
+//            if (h > 768) {
+//                w = 768 * w / h;
+//                h = 768;
+//            }
+//        }
+//        String accessUrl = String.format(Locale.getDefault(), url,
+//                longitude, latitude,
+//                longitude, latitude,
+//                w, h);
+//        XLogger.d("load map: " + accessUrl);
+//        webView.loadUrl(accessUrl);
+//    }
 }

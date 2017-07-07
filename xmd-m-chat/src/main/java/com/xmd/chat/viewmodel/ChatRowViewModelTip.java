@@ -1,6 +1,8 @@
 package com.xmd.chat.viewmodel;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,11 @@ public class ChatRowViewModelTip extends ChatRowViewModel {
     @Override
     public void onUnbindView() {
 
+    }
+
+    @Override
+    public Drawable getContentViewBackground(Context context) {
+        return null;
     }
 
     public CharSequence getTip() {

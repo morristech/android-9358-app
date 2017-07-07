@@ -78,7 +78,7 @@ public class MenuFactory {
                     public void onResponse(Location result, Throwable error) {
                         if (result != null) {
                             ChatMessage chatMessage = MessageManager.getInstance()
-                                    .sendLocationMessage(remoteUser.getChatId(), result);
+                                    .sendLocationMessage(remoteUser, result);
                             activity.addNewChatMessageToUi(chatMessage);
                         }
                     }

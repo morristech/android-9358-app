@@ -66,10 +66,9 @@
                     android:id="@+id/contentView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/sent_message"
+                    android:background="@{data.getContentViewBackground(context)}"
                     android:onLongClick="@{(v)->data.onLongClick(v)}" />
             </LinearLayout>
-
 
             <ImageView
                 android:layout_width="48dp"

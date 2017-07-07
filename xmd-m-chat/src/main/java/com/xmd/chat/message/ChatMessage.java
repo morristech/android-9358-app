@@ -36,6 +36,7 @@ public class ChatMessage {
     public static final String MSG_TYPE_ORIGIN_FILE = "FILE";
     public static final String MSG_TYPE_ORIGIN_CMD = "CMD";
     public static final String MSG_TYPE_TIP = "tip"; //提示消息
+    public static final String MSG_TYPE_CLUB_LOCATION = "clubLocation"; //位置消息
     public static final String MSG_TYPE_ORDER_START = "order_start";
     public static final String MSG_TYPE_ORDER_REFUSE = "order_refuse";
     public static final String MSG_TYPE_ORDER_CONFIRM = "order_confirm";
@@ -69,6 +70,7 @@ public class ChatMessage {
     public ChatMessage(EMMessage emMessage, String msgType) {
         this.emMessage = emMessage;
         setAttr(ATTRIBUTE_MESSAGE_TYPE, msgType);
+        setTime(String.valueOf(emMessage.getMsgTime()));
     }
 
     public String getMsgType() {
@@ -85,8 +87,10 @@ public class ChatMessage {
         setUserId(user.getId());
         setUserName(user.getName());
         setUserAvatar(user.getAvatar());
-        //TODO
-        // set clubId,clubName,TechNo
+
+        setClubId(user.getClubId());
+        setClubName(user.getClubName());
+        setTechNo(user.getTechNo());
     }
 
     public String getTag() {

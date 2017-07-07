@@ -1,9 +1,11 @@
 package com.xmd.manager.beans;
 
+import java.io.Serializable;
+
 /**
  * Created by sdcm on 15-10-27.
  */
-public class ClubInfo {
+public class ClubInfo implements Serializable {
     /**
      * clubId : 601679316694081536
      * name : 刘哥会所

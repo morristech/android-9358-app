@@ -15,6 +15,7 @@ import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.event.EventTotalUnreadMessage;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.RevokeChatMessage;
 import com.xmd.chat.message.TipChatMessage;
 import com.xmd.m.notify.display.XmdDisplay;
@@ -105,11 +106,10 @@ public class MessageManager {
     }
 
     //发送位置消息
-    public ChatMessage sendLocationMessage(String remoteChatId, Location location) {
-        EMMessage emMessage = EMMessage.createLocationSendMessage(location.latitude, location.longitude, location.street, remoteChatId);
-        ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
-        chatMessage.setClubName(AccountManager.getInstance().getUser().getClubName());
-        return sendMessage(chatMessage);
+    public ChatMessage sendLocationMessage(User remoteUser, Location location) {
+        CustomLocationMessage message = CustomLocationMessage.create(
+                remoteUser, location.latitude, location.longitude, location.street, location.staticMapUrl);
+        return sendMessage(message);
     }
 
     //发送撤回命令

@@ -21,7 +21,8 @@
             android:background="#30000000"
             android:padding="2dp"
             android:text="@{data.tip}"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/fontCaption" />
     </FrameLayout>
 
 

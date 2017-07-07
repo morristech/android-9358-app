@@ -1,7 +1,9 @@
 package com.xmd.chat.viewmodel;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,6 +75,12 @@ public abstract class ChatRowViewModel {
 
     public long getTime() {
         return chatMessage.getEmMessage().getMsgTime();
+    }
+
+    public Drawable getContentViewBackground(Context context) {
+        return chatMessage.isReceivedMessage() ?
+                context.getResources().getDrawable(R.drawable.recv_message)
+                : context.getResources().getDrawable(R.drawable.sent_message);
     }
 
     @BindingAdapter("avatar")

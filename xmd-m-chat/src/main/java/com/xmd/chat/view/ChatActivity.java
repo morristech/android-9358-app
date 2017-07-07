@@ -87,6 +87,9 @@ public class ChatActivity extends BaseActivity {
             finish();
             return;
         }
+
+        setTitle(mRemoteUser.getShowName());
+
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerView.setAdapter(mAdapter);
 
@@ -212,14 +215,25 @@ public class ChatActivity extends BaseActivity {
 
     //处理撤回消息
     @Subscribe
-    public void onRevokeMessage(EventRevokeMessage revokeMessage) {
-        String msgId = revokeMessage.getChatRowViewModel().getChatMessage().getEmMessage().getMsgId();
-        getConversation().removeMessage(msgId);
-        removeMessageFromUi(revokeMessage.getChatRowViewModel());
-        MessageManager.getInstance().sendRevokeMessage(mRemoteUser.getChatId(), msgId);
+    public void onRevokeMessage(EventRevokeMessage event) {
+        ChatMessage revokeMsg = event.getChatRowViewModel().getChatMessage();
+        long originMsgTime = revokeMsg.getEmMessage().getMsgTime();
+        if (System.currentTimeMillis() - originMsgTime > ChatConstants.REVOKE_LIMIT_TIME) {
+            XToast.show("发送时间超过" + ChatConstants.REVOKE_LIMIT_TIME / 1000 / 60 + "分钟的消息不能被撤回");
+            return;
+        }
+        //移除原来消息
+        int index = mDataList.indexOf(event.getChatRowViewModel());
 
+        String msgId = revokeMsg.getEmMessage().getMsgId();
+        getConversation().removeMessage(msgId);
+        removeMessageFromUi(event.getChatRowViewModel());
+        //发送撤回命令
+        MessageManager.getInstance().sendRevokeMessage(mRemoteUser.getChatId(), msgId);
+        //增加提示信息
         ChatMessage chatMessage = MessageManager.getInstance().sendTipMessage(getConversation(), mRemoteUser, "你撤回了一条消息");
-        addNewChatMessageToUi(chatMessage);
+        chatMessage.getEmMessage().setMsgTime(revokeMsg.getEmMessage().getMsgTime());
+        insertNewChatMessageToUi(index, chatMessage);
     }
 
     /**
@@ -257,6 +271,14 @@ public class ChatActivity extends BaseActivity {
         mDataList.add(data);
         mAdapter.notifyItemInserted(mDataList.size() - 1);
         mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
+    }
+
+    //增加一条消息到列表
+    public void insertNewChatMessageToUi(int position, ChatMessage chatMessage) {
+        ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
+        mDataList.add(position, data);
+        setShowTime(position - 1 >= 0 ? mDataList.get(position - 1) : null, data);
+        mAdapter.notifyItemInserted(position);
     }
 
     //从列表删除一条消息

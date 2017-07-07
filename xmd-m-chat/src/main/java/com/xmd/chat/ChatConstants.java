@@ -8,6 +8,7 @@ package com.xmd.chat;
 public class ChatConstants {
     //时间显示间隔
     public static final int TIME_SHOW_INTERVAL = 5 * 60 * 1000;
+    public static final long REVOKE_LIMIT_TIME = 2 * 60 * 1000;
 
     //角色定义
     public static final String CHAT_ROLE_USER = "user";

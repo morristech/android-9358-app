@@ -12,4 +12,5 @@ public class Location {
     public double longitude;
     public String province;
     public String street;
+    public String staticMapUrl;
 }

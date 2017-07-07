@@ -37,7 +37,7 @@ public class ChatRowViewFactory {
             case ChatMessage.MSG_TYPE_ORIGIN_IMAGE:
                 baseType = CHAT_ROW_VIEW_IMAGE;
                 break;
-            case ChatMessage.MSG_TYPE_ORIGIN_LOCATION:
+            case ChatMessage.MSG_TYPE_CLUB_LOCATION:
                 baseType = CHAT_ROW_VIEW_LOCATION;
                 break;
             case ChatMessage.MSG_TYPE_ORDER_START:
@@ -101,7 +101,7 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelText(message);
             case ChatMessage.MSG_TYPE_ORIGIN_IMAGE:
                 return new ChatRowViewModelImage(message);
-            case ChatMessage.MSG_TYPE_ORIGIN_LOCATION:
+            case ChatMessage.MSG_TYPE_CLUB_LOCATION:
                 return new ChatRowViewModelLocation(message);
             case ChatMessage.MSG_TYPE_TIP:
                 return new ChatRowViewModelTip(message);
