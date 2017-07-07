@@ -72,11 +72,24 @@
             android:layout_height="1dp"
             android:background="@color/colorDivide" />
 
-        <com.shidou.commonlibrary.widget.AutoHeightViewPager
-            android:id="@+id/submenuLayout"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{data.showSubMenu?View.VISIBLE:View.GONE}" />
+            android:visibility="@{data.showSubMenu?View.VISIBLE:View.GONE}">
+
+            <com.shidou.commonlibrary.widget.AutoHeightViewPager
+                android:id="@+id/submenuLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.shidou.commonlibrary.widget.XViewPageIndicator
+                android:id="@+id/pageIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center" />
+        </FrameLayout>
+
     </LinearLayout>
 </layout>
 

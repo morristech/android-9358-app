@@ -11,17 +11,26 @@
             type="com.xmd.chat.viewmodel.ChatRowViewModelLocation" />
     </data>
 
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="@drawable/chat_location"-->
-    <!--android:text="@{data.address}"-->
-    <!--android:textColor="@android:color/white" />-->
 
-    <WebView
-        android:id="@+id/webView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        app:map="@{data}" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="vertical">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            app:map="@{data}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#80000000"
+            android:text="@{data.address}"
+            android:layout_gravity="bottom"
+            android:textColor="@android:color/white" />
+    </FrameLayout>
+
 </layout>

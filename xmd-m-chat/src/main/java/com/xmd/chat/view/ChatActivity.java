@@ -7,7 +7,7 @@ import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
@@ -60,7 +60,6 @@ public class ChatActivity extends BaseActivity {
 
     private EMConversation mConversation;
     private final int PAGE_SIZE = 20;
-    private int mPageIndex;
 
     private ImageView mFocusMenuView;
 
@@ -100,6 +99,8 @@ public class ChatActivity extends BaseActivity {
 
         mConversation = EMClient.getInstance().chatManager().getConversation(chatId);
 
+        mBinding.pageIndicator.setViewPager(mBinding.submenuLayout, R.drawable.chat_menu_indicator_normal, R.drawable.chat_menu_indicator_focus);
+        mBinding.submenuLayout.addOnPageChangeListener(mBinding.pageIndicator);
         initMenu();
 
         loadData(null);
@@ -235,14 +236,14 @@ public class ChatActivity extends BaseActivity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mFocusMenuView != null) {
-                        mFocusMenuView.setSelected(false);
-                        mFocusMenuView = null;
-                    }
                     if (chatMenu.subMenuList != null && chatMenu.subMenuList.size() > 0) {
                         showSubMenu(imageView, chatMenu);
                     } else {
-                        showSubMenu.set(false);
+                        if (mFocusMenuView != null) {
+                            mFocusMenuView.setSelected(false);
+                            mFocusMenuView = null;
+                            showSubMenu.set(false);
+                        }
                     }
                     if (chatMenu.listener != null) {
                         chatMenu.listener.onClick(v);
@@ -259,16 +260,16 @@ public class ChatActivity extends BaseActivity {
     }
 
     public void showSubMenu(ImageView menuView, final ChatMenu chatMenu) {
-        if (showSubMenu.get()) {
+        if (mFocusMenuView != null) {
+            mFocusMenuView.setSelected(false);
+        }
+        if (mFocusMenuView == menuView) {
+            mFocusMenuView = null;
             showSubMenu.set(false);
             return;
         }
-        mFocusMenuView = menuView;
-        mFocusMenuView.setSelected(true);
-        showSubMenu.set(true);
 
-        mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
-        mBinding.submenuLayout.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+        mBinding.submenuLayout.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 return chatMenu.subMenuList.get(position);
@@ -279,5 +280,16 @@ public class ChatActivity extends BaseActivity {
                 return chatMenu.subMenuList.size();
             }
         });
+        if (chatMenu.subMenuList.size() > 1) {
+            mBinding.pageIndicator.setVisibility(View.VISIBLE);
+            mBinding.pageIndicator.drawIcons(chatMenu.subMenuList.size());
+        } else {
+            mBinding.pageIndicator.setVisibility(View.GONE);
+        }
+
+        mFocusMenuView = menuView;
+        mFocusMenuView.setSelected(true);
+        showSubMenu.set(true);
+        mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
     }
 }

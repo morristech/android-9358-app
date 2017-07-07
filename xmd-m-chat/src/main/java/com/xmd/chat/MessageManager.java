@@ -10,6 +10,7 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.event.EventTotalUnreadMessage;
 import com.xmd.chat.message.ChatMessage;
@@ -100,9 +101,10 @@ public class MessageManager {
         return sendMessage(chatMessage);
     }
 
-    public ChatMessage sendLocationMessage(String remoteChatId, double latitude, double longitude, String address) {
-        EMMessage emMessage = EMMessage.createLocationSendMessage(latitude, longitude, address, remoteChatId);
+    public ChatMessage sendLocationMessage(String remoteChatId, Location location) {
+        EMMessage emMessage = EMMessage.createLocationSendMessage(location.latitude, location.longitude, location.street, remoteChatId);
         ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
+        chatMessage.setClubName(AccountManager.getInstance().getUser().getClubName());
         return sendMessage(chatMessage);
     }
 
