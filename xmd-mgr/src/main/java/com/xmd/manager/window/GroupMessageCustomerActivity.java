@@ -144,6 +144,7 @@ public class GroupMessageCustomerActivity extends BaseActivity {
                     mEditContentFragment.setArguments(bundle);
                     transaction.add(R.id.fragment_message_step, mEditContentFragment);
                 }
+                mEditContentFragment.setSelectCoupon(mCouponFragment.getCouponInfo() != null);
                 break;
             case CONFIRM_FRAGMENT:
                 if (mConfirmFragment != null) {

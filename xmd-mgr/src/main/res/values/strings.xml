@@ -464,6 +464,7 @@
     <string name="alert_message_send_group_time_limit">距离上次群发消息未超过24小时</string>
     <string name="text_all_customer_hint">(发送至通过会所注册的全部手机用户)</string>
     <string name="text_no_activity_selected">未选择任何活动</string>
+    <string name="text_no_content">无内容</string>
     <string name="club_journal">电子期刊</string>
     <string name="club_group_message">微信群发</string>
     <string name="club_coupon">优惠券</string>
