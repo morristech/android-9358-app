@@ -23,18 +23,18 @@ import com.xmd.cashier.contract.ScanPayContract;
 import com.xmd.cashier.contract.ScanPayContract.Presenter;
 import com.xmd.cashier.dal.bean.OnlinePayUrlInfo;
 import com.xmd.cashier.dal.bean.Trade;
-import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
 import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
 import com.xmd.cashier.dal.net.response.StringResult;
-import com.xmd.cashier.exceptions.ServerException;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback0;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.ServerException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -85,7 +85,7 @@ public class ScanPayPresenter implements Presenter {
                                     doCodeExpire();
                                     return;
                                 }
-                                if (AppConstants.APP_REQUEST_YES.equals(result.respData)) {
+                                if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
                                     // 已经扫码:获取买单详情
                                     isScan = true;
                                     mView.updateScanStatus();
@@ -123,13 +123,13 @@ public class ScanPayPresenter implements Presenter {
                 .subscribe(new NetworkSubscriber<OnlinePayDetailResult>() {
                     @Override
                     public void onCallbackSuccess(OnlinePayDetailResult result) {
-                        if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(result.respData.status)) {
+                        if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(result.getRespData().status)) {
                             // 支付成功
                             PosFactory.getCurrentCashier().textToSound("买单成功");
-                            mTradeManager.getCurrentTrade().tradeTime = result.respData.createTime;
-                            mTradeManager.getCurrentTrade().setOnlinePayPaidMoney(result.respData.payAmount);
+                            mTradeManager.getCurrentTrade().tradeTime = result.getRespData().createTime;
+                            mTradeManager.getCurrentTrade().setOnlinePayPaidMoney(result.getRespData().payAmount);
                             // FIXME  更新在线买单支付方式
-                            UiNavigation.gotoScanPayResultActivity(mContext, result.respData);
+                            UiNavigation.gotoScanPayResultActivity(mContext, result.getRespData());
                             mView.finishSelf();
                         } else {
                             if (isCodeExpire()) {
@@ -260,9 +260,9 @@ public class ScanPayPresenter implements Presenter {
         mDeleteXMDOnlineOrderIdSubscription = SpaRetrofit.getService().deleteXMDOnlineOrderId(AccountManager.getInstance().getToken(), orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<BaseBean>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(BaseBean result) {
                         mView.hideLoading();
                         doFinish();
                     }
@@ -287,7 +287,7 @@ public class ScanPayPresenter implements Presenter {
                 .subscribe(new NetworkSubscriber<OnlinePayUrlResult>() {
                     @Override
                     public void onCallbackSuccess(OnlinePayUrlResult result) {
-                        OnlinePayUrlInfo info = result.respData;
+                        OnlinePayUrlInfo info = result.getRespData();
                         if (info == null || TextUtils.isEmpty(info.url)) {
                             mView.showQrError("获取二维码数据异常");
                             return;

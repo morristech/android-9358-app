@@ -30,15 +30,15 @@ import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
-import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.sp.SPManager;
-import com.xmd.cashier.exceptions.ServerException;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.widget.CustomNotifyLayoutManager;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.ServerException;
 
 import java.util.List;
 
@@ -362,9 +362,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_ACCEPT, info.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
+                        .subscribe(new NetworkSubscriber<BaseBean>() {
                             @Override
-                            public void onCallbackSuccess(BaseResult result) {
+                            public void onCallbackSuccess(BaseBean result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单成功", Toast.LENGTH_SHORT).show();
                                 SPManager.getInstance().updateOrderPushTag();
@@ -404,9 +404,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_REJECT, info.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
+                        .subscribe(new NetworkSubscriber<BaseBean>() {
                             @Override
-                            public void onCallbackSuccess(BaseResult result) {
+                            public void onCallbackSuccess(BaseBean result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝成功", Toast.LENGTH_SHORT).show();
                                 SPManager.getInstance().updateOrderPushTag();
@@ -479,9 +479,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_PASS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
+                        .subscribe(new NetworkSubscriber<BaseBean>() {
                             @Override
-                            public void onCallbackSuccess(BaseResult result) {
+                            public void onCallbackSuccess(BaseBean result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认成功", Toast.LENGTH_SHORT).show();
                                 SPManager.getInstance().updateFastPayPushTag();
@@ -522,9 +522,9 @@ public class CustomService extends Service {
                 SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
+                        .subscribe(new NetworkSubscriber<BaseBean>() {
                             @Override
-                            public void onCallbackSuccess(BaseResult result) {
+                            public void onCallbackSuccess(BaseBean result) {
                                 adapter.removeItem(position);
                                 Toast.makeText(MainApplication.getInstance().getApplicationContext(), "已通知请到前台", Toast.LENGTH_SHORT).show();
                                 SPManager.getInstance().updateFastPayPushTag();

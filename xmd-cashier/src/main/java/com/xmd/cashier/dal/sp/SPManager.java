@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.BuildConfig;
+import com.xmd.m.network.XmdNetwork;
 
 /**
  * Created by heyangya on 16-8-23.
@@ -27,12 +28,13 @@ public class SPManager {
     }
 
     public String getSpaServerAddress() {
-        return mSharedPreferences.getString(SPConstants.SERVER_ADDRESS, BuildConfig.SERVER_HOST);
+        return mSharedPreferences.getString(SPConstants.SERVER_ADDRESS, "http://" + BuildConfig.SERVER_HOST);
     }
 
     public void setSpaServerAddress(String address) {
         XLogger.i("set server to " + address);
-        mSharedPreferences.edit().putString(SPConstants.SERVER_ADDRESS, address).apply();
+        XmdNetwork.getInstance().changeServer("http://" + address);
+        mSharedPreferences.edit().putString(SPConstants.SERVER_ADDRESS, "http://" + address).apply();
     }
 
     // ---核销成功

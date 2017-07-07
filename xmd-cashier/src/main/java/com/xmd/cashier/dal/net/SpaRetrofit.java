@@ -17,7 +17,7 @@ public class SpaRetrofit {
     public static synchronized SpaService getService() {
         if (spaService == null) {
             Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl("http://" + SPManager.getInstance().getSpaServerAddress())
+                    .baseUrl(SPManager.getInstance().getSpaServerAddress())
                     .client(OkHttpUtil.getInstance().getClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create());

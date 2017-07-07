@@ -22,11 +22,9 @@ import com.xmd.cashier.dal.bean.ClubQrcodeBytes;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.bean.VerificationItem;
-import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
@@ -36,8 +34,10 @@ import com.xmd.cashier.dal.net.response.MemberPayResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.sp.SPManager;
-import com.xmd.cashier.exceptions.NetworkException;
-import com.xmd.cashier.exceptions.ServerException;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkException;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.ServerException;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
@@ -114,7 +114,7 @@ public class TradeManager {
                 .subscribe(new NetworkSubscriber<StringResult>() {
                     @Override
                     public void onCallbackSuccess(StringResult result) {
-                        mTrade.tradeNo = result.respData;
+                        mTrade.tradeNo = result.getRespData();
                         mTrade.tradeTime = DateUtils.doDate2String(new Date());
                         XLogger.i("OnlinePayTempId : " + mTrade.tradeNo);
                         callback.onSuccess(result);
@@ -139,7 +139,7 @@ public class TradeManager {
                 .subscribe(new NetworkSubscriber<GetTradeNoResult>() {
                     @Override
                     public void onCallbackSuccess(GetTradeNoResult result) {
-                        mTrade.tradeNo = result.respData;
+                        mTrade.tradeNo = result.getRespData();
                         XLogger.i("PosTradeNo : " + mTrade.tradeNo);
                         callback.onSuccess(result);
                     }
@@ -161,7 +161,7 @@ public class TradeManager {
 
                     @Override
                     public void onCallbackSuccess(GetMemberInfo result) {
-                        mTrade.memberInfo = result.respData;
+                        mTrade.memberInfo = result.getRespData();
                         mTrade.memberInfo.token = memberToken;
                         callback.onSuccess(mTrade.memberInfo);
                         XLogger.i("MemberInfo : " + mTrade.memberInfo.toString());
@@ -189,11 +189,11 @@ public class TradeManager {
                 .subscribe(new NetworkSubscriber<MemberPayResult>() {
                     @Override
                     public void onCallbackSuccess(MemberPayResult result) {
-                        mTrade.setMemberPaidMoney(result.respData.payMoney);
-                        mTrade.memberPoints = result.respData.creditAmount;
-                        mTrade.memberPayCertificate = result.respData.tradeId;
+                        mTrade.setMemberPaidMoney(result.getRespData().payMoney);
+                        mTrade.memberPoints = result.getRespData().creditAmount;
+                        mTrade.memberPayCertificate = result.getRespData().tradeId;
                         mTrade.memberPayResult = AppConstants.PAY_RESULT_SUCCESS;
-                        callback.onSuccess(result.respData);
+                        callback.onSuccess(result.getRespData());
                         XLogger.i("MemberPaySuccess : payMoney=" + mTrade.getMemberPaidMoney() + " & creditAmount=" + mTrade.memberPoints);
                     }
 
@@ -293,9 +293,9 @@ public class TradeManager {
                 RequestConstant.DEFAULT_SIGN_VALUE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<BaseBean>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(BaseBean result) {
                         callback.onSuccess(null);
                     }
 
@@ -355,7 +355,7 @@ public class TradeManager {
                 .subscribe(new Action1<StringResult>() {
                     @Override
                     public void call(StringResult stringResult) {
-                        byte[] bitmapBytes = SpaOkHttp.getClubWXQrcode(stringResult.respData);
+                        byte[] bitmapBytes = SpaOkHttp.getClubWXQrcode(stringResult.getRespData());
                         if (bitmapBytes != null) {
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
                             Matrix matrix = new Matrix();
@@ -469,9 +469,9 @@ public class TradeManager {
                                 case AppConstants.TYPE_COUPON:
                                     // 处理券
                                     SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), v.code)
-                                            .subscribe(new NetworkSubscriber<BaseResult>() {
+                                            .subscribe(new NetworkSubscriber<BaseBean>() {
                                                 @Override
-                                                public void onCallbackSuccess(BaseResult result) {
+                                                public void onCallbackSuccess(BaseBean result) {
                                                     // 核销成功
                                                     v.success = true;
                                                     v.errorMsg = AppConstants.APP_REQUEST_YES;
@@ -493,9 +493,9 @@ public class TradeManager {
                                 case AppConstants.TYPE_ORDER:
                                     // 处理预约
                                     SpaRetrofit.getService().verifyPaidOrder(AccountManager.getInstance().getToken(), v.code, AppConstants.PAID_ORDER_OP_VERIFIED)
-                                            .subscribe(new NetworkSubscriber<BaseResult>() {
+                                            .subscribe(new NetworkSubscriber<BaseBean>() {
                                                 @Override
-                                                public void onCallbackSuccess(BaseResult result) {
+                                                public void onCallbackSuccess(BaseBean result) {
                                                     // 核销成功
                                                     v.success = true;
                                                     v.errorMsg = AppConstants.APP_REQUEST_YES;
@@ -533,9 +533,9 @@ public class TradeManager {
                                     continue;
                                 }
                                 SpaRetrofit.getService().verifyWithMoney(AccountManager.getInstance().getToken(), String.valueOf(v.treatInfo.useMoney), v.treatInfo.authorizeCode, v.type)
-                                        .subscribe(new NetworkSubscriber<BaseResult>() {
+                                        .subscribe(new NetworkSubscriber<BaseBean>() {
                                             @Override
-                                            public void onCallbackSuccess(BaseResult result) {
+                                            public void onCallbackSuccess(BaseBean result) {
                                                 // 核销成功
                                                 v.success = true;
                                                 v.errorMsg = AppConstants.APP_REQUEST_YES;

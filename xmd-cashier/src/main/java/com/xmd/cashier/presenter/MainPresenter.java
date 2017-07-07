@@ -33,7 +33,7 @@ import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.cashier.pos.PosImpl;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
-import com.xmd.m.network.OkHttpUtil;
+import com.xmd.m.network.XmdNetwork;
 
 import rx.Subscription;
 
@@ -199,7 +199,7 @@ public class MainPresenter implements MainContract.Presenter {
         mGetVerifyTypeSubscription = VerifyManager.getInstance().getVerifyType(code, new Callback<StringResult>() {
             @Override
             public void onSuccess(StringResult o) {
-                switch (o.respData) {
+                switch (o.getRespData()) {
                     case AppConstants.TYPE_PHONE:
                         // 手机号:核销券和付费预约
                         mView.hideLoading();
@@ -250,7 +250,7 @@ public class MainPresenter implements MainContract.Presenter {
             @Override
             public void onSuccess(CouponResult o) {
                 mView.hideLoading();
-                CouponInfo couponInfo = o.respData;
+                CouponInfo couponInfo = o.getRespData();
                 couponInfo.customType = ("paid".equals(couponInfo.couponType) ? AppConstants.TYPE_PAID_COUPON : AppConstants.TYPE_COUPON);
                 couponInfo.valid = Utils.getCouponValid(couponInfo.startDate, couponInfo.endUseDate, couponInfo.useTimePeriod);
                 UiNavigation.gotoVerifyCouponActivity(mContext, couponInfo, true);
@@ -281,7 +281,7 @@ public class MainPresenter implements MainContract.Presenter {
             @Override
             public void onSuccess(OrderResult o) {
                 mView.hideLoading();
-                UiNavigation.gotoVerifyOrderActivity(mContext, o.respData, true);
+                UiNavigation.gotoVerifyOrderActivity(mContext, o.getRespData(), true);
             }
 
             @Override
@@ -309,7 +309,7 @@ public class MainPresenter implements MainContract.Presenter {
             @Override
             public void onSuccess(CouponResult o) {
                 mView.hideLoading();
-                CouponInfo couponInfo = o.respData;
+                CouponInfo couponInfo = o.getRespData();
                 couponInfo.customType = AppConstants.TYPE_SERVICE_ITEM_COUPON;
                 couponInfo.valid = Utils.getCouponValid(couponInfo.startDate, couponInfo.endUseDate, couponInfo.useTimePeriod);
                 UiNavigation.gotoVerifyCouponActivity(mContext, couponInfo, true);
@@ -339,7 +339,7 @@ public class MainPresenter implements MainContract.Presenter {
             @Override
             public void onSuccess(PrizeResult o) {
                 mView.hideLoading();
-                UiNavigation.gotoVerifyPrizeActivity(mContext, o.respData);
+                UiNavigation.gotoVerifyPrizeActivity(mContext, o.getRespData());
             }
 
             @Override
@@ -366,7 +366,7 @@ public class MainPresenter implements MainContract.Presenter {
             @Override
             public void onSuccess(CommonVerifyResult o) {
                 mView.hideLoading();
-                UiNavigation.gotoVerifyCommonActivity(mContext, o.respData);
+                UiNavigation.gotoVerifyCommonActivity(mContext, o.getRespData());
             }
 
             @Override
@@ -428,8 +428,8 @@ public class MainPresenter implements MainContract.Presenter {
             public void onSuccess(Void o) {
                 mView.hideLoading();
                 mView.showToast("初始化支付环境成功！");
-                // 初始化成功之后添加请求头
-                OkHttpUtil.getInstance().setCommonHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
+                // POS初始化成功之后添加请求头:设备信息
+                XmdNetwork.getInstance().setHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
                 // 开始轮询
                 CustomService.refreshOnlinePayNotify(true);
                 CustomService.refreshOrderRecordNotify(true);

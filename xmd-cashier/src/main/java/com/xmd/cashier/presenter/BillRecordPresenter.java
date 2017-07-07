@@ -68,12 +68,12 @@ public class BillRecordPresenter implements BillRecordContract.Presenter {
                     @Override
                     public void onSuccess(BillRecordResult o) {
                         mView.hideLoadIng();
-                        if (o.respData == null || o.respData.list == null || o.respData.list.size() == 0) {
+                        if (o.getRespData() == null || o.getRespData().list == null || o.getRespData().list.size() == 0) {
                             mView.showLoadEmpty();
                         } else {
                             mView.showLoadSuccess();
-                            mView.updateSumInfo(o.respData.count, o.respData.payMoney);
-                            if (AppConstants.APP_LIST_DEFAULT_PAGE < o.pageCount) {
+                            mView.updateSumInfo(o.getRespData().count, o.getRespData().payMoney);
+                            if (AppConstants.APP_LIST_DEFAULT_PAGE < o.getPageCount()) {
                                 mPageIndex++;
                                 mView.showMoreSuccess();
                                 mView.setHasMore(true);
@@ -81,7 +81,7 @@ public class BillRecordPresenter implements BillRecordContract.Presenter {
                                 mView.showMoreNone();
                                 mView.setHasMore(false);
                             }
-                            mView.showBillData(o.respData.list);
+                            mView.showBillData(o.getRespData().list);
                         }
                     }
 
@@ -107,7 +107,7 @@ public class BillRecordPresenter implements BillRecordContract.Presenter {
                 new Callback<BillRecordResult>() {
                     @Override
                     public void onSuccess(BillRecordResult o) {
-                        if (mPageIndex < o.pageCount) {
+                        if (mPageIndex < o.getPageCount()) {
                             mPageIndex++;
                             mView.showMoreSuccess();
                             mView.setHasMore(true);
@@ -115,7 +115,7 @@ public class BillRecordPresenter implements BillRecordContract.Presenter {
                             mView.showMoreNone();
                             mView.setHasMore(false);
                         }
-                        mView.showBillData(o.respData.list);
+                        mView.showBillData(o.getRespData().list);
                     }
 
                     @Override

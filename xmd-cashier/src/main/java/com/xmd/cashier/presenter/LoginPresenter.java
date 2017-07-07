@@ -85,7 +85,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         final int[] selectedId = {0};
         String currentServer = SPManager.getInstance().getSpaServerAddress();
         for (int i = 0; i < serverList.length; i++) {
-            if (currentServer.equals(serverList[i])) {
+            if (currentServer.contains(serverList[i])) {
                 selectedId[0] = i;
                 break;
             }

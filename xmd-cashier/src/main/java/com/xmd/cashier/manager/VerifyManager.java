@@ -14,9 +14,7 @@ import com.xmd.cashier.dal.bean.CouponInfo;
 import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.bean.PrizeInfo;
 import com.xmd.cashier.dal.bean.TreatInfo;
-import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
@@ -27,8 +25,10 @@ import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordResult;
 import com.xmd.cashier.dal.net.response.VerifyTypeResult;
 import com.xmd.cashier.dal.sp.SPManager;
-import com.xmd.cashier.exceptions.NetworkException;
-import com.xmd.cashier.exceptions.ServerException;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkException;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.ServerException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -206,14 +206,14 @@ public class VerifyManager {
                     @Override
                     public void onCallbackSuccess(CheckInfoListResult result) {
                         // 处理没有数据的情况
-                        if (result == null || result.respData == null || result.respData.isEmpty()) {
+                        if (result == null || result.getRespData() == null || result.getRespData().isEmpty()) {
                             callback.onError("暂未查询到可用的核销信息");
                             return;
                         }
 
                         // 处理内容
                         Gson gson = new Gson();
-                        for (CheckInfo info : result.respData) {
+                        for (CheckInfo info : result.getRespData()) {
                             switch (info.getInfoType()) {
                                 case AppConstants.CHECK_INFO_TYPE_COUPON:
                                     // 券
@@ -240,7 +240,7 @@ public class VerifyManager {
                         }
 
                         // 排序
-                        Collections.sort(result.respData, new Comparator<CheckInfo>() {
+                        Collections.sort(result.getRespData(), new Comparator<CheckInfo>() {
                             @Override
                             public int compare(CheckInfo lhs, CheckInfo rhs) {
                                 if (lhs.getValid() && rhs.getValid()) {
@@ -253,7 +253,7 @@ public class VerifyManager {
                                 return 0;
                             }
                         });
-                        mVerifyList = result.respData;
+                        mVerifyList = result.getRespData();
                         callback.onSuccess(result);
                     }
 
@@ -356,13 +356,13 @@ public class VerifyManager {
 
     /******************************************** 处理核销 *****************************************/
     // ---核销：优惠券---
-    public Subscription verifyCoupon(String couponNo, final Callback<BaseResult> callback) {
+    public Subscription verifyCoupon(String couponNo, final Callback<BaseBean> callback) {
         return SpaRetrofit.getService().verifyCoupon(AccountManager.getInstance().getToken(), couponNo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<BaseBean>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(BaseBean result) {
                         callback.onSuccess(result);
                     }
 
@@ -374,13 +374,13 @@ public class VerifyManager {
     }
 
     // ---核销：付费预约---
-    public Subscription verifyPaidOrder(String orderNo, String processType, final Callback<BaseResult> callback) {
+    public Subscription verifyPaidOrder(String orderNo, String processType, final Callback<BaseBean> callback) {
         return SpaRetrofit.getService().verifyPaidOrder(AccountManager.getInstance().getToken(), orderNo, processType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<BaseBean>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(BaseBean result) {
                         callback.onSuccess(result);
                     }
 
@@ -392,13 +392,13 @@ public class VerifyManager {
     }
 
     // ---核销：奖品---
-    public Subscription verifyLuckyWheel(String verifyCode, final Callback<BaseResult> callback) {
+    public Subscription verifyLuckyWheel(String verifyCode, final Callback<BaseBean> callback) {
         return SpaRetrofit.getService().verifyLuckyWheel(AccountManager.getInstance().getToken(), verifyCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<BaseBean>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(BaseBean result) {
                         callback.onSuccess(result);
                     }
 
@@ -410,13 +410,13 @@ public class VerifyManager {
     }
 
     // ---核销：项目券---
-    public Subscription verifyServiceCoupon(String couponNo, final Callback<BaseResult> callback) {
+    public Subscription verifyServiceCoupon(String couponNo, final Callback<BaseBean> callback) {
         return SpaRetrofit.getService().verifyServiceCoupon(AccountManager.getInstance().getToken(), couponNo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<BaseBean>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(BaseBean result) {
                         callback.onSuccess(result);
                     }
 
@@ -429,13 +429,13 @@ public class VerifyManager {
 
 
     // ---核销：withMoney---
-    public Subscription verifyWithMoney(int amount, String code, String type, final Callback<BaseResult> callback) {
+    public Subscription verifyWithMoney(int amount, String code, String type, final Callback<BaseBean> callback) {
         return SpaRetrofit.getService().verifyWithMoney(AccountManager.getInstance().getToken(), String.valueOf(amount), code, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<BaseBean>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(BaseBean result) {
                         callback.onSuccess(result);
                     }
 
@@ -447,13 +447,13 @@ public class VerifyManager {
     }
 
     // ---核销：任意---
-    public Subscription verifyCommon(String code, final Callback<BaseResult> callback) {
+    public Subscription verifyCommon(String code, final Callback<BaseBean> callback) {
         return SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<BaseBean>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(BaseBean result) {
                         callback.onSuccess(result);
                     }
 
@@ -477,11 +477,11 @@ public class VerifyManager {
                             }
                             switch (info.getInfoType()) {
                                 case AppConstants.CHECK_INFO_TYPE_COUPON:
-                                    SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), info.getCode()).subscribe(new NetworkSubscriber<BaseResult>() {
+                                    SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), info.getCode()).subscribe(new NetworkSubscriber<BaseBean>() {
                                         @Override
-                                        public void onCallbackSuccess(BaseResult result) {
+                                        public void onCallbackSuccess(BaseBean result) {
                                             print(info.getType(), info.getInfo());
-                                            info.setErrorCode(result.statusCode);
+                                            info.setErrorCode(result.getStatusCode());
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
                                         }
@@ -499,11 +499,11 @@ public class VerifyManager {
                                     });
                                     break;
                                 case AppConstants.CHECK_INFO_TYPE_ORDER:
-                                    SpaRetrofit.getService().verifyPaidOrder(AccountManager.getInstance().getToken(), info.getCode(), AppConstants.PAID_ORDER_OP_VERIFIED).subscribe(new NetworkSubscriber<BaseResult>() {
+                                    SpaRetrofit.getService().verifyPaidOrder(AccountManager.getInstance().getToken(), info.getCode(), AppConstants.PAID_ORDER_OP_VERIFIED).subscribe(new NetworkSubscriber<BaseBean>() {
                                         @Override
-                                        public void onCallbackSuccess(BaseResult result) {
+                                        public void onCallbackSuccess(BaseBean result) {
                                             print(info.getType(), info.getInfo());
-                                            info.setErrorCode(result.statusCode);
+                                            info.setErrorCode(result.getStatusCode());
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
                                         }

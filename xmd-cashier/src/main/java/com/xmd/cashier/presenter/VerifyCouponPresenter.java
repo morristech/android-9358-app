@@ -5,9 +5,9 @@ import android.content.Context;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyCouponContract;
 import com.xmd.cashier.dal.bean.CouponInfo;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
+import com.xmd.m.network.BaseBean;
 
 import rx.Subscription;
 
@@ -55,9 +55,9 @@ public class VerifyCouponPresenter implements VerifyCouponContract.Presenter {
             mVerifyNormalCouponSubscription.unsubscribe();
         }
 
-        mVerifyNormalCouponSubscription = VerifyManager.getInstance().verifyCommon(info.couponNo, new Callback<BaseResult>() {
+        mVerifyNormalCouponSubscription = VerifyManager.getInstance().verifyCommon(info.couponNo, new Callback<BaseBean>() {
             @Override
-            public void onSuccess(BaseResult o) {
+            public void onSuccess(BaseBean o) {
                 VerifyManager.getInstance().print(info.customType, info);
                 mView.showToast("核销成功");
                 mView.hideLoading();

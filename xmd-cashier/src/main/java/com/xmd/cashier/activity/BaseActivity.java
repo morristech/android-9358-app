@@ -15,21 +15,18 @@ import com.umeng.analytics.MobclickAgent;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
-import com.xmd.cashier.common.RxBus;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.exceptions.TokenExpiredException;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.cashier.widget.CustomToolbar;
+import com.xmd.m.network.EventTokenExpired;
 
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class BaseActivity extends AppCompatActivity {
     private XProgressDialog progressDialog;
-    private Subscription tokenExpiredSubscription;
 
     protected static final int TOOL_BAR_NAV_NONE = 0;
     protected static final int TOOL_BAR_NAV_HOME = 1;
@@ -41,21 +38,19 @@ public class BaseActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         MainApplication.getInstance().addActivity(this);
         progressDialog = new XProgressDialog(this);
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe
+    public void onEvent(EventTokenExpired event) {
         if (!(this instanceof LoginActivity)) {
-            tokenExpiredSubscription = RxBus.getDefault().toObservable(TokenExpiredException.class)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<TokenExpiredException>() {
-                        @Override
-                        public void call(TokenExpiredException e) {
-                            // 关闭轮询
-                            CustomService.refreshOrderRecordNotify(false);
-                            CustomService.refreshOnlinePayNotify(false);
-                            AccountManager.getInstance().cleanUserInfo();
-                            VerifyManager.getInstance().clearVerifyList();
-                            showToast(getString(R.string.token_expired));
-                            UiNavigation.gotoLoginActivity(BaseActivity.this);
-                        }
-                    });
+            // 关闭轮询
+            CustomService.refreshOrderRecordNotify(false);
+            CustomService.refreshOnlinePayNotify(false);
+            AccountManager.getInstance().cleanUserInfo();
+            VerifyManager.getInstance().clearVerifyList();
+            showToast(getString(R.string.token_expired));
+            UiNavigation.gotoLoginActivity(BaseActivity.this);
         }
     }
 
@@ -106,9 +101,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         MainApplication.getInstance().removeActivity(this);
         progressDialog.dismiss();
-        if (tokenExpiredSubscription != null) {
-            tokenExpiredSubscription.unsubscribe();
-        }
+        EventBus.getDefault().unregister(this);
     }
 
     public void showLoading() {

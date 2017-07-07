@@ -66,9 +66,9 @@ public class SettleRecordPresenter implements SettleRecordContract.Presenter {
             @Override
             public void onSuccess(SettleRecordResult o) {
                 mView.hideLoading();
-                if (o.respData != null && o.respData.records != null && o.respData.records.size() > 0) {
+                if (o.getRespData() != null && o.getRespData().records != null && o.getRespData().records.size() > 0) {
                     mView.showLoadSuccess();
-                    if (mPageIndex < o.pageCount) {
+                    if (mPageIndex < o.getPageCount()) {
                         hasMore = true;
                         mPageIndex++;
                         mView.showMoreSuccess();
@@ -76,7 +76,7 @@ public class SettleRecordPresenter implements SettleRecordContract.Presenter {
                         hasMore = false;
                         mView.showMoreNone();
                     }
-                    mView.showData(o.respData.records);
+                    mView.showData(o.getRespData().records);
                 } else {
                     mView.showLoadEmpty();
                 }
@@ -108,7 +108,7 @@ public class SettleRecordPresenter implements SettleRecordContract.Presenter {
             @Override
             public void onSuccess(SettleRecordResult o) {
                 isLoadingMore = false;
-                if (mPageIndex < o.pageCount) {
+                if (mPageIndex < o.getPageCount()) {
                     mPageIndex++;
                     hasMore = true;
                     mView.showMoreSuccess();
@@ -116,7 +116,7 @@ public class SettleRecordPresenter implements SettleRecordContract.Presenter {
                     hasMore = false;
                     mView.showMoreNone();
                 }
-                mView.showData(o.respData.records);
+                mView.showData(o.getRespData().records);
             }
 
             @Override
@@ -143,9 +143,9 @@ public class SettleRecordPresenter implements SettleRecordContract.Presenter {
             @Override
             public void onSuccess(SettleRecordResult o) {
                 mView.hideLoading();
-                if (o.respData != null && o.respData.records != null && o.respData.records.size() > 0) {
+                if (o.getRespData() != null && o.getRespData().records != null && o.getRespData().records.size() > 0) {
                     mView.showLoadSuccess();
-                    mView.showData(o.respData.records);
+                    mView.showData(o.getRespData().records);
                 } else {
                     mView.showLoadEmpty();
                 }

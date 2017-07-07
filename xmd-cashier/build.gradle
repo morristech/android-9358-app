@@ -51,15 +51,13 @@ android {
         debug {
             buildConfigField "String", "SERVER_HOST", SERVER_SDCM100
             buildConfigField "String", "UPDATE_SERVER_HOST", "\"192.168.1.100:9883\""
-            buildConfigField "String", "ONLINE_PAY_HOST", "\"test.xiaomodo.com\""
 
             manifestPlaceholders = [
-                    GETUI_APP_ID        : "2EGme0wegq6E8tRnNs0GhA",
-                    GETUI_APP_KEY       : "wZgR2bW8Rv9ew0t8Fg4Hq9",
-                    GETUI_APP_SECRET    : "DQJiiS6cWT9wVuaSYOSKzA",
-                    GETUI_MASTER_SECRET : "seP9EYGdeu8jdegWDCXVt"
+                    GETUI_APP_ID       : "2EGme0wegq6E8tRnNs0GhA",
+                    GETUI_APP_KEY      : "wZgR2bW8Rv9ew0t8Fg4Hq9",
+                    GETUI_APP_SECRET   : "DQJiiS6cWT9wVuaSYOSKzA",
+                    GETUI_MASTER_SECRET: "seP9EYGdeu8jdegWDCXVt"
             ]
-
         }
         release {
             minifyEnabled true
@@ -68,15 +66,13 @@ android {
 
             buildConfigField "String", "SERVER_HOST", SERVER_PUBLIC
             buildConfigField "String", "UPDATE_SERVER_HOST", "\"service.xiaomodo.com\""
-            buildConfigField "String", "ONLINE_PAY_HOST", SERVER_PUBLIC
 
             manifestPlaceholders = [
-                    GETUI_APP_ID        : "RLrQetj8Aa6HitucKiOVy5",
-                    GETUI_APP_KEY       : "7vro2q7NREAzOeco4BG4X3",
-                    GETUI_APP_SECRET    : "AqdqH9i61F6Yu5PkNUEQT1",
-                    GETUI_MASTER_SECRET : "czE4FjhBCI9eyUMNnAKEE"
+                    GETUI_APP_ID       : "RLrQetj8Aa6HitucKiOVy5",
+                    GETUI_APP_KEY      : "7vro2q7NREAzOeco4BG4X3",
+                    GETUI_APP_SECRET   : "AqdqH9i61F6Yu5PkNUEQT1",
+                    GETUI_MASTER_SECRET: "czE4FjhBCI9eyUMNnAKEE"
             ]
-
         }
     }
 

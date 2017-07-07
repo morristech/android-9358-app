@@ -208,22 +208,22 @@ public class VerificationPresenter implements VerificationContract.Presenter {
         mGetVerifyTypeSubscription = VerifyManager.getInstance().getVerifyType(number, new Callback<StringResult>() {
             @Override
             public void onSuccess(StringResult o) {
-                switch (o.respData) {
+                switch (o.getRespData()) {
                     case AppConstants.TYPE_PHONE:
                         // 手机号
                         getList(number);
                         break;
                     case AppConstants.TYPE_COUPON:
                         // 券
-                        getCoupon(number, o.respData);
+                        getCoupon(number, o.getRespData());
                         break;
                     case AppConstants.TYPE_ORDER:
                         // 预约
-                        getOrder(number, o.respData);
+                        getOrder(number, o.getRespData());
                         break;
                     case AppConstants.TYPE_PAY_FOR_OTHER:
                         // 请客
-                        getTreat(number, o.respData);
+                        getTreat(number, o.getRespData());
                         break;
                     default:
                         mView.hideLoadingView();
@@ -248,12 +248,12 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             @Override
             public void onSuccess(CheckInfoListResult o) {
                 mView.hideLoadingView();
-                if (o.respData == null || o.respData.isEmpty()) {
+                if (o.getRespData() == null || o.getRespData().isEmpty()) {
                     mView.showError("未查询到有效的优惠信息");
                     return;
                 }
                 Gson gson = new Gson();
-                for (CheckInfo info : o.respData) {
+                for (CheckInfo info : o.getRespData()) {
                     if (info.getValid()) {
                         // 可用
                         switch (info.getType()) {
@@ -312,7 +312,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
         mGetVerifyCouponSubscription = mTradeManager.getVerifyCoupon(couponNo, new Callback<CouponResult>() {
             @Override
             public void onSuccess(CouponResult o) {
-                CouponInfo info = o.respData;
+                CouponInfo info = o.getRespData();
                 info.customType = ("paid".equals(info.couponType) ? AppConstants.TYPE_PAID_COUPON : AppConstants.TYPE_COUPON);
                 info.valid = Utils.getCouponValid(info.startDate, info.endUseDate, info.useTimePeriod);
                 VerificationItem item = new VerificationItem();
@@ -342,7 +342,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
         mGetVerifyOrderSubscription = mTradeManager.getVerifyOrder(orderNo, new Callback<OrderResult>() {
             @Override
             public void onSuccess(OrderResult o) {
-                OrderInfo info = o.respData;
+                OrderInfo info = o.getRespData();
                 VerificationItem item = new VerificationItem();
                 item.code = info.orderNo;
                 item.type = type;
@@ -370,10 +370,10 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             @Override
             public void onSuccess(CommonVerifyResult o) {
                 TreatInfo info = new TreatInfo();
-                info.authorizeCode = o.respData.code;
-                info.amount = Integer.parseInt(o.respData.info.amount);
-                info.userName = o.respData.userName;
-                info.userPhone = o.respData.userPhone;
+                info.authorizeCode = o.getRespData().code;
+                info.amount = Integer.parseInt(o.getRespData().info.amount);
+                info.userName = o.getRespData().userName;
+                info.userPhone = o.getRespData().userPhone;
                 VerificationItem item = new VerificationItem();
                 item.code = info.authorizeCode;
                 item.type = type;

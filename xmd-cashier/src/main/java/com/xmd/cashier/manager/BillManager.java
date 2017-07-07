@@ -11,9 +11,9 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.BillInfo;
 import com.xmd.cashier.dal.bean.Trade;
-import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.SpaRetrofit;
 import com.xmd.cashier.dal.net.response.BillRecordResult;
+import com.xmd.m.network.NetworkSubscriber;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;

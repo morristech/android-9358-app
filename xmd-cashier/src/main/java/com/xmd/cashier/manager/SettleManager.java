@@ -7,11 +7,11 @@ import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.SettleSummaryInfo;
-import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.SettleRecordResult;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
 
 import java.util.Date;
 import java.util.List;
@@ -37,13 +37,13 @@ public class SettleManager {
     }
 
     // 确认结算
-    public Subscription saveSettle(String settleRecord, final Callback<BaseResult> callback) {
+    public Subscription saveSettle(String settleRecord, final Callback<BaseBean> callback) {
         return SpaRetrofit.getService().saveSettle(AccountManager.getInstance().getToken(), settleRecord)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
+                .subscribe(new NetworkSubscriber<BaseBean>() {
                     @Override
-                    public void onCallbackSuccess(BaseResult result) {
+                    public void onCallbackSuccess(BaseBean result) {
                         callback.onSuccess(result);
                     }
 

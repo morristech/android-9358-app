@@ -40,13 +40,6 @@ public class RequestConstant {
     // 获取核销列表:优惠券 + 付费预约
     public static final String URL_USER_CHECK_INFO_LIST = SPA_SERVICE_BASE + "/v2/manager/checkinfo/info/{number}";
 
-    // 获取优惠列表   -- 核销 old
-    public static final String URL_USER_COUPON_LIST = SPA_SERVICE_BASE + "/v2/manager/user/coupons";
-    // 根据预约码查询优惠券或者订单  -- 收银
-    public static final String URL_GET_ORDER_COUPON_VIEW = SPA_SERVICE_BASE + "/v2/manager/user/paid_order_or_coupon/view";
-    // 根据授权码查询未使用的授权详情--针对请客    -- 收银
-    public static final String URL_GET_TREAT_INFO = SPA_SERVICE_BASE + "/v2/financial/account/payforother/not_used_detail";
-
     // 查询核销码类型
     public static final String URL_GET_VERIFY_TYPE = SPA_SERVICE_BASE + "/v2/manager/checkinfo/type/get";
 
@@ -213,15 +206,6 @@ public class RequestConstant {
     public static final int RESP_OK_NO_CONTENT = 204;
     public static final int RESP_TOKEN_EXPIRED = 401;
     public static final int RESP_ERROR = 400;
-    public static final int RESP_EXCEPTION = 404;
-
-    public static final int RESP_ERROR_CODE_FOR_LOCAL = 9999;
-    public static final int PAY_RESULT_ERROR_CODE = 500;
-
-    public static final String RESP_STATUS_FAIL = "fail";
-
-    public static final String RESULT_TYPE_ORDER = "paid_order";
-    public static final String RESULT_TYPE_COUPON = "paid_coupon";
 
     public static final String DEFAULT_SIGN_VALUE = "need_sign";
     public static final String CLIENT_SECRET = "SPA$@MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIgHnOn7LLILlKETd6";

@@ -154,7 +154,7 @@ public class XmdPushManager {
         if (!binding) {
             return true;
         }
-        XLogger.d(TAG, "binding ...userId:" + userId + ",clientId:" + clientId);
+        XLogger.d(TAG, "binding... userId:" + userId + " & clientId:" + clientId);
         String secretBefore = getuiAppId +
                 getuiAppSecret +
                 userId +
@@ -169,12 +169,12 @@ public class XmdPushManager {
             @Override
             public void onCallbackSuccess(BaseBean result) {
                 bound = true;
-                XLogger.i(TAG, "bind userId:" + userId + " with clientId:" + clientId + " success!");
+                XLogger.i(TAG, "bind success --- userId:" + userId + " & clientId:" + clientId);
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e(TAG, "bind failed:" + e.getLocalizedMessage());
+                XLogger.e(TAG, "bind failed --- " + e.getLocalizedMessage());
             }
         });
 

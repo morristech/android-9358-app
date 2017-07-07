@@ -144,4 +144,12 @@ public class XmdNetwork {
         OkHttpUtil.getInstance().removeCommonHeader(TOKEN);
         sharedPreferences.edit().remove(TOKEN).apply();
     }
+
+    public void setHeader(String key, String value) {
+        OkHttpUtil.getInstance().setCommonHeader(key, value);
+    }
+
+    public void setRequestPreprocess(OkHttpUtil.RequestPreprocess requestPreprocess) {
+        OkHttpUtil.getInstance().setRequestPreprocess(requestPreprocess);
+    }
 }

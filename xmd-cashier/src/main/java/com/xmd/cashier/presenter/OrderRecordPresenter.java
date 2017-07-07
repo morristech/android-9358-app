@@ -6,12 +6,12 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.OrderRecordContract;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.NotifyManager;
+import com.xmd.m.network.BaseBean;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -91,11 +91,11 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
             @Override
             public void onSuccess(OrderRecordListResult o) {
                 mView.clearData();
-                if (o.respData == null || o.respData.size() == 0) {
+                if (o.getRespData() == null || o.getRespData().size() == 0) {
                     mView.showRefreshEmpty();
                 } else {
                     mView.showRefreshSuccess();
-                    if (pageIndex < o.pageCount) {
+                    if (pageIndex < o.getPageCount()) {
                         pageIndex++;
                         hasMore = true;
                         mView.showMoreSuccess();
@@ -103,7 +103,7 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
                         hasMore = false;
                         mView.showMoreNone();
                     }
-                    mView.showData(o.respData);
+                    mView.showData(o.getRespData());
                 }
                 isRefreshing = false;
             }
@@ -134,7 +134,7 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
         mGetOrderRecordListSubscription = NotifyManager.getInstance().getOrderRecordList(pageIndex, mSearch, mFilter, new Callback<OrderRecordListResult>() {
             @Override
             public void onSuccess(OrderRecordListResult o) {
-                if (pageIndex < o.pageCount) {
+                if (pageIndex < o.getPageCount()) {
                     pageIndex++;
                     hasMore = true;
                     mView.showMoreSuccess();
@@ -142,7 +142,7 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
                     hasMore = false;
                     mView.showMoreNone();
                 }
-                mView.showData(o.respData);
+                mView.showData(o.getRespData());
                 isLoading = false;
             }
 
@@ -199,9 +199,9 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
         if (mAcceptOrderRecordSubscription != null) {
             mAcceptOrderRecordSubscription.unsubscribe();
         }
-        mAcceptOrderRecordSubscription = NotifyManager.getInstance().acceptOrder(info.id, new Callback<BaseResult>() {
+        mAcceptOrderRecordSubscription = NotifyManager.getInstance().acceptOrder(info.id, new Callback<BaseBean>() {
             @Override
-            public void onSuccess(BaseResult o) {
+            public void onSuccess(BaseBean o) {
                 mView.hideLoading();
                 mView.showToast("订单接受成功");
                 mView.updateDataStatus(AppConstants.ORDER_RECORD_STATUS_ACCEPT, position);
@@ -233,9 +233,9 @@ public class OrderRecordPresenter implements OrderRecordContract.Presenter {
         if (mRejectOrderRecordSubscription != null) {
             mRejectOrderRecordSubscription.unsubscribe();
         }
-        mRejectOrderRecordSubscription = NotifyManager.getInstance().rejectOrder(info.id, new Callback<BaseResult>() {
+        mRejectOrderRecordSubscription = NotifyManager.getInstance().rejectOrder(info.id, new Callback<BaseBean>() {
             @Override
-            public void onSuccess(BaseResult o) {
+            public void onSuccess(BaseBean o) {
                 mView.hideLoading();
                 mView.showToast("订单拒绝成功");
                 mView.updateDataStatus(AppConstants.ORDER_RECORD_STATUS_REJECT, position);

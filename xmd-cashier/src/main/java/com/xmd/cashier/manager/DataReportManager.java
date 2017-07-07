@@ -116,8 +116,8 @@ public class DataReportManager {
         public void onSuccess(ReportTradeDataResult o) {
             XLogger.i("trade data report ok!");
             if (trade != null) {
-                if (o.respData != null) {
-                    trade.posPoints = o.respData.cashierPoints;
+                if (o.getRespData() != null) {
+                    trade.posPoints = o.getRespData().cashierPoints;
                 }
             } else {
                 DataReportTable.delete(tradeNo);

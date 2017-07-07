@@ -29,7 +29,6 @@ import com.xmd.m.notify.push.XmdPushMessageListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import okhttp3.Request;
@@ -62,15 +61,6 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         SPManager.getInstance().init(getSharedPreferences("9358", MODE_PRIVATE));
         CrashHandler.getInstance().init(getApplicationContext(), this);
         XToast.init(getApplicationContext(), 0);
-        OkHttpUtil.init(getFilesDir() + File.separator + "networkCache", 10 * 1024 * 1024, 10000, 10000, 10000);
-        OkHttpUtil.getInstance().setLog(true);
-        OkHttpUtil.getInstance().setCommonHeader("User-Agent", "9358-cashier-" + BuildConfig.POS_TYPE);
-        OkHttpUtil.getInstance().setRequestPreprocess(new OkHttpUtil.RequestPreprocess() {
-            @Override
-            public Request preProcess(Request request) {
-                return SpaOkHttp.checkAndSign(request);
-            }
-        });
 
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(true);
@@ -78,18 +68,27 @@ public class MainApplication extends Application implements CrashHandler.Callbac
 
         DataReportManager.getInstance().startMonitor();
 
-        // 推送使用到xmd-network模块,需要初始化
-        XmdNetwork.getInstance().init(this, "9358-cashier-" + BuildConfig.POS_TYPE, "http://" + SPManager.getInstance().getSpaServerAddress());
+        // 初始化网络模块
+        XmdNetwork.getInstance().init(this, "9358-cashier-" + BuildConfig.POS_TYPE, SPManager.getInstance().getSpaServerAddress());
         XmdNetwork.getInstance().setDebug(true);
+        XmdNetwork.getInstance().setRequestPreprocess(new OkHttpUtil.RequestPreprocess() {
+            @Override
+            public Request preProcess(Request request) {
+                return SpaOkHttp.checkAndSign(request);
+            }
+        });
+
+        // 初始化推送
         XmdPushManager.getInstance().init(this, "pos", new XmdPushMessageListener() {
             @Override
             public void onMessage(XmdPushMessage message) {
-
+                // 按照指定格式处理消息
             }
 
             @Override
             public void onRawMessage(String message) {
-                XLogger.e("MainApplication:" + message);
+                // 处理原始透传消息
+                XLogger.i("MainApplication:" + message);
                 try {
                     JSONObject jsonObject = new JSONObject(message);
                     switch (jsonObject.getString(RequestConstant.KEY_BUSINESS_TYPE)) {
@@ -107,6 +106,8 @@ public class MainApplication extends Application implements CrashHandler.Callbac
                 }
             }
         });
+
+        // 开启服务
         CustomService.start();
     }
 
