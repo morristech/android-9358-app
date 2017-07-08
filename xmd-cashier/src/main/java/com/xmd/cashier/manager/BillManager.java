@@ -11,13 +11,13 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.BillInfo;
 import com.xmd.cashier.dal.bean.Trade;
-import com.xmd.cashier.dal.net.SpaRetrofit;
+import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.BillRecordResult;
 import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
+import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 16-11-30.
@@ -38,40 +38,38 @@ public class BillManager {
 
     // 获取交易流水
     public Subscription getBillList(String billStart, String billEnd, int payType, int status, int pageNo, final Callback<BillRecordResult> callback) {
-        return SpaRetrofit.getService().getBill(AccountManager.getInstance().getToken(), billStart, billEnd, payType, status, pageNo, AppConstants.APP_LIST_PAGE_SIZE)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BillRecordResult>() {
+        Observable<BillRecordResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getBill(AccountManager.getInstance().getToken(), billStart, billEnd, payType, status, pageNo, AppConstants.APP_LIST_PAGE_SIZE);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BillRecordResult>() {
 
-                    @Override
-                    public void onCallbackSuccess(BillRecordResult result) {
-                        callback.onSuccess(result);
-                    }
+            @Override
+            public void onCallbackSuccess(BillRecordResult result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        e.printStackTrace();
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                e.printStackTrace();
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 搜索交易流水
     public Subscription searchBillList(String tradeNO, int pageNo, final Callback<BillRecordResult> callback) {
-        return SpaRetrofit.getService().searchBill(AccountManager.getInstance().getToken(), tradeNO, pageNo, AppConstants.APP_LIST_PAGE_SIZE)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BillRecordResult>() {
-                    @Override
-                    public void onCallbackSuccess(BillRecordResult result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<BillRecordResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .searchBill(AccountManager.getInstance().getToken(), tradeNO, pageNo, AppConstants.APP_LIST_PAGE_SIZE);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BillRecordResult>() {
+            @Override
+            public void onCallbackSuccess(BillRecordResult result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     public void print(BillInfo info) {

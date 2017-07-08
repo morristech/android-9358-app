@@ -12,8 +12,10 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -111,6 +113,47 @@ public class XmdNetwork {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
+    }
+
+    // 特殊处理
+    public <T> Subscription request(Observable<T> observable, Subscriber<T> subscriber) {
+        if (subscriber == null) {
+            subscriber = new Subscriber<T>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(T t) {
+
+                }
+            };
+        }
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public <T> Subscription request(Observable<T> observable, Action1<T> action) {
+        if (action == null) {
+            action = new Action1<T>() {
+                @Override
+                public void call(T t) {
+
+                }
+            };
+        }
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(action);
     }
 
     /**

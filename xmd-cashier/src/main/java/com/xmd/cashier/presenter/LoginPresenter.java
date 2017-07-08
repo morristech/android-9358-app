@@ -9,7 +9,6 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.LoginContract;
 import com.xmd.cashier.dal.bean.User;
-import com.xmd.cashier.dal.net.SpaRetrofit;
 import com.xmd.cashier.dal.net.response.LoginResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
@@ -101,7 +100,6 @@ public class LoginPresenter implements LoginContract.Presenter {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SPManager.getInstance().setSpaServerAddress(serverList[selectedId[0]]);
-                        SpaRetrofit.rebuildService();
                     }
                 })
                 .setCancelable(false)

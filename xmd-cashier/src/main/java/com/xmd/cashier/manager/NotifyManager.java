@@ -13,7 +13,6 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.net.RequestConstant;
-import com.xmd.cashier.dal.net.SpaRetrofit;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.net.response.OrderRecordListResult;
@@ -27,9 +26,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import retrofit2.Call;
+import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-4-11.
@@ -51,182 +49,165 @@ public class NotifyManager {
 
     // 预约订单列表
     public Subscription getOrderRecordList(int page, String search, String status, final Callback<OrderRecordListResult> callback) {
-        return SpaRetrofit.getService().getOrderRecordList(AccountManager.getInstance().getToken(),
-                String.valueOf(page), String.valueOf(AppConstants.APP_LIST_PAGE_SIZE),
-                search, status)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<OrderRecordListResult>() {
-                    @Override
-                    public void onCallbackSuccess(OrderRecordListResult result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<OrderRecordListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getOrderRecordList(AccountManager.getInstance().getToken(), String.valueOf(page), String.valueOf(AppConstants.APP_LIST_PAGE_SIZE), search, status);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OrderRecordListResult>() {
+            @Override
+            public void onCallbackSuccess(OrderRecordListResult result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        e.printStackTrace();
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                e.printStackTrace();
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 接受订单
     public Subscription acceptOrder(String orderId, final Callback<BaseBean> callback) {
-        return SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(),
-                AppConstants.SESSION_TYPE,
-                AppConstants.ORDER_RECORD_STATUS_ACCEPT, orderId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseBean>() {
-                    @Override
-                    public void onCallbackSuccess(BaseBean result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_ACCEPT, orderId);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 拒绝订单
     public Subscription rejectOrder(String orderId, final Callback<BaseBean> callback) {
-        return SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(),
-                AppConstants.SESSION_TYPE,
-                AppConstants.ORDER_RECORD_STATUS_REJECT, orderId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseBean>() {
-                    @Override
-                    public void onCallbackSuccess(BaseBean result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_REJECT, orderId);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 在线买单列表
     public Subscription getOnlinePayList(int page, String search, String status, final Callback<OnlinePayListResult> callback) {
-        return SpaRetrofit.getService().getOnlinePayList(AccountManager.getInstance().getToken(),
-                String.valueOf(page), String.valueOf(AppConstants.APP_LIST_PAGE_SIZE), AppConstants.APP_REQUEST_YES, search, status)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<OnlinePayListResult>() {
-                    @Override
-                    public void onCallbackSuccess(OnlinePayListResult result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<OnlinePayListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getOnlinePayList(AccountManager.getInstance().getToken(), String.valueOf(page), String.valueOf(AppConstants.APP_LIST_PAGE_SIZE), AppConstants.APP_REQUEST_YES, search, status);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayListResult>() {
+            @Override
+            public void onCallbackSuccess(OnlinePayListResult result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 确认买单
     public Subscription passOnlinePay(String orderId, String status, final Callback<BaseBean> callback) {
-        return SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(),
-                orderId, status)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseBean>() {
-                    @Override
-                    public void onCallbackSuccess(BaseBean result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .updateOnlinePayStatus(AccountManager.getInstance().getToken(), orderId, status);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 请到前台
     public Subscription unPassOnlinePay(String orderId, String status, final Callback<BaseBean> callback) {
-        return SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(),
-                orderId, status)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseBean>() {
-                    @Override
-                    public void onCallbackSuccess(BaseBean result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .updateOnlinePayStatus(AccountManager.getInstance().getToken(), orderId, status);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     public void refreshOrderRecordNotify() {
-        SpaRetrofit.getService().getOrderRecordList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<OrderRecordListResult>() {
-                    @Override
-                    public void onCallbackSuccess(OrderRecordListResult result) {
-                        // 成功:判断列表,显示通知
-                        if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
-                            SPManager.getInstance().setOrderPushTag(result.getRespData().size());
-                            for (OrderRecordInfo info : result.getRespData()) {
-                                info.tempNo = result.getRespData().indexOf(info) + 1;
-                            }
-                            Intent intent = new Intent();
-                            intent.setAction(AppConstants.ACTION_CUSTOM_NOTIFY_RECEIVER);
-                            intent.putExtra(AppConstants.EXTRA_NOTIFY_TYPE, AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD);
-                            intent.putExtra(AppConstants.EXTRA_NOTIFY_DATA, (Serializable) result.getRespData());
-                            MainApplication.getInstance().getApplicationContext().sendBroadcast(intent);
-                        } else {
-                            SPManager.getInstance().setOrderPushTag(0);
-                        }
+        Observable<OrderRecordListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getOrderRecordList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT);
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OrderRecordListResult>() {
+            @Override
+            public void onCallbackSuccess(OrderRecordListResult result) {
+                // 成功:判断列表,显示通知
+                if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
+                    SPManager.getInstance().setOrderPushTag(result.getRespData().size());
+                    for (OrderRecordInfo info : result.getRespData()) {
+                        info.tempNo = result.getRespData().indexOf(info) + 1;
                     }
+                    Intent intent = new Intent();
+                    intent.setAction(AppConstants.ACTION_CUSTOM_NOTIFY_RECEIVER);
+                    intent.putExtra(AppConstants.EXTRA_NOTIFY_TYPE, AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD);
+                    intent.putExtra(AppConstants.EXTRA_NOTIFY_DATA, (Serializable) result.getRespData());
+                    MainApplication.getInstance().getApplicationContext().sendBroadcast(intent);
+                } else {
+                    SPManager.getInstance().setOrderPushTag(0);
+                }
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        e.printStackTrace();
-                        XLogger.i(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                e.printStackTrace();
+                XLogger.i(e.getLocalizedMessage());
+            }
+        });
     }
 
     public void refreshOnlinePayNotify() {
-        SpaRetrofit.getService().getOnlinePayList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), AppConstants.APP_REQUEST_YES, null, AppConstants.ONLINE_PAY_STATUS_PAID)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<OnlinePayListResult>() {
-                    @Override
-                    public void onCallbackSuccess(OnlinePayListResult result) {
-                        //成功:判断列表,显示通知
-                        if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
-                            SPManager.getInstance().setFastPayPushTag(result.getRespData().size());
-                            for (OnlinePayInfo info : result.getRespData()) {
-                                info.tempNo = result.getRespData().indexOf(info) + 1;
-                            }
-                            Intent intent = new Intent();
-                            intent.setAction(AppConstants.ACTION_CUSTOM_NOTIFY_RECEIVER);
-                            intent.putExtra(AppConstants.EXTRA_NOTIFY_TYPE, AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY);
-                            intent.putExtra(AppConstants.EXTRA_NOTIFY_DATA, (Serializable) result.getRespData());
-                            MainApplication.getInstance().getApplicationContext().sendBroadcast(intent);
-                        } else {
-                            SPManager.getInstance().setFastPayPushTag(0);
-                        }
+        Observable<OnlinePayListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getOnlinePayList(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), AppConstants.APP_REQUEST_YES, null, AppConstants.ONLINE_PAY_STATUS_PAID);
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayListResult>() {
+            @Override
+            public void onCallbackSuccess(OnlinePayListResult result) {
+                //成功:判断列表,显示通知
+                if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
+                    SPManager.getInstance().setFastPayPushTag(result.getRespData().size());
+                    for (OnlinePayInfo info : result.getRespData()) {
+                        info.tempNo = result.getRespData().indexOf(info) + 1;
                     }
+                    Intent intent = new Intent();
+                    intent.setAction(AppConstants.ACTION_CUSTOM_NOTIFY_RECEIVER);
+                    intent.putExtra(AppConstants.EXTRA_NOTIFY_TYPE, AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY);
+                    intent.putExtra(AppConstants.EXTRA_NOTIFY_DATA, (Serializable) result.getRespData());
+                    MainApplication.getInstance().getApplicationContext().sendBroadcast(intent);
+                } else {
+                    SPManager.getInstance().setFastPayPushTag(0);
+                }
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        e.printStackTrace();
-                        XLogger.i(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                e.printStackTrace();
+                XLogger.i(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 打印预约订单小票
@@ -364,13 +345,13 @@ public class NotifyManager {
     }
 
     private boolean getFastPayCount() {
-        XLogger.e("getFastPayCount request");
+        XLogger.i("getFastPayCount request");
         callOnlinePay = XmdNetwork.getInstance().getService(SpaService.class)
                 .getOnlinePayCount(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), AppConstants.APP_REQUEST_YES, null, AppConstants.ONLINE_PAY_STATUS_PAID);
         XmdNetwork.getInstance().requestSync(callOnlinePay, new NetworkSubscriber<OnlinePayListResult>() {
             @Override
             public void onCallbackSuccess(OnlinePayListResult result) {
-                XLogger.e("getFastPayCount success");
+                XLogger.i("getFastPayCount success");
                 //成功:判断列表,显示通知
                 if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
                     SPManager.getInstance().setFastPayPushTag(result.getRespData().size());
@@ -382,7 +363,7 @@ public class NotifyManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e("getFastPayCount error");
+                XLogger.i("getFastPayCount error");
                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                     // token过期
                     resultFastPay = true;
@@ -420,13 +401,13 @@ public class NotifyManager {
     }
 
     private boolean getOrderCount() {
-        XLogger.e("getOrderCount request");
+        XLogger.i("getOrderCount request");
         callOrderRecord = XmdNetwork.getInstance().getService(SpaService.class)
                 .getOrderRecordCount(AccountManager.getInstance().getToken(), String.valueOf(AppConstants.APP_LIST_DEFAULT_PAGE), String.valueOf(Integer.MAX_VALUE), null, AppConstants.ORDER_RECORD_STATUS_SUBMIT);
         XmdNetwork.getInstance().requestSync(callOrderRecord, new NetworkSubscriber<OrderRecordListResult>() {
             @Override
             public void onCallbackSuccess(OrderRecordListResult result) {
-                XLogger.e("getOrderCount success");
+                XLogger.i("getOrderCount success");
                 // 成功:判断列表,显示通知
                 if (result != null && result.getRespData() != null && result.getRespData().size() > 0) {
                     SPManager.getInstance().setOrderPushTag(result.getRespData().size());
@@ -438,7 +419,7 @@ public class NotifyManager {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e("getOrderCount error");
+                XLogger.i("getOrderCount error");
                 if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                     // token过期
                     resultOrder = true;
