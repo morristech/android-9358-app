@@ -77,6 +77,7 @@ public class XmdNetwork {
         } else {
             mServer = server;
         }
+        RetrofitFactory.setBaseUrl(mServer);
     }
 
     /**
