@@ -156,6 +156,23 @@ public class XmdNetwork {
                 .subscribe(action);
     }
 
+    public <T> Subscription request(Observable<T> observable) {
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new NetworkSubscriber<T>() {
+                    @Override
+                    public void onCallbackSuccess(T result) {
+                        
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+
+                    }
+                });
+    }
+
     /**
      * 同步网络请求
      *

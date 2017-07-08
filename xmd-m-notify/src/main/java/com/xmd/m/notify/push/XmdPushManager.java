@@ -196,7 +196,7 @@ public class XmdPushManager {
         Observable<BaseBean> observable = XmdNetwork.getInstance()
                 .getService(NetService.class)
                 .unbindGetuiClientId(userType, clientId, userType);
-        unBindSubscription = XmdNetwork.getInstance().request(observable, null);
+        unBindSubscription = XmdNetwork.getInstance().request(observable);
         if (bound) {
             bound = false;
         }
