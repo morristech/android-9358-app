@@ -45,6 +45,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import retrofit2.Call;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -332,12 +333,13 @@ public class TradeManager {
             clubQrcodeBytes = c.data;
             return clubQrcodeBytes;
         }
-        Observable<StringResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+
+        Call<StringResult> call = XmdNetwork.getInstance().getService(SpaService.class)
                 .getClubWXQrcode(AccountManager.getInstance().getClubId(), mTrade.tradeNo);
-        XmdNetwork.getInstance().request(observable, new Action1<StringResult>() {
+        XmdNetwork.getInstance().requestSync(call, new NetworkSubscriber<StringResult>() {
             @Override
-            public void call(StringResult stringResult) {
-                byte[] bitmapBytes = SpaOkHttp.getClubWXQrcode(stringResult.getRespData());
+            public void onCallbackSuccess(StringResult result) {
+                byte[] bitmapBytes = SpaOkHttp.getClubWXQrcode(result.getRespData());
                 if (bitmapBytes != null) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
                     Matrix matrix = new Matrix();
@@ -356,6 +358,11 @@ public class TradeManager {
                 } else {
                     XLogger.e("can not get qrcode !");
                 }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+
             }
         });
         return clubQrcodeBytes;
@@ -804,6 +811,10 @@ public class TradeManager {
 
         mPos.printText("交易号:", mTrade.tradeNo);
         mPos.printText("付款方式:", "小摩豆在线买单");
+
+        String channel = Utils.getPayChannel(mTrade.getOnlinePayChannel());
+        mPos.printText("支付方式:", TextUtils.isEmpty(channel) ? "未知" : channel);
+
         mPos.printText("交易时间:", mTrade.tradeTime);
         mPos.printText("打印时间:", DateUtils.doDate2String(new Date()));
         mPos.printText("收银员:", AccountManager.getInstance().getUser().userName);

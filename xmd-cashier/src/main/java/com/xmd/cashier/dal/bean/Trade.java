@@ -61,12 +61,6 @@ public class Trade {
     public String posPointsPhone;//收银台积分需要送到的手机号
 
     /**
-     * 扫码在线买单
-     */
-    private int onlinePayPaidMoney;
-
-
-    /**
      * 二维码
      **/
     public byte[] qrCodeBytes;
@@ -76,12 +70,27 @@ public class Trade {
         discountType = DISCOUNT_TYPE_COUPON;
     }
 
+    /**
+     * 扫码在线买单
+     */
+    private int onlinePayPaidMoney;
+    private String onlinePayChannel;
+
+    // 在线扫码买单
     public void setOnlinePayPaidMoney(int onlineMoney) {
         this.onlinePayPaidMoney = onlineMoney;
     }
 
     public int getOnlinePayPaidMoney() {
         return this.onlinePayPaidMoney;
+    }
+
+    public void setOnlinePayChannel(String channel) {
+        this.onlinePayChannel = channel;
+    }
+
+    public String getOnlinePayChannel() {
+        return this.onlinePayChannel;
     }
 
     //设置原始消费金额

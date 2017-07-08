@@ -22,6 +22,7 @@ public class OnlinePayInfo implements Serializable {
     public String techNo;    //技师编号
     public String otherTechNames;    //合并技师
 
+    public String payChannel;   //wx:微信 ali:支付宝
     public int payAmount;    //支付金额:单位为分
     public int originalAmount;  //原消费金额(*Pos买单新增)
 

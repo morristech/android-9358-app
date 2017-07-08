@@ -284,6 +284,10 @@ public class NotifyManager {
         mPos.printDivide();
         mPos.printText("交易号: ", info.payId);
         mPos.printText("付款方式: ", "小摩豆在线买单");
+
+        String channel = Utils.getPayChannel(info.payChannel);
+        mPos.printText("支付方式:", TextUtils.isEmpty(channel) ? "未知" : channel);
+
         if (!TextUtils.isEmpty(info.techName)) {
             mPos.printText("技师: ", TextUtils.isEmpty(info.techNo) ? info.techName : String.format("%s[%s]", info.techName, info.techNo));
         }
