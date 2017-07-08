@@ -96,19 +96,6 @@ public class XmdNetwork {
      * @return 返回调用观察对像，可用于取消网络请求操作
      */
     public <T> Subscription request(Observable<T> observable, NetworkSubscriber<T> subscriber) {
-        if (subscriber == null) {
-            subscriber = new NetworkSubscriber<T>() {
-                @Override
-                public void onCallbackSuccess(T result) {
-
-                }
-
-                @Override
-                public void onCallbackError(Throwable e) {
-
-                }
-            };
-        }
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -117,24 +104,6 @@ public class XmdNetwork {
 
     // 特殊处理
     public <T> Subscription request(Observable<T> observable, Subscriber<T> subscriber) {
-        if (subscriber == null) {
-            subscriber = new Subscriber<T>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onNext(T t) {
-
-                }
-            };
-        }
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -142,14 +111,6 @@ public class XmdNetwork {
     }
 
     public <T> Subscription request(Observable<T> observable, Action1<T> action) {
-        if (action == null) {
-            action = new Action1<T>() {
-                @Override
-                public void call(T t) {
-
-                }
-            };
-        }
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -163,7 +124,7 @@ public class XmdNetwork {
                 .subscribe(new NetworkSubscriber<T>() {
                     @Override
                     public void onCallbackSuccess(T result) {
-                        
+
                     }
 
                     @Override
