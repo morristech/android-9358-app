@@ -29,6 +29,11 @@ public class OrderChatMessage extends ChatMessage {
         super(emMessage, msgType);
     }
 
+    public static OrderChatMessage createRequestOrderMessage(String remoteChatId) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", remoteChatId);
+        return new OrderChatMessage(emMessage, ChatMessage.MSG_TYPE_ORDER_REQUEST);
+    }
+
     public String getCustomerName() {
         return getSafeStringAttribute(ATTR_ORDER_CUSTOMER_NAME);
     }

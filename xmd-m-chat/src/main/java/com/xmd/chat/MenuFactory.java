@@ -1,10 +1,13 @@
 package com.xmd.chat;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.view.View;
 
@@ -13,6 +16,7 @@ import com.xmd.app.user.User;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.chat.view.ChatActivity;
 import com.xmd.chat.view.SubmenuEmojiFragment;
 import com.xmd.chat.view.SubmenuFastReplyFragment;
@@ -34,6 +38,7 @@ public class MenuFactory {
     private List<ChatMenu> menus = new ArrayList<>();
     private List<ChatMenu> moreMenus = new ArrayList<>();
 
+    //创建菜单资源
     public List<ChatMenu> createMenuList(ChatActivity activity, User remoteUser, Editable editable) {
 
         //创建普通菜单
@@ -42,10 +47,17 @@ public class MenuFactory {
         createFastReplyMenu(remoteUser);
 
         //创建更多菜单
+        createMoreRequestOrderMenu(activity, remoteUser);
         createMoreLocationMenu(remoteUser);
         createMoreMenu();
 
         return menus;
+    }
+
+    //清除菜单资源
+    public void cleanMenus() {
+        menus.clear();
+        moreMenus.clear();
     }
 
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -133,9 +145,26 @@ public class MenuFactory {
         }, null));
     }
 
-    //清除菜单资源
-    public void cleanMenus() {
-        menus.clear();
-        moreMenus.clear();
+    //创建更多-求预约菜单
+    public void createMoreRequestOrderMenu(final Context context, final User remoteUser) {
+        moreMenus.add(new ChatMenu("求预约", R.drawable.chat_menu_order_request, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(context, R.style.AppTheme_AlertDialog)
+                        .setMessage("确定发送求预约消息?")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ChatMessage chatMessage = OrderChatMessage.createRequestOrderMessage(remoteUser.getChatId());
+                                MessageManager.getInstance().sendMessage(chatMessage);
+                                EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+        }, null));
     }
+
 }

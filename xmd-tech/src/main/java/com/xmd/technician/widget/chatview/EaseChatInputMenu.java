@@ -209,7 +209,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER_REQUEST)
     public void initMenuOrderRequst() {
-        moreMenuList.add(new MoreMenuItem("求预约", R.drawable.ic_order_request, new OnClickListener() {
+        moreMenuList.add(new MoreMenuItem("求预约", R.drawable.chat_menu_order_request_normal, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 specialListener.onAppointmentRequestClicked();

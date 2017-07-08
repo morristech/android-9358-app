@@ -40,7 +40,7 @@
             android:layout_below="@+id/time"
             android:layout_toLeftOf="@+id/avatar"
             android:autoLink="all"
-            android:background="@drawable/sent_message"
+            android:background="@drawable/send_wrapper"
             android:gravity="center_vertical"
             android:minHeight="@dimen/avatar_head"
             android:text="hello"

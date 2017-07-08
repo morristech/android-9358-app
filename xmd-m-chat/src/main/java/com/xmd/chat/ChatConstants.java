@@ -18,12 +18,15 @@ public class ChatConstants {
     //视图定义
     public static final int CHAT_VIEW_DIRECT_SEND = 0;
     public static final int CHAT_VIEW_DIRECT_RECEIVE = 1;
-    public static final int CHAT_ROW_VIEW_TEXT = 0x1;
-    public static final int CHAT_ROW_VIEW_IMAGE = 0x2;
-    public static final int CHAT_ROW_VIEW_LOCATION = 0x3;
-    public static final int CHAT_ROW_VIEW_TIP = 0x20;
-    public static final int CHAT_ROW_VIEW_TYPE_ORDER = 0x40;
-    public static final int CHAT_ROW_VIEW_TYPE_ORDER_REQUEST = 0x11;
+    public static final int CHAT_ROW_VIEW_TEXT = 0x1; //文本
+    public static final int CHAT_ROW_VIEW_IMAGE = 0x2; //图片
+    public static final int CHAT_ROW_VIEW_LOCATION = 0x3; //位置
+
+
+    public static final int CHAT_ROW_VIEW_TYPE_ORDER = 0x10;
+    public static final int CHAT_ROW_VIEW_TYPE_ORDER_REQUEST = 0x11;//求预约
+
+    public static final int CHAT_ROW_VIEW_TIP = 0x20;//提示
 
     public static final int CHAT_ROW_VIEW_TYPE_MAX = 0x200;
 }

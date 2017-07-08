@@ -79,8 +79,8 @@ public abstract class ChatRowViewModel {
 
     public Drawable getContentViewBackground(Context context) {
         return chatMessage.isReceivedMessage() ?
-                context.getResources().getDrawable(R.drawable.recv_message)
-                : context.getResources().getDrawable(R.drawable.sent_message);
+                context.getResources().getDrawable(R.drawable.receive_wrapper)
+                : context.getResources().getDrawable(R.drawable.send_wrapper);
     }
 
     @BindingAdapter("avatar")

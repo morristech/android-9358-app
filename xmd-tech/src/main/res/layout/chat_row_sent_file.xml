@@ -36,7 +36,7 @@
             android:layout_marginRight="@dimen/small_space"
             android:layout_toLeftOf="@id/avatar"
             android:layout_toRightOf="@+id/ll_loading"
-            android:background="@drawable/sent_message">
+            android:background="@drawable/send_wrapper">
 
             <ImageView
                 android:layout_width="wrap_content"

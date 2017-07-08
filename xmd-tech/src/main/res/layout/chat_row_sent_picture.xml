@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/small_space"
             android:layout_toLeftOf="@id/avatar"
-            android:background="@drawable/sent_message"
+            android:background="@drawable/send_wrapper"
             >
             <ImageView
                 android:id="@+id/image"

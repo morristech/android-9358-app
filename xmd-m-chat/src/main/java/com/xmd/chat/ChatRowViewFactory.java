@@ -8,6 +8,7 @@ import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
 import com.xmd.chat.viewmodel.ChatRowViewModelImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelLocation;
+import com.xmd.chat.viewmodel.ChatRowViewModelOrderRequest;
 import com.xmd.chat.viewmodel.ChatRowViewModelText;
 import com.xmd.chat.viewmodel.ChatRowViewModelTip;
 
@@ -105,6 +106,8 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelLocation(message);
             case ChatMessage.MSG_TYPE_TIP:
                 return new ChatRowViewModelTip(message);
+            case ChatMessage.MSG_TYPE_ORDER_REQUEST:
+                return new ChatRowViewModelOrderRequest(message);
             default:
                 return new ChatRowViewModelText(message);
         }
