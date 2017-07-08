@@ -1,5 +1,6 @@
 package com.xmd.chat.view;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -17,6 +18,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +33,7 @@ import com.xmd.app.ExCommonRecyclerViewAdapter;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.appointment.AppointmentEvent;
 import com.xmd.chat.BR;
 import com.xmd.chat.ChatConstants;
 import com.xmd.chat.ChatMenu;
@@ -69,6 +72,8 @@ public class ChatActivity extends BaseActivity {
 
     public ObservableField<String> textMessageContent = new ObservableField<>();
     public ObservableBoolean showSubMenu = new ObservableBoolean();
+
+    private InputMethodManager mInputMethodManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,6 +254,12 @@ public class ChatActivity extends BaseActivity {
         insertNewChatMessageToUi(index, chatMessage);
     }
 
+    //中转预约消息
+    @Subscribe
+    public void onAppointmentMessage(AppointmentEvent event) {
+        XmdChat.getInstance().getMenuFactory().processAppointmentEvent(event);
+    }
+
     /**
      * 设置是否需要显示时间
      *
@@ -268,6 +279,7 @@ public class ChatActivity extends BaseActivity {
         textMessageContent.set(s.toString());
     }
 
+    //发送消息
     public void sendTextMessage() {
         ChatMessage chatMessage = MessageManager.getInstance().sendTextMessage(mRemoteUser.getChatId(), textMessageContent.get());
         if (chatMessage != null) {
@@ -275,6 +287,11 @@ public class ChatActivity extends BaseActivity {
             textMessageContent.set(null);
             mBinding.sendEditText.getText().clear();
         }
+    }
+
+    //点击输入框时隐藏子菜单
+    public void onClickEditText() {
+        hideFocusMenu();
     }
 
     //增加一条消息到列表
@@ -343,8 +360,7 @@ public class ChatActivity extends BaseActivity {
             mFocusMenuView.setSelected(false);
         }
         if (mFocusMenuView == menuView) {
-            mFocusMenuView = null;
-            showSubMenu.set(false);
+            hideFocusMenu();
             return;
         }
 
@@ -366,9 +382,34 @@ public class ChatActivity extends BaseActivity {
             mBinding.pageIndicator.setVisibility(View.GONE);
         }
 
+        hideSoftwareInput();
         mFocusMenuView = menuView;
         mFocusMenuView.setSelected(true);
         showSubMenu.set(true);
         mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mFocusMenuView != null) {
+            hideFocusMenu();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    private void hideSoftwareInput() {
+        if (mInputMethodManager == null) {
+            mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        }
+        mInputMethodManager.hideSoftInputFromWindow(mBinding.sendEditText.getWindowToken(), 0);
+    }
+
+    private void hideFocusMenu() {
+        if (mFocusMenuView != null) {
+            mFocusMenuView.setSelected(false);
+            mFocusMenuView = null;
+            showSubMenu.set(false);
+        }
     }
 }

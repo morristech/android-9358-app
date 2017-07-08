@@ -133,6 +133,9 @@ public class TechApplication extends MultiDexApplication {
                 //初始化消息推送
                 XmdPushModule.getInstance().init(this, "tech", UINavigation.xmdActionFactory, new PushMessageListener());
 
+                //初始化聊天模块
+//                XmdChat.getInstance().init(this, BuildConfig.DEBUG);
+                //初始化旧聊天模块
                 ChatHelper.getInstance().init(getAppContext());
 
                 DataRefreshService.start();

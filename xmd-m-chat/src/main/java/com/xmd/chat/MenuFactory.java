@@ -12,11 +12,16 @@ import android.text.Editable;
 import android.view.View;
 
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
+import com.xmd.appointment.AppointmentData;
+import com.xmd.appointment.AppointmentEvent;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
+import com.xmd.chat.order.OrderChatManager;
 import com.xmd.chat.view.ChatActivity;
 import com.xmd.chat.view.SubmenuEmojiFragment;
 import com.xmd.chat.view.SubmenuFastReplyFragment;
@@ -34,9 +39,12 @@ import java.util.List;
  */
 
 public class MenuFactory {
+    private static final String TAG = "ChatActivity";
     private ImageTool imageTool = new ImageTool();
     private List<ChatMenu> menus = new ArrayList<>();
     private List<ChatMenu> moreMenus = new ArrayList<>();
+
+    private boolean isInSubmitAppointment;
 
     //创建菜单资源
     public List<ChatMenu> createMenuList(ChatActivity activity, User remoteUser, Editable editable) {
@@ -45,6 +53,7 @@ public class MenuFactory {
         createPictureMenu(activity, remoteUser);
         createEmojiMenu(editable);
         createFastReplyMenu(remoteUser);
+        createAppointmentMenu(remoteUser);
 
         //创建更多菜单
         createMoreRequestOrderMenu(activity, remoteUser);
@@ -114,6 +123,71 @@ public class MenuFactory {
         menus.add(new ChatMenu(R.drawable.chat_menu_fast_reply, null, fragmentList));
     }
 
+    //创建预约菜单
+    public void createAppointmentMenu(final User remoteUser) {
+        menus.add(new ChatMenu(R.drawable.chat_menu_appointment, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isInSubmitAppointment) {
+                    XToast.show("正在处理，请稍后");
+                    return;
+                }
+                AppointmentData data = new AppointmentData();
+                data.setCustomerChatId(remoteUser.getChatId());
+                data.setCustomerId(remoteUser.getId());
+                data.setCustomerName(remoteUser.getName());
+//                boolean fixTech = technician.getRoles() != null && !technician.getRoles().contains(User.ROLE_FLOOR);
+//                if (fixTech) {
+//                    Technician tech = new Technician();
+//                    tech.setId(technician.getUserId());
+//                    tech.setAvatarUrl(technician.getAvatarUrl());
+//                    tech.setName(technician.getNickName());
+//                    data.setTechnician(tech);
+//                    data.setFixTechnician(true);
+//                }
+                EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, TAG, data));
+            }
+        }, null));
+    }
+
+    //处理预约菜单事件
+    public void processAppointmentEvent(AppointmentEvent event) {
+        if (!TAG.equals(event.getTag())) {
+            return;
+        }
+        if (event.getCmd() == AppointmentEvent.CMD_HIDE) {
+            if (event.getData() != null) {
+                if (OrderChatManager.isFreeAppointment(event.getData(), null)) {
+                    //免费预约，发送确认消息
+                    isInSubmitAppointment = false;
+                    MessageManager.getInstance().sendMessage(
+                            OrderChatManager.createMessage(
+                                    event.getData().getCustomerChatId(),
+                                    ChatMessage.MSG_TYPE_ORDER_CONFIRM,
+                                    event.getData()));
+                } else {
+                    //付费预约，先生成订单，然后发送确认消息
+                    EventBusSafeRegister.register(this);
+                    EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT, TAG, event.getData()));
+                }
+            } else {
+                isInSubmitAppointment = false;
+            }
+        } else if (event.getCmd() == AppointmentEvent.CMD_SUBMIT_RESULT) {
+            isInSubmitAppointment = false;
+            if (event.getData().isSubmitSuccess()) {
+                //生成订单成功，发送确认消息
+                MessageManager.getInstance().sendMessage(
+                        OrderChatManager.createMessage(
+                                event.getData().getCustomerChatId(),
+                                ChatMessage.MSG_TYPE_ORDER_CONFIRM,
+                                event.getData()));
+            } else {
+                XToast.show("生成订单失败：" + event.getData().getSubmitErrorString());
+            }
+        }
+    }
+
     //创建更多菜单
     public void createMoreMenu() {
         if (moreMenus.size() == 0) {
@@ -166,5 +240,4 @@ public class MenuFactory {
             }
         }, null));
     }
-
 }

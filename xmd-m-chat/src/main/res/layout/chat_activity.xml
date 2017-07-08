@@ -44,6 +44,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:afterTextChanged="@{(s)->data.setTextMessageContent(s)}"
+                android:onClick="@{()->data.onClickEditText()}"
                 android:text="@{data.textMessageContent}" />
 
             <Button

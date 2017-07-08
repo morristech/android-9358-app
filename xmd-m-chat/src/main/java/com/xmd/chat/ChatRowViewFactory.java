@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
+import com.xmd.chat.viewmodel.ChatRowViewModelAppointment;
 import com.xmd.chat.viewmodel.ChatRowViewModelImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelLocation;
 import com.xmd.chat.viewmodel.ChatRowViewModelOrderRequest;
@@ -90,6 +91,8 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelLocation.createView(parent);
             case CHAT_ROW_VIEW_TIP:
                 return ChatRowViewModelTip.createView(parent);
+            case CHAT_ROW_VIEW_TYPE_ORDER:
+                return ChatRowViewModelAppointment.createView(parent);
             default:
                 return ChatRowViewModelText.createView(parent);
         }
@@ -108,6 +111,8 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelTip(message);
             case ChatMessage.MSG_TYPE_ORDER_REQUEST:
                 return new ChatRowViewModelOrderRequest(message);
+            case ChatMessage.MSG_TYPE_ORDER:
+                return new ChatRowViewModelAppointment(message);
             default:
                 return new ChatRowViewModelText(message);
         }
