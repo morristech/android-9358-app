@@ -61,9 +61,9 @@ public class ChatRowVoiceView extends ChatRowFileView {
             voiceAnimation.start();
         } else {
             if (mEMMessage.direct() == EMMessage.Direct.RECEIVE) {
-                voiceImageView.setImageResource(R.drawable.ease_chatfrom_voice_playing);
+                voiceImageView.setImageResource(R.drawable.message_voice_receive);
             } else {
-                voiceImageView.setImageResource(R.drawable.ease_chatto_voice_playing);
+                voiceImageView.setImageResource(R.drawable.message_voice_send);
             }
         }
         if (mEMMessage.direct() == EMMessage.Direct.RECEIVE) {

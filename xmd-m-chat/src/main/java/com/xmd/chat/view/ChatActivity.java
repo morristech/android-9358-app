@@ -1,5 +1,6 @@
 package com.xmd.chat.view;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -23,9 +25,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.crazyman.library.PermissionTool;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
@@ -41,6 +45,7 @@ import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.ChatRowViewFactory;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.R;
+import com.xmd.chat.VoiceManager;
 import com.xmd.chat.XmdChat;
 import com.xmd.chat.databinding.ChatActivityBinding;
 import com.xmd.chat.event.EventDeleteMessage;
@@ -52,6 +57,7 @@ import com.xmd.chat.viewmodel.ChatRowViewModel;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,8 +78,11 @@ public class ChatActivity extends BaseActivity {
 
     public ObservableField<String> textMessageContent = new ObservableField<>();
     public ObservableBoolean showSubMenu = new ObservableBoolean();
+    public ObservableBoolean voiceInputMode = new ObservableBoolean();
+    public ObservableBoolean voiceRecording = new ObservableBoolean();
 
     private InputMethodManager mInputMethodManager;
+    private static final int REQUEST_CODE_PERMISSION_REQUEST = 0x800;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +118,8 @@ public class ChatActivity extends BaseActivity {
 
         mBinding.setData(this);
 
-        mBinding.pageIndicator.setViewPager(mBinding.submenuLayout, R.drawable.chat_menu_indicator_normal, R.drawable.chat_menu_indicator_focus);
-        mBinding.submenuLayout.addOnPageChangeListener(mBinding.pageIndicator);
+        mBinding.inputVoice.setOnTouchListener(voiceButtonListener);
+
         initMenu();
 
         loadData(null);
@@ -119,6 +128,7 @@ public class ChatActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        VoiceManager.getInstance().cleanResource();
         XmdChat.getInstance().getMenuFactory().cleanMenus();
     }
 
@@ -128,9 +138,17 @@ public class ChatActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!XmdChat.getInstance().getMenuFactory().onActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
+        if (XmdChat.getInstance().getMenuFactory().onActivityResult(requestCode, resultCode, data)) {
+            return;
         }
+        if (requestCode == REQUEST_CODE_PERMISSION_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                voiceInputMode.set(true);
+                hideSoftwareInput();
+                hideFocusMenu();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void loadData(String msgId) {
@@ -323,6 +341,8 @@ public class ChatActivity extends BaseActivity {
 
     //初始化菜单
     public void initMenu() {
+        mBinding.pageIndicator.setViewPager(mBinding.submenuLayout, R.drawable.chat_menu_indicator_normal, R.drawable.chat_menu_indicator_focus);
+        mBinding.submenuLayout.addOnPageChangeListener(mBinding.pageIndicator);
         List<ChatMenu> chatMenuList = XmdChat.getInstance().getMenuFactory()
                 .createMenuList(this, mRemoteUser, mBinding.sendEditText.getText());
         for (final ChatMenu chatMenu : chatMenuList) {
@@ -389,6 +409,18 @@ public class ChatActivity extends BaseActivity {
         mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
     }
 
+    public void onSwitchInputMode() {
+        if (voiceInputMode.get()) {
+            voiceInputMode.set(false);
+        } else {
+            PermissionTool.requestPermission(
+                    this,
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    new String[]{"发送语音消息需要录音权限"},
+                    REQUEST_CODE_PERMISSION_REQUEST);
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (mFocusMenuView != null) {
@@ -411,5 +443,51 @@ public class ChatActivity extends BaseActivity {
             mFocusMenuView = null;
             showSubMenu.set(false);
         }
+    }
+
+    private View.OnTouchListener voiceButtonListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    onVoiceButtonDown();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    onVoiceButtonUp();
+                    break;
+            }
+            return true;
+        }
+    };
+
+    private void onVoiceButtonDown() {
+        XLogger.d("onVoiceButtonDown");
+        if (voiceRecording.get()) {
+            return;
+        }
+
+        if (VoiceManager.getInstance().startRecord()) {
+            voiceRecording.set(true);
+            mBinding.inputVoice.setBackgroundResource(R.drawable.shape_r4_solid_green);
+        }
+    }
+
+    private void onVoiceButtonUp() {
+        XLogger.d("onVoiceButtonUp");
+        if (!voiceRecording.get()) {
+            return;
+        }
+        voiceRecording.set(false);
+        mBinding.inputVoice.setBackgroundResource(R.drawable.shape_r4_stoke_gray);
+        VoiceManager.getInstance().stopRecord();
+        String path = VoiceManager.getInstance().getRecordFile();
+        File file = new File(path);
+        if (!file.exists()) {
+            XToast.show("录制失败！");
+            return;
+        }
+        ChatMessage chatMessage = MessageManager.getInstance()
+                .sendVoiceMessage(mRemoteUser, path, (int) VoiceManager.getInstance().getRecordTime() / 1000);
+        addNewChatMessageToUi(chatMessage);
     }
 }

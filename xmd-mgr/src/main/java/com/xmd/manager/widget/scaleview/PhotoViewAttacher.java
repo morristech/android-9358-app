@@ -67,7 +67,7 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
     static final String LOG_TAG = "PhotoViewAttacher";
 
     // let debug flag be dynamic, but still Proguard can be used to remove from
-    // release builds
+    // releaseVoicePlayer builds
     static final boolean DEBUG = Log.isLoggable(LOG_TAG, Log.DEBUG);
 
     static final int EDGE_NONE = -1;

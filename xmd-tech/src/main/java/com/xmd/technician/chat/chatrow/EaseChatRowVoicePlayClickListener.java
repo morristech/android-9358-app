@@ -57,9 +57,9 @@ public class EaseChatRowVoicePlayClickListener implements View.OnClickListener {
     public void stopPlayVoice() {
         voiceAnimation.stop();
         if (message.direct() == EMMessage.Direct.RECEIVE) {
-            voiceIconView.setImageResource(R.drawable.ease_chatfrom_voice_playing);
+            voiceIconView.setImageResource(R.drawable.message_voice_receive);
         } else {
-            voiceIconView.setImageResource(R.drawable.ease_chatto_voice_playing);
+            voiceIconView.setImageResource(R.drawable.message_voice_send);
         }
         // stop play voice
         if (mediaPlayer != null) {

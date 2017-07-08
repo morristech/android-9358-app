@@ -128,6 +128,12 @@ public class MessageManager {
         return tipChatMessage;
     }
 
+    public ChatMessage sendVoiceMessage(User remoteUser, String path, int length) {
+        EMMessage emMessage = EMMessage.createVoiceSendMessage(path, length, remoteUser.getChatId());
+        ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
+        return sendMessage(chatMessage);
+    }
+
     public ChatMessage sendMessage(ChatMessage chatMessage) {
         User user = AccountManager.getInstance().getUser();
         if (user == null) {

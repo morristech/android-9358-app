@@ -21,7 +21,7 @@ public class ChatConstants {
     public static final int CHAT_ROW_VIEW_TEXT = 0x1; //文本
     public static final int CHAT_ROW_VIEW_IMAGE = 0x2; //图片
     public static final int CHAT_ROW_VIEW_LOCATION = 0x3; //位置
-
+    public static final int CHAT_ROW_VIEW_VOICE = 0x4;
 
     public static final int CHAT_ROW_VIEW_TYPE_ORDER = 0x10;
     public static final int CHAT_ROW_VIEW_TYPE_ORDER_REQUEST = 0x11;//求预约

@@ -1,5 +1,7 @@
 package com.xmd.m.network;
 
+import android.text.TextUtils;
+
 import com.shidou.commonlibrary.helper.XLogger;
 
 import java.io.File;

@@ -121,4 +121,8 @@ public class XmdChat {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
+
+    public Context getContext() {
+        return context;
+    }
 }

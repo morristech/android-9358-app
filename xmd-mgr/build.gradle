@@ -41,7 +41,7 @@ android {
         applicationId "com.xmd.manager"
         minSdkVersion 15
         targetSdkVersion 25
-        //TODO: release version :
+        //TODO: releaseVoicePlayer version :
         // 2.5.0.11 << 2.4.2.6 << 2.4.1 << 2.4.0 << 2.3.0, update this comment when you change the versionCode and versionName
         // 2.6.0 ,15 Mainly add the Ranking Activity, which is to load the URL
         // 2.6.3 ,16 Add the Paid Order Consume
@@ -66,7 +66,7 @@ android {
 
         manifestPlaceholders = [
                 PACKAGE_NAME      : applicationId,
-                //UMENG_APPKEY for release
+                //UMENG_APPKEY for releaseVoicePlayer
                 UMENG_APPKEY_VALUE: "565d57ade0f55a1504001a62",
                 CHANNEL_VALUE     : "xiaomodo",
         ]
@@ -133,7 +133,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith("release.apk")) {
+            if (outputFile != null && outputFile.name.endsWith("releaseVoicePlayer.apk")) {
                 // output
                 def flavorName = variant.productFlavors[0].name + "_";
                 if (flavorName == "prd_") {

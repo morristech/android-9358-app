@@ -35,7 +35,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginRight="8dp"
+                android:onClick="@{()->data.onSwitchInputMode()}"
+                android:src="@{data.voiceInputMode?@drawable/input_keyboard:@drawable/input_voice}" />
+
+            <TextView
+                android:id="@+id/inputVoice"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_r4_stoke_gray"
+                android:gravity="center"
+                android:text="按住说话"
+                android:visibility="@{data.voiceInputMode?View.VISIBLE:View.GONE}" />
 
             <EditText
                 android:id="@+id/sendEditText"
@@ -45,16 +65,19 @@
                 android:layout_weight="1"
                 android:afterTextChanged="@{(s)->data.setTextMessageContent(s)}"
                 android:onClick="@{()->data.onClickEditText()}"
-                android:text="@{data.textMessageContent}" />
+                android:text="@{data.textMessageContent}"
+                android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />
 
             <Button
                 style="@style/AppTheme.Button.Main"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:enabled='@{!TextUtils.isEmpty(data.textMessageContent.get())}'
+                android:minWidth="56dp"
                 android:onClick="@{()->data.sendTextMessage()}"
-                android:text="发送" />
+                android:text="发送"
+                android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />
         </LinearLayout>
 
         <!-- 菜单 -->

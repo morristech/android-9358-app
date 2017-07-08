@@ -12,6 +12,7 @@ import com.xmd.chat.viewmodel.ChatRowViewModelLocation;
 import com.xmd.chat.viewmodel.ChatRowViewModelOrderRequest;
 import com.xmd.chat.viewmodel.ChatRowViewModelText;
 import com.xmd.chat.viewmodel.ChatRowViewModelTip;
+import com.xmd.chat.viewmodel.ChatRowViewModelVoice;
 
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_IMAGE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_LOCATION;
@@ -19,6 +20,7 @@ import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TEXT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TIP;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER_REQUEST;
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_VOICE;
 
 /**
  * Created by heyangya on 17-6-7.
@@ -38,6 +40,9 @@ public class ChatRowViewFactory {
                 break;
             case ChatMessage.MSG_TYPE_ORIGIN_IMAGE:
                 baseType = CHAT_ROW_VIEW_IMAGE;
+                break;
+            case ChatMessage.MSG_TYPE_ORIGIN_VOICE:
+                baseType = CHAT_ROW_VIEW_VOICE;
                 break;
             case ChatMessage.MSG_TYPE_CLUB_LOCATION:
                 baseType = CHAT_ROW_VIEW_LOCATION;
@@ -93,6 +98,8 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelTip.createView(parent);
             case CHAT_ROW_VIEW_TYPE_ORDER:
                 return ChatRowViewModelAppointment.createView(parent);
+            case CHAT_ROW_VIEW_VOICE:
+                return ChatRowViewModelVoice.createView(parent);
             default:
                 return ChatRowViewModelText.createView(parent);
         }
@@ -105,6 +112,8 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelText(message);
             case ChatMessage.MSG_TYPE_ORIGIN_IMAGE:
                 return new ChatRowViewModelImage(message);
+            case ChatMessage.MSG_TYPE_ORIGIN_VOICE:
+                return new ChatRowViewModelVoice(message);
             case ChatMessage.MSG_TYPE_CLUB_LOCATION:
                 return new ChatRowViewModelLocation(message);
             case ChatMessage.MSG_TYPE_TIP:
