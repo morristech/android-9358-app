@@ -84,7 +84,12 @@ public class GMessageConfirmFragment extends BaseFragment {
             contentText.setText(messageContent);
             contentText.setVisibility(View.VISIBLE);
         }else {
-            contentText.setVisibility(View.GONE);
+            if(Utils.isEmpty(imageUrl)){ //图片文字都为空
+                contentText.setText(ResourceUtils.getString(R.string.text_no_content));
+                contentText.setVisibility(View.VISIBLE);
+            }else {
+                contentText.setVisibility(View.GONE);
+            }
         }
 
         String s = "(" + String.valueOf(selectCustomerCount) + "个)";

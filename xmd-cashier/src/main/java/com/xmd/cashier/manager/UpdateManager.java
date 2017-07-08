@@ -7,9 +7,9 @@ import com.shidou.update.UpdateConfig;
 import com.shidou.update.UpdaterController;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.UpdateRetrofit;
 import com.xmd.cashier.dal.net.response.CheckUpdateResult;
+import com.xmd.m.network.NetworkSubscriber;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;

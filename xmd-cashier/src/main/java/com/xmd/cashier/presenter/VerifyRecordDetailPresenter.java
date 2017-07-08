@@ -64,7 +64,7 @@ public class VerifyRecordDetailPresenter implements VerifyRecordDetailContract.P
             @Override
             public void onSuccess(VerifyRecordDetailResult o) {
                 mView.hideLoading();
-                mView.onDetailSuccess(o.respData);
+                mView.onDetailSuccess(o.getRespData());
             }
 
             @Override

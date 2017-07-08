@@ -65,7 +65,7 @@ public class SettleDetailPresenter implements SettleDetailContract.Presenter {
         mGetSummaryByIdSubscription = SettleManager.getInstance().getSettleDetail(recordId, new Callback<SettleSummaryResult>() {
             @Override
             public void onSuccess(SettleSummaryResult o) {
-                mView.onDetailSuccess(o.respData);
+                mView.onDetailSuccess(o.getRespData());
             }
 
             @Override

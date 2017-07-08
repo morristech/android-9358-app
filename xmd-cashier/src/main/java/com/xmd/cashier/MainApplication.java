@@ -10,17 +10,25 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.cashier.activity.BaseActivity;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.ThreadManager;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.db.DBManager;
+import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.DataReportManager;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.OkHttpUtil;
+import com.xmd.m.network.XmdNetwork;
+import com.xmd.m.notify.push.XmdPushManager;
+import com.xmd.m.notify.push.XmdPushMessage;
+import com.xmd.m.notify.push.XmdPushMessageListener;
 
-import java.io.File;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import okhttp3.Request;
@@ -37,12 +45,6 @@ public class MainApplication extends Application implements CrashHandler.Callbac
     @Override
     public void onCreate() {
         super.onCreate();
-
-//        if(LeakCanary.isInAnalyzerProcess(this)){
-//            return;
-//        }
-//        LeakCanary.install(this);
-
         instance = this;
 
         try {
@@ -59,21 +61,53 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         SPManager.getInstance().init(getSharedPreferences("9358", MODE_PRIVATE));
         CrashHandler.getInstance().init(getApplicationContext(), this);
         XToast.init(getApplicationContext(), 0);
-        OkHttpUtil.init(getFilesDir() + File.separator + "networkCache", 10 * 1024 * 1024, 10000, 10000, 10000);
-        OkHttpUtil.getInstance().setLog(true);
-        OkHttpUtil.getInstance().setCommonHeader("User-Agent", "9358-cashier-" + BuildConfig.POS_TYPE);
-        OkHttpUtil.getInstance().setRequestPreprocess(new OkHttpUtil.RequestPreprocess() {
-            @Override
-            public Request preProcess(Request request) {
-                return SpaOkHttp.checkAndSign(request);
-            }
-        });
+
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(true);
         ThreadManager.init(this);
 
         DataReportManager.getInstance().startMonitor();
 
+        // 初始化网络模块
+        XmdNetwork.getInstance().init(this, "9358-cashier-" + BuildConfig.POS_TYPE, SPManager.getInstance().getSpaServerAddress());
+        XmdNetwork.getInstance().setDebug(true);
+        XmdNetwork.getInstance().setRequestPreprocess(new OkHttpUtil.RequestPreprocess() {
+            @Override
+            public Request preProcess(Request request) {
+                return SpaOkHttp.checkAndSign(request);
+            }
+        });
+
+        // 初始化推送
+        XmdPushManager.getInstance().init(this, "pos", new XmdPushMessageListener() {
+            @Override
+            public void onMessage(XmdPushMessage message) {
+                // 按照指定格式处理消息
+            }
+
+            @Override
+            public void onRawMessage(String message) {
+                // 处理原始透传消息
+                XLogger.i("MainApplication:" + message);
+                try {
+                    JSONObject jsonObject = new JSONObject(message);
+                    switch (jsonObject.getString(RequestConstant.KEY_BUSINESS_TYPE)) {
+                        case AppConstants.PUSH_TAG_FASTPAY:
+                            SPManager.getInstance().setFastPayPushTag(jsonObject.getInt(RequestConstant.KEY_COUNT));
+                            break;
+                        case AppConstants.PUSH_TAG_ORDER:
+                            SPManager.getInstance().setOrderPushTag(jsonObject.getInt(RequestConstant.KEY_COUNT));
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        // 开启服务
         CustomService.start();
     }
 

@@ -12,8 +12,10 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -75,6 +77,7 @@ public class XmdNetwork {
         } else {
             mServer = server;
         }
+        RetrofitFactory.setBaseUrl(mServer);
     }
 
     /**
@@ -94,23 +97,42 @@ public class XmdNetwork {
      * @return 返回调用观察对像，可用于取消网络请求操作
      */
     public <T> Subscription request(Observable<T> observable, NetworkSubscriber<T> subscriber) {
-        if (subscriber == null) {
-            subscriber = new NetworkSubscriber<T>() {
-                @Override
-                public void onCallbackSuccess(T result) {
-
-                }
-
-                @Override
-                public void onCallbackError(Throwable e) {
-
-                }
-            };
-        }
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
+    }
+
+    // 特殊处理
+    public <T> Subscription request(Observable<T> observable, Subscriber<T> subscriber) {
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public <T> Subscription request(Observable<T> observable, Action1<T> action) {
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(action);
+    }
+
+    public <T> Subscription request(Observable<T> observable) {
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new NetworkSubscriber<T>() {
+                    @Override
+                    public void onCallbackSuccess(T result) {
+
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+
+                    }
+                });
     }
 
     /**
@@ -143,5 +165,13 @@ public class XmdNetwork {
     public void onTokenExpired(EventTokenExpired event) {
         OkHttpUtil.getInstance().removeCommonHeader(TOKEN);
         sharedPreferences.edit().remove(TOKEN).apply();
+    }
+
+    public void setHeader(String key, String value) {
+        OkHttpUtil.getInstance().setCommonHeader(key, value);
+    }
+
+    public void setRequestPreprocess(OkHttpUtil.RequestPreprocess requestPreprocess) {
+        OkHttpUtil.getInstance().setRequestPreprocess(requestPreprocess);
     }
 }

@@ -6,6 +6,7 @@ import com.shidou.commonlibrary.util.MD5Utils;
 import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.sp.SPManager;
+import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.OkHttpUtil;
 
 import java.io.IOException;
@@ -66,7 +67,7 @@ public class SpaOkHttp {
 
     public static void reportTradeDataSync(FormBody formBody, final com.xmd.cashier.manager.Callback<ReportTradeDataResult> callback) {
         Request request = new Request.Builder()
-                .url("http://" + SPManager.getInstance().getSpaServerAddress() + RequestConstant.URL_REPORT_TRADE_DATA)
+                .url(SPManager.getInstance().getSpaServerAddress() + RequestConstant.URL_REPORT_TRADE_DATA)
                 .post(formBody)
                 .build();
         final NetworkSubscriber<ReportTradeDataResult> networkCallback = new NetworkSubscriber<ReportTradeDataResult>() {
@@ -112,13 +113,13 @@ public class SpaOkHttp {
         builder.add(RequestConstant.KEY_TRADE_NO, tradeNo);
         builder.add(RequestConstant.KEY_SIGN, RequestConstant.DEFAULT_SIGN_VALUE);
         Request request = new Request.Builder()
-                .url("http://" + SPManager.getInstance().getSpaServerAddress() + RequestConstant.URL_TRADE_QR_CODE)
+                .url(SPManager.getInstance().getSpaServerAddress() + RequestConstant.URL_TRADE_QR_CODE)
                 .post(builder.build())
                 .build();
         try {
             Response response = OkHttpUtil.getInstance().getClient().newCall(request).execute();
             StringResult stringResult = new Gson().fromJson(response.body().string(), StringResult.class);
-            return stringResult.respData;
+            return stringResult.getRespData();
         } catch (Exception e) {
             XLogger.e("getTradeQrcode failed:" + e.getLocalizedMessage());
         }

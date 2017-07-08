@@ -77,11 +77,11 @@ public class BillSearchPresenter implements BillSearchContract.Presenter {
             @Override
             public void onSuccess(BillRecordResult o) {
                 mView.hideLoadIng();
-                if (o.respData == null || o.respData.list == null || o.respData.list.size() == 0) {
+                if (o.getRespData() == null || o.getRespData().list == null || o.getRespData().list.size() == 0) {
                     mView.showLoadEmpty();
                 } else {
                     mView.showLoadSuccess();
-                    if (mPageIndex < o.pageCount) {
+                    if (mPageIndex < o.getPageCount()) {
                         mPageIndex++;
                         mView.showMoreSuccess();
                         mView.setHasMore(true);
@@ -89,7 +89,7 @@ public class BillSearchPresenter implements BillSearchContract.Presenter {
                         mView.showMoreNone();
                         mView.setHasMore(false);
                     }
-                    mView.showBillData(o.respData.list);
+                    mView.showBillData(o.getRespData().list);
                 }
             }
 
@@ -117,7 +117,7 @@ public class BillSearchPresenter implements BillSearchContract.Presenter {
         mSearchBillListSubscription = mBillManager.searchBillList(mTradeNo, mPageIndex, new Callback<BillRecordResult>() {
             @Override
             public void onSuccess(BillRecordResult o) {
-                if (mPageIndex < o.pageCount) {
+                if (mPageIndex < o.getPageCount()) {
                     mPageIndex++;
                     mView.showMoreSuccess();
                     mView.setHasMore(true);
@@ -125,7 +125,7 @@ public class BillSearchPresenter implements BillSearchContract.Presenter {
                     mView.showMoreNone();
                     mView.setHasMore(false);
                 }
-                mView.showBillData(o.respData.list);
+                mView.showBillData(o.getRespData().list);
             }
 
             @Override

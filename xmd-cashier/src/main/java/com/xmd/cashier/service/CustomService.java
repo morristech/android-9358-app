@@ -30,15 +30,16 @@ import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
-import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.RequestConstant;
-import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.BaseResult;
+import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.sp.SPManager;
-import com.xmd.cashier.exceptions.ServerException;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.widget.CustomNotifyLayoutManager;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.ServerException;
+import com.xmd.m.network.XmdNetwork;
 
 import java.util.List;
 
@@ -107,7 +108,9 @@ public class CustomService extends Service {
                     e.printStackTrace();
                     break;
                 }
-                NotifyManager.getInstance().refreshOnlinePayNotify();
+                if (SPManager.getInstance().getFastPayPushTag() > 0) {
+                    NotifyManager.getInstance().refreshOnlinePayNotify();
+                }
             }
         }
     }
@@ -122,7 +125,9 @@ public class CustomService extends Service {
                     e.printStackTrace();
                     break;
                 }
-                NotifyManager.getInstance().refreshOrderRecordNotify();
+                if (SPManager.getInstance().getOrderPushTag() > 0) {
+                    NotifyManager.getInstance().refreshOrderRecordNotify();
+                }
             }
         }
     }
@@ -355,81 +360,83 @@ public class CustomService extends Service {
             @Override
             public void onAccept(final OrderRecordInfo info, final int position) {
                 adapter.updateDisable(position);    // 更新处理时的状态
-                SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_ACCEPT, info.id)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
-                            @Override
-                            public void onCallbackSuccess(BaseResult result) {
-                                adapter.removeItem(position);
-                                Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单成功", Toast.LENGTH_SHORT).show();
-                                info.status = AppConstants.ORDER_RECORD_STATUS_ACCEPT;
-                                info.receiverName = AccountManager.getInstance().getUser().userName;
-                                if (SPManager.getInstance().getOrderAcceptSwitch()) {
-                                    posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD, info);
-                                }
-                                if (adapter.getItemCount() == 0) {
-                                    mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
-                                    hide();
-                                    refreshOrderRecordNotify(true);
-                                }
-                            }
+                Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                        .updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_ACCEPT, info.id);
+                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                    @Override
+                    public void onCallbackSuccess(BaseBean result) {
+                        adapter.removeItem(position);
+                        Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单成功", Toast.LENGTH_SHORT).show();
+                        SPManager.getInstance().updateOrderPushTag();
+                        info.status = AppConstants.ORDER_RECORD_STATUS_ACCEPT;
+                        info.receiverName = AccountManager.getInstance().getUser().userName;
+                        if (SPManager.getInstance().getOrderAcceptSwitch()) {
+                            posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD, info);
+                        }
+                        if (adapter.getItemCount() == 0) {
+                            mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
+                            hide();
+                            refreshOrderRecordNotify(true);
+                        }
+                    }
 
-                            @Override
-                            public void onCallbackError(Throwable e) {
-                                e.printStackTrace();
-                                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
-                                    String tempStr = e.getLocalizedMessage();
-                                    if (tempStr.contains("处理")) {
-                                        tempStr = "订单已被处理，详情请查看付费预约列表";
-                                    }
-                                    adapter.updateError(position, tempStr);
-                                } else {
-                                    adapter.updateNormal(position);
-                                    Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        e.printStackTrace();
+                        if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                            SPManager.getInstance().updateOrderPushTag();
+                            String tempStr = e.getLocalizedMessage();
+                            if (tempStr.contains("处理")) {
+                                tempStr = "订单已被处理，详情请查看付费预约列表";
                             }
-                        });
+                            adapter.updateError(position, tempStr);
+                        } else {
+                            adapter.updateNormal(position);
+                            Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
 
             @Override
             public void onReject(final OrderRecordInfo info, final int position) {
                 adapter.updateDisable(position);    // 更新处理时的状态
-                SpaRetrofit.getService().updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_REJECT, info.id)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
-                            @Override
-                            public void onCallbackSuccess(BaseResult result) {
-                                adapter.removeItem(position);
-                                Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝成功", Toast.LENGTH_SHORT).show();
-                                info.status = AppConstants.ORDER_RECORD_STATUS_REJECT;
-                                if (SPManager.getInstance().getOrderRejectSwitch()) {
-                                    posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD, info);
-                                }
-                                if (adapter.getItemCount() == 0) {
-                                    mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
-                                    hide();
-                                    refreshOrderRecordNotify(true);
-                                }
-                            }
+                Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                        .updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_REJECT, info.id);
+                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                    @Override
+                    public void onCallbackSuccess(BaseBean result) {
+                        adapter.removeItem(position);
+                        Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝成功", Toast.LENGTH_SHORT).show();
+                        SPManager.getInstance().updateOrderPushTag();
+                        info.status = AppConstants.ORDER_RECORD_STATUS_REJECT;
+                        if (SPManager.getInstance().getOrderRejectSwitch()) {
+                            posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ORDER_RECORD, info);
+                        }
+                        if (adapter.getItemCount() == 0) {
+                            mOrderRecordHandler.removeCallbacks(notifyOrderRecord);
+                            hide();
+                            refreshOrderRecordNotify(true);
+                        }
+                    }
 
-                            @Override
-                            public void onCallbackError(Throwable e) {
-                                e.printStackTrace();
-                                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
-                                    // status=400
-                                    String tempStr = e.getLocalizedMessage();
-                                    if (tempStr.contains("处理")) {
-                                        tempStr = "订单已被处理，详情请查看付费预约列表";
-                                    }
-                                    adapter.updateError(position, tempStr);
-                                } else {
-                                    adapter.updateNormal(position);
-                                    Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        e.printStackTrace();
+                        if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                            SPManager.getInstance().updateOrderPushTag();
+                            // status=400
+                            String tempStr = e.getLocalizedMessage();
+                            if (tempStr.contains("处理")) {
+                                tempStr = "订单已被处理，详情请查看付费预约列表";
                             }
-                        });
+                            adapter.updateError(position, tempStr);
+                        } else {
+                            adapter.updateNormal(position);
+                            Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
 
             @Override
@@ -468,83 +475,85 @@ public class CustomService extends Service {
             @Override
             public void onPass(final OnlinePayInfo info, final int position) {
                 adapter.updateDisable(position);
-                SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_PASS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
-                            @Override
-                            public void onCallbackSuccess(BaseResult result) {
-                                adapter.removeItem(position);
-                                Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认成功", Toast.LENGTH_SHORT).show();
-                                info.status = AppConstants.ONLINE_PAY_STATUS_PASS;
-                                info.operatorName = AccountManager.getInstance().getUser().userName;
-                                if (SPManager.getInstance().getOnlinePassSwitch()) {
-                                    posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY, info);
-                                }
-                                if (adapter.getItemCount() == 0) {
-                                    mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
-                                    hide();
-                                    refreshOnlinePayNotify(true);
-                                }
-                            }
+                Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                        .updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_PASS);
+                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                    @Override
+                    public void onCallbackSuccess(BaseBean result) {
+                        adapter.removeItem(position);
+                        Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认成功", Toast.LENGTH_SHORT).show();
+                        SPManager.getInstance().updateFastPayPushTag();
+                        info.status = AppConstants.ONLINE_PAY_STATUS_PASS;
+                        info.operatorName = AccountManager.getInstance().getUser().userName;
+                        if (SPManager.getInstance().getOnlinePassSwitch()) {
+                            posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY, info);
+                        }
+                        if (adapter.getItemCount() == 0) {
+                            mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
+                            hide();
+                            refreshOnlinePayNotify(true);
+                        }
+                    }
 
-                            @Override
-                            public void onCallbackError(Throwable e) {
-                                e.printStackTrace();
-                                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
-                                    // status = 400
-                                    String tempStr = e.getLocalizedMessage();
-                                    if (tempStr.contains("处理")) {
-                                        tempStr = "买单已被处理，详情请查看在线买单列表";
-                                    }
-                                    adapter.updateError(position, tempStr);
-                                } else {
-                                    adapter.updateNormal(position);
-                                    Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        e.printStackTrace();
+                        if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                            SPManager.getInstance().updateFastPayPushTag();
+                            // status = 400
+                            String tempStr = e.getLocalizedMessage();
+                            if (tempStr.contains("处理")) {
+                                tempStr = "买单已被处理，详情请查看在线买单列表";
                             }
-                        });
+                            adapter.updateError(position, tempStr);
+                        } else {
+                            adapter.updateNormal(position);
+                            Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
 
             @Override
             public void onUnpass(final OnlinePayInfo info, final int position) {
                 adapter.updateDisable(position);
-                SpaRetrofit.getService().updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<BaseResult>() {
-                            @Override
-                            public void onCallbackSuccess(BaseResult result) {
-                                adapter.removeItem(position);
-                                Toast.makeText(MainApplication.getInstance().getApplicationContext(), "已通知请到前台", Toast.LENGTH_SHORT).show();
-                                info.status = AppConstants.ONLINE_PAY_STATUS_UNPASS;
-                                info.operatorName = AccountManager.getInstance().getUser().userName;
-                                if (SPManager.getInstance().getOnlineUnpassSwitch()) {
-                                    posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY, info);
-                                }
-                                if (adapter.getItemCount() == 0) {
-                                    mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
-                                    hide();
-                                    refreshOnlinePayNotify(true);
-                                }
-                            }
+                Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                        .updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS);
+                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                    @Override
+                    public void onCallbackSuccess(BaseBean result) {
+                        adapter.removeItem(position);
+                        Toast.makeText(MainApplication.getInstance().getApplicationContext(), "已通知请到前台", Toast.LENGTH_SHORT).show();
+                        SPManager.getInstance().updateFastPayPushTag();
+                        info.status = AppConstants.ONLINE_PAY_STATUS_UNPASS;
+                        info.operatorName = AccountManager.getInstance().getUser().userName;
+                        if (SPManager.getInstance().getOnlineUnpassSwitch()) {
+                            posPrint(AppConstants.EXTRA_NOTIFY_TYPE_ONLINE_PAY, info);
+                        }
+                        if (adapter.getItemCount() == 0) {
+                            mOnlinePayHandler.removeCallbacks(notifyOnlinePay);
+                            hide();
+                            refreshOnlinePayNotify(true);
+                        }
+                    }
 
-                            @Override
-                            public void onCallbackError(Throwable e) {
-                                e.printStackTrace();
-                                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
-                                    // status = 400
-                                    String tempStr = e.getLocalizedMessage();
-                                    if (tempStr.contains("处理")) {
-                                        tempStr = "买单已被处理，详情请查看在线买单列表";
-                                    }
-                                    adapter.updateError(position, tempStr);
-                                } else {
-                                    adapter.updateNormal(position);
-                                    Toast.makeText(MainApplication.getInstance().getApplicationContext(), "请到前台失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        e.printStackTrace();
+                        if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                            SPManager.getInstance().updateFastPayPushTag();
+                            // status = 400
+                            String tempStr = e.getLocalizedMessage();
+                            if (tempStr.contains("处理")) {
+                                tempStr = "买单已被处理，详情请查看在线买单列表";
                             }
-                        });
+                            adapter.updateError(position, tempStr);
+                        } else {
+                            adapter.updateNormal(position);
+                            Toast.makeText(MainApplication.getInstance().getApplicationContext(), "请到前台失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
 
             @Override

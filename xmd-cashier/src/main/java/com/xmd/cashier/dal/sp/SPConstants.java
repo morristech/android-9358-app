@@ -14,4 +14,7 @@ public class SPConstants {
     public static String ONLINE_PASS_PRINT_SWITCH = "6a3891bc01605d89c8ccdd4c1b822de3";     //买单确认
     public static String ONLINE_UNPASS_PRINT_SWITCH = "3286de45a71ed53bc6eb24a9fd0e3278";   //买单异常
     public static String ONLINE_PAY_PRINT_SWITCH = "c68b6a54fb8bc80e64fe6aa9aa4c3a39";      //微信买单
+
+    public static String FASTPAY_PUSH_TAG = "42f8ab3f8a309888af0bb6275abef2ef";
+    public static String ORDER_PUSH_TAG = "79c5273b8d7b56703921f63d4c56ffbd";
 }

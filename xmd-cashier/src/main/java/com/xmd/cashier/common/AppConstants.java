@@ -167,9 +167,12 @@ public class AppConstants {
 
     public static final String CASHIER_TYPE_POS_TEXT = "银行卡或现金";
     public static final String CASHIER_TYPE_MEMBER_TEXT = "会员支付";
-    public static final String CASHIER_TYPE_XMD_ONLINE_TEXT = "微信支付";
+    public static final String CASHIER_TYPE_XMD_ONLINE_TEXT = "微信或支付宝";
 
     public static final String TYPE_PAID_AMOUNT = "amount";
     public static final String TYPE_PAID_CREDITS = "credits";
     public static final String TYPE_PAID_FREE = "free";
+
+    public static final String PUSH_TAG_FASTPAY = "fast_pay";
+    public static final String PUSH_TAG_ORDER = "order";
 }

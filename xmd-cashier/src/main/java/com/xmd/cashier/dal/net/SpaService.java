@@ -1,6 +1,5 @@
 package com.xmd.cashier.dal.net;
 
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.BillRecordResult;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.ClubResult;
@@ -23,7 +22,9 @@ import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordResult;
 import com.xmd.cashier.dal.net.response.VerifyTypeResult;
+import com.xmd.m.network.BaseBean;
 
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -156,10 +157,10 @@ public interface SpaService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_GAIN_POINTS)
-    Observable<BaseResult> gainPoints(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                      @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
-                                      @Field(RequestConstant.KEY_PHONE) String phone,
-                                      @Field(RequestConstant.KEY_SIGN) String requestSign);
+    Observable<BaseBean> gainPoints(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                    @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                    @Field(RequestConstant.KEY_PHONE) String phone,
+                                    @Field(RequestConstant.KEY_SIGN) String requestSign);
 
     /**
      * 获取交易流水记录
@@ -268,8 +269,8 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_VERIFY_COUPON)
-    Observable<BaseResult> verifyCoupon(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                        @Field(RequestConstant.KEY_COUPON_NO) String couponNo);
+    Observable<BaseBean> verifyCoupon(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                      @Field(RequestConstant.KEY_COUPON_NO) String couponNo);
 
     /**
      * 核销付费预约
@@ -280,9 +281,9 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_VERIFY_PAID_ORDER)
-    Observable<BaseResult> verifyPaidOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                           @Field(RequestConstant.KEY_ORDER_NO) String orderNo,
-                                           @Field(RequestConstant.KEY_PROCESS_TYPE) String processType);
+    Observable<BaseBean> verifyPaidOrder(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                         @Field(RequestConstant.KEY_ORDER_NO) String orderNo,
+                                         @Field(RequestConstant.KEY_PROCESS_TYPE) String processType);
 
     /**
      * 核销转盘奖品
@@ -292,8 +293,8 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_VERIFY_LUCKY_WHEEL)
-    Observable<BaseResult> verifyLuckyWheel(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                            @Field(RequestConstant.KEY_VERIFY_CODE) String verifyCode);
+    Observable<BaseBean> verifyLuckyWheel(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                          @Field(RequestConstant.KEY_VERIFY_CODE) String verifyCode);
 
     /**
      * 核销项目券
@@ -303,8 +304,8 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_VERIFY_SERVICE_ITEM)
-    Observable<BaseResult> verifyServiceCoupon(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                               @Field(RequestConstant.KEY_COUPON_NO) String couponNo);
+    Observable<BaseBean> verifyServiceCoupon(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                             @Field(RequestConstant.KEY_COUPON_NO) String couponNo);
 
     /**
      * 核销默认
@@ -317,10 +318,10 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_VERIFY_COMMON)
-    Observable<BaseResult> verifyWithMoney(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                           @Field(RequestConstant.KEY_AMOUNT) String amount,
-                                           @Field(RequestConstant.KEY_CODE) String code,
-                                           @Field(RequestConstant.KEY_TYPE) String type);
+    Observable<BaseBean> verifyWithMoney(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                         @Field(RequestConstant.KEY_AMOUNT) String amount,
+                                         @Field(RequestConstant.KEY_CODE) String code,
+                                         @Field(RequestConstant.KEY_TYPE) String type);
 
     /**
      * 任意核销
@@ -331,8 +332,8 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_VERIFY_COMMON)
-    Observable<BaseResult> verifyCommon(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                        @Field(RequestConstant.KEY_CODE) String code);
+    Observable<BaseBean> verifyCommon(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                      @Field(RequestConstant.KEY_CODE) String code);
 
 
     /*****************************************
@@ -357,6 +358,15 @@ public interface SpaService {
                                                      @Field(RequestConstant.KEY_TECH_NAME) String techName, // 搜索条件:技师名称或者编号
                                                      @Field(RequestConstant.KEY_STATUS) String status);     // 筛选条件:在线买单状态
 
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_ONLINE_PAY_LIST)
+    Call<OnlinePayListResult> getOnlinePayCount(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                @Field(RequestConstant.KEY_PAGE_START) String page,
+                                                @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                                @Field(RequestConstant.KEY_IS_POS) String isPos,
+                                                @Field(RequestConstant.KEY_TECH_NAME) String techName, // 搜索条件:技师名称或者编号
+                                                @Field(RequestConstant.KEY_STATUS) String status);     // 筛选条件:在线买单状态
+
     /**
      * 修改在线买单状态
      *
@@ -367,9 +377,9 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_ONLINE_PAY_STATUS_UPDATE)
-    Observable<BaseResult> updateOnlinePayStatus(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                 @Field(RequestConstant.KEY_ORDER_ID) String orderId,
-                                                 @Field(RequestConstant.KEY_STATUS) String status);
+    Observable<BaseBean> updateOnlinePayStatus(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                               @Field(RequestConstant.KEY_ORDER_ID) String orderId,
+                                               @Field(RequestConstant.KEY_STATUS) String status);
 
     /**
      * 获取会所预约订单列表
@@ -388,6 +398,13 @@ public interface SpaService {
                                                          @Query(RequestConstant.KEY_TELEPHONE) String telephone,    // 搜索条件:客户手机号或者技师编号
                                                          @Query(RequestConstant.KEY_STATUS) String status);     // 筛选条件:订单状态
 
+    @GET(RequestConstant.URL_GET_ORDER_RECORD_LIST)
+    Call<OrderRecordListResult> getOrderRecordCount(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                    @Query(RequestConstant.KEY_PAGE_START) String page,
+                                                    @Query(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                                    @Query(RequestConstant.KEY_TELEPHONE) String telephone,    // 搜索条件:客户手机号或者技师编号
+                                                    @Query(RequestConstant.KEY_STATUS) String status);     // 筛选条件:订单状态
+
     /**
      * 修改付费预约状态
      *
@@ -399,10 +416,10 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_ORDER_RECORD_STATUS_UPDATE)
-    Observable<BaseResult> updateOrderRecordStatus(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                   @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
-                                                   @Field(RequestConstant.KEY_PROCESS_TYPE) String processType,
-                                                   @Field(RequestConstant.KEY_ID) String id);
+    Observable<BaseBean> updateOrderRecordStatus(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                 @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType,
+                                                 @Field(RequestConstant.KEY_PROCESS_TYPE) String processType,
+                                                 @Field(RequestConstant.KEY_ID) String id);
 
     /****************************************
      * Pos结算 *
@@ -417,8 +434,8 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_SETTLE_SAVE)
-    Observable<BaseResult> saveSettle(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                      @Field(RequestConstant.KEY_SETTLE_RECORD) String settleRecord);
+    Observable<BaseBean> saveSettle(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                    @Field(RequestConstant.KEY_SETTLE_RECORD) String settleRecord);
 
     /**
      * 获取当前未结算的交易汇总
@@ -556,6 +573,6 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_DELETE_XMD_ONLINE_ORDER_ID)
-    Observable<BaseResult> deleteXMDOnlineOrderId(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                  @Field(RequestConstant.KEY_ORDER_ID) String orderId);
+    Observable<BaseBean> deleteXMDOnlineOrderId(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                @Field(RequestConstant.KEY_ORDER_ID) String orderId);
 }

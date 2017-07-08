@@ -6,9 +6,9 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyOrderContract;
 import com.xmd.cashier.dal.bean.OrderInfo;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
+import com.xmd.m.network.BaseBean;
 
 import rx.Subscription;
 
@@ -57,9 +57,9 @@ public class VerifyOrderPresenter implements VerifyOrderContract.Presenter {
             mModifyOrderStatusSubscription.unsubscribe();
         }
 
-        mModifyOrderStatusSubscription = VerifyManager.getInstance().verifyPaidOrder(info.orderNo, AppConstants.PAID_ORDER_OP_VERIFIED, new Callback<BaseResult>() {
+        mModifyOrderStatusSubscription = VerifyManager.getInstance().verifyPaidOrder(info.orderNo, AppConstants.PAID_ORDER_OP_VERIFIED, new Callback<BaseBean>() {
             @Override
-            public void onSuccess(BaseResult o) {
+            public void onSuccess(BaseBean o) {
                 VerifyManager.getInstance().print(AppConstants.TYPE_ORDER, info);
                 mView.hideLoading();
                 mView.showToast("核销成功");

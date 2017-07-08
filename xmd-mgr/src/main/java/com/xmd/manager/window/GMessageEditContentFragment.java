@@ -47,6 +47,7 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
     private String imageUrl;
     private int mLimitImageSize;
     private String mMessageContent;
+    private boolean mSelectCoupon;
 
     @Nullable
     @Override
@@ -84,7 +85,7 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
                 ((GroupMessageCustomerActivity) getActivity()).gotoCouponFragment();
                 break;
             case R.id.btn_preview:
-                if (Utils.isEmpty(imageUrl) && Utils.isEmpty(mMessageContent)) {
+                if (Utils.isEmpty(imageUrl) && Utils.isEmpty(mMessageContent) && !mSelectCoupon) {
                     Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.send_group_message_alert));
                     return;
                 }
@@ -135,6 +136,10 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
             }
         }
         mMessageContent = mEditContent.getText().toString();
+    }
+
+    public void setSelectCoupon(boolean selected){
+        mSelectCoupon = selected;
     }
 
     public String getImageUrl() {

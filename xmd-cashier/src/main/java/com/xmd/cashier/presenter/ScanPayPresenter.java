@@ -23,26 +23,26 @@ import com.xmd.cashier.contract.ScanPayContract;
 import com.xmd.cashier.contract.ScanPayContract.Presenter;
 import com.xmd.cashier.dal.bean.OnlinePayUrlInfo;
 import com.xmd.cashier.dal.bean.Trade;
-import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.RequestConstant;
-import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.BaseResult;
+import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
 import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
 import com.xmd.cashier.dal.net.response.StringResult;
-import com.xmd.cashier.exceptions.ServerException;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback0;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.ServerException;
+import com.xmd.m.network.XmdNetwork;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-5-12.
@@ -75,39 +75,38 @@ public class ScanPayPresenter implements Presenter {
                 if (mGetXMDScanStatusSubscription != null) {
                     mGetXMDScanStatusSubscription.unsubscribe();
                 }
-                mGetXMDScanStatusSubscription = SpaRetrofit.getService().getXMDOnlineScanStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new NetworkSubscriber<StringResult>() {
-                            @Override
-                            public void onCallbackSuccess(StringResult result) {
-                                if (isCodeExpire()) {
-                                    doCodeExpire();
-                                    return;
-                                }
-                                if (AppConstants.APP_REQUEST_YES.equals(result.respData)) {
-                                    // 已经扫码:获取买单详情
-                                    isScan = true;
-                                    mView.updateScanStatus();
-                                }
-                                handleDetail();
-                            }
+                Observable<StringResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                        .getXMDOnlineScanStatus(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo);
+                mGetXMDScanStatusSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<StringResult>() {
+                    @Override
+                    public void onCallbackSuccess(StringResult result) {
+                        if (isCodeExpire()) {
+                            doCodeExpire();
+                            return;
+                        }
+                        if (AppConstants.APP_REQUEST_YES.equals(result.getRespData())) {
+                            // 已经扫码:获取买单详情
+                            isScan = true;
+                            mView.updateScanStatus();
+                        }
+                        handleDetail();
+                    }
 
-                            @Override
-                            public void onCallbackError(Throwable e) {
-                                if (e instanceof ServerException) {
-                                    if (((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
-                                        // 400:二维码过期
-                                        doCodeExpire();
-                                    } else if (((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
-                                        // 会话过期
-                                        doFinish();
-                                    } else {
-                                        mHandler.postDelayed(mRunnable, INTERVAL);
-                                    }
-                                }
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        if (e instanceof ServerException) {
+                            if (((ServerException) e).statusCode == RequestConstant.RESP_ERROR) {
+                                // 400:二维码过期
+                                doCodeExpire();
+                            } else if (((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
+                                // 会话过期
+                                doFinish();
+                            } else {
+                                mHandler.postDelayed(mRunnable, INTERVAL);
                             }
-                        });
+                        }
+                    }
+                });
             }
         }
     };
@@ -117,43 +116,42 @@ public class ScanPayPresenter implements Presenter {
         if (mGetXMDOnlinePayDetailSubscription != null) {
             mGetXMDOnlinePayDetailSubscription.unsubscribe();
         }
-        mGetXMDOnlinePayDetailSubscription = SpaRetrofit.getService().getXMDOnlinePayDetail(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<OnlinePayDetailResult>() {
-                    @Override
-                    public void onCallbackSuccess(OnlinePayDetailResult result) {
-                        if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(result.respData.status)) {
-                            // 支付成功
-                            PosFactory.getCurrentCashier().textToSound("买单成功");
-                            mTradeManager.getCurrentTrade().tradeTime = result.respData.createTime;
-                            mTradeManager.getCurrentTrade().setOnlinePayPaidMoney(result.respData.payAmount);
-                            // FIXME  更新在线买单支付方式
-                            UiNavigation.gotoScanPayResultActivity(mContext, result.respData);
-                            mView.finishSelf();
-                        } else {
-                            if (isCodeExpire()) {
-                                // 二维码过期
-                                doCodeExpire();
-                            } else {
-                                // 尚未支付成功:重试
-                                mHandler.postDelayed(mRunnable, INTERVAL);
-                            }
-                        }
+        Observable<OnlinePayDetailResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getXMDOnlinePayDetail(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo);
+        mGetXMDOnlinePayDetailSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayDetailResult>() {
+            @Override
+            public void onCallbackSuccess(OnlinePayDetailResult result) {
+                if (AppConstants.ONLINE_PAY_STATUS_PASS.equals(result.getRespData().status)) {
+                    // 支付成功
+                    PosFactory.getCurrentCashier().textToSound("买单成功");
+                    mTradeManager.getCurrentTrade().tradeTime = result.getRespData().createTime;
+                    mTradeManager.getCurrentTrade().setOnlinePayPaidMoney(result.getRespData().payAmount);
+                    // FIXME  更新在线买单支付方式
+                    UiNavigation.gotoScanPayResultActivity(mContext, result.getRespData());
+                    mView.finishSelf();
+                } else {
+                    if (isCodeExpire()) {
+                        // 二维码过期
+                        doCodeExpire();
+                    } else {
+                        // 尚未支付成功:重试
+                        mHandler.postDelayed(mRunnable, INTERVAL);
                     }
+                }
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        if (e instanceof ServerException) {
-                            if (((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
-                                // 会话过期
-                                doFinish();
-                            } else {
-                                mHandler.postDelayed(mRunnable, INTERVAL);
-                            }
-                        }
+            @Override
+            public void onCallbackError(Throwable e) {
+                if (e instanceof ServerException) {
+                    if (((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
+                        // 会话过期
+                        doFinish();
+                    } else {
+                        mHandler.postDelayed(mRunnable, INTERVAL);
                     }
-                });
+                }
+            }
+        });
     }
 
     public ScanPayPresenter(Context context, ScanPayContract.View view) {
@@ -257,22 +255,22 @@ public class ScanPayPresenter implements Presenter {
         if (mDeleteXMDOnlineOrderIdSubscription != null) {
             mDeleteXMDOnlineOrderIdSubscription.unsubscribe();
         }
-        mDeleteXMDOnlineOrderIdSubscription = SpaRetrofit.getService().deleteXMDOnlineOrderId(AccountManager.getInstance().getToken(), orderId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
-                    @Override
-                    public void onCallbackSuccess(BaseResult result) {
-                        mView.hideLoading();
-                        doFinish();
-                    }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        mView.hideLoading();
-                        mView.showToast("请求失败：" + e.getLocalizedMessage());
-                    }
-                });
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .deleteXMDOnlineOrderId(AccountManager.getInstance().getToken(), orderId);
+        mDeleteXMDOnlineOrderIdSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                mView.hideLoading();
+                doFinish();
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                mView.hideLoading();
+                mView.showToast("请求失败：" + e.getLocalizedMessage());
+            }
+        });
     }
 
     @Override
@@ -281,40 +279,39 @@ public class ScanPayPresenter implements Presenter {
         if (mGetXMDOnlineQrcodeUrlSubscription != null) {
             mGetXMDOnlineQrcodeUrlSubscription.unsubscribe();
         }
-        mGetXMDOnlineQrcodeUrlSubscription = SpaRetrofit.getService().getXMDOnlineQrcodeUrl(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo, String.valueOf(mTradeManager.getCurrentTrade().getOriginMoney()), String.valueOf(mTradeManager.getCurrentTrade().getWillDiscountMoney()))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<OnlinePayUrlResult>() {
-                    @Override
-                    public void onCallbackSuccess(OnlinePayUrlResult result) {
-                        OnlinePayUrlInfo info = result.respData;
-                        if (info == null || TextUtils.isEmpty(info.url)) {
-                            mView.showQrError("获取二维码数据异常");
-                            return;
-                        }
-                        XLogger.d(info.orderId + " --- " + info.url);
-                        // 获取二维码成功
-                        try {
-                            mQRBitmap = getQRBitmap(info.url);
-                        } catch (Exception e) {
-                            mQRBitmap = null;
-                        }
-                        if (mQRBitmap == null) {
-                            // 解析失败
-                            mView.showQrError("解析二维码链接失败");
-                        } else {
-                            mView.showQrSuccess();
-                            mView.setQRCode(mQRBitmap);
-                            mHandler.postDelayed(mRunnable, INTERVAL);
-                        }
-                    }
+        Observable<OnlinePayUrlResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getXMDOnlineQrcodeUrl(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo, String.valueOf(mTradeManager.getCurrentTrade().getOriginMoney()), String.valueOf(mTradeManager.getCurrentTrade().getWillDiscountMoney()));
+        mGetXMDOnlineQrcodeUrlSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayUrlResult>() {
+            @Override
+            public void onCallbackSuccess(OnlinePayUrlResult result) {
+                OnlinePayUrlInfo info = result.getRespData();
+                if (info == null || TextUtils.isEmpty(info.url)) {
+                    mView.showQrError("获取二维码数据异常");
+                    return;
+                }
+                XLogger.d(info.orderId + " --- " + info.url);
+                // 获取二维码成功
+                try {
+                    mQRBitmap = getQRBitmap(info.url);
+                } catch (Exception e) {
+                    mQRBitmap = null;
+                }
+                if (mQRBitmap == null) {
+                    // 解析失败
+                    mView.showQrError("解析二维码链接失败");
+                } else {
+                    mView.showQrSuccess();
+                    mView.setQRCode(mQRBitmap);
+                    mHandler.postDelayed(mRunnable, INTERVAL);
+                }
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        // 获取失败
-                        mView.showQrError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                // 获取失败
+                mView.showQrError(e.getLocalizedMessage());
+            }
+        });
     }
 
     private boolean isCodeExpire() {

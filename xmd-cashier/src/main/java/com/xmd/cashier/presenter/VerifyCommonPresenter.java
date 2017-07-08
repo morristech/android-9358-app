@@ -8,9 +8,9 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyCommonContract;
 import com.xmd.cashier.dal.bean.CommonVerifyInfo;
 import com.xmd.cashier.dal.bean.TreatInfo;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
+import com.xmd.m.network.BaseBean;
 
 import rx.Subscription;
 
@@ -43,9 +43,9 @@ public class VerifyCommonPresenter implements VerifyCommonContract.Presenter {
             mVerifyCommonSubscription.unsubscribe();
         }
         mView.showLoadingView();
-        mVerifyCommonSubscription = VerifyManager.getInstance().verifyWithMoney(Utils.stringToMoney(mView.getAmount()), mView.getCode(), mView.getType(), new Callback<BaseResult>() {
+        mVerifyCommonSubscription = VerifyManager.getInstance().verifyWithMoney(Utils.stringToMoney(mView.getAmount()), mView.getCode(), mView.getType(), new Callback<BaseBean>() {
             @Override
-            public void onSuccess(BaseResult o) {
+            public void onSuccess(BaseBean o) {
                 if (AppConstants.TYPE_PAY_FOR_OTHER.equals(info.type)) {
                     TreatInfo treatInfo = new TreatInfo();
                     treatInfo.userName = info.userName;
