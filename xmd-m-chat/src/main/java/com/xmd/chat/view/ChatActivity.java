@@ -42,6 +42,7 @@ import com.xmd.chat.XmdChat;
 import com.xmd.chat.databinding.ChatActivityBinding;
 import com.xmd.chat.event.EventDeleteMessage;
 import com.xmd.chat.event.EventNewMessages;
+import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.event.EventRevokeMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
@@ -108,6 +109,12 @@ public class ChatActivity extends BaseActivity {
         initMenu();
 
         loadData(null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        XmdChat.getInstance().getMenuFactory().cleanMenus();
     }
 
     private EMConversation getConversation() {
@@ -194,6 +201,12 @@ public class ChatActivity extends BaseActivity {
                 addNewChatMessageToUi(ChatMessageFactory.get(message));
             }
         }
+    }
+
+    //处理新的UI消息
+    @Subscribe
+    public void onNewUiMessages(EventNewUiMessage message) {
+        addNewChatMessageToUi(message.getChatMessage());
     }
 
     //处理删除消息

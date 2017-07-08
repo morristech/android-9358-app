@@ -4,7 +4,7 @@ import android.view.View;
 
 /**
  * Created by mo on 17-7-6.
- * 表情
+ * 快速回复
  */
 
 public class SubMenuFastReplyViewModel {
