@@ -82,7 +82,7 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_CLUB_WX_QRCODE)
-    Observable<StringResult> getClubWXQrcode(@Field(RequestConstant.KEY_CLUB_ID) String userToken,
+    Call<StringResult> getClubWXQrcode(@Field(RequestConstant.KEY_CLUB_ID) String userToken,
                                              @Field(RequestConstant.KEY_TRADE_NO) String tradeNo);
 
     /**

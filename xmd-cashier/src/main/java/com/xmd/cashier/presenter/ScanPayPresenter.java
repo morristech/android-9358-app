@@ -126,7 +126,7 @@ public class ScanPayPresenter implements Presenter {
                     PosFactory.getCurrentCashier().textToSound("买单成功");
                     mTradeManager.getCurrentTrade().tradeTime = result.getRespData().createTime;
                     mTradeManager.getCurrentTrade().setOnlinePayPaidMoney(result.getRespData().payAmount);
-                    // FIXME  更新在线买单支付方式
+                    mTradeManager.getCurrentTrade().setOnlinePayChannel(result.getRespData().payChannel);
                     UiNavigation.gotoScanPayResultActivity(mContext, result.getRespData());
                     mView.finishSelf();
                 } else {

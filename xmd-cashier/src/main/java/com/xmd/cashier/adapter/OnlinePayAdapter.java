@@ -168,6 +168,9 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemViewHolder.mAddTechName.setText(info.otherTechNames);
             }
 
+            String payChannel = Utils.getPayChannel(info.payChannel);
+            itemViewHolder.mPayChannel.setText(TextUtils.isEmpty(payChannel) ? "未知" : payChannel);
+
             if (TextUtils.isEmpty(info.techName)) {
                 itemViewHolder.mTechInfoRow.setVisibility(View.GONE);
             } else {
@@ -271,6 +274,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public TextView mCashierMoney;
         public TextView mTradeNo;
         public TextView mCashierTime;
+        public TextView mPayChannel;
 
         public Button mPrintBtn;
         public LinearLayout mOperateLayout;
@@ -299,6 +303,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mOperateLayout = (LinearLayout) itemView.findViewById(R.id.item_layout_operate);
             mConfirmBtn = (Button) itemView.findViewById(R.id.item_btn_confirm);
             mExceptionBtn = (Button) itemView.findViewById(R.id.item_btn_exception);
+            mPayChannel = (TextView) itemView.findViewById(R.id.item_pay_channel);
         }
     }
 

@@ -198,6 +198,17 @@ public class Utils {
         }
     }
 
+    public static String getPayChannel(String channel) {
+        switch (channel) {
+            case AppConstants.FAST_PAY_CHANNEL_ALI:
+                return "支付宝支付";
+            case AppConstants.FAST_PAY_CHANNEL_WX:
+                return "微信支付";
+            default:
+                return null;
+        }
+    }
+
     public static void maskScreen(Activity activity, boolean toMask) {
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
         if (toMask) {

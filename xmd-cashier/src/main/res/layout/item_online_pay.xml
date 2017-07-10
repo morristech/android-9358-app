@@ -194,6 +194,26 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="支付方式"
+                android:textColor="@color/colorText3"
+                android:textSize="@dimen/font_size_14" />
+
+            <TextView
+                android:id="@+id/item_pay_channel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_small_margin"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/font_size_14" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/activity_small_margin"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="实付"
                 android:textColor="@color/colorText3"
                 android:textSize="@dimen/font_size_14" />
