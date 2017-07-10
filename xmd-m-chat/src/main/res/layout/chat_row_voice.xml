@@ -14,6 +14,7 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onLongClick="@{(v)->data.onLongClick(v)}"
         android:onClick="@{(v)->data.playVoice(v)}">
 
         <LinearLayout

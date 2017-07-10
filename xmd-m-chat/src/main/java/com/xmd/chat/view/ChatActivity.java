@@ -121,7 +121,6 @@ public class ChatActivity extends BaseActivity {
         mBinding.inputVoice.setOnTouchListener(voiceButtonListener);
 
         initMenu();
-
         loadData(null);
     }
 
@@ -167,7 +166,8 @@ public class ChatActivity extends BaseActivity {
         }
         ChatRowViewModel beforeData = null;
         for (EMMessage message : messageList) {
-            ChatRowViewModel data = ChatRowViewFactory.createViewModel(ChatMessageFactory.get(message));
+            ChatMessage chatMessage = ChatMessageFactory.get(message);
+            ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
             setShowTime(beforeData, data);
             beforeData = data;
             newDataList.add(data);
@@ -488,6 +488,8 @@ public class ChatActivity extends BaseActivity {
         }
         ChatMessage chatMessage = MessageManager.getInstance()
                 .sendVoiceMessage(mRemoteUser, path, (int) VoiceManager.getInstance().getRecordTime() / 1000);
-        addNewChatMessageToUi(chatMessage);
+        if (chatMessage != null) {
+            addNewChatMessageToUi(chatMessage);
+        }
     }
 }

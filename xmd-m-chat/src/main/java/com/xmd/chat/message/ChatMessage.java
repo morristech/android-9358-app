@@ -3,7 +3,6 @@ package com.xmd.chat.message;
 import android.text.SpannableString;
 import android.text.TextUtils;
 
-import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
@@ -20,8 +19,7 @@ import java.util.Calendar;
 
 public class ChatMessage {
     private static final String TAG = "ChatMessage";
-    //订单
-    public static final String MSG_TYPE_ORDER = "order";
+
 
     /**
      * 原始数据类型:
@@ -44,6 +42,7 @@ public class ChatMessage {
     public static final String MSG_TYPE_ORDER_SUCCESS = "order_success";
     public static final String MSG_TYPE_ORDER_REQUEST = "order_request"; //求预约
 
+    public static final String MSG_TYPE_ORDER = "order";//订单消息
     public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";//客服消息
     public static final String MSG_TAG_HELLO = "hello"; //打招呼消息
 
@@ -67,14 +66,24 @@ public class ChatMessage {
     private SpannableString contentText; //缓存emoji格式化后的数据
     protected String formatTime; //缓存格式化后的时间
 
+    @Deprecated
     public ChatMessage(EMMessage emMessage, String msgType) {
         this.emMessage = emMessage;
         setAttr(ATTRIBUTE_MESSAGE_TYPE, msgType);
         setTime(String.valueOf(emMessage.getMsgTime()));
     }
 
+    public ChatMessage(EMMessage emMessage) {
+        this.emMessage = emMessage;
+        setTime(String.valueOf(emMessage.getMsgTime()));
+    }
+
     public String getMsgType() {
         return getMsgType(emMessage);
+    }
+
+    public void setMsgType(String msgType) {
+        setAttr(ATTRIBUTE_MESSAGE_TYPE, msgType);
     }
 
     public static String getMsgType(EMMessage emMessage) {
@@ -181,22 +190,18 @@ public class ChatMessage {
 
     protected void setAttr(String key, String value) {
         emMessage.setAttribute(key, value);
-        EMClient.getInstance().chatManager().updateMessage(emMessage);
     }
 
     protected void setAttr(String attrKey, Long attr) {
         emMessage.setAttribute(attrKey, attr);
-        EMClient.getInstance().chatManager().updateMessage(emMessage);
     }
 
     protected void setAttr(String attrKey, Integer attr) {
         emMessage.setAttribute(attrKey, attr);
-        EMClient.getInstance().chatManager().updateMessage(emMessage);
     }
 
     protected void setAttr(String attrKey, Boolean attr) {
         emMessage.setAttribute(attrKey, attr);
-        EMClient.getInstance().chatManager().updateMessage(emMessage);
     }
 
     public EMMessage getEmMessage() {
@@ -296,5 +301,46 @@ public class ChatMessage {
         } catch (HyphenateException e) {
             return null;
         }
+    }
+
+    public static String getMsgTypeText(String msgType) {
+        switch (msgType) {
+            case ChatMessage.MSG_TYPE_ORDER_START:
+                return "发起预约";
+            case ChatMessage.MSG_TYPE_ORDER_REFUSE:
+                return "拒绝预约";
+            case ChatMessage.MSG_TYPE_ORDER_CANCEL:
+                return "预约取消";
+            case ChatMessage.MSG_TYPE_ORDER_CONFIRM:
+                return "预约确认";
+            case ChatMessage.MSG_TYPE_ORDER_SUCCESS:
+                return "预约成功";
+        }
+        return msgType;
+    }
+
+
+    public static ChatMessage createTextMessage(String remoteChatId, String text) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage(text, remoteChatId);
+        if (emMessage == null) {
+            return null;
+        }
+        return new ChatMessage(emMessage);
+    }
+
+    public static ChatMessage createImageMessage(String remoteChatId, String imagePath) {
+        EMMessage emMessage = EMMessage.createImageSendMessage(imagePath, true, remoteChatId);
+        if (emMessage == null) {
+            return null;
+        }
+        return new ChatMessage(emMessage);
+    }
+
+    public static ChatMessage createVoiceSendMessage(String remoteChatId, String audioPath, int length) {
+        EMMessage emMessage = EMMessage.createVoiceSendMessage(audioPath, length, remoteChatId);
+        if (emMessage == null) {
+            return null;
+        }
+        return new ChatMessage(emMessage);
     }
 }

@@ -175,7 +175,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
     @BindingAdapter("order_title")
     public static void bindOrderTitle(TextView view, OrderChatMessage data) {
         if (data != null) {
-            view.setText(OrderChatManager.getMsgTypeText(data.getMsgType()));
+            view.setText(OrderChatMessage.getMsgTypeText(data.getMsgType()));
         }
     }
 

@@ -17,4 +17,10 @@ public class RevokeChatMessage extends ChatMessage {
         setAttr("mark", "revoke");
         emMessage.addBody(cmdBody);
     }
+
+    public static RevokeChatMessage create(String remoteChatId, String revokeMsgId) {
+        EMMessage cmdMessage = EMMessage.createSendMessage(EMMessage.Type.CMD);
+        cmdMessage.setTo(remoteChatId);
+        return new RevokeChatMessage(revokeMsgId, cmdMessage);
+    }
 }

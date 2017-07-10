@@ -93,16 +93,12 @@ public class MessageManager {
 
     //发送文本消息
     public ChatMessage sendTextMessage(String remoteChatId, String text) {
-        EMMessage emMessage = EMMessage.createTxtSendMessage(text, remoteChatId);
-        ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
-        return sendMessage(chatMessage);
+        return sendMessage(ChatMessage.createTextMessage(remoteChatId, text));
     }
 
     //发送图片消息
     public ChatMessage sendImageMessage(String remoteChatId, String filePath) {
-        EMMessage emMessage = EMMessage.createImageSendMessage(filePath, true, remoteChatId);
-        ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
-        return sendMessage(chatMessage);
+        return sendMessage(ChatMessage.createImageMessage(remoteChatId, filePath));
     }
 
     //发送位置消息
@@ -114,9 +110,7 @@ public class MessageManager {
 
     //发送撤回命令
     public void sendRevokeMessage(String remoteChatId, String msgId) {
-        EMMessage cmdMessage = EMMessage.createSendMessage(EMMessage.Type.CMD);
-        cmdMessage.setTo(remoteChatId);
-        RevokeChatMessage chatMessage = new RevokeChatMessage(msgId, cmdMessage);
+        RevokeChatMessage chatMessage = RevokeChatMessage.create(remoteChatId, msgId);
         sendMessage(chatMessage);
     }
 
@@ -129,12 +123,13 @@ public class MessageManager {
     }
 
     public ChatMessage sendVoiceMessage(User remoteUser, String path, int length) {
-        EMMessage emMessage = EMMessage.createVoiceSendMessage(path, length, remoteUser.getChatId());
-        ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
-        return sendMessage(chatMessage);
+        return sendMessage(ChatMessage.createVoiceSendMessage(remoteUser.getChatId(), path, length));
     }
 
     public ChatMessage sendMessage(ChatMessage chatMessage) {
+        if (chatMessage == null) {
+            return null;
+        }
         User user = AccountManager.getInstance().getUser();
         if (user == null) {
             XToast.show("无法发送消息，没有用户信息!");
@@ -143,6 +138,17 @@ public class MessageManager {
         chatMessage.setUser(user);
         EMClient.getInstance().chatManager().sendMessage(chatMessage.getEmMessage());
         return chatMessage;
+    }
+
+
+    //将消息保存到本地
+    public void saveMessage(final ChatMessage chatMessage) {
+        ThreadPoolManager.run(new Runnable() {
+            @Override
+            public void run() {
+                EMClient.getInstance().chatManager().updateMessage(chatMessage.getEmMessage());
+            }
+        });
     }
 
     private void displayNotification(ChatMessage chatMessage) {

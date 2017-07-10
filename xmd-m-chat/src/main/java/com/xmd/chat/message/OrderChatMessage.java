@@ -25,13 +25,22 @@ public class OrderChatMessage extends ChatMessage {
     //内部是否已处理此消息
     private static final String ATTR_INNER_PROCESSED = "inner_processed";
 
-    public OrderChatMessage(EMMessage emMessage, String msgType) {
-        super(emMessage, msgType);
+    public OrderChatMessage(EMMessage emMessage) {
+        super(emMessage);
+    }
+
+    public static OrderChatMessage create(String remoteChatId, String msgType) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage(getMsgTypeText(msgType), remoteChatId);
+        OrderChatMessage orderChatMessage = new OrderChatMessage(emMessage);
+        orderChatMessage.setMsgType(msgType);
+        return orderChatMessage;
     }
 
     public static OrderChatMessage createRequestOrderMessage(String remoteChatId) {
         EMMessage emMessage = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", remoteChatId);
-        return new OrderChatMessage(emMessage, ChatMessage.MSG_TYPE_ORDER_REQUEST);
+        OrderChatMessage orderChatMessage = new OrderChatMessage(emMessage);
+        orderChatMessage.setMsgType(ChatMessage.MSG_TYPE_ORDER_REQUEST);
+        return orderChatMessage;
     }
 
     public String getCustomerName() {

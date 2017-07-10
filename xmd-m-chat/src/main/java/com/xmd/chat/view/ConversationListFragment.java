@@ -17,7 +17,6 @@ import com.xmd.app.BaseFragment;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.chat.BR;
-import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.ConversationManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.FragmentConversationBinding;
@@ -101,7 +100,7 @@ public class ConversationListFragment extends BaseFragment {
                 loadData(null);
                 return;
             } else {
-                ChatMessage chatMessage = ChatMessageFactory.get(message);
+                ChatMessage chatMessage = new ChatMessage(message);
                 data.setLastMessage(chatMessage);
                 int fromPosition = mAdapter.getDataList().indexOf(data);
                 mAdapter.notifyItemChanged(fromPosition);

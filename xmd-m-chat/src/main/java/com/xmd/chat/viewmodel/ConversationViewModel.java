@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMConversation;
 import com.xmd.app.user.User;
 import com.xmd.app.widget.GlideCircleTransform;
-import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.ConversationManager;
 import com.xmd.chat.R;
 import com.xmd.chat.message.ChatMessage;
@@ -32,7 +31,7 @@ public class ConversationViewModel {
     public ConversationViewModel(User user, EMConversation conversation) {
         this.user = user;
         this.conversation = conversation;
-        this.lastMessage = ChatMessageFactory.get(conversation.getLastMessage());
+        this.lastMessage = new ChatMessage(conversation.getLastMessage());
     }
 
     @BindingAdapter("avatar")

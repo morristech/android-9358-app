@@ -64,7 +64,7 @@ public class XmdChat {
         for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
             EMMessage emMessage = conversation.getLatestMessageFromOthers();
             if (emMessage != null) {
-                ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
+                ChatMessage chatMessage = new ChatMessage(emMessage);
                 if (chatMessage.getUserId() != null) {
                     User user = new User(chatMessage.getUserId());
                     user.setName(chatMessage.getUserName());

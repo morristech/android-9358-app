@@ -8,7 +8,6 @@ import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.beans.ServiceItem;
 import com.xmd.appointment.beans.Technician;
-import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
 
 import java.util.Date;
@@ -124,25 +123,9 @@ public class OrderChatManager {
         }
     }
 
-    public static String getMsgTypeText(String msgType) {
-        switch (msgType) {
-            case ChatMessage.MSG_TYPE_ORDER_START:
-                return "发起预约";
-            case ChatMessage.MSG_TYPE_ORDER_REFUSE:
-                return "拒绝预约";
-            case ChatMessage.MSG_TYPE_ORDER_CANCEL:
-                return "预约取消";
-            case ChatMessage.MSG_TYPE_ORDER_CONFIRM:
-                return "预约确认";
-            case ChatMessage.MSG_TYPE_ORDER_SUCCESS:
-                return "预约成功";
-        }
-        return "预约消息";
-    }
 
     public static OrderChatMessage createMessage(String toChatId, String msgType, AppointmentData data) {
-        String content = getMsgTypeText(msgType);
-        OrderChatMessage msg = new OrderChatMessage(EMMessage.createTxtSendMessage(content, toChatId), msgType);
+        OrderChatMessage msg = OrderChatMessage.create(toChatId, msgType);
         if (data != null) {
             fillMessage(msg, data);
         }

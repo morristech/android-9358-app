@@ -1,5 +1,6 @@
 package com.xmd.chat;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -25,13 +26,15 @@ public class VoiceManager {
     private String recordFile;
     private long recordStartTime;
     private long recordTime;
+    private boolean handsFree;
+    private AudioManager audioManager;
 
     public static VoiceManager getInstance() {
         return ourInstance;
     }
 
     private VoiceManager() {
-
+        audioManager = (AudioManager) XmdChat.getInstance().getContext().getSystemService(Context.AUDIO_SERVICE);
     }
 
     public void play(String filePath, final Callback<Void> callback) {
@@ -40,8 +43,13 @@ public class VoiceManager {
             stopPlayVoiceListener.onStop(mediaPlayer);
             stopPlayVoiceListener = null;
         }
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+        }
+        audioManager.setSpeakerphoneOn(handsFree);
+        audioManager.setMode(handsFree ? AudioManager.MODE_NORMAL : AudioManager.MODE_IN_COMMUNICATION);
+        mediaPlayer.setAudioStreamType(handsFree ? AudioManager.STREAM_MUSIC : AudioManager.STREAM_VOICE_CALL);
         try {
-            createVoicePlayer();
             mediaPlayer.stop();
             mediaPlayer.reset();
             mediaPlayer.setDataSource(filePath);
@@ -49,6 +57,7 @@ public class VoiceManager {
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
+                    stopPlayVoiceListener = null;
                     callback.onResponse(null, new Throwable("无法播放：what=" + what + ",extra=" + extra));
                     return true;
                 }
@@ -56,6 +65,7 @@ public class VoiceManager {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    stopPlayVoiceListener = null;
                     callback.onResponse(null, null);
                 }
             });
@@ -68,6 +78,7 @@ public class VoiceManager {
             setStopPlayVoiceListener(new OnStopListener() {
                 @Override
                 public void onStop(MediaPlayer mediaPlayer) {
+                    stopPlayVoiceListener = null;
                     callback.onResponse(null, null);
                 }
             });
@@ -82,28 +93,24 @@ public class VoiceManager {
             mediaPlayer.stop();
             if (stopPlayVoiceListener != null) {
                 stopPlayVoiceListener.onStop(mediaPlayer);
+                stopPlayVoiceListener = null;
             }
         }
     }
 
 
     public void cleanResource() {
+        stopPlayVoiceListener = null;
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
         if (mediaRecorder != null) {
             mediaRecorder.release();
+            mediaRecorder = null;
         }
     }
 
-
-    private void createVoicePlayer() {
-        if (mediaPlayer == null) {
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        }
-    }
 
     private interface OnStopListener {
         void onStop(MediaPlayer mediaPlayer);
@@ -126,16 +133,14 @@ public class VoiceManager {
     public boolean startRecord() {
         if (mediaRecorder == null) {
             mediaRecorder = new MediaRecorder();
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            mediaRecorder.setAudioChannels(2);
-            mediaRecorder.setAudioSamplingRate(8000);
-            mediaRecorder.setAudioEncodingBitRate(64);
-        } else {
-            mediaRecorder.stop();
-            mediaRecorder.reset();
         }
+        mediaRecorder.reset();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mediaRecorder.setAudioChannels(2);
+        mediaRecorder.setAudioSamplingRate(8000);
+        mediaRecorder.setAudioEncodingBitRate(64);
         recordFile = PathUtil.getInstance().getVoicePath() + "/" + System.currentTimeMillis() + ".amr";
         mediaRecorder.setOutputFile(recordFile);
         try {
@@ -166,5 +171,13 @@ public class VoiceManager {
 
     public long getRecordTime() {
         return recordTime;
+    }
+
+    public boolean isHandsFree() {
+        return handsFree;
+    }
+
+    public void setHandsFree(boolean handsFree) {
+        this.handsFree = handsFree;
     }
 }

@@ -11,11 +11,8 @@ import com.xmd.chat.message.OrderChatMessage;
  */
 
 public class ChatMessageFactory {
-
     /**
-     * 使用已有EMMessage创建一个ChatMessage, 从EMMessage中解析出类型
-     *
-     * @param message EMMessage
+     * 使用已有EMMessage创建一个合适的ChatMessage
      */
     public static ChatMessage get(EMMessage message) {
         String msgType = ChatMessage.getMsgType(message);
@@ -27,9 +24,9 @@ public class ChatMessageFactory {
             case ChatMessage.MSG_TYPE_ORDER_CONFIRM:
             case ChatMessage.MSG_TYPE_ORDER_CANCEL:
             case ChatMessage.MSG_TYPE_ORDER_SUCCESS:
-                return new OrderChatMessage(message, msgType);
+                return new OrderChatMessage(message);
             default:
-                return new ChatMessage(message, msgType);
+                return new ChatMessage(message);
         }
     }
 }
