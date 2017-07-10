@@ -374,6 +374,7 @@ public class RequestConstant {
     public static final String KEY_USER_COUPON_ACT_ID = "actId";
     public static final String KEY_USER_COUPON_CHANEL = "chanel"; //tech,manager,qrCode,link,index
     public static final String KEY_USER_COUPON_EMCHAT_ID = "emchatId";
+    public static final String KEY_USER_COUPON_INFO = "couponInfo";
     public static final String KEY_USER_COUPON_EMCHAT_MESSAGE = "messageContent";
 
     /*********************************************************************************************/

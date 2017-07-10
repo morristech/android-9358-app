@@ -2,13 +2,13 @@ package com.xmd.manager.service;
 
 import android.os.Message;
 
-import com.hyphenate.chat.EMMessage;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
 import com.xmd.manager.SettingFlags;
 import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.CheckCouponResult;
 import com.xmd.manager.beans.CheckInfoList;
+import com.xmd.manager.beans.CouponInfo;
 import com.xmd.manager.beans.Customer;
 import com.xmd.manager.beans.IndexOrderData;
 import com.xmd.manager.beans.OrderDetailResult;
@@ -2326,13 +2326,13 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<UserGetCouponResult>() {
             @Override
             protected void postResult(UserGetCouponResult result) {
-                UserGetCouponResult resultDate = new UserGetCouponResult(result.respData, (EMMessage) params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE));
+                UserGetCouponResult resultDate = new UserGetCouponResult((CouponInfo) params.get(RequestConstant.KEY_USER_COUPON_INFO), result.respData);
                 RxBus.getInstance().post(resultDate);
             }
 
             @Override
             protected void postError(String errorMsg) {
-                UserGetCouponResult result = new UserGetCouponResult((EMMessage) params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE));
+                UserGetCouponResult result = new UserGetCouponResult((CouponInfo) params.get(RequestConstant.KEY_USER_COUPON_INFO), null);
                 RxBus.getInstance().post(result);
             }
         });

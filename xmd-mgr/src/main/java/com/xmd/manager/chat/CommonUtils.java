@@ -17,6 +17,7 @@ import com.hyphenate.util.PathUtil;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.CheckInfo;
+import com.xmd.manager.beans.CouponInfo;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.service.RequestConstant;
@@ -45,12 +46,12 @@ public class CommonUtils {
         return params;
     }
 
-    public static void userGetCoupon(String actId, String channel, String emchatId, EMMessage emMessage) {
+    public static void userGetCoupon(String actId, String channel, String emchatId, CouponInfo couponInfo) {
         Map<String, Object> params = new HashMap<>();
         params.put(RequestConstant.KEY_USER_COUPON_ACT_ID, actId);
         params.put(RequestConstant.KEY_USER_COUPON_CHANEL, channel);
         params.put(RequestConstant.KEY_USER_COUPON_EMCHAT_ID, emchatId);
-        params.put(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE, emMessage);
+        params.put(RequestConstant.KEY_USER_COUPON_INFO, couponInfo);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_USER_GET_COUPON, params);
     }
 

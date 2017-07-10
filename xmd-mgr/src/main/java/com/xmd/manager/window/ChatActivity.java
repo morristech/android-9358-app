@@ -136,13 +136,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     private void handleUserGetCoupon(UserGetCouponResult couponResult) {
-        EMMessage message = couponResult.mMessage;
-        if (couponResult.statusCode == 200) {
-            if (Utils.isNotEmpty(couponResult.respData.userActId)) {
-                message.setAttribute(EmchatConstant.KEY_COUPON_ACT_ID, couponResult.respData.userActId);
-            }
-        }
-        sendMessage(message);
+//        EMMessage message = couponResult.mMessage;
+//        if (couponResult.statusCode == 200) {
+//            if (Utils.isNotEmpty(couponResult.respData.userActId)) {
+//                message.setAttribute(EmchatConstant.KEY_COUPON_ACT_ID, couponResult.respData.userActId);
+//            }
+//        }
+//        sendMessage(message);
     }
 
     private void handleEmchatObject(Object object) {
@@ -398,7 +398,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         message.setAttribute(EmchatConstant.KEY_CUSTOM_TYPE, "ordinaryCoupon");
         message.setAttribute(EmchatConstant.KEY_ACT_ID, actId);
         message.setAttribute(EmchatConstant.KEY_TECH_CODE, SharedPreferenceHelper.getUserInviteCode());
-        CommonUtils.userGetCoupon(actId, "manager", mToChatUsername, message);
+        CommonUtils.userGetCoupon(actId, "manager", mToChatUsername, null);
     }
 
     private void sendOrderMessage(String content, String orderId) {

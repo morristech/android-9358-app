@@ -45,7 +45,7 @@ public class XmdChat {
     private MenuFactory menuFactory;
     private Location location;
 
-    public void init(Context context, boolean debug) {
+    public void init(Context context, boolean debug, MenuFactory menuFactory) {
         XLogger.i("---------聊天系统初始化---------------");
         context = context.getApplicationContext();
         this.context = context;
@@ -79,7 +79,7 @@ public class XmdChat {
         AccountManager.getInstance().init();
         ConversationManager.getInstance().init();
         MessageManager.getInstance().init();
-        setMenuFactory(new MenuFactory());
+        setMenuFactory(menuFactory);
 
         EventBusSafeRegister.register(this);
     }

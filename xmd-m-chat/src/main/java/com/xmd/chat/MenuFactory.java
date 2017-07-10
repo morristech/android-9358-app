@@ -53,6 +53,7 @@ public class MenuFactory {
         createPictureMenu(activity, remoteUser);
         createEmojiMenu(editable);
         createFastReplyMenu(remoteUser);
+        createCouponMenu(activity, remoteUser);
         createAppointmentMenu(remoteUser);
 
         //创建更多菜单
@@ -121,6 +122,21 @@ public class MenuFactory {
         fragment2.setData(remoteUser.getChatId(), messageList2);
         fragmentList.add(fragment2);
         menus.add(new ChatMenu(R.drawable.chat_menu_fast_reply, null, fragmentList));
+    }
+
+    //创建发券菜单
+    public void createCouponMenu(final Activity activity, final User remoteUser) {
+        menus.add(new ChatMenu(R.drawable.chat_menu_coupon, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onShowDeliverCouponView(activity, remoteUser);
+            }
+        }, null));
+    }
+
+    //显示发券界面，因为当前两个app都已实现
+    public void onShowDeliverCouponView(Activity activity, User remoteUser) {
+
     }
 
     //创建预约菜单
