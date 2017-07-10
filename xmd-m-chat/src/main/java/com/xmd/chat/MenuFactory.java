@@ -13,19 +13,22 @@ import android.view.View;
 
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
 import com.xmd.chat.beans.Location;
-import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
+import com.xmd.chat.message.ShareChatMessage;
 import com.xmd.chat.order.OrderChatManager;
 import com.xmd.chat.view.ChatActivity;
+import com.xmd.chat.view.JournalShareActivity;
 import com.xmd.chat.view.SubmenuEmojiFragment;
 import com.xmd.chat.view.SubmenuFastReplyFragment;
 import com.xmd.chat.view.SubmenuMoreFragment;
+import com.xmd.chat.viewmodel.ShareJournalViewModel;
 import com.xmd.image_tool.ImageTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,6 +61,7 @@ public class MenuFactory {
 
         //创建更多菜单
         createMoreRequestOrderMenu(activity, remoteUser);
+        createMoreJournalMenu(activity, remoteUser);
         createMoreLocationMenu(remoteUser);
         createMoreMenu();
 
@@ -71,7 +75,8 @@ public class MenuFactory {
     }
 
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-        return imageTool.onActivityResult(requestCode, resultCode, data);
+        return imageTool.onActivityResult(requestCode, resultCode, data)
+                || processJournalMenu(requestCode, resultCode, data);
     }
 
     //创建图片菜单
@@ -82,9 +87,8 @@ public class MenuFactory {
                 imageTool.onlyPick(true).start(activity, new ImageTool.ResultListener() {
                     @Override
                     public void onResult(String s, Uri uri, Bitmap bitmap) {
-                        ChatMessage chatMessage = MessageManager.getInstance()
+                        MessageManager.getInstance()
                                 .sendImageMessage(remoteUser.getChatId(), uri.getPath());
-                        EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
                     }
                 });
             }
@@ -225,9 +229,8 @@ public class MenuFactory {
                     @Override
                     public void onResponse(Location result, Throwable error) {
                         if (result != null) {
-                            ChatMessage chatMessage = MessageManager.getInstance()
+                            MessageManager.getInstance()
                                     .sendLocationMessage(remoteUser, result);
-                            EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
                         }
                     }
                 });
@@ -248,12 +251,42 @@ public class MenuFactory {
                             public void onClick(DialogInterface dialog, int which) {
                                 ChatMessage chatMessage = OrderChatMessage.createRequestOrderMessage(remoteUser.getChatId());
                                 MessageManager.getInstance().sendMessage(chatMessage);
-                                EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
                             }
                         })
                         .create()
                         .show();
             }
         }, null));
+    }
+
+    //创建更多-电子期刊菜单
+    public void createMoreJournalMenu(final Activity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu("电子期刊", R.drawable.chat_menu_location, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, JournalShareActivity.class);
+                intent.putExtra(Constants.EXTRA_CHAT_ID, remoteUser.getChatId());
+                activity.startActivityForResult(intent, ChatActivity.REQUEST_CODE_MENU_JOURNAL);
+            }
+        }, null));
+    }
+
+    private boolean processJournalMenu(int requestCode, int resultCode, Intent data) {
+        if (requestCode != ChatActivity.REQUEST_CODE_MENU_JOURNAL) {
+            return false;
+        }
+        if (resultCode == Activity.RESULT_OK) {
+            String chatId = data.getStringExtra(Constants.EXTRA_CHAT_ID);
+            List<ShareJournalViewModel> list = data.getParcelableArrayListExtra("data");
+            for (ShareJournalViewModel v : list) {
+                ShareChatMessage message = ShareChatMessage.createJournalMessage(
+                        chatId,
+                        v.getJournal().journalId,
+                        String.valueOf(v.getJournal().templateId),
+                        v.getJournal().title);
+                MessageManager.getInstance().sendMessage(message);
+            }
+        }
+        return true;
     }
 }

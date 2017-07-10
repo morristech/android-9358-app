@@ -83,8 +83,8 @@ public class ChatActivity extends BaseActivity {
     public ObservableBoolean voiceRecording = new ObservableBoolean();
 
     private InputMethodManager mInputMethodManager;
-    private static final int REQUEST_CODE_PERMISSION_REQUEST = 0x800;
-
+    public static final int REQUEST_CODE_PERMISSION_REQUEST = 0x800;
+    public static final int REQUEST_CODE_MENU_JOURNAL = 0x801;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -303,7 +303,6 @@ public class ChatActivity extends BaseActivity {
     public void sendTextMessage() {
         ChatMessage chatMessage = MessageManager.getInstance().sendTextMessage(mRemoteUser.getChatId(), textMessageContent.get());
         if (chatMessage != null) {
-            addNewChatMessageToUi(chatMessage);
             textMessageContent.set(null);
             mBinding.sendEditText.getText().clear();
         }

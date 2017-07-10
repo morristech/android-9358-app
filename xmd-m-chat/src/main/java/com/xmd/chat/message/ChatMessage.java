@@ -43,7 +43,11 @@ public class ChatMessage {
     public static final String MSG_TYPE_ORDER_SUCCESS = "order_success";
     public static final String MSG_TYPE_ORDER_REQUEST = "order_request"; //求预约
 
-    public static final String MSG_TYPE_ORDER = "order";//订单消息
+    public static final String MSG_TYPE_ORDER = "order";//原始订单消息
+
+    //活动消息
+    public static final String MSG_TYPE_JOURNAL = "journal"; //电子期刊
+
     public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";//客服消息
     public static final String MSG_TAG_HELLO = "hello"; //打招呼消息
 

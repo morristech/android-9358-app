@@ -14,11 +14,7 @@ import com.xmd.chat.BR;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.FragmentSubmenuFastReplyBinding;
-import com.xmd.chat.event.EventNewUiMessage;
-import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.SubMenuFastReplyViewModel;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +43,7 @@ public class SubmenuFastReplyFragment extends BaseFragment {
             dataList.add(new SubMenuFastReplyViewModel(s, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ChatMessage chatMessage = MessageManager.getInstance().sendTextMessage(remoteChatId, s);
-                    EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
+                    MessageManager.getInstance().sendTextMessage(remoteChatId, s);
                 }
             }));
         }

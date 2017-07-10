@@ -13,6 +13,7 @@ import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventNewMessages;
+import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.event.EventSendMessage;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.message.ChatMessage;
@@ -140,6 +141,7 @@ public class MessageManager {
         chatMessage.setUser(user);
         EMClient.getInstance().chatManager().sendMessage(chatMessage.getEmMessage());
         EventBus.getDefault().post(new EventSendMessage(chatMessage));
+        EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
         return chatMessage;
     }
 

@@ -9,7 +9,6 @@ import android.widget.Button;
 
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.chat.MessageManager;
-import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.message.CouponChatMessage;
 import com.xmd.manager.R;
@@ -148,7 +147,6 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                             couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod),
                     SharedPreferenceHelper.getUserInviteCode());
             MessageManager.getInstance().sendMessage(chatMessage);
-            EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
             successCount++;
         } else {
             failedCount++;

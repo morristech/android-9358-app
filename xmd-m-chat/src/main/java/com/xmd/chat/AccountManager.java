@@ -20,10 +20,10 @@ import org.greenrobot.eventbus.Subscribe;
  * 账号管理（登录，登出）
  */
 
-class AccountManager {
+public class AccountManager {
     private static final AccountManager ourInstance = new AccountManager();
 
-    static AccountManager getInstance() {
+    public static AccountManager getInstance() {
         return ourInstance;
     }
 
