@@ -103,4 +103,8 @@ public class ConversationViewModel {
     public void setLastMessage(ChatMessage lastMessage) {
         this.lastMessage = lastMessage;
     }
+
+    public EMConversation getConversation() {
+        return conversation;
+    }
 }

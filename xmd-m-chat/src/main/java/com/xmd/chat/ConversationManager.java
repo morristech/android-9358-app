@@ -10,6 +10,8 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.event.EventDeleteConversation;
+import com.xmd.chat.event.EventTotalUnreadCount;
+import com.xmd.chat.event.EventUnreadCount;
 import com.xmd.chat.viewmodel.ConversationViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -138,6 +140,12 @@ public class ConversationManager {
         this.filter = filter;
     }
 
+    public void markAllMessagesRead(String chatId) {
+        ConversationViewModel conversationViewModel = getConversationData(chatId);
+        conversationViewModel.getConversation().markAllMessagesAsRead();
+        EventBus.getDefault().post(new EventUnreadCount(conversationViewModel));
+        EventBus.getDefault().post(new EventTotalUnreadCount(EMClient.getInstance().chatManager().getUnreadMessageCount()));
+    }
 
     private int getConversationDataPosition(String chatId) {
         for (int i = 0; i < mConversationList.size(); i++) {
@@ -180,6 +188,11 @@ public class ConversationManager {
         for (String key : chatIdList) {
             deleteConversationInner(key);
         }
+    }
+
+    //从chatId获取会话
+    public EMConversation getConversation(String chatId) {
+        return EMClient.getInstance().chatManager().getConversation(chatId);
     }
 
     /***************************会话过滤，不通过的会话会被删除**********************/

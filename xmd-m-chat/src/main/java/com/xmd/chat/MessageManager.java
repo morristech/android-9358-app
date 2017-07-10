@@ -13,7 +13,8 @@ import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventNewMessages;
-import com.xmd.chat.event.EventTotalUnreadMessage;
+import com.xmd.chat.event.EventSendMessage;
+import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.RevokeChatMessage;
@@ -64,7 +65,7 @@ public class MessageManager {
                         }
 
                         EventBus.getDefault().post(new EventNewMessages(list));
-                        EventBus.getDefault().post(new EventTotalUnreadMessage(EMClient.getInstance().chatManager().getUnreadMessageCount()));
+                        EventBus.getDefault().post(new EventTotalUnreadCount(EMClient.getInstance().chatManager().getUnreadMessageCount()));
                     }
                 });
             }
@@ -119,6 +120,7 @@ public class MessageManager {
         TipChatMessage tipChatMessage = TipChatMessage.create(remoteUser, tip);
         tipChatMessage.setUser(AccountManager.getInstance().getUser());
         conversation.appendMessage(tipChatMessage.getEmMessage());
+        EventBus.getDefault().post(new EventSendMessage(tipChatMessage));
         return tipChatMessage;
     }
 
@@ -137,6 +139,7 @@ public class MessageManager {
         }
         chatMessage.setUser(user);
         EMClient.getInstance().chatManager().sendMessage(chatMessage.getEmMessage());
+        EventBus.getDefault().post(new EventSendMessage(chatMessage));
         return chatMessage;
     }
 

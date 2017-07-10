@@ -3,12 +3,14 @@ package com.xmd.manager.window;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.EventBusSafeRegister;
+import com.xmd.chat.XmdChat;
+import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.view.ConversationListFragment;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.manager.ClubData;
@@ -21,7 +23,6 @@ import com.xmd.manager.auth.AuthConstants;
 import com.xmd.manager.auth.AuthHelper;
 import com.xmd.manager.beans.AuthData;
 import com.xmd.manager.beans.ClubInfo;
-import com.xmd.manager.beans.EmchatMsgResult;
 import com.xmd.manager.beans.SwitchIndex;
 import com.xmd.manager.beans.SwitchIndexBean;
 import com.xmd.manager.chat.EmchatUserHelper;
@@ -40,6 +41,8 @@ import com.xmd.manager.service.response.ClubResult;
 import com.xmd.manager.service.response.NewOrderCountResult;
 import com.xmd.manager.widget.CombineLoadingView;
 import com.xmd.manager.widget.ViewPagerTabIndicator;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,18 +110,18 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                 result -> mViewPagerTabIndicator.setNotice(sTabOrder, result.respData)
         );
 
-        mGetEmchatMsgCountSubscription = RxBus.getInstance().toObservable(EmchatMsgResult.class).subscribe(
-                emchatMsgResult -> {
-                    ClubData.getInstance().addEmchatMsgCount(emchatMsgResult.list.size());
-                    List<Fragment> fragments = getSupportFragmentManager().getFragments();
-                    if (mCurrentPosition != 1) {
-                        mViewPagerTabIndicator.setNotice(sTabChat, emchatMsgResult.list.size());
-                    } else {
-                        mViewPagerTabIndicator.setNotice(sTabChat, 0);
-                    }
-
-                }
-        );
+//        mGetEmchatMsgCountSubscription = RxBus.getInstance().toObservable(EmchatMsgResult.class).subscribe(
+//                emchatMsgResult -> {
+//                    ClubData.getInstance().addEmchatMsgCount(emchatMsgResult.list.size());
+//                    List<Fragment> fragments = getSupportFragmentManager().getFragments();
+//                    if (mCurrentPosition != 1) {
+//                        mViewPagerTabIndicator.setNotice(sTabChat, emchatMsgResult.list.size());
+//                    } else {
+//                        mViewPagerTabIndicator.setNotice(sTabChat, 0);
+//                    }
+//
+//                }
+//        );
 
         mGetClubSubscription = RxBus.getInstance().toObservable(ClubResult.class).subscribe(
                 clubResult -> handleGetClubResult(clubResult)
@@ -135,6 +138,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         loadData();
 
         processXmdDisplay(getIntent());
+
+        EventBusSafeRegister.register(this);
     }
 
     @Override
@@ -164,6 +169,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     protected void onDestroy() {
         super.onDestroy();
         RxBus.getInstance().unsubscribe(mGetNewOrderCountSubscription, mGetEmchatMsgCountSubscription, mSwitchIndex, mGetClubSubscription, mGetAuthConfigSubscription);
+        EventBusSafeRegister.unregister(this);
     }
 
     @Override
@@ -301,6 +307,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                         tabTexts.add(authData.name);
                         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_chat));
                         sTabChat = tabTexts.size() - 1;
+                        mViewPagerTabIndicator.setNotice(sTabChat, XmdChat.getInstance().getTotalUnreadCount());
                         break;
 
                 }
@@ -344,5 +351,12 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     public void onTabClick(int position) {
         setRightIcon(position);
         RxBus.getInstance().post(new SwitchIndexBean(position));
+    }
+
+    @Subscribe
+    public void onChatMessageTotalUnreadCount(EventTotalUnreadCount event) {
+        if (sTabChat >= 0) {
+            mViewPagerTabIndicator.setNotice(sTabChat, event.getCount());
+        }
     }
 }

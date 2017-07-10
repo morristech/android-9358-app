@@ -15,10 +15,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="1px"
         android:background="@android:color/white"
-        android:orientation="horizontal"
-        android:padding="8dp"
+        android:onClick="@{(v)->data.onClick(v)}"
         android:onLongClick="@{(v)->data.onLongClick(v)}"
-        android:onClick="@{(v)->data.onClick(v)}">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageView
             android:layout_width="48dp"
@@ -30,24 +30,27 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:textSize="@dimen/fontSubheading"
                 android:text="@{data.name}" />
 
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{data.message}" />
+                android:text="@{data.message}"
+                android:textSize="@dimen/fontCaption" />
 
         </LinearLayout>
 

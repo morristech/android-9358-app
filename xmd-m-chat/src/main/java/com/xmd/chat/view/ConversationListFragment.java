@@ -23,6 +23,8 @@ import com.xmd.chat.databinding.FragmentConversationBinding;
 import com.xmd.chat.event.EventChatLoginSuccess;
 import com.xmd.chat.event.EventDeleteConversation;
 import com.xmd.chat.event.EventNewMessages;
+import com.xmd.chat.event.EventSendMessage;
+import com.xmd.chat.event.EventUnreadCount;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ConversationViewModel;
 
@@ -91,31 +93,39 @@ public class ConversationListFragment extends BaseFragment {
         });
     }
 
+    private void processMessageReceiveOrSend(ChatMessage chatMessage) {
+        ConversationViewModel data = conversationManager.getConversationData(chatMessage.getRemoteChatId());
+        if (data == null) {
+            //new conversation,refresh all list
+            loadData(null);
+            return;
+        } else {
+            data.setLastMessage(chatMessage);
+            int fromPosition = mAdapter.getDataList().indexOf(data);
+            mAdapter.notifyItemChanged(fromPosition);
+            conversationViewModelList.remove(data);
+            conversationViewModelList.add(0, data);
+            if (mAdapter.getDataList() != conversationViewModelList) {
+                mAdapter.getDataList().remove(fromPosition);
+                mAdapter.getDataList().add(0, data);
+            }
+
+            if (fromPosition > 0) {
+                mAdapter.notifyItemMoved(fromPosition, 0);
+            }
+        }
+    }
+
     @Subscribe
     public void onReceiveNewMessages(EventNewMessages messages) {
         for (EMMessage message : messages.getList()) {
-            ConversationViewModel data = conversationManager.getConversationData(message.getFrom());
-            if (data == null) {
-                //new conversation,refresh all list
-                loadData(null);
-                return;
-            } else {
-                ChatMessage chatMessage = new ChatMessage(message);
-                data.setLastMessage(chatMessage);
-                int fromPosition = mAdapter.getDataList().indexOf(data);
-                mAdapter.notifyItemChanged(fromPosition);
-                conversationViewModelList.remove(data);
-                conversationViewModelList.add(0, data);
-                if (mAdapter.getDataList() != conversationViewModelList) {
-                    mAdapter.getDataList().remove(fromPosition);
-                    mAdapter.getDataList().add(0, data);
-                }
-
-                if (fromPosition > 0) {
-                    mAdapter.notifyItemMoved(fromPosition, 0);
-                }
-            }
+            processMessageReceiveOrSend(new ChatMessage(message));
         }
+    }
+
+    @Subscribe
+    public void onSendMessage(EventSendMessage eventSendMessage) {
+        processMessageReceiveOrSend(eventSendMessage.getChatMessage());
     }
 
     @Subscribe
@@ -133,6 +143,14 @@ public class ConversationListFragment extends BaseFragment {
         }
         if (position >= 0) {
             mAdapter.notifyItemRemoved(position);
+        }
+    }
+
+    @Subscribe
+    public void onUnreadCountEvent(EventUnreadCount event) {
+        int position = mAdapter.getDataList().indexOf(event.getConversationViewModel());
+        if (position >= 0) {
+            mAdapter.notifyItemChanged(position);
         }
     }
 

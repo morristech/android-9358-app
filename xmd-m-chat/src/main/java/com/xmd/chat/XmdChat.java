@@ -125,4 +125,8 @@ public class XmdChat {
     public Context getContext() {
         return context;
     }
+
+    public int getTotalUnreadCount() {
+        return EMClient.getInstance().chatManager().getUnreadMessageCount();
+    }
 }

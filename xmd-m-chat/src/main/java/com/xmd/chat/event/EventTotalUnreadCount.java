@@ -5,10 +5,10 @@ package com.xmd.chat.event;
  * 未读消息总数
  */
 
-public class EventTotalUnreadMessage {
+public class EventTotalUnreadCount {
     private int count;
 
-    public EventTotalUnreadMessage(int count) {
+    public EventTotalUnreadCount(int count) {
         this.count = count;
     }
 

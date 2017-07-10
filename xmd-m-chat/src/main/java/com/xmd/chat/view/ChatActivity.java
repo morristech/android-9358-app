@@ -43,6 +43,7 @@ import com.xmd.chat.ChatConstants;
 import com.xmd.chat.ChatMenu;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.ChatRowViewFactory;
+import com.xmd.chat.ConversationManager;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.VoiceManager;
@@ -95,7 +96,7 @@ public class ChatActivity extends BaseActivity {
             finish();
             return;
         }
-
+        ConversationManager.getInstance().markAllMessagesRead(chatId);
         mRemoteUser = userInfoService.getUserByChatId(chatId);
         if (mRemoteUser == null) {
             XToast.show("无法找到用户信息!");
@@ -104,6 +105,7 @@ public class ChatActivity extends BaseActivity {
         }
 
         setTitle(mRemoteUser.getShowName());
+
 
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerView.setAdapter(mAdapter);
