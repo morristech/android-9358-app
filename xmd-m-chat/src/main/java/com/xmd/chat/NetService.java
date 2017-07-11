@@ -2,7 +2,8 @@ package com.xmd.chat;
 
 import com.xmd.chat.beans.Journal;
 import com.xmd.chat.beans.Location;
-import com.xmd.chat.beans.OnceCardResult;
+import com.xmd.chat.beans.MarketingCategory;
+import com.xmd.chat.beans.ResultOnceCard;
 import com.xmd.m.network.BaseBean;
 
 import java.util.List;
@@ -31,11 +32,12 @@ public interface NetService {
 
     //次卡分享数据列表
     @GET("/spa-manager/api/v2/club/item_card/activity/list")
-    Observable<BaseBean<OnceCardResult>> listOnceCards(@Query("clubId") String clubId,
+    Observable<BaseBean<ResultOnceCard>> listOnceCards(@Query("clubId") String clubId,
                                                        @Query("isShare") String isShare,
                                                        @Query("page") String page,
                                                        @Query("pageSize") String pageSize);
 
-//    @GET("/spa-manager/api/v1/techshare/darwActListDetail")
-//    Observable<BaseBean<Journal>> listClubActivities();
+    //营销活动列表
+    @GET("/spa-manager/api/v2/tech/marketing_item/list")
+    Observable<BaseBean<List<MarketingCategory>>> listMarketing();
 }

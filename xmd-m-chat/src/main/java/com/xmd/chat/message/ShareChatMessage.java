@@ -1,6 +1,9 @@
 package com.xmd.chat.message;
 
+import android.text.TextUtils;
+
 import com.hyphenate.chat.EMMessage;
+import com.xmd.chat.beans.Marketing;
 import com.xmd.chat.beans.OnceCard;
 
 /**
@@ -49,6 +52,33 @@ public class ShareChatMessage extends ChatMessage {
         message.setAttr(ATTR_CARD_TYPE, card.cardType);
         message.setAttr(ATTR_ACT_NAME, card.name);
         message.setAttr(ATTR_ACT_ID, card.id);
+        return message;
+    }
+
+    public static ShareChatMessage createMarketingTimeLimitMessage(String remoteChatId, Marketing marketing) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage("春宵一刻值千金", remoteChatId);
+        ShareChatMessage message = new ShareChatMessage(emMessage);
+        message.setMsgType(MSG_TYPE_TIME_LIMIT_TYPE);
+        message.setAttr(ATTR_ACT_NAME, marketing.itemName);
+        message.setAttr(ATTR_ACT_ID, TextUtils.isEmpty(marketing.actId) ? marketing.id : marketing.actId);
+        return message;
+    }
+
+    public static ShareChatMessage createMarketingOneYuanMessage(String remoteChatId, Marketing marketing) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage("我和你只有一块钱的距离", remoteChatId);
+        ShareChatMessage message = new ShareChatMessage(emMessage);
+        message.setMsgType(MSG_TYPE_ONE_YUAN_TYPE);
+        message.setAttr(ATTR_ACT_NAME, marketing.actName);
+        message.setAttr(ATTR_ACT_ID, TextUtils.isEmpty(marketing.actId) ? marketing.id : marketing.actId);
+        return message;
+    }
+
+    public static ShareChatMessage createMarketingLuckWheelMessage(String remoteChatId, Marketing marketing) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage("那一世转山转水，只为相见", remoteChatId);
+        ShareChatMessage message = new ShareChatMessage(emMessage);
+        message.setMsgType(MSG_TYPE_LUCKY_WHEEL_TYPE);
+        message.setAttr(ATTR_ACT_NAME, marketing.actName);
+        message.setAttr(ATTR_ACT_ID, TextUtils.isEmpty(marketing.actId) ? marketing.id : marketing.actId);
         return message;
     }
 

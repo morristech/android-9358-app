@@ -51,6 +51,9 @@ public class ChatRowViewFactory {
                 break;
             case ChatMessage.MSG_TYPE_JOURNAL:
             case ChatMessage.MSG_TYPE_ONCE_CARD:
+            case ChatMessage.MSG_TYPE_TIME_LIMIT_TYPE:
+            case ChatMessage.MSG_TYPE_ONE_YUAN_TYPE:
+            case ChatMessage.MSG_TYPE_LUCKY_WHEEL_TYPE:
                 baseType = CHAT_ROW_VIEW_SHARE;
                 break;
             case ChatMessage.MSG_TYPE_ORDER_START:
@@ -128,10 +131,17 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelTip(message);
             case ChatMessage.MSG_TYPE_ORDER_REQUEST:
                 return new ChatRowViewModelOrderRequest(message);
-            case ChatMessage.MSG_TYPE_ORDER:
+            case ChatMessage.MSG_TYPE_ORDER_START:
+            case ChatMessage.MSG_TYPE_ORDER_REFUSE:
+            case ChatMessage.MSG_TYPE_ORDER_CONFIRM:
+            case ChatMessage.MSG_TYPE_ORDER_CANCEL:
+            case ChatMessage.MSG_TYPE_ORDER_SUCCESS:
                 return new ChatRowViewModelAppointment(message);
             case ChatMessage.MSG_TYPE_JOURNAL:
             case ChatMessage.MSG_TYPE_ONCE_CARD:
+            case ChatMessage.MSG_TYPE_TIME_LIMIT_TYPE:
+            case ChatMessage.MSG_TYPE_ONE_YUAN_TYPE:
+            case ChatMessage.MSG_TYPE_LUCKY_WHEEL_TYPE:
                 return new ChatRowViewModelShare(message);
             default:
                 return new ChatRowViewModelText(message);

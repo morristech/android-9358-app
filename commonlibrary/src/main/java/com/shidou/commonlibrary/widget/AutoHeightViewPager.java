@@ -21,6 +21,10 @@ public class AutoHeightViewPager extends ViewPager {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (getChildCount() == 0) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
+        }
         int height = 0;
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);

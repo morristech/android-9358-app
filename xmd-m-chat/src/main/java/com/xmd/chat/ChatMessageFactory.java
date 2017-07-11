@@ -28,6 +28,9 @@ public class ChatMessageFactory {
                 return new OrderChatMessage(message);
             case ChatMessage.MSG_TYPE_JOURNAL:
             case ChatMessage.MSG_TYPE_ONCE_CARD:
+            case ChatMessage.MSG_TYPE_TIME_LIMIT_TYPE:
+            case ChatMessage.MSG_TYPE_ONE_YUAN_TYPE:
+            case ChatMessage.MSG_TYPE_LUCKY_WHEEL_TYPE:
                 return new ShareChatMessage(message);
             default:
                 return new ChatMessage(message);

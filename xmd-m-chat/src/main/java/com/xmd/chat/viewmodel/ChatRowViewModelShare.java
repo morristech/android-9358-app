@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.chat.R;
 import com.xmd.chat.beans.OnceCard;
 import com.xmd.chat.databinding.ChatRowShareBinding;
@@ -31,6 +32,7 @@ public class ChatRowViewModelShare extends ChatRowViewModel {
 
     @Override
     public void onBindView(View view) {
+        view.getLayoutParams().width = ScreenUtils.getScreenWidth() * 3 / 5;
         ChatRowShareBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
     }
@@ -45,6 +47,15 @@ public class ChatRowViewModelShare extends ChatRowViewModel {
         switch (data.getChatMessage().getMsgType()) {
             case ChatMessage.MSG_TYPE_JOURNAL:
                 imageView.setImageResource(R.drawable.message_share_journal);
+                break;
+            case ChatMessage.MSG_TYPE_TIME_LIMIT_TYPE:
+                imageView.setImageResource(R.drawable.message_share_time_limit);
+                break;
+            case ChatMessage.MSG_TYPE_ONE_YUAN_TYPE:
+                imageView.setImageResource(R.drawable.message_share_one_yuan);
+                break;
+            case ChatMessage.MSG_TYPE_LUCKY_WHEEL_TYPE:
+                imageView.setImageResource(R.drawable.message_share_luck_wheel);
                 break;
             case ChatMessage.MSG_TYPE_ONCE_CARD: {
                 switch (((ShareChatMessage) data.getChatMessage()).getCardType()) {

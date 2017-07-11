@@ -103,7 +103,7 @@ public class ChatRowActivityView extends BaseEaseChatView {
                 content = ResourceUtils.getString(R.string.chat_indiana_message_des);
 
          //       title = ResourceUtils.getString(R.string.chat_indiana_message_type);
-                iconRes = R.drawable.icon_seckill;
+                iconRes = R.drawable.message_share_time_limit;
                 break;
             case ChatConstant.KEY_ACTIVITY_ONE_YUAN_TYPE:
                 content = ResourceUtils.getString(R.string.chat_seckill_message_des);
@@ -113,7 +113,7 @@ public class ChatRowActivityView extends BaseEaseChatView {
             case ChatConstant.KEY_ACTIVITY_LUCKY_WHEEL_TYPE:
                 content = ResourceUtils.getString(R.string.chat_turntable_message_des);
          //       title = ResourceUtils.getString(R.string.chat_turntable_message_type);
-                iconRes = R.drawable.icon_turntalbel;
+                iconRes = R.drawable.message_share_luck_wheel;
                 break;
             case ChatConstant.KEY_ACTIVITY_JOURNAL_TYPE:
                 content = ResourceUtils.getString(R.string.chat_journal_message_des);

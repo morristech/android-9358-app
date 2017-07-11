@@ -60,6 +60,7 @@ public class MenuFactory {
 
         //创建更多菜单
         createMoreRequestOrderMenu(activity, remoteUser);
+        createMoreMarketingMenu(activity, remoteUser);
         createMoreJournalMenu(activity, remoteUser);
         createMoreMallMenu(activity, remoteUser);
         createMoreLocationMenu(remoteUser);
@@ -86,8 +87,10 @@ public class MenuFactory {
                 imageTool.onlyPick(true).start(activity, new ImageTool.ResultListener() {
                     @Override
                     public void onResult(String s, Uri uri, Bitmap bitmap) {
-                        MessageManager.getInstance()
-                                .sendImageMessage(remoteUser.getChatId(), uri.getPath());
+                        if (uri != null) {
+                            MessageManager.getInstance()
+                                    .sendImageMessage(remoteUser.getChatId(), uri.getPath());
+                        }
                     }
                 });
             }
@@ -298,6 +301,30 @@ public class MenuFactory {
                         dataTypeList.add(ShareDataManager.DATA_TYPE_ONCE_CARD_MIX);
                         dataTypeList.add(ShareDataManager.DATA_TYPE_ONCE_CARD_CREDIT);
                         intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST, dataTypeList);
+                        activity.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        XToast.show("加载数据失败：" + e.getMessage());
+                    }
+                });
+            }
+        }, null));
+    }
+
+    //创建更多-营销活动菜单
+    public void createMoreMarketingMenu(final Activity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu("营销活动", R.drawable.chat_menu_location, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShareDataManager.getInstance().loadMarketingList(new NetworkSubscriber<Void>() {
+                    @Override
+                    public void onCallbackSuccess(Void v) {
+                        Intent intent = new Intent(activity, ShareListActivity.class);
+                        intent.putExtra(Constants.EXTRA_CHAT_ID, remoteUser.getChatId());
+                        intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST,
+                                (ArrayList<String>) ShareDataManager.getInstance().getMarketingDataTypeList());
                         activity.startActivity(intent);
                     }
 

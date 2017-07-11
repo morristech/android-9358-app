@@ -62,6 +62,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 聊天对话框
+ */
 
 public class ChatActivity extends BaseActivity {
     public static final String EXTRA_CHAT_ID = "extra_chat_id";
@@ -84,7 +87,7 @@ public class ChatActivity extends BaseActivity {
 
     private InputMethodManager mInputMethodManager;
     public static final int REQUEST_CODE_PERMISSION_REQUEST = 0x800;
-    public static final int REQUEST_CODE_MENU_JOURNAL = 0x801;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +155,7 @@ public class ChatActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //加载聊天记录
     private void loadData(String msgId) {
         EMConversation conversation = getConversation();
         if (conversation == null || conversation.getAllMsgCount() == 0) {
@@ -185,7 +189,7 @@ public class ChatActivity extends BaseActivity {
         mBinding.recyclerView.scrollToPosition(newDataList.size() - 1);
     }
 
-
+    //聊天消息展示
     private ExCommonRecyclerViewAdapter<ChatRowViewModel> mAdapter = new ExCommonRecyclerViewAdapter<ChatRowViewModel>() {
 
         @Override
@@ -283,8 +287,8 @@ public class ChatActivity extends BaseActivity {
     /**
      * 设置是否需要显示时间
      *
-     * @param before  前一个汽泡
-     * @param current 当前汽泡
+     * @param before  前一个气泡
+     * @param current 当前气泡
      */
     private void setShowTime(ChatRowViewModel before, ChatRowViewModel current) {
         if (before == null) {
@@ -376,6 +380,7 @@ public class ChatActivity extends BaseActivity {
         }
     }
 
+    //显示子菜单
     public void showSubMenu(ImageView menuView, final ChatMenu chatMenu) {
         if (mFocusMenuView != null) {
             mFocusMenuView.setSelected(false);
@@ -385,7 +390,9 @@ public class ChatActivity extends BaseActivity {
             return;
         }
 
+
         mBinding.submenuLayout.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+
             @Override
             public Fragment getItem(int position) {
                 return chatMenu.subMenuList.get(position);
@@ -395,6 +402,8 @@ public class ChatActivity extends BaseActivity {
             public int getCount() {
                 return chatMenu.subMenuList.size();
             }
+
+
         });
         if (chatMenu.subMenuList.size() > 1) {
             mBinding.pageIndicator.setVisibility(View.VISIBLE);
@@ -410,6 +419,7 @@ public class ChatActivity extends BaseActivity {
         mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
     }
 
+    //转换文字和语音
     public void onSwitchInputMode() {
         if (voiceInputMode.get()) {
             voiceInputMode.set(false);
@@ -461,6 +471,7 @@ public class ChatActivity extends BaseActivity {
         }
     };
 
+    //按下录音键
     private void onVoiceButtonDown() {
         XLogger.d("onVoiceButtonDown");
         if (voiceRecording.get()) {
@@ -473,6 +484,7 @@ public class ChatActivity extends BaseActivity {
         }
     }
 
+    //放到录音键
     private void onVoiceButtonUp() {
         XLogger.d("onVoiceButtonUp");
         if (!voiceRecording.get()) {
@@ -487,10 +499,7 @@ public class ChatActivity extends BaseActivity {
             XToast.show("录制失败！");
             return;
         }
-        ChatMessage chatMessage = MessageManager.getInstance()
+        MessageManager.getInstance()
                 .sendVoiceMessage(mRemoteUser, path, (int) VoiceManager.getInstance().getRecordTime() / 1000);
-        if (chatMessage != null) {
-            addNewChatMessageToUi(chatMessage);
-        }
     }
 }

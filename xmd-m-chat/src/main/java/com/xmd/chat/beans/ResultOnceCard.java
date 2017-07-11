@@ -7,6 +7,6 @@ import java.util.List;
  * 请求次卡数据结果
  */
 
-public class OnceCardResult {
+public class ResultOnceCard {
     public List<OnceCard> activityList;
 }

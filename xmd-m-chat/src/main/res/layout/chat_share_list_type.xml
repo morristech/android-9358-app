@@ -15,40 +15,30 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="8dp">
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <View
+            android:layout_width="2dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="2dp"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="4dp"
-            android:paddingTop="8dp">
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:text="@{data}"
+            android:textSize="16sp" />
 
-            <View
-                android:layout_width="2dp"
-                android:layout_height="16dp"
-                android:layout_marginLeft="8dp"
-                android:background="@color/colorPrimary" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:text="@{data}"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:src="@drawable/arrow_down" />
-        </LinearLayout>
-
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/arrow_down" />
     </LinearLayout>
 </layout>

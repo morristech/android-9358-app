@@ -1,8 +1,10 @@
 package com.xmd.chat;
 
 import com.xmd.chat.beans.Journal;
+import com.xmd.chat.beans.Marketing;
+import com.xmd.chat.beans.MarketingCategory;
 import com.xmd.chat.beans.OnceCard;
-import com.xmd.chat.beans.OnceCardResult;
+import com.xmd.chat.beans.ResultOnceCard;
 import com.xmd.chat.message.ShareChatMessage;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
@@ -37,9 +39,14 @@ public class ShareDataManager {
     }
 
     private Map<String, List> dataSource = new HashMap<>();
+    private List<String> marketingDataTypeList = new ArrayList<>();
 
     public List getDataList(String type) {
         return dataSource.get(type);
+    }
+
+    public List<String> getMarketingDataTypeList() {
+        return marketingDataTypeList;
     }
 
     public int getDataTypeLayoutId(String type) {
@@ -51,6 +58,9 @@ public class ShareDataManager {
             case DATA_TYPE_ONCE_CARD_CREDIT:
                 return R.layout.chat_share_list_item_once_card;
             default:
+                if (marketingDataTypeList.contains(type)) {
+                    return R.layout.chat_share_list_item_marketing;
+                }
                 throw new RuntimeException("不支持的类型");
         }
     }
@@ -68,6 +78,9 @@ public class ShareDataManager {
                     shareOnceCardList(chatId, shareData.get(type));
                     break;
             }
+            if (marketingDataTypeList.contains(type)) {
+                shareMarketingList(chatId, shareData.get(type));
+            }
         }
     }
 
@@ -83,10 +96,32 @@ public class ShareDataManager {
         }
     }
 
+    //分享次卡
     private void shareOnceCardList(String chatId, List<OnceCard> shareData) {
         for (OnceCard data : shareData) {
             ShareChatMessage message = ShareChatMessage.createOnceCardMessage(chatId, data);
             MessageManager.getInstance().sendMessage(message);
+        }
+    }
+
+    //分享营销活动
+    private void shareMarketingList(String chatId, List<Marketing> shareData) {
+        ShareChatMessage message = null;
+        for (Marketing data : shareData) {
+            switch (data.getCategory()) {
+                case MarketingCategory.TIME_LIMIT:
+                    message = ShareChatMessage.createMarketingTimeLimitMessage(chatId, data);
+                    break;
+                case MarketingCategory.ONE_YUAN:
+                    message = ShareChatMessage.createMarketingOneYuanMessage(chatId, data);
+                    break;
+                case MarketingCategory.LUCKY_WHEEL:
+                    message = ShareChatMessage.createMarketingLuckWheelMessage(chatId, data);
+                    break;
+            }
+            if (message != null) {
+                MessageManager.getInstance().sendMessage(message);
+            }
         }
     }
 
@@ -115,12 +150,12 @@ public class ShareDataManager {
 
     //加载优惠商城数据
     public Subscription loadOnceCardList(final NetworkSubscriber<Void> networkSubscriber) {
-        Observable<BaseBean<OnceCardResult>> observable = XmdNetwork.getInstance()
+        Observable<BaseBean<ResultOnceCard>> observable = XmdNetwork.getInstance()
                 .getService(NetService.class)
                 .listOnceCards(AccountManager.getInstance().getUser().getClubId(), "true", "0", String.valueOf(Integer.MAX_VALUE));
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<OnceCardResult>>() {
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<ResultOnceCard>>() {
             @Override
-            public void onCallbackSuccess(BaseBean<OnceCardResult> result) {
+            public void onCallbackSuccess(BaseBean<ResultOnceCard> result) {
                 List<OnceCard> singleOnceCardList = new ArrayList<>();
                 List<OnceCard> mixOnceCardList = new ArrayList<>();
                 List<OnceCard> creditOnceCardList = new ArrayList<>();
@@ -140,6 +175,32 @@ public class ShareDataManager {
                 dataSource.put(DATA_TYPE_ONCE_CARD_SINGLE, singleOnceCardList);
                 dataSource.put(DATA_TYPE_ONCE_CARD_MIX, mixOnceCardList);
                 dataSource.put(DATA_TYPE_ONCE_CARD_CREDIT, creditOnceCardList);
+                networkSubscriber.onCallbackSuccess(null);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                networkSubscriber.onCallbackError(e);
+            }
+        });
+    }
+
+    //加载营销活动数据
+    public Subscription loadMarketingList(final NetworkSubscriber<Void> networkSubscriber) {
+        Observable<BaseBean<List<MarketingCategory>>> observable = XmdNetwork.getInstance()
+                .getService(NetService.class)
+                .listMarketing();
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<List<MarketingCategory>>>() {
+            @Override
+            public void onCallbackSuccess(BaseBean<List<MarketingCategory>> result) {
+                marketingDataTypeList.clear();
+                for (MarketingCategory marketing : result.getRespData()) {
+                    marketingDataTypeList.add(marketing.categoryName);
+                    for (Marketing sub : marketing.list) {
+                        sub.setCategory(marketing.category);
+                    }
+                    dataSource.put(marketing.categoryName, marketing.list);
+                }
                 networkSubscriber.onCallbackSuccess(null);
             }
 
