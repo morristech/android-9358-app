@@ -49,7 +49,7 @@ public class AppointmentActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_appointment);
 
-        eventTag = getIntent().getStringExtra(Constants.EXTAR_EVENT_TAG);
+        eventTag = getIntent().getStringExtra(Constants.EXTRA_EVENT_TAG);
         mData = (AppointmentData) getIntent().getSerializableExtra(Constants.EXTRA_DATA);
         mBinding.setData(mData);
         mBinding.setHandler(this);

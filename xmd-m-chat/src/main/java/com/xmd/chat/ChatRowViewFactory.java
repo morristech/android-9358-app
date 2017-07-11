@@ -10,12 +10,14 @@ import com.xmd.chat.viewmodel.ChatRowViewModelAppointment;
 import com.xmd.chat.viewmodel.ChatRowViewModelImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelLocation;
 import com.xmd.chat.viewmodel.ChatRowViewModelOrderRequest;
+import com.xmd.chat.viewmodel.ChatRowViewModelShare;
 import com.xmd.chat.viewmodel.ChatRowViewModelText;
 import com.xmd.chat.viewmodel.ChatRowViewModelTip;
 import com.xmd.chat.viewmodel.ChatRowViewModelVoice;
 
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_IMAGE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_LOCATION;
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_SHARE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TEXT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TIP;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER;
@@ -46,6 +48,10 @@ public class ChatRowViewFactory {
                 break;
             case ChatMessage.MSG_TYPE_CLUB_LOCATION:
                 baseType = CHAT_ROW_VIEW_LOCATION;
+                break;
+            case ChatMessage.MSG_TYPE_JOURNAL:
+            case ChatMessage.MSG_TYPE_ONCE_CARD:
+                baseType = CHAT_ROW_VIEW_SHARE;
                 break;
             case ChatMessage.MSG_TYPE_ORDER_START:
             case ChatMessage.MSG_TYPE_ORDER_REFUSE:
@@ -100,6 +106,8 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelAppointment.createView(parent);
             case CHAT_ROW_VIEW_VOICE:
                 return ChatRowViewModelVoice.createView(parent);
+            case CHAT_ROW_VIEW_SHARE:
+                return ChatRowViewModelShare.createView(parent);
             default:
                 return ChatRowViewModelText.createView(parent);
         }
@@ -122,6 +130,9 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelOrderRequest(message);
             case ChatMessage.MSG_TYPE_ORDER:
                 return new ChatRowViewModelAppointment(message);
+            case ChatMessage.MSG_TYPE_JOURNAL:
+            case ChatMessage.MSG_TYPE_ONCE_CARD:
+                return new ChatRowViewModelShare(message);
             default:
                 return new ChatRowViewModelText(message);
         }

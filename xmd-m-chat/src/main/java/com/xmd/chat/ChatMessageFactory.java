@@ -4,10 +4,11 @@ import com.hyphenate.chat.EMMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.OrderChatMessage;
+import com.xmd.chat.message.ShareChatMessage;
 
 /**
  * Created by heyangya on 17-6-7.
- * 消息转换工厂
+ * 消息转换工厂  环信消息 <---> 自定义消息
  */
 
 public class ChatMessageFactory {
@@ -25,6 +26,9 @@ public class ChatMessageFactory {
             case ChatMessage.MSG_TYPE_ORDER_CANCEL:
             case ChatMessage.MSG_TYPE_ORDER_SUCCESS:
                 return new OrderChatMessage(message);
+            case ChatMessage.MSG_TYPE_JOURNAL:
+            case ChatMessage.MSG_TYPE_ONCE_CARD:
+                return new ShareChatMessage(message);
             default:
                 return new ChatMessage(message);
         }

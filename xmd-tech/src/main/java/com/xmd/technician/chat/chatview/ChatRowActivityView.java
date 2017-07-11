@@ -2,7 +2,6 @@ package com.xmd.technician.chat.chatview;
 
 import android.content.Context;
 import android.text.Spannable;
-import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -119,22 +118,22 @@ public class ChatRowActivityView extends BaseEaseChatView {
             case ChatConstant.KEY_ACTIVITY_JOURNAL_TYPE:
                 content = ResourceUtils.getString(R.string.chat_journal_message_des);
          //       title = ResourceUtils.getString(R.string.chat_journal_message_type);
-                iconRes = R.drawable.icon_journal;
+                iconRes = R.drawable.message_share_journal;
                 break;
             case ChatConstant.KEY_ACTIVITY_ITEM_CARD_TYPE:
                 String itemCardType = mEMMessage.getStringAttribute(ChatConstant.KEY_SUB_CARD_TYPE, "");
                 if (itemCardType.equals("item_package")) {
                     content = ResourceUtils.getString(R.string.chat_package_message_des);
          //           title = ResourceUtils.getString(R.string.chat_package_message_type);
-                    iconRes = R.drawable.icon_package;
+                    iconRes = R.drawable.message_share_once_card_mix;
                 } else if (itemCardType.equals("credit_gift")) {
                     content = ResourceUtils.getString(R.string.chat_gift_message_des);
          //           title = ResourceUtils.getString(R.string.chat_gift_message_type);
-                    iconRes = R.drawable.icon_credit_gift;
+                    iconRes = R.drawable.message_share_once_card_credit;
                 } else {
                     content = ResourceUtils.getString(R.string.chat_timescard_message_des);
          //           title = ResourceUtils.getString(R.string.chat_timescard_message_type);
-                    iconRes = R.drawable.icon_oncecard;
+                    iconRes = R.drawable.message_share_once_card_single;
                 }
                 break;
 

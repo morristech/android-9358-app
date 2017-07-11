@@ -3,12 +3,14 @@ package com.xmd.chat.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.xmd.app.BaseViewModel;
+
 /**
  * Created by mo on 17-7-10.
  * 电子期刊
  */
 
-public class Journal implements Parcelable {
+public class Journal extends BaseViewModel implements Parcelable {
     public String journalId;
     public int sequenceNo;
     public String title;

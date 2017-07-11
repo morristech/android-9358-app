@@ -40,7 +40,7 @@ public class XmdModuleAppointment implements IFunctionInit {
             case AppointmentEvent.CMD_SHOW:
                 Intent intent = new Intent(XmdApp.getInstance().getContext(), AppointmentActivity.class);
                 intent.putExtra(Constants.EXTRA_DATA, event.getData());
-                intent.putExtra(Constants.EXTAR_EVENT_TAG, event.getTag());
+                intent.putExtra(Constants.EXTRA_EVENT_TAG, event.getTag());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 XmdApp.getInstance().getContext().startActivity(intent);
                 break;

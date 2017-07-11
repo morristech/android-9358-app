@@ -48,7 +48,7 @@
         </receiver>
 
         <activity android:name=".view.ChatActivity" />
-        <activity android:name=".view.JournalShareActivity"></activity>
+        <activity android:name=".view.ShareListActivity"></activity>
     </application>
 
 </manifest>

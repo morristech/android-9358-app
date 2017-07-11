@@ -21,15 +21,14 @@ import com.xmd.appointment.AppointmentEvent;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
-import com.xmd.chat.message.ShareChatMessage;
 import com.xmd.chat.order.OrderChatManager;
 import com.xmd.chat.view.ChatActivity;
-import com.xmd.chat.view.JournalShareActivity;
+import com.xmd.chat.view.ShareListActivity;
 import com.xmd.chat.view.SubmenuEmojiFragment;
 import com.xmd.chat.view.SubmenuFastReplyFragment;
 import com.xmd.chat.view.SubmenuMoreFragment;
-import com.xmd.chat.viewmodel.ShareJournalViewModel;
 import com.xmd.image_tool.ImageTool;
+import com.xmd.m.network.NetworkSubscriber;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -62,6 +61,7 @@ public class MenuFactory {
         //创建更多菜单
         createMoreRequestOrderMenu(activity, remoteUser);
         createMoreJournalMenu(activity, remoteUser);
+        createMoreMallMenu(activity, remoteUser);
         createMoreLocationMenu(remoteUser);
         createMoreMenu();
 
@@ -75,8 +75,7 @@ public class MenuFactory {
     }
 
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-        return imageTool.onActivityResult(requestCode, resultCode, data)
-                || processJournalMenu(requestCode, resultCode, data);
+        return imageTool.onActivityResult(requestCode, resultCode, data);
     }
 
     //创建图片菜单
@@ -264,29 +263,50 @@ public class MenuFactory {
         moreMenus.add(new ChatMenu("电子期刊", R.drawable.chat_menu_location, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, JournalShareActivity.class);
-                intent.putExtra(Constants.EXTRA_CHAT_ID, remoteUser.getChatId());
-                activity.startActivityForResult(intent, ChatActivity.REQUEST_CODE_MENU_JOURNAL);
+                ShareDataManager.getInstance().loadJournalList(new NetworkSubscriber<Void>() {
+                    @Override
+                    public void onCallbackSuccess(Void v) {
+                        Intent intent = new Intent(activity, ShareListActivity.class);
+                        intent.putExtra(Constants.EXTRA_CHAT_ID, remoteUser.getChatId());
+                        ArrayList<String> dataTypeList = new ArrayList<>();
+                        dataTypeList.add(ShareDataManager.DATA_TYPE_JOURNAL);
+                        intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST, dataTypeList);
+                        activity.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        XToast.show("加载数据失败：" + e.getMessage());
+                    }
+                });
             }
         }, null));
     }
 
-    private boolean processJournalMenu(int requestCode, int resultCode, Intent data) {
-        if (requestCode != ChatActivity.REQUEST_CODE_MENU_JOURNAL) {
-            return false;
-        }
-        if (resultCode == Activity.RESULT_OK) {
-            String chatId = data.getStringExtra(Constants.EXTRA_CHAT_ID);
-            List<ShareJournalViewModel> list = data.getParcelableArrayListExtra("data");
-            for (ShareJournalViewModel v : list) {
-                ShareChatMessage message = ShareChatMessage.createJournalMessage(
-                        chatId,
-                        v.getJournal().journalId,
-                        String.valueOf(v.getJournal().templateId),
-                        v.getJournal().title);
-                MessageManager.getInstance().sendMessage(message);
+    //创建更多-商城菜单
+    public void createMoreMallMenu(final Activity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu("特惠商城", R.drawable.chat_menu_location, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShareDataManager.getInstance().loadOnceCardList(new NetworkSubscriber<Void>() {
+                    @Override
+                    public void onCallbackSuccess(Void v) {
+                        Intent intent = new Intent(activity, ShareListActivity.class);
+                        intent.putExtra(Constants.EXTRA_CHAT_ID, remoteUser.getChatId());
+                        ArrayList<String> dataTypeList = new ArrayList<>();
+                        dataTypeList.add(ShareDataManager.DATA_TYPE_ONCE_CARD_SINGLE);
+                        dataTypeList.add(ShareDataManager.DATA_TYPE_ONCE_CARD_MIX);
+                        dataTypeList.add(ShareDataManager.DATA_TYPE_ONCE_CARD_CREDIT);
+                        intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST, dataTypeList);
+                        activity.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        XToast.show("加载数据失败：" + e.getMessage());
+                    }
+                });
             }
-        }
-        return true;
+        }, null));
     }
 }

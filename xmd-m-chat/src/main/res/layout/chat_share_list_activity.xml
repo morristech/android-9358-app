@@ -8,7 +8,7 @@
 
         <variable
             name="data"
-            type="com.xmd.chat.view.JournalShareActivity" />
+            type="com.xmd.chat.view.ShareListActivity" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -45,21 +45,14 @@
         </android.support.v7.widget.Toolbar>
 
 
-        <FrameLayout
+        <LinearLayout
+            android:id="@+id/contentView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--这里动态增加列表-->
+        </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="@{data.loading?View.VISIBLE:View.GONE}" />
-
-        </FrameLayout>
     </LinearLayout>
 </layout>

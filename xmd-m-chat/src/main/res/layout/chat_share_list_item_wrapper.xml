@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.xmd.chat.viewmodel.ShareViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/white"
+        android:onClick="@{data.listener}"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <FrameLayout
+            android:id="@+id/contentView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="@{data.select}"
+            android:onClick="@{data.listener}" />
+
+    </LinearLayout>
+</layout>

@@ -47,6 +47,7 @@ public class ChatMessage {
 
     //活动消息
     public static final String MSG_TYPE_JOURNAL = "journal"; //电子期刊
+    public static final String MSG_TYPE_ONCE_CARD = "itemCard"; //次卡
 
     public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";//客服消息
     public static final String MSG_TAG_HELLO = "hello"; //打招呼消息

@@ -142,7 +142,9 @@ public class ConversationManager {
 
     public void markAllMessagesRead(String chatId) {
         ConversationViewModel conversationViewModel = getConversationData(chatId);
-        conversationViewModel.getConversation().markAllMessagesAsRead();
+        if (conversationViewModel != null) {
+            conversationViewModel.getConversation().markAllMessagesAsRead();
+        }
         EventBus.getDefault().post(new EventUnreadCount(conversationViewModel));
         EventBus.getDefault().post(new EventTotalUnreadCount(EMClient.getInstance().chatManager().getUnreadMessageCount()));
     }
