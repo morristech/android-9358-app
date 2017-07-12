@@ -11,6 +11,8 @@ import android.view.View;
  */
 
 public class AutoHeightViewPager extends ViewPager {
+    private int emptyHeight;
+
     public AutoHeightViewPager(Context context) {
         super(context);
     }
@@ -19,9 +21,16 @@ public class AutoHeightViewPager extends ViewPager {
         super(context, attrs);
     }
 
+    public void setEmptyHeight(int height) {
+        emptyHeight = height;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (getChildCount() == 0) {
+            //没有子view时返回初始高度,默认0
+            //在增加子view后请使用requestLayout重新计算高度
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(emptyHeight, MeasureSpec.EXACTLY);
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
         }

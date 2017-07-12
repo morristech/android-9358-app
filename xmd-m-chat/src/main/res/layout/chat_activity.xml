@@ -15,30 +15,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/activityLayout">
 
         <include layout="@layout/layout_toolbar" />
+
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:isScrollContainer="false">
 
-            <android.support.v7.widget.RecyclerView
+            <com.xmd.chat.ChatRecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical" />
+                android:layout_height="match_parent" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:isScrollContainer="false">
 
             <ImageView
                 android:layout_width="36dp"
@@ -64,7 +68,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:afterTextChanged="@{(s)->data.setTextMessageContent(s)}"
-                android:onClick="@{()->data.onClickEditText()}"
+                android:onTouch="@{(v,e)->data.onTouchEditText(v,e)}"
                 android:text="@{data.textMessageContent}"
                 android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />
 
@@ -85,11 +89,13 @@
             android:id="@+id/menuLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:isScrollContainer="false"
             android:orientation="horizontal"
             android:paddingBottom="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="8dp" />
+
 
         <View
             android:layout_width="match_parent"
@@ -99,6 +105,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:visibility="@{data.showSubMenu?View.VISIBLE:View.GONE}">
 
             <com.shidou.commonlibrary.widget.AutoHeightViewPager
@@ -113,7 +120,6 @@
                 android:layout_gravity="bottom"
                 android:gravity="center" />
         </FrameLayout>
-
     </LinearLayout>
 </layout>
 

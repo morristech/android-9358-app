@@ -2,17 +2,13 @@ package com.xmd.chat.view;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -42,6 +38,7 @@ import com.xmd.chat.BR;
 import com.xmd.chat.ChatConstants;
 import com.xmd.chat.ChatMenu;
 import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.ChatRecyclerView;
 import com.xmd.chat.ChatRowViewFactory;
 import com.xmd.chat.ConversationManager;
 import com.xmd.chat.MessageManager;
@@ -88,6 +85,8 @@ public class ChatActivity extends BaseActivity {
     private InputMethodManager mInputMethodManager;
     public static final int REQUEST_CODE_PERMISSION_REQUEST = 0x800;
 
+    private LinearLayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,8 +108,8 @@ public class ChatActivity extends BaseActivity {
 
         setTitle(mRemoteUser.getShowName());
 
-
-        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        mBinding.recyclerView.setLayoutManager(layoutManager);
         mBinding.recyclerView.setAdapter(mAdapter);
 
         mBinding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -126,7 +125,21 @@ public class ChatActivity extends BaseActivity {
         mBinding.inputVoice.setOnTouchListener(voiceButtonListener);
 
         initMenu();
+
         loadData(null);
+
+        mBinding.recyclerView.setOnSizeChangedListener(new ChatRecyclerView.OnSizeChangedListener() {
+            @Override
+            public void onSizeChanged(int w, int h, int oldw, int oldh) {
+                if (oldh > h) {
+                    //small size, need to scroll to last visible position
+                    mBinding.recyclerView.scrollToPosition(layoutManager.findLastVisibleItemPosition());
+                }
+                if (mBinding.recyclerView.isMaxHeight() && mFocusMenuView != null) {
+                    showSubMenu.set(true);
+                }
+            }
+        });
     }
 
     @Override
@@ -241,18 +254,8 @@ public class ChatActivity extends BaseActivity {
     //处理删除消息
     @Subscribe
     public void onDeleteMessage(final EventDeleteMessage deleteMessage) {
-        new AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                .setMessage("删除后将不会出现在你的消息记录中，确实删除？")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getConversation().removeMessage(deleteMessage.getChatRowViewModel().getChatMessage().getEmMessage().getMsgId());
-                        removeMessageFromUi(deleteMessage.getChatRowViewModel());
-                    }
-                })
-                .create()
-                .show();
+        getConversation().removeMessage(deleteMessage.getChatRowViewModel().getChatMessage().getEmMessage().getMsgId());
+        removeMessageFromUi(deleteMessage.getChatRowViewModel());
     }
 
     //处理撤回消息
@@ -313,8 +316,11 @@ public class ChatActivity extends BaseActivity {
     }
 
     //点击输入框时隐藏子菜单
-    public void onClickEditText() {
-        hideFocusMenu();
+    public boolean onTouchEditText(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            hideFocusMenu();
+        }
+        return false;
     }
 
     //增加一条消息到列表
@@ -390,21 +396,8 @@ public class ChatActivity extends BaseActivity {
             return;
         }
 
-
-        mBinding.submenuLayout.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
-
-            @Override
-            public Fragment getItem(int position) {
-                return chatMenu.subMenuList.get(position);
-            }
-
-            @Override
-            public int getCount() {
-                return chatMenu.subMenuList.size();
-            }
-
-
-        });
+        mBinding.submenuLayout.setAdapter(chatMenu.adapter);
+        mBinding.submenuLayout.getAdapter().notifyDataSetChanged();
         if (chatMenu.subMenuList.size() > 1) {
             mBinding.pageIndicator.setVisibility(View.VISIBLE);
             mBinding.pageIndicator.drawIcons(chatMenu.subMenuList.size());
@@ -415,8 +408,11 @@ public class ChatActivity extends BaseActivity {
         hideSoftwareInput();
         mFocusMenuView = menuView;
         mFocusMenuView.setSelected(true);
-        showSubMenu.set(true);
-        mBinding.recyclerView.scrollToPosition(mDataList.size() - 1);
+        //如果当前recyclerView是最大高度状态（键盘是隐藏的），那么直接显示
+        //否则等recyclerView达到最大高度时再显示，解决闪烁问题
+        if (mBinding.recyclerView.isMaxHeight()) {
+            showSubMenu.set(true);
+        }
     }
 
     //转换文字和语音

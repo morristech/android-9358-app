@@ -1,9 +1,11 @@
 package com.xmd.chat.viewmodel;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,20 +41,6 @@ public abstract class ChatRowViewModel {
         this.chatMessage = chatMessage;
         error.set(false);
         progress.set(false);
-        EMMessage.Status status = chatMessage.getEmMessage().status();
-        switch (status) {
-            case SUCCESS:
-                error.set(false);
-                break;
-            case FAIL:
-                error.set(true);
-                break;
-            case CREATE:
-            case INPROGRESS:
-                progress.set(true);
-                break;
-        }
-
         chatMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
             @Override
             public void onSuccess() {
@@ -71,6 +59,19 @@ public abstract class ChatRowViewModel {
                 progress.set(true);
             }
         });
+        EMMessage.Status status = chatMessage.getEmMessage().status();
+        switch (status) {
+            case SUCCESS:
+                error.set(false);
+                break;
+            case FAIL:
+                error.set(true);
+                break;
+            case CREATE:
+            case INPROGRESS:
+                progress.set(true);
+                break;
+        }
     }
 
     public long getTime() {
@@ -105,29 +106,40 @@ public abstract class ChatRowViewModel {
         return chatMessage;
     }
 
-    public void send() {
+    public void reSend() {
         error.set(false);
         progress.set(true);
         MessageManager.getInstance().sendMessage(chatMessage);
+        EventBus.getDefault().post(new EventDeleteMessage(this));
     }
 
-    public boolean onLongClick(View view) {
+    public boolean onLongClick(final View view) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
         popupMenu.inflate(chatMessage.isReceivedMessage() ? R.menu.message_receive_actions : R.menu.message_send_actions);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                return onClickMenu(item);
+                return onClickMenu(view.getContext(), item);
             }
         });
         popupMenu.show();
         return true;
     }
 
-    protected boolean onClickMenu(MenuItem item) {
+    protected boolean onClickMenu(Context context, MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.menu_delete) {
-            EventBus.getDefault().post(new EventDeleteMessage(this));
+            new AlertDialog.Builder(context, R.style.AppTheme_AlertDialog)
+                    .setMessage("删除后将不会出现在你的消息记录中，确实删除？")
+                    .setNegativeButton("取消", null)
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            EventBus.getDefault().post(new EventDeleteMessage(ChatRowViewModel.this));
+                        }
+                    })
+                    .create()
+                    .show();
             return true;
         } else if (i == R.id.menu_revoke) {
             EventBus.getDefault().post(new EventRevokeMessage(this));

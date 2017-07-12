@@ -1,13 +1,13 @@
 package com.xmd.chat;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.View;
 
@@ -53,18 +53,18 @@ public class MenuFactory {
 
         //创建普通菜单
         createPictureMenu(activity, remoteUser);
-        createEmojiMenu(editable);
-        createFastReplyMenu(remoteUser);
+        createEmojiMenu(activity, editable);
+        createFastReplyMenu(activity, remoteUser);
         createCouponMenu(activity, remoteUser);
-        createAppointmentMenu(remoteUser);
+        createAppointmentMenu(activity, remoteUser);
 
         //创建更多菜单
         createMoreRequestOrderMenu(activity, remoteUser);
         createMoreMarketingMenu(activity, remoteUser);
         createMoreJournalMenu(activity, remoteUser);
         createMoreMallMenu(activity, remoteUser);
-        createMoreLocationMenu(remoteUser);
-        createMoreMenu();
+        createMoreLocationMenu(activity, remoteUser);
+        createMoreMenu(activity);
 
         return menus;
     }
@@ -80,8 +80,8 @@ public class MenuFactory {
     }
 
     //创建图片菜单
-    public void createPictureMenu(final Activity activity, final User remoteUser) {
-        menus.add(new ChatMenu(R.drawable.chat_menu_image, new View.OnClickListener() {
+    public void createPictureMenu(final AppCompatActivity activity, final User remoteUser) {
+        menus.add(new ChatMenu(activity, R.drawable.chat_menu_image, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imageTool.onlyPick(true).start(activity, new ImageTool.ResultListener() {
@@ -98,16 +98,16 @@ public class MenuFactory {
     }
 
     //创建表情菜单
-    public void createEmojiMenu(Editable editable) {
+    public void createEmojiMenu(final AppCompatActivity activity, Editable editable) {
         List<Fragment> emojiFragmentList = new ArrayList<>();
         SubmenuEmojiFragment submenuEmojiFragment = new SubmenuEmojiFragment();
         submenuEmojiFragment.setOutputView(editable);
         emojiFragmentList.add(submenuEmojiFragment);
-        menus.add(new ChatMenu(R.drawable.chat_menu_emoji, null, emojiFragmentList));
+        menus.add(new ChatMenu(activity, R.drawable.chat_menu_emoji, null, emojiFragmentList));
     }
 
     //创建快捷回复菜单
-    public void createFastReplyMenu(final User remoteUser) {
+    public void createFastReplyMenu(final AppCompatActivity activity, final User remoteUser) {
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> messageList1 = new ArrayList<>();
         messageList1.add("很高兴能为您解决问题，客官给个好评哦，么么哒");
@@ -127,12 +127,12 @@ public class MenuFactory {
         SubmenuFastReplyFragment fragment2 = new SubmenuFastReplyFragment();
         fragment2.setData(remoteUser.getChatId(), messageList2);
         fragmentList.add(fragment2);
-        menus.add(new ChatMenu(R.drawable.chat_menu_fast_reply, null, fragmentList));
+        menus.add(new ChatMenu(activity, R.drawable.chat_menu_fast_reply, null, fragmentList));
     }
 
     //创建发券菜单
-    public void createCouponMenu(final Activity activity, final User remoteUser) {
-        menus.add(new ChatMenu(R.drawable.chat_menu_coupon, new View.OnClickListener() {
+    public void createCouponMenu(final AppCompatActivity activity, final User remoteUser) {
+        menus.add(new ChatMenu(activity, R.drawable.chat_menu_coupon, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onShowDeliverCouponView(activity, remoteUser);
@@ -146,8 +146,8 @@ public class MenuFactory {
     }
 
     //创建预约菜单
-    public void createAppointmentMenu(final User remoteUser) {
-        menus.add(new ChatMenu(R.drawable.chat_menu_appointment, new View.OnClickListener() {
+    public void createAppointmentMenu(final AppCompatActivity activity, final User remoteUser) {
+        menus.add(new ChatMenu(activity, R.drawable.chat_menu_appointment, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isInSubmitAppointment) {
@@ -211,7 +211,7 @@ public class MenuFactory {
     }
 
     //创建更多菜单
-    public void createMoreMenu() {
+    public void createMoreMenu(final AppCompatActivity activity) {
         if (moreMenus.size() == 0) {
             return;
         }
@@ -219,12 +219,12 @@ public class MenuFactory {
         SubmenuMoreFragment fragment = new SubmenuMoreFragment();
         fragment.setData(moreMenus);
         fragmentList.add(fragment);
-        menus.add(new ChatMenu(R.drawable.chat_menu_more, null, fragmentList));
+        menus.add(new ChatMenu(activity, R.drawable.chat_menu_more, null, fragmentList));
     }
 
     //创建更多-位置菜单
-    public void createMoreLocationMenu(final User remoteUser) {
-        moreMenus.add(new ChatMenu("会所位置", R.drawable.chat_menu_location, new View.OnClickListener() {
+    public void createMoreLocationMenu(final AppCompatActivity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu(activity, "会所位置", R.drawable.chat_menu_location, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 XmdChat.getInstance().getClubLocation(new Callback<Location>() {
@@ -241,11 +241,11 @@ public class MenuFactory {
     }
 
     //创建更多-求预约菜单
-    public void createMoreRequestOrderMenu(final Context context, final User remoteUser) {
-        moreMenus.add(new ChatMenu("求预约", R.drawable.chat_menu_order_request, new View.OnClickListener() {
+    public void createMoreRequestOrderMenu(final AppCompatActivity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu(activity, "求预约", R.drawable.chat_menu_order_request, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(context, R.style.AppTheme_AlertDialog)
+                new AlertDialog.Builder(activity, R.style.AppTheme_AlertDialog)
                         .setMessage("确定发送求预约消息?")
                         .setNegativeButton("取消", null)
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -262,8 +262,8 @@ public class MenuFactory {
     }
 
     //创建更多-电子期刊菜单
-    public void createMoreJournalMenu(final Activity activity, final User remoteUser) {
-        moreMenus.add(new ChatMenu("电子期刊", R.drawable.chat_menu_location, new View.OnClickListener() {
+    public void createMoreJournalMenu(final AppCompatActivity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu(activity, "电子期刊", R.drawable.chat_menu_location, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ShareDataManager.getInstance().loadJournalList(new NetworkSubscriber<Void>() {
@@ -287,8 +287,8 @@ public class MenuFactory {
     }
 
     //创建更多-商城菜单
-    public void createMoreMallMenu(final Activity activity, final User remoteUser) {
-        moreMenus.add(new ChatMenu("特惠商城", R.drawable.chat_menu_location, new View.OnClickListener() {
+    public void createMoreMallMenu(final AppCompatActivity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu(activity, "特惠商城", R.drawable.chat_menu_location, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ShareDataManager.getInstance().loadOnceCardList(new NetworkSubscriber<Void>() {
@@ -314,8 +314,8 @@ public class MenuFactory {
     }
 
     //创建更多-营销活动菜单
-    public void createMoreMarketingMenu(final Activity activity, final User remoteUser) {
-        moreMenus.add(new ChatMenu("营销活动", R.drawable.chat_menu_location, new View.OnClickListener() {
+    public void createMoreMarketingMenu(final AppCompatActivity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu(activity, "营销活动", R.drawable.chat_menu_location, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ShareDataManager.getInstance().loadMarketingList(new NetworkSubscriber<Void>() {

@@ -57,7 +57,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:onClick="@{()->data.send()}"
+                        android:onClick="@{()->data.reSend()}"
                         android:src="@drawable/chat_sent_failed"
                         android:visibility="@{data.error?View.VISIBLE:View.GONE}" />
                 </FrameLayout>

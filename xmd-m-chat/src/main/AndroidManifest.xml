@@ -47,8 +47,13 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".view.ChatActivity" />
-        <activity android:name=".view.ShareListActivity"></activity>
+        <activity
+            android:name=".view.ChatActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".view.ShareListActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

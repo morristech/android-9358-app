@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
 import com.shidou.commonlibrary.helper.CrashHandler;
@@ -167,7 +168,7 @@ public class ManagerApplication extends Application {
 
     private MenuFactory menuFactory = new MenuFactory() {
         @Override
-        public void createAppointmentMenu(User remoteUser) {
+        public void createAppointmentMenu(AppCompatActivity activity, User remoteUser) {
             // 管理者不需要预约菜单
         }
 
