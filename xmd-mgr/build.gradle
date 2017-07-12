@@ -192,5 +192,5 @@ dependencies {
     compile 'com.ms-square:expandableTextView:0.1.4'
 
     //aspectj
-    compile 'org.aspectj:aspectjrt:1.8.+'
+    compile "org.aspectj:aspectjrt:${rootProject.ext.aspectjrtVersion}"
 }

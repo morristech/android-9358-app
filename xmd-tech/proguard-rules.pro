@@ -131,9 +131,9 @@
 -keep class **$$PermissionProxy { *; }
 
 #permission
--keep class com.xmd.technician.permission.CheckBusinessPermission {*;}
+-keep class com.xmd.permission.CheckBusinessPermission {*;}
 -keep class * {
-    @com.xmd.technician.permission.CheckBusinessPermission public <methods>;
+    @com.xmd.permission.CheckBusinessPermission public <methods>;
 }
 
 #image

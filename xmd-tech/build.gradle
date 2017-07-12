@@ -136,10 +136,6 @@ repositories {
     }
 }
 
-aspectjx {
-    excludeJarFilter '.jar'
-}
-
 
 dependencies {
     //依赖文件
@@ -147,6 +143,7 @@ dependencies {
     compile project(':commonlibrary')
     compile project(':xmd-m-network')
     compile project(':xmd-app')
+    compile project(':xmd-m-permission')
     compile project(':xmd-m-appointment')
     compile project(':xmd-m-chat')
     compile project(':xmd-m-notify')
@@ -171,7 +168,7 @@ dependencies {
     compile "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
     compile 'com.umeng.analytics:analytics:latest.integration'
     //    aspectj
-    compile 'org.aspectj:aspectjrt:1.8.+'
+    compile "org.aspectj:aspectjrt:${rootProject.ext.aspectjrtVersion}"
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     // for multidex
     compile 'com.android.support:multidex:1.0.1'

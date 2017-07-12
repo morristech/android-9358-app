@@ -178,3 +178,9 @@
 -keep public class ** {
     @org.greenrobot.eventbus.Subscribe public <methods>;
 }
+
+#permission
+-keep class com.xmd.permission.CheckBusinessPermission {*;}
+-keep class * {
+    @com.xmd.permission.CheckBusinessPermission public <methods>;
+}

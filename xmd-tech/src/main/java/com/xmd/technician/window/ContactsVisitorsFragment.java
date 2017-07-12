@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 
 import com.hyphenate.exceptions.HyphenateException;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.technician.Constant;
@@ -19,7 +18,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.SayHiVisitorResult;
 import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.CharacterParser;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
@@ -240,10 +238,6 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
     }
 
     private void sayHiRequest(String userId, String userName, String avatarUrl, String userType, String userEmchatId, String position) {
-        if (!ChatHelper.getInstance().isConnected()) {
-            XToast.show("当前已经离线，请稍后再试!");
-            return;
-        }
         mSayHiParams.clear();
         mSayHiParams.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_VISITOR);
         mSayHiParams.put(RequestConstant.KEY_NEW_CUSTOMER_ID, userId);

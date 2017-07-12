@@ -35,7 +35,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
 
     //aspectj
-    compile 'org.aspectj:aspectjrt:1.8.+'
+    compile "org.aspectj:aspectjrt:${rootProject.ext.aspectjrtVersion}"
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

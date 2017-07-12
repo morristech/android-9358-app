@@ -31,6 +31,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
+import com.xmd.permission.BusinessPermissionManager;
+import com.xmd.permission.CheckBusinessPermission;
+import com.xmd.permission.PermissionConstants;
 import com.xmd.technician.Adapter.MainPageTechOrderListAdapter;
 import com.xmd.technician.Adapter.PKRankingAdapter;
 import com.xmd.technician.AppConfig;
@@ -43,8 +46,6 @@ import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.ChatHelper;
-import com.xmd.technician.chat.model.ChatModel;
 import com.xmd.technician.common.HeartBeatTimer;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
@@ -72,9 +73,6 @@ import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyFragment;
-import com.xmd.technician.permission.BusinessPermissionManager;
-import com.xmd.technician.permission.CheckBusinessPermission;
-import com.xmd.technician.permission.PermissionConstants;
 import com.xmd.technician.widget.CircleAvatarView;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RewardConfirmDialog;
@@ -270,7 +268,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private View mRootView;
     private boolean isHasPk;
     private boolean isInitNormalRanking;
-    private ChatModel mChatModel;
 
     @Nullable
     @Override
@@ -302,10 +299,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mChatModel = ChatHelper.getInstance().getModel();
-        mChatModel.setSettingMsgVibrate(true);
-        mChatModel.setSettingMsgSound(true);
-        mChatModel.setSettingMsgSpeaker(true);
     }
 
     @Override
@@ -1267,7 +1260,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onRefresh() {
         mTech.loadTechInfo();
         sendDataRequest();
-        BusinessPermissionManager.getInstance().syncPermissionsImmediately();//刷新权限
+        BusinessPermissionManager.getInstance().syncPermissionsImmediately(null);//刷新权限
     }
 
     //成功通过会所审核

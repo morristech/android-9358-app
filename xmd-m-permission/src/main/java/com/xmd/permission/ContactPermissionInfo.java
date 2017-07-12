@@ -1,4 +1,4 @@
-package com.xmd.technician.bean;
+package com.xmd.permission;
 
 import java.io.Serializable;
 

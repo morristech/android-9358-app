@@ -189,7 +189,7 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
     @BindingAdapter("order_title")
     public static void bindOrderTitle(TextView view, OrderChatMessage data) {
         if (data != null) {
-            view.setText(OrderChatManager.getMsgTypeText(data.getMsgType()));
+            view.setText(ChatMessage.getMsgTypeText(data.getMsgType()));
         }
     }
 

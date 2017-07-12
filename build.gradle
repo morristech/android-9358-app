@@ -36,4 +36,5 @@ ext {
     retrofitVersion = '2.3.0'
     eventbusVersion = '3.0.0'
     glideVersion = '3.7.0'
+    aspectjrtVersion = '1.8.10'
 }

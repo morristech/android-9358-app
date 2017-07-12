@@ -1,5 +1,6 @@
 package com.xmd.technician;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -20,10 +21,12 @@ import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.EmojiManager;
 import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
+import com.xmd.app.user.User;
 import com.xmd.appointment.XmdModuleAppointment;
+import com.xmd.chat.MenuFactory;
+import com.xmd.chat.XmdChat;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
-import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
@@ -134,9 +137,9 @@ public class TechApplication extends MultiDexApplication {
                 XmdPushModule.getInstance().init(this, "tech", UINavigation.xmdActionFactory, new PushMessageListener());
 
                 //初始化聊天模块
-//                XmdChat.getInstance().init(this, BuildConfig.DEBUG);
+                XmdChat.getInstance().init(this, BuildConfig.DEBUG, menuFactory);
                 //初始化旧聊天模块
-                ChatHelper.getInstance().init(getAppContext());
+//                ChatHelper.getInstance().init(getAppContext());
 
                 DataRefreshService.start();
                 HelloReplyService.start();
@@ -213,4 +216,15 @@ public class TechApplication extends MultiDexApplication {
         XLogger.i(TAG, "APP VERSION NAME:" + mAppVersionName);
         XLogger.i(TAG, "=========================================");
     }
+
+
+    private MenuFactory menuFactory = new MenuFactory() {
+
+        @Override
+        public void onShowDeliverCouponView(Activity activity, User remoteUser) {
+//            Intent intent = new Intent(activity, DeliveryCouponActivity.class);
+//            intent.putExtra(DeliveryCouponActivity.EXTRA_CHAT_ID, remoteUser.getChatId());
+//            activity.startActivity(intent);
+        }
+    };
 }

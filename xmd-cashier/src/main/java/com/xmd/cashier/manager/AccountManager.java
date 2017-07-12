@@ -139,7 +139,8 @@ public class AccountManager {
 
                             // 绑定推送
                             EventBus.getDefault().removeStickyEvent(EventLogin.class);
-                            EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), AccountManager.getInstance().getUserId()));
+                            com.xmd.app.user.User user = new com.xmd.app.user.User(AccountManager.getInstance().getUserId());
+                            EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));
                             NotifyManager.getInstance().startGetFastPayCountAsync();
                             NotifyManager.getInstance().startGetOrderCountAsync();
                         }

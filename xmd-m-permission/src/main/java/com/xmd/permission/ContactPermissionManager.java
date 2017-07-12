@@ -1,27 +1,21 @@
-package com.xmd.technician.permission.contact;
+package com.xmd.permission;
 
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
-import com.xmd.technician.bean.ContactPermissionInfo;
-import com.xmd.technician.http.RequestConstant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import rx.Observable;
 import rx.Subscription;
 
 /**
  * Created by mo on 17-6-15.
- * 技师与客服的联系权限
+ * 技师与客户的联系权限
  */
 
 public class ContactPermissionManager {
@@ -57,7 +51,7 @@ public class ContactPermissionManager {
      * @param customerId 客户userId
      * @param listener   回调方法
      */
-    public Subscription getPermission(String customerId, NetworkSubscriber<ContactPermissionInfo> listener) {
+    public Subscription getPermission(final String customerId, final NetworkSubscriber<ContactPermissionInfo> listener) {
         ContactPermissionInfo info = mPermissionMap.get(customerId);
         if (info != null && info.echat) {
             //具有全部权限，直接返回
@@ -71,7 +65,7 @@ public class ContactPermissionManager {
             }
             subscription =
                     XmdNetwork.getInstance().request(
-                            XmdNetwork.getInstance().getService(ContactPermissionNet.class).getContactPermissionInfo(customerId, null),
+                            XmdNetwork.getInstance().getService(NetService.class).getContactPermissionInfo(customerId, null),
                             new NetworkSubscriber<BaseBean<ContactPermissionInfo>>() {
                                 @Override
                                 public void onCallbackSuccess(BaseBean<ContactPermissionInfo> result) {
@@ -93,16 +87,5 @@ public class ContactPermissionManager {
             return subscription;
         }
         return null;
-    }
-
-    interface ContactPermissionNet {
-        /**
-         * @param id     路径参数，默认为客户ID
-         * @param idType ID类型，可选，customer:客户ID，emchat:环信ID
-         * @return
-         */
-        @GET("/spa-manager/api/v2/tech/contact/permission/{id}")
-        Observable<BaseBean<ContactPermissionInfo>> getContactPermissionInfo(@Path(RequestConstant.KEY_ID) String id,
-                                                                             @Query(RequestConstant.KEY_CONTACT_ID_TYPE) String idType);
     }
 }
