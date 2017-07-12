@@ -172,10 +172,15 @@ public class ManagerApplication extends Application {
             // 管理者不需要预约菜单
         }
 
-//        @Override
-//        public void createMoreRequestOrderMenu(Context context, User remoteUser) {
-//            // 管理者不需要预约菜单
-//        }
+        @Override
+        public void createMoreRequestOrderMenu(AppCompatActivity activity, User remoteUser) {
+            // 管理者不需要预约菜单
+        }
+
+        @Override
+        public void createMoreRequestRewardMenu(AppCompatActivity activity, User remoteUser) {
+            //管理者不需要求打赏
+        }
 
         @Override
         public void onShowDeliverCouponView(Activity activity, User remoteUser) {

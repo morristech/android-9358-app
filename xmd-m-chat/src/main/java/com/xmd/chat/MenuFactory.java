@@ -21,6 +21,7 @@ import com.xmd.appointment.AppointmentEvent;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
+import com.xmd.chat.message.RewardChatMessage;
 import com.xmd.chat.order.OrderChatManager;
 import com.xmd.chat.view.ChatActivity;
 import com.xmd.chat.view.ShareListActivity;
@@ -60,6 +61,7 @@ public class MenuFactory {
 
         //创建更多菜单
         createMoreRequestOrderMenu(activity, remoteUser);
+        createMoreRequestRewardMenu(activity, remoteUser);
         createMoreMarketingMenu(activity, remoteUser);
         createMoreJournalMenu(activity, remoteUser);
         createMoreMallMenu(activity, remoteUser);
@@ -261,9 +263,30 @@ public class MenuFactory {
         }, null));
     }
 
+    //创建更多-求打赏菜单
+    public void createMoreRequestRewardMenu(final AppCompatActivity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu(activity, "求打赏", R.drawable.chat_menu_request_reward, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(activity, R.style.AppTheme_AlertDialog)
+                        .setMessage("确定发送求打赏消息?")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ChatMessage chatMessage = RewardChatMessage.createRequestRewardMessage(remoteUser.getChatId());
+                                MessageManager.getInstance().sendMessage(chatMessage);
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+        }, null));
+    }
+
     //创建更多-电子期刊菜单
     public void createMoreJournalMenu(final AppCompatActivity activity, final User remoteUser) {
-        moreMenus.add(new ChatMenu(activity, "电子期刊", R.drawable.chat_menu_location, new View.OnClickListener() {
+        moreMenus.add(new ChatMenu(activity, "电子期刊", R.drawable.chat_menu_journal, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ShareDataManager.getInstance().loadJournalList(new NetworkSubscriber<Void>() {
@@ -288,7 +311,7 @@ public class MenuFactory {
 
     //创建更多-商城菜单
     public void createMoreMallMenu(final AppCompatActivity activity, final User remoteUser) {
-        moreMenus.add(new ChatMenu(activity, "特惠商城", R.drawable.chat_menu_location, new View.OnClickListener() {
+        moreMenus.add(new ChatMenu(activity, "特惠商城", R.drawable.chat_menu_mall, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ShareDataManager.getInstance().loadOnceCardList(new NetworkSubscriber<Void>() {
@@ -315,7 +338,7 @@ public class MenuFactory {
 
     //创建更多-营销活动菜单
     public void createMoreMarketingMenu(final AppCompatActivity activity, final User remoteUser) {
-        moreMenus.add(new ChatMenu(activity, "营销活动", R.drawable.chat_menu_location, new View.OnClickListener() {
+        moreMenus.add(new ChatMenu(activity, "营销活动", R.drawable.chat_menu_marketing, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ShareDataManager.getInstance().loadMarketingList(new NetworkSubscriber<Void>() {

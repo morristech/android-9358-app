@@ -48,12 +48,15 @@ public class ChatMessage {
     //活动消息
     public static final String MSG_TYPE_JOURNAL = "journal"; //电子期刊
     public static final String MSG_TYPE_ONCE_CARD = "itemCard"; //次卡
-    public static final String MSG_TYPE_TIME_LIMIT_TYPE = "timeLimit";
-    public static final String MSG_TYPE_ONE_YUAN_TYPE = "oneYuan";
-    public static final String MSG_TYPE_LUCKY_WHEEL_TYPE = "luckyWheel";
+    public static final String MSG_TYPE_TIME_LIMIT_TYPE = "timeLimit";//限时购
+    public static final String MSG_TYPE_ONE_YUAN_TYPE = "oneYuan";//夺宝
+    public static final String MSG_TYPE_LUCKY_WHEEL_TYPE = "luckyWheel"; //大转盘
+    public static final String MSG_TYPE_REQUEST_REWARD = "begReward"; //求打赏
+    public static final String MSG_TYPE_REWARD = "reward"; //用户打赏
 
     public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";//客服消息
     public static final String MSG_TAG_HELLO = "hello"; //打招呼消息
+
 
     public static final String ATTRIBUTE_MESSAGE_TYPE = "msgType";
     private static final String ATTRIBUTE_TAG = "xmd_tag";
