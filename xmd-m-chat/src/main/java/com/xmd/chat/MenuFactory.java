@@ -30,6 +30,8 @@ import com.xmd.chat.view.SubmenuFastReplyFragment;
 import com.xmd.chat.view.SubmenuMoreFragment;
 import com.xmd.image_tool.ImageTool;
 import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.permission.CheckBusinessPermission;
+import com.xmd.permission.PermissionConstants;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -82,6 +84,7 @@ public class MenuFactory {
     }
 
     //创建图片菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_PICTURE)
     public void createPictureMenu(final AppCompatActivity activity, final User remoteUser) {
         menus.add(new ChatMenu(activity, R.drawable.chat_menu_image, new View.OnClickListener() {
             @Override
@@ -100,6 +103,7 @@ public class MenuFactory {
     }
 
     //创建表情菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_EMOJI)
     public void createEmojiMenu(final AppCompatActivity activity, Editable editable) {
         List<Fragment> emojiFragmentList = new ArrayList<>();
         SubmenuEmojiFragment submenuEmojiFragment = new SubmenuEmojiFragment();
@@ -109,6 +113,7 @@ public class MenuFactory {
     }
 
     //创建快捷回复菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_FAST_REPLY)
     public void createFastReplyMenu(final AppCompatActivity activity, final User remoteUser) {
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> messageList1 = new ArrayList<>();
@@ -133,6 +138,7 @@ public class MenuFactory {
     }
 
     //创建发券菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_COUPON)
     public void createCouponMenu(final AppCompatActivity activity, final User remoteUser) {
         menus.add(new ChatMenu(activity, R.drawable.chat_menu_coupon, new View.OnClickListener() {
             @Override
@@ -148,6 +154,7 @@ public class MenuFactory {
     }
 
     //创建预约菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER)
     public void createAppointmentMenu(final AppCompatActivity activity, final User remoteUser) {
         menus.add(new ChatMenu(activity, R.drawable.chat_menu_appointment, new View.OnClickListener() {
             @Override
@@ -225,6 +232,7 @@ public class MenuFactory {
     }
 
     //创建更多-位置菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_LOCATION)
     public void createMoreLocationMenu(final AppCompatActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "会所位置", R.drawable.chat_menu_location, new View.OnClickListener() {
             @Override
@@ -243,6 +251,7 @@ public class MenuFactory {
     }
 
     //创建更多-求预约菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER_REQUEST)
     public void createMoreRequestOrderMenu(final AppCompatActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "求预约", R.drawable.chat_menu_order_request, new View.OnClickListener() {
             @Override
@@ -264,6 +273,7 @@ public class MenuFactory {
     }
 
     //创建更多-求打赏菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_REWARD)
     public void createMoreRequestRewardMenu(final AppCompatActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "求打赏", R.drawable.chat_menu_request_reward, new View.OnClickListener() {
             @Override
@@ -285,6 +295,7 @@ public class MenuFactory {
     }
 
     //创建更多-电子期刊菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_JOURNAL)
     public void createMoreJournalMenu(final AppCompatActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "电子期刊", R.drawable.chat_menu_journal, new View.OnClickListener() {
             @Override
@@ -310,6 +321,7 @@ public class MenuFactory {
     }
 
     //创建更多-商城菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_MALL_INFO)
     public void createMoreMallMenu(final AppCompatActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "特惠商城", R.drawable.chat_menu_mall, new View.OnClickListener() {
             @Override
@@ -337,6 +349,7 @@ public class MenuFactory {
     }
 
     //创建更多-营销活动菜单
+    @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ACTIVITY)
     public void createMoreMarketingMenu(final AppCompatActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "营销活动", R.drawable.chat_menu_marketing, new View.OnClickListener() {
             @Override

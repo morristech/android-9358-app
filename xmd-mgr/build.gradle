@@ -8,6 +8,7 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'android-aspectjx'
 
 def releaseTime() {
     return new Date().format("yyyyMMddHHmm", TimeZone.getDefault())
@@ -161,6 +162,7 @@ dependencies {
     compile project(':commonlibrary')
     compile project(':xmd-m-network')
     compile project(':xmd-app')
+    compile project(':xmd-m-permission')
     compile project(':xmd-m-notify')
     compile project(':xmd-m-chat')
     compile(name: 'xmd-image-crop-1.0', ext: 'aar')
@@ -188,5 +190,7 @@ dependencies {
     compile project(':loading-view')
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.ms-square:expandableTextView:0.1.4'
-    compile project(path: ':xmd-app')
+
+    //aspectj
+    compile 'org.aspectj:aspectjrt:1.8.+'
 }
