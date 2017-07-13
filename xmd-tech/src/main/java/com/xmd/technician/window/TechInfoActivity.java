@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -50,26 +50,26 @@ public class TechInfoActivity extends BaseActivity {
     public static final int REQUEST_CODE_LOCAL_PICTURE_AVATAR = 1;
     public static final int REQUEST_CODE_LOCAL_PICTURE_ALBUM = 2;
 
-    @Bind(R.id.avatar)
+    @BindView(R.id.avatar)
     RoundImageView mAvatar;
-    @Bind(R.id.user_name)
+    @BindView(R.id.user_name)
     TextView mUserName;
-    @Bind(R.id.native_place)
+    @BindView(R.id.native_place)
     TextView mNativePlace;
-    @Bind(R.id.phone_number)
+    @BindView(R.id.phone_number)
     TextView mPhoneNumber;
-    @Bind(R.id.introduce)
+    @BindView(R.id.introduce)
     EditText mDescription;
-    @Bind(R.id.button_female)
+    @BindView(R.id.button_female)
     RadioButton mFemale;
-    @Bind(R.id.button_male)
+    @BindView(R.id.button_male)
     RadioButton mMale;
-    @Bind(R.id.album_container)
+    @BindView(R.id.album_container)
     RecyclerView mAlbumListView;
 
-    @Bind(R.id.button_album_all)
+    @BindView(R.id.button_album_all)
     RadioButton mAlbumAllAccess;
-    @Bind(R.id.button_album_vip)
+    @BindView(R.id.button_album_vip)
     RadioButton mAlbumVipAccess;
 
     private Subscription mGetTechInfoSubscription;

@@ -20,16 +20,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
 public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
     protected static final int PAGE_SIZE = 20;
 
-    @Bind(R.id.comment_list) RecyclerView mListView;
-    @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.empty_view_widget) EmptyView mEmptyView;
+    @BindView(R.id.comment_list) RecyclerView mListView;
+    @BindView(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.empty_view_widget) EmptyView mEmptyView;
 
     private CommentAdapter mAdapter;
     private Subscription mCommentSubscription;

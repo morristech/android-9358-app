@@ -21,7 +21,7 @@ import com.xmd.manager.widget.LoginFailDialog;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -32,13 +32,13 @@ import rx.Subscription;
 public class ModifyPasswordActivity extends BaseActivity implements TextWatcher, InputFilter {
     public final static int PASSWORD_MAX_LEN = 20;
 
-    @Bind(R.id.old_password)
+    @BindView(R.id.old_password)
     EditText mOldPassWordEdt;
-    @Bind(R.id.new_password)
+    @BindView(R.id.new_password)
     EditText mNewPassWordEdt;
-    @Bind(R.id.confirm_password)
+    @BindView(R.id.confirm_password)
     EditText mConfirmPassWordEdt;
-    @Bind(R.id.confirm)
+    @BindView(R.id.confirm)
     Button mChangePassWordBtn;
 
     private Subscription mModifyPasswordSubscription;

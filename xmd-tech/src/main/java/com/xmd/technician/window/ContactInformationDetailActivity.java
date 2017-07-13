@@ -64,7 +64,8 @@ import com.xmd.technician.widget.RoundImageView;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -73,89 +74,89 @@ import rx.Subscription;
  * Created by lhj on 2016/7/5.
  */
 public class ContactInformationDetailActivity extends BaseActivity {
-    @Bind(R.id.customer_head)
+    @BindView(R.id.customer_head)
     RoundImageView mContactHead;
-    @Bind(R.id.tv_customer_name)
+    @BindView(R.id.tv_customer_name)
     TextView mContactName;
-    @Bind(R.id.tv_customer_telephone)
+    @BindView(R.id.tv_customer_telephone)
     TextView mContactTelephone;
-    @Bind(R.id.tv_customer_nick_name)
+    @BindView(R.id.tv_customer_nick_name)
     TextView mContactNickName;
-    @Bind(R.id.tv_customer_remark)
+    @BindView(R.id.tv_customer_remark)
     TextView mContactRemark;
-    @Bind(R.id.customer_order)
+    @BindView(R.id.customer_order)
     TextView mContactOrder;
-    @Bind(R.id.customer_reward)
+    @BindView(R.id.customer_reward)
     TextView mContactReward;
-    @Bind(R.id.ll_customer_order)
+    @BindView(R.id.ll_customer_order)
     LinearLayout mContactOrderLayout;
-    @Bind(R.id.order_time)
+    @BindView(R.id.order_time)
     TextView orderTime;
-    @Bind(R.id.order_state)
+    @BindView(R.id.order_state)
     TextView orderState;
-    @Bind(R.id.order_item_detail)
+    @BindView(R.id.order_item_detail)
     TextView orderItem;
-    @Bind(R.id.rl_order)
+    @BindView(R.id.rl_order)
     RelativeLayout rlOrder;
-    @Bind(R.id.order2_time)
+    @BindView(R.id.order2_time)
     TextView order2Time;
-    @Bind(R.id.order2_state)
+    @BindView(R.id.order2_state)
     TextView order2State;
-    @Bind(R.id.order2_item_detail)
+    @BindView(R.id.order2_item_detail)
     TextView order2Item;
-    @Bind(R.id.rl_order2)
+    @BindView(R.id.rl_order2)
     RelativeLayout rlOrder2;
-    @Bind(R.id.btn_chat)
+    @BindView(R.id.btn_chat)
     ImageButton btnChat;
-    @Bind(R.id.btn_call_phone)
+    @BindView(R.id.btn_call_phone)
     ImageButton btnCallPhone;
-    @Bind(R.id.btn_EmChat)
+    @BindView(R.id.btn_EmChat)
     ImageButton btnEmChat;
-    @Bind(R.id.btn_EmHello)
+    @BindView(R.id.btn_EmHello)
     ImageButton btnEmHello;
-    @Bind(R.id.btn_rm_blacklist)
+    @BindView(R.id.btn_rm_blacklist)
     Button btnRmBlacklist;
-    @Bind(R.id.order_empty_alter)
+    @BindView(R.id.order_empty_alter)
     TextView orderEmpty;
-    @Bind(R.id.contact_more)
+    @BindView(R.id.contact_more)
     LinearLayout contactMore;
-    @Bind(R.id.remark_alert)
+    @BindView(R.id.remark_alert)
     TextView textRemarkAlert;
-    @Bind(R.id.ll_tech_number)
+    @BindView(R.id.ll_tech_number)
     LinearLayout llTechNum;
-    @Bind(R.id.tech_number)
+    @BindView(R.id.tech_number)
     TextView techNum;
-    @Bind(R.id.view_div)
+    @BindView(R.id.view_div)
     View divView;
-    @Bind(R.id.register_alert)
+    @BindView(R.id.register_alert)
     TextView registerAlert;
-    @Bind(R.id.ll_marker_message)
+    @BindView(R.id.ll_marker_message)
     LinearLayout markMessageLayout;
-    @Bind(R.id.text_contact_marker)
+    @BindView(R.id.text_contact_marker)
     TextView contactMark;
-    @Bind(R.id.linear_belong_tech)
+    @BindView(R.id.linear_belong_tech)
     LinearLayout linearBelongTech;
-    @Bind(R.id.belong_tech_name)
+    @BindView(R.id.belong_tech_name)
     TextView belongTechName;
-    @Bind(R.id.belong_tech_num)
+    @BindView(R.id.belong_tech_num)
     TextView belongTechNum;
-    @Bind(R.id.belong_tech_times)
+    @BindView(R.id.belong_tech_times)
     TextView belongTechTimes;
-    @Bind(R.id.belong_tech_day)
+    @BindView(R.id.belong_tech_day)
     TextView belongTechDay;
-    @Bind(R.id.belong_tech_visit)
+    @BindView(R.id.belong_tech_visit)
     TextView belongTechVisit;
-    @Bind(R.id.customer_type)
+    @BindView(R.id.customer_type)
     ImageView customerType;
-    @Bind(R.id.customer_other_type)
+    @BindView(R.id.customer_other_type)
     ImageView customerOtherType;
-    @Bind(R.id.rl_recently_visit_time)
+    @BindView(R.id.rl_recently_visit_time)
     RelativeLayout mVisitTime;
-    @Bind(R.id.rl_visit_tech_name)
+    @BindView(R.id.rl_visit_tech_name)
     RelativeLayout mVisitTechName;
-    @Bind(R.id.layout_operation_buttons)
+    @BindView(R.id.layout_operation_buttons)
     LinearLayout layoutOperationButtons;
-    @Bind(R.id.btn_operation)
+    @BindView(R.id.btn_operation)
     ImageButton btnOperation;
 
     private Context mContext;
@@ -932,7 +933,6 @@ public class ContactInformationDetailActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
         if (getCustomerInformationSubscription != null) {
             RxBus.getInstance().unsubscribe(getCustomerInformationSubscription, doDeleteContactSubscription, doShowVisitViewSubscription, sayHiDetailSubscription, contactPermissionDetailSubscription,
                     addToBlacklistSubscription, removeFromBlacklistSubscription, inBlacklistSubscription);

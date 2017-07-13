@@ -30,7 +30,7 @@ import com.xmd.manager.widget.DateTimePickDialog;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -41,13 +41,13 @@ import rx.Subscription;
 
 public class OnlinePayListFragment extends BaseListFragment<OnlinePayBean> {
 
-    @Bind(R.id.startTime)
+    @BindView(R.id.startTime)
     TextView mStartTime;
-    @Bind(R.id.endTime)
+    @BindView(R.id.endTime)
     TextView mEndTime;
-    @Bind(R.id.btnSubmit)
+    @BindView(R.id.btnSubmit)
     Button btnSubmit;
-    @Bind(R.id.tv_online_pay_income_total)
+    @BindView(R.id.tv_online_pay_income_total)
     TextView tvOnlinePayTotal;
 
     private Map<String, String> params;
@@ -123,7 +123,6 @@ public class OnlinePayListFragment extends BaseListFragment<OnlinePayBean> {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mOnlinePaySubscription);
-        ButterKnife.unbind(this);
     }
 
     @OnClick(R.id.startTime)

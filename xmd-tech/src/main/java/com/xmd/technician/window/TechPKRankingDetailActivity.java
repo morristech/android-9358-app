@@ -25,7 +25,7 @@ import com.xmd.technician.widget.ViewPagerTabIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -35,35 +35,35 @@ import butterknife.OnClick;
 
 public class TechPKRankingDetailActivity extends BaseActivity implements BaseFragment.IFragmentCallback {
 
-    @Bind(R.id.toolbar_back)
+    @BindView(R.id.toolbar_back)
     ImageView toolbarBack;
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @Bind(R.id.pk_detail_time_filter)
+    @BindView(R.id.pk_detail_time_filter)
     TextView pkDetailTimeFilter;
-    @Bind(R.id.rl_toolbar)
+    @BindView(R.id.rl_toolbar)
     RelativeLayout rlToolbar;
-    @Bind(R.id.pk_active_status)
+    @BindView(R.id.pk_active_status)
     TextView pkActiveStatus;
-    @Bind(R.id.time_filter_yesterday)
+    @BindView(R.id.time_filter_yesterday)
     TextView timeFilterYesterday;
-    @Bind(R.id.time_filter_today)
+    @BindView(R.id.time_filter_today)
     TextView timeFilterToday;
-    @Bind(R.id.time_filter_tomorrow)
+    @BindView(R.id.time_filter_tomorrow)
     TextView timeFilterTomorrow;
-    @Bind(R.id.tabIndicator)
+    @BindView(R.id.tabIndicator)
     ViewPagerTabIndicator tabIndicator;
-    @Bind(R.id.viewPager)
+    @BindView(R.id.viewPager)
     ViewPager viewPager;
-    @Bind(R.id.ll_filter_selected_total)
+    @BindView(R.id.ll_filter_selected_total)
     LinearLayout llFilterSelectedTotal;
-    @Bind(R.id.rl_pk_detail_time)
+    @BindView(R.id.rl_pk_detail_time)
     RelativeLayout rlPkDetailTime;
-    @Bind(R.id.ll_filter_by_day)
+    @BindView(R.id.ll_filter_by_day)
     LinearLayout llFilterByDay;
-    @Bind(R.id.time_today)
+    @BindView(R.id.time_today)
     TextView timeToday;
-    @Bind(R.id.empty_view_widget)
+    @BindView(R.id.empty_view_widget)
     EmptyView emptyView;
 
     private final long DAY_MILLISECOND = 24 * 3600 * 1000;//24小时毫秒值

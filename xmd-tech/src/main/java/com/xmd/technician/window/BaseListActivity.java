@@ -14,7 +14,8 @@ import com.xmd.technician.widget.DividerItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -25,8 +26,8 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
     protected static final int PAGE_START = 0;
     protected static final int PAGE_SIZE = 20;
 
-    @Bind(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.list) RecyclerView mListView;
+    @BindView(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.list) RecyclerView mListView;
 
     protected LinearLayoutManager mLayoutManager;
     protected ListRecycleViewAdapter mOrderListAdapter;

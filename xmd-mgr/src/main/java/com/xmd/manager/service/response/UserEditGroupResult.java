@@ -1,7 +1,10 @@
 package com.xmd.manager.service.response;
 
-import com.xmd.manager.beans.AllGroupListBean;
-import com.xmd.manager.beans.UserGroupListBean;
+
+
+
+import com.example.xmd_m_comment.bean.AllGroupListBean;
+import com.example.xmd_m_comment.bean.UserGroupListBean;
 
 import java.util.List;
 

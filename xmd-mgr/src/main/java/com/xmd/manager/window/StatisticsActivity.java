@@ -9,17 +9,17 @@ import com.xmd.manager.adapter.PageFragmentPagerAdapter;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.widget.ViewPagerTabIndicator;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by linms@xiaomodo.com on 16-5-26.
  */
 public class StatisticsActivity extends BaseActivity {
 
-    @Bind(R.id.tab_indicator)
+    @BindView(R.id.tab_indicator)
     ViewPagerTabIndicator mViewPagerTabIndicator;
 
-    @Bind(R.id.view_pager)
+    @BindView(R.id.view_pager)
     ViewPager mViewPager;
 
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;

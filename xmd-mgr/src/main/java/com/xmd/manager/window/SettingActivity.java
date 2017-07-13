@@ -13,14 +13,14 @@ import com.xmd.manager.widget.SettingItemFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by sdcm on 16-1-22.
  */
 public class SettingActivity extends BaseActivity implements ISettingItem {
 
-    @Bind(R.id.setting_list)
+    @BindView(R.id.setting_list)
     LinearLayout mSettingList;
 
     private List<SettingItemInfo> mSettingItemList = new ArrayList<>();

@@ -25,7 +25,7 @@ import com.xmd.technician.widget.DividerItemDecoration;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -34,8 +34,8 @@ import rx.Subscription;
  */
 public class OrderFragment extends BaseListFragment<Order> {
 
-    @Bind(R.id.filter_order) RadioGroup mRgFilterOrder;
-    @Bind(R.id.toolbar_back) ImageView  mImgBack;
+    @BindView(R.id.filter_order) RadioGroup mRgFilterOrder;
+    @BindView(R.id.toolbar_back) ImageView  mImgBack;
     private String mFilterOrder = Constant.FILTER_ORDER_SUBMIT;
     private Subscription mGetOrderListSubscription;
     private Subscription mOrderManageSubscription;

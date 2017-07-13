@@ -38,7 +38,7 @@ import com.xmd.technician.widget.EmptyView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -50,74 +50,75 @@ import rx.Subscription;
 
 public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.toolbar_back)
+    @BindView(R.id.toolbar_back)
     ImageView mToolbarBack;
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
-    @Bind(R.id.pay_tickets_name)
+    @BindView(R.id.pay_tickets_name)
     TextView mPayTicketsName;
-    @Bind(R.id.pay_tickets_title)
+    @BindView(R.id.pay_tickets_title)
     TextView mPayTicketsTitle;
-    @Bind(R.id.rl_paid_coupon)
+    @BindView(R.id.rl_paid_coupon)
     RelativeLayout mRlPaidCoupon;
-    @Bind(R.id.coupon_name)
+    @BindView(R.id.coupon_name)
     TextView mCouponName;
-    @Bind(R.id.coupon_title)
+    @BindView(R.id.coupon_title)
     TextView mCouponTitle;
-    @Bind(R.id.rl_normal_coupon)
+    @BindView(R.id.rl_normal_coupon)
     RelativeLayout mRlNormalCoupon;
-    @Bind(R.id.once_card_name)
+    @BindView(R.id.once_card_name)
     TextView mOnceCardName;
-    @Bind(R.id.once_card_title)
+    @BindView(R.id.once_card_title)
     TextView mOnceCardTitle;
-    @Bind(R.id.rl_once_card)
+    @BindView(R.id.rl_once_card)
     RelativeLayout mRlOnceCard;
-    @Bind(R.id.layout_coupon)
+    @BindView(R.id.layout_coupon)
     LinearLayout mLayoutCoupon;
-    @Bind(R.id.limit_name)
+    @BindView(R.id.limit_name)
     TextView mLimitName;
-    @Bind(R.id.limit_grab_total)
+    @BindView(R.id.limit_grab_total)
     TextView mLimitGrabTotal;
-    @Bind(R.id.rl_limit_grab)
+    @BindView(R.id.rl_limit_grab)
     RelativeLayout mRlLimitGrab;
-    @Bind(R.id.pay_for_me_name)
+    @BindView(R.id.pay_for_me_name)
     TextView mPayForMeName;
-    @Bind(R.id.pay_for_me_total)
+    @BindView(R.id.pay_for_me_total)
     TextView mPayForMeTotal;
-    @Bind(R.id.rl_pay_for_me)
+    @BindView(R.id.rl_pay_for_me)
     RelativeLayout mRlPayForMe;
-    @Bind(R.id.reward_name)
+    @BindView(R.id.reward_name)
     TextView mRewardName;
-    @Bind(R.id.reward_total)
+    @BindView(R.id.reward_total)
     TextView mRewardTotal;
-    @Bind(R.id.rl_reward)
+    @BindView(R.id.rl_reward)
     RelativeLayout mRlReward;
-    @Bind(R.id.layout_activity)
+    @BindView(R.id.layout_activity)
     LinearLayout mLayoutActivity;
-    @Bind(R.id.publication_name)
+    @BindView(R.id.publication_name)
     TextView mPublicationName;
-    @Bind(R.id.publication_total)
+    @BindView(R.id.publication_total)
     TextView mPublicationTotal;
-    @Bind(R.id.rl_publication)
+    @BindView(R.id.rl_publication)
     RelativeLayout mRlPublication;
-    @Bind(R.id.layout_publicity)
+    @BindView(R.id.layout_publicity)
     LinearLayout mLayoutPublicity;
-    @Bind(R.id.tv_bottom_text)
+    @BindView(R.id.tv_bottom_text)
     TextView mTvBottomText;
-    @Bind(R.id.sv_share_view)
+    @BindView(R.id.sv_share_view)
     ScrollView mSvShareView;
-    @Bind(R.id.share_empty)
+    @BindView(R.id.share_empty)
     EmptyView mShareEmpty;
-    @Bind(R.id.ll_share_view)
+    @BindView(R.id.ll_share_view)
     LinearLayout mShareView;
-    @Bind(R.id.ll_share_tech_card)
+    @BindView(R.id.ll_share_tech_card)
     LinearLayout mShareTechCard;
-
-    @Bind(R.id.user_name)
+    @BindView(R.id.img_tech_head)
+    ImageView mImgTechHead;
+    @BindView(R.id.user_name)
     TextView mUserName;
-//    @Bind(R.id.btn_share_user_card)
+//    @BindView(R.id.btn_share_user_card)
 //    Button mBtnShareUserCard;
 
     private Subscription mShareCouponViewSubscription;
@@ -171,6 +172,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
 
     private void handleTechCurrentResult(TechInfoResult techCurrentResult) {
         if (techCurrentResult.respData != null) {
+            Glide.with(getActivity()).load(techCurrentResult.respData.imageUrl).into(mImgTechHead);
             String userInfo;
             if (Utils.isNotEmpty(techCurrentResult.respData.serialNo)) {
                 userInfo = techCurrentResult.respData.userName + "[" + techCurrentResult.respData.serialNo + "]";
@@ -357,7 +359,6 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mShareActivityViewSubscription, mShareCouponViewSubscription, mSharePropagandaViewSubscription, mGetTechCurrentInfoSubscription);
     }
 

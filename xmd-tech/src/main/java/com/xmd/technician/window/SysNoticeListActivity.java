@@ -14,12 +14,12 @@ import com.xmd.technician.chat.utils.EaseCommonUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SysNoticeListActivity extends BaseActivity{
 
-    @Bind(R.id.list_view) RecyclerView mNoticeListView;
+    @BindView(R.id.list_view) RecyclerView mNoticeListView;
 
     private boolean mIsLoading;
     private boolean mHaveMoreData = true;

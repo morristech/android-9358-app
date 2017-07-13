@@ -22,7 +22,7 @@ import com.xmd.technician.widget.EmptyView;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -32,7 +32,7 @@ import rx.Subscription;
 
 public class PaidCouponListFragment extends BaseListFragment<ShareCouponBean> {
 
-    @Bind(R.id.empty_view_widget)
+    @BindView(R.id.empty_view_widget)
     EmptyView mEmptyViewWidget;
     private Subscription mGetPaidCouponListSubscription;
     private int mTotalAmount;
@@ -113,7 +113,6 @@ public class PaidCouponListFragment extends BaseListFragment<ShareCouponBean> {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mGetPaidCouponListSubscription);
-        ButterKnife.unbind(this);
     }
 
 }

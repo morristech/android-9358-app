@@ -19,7 +19,8 @@ import com.xmd.technician.widget.RoundImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -211,27 +212,27 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     }
 
     static class ViewChildViewHolder {
-        @Bind(R.id.marketing_head)
+        @BindView(R.id.marketing_head)
         RoundImageView marketingHead;
-        @Bind(R.id.marketing_mark)
+        @BindView(R.id.marketing_mark)
         TextView marketingMark;
-        @Bind(R.id.marketing_title)
+        @BindView(R.id.marketing_title)
         TextView marketingTitle;
-        @Bind(R.id.marketing_title_mark)
+        @BindView(R.id.marketing_title_mark)
         TextView marketingTitleMark;
-        @Bind(R.id.marketing_money)
+        @BindView(R.id.marketing_money)
         TextView marketingMoney;
-        @Bind(R.id.unit)
+        @BindView(R.id.unit)
         TextView unit;
-        @Bind(R.id.marketing_credit)
+        @BindView(R.id.marketing_credit)
         TextView marketingCredit;
-        @Bind(R.id.marketing_detail)
+        @BindView(R.id.marketing_detail)
         TextView marketingDetail;
-        @Bind(R.id.marketing_select)
+        @BindView(R.id.marketing_select)
         TextView marketingSelect;
-        @Bind(R.id.ll_view)
+        @BindView(R.id.ll_view)
         LinearLayout llView;
-        @Bind(R.id.marketing_money_mark)
+        @BindView(R.id.marketing_money_mark)
         TextView marketingMoneyMark;
 
         ViewChildViewHolder(View view) {

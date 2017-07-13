@@ -13,7 +13,7 @@ import com.xmd.manager.beans.CouponInfo;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -85,15 +85,15 @@ public class DeliveryCouponListAdapter extends RecyclerView.Adapter<RecyclerView
 
     static class DeliveryCouponItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.coupon_name)
+        @BindView(R.id.coupon_name)
         TextView mCouponName;
-        @Bind(R.id.coupon_type)
+        @BindView(R.id.coupon_type)
         TextView mCouponType;
-        @Bind(R.id.coupon_desc)
+        @BindView(R.id.coupon_desc)
         TextView mCouponDesc;
-        @Bind(R.id.coupon_duration)
+        @BindView(R.id.coupon_duration)
         TextView mCouponDuration;
-        @Bind(R.id.img_coupon_selected)
+        @BindView(R.id.img_coupon_selected)
         ImageView mImgCouponDelected;
 
         DeliveryCouponItemViewHolder(View itemView) {

@@ -20,7 +20,7 @@ import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.response.MarketingResult;
 import com.xmd.manager.service.response.SendGroupMessageResult;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -30,35 +30,35 @@ import rx.Subscription;
  */
 public class MarketingFragment extends BaseFragment {
 
-    @Bind(R.id.marketing_journal_text)
+    @BindView(R.id.marketing_journal_text)
     TextView marketingJournalText;
-    @Bind(R.id.marketing_journal)
+     @BindView(R.id.marketing_journal)
     RelativeLayout marketingJournal;
-    @Bind(R.id.marketing_group_message_text)
+     @BindView(R.id.marketing_group_message_text)
     TextView marketingGroupMessageText;
-    @Bind(R.id.marketing_group_message)
+     @BindView(R.id.marketing_group_message)
     RelativeLayout marketingGroupMessage;
-    @Bind(R.id.marketing_reward_text)
+     @BindView(R.id.marketing_reward_text)
     TextView marketingRewardText;
-    @Bind(R.id.marketing_reward)
+     @BindView(R.id.marketing_reward)
     RelativeLayout marketingReward;
-    @Bind(R.id.marketing_deprive_text)
+     @BindView(R.id.marketing_deprive_text)
     TextView marketingDepriveText;
-    @Bind(R.id.marketing_deprive)
+     @BindView(R.id.marketing_deprive)
     RelativeLayout marketingDeprive;
-    @Bind(R.id.marketing_purchase_text)
+     @BindView(R.id.marketing_purchase_text)
     TextView marketingPurchaseText;
-    @Bind(R.id.marketing_purchase)
+     @BindView(R.id.marketing_purchase)
     RelativeLayout marketingPurchase;
-    @Bind(R.id.marketing_credit_shopping_text)
+     @BindView(R.id.marketing_credit_shopping_text)
     TextView marketingCreditShoppingText;
-    @Bind(R.id.marketing_credit_shopping)
+     @BindView(R.id.marketing_credit_shopping)
     RelativeLayout marketingCreditShopping;
-    @Bind(R.id.marketing_coupon_text)
+     @BindView(R.id.marketing_coupon_text)
     TextView marketingCouponText;
-    @Bind(R.id.marketing_coupon)
+     @BindView(R.id.marketing_coupon)
     RelativeLayout marketingCoupon;
-    @Bind(R.id.marketing_bottom_text)
+     @BindView(R.id.marketing_bottom_text)
     RelativeLayout marketingBottomText;
 
     private Subscription mMarketingItemsSubscription;
@@ -195,6 +195,5 @@ public class MarketingFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mMarketingItemsSubscription, mSendGroupMessageResultSubscription);
-        ButterKnife.unbind(this);
     }
 }

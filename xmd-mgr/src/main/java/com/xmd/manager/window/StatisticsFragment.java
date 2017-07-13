@@ -26,7 +26,7 @@ import com.xmd.manager.service.response.StatisticsHomeDataResult;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -44,42 +44,42 @@ public class StatisticsFragment extends BaseFragment {
     private int mRange;
     private Subscription mGetStatisticsHomeDataSubscription;
 
-    @Bind(R.id.tv_register_users)
+    @BindView(R.id.tv_register_users)
     TextView mTvRegisterUsers;
 
-    @Bind(R.id.tv_propagate)
+    @BindView(R.id.tv_propagate)
     TextView mTvPropagate;
 
-    @Bind(R.id.tv_delivery)
+    @BindView(R.id.tv_delivery)
     TextView mTvDelivery;
 
-    @Bind(R.id.tv_share)
+    @BindView(R.id.tv_share)
     TextView mTvShare;
 
-    @Bind(R.id.tv_to_club)
+    @BindView(R.id.tv_to_club)
     TextView mTvToClub;
 
-    @Bind(R.id.tv_total_income)
+    @BindView(R.id.tv_total_income)
     TextView mTvTotalIncome;
 
-    @Bind(R.id.tv_tech_income)
+    @BindView(R.id.tv_tech_income)
     TextView mTvTechIncome;
 
-    @Bind(R.id.tv_wifi_propagate)
+    @BindView(R.id.tv_wifi_propagate)
     TextView mTvWifiPropagate;
 
-    @Bind(R.id.tv_statistics_visit)
+    @BindView(R.id.tv_statistics_visit)
     TextView mTvVisitStatistics;
 
-    @Bind(R.id.rl_wifi_propagate)
+    @BindView(R.id.rl_wifi_propagate)
     RelativeLayout rlWifiPropagate;
-    @Bind(R.id.rl_online_visit)
+    @BindView(R.id.rl_online_visit)
     RelativeLayout rlOnlineVisit;
-    @Bind(R.id.rl_register)
+    @BindView(R.id.rl_register)
     RelativeLayout rlRegister;
-    @Bind(R.id.ll_coupons)
+    @BindView(R.id.ll_coupons)
     LinearLayout llCoupons;
-    @Bind(R.id.ll_dianzhong)
+    @BindView(R.id.ll_dianzhong)
     LinearLayout llDianzhong;
 
     @Nullable
@@ -114,7 +114,6 @@ public class StatisticsFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mGetStatisticsHomeDataSubscription);
-        ButterKnife.unbind(this);
     }
 
     private void initVisibilityForViews() {

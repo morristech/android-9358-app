@@ -3,6 +3,7 @@ package com.xmd.manager.window;
 import android.content.Intent;
 import android.view.View;
 
+import com.example.xmd_m_comment.CustomerInfoDetailActivity;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.Customer;
@@ -15,7 +16,7 @@ import com.xmd.manager.widget.ClearableEditText;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -23,7 +24,7 @@ import butterknife.OnClick;
  */
 public class CustomerSearchActivity extends BaseListActivity<Customer, CustomerSearchListResult> {
 
-    @Bind(R.id.search_word)
+    @BindView(R.id.search_word)
     ClearableEditText mCetSearchWord;
 
     private String mSearchUserName = "";
@@ -76,8 +77,9 @@ public class CustomerSearchActivity extends BaseListActivity<Customer, CustomerS
 
     @Override
     public void onItemClicked(Customer bean) {
-        Intent intent = new Intent(this, CustomerActivity.class);
-        intent.putExtra(CustomerActivity.ARG_CUSTOMER, bean);
-        startActivity(intent);
+//        Intent intent = new Intent(this, CustomerActivity.class);
+//        intent.putExtra(CustomerActivity.ARG_CUSTOMER, bean);
+//        startActivity(intent);
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(CustomerSearchActivity.this,bean.userId, "manger",false);
     }
 }

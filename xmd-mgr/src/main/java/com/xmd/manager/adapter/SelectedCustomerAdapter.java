@@ -14,7 +14,8 @@ import com.xmd.manager.widget.CircularBeadImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -58,7 +59,7 @@ public class SelectedCustomerAdapter extends RecyclerView.Adapter {
     }
 
     static class CustomerViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.customer_head)
+        @BindView(R.id.customer_head)
         CircularBeadImageView customerHead;
 
         public CustomerViewHolder(View itemView) {

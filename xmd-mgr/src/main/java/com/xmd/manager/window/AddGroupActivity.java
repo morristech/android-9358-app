@@ -9,10 +9,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+
+import com.example.xmd_m_comment.bean.AllGroupListBean;
+import com.example.xmd_m_comment.bean.UserGroupListBean;
+import com.example.xmd_m_comment.event.EditCustomerGroupEvent;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
-import com.xmd.manager.beans.AllGroupListBean;
-import com.xmd.manager.beans.UserGroupListBean;
+
+
+
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.MsgDef;
@@ -25,13 +30,15 @@ import com.xmd.manager.widget.AddGroupDialog;
 import com.xmd.manager.widget.AlertDialogBuilder;
 import com.xmd.manager.widget.FlowLayout;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -42,9 +49,9 @@ import rx.Subscription;
 
 public class AddGroupActivity extends BaseActivity {
 
-    @Bind(R.id.selected_group)
+    @BindView(R.id.selected_group)
     FlowLayout selectedGroupView;
-    @Bind(R.id.all_group)
+    @BindView(R.id.all_group)
     FlowLayout allGroupView;
 
     private Subscription mGroupAddSubscription;
@@ -126,6 +133,7 @@ public class AddGroupActivity extends BaseActivity {
         if (saveResult.statusCode == 200) {
             makeShortToast(saveResult.msg);
             finish();
+            EventBus.getDefault().post(new EditCustomerGroupEvent(""));
         } else {
             makeShortToast(saveResult.msg);
         }

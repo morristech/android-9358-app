@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import rx.Subscription;
 
 /**
@@ -34,11 +34,11 @@ public class CouponUseDataActivity extends BaseActivity implements SwipeRefreshL
     public static final int PAGE_START = 1;
     public static final int PAGE_SIZE = 500;
 
-    @Bind(R.id.total_count)
+    @BindView(R.id.total_count)
     TextView mTotalCount;
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.coupon_consume_list)
+    @BindView(R.id.coupon_consume_list)
     RecyclerView mCouponUseListView;
 
     private LinearLayoutManager mLayoutManager;

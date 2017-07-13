@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -46,46 +46,46 @@ import rx.Subscription;
  */
 public class CouponActivity extends BaseActivity {
 
-    @Bind(R.id.coupon_empty_view)
+    @BindView(R.id.coupon_empty_view)
     EmptyView mCouponEmptyView;
 
-    @Bind(R.id.coupon_name)
+    @BindView(R.id.coupon_name)
     TextView mCouponName;
-    @Bind(R.id.coupon_type)
+    @BindView(R.id.coupon_type)
     TextView mCouponType;
-    @Bind(R.id.coupon_desc)
+    @BindView(R.id.coupon_desc)
     TextView mCouponDesc;
-    @Bind(R.id.activity_duration)
+    @BindView(R.id.activity_duration)
     TextView mActivityDuration;
-    @Bind(R.id.coupon_duration)
+    @BindView(R.id.coupon_duration)
     TextView mCouponDuration;
-    @Bind(R.id.coupon_use_duration)
+    @BindView(R.id.coupon_use_duration)
     TextView mCouponUseDuration;
-    @Bind(R.id.coupon_status)
+    @BindView(R.id.coupon_status)
     TextView mCouponStatus;
 
-    @Bind(R.id.coupon_supplement_section)
+    @BindView(R.id.coupon_supplement_section)
     LinearLayout mCouponSupplementSection;
-    @Bind(R.id.coupon_supplement)
+    @BindView(R.id.coupon_supplement)
     WebView mCouponSupplement;
-    @Bind(R.id.coupon_use_supplement)
+    @BindView(R.id.coupon_use_supplement)
     WebView mCouponUseSupplement;
-    @Bind(R.id.coupon_commission_section)
+    @BindView(R.id.coupon_commission_section)
     LinearLayout mCouponCommissionSection;
-    @Bind(R.id.coupon_commission)
+    @BindView(R.id.coupon_commission)
     TextView mCouponCommission;
 
-    @Bind(R.id.coupon_use_data)
+    @BindView(R.id.coupon_use_data)
     Button mCouponUseData;
-    @Bind(R.id.coupon_use)
+    @BindView(R.id.coupon_use)
     Button mCouponUse;
-    @Bind(R.id.coupon_no_section)
+    @BindView(R.id.coupon_no_section)
     LinearLayout mCouponNoSection;
-    @Bind(R.id.coupon_no)
+    @BindView(R.id.coupon_no)
     TextView mCouponNo;
-    @Bind(R.id.coupon_item)
+    @BindView(R.id.coupon_item)
     TextView mCouponItem;
-    @Bind(R.id.coupon_items_container)
+    @BindView(R.id.coupon_items_container)
     View mCouponItemsContainer;
 
     private CouponInfo mCouponInfo;

@@ -25,7 +25,8 @@ import com.xmd.manager.widget.AlertDialogBuilder;
 
 import java.io.Serializable;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -35,9 +36,9 @@ import rx.Subscription;
 
 public class ManagerVerificationActivity extends BaseActivity {
 
-    @Bind(R.id.fragment_verification)
+    @BindView(R.id.fragment_verification)
     FrameLayout fragmentVerification;
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     private String mVerificationType;
     private Object mObject;

@@ -16,7 +16,7 @@ import com.xmd.manager.widget.CircularBeadImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -148,11 +148,11 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     static class GroupMemberViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.group_member_head)
+        @BindView(R.id.group_member_head)
         CircularBeadImageView groupMemberHead;
-        @Bind(R.id.group_member_name)
+        @BindView(R.id.group_member_name)
         TextView groupMemberName;
-        @Bind(R.id.group_member_delete)
+        @BindView(R.id.group_member_delete)
         ImageView groupMemberDelete;
 
         public GroupMemberViewHolder(View itemView) {

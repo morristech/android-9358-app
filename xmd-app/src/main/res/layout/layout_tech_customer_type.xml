@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_customer_tech_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_little_margin"
+        android:background="@drawable/bg_contact_tech_add_mark"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:text="@string/contact_mark_tech_add"
+        android:textColor="#4d98df"
+        android:textSize="@dimen/fontCaption"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/tv_customer_tech_new_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_little_margin"
+        android:background="@drawable/bg_contact_mark"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:text="@string/contact_mark_new_add"
+        android:textColor="#ff8909"
+        android:textSize="@dimen/fontCaption"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/tv_customer_tech_activation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_little_margin"
+        android:background="@drawable/bg_contact_mark"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:text="@string/contact_mark_activation"
+        android:textColor="#ff8909"
+        android:textSize="@dimen/fontCaption"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/tv_customer_tech_big"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_little_margin"
+        android:background="@drawable/bg_contact_mark"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:text="@string/contact_mark_big"
+        android:textColor="#ff8909"
+        android:textSize="@dimen/fontCaption"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/tv_customer_tech_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_little_margin"
+        android:background="@drawable/bg_contact_mark"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:text="@string/contact_mark_normal"
+        android:textColor="#ff8909"
+        android:textSize="@dimen/fontCaption"
+        android:visibility="gone"
+        />
+
+
+</LinearLayout>

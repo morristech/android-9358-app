@@ -19,7 +19,7 @@ import com.xmd.manager.service.RequestConstant;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -29,23 +29,23 @@ import butterknife.OnClick;
 
 public class OrderVerificationFragment extends BaseFragment {
 
-    @Bind(R.id.verification_order_customer_name)
+    @BindView(R.id.verification_order_customer_name)
     TextView verificationOrderCustomerName;
-    @Bind(R.id.verification_order_start_time)
+    @BindView(R.id.verification_order_start_time)
     TextView verificationOrderStartTime;
-    @Bind(R.id.verification_order_time)
+    @BindView(R.id.verification_order_time)
     TextView verificationOrderTime;
-    @Bind(R.id.verification_order_tech)
+    @BindView(R.id.verification_order_tech)
     TextView verificationOrderTech;
-    @Bind(R.id.verification_order_pay)
+    @BindView(R.id.verification_order_pay)
     TextView verificationOrderPay;
-    @Bind(R.id.verification_order_state)
+    @BindView(R.id.verification_order_state)
     TextView verificationOrderState;
-    @Bind(R.id.btn_order_verification)
+    @BindView(R.id.btn_order_verification)
     Button btnOrderVerification;
-    @Bind(R.id.btn_order_over_time)
+    @BindView(R.id.btn_order_over_time)
     Button btnOrderOverTime;
-    @Bind(R.id.btn_order_cancel)
+    @BindView(R.id.btn_order_cancel)
     Button btnOrderCancel;
 
     private PayOrderDetailBean mOrder;
@@ -96,7 +96,6 @@ public class OrderVerificationFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick({R.id.btn_order_verification, R.id.btn_order_over_time, R.id.btn_order_cancel})

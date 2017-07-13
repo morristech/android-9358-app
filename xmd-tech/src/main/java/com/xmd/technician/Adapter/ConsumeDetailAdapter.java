@@ -15,8 +15,7 @@ import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -152,7 +151,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
                     viewHolder.mAvatar.setVisibility(View.GONE);
                 } else {
                     viewHolder.mAvatar.setVisibility(View.VISIBLE);
-                    viewHolder.mAvatar.setUserInfo(info.userId, info.headImgUrl);
+                    viewHolder.mAvatar.setUserInfo(info.userId, info.headImgUrl,false);
                 }
             }
         } else if (holder instanceof FooterViewHolder) {
@@ -182,17 +181,17 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
 
     public class DetailViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.avatar)
+        @BindView(R.id.avatar)
         CircleAvatarView mAvatar;
-        @Bind(R.id.title)
+        @BindView(R.id.title)
         TextView mTitle;
-        @Bind(R.id.remark)
+        @BindView(R.id.remark)
         TextView mRemark;
-        @Bind(R.id.amount)
+        @BindView(R.id.amount)
         TextView mAmount;
-        @Bind(R.id.time)
+        @BindView(R.id.time)
         TextView mTimeStamp;
-        @Bind(R.id.commission_remark)
+        @BindView(R.id.commission_remark)
         TextView mCommissionRemark;
 
         public DetailViewHolder(View itemView) {
@@ -203,7 +202,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_footer)
+        @BindView(R.id.item_footer)
         TextView itemFooter;
 
         public FooterViewHolder(View itemView) {

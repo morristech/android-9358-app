@@ -21,7 +21,7 @@ import com.xmd.technician.common.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -182,21 +182,21 @@ public class ChatCouponAdapter extends BaseExpandableListAdapter {
     }
 
     static class ViewChildViewHolder {
-        @Bind(R.id.tv_consume_money_description)
+        @BindView(R.id.tv_consume_money_description)
         TextView mTvConsumeMoneyDescription;
-        @Bind(R.id.tv_coupon_title)
+        @BindView(R.id.tv_coupon_title)
         TextView mTvCouponTitle;
-        @Bind(R.id.tv_coupon_reward)
+        @BindView(R.id.tv_coupon_reward)
         TextView mTvCouponReward;
-        @Bind(R.id.tv_coupon_period)
+        @BindView(R.id.tv_coupon_period)
         TextView mCouponPeriod;
-        @Bind(R.id.coupon_amount)
+        @BindView(R.id.coupon_amount)
         TextView mCouponAmount;
-        @Bind(R.id.coupon_type)
+        @BindView(R.id.coupon_type)
         TextView mCouponType;
-        @Bind(R.id.coupon_select)
+        @BindView(R.id.coupon_select)
         TextView mTextCheck;
-        @Bind(R.id.ll_view)
+        @BindView(R.id.ll_view)
         LinearLayout llView;
 
         ViewChildViewHolder(View view) {

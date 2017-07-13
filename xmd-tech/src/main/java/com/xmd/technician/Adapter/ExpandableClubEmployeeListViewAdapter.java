@@ -19,7 +19,8 @@ import com.xmd.technician.widget.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -145,13 +146,13 @@ public class ExpandableClubEmployeeListViewAdapter extends BaseExpandableListAda
 
 
     static class ViewChildViewHolder {
-        @Bind(R.id.employee_avatar)
+        @BindView(R.id.employee_avatar)
         CircleImageView employeeAvatar;
-        @Bind(R.id.employee_name)
+        @BindView(R.id.employee_name)
         TextView employeeName;
-        @Bind(R.id.employee_tech_no)
+        @BindView(R.id.employee_tech_no)
         TextView employeeTechNo;
-        @Bind(R.id.ll_employee_view)
+        @BindView(R.id.ll_employee_view)
         LinearLayout llEmployeeView;
 
         ViewChildViewHolder(View view) {

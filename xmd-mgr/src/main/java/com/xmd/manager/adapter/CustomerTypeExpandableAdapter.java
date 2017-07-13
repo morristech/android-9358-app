@@ -26,7 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -247,10 +248,10 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
     }
 
     class CustomerGroupHolder {
-        @Bind(R.id.customer_type_group)
+        @BindView(R.id.customer_type_group)
         TextView customerTypeGroup;
 
-        @Bind(R.id.image_arrow)
+        @BindView(R.id.image_arrow)
         ImageView arrowImage;
 
         public CustomerGroupHolder(View view) {
@@ -259,10 +260,10 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
     }
 
     class CustomerGroupChildHolder {
-        @Bind(R.id.customer_group_child_list)
+        @BindView(R.id.customer_group_child_list)
         FlowLayout customerTypeChildListView;
 
-        @Bind(R.id.group_tag_detail)
+        @BindView(R.id.group_tag_detail)
         TextView groupTagDetail;
 
         private Context context;
@@ -330,13 +331,13 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
     }
 
     class CouponGroupHolder {
-        @Bind(R.id.coupon_group)
+        @BindView(R.id.coupon_group)
         TextView couponGroup;
 
-        @Bind(R.id.image_arrow)
+        @BindView(R.id.image_arrow)
         ImageView arrowImage;
 
-        @Bind(R.id.coupon_icon)
+        @BindView(R.id.coupon_icon)
         ImageView couponIcon;
 
         public CouponGroupHolder(View view) {
@@ -345,16 +346,16 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
     }
 
     class CouponChildHolder {
-        @Bind(R.id.coupon_name_text)
+        @BindView(R.id.coupon_name_text)
         TextView couponName;
 
-        @Bind(R.id.check_image)
+        @BindView(R.id.check_image)
         ImageView checkImage;
 
-        @Bind(R.id.coupon_type_text)
+        @BindView(R.id.coupon_type_text)
         TextView couponType;
 
-        @Bind(R.id.coupon_remark_text)
+        @BindView(R.id.coupon_remark_text)
         TextView couponRemark;
 
         public CouponChildHolder(View view) {

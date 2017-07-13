@@ -21,7 +21,8 @@ import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.window.BrowserActivity;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -129,9 +130,9 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
 
     public class NoticeViewHolder extends RecyclerView.ViewHolder{
 
-        @Bind(R.id.title) TextView mTitle;
-        @Bind(R.id.summary) TextView mSummary;
-        @Bind(R.id.image) ImageView mImage;
+        @BindView(R.id.title) TextView mTitle;
+        @BindView(R.id.summary) TextView mSummary;
+        @BindView(R.id.image) ImageView mImage;
 
         public NoticeViewHolder(View itemView) {
             super(itemView);
@@ -141,7 +142,7 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_footer)
+        @BindView(R.id.item_footer)
         TextView itemFooter;
 
         public FooterViewHolder(View itemView) {

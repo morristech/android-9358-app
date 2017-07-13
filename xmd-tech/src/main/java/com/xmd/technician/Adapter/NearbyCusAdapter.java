@@ -24,7 +24,8 @@ import com.xmd.technician.widget.CircleAvatarView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -81,7 +82,7 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         NearbyCusInfo info = getItem(position);
         holder.mPosition.setText(info.userPosition);    // 位置
         holder.mDistance.setText("距离" + Math.round(info.userClubDistance) + "m");   // 距离
-        holder.mAvatar.setUserInfo(info.userId, info.userAvatar);
+        holder.mAvatar.setUserInfo(info.userId, info.userAvatar,false);
         holder.mNickName.setText(info.userName);    // 名称
 
         // 用户类型
@@ -159,32 +160,32 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.cus_item_position)
+        @BindView(R.id.cus_item_position)
         TextView mPosition;
-        @Bind(R.id.cus_item_distance)
+        @BindView(R.id.cus_item_distance)
         TextView mDistance;
-        @Bind(R.id.cus_item_avatar)
+        @BindView(R.id.cus_item_avatar)
         CircleAvatarView mAvatar;
-        @Bind(R.id.cus_item_nickname)
+        @BindView(R.id.cus_item_nickname)
         TextView mNickName;
-        @Bind(R.id.cus_item_type)
+        @BindView(R.id.cus_item_type)
         ImageView mType;
-        @Bind(R.id.cus_item_other_type)
+        @BindView(R.id.cus_item_other_type)
         ImageView mOtherType;
-        @Bind(R.id.cus_item_hello_count)
+        @BindView(R.id.cus_item_hello_count)
         TextView mHelloCount;
-        @Bind(R.id.cus_item_booking_count)
+        @BindView(R.id.cus_item_booking_count)
         TextView mBookingCount;
-        @Bind(R.id.cus_item_reward_count)
+        @BindView(R.id.cus_item_reward_count)
         TextView mRewardCount;
-        @Bind(R.id.cus_item_last_login)
+        @BindView(R.id.cus_item_last_login)
         TextView mLastLogin;
-        @Bind(R.id.cus_item_last_hello_dynamic)
+        @BindView(R.id.cus_item_last_hello_dynamic)
         TextView mLastHelloDynamic;
-        @Bind(R.id.cus_item_btn_hello)
+        @BindView(R.id.cus_item_btn_hello)
         TextView mSayHello;
 
-        @Bind(R.id.layout_btn_say_hi)
+        @BindView(R.id.layout_btn_say_hi)
         View mLayoutSayHello;
 
         public ViewHolder(View itemView) {

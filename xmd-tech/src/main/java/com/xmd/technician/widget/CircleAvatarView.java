@@ -1,14 +1,18 @@
 package com.xmd.technician.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import com.bumptech.glide.Glide;
+import com.example.xmd_m_comment.httprequest.ConstantResources;
+import com.xmd.app.user.User;
 import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.technician.R;
 import com.xmd.technician.common.UINavigation;
+import com.xmd.technician.model.LoginTechnician;
 
 /**
  * Created by mo on 17-6-15.
@@ -42,8 +46,17 @@ public class CircleAvatarView extends android.support.v7.widget.AppCompatImageVi
         } else {
             setImageResource(R.drawable.img_default_avatar);
         }
+
+    }
+
+    public void setUserInfo(String userId, String avatarUrl, boolean isTech) {
+        if (!TextUtils.isEmpty(avatarUrl)) {
+            Glide.with(getContext()).load(avatarUrl).transform(new GlideCircleTransform(getContext())).error(R.drawable.img_default_avatar).into(this);
+        } else {
+            setImageResource(R.drawable.img_default_avatar);
+        }
         if (!TextUtils.isEmpty(userId)) {
-            setOnClickListener((v) -> UINavigation.gotoCustomerDetailActivity(v.getContext(), userId));
+            setOnClickListener((v) -> UINavigation.gotoCustomerDetailActivity((Activity) v.getContext(), userId, ConstantResources.INTENT_TYPE_TECH, isTech));
         }
     }
 }

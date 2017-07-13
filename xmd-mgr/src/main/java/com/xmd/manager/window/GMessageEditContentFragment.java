@@ -17,12 +17,9 @@ import com.xmd.image_tool.ImageTool;
 import com.xmd.manager.R;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
-import com.xmd.manager.msgctrl.MsgDef;
-import com.xmd.manager.msgctrl.MsgDispatcher;
-import com.xmd.manager.service.response.GroupInfoResult;
 import com.xmd.manager.widget.CircularBeadImageView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -32,15 +29,15 @@ import butterknife.OnClick;
 public class GMessageEditContentFragment extends BaseFragment implements TextWatcher {
 
     public final static String EXTRA_LIMIT_SIZE = "image_limit_size";
-    @Bind(R.id.group_add_pic)
+   @BindView(R.id.group_add_pic)
     CircularBeadImageView groupAddPic;
-    @Bind(R.id.image_delete)
+   @BindView(R.id.image_delete)
     ImageView imageDelete;
-    @Bind(R.id.limit_image_size)
+   @BindView(R.id.limit_image_size)
     TextView limitImageSize;
-    @Bind(R.id.edit_content)
+   @BindView(R.id.edit_content)
     EditText mEditContent;
-    @Bind(R.id.editable_amount)
+   @BindView(R.id.editable_amount)
     TextView mEditAbleAmount;
 
     private ImageTool mImageTool = new ImageTool();

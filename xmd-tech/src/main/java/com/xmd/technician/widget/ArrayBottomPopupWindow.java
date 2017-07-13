@@ -15,14 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
+
 
 /**
  * Created by sdcm on 16-4-15.
  */
 public class ArrayBottomPopupWindow<T> extends BasePopupWindow {
 
-    @Bind(R.id.popup_window_list)
+    @BindView(R.id.popup_window_list)
     ListView mView;
 
     private FiltrateAdapter mFiltrateAdapter;

@@ -27,7 +27,8 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -36,21 +37,21 @@ import rx.Subscription;
  * Created by Administrator on 2016/8/8.
  */
 public class CreditExchangeActivity extends BaseActivity implements TextWatcher {
-    @Bind(R.id.credit_total)
+    @BindView(R.id.credit_total)
     TextView mCreditTotal;
-    @Bind(R.id.max_exchange)
+    @BindView(R.id.max_exchange)
     TextView mMaxExchange;
-    @Bind(R.id.money_exchange)
+    @BindView(R.id.money_exchange)
     EditText mMoneyExchange;
-    @Bind(R.id.img_close)
+    @BindView(R.id.img_close)
     ImageButton mImgClose;
-    @Bind(R.id.exchange_convert)
+    @BindView(R.id.exchange_convert)
     TextView mExchangeConvert;
-    @Bind(R.id.credit_exchange_limit)
+    @BindView(R.id.credit_exchange_limit)
     TextView mCreditExchangeLimit;
-    @Bind(R.id.credit_exchange_ratio)
+    @BindView(R.id.credit_exchange_ratio)
     TextView mCreditExchangeRatio;
-    @Bind(R.id.btn_sent)
+    @BindView(R.id.btn_sent)
     Button mBtnSent;
     private int mTotalCredit;
     private int mExchangeRatio;

@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -40,25 +40,25 @@ import butterknife.OnClick;
 
 public class DefaultVerificationFragment extends BaseFragment {
 
-    @Bind(R.id.default_verification_code)
+    @BindView(R.id.default_verification_code)
     TextView defaultVerificationCode;
-    @Bind(R.id.list_content)
+    @BindView(R.id.list_content)
     ListView listContent;
-    @Bind(R.id.textView)
+    @BindView(R.id.textView)
     TextView textView;
-    @Bind(R.id.default_pay_amount)
+    @BindView(R.id.default_pay_amount)
     LinearLayout defaultPayAmount;
-    @Bind(R.id.btn_default_verification)
+    @BindView(R.id.btn_default_verification)
     Button btnDefaultVerification;
-    @Bind(R.id.btn_default_verification_cancel)
+    @BindView(R.id.btn_default_verification_cancel)
     Button btnDefaultVerificationCancel;
-    @Bind(R.id.pay_amount)
+    @BindView(R.id.pay_amount)
     ClearableEditText payAmount;
-    @Bind(R.id.layout_default_info_remark)
+    @BindView(R.id.layout_default_info_remark)
     LinearLayout infoRemark;
-    @Bind(R.id.default_verification_title)
+    @BindView(R.id.default_verification_title)
     TextView verificationTitle;
-    @Bind(R.id.action_default_supplement)
+    @BindView(R.id.action_default_supplement)
     WebView verificationRemark;
 
     private DefaultVerificationBean mDefaultBean;
@@ -137,7 +137,6 @@ public class DefaultVerificationFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick({R.id.btn_default_verification, R.id.btn_default_verification_cancel})

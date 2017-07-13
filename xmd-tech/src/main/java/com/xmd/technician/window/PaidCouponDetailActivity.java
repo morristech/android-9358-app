@@ -24,7 +24,7 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.share.ShareController;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -34,17 +34,17 @@ import rx.Subscription;
  */
 public class PaidCouponDetailActivity extends BaseActivity {
 
-    @Bind(R.id.tv_tips_verified)
+    @BindView(R.id.tv_tips_verified)
     TextView mTvTipsVerified;
-    @Bind(R.id.btn_share)
+    @BindView(R.id.btn_share)
     Button mShare;
-    @Bind(R.id.tv_consume_money_description)
+    @BindView(R.id.tv_consume_money_description)
     TextView mTvConsumeMoneyDescription;
-    @Bind(R.id.tv_coupon_period)
+    @BindView(R.id.tv_coupon_period)
     TextView mTvCouponPeriod;
-    @Bind(R.id.wv_act_content)
+    @BindView(R.id.wv_act_content)
     WebView mWvActContent;
-    @Bind(R.id.iv_share_qr_code)
+    @BindView(R.id.iv_share_qr_code)
     ImageView mIvShareQrCode;
 
     private Subscription mGetCouponInfoSubscription;

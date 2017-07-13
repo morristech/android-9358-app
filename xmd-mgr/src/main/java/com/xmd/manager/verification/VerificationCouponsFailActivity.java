@@ -26,7 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -39,13 +40,13 @@ public class VerificationCouponsFailActivity extends BaseActivity implements Ver
     public static String FAILED_COUPONS_LIST = "failed_coupons_list";
     public static String VERIFICATION_COUPONS_SUCCESS_TOTAL = "verification_coupons_success_total";
 
-    @Bind(R.id.verification_success_total)
+    @BindView(R.id.verification_success_total)
     TextView mVerificationSuccessTotal;
-    @Bind(R.id.verification_failed_total)
+    @BindView(R.id.verification_failed_total)
     TextView mVerificationFailedTotal;
-    @Bind(R.id.customer_fail_coupon_list)
+    @BindView(R.id.customer_fail_coupon_list)
     RecyclerView mCustomerCouponList;
-    @Bind(R.id.btn_verification_again)
+    @BindView(R.id.btn_verification_again)
     Button mBtnVerificationAgain;
 
     private static final int REQUEST_CODE_DETAIL = 0x1;

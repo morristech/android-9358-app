@@ -15,7 +15,8 @@ import com.xmd.manager.common.ResourceUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -108,11 +109,11 @@ public class CommentDetailItemAdapter<T> extends RecyclerView.Adapter {
     }
 
     static class CommentDetailItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_rate)
+        @BindView(R.id.tv_rate)
         TextView tvRate;
-        @Bind(R.id.tv_attitude_rate)
+        @BindView(R.id.tv_attitude_rate)
         TextView tvAttitudeRate;
-        @Bind(R.id.iv_attitude_rate)
+        @BindView(R.id.iv_attitude_rate)
         ImageView ivAttitudeRate;
 
         CommentDetailItemViewHolder(View view) {
@@ -122,9 +123,9 @@ public class CommentDetailItemAdapter<T> extends RecyclerView.Adapter {
     }
 
     static class BadCommentDetailItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.bad_comment_type)
+        @BindView(R.id.bad_comment_type)
         TextView badCommentType;
-        @Bind(R.id.bad_comment_fitment)
+        @BindView(R.id.bad_comment_fitment)
         TextView badCommentFitment;
 
         BadCommentDetailItemViewHolder(View view) {

@@ -32,7 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -43,15 +44,15 @@ import rx.Subscription;
 
 public class VerificationListActivity extends BaseActivity implements VerificationListListener {
 
-    @Bind(R.id.coupon_empty_view)
+    @BindView(R.id.coupon_empty_view)
     EmptyView mCouponEmptyView;
-    @Bind(R.id.phone_number)
+    @BindView(R.id.phone_number)
     TextView mPhoneNumber;
-    @Bind(R.id.customer_coupon_list)
+    @BindView(R.id.customer_coupon_list)
     RecyclerView mRecyclerView;
-    @Bind(R.id.selected_coupon_total)
+    @BindView(R.id.selected_coupon_total)
     TextView mSelectedCouponTotal;
-    @Bind(R.id.btn_verification)
+    @BindView(R.id.btn_verification)
     Button mBtnVerification;
 
     private static final int REQUEST_CODE_DETAIL = 0x1;

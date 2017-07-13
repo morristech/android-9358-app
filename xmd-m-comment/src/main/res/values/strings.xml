@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">xmd-m-comment</string>
+    <string name="comment_search_by_name_or_phone">输入用户昵称或手机号</string>
+    <string name="comment_activity_title">全部评论</string>
+    <string name="comment_table_good">好评</string>
+    <string name="comment_table_complaint">差评投诉</string>
+    <string name="comment_table_middle">中评</string>
+    <string name="comment_table_bad">差评</string>
+    <string name="comment_detail_activity_title">评论详情</string>
+    <string name="customer_info_detail_activity_title">详情资料</string>
+    <string name="comment_complaint_alter_message">(*投诉内容不会被其他客户看到，无需删除)</string>
+    <string name="comment_anonymous_alter_message">匿名评价无详情信息</string>
+    <string name="search_hint_message">输入用户昵称或手机号搜索</string>
+    <string name="customer_remark_empty">您尚未为此好友添加备注信息...</string>
+</resources>

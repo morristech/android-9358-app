@@ -23,7 +23,7 @@ import com.xmd.technician.widget.EmptyView;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -34,7 +34,7 @@ import rx.Subscription;
 public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
 
 
-    @Bind(R.id.empty_view_widget)
+    @BindView(R.id.empty_view_widget)
     EmptyView mEmptyViewWidget;
     private Subscription mClubJournalListSubscription;
     private int mTotalAmount;
@@ -117,7 +117,7 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mClubJournalListSubscription);
-        ButterKnife.unbind(this);
+
     }
 
     @Override

@@ -23,7 +23,7 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.widget.SmoothProgressBar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -33,13 +33,13 @@ import butterknife.ButterKnife;
 public class ShareDetailActivity extends BaseActivity implements View.OnClickListener{
 
 
-    @Bind(R.id.share_web_view) WebView shareWebView;
-    @Bind(R.id.back_ImageView) ImageView back_ImageView;
-    @Bind(R.id.go_next_ImageView) ImageView go_next_ImageView;
-    @Bind(R.id.refresh_ImageView) ImageView refresh_ImageView;
-    @Bind(R.id.home_ImageView) ImageView home_ImageView;
-    @Bind(R.id.download_progressbar) SmoothProgressBar downloadProgressbar;
-    @Bind(R.id.menu_LinearLayout) LinearLayout mMenuBar;
+    @BindView(R.id.share_web_view) WebView shareWebView;
+    @BindView(R.id.back_ImageView) ImageView back_ImageView;
+    @BindView(R.id.go_next_ImageView) ImageView go_next_ImageView;
+    @BindView(R.id.refresh_ImageView) ImageView refresh_ImageView;
+    @BindView(R.id.home_ImageView) ImageView home_ImageView;
+    @BindView(R.id.download_progressbar) SmoothProgressBar downloadProgressbar;
+    @BindView(R.id.menu_LinearLayout) LinearLayout mMenuBar;
 
     public static final String SHARE_URL = "share_url";
     public static final String SHARE_TITLE = "share_title";

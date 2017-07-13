@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -32,7 +32,7 @@ import rx.Subscription;
 
 public class TechPKActiveActivity extends BaseListActivity<ActivityRankingBean> {
 
-    @Bind(R.id.btn_pk_ranking_detail)
+    @BindView(R.id.btn_pk_ranking_detail)
     Button btnPkRankingDetail;
 
     public static final String PK_ITEM_ID = "pkActivityId"; //活动Id

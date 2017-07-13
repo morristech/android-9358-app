@@ -17,7 +17,8 @@ import com.xmd.manager.journal.presenter.ClubServiceChoicePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -27,11 +28,11 @@ import butterknife.OnClick;
  */
 public class ClubServiceChoiceActivity extends BaseActivity implements ClubServiceChoiceContract.View {
 
-    @Bind(R.id.list_service_view)
+    @BindView(R.id.list_service_view)
     RecyclerView listServiceView;
-    @Bind(R.id.btn_service_cancel)
+    @BindView(R.id.btn_service_cancel)
     Button btnServiceCancel;
-    @Bind(R.id.btn_service_save)
+    @BindView(R.id.btn_service_save)
     Button btnServiceSave;
 
     private ClubServiceChoiceContract.Presenter mPresenter;

@@ -13,7 +13,7 @@ import com.xmd.manager.beans.TechBadComment;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.response.TechBadCommentListResult;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -23,9 +23,9 @@ import rx.Subscription;
 public class TechBadCommentFragment extends BaseListFragment<TechBadComment> {
 
 
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     RecyclerView list;
-    @Bind(R.id.tech_bad_comment_progress)
+    @BindView(R.id.tech_bad_comment_progress)
     ProgressBar techBadCommentProgress;
     private View view;
 
@@ -76,6 +76,5 @@ public class TechBadCommentFragment extends BaseListFragment<TechBadComment> {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

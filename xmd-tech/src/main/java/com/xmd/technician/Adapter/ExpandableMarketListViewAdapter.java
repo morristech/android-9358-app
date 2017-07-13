@@ -19,7 +19,8 @@ import com.xmd.technician.widget.StartCustomTextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -161,21 +162,21 @@ public class ExpandableMarketListViewAdapter extends BaseExpandableListAdapter {
 
     static class ViewChildViewHolder {
         
-        @Bind(R.id.once_card_head)
+        @BindView(R.id.once_card_head)
         RoundImageView onceCardHead;
-        @Bind(R.id.once_card_mark_new)
+        @BindView(R.id.once_card_mark_new)
         TextView onceCardMarkNew;
-        @Bind(R.id.once_card_title)
+        @BindView(R.id.once_card_title)
         TextView onceCardTitle;
-        @Bind(R.id.once_card_credit)
+        @BindView(R.id.once_card_credit)
         TextView onceCardCredit;
-        @Bind(R.id.once_card_discount_price)
+        @BindView(R.id.once_card_discount_price)
         StartCustomTextView onceCardDiscountPrice;
-        @Bind(R.id.once_card_money)
+        @BindView(R.id.once_card_money)
         StartCustomTextView onceCardMoney;
-        @Bind(R.id.once_card_select)
+        @BindView(R.id.once_card_select)
         TextView onceCardSelect;
-        @Bind(R.id.ll_once_card_share_view)
+        @BindView(R.id.ll_once_card_share_view)
         LinearLayout llOnceCardShareView;
 
         ViewChildViewHolder(View view) {

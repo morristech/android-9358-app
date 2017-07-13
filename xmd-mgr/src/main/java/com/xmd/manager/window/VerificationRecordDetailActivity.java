@@ -21,7 +21,7 @@ import com.xmd.manager.widget.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -31,21 +31,21 @@ import rx.Subscription;
 
 public class VerificationRecordDetailActivity extends BaseActivity {
 
-    @Bind(R.id.user_head)
+    @BindView(R.id.user_head)
     CircleImageView mUserHead;
-    @Bind(R.id.user_phone)
+    @BindView(R.id.user_phone)
     TextView mUserPhone;
-    @Bind(R.id.user_verification_type)
+    @BindView(R.id.user_verification_type)
     TextView mUserVerificationType;
-    @Bind(R.id.user_verification_time)
+    @BindView(R.id.user_verification_time)
     TextView mUserVerificationTime;
-    @Bind(R.id.user_verification_handler)
+    @BindView(R.id.user_verification_handler)
     TextView mUserVerificationHandler;
-    @Bind(R.id.user_verification_code)
+    @BindView(R.id.user_verification_code)
     TextView mUserVerificationCode;
-    @Bind(R.id.user_verification_list)
+    @BindView(R.id.user_verification_list)
     ListView mUserVerificationList;
-    @Bind(R.id.user_name)
+    @BindView(R.id.user_name)
     TextView mUserName;
 
 

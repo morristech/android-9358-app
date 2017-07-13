@@ -20,7 +20,8 @@ import com.xmd.technician.widget.RoundImageView;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -115,25 +116,25 @@ public class MallPackageListAdapter extends RecyclerView.Adapter {
     }
 
     static class MallPackageViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.iv_once_card_title)
+        @BindView(R.id.iv_once_card_title)
         ImageView mIvOnceCardTitle;
-        @Bind(R.id.once_card_head)
+        @BindView(R.id.once_card_head)
         RoundImageView mOnceCardHead;
-        @Bind(R.id.once_card_title)
+        @BindView(R.id.once_card_title)
         TextView mOnceCardTitle;
-        @Bind(R.id.expand_text_view)
+        @BindView(R.id.expand_text_view)
         ExpandableTextView expandTextView;
-        @Bind(R.id.once_card_money)
+        @BindView(R.id.once_card_money)
         TextView mOnceCardMoney;
-        @Bind(R.id.once_card_price)
+        @BindView(R.id.once_card_price)
         TextView mOnceCardPrice;
-        @Bind(R.id.once_card_share)
+        @BindView(R.id.once_card_share)
         Button mOnceCardShare;
-        @Bind(R.id.once_card_discount)
+        @BindView(R.id.once_card_discount)
         TextView mOnceCardDiscount;
-        @Bind(R.id.ll_show_code)
+        @BindView(R.id.ll_show_code)
         LinearLayout mShowCode;
-        @Bind(R.id.tv_show_code_text)
+        @BindView(R.id.tv_show_code_text)
         TextView tvShowCodeText;
 
 

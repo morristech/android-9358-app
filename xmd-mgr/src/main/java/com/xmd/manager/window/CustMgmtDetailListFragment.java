@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.xmd_m_comment.CustomerInfoDetailActivity;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ListRecycleViewAdapter;
@@ -39,7 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -59,11 +60,11 @@ public class CustMgmtDetailListFragment extends BaseFragment implements ListRecy
     public static final int TAB_ACTIVE_DEGREE = 1;
     public static final int TAB_BAD_COMMENT = 2;
 
-    @Bind(R.id.technicain_list)
+    @BindView(R.id.technicain_list)
     RecyclerView mRvTechnician;
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     RecyclerView mListView;
 
     protected LinearLayoutManager mLayoutManager;
@@ -352,9 +353,10 @@ public class CustMgmtDetailListFragment extends BaseFragment implements ListRecy
 
     @Override
     public void onItemClicked(Customer bean) {
-        Intent intent = new Intent(getActivity(), CustomerActivity.class);
-        intent.putExtra(CustomerActivity.ARG_CUSTOMER, bean);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), CustomerActivity.class);
+//        intent.putExtra(CustomerActivity.ARG_CUSTOMER, bean);
+//        startActivity(intent);
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(),bean.userId, "manger",false);
     }
 
     @Override
@@ -613,9 +615,9 @@ public class CustMgmtDetailListFragment extends BaseFragment implements ListRecy
 
     static class CustomerHeaderItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_header)
+        @BindView(R.id.tv_header)
         TextView mTvHeader;
-        @Bind(R.id.tv_group_count)
+        @BindView(R.id.tv_group_count)
         TextView mTvGroupCount;
 
         public CustomerHeaderItemViewHolder(View itemView) {
