@@ -34,7 +34,7 @@ public class ChatMessage {
     public static final String MSG_TYPE_ORIGIN_FILE = "FILE";
     public static final String MSG_TYPE_ORIGIN_CMD = "CMD";
     public static final String MSG_TYPE_TIP = "tip"; //提示消息
-    public static final String MSG_TYPE_COUPON = "ordinaryCoupon";
+
     public static final String MSG_TYPE_CLUB_LOCATION = "clubLocation"; //位置消息
     public static final String MSG_TYPE_ORDER_START = "order_start";
     public static final String MSG_TYPE_ORDER_REFUSE = "order_refuse";
@@ -42,9 +42,7 @@ public class ChatMessage {
     public static final String MSG_TYPE_ORDER_CANCEL = "order_cancel";
     public static final String MSG_TYPE_ORDER_SUCCESS = "order_success";
     public static final String MSG_TYPE_ORDER_REQUEST = "order_request"; //求预约
-
     public static final String MSG_TYPE_ORDER = "order";//原始订单消息
-
     //活动消息
     public static final String MSG_TYPE_JOURNAL = "journal"; //电子期刊
     public static final String MSG_TYPE_ONCE_CARD = "itemCard"; //次卡
@@ -53,6 +51,9 @@ public class ChatMessage {
     public static final String MSG_TYPE_LUCKY_WHEEL_TYPE = "luckyWheel"; //大转盘
     public static final String MSG_TYPE_REQUEST_REWARD = "begReward"; //求打赏
     public static final String MSG_TYPE_REWARD = "reward"; //用户打赏
+    public static final String MSG_TYPE_COUPON = "ordinaryCoupon";
+    public static final String MSG_TYPE_COUPON_TIP = "couponTip"; //用户领取优惠券
+    public static final String MSG_TYPE_PAID_COUPON_TIP = "paidCouponTip";//用户购买点钟券
 
     public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";//客服消息
     public static final String MSG_TAG_HELLO = "hello"; //打招呼消息
@@ -61,6 +62,7 @@ public class ChatMessage {
     public static final String ATTRIBUTE_MESSAGE_TYPE = "msgType";
     private static final String ATTRIBUTE_TAG = "xmd_tag";
 
+    private static final String ATTRIBUTE_USER_ROLES = "userRoles";
     private static final String ATTRIBUTE_USER_ID = "userId";
     private static final String ATTRIBUTE_USER_NAME = "name";
     private static final String ATTRIBUTE_USER_AVATAR = "header";
@@ -105,6 +107,7 @@ public class ChatMessage {
 
     //设置用户信息，发送时设置
     public void setUser(User user) {
+        setUserRoles(user.getRoles());
         setUserId(user.getId());
         setUserName(user.getName());
         setUserAvatar(user.getAvatar());
@@ -141,6 +144,14 @@ public class ChatMessage {
 
     public void setUserId(String userId) {
         setAttr(ATTRIBUTE_USER_ID, userId);
+    }
+
+    public String getUserRoles() {
+        return getSafeStringAttribute(ATTRIBUTE_USER_ROLES);
+    }
+
+    public void setUserRoles(String userRoles) {
+        setAttr(ATTRIBUTE_USER_ROLES, userRoles);
     }
 
     public String getUserName() {

@@ -17,7 +17,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.NearbyCusInfo;
 import com.xmd.technician.bean.SayHiNearbyResult;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
@@ -108,10 +107,6 @@ public class NearbyActivity extends BaseActivity {
                 Intent intent = new Intent(NearbyActivity.this, HelloSettingActivity.class);
                 startActivity(intent);
                 XToast.show("请先设置打招呼模板！");
-                return;
-            }
-            if (!ChatHelper.getInstance().isConnected()) {
-                showToast("当前已经离线，请稍后再试!");
                 return;
             }
             // 打招呼

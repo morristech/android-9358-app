@@ -25,7 +25,6 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
-import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.runtimepermissions.PermissionsResultAction;
 import com.xmd.technician.common.Logger;
@@ -53,17 +52,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     private List<View> mBottomBarButtonList = new LinkedList<View>();
 
     private MainFragment mHomeFragment;
-    private ChatFragment mChatFragment;
-    private ContactsSummaryFragment mContactsSummaryFragment;
-    private ShareCouponFragment mMarketingFragment;
-
 
     private int mCurrentTabIndex = -1;
-    private Subscription mSysNoticeNotifySubscription;
     private Subscription mGetUserIsBindWXSubscription;
-    //环信
-    private Subscription mUnreadEmchatCountSubscription;
-    private ChatHelper mChatHelper;
 
     @Bind(R.id.main_unread_message)
     TextView mUnreadMsgLabel;
@@ -79,7 +70,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         checkLoginStatus();
-        mChatHelper = ChatHelper.getInstance();
         permissionManager.loadPermissions(new Callback<Void>() {
             @Override
             public void onResponse(Void result, Throwable error) {
@@ -224,10 +214,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(
-                mSysNoticeNotifySubscription,
-                mGetUserIsBindWXSubscription,
-                mUnreadEmchatCountSubscription);
+        RxBus.getInstance().unsubscribe(mGetUserIsBindWXSubscription);
         redPointService.unBind(Constant.RED_POINT_CHAT_ALL_UNREAD, mUnreadMsgLabel);
     }
 

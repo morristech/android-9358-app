@@ -49,10 +49,12 @@
 
         <activity
             android:name=".view.ChatActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".view.ShareListActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
     </application>
 

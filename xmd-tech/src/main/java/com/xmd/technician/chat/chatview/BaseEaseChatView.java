@@ -125,7 +125,7 @@ public abstract class BaseEaseChatView extends LinearLayout {
         if (mEMMessage.direct() == EMMessage.Direct.SEND) {
             mUserAvatarView.setUserInfo(null, localUserAvatar);
         } else {
-            mUserAvatarView.setUserInfo(ChatMessageFactory.get(mEMMessage).getUserId(), remoteUserAvatar);
+            mUserAvatarView.setUserInfo(ChatMessageFactory.create(mEMMessage).getUserId(), remoteUserAvatar);
         }
 
         if (mDeliveredView != null) {

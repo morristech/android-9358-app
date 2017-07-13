@@ -35,6 +35,7 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.HelloReplyService;
 import com.xmd.technician.msgctrl.ControllerRegister;
 import com.xmd.technician.notify.NotificationCenter;
+import com.xmd.technician.window.AvailableCouponListActivity;
 import com.xmd.technician.window.WelcomeActivity;
 
 import java.io.File;
@@ -222,9 +223,9 @@ public class TechApplication extends MultiDexApplication {
 
         @Override
         public void onShowDeliverCouponView(Activity activity, User remoteUser) {
-//            Intent intent = new Intent(activity, DeliveryCouponActivity.class);
-//            intent.putExtra(DeliveryCouponActivity.EXTRA_CHAT_ID, remoteUser.getChatId());
-//            activity.startActivity(intent);
+            Intent intent = new Intent(activity, AvailableCouponListActivity.class);
+            intent.putExtra(AvailableCouponListActivity.EXTRA_CHAT_ID, remoteUser.getChatId());
+            activity.startActivity(intent);
         }
     };
 }

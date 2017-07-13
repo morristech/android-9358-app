@@ -1,4 +1,4 @@
-package com.xmd.chat;
+package com.xmd.chat.view;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

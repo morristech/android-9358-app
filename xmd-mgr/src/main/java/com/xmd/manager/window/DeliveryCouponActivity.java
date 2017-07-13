@@ -95,9 +95,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
             for (int i = 0; i < result.respData.size(); i++) {
                 result.respData.get(i).isSelected = 1;
                 if (result.respData.get(i).actStatus.equals("online")) {
-
                     if (result.respData.get(i).useTypeName.equals("优惠券") || result.respData.get(i).useTypeName.equals("现金券")) {
-
                         mCoupons.add(result.respData.get(i));
                     }
                 }
@@ -132,7 +130,6 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                 for (CouponInfo couponInfo : mSelectedCouponList) {
                     CommonUtils.userGetCoupon(couponInfo.actId, "manager", chatId, couponInfo);
                 }
-                finish();
                 break;
         }
     }
@@ -164,7 +161,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGetClubCouponList);
+        RxBus.getInstance().unsubscribe(mGetClubCouponList, mUserGetCouponResult);
     }
 
     private void getData() {

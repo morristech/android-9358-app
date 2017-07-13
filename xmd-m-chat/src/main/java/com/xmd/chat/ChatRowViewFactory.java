@@ -10,6 +10,8 @@ import com.xmd.chat.viewmodel.ChatRowViewModelAppointment;
 import com.xmd.chat.viewmodel.ChatRowViewModelImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelLocation;
 import com.xmd.chat.viewmodel.ChatRowViewModelOrderRequest;
+import com.xmd.chat.viewmodel.ChatRowViewModelReward;
+import com.xmd.chat.viewmodel.ChatRowViewModelRewardRequest;
 import com.xmd.chat.viewmodel.ChatRowViewModelShare;
 import com.xmd.chat.viewmodel.ChatRowViewModelText;
 import com.xmd.chat.viewmodel.ChatRowViewModelTip;
@@ -131,6 +133,10 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelTip(message);
             case ChatMessage.MSG_TYPE_ORDER_REQUEST:
                 return new ChatRowViewModelOrderRequest(message);
+            case ChatMessage.MSG_TYPE_REQUEST_REWARD:
+                return new ChatRowViewModelRewardRequest(message);
+            case ChatMessage.MSG_TYPE_REWARD:
+                return new ChatRowViewModelReward(message);
             case ChatMessage.MSG_TYPE_ORDER_START:
             case ChatMessage.MSG_TYPE_ORDER_REFUSE:
             case ChatMessage.MSG_TYPE_ORDER_CONFIRM:

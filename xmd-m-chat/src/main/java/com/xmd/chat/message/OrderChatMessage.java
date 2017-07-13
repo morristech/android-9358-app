@@ -1,6 +1,8 @@
 package com.xmd.chat.message;
 
 import com.hyphenate.chat.EMMessage;
+import com.xmd.appointment.AppointmentData;
+import com.xmd.chat.MessageManager;
 
 /**
  * Created by heyangya on 17-6-7.
@@ -145,6 +147,7 @@ public class OrderChatMessage extends ChatMessage {
 
     public void setInnerProcessed(String processedDesc) {
         setAttr(ATTR_INNER_PROCESSED, processedDesc);
+        MessageManager.getInstance().saveMessage(this); //设置状态标记后，需要保存消息到本地
     }
 
     public String getOrderType() {
@@ -153,5 +156,58 @@ public class OrderChatMessage extends ChatMessage {
 
     public void setOrderType(String type) {
         setAttr(ATTR_ORDER_TYPE, type);
+    }
+
+
+    //设置订单数据
+    public void setOrderData(AppointmentData data) {
+        if (data.getCustomerName() != null) {
+            setCustomerName(data.getCustomerName());
+        }
+        if (data.getCustomerPhone() != null) {
+            setCustomerPhone(data.getCustomerPhone());
+        }
+        if (data.getAppointmentTime() != null) {
+            setOrderServiceTime(data.getAppointmentTime().getTime());
+        }
+        if (data.getTechnician() != null) {
+            setOrderTechId(data.getTechnician().getId());
+            setOrderTechName(data.getTechnician().getName());
+            setOrderTechAvatar(data.getTechnician().getAvatarUrl());
+        }
+        if (data.getServiceItem() != null) {
+            setOrderServiceId(data.getServiceItem().getId());
+            setOrderServiceName(data.getServiceItem().getName());
+            if (data.getServiceItem().getPrice() != null) {
+                setOrderServicePrice(Integer.parseInt(data.getServiceItem().getPrice()));
+            }
+        }
+        if (data.getDuration() > 0) {
+            setOrderServiceDuration(data.getDuration());
+        }
+        if (data.getFontMoney() != null && data.getFontMoney() > 0) {
+            setOrderPayMoney(data.getFontMoney());
+        }
+
+        //设置生成的订单ID
+        if (data.getSubmitOrderId() != null) {
+            setOrderId(data.getSubmitOrderId());
+        }
+    }
+
+    public static OrderChatMessage create(String toChatId, String msgType, AppointmentData data) {
+        OrderChatMessage msg = OrderChatMessage.create(toChatId, msgType);
+        if (data != null) {
+            msg.setOrderData(data);
+        }
+        return msg;
+    }
+
+    public static boolean isFreeAppointment(AppointmentData data, OrderChatMessage msg) {
+        if (data != null) {
+            return data.getFontMoney() == null || data.getFontMoney() == 0;
+        } else {
+            return msg.getOrderPayMoney() == null || msg.getOrderPayMoney() == 0;
+        }
     }
 }

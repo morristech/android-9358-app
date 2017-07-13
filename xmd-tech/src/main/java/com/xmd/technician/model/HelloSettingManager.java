@@ -164,7 +164,7 @@ public class HelloSettingManager {
     }
 
     private void emSendMessage(EMMessage msg) {
-        ChatMessage message = ChatMessageFactory.get(msg);
+        ChatMessage message = ChatMessageFactory.create(msg);
         message.addTag(ChatMessage.MSG_TAG_HELLO);
         message.setUserId(SharedPreferenceHelper.getUserId());
         message.setUserName(SharedPreferenceHelper.getUserName());

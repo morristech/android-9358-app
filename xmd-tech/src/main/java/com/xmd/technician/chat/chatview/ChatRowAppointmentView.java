@@ -131,7 +131,7 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
     @Override
     protected void onSetUpView(EMMessage message) {
         mBubbleLayout.setOnClickListener(null);
-        mChatMessage = (OrderChatMessage) ChatMessageFactory.get(message);
+        mChatMessage = (OrderChatMessage) ChatMessageFactory.create(message);
         mAppointmentData = OrderChatManager.parseMessage(mChatMessage);
         setupOperationButton();
         setupShowItem();

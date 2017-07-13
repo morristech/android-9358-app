@@ -380,9 +380,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
         }
         if (emChatId.equals(SharedPreferenceHelper.getEmchatId())) {
             this.makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
-            return;
         } else {
-            UINavigation.gotoChatActivity(this, Utils.wrapChatParams(emChatId, emChatName, chatHeadUrl, contactType));
+            UINavigation.gotoChatActivity(this, emChatId);
         }
 
     }

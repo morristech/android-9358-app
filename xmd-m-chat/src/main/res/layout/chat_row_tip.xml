@@ -19,11 +19,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="#30000000"
-            android:padding="2dp"
-            android:text="@{data.tip}"
+            android:drawableLeft="@{data.getTipIcon(context)}"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="@{data.tip,default=xxx领取了你的优惠券}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/fontCaption" />
     </FrameLayout>
-
 
 </layout>

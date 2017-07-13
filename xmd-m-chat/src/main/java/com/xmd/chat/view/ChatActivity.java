@@ -38,7 +38,6 @@ import com.xmd.chat.BR;
 import com.xmd.chat.ChatConstants;
 import com.xmd.chat.ChatMenu;
 import com.xmd.chat.ChatMessageFactory;
-import com.xmd.chat.ChatRecyclerView;
 import com.xmd.chat.ChatRowViewFactory;
 import com.xmd.chat.ConversationManager;
 import com.xmd.chat.MessageManager;
@@ -47,7 +46,6 @@ import com.xmd.chat.VoiceManager;
 import com.xmd.chat.XmdChat;
 import com.xmd.chat.databinding.ChatActivityBinding;
 import com.xmd.chat.event.EventDeleteMessage;
-import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.event.EventRevokeMessage;
 import com.xmd.chat.message.ChatMessage;
@@ -99,6 +97,7 @@ public class ChatActivity extends BaseActivity {
             return;
         }
         ConversationManager.getInstance().markAllMessagesRead(chatId);
+        MessageManager.getInstance().setCurrentChatId(chatId);
         mRemoteUser = userInfoService.getUserByChatId(chatId);
         if (mRemoteUser == null) {
             XToast.show("无法找到用户信息!");
@@ -147,6 +146,7 @@ public class ChatActivity extends BaseActivity {
         super.onDestroy();
         VoiceManager.getInstance().cleanResource();
         XmdChat.getInstance().getMenuFactory().cleanMenus();
+        MessageManager.getInstance().setCurrentChatId(null);
     }
 
     private EMConversation getConversation() {
@@ -185,7 +185,7 @@ public class ChatActivity extends BaseActivity {
         }
         ChatRowViewModel beforeData = null;
         for (EMMessage message : messageList) {
-            ChatMessage chatMessage = ChatMessageFactory.get(message);
+            ChatMessage chatMessage = ChatMessageFactory.create(message);
             ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
             setShowTime(beforeData, data);
             beforeData = data;
@@ -226,24 +226,15 @@ public class ChatActivity extends BaseActivity {
             ChatRowViewModel data = getDataList().get(position);
             FrameLayout layout = (FrameLayout) binding.getRoot().findViewById(R.id.contentView);
             data.onBindView(layout.getChildAt(0));
+            binding.executePendingBindings();
         }
 
         @Override
         public void onDataUnBinding(ViewDataBinding binding, int position) {
-//            ChatRowViewModel data = getDataList().get(position);
+//            ChatRowViewModel data = getDataList().create(position);
 //            data.onUnbindView();
         }
     };
-
-    //处理新消息
-    @Subscribe
-    public void onNewMessages(EventNewMessages newMessages) {
-        for (EMMessage message : newMessages.getList()) {
-            if (message.getFrom().equals(mRemoteUser.getChatId())) {
-                addNewChatMessageToUi(ChatMessageFactory.get(message));
-            }
-        }
-    }
 
     //处理新的UI消息
     @Subscribe
@@ -381,6 +372,7 @@ public class ChatActivity extends BaseActivity {
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) imageView.getLayoutParams();
             layoutParams.width = ScreenUtils.dpToPx(24);
             layoutParams.height = ScreenUtils.dpToPx(24);
+            layoutParams.weight = 1;
             layoutParams.leftMargin = ScreenUtils.dpToPx(8);
             layoutParams.rightMargin = ScreenUtils.dpToPx(8);
         }

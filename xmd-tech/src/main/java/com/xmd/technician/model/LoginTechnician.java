@@ -12,7 +12,6 @@ import com.xmd.technician.DataRefreshService;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.TechInfo;
-import com.xmd.technician.chat.UserProfileProvider;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.UINavigation;
@@ -243,6 +242,7 @@ public class LoginTechnician {
         user.setClubId(getClubId());
         user.setClubName(getClubName());
         user.setTechNo(getTechNo());
+        user.setRoles(getRoles());
         return user;
     }
 
@@ -376,8 +376,6 @@ public class LoginTechnician {
 
         //清空当前用户打招呼数据
         HelloSettingManager.getInstance().resetTemplate();
-
-        UserProfileProvider.getInstance().reset();
 
 
         //清空token

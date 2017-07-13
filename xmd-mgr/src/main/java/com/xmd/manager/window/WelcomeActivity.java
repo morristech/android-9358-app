@@ -58,7 +58,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
             User user = new User(SharedPreferenceHelper.getUserId());
-            user.setType(User.USER_TYPE_MANAGER);
+            user.setRoles(User.ROLE_MANAGER);
             user.setChatId(SharedPreferenceHelper.getEmchatId());
             user.setChatPassword(SharedPreferenceHelper.getEmchatPassword());
             user.setName(SharedPreferenceHelper.getUserName());

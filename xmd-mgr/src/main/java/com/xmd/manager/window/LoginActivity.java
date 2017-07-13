@@ -159,7 +159,7 @@ public class LoginActivity extends BaseActivity {
 
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
             User user = new User(loginResult.userId);
-            user.setType(User.USER_TYPE_MANAGER);
+            user.setRoles(User.ROLE_MANAGER);
             user.setChatId(loginResult.emchatId);
             user.setChatPassword(loginResult.emchatPassword);
             user.setName(loginResult.name);

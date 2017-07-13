@@ -136,7 +136,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
             android:background="#dddddd"
-            android:visibility="@{data.operateVisible?View.VISIBLE:View.GONE}" />
+            android:visibility="@{data.showOperateSplitLine?View.VISIBLE:View.GONE}" />
 
         <!-- 接受或拒绝 -->
         <LinearLayout
@@ -224,7 +224,7 @@
             android:drawablePadding="8dp"
             android:gravity="center"
             android:padding="8dp"
-            android:text="@{data.orderChatMessage.innerProcessed}"
-            android:visibility="@{data.orderChatMessage.innerProcessed==null?View.GONE:View.VISIBLE}" />
+            android:text="@{data.status}"
+            android:visibility="@{data.status==null?View.GONE:View.VISIBLE}" />
     </LinearLayout>
 </layout>

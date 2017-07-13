@@ -262,7 +262,7 @@ public class EaseCommonUtils {
     }
 
     public static int getCustomChatType(EMMessage message) {
-        ChatMessage chatMessage = ChatMessageFactory.get(message);
+        ChatMessage chatMessage = ChatMessageFactory.create(message);
         int viewType = ChatRowViewFactory.getViewType(chatMessage);
         if (viewType != ChatRowViewFactory.sendType(ChatConstants.CHAT_ROW_VIEW_TEXT)
                 && viewType != ChatRowViewFactory.receiveType(ChatConstants.CHAT_ROW_VIEW_TEXT)) {
@@ -317,7 +317,7 @@ public class EaseCommonUtils {
 
     public static BaseEaseChatView getCustomChatView(Context context, EMMessage message, int position, BaseAdapter adapter) {
         BaseEaseChatView chatRow = null;
-        ChatMessage chatMessage = ChatMessageFactory.get(message);
+        ChatMessage chatMessage = ChatMessageFactory.create(message);
         switch (chatMessage.getMsgType()) {
             case ChatMessage.MSG_TYPE_ORDER_START:
             case ChatMessage.MSG_TYPE_ORDER_REFUSE:

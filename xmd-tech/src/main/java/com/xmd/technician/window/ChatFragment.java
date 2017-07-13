@@ -159,7 +159,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         if (list.size() > 0) {
             mWaitProcessCount = list.size();
             for (EMConversation conversation : list) {
-                ChatMessage lastMessage = ChatMessageFactory.get(conversation.getLastMessage());
+                ChatMessage lastMessage = ChatMessageFactory.create(conversation.getLastMessage());
                 if (lastMessage == null) {
                     ChatHelper.getInstance().clearUnreadMessage(conversation);
                     onLoadPermissionFinish();

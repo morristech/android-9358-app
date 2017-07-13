@@ -10,7 +10,7 @@ public class ControllerRegister {
         initRequestController();
         initShareController();
         initStatController();
-        initChatController();
+//        initChatController();
     }
 
     private static void initUpgradeController() {

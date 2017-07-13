@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowTipBinding;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.message.TipChatMessage;
 
 
 /**
@@ -46,5 +47,14 @@ public class ChatRowViewModelTip extends ChatRowViewModel {
 
     public CharSequence getTip() {
         return chatMessage.getContentText();
+    }
+
+    public Drawable getTipIcon(Context context) {
+        int id = ((TipChatMessage) chatMessage).getIconResourcesId();
+        if (id <= 0) {
+            return null;
+        } else {
+            return context.getResources().getDrawable(id);
+        }
     }
 }

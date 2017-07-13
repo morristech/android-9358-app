@@ -76,7 +76,7 @@ public class NotificationCenter {
         List<EMMessage> list = eventReceiveMessage.getList();
         if (list != null && list.size() > 0) {
             for (EMMessage message : list) {
-                ChatMessage chatMessage = ChatMessageFactory.get(message);
+                ChatMessage chatMessage = ChatMessageFactory.create(message);
                 String userName = chatMessage.getUserName();
                 Bundle bundle = new Bundle();
                 bundle.putString(ChatConstant.TO_CHAT_USER_ID, message.getFrom());

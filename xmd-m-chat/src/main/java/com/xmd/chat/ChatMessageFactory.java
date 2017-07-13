@@ -5,6 +5,7 @@ import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.chat.message.ShareChatMessage;
+import com.xmd.chat.message.TipChatMessage;
 
 /**
  * Created by heyangya on 17-6-7.
@@ -13,9 +14,9 @@ import com.xmd.chat.message.ShareChatMessage;
 
 public class ChatMessageFactory {
     /**
-     * 使用已有EMMessage创建一个合适的ChatMessage
+     * EMMessage => ChatMessage
      */
-    public static ChatMessage get(EMMessage message) {
+    public static ChatMessage create(EMMessage message) {
         String msgType = ChatMessage.getMsgType(message);
         switch (msgType) {
             case ChatMessage.MSG_TYPE_CLUB_LOCATION:
@@ -32,6 +33,11 @@ public class ChatMessageFactory {
             case ChatMessage.MSG_TYPE_ONE_YUAN_TYPE:
             case ChatMessage.MSG_TYPE_LUCKY_WHEEL_TYPE:
                 return new ShareChatMessage(message);
+            case ChatMessage.MSG_TYPE_COUPON_TIP:
+            case ChatMessage.MSG_TYPE_PAID_COUPON_TIP:
+                return new TipChatMessage(message, msgType);
+            case ChatMessage.MSG_TYPE_TIP:
+                return new TipChatMessage(message);
             default:
                 return new ChatMessage(message);
         }

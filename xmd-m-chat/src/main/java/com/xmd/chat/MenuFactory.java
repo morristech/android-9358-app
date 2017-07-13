@@ -18,6 +18,7 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
+import com.xmd.appointment.beans.Technician;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
@@ -163,19 +164,21 @@ public class MenuFactory {
                     XToast.show("正在处理，请稍后");
                     return;
                 }
+                isInSubmitAppointment = true;
                 AppointmentData data = new AppointmentData();
                 data.setCustomerChatId(remoteUser.getChatId());
                 data.setCustomerId(remoteUser.getId());
                 data.setCustomerName(remoteUser.getName());
-//                boolean fixTech = technician.getRoles() != null && !technician.getRoles().contains(User.ROLE_FLOOR);
-//                if (fixTech) {
-//                    Technician tech = new Technician();
-//                    tech.setId(technician.getUserId());
-//                    tech.setAvatarUrl(technician.getAvatarUrl());
-//                    tech.setName(technician.getNickName());
-//                    data.setTechnician(tech);
-//                    data.setFixTechnician(true);
-//                }
+                User user = AccountManager.getInstance().getUser();
+                boolean fixTech = user.getRoles() != null && !user.getRoles().contains(User.ROLE_FLOOR);
+                if (fixTech) {
+                    Technician tech = new Technician();
+                    tech.setId(user.getId());
+                    tech.setAvatarUrl(user.getAvatar());
+                    tech.setName(user.getName());
+                    data.setTechnician(tech);
+                    data.setFixTechnician(true);
+                }
                 EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, TAG, data));
             }
         }, null));
@@ -188,7 +191,7 @@ public class MenuFactory {
         }
         if (event.getCmd() == AppointmentEvent.CMD_HIDE) {
             if (event.getData() != null) {
-                if (OrderChatManager.isFreeAppointment(event.getData(), null)) {
+                if (OrderChatMessage.isFreeAppointment(event.getData(), null)) {
                     //免费预约，发送确认消息
                     isInSubmitAppointment = false;
                     MessageManager.getInstance().sendMessage(

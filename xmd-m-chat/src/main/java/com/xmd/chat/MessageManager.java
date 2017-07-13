@@ -7,6 +7,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
@@ -17,6 +18,7 @@ import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.event.EventSendMessage;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.message.CouponChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.RevokeChatMessage;
 import com.xmd.chat.message.TipChatMessage;
@@ -44,6 +46,8 @@ public class MessageManager {
 
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
 
+    private String currentChatId; //当前正在聊天的用户chatId,收到此人消息自动设置已读
+
     public void init() {
         EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
             @Override
@@ -54,14 +58,41 @@ public class MessageManager {
                     public void run() {
                         //从消息中解析更新用户信息
                         for (EMMessage message : list) {
-                            ChatMessage chatMessage = ChatMessageFactory.get(message);
+                            String chatId = message.getFrom();
+                            ChatMessage chatMessage = ChatMessageFactory.create(message);
+                            User user;
                             if (!TextUtils.isEmpty(chatMessage.getUserId())) {
-                                User user = new User(chatMessage.getUserId());
-                                user.setChatId(chatMessage.getEmMessage().getFrom());
+                                user = new User(chatMessage.getUserId());
+                                user.setChatId(chatId);
                                 user.setName(chatMessage.getUserName());
                                 user.setAvatar(chatMessage.getUserAvatar());
                                 userInfoService.saveUser(user);
+                            } else {
+                                user = userInfoService.getUserByChatId(chatId);
                             }
+                            if (user == null) {
+                                XLogger.e("无法找到用户 by chatId: " + chatId + ", so delete the message!");
+                                EMClient.getInstance().chatManager().getAllConversations().remove(chatId);
+                                EMClient.getInstance().chatManager().deleteConversation(chatId, true);
+                                continue;
+                            }
+                            if (currentChatId != null && currentChatId.equals(chatMessage.getFromChatId())) {
+                                ConversationManager.getInstance().markAllMessagesRead(currentChatId);
+                                EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
+                            }
+
+                            //对于打赏消息特殊处理，需要插入一条提示消息
+                            if (ChatMessage.MSG_TYPE_REWARD.equals(chatMessage.getMsgType())) {
+                                TipChatMessage tipChatMessage = TipChatMessage.create(
+                                        user.getChatId(),
+                                        String.format("%s的打赏已存入您的账户", user.getName()),
+                                        ChatMessage.MSG_TYPE_REWARD);
+                                tipChatMessage.setUser(user);
+                                EMConversation conversation = EMClient.getInstance().chatManager().getConversation(chatId);
+                                conversation.appendMessage(tipChatMessage.getEmMessage());
+                                EventBus.getDefault().post(new EventSendMessage(tipChatMessage));
+                            }
+
                             displayNotification(chatMessage);
                         }
 
@@ -118,11 +149,16 @@ public class MessageManager {
 
     //发送tip消息
     public ChatMessage sendTipMessage(EMConversation conversation, User remoteUser, String tip) {
-        TipChatMessage tipChatMessage = TipChatMessage.create(remoteUser, tip);
+        TipChatMessage tipChatMessage = TipChatMessage.create(remoteUser.getChatId(), tip);
         tipChatMessage.setUser(AccountManager.getInstance().getUser());
         conversation.appendMessage(tipChatMessage.getEmMessage());
         EventBus.getDefault().post(new EventSendMessage(tipChatMessage));
         return tipChatMessage;
+    }
+
+    public void sendCouponMessage(String remoteChatId, String content, String actId, String inviteCode) {
+        CouponChatMessage chatMessage = CouponChatMessage.create(remoteChatId, actId, content, inviteCode);
+        sendMessage(chatMessage);
     }
 
     public ChatMessage sendVoiceMessage(User remoteUser, String path, int length) {
@@ -154,6 +190,10 @@ public class MessageManager {
                 EMClient.getInstance().chatManager().updateMessage(chatMessage.getEmMessage());
             }
         });
+    }
+
+    public void setCurrentChatId(String currentChatId) {
+        this.currentChatId = currentChatId;
     }
 
     private void displayNotification(ChatMessage chatMessage) {

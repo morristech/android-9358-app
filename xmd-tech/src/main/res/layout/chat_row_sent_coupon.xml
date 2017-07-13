@@ -32,7 +32,7 @@
             android:layout_height="80dp"
             android:layout_below="@+id/time"
             android:layout_toLeftOf="@+id/avatar"
-            android:background="@drawable/sent_coupon_bg"
+            android:background="@drawable/send_wrapper_coupon"
             android:orientation="vertical"
             android:gravity="center_vertical"
             android:visibility="visible">
@@ -136,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/reward_tip_bg"
-        android:drawableLeft="@drawable/icon07"
+        android:drawableLeft="@drawable/tip_icon_coupon"
         android:drawablePadding="@dimen/personal_padding"
         android:gravity="center_vertical"
         android:paddingBottom="@dimen/margin_5"
