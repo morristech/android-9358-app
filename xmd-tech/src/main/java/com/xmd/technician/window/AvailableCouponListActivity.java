@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.chat.MessageManager;
-import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.technician.Adapter.ChatCouponAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -26,11 +25,10 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.EmptyView;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -199,14 +197,14 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
             remainSendCount = mSelectedCouponInfo.size();
             for (CouponInfo couponInfo : mSelectedCouponInfo) {
                 if (!(ChatConstant.KEY_COUPON_PAID_TYPE).equals(couponInfo.couponType)) {
-                    String content = String.format("<i>%s</i><span>%d</span>元<b>%s</b>", couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod);
+                    String content = String.format(Locale.getDefault(), "<i>%s</i><span>%d</span>元<b>%s</b>", couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod);
                     EaseCommonUtils.userGetCoupon(content, couponInfo.actId, "tech", chatId);
                 } else {
                     successCount++;
                     remainSendCount--;
                     MessageManager.getInstance().sendCouponMessage(
                             chatId,
-                            String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod),
+                            String.format(Locale.getDefault(), "<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod),
                             couponInfo.actId, LoginTechnician.getInstance().getInviteCode());
                 }
             }
@@ -218,7 +216,6 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
     public void checkDeliverResult() {
         if (remainSendCount == 0) {
             XToast.show("发券成功" + successCount + "张" + (failedCount > 0 ? "失败" + failedCount + "张" : ""));
-            EventBus.getDefault().post(new EventStartChatActivity(chatId));
             finish();
         }
     }

@@ -7,6 +7,7 @@ import com.hyphenate.chat.EMMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
 import com.xmd.chat.viewmodel.ChatRowViewModelAppointment;
+import com.xmd.chat.viewmodel.ChatRowViewModelCoupon;
 import com.xmd.chat.viewmodel.ChatRowViewModelImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelLocation;
 import com.xmd.chat.viewmodel.ChatRowViewModelOrderRequest;
@@ -17,6 +18,7 @@ import com.xmd.chat.viewmodel.ChatRowViewModelText;
 import com.xmd.chat.viewmodel.ChatRowViewModelTip;
 import com.xmd.chat.viewmodel.ChatRowViewModelVoice;
 
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_COUPON;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_IMAGE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_LOCATION;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_SHARE;
@@ -68,6 +70,9 @@ public class ChatRowViewFactory {
             case ChatMessage.MSG_TYPE_ORDER_REQUEST:
                 baseType = CHAT_ROW_VIEW_TYPE_ORDER_REQUEST;
                 break;
+            case ChatMessage.MSG_TYPE_COUPON:
+                baseType = CHAT_ROW_VIEW_COUPON;
+                break;
             default:
                 baseType = CHAT_ROW_VIEW_TEXT;
                 break;
@@ -113,6 +118,8 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelVoice.createView(parent);
             case CHAT_ROW_VIEW_SHARE:
                 return ChatRowViewModelShare.createView(parent);
+            case CHAT_ROW_VIEW_COUPON:
+                return ChatRowViewModelCoupon.createView(parent);
             default:
                 return ChatRowViewModelText.createView(parent);
         }
@@ -149,6 +156,8 @@ public class ChatRowViewFactory {
             case ChatMessage.MSG_TYPE_ONE_YUAN_TYPE:
             case ChatMessage.MSG_TYPE_LUCKY_WHEEL_TYPE:
                 return new ChatRowViewModelShare(message);
+            case ChatMessage.MSG_TYPE_COUPON:
+                return new ChatRowViewModelCoupon(message);
             default:
                 return new ChatRowViewModelText(message);
         }

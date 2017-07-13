@@ -2,6 +2,7 @@ package com.xmd.chat;
 
 import com.hyphenate.chat.EMMessage;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.message.CouponChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.chat.message.ShareChatMessage;
@@ -38,6 +39,8 @@ public class ChatMessageFactory {
                 return new TipChatMessage(message, msgType);
             case ChatMessage.MSG_TYPE_TIP:
                 return new TipChatMessage(message);
+            case ChatMessage.MSG_TYPE_COUPON:
+                return new CouponChatMessage(message);
             default:
                 return new ChatMessage(message);
         }

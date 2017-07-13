@@ -11,6 +11,7 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.message.CouponChatMessage;
+import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.adapter.DeliveryCouponListAdapter;
@@ -128,8 +129,18 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                 failedCount = 0;
                 remainSendCount = mSelectedCouponList.size();
                 for (CouponInfo couponInfo : mSelectedCouponList) {
-                    CommonUtils.userGetCoupon(couponInfo.actId, "manager", chatId, couponInfo);
+                    if (!(Constant.COUPON_TYPE_PAID).equals(couponInfo.couponType)) {
+                        CommonUtils.userGetCoupon(couponInfo.actId, "manager", chatId, couponInfo);
+                    } else {
+                        successCount++;
+                        remainSendCount--;
+                        MessageManager.getInstance().sendCouponMessage(
+                                chatId,
+                                String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod),
+                                couponInfo.actId, SharedPreferenceHelper.getUserInviteCode());
+                    }
                 }
+                checkDeliverResult();
                 break;
         }
     }
@@ -148,6 +159,10 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
         } else {
             failedCount++;
         }
+        checkDeliverResult();
+    }
+
+    public void checkDeliverResult() {
         if (remainSendCount == 0) {
             XToast.show("发券成功" + successCount + "张" + (failedCount > 0 ? "失败" + failedCount + "张" : ""));
             finish();

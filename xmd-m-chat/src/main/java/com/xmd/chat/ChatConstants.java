@@ -25,8 +25,8 @@ public class ChatConstants {
 
     public static final int CHAT_ROW_VIEW_TYPE_ORDER = 0x10; //订单
     public static final int CHAT_ROW_VIEW_TYPE_ORDER_REQUEST = 0x11;//求预约
-    public static final int CHAT_ROW_VIEW_REWARD = 0x12;//用户打赏
     public static final int CHAT_ROW_VIEW_SHARE = 0x15; //分享
+    public static final int CHAT_ROW_VIEW_COUPON = 0x12; //优惠券
 
     public static final int CHAT_ROW_VIEW_TIP = 0x20;//提示
 
