@@ -37,6 +37,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -461,10 +462,10 @@ public class VerifyManager {
                                 continue;
                             }
                             switch (info.getInfoType()) {
-                                case AppConstants.CHECK_INFO_TYPE_COUPON: {
-                                    Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                                            .verifyCommon(AccountManager.getInstance().getToken(), info.getCode());
-                                    XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                                case AppConstants.CHECK_INFO_TYPE_COUPON:
+                                    Call<BaseBean> commonCall = XmdNetwork.getInstance().getService(SpaService.class)
+                                            .verifyCommonCall(AccountManager.getInstance().getToken(), info.getCode());
+                                    XmdNetwork.getInstance().requestSync(commonCall, new NetworkSubscriber<BaseBean>() {
                                         @Override
                                         public void onCallbackSuccess(BaseBean result) {
                                             print(info.getType(), info.getInfo());
@@ -484,12 +485,11 @@ public class VerifyManager {
                                             }
                                         }
                                     });
-                                }
-                                break;
-                                case AppConstants.CHECK_INFO_TYPE_ORDER: {
-                                    Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                                            .verifyPaidOrder(AccountManager.getInstance().getToken(), info.getCode(), AppConstants.PAID_ORDER_OP_VERIFIED);
-                                    XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                                    break;
+                                case AppConstants.CHECK_INFO_TYPE_ORDER:
+                                    Call<BaseBean> orderCall = XmdNetwork.getInstance().getService(SpaService.class)
+                                            .verifyPaidOrderCall(AccountManager.getInstance().getToken(), info.getCode(), AppConstants.PAID_ORDER_OP_VERIFIED);
+                                    XmdNetwork.getInstance().requestSync(orderCall, new NetworkSubscriber<BaseBean>() {
                                         @Override
                                         public void onCallbackSuccess(BaseBean result) {
                                             print(info.getType(), info.getInfo());
@@ -509,8 +509,7 @@ public class VerifyManager {
                                             }
                                         }
                                     });
-                                }
-                                break;
+                                    break;
                                 default:
                                     break;
                             }

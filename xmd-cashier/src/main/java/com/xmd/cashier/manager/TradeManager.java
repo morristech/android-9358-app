@@ -451,11 +451,11 @@ public class TradeManager {
                                 continue;
                             }
                             switch (v.type) {
-                                case AppConstants.TYPE_COUPON: {
+                                case AppConstants.TYPE_COUPON:
                                     // 处理券
-                                    Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                                            .verifyCommon(AccountManager.getInstance().getToken(), v.code);
-                                    XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                                    Call<BaseBean> commonCall = XmdNetwork.getInstance().getService(SpaService.class)
+                                            .verifyCommonCall(AccountManager.getInstance().getToken(), v.code);
+                                    XmdNetwork.getInstance().requestSync(commonCall, new NetworkSubscriber<BaseBean>() {
                                         @Override
                                         public void onCallbackSuccess(BaseBean result) {
                                             // 核销成功
@@ -475,13 +475,12 @@ public class TradeManager {
                                             }
                                         }
                                     });
-                                }
-                                break;
-                                case AppConstants.TYPE_ORDER: {
+                                    break;
+                                case AppConstants.TYPE_ORDER:
                                     // 处理预约
-                                    Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                                            .verifyPaidOrder(AccountManager.getInstance().getToken(), v.code, AppConstants.PAID_ORDER_OP_VERIFIED);
-                                    XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                                    Call<BaseBean> orderCall = XmdNetwork.getInstance().getService(SpaService.class)
+                                            .verifyPaidOrderCall(AccountManager.getInstance().getToken(), v.code, AppConstants.PAID_ORDER_OP_VERIFIED);
+                                    XmdNetwork.getInstance().requestSync(orderCall, new NetworkSubscriber<BaseBean>() {
                                         @Override
                                         public void onCallbackSuccess(BaseBean result) {
                                             // 核销成功
@@ -501,8 +500,7 @@ public class TradeManager {
                                             }
                                         }
                                     });
-                                }
-                                break;
+                                    break;
                                 default:
                                     break;
                             }
@@ -521,9 +519,9 @@ public class TradeManager {
                                     v.success = true;
                                     continue;
                                 }
-                                Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                                        .verifyWithMoney(AccountManager.getInstance().getToken(), String.valueOf(v.treatInfo.useMoney), v.treatInfo.authorizeCode, v.type);
-                                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                                Call<BaseBean> withMoneyCall = XmdNetwork.getInstance().getService(SpaService.class)
+                                        .verifyWithMoneyCall(AccountManager.getInstance().getToken(), String.valueOf(v.treatInfo.useMoney), v.treatInfo.authorizeCode, v.type);
+                                XmdNetwork.getInstance().requestSync(withMoneyCall, new NetworkSubscriber<BaseBean>() {
                                     @Override
                                     public void onCallbackSuccess(BaseBean result) {
                                         // 核销成功
@@ -809,7 +807,7 @@ public class TradeManager {
         mPos.printRight("实收 " + Utils.moneyToStringEx(mTrade.getOnlinePayPaidMoney()) + " 元");
         mPos.printDivide();
 
-        mPos.printText("交易号:", mTrade.tradeNo);
+        mPos.printText("交易号:", TextUtils.isEmpty(mTrade.getOnlinePayId()) ? mTrade.tradeNo : mTrade.getOnlinePayId());
         mPos.printText("付款方式:", "小摩豆在线买单");
 
         String channel = Utils.getPayChannel(mTrade.getOnlinePayChannel());

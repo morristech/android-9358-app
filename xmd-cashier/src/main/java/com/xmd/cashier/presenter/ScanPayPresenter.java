@@ -127,6 +127,7 @@ public class ScanPayPresenter implements Presenter {
                     mTradeManager.getCurrentTrade().tradeTime = result.getRespData().createTime;
                     mTradeManager.getCurrentTrade().setOnlinePayPaidMoney(result.getRespData().payAmount);
                     mTradeManager.getCurrentTrade().setOnlinePayChannel(result.getRespData().payChannel);
+                    mTradeManager.getCurrentTrade().setOnlinePayId(result.getRespData().payId);
                     UiNavigation.gotoScanPayResultActivity(mContext, result.getRespData());
                     mView.finishSelf();
                 } else {
