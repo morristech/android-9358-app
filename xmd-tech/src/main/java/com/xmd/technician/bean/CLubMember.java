@@ -6,7 +6,7 @@ import com.xmd.technician.http.gson.BaseResult;
 /**
  * Created by Administrator on 2016/7/7.
  */
-public class CLubMember extends BaseResult  {
+public class CLubMember extends BaseResult {
     public String userType;
     public String id;
     public String phoneNum;
@@ -20,12 +20,12 @@ public class CLubMember extends BaseResult  {
     public CLubMember(String id, String userType, String avatarUrl, String name, String serialNo, String phoneNum) {
         this.userType = userType;
         this.avatarUrl = avatarUrl;
-        this.name = (name==null?"匿名":name);
+        this.name = (name == null ? "匿名" : name);
         this.serialNo = serialNo;
         this.phoneNum = phoneNum;
         this.id = id;
-        this.sortLetters = CharacterParser.getInstance().getSelling(name).substring(0,1).toUpperCase().matches("[A-Z]")?CharacterParser.getInstance().getSelling(name).substring(0,1).toUpperCase():"#";
-        }
+        this.sortLetters = CharacterParser.getInstance().getSelling(name).substring(0, 1).toUpperCase().matches("[A-Z]") ? CharacterParser.getInstance().getSelling(name).substring(0, 1).toUpperCase() : "#";
+    }
 
     public String getSortLetters() {
         return sortLetters;

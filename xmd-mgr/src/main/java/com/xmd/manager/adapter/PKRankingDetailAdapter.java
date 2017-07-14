@@ -18,7 +18,6 @@ import com.xmd.manager.widget.CircleImageView;
 
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -45,12 +44,13 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
         this.mData = data;
     }
 
-    public void setData(List<PKDetailListBean> data, int teamNumber,String teamFilter) {
+    public void setData(List<PKDetailListBean> data, int teamNumber, String teamFilter) {
         this.mData = data;
         this.mTeamNumber = teamNumber;
         this.mCurrentTeamFilter = teamFilter;
         notifyDataSetChanged();
     }
+
     public void setTeamFilter(TeamFilterListener listener) {
         this.mFilterListener = listener;
     }
@@ -58,6 +58,7 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
     public interface TeamFilterListener {
         void filterTeam(View view);
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
@@ -153,7 +154,7 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
                 detailViewHolder.tvRankingMemberNumber.setText(String.format("%s个", bean.commentStat));
             }
             if (null != mFilterListener) {
-                if(Utils.isNotEmpty(mCurrentTeamFilter)){
+                if (Utils.isNotEmpty(mCurrentTeamFilter)) {
                     detailViewHolder.tvSelectedTeam.setText(mCurrentTeamFilter);
                 }
                 detailViewHolder.llTeamFilter.setOnClickListener(v -> mFilterListener.filterTeam(detailViewHolder.llTeamFilter));

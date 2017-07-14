@@ -1,6 +1,5 @@
 package com.xmd.technician.window;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
-import com.example.xmd_m_comment.httprequest.ConstantResources;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.technician.Adapter.ExpandableClubEmployeeListViewAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -18,7 +17,6 @@ import com.xmd.technician.bean.ClubUserListBean;
 import com.xmd.technician.common.CharacterParser;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ClubEmployeeListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -30,7 +28,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,7 +87,7 @@ public class ContactsTechnicianFragment extends BaseFragment implements SwipeRef
 //                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_TECH);
 //                }
 //                startActivity(intent);
-                UINavigation.gotoCustomerDetailActivity(getActivity(),bean.id, ConstantResources.INTENT_TYPE_TECH,true);
+                UINavigation.gotoCustomerDetailActivity(getActivity(), bean.id, ConstantResources.INTENT_TYPE_TECH, true);
             }
         });
         technicianExpandList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {

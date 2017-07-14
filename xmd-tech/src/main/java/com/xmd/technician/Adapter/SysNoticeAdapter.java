@@ -13,14 +13,11 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
-
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
-
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.window.BrowserActivity;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Lhj on 16-5-13.
  */
-public class SysNoticeAdapter extends RecyclerView.Adapter{
+public class SysNoticeAdapter extends RecyclerView.Adapter {
     private static final byte TYPE_FOOTER = 0;
     private static final byte TYPE_ITEM = 1;
 
@@ -39,16 +36,16 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
 
     private View.OnClickListener mFooterClickListener;
 
-    public SysNoticeAdapter(Context context, String username, int chatType){
+    public SysNoticeAdapter(Context context, String username, int chatType) {
         mContext = context;
         mConversation = EMClient.getInstance().chatManager().getConversation(username, EaseCommonUtils.getConversationType(chatType), true);
     }
 
-    public void setOnFooterClickListener(View.OnClickListener listener){
+    public void setOnFooterClickListener(View.OnClickListener listener) {
         mFooterClickListener = listener;
     }
 
-    public void refreshList(){
+    public void refreshList() {
         mChatMessages = mConversation.getAllMessages().toArray(new EMMessage[0]);
         mConversation.markAllMessagesAsRead();
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, new Runnable() {
@@ -68,19 +65,19 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemViewType(int position) {
-        if(position + 1 == getItemCount()){
+        if (position + 1 == getItemCount()) {
             return TYPE_FOOTER;
-        }else {
+        } else {
             return TYPE_ITEM;
         }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == TYPE_ITEM){
+        if (viewType == TYPE_ITEM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.system_notice_item, parent, false);
             return new NoticeViewHolder(view);
-        }else {
+        } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer, parent, false);
             return new FooterViewHolder(view);
         }
@@ -88,7 +85,7 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof NoticeViewHolder){
+        if (holder instanceof NoticeViewHolder) {
             NoticeViewHolder viewHolder = (NoticeViewHolder) holder;
             EMMessage message = mChatMessages[mChatMessages.length - 1 - position];
 
@@ -99,10 +96,10 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
             viewHolder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(mContext, BrowserActivity.class);
                 intent.putExtra(BrowserActivity.EXTRA_SHOW_MENU, false);
-                intent.putExtra(BrowserActivity.EXTRA_URL, message.getStringAttribute(ChatConstant.KEY_LINK_URL,""));
+                intent.putExtra(BrowserActivity.EXTRA_URL, message.getStringAttribute(ChatConstant.KEY_LINK_URL, ""));
                 mContext.startActivity(intent);
             });
-        } else if(holder instanceof FooterViewHolder){
+        } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerHolder = (FooterViewHolder) holder;
             String desc = mContext.getResources().getString(R.string.list_item_loading);
             if (mChatMessages == null || mChatMessages.length == 0) {
@@ -113,7 +110,7 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
                 footerHolder.itemFooter.setOnClickListener(null);
             } else {
                 footerHolder.itemFooter.setOnClickListener(v -> {
-                    if(mFooterClickListener != null){
+                    if (mFooterClickListener != null) {
                         mFooterClickListener.onClick(v);
                     }
                 });
@@ -128,11 +125,14 @@ public class SysNoticeAdapter extends RecyclerView.Adapter{
     }
 
 
-    public class NoticeViewHolder extends RecyclerView.ViewHolder{
+    public class NoticeViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.title) TextView mTitle;
-        @BindView(R.id.summary) TextView mSummary;
-        @BindView(R.id.image) ImageView mImage;
+        @BindView(R.id.title)
+        TextView mTitle;
+        @BindView(R.id.summary)
+        TextView mSummary;
+        @BindView(R.id.image)
+        ImageView mImage;
 
         public NoticeViewHolder(View itemView) {
             super(itemView);

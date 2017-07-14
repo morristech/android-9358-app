@@ -6,7 +6,7 @@ package com.xmd.technician.chat.event;
 
 public class ReceiveMessage {
 
-    public ReceiveMessage(){
+    public ReceiveMessage() {
 
     }
 

@@ -1,6 +1,6 @@
 package com.xmd.technician.http.gson;
 
-import com.xmd.technician.bean.ContactPermissionInfo;
+import com.xmd.permission.ContactPermissionInfo;
 
 /**
  * Created by ZR on 17-3-3.

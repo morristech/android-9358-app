@@ -20,15 +20,15 @@ public abstract class SimpleEMMessageListener implements EMMessageListener {
 
     }
 
-    @Override
-    public void onMessageReadAckReceived(List<EMMessage> list) {
-
-    }
-
-    @Override
-    public void onMessageDeliveryAckReceived(List<EMMessage> list) {
-
-    }
+//    @Override
+//    public void onMessageReadAckReceived(List<EMMessage> list) {
+//
+//    }
+//
+//    @Override
+//    public void onMessageDeliveryAckReceived(List<EMMessage> list) {
+//
+//    }
 
     @Override
     public void onMessageChanged(EMMessage emMessage, Object o) {

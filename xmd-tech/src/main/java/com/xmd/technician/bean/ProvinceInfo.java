@@ -30,13 +30,11 @@ public class ProvinceInfo {
         this.name = name;
     }
 
-    public String getProvinceCode()
-    {
+    public String getProvinceCode() {
         return provinceCode;
     }
 
-    public void setProvinceCode(String provinceCode)
-    {
+    public void setProvinceCode(String provinceCode) {
         this.provinceCode = provinceCode;
     }
 

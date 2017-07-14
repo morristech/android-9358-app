@@ -1,7 +1,6 @@
 package com.xmd.app.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -17,8 +16,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
-
-import com.xmd.app.R;
 
 /**
  * Created by Lhj on 17-7-1.
@@ -81,7 +78,7 @@ public class RoundImageView extends ImageView {
 //                                        .getDisplayMetrics()));// 默认为10dp
 //        type = a.getInt(R.styleable.RoundImageView_roundType, TYPE_CIRCLE);// 默认为Circle
 
- //       a.recycle();
+        //       a.recycle();
     }
 
     public RoundImageView(Context context) {

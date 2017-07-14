@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/small_space"
             android:layout_toLeftOf="@id/avatar"
-            android:background="@drawable/sent_text"
+            android:background="@drawable/send_wrapper"
             >
 
             <ImageView
@@ -42,7 +42,7 @@
                 android:layout_centerInParent="true"
                 android:paddingLeft="12dp"
                 android:paddingRight="10dp"
-                android:src="@drawable/ease_chatto_voice_playing"/>
+                android:src="@drawable/message_voice_send" />
         </RelativeLayout>
 
 

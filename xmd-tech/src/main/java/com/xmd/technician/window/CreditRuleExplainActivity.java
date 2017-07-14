@@ -1,6 +1,7 @@
 package com.xmd.technician.window;
 
 import android.os.Bundle;
+
 import com.xmd.technician.R;
 
 /**
@@ -14,7 +15,8 @@ public class CreditRuleExplainActivity extends BaseActivity {
         setContentView(R.layout.activity_credit_rule);
         initView();
     }
-    private void initView(){
+
+    private void initView() {
         setBackVisible(true);
         setTitle("积分规则");
     }

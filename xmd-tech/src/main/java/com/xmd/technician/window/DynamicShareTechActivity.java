@@ -27,7 +27,6 @@ import com.xmd.technician.widget.RoundImageView;
 import java.util.EnumMap;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -82,47 +81,48 @@ public class DynamicShareTechActivity extends BaseActivity {
         userCanShare = intent.getBooleanExtra(Constant.TECH_CAN_SHARE, false);
         codeUrl = intent.getStringExtra(Constant.TECH_ShARE_CODE_IMG);
         Glide.with(this).load(userHead).into(userCardHead);
-        userCardName.setText(Utils.StrSubstring(10,userName,true));
+        userCardName.setText(Utils.StrSubstring(10, userName, true));
         userCardClub.setText(userClubName);
 
-    if(userCanShare){
-        userShareBtn.setEnabled(true);
-    }else{
-        userShareBtn.setEnabled(false);
-    }
-    if(Utils.isNotEmpty(userNum)){
-        userCardNum.setText(userNum);
-    }else{
-        llTechCode.setVisibility(View.GONE);
-    }
-    if(Utils.isNotEmpty(codeUrl)){
-        Glide.with(DynamicShareTechActivity.this).load(codeUrl).error(ResourceUtils.getDrawable(R.drawable.icon22)).into(userShareImg);
-    }else {
-        userShareImg.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                if(mQRBitmap==null){
-                    try {
-                        mQRBitmap=encodeAsBitmap(0, codeUrl, userShareImg.getWidth());
-                        userShareImg.setImageBitmap(mQRBitmap);
-                    } catch (WriterException e) {
-                        e.printStackTrace();
+        if (userCanShare) {
+            userShareBtn.setEnabled(true);
+        } else {
+            userShareBtn.setEnabled(false);
+        }
+        if (Utils.isNotEmpty(userNum)) {
+            userCardNum.setText(userNum);
+        } else {
+            llTechCode.setVisibility(View.GONE);
+        }
+        if (Utils.isNotEmpty(codeUrl)) {
+            Glide.with(DynamicShareTechActivity.this).load(codeUrl).error(ResourceUtils.getDrawable(R.drawable.icon22)).into(userShareImg);
+        } else {
+            userShareImg.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    if (mQRBitmap == null) {
+                        try {
+                            mQRBitmap = encodeAsBitmap(0, codeUrl, userShareImg.getWidth());
+                            userShareImg.setImageBitmap(mQRBitmap);
+                        } catch (WriterException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+
+        }
 
     }
-
-}
 
     @OnClick(R.id.user_share_btn)
     public void shareUser() {
-        ShareController.doShare("",userShareUrl,SharedPreferenceHelper.getUserName() + "欢迎您","点我聊聊，更多优惠，更好服务！",Constant.SHARE_BUSINESS_CARD,"");
+        ShareController.doShare("", userShareUrl, SharedPreferenceHelper.getUserName() + "欢迎您", "点我聊聊，更多优惠，更好服务！", Constant.SHARE_BUSINESS_CARD, "");
     }
-    private Bitmap encodeAsBitmap(int logoResourceId,String contentString,int dimension) throws WriterException {
-        Map<EncodeHintType,Object> hints = new EnumMap<EncodeHintType,Object>(EncodeHintType.class);
+
+    private Bitmap encodeAsBitmap(int logoResourceId, String contentString, int dimension) throws WriterException {
+        Map<EncodeHintType, Object> hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         BitMatrix result;
         try {

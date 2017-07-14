@@ -8,7 +8,7 @@ import java.util.List;
  * Created by sdcm on 17-5-12.
  */
 
-public class MarketingListResult extends BaseResult{
+public class MarketingListResult extends BaseResult {
 
 
     public List<MarketingBean> respData;

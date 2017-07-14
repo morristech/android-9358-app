@@ -5,19 +5,12 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.manager.R;
-import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.ConversationListResult;
 import com.xmd.manager.beans.EmchatMsgResult;
-import com.xmd.manager.chat.EmchatConstant;
-import com.xmd.manager.chat.EmchatUserHelper;
-import com.xmd.manager.common.ResourceUtils;
-import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
-import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.widget.ClearableEditText;
 import com.xmd.manager.widget.DividerItemDecoration;
 
@@ -80,34 +73,34 @@ public class ConversationListActivity extends BaseListActivity<EMConversation, C
 
     @Override
     public void onItemClicked(EMConversation conversation) {
-        String username = conversation.getUserName();
-        if (username.equals(SharedPreferenceHelper.getEmchatId()))
-            makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
-        else if (username.equals(EmchatConstant.MESSAGE_SYSTEM_NOTICE)) {
-//            Intent intent = new Intent(this, SysNoticeListActivity.class);
-//            // it's single chat
-//            intent.putExtra(EmchatConstant.EMCHAT_ID, username);
-//            startActivity(intent);
-        } else {
-            if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
-                if (Utils.isNotEmpty(conversation.getLastMessage().getTo())) {
-                    EmchatUserHelper.startToChat(username, "", "", null, EmchatConstant.MESSAGE_TECH_TYPE);
-                } else {
-                    EmchatUserHelper.startToChat(username, "", "");
-                }
-
-            } else {
-                try {
-                    if (!TextUtils.isEmpty(conversation.getLastMessage().getStringAttribute(RequestConstant.KEY_TECH_ID))) {
-                        SharedPreferenceHelper.setChatUserType(conversation.getLastMessage().getTo(), EmchatConstant.MESSAGE_TECH_TYPE);
-                        EmchatUserHelper.startToChat(username, "", "", null, EmchatConstant.MESSAGE_TECH_TYPE);
-                    }
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                    EmchatUserHelper.startToChat(username, "", "");
-                }
-            }
-        }
+//        String username = conversation.getUserName();
+//        if (username.equals(SharedPreferenceHelper.getEmchatId()))
+//            makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
+//        else if (username.equals(EmchatConstant.MESSAGE_SYSTEM_NOTICE)) {
+////            Intent intent = new Intent(this, SysNoticeListActivity.class);
+////            // it's single chat
+////            intent.putExtra(EmchatConstant.EMCHAT_ID, username);
+////            startActivity(intent);
+//        } else {
+//            if (conversation.getLastMessage().getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
+//                if (Utils.isNotEmpty(conversation.getLastMessage().getTo())) {
+//                    EmchatUserHelper.startToChat(username, "", "", null, EmchatConstant.MESSAGE_TECH_TYPE);
+//                } else {
+//                    EmchatUserHelper.startToChat(username, "", "");
+//                }
+//
+//            } else {
+//                try {
+//                    if (!TextUtils.isEmpty(conversation.getLastMessage().getStringAttribute(RequestConstant.KEY_TECH_ID))) {
+//                        SharedPreferenceHelper.setChatUserType(conversation.getLastMessage().getTo(), EmchatConstant.MESSAGE_TECH_TYPE);
+//                        EmchatUserHelper.startToChat(username, "", "", null, EmchatConstant.MESSAGE_TECH_TYPE);
+//                    }
+//                } catch (HyphenateException e) {
+//                    e.printStackTrace();
+//                    EmchatUserHelper.startToChat(username, "", "");
+//                }
+//            }
+//        }
     }
 
     @Override

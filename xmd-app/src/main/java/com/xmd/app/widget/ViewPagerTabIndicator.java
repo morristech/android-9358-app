@@ -20,7 +20,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.xmd.app.R;
 import com.xmd.app.utils.ResourceUtils;
 
@@ -298,10 +297,10 @@ public class ViewPagerTabIndicator extends FrameLayout {
         textView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-            if (mOnTabclickListener != null) {
-                mOnTabclickListener.onTabClick(index);
-            }
-            updateSelectedPosition(index);
+                if (mOnTabclickListener != null) {
+                    mOnTabclickListener.onTabClick(index);
+                }
+                updateSelectedPosition(index);
             }
         });
 

@@ -26,9 +26,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
-import com.example.xmd_m_comment.CommentDetailActivity;
-import com.example.xmd_m_comment.CommentListActivity;
-import com.example.xmd_m_comment.bean.CommentBean;
+import com.xmd.m.comment.CommentDetailActivity;
+import com.xmd.m.comment.CommentListActivity;
+import com.xmd.m.comment.bean.CommentBean;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.BuildConfig;
 import com.xmd.manager.ClubData;

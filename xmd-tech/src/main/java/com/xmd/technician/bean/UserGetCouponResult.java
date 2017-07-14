@@ -1,13 +1,12 @@
 package com.xmd.technician.bean;
 
-import com.hyphenate.chat.EMMessage;
 import com.xmd.technician.http.gson.BaseResult;
 
 /**
  * Created by Lhj on 2017/1/12.
  */
 
-public class UserGetCouponResult extends BaseResult{
+public class UserGetCouponResult extends BaseResult {
     /**
      * respData : {"userActId":"818657996652421120"}
      */
@@ -25,9 +24,9 @@ public class UserGetCouponResult extends BaseResult{
         public String userActId;
     }
 
-    public UserGetCouponResult(String content,String actId,String techCode){
+    public UserGetCouponResult(String content, String actId, String techCode) {
         this.content = content;
-        this.actId =actId;
+        this.actId = actId;
         this.techCode = techCode;
     }
 }

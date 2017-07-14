@@ -1221,7 +1221,7 @@ public class RequestController extends AbstractController {
 //     * @param
 //     */
 //    private void doGetTechInfoDetail(Map<String, String> params) {
-//        Call<TechDetailResult> call = getSpaService().getTechInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
+//        Call<TechDetailResult> call = getSpaService().getTechInfoDetail(RequestConstant.SESSION_TYPE, params.create(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
 //        call.enqueue(new TokenCheckedCallback<TechDetailResult>() {
 //            @Override
 //            protected void postResult(TechDetailResult result) {
@@ -1237,7 +1237,7 @@ public class RequestController extends AbstractController {
 //     * @param
 //     */
 //    private void doGetManagerInfoDetail(Map<String, String> params) {
-//        Call<ManagerDetailResult> call = getSpaService().getManagerInfoDetail(RequestConstant.SESSION_TYPE, params.get(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
+//        Call<ManagerDetailResult> call = getSpaService().getManagerInfoDetail(RequestConstant.SESSION_TYPE, params.create(RequestConstant.KEY_ID), LoginTechnician.getInstance().getToken());
 //        call.enqueue(new TokenCheckedCallback<ManagerDetailResult>() {
 //            @Override
 //            protected void postResult(ManagerDetailResult result) {
@@ -1584,8 +1584,13 @@ public class RequestController extends AbstractController {
     }
 
     private void getClubUserCoupon(Map<String, String> params) {
-        Call<UserGetCouponResult> call = getSpaService().clubUserCoupon(SharedPreferenceHelper.getUserToken(), params.get(RequestConstant.KEY_USER_COUPON_ACT_ID),
-                params.get(RequestConstant.KEY_USER_COUPON_CHANEL), params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_ID), SharedPreferenceHelper.getInviteCode(), SharedPreferenceHelper.getInviteCode());
+        Call<UserGetCouponResult> call = getSpaService().clubUserCoupon(
+                SharedPreferenceHelper.getUserToken(),
+                params.get(RequestConstant.KEY_USER_COUPON_ACT_ID),
+                params.get(RequestConstant.KEY_USER_COUPON_CHANEL),
+                params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_ID),
+                SharedPreferenceHelper.getInviteCode(),
+                SharedPreferenceHelper.getInviteCode());
         call.enqueue(new TokenCheckedCallback<UserGetCouponResult>() {
             @Override
             protected void postResult(UserGetCouponResult result) {
@@ -1860,7 +1865,7 @@ public class RequestController extends AbstractController {
                 } else {
                     try {
                         //RxBus.getInstance().post(new Throwable(response.errorBody().string()));
-                        Logger.e("get app update config failed:" + response.errorBody().string());
+                        Logger.e("create app update config failed:" + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -1870,7 +1875,7 @@ public class RequestController extends AbstractController {
             @Override
             public void onFailure(Call<AppUpdateConfigResult> call, Throwable t) {
 //                RxBus.getInstance().post(t);
-                Logger.e("get app update config failed:" + t.getMessage());
+                Logger.e("create app update config failed:" + t.getMessage());
             }
         });
     }
@@ -1919,8 +1924,8 @@ public class RequestController extends AbstractController {
     private void getPayNotify(Map<String, Object> params) {
 //        Call<GetPayNotifyListResult> call = getSpaService().getPayNotifyList(
 //                SharedPreferenceHelper.getUserToken(),
-//                (String) params.get(RequestConstant.KEY_START_DATE),
-//                (String) params.get(RequestConstant.KEY_END_DATE),
+//                (String) params.create(RequestConstant.KEY_START_DATE),
+//                (String) params.create(RequestConstant.KEY_END_DATE),
 //                "1", String.valueOf(Integer.MAX_VALUE));
 //        call.enqueue(new TokenCheckedCallback<GetPayNotifyListResult>() {
 //            @Override
@@ -2037,7 +2042,7 @@ public class RequestController extends AbstractController {
 
 //    // 查询同某个客户是否打过招呼
 //    private void checkHelloRecently(Map<String, String> params) {
-//        Call<HelloCheckRecentlyResult> call = getSpaService().checkHelloRecently(params.get(RequestConstant.KEY_NEW_CUSTOMER_ID),
+//        Call<HelloCheckRecentlyResult> call = getSpaService().checkHelloRecently(params.create(RequestConstant.KEY_NEW_CUSTOMER_ID),
 //                SharedPreferenceHelper.getUserToken());
 //        call.enqueue(new TokenCheckedCallback<HelloCheckRecentlyResult>() {
 //            @Override

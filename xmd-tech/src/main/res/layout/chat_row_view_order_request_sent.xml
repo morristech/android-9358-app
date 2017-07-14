@@ -33,7 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/avatar"
-            android:background="@drawable/img_order_request"
             android:minWidth="@dimen/bubble_width"
             android:paddingBottom="8dp"
             android:paddingLeft="54dp"

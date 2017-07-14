@@ -7,7 +7,8 @@ import com.hyphenate.chat.EMMessage;
  */
 public class CancelGame {
     public EMMessage message;
-            public CancelGame(EMMessage message){
-                this.message = message;
-            }
+
+    public CancelGame(EMMessage message) {
+        this.message = message;
+    }
 }

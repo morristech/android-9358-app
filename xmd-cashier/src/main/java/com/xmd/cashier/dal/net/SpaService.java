@@ -288,8 +288,8 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_VERIFY_PAID_ORDER)
     Call<BaseBean> verifyPaidOrderCall(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                         @Field(RequestConstant.KEY_ORDER_NO) String orderNo,
-                                         @Field(RequestConstant.KEY_PROCESS_TYPE) String processType);
+                                       @Field(RequestConstant.KEY_ORDER_NO) String orderNo,
+                                       @Field(RequestConstant.KEY_PROCESS_TYPE) String processType);
 
     /**
      * 核销转盘奖品
@@ -332,9 +332,9 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_VERIFY_COMMON)
     Call<BaseBean> verifyWithMoneyCall(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                         @Field(RequestConstant.KEY_AMOUNT) String amount,
-                                         @Field(RequestConstant.KEY_CODE) String code,
-                                         @Field(RequestConstant.KEY_TYPE) String type);
+                                       @Field(RequestConstant.KEY_AMOUNT) String amount,
+                                       @Field(RequestConstant.KEY_CODE) String code,
+                                       @Field(RequestConstant.KEY_TYPE) String type);
 
     /**
      * 任意核销
@@ -351,7 +351,7 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_VERIFY_COMMON)
     Call<BaseBean> verifyCommonCall(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                      @Field(RequestConstant.KEY_CODE) String code);
+                                    @Field(RequestConstant.KEY_CODE) String code);
 
     /*****************************************
      * Pos接单提醒

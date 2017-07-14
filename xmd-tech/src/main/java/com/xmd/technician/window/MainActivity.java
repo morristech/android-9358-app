@@ -8,34 +8,36 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crazyman.library.PermissionTool;
-import com.example.xmd_m_comment.bean.UserInfoBean;
-import com.example.xmd_m_comment.event.UserInfoEvent;
 import com.hyphenate.chat.EMClient;
+import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.m.network.BaseBean;
+import com.xmd.chat.event.EventTotalUnreadCount;
+import com.xmd.chat.view.ConversationListFragment;
+import com.xmd.m.comment.bean.UserInfoBean;
+import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.notify.display.XmdDisplay;
-import com.xmd.m.notify.redpoint.RedPointService;
-import com.xmd.m.notify.redpoint.RedPointServiceImpl;
+import com.xmd.permission.BusinessPermissionManager;
+import com.xmd.permission.CheckBusinessPermission;
+import com.xmd.permission.IBusinessPermissionManager;
+import com.xmd.permission.PermissionConstants;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
-import com.xmd.technician.bean.UserInfo;
-import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.runtimepermissions.PermissionsResultAction;
-import com.xmd.technician.common.Callback;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
@@ -45,19 +47,13 @@ import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.permission.BusinessPermissionManager;
-import com.xmd.technician.permission.CheckBusinessPermission;
-import com.xmd.technician.permission.IBusinessPermissionManager;
-import com.xmd.technician.permission.PermissionConstants;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,28 +65,18 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     public static final int REQUEST_CODE_EDIT_TECH_INFO = 2;
     public static final int REQUEST_CODE_CALL_PERMISSION = 3;
 
-    private List<BaseFragment> mFragmentList = new LinkedList<BaseFragment>();
+    private List<Fragment> mFragmentList = new LinkedList<>();
     private List<View> mBottomBarButtonList = new LinkedList<View>();
 
     private MainFragment mHomeFragment;
-    private ChatFragment mChatFragment;
-    private ContactsSummaryFragment mContactsSummaryFragment;
-    private ShareCouponFragment mMarketingFragment;
-
 
     private int mCurrentTabIndex = -1;
-    private Subscription mSysNoticeNotifySubscription;
     private Subscription mGetUserIsBindWXSubscription;
-    //环信
-    private Subscription mUnreadEmchatCountSubscription;
-    private ChatHelper mChatHelper;
+
     private String contactPhone;
 
     @BindView(R.id.main_unread_message)
     TextView mUnreadMsgLabel;
-
-    private RedPointService redPointService = RedPointServiceImpl.getInstance();
-
 
     private IBusinessPermissionManager permissionManager = BusinessPermissionManager.getInstance();
 
@@ -100,10 +86,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         checkLoginStatus();
-        mChatHelper = ChatHelper.getInstance();
         permissionManager.loadPermissions(new Callback<Void>() {
             @Override
-            public void onResult(Throwable error, Void result) {
+            public void onResponse(Void result, Throwable error) {
                 if (error == null) {
                     addFragmentHome();
                     addFragmentMessage();
@@ -122,9 +107,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
             }
         });
 
-//        mSysNoticeNotifySubscription = RxBus.getInstance().toObservable(SystemNoticeResult.class).subscribe(
-//                result -> updateUnreadMsgLabel(mChatHelper.getUnreadMessageCount()));
-
         mGetUserIsBindWXSubscription = RxBus.getInstance().toObservable(IsBindResult.class).subscribe(
                 result -> handlerIsBindResult(result)
         );
@@ -132,8 +114,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         requestPermissions();
         //检查更新
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
-        redPointService.bind(Constant.RED_POINT_CHAT_ALL_UNREAD, mUnreadMsgLabel, RedPointService.SHOW_TYPE_DIGITAL);
-        EventBus.getDefault().register(this);
+
+        EventBusSafeRegister.register(this);
     }
 
     @TargetApi(23)
@@ -194,50 +176,43 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE)
     public void addFragmentMessage() {
-        mChatFragment = (ChatFragment) addFragment(R.id.main_button_message, ChatFragment.class);
-//        updateUnreadMsgLabel(mChatHelper.getUnreadMessageCount());
-//        mUnreadEmchatCountSubscription = RxBus.getInstance().toObservable(EventUnreadMessageCount.class).subscribe(
-//                unreadMessageCount -> {
-//                    updateUnreadMsgLabel(unreadMessageCount.getUnread());
-//                }
-//        );
+        addFragment(R.id.main_button_message, ConversationListFragment.class);
     }
 
     @CheckBusinessPermission(PermissionConstants.CONTACTS)
     public void addFragmentContacts() {
-        mContactsSummaryFragment = (ContactsSummaryFragment) addFragment(R.id.main_button_contacts, ContactsSummaryFragment.class);
-
+        addFragment(R.id.main_button_contacts, ContactsSummaryFragment.class);
     }
 
     @CheckBusinessPermission(PermissionConstants.MARKETING)
     public void addFragmentMarketing() {
-        mMarketingFragment = (ShareCouponFragment) addFragment(R.id.main_button_marketing, ShareCouponFragment.class);
+        addFragment(R.id.main_button_marketing, ShareCouponFragment.class);
     }
 
-    private BaseFragment addFragment(int id, Class clazz) {
+    private Fragment addFragment(int id, Class clazz) {
         View view = findViewById(id);
         if (view != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            BaseFragment baseFragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(getFragmentTagById(id));
-            if (baseFragment == null) {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(getFragmentTagById(id));
+            if (fragment == null) {
                 try {
-                    baseFragment = (BaseFragment) clazz.newInstance();
-                    ft.add(R.id.fragment_container, baseFragment, getFragmentTagById(id));
+                    fragment = (Fragment) clazz.newInstance();
+                    ft.add(R.id.fragment_container, fragment, getFragmentTagById(id));
                 } catch (Exception e) {
                     Logger.e("init fragment failed:" + e.getLocalizedMessage());
                     return null;
                 }
             }
-            ft.hide(baseFragment);
+            ft.hide(fragment);
             ft.commit();
 
-            mFragmentList.add(baseFragment);
+            mFragmentList.add(fragment);
 
             view.setVisibility(View.VISIBLE);
             mBottomBarButtonList.add(view);
             final int index = mFragmentList.size() - 1;
             view.setOnClickListener(v -> switchFragment(index));
-            return baseFragment;
+            return fragment;
         }
         return null;
     }
@@ -255,12 +230,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(
-                mSysNoticeNotifySubscription,
-                mGetUserIsBindWXSubscription,
-                mUnreadEmchatCountSubscription);
-        redPointService.unBind(Constant.RED_POINT_CHAT_ALL_UNREAD, mUnreadMsgLabel);
-        EventBus.getDefault().unregister(this);
+        RxBus.getInstance().unsubscribe(mGetUserIsBindWXSubscription);
+        EventBusSafeRegister.unregister(this);
     }
 
     public void switchFragment(int index) {
@@ -283,7 +254,9 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     /**
      * 刷新未读消息数
      */
-    public void updateUnreadMsgLabel(int count) {
+    @Subscribe
+    public void updateUnreadMsgLabel(EventTotalUnreadCount event) {
+        int count = event.getCount();
         if (count > 0) {
             if (count > 99) {
                 mUnreadMsgLabel.setText("99+");
@@ -302,9 +275,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         } else {
             SharedPreferenceHelper.setBindSuccess(false);
         }
-
     }
-
 
     public int getFragmentSize() {
         return mFragmentList.size();
@@ -340,7 +311,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                     this.makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
                     return;
                 } else {
-                    UINavigation.gotoChatActivity(this, Utils.wrapChatParams(event.bean.emChatId, event.bean.emChatName, event.bean.chatHeadUrl, event.bean.contactType));
+                    UINavigation.gotoChatActivity(this, event.bean.emChatId);
                 }
                 break;
             case 2://发短信

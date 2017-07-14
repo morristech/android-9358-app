@@ -1,7 +1,7 @@
 package com.xmd.manager.service.response;
 
 
-import com.hyphenate.chat.EMMessage;
+import com.xmd.manager.beans.CouponInfo;
 
 /**
  * Created by Administrator on 2017/1/9.
@@ -12,10 +12,8 @@ public class UserGetCouponResult extends BaseResult {
      * respData : {"userActId":"818657996652421120"}
      */
 
+    public CouponInfo couponInfo;
     public RespDataBean respData;
-    public String actId;
-    public String content;
-    public EMMessage mMessage;
 
     public static class RespDataBean {
         /**
@@ -25,14 +23,9 @@ public class UserGetCouponResult extends BaseResult {
         public String userActId;
     }
 
-    public UserGetCouponResult(RespDataBean respDate, EMMessage emMessage) {
-        this.statusCode = 200;
+    public UserGetCouponResult(CouponInfo couponInfo, RespDataBean respDate) {
+        this.couponInfo = couponInfo;
         this.respData = respDate;
-        this.mMessage = emMessage;
-    }
-
-    public UserGetCouponResult(EMMessage msg) {
-        this.mMessage = msg;
     }
 
 }

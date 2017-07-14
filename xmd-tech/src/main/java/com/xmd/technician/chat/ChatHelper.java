@@ -23,6 +23,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.util.EMLog;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatMessageFactory;
@@ -42,7 +43,6 @@ import com.xmd.technician.chat.receiver.CallReceiver;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.chat.utils.PreferenceManager;
 import com.xmd.technician.chat.utils.UserUtils;
-import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.window.MainActivity;
@@ -200,7 +200,7 @@ public class ChatHelper {
             for (EMConversation conversation : getAllConversationList()) {
                 EMMessage emMessage = conversation.getLatestMessageFromOthers();
                 if (emMessage != null) {
-                    ChatMessage chatMessage = ChatMessageFactory.get(emMessage);
+                    ChatMessage chatMessage = ChatMessageFactory.create(emMessage);
                     if (chatMessage.getUserId() != null) {
                         User user = new User(chatMessage.getUserId());
                         user.setName(chatMessage.getUserName());
@@ -291,7 +291,7 @@ public class ChatHelper {
                 } else {
                     String chatUsename = null;
                     List<String> notNotifyIds = null;
-                    // get user or group id which was blocked to show message notifications
+                    // create user or group id which was blocked to show message notifications
                     if (message.getChatType() == EMMessage.ChatType.Chat) {
                         chatUsename = message.getFrom();
                         notNotifyIds = ChatModel.getDisabledIds();
@@ -666,7 +666,7 @@ public class ChatHelper {
 
 
                     //更新用户信息
-                    ChatMessage chatMessage = ChatMessageFactory.get(message);
+                    ChatMessage chatMessage = ChatMessageFactory.create(message);
 //                    XLogger.i("tag:" + chatMessage.getTag());
 //                    XLogger.i("userId:" + chatMessage.getUserId());
 //                    XLogger.i("userName:" + chatMessage.getUserName());
@@ -759,7 +759,7 @@ public class ChatHelper {
     }
 
     /**
-     * get instance of EaseNotifier
+     * create instance of EaseNotifier
      *
      * @return
      */
@@ -796,7 +796,7 @@ public class ChatHelper {
     }
 
     /**
-     * get contact list
+     * create contact list
      *
      * @return
      */
@@ -824,7 +824,7 @@ public class ChatHelper {
     }
 
     /**
-     * get current user's id
+     * create current user's id
      */
     public String getCurrentUserName() {
         if (username == null) {

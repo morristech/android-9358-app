@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/select_time_padding"
-        android:background="@drawable/icon_checkbox"/>
+        android:background="@drawable/icon_checkbox" />
 
     <TextView
         android:id="@+id/coupon_name_text"
@@ -23,7 +23,7 @@
         android:layout_toRightOf="@+id/check_image"
         tools:text="20元现金券"
         android:textSize="@dimen/middle_text_size"
-        android:textColor="@color/colorCustomerCount"/>
+        android:textColor="@color/colorCustomerCount" />
 
     <TextView
         android:id="@+id/coupon_type_text"
@@ -32,7 +32,7 @@
         android:layout_alignParentRight="true"
         tools:text="20元现金券"
         android:textSize="@dimen/fontNormal"
-        android:textColor="@color/light_red"/>
+        android:textColor="@color/light_red" />
 
     <TextView
         android:id="@+id/coupon_remark_text"
@@ -44,12 +44,12 @@
         android:layout_below="@+id/coupon_name_text"
         tools:text="20元现金券"
         android:textSize="@dimen/fontMiddle"
-        android:textColor="@color/colorBody"/>
+        android:textColor="@color/colorBody" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/dash_line_bg"
-        android:layerType="software"/>
+        android:layerType="software" />
 </RelativeLayout>

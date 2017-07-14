@@ -25,7 +25,7 @@ public class EaseLoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
     private int height;
     private Context context;
 
-    public EaseLoadLocalBigImgTask(Context context,String path, ScaleView photoView,
+    public EaseLoadLocalBigImgTask(Context context, String path, ScaleView photoView,
                                    ProgressBar pb, int width, int height) {
         this.context = context;
         this.path = path;

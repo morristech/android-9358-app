@@ -18,7 +18,6 @@ import com.xmd.technician.msgctrl.RxBus;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;

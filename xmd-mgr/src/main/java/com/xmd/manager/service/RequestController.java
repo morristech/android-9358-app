@@ -2,14 +2,13 @@ package com.xmd.manager.service;
 
 import android.os.Message;
 
-import com.example.xmd_m_comment.bean.CommentListResult;
-import com.hyphenate.chat.EMMessage;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
 import com.xmd.manager.SettingFlags;
 import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.CheckCouponResult;
 import com.xmd.manager.beans.CheckInfoList;
+import com.xmd.manager.beans.CouponInfo;
 import com.xmd.manager.beans.Customer;
 import com.xmd.manager.beans.IndexOrderData;
 import com.xmd.manager.beans.OrderDetailResult;
@@ -105,7 +104,6 @@ import com.xmd.manager.service.response.UserCouponViewResult;
 import com.xmd.manager.service.response.UserEditGroupResult;
 import com.xmd.manager.service.response.UserGetCouponResult;
 import com.xmd.manager.service.response.UserGroupDetailListResult;
-
 import com.xmd.manager.service.response.UserGroupSaveResult;
 import com.xmd.manager.service.response.VerificationCouponDetailResult;
 import com.xmd.manager.service.response.VerificationRecordDetailResult;
@@ -1547,7 +1545,7 @@ public class RequestController extends AbstractController {
         });
     }
 
-    private void getGMessageStatSwitch(){
+    private void getGMessageStatSwitch() {
         Call<GMessageStatSwitchResult> call = getSpaService().getGMessageStatSwitch(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<GMessageStatSwitchResult>() {
@@ -2333,13 +2331,13 @@ public class RequestController extends AbstractController {
         call.enqueue(new TokenCheckedCallback<UserGetCouponResult>() {
             @Override
             protected void postResult(UserGetCouponResult result) {
-                UserGetCouponResult resultDate = new UserGetCouponResult(result.respData, (EMMessage) params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE));
+                UserGetCouponResult resultDate = new UserGetCouponResult((CouponInfo) params.get(RequestConstant.KEY_USER_COUPON_INFO), result.respData);
                 RxBus.getInstance().post(resultDate);
             }
 
             @Override
             protected void postError(String errorMsg) {
-                UserGetCouponResult result = new UserGetCouponResult((EMMessage) params.get(RequestConstant.KEY_USER_COUPON_EMCHAT_MESSAGE));
+                UserGetCouponResult result = new UserGetCouponResult((CouponInfo) params.get(RequestConstant.KEY_USER_COUPON_INFO), null);
                 RxBus.getInstance().post(result);
             }
         });
@@ -2641,7 +2639,7 @@ public class RequestController extends AbstractController {
     }
 
     //会所标签
-    private void getGroupTagList(){
+    private void getGroupTagList() {
         Call<GroupTagListResult> call = getSpaService().getGroupTagList(SharedPreferenceHelper.getUserToken(), RequestConstant.SESSION_TYPE);
 
         call.enqueue(new TokenCheckedCallback<GroupTagListResult>() {
@@ -2660,22 +2658,21 @@ public class RequestController extends AbstractController {
     }
 
     /**
-     *     @FormUrlEncoded
-     @POST(RequestConstant.URL_COMMENT_LIST)
-     Observable<CommentListResult> getCommentList(@Field("page") String page,
-     @Field("pageSize") String pageSize,
-     @Field("startDate") String startDate,
-     @Field("endDate") String endDate,
-     @Field("techId") String techId,
-     @Field("type") String type,
-     @Field("userName") String userName,
-     @Field("returnStatus") String returnStatus,
-     @Field("status") String status,
-     @Field("commentType") String commentType);
+     * @FormUrlEncoded
+     * @POST(RequestConstant.URL_COMMENT_LIST) Observable<CommentListResult> getCommentList(@Field("page") String page,
+     * @Field("pageSize") String pageSize,
+     * @Field("startDate") String startDate,
+     * @Field("endDate") String endDate,
+     * @Field("techId") String techId,
+     * @Field("type") String type,
+     * @Field("userName") String userName,
+     * @Field("returnStatus") String returnStatus,
+     * @Field("status") String status,
+     * @Field("commentType") String commentType);
      */
-    private void getBadCommentAndComplaint(){
-        Call<CommentAndComplaintListResult> call = getSpaService().getCommentAndComplaintList(SharedPreferenceHelper.getUserToken(),"1","2","2015-01-01", DateUtil.getCurrentDate(),
-                "","1","","N","valid","");
+    private void getBadCommentAndComplaint() {
+        Call<CommentAndComplaintListResult> call = getSpaService().getCommentAndComplaintList(SharedPreferenceHelper.getUserToken(), "1", "2", "2015-01-01", DateUtil.getCurrentDate(),
+                "", "1", "", "N", "valid", "");
 
         call.enqueue(new TokenCheckedCallback<CommentAndComplaintListResult>() {
             @Override

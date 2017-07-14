@@ -38,7 +38,7 @@
                 android:id="@+id/tv_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ease_location_msg"
+                android:background="@drawable/chat_location"
                 android:gravity="center|left"
                 android:textSize="13sp"
                 android:textColor="@android:color/white" />

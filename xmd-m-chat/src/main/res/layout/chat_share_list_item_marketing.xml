@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.xmd.chat.beans.Marketing" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:image="@{data.image}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#80ff6666"
+                android:paddingBottom="2dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@{data.oneYuanMark,default=限时抢}"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/fontCaption"
+                android:visibility="@{data.oneYuanMark==null?View.GONE:View.VISIBLE}" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{data.showText1,default=泰式按摩}"
+                    android:textSize="@dimen/fontSubheading" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/shape_r4_stoke_red"
+                    android:gravity="center_vertical"
+                    android:padding="2dp"
+                    android:text="限时用"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/fontSmall"
+                    android:visibility="@{data.limitedUse?View.VISIBLE:View.GONE}" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text='@{data.showText2,default=单价2元}' />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text='@{data.showText3,default="已售:0/50"}'
+                android:textSize="@dimen/fontCaption" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

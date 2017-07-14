@@ -1,14 +1,14 @@
 package com.xmd.technician.Adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PageFragmentPagerAdapter extends FragmentPagerAdapter {

@@ -27,7 +27,6 @@ import java.util.List;
 public class StatisticsView extends LinearLayout {
 
 
-
     private Context context;
     private TextView titleTextView;
     private TextView numberTextView;

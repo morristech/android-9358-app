@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Lhj on 2017/2/20.
  */
 
-public class OnceCardItemBean implements Parcelable{
+public class OnceCardItemBean implements Parcelable {
 
     public String id;
     public String cardType;  //类型 tem_card-单项次卡;item_package-混合套餐；credit_gift-积分礼品
@@ -15,7 +15,7 @@ public class OnceCardItemBean implements Parcelable{
     public String imageUrl; //图片
     public String comboDescription;//套餐描述
     public String techRoyalty; //技师提成
- //   public String price; //商品价格
+    //   public String price; //商品价格
     public String shareUrl; //分享链接
     public String shareDescription; //分享描述语言
     public String sellingPrice; //销售价格
@@ -29,7 +29,7 @@ public class OnceCardItemBean implements Parcelable{
 
     }
 
-    public OnceCardItemBean(String id,String cardType,int type,int position,String name,String imageUrl,String comboDescription,String shareDescription,String techRoyalty,String shareUrl,String sellingPrice,String discountPrice,String depositRate,int selectedStatus) {
+    public OnceCardItemBean(String id, String cardType, int type, int position, String name, String imageUrl, String comboDescription, String shareDescription, String techRoyalty, String shareUrl, String sellingPrice, String discountPrice, String depositRate, int selectedStatus) {
         this.id = id;
         this.cardType = cardType;
         this.type = type;

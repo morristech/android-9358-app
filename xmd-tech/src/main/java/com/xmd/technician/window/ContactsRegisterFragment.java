@@ -12,14 +12,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.hyphenate.exceptions.HyphenateException;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ContactAllBean;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
-import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ContactRegisterListResult;
@@ -31,7 +30,6 @@ import com.xmd.technician.widget.BottomContactFilterPopupWindow;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -142,7 +140,7 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
             Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.contact_has_no_information_alter));
             return;
         }
-        UINavigation.gotoCustomerDetailActivity(getActivity(), TextUtils.isEmpty(bean.userId)?bean.id:bean.userId, ConstantResources.INTENT_TYPE_TECH,false);
+        UINavigation.gotoCustomerDetailActivity(getActivity(), TextUtils.isEmpty(bean.userId) ? bean.id : bean.userId, ConstantResources.INTENT_TYPE_TECH, false);
 //        Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
 //        if (Utils.isNotEmpty(bean.id)) {
 //            intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, bean.id);

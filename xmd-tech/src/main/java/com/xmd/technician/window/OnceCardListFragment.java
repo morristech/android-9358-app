@@ -109,11 +109,11 @@ public class OnceCardListFragment extends BaseFragment {
                 params.put(Constant.PARAM_SHARE_DESCRIPTION, bean.shareDescription);
                 params.put(Constant.PARAM_SHARE_TYPE, Constant.SHARE_TYPE_ONCE_CARD);
                 params.put(Constant.PARAM_ACT_ID, bean.id);
-                if(bean.cardType.equals(Constant.ITEM_CARD_TYPE)){
+                if (bean.cardType.equals(Constant.ITEM_CARD_TYPE)) {
                     params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.chat_timescard_message_type));
-                }else if(bean.cardType.equals(Constant.ITEM_PACKAGE_TYPE)){
+                } else if (bean.cardType.equals(Constant.ITEM_PACKAGE_TYPE)) {
                     params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.chat_package_message_type));
-                }else{
+                } else {
                     params.put(Constant.PARAM_SHARE_DIALOG_TITLE, ResourceUtils.getString(R.string.chat_gift_message_type));
                 }
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEG_SHARE_QR_CODE, params);
@@ -179,7 +179,7 @@ public class OnceCardListFragment extends BaseFragment {
                 break;
             case R.id.tv_package_table:
                 if (mOnceCardHelper.packageSize > 0) {
-                    ((LinearLayoutManager)recyclerView.getLayoutManager()).scrollToPositionWithOffset(mOnceCardHelper.itemCardSize,0);
+                    ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(mOnceCardHelper.itemCardSize, 0);
 
                 } else {
                     Utils.makeShortToast(getActivity(), "暂无此类型");
@@ -188,7 +188,7 @@ public class OnceCardListFragment extends BaseFragment {
                 break;
             case R.id.tv_credit_gift_table:
                 if (mOnceCardHelper.creditSize > 0) {
-                   ((LinearLayoutManager)recyclerView.getLayoutManager()).scrollToPositionWithOffset(mOnceCardHelper.itemCardSize + mOnceCardHelper.packageSize,0);
+                    ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(mOnceCardHelper.itemCardSize + mOnceCardHelper.packageSize, 0);
                 } else {
                     Utils.makeShortToast(getActivity(), "暂无此类型");
                 }

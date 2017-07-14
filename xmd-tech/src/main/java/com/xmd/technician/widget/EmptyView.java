@@ -27,7 +27,7 @@ public class EmptyView extends RelativeLayout {
     private OnRefreshListener mRefreshListener;
     private Status mCurrentStatus;
 
-    public interface OnRefreshListener{
+    public interface OnRefreshListener {
         void onRefresh();
     }
 
@@ -62,15 +62,15 @@ public class EmptyView extends RelativeLayout {
                     mRefreshListener.onRefresh();
             }
         });
-        mCurrentStatus= Status.Empty;
+        mCurrentStatus = Status.Empty;
     }
 
-    public Status getStatus(){
+    public Status getStatus() {
         return mCurrentStatus;
     }
 
     public EmptyView setStatus(Status status) {
-        mCurrentStatus=status;
+        mCurrentStatus = status;
         if (status == Status.Gone) {
             setVisibility(View.GONE);
             mainView.setVisibility(View.GONE);
@@ -129,15 +129,16 @@ public class EmptyView extends RelativeLayout {
         ivEmptyPic.setImageResource(resId);
         return this;
     }
-    public EmptyView setEmptyViewWithDescription(int resId,CharSequence tip){
+
+    public EmptyView setEmptyViewWithDescription(int resId, CharSequence tip) {
         setStatus(Status.Empty);
         ivEmptyPic.setImageResource(resId);
         tvEmptyTip.setText(tip);
         return this;
     }
 
-    public void setOnRefreshListener(OnRefreshListener listener){
-        mRefreshListener=listener;
+    public void setOnRefreshListener(OnRefreshListener listener) {
+        mRefreshListener = listener;
     }
 
     public enum Status {

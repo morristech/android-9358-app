@@ -1,4 +1,5 @@
 package com.xmd.manager.beans;
+
 /**
  * Created by heyangya on 17-5-11.
  * 付费预约 返回前端的数据

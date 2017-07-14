@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xmd.technician.Adapter.CommonRecyclerViewAdapter;
 import com.xmd.technician.BR;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -25,7 +26,6 @@ import com.xmd.technician.onlinepaynotify.event.PayNotifyNewDataEvent;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
 import com.xmd.technician.onlinepaynotify.viewmodel.PayNotifyInfoViewModel;
-import com.xmd.technician.Adapter.CommonRecyclerViewAdapter;
 import com.xmd.technician.widget.CustomAlertDialog;
 import com.xmd.technician.window.BaseFragment;
 
@@ -237,7 +237,7 @@ public class OnlinePayNotifyFragment extends BaseFragment {
         }
         int position = 0;
         for (; position < mAdapter.getDataList().size(); position++) {
-            if (mAdapter.getData(position).id .equals(info.id) ) {
+            if (mAdapter.getData(position).id.equals(info.id)) {
                 if (mOnlyNotArchived) {
                     mAdapter.getDataList().remove(position);
                     if (position <= mLimitCount) {

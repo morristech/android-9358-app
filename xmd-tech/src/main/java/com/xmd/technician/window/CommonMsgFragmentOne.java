@@ -30,16 +30,17 @@ public class CommonMsgFragmentOne extends Fragment {
     @BindView(R.id.text5)
     TextView text5;
 
-    private  static  CommonMsgOnClickInterface msgOnClickInterface;
-    private static  CommonMsgFragmentOne commonMsgFragmentOne;
+    private static CommonMsgOnClickInterface msgOnClickInterface;
+    private static CommonMsgFragmentOne commonMsgFragmentOne;
 
-    public static CommonMsgFragmentOne getInstance(CommonMsgOnClickInterface clickInterface){
+    public static CommonMsgFragmentOne getInstance(CommonMsgOnClickInterface clickInterface) {
         msgOnClickInterface = clickInterface;
-        if(commonMsgFragmentOne==null){
+        if (commonMsgFragmentOne == null) {
             commonMsgFragmentOne = new CommonMsgFragmentOne();
         }
         return commonMsgFragmentOne;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,9 +48,10 @@ public class CommonMsgFragmentOne extends Fragment {
         ButterKnife.bind(this, view);
         return view;
     }
-    @OnClick({R.id.text1,R.id.text2,R.id.text3,R.id.text4,R.id.text5})
-    public void onclick(View view){
-        switch (view.getId()){
+
+    @OnClick({R.id.text1, R.id.text2, R.id.text3, R.id.text4, R.id.text5})
+    public void onclick(View view) {
+        switch (view.getId()) {
             case R.id.text1:
                 msgOnClickInterface.onMsgClickListener(text1.getText().toString());
                 break;

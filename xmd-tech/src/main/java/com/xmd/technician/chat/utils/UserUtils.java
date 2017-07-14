@@ -62,7 +62,7 @@ public class UserUtils {
         return UserProfileProvider.getInstance().userExisted(username);
     }
 
-    public static void deleteUser(String username){
+    public static void deleteUser(String username) {
         UserProfileProvider.getInstance().deleteChatUser(username);
     }
 

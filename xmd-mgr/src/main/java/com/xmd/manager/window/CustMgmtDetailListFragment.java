@@ -1,6 +1,5 @@
 package com.xmd.manager.window;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,7 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.xmd_m_comment.CustomerInfoDetailActivity;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.m.comment.CustomerInfoDetailActivity;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ListRecycleViewAdapter;
@@ -257,6 +259,13 @@ public class CustMgmtDetailListFragment extends BaseFragment implements ListRecy
     }
 
     protected void onGetListSucceeded(int pageCount, List<Customer> list) {
+        for (Customer customer : list) {
+            User user = new User(customer.userId);
+            user.setName(customer.userName);
+            user.setChatId(customer.emchatId);
+            user.setAvatar(customer.userHeadimgurl);
+            UserInfoServiceImpl.getInstance().saveUser(user);
+        }
         mSwipeRefreshLayout.setRefreshing(false);
         mPageCount = pageCount;
         if (list != null) {
@@ -356,7 +365,7 @@ public class CustMgmtDetailListFragment extends BaseFragment implements ListRecy
 //        Intent intent = new Intent(getActivity(), CustomerActivity.class);
 //        intent.putExtra(CustomerActivity.ARG_CUSTOMER, bean);
 //        startActivity(intent);
-        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(),bean.userId, "manger",false);
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.userId, ConstantResources.INTENT_TYPE_MANAGER, false);
     }
 
     @Override

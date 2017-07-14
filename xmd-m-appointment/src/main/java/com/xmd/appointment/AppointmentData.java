@@ -34,6 +34,7 @@ public class AppointmentData implements Serializable {
     private AppointmentSetting appointmentSetting; //额外信息
 
     private String customerId;
+    private String customerChatId;
     private String customerName;//客户名称
     private String customerPhone;//客户电话
 
@@ -252,6 +253,14 @@ public class AppointmentData implements Serializable {
 
     public void setFixTechnician(boolean fixTechnician) {
         this.fixTechnician = fixTechnician;
+    }
+
+    public String getCustomerChatId() {
+        return customerChatId;
+    }
+
+    public void setCustomerChatId(String customerChatId) {
+        this.customerChatId = customerChatId;
     }
 
     @Override

@@ -316,6 +316,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void showLoading() {
         showLoading("正在处理中...");
     }
+
     protected void showLoading(String message) {
         if (mLoadingView == null) {
             mLoadingView = new ProgressDialog(this);

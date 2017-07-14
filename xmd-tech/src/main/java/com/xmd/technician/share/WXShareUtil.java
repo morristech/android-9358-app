@@ -49,7 +49,7 @@ public class WXShareUtil extends BaseShareUtil {
         WXMediaMessage wxMediaMessage = new WXMediaMessage(webpageObject);
         if (mShareThumbnail != null) {
             wxMediaMessage.setThumbImage(mShareThumbnail);
-            if(wxMediaMessage.thumbData.length > 1024*32){
+            if (wxMediaMessage.thumbData.length > 1024 * 32) {
                 wxMediaMessage.thumbData = null;
             }
         }
@@ -63,11 +63,12 @@ public class WXShareUtil extends BaseShareUtil {
         mWxApi.sendReq(req);
 
     }
-    public void loginWX(){
+
+    public void loginWX() {
         SendAuth.Req req = new SendAuth.Req();
-            req.scope = "snsapi_userinfo";
-            req.state = "wechat_sdk_demo_test";
-            mWxApi.sendReq(req);
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_sdk_demo_test";
+        mWxApi.sendReq(req);
     }
 
 

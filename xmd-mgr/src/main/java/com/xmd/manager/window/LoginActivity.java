@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.app.user.User;
 import com.xmd.m.network.OkHttpUtil;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
@@ -32,7 +33,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -158,7 +158,14 @@ public class LoginActivity extends BaseActivity {
             SharedPreferenceHelper.setMultiClubToken(loginResult.token);
 
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
-            EventBus.getDefault().postSticky(new EventLogin(loginResult.token, loginResult.userId));
+            User user = new User(loginResult.userId);
+            user.setRoles(User.ROLE_MANAGER);
+            user.setChatId(loginResult.emchatId);
+            user.setChatPassword(loginResult.emchatPassword);
+            user.setName(loginResult.name);
+            user.setAvatar(loginResult.avatarUrl);
+            EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), user);
+            EventBus.getDefault().postSticky(eventLogin);
 
             if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles)) {
                 startActivity(new Intent(LoginActivity.this, ClubListActivity.class));

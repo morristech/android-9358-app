@@ -28,13 +28,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
-public class ResetPasswordActivity extends BaseActivity implements TextWatcher{
+public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
     public static final int ICODE_RESEND_TIME = 60000;//验证码重发时间
-    @BindView(R.id.user_name) EditText mAccountNumberEdt;
-    @BindView(R.id.icode) EditText mSecurityCodeEdt;
-    @BindView(R.id.password) EditText mPassWordEdt;
-    @BindView(R.id.send_icode) Button mSendMSMBtn;
-    @BindView(R.id.confirm) Button mConfirmBtn;
+    @BindView(R.id.user_name)
+    EditText mAccountNumberEdt;
+    @BindView(R.id.icode)
+    EditText mSecurityCodeEdt;
+    @BindView(R.id.password)
+    EditText mPassWordEdt;
+    @BindView(R.id.send_icode)
+    Button mSendMSMBtn;
+    @BindView(R.id.confirm)
+    Button mConfirmBtn;
 
     private Handler mHandler = new Handler();
     private boolean mPhoneNumReady = false;
@@ -163,7 +168,7 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher{
     }
 
     @OnClick(R.id.confirm)
-    public void resetPassword(){
+    public void resetPassword() {
         String username = mAccountNumberEdt.getText().toString();
         String password = mPassWordEdt.getText().toString();
         String icode = mSecurityCodeEdt.getText().toString();
@@ -178,22 +183,22 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher{
     }
 
     @OnClick(R.id.send_icode)
-    public void sendSecurityCodeMSM(){
+    public void sendSecurityCodeMSM() {
         mHandler.removeCallbacks(mRefreshICodeTask);
         //do something
         mCurrentTimeMillis = SystemClock.elapsedRealtime();
         mHandler.post(mRefreshICodeTask);
         String mobile = mAccountNumberEdt.getText().toString();
-        String sign = DESede.encrypt(mobile+RequestConstant.KEY_WHICH_VALUE);
+        String sign = DESede.encrypt(mobile + RequestConstant.KEY_WHICH_VALUE);
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_MOBILE, mobile);
-        params.put(RequestConstant.KEY_WHICH,RequestConstant.KEY_WHICH_VALUE);
-        params.put(RequestConstant.KEY_SIGN,sign);
+        params.put(RequestConstant.KEY_WHICH, RequestConstant.KEY_WHICH_VALUE);
+        params.put(RequestConstant.KEY_SIGN, sign);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ICODE, params);
     }
 
     @OnClick(R.id.login)
-    public void gotoLogin(){
+    public void gotoLogin() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

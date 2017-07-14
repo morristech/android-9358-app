@@ -18,13 +18,13 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.FileUtils;
 import com.xmd.technician.common.ImageLoader;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.share.ShareController;
 
@@ -202,17 +202,18 @@ public class TechShareCardActivity extends BaseActivity {
 
         return bitmap;
     }
+
     @OnClick(R.id.user_save_btn)
-    public void saveUserCard(){
-        String filePath = Environment.getExternalStorageDirectory()+"/"+ResourceUtils.getString(R.string.save_tech_card_path)+".jpg";
-        if(FileUtils.checkFileExist(filePath,false)){
+    public void saveUserCard() {
+        String filePath = Environment.getExternalStorageDirectory() + "/" + ResourceUtils.getString(R.string.save_tech_card_path) + ".jpg";
+        if (FileUtils.checkFileExist(filePath, false)) {
             makeShortToast(ResourceUtils.getString(R.string.had_saved_tech_card));
-        }else{
+        } else {
             ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
                     Bitmap bitmap = ImageLoader.readBitmapFromImgUrl(codeUrl);
-                    ImageLoader.saveBitmapToLocal(TechShareCardActivity.this,bitmap,ResourceUtils.getString(R.string.save_tech_card_path));
+                    ImageLoader.saveBitmapToLocal(TechShareCardActivity.this, bitmap, ResourceUtils.getString(R.string.save_tech_card_path));
                 }
             });
         }

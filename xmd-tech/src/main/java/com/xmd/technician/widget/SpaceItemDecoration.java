@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 /**
  * Created by sdcm on 16-5-18.
  */
-public class SpaceItemDecoration extends RecyclerView.ItemDecoration{
+public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
 
     public static final int GRID_LAYOUT = 0;
 
@@ -15,7 +15,7 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration{
     private int mOrientation;
     private int mSpace;
 
-    public SpaceItemDecoration(int space,int orientation) {
+    public SpaceItemDecoration(int space, int orientation) {
         this.mSpace = space;
         setOrientation(orientation);
     }

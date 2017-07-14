@@ -26,8 +26,8 @@ public class OnceCardBean {
      * shareUrl : http://w.url.cn/s/AD1i4NP
      * period : 1Y
      * description : good
-     nihas
-     okokk
+     * nihas
+     * okokk
      * cardType : item_card
      * imageUrl : http://sdcm103.stonebean.com:8489/s/group00/M00/01/22/oIYBAFi07MuAb0q0AAAwrHBtAI05788325?st=JiyQWmAbb8gOx8Y7rQ_kEA&e=1497759643
      * statusName : 进行中

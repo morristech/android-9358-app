@@ -25,7 +25,7 @@ android {
         targetSdkVersion 25 //目标版本
         multiDexEnabled true
         // 1.0.1 << 1.0.0, update this comment when you change the versionCode and versionName
-        // release version : 1.4.0.14
+        // releaseVoicePlayer version : 1.4.0.14
         // 1.5.4 备用技师登录需求
         // 1.5.6 技师相册权限+在线买单通知
         //1.6.0 技师营销页面改版
@@ -38,7 +38,7 @@ android {
 
         manifestPlaceholders = [
                 PACKAGE_NAME       : "com.xmd.technician",
-                //UMENG_APPKEY for release
+                //UMENG_APPKEY for releaseVoicePlayer
                 UMENG_APPKEY_VALUE : "568cf00e67e58eeba4000e38",
                 UMENG_CHANNEL_VALUE: "xiaomodo-tech",
         ]
@@ -107,7 +107,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith("release.apk")) {
+            if (outputFile != null && outputFile.name.endsWith("releaseVoicePlayer.apk")) {
                 // output
                 def flavorName = variant.productFlavors[0].name + "_";
                 if (flavorName == "prd_") {
@@ -136,10 +136,6 @@ repositories {
     }
 }
 
-aspectjx {
-    excludeJarFilter '.jar'
-}
-
 
 dependencies {
     //依赖文件
@@ -147,6 +143,7 @@ dependencies {
     compile project(':commonlibrary')
     compile project(':xmd-m-network')
     compile project(':xmd-app')
+    compile project(':xmd-m-permission')
     compile project(':xmd-m-appointment')
     compile project(':xmd-m-chat')
     compile project(':xmd-m-notify')
@@ -173,7 +170,7 @@ dependencies {
     compile "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
     compile 'com.umeng.analytics:analytics:latest.integration'
     //    aspectj
-    compile 'org.aspectj:aspectjrt:1.8.+'
+    compile "org.aspectj:aspectjrt:${rootProject.ext.aspectjrtVersion}"
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     // for multidex
     compile 'com.android.support:multidex:1.0.1'

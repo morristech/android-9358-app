@@ -131,9 +131,9 @@
 -keep class **$$PermissionProxy { *; }
 
 #permission
--keep class com.xmd.technician.permission.CheckBusinessPermission {*;}
+-keep class com.xmd.permission.CheckBusinessPermission {*;}
 -keep class * {
-    @com.xmd.technician.permission.CheckBusinessPermission public <methods>;
+    @com.xmd.permission.CheckBusinessPermission public <methods>;
 }
 
 #image
@@ -163,6 +163,12 @@
 -dontwarn com.xmd.chat.message.**
 -keep class com.xmd.chat.message.** {*;}
 
+-dontwarn com.xmd.permission.**
+-keep class com.xmd.permission.** {*;}
+
 -keep public class ** {
     @org.greenrobot.eventbus.Subscribe public <methods>;
 }
+
+-dontwarn com.xmd.m.**
+-keep class com.xmd.m.** {*;}

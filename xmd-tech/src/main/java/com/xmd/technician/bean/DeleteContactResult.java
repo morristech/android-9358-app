@@ -8,8 +8,9 @@ import com.xmd.technician.http.gson.BaseResult;
 public class DeleteContactResult extends BaseResult {
     public String msg;
     public int resultcode;
-    public  DeleteContactResult(String msg,int resultCode){
-        this.msg =msg;
+
+    public DeleteContactResult(String msg, int resultCode) {
+        this.msg = msg;
         this.resultcode = resultCode;
     }
 

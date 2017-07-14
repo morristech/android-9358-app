@@ -1,8 +1,6 @@
 package com.xmd.technician.common;
 
 
-import android.util.Log;
-
 import com.shidou.commonlibrary.helper.XLogger;
 
 public class Logger {

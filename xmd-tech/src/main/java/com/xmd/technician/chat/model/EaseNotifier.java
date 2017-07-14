@@ -13,16 +13,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
-import android.text.TextUtils;
 
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.EasyUtils;
-import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.ChatUser;
 import com.xmd.technician.chat.controller.ChatUI;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
-import com.xmd.technician.chat.utils.UserUtils;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -40,8 +37,8 @@ public class EaseNotifier {
     protected final static String[] msg_eng = {"sent a message", "sent a picture", "sent a voice",
             "sent location message", "sent a video", "sent a file", "%1 contacts sent %2 messages"
     };
-    protected final static String[] msg_ch = {"发来一条消息", "发来一张图片", "发来一段语音", "发来位置信息", "给你下单了", "购买了你的点钟券","打赏了你",
-            "系统消息","%1个联系人发来%2条消息"
+    protected final static String[] msg_ch = {"发来一条消息", "发来一张图片", "发来一段语音", "发来位置信息", "给你下单了", "购买了你的点钟券", "打赏了你",
+            "系统消息", "%1个联系人发来%2条消息"
     };
 
     protected static int notifyID = 0525; // start notification id
@@ -99,9 +96,9 @@ public class EaseNotifier {
     }
 
     void cancelNotification() {
-        if (notificationManager != null){
+        if (notificationManager != null) {
             notificationManager.cancel(notifyID);
-           // notificationManager.cancelAll();
+            // notificationManager.cancelAll();
         }
     }
 

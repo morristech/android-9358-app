@@ -7,7 +7,7 @@ public class AccountMoneyResult extends BaseResult {
 
     public Content respData;
 
-    public class Content{
+    public class Content {
         public float rewardMoney;
         public float redPack;
         public float paidMoney;

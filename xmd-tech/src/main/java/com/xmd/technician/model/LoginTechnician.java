@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.app.user.User;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
@@ -11,8 +12,6 @@ import com.xmd.technician.DataRefreshService;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.TechInfo;
-import com.xmd.technician.chat.UserProfileProvider;
-import com.xmd.technician.chat.event.EventEmChatLoginSuccess;
 import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.UINavigation;
@@ -224,27 +223,27 @@ public class LoginTechnician {
             //开始刷新买单通知
             DataRefreshService.refreshPayNotify(true);
         }
-        RxBus.getInstance().toObservable(EventEmChatLoginSuccess.class).subscribe(loginResult -> {
-                    if (!loginResult.loginSuccess) {
-                        loginEmChatAccount();
-                    }
-                }
-        );
-        UserProfileProvider.getInstance().updateCurrentUserInfo(getNickName(), getAvatarUrl());
-        loginEmChatAccount();
 
         //开始汇报状态
         if (needSendLoginEvent) {
             needSendLoginEvent = false;
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
-            EventBus.getDefault().postSticky(new EventLogin(getToken(), getUserId()));
-            RxBus.getInstance().post(new EventLogin(getToken(), getUserId()));
+            EventBus.getDefault().postSticky(new EventLogin(getToken(), getUserInfo()));
+            RxBus.getInstance().post(new EventLogin(getToken(), getUserInfo()));
         }
     }
 
-    //登录聊天账号
-    public void loginEmChatAccount() {
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGIN_EMCHAT, null);
+    public User getUserInfo() {
+        User user = new User(getUserId());
+        user.setName(getNickName());
+        user.setAvatar(getAvatarUrl());
+        user.setChatId(getEmchatId());
+        user.setChatPassword(getEmchatPassword());
+        user.setClubId(getClubId());
+        user.setClubName(getClubName());
+        user.setTechNo(getTechNo());
+        user.setRoles(getRoles());
+        return user;
     }
 
     //获取短信验证码
@@ -378,16 +377,12 @@ public class LoginTechnician {
         //清空当前用户打招呼数据
         HelloSettingManager.getInstance().resetTemplate();
 
-        UserProfileProvider.getInstance().reset();
-
 
         //清空token
         setToken(null);
 
         ActivityHelper.getInstance().removeAllActivities();
         UINavigation.gotoLogin(TechApplication.getAppContext());
-
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT_EMCHAT);
     }
 
 

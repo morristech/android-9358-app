@@ -17,9 +17,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SysNoticeListActivity extends BaseActivity{
+public class SysNoticeListActivity extends BaseActivity {
 
-    @BindView(R.id.list_view) RecyclerView mNoticeListView;
+    @BindView(R.id.list_view)
+    RecyclerView mNoticeListView;
 
     private boolean mIsLoading;
     private boolean mHaveMoreData = true;
@@ -57,8 +58,8 @@ public class SysNoticeListActivity extends BaseActivity{
         mConversation.clear();
     }
 
-    private void initView(){
-        mNoticeAdapter = new SysNoticeAdapter(this, mToChatUsername,ChatConstant.CHAT_TYPE_SINGLE);
+    private void initView() {
+        mNoticeAdapter = new SysNoticeAdapter(this, mToChatUsername, ChatConstant.CHAT_TYPE_SINGLE);
         mNoticeAdapter.setOnFooterClickListener(v -> loadMore());
         mLayoutManager = new LinearLayoutManager(this);
         mNoticeListView.setHasFixedSize(true);
@@ -82,7 +83,7 @@ public class SysNoticeListActivity extends BaseActivity{
         });
     }
 
-    private void onConversationInit(){
+    private void onConversationInit() {
         // 获取当前conversation对象
         mConversation = EMClient.getInstance().chatManager().getConversation(mToChatUsername, EaseCommonUtils.getConversationType(ChatConstant.CHAT_TYPE_SINGLE), true);
         // 把此会话的未读数置为0
@@ -101,22 +102,22 @@ public class SysNoticeListActivity extends BaseActivity{
         }
     }
 
-    private void loadMore(){
-        if(!mIsLoading && mHaveMoreData){
+    private void loadMore() {
+        if (!mIsLoading && mHaveMoreData) {
             List<EMMessage> messages;
             try {
                 messages = mConversation.loadMoreMsgFromDB(mNoticeAdapter.getItem(0).getMsgId(),
                         mPageSize);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return;
             }
 
-            if(messages.size() > 0){
+            if (messages.size() > 0) {
                 mNoticeAdapter.refreshList();
-                if(messages.size() != mPageSize){
+                if (messages.size() != mPageSize) {
                     mHaveMoreData = false;
                 }
-            }else {
+            } else {
                 mHaveMoreData = false;
             }
 

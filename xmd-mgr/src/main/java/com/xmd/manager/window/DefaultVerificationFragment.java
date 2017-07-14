@@ -192,6 +192,7 @@ public class DefaultVerificationFragment extends BaseFragment {
             return view;
         }
     }
+
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         if (listView == null) {
             return;

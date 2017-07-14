@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SimpleTimeZone;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

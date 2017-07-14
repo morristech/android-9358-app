@@ -123,9 +123,9 @@ public abstract class BaseEaseChatView extends LinearLayout {
         }
         //设置头像和nick
         if (mEMMessage.direct() == EMMessage.Direct.SEND) {
-            mUserAvatarView.setUserInfo(null, localUserAvatar,false);
+            mUserAvatarView.setUserInfo(null, localUserAvatar);
         } else {
-            mUserAvatarView.setUserInfo(ChatMessageFactory.get(mEMMessage).getUserId(), remoteUserAvatar,false);
+            mUserAvatarView.setUserInfo(ChatMessageFactory.create(mEMMessage).getUserId(), remoteUserAvatar);
         }
 
         if (mDeliveredView != null) {
@@ -212,10 +212,10 @@ public abstract class BaseEaseChatView extends LinearLayout {
                 }
             };
         } else {
-                if(!ChatHelper.getMessageSeting().contains(mEMMessage.getMsgId())){
-                    saveChatContact(mEMMessage.getTo(), mEMMessage.getMsgId());
-                    ChatHelper.getMessageSeting().add(mEMMessage.getMsgId());
-                }
+            if (!ChatHelper.getMessageSeting().contains(mEMMessage.getMsgId())) {
+                saveChatContact(mEMMessage.getTo(), mEMMessage.getMsgId());
+                ChatHelper.getMessageSeting().add(mEMMessage.getMsgId());
+            }
 
         }
         mEMMessage.setMessageStatusCallback(mMessageSendCallBack);

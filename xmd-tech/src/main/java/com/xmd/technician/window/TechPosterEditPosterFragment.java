@@ -235,7 +235,7 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                     mPosterImageUrl = "";
                 }
 
-                mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true,false);
+                mDialog = new TechPosterDialog(getActivity(), mCurrentModel, true, false);
                 mDialog.show();
                 mDialog.setViewDate(mPrimaryTitle, mMinorTitle, mNickName, mTechNumber, mClubName, imageUrl, mPosterImageUrl);
                 mDialog.setCanceledOnTouchOutside(true);
@@ -243,20 +243,20 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
                 break;
             case R.id.iv_poster_primary_title:
                 primaryTitleIsSelected = true;
-                Utils.makeShortToast(getActivity(),"海报必须包含大标题，不可取消勾选");
-                if( Utils.isEmpty(editPosterPrimaryTitle.getText().toString())){
+                Utils.makeShortToast(getActivity(), "海报必须包含大标题，不可取消勾选");
+                if (Utils.isEmpty(editPosterPrimaryTitle.getText().toString())) {
                     editPosterPrimaryTitle.setText(ResourceUtils.getString(R.string.tech_poster_primary_title_default));
                 }
                 break;
             case R.id.iv_poster_minor_title:
                 minorTitleIsSelected = changeViewState(ivPosterMinorTitle);
-                if(minorTitleIsSelected && Utils.isEmpty(editPosterMinorTitle.getText().toString())){
+                if (minorTitleIsSelected && Utils.isEmpty(editPosterMinorTitle.getText().toString())) {
                     editPosterMinorTitle.setText(ResourceUtils.getString(R.string.tech_poster_minor_title_default));
                 }
                 break;
             case R.id.iv_poster_tech_name:
                 nickNameIsSelected = changeViewState(ivPosterTechName);
-                if(nickNameIsSelected && Utils.isEmpty(editPosterTechName.getText().toString())){
+                if (nickNameIsSelected && Utils.isEmpty(editPosterTechName.getText().toString())) {
                     editPosterTechName.setText(LoginTechnician.getInstance().getNickName());
                 }
                 break;
@@ -401,10 +401,10 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
 
 
     @Override
-    public void posterSave(View view,View dismiss) {
+    public void posterSave(View view, View dismiss) {
 
         new RewardConfirmDialog(getActivity(), getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_poster_save_alter_message),
-                DateUtil.getCurrentDate(System.currentTimeMillis()+ONE_MONTH_DAY_MILLISECOND)), "", true) {
+                DateUtil.getCurrentDate(System.currentTimeMillis() + ONE_MONTH_DAY_MILLISECOND)), "", true) {
 
             @Override
             //tech_poster_save_alter_message

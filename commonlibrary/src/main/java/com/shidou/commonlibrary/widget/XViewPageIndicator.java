@@ -1,6 +1,8 @@
 package com.shidou.commonlibrary.widget;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -11,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by heyangya on 16-4-11.
+ * View pager 指示器
  */
 public class XViewPageIndicator extends LinearLayout implements ViewPager.OnPageChangeListener {
     private Context mContext;
@@ -23,6 +26,7 @@ public class XViewPageIndicator extends LinearLayout implements ViewPager.OnPage
         init(context);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     public XViewPageIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
@@ -33,6 +37,7 @@ public class XViewPageIndicator extends LinearLayout implements ViewPager.OnPage
         init(context);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public XViewPageIndicator(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
@@ -43,10 +48,10 @@ public class XViewPageIndicator extends LinearLayout implements ViewPager.OnPage
         mImageViews = new ArrayList<>();
     }
 
-    public void setViewPager(ViewPager pager, int normalImageId, int forcusImageId) {
+    public void setViewPager(ViewPager pager, int normalImageId, int focusImageId) {
         pager.addOnPageChangeListener(this);
         mNormalImageId = normalImageId;
-        mFocusImageId = forcusImageId;
+        mFocusImageId = focusImageId;
     }
 
     public synchronized void drawIcons(int count) {
@@ -56,6 +61,8 @@ public class XViewPageIndicator extends LinearLayout implements ViewPager.OnPage
             ImageView imageView = new ImageView(mContext);
             imageView.setPadding(8, 8, 8, 8);
             addView(imageView);
+            imageView.getLayoutParams().width = ScreenUtils.dpToPx(16);
+            imageView.getLayoutParams().height = ScreenUtils.dpToPx(16);
             mImageViews.add(imageView);
         }
         onPageSelected(0);

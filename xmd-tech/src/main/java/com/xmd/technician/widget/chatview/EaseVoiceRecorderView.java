@@ -21,7 +21,6 @@ import com.xmd.technician.chat.model.EaseVoiceRecorder;
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 
 
-
 /**
  * Created by sdcm on 17-3-15.
  */

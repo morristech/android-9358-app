@@ -16,7 +16,6 @@ import com.shidou.commonlibrary.widget.XProgressDialog;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.m.network.EventTokenExpired;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 public class BaseActivity extends AppCompatActivity {
@@ -29,7 +28,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+        EventBusSafeRegister.register(this);
 
     }
 
@@ -71,11 +70,13 @@ public class BaseActivity extends AppCompatActivity {
 
         }
     }
+
     public void setBackVisible(boolean visible) {
         if (toolbarBack != null) {
             toolbarBack.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
+
     public void setRightVisible(boolean isVisible, int srcId) {
         if (toolbarRightImage != null) {
             int visible = isVisible ? View.VISIBLE : View.GONE;
@@ -100,7 +101,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        EventBusSafeRegister.unregister(this);
     }
 
     @Subscribe

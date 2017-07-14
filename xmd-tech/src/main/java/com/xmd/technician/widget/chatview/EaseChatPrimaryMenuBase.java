@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
  */
 
 public abstract class EaseChatPrimaryMenuBase extends LinearLayout {
-   // protected EaseChatPrimaryMenuListener listener;
+    // protected EaseChatPrimaryMenuListener listener;
     protected Activity activity;
     protected InputMethodManager inputManager;
 
@@ -34,7 +34,7 @@ public abstract class EaseChatPrimaryMenuBase extends LinearLayout {
         init(context);
     }
 
-    private void init(Context context){
+    private void init(Context context) {
         this.activity = (Activity) context;
         inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
     }
@@ -49,6 +49,7 @@ public abstract class EaseChatPrimaryMenuBase extends LinearLayout {
 
     /**
      * emoji icon input event
+     *
      * @param emojiContent
      */
     public abstract void onEmojiconInputEvent(CharSequence emojiContent);
@@ -66,6 +67,7 @@ public abstract class EaseChatPrimaryMenuBase extends LinearLayout {
 
     /**
      * insert text
+     *
      * @param text
      */
     public abstract void onTextInsert(CharSequence text);
@@ -83,18 +85,18 @@ public abstract class EaseChatPrimaryMenuBase extends LinearLayout {
     }
 
 
-    public interface EaseChatPrimaryMenuListener{
+    public interface EaseChatPrimaryMenuListener {
         /**
          * when send button clicked
-         * @param content
-         * 发送按钮
+         *
+         * @param content 发送按钮
          */
         void onSendBtnClicked(String content);
 
         /**
          * when speak button is touched
-         * @return
-         * 录音按钮
+         *
+         * @return 录音按钮
          */
         boolean onPressToSpeakBtnTouch(View v, MotionEvent event);
 
@@ -119,6 +121,7 @@ public abstract class EaseChatPrimaryMenuBase extends LinearLayout {
          * on text input is clicked
          */
         void onEditTextClicked();
+
         /**
          * on more clicked
          */

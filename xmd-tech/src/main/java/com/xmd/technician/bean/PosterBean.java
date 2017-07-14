@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Lhj on 17-6-22.
  */
 
-public class PosterBean implements Parcelable{
+public class PosterBean implements Parcelable {
     /**
      * id : 14
      * techId : 748081899301244928

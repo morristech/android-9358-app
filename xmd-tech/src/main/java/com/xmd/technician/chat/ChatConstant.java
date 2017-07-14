@@ -17,10 +17,8 @@ public class ChatConstant {
     public static final String TO_CHAT_USER_TYPE_CUSTOMER = "customer";
 
 
-
     public static final String MESSAGE_ATTR_AT_MSG = "em_at_list";
     public static final String MESSAGE_ATTR_VALUE_AT_MSG_ALL = "ALL";
-
 
 
     public static final String EXTRA_CHAT_TYPE = "chatType";
@@ -52,11 +50,10 @@ public class ChatConstant {
     public static final String TO_CHAT_USER_ID = "userId";
 
 
-
     //自定义消息
     public static final int MESSAGE_SENT_REWARD_TYPE = 0x001;
     public static final int MESSAGE_RECEIVE_REWARD_TYPE = 0x002;
-    public static final int MESSAGE_SENT_ORDER_TYPE=0x03;
+    public static final int MESSAGE_SENT_ORDER_TYPE = 0x03;
     public static final int MESSAGE_RECEIVE_ORDER_TYPE = 0x004;
     public static final int MESSAGE_SENT_COUPON_TYPE = 0x05;
     public static final int MESSAGE_RECEIVE_COUPON_TYPE = 0x006;
@@ -151,12 +148,11 @@ public class ChatConstant {
     public static final String KEY_SUB_TEMPLATE_ID = "templateId";
     public static final String KEY_SUB_CARD_TYPE = "cardType";
     public static final String KEY_ACTIVITY_TIME_LIMIT_TYPE = "timeLimit";
-    public static final String KEY_ACTIVITY_ONE_YUAN_TYPE ="oneYuan";
+    public static final String KEY_ACTIVITY_ONE_YUAN_TYPE = "oneYuan";
     public static final String KEY_ACTIVITY_LUCKY_WHEEL_TYPE = "luckyWheel";
-    public static final String KEY_ACTIVITY_JOURNAL_TYPE ="journal";
+    public static final String KEY_ACTIVITY_JOURNAL_TYPE = "journal";
     public static final String KEY_ACTIVITY_ITEM_CARD_TYPE = "itemCard";
     public static final String KEY_ACTIVITY_ACT_NAME = "actName";
-
 
 
     public static final String KEY_CHAT_SENT_REWARD_TYPE = "begReward";//技师求打赏
@@ -164,7 +160,7 @@ public class ChatConstant {
     public static final String KEY_CHAT_SENT_COUPON_TYPE = "ordinaryCoupon";//技师发送优惠券
     public static final String KEY_CHAT_RECEIVE_ORDER_TYPE = "order"; //用户预约
     public static final String KEY_CHAT_SENT_PAID_COUPON_TYPE = "paidCoupon";//技师求点钟
-    public static final String KEY_CHAT_RECEIVE_PAID_COUPON_TYPE ="paidCouponTip";//用户购买点钟券
+    public static final String KEY_CHAT_RECEIVE_PAID_COUPON_TYPE = "paidCouponTip";//用户购买点钟券
     public static final String KEY_CHAT_DICE_GAME = "diceGame";//用户发起游戏
     public static final String KEY_CHAT_GIFT_TYPE = "gift";
     public static final String KEY_CHAT_LOCATION_TYPE = "clubLocation";

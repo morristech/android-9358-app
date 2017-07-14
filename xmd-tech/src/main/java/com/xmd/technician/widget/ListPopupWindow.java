@@ -25,7 +25,8 @@ public class ListPopupWindow<T> extends BasePopupWindow {
         void onPopupWindowItemClicked(T bean);
     }
 
-    @BindView(R.id.ll_popup_window) LinearLayout mContainer;
+    @BindView(R.id.ll_popup_window)
+    LinearLayout mContainer;
 
     public ListPopupWindow(View parentView, List<T> data, Callback<T> callback) {
         super(parentView, null);

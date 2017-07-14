@@ -63,7 +63,7 @@ public class TechAccountActivity extends BaseActivity {
 
             @Override
             public void onItemClicked(TechAccountBean bean) {
-                gotoDetailActivity(bean.accountType,bean.name);
+                gotoDetailActivity(bean.accountType, bean.name);
             }
         });
     }
@@ -85,10 +85,10 @@ public class TechAccountActivity extends BaseActivity {
         RxBus.getInstance().unsubscribe(mTechAccountListSubscription);
     }
 
-    private void gotoDetailActivity(String type,String name) {
+    private void gotoDetailActivity(String type, String name) {
         Intent intent = new Intent(TechAccountActivity.this, ConsumeDetailActivity.class);
         intent.putExtra(ConsumeDetailActivity.EXTRA_CONSUME_TYPE, type);
-        intent.putExtra(ConsumeDetailActivity.EXTRA_CONSUME_NAME,name);
+        intent.putExtra(ConsumeDetailActivity.EXTRA_CONSUME_NAME, name);
         startActivity(intent);
     }
 

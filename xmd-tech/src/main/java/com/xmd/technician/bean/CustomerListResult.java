@@ -7,6 +7,6 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/4.
  */
-public class CustomerListResult extends BaseResult{
+public class CustomerListResult extends BaseResult {
     public List<CustomerInfo> respData;
 }

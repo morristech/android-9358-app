@@ -7,9 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import com.hyphenate.chat.EMClient;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.app.user.User;
+import com.xmd.manager.ClubData;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
+import com.xmd.manager.beans.ClubInfo;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ThreadManager;
 import com.xmd.manager.common.Utils;
@@ -54,7 +57,19 @@ public class WelcomeActivity extends AppCompatActivity {
             });
 
             EventBus.getDefault().removeStickyEvent(EventLogout.class);
-            EventBus.getDefault().postSticky(new EventLogin(SharedPreferenceHelper.getUserToken(), SharedPreferenceHelper.getUserId()));
+            User user = new User(SharedPreferenceHelper.getUserId());
+            user.setRoles(User.ROLE_MANAGER);
+            user.setChatId(SharedPreferenceHelper.getEmchatId());
+            user.setChatPassword(SharedPreferenceHelper.getEmchatPassword());
+            user.setName(SharedPreferenceHelper.getUserName());
+            user.setAvatar(SharedPreferenceHelper.getUserAvatar());
+            ClubInfo clubInfo = ClubData.getInstance().getClubInfo();
+            if (clubInfo != null) {
+                user.setClubId(clubInfo.clubId);
+                user.setClubName(clubInfo.clubName);
+            }
+            EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), user);
+            EventBus.getDefault().postSticky(eventLogin);
             // Switch to MainActivity
             if (Constant.MULTI_CLUB_ROLE.equals(SharedPreferenceHelper.getUserRole())) {
                 startActivity(new Intent(WelcomeActivity.this, ClubListActivity.class));

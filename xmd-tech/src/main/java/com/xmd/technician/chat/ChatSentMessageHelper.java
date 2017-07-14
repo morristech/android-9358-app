@@ -40,7 +40,7 @@ public class ChatSentMessageHelper {
         this.isMessageListInited = isMessageListInited;
     }
 
-    public void setInUserBlackList(boolean inUserBlacklist){
+    public void setInUserBlackList(boolean inUserBlacklist) {
         this.inUserBlacklist = inUserBlacklist;
     }
 
@@ -50,7 +50,7 @@ public class ChatSentMessageHelper {
 //        OrderChatMessage chatMessage = new OrderChatMessage(EMMessage.createTxtSendMessage(content, mToChatEmchatId), ChatMessage.MSG_TYPE_ORDER_START);
 //        sendMessage(chatMessage);
         EMMessage message = EMMessage.createTxtSendMessage(content, mToChatEmchatId);
-        sendMessage(new ChatMessage(message, null));
+        sendMessage(new ChatMessage(message));
     }
 
 
@@ -190,7 +190,7 @@ public class ChatSentMessageHelper {
         return message;
     }
 
-    public void sendActivityMessage(String actId, String subType, String templateId,String actName) {
+    public void sendActivityMessage(String actId, String subType, String templateId, String actName) {
 
         String content;
         String activityType = "";
@@ -239,10 +239,10 @@ public class ChatSentMessageHelper {
         if (activityType.equals(ChatConstant.KEY_ACTIVITY_JOURNAL_TYPE)) {
             message.setAttribute(ChatConstant.KEY_SUB_TEMPLATE_ID, templateId);
         }
-        if(Utils.isNotEmpty(actShareName)){
-            message.setAttribute(ChatConstant.KEY_ACTIVITY_ACT_NAME,actShareName);
-        }else{
-            message.setAttribute(ChatConstant.KEY_ACTIVITY_ACT_NAME,"");
+        if (Utils.isNotEmpty(actShareName)) {
+            message.setAttribute(ChatConstant.KEY_ACTIVITY_ACT_NAME, actShareName);
+        } else {
+            message.setAttribute(ChatConstant.KEY_ACTIVITY_ACT_NAME, "");
         }
 
         if (activityType.equals(ChatConstant.KEY_ACTIVITY_ITEM_CARD_TYPE)) {

@@ -22,7 +22,7 @@ public class OtherShareUtil extends BaseShareUtil {
         return InstanceHolder.sInstance;
     }
 
-    public void share(Map<String, Object> params){
+    public void share(Map<String, Object> params) {
         explainParams(params);
 
         Intent intent = new Intent(Intent.ACTION_SEND);

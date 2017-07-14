@@ -7,14 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
@@ -25,7 +22,6 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -37,7 +33,6 @@ import com.xmd.technician.chat.ChatConstant;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -496,7 +491,7 @@ public class Utils {
 
     public static String getFloat2Str(String f) {
         String fStr = String.valueOf(f);
-        while ((fStr.length() > 1) && fStr.contains(".")&&fStr.endsWith("0")) {
+        while ((fStr.length() > 1) && fStr.contains(".") && fStr.endsWith("0")) {
             fStr = fStr.substring(0, fStr.length() - 1);
         }
 
@@ -562,44 +557,45 @@ public class Utils {
         lastClickTime = time;
         return true;
     }
+
     public static String listToString(List<String> list) {
-        if(list.size()>0){
+        if (list.size() > 0) {
             StringBuffer buffer = new StringBuffer();
             for (int i = 0; i < list.size(); i++) {
                 buffer.append(list.get(i) + "、");
             }
             return buffer.toString().substring(0, buffer.length() - 1);
-        }else{
+        } else {
             return "";
         }
 
     }
 
 
-    public static void saveImageToGallery(Context context,File file) {
+    public static void saveImageToGallery(Context context, File file) {
         // 其次把文件插入到系统图库
         try {
             MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), "code", null);
             // 最后通知图库更新
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"
                     + file)));
-            Logger.i(">>>","保存成功");
+            Logger.i(">>>", "保存成功");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public static String stringFormat(String string){
-        if(Utils.isEmpty(string)){
+    public static String stringFormat(String string) {
+        if (Utils.isEmpty(string)) {
             return "";
         }
         List<String> st = new ArrayList<>();
-        for (int i = 0; i <string.length() ; i++) {
-            st.add(string.substring(i,i+1));
+        for (int i = 0; i < string.length(); i++) {
+            st.add(string.substring(i, i + 1));
         }
         String newString = st.toString();
-        return st.toString().substring(1,newString.length()-1).replace(",","/").trim();
+        return st.toString().substring(1, newString.length() - 1).replace(",", "/").trim();
     }
 }
 

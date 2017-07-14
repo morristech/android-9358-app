@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.xmd.technician.Adapter.PKRankingDetailAdapter;
 import com.xmd.technician.Constant;
@@ -19,7 +18,6 @@ import com.xmd.technician.bean.DateChangedResult;
 import com.xmd.technician.bean.PKDetailListBean;
 import com.xmd.technician.bean.PkFilterTeamBean;
 import com.xmd.technician.common.DateUtil;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;

@@ -28,10 +28,11 @@ import com.xmd.chat.message.ChatMessage;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
+import com.xmd.permission.ContactPermissionInfo;
+import com.xmd.permission.ContactPermissionManager;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.bean.ContactPermissionInfo;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.UserProfileProvider;
@@ -45,7 +46,6 @@ import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.permission.contact.ContactPermissionManager;
 import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.ChatMessageManagerDialog;
 import com.xmd.technician.widget.EmptyView;
@@ -159,7 +159,7 @@ public class ChatFragment extends BaseListFragment<EMConversation> {
         if (list.size() > 0) {
             mWaitProcessCount = list.size();
             for (EMConversation conversation : list) {
-                ChatMessage lastMessage = ChatMessageFactory.get(conversation.getLastMessage());
+                ChatMessage lastMessage = ChatMessageFactory.create(conversation.getLastMessage());
                 if (lastMessage == null) {
                     ChatHelper.getInstance().clearUnreadMessage(conversation);
                     onLoadPermissionFinish();

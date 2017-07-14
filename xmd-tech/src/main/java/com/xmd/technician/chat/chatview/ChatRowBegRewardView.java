@@ -12,7 +12,6 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
-
 import com.xmd.technician.chat.utils.EaseCommonUtils;
 import com.xmd.technician.chat.utils.SmileUtils;
 
@@ -24,6 +23,7 @@ public class ChatRowBegRewardView extends BaseEaseChatView {
 
     private TextView contentView;
     private TextView rewardTip;
+
     public ChatRowBegRewardView(Context context, EMMessage message, int position, BaseAdapter adapter) {
         super(context, message, position, adapter);
     }
@@ -54,10 +54,10 @@ public class ChatRowBegRewardView extends BaseEaseChatView {
                     break;
                 case FAIL:
                     String errorCode = mEMMessage.getStringAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_SERVER_NOT_REACHABLE);
-                    if(ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)){
+                    if (ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)) {
                         mProgressBar.setVisibility(View.GONE);
                         mStatusView.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         mProgressBar.setVisibility(View.GONE);
                         mProgressBar.setVisibility(View.VISIBLE);
                     }
@@ -87,16 +87,16 @@ public class ChatRowBegRewardView extends BaseEaseChatView {
 
     @Override
     protected void onSetUpView() {
-        if(mEMMessage.direct() == EMMessage.Direct.RECEIVE){
-            Spannable span = SmileUtils.getSmiledText(mContext, EaseCommonUtils.getMessageDigest(mEMMessage,mContext));
+        if (mEMMessage.direct() == EMMessage.Direct.RECEIVE) {
+            Spannable span = SmileUtils.getSmiledText(mContext, EaseCommonUtils.getMessageDigest(mEMMessage, mContext));
             // 设置内容
             contentView.setText(span, TextView.BufferType.SPANNABLE);
-            rewardTip.setText(String.format("%s的打赏已存入您的账户", mEMMessage.getStringAttribute(ChatConstant.KEY_NAME,"")));
-        }else{
+            rewardTip.setText(String.format("%s的打赏已存入您的账户", mEMMessage.getStringAttribute(ChatConstant.KEY_NAME, "")));
+        } else {
             EMTextMessageBody body = (EMTextMessageBody) mEMMessage.getBody();
             String content = body.getMessage();
-            content = content.replaceAll("<i>|</i>|<span>|</span>","");
-            contentView.setText(content.replaceAll("<br/>","\n"));
+            content = content.replaceAll("<i>|</i>|<span>|</span>", "");
+            contentView.setText(content.replaceAll("<br/>", "\n"));
         }
         handleTextMessage();
     }
@@ -105,7 +105,6 @@ public class ChatRowBegRewardView extends BaseEaseChatView {
     protected void onBubbleClick() {
 
     }
-
 
 
 }

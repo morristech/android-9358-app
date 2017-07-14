@@ -11,7 +11,6 @@ import com.xmd.manager.Manager;
 import com.xmd.manager.R;
 import com.xmd.manager.common.ResourceUtils;
 
-
 import butterknife.BindView;
 import butterknife.OnClick;
 

@@ -18,7 +18,7 @@ public class ThreadManager {
     private static Handler mBackgroundHandler;
     private static Handler mMainHandler;
 
-    public static void initialize(){
+    public static void initialize() {
         mBackgroundThread = new BackgroundThread();
         mBackgroundThread.start();
 
@@ -27,7 +27,7 @@ public class ThreadManager {
     }
 
     public static void postDelayed(int threadType, Runnable r, long delayed) {
-        switch(threadType){
+        switch (threadType) {
             case THREAD_TYPE_BACKGROUND:
                 mBackgroundHandler.postDelayed(r, delayed);
                 break;
@@ -37,13 +37,13 @@ public class ThreadManager {
         }
     }
 
-    public static void postRunnable(int threadType, Runnable r){
+    public static void postRunnable(int threadType, Runnable r) {
         postDelayed(threadType, r, 0);
     }
 
     static class BackgroundThread extends HandlerThread {
 
-        public BackgroundThread(){
+        public BackgroundThread() {
             super("BackgroundThread", android.os.Process.THREAD_PRIORITY_BACKGROUND);
         }
     }

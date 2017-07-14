@@ -1,6 +1,7 @@
 package com.xmd.app;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.alive.InitAliveReport;
@@ -42,6 +43,9 @@ public class XmdApp {
     private String mServer;
     private String mToken;
 
+    private SharedPreferences sharedPreferences;
+    private Boolean appFirstStart; //app是否为第一次启动
+
     /**
      * 初始化模块
      *
@@ -56,6 +60,7 @@ public class XmdApp {
         if (!MODULE_INIT) {
             MODULE_INIT = true;
             EventBus.getDefault().register(this);
+            sharedPreferences = applicationContext.getSharedPreferences("xmd-app", Context.MODE_PRIVATE);
         }
 
         //初始化心跳功能
@@ -103,5 +108,21 @@ public class XmdApp {
 
     public void setToken(String token) {
         this.mToken = token;
+    }
+
+    //返回sp
+    public SharedPreferences getSp() {
+        return sharedPreferences;
+    }
+
+    //app是否为首次启动
+    public boolean isAppFirstStart() {
+        if (appFirstStart == null) {
+            appFirstStart = getSp().getBoolean(SpConstants.KEY_IS_APP_FIRST_START, true);
+            if (appFirstStart) {
+                getSp().edit().putBoolean(SpConstants.KEY_IS_APP_FIRST_START, false).apply();
+            }
+        }
+        return appFirstStart;
     }
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.xmd.chat.viewmodel.ChatRowViewModelVoice" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onLongClick="@{(v)->data.onLongClick(v)}"
+        android:onClick="@{(v)->data.playVoice(v)}">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{data.loading?View.GONE:View.VISIBLE}">
+
+            <ImageView
+                android:id="@+id/receiveIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:visibility="@{data.receiveMessage?View.VISIBLE:View.GONE}"
+                app:voiceIcon="@{data}" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:text="@{data.voiceLength}" />
+
+            <ImageView
+                android:id="@+id/sendIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:visibility="@{data.receiveMessage?View.GONE:View.VISIBLE}"
+                app:voiceIcon="@{data}" />
+        </LinearLayout>
+
+
+        <ProgressBar
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:visibility="@{data.loading?View.VISIBLE:View.GONE}" />
+    </FrameLayout>
+
+</layout>

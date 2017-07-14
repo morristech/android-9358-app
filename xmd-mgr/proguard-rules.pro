@@ -172,6 +172,18 @@
 -dontwarn com.xmd.chat.message.**
 -keep class com.xmd.chat.message.** {*;}
 
+-dontwarn com.xmd.permission.**
+-keep class com.xmd.permission.** {*;}
+
+-dontwarn com.xmd.m.**
+-keep class com.xmd.m.** {*;}
+
 -keep public class ** {
     @org.greenrobot.eventbus.Subscribe public <methods>;
+}
+
+#permission
+-keep class com.xmd.permission.CheckBusinessPermission {*;}
+-keep class * {
+    @com.xmd.permission.CheckBusinessPermission public <methods>;
 }

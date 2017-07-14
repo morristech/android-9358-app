@@ -90,7 +90,7 @@ public class MarketingChatShareActivity extends BaseActivity implements View.OnC
 
     private void handlerMarketingResult(MarketingListResult result) {
         if (result.statusCode == 200) {
-            if(result.respData.size()==0){
+            if (result.respData.size() == 0) {
                 viewEmptyView.setStatus(EmptyView.Status.Empty);
                 return;
             }
@@ -104,16 +104,16 @@ public class MarketingChatShareActivity extends BaseActivity implements View.OnC
                 marketingList.add(result.respData.get(i).list);
             }
             expandableAdapter.setData(result.respData, marketingList);
-            if(marketingList.size()>0){
+            if (marketingList.size() > 0) {
                 for (int i = 0; i < marketingList.size(); i++) {
                     expandableListView.expandGroup(i, false);
                 }
-            }else{
+            } else {
                 viewEmptyView.setStatus(EmptyView.Status.Empty);
             }
 
 
-        }else{
+        } else {
             viewEmptyView.setStatus(EmptyView.Status.Failed);
         }
     }

@@ -6,7 +6,8 @@ package com.xmd.technician.chat.event;
 
 public class EventEmChatLoginSuccess {
     public boolean loginSuccess; //是否登录成功
-    public EventEmChatLoginSuccess(Boolean loginSuccess){
+
+    public EventEmChatLoginSuccess(Boolean loginSuccess) {
         this.loginSuccess = loginSuccess;
     }
 

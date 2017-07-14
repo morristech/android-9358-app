@@ -18,12 +18,16 @@ import butterknife.OnClick;
 /**
  * Created by sdcm on 16-4-13.
  */
-public class RewardConfirmDialog extends Dialog{
+public class RewardConfirmDialog extends Dialog {
 
-    @BindView(R.id.dialog_alert_title) TextView mTitleTxt;
-    @BindView(R.id.dialog_alert_message) TextView mTipsTxt;
-    @BindView(R.id.dialog_alert_ok_btn) Button mBtnOk;
-    @BindView(R.id.dialog_alert_cancel_btn) Button mBtnCancel;
+    @BindView(R.id.dialog_alert_title)
+    TextView mTitleTxt;
+    @BindView(R.id.dialog_alert_message)
+    TextView mTipsTxt;
+    @BindView(R.id.dialog_alert_ok_btn)
+    Button mBtnOk;
+    @BindView(R.id.dialog_alert_cancel_btn)
+    Button mBtnCancel;
 
     private String mTitle;
     private String mTipInfo;
@@ -38,14 +42,14 @@ public class RewardConfirmDialog extends Dialog{
         super(context, themeResId);
     }
 
-    public RewardConfirmDialog(Context context,String title, String msg,String btnText){
+    public RewardConfirmDialog(Context context, String title, String msg, String btnText) {
         this(context, R.style.default_dialog_style);
         this.mTitle = title;
         this.mTipInfo = msg;
         this.mBtnText = btnText;
     }
 
-    public RewardConfirmDialog(Context context,String title, String msg,String btnText,boolean isShowCancel){
+    public RewardConfirmDialog(Context context, String title, String msg, String btnText, boolean isShowCancel) {
         this(context, R.style.default_dialog_style);
         this.mTitle = title;
         this.mTipInfo = msg;
@@ -59,33 +63,33 @@ public class RewardConfirmDialog extends Dialog{
         setContentView(R.layout.reward_confirm_dialog);
         ButterKnife.bind(this);
 
-        if(TextUtils.isEmpty(mTitle)){
+        if (TextUtils.isEmpty(mTitle)) {
             mTitleTxt.setVisibility(View.GONE);
-        }else {
+        } else {
             mTitleTxt.setText(mTitle);
         }
-        if(TextUtils.isEmpty(mTipInfo)){
+        if (TextUtils.isEmpty(mTipInfo)) {
             mTipsTxt.setVisibility(View.GONE);
-        }else {
+        } else {
             mTipsTxt.setText(mTipInfo);
         }
-        if(TextUtils.isEmpty(mBtnText)){
+        if (TextUtils.isEmpty(mBtnText)) {
             mBtnOk.setText(ResourceUtils.getString(R.string.confirm));
-        }else{
+        } else {
             mBtnOk.setText(mBtnText);
         }
-        if(!isShow){
+        if (!isShow) {
             mBtnCancel.setVisibility(View.GONE);
         }
     }
 
     @OnClick(R.id.dialog_alert_cancel_btn)
-    public void cancel(){
+    public void cancel() {
         dismiss();
     }
 
     @OnClick(R.id.dialog_alert_ok_btn)
-    public void onConfirmClick(){
+    public void onConfirmClick() {
         dismiss();
     }
 }

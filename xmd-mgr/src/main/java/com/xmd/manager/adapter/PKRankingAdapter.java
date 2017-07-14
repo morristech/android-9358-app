@@ -17,7 +17,6 @@ import com.xmd.manager.widget.CircleImageView;
 
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

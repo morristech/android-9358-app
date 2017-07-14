@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/colorAppBackground"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAppBackground"
+    android:orientation="vertical">
 
-    <include layout="@layout/layout_toolbar"/>
+    <include layout="@layout/layout_toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_phone"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
                 <ImageButton
                     android:id="@+id/btn_EmChat"
@@ -48,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_chat"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
                 <ImageButton
                     android:id="@+id/btn_chat"
@@ -56,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_message"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
                 <ImageButton
                     android:id="@+id/btn_EmHello"
@@ -64,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_hello"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
 
             </LinearLayout>
@@ -74,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:src="@drawable/transition_btn_contact"/>
+                android:src="@drawable/transition_btn_contact" />
         </LinearLayout>
     </RelativeLayout>
 

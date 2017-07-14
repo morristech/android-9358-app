@@ -2,8 +2,6 @@ package com.xmd.technician.common;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.nfc.FormatException;
-
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -17,16 +15,16 @@ import java.util.Hashtable;
 
 public class DecodeImage {
 
-	public static Result handleQRCodeFormBitmap(Bitmap bitmap) {
-        Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType,String>();
+    public static Result handleQRCodeFormBitmap(Bitmap bitmap) {
+        Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
         hints.put(DecodeHintType.CHARACTER_SET, "utf-8");
-        RGBLuminanceSource source =new RGBLuminanceSource(bitmap);
+        RGBLuminanceSource source = new RGBLuminanceSource(bitmap);
         BinaryBitmap bitmap1 = new BinaryBitmap(new HybridBinarizer(source));
-        QRCodeReader reader2= new QRCodeReader();
+        QRCodeReader reader2 = new QRCodeReader();
         Result result = null;
         try {
-        	try {
-                result = reader2.decode(bitmap1,hints);
+            try {
+                result = reader2.decode(bitmap1, hints);
             } catch (ChecksumException e) {
                 e.printStackTrace();
             } catch (NotFoundException e) {
@@ -36,8 +34,8 @@ public class DecodeImage {
             }
 
         } catch (Resources.NotFoundException e) {
-                e.printStackTrace();
-        } 
+            e.printStackTrace();
+        }
         return result;
     }
 

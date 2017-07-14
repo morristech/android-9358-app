@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.technician.Constant;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -63,11 +64,11 @@ public class ImageUploader {
         });
     }
 
-    public void uploadByUrl(int type,String url){
+    public void uploadByUrl(int type, String url) {
         ThreadPoolManager.run(new Runnable() {
             @Override
             public void run() {
-                switch (type){
+                switch (type) {
                     case TYPE_TECH_POSTER:
                         try {
                             String baseString = encodeFileToBase64(url);

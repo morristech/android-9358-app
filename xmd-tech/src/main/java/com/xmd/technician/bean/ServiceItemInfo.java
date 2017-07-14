@@ -9,7 +9,7 @@ public class ServiceItemInfo {
     public String name;
     public List<ItemInfo> serviceItems;
 
-    public class ItemInfo{
+    public class ItemInfo {
         public String id;
         public String name;
         public String price;

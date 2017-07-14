@@ -86,7 +86,7 @@ public class TechPosterChoiceModelFragment extends BaseFragment {
             view.setSelected(false);
         }
         viewSelect.setSelected(true);
-        ((EditTechPosterActivity)getActivity()).setSelectedModel(selectedMode);
+        ((EditTechPosterActivity) getActivity()).setSelectedModel(selectedMode);
     }
 
 

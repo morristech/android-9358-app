@@ -1,6 +1,7 @@
 package com.xmd.chat.message;
 
 import com.hyphenate.chat.EMMessage;
+import com.xmd.appointment.AppointmentData;
 
 /**
  * Created by heyangya on 17-6-7.
@@ -22,11 +23,23 @@ public class OrderChatMessage extends ChatMessage {
     private final static String ATTR_ORDER_ID = "orderId";//订单ID
     private final static String ATTR_ORDER_PAY_MONEY = "orderPayMoney";////支付金额，单位为分 Integer
 
-    //内部是否已处理此消息
-    private static final String ATTR_INNER_PROCESSED = "inner_processed";
 
-    public OrderChatMessage(EMMessage emMessage, String msgType) {
-        super(emMessage, msgType);
+    public OrderChatMessage(EMMessage emMessage) {
+        super(emMessage);
+    }
+
+    public static OrderChatMessage create(String remoteChatId, String msgType) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage(getMsgTypeText(msgType), remoteChatId);
+        OrderChatMessage orderChatMessage = new OrderChatMessage(emMessage);
+        orderChatMessage.setMsgType(msgType);
+        return orderChatMessage;
+    }
+
+    public static OrderChatMessage createRequestOrderMessage(String remoteChatId) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", remoteChatId);
+        OrderChatMessage orderChatMessage = new OrderChatMessage(emMessage);
+        orderChatMessage.setMsgType(ChatMessage.MSG_TYPE_ORDER_REQUEST);
+        return orderChatMessage;
     }
 
     public String getCustomerName() {
@@ -86,7 +99,7 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public Integer getOrderServicePrice() {
-        return getSafeIntergeAttribute(ATTR_ORDER_SERVICE_PRICE);
+        return getSafeIntegerAttribute(ATTR_ORDER_SERVICE_PRICE);
     }
 
     public void setOrderServicePrice(Integer orderServicePrice) {
@@ -102,7 +115,7 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public Integer getOrderServiceDuration() {
-        return getSafeIntergeAttribute(ATTR_ORDER_SERVICE_DURATION);
+        return getSafeIntegerAttribute(ATTR_ORDER_SERVICE_DURATION);
     }
 
     public void setOrderServiceDuration(Integer orderServiceDuration) {
@@ -118,20 +131,14 @@ public class OrderChatMessage extends ChatMessage {
     }
 
     public Integer getOrderPayMoney() {
-        return getSafeIntergeAttribute(ATTR_ORDER_PAY_MONEY);
+        return getSafeIntegerAttribute(ATTR_ORDER_PAY_MONEY);
     }
 
     public void setOrderPayMoney(Integer orderPayMoney) {
         setAttr(ATTR_ORDER_PAY_MONEY, orderPayMoney);
     }
 
-    public String getInnerProcessed() {
-        return getSafeStringAttribute(ATTR_INNER_PROCESSED);
-    }
 
-    public void setInnerProcessed(String processedDesc) {
-        setAttr(ATTR_INNER_PROCESSED, processedDesc);
-    }
 
     public String getOrderType() {
         return getSafeStringAttribute(ATTR_ORDER_TYPE);
@@ -139,5 +146,58 @@ public class OrderChatMessage extends ChatMessage {
 
     public void setOrderType(String type) {
         setAttr(ATTR_ORDER_TYPE, type);
+    }
+
+
+    //设置订单数据
+    public void setOrderData(AppointmentData data) {
+        if (data.getCustomerName() != null) {
+            setCustomerName(data.getCustomerName());
+        }
+        if (data.getCustomerPhone() != null) {
+            setCustomerPhone(data.getCustomerPhone());
+        }
+        if (data.getAppointmentTime() != null) {
+            setOrderServiceTime(data.getAppointmentTime().getTime());
+        }
+        if (data.getTechnician() != null) {
+            setOrderTechId(data.getTechnician().getId());
+            setOrderTechName(data.getTechnician().getName());
+            setOrderTechAvatar(data.getTechnician().getAvatarUrl());
+        }
+        if (data.getServiceItem() != null) {
+            setOrderServiceId(data.getServiceItem().getId());
+            setOrderServiceName(data.getServiceItem().getName());
+            if (data.getServiceItem().getPrice() != null) {
+                setOrderServicePrice(Integer.parseInt(data.getServiceItem().getPrice()));
+            }
+        }
+        if (data.getDuration() > 0) {
+            setOrderServiceDuration(data.getDuration());
+        }
+        if (data.getFontMoney() != null && data.getFontMoney() > 0) {
+            setOrderPayMoney(data.getFontMoney());
+        }
+
+        //设置生成的订单ID
+        if (data.getSubmitOrderId() != null) {
+            setOrderId(data.getSubmitOrderId());
+        }
+    }
+
+    public static OrderChatMessage create(String toChatId, String msgType, AppointmentData data) {
+        OrderChatMessage msg = OrderChatMessage.create(toChatId, msgType);
+        if (data != null) {
+            msg.setOrderData(data);
+        }
+        return msg;
+    }
+
+    public static boolean isFreeAppointment(AppointmentData data, OrderChatMessage msg) {
+        if (data != null) {
+            return data.getFontMoney() == null || data.getFontMoney() == 0;
+        } else {
+            return msg.getOrderPayMoney() == null || msg.getOrderPayMoney() == 0;
+        }
     }
 }

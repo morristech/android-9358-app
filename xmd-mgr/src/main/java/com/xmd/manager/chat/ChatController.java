@@ -59,7 +59,7 @@ public class ChatController extends AbstractController {
                 if (msg.obj != null) {
                     conversation = (EMConversation) msg.obj;
                 }
-                EmchatManager.getInstance().deleteChatConversion(conversation.getUserName());
+//                EmchatManager.getInstance().deleteChatConversion(conversation.getUserName());
                 break;
         }
         return true;

@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorAppBackground"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAppBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/ll_comment_search"
@@ -19,8 +17,7 @@
             android:orientation="horizontal"
             android:paddingBottom="@dimen/small_padding"
             android:paddingLeft="@dimen/activity_normal_margin"
-            android:paddingRight="@dimen/activity_normal_margin"
-            >
+            android:paddingRight="@dimen/activity_normal_margin">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,14 +34,13 @@
                     android:paddingTop="@dimen/small_padding"
                     android:text="@string/comment_search_by_name_or_phone"
                     android:textColor="@color/colorGray"
-                    android:textSize="@dimen/fontBody"
-                    />
+                    android:textSize="@dimen/fontBody" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/icon_search"/>
+                    android:src="@drawable/icon_search" />
             </LinearLayout>
 
 
@@ -53,8 +49,7 @@
         <com.xmd.app.widget.ViewPagerTabIndicator
             android:id="@+id/comment_view_pager_indicator"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/comment_view_pager"
@@ -73,6 +68,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="120dp"
         android:layout_marginRight="10dp"
-        android:src="@drawable/icon_comment_ranking_list"/>
+        android:src="@drawable/icon_comment_ranking_list" />
 
 </RelativeLayout>

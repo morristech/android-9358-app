@@ -31,9 +31,9 @@ public class ShareCouponDialog extends Dialog {
 
     private Button mButtonShare;
     private ImageView btnDismiss, mCode;
-    private String shareThumbnail, shareUrl, shareTitle, ShareDescription, type, actId,dialogTitle;
+    private String shareThumbnail, shareUrl, shareTitle, ShareDescription, type, actId, dialogTitle;
     private Context mContext;
-    private TextView mDialogTitle,mDialogDes;
+    private TextView mDialogTitle, mDialogDes;
 
 
     public ShareCouponDialog(Context context, Map<String, Object> params) {
@@ -67,11 +67,11 @@ public class ShareCouponDialog extends Dialog {
         mCode = (ImageView) findViewById(R.id.img_share_code);
         mDialogTitle = (TextView) findViewById(R.id.dialog_title_text);
         mDialogDes = (TextView) findViewById(R.id.des_share_text);
-        mDialogTitle.setText(String.format("%s二维码",dialogTitle));
-        if(dialogTitle.equals(ResourceUtils.getString(R.string.chat_gift_message_type))){
-            mDialogDes.setText(String.format("扫码关注9358,兑换%s",dialogTitle));
-        }else{
-            mDialogDes.setText(String.format("扫码关注9358,购买%s",dialogTitle));
+        mDialogTitle.setText(String.format("%s二维码", dialogTitle));
+        if (dialogTitle.equals(ResourceUtils.getString(R.string.chat_gift_message_type))) {
+            mDialogDes.setText(String.format("扫码关注9358,兑换%s", dialogTitle));
+        } else {
+            mDialogDes.setText(String.format("扫码关注9358,购买%s", dialogTitle));
         }
 
         btnDismiss.setOnClickListener(v -> this.dismiss());

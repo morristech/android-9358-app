@@ -12,112 +12,113 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-        android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_white_with_border"
-            android:clickable="false"
-            android:orientation="vertical"
-            android:paddingBottom="25dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="5dp"
-                android:paddingLeft="@dimen/select_time_padding"
-                android:paddingTop="@dimen/select_time_padding">
+                android:background="@drawable/bg_white_with_border"
+                android:clickable="false"
+                android:orientation="vertical"
+                android:paddingBottom="25dp">
 
-                <TextView
-                    android:id="@+id/default_verification_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
-                    android:text="@string/verification_order_code"
-                    android:textColor="@color/order_verification_title"
-                    android:textSize="@dimen/x_large_text_size" />
-
-                <TextView
-                    android:id="@+id/default_verification_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/colorClubItemTitle"
-                    android:textSize="@dimen/x_large_text_size"
-                    tools:text="123123456526412" />
-            </LinearLayout>
-
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/verification_circle_diameter"
-                android:layout_gravity="center_vertical">
-
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inter_space"
-                    android:layout_gravity="center"
-                    android:background="@drawable/comment_detail_div_line"
-                    android:layerType="software" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="@dimen/select_time_padding"
+                    android:paddingTop="@dimen/select_time_padding">
 
-                <RelativeLayout
+                    <TextView
+                        android:id="@+id/default_verification_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:text="@string/verification_order_code"
+                        android:textColor="@color/order_verification_title"
+                        android:textSize="@dimen/x_large_text_size" />
+
+                    <TextView
+                        android:id="@+id/default_verification_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorClubItemTitle"
+                        android:textSize="@dimen/x_large_text_size"
+                        tools:text="123123456526412" />
+                </LinearLayout>
+
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="@dimen/verification_circle_diameter"
+                    android:layout_gravity="center_vertical">
 
                     <View
-                        android:layout_width="@dimen/semi_circle_radius"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/verification_torus_margin"
-                        android:background="@drawable/left_semi_circle" />
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/inter_space"
+                        android:layout_gravity="center"
+                        android:background="@drawable/comment_detail_div_line"
+                        android:layerType="software" />
 
-                    <View
-                        android:layout_width="@dimen/semi_circle_radius"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/verification_torus_margin"
-                        android:background="@drawable/right_semi_circle" />
-                </RelativeLayout>
-            </FrameLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-            <ListView
-                android:id="@+id/list_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                        <View
+                            android:layout_width="@dimen/semi_circle_radius"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/verification_torus_margin"
+                            android:background="@drawable/left_semi_circle" />
 
-            <LinearLayout
-                android:id="@+id/default_pay_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/select_time_padding"
-                android:visibility="gone">
+                        <View
+                            android:layout_width="@dimen/semi_circle_radius"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="@dimen/verification_torus_margin"
+                            android:background="@drawable/right_semi_circle" />
+                    </RelativeLayout>
+                </FrameLayout>
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="0dp"
+                <ListView
+                    android:id="@+id/list_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="金额："
-                    android:textColor="@color/order_verification_title"
-                    android:textSize="@dimen/fontBody" />
+                    android:visibility="gone" />
 
-                <com.xmd.manager.widget.ClearableEditText
-                    android:id="@+id/pay_amount"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/toolbar_padding_left_or_right"
-                    android:layout_weight="4"
-                    android:background="@drawable/bg_white_with_border"
-                    android:hint="@string/pay_alert_message"
-                    android:inputType="number" />
+                <LinearLayout
+                    android:id="@+id/default_pay_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/select_time_padding"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="金额："
+                        android:textColor="@color/order_verification_title"
+                        android:textSize="@dimen/fontBody" />
+
+                    <com.xmd.manager.widget.ClearableEditText
+                        android:id="@+id/pay_amount"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/toolbar_padding_left_or_right"
+                        android:layout_weight="4"
+                        android:background="@drawable/bg_white_with_border"
+                        android:hint="@string/pay_alert_message"
+                        android:inputType="number" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
             <Button
                 android:id="@+id/btn_default_verification"

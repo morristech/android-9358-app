@@ -9,7 +9,6 @@ import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.widget.DividerItemDecoration;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -33,6 +32,7 @@ public class ConfigurationMonitorActivity extends BaseActivity {
         initContent();
 
     }
+
     private void initContent() {
         mLayoutManager = new LinearLayoutManager(this);
         mConfigurationRecycleView.setHasFixedSize(true);

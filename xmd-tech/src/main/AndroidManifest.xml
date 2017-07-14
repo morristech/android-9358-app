@@ -48,27 +48,6 @@
             android:value="${UMENG_CHANNEL_VALUE}"/>
         <!-- end umeng sdk -->
 
-        <!-- 声明环信sdk所需的service SDK核心功能 -->
-        <!-- 设置环信应用的appkey -->
-        <meta-data
-            android:name="EASEMOB_APPKEY"
-            android:value="${EASEMOB_APPKEY_VALUE}"/>
-        <service
-            android:name="com.hyphenate.chat.EMChatService"
-            android:exported="true"/>
-        <!-- 声明sdk所需的receiver -->
-        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-
-                <data android:scheme="package"/>
-            </intent-filter>
-            <!-- 可选filter -->
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".window.WelcomeActivity"
@@ -265,12 +244,14 @@
         <activity android:name=".window.MallDiscountChatShareActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".window.MarketingChatShareActivity"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".window.TechPersonalPosterActivity"
-                  android:label="@string/tech_poster_title"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".window.EditTechPosterActivity"
-                  android:label="@string/tech_poster_choice_poster_model"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.TechPersonalPosterActivity"
+            android:label="@string/tech_poster_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".window.EditTechPosterActivity"
+            android:label="@string/tech_poster_choice_poster_model"
                   android:screenOrientation="portrait"/>
     </application>
 

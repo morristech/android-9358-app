@@ -31,13 +31,13 @@ public class ClearableEditText extends EditText {
 
     private int mBgColorFilter;
 
-    private  CleanTextListener cleanText;
+    private CleanTextListener cleanText;
 
-    public interface CleanTextListener{
+    public interface CleanTextListener {
         void cleanText();
     }
 
-    public void setCleanTextListener(CleanTextListener cleanListener){
+    public void setCleanTextListener(CleanTextListener cleanListener) {
         this.cleanText = cleanListener;
     }
 
@@ -61,7 +61,7 @@ public class ClearableEditText extends EditText {
     }
 
     private void init() {
-        if(isInEditMode()) {
+        if (isInEditMode()) {
             return;
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && mBgColorFilter != -1) {
@@ -91,7 +91,7 @@ public class ClearableEditText extends EditText {
                 if (touchable) {
                     this.setText("");
                     this.setTag(null);
-                    if(cleanText != null){
+                    if (cleanText != null) {
                         cleanText.cleanText();
                     }
 

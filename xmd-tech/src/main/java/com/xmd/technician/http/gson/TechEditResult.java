@@ -12,7 +12,8 @@ import java.util.List;
 public class TechEditResult extends BaseResult {
 
     public Content respData;
-    public class Content{
+
+    public class Content {
         public String phoneNum;
         public NativePlaceInfo nativePlace;
         public List<AlbumInfo> albums;

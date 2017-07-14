@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="data"
+            type="com.xmd.chat.view.ChatActivity" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/activityLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_toolbar" />
+
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:isScrollContainer="false">
+
+            <com.xmd.chat.view.ChatRecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:isScrollContainer="false">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginRight="8dp"
+                android:onClick="@{()->data.onSwitchInputMode()}"
+                android:src="@{data.voiceInputMode?@drawable/input_keyboard:@drawable/input_voice}" />
+
+            <TextView
+                android:id="@+id/inputVoice"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_r4_stoke_gray"
+                android:gravity="center"
+                android:text="按住说话"
+                android:visibility="@{data.voiceInputMode?View.VISIBLE:View.GONE}" />
+
+            <EditText
+                android:id="@+id/sendEditText"
+                style="@style/AppTheme.EditText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhite"
+                android:afterTextChanged="@{(s)->data.setTextMessageContent(s)}"
+                android:onTouch="@{(v,e)->data.onTouchEditText(v,e)}"
+                android:text="@{data.textMessageContent}"
+                android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />
+
+            <Button
+                style="@style/AppTheme.Button.Main"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:enabled='@{!TextUtils.isEmpty(data.textMessageContent.get())}'
+                android:minWidth="56dp"
+                android:onClick="@{()->data.sendTextMessage()}"
+                android:text="发送"
+                android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />
+        </LinearLayout>
+
+        <!-- 菜单 -->
+        <LinearLayout
+            android:id="@+id/menuLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="false"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivide" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:visibility="@{data.showSubMenu?View.VISIBLE:View.GONE}">
+
+            <com.shidou.commonlibrary.widget.AutoHeightViewPager
+                android:id="@+id/submenuLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.shidou.commonlibrary.widget.XViewPageIndicator
+                android:id="@+id/pageIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center" />
+        </FrameLayout>
+    </LinearLayout>
+</layout>
+

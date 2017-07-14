@@ -45,7 +45,7 @@ import rx.Subscription;
  * Created by Lhj on 17-6-20.
  */
 
-public class TechPersonalPosterActivity extends BaseActivity implements TechPosterListAdapter.PosterCallBack,TechPosterDialog.PosterShareOrSaveListener {
+public class TechPersonalPosterActivity extends BaseActivity implements TechPosterListAdapter.PosterCallBack, TechPosterDialog.PosterShareOrSaveListener {
 
     @BindView(R.id.ll_tech_poster_empty_view)
     LinearLayout llTechPosterEmptyView;
@@ -95,7 +95,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
             if (null == result.respData || result.respData.list.size() == 0) {
                 llTechPosterEmptyView.setVisibility(View.VISIBLE);
                 return;
-            }else{
+            } else {
                 llTechPosterEmptyView.setVisibility(View.GONE);
             }
 
@@ -160,7 +160,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
                 mCurrentModel = Constant.TECH_POSTER_FLOWER_MODEL;
                 break;
         }
-        mDialog = new TechPosterDialog(this, mCurrentModel, true,true);
+        mDialog = new TechPosterDialog(this, mCurrentModel, true, true);
         mDialog.show();
         mDialog.setViewDate(bean.title, bean.subTitle, bean.name, bean.techNo, bean.clubName, "", bean.imageUrl);
         mDialog.setCanceledOnTouchOutside(true);
@@ -170,7 +170,7 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
 
     @Override
     public void deleteClicked(PosterBean bean) {
-        new RewardConfirmDialog(TechPersonalPosterActivity.this, getString(R.string.tech_poster_alter_message), getString(R.string.tech_poster_alter_delete_message), "",true) {
+        new RewardConfirmDialog(TechPersonalPosterActivity.this, getString(R.string.tech_poster_alter_message), getString(R.string.tech_poster_alter_delete_message), "", true) {
             @Override
             public void onConfirmClick() {
                 super.onConfirmClick();
@@ -192,9 +192,9 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
     }
 
     @Override
-    public void posterSave(View view,View dismiss) {
-        new RewardConfirmDialog(this,ResourceUtils.getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_poster_save_alter_message),
-                DateUtil.getCurrentDate(System.currentTimeMillis()+ONE_MONTH_DAY_MILLISECOND)), "", true) {
+    public void posterSave(View view, View dismiss) {
+        new RewardConfirmDialog(this, ResourceUtils.getString(R.string.tech_poster_alter_message), String.format(ResourceUtils.getString(R.string.tech_poster_save_alter_message),
+                DateUtil.getCurrentDate(System.currentTimeMillis() + ONE_MONTH_DAY_MILLISECOND)), "", true) {
 
             @Override
             //tech_poster_save_alter_message
@@ -274,8 +274,6 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
             e.printStackTrace();
         }
     }
-
-
 
 
 }

@@ -5,7 +5,8 @@ package com.xmd.technician.bean;
  */
 public class PlayDiceGame {
     public String content;
-    public PlayDiceGame(String content){
+
+    public PlayDiceGame(String content) {
         this.content = content;
 
     }

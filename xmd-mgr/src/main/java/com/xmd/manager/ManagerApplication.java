@@ -1,24 +1,35 @@
 package com.xmd.manager;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.view.WindowManager;
 
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.EmojiManager;
 import com.xmd.app.XmdApp;
+import com.xmd.app.user.User;
+import com.xmd.appointment.XmdModuleAppointment;
+import com.xmd.chat.MenuFactory;
+import com.xmd.chat.XmdChat;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
 import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ToastUtils;
 import com.xmd.manager.common.Utils;
+import com.xmd.manager.window.DeliveryCouponActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +67,9 @@ public class ManagerApplication extends Application {
                 XLogger.setGloableTag("9358");
                 printMachineInfo();
 
+                //初始化线程池
+                ThreadPoolManager.init(this);
+
                 SharedPreferenceHelper.initialize();
 
                 //初始化网络库
@@ -71,6 +85,10 @@ public class ManagerApplication extends Application {
                     }
                 });
 
+                //界面辅助类
+                WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+                ScreenUtils.initScreenSize(windowManager);
+                EmojiManager.getInstance().init(this);
                 XToast.init(this, -1);
 
                 //初始化磁盘缓存模块
@@ -96,7 +114,12 @@ public class ManagerApplication extends Application {
                 //模块功能初始化
                 Set<String> functions = new HashSet<>();
                 functions.add(XmdApp.FUNCTION_ALIVE_REPORT);
+                functions.add(XmdApp.FUNCTION_USER_INFO);
                 XmdApp.getInstance().init(this, SharedPreferenceHelper.getServerHost(), functions);
+                XmdModuleAppointment.getInstance().init(this);
+
+                //初始化聊天模块
+                XmdChat.getInstance().init(this, BuildConfig.DEBUG, menuFactory);
 
                 XmdPushModule.getInstance().init(this, "manager", UINavigation.xmdActionFactory, null);
 
@@ -141,4 +164,14 @@ public class ManagerApplication extends Application {
         XLogger.i(TAG, "APP VERSION NAME:" + mAppVersionName);
         XLogger.i(TAG, "=========================================");
     }
+
+    private MenuFactory menuFactory = new MenuFactory() {
+
+        @Override
+        public void onShowDeliverCouponView(Activity activity, User remoteUser) {
+            Intent intent = new Intent(activity, DeliveryCouponActivity.class);
+            intent.putExtra(DeliveryCouponActivity.EXTRA_CHAT_ID, remoteUser.getChatId());
+            activity.startActivity(intent);
+        }
+    };
 }

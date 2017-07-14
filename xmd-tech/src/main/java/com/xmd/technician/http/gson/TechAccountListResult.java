@@ -11,7 +11,7 @@ import java.util.List;
 public class TechAccountListResult extends BaseResult {
     public Content respData;
 
-    public class Content{
+    public class Content {
         public String withdrawal;
         public List<TechAccountBean> accountList;
     }

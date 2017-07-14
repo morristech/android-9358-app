@@ -36,7 +36,8 @@ import com.xmd.appointment.AppointmentEvent;
 import com.xmd.appointment.beans.Technician;
 import com.xmd.chat.ChatConstants;
 import com.xmd.chat.message.ChatMessage;
-import com.xmd.chat.order.OrderChatManager;
+import com.xmd.permission.CheckBusinessPermission;
+import com.xmd.permission.PermissionConstants;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -80,8 +81,6 @@ import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.permission.CheckBusinessPermission;
-import com.xmd.technician.permission.PermissionConstants;
 import com.xmd.technician.widget.FlowerAnimation;
 import com.xmd.technician.widget.GameSettingDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
@@ -98,7 +97,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -421,7 +419,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                     public void onConfirmClick() {
                         super.onConfirmClick();
                         EMMessage message = EMMessage.createTxtSendMessage("选项目、约技师，\n线上预约，方便快捷～", toChatUserId);
-                        chatSentMessageHelper.sendMessage(new ChatMessage(message, ChatMessage.MSG_TYPE_ORDER_REQUEST));
+                        chatSentMessageHelper.sendMessage(new ChatMessage(message));
                     }
                 }.show();
             }
@@ -439,15 +437,15 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
         if (event.getCmd() == AppointmentEvent.CMD_HIDE) {
             EventBusSafeRegister.unregister(this);
             if (event.getData() != null) {
-                if (OrderChatManager.isFreeAppointment(event.getData(), null)) {
-                    //免费预约，发送确认消息
-                    isInSubmitAppointment = false;
-                    chatSentMessageHelper.sendMessage(OrderChatManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
-                } else {
-                    //付费预约，先生成订单，然后发送确认消息
-                    EventBusSafeRegister.register(this);
-                    EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT, TAG, event.getData()));
-                }
+//                if (OrderChatManager.isFreeAppointment(event.getData(), null)) {
+//                    //免费预约，发送确认消息
+//                    isInSubmitAppointment = false;
+////                    chatSentMessageHelper.sendMessage(OrderChatManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
+//                } else {
+//                    //付费预约，先生成订单，然后发送确认消息
+//                    EventBusSafeRegister.register(this);
+//                    EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SUBMIT, TAG, event.getData()));
+//                }
             } else {
                 isInSubmitAppointment = false;
             }
@@ -456,7 +454,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
             EventBusSafeRegister.unregister(this);
             if (event.getData().isSubmitSuccess()) {
                 //生成订单成功，发送确认消息
-                chatSentMessageHelper.sendMessage(OrderChatManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
+//                chatSentMessageHelper.sendMessage(OrderChatManager.createMessage(toChatUserId, ChatMessage.MSG_TYPE_ORDER_CONFIRM, event.getData()));
             } else {
                 XToast.show("生成订单失败：" + event.getData().getSubmitErrorString());
             }
@@ -712,13 +710,13 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
     }
 
     //特惠商城,电子期刊
-    private void handlerCheckedActivity(String actId, String subType, String jounrlId,String actName) {
-        chatSentMessageHelper.sendActivityMessage(actId, subType, jounrlId,actName);
+    private void handlerCheckedActivity(String actId, String subType, String jounrlId, String actName) {
+        chatSentMessageHelper.sendActivityMessage(actId, subType, jounrlId, actName);
     }
 
     //营销活动
-    private void handlerCheckedMarketing(String actId, String subType,String actName) {
-        chatSentMessageHelper.sendActivityMessage(actId, subType, "",actName);
+    private void handlerCheckedMarketing(String actId, String subType, String actName) {
+        chatSentMessageHelper.sendActivityMessage(actId, subType, "", actName);
     }
 
 
@@ -1075,7 +1073,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                     }
                     actName = Utils.isEmpty(mChatShareBeans.get(i).actName) ? mChatShareBeans.get(i).itemName : mChatShareBeans.get(i).actName;
 
-                    handlerCheckedMarketing(actId, activityType,actName);
+                    handlerCheckedMarketing(actId, activityType, actName);
                 }
                 break;
             case GET_JOURNAL_CODE://电子期刊
@@ -1086,7 +1084,7 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 }
                 mSelectedJournal = (List<ClubJournalBean>) data.getSerializableExtra(REQUEST_JOURNAL_TYPE);
                 for (int i = 0; i < mSelectedJournal.size(); i++) {
-                    handlerCheckedActivity(mSelectedJournal.get(i).journalId, ChatConstant.KEY_SUB_TYPE_JOURNAL, String.valueOf(mSelectedJournal.get(i).templateId),mSelectedJournal.get(i).title);
+                    handlerCheckedActivity(mSelectedJournal.get(i).journalId, ChatConstant.KEY_SUB_TYPE_JOURNAL, String.valueOf(mSelectedJournal.get(i).templateId), mSelectedJournal.get(i).title);
                 }
                 break;
             case GET_PREFERENTIAL_CODE://特惠商城
@@ -1098,11 +1096,11 @@ public class TechChatActivity extends BaseActivity implements EMMessageListener 
                 mSelectedOnceCard = (List<OnceCardItemBean>) data.getSerializableExtra(REQUEST_PREFERENTIAL_TYPE);
                 for (int i = 0; i < mSelectedOnceCard.size(); i++) {
                     if (mSelectedOnceCard.get(i).cardType.equals(Constant.ITEM_CARD_TYPE)) {
-                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_TIMES_SCARD, "",mSelectedOnceCard.get(i).name);
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_TIMES_SCARD, "", mSelectedOnceCard.get(i).name);
                     } else if (mSelectedOnceCard.get(i).cardType.equals(Constant.ITEM_PACKAGE_TYPE)) {
-                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_PACKAGE, "",mSelectedOnceCard.get(i).name);
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_PACKAGE, "", mSelectedOnceCard.get(i).name);
                     } else {
-                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_GIFT, "",mSelectedOnceCard.get(i).name);
+                        handlerCheckedActivity(mSelectedOnceCard.get(i).id, ChatConstant.KEY_SUB_TYPE_GIFT, "", mSelectedOnceCard.get(i).name);
                     }
 
                 }

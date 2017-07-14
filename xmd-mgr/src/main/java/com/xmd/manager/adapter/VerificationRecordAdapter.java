@@ -18,7 +18,6 @@ import com.xmd.manager.widget.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -41,6 +40,7 @@ public class VerificationRecordAdapter extends RecyclerView.Adapter<RecyclerView
 
     public interface ClickedCallback {
         void loadMore();
+
         void onItemClicked(VerificationDetailBean bean);
     }
 
@@ -97,7 +97,7 @@ public class VerificationRecordAdapter extends RecyclerView.Adapter<RecyclerView
                 bindVerificationDetailItemViewHolder(holder, obj, position);
             }
 
-            }
+        }
 
 
     }

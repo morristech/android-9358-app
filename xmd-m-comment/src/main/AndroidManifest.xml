@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.xmd_m_comment">
+    package="com.xmd.m">
 
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,20 +9,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CommentListActivity"
-            android:screenOrientation="portrait"/>
+            android:name="com.xmd.m.comment.CommentListActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".CommentDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:name="com.xmd.m.comment.CommentDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".CustomerInfoDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:name="com.xmd.m.comment.CustomerInfoDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".CommentSearchActivity"
-            android:screenOrientation="portrait"/>
+            android:name="com.xmd.m.comment.CommentSearchActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".EditCustomerInformationActivity"
-            android:screenOrientation="portrait"/>
+            android:name="com.xmd.m.comment.EditCustomerInformationActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

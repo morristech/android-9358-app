@@ -21,11 +21,7 @@ import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.widget.FlowLayout;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -166,19 +162,19 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
             case GROUP_TYPE_ACTIVITY_GROUP:
                 CouponGroupHolder couponHolder = (CouponGroupHolder) view.getTag();
                 FavourableActivityGroup bean = (FavourableActivityGroup) groupArray.get(groupPosition);
-                if(Constant.MSG_TYPE_COUPON.equals(bean.category)){
+                if (Constant.MSG_TYPE_COUPON.equals(bean.category)) {
                     couponHolder.couponIcon.setBackgroundResource(R.drawable.icon_coupon);
                     couponHolder.couponGroup.setText(ResourceUtils.getString(R.string.club_coupon));
-                }else if(Constant.MSG_TYPE_TIME_LIMIT.equals(bean.category)){
+                } else if (Constant.MSG_TYPE_TIME_LIMIT.equals(bean.category)) {
                     couponHolder.couponIcon.setBackgroundResource(R.drawable.icon_panicbuying);
                     couponHolder.couponGroup.setText(ResourceUtils.getString(R.string.club_time_limit));
-                }else if(Constant.MSG_TYPE_ONE_YUAN.equals(bean.category)){
+                } else if (Constant.MSG_TYPE_ONE_YUAN.equals(bean.category)) {
                     couponHolder.couponIcon.setBackgroundResource(R.drawable.icon_pay);
                     couponHolder.couponGroup.setText(ResourceUtils.getString(R.string.club_one_yuan));
-                }else if(Constant.MSG_TYPE_LUCKY_WHEEL.equals(bean.category)){
+                } else if (Constant.MSG_TYPE_LUCKY_WHEEL.equals(bean.category)) {
                     couponHolder.couponIcon.setBackgroundResource(R.drawable.icon_turntable);
                     couponHolder.couponGroup.setText(ResourceUtils.getString(R.string.club_lucky_wheel));
-                }else if(Constant.MSG_TYPE_JOURNAL.equals(bean.category)){
+                } else if (Constant.MSG_TYPE_JOURNAL.equals(bean.category)) {
                     couponHolder.couponIcon.setBackgroundResource(R.drawable.icon_periodical);
                     couponHolder.couponGroup.setText(ResourceUtils.getString(R.string.club_journal));
                 }
@@ -230,9 +226,9 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
                 couponHolder.couponName.setText(bean.name);
                 couponHolder.couponType.setText(bean.actTypeName);
                 couponHolder.couponRemark.setText(bean.description);
-                if(mCallback.isChecked(groupPosition, childPosition)){
+                if (mCallback.isChecked(groupPosition, childPosition)) {
                     couponHolder.checkImage.setBackgroundResource(R.drawable.icon_checkbox_checked);
-                }else {
+                } else {
                     couponHolder.checkImage.setBackgroundResource(R.drawable.icon_checkbox);
                 }
 
@@ -302,7 +298,7 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
                 v.setOnClickListener(v1 -> {
                     mCallback.onItemClicked(groupPosition, finalI);
                     textView.setSelected(mCallback.isChecked(groupPosition, finalI));
-                    if(bean instanceof GroupTagBean){
+                    if (bean instanceof GroupTagBean) {
                         groupTagDetail.setText(((GroupTagBean) bean).description);
                     }
                 });
@@ -319,12 +315,12 @@ public class CustomerTypeExpandableAdapter<T> extends BaseExpandableListAdapter 
                 customerTypeChildListView.addView(v, lp);
             }
 
-            if(groupPosition == 0){
+            if (groupPosition == 0) {
                 groupTagDetail.setVisibility(View.VISIBLE);
-                if(allGroups.size() == 0){
+                if (allGroups.size() == 0) {
                     groupTagDetail.setText("会所未开通客户标签管理功能");
                 }
-            }else {
+            } else {
                 groupTagDetail.setVisibility(View.GONE);
             }
         }

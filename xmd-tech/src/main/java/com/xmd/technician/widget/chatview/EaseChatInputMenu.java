@@ -19,17 +19,17 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.chat.ChatConstants;
+import com.xmd.permission.CheckBusinessPermission;
+import com.xmd.permission.PermissionConstants;
 import com.xmd.technician.Adapter.ChatGridViewAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.DefaultEmojiconDatas;
 import com.xmd.technician.chat.Emojicon;
 import com.xmd.technician.chat.utils.SmileUtils;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
-import com.xmd.technician.common.ThreadPoolManager;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.permission.CheckBusinessPermission;
-import com.xmd.technician.permission.PermissionConstants;
 import com.xmd.technician.widget.ClearableEditText;
 import com.xmd.technician.widget.EmojiconMenu;
 import com.xmd.technician.window.CommonMsgFragmentOne;
@@ -209,7 +209,7 @@ public class EaseChatInputMenu extends EaseChatPrimaryMenuBase implements View.O
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER_REQUEST)
     public void initMenuOrderRequst() {
-        moreMenuList.add(new MoreMenuItem("求预约", R.drawable.ic_order_request, new OnClickListener() {
+        moreMenuList.add(new MoreMenuItem("求预约", R.drawable.chat_menu_order_request_normal, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 specialListener.onAppointmentRequestClicked();

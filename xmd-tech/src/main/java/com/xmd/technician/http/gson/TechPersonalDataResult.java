@@ -6,7 +6,7 @@ package com.xmd.technician.http.gson;
 public class TechPersonalDataResult extends BaseResult {
     public Content respData;
 
-    public class Content{
+    public class Content {
         public int unreadCommentCount;
         public int allCommentCount;
         public float accountAmount;

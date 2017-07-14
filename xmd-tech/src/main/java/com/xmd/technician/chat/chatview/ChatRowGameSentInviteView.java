@@ -26,11 +26,11 @@ import com.xmd.technician.widget.RoundImageView;
 
 public class ChatRowGameSentInviteView extends BaseEaseChatView {
 
-    private TextView mGameAmount, mAdverseName, mUserName, mCurrentGameStatus, mGameIntroduce, mCancel,mCancelOrReject;
+    private TextView mGameAmount, mAdverseName, mUserName, mCurrentGameStatus, mGameIntroduce, mCancel, mCancelOrReject;
     private RoundImageView mUserHead;
-    long gameStartTime,currentTime;
+    long gameStartTime, currentTime;
 
-    private String mGameStatus,mGameId;
+    private String mGameStatus, mGameId;
 
     public ChatRowGameSentInviteView(Context context, EMMessage message, int position, BaseAdapter adapter, String gameStaus) {
         super(context, message, position, adapter);
@@ -39,7 +39,7 @@ public class ChatRowGameSentInviteView extends BaseEaseChatView {
 
     @Override
     protected void onInflateView() {
-        mInflater.inflate(R.layout.chat_row_sent_game_invite,this);
+        mInflater.inflate(R.layout.chat_row_sent_game_invite, this);
     }
 
     @Override
@@ -75,25 +75,26 @@ public class ChatRowGameSentInviteView extends BaseEaseChatView {
             e.printStackTrace();
         }
 
-        if(Utils.isEmpty(SharedPreferenceHelper.getGameStatus(mGameId))){
-            initGameStatusView(ChatConstant.KEY_REQUEST_GAME_STATUS,content);
-        }else{
-            initGameStatusView(SharedPreferenceHelper.getGameStatus(mGameId),content);
+        if (Utils.isEmpty(SharedPreferenceHelper.getGameStatus(mGameId))) {
+            initGameStatusView(ChatConstant.KEY_REQUEST_GAME_STATUS, content);
+        } else {
+            initGameStatusView(SharedPreferenceHelper.getGameStatus(mGameId), content);
         }
 
         mCancel.setOnClickListener(v -> {
             gameStartTime = mEMMessage.getMsgTime();
             currentTime = System.currentTimeMillis();
-            if((currentTime-gameStartTime)> SharedPreferenceHelper.getGameTimeout()){
-               SharedPreferenceHelper.setGameStatus(mGameId, ChatConstant.KEY_OVER_TIME_GAME_STATUS);
-               mAdapter.notifyDataSetChanged();
-            }else{
+            if ((currentTime - gameStartTime) > SharedPreferenceHelper.getGameTimeout()) {
+                SharedPreferenceHelper.setGameStatus(mGameId, ChatConstant.KEY_OVER_TIME_GAME_STATUS);
+                mAdapter.notifyDataSetChanged();
+            } else {
                 RxBus.getInstance().post(new CancelGame(mEMMessage));
             }
 
         });
-      //  handleTextMessage();
+        //  handleTextMessage();
     }
+
     protected void handleTextMessage() {
         if (mEMMessage.direct() == EMMessage.Direct.SEND) {
             setMessageSendCallback();
@@ -108,10 +109,10 @@ public class ChatRowGameSentInviteView extends BaseEaseChatView {
                     break;
                 case FAIL:
                     String errorCode = mEMMessage.getStringAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_SERVER_NOT_REACHABLE);
-                    if(ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)){
+                    if (ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)) {
                         mProgressBar.setVisibility(View.GONE);
                         mStatusView.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         mProgressBar.setVisibility(View.GONE);
                         mProgressBar.setVisibility(View.VISIBLE);
                     }
@@ -133,31 +134,32 @@ public class ChatRowGameSentInviteView extends BaseEaseChatView {
             }
         }
     }
-    private void initGameStatusView(String gameStatus,String body) {
 
-        if(gameStatus.equals(ChatConstant.KEY_REQUEST_GAME_STATUS)){
+    private void initGameStatusView(String gameStatus, String body) {
+
+        if (gameStatus.equals(ChatConstant.KEY_REQUEST_GAME_STATUS)) {
             mCurrentGameStatus.setText("等待接受");
             mCancelOrReject.setVisibility(View.GONE);
             mCancel.setVisibility(View.VISIBLE);
-        }else if(gameStatus.equals(ChatConstant.KEY_CANCEL_GAME_STATUS)){
+        } else if (gameStatus.equals(ChatConstant.KEY_CANCEL_GAME_STATUS)) {
             mCurrentGameStatus.setText("已取消");
             mCancelOrReject.setVisibility(View.VISIBLE);
             mCancel.setVisibility(View.INVISIBLE);
-            mCancelOrReject.setText(String.format("取消游戏，返还%s积分",body));
-        }else if(gameStatus.equals(ChatConstant.KEY_REFUSED_GAME_STATUS)||gameStatus.equals(ChatConstant.KEY_GAME_REJECT)){
+            mCancelOrReject.setText(String.format("取消游戏，返还%s积分", body));
+        } else if (gameStatus.equals(ChatConstant.KEY_REFUSED_GAME_STATUS) || gameStatus.equals(ChatConstant.KEY_GAME_REJECT)) {
             mCurrentGameStatus.setText("已拒绝");
             mCancelOrReject.setVisibility(View.VISIBLE);
             mCancel.setVisibility(View.INVISIBLE);
-            mCancelOrReject.setText(String.format("对方拒绝游戏，返还%s积分",body));
-        }else if(gameStatus.equals(ChatConstant.KEY_ACCEPT_GAME_STATUS)||gameStatus.equals(ChatConstant.KEY_OVER_GAME_STATUS)){
+            mCancelOrReject.setText(String.format("对方拒绝游戏，返还%s积分", body));
+        } else if (gameStatus.equals(ChatConstant.KEY_ACCEPT_GAME_STATUS) || gameStatus.equals(ChatConstant.KEY_OVER_GAME_STATUS)) {
             mCurrentGameStatus.setText("已接受");
             mCancelOrReject.setVisibility(View.GONE);
             mCancel.setVisibility(View.INVISIBLE);
-        }else if(gameStatus.equals(ChatConstant.KEY_OVER_TIME_GAME_STATUS)){
+        } else if (gameStatus.equals(ChatConstant.KEY_OVER_TIME_GAME_STATUS)) {
             mCurrentGameStatus.setText("已超时");
             mCancelOrReject.setVisibility(View.VISIBLE);
             mCancel.setVisibility(View.INVISIBLE);
-            mCancelOrReject.setText(String.format("游戏已超时，返还%s积分",body));
+            mCancelOrReject.setText(String.format("游戏已超时，返还%s积分", body));
         }
 
     }

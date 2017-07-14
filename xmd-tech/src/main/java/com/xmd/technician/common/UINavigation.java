@@ -4,29 +4,24 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 
-import com.example.xmd_m_comment.CustomerInfoDetailActivity;
-import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.chat.event.EventStartChatActivity;
+import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.m.notify.display.XmdActionFactory;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.technician.Constant;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.ChatUser;
-import com.xmd.technician.chat.utils.UserUtils;
-import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
-import com.xmd.technician.window.ContactInformationDetailActivity;
 import com.xmd.technician.window.JoinClubActivity;
 import com.xmd.technician.window.LoginActivity;
 import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.RegisterActivity;
 import com.xmd.technician.window.TechChatActivity;
 
-import java.util.Map;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by heyangya on 16-12-22.
@@ -104,37 +99,12 @@ public class UINavigation {
     }
 
     public static void gotoChatActivity(Context context, String remoteChatId) {
-        Intent intent = new Intent(context, TechChatActivity.class);
-        intent.putExtra(ChatConstant.TO_CHAT_USER_ID, remoteChatId);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
-    public static void gotoChatActivity(Context context, Map<String, Object> params) {
-        String emchatId = (String) params.get(ChatConstant.EMCHAT_ID);
-        String emchatNickname = (String) params.get(ChatConstant.EMCHAT_NICKNAME);
-        String emchatAvatar = (String) params.get(ChatConstant.EMCHAT_AVATAR);
-        String emchatIsTech = (String) params.get(ChatConstant.EMCHAT_IS_TECH);
-
-        if (TextUtils.isEmpty(emchatId)) {
-            return;
-        }
-
-        ChatUser chatUser = new ChatUser(emchatId);
-        chatUser.setNickname(emchatNickname);
-        chatUser.setAvatar(emchatAvatar);
-        chatUser.setUserType(emchatIsTech);
-        UserUtils.saveUser(chatUser);
-
-        Intent intent = new Intent(context, TechChatActivity.class);
-        intent.putExtra(ChatConstant.TO_CHAT_USER_ID, emchatId);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        TechApplication.getAppContext().startActivity(intent);
+        EventBus.getDefault().post(new EventStartChatActivity(remoteChatId));
     }
 
 
-    public static void gotoCustomerDetailActivity(Activity activity, String customerId,String appType,boolean isTech) {
-        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(activity, customerId, appType,isTech);
+    public static void gotoCustomerDetailActivity(Activity activity, String customerId, String appType, boolean isTech) {
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(activity, customerId, appType, isTech);
     }
 
 

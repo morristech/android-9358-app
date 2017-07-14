@@ -62,7 +62,6 @@ import com.xmd.technician.widget.TechCustomerTypeView;
 import java.util.Date;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -615,7 +614,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
-            viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl,false);
+            viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl, false);
             viewHolder.dynamicItemName.setText(Utils.StrSubstring(6, dynamicDetail.userName, true));
             if (Utils.isNotEmpty(dynamicDetail.userEmchatId)) {
                 viewHolder.btnThanks.setVisibility(View.VISIBLE);
@@ -993,10 +992,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 viewHolder.contactServiceTime.setVisibility(View.GONE);
             }
-            if(Utils.isNotEmpty(contactBean.remark)){
+            if (Utils.isNotEmpty(contactBean.remark)) {
                 viewHolder.contactTypeView.setVisibility(View.VISIBLE);
                 viewHolder.contactTypeView.setTechCustomerType(contactBean.remark);
-            }else{
+            } else {
                 viewHolder.contactTypeView.setVisibility(View.INVISIBLE);
             }
 

@@ -8,11 +8,11 @@ import java.util.List;
 /**
  * Created by sdcm on 16-3-16.
  */
-public class WorkTimeResult extends BaseResult{
+public class WorkTimeResult extends BaseResult {
 
-    public  Content respData;
+    public Content respData;
 
-    public class Content{
+    public class Content {
         public String id;
         public String techStatus;
         public String workTimeRange;

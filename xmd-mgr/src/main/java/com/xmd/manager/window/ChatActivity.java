@@ -51,7 +51,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -88,7 +87,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.chat_activity);
         setTitle("");
         mToChatUsername = getIntent().getExtras().getString(EmchatConstant.EMCHAT_ID);
         String nickname = getIntent().getExtras().getString(EmchatConstant.EMCHAT_NICKNAME);
@@ -137,13 +136,13 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     private void handleUserGetCoupon(UserGetCouponResult couponResult) {
-        EMMessage message = couponResult.mMessage;
-        if (couponResult.statusCode == 200) {
-            if (Utils.isNotEmpty(couponResult.respData.userActId)) {
-                message.setAttribute(EmchatConstant.KEY_COUPON_ACT_ID, couponResult.respData.userActId);
-            }
-        }
-        sendMessage(message);
+//        EMMessage message = couponResult.mMessage;
+//        if (couponResult.statusCode == 200) {
+//            if (Utils.isNotEmpty(couponResult.respData.userActId)) {
+//                message.setAttribute(EmchatConstant.KEY_COUPON_ACT_ID, couponResult.respData.userActId);
+//            }
+//        }
+//        sendMessage(message);
     }
 
     private void handleEmchatObject(Object object) {
@@ -399,7 +398,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         message.setAttribute(EmchatConstant.KEY_CUSTOM_TYPE, "ordinaryCoupon");
         message.setAttribute(EmchatConstant.KEY_ACT_ID, actId);
         message.setAttribute(EmchatConstant.KEY_TECH_CODE, SharedPreferenceHelper.getUserInviteCode());
-        CommonUtils.userGetCoupon(actId, "manager", mToChatUsername, message);
+        CommonUtils.userGetCoupon(actId, "manager", mToChatUsername, null);
     }
 
     private void sendOrderMessage(String content, String orderId) {

@@ -144,7 +144,7 @@ public abstract class SelectTimeDialog extends Dialog {
         mSelectEnd.addChangingListener(new OnWheelChangedListener() {
             @Override
             public void onChanged(WheelView wheel, int oldValue, int newValue) {
-                if(mCacheEndTimeArray != null) {
+                if (mCacheEndTimeArray != null) {
                     mCurrentEnd = mCacheEndTimeArray[newValue];
                 }
             }

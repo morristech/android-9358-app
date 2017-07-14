@@ -29,11 +29,13 @@ import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.permission.CheckBusinessPermission;
+import com.xmd.permission.ContactPermissionInfo;
+import com.xmd.permission.PermissionConstants;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ContactHandlerBean;
-import com.xmd.technician.bean.ContactPermissionInfo;
 import com.xmd.technician.bean.CustomerDetailResult;
 import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.bean.DeleteContactResult;
@@ -55,15 +57,12 @@ import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.permission.CheckBusinessPermission;
-import com.xmd.technician.permission.PermissionConstants;
 import com.xmd.technician.widget.DropDownMenuDialog;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.RoundImageView;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -381,9 +380,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
         }
         if (emChatId.equals(SharedPreferenceHelper.getEmchatId())) {
             this.makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
-            return;
         } else {
-            UINavigation.gotoChatActivity(this, Utils.wrapChatParams(emChatId, emChatName, chatHeadUrl, contactType));
+            UINavigation.gotoChatActivity(this, emChatId);
         }
 
     }
@@ -857,9 +855,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
             } else {
                 btnEmChat.setVisibility(View.VISIBLE);
             }
-            if(Utils.isEmpty(emChatId) && Utils.isEmpty(contactPhone)){
+            if (Utils.isEmpty(emChatId) && Utils.isEmpty(contactPhone)) {
                 btnOperation.setVisibility(View.GONE);
-            }else{
+            } else {
                 btnOperation.setVisibility(View.VISIBLE);
             }
 

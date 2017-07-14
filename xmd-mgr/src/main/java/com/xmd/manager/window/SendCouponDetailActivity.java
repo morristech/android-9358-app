@@ -47,7 +47,7 @@ public class SendCouponDetailActivity extends BaseListActivity<GroupMessage, Gro
     protected void initOtherViews() {
 
         super.initOtherViews();
-     //   setRightVisible(false, -1, null);
+        //   setRightVisible(false, -1, null);
         setRightVisible(true, ResourceUtils.getString(R.string.new_create), view -> startActivity(new Intent(this, GroupMessageCustomerActivity.class)));
         setTitle(ResourceUtils.getString(R.string.send_group_detail));
         mSendGroupMessageResultSubscription = RxBus.getInstance().toObservable(SendGroupMessageResult.class).subscribe(
@@ -63,7 +63,7 @@ public class SendCouponDetailActivity extends BaseListActivity<GroupMessage, Gro
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mSendGroupMessageResultSubscription,mGetStatShowSwitchSubscription);
+        RxBus.getInstance().unsubscribe(mSendGroupMessageResultSubscription, mGetStatShowSwitchSubscription);
     }
 
     @Override

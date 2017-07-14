@@ -15,6 +15,7 @@ import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -118,21 +119,21 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
             DetailViewHolder viewHolder = (DetailViewHolder) holder;
             ConsumeInfo info = mConsumeList.get(position);
             viewHolder.mTitle.setText(info.title);
-         if(Utils.isNotEmpty(info.remark)){
-             if (info.remark.contains("##")) {
-                 String desStart = info.remark.substring(0, info.remark.lastIndexOf("#") - 1);
-                 String desEnd = info.remark.substring(info.remark.lastIndexOf("#") + 1, info.remark.length());
-                 viewHolder.mRemark.setText(desStart);
-                 viewHolder.mCommissionRemark.setVisibility(View.VISIBLE);
-                 viewHolder.mCommissionRemark.setText(desEnd);
-             } else {
-                 viewHolder.mCommissionRemark.setVisibility(View.GONE);
-                 viewHolder.mRemark.setText(info.remark);
-             }
-         }else{
-             viewHolder.mRemark.setVisibility(View.GONE);
-             viewHolder.mCommissionRemark.setVisibility(View.GONE);
-         }
+            if (Utils.isNotEmpty(info.remark)) {
+                if (info.remark.contains("##")) {
+                    String desStart = info.remark.substring(0, info.remark.lastIndexOf("#") - 1);
+                    String desEnd = info.remark.substring(info.remark.lastIndexOf("#") + 1, info.remark.length());
+                    viewHolder.mRemark.setText(desStart);
+                    viewHolder.mCommissionRemark.setVisibility(View.VISIBLE);
+                    viewHolder.mCommissionRemark.setText(desEnd);
+                } else {
+                    viewHolder.mCommissionRemark.setVisibility(View.GONE);
+                    viewHolder.mRemark.setText(info.remark);
+                }
+            } else {
+                viewHolder.mRemark.setVisibility(View.GONE);
+                viewHolder.mCommissionRemark.setVisibility(View.GONE);
+            }
             viewHolder.mTimeStamp.setText(info.dealDate);
 
             int viewType = getItemViewType(position);
@@ -151,7 +152,7 @@ public class ConsumeDetailAdapter extends RecyclerView.Adapter {
                     viewHolder.mAvatar.setVisibility(View.GONE);
                 } else {
                     viewHolder.mAvatar.setVisibility(View.VISIBLE);
-                    viewHolder.mAvatar.setUserInfo(info.userId, info.headImgUrl,false);
+                    viewHolder.mAvatar.setUserInfo(info.userId, info.headImgUrl, false);
                 }
             }
         } else if (holder instanceof FooterViewHolder) {

@@ -5,9 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +23,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Created by sdcm on 16-6-8.
  */
-public class EmojiconMenu extends RelativeLayout{
+public class EmojiconMenu extends RelativeLayout {
 
-    @BindView(R.id.pager_view) ViewPager mViewPager;
-    @BindView(R.id.indicator_view) LinearLayout mIndicatorView;
+    @BindView(R.id.pager_view)
+    ViewPager mViewPager;
+    @BindView(R.id.indicator_view)
+    LinearLayout mIndicatorView;
 
     private Bitmap mSelectedBitmap;
     private Bitmap mUnselectedBitmap;
@@ -72,8 +71,8 @@ public class EmojiconMenu extends RelativeLayout{
         mUnselectedBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.dot_emojicon_unselected);
     }
 
-    public void init(List<Emojicon> emojiconList){
-        if(emojiconList == null){
+    public void init(List<Emojicon> emojiconList) {
+        if (emojiconList == null) {
             throw new RuntimeException("emojiconList is null");
         }
 
@@ -85,33 +84,33 @@ public class EmojiconMenu extends RelativeLayout{
         initDotViews(mViewPages.size());
     }
 
-    public void setEmojiconMenuListener(EmojiconMenuListener listener){
+    public void setEmojiconMenuListener(EmojiconMenuListener listener) {
         this.mEmojiconMenuListener = listener;
     }
 
-    private List<View> getGridViews(List<Emojicon> emojiconList){
+    private List<View> getGridViews(List<Emojicon> emojiconList) {
         int totalSize = emojiconList.size();
         int itemSize = mEmojiconRows * mEmojiconColumns;
-        int pageSize = totalSize % itemSize == 0 ? totalSize/itemSize : totalSize/itemSize + 1;
+        int pageSize = totalSize % itemSize == 0 ? totalSize / itemSize : totalSize / itemSize + 1;
 
         List<View> views = new ArrayList<View>();
-        for(int i = 0; i < pageSize; i++){
+        for (int i = 0; i < pageSize; i++) {
             GridView gv = (GridView) View.inflate(getContext(), R.layout.emojicon_grid_view, null);
             //GridView gv = (GridView) view.findViewById(R.id.grid_view);
             gv.setNumColumns(mEmojiconColumns);
 
-            List<Map<String,Object>> list = new ArrayList<>();
+            List<Map<String, Object>> list = new ArrayList<>();
 
-            int size = Math.min((i+1) * itemSize, totalSize);
-            for(int j = i * itemSize;j < size;j++){
-                Map<String,Object> item = new HashMap<>();
-                item.put("icon",emojiconList.get(j).getIcon());
-                item.put("item",emojiconList.get(j));
+            int size = Math.min((i + 1) * itemSize, totalSize);
+            for (int j = i * itemSize; j < size; j++) {
+                Map<String, Object> item = new HashMap<>();
+                item.put("icon", emojiconList.get(j).getIcon());
+                item.put("item", emojiconList.get(j));
                 list.add(item);
             }
             gv.setAdapter(new SimpleAdapter(getContext(), list, android.R.layout.activity_list_item, new String[]{"icon"}, new int[]{android.R.id.icon}));
             gv.setOnItemClickListener((parent, v, position, id) -> {
-                if(mEmojiconMenuListener != null){
+                if (mEmojiconMenuListener != null) {
                     Map<String, Object> item = (Map<String, Object>) parent.getAdapter().getItem(position);
                     mEmojiconMenuListener.onEmojiconClicked((Emojicon) item.get("item"));
                 }
@@ -123,7 +122,7 @@ public class EmojiconMenu extends RelativeLayout{
         return views;
     }
 
-    private void initDotViews(int count){
+    private void initDotViews(int count) {
         mDotViews = new ArrayList<ImageView>();
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -139,7 +138,7 @@ public class EmojiconMenu extends RelativeLayout{
         }
     }
 
-    class EmojiconPagerAdapter extends PagerAdapter{
+    class EmojiconPagerAdapter extends PagerAdapter {
 
         private List<View> views;
 
@@ -189,7 +188,7 @@ public class EmojiconMenu extends RelativeLayout{
         }
     }
 
-    public interface EmojiconMenuListener{
+    public interface EmojiconMenuListener {
         void onEmojiconClicked(Emojicon emojicon);
     }
 }

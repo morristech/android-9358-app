@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.xmd.manager.ClubData;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.CustomerTypeExpandableAdapter;
@@ -20,18 +19,11 @@ import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
-import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.GroupInfoResult;
-import com.xmd.manager.service.response.GroupListResult;
 import com.xmd.manager.service.response.GroupTagListResult;
-import com.xmd.manager.service.response.TechListResult;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,7 +88,7 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
                 Constant.USER_GROUP_TYPE_TECH,
                 Constant.USER_GROUP_TYPE_SPECIFIED};
 
-        customerExpandAdapter = new CustomerTypeExpandableAdapter(couponGroupList, couponChildList,CustomerTypeExpandableAdapter.GROUP_TYPE_CUSTOMER_GROUP,this);
+        customerExpandAdapter = new CustomerTypeExpandableAdapter(couponGroupList, couponChildList, CustomerTypeExpandableAdapter.GROUP_TYPE_CUSTOMER_GROUP, this);
         customerGroupListView.setAdapter(customerExpandAdapter);
 
         customerGroupListView.setOnGroupExpandListener(groupPosition -> {
@@ -118,7 +110,7 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
             couponChildList.clear();
             couponGroupList.clear();
             for (int i = 0; i < result.respData.size(); i++) {
-                if(result.respData.get(i).list != null){
+                if (result.respData.get(i).list != null) {
                     couponChildList.add(result.respData.get(i).list);
                     couponGroupList.add(result.respData.get(i));
                 }
@@ -161,8 +153,8 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
                 }
                 break;
             case R.id.btn_next_step:
-                if(!sendIntervalReasonable){
-                    Utils.makeShortToast(getActivity(),"还没到下一次发送的时间哦");
+                if (!sendIntervalReasonable) {
+                    Utils.makeShortToast(getActivity(), "还没到下一次发送的时间哦");
                     return;
                 }
                 if (selectCustomerCount == 0) {
@@ -179,27 +171,27 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
         groupAll.setSelected(false);
         Object bean = customerExpandAdapter.getChild(groupPosition, childPosition);
         int count = 0;
-        if(bean instanceof Technician){
+        if (bean instanceof Technician) {
             count = ((Technician) bean).count;
-        } else if(bean instanceof GroupBean){
+        } else if (bean instanceof GroupBean) {
             count = ((GroupBean) bean).totalCount;
-        } else if(bean instanceof GroupTagBean){
+        } else if (bean instanceof GroupTagBean) {
             count = ((GroupTagBean) bean).userCount;
-        } else if((groupPosition == 0)&&(childPosition == 0)){
+        } else if ((groupPosition == 0) && (childPosition == 0)) {
             count = activeCount;
-        } else if((groupPosition == 0)&&(childPosition == 1)){
+        } else if ((groupPosition == 0) && (childPosition == 1)) {
             count = unactiveCount;
         }
 
-        if(groupPosition == checkedGroupPosition){
-            if(checkedIdMap.contains(String.valueOf(childPosition))){
+        if (groupPosition == checkedGroupPosition) {
+            if (checkedIdMap.contains(String.valueOf(childPosition))) {
                 checkedIdMap.remove(String.valueOf(childPosition));
                 selectCustomerCount -= count;
-            }else {
+            } else {
                 checkedIdMap.add(String.valueOf(childPosition));
                 selectCustomerCount += count;
             }
-        }else {
+        } else {
             checkedIdMap.clear();
             checkedGroupPosition = groupPosition;
             checkedIdMap.add(String.valueOf(childPosition));
@@ -216,7 +208,7 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
 
     @Override
     public boolean isChecked(int groupPosition, int childPosition) {
-        if((groupPosition == checkedGroupPosition) && checkedIdMap.contains(String.valueOf(childPosition))){
+        if ((groupPosition == checkedGroupPosition) && checkedIdMap.contains(String.valueOf(childPosition))) {
             return true;
         }
         return false;
@@ -226,49 +218,49 @@ public class GMessageSelectCustomerFragment extends BaseFragment implements Cust
         return selectCustomerCount;
     }
 
-    public String getSelectCustomerGroupType(){
-        if((checkedGroupPosition == -1) || (checkedIdMap.size() == 0)){
+    public String getSelectCustomerGroupType() {
+        if ((checkedGroupPosition == -1) || (checkedIdMap.size() == 0)) {
             return "";
         }
-        return ((GroupTagList)customerExpandAdapter.getGroup(checkedGroupPosition)).category;
+        return ((GroupTagList) customerExpandAdapter.getGroup(checkedGroupPosition)).category;
     }
 
-    public String getSelectCustomerGroupIds(){
-        if((checkedGroupPosition == -1) || (checkedIdMap.size() == 0)){
+    public String getSelectCustomerGroupIds() {
+        if ((checkedGroupPosition == -1) || (checkedIdMap.size() == 0)) {
             return "";
         }
 
         StringBuffer buffer = new StringBuffer("");
-        for(int i = 0; i < checkedIdMap.size(); i++){
+        for (int i = 0; i < checkedIdMap.size(); i++) {
             Object bean = customerExpandAdapter.getChild(checkedGroupPosition, Integer.parseInt(checkedIdMap.get(i)));
-            if(bean instanceof Technician){
+            if (bean instanceof Technician) {
                 buffer.append(((Technician) bean).techId + ",");
-            } else if(bean instanceof GroupBean){
+            } else if (bean instanceof GroupBean) {
                 buffer.append(((GroupBean) bean).id + ",");
-            } else if(bean instanceof GroupTagBean){
+            } else if (bean instanceof GroupTagBean) {
                 buffer.append(((GroupTagBean) bean).tagId + ",");
             }
         }
         return buffer.toString().substring(0, buffer.length() - 1);
     }
 
-    public String getSelectCustomerGroupNames(){
-        if((checkedGroupPosition == -1) || (checkedIdMap.size() == 0)){
+    public String getSelectCustomerGroupNames() {
+        if ((checkedGroupPosition == -1) || (checkedIdMap.size() == 0)) {
             return ResourceUtils.getString(R.string.all_customer);
         }
 
         StringBuffer buffer = new StringBuffer("");
-        for(int i = 0; i < checkedIdMap.size(); i++){
+        for (int i = 0; i < checkedIdMap.size(); i++) {
             Object bean = customerExpandAdapter.getChild(checkedGroupPosition, Integer.parseInt(checkedIdMap.get(i)));
-            if(bean instanceof Technician){
+            if (bean instanceof Technician) {
                 if (Utils.isEmpty(((Technician) bean).techNo)) {
                     buffer.append(((Technician) bean).techName + "/");
                 } else {
-                    buffer.append(((Technician) bean).techName + "["+((Technician) bean).techNo +"]/");
+                    buffer.append(((Technician) bean).techName + "[" + ((Technician) bean).techNo + "]/");
                 }
-            } else if(bean instanceof GroupBean){
+            } else if (bean instanceof GroupBean) {
                 buffer.append(((GroupBean) bean).name + "/");
-            } else if(bean instanceof GroupTagBean){
+            } else if (bean instanceof GroupTagBean) {
                 buffer.append(((GroupTagBean) bean).tagName + "/");
             }
         }

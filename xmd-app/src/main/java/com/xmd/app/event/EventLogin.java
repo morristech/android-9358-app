@@ -1,5 +1,7 @@
 package com.xmd.app.event;
 
+import com.xmd.app.user.User;
+
 /**
  * Created by heyangya on 17-5-24.
  * 登录事件，每次重新启动时也算一次登录
@@ -7,11 +9,11 @@ package com.xmd.app.event;
 
 public class EventLogin {
     private String token;
-    private String userId;
+    private User user;
 
-    public EventLogin(String token, String userId) {
+    public EventLogin(String token, User user) {
         this.token = token;
-        this.userId = userId;
+        this.user = user;
     }
 
     public String getToken() {
@@ -23,18 +25,31 @@ public class EventLogin {
     }
 
     public String getUserId() {
-        return userId;
+        return user.getId();
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public String getChatId() {
+        return user.getChatId();
+    }
+
+
+    public String getChatPassword() {
+        return user.getChatPassword();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
         return "EventLogin{" +
                 "token='" + token + '\'' +
-                ", userId='" + userId + '\'' +
+                ", user='" + user + '\'' +
                 '}';
     }
 }

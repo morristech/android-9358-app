@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorAppBackground"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAppBackground">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,14 +18,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:padding="10dp"
-                >
+                android:padding="10dp">
 
                 <com.xmd.app.widget.RoundImageView
                     android:id="@+id/img_customer_head"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/img_default_avatar"/>
+                    android:src="@drawable/img_default_avatar" />
 
                 <TextView
                     android:id="@+id/tv_customer_name"
@@ -36,7 +34,7 @@
                     android:layout_marginLeft="15dp"
                     android:textColor="#111111"
                     android:textSize="17sp"
-                    tools:text="王先生"/>
+                    tools:text="王先生" />
 
                 <ImageView
                     android:id="@+id/img_customer_type_01"
@@ -47,7 +45,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/tv_customer_name"
                     android:src="@drawable/icon_contact_fans"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/img_customer_type_02"
@@ -58,7 +56,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/img_customer_type_01"
                     android:src="@drawable/icon_contact_wx"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/ll_customer_phone"
@@ -74,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:text="手机号："
                         android:textColor="#818181"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_customer_phone"
@@ -83,7 +81,7 @@
                         android:layout_marginLeft="10dp"
                         tools:text="13137558109"
                         android:textColor="#818181"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -101,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:text="昵称："
                         android:textColor="#818181"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_customer_nick_name"
@@ -110,14 +108,14 @@
                         android:layout_marginLeft="10dp"
                         android:textColor="#818181"
                         android:textSize="14sp"
-                        tools:text="符号"/>
+                        tools:text="符号" />
                 </LinearLayout>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#d9d9d9"/>
+                android:background="#d9d9d9" />
 
 
             <LinearLayout
@@ -135,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:text="备注："
                     android:textColor="#666666"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_customer_mark"
@@ -144,19 +142,19 @@
                     android:layout_marginLeft="12dp"
                     android:textColor="#404040"
                     android:textSize="15sp"
-                    tools:text="此处是用户备注信息"/>
+                    tools:text="此处是用户备注信息" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#d9d9d9"/>
+                android:background="#d9d9d9" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="8sp"
-                android:background="#d9d9d9"/>
+                android:background="#d9d9d9" />
 
             <LinearLayout
                 android:id="@+id/ll_customer_group"
@@ -169,7 +167,7 @@
 
                 <TextView
                     style="@style/CustomerDetailTextStyle"
-                    android:text="分组"/>
+                    android:text="分组" />
 
                 <TextView
                     android:id="@+id/tv_customer_group"
@@ -179,24 +177,24 @@
                     android:layout_weight="1"
                     android:textColor="#ff9c0c"
                     android:textSize="15sp"
-                    tools:text="尚未添加分组，赶紧去添加吧"/>
+                    tools:text="尚未添加分组，赶紧去添加吧" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/arrow_right"/>
+                    android:src="@drawable/arrow_right" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#d9d9d9"/>
+                android:background="#d9d9d9" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="8sp"
-                android:background="#d9d9d9"/>
+                android:background="#d9d9d9" />
 
             <LinearLayout
                 android:id="@+id/ll_customer_type_label"
@@ -205,14 +203,12 @@
                 android:background="@drawable/selector_bg_white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                >
+                android:padding="10dp">
 
 
                 <TextView
                     style="@style/CustomerDetailTextStyle"
-                    android:text="标签"
-                    />
+                    android:text="标签" />
 
                 <LinearLayout
                     android:id="@+id/customer_type_label"
@@ -228,14 +224,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:src="@drawable/arrow_up"/>
+                    android:src="@drawable/arrow_up" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#d9d9d9"/>
+                android:background="#d9d9d9" />
 
 
             <LinearLayout
@@ -252,18 +248,16 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="10dp"
-                    >
+                    android:padding="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
-                        android:text="注册时间"
-                        />
+                        android:text="注册时间" />
 
                     <TextView
                         android:id="@+id/tv_customer_register_time"
                         style="@style/CustomerInfoDetailTextStyle"
-                        tools:text="2017-02-08　18：20"/>
+                        tools:text="2017-02-08　18：20" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -273,19 +267,17 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    >
+                    android:paddingLeft="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
                         android:text="消费金额"
-                        android:textColor="#616161"
-                        />
+                        android:textColor="#616161" />
 
                     <TextView
                         android:id="@+id/tv_customer_consume_money"
                         style="@style/CustomerInfoDetailTextStyle"
-                        tools:text="900元"/>
+                        tools:text="900元" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -295,19 +287,17 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="10dp"
-                    >
+                    android:padding="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
                         android:text="消费次数"
-                        android:textColor="#616161"
-                        />
+                        android:textColor="#616161" />
 
                     <TextView
                         android:id="@+id/tv_customer_consume_times"
                         style="@style/CustomerInfoDetailTextStyle"
-                        tools:text="10次（最近消费2017-02-09　18：20）"/>
+                        tools:text="10次（最近消费2017-02-09　18：20）" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -318,18 +308,16 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    >
+                    android:paddingLeft="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
-                        android:text="网店访问"
-                        />
+                        android:text="网店访问" />
 
                     <TextView
                         android:id="@+id/tv_customer_visit_time"
                         style="@style/CustomerInfoDetailTextStyle"
-                        tools:text="10次（最近访问2017-02-09　18：20）"/>
+                        tools:text="10次（最近访问2017-02-09　18：20）" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -340,18 +328,16 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    >
+                    android:paddingLeft="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
-                        android:text="所属技师"
-                        />
+                        android:text="所属技师" />
 
                     <TextView
                         android:id="@+id/tv_customer_belong_tech_name"
                         style="@style/CustomerInfoDetailTextStyle"
-                        tools:text="小张"/>
+                        tools:text="小张" />
 
                     <TextView
                         android:id="@+id/tv_customer_belong_tech_no"
@@ -359,14 +345,13 @@
                         android:layout_height="wrap_content"
                         android:textColor="#ff9c0c"
                         android:textSize="14sp"
-                        tools:text="［89757］"/>
+                        tools:text="［89757］" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="#d9d9d9"
-                    />
+                    android:background="#d9d9d9" />
 
             </LinearLayout>
 
@@ -375,8 +360,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="8dp"
-                android:background="#d9d9d9"
-                />
+                android:background="#d9d9d9" />
 
             <LinearLayout
                 android:id="@+id/ll_customer_membership_grade"
@@ -385,14 +369,12 @@
                 android:background="@drawable/selector_bg_white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                >
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tv_customer_membership_grade"
                     style="@style/CustomerDetailTextStyle"
-                    android:text="金卡会员"
-                    />
+                    android:text="金卡会员" />
 
                 <TextView
                     android:id="@+id/tv_customer_membership_grade_money"
@@ -401,28 +383,26 @@
                     android:layout_weight="1"
                     android:textColor="#616161"
                     android:textSize="14sp"
-                    tools:text="余额　201111.77元"/>
+                    tools:text="余额　201111.77元" />
 
                 <ImageView
                     android:id="@+id/img_customer_membership_grade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/arrow_up"/>
+                    android:src="@drawable/arrow_up" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#d9d9d9"
-                />
+                android:background="#d9d9d9" />
 
             <LinearLayout
                 android:id="@+id/ll_customer_membership_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible"
-                >
+                android:visibility="visible">
 
                 <LinearLayout
                     android:id="@+id/ll_customer_card_create_time"
@@ -431,18 +411,16 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="10dp"
-                    >
+                    android:padding="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
-                        android:text="开卡时间"
-                        />
+                        android:text="开卡时间" />
 
                     <TextView
                         android:id="@+id/tv_customer_card_create_time"
                         style="@style/CustomerInfoDetailTextStyle"
-                        tools:text="2017-02-08　18：20"/>
+                        tools:text="2017-02-08　18：20" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -452,19 +430,17 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    >
+                    android:paddingLeft="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
                         android:text="卡号"
-                        android:textColor="#666666"
-                        />
+                        android:textColor="#666666" />
 
                     <TextView
                         android:id="@+id/tv_customer_card_number"
                         style="@style/CustomerInfoDetailTextStyle"
-                        tools:text="45644687"/>
+                        tools:text="45644687" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -474,18 +450,16 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="10dp"
-                    >
+                    android:padding="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
-                        android:text="生日"
-                        />
+                        android:text="生日" />
 
                     <TextView
                         android:id="@+id/tv_customer_card_user_birthday"
                         style="@style/CustomerInfoDetailTextStyle"
-                        tools:text="1978-05-19"/>
+                        tools:text="1978-05-19" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -496,18 +470,16 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    >
+                    android:paddingLeft="10dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
-                        android:text="开卡人"
-                        />
+                        android:text="开卡人" />
 
                     <TextView
                         android:id="@+id/tv_customer_card_handler"
                         style="@style/CustomerInfoDetailTextStyle"
-                        tools:text="admin"/>
+                        tools:text="admin" />
                 </LinearLayout>
 
                 <View
@@ -515,7 +487,7 @@
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
-                    android:background="#d9d9d9"/>
+                    android:background="#d9d9d9" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -535,8 +507,7 @@
 
                         <TextView
                             style="@style/CustomerInfoDetailTextStyle"
-                            android:text="累计充值"
-                            />
+                            android:text="累计充值" />
 
                         <TextView
                             android:id="@+id/iv_customer_card_recharge_total"
@@ -545,7 +516,7 @@
                             android:layout_marginTop="10dp"
                             android:textColor="#616161"
                             android:textSize="14sp"
-                            tools:text="12222.00"/>
+                            tools:text="12222.00" />
                     </LinearLayout>
 
                     <View
@@ -553,7 +524,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginBottom="15dp"
                         android:layout_marginTop="15dp"
-                        android:background="#d9d9d9"/>
+                        android:background="#d9d9d9" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -564,8 +535,7 @@
 
                         <TextView
                             style="@style/CustomerInfoDetailTextStyle"
-                            android:text="累计赠送"
-                            />
+                            android:text="累计赠送" />
 
                         <TextView
                             android:id="@+id/iv_customer_card_reward_total"
@@ -574,7 +544,7 @@
                             android:layout_marginTop="10dp"
                             android:textColor="#616161"
                             android:textSize="14sp"
-                            tools:text="1213.00"/>
+                            tools:text="1213.00" />
                     </LinearLayout>
 
                     <View
@@ -582,7 +552,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginBottom="15dp"
                         android:layout_marginTop="15dp"
-                        android:background="#d9d9d9"/>
+                        android:background="#d9d9d9" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -593,8 +563,7 @@
 
                         <TextView
                             style="@style/CustomerInfoDetailTextStyle"
-                            android:text="次均消费"
-                            />
+                            android:text="次均消费" />
 
                         <TextView
                             android:id="@+id/iv_customer_card_consume_total"
@@ -603,7 +572,7 @@
                             android:layout_marginTop="10dp"
                             android:textColor="#616161"
                             android:textSize="14sp"
-                            tools:text="5646.00"/>
+                            tools:text="5646.00" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -611,14 +580,14 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="#d9d9d9"/>
+                    android:background="#d9d9d9" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="8dp"
-                android:background="#d9d9d9"/>
+                android:background="#d9d9d9" />
 
             <LinearLayout
                 android:id="@+id/ll_customer_credit"
@@ -627,13 +596,11 @@
                 android:background="@drawable/selector_bg_white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                >
+                android:padding="10dp">
 
                 <TextView
                     style="@style/CustomerDetailTextStyle"
-                    android:text="积分"
-                    />
+                    android:text="积分" />
 
                 <TextView
                     android:id="@+id/tv_customer_credit"
@@ -642,21 +609,20 @@
                     android:layout_weight="1"
                     android:textColor="#616161"
                     android:textSize="14sp"
-                    tools:text="余额　201111.77"/>
+                    tools:text="余额　201111.77" />
 
                 <ImageView
                     android:id="@+id/img_customer_credit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/arrow_up"/>
+                    android:src="@drawable/arrow_up" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#d9d9d9"
-                />
+                android:background="#d9d9d9" />
 
             <LinearLayout
                 android:id="@+id/ll_customer_credit_detail"
@@ -677,8 +643,7 @@
 
                     <TextView
                         style="@style/CustomerInfoDetailTextStyle"
-                        android:text="累计获得"
-                        />
+                        android:text="累计获得" />
 
                     <TextView
                         android:id="@+id/iv_customer_credit_total"
@@ -687,7 +652,7 @@
                         android:layout_marginTop="10dp"
                         android:text="12222.00"
                         android:textColor="#616161"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
@@ -695,7 +660,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="15dp"
                     android:layout_marginTop="15dp"
-                    android:background="#d9d9d9"/>
+                    android:background="#d9d9d9" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -706,8 +671,7 @@
 
                     <TextView
                         style="@style/CustomerInfoDetailTextStyle"
-                        android:text="累计使用"
-                        />
+                        android:text="累计使用" />
 
                     <TextView
                         android:id="@+id/iv_customer_credit_consume_total"
@@ -716,7 +680,7 @@
                         android:layout_marginTop="10dp"
                         android:text="1213.00"
                         android:textColor="#616161"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
@@ -724,7 +688,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="15dp"
                     android:layout_marginTop="15dp"
-                    android:background="#d9d9d9"/>
+                    android:background="#d9d9d9" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -735,8 +699,7 @@
 
                     <TextView
                         style="@style/CustomerInfoDetailTextStyle"
-                        android:text="累计赠送技师"
-                        />
+                        android:text="累计赠送技师" />
 
                     <TextView
                         android:id="@+id/iv_customer_credit_reward_total"
@@ -745,7 +708,7 @@
                         android:layout_marginTop="10dp"
                         android:text="5646.00"
                         android:textColor="#616161"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -754,7 +717,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="8dp"
-                android:background="#d9d9d9"/>
+                android:background="#d9d9d9" />
 
             <RelativeLayout
                 android:id="@+id/rl_customer_comment"
@@ -766,8 +729,7 @@
 
                 <TextView
                     style="@style/CustomerDetailTextStyle"
-                    android:text="点评投诉"
-                    />
+                    android:text="点评投诉" />
 
                 <ImageView
                     android:id="@+id/img_right"
@@ -775,7 +737,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_right"/>
+                    android:src="@drawable/arrow_right" />
 
                 <TextView
                     android:id="@+id/tv_comment_note"
@@ -786,7 +748,7 @@
                     android:layout_toLeftOf="@id/img_right"
                     android:text="次"
                     android:textColor="#4d4d4d"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_comment_times"
@@ -797,23 +759,21 @@
                     android:layout_toLeftOf="@id/tv_comment_note"
                     android:textColor="#ff9a0c"
                     android:textSize="16sp"
-                    tools:text="8"/>
+                    tools:text="8" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#d9d9d9"/>
+                android:background="#d9d9d9" />
 
             <FrameLayout
                 android:id="@+id/frame_consume_manager"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/consume_view_height"
-                android:paddingBottom="10dp"/>
+                android:paddingBottom="10dp" />
         </LinearLayout>
     </ScrollView>
-
-
 
 
 </RelativeLayout>

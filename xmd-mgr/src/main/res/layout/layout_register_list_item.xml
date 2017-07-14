@@ -18,6 +18,7 @@
         android:background="@drawable/shape_club_list_item_content"
         android:orientation="vertical"
         android:paddingBottom="@dimen/large_space">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,6 +60,7 @@
             android:layout_marginRight="@dimen/inter_space"
             android:layout_marginTop="@dimen/margin_10"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,6 +77,7 @@
                 android:lines="1"
                 android:textColor="@color/colorVisitFromText"
                 android:textSize="@dimen/fontBody" />
+
             <TextView
                 android:id="@+id/user_tech_no"
                 android:layout_width="wrap_content"

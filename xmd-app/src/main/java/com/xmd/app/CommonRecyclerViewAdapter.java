@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shidou.commonlibrary.DataTranslator;
-
 import java.util.List;
 
 /**
@@ -76,6 +74,10 @@ public class CommonRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonRec
     //获取特定位置的数据，index是数据索引，非列表索引
     public T getData(int index) {
         return mData.get(index);
+    }
+
+    public List<T> getDataList() {
+        return mData;
     }
 
     @Override

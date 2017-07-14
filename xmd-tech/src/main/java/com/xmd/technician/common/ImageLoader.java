@@ -12,10 +12,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
@@ -230,14 +228,14 @@ public class ImageLoader {
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Utils.makeShortToast(context,"保存成功");
+                    Utils.makeShortToast(context, "保存成功");
                 }
             });
         } catch (FileNotFoundException e) {
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Utils.makeShortToast(context,"保存失败");
+                    Utils.makeShortToast(context, "保存失败");
                 }
             });
             e.printStackTrace();

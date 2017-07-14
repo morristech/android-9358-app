@@ -27,7 +27,6 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -57,7 +56,7 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher 
     private int mExchangeRatio;
     private int mExchangeLimitation;
     private int availableExchange;
-    private float mExchange ;
+    private float mExchange;
     private String editExchange;
     private String clubSwitch;
 
@@ -111,13 +110,14 @@ public class CreditExchangeActivity extends BaseActivity implements TextWatcher 
         super.onResume();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_STATUS);
     }
+
     private void handlerCreditStatus(CreditStatusResult result) {
         mExchangeRatio = result.respData.exchangeRatio;
         mExchangeLimitation = result.respData.exchangeLimitation;
-        availableExchange =  mTotalCredit - mExchangeLimitation;
+        availableExchange = mTotalCredit - mExchangeLimitation;
         clubSwitch = result.respData.clubSwitch;
         mCreditTotal.setText(String.valueOf(availableExchange));
-        mExchange = (float)(availableExchange*1.0/mExchangeRatio);
+        mExchange = (float) (availableExchange * 1.0 / mExchangeRatio);
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数
         String s = df.format(mExchange);
         mExchangeConvert.setText(s);

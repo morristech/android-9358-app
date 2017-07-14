@@ -7,6 +7,6 @@ import java.util.List;
 /**
  * Created by sdcm on 16-3-14.
  */
-public class CommentResult extends BaseResult{
+public class CommentResult extends BaseResult {
     public List<CommentInfo> respData;
 }

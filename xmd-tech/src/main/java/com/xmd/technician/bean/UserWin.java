@@ -7,7 +7,8 @@ import com.xmd.technician.http.gson.BaseResult;
  */
 public class UserWin extends BaseResult {
     public String messageId;
-    public UserWin(String gameId){
+
+    public UserWin(String gameId) {
         this.messageId = gameId;
 
     }

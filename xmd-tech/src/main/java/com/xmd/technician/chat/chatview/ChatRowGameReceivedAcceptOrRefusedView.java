@@ -27,7 +27,7 @@ public class ChatRowGameReceivedAcceptOrRefusedView extends BaseEaseChatView {
 
     @Override
     protected void onInflateView() {
-        mInflater.inflate(mEMMessage.direct() == EMMessage.Direct.RECEIVE ? R.layout.chat_row_received_accept_or_refused_view: R.layout.chat_row_received_accept_or_refused_view, this);
+        mInflater.inflate(mEMMessage.direct() == EMMessage.Direct.RECEIVE ? R.layout.chat_row_received_accept_or_refused_view : R.layout.chat_row_received_accept_or_refused_view, this);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ChatRowGameReceivedAcceptOrRefusedView extends BaseEaseChatView {
         if (Utils.isNotEmpty(gameId)) {
             SharedPreferenceHelper.setGameStatus(gameId, mGameStatus);
         }
-       // handleTextMessage();
+        // handleTextMessage();
     }
 
     protected void handleTextMessage() {
@@ -67,10 +67,10 @@ public class ChatRowGameReceivedAcceptOrRefusedView extends BaseEaseChatView {
                     break;
                 case FAIL:
                     String errorCode = mEMMessage.getStringAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_SERVER_NOT_REACHABLE);
-                    if(ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)){
+                    if (ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)) {
                         mProgressBar.setVisibility(View.GONE);
                         mStatusView.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         mProgressBar.setVisibility(View.GONE);
                         mProgressBar.setVisibility(View.VISIBLE);
                     }

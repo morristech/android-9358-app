@@ -6,6 +6,9 @@ package com.xmd.chat;
  */
 
 public class ChatConstants {
+    //时间显示间隔
+    public static final int TIME_SHOW_INTERVAL = 5 * 60 * 1000;
+    public static final long REVOKE_LIMIT_TIME = 2 * 60 * 1000;
 
     //角色定义
     public static final String CHAT_ROLE_USER = "user";
@@ -13,12 +16,20 @@ public class ChatConstants {
     public static final String CHAT_ROLE_MGR = "manager";
 
     //视图定义
-    // 实际的视图类型是 view+direct  例如CHAT_ROW_VIEW_TYPE_ORDER+CHAT_VIEW_SEND_INC 是发送预约视图
-    public static final int CHAT_VIEW_SEND_INC = 0;
-    public static final int CHAT_VIEW_RECEIVE_INC = 1;
-    public static final int CHAT_ROW_VIEW_DEFAULT = 0x100;
-    public static final int CHAT_ROW_VIEW_TYPE_ORDER = 0x102;
-    public static final int CHAT_ROW_VIEW_TYPE_ORDER_REQUEST = 0x104;
+    public static final int CHAT_VIEW_DIRECT_SEND = 0;
+    public static final int CHAT_VIEW_DIRECT_RECEIVE = 1;
+    public static final int CHAT_ROW_VIEW_TEXT = 0x1; //文本
+    public static final int CHAT_ROW_VIEW_IMAGE = 0x2; //图片
+    public static final int CHAT_ROW_VIEW_LOCATION = 0x3; //位置
+    public static final int CHAT_ROW_VIEW_VOICE = 0x4;//语音
+
+    public static final int CHAT_ROW_VIEW_TYPE_APPOINTMENT = 0x10; //预约消息
+    public static final int CHAT_ROW_VIEW_TYPE_ORDER_REQUEST = 0x11;//求预约
+    public static final int CHAT_ROW_VIEW_COUPON = 0x12; //优惠券
+    public static final int CHAT_ROW_VIEW_CREDIT_GIFT = 0x13; //积分礼物
+    public static final int CHAT_ROW_VIEW_NEW_ORDER = 0x14; //新订单
+    public static final int CHAT_ROW_VIEW_SHARE = 0x15; //分享
+    public static final int CHAT_ROW_VIEW_TIP = 0x20;//提示
 
     public static final int CHAT_ROW_VIEW_TYPE_MAX = 0x200;
 }

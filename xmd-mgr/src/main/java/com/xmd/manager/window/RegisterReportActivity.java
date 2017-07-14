@@ -86,7 +86,7 @@ public class RegisterReportActivity extends BaseActivity {
 
 
     private void initView() {
-     //   initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
+        //   initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
         initStartDateTime = SharedPreferenceHelper.getCurrentClubCreateTime();
         initEndDateTime = DateUtil.getCurrentDate();
         mStartTime.setText(initStartDateTime);

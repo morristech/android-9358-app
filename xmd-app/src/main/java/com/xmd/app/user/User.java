@@ -11,23 +11,24 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private static final long serialVersionUID = 88750009432710L;
-    public final static int USER_TYPE_UNKNOWN = 0;
-    public final static int USER_TYPE_CUSTOMER = 1;
-    public final static int USER_TYPE_TECH = 2;
-    public final static int USER_TYPE_MANAGER = 3;
 
     public final static String ROLE_USER = "user"; //客户
-
     public final static String ROLE_TECH = "tech";//技师
     public final static String ROLE_FLOOR = "floor_staff";//楼面
-    public final static String ROLE_MANAGER = "管理者";
+    public final static String ROLE_MANAGER = "club_manager";//管理者
 
     private String id; //用户ID
     private String avatar; //用户头像
     private String name; //用户名称
     private String chatId; //用户聊天ID
+    private String chatPassword; //聊天密码，当前登录用户设置
 
-    private int type; //用户类型
+    private String clubId;
+    private String clubName;
+
+    private String techNo;
+
+    private String roles;
 
     private String markName;
 
@@ -76,12 +77,12 @@ public class User implements Serializable {
         this.chatId = chatId;
     }
 
-    public int getType() {
-        return type;
+    public String getRoles() {
+        return roles;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
     public String getMarkName() {
@@ -92,22 +93,44 @@ public class User implements Serializable {
         this.markName = markName;
     }
 
+    public String getChatPassword() {
+        return chatPassword;
+    }
+
+    public void setChatPassword(String chatPassword) {
+        this.chatPassword = chatPassword;
+    }
+
+    public String getClubId() {
+        return clubId;
+    }
+
+    public void setClubId(String clubId) {
+        this.clubId = clubId;
+    }
+
+    public String getClubName() {
+        return clubName;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
+    }
+
+    public String getTechNo() {
+        return techNo;
+    }
+
+    public void setTechNo(String techNo) {
+        this.techNo = techNo;
+    }
+
     public User update(User n) {
-        if (n.chatId != null) {
-            chatId = n.chatId;
-        }
-        if (n.name != null) {
-            name = n.name;
-        }
-        if (n.avatar != null) {
-            avatar = n.avatar;
-        }
-        if (n.markName != null) {
-            markName = n.markName;
-        }
-        if (n.type != USER_TYPE_UNKNOWN) {
-            type = n.type;
-        }
+        chatId = n.chatId != null ? n.chatId : chatId;
+        name = n.name != null ? n.name : name;
+        avatar = n.avatar != null ? n.avatar : avatar;
+        markName = n.markName != null ? n.markName : markName;
+        roles = n.roles != null ? n.roles : roles;
         return this;
     }
 
@@ -121,7 +144,6 @@ public class User implements Serializable {
                 && TextUtils.equals(avatar, o.avatar)
                 && TextUtils.equals(name, o.name)
                 && TextUtils.equals(chatId, o.chatId)
-                && type == o.type
                 && TextUtils.equals(markName, o.markName);
     }
 
@@ -132,7 +154,6 @@ public class User implements Serializable {
         h += name == null ? 0 : name.hashCode();
         h += avatar == null ? 0 : avatar.hashCode();
         h += chatId == null ? 0 : chatId.hashCode();
-        h += type;
         h += markName == null ? 0 : markName.hashCode();
         return h;
     }
@@ -144,7 +165,10 @@ public class User implements Serializable {
                 ", avatar='" + avatar + '\'' +
                 ", name='" + name + '\'' +
                 ", chatId='" + chatId + '\'' +
-                ", type=" + type +
+                ", chatPassword='" + chatPassword + '\'' +
+                ", clubId='" + clubId + '\'' +
+                ", clubName='" + clubName + '\'' +
+                ", techNo='" + techNo + '\'' +
                 ", markName='" + markName + '\'' +
                 '}';
     }

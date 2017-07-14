@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.LoginTechnician;
 
@@ -53,13 +52,13 @@ public class TechPosterDialog extends Dialog {
     TextView tvSharePoster;
 
     private int style;
-    private boolean isSave,isShare;
+    private boolean isSave, isShare;
     private Context mContext;
     private PosterShareOrSaveListener posterListener;
 
-    public TechPosterDialog(Context context, int style, boolean isSave,boolean isShare) {
+    public TechPosterDialog(Context context, int style, boolean isSave, boolean isShare) {
 
-       super(context,R.style.default_dialog_style);
+        super(context, R.style.default_dialog_style);
         this.mContext = context;
         this.style = style;
         this.isSave = isSave;
@@ -67,7 +66,7 @@ public class TechPosterDialog extends Dialog {
     }
 
     public interface PosterShareOrSaveListener {
-        void posterSave(View view,View dismiss);
+        void posterSave(View view, View dismiss);
 
         void posterEdit();
 
@@ -76,10 +75,9 @@ public class TechPosterDialog extends Dialog {
     }
 
     public TechPosterDialog(Context context) {
-        this(context,-1);
+        this(context, -1);
 
     }
-
 
 
     public void setPosterListener(PosterShareOrSaveListener posterListener) {
@@ -97,11 +95,11 @@ public class TechPosterDialog extends Dialog {
     public void setViewDate(String primaryTitle, String minorTitle, String techName, String techNo, String clubName, String image, String imageUrl) {
 
         if (Utils.isNotEmpty(primaryTitle)) {
-            if(style == Constant.TECH_POSTER_SQUARE_MODEL){
-                tvPosterPrimaryTitle.setText(String.format("<<%s>>",primaryTitle));
-            }else if(style == Constant.TECH_POSTER_FLOWER_MODEL ){
+            if (style == Constant.TECH_POSTER_SQUARE_MODEL) {
+                tvPosterPrimaryTitle.setText(String.format("<<%s>>", primaryTitle));
+            } else if (style == Constant.TECH_POSTER_FLOWER_MODEL) {
                 tvPosterPrimaryTitle.setText(Utils.stringFormat(primaryTitle));
-            }else{
+            } else {
                 tvPosterPrimaryTitle.setText(primaryTitle);
             }
         } else {
@@ -164,11 +162,11 @@ public class TechPosterDialog extends Dialog {
         ButterKnife.bind(this);
         Glide.with(mContext).load(LoginTechnician.getInstance().getQrCodeUrl()).into(imgPosterQrCode);
         if (isSave) {
-            if(isShare){
+            if (isShare) {
                 rlPosterEditOrSave.setVisibility(View.GONE);
                 llPosterEditOrShare.setVisibility(View.GONE);
                 rlPosterSaveAndShare.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 rlPosterEditOrSave.setVisibility(View.VISIBLE);
                 llPosterEditOrShare.setVisibility(View.GONE);
                 rlPosterSaveAndShare.setVisibility(View.GONE);
@@ -183,7 +181,7 @@ public class TechPosterDialog extends Dialog {
     }
 
 
-    @OnClick({R.id.img_poster_dismiss, R.id.tv_save_poster, R.id.tv_edit_poster, R.id.ll_poster_edit, R.id.ll_poster_share,R.id.tv_poster_save,R.id.tv_share_poster})
+    @OnClick({R.id.img_poster_dismiss, R.id.tv_save_poster, R.id.tv_edit_poster, R.id.ll_poster_edit, R.id.ll_poster_share, R.id.tv_poster_save, R.id.tv_share_poster})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_poster_dismiss:
@@ -193,7 +191,7 @@ public class TechPosterDialog extends Dialog {
 
                 if (posterListener != null) {
                     imgPosterDismiss.setVisibility(View.GONE);
-                    posterListener.posterSave(rlView,imgPosterDismiss);
+                    posterListener.posterSave(rlView, imgPosterDismiss);
                     imgPosterDismiss.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -218,7 +216,7 @@ public class TechPosterDialog extends Dialog {
             case R.id.tv_poster_save:
                 if (posterListener != null) {
                     imgPosterDismiss.setVisibility(View.GONE);
-                    posterListener.posterSave(rlView,imgPosterDismiss);
+                    posterListener.posterSave(rlView, imgPosterDismiss);
                     imgPosterDismiss.setVisibility(View.VISIBLE);
                 }
                 break;

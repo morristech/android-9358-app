@@ -24,6 +24,7 @@ public class ImageTool {
     public static void loadImage(Context context, String url, ImageView imageView, int placeHolder) {
         Glide.with(context).load(url).placeholder(placeHolder).into(imageView);
     }
+
     public static void loadCircleImage(Context context, String url, ImageView imageView) {
         Glide.with(context).load(url).transform(new CircleBitmapTransformation(context)).into(imageView);
     }

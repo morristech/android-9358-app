@@ -13,6 +13,7 @@ public class VerificationRecordListResult extends BaseResult {
 
 
     public RespDataBean respData;
+
     public static class RespDataBean {
 
         public int total;

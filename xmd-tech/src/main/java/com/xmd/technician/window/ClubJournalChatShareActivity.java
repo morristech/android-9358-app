@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
@@ -90,15 +89,13 @@ public class ClubJournalChatShareActivity extends BaseActivity implements View.O
             setResult(RESULT_OK, resultIntent);
         }
         this.finish();
-
     }
 
 
     private void handleJournalListResult(JournalListResult result) {
-
         if (result.statusCode == 200) {
             if (result.respData != null) {
-                if(result.respData.size()==0){
+                if (result.respData.size() == 0) {
                     viewEmptyView.setStatus(EmptyView.Status.Empty);
                     return;
                 }
@@ -111,12 +108,10 @@ public class ClubJournalChatShareActivity extends BaseActivity implements View.O
                 if (ClubJournalBeanList != null) {
                     adapter.setData(ClubJournalBeanList);
                 }
-
             }
-        }else{
+        } else {
             viewEmptyView.setStatus(EmptyView.Status.Failed);
         }
-
     }
 
     @Override

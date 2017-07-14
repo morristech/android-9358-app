@@ -1,6 +1,5 @@
 package com.xmd.manager.service.response;
 
-import com.xmd.manager.beans.FavourableActivityBean;
 import com.xmd.manager.beans.FavourableActivityGroup;
 
 /**

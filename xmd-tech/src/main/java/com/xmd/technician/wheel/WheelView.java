@@ -810,7 +810,7 @@ public class WheelView extends View {
             updated = true;
         }
 
-        if(range == null){
+        if (range == null) {
             return false;
         }
 

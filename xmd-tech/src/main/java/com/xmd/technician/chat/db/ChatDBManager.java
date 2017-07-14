@@ -52,7 +52,7 @@ public class ChatDBManager {
                     values.put(UserDao.COLUMN_NAME_AVATAR, user.getAvatar());
                 if (user.getUserType() != null) {
                     values.put(UserDao.COLUMN_NAME_TYPE, user.getUserType());
-                }else{
+                } else {
                     values.put(UserDao.COLUMN_NAME_TYPE, ChatConstant.CHAT_USER_TYPE_CUSTOMER);
                 }
                 db.replace(UserDao.TABLE_NAME, null, values);

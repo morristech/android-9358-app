@@ -3,6 +3,8 @@ package com.xmd.technician.msgctrl;
 import android.os.Message;
 import android.util.SparseArray;
 
+import com.shidou.commonlibrary.helper.XLogger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,27 +17,29 @@ public class MsgDispatcher {
 
     /**
      * Register the messages to controller
-     * @see ControllerRegister
+     *
      * @param controllerId
      * @param msgIds
+     * @see ControllerRegister
      */
-    public static void register(int controllerId, int[] msgIds){
+    public static void register(int controllerId, int[] msgIds) {
         mControllers.put(controllerId, msgIds);
     }
 
     /**
      * find the controllers which this msgId registered to, @see ControllerRegister.java
+     *
      * @param msgId
      * @return
      */
-    private static List<Integer> findControllerId(int msgId){
+    private static List<Integer> findControllerId(int msgId) {
         List<Integer> controllers = new ArrayList<>();
         int len = mControllers.size();
-        for(int i = 0; i < len; i++){
+        for (int i = 0; i < len; i++) {
             int[] msgIds = mControllers.valueAt(i);
             int valLen = msgIds.length;
-            for(int k = 0; k < valLen; k++){
-                if(msgIds[k] == msgId){
+            for (int k = 0; k < valLen; k++) {
+                if (msgIds[k] == msgId) {
                     controllers.add(mControllers.keyAt(i));
                 }
             }
@@ -43,15 +47,19 @@ public class MsgDispatcher {
         return controllers;
     }
 
-    public static void dispatchMessage(Message msg){
+    public static void dispatchMessage(Message msg) {
         List<Integer> controllerIds = findControllerId(msg.what);
-        for(Integer controllerId : controllerIds){
+        for (Integer controllerId : controllerIds) {
             AbstractController controller = ControllerFactory.createController(controllerId);
-            controller.sendMessage(msg);
+            if (controller != null) {
+                controller.sendMessage(msg);
+            } else {
+                XLogger.e("not found controller by id :" + controllerId);
+            }
         }
     }
 
-    public static void dispatchMessage(int msgId, int arg1, int arg2, Object obj){
+    public static void dispatchMessage(int msgId, int arg1, int arg2, Object obj) {
         Message msg = Message.obtain();
         msg.what = msgId;
         msg.arg1 = arg1;
@@ -60,11 +68,11 @@ public class MsgDispatcher {
         dispatchMessage(msg);
     }
 
-    public static void dispatchMessage(int msgId, Object obj){
+    public static void dispatchMessage(int msgId, Object obj) {
         dispatchMessage(msgId, -1, -1, obj);
     }
 
-    public static void dispatchMessage(int msgId){
+    public static void dispatchMessage(int msgId) {
         dispatchMessage(msgId, null);
     }
 }

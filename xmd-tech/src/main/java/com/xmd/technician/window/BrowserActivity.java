@@ -23,7 +23,6 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.widget.SmoothProgressBar;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

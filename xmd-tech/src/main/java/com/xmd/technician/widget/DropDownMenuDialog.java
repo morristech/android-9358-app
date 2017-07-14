@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Utils;
 
 /**
  * Created by Administrator on 2016/7/8.
@@ -64,7 +63,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
     }
 
     private void initViews() {
-        if(items == null){
+        if (items == null) {
             return;
         }
         for (int i = 0; i < items.length; i++) {
@@ -97,6 +96,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
             }
         }
     }
+
     public void show(View view) {
         showAsDropDown(view, 0, 10);
     }
@@ -107,6 +107,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
         contentView.measure(0, 0);
         showAtLocation(v, Gravity.CENTER_HORIZONTAL | Gravity.TOP, location[0], location[1] - contentView.getMeasuredHeight());
     }
+
     public interface OnItemClickListener {
         void onItemClick(int index);
     }

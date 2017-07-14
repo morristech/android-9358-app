@@ -1,9 +1,9 @@
 package com.xmd.manager.window;
 
-import android.content.Intent;
 import android.view.View;
 
-import com.example.xmd_m_comment.CustomerInfoDetailActivity;
+import com.xmd.m.comment.CustomerInfoDetailActivity;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.Customer;
@@ -80,6 +80,6 @@ public class CustomerSearchActivity extends BaseListActivity<Customer, CustomerS
 //        Intent intent = new Intent(this, CustomerActivity.class);
 //        intent.putExtra(CustomerActivity.ARG_CUSTOMER, bean);
 //        startActivity(intent);
-        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(CustomerSearchActivity.this,bean.userId, "manger",false);
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(CustomerSearchActivity.this, bean.userId, ConstantResources.INTENT_TYPE_MANAGER, false);
     }
 }

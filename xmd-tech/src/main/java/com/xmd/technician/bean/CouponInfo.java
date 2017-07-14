@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Lhj on 16-4-14.
  */
-public class CouponInfo implements Parcelable{
+public class CouponInfo implements Parcelable {
     public String actId;
     public String actTitle;
     public String actContent;

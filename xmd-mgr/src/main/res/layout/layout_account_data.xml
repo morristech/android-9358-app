@@ -67,9 +67,9 @@
                     android:text="0" />
 
                 <!--<TextView-->
-                    <!--style="@style/main_fragment_layout_statistics_accumulate_value_style"-->
-                    <!--android:layout_marginTop="3dp"-->
-                    <!--android:text="@string/amount_unit" />-->
+                <!--style="@style/main_fragment_layout_statistics_accumulate_value_style"-->
+                <!--android:layout_marginTop="3dp"-->
+                <!--android:text="@string/amount_unit" />-->
 
             </LinearLayout>
 
@@ -126,9 +126,9 @@
                     android:text="0" />
 
                 <!--<TextView-->
-                    <!--style="@style/main_fragment_layout_statistics_accumulate_value_style"-->
-                    <!--android:layout_marginTop="3dp"-->
-                    <!--android:text="@string/amount_unit" />-->
+                <!--style="@style/main_fragment_layout_statistics_accumulate_value_style"-->
+                <!--android:layout_marginTop="3dp"-->
+                <!--android:text="@string/amount_unit" />-->
 
             </LinearLayout>
 

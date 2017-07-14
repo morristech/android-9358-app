@@ -14,7 +14,6 @@ import com.xmd.technician.msgctrl.RxBus;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -22,7 +21,8 @@ import rx.Subscription;
 
 public class FeedbackActivity extends BaseActivity {
 
-    @BindView(R.id.feedback_content) EditText mContent;
+    @BindView(R.id.feedback_content)
+    EditText mContent;
 
     private Subscription mSubmitFeedbackSubscription;
 
@@ -46,9 +46,9 @@ public class FeedbackActivity extends BaseActivity {
     }
 
     @OnClick(R.id.confirm)
-    public void submitFeeedback(){
+    public void submitFeeedback() {
         String content = mContent.getText().toString().trim();
-        if(TextUtils.isEmpty(content)){
+        if (TextUtils.isEmpty(content)) {
             makeShortToast(getString(R.string.feedback_empty_tips));
             return;
         }
@@ -56,16 +56,16 @@ public class FeedbackActivity extends BaseActivity {
         showProgressDialog(getString(R.string.settings_activity_suggest));
 
         Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_COMMENTS,content);
+        params.put(RequestConstant.KEY_COMMENTS, content);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SUBMIT_FEEDBACK, params);
     }
 
     @OnClick(R.id.cancel)
-    public void cancel(){
+    public void cancel() {
         mContent.setText("");
     }
 
-    private void submitFeedbackResult(){
+    private void submitFeedbackResult() {
         dismissProgressDialogIfShowing();
         mContent.setText("");
         makeShortToast(getString(R.string.feedback_result));

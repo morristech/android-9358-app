@@ -19,7 +19,7 @@
         android:textSize="@dimen/small_text_size"
         android:hint="推荐分类"
         android:textColorHint="@color/colorFont2"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.xmd.manager.widget.FlowLayout
         android:id="@+id/customer_group_child_list"

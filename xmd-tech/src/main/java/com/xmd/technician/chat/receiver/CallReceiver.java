@@ -14,7 +14,7 @@ import com.xmd.technician.chat.ChatHelper;
 public class CallReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(!ChatHelper.getInstance().isLoggedIn())
+        if (!ChatHelper.getInstance().isLoggedIn())
             return;
         //username
         String from = intent.getStringExtra("from");

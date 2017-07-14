@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.xmd.technician.R;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,16 +30,17 @@ public class CommonMsgFragmentTwo extends Fragment {
     @BindView(R.id.text5)
     TextView text5;
 
-    private  static CommonMsgOnClickInterface msgOnClickInterface;
-    private static  CommonMsgFragmentTwo commonMsgFragmentTwo;
+    private static CommonMsgOnClickInterface msgOnClickInterface;
+    private static CommonMsgFragmentTwo commonMsgFragmentTwo;
 
-    public static CommonMsgFragmentTwo getInstance(CommonMsgOnClickInterface clickInterface){
+    public static CommonMsgFragmentTwo getInstance(CommonMsgOnClickInterface clickInterface) {
         msgOnClickInterface = clickInterface;
-        if(commonMsgFragmentTwo==null){
+        if (commonMsgFragmentTwo == null) {
             commonMsgFragmentTwo = new CommonMsgFragmentTwo();
         }
         return commonMsgFragmentTwo;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,9 +48,10 @@ public class CommonMsgFragmentTwo extends Fragment {
         ButterKnife.bind(this, view);
         return view;
     }
-    @OnClick({R.id.text1,R.id.text2,R.id.text3,R.id.text4,R.id.text5})
-    public void onclick(View view){
-        switch (view.getId()){
+
+    @OnClick({R.id.text1, R.id.text2, R.id.text3, R.id.text4, R.id.text5})
+    public void onclick(View view) {
+        switch (view.getId()) {
             case R.id.text1:
                 msgOnClickInterface.onMsgClickListener(text1.getText().toString());
                 break;
@@ -73,6 +74,6 @@ public class CommonMsgFragmentTwo extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        
+
     }
 }

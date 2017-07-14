@@ -8,6 +8,7 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'android-aspectjx'
 
 def releaseTime() {
     return new Date().format("yyyyMMddHHmm", TimeZone.getDefault())
@@ -70,6 +71,10 @@ android {
                 UMENG_APPKEY_VALUE: "565d57ade0f55a1504001a62",
                 CHANNEL_VALUE     : "xiaomodo",
         ]
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
     }
 
     lintOptions {
@@ -88,19 +93,11 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField "String", "DEFAULT_UPDATE_SERVER", "\"http://service.xiaomodo.com\""
-            manifestPlaceholders = [
-                    EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
-                    GETUI_APP_ID        : "8UMRKwWVdoAGROcu6riYn7",
-                    GETUI_APP_KEY       : "YMMAertL7F8HXT4aYHTWU3",
-                    GETUI_APP_SECRET    : "GQryaLLQfA8SmOoT7kHW15",
-                    GETUI_MASTER_SECRET : "O76Q0ZRN2W5OGLhPuTtqW4",
-            ]
             signingConfig signingConfigs.release
         }
 
         release {
-            minifyEnabled false
+            minifyEnabled true
             zipAlignEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -165,13 +162,15 @@ dependencies {
     compile project(':commonlibrary')
     compile project(':xmd-m-network')
     compile project(':xmd-app')
+    compile project(':xmd-m-permission')
     compile project(':xmd-m-notify')
     compile project(':xmd-m-comment')
-    compile(name: 'shidou-updater-1.7', ext: 'aar')
+    compile project(':xmd-m-chat')
     compile(name: 'xmd-image-crop-1.0', ext: 'aar')
     compile(name: 'xmd-image-selector-1.0', ext: 'aar')
     compile(name: 'xmd-image-tool-1.0', ext: 'aar')
     compile(name: 'permission-tool-1.0', ext: 'aar')
+    compile(name: 'shidou-updater-1.7', ext: 'aar')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibraryVersion}"
     compile "com.android.support:cardview-v7:${rootProject.ext.supportLibraryVersion}"
@@ -193,5 +192,7 @@ dependencies {
     compile project(':loading-view')
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.ms-square:expandableTextView:0.1.4'
-    compile project(path: ':xmd-app')
+
+    //aspectj
+    compile "org.aspectj:aspectjrt:${rootProject.ext.aspectjrtVersion}"
 }

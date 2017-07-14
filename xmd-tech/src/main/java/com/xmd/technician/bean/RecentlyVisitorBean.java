@@ -37,5 +37,4 @@ public class RecentlyVisitorBean implements Serializable {
     public String tech_customer_id;
 
 
-
 }

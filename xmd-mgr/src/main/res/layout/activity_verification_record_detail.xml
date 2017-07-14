@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical">
+
     <include layout="@layout/toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -92,6 +94,7 @@
                 style="@style/verification_record_content_type"
                 tools:text="3215987126945369536" />
         </LinearLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/verification_circle_diameter"
@@ -123,6 +126,7 @@
                     android:background="@drawable/right_semi_circle" />
             </RelativeLayout>
         </FrameLayout>
+
         <ListView
             android:id="@+id/user_verification_list"
             android:layout_width="match_parent"

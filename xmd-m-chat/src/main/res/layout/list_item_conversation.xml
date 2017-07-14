@@ -3,15 +3,22 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="data"
-            type="com.xmd.chat.ConversationData" />
+            type="com.xmd.chat.viewmodel.ConversationViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginBottom="1px"
+        android:background="@android:color/white"
+        android:onClick="@{(v)->data.onClick(v)}"
+        android:onLongClick="@{(v)->data.onLongClick(v)}"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageView
             android:layout_width="48dp"
@@ -19,22 +26,63 @@
             app:avatar="@{data.avatar}" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{data.name}"
-                android:layout_weight="3"/>
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/fontSubheading"
+                android:text="@{data.name}" />
+
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{data.message}"
-                android:layout_weight="2"/>
+                android:textSize="@dimen/fontCaption" />
+
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="3"
+                app:time="@{data}" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center|right"
+                    android:background="@drawable/red_circle"
+                    android:gravity="center"
+                    android:minWidth="16dp"
+                    android:text="@{String.valueOf(data.unReadMsgCount)}"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/fontSmall"
+                    android:visibility="@{data.unReadMsgCount>0?View.VISIBLE:View.GONE}" />
+            </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 </layout>

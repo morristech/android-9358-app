@@ -35,11 +35,11 @@ public class ControllerFactory {
                     sShareController = new ShareController();
                 }
                 return sShareController;
-            case ControllerId.CHAT_CONTROLLER:
-                if (sChatController == null) {
-                    sChatController = new ChatController();
-                }
-                return sChatController;
+//            case ControllerId.CHAT_CONTROLLER:
+//                if (sChatController == null) {
+//                    sChatController = new ChatController();
+//                }
+//                return sChatController;
         }
         return null;
     }

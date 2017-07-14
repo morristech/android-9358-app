@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/app_bg"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
 
     <include layout="@layout/toolbar"/>
 
@@ -58,12 +57,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/right_arrow"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical" />
 
         <!--<Button-->
-            <!--android:id="@+id/btn_share_user_card"-->
-            <!--style="@style/share_btn_style"-->
-            <!--/>-->
+        <!--android:id="@+id/btn_share_user_card"-->
+        <!--style="@style/share_btn_style"-->
+        <!--/>-->
 
     </LinearLayout>
 
@@ -322,7 +321,7 @@
                                 android:layout_width="64dp"
                                 android:layout_height="64dp"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/icon_indiana_"/>
+                                android:src="@drawable/icon_indiana_" />
 
                             <TextView
                                 android:id="@+id/pay_for_me_name"

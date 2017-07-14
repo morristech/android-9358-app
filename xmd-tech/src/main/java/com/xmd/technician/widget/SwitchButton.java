@@ -56,9 +56,11 @@ public class SwitchButton extends FrameLayout {
     public SwitchButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
-    public boolean isSwitchOpen(){
+
+    public boolean isSwitchOpen() {
         return openImage.getVisibility() == View.VISIBLE;
     }
+
     public void openSwitch() {
         openImage.setVisibility(View.VISIBLE);
         closeImage.setVisibility(View.INVISIBLE);

@@ -353,7 +353,7 @@
             android:text="@string/effect_analysis"
             android:textColor="@color/colorClubItemTitle"
             android:textSize="@dimen/large_text_size"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/effect_analysis_container"

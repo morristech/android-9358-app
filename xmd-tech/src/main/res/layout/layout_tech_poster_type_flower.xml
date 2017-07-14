@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/poster_dialog_width"
@@ -11,8 +10,7 @@
         android:id="@+id/rl_view"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <com.xmd.technician.widget.RoundImageView
             android:id="@+id/img_poster_tech_photo"
@@ -25,13 +23,12 @@
             android:layout_marginTop="30dp"
             android:scaleType="fitXY"
             android:src="@drawable/img_default_square"
-            app:type="round"
-            />
+            app:type="round" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/poster_flower_bg"/>
+            android:background="@drawable/poster_flower_bg" />
 
         <TextView
             android:id="@+id/tv_poster_tech_name"
@@ -43,7 +40,7 @@
             android:gravity="center"
             android:paddingLeft="5dp"
             android:textSize="12sp"
-            tools:text="张乔乔 /Ａ００８"/>
+            tools:text="张乔乔 /Ａ００８" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -53,7 +50,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginBottom="-17dp"
             android:scaleType="fitXY"
-            android:src="@drawable/poster_flower_bottom"/>
+            android:src="@drawable/poster_flower_bottom" />
 
         <ImageView
             android:id="@+id/img_poster_qr_code"
@@ -62,8 +59,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/icon23"
-            />
+            android:src="@drawable/icon23" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_white"
                 android:textSize="16sp"
-                tools:text="客/观/捧/捧/场"/>
+                tools:text="客/观/捧/捧/场" />
 
             <TextView
                 android:id="@+id/tv_poster_minor_title"
@@ -86,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_white"
                 android:textSize="12sp"
-                tools:text="关注9358快来预约我吧"/>
+                tools:text="关注9358快来预约我吧" />
 
             <TextView
                 android:id="@+id/tv_poster_club_name"
@@ -96,7 +92,7 @@
                 android:paddingBottom="@dimen/small_space"
                 android:textColor="@color/color_white"
                 android:textSize="12sp"
-                tools:text="小摩豆休闲养生会所"/>
+                tools:text="小摩豆休闲养生会所" />
 
         </LinearLayout>
 
@@ -108,10 +104,10 @@
             android:layout_gravity="right"
             android:layout_margin="-20dp"
             android:scaleType="fitXY"
-            android:src="@drawable/icon_dialog_dismiss"/>
+            android:src="@drawable/icon_dialog_dismiss" />
     </RelativeLayout>
 
-    <include layout="@layout/layout_poster_dialog_bottom_btn"/>
+    <include layout="@layout/layout_poster_dialog_bottom_btn" />
 </LinearLayout>
 
 

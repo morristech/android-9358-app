@@ -12,7 +12,7 @@ public class CityInfo {
         super();
     }
 
-    public CityInfo(String name , String cityCode) {
+    public CityInfo(String name, String cityCode) {
         super();
         this.name = name;
         this.cityCode = cityCode;
@@ -26,13 +26,11 @@ public class CityInfo {
         this.name = name;
     }
 
-    public String getCityCode()
-    {
+    public String getCityCode() {
         return cityCode;
     }
 
-    public void setCityCode(String cityCode)
-    {
+    public void setCityCode(String cityCode) {
         this.cityCode = cityCode;
     }
 }

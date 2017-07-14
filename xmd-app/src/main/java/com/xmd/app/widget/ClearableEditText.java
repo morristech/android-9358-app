@@ -27,13 +27,13 @@ public class ClearableEditText extends EditText {
 
     private int mBgColorFilter;
 
-    private  CleanTextListener cleanText;
+    private CleanTextListener cleanText;
 
-    public interface CleanTextListener{
+    public interface CleanTextListener {
         void cleanText();
     }
 
-    public void setCleanTextListener(CleanTextListener cleanListener){
+    public void setCleanTextListener(CleanTextListener cleanListener) {
         this.cleanText = cleanListener;
     }
 
@@ -57,7 +57,7 @@ public class ClearableEditText extends EditText {
     }
 
     private void init() {
-        if(isInEditMode()) {
+        if (isInEditMode()) {
             return;
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && mBgColorFilter != -1) {
@@ -87,7 +87,7 @@ public class ClearableEditText extends EditText {
                 if (touchable) {
                     this.setText("");
                     this.setTag(null);
-                    if(cleanText != null){
+                    if (cleanText != null) {
                         cleanText.cleanText();
                     }
 
@@ -111,7 +111,7 @@ public class ClearableEditText extends EditText {
     /**
      * 当ClearEditText焦点发生变化的时候，判断里面字符串长度设置清除图标的显示与隐藏
      */
-   // @OnFocusChange
+    // @OnFocusChange
     public void onFocusChange(View v, boolean hasFocus) {
         this.hasFoucs = hasFocus;
         if (hasFocus) {
@@ -124,7 +124,7 @@ public class ClearableEditText extends EditText {
     /**
      * 当输入框里面内容发生变化的时候回调的方法
      */
-  //  @OnTextChanged
+    //  @OnTextChanged
     public void onTextChanged(CharSequence s, int start, int count, int after) {
         if (hasFoucs) {
             setClearIconVisible(s.length() > 0);

@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/xmd-m-comment" />
             <option value="$PROJECT_DIR$/xmd-m-network" />
             <option value="$PROJECT_DIR$/xmd-m-notify" />
+            <option value="$PROJECT_DIR$/xmd-m-permission" />
             <option value="$PROJECT_DIR$/xmd-mgr" />
             <option value="$PROJECT_DIR$/xmd-tech" />
           </set>

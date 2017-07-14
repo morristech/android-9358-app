@@ -24,7 +24,6 @@ import com.xmd.technician.widget.CircleAvatarView;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -82,7 +81,7 @@ public class NearbyCusAdapter extends RecyclerView.Adapter<NearbyCusAdapter.View
         NearbyCusInfo info = getItem(position);
         holder.mPosition.setText(info.userPosition);    // 位置
         holder.mDistance.setText("距离" + Math.round(info.userClubDistance) + "m");   // 距离
-        holder.mAvatar.setUserInfo(info.userId, info.userAvatar,false);
+        holder.mAvatar.setUserInfo(info.userId, info.userAvatar, false);
         holder.mNickName.setText(info.userName);    // 名称
 
         // 用户类型

@@ -32,7 +32,6 @@ import com.xmd.technician.msgctrl.RxBus;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -91,8 +90,8 @@ public class HelloSettingActivity extends BaseActivity {
             mCustomCheck.setEnabled(true);
         });
         mTemplateListView.setNestedScrollingEnabled(false);
-       // mTemplateListView.setLayoutManager(new FullyGridLayoutManager(HelloSettingActivity.this, 1));
-        mTemplateListView.setLayoutManager(new GridLayoutManager(HelloSettingActivity.this,1));
+        // mTemplateListView.setLayoutManager(new FullyGridLayoutManager(HelloSettingActivity.this, 1));
+        mTemplateListView.setLayoutManager(new GridLayoutManager(HelloSettingActivity.this, 1));
         mTemplateListView.setAdapter(mAdapter);
         initCustom();
         initImage();

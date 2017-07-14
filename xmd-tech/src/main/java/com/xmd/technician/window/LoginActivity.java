@@ -23,7 +23,6 @@ import com.xmd.technician.presenter.LoginPresenter;
 import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.ClearableEditText;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

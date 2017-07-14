@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true" android:drawable="@drawable/icon_more_click"/>
-    <item android:state_selected="false" android:drawable="@drawable/icon_more_normal"/>
-    <item android:drawable="@drawable/icon_more_normal"/>
+    <item android:state_selected="true" android:drawable="@drawable/chat_menu_more_focus" />
+    <item android:state_selected="false" android:drawable="@drawable/chat_menu_more_normal" />
+    <item android:drawable="@drawable/chat_menu_more_normal" />
 </selector>

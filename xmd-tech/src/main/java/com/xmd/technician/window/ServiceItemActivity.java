@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+
 import com.xmd.technician.Adapter.ServiceAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.http.RequestConstant;
@@ -25,10 +26,14 @@ import rx.Subscription;
 
 public class ServiceItemActivity extends BaseActivity {
 
-    @BindView(R.id.list_view) RecyclerView mListView;
-    @BindView(R.id.confirm) Button mConfirmBtn;
-    @BindView(R.id.header_container) View mHearContainer;
-    @BindView(R.id.empty_view_widget) EmptyView mEmptyView;
+    @BindView(R.id.list_view)
+    RecyclerView mListView;
+    @BindView(R.id.confirm)
+    Button mConfirmBtn;
+    @BindView(R.id.header_container)
+    View mHearContainer;
+    @BindView(R.id.empty_view_widget)
+    EmptyView mEmptyView;
 
     private ServiceAdapter mAdapter;
 
@@ -68,12 +73,12 @@ public class ServiceItemActivity extends BaseActivity {
         RxBus.getInstance().unsubscribe(mUpdateSubscription);
     }
 
-    private void initData(ServiceResult result){
-        if(result.respData == null || result.respData.isEmpty()){
+    private void initData(ServiceResult result) {
+        if (result.respData == null || result.respData.isEmpty()) {
             mEmptyView.setStatus(EmptyView.Status.Empty);
             mConfirmBtn.setVisibility(View.INVISIBLE);
             mHearContainer.setVisibility(View.INVISIBLE);
-        }else {
+        } else {
             mEmptyView.setStatus(EmptyView.Status.Gone);
             mConfirmBtn.setVisibility(View.VISIBLE);
             mHearContainer.setVisibility(View.VISIBLE);
@@ -82,10 +87,10 @@ public class ServiceItemActivity extends BaseActivity {
     }
 
     @OnClick(R.id.confirm)
-    public void updateServiceList(){
+    public void updateServiceList() {
         String ids = mAdapter.getSelectedIds();
         Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_IDS,ids);
+        params.put(RequestConstant.KEY_IDS, ids);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPDATE_SERVICE_ITEM_LIST, params);
     }
 }

@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_activity_drawer_title_height"
@@ -90,12 +91,15 @@
 
         </LinearLayout>
     </LinearLayout>
+
     <View
         style="@style/line"
         android:background="@color/tab_bottom_line_color" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_activity_drawer_title_height">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -113,12 +117,15 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp" />
     </RelativeLayout>
+
     <View
         style="@style/line"
         android:background="@color/tab_bottom_line_color" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_activity_drawer_title_height">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

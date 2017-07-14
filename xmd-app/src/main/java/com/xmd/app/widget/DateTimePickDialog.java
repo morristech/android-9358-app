@@ -10,8 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.R;
 
 import java.text.SimpleDateFormat;

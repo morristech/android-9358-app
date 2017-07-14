@@ -27,7 +27,7 @@
                 android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="6dp"
-                android:background="@drawable/ease_chatting_setmode_voice_btn"
+                android:background="@drawable/input_voice"
                 android:visibility="visible" />
 
             <Button
@@ -36,7 +36,7 @@
                 android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="6dp"
-                android:background="@drawable/ease_chatting_setmode_keyboard_btn"
+                android:background="@drawable/input_keyboard"
                 android:visibility="gone" />
 
             <LinearLayout
@@ -128,7 +128,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:src="@drawable/chat_expression_icon_bg" />
+                android:src="@drawable/chat_menu_emoji" />
 
 
             <ImageView

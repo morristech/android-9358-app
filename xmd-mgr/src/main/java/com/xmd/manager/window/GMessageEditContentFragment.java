@@ -29,15 +29,15 @@ import butterknife.OnClick;
 public class GMessageEditContentFragment extends BaseFragment implements TextWatcher {
 
     public final static String EXTRA_LIMIT_SIZE = "image_limit_size";
-   @BindView(R.id.group_add_pic)
+    @BindView(R.id.group_add_pic)
     CircularBeadImageView groupAddPic;
-   @BindView(R.id.image_delete)
+    @BindView(R.id.image_delete)
     ImageView imageDelete;
-   @BindView(R.id.limit_image_size)
+    @BindView(R.id.limit_image_size)
     TextView limitImageSize;
-   @BindView(R.id.edit_content)
+    @BindView(R.id.edit_content)
     EditText mEditContent;
-   @BindView(R.id.editable_amount)
+    @BindView(R.id.editable_amount)
     TextView mEditAbleAmount;
 
     private ImageTool mImageTool = new ImageTool();
@@ -91,16 +91,16 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
         }
     }
 
-    private void deleteImage(){
+    private void deleteImage() {
         Glide.with(getActivity()).load(R.drawable.img_group_add_img).into(groupAddPic);
         imageDelete.setVisibility(View.GONE);
         imageUrl = "";
     }
 
-    private void clearMessageContent(){
+    private void clearMessageContent() {
         mEditAbleAmount.setText("100");
         mEditContent.setText("");
-        mMessageContent="";
+        mMessageContent = "";
     }
 
     @Override
@@ -135,7 +135,7 @@ public class GMessageEditContentFragment extends BaseFragment implements TextWat
         mMessageContent = mEditContent.getText().toString();
     }
 
-    public void setSelectCoupon(boolean selected){
+    public void setSelectCoupon(boolean selected) {
         mSelectCoupon = selected;
     }
 

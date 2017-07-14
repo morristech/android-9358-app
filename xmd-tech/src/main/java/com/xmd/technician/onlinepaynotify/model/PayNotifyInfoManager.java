@@ -4,6 +4,8 @@ package com.xmd.technician.onlinepaynotify.model;
 import android.text.TextUtils;
 
 import com.xmd.app.event.EventLogout;
+import com.xmd.permission.CheckBusinessPermission;
+import com.xmd.permission.PermissionConstants;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.Callback;
@@ -17,8 +19,6 @@ import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.onlinepaynotify.event.PayNotifyArchiveEvent;
 import com.xmd.technician.onlinepaynotify.event.PayNotifyNewDataEvent;
-import com.xmd.technician.permission.CheckBusinessPermission;
-import com.xmd.technician.permission.PermissionConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -10,9 +10,9 @@ public class PkFilterTeamBean {
     public String teamId;
     public String teamName;
 
-    public PkFilterTeamBean(String id,String name){
+    public PkFilterTeamBean(String id, String name) {
         this.teamId = id;
-        this.teamName =name;
+        this.teamName = name;
     }
 
     @Override

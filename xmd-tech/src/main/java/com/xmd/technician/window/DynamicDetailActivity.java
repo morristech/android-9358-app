@@ -13,7 +13,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.DynamicListResult;
@@ -24,7 +23,6 @@ import com.xmd.technician.widget.DropDownMenuDialog;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.OnClick;

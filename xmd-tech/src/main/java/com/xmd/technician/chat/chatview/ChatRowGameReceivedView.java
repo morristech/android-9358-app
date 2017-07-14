@@ -88,7 +88,7 @@ public class ChatRowGameReceivedView extends BaseEaseChatView {
             e.printStackTrace();
         }
         initGameView();
-       // handleTextMessage();
+        // handleTextMessage();
     }
 
     private void initGameView() {
@@ -97,17 +97,17 @@ public class ChatRowGameReceivedView extends BaseEaseChatView {
         gameIntegral.setText(String.format(ResourceUtils.getString(R.string.dice_game_integral), content));
         gameStartTime = mEMMessage.getMsgTime();
         currentTime = System.currentTimeMillis();
-        if(Utils.isEmpty(SharedPreferenceHelper.getGameStatus(gameId))){
+        if (Utils.isEmpty(SharedPreferenceHelper.getGameStatus(gameId))) {
             viewShow(gameStatus);
-        }else{
+        } else {
             viewShow(SharedPreferenceHelper.getGameStatus(gameId));
         }
 
         acceptGame.setOnClickListener(v -> {
             currentTime = System.currentTimeMillis();
-            if(currentTime-gameStartTime> SharedPreferenceHelper.getGameTimeout()){
+            if (currentTime - gameStartTime > SharedPreferenceHelper.getGameTimeout()) {
                 SharedPreferenceHelper.setGameStatus(gameId, ChatConstant.KEY_OVER_TIME_GAME_STATUS);
-            }else{
+            } else {
                 SharedPreferenceHelper.setGameStatus(gameId, ChatConstant.KEY_ACCEPT_GAME_STATUS);
                 RxBus.getInstance().post(new AcceptOrRejectGame(body.getMessage(), gameId, ChatConstant.KEY_ACCEPT_GAME, mEMMessage.getFrom()));
             }
@@ -115,9 +115,9 @@ public class ChatRowGameReceivedView extends BaseEaseChatView {
         });
         refusedGame.setOnClickListener(v -> {
             currentTime = System.currentTimeMillis();
-            if(currentTime-gameStartTime> SharedPreferenceHelper.getGameTimeout()){
+            if (currentTime - gameStartTime > SharedPreferenceHelper.getGameTimeout()) {
                 SharedPreferenceHelper.setGameStatus(gameId, ChatConstant.KEY_OVER_TIME_GAME_STATUS);
-            }else{
+            } else {
                 SharedPreferenceHelper.setGameStatus(gameId, ChatConstant.KEY_REFUSED_GAME_STATUS);
                 Map<String, String> params = new HashMap<>();
                 params.put(RequestConstant.KEY_DICE_GAME_ID, gameId.substring(5));
@@ -125,7 +125,6 @@ public class ChatRowGameReceivedView extends BaseEaseChatView {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_GAME_ACCEPT_OR_REJECT, params);
             }
         });
-
 
 
     }
@@ -143,7 +142,7 @@ public class ChatRowGameReceivedView extends BaseEaseChatView {
             refusedGame.setEnabled(false);
             acceptGame.setEnabled(false);
 
-        } else if (gameStatus.equals(ChatConstant.KEY_REFUSED_GAME_STATUS)||gameStatus.equals(ChatConstant.KEY_GAME_REJECT)) {
+        } else if (gameStatus.equals(ChatConstant.KEY_REFUSED_GAME_STATUS) || gameStatus.equals(ChatConstant.KEY_GAME_REJECT)) {
             acceptOrRefusedMark.setText(String.format("(%s)", ResourceUtils.getString(R.string.order_status_description_reject)));
             acceptOrRefusedMark.setVisibility(View.VISIBLE);
             refusedGame.setEnabled(false);

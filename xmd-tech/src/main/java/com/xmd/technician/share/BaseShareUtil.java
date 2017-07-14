@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
-import com.xmd.technician.common.ThreadManager;
 
 import java.util.Map;
 

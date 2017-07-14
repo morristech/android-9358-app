@@ -5,8 +5,11 @@ package com.xmd.app;
  */
 
 public class Constants {
-    public static final String EXTAR_EVENT_TAG = "extra_event_tag";
+    public static final String EXTRA_EVENT_TAG = "extra_event_tag";
     public static final String EXTRA_DATA = "extra_data";
+    public static final String EXTRA_TYPE = "extra_type";
+
+    public static final String EXTRA_CHAT_ID = "extra_chat_id";
 
     //技师状态
     public static final String TECH_STATUS_VALID = "valid"; //未加入会所

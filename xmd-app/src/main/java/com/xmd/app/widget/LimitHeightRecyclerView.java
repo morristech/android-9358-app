@@ -10,7 +10,7 @@ import android.view.View;
  * Created by Lhj on 17-7-7.
  */
 
-public class LimitHeightRecyclerView extends LinearLayoutManager{
+public class LimitHeightRecyclerView extends LinearLayoutManager {
 
 
     public LimitHeightRecyclerView(Context context) {
@@ -27,10 +27,10 @@ public class LimitHeightRecyclerView extends LinearLayoutManager{
 
     @Override
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-        if(this.getChildCount()>0){
+        if (this.getChildCount() > 0) {
             View firstChildView = recycler.getViewForPosition(0);
-            measureChild(firstChildView,widthSpec,heightSpec);
-            setMeasuredDimension(View.MeasureSpec.getSize(widthSpec),firstChildView.getMeasuredHeight()*4);
+            measureChild(firstChildView, widthSpec, heightSpec);
+            setMeasuredDimension(View.MeasureSpec.getSize(widthSpec), firstChildView.getMeasuredHeight() * 4);
         }
         super.onMeasure(recycler, state, widthSpec, heightSpec);
 

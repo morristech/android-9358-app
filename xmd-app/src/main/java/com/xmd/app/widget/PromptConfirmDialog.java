@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.xmd.app.R;
 
 
@@ -14,7 +15,7 @@ import com.xmd.app.R;
  * Created by Lhj on 17-7-12.
  */
 
-public class PromptConfirmDialog extends Dialog  {
+public class PromptConfirmDialog extends Dialog {
 
     TextView mTitleTxt;
     TextView mTipsTxt;
@@ -32,7 +33,7 @@ public class PromptConfirmDialog extends Dialog  {
 
     }
 
-    public interface ConfirmClickedListener{
+    public interface ConfirmClickedListener {
         void onConfirmClick();
     }
 
@@ -40,7 +41,7 @@ public class PromptConfirmDialog extends Dialog  {
         super(context, themeResId);
     }
 
-    public PromptConfirmDialog(Context context, String title, String msg, String btnText,ConfirmClickedListener listener) {
+    public PromptConfirmDialog(Context context, String title, String msg, String btnText, ConfirmClickedListener listener) {
         this(context, R.style.default_dialog_style);
         this.mTitle = title;
         this.mTipInfo = msg;
@@ -100,7 +101,6 @@ public class PromptConfirmDialog extends Dialog  {
             }
         });
     }
-
 
 
 }

@@ -64,7 +64,6 @@
     </style>
 
 
-
     <style name="success_dialog_style" parent="android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>

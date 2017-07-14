@@ -9,11 +9,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.xmd.technician.Adapter.ListRecycleViewAdapter;
 import com.xmd.technician.R;
-import com.xmd.technician.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,13 +19,15 @@ import butterknife.ButterKnife;
 /**
  * Created by linms@xiaomodo.com on 16-4-29.
  */
-public abstract class BaseListActivity<T> extends BaseActivity implements ListRecycleViewAdapter.Callback<T>, SwipeRefreshLayout.OnRefreshListener{
+public abstract class BaseListActivity<T> extends BaseActivity implements ListRecycleViewAdapter.Callback<T>, SwipeRefreshLayout.OnRefreshListener {
 
     protected static final int PAGE_START = 0;
     protected static final int PAGE_SIZE = 20;
 
-    @BindView(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.list) RecyclerView mListView;
+    @BindView(R.id.swipe_refresh_widget)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.list)
+    RecyclerView mListView;
 
     protected LinearLayoutManager mLayoutManager;
     protected ListRecycleViewAdapter mOrderListAdapter;
@@ -63,7 +63,7 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
         mOrderListAdapter = new ListRecycleViewAdapter(this, mData, this);
         mListView.setAdapter(mOrderListAdapter);
         mListView.setItemAnimator(new DefaultItemAnimator());
-    //    mListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        //    mListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         mListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -83,7 +83,7 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
     }
 
     private void loadMore() {
-        if(getListSafe()){
+        if (getListSafe()) {
             //上拉刷新，加载更多数据
             mSwipeRefreshLayout.setRefreshing(true);
             mIsLoadingMore = true;
@@ -92,11 +92,12 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
 
     /**
      * Only when current page is less than the pageCount, it's able to send request to server
+     *
      * @return true means it really sends the request
      */
-    private boolean getListSafe(){
-        if(mPageCount < 0 || mPages + 1 <= mPageCount) {
-            mPages ++;
+    private boolean getListSafe() {
+        if (mPageCount < 0 || mPages + 1 <= mPageCount) {
+            mPages++;
             dispatchRequest();
             return true;
         }
@@ -104,15 +105,14 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
     }
 
     /**
-     *
      * @param pageCount
-     * @param list - The List with T
+     * @param list      - The List with T
      */
     protected void onGetListSucceeded(int pageCount, List<T> list) {
         mPageCount = pageCount;
         mSwipeRefreshLayout.setRefreshing(false);
         if (list != null) {
-            if(!mIsLoadingMore) {
+            if (!mIsLoadingMore) {
                 mData.clear();
             }
             mData.addAll(list);
@@ -158,7 +158,7 @@ public abstract class BaseListActivity<T> extends BaseActivity implements ListRe
     }
 
     @Override
-    public boolean isHorizontalSliding(){
+    public boolean isHorizontalSliding() {
         return false;
     }
 

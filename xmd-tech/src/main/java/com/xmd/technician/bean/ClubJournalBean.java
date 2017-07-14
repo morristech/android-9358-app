@@ -8,7 +8,7 @@ import android.os.Parcelable;
  * Created by Lhj on 2017/2/9.
  */
 
-public class ClubJournalBean implements Parcelable{
+public class ClubJournalBean implements Parcelable {
 
 
     /**
