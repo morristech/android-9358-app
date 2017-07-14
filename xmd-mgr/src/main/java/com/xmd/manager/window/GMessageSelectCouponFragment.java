@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,7 +32,7 @@ import butterknife.OnClick;
 /**
  * Created by sdcm on 17-5-22.
  */
-public class GMessageSelectCouponFragment extends BaseFragment implements CustomerTypeExpandableAdapter.Callback{
+public class GMessageSelectCouponFragment extends BaseFragment implements CustomerTypeExpandableAdapter.Callback {
     @BindView(R.id.select_coupon_hint)
     TextView selectCouponHint;
     @BindView(R.id.coupon_list)
@@ -61,7 +60,7 @@ public class GMessageSelectCouponFragment extends BaseFragment implements Custom
         initData();
     }
 
-    private void initData(){
+    private void initData() {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PAGE, "");
         params.put(RequestConstant.KEY_PAGE_SIZE, "100");
@@ -81,13 +80,13 @@ public class GMessageSelectCouponFragment extends BaseFragment implements Custom
         });
     }
 
-    private void initHintView(){
-        if(checkedGroupPosition == -1){
+    private void initHintView() {
+        if (checkedGroupPosition == -1) {
             selectCouponHint.setText(ResourceUtils.getString(R.string.text_no_activity_selected));
-        }else {
+        } else {
             FavourableActivityBean bean = couponChildList.get(checkedGroupPosition).get(checkedChildPosition);
             selectCouponHint.setText(Utils.changeColor(String.format("已选择【%s】%s", Constant.MESSAGE_ACTIVITY_LABELS.get(bean.msgType), bean.name),
-                    ResourceUtils.getColor(R.color.colorMain), 4 ,Constant.MESSAGE_ACTIVITY_LABELS.get(bean.msgType).length() + 4));
+                    ResourceUtils.getColor(R.color.colorMain), 4, Constant.MESSAGE_ACTIVITY_LABELS.get(bean.msgType).length() + 4));
         }
     }
 
@@ -104,7 +103,7 @@ public class GMessageSelectCouponFragment extends BaseFragment implements Custom
         }
     }
 
-    private void clear(){
+    private void clear() {
         checkedGroupPosition = -1;
         checkedChildPosition = -1;
         for (int i = 0; i < couponAdapter.getGroupCount(); i++) {
@@ -118,14 +117,14 @@ public class GMessageSelectCouponFragment extends BaseFragment implements Custom
             couponChildList.clear();
             couponGroupList.clear();
             for (int i = 0; i < result.respData.size(); i++) {
-                if(result.respData.get(i).list != null && !result.respData.get(i).list.isEmpty()){
+                if (result.respData.get(i).list != null && !result.respData.get(i).list.isEmpty()) {
                     couponChildList.add(result.respData.get(i).list);
                     couponGroupList.add(result.respData.get(i));
                 }
             }
 
             couponAdapter.setData(couponGroupList, couponChildList);
-            if(couponGroupList.isEmpty()){
+            if (couponGroupList.isEmpty()) {
                 selectCouponHint.setText("暂无上线活动");
             }
         }
@@ -145,14 +144,14 @@ public class GMessageSelectCouponFragment extends BaseFragment implements Custom
 
     @Override
     public boolean isChecked(int groupPosition, int childPosition) {
-        if((checkedGroupPosition == groupPosition) && (checkedChildPosition == childPosition)){
+        if ((checkedGroupPosition == groupPosition) && (checkedChildPosition == childPosition)) {
             return true;
         }
         return false;
     }
 
-    public FavourableActivityBean getCouponInfo(){
-        if((checkedGroupPosition == -1) || (checkedChildPosition == -1)){
+    public FavourableActivityBean getCouponInfo() {
+        if ((checkedGroupPosition == -1) || (checkedChildPosition == -1)) {
             return null;
         }
 

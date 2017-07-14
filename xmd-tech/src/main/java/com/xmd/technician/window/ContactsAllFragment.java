@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.hyphenate.exceptions.HyphenateException;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ContactAllBean;

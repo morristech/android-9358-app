@@ -202,17 +202,18 @@ public class TechShareCardActivity extends BaseActivity {
 
         return bitmap;
     }
+
     @OnClick(R.id.user_save_btn)
-    public void saveUserCard(){
-        String filePath = Environment.getExternalStorageDirectory()+"/"+ResourceUtils.getString(R.string.save_tech_card_path)+".jpg";
-        if(FileUtils.checkFileExist(filePath,false)){
+    public void saveUserCard() {
+        String filePath = Environment.getExternalStorageDirectory() + "/" + ResourceUtils.getString(R.string.save_tech_card_path) + ".jpg";
+        if (FileUtils.checkFileExist(filePath, false)) {
             makeShortToast(ResourceUtils.getString(R.string.had_saved_tech_card));
-        }else{
+        } else {
             ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
                     Bitmap bitmap = ImageLoader.readBitmapFromImgUrl(codeUrl);
-                    ImageLoader.saveBitmapToLocal(TechShareCardActivity.this,bitmap,ResourceUtils.getString(R.string.save_tech_card_path));
+                    ImageLoader.saveBitmapToLocal(TechShareCardActivity.this, bitmap, ResourceUtils.getString(R.string.save_tech_card_path));
                 }
             });
         }

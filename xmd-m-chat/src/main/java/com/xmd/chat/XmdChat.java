@@ -5,16 +5,15 @@ import android.content.Intent;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.XmdApp;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventStartChatActivity;
-import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.view.ChatActivity;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
@@ -59,29 +58,24 @@ public class XmdChat {
         EMClient.getInstance().chatManager().loadAllConversations();
         EMClient.getInstance().groupManager().loadAllGroups();
 
-        //初始化用户信息
-        EMClient.getInstance().chatManager().loadAllConversations();
-        for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
-            EMMessage emMessage = conversation.getLatestMessageFromOthers();
-            if (emMessage != null) {
-                ChatMessage chatMessage = new ChatMessage(emMessage);
-                if (chatMessage.getUserId() != null) {
-                    User user = new User(chatMessage.getUserId());
-                    user.setName(chatMessage.getUserName());
-                    user.setAvatar(chatMessage.getUserAvatar());
-                    user.setChatId(chatMessage.getEmMessage().getFrom());
-                    UserInfoServiceImpl.getInstance().saveUser(user);
-                }
-            }
-            conversation.clear();
-        }
-
         AccountManager.getInstance().init();
         ConversationManager.getInstance().init();
         MessageManager.getInstance().init();
         setMenuFactory(menuFactory);
 
         EventBusSafeRegister.register(this);
+
+        if (XmdApp.getInstance().isAppFirstStart()) {
+            //历史原因，需要初始化用户信息
+            EMClient.getInstance().chatManager().loadAllConversations();
+            for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
+                User user = ConversationManager.getInstance().parseUserFromConversation(conversation);
+                if (user != null) {
+                    UserInfoServiceImpl.getInstance().saveUser(user);
+                }
+                conversation.clear(); //清除加载的会话数据，避免聊天窗口加载出错
+            }
+        }
     }
 
     public MenuFactory getMenuFactory() {

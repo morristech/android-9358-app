@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 public class CustomWebView extends WebView implements View.OnLongClickListener {
     private Context context;
     private LongClickCallBack mCallBack;
+
     public CustomWebView(Context context, LongClickCallBack mCallBack) {
         super(context);
         this.context = context;
@@ -54,6 +55,7 @@ public class CustomWebView extends WebView implements View.OnLongClickListener {
     private class MyWebViewClient extends WebViewClient {
         /**
          * 加载过程中 拦截加载的地址url
+         *
          * @param view
          * @param url  被拦截的url
          * @return
@@ -62,8 +64,10 @@ public class CustomWebView extends WebView implements View.OnLongClickListener {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             return super.shouldOverrideUrlLoading(view, url);
         }
+
         /**
          * 页面加载过程中，加载资源回调的方法
+         *
          * @param view
          * @param url
          */
@@ -71,8 +75,10 @@ public class CustomWebView extends WebView implements View.OnLongClickListener {
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
         }
+
         /**
          * 页面加载完成回调的方法
+         *
          * @param view
          * @param url
          */
@@ -83,8 +89,10 @@ public class CustomWebView extends WebView implements View.OnLongClickListener {
             view.getSettings().setBlockNetworkImage(false);
 
         }
+
         /**
          * 页面开始加载调用的方法
+         *
          * @param view
          * @param url
          * @param favicon
@@ -111,10 +119,13 @@ public class CustomWebView extends WebView implements View.OnLongClickListener {
 
     /**
      * 长按事件回调接口，传递图片地址
+     *
      * @author LinZhang
      */
-    public interface LongClickCallBack{
-        /**用于传递图片地址*/
+    public interface LongClickCallBack {
+        /**
+         * 用于传递图片地址
+         */
         void onLongClickCallBack(String imgUrl);
     }
 

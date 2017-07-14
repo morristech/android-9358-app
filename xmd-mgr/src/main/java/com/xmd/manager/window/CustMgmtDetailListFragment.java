@@ -1,6 +1,5 @@
 package com.xmd.manager.window;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.example.xmd_m_comment.CustomerInfoDetailActivity;
+import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ListRecycleViewAdapter;
@@ -365,7 +364,7 @@ public class CustMgmtDetailListFragment extends BaseFragment implements ListRecy
 //        Intent intent = new Intent(getActivity(), CustomerActivity.class);
 //        intent.putExtra(CustomerActivity.ARG_CUSTOMER, bean);
 //        startActivity(intent);
-        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(),bean.userId, "manger",false);
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.userId, "manger", false);
     }
 
     @Override

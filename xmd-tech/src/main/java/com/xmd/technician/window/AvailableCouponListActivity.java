@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;

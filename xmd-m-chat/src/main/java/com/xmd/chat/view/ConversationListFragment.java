@@ -5,8 +5,10 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +68,13 @@ public class ConversationListFragment extends BaseFragment {
             }
         };
         mBinding.recyclerView.setAdapter(mAdapter);
+        mBinding.refreshLayout.setColorSchemeColors(0xffff0000, 0xff00ff00, 0xff0000ff, 0xffffffff, 0xff000000);
+        mBinding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData(null);
+            }
+        });
 
         loadData(null);
         EventBusSafeRegister.register(this);
@@ -85,6 +94,7 @@ public class ConversationListFragment extends BaseFragment {
         conversationManager.loadConversationList(new Callback<List<ConversationViewModel>>() {
             @Override
             public void onResponse(List<ConversationViewModel> result, Throwable error) {
+                mBinding.refreshLayout.setRefreshing(false);
                 showLoading.set(false);
                 conversationViewModelList = result;
                 mAdapter.setData(R.layout.list_item_conversation, BR.data, conversationViewModelList);
@@ -156,6 +166,11 @@ public class ConversationListFragment extends BaseFragment {
 
     //搜索
     public void onSearch(Editable s) {
+        if (!TextUtils.isEmpty(s.toString())) {
+            mBinding.refreshLayout.setEnabled(false);
+        } else {
+            mBinding.refreshLayout.setEnabled(true);
+        }
         mAdapter.setData(R.layout.list_item_conversation, BR.data, conversationManager.listConversationData(s.toString()));
         mAdapter.notifyDataSetChanged();
     }

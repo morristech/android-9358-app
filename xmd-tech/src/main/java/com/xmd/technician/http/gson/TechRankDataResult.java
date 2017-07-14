@@ -12,7 +12,7 @@ public class TechRankDataResult extends BaseResult {
          * id : 748081899301244928
          * name : 7777
          * avatar : 153296
-         * serialNo : 
+         * serialNo :
          * counts : 1
          * avatarUrl : null
          */
@@ -22,7 +22,7 @@ public class TechRankDataResult extends BaseResult {
          * id : 748081899301244928
          * name : 7777
          * avatar : 153296
-         * serialNo : 
+         * serialNo :
          * counts : 1
          * avatarUrl : null
          */
@@ -32,7 +32,7 @@ public class TechRankDataResult extends BaseResult {
          * id : 748081899301244928
          * name : 7777
          * avatar : 153296
-         * serialNo : 
+         * serialNo :
          * counts : 1
          * avatarUrl : null
          */
@@ -47,7 +47,7 @@ public class TechRankDataResult extends BaseResult {
             public String serialNo;
             public String counts;
             public Object avatarUrl;
-    
+
         }
 
         public static class UserRankingBean {

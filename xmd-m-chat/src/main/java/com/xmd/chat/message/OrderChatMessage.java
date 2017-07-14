@@ -2,7 +2,6 @@ package com.xmd.chat.message;
 
 import com.hyphenate.chat.EMMessage;
 import com.xmd.appointment.AppointmentData;
-import com.xmd.chat.MessageManager;
 
 /**
  * Created by heyangya on 17-6-7.
@@ -24,8 +23,6 @@ public class OrderChatMessage extends ChatMessage {
     private final static String ATTR_ORDER_ID = "orderId";//订单ID
     private final static String ATTR_ORDER_PAY_MONEY = "orderPayMoney";////支付金额，单位为分 Integer
 
-    //内部是否已处理此消息
-    private static final String ATTR_INNER_PROCESSED = "inner_processed";
 
     public OrderChatMessage(EMMessage emMessage) {
         super(emMessage);
@@ -141,14 +138,7 @@ public class OrderChatMessage extends ChatMessage {
         setAttr(ATTR_ORDER_PAY_MONEY, orderPayMoney);
     }
 
-    public String getInnerProcessed() {
-        return getSafeStringAttribute(ATTR_INNER_PROCESSED);
-    }
 
-    public void setInnerProcessed(String processedDesc) {
-        setAttr(ATTR_INNER_PROCESSED, processedDesc);
-        MessageManager.getInstance().saveMessage(this); //设置状态标记后，需要保存消息到本地
-    }
 
     public String getOrderType() {
         return getSafeStringAttribute(ATTR_ORDER_TYPE);

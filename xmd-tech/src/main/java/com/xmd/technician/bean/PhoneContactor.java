@@ -1,15 +1,15 @@
 package com.xmd.technician.bean;
 
 
-
 /**
  * Created by Administrator on 2016/7/4.
  */
-public class PhoneContactor  {
+public class PhoneContactor {
     public String name;
     public String telephone;
     public String sortLetters;
-    public    PhoneContactor(String name,String telephone){
+
+    public PhoneContactor(String name, String telephone) {
         this.name = name;
         this.telephone = telephone;
     }

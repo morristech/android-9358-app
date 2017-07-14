@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.xmd.technician.R;
 import com.xmd.technician.common.Utils;
 
@@ -23,7 +24,7 @@ public class SuccessDialog extends Dialog {
 
     private TextView text;
 
-    private  Button btnSure;
+    private Button btnSure;
     boolean showBtn;
     private String mTipInfo;
 
@@ -35,7 +36,7 @@ public class SuccessDialog extends Dialog {
         super(context, themeResId);
     }
 
-    public  SuccessDialog(Context context,String msg,boolean showBtn){
+    public SuccessDialog(Context context, String msg, boolean showBtn) {
         this(context, R.style.success_dialog_style);
         this.mTipInfo = msg;
         this.showBtn = showBtn;
@@ -48,16 +49,16 @@ public class SuccessDialog extends Dialog {
         text = (TextView) findViewById(R.id.text);
         btnSure = (Button) findViewById(R.id.btn_sure);
 
-        if(Utils.isNotEmpty(mTipInfo)){
+        if (Utils.isNotEmpty(mTipInfo)) {
             text.setText(mTipInfo);
         }
-        if(showBtn){
+        if (showBtn) {
             btnSure.setVisibility(View.VISIBLE);
         }
     }
 
     @OnClick(R.id.btn_sure)
-    public void onConfirmClick(){
+    public void onConfirmClick() {
         dismiss();
     }
 }

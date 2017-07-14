@@ -104,19 +104,20 @@ public class EaseVoiceRecorder {
                     file.delete();
                 }
             } catch (IllegalStateException e) {
-            } catch (RuntimeException e){}
+            } catch (RuntimeException e) {
+            }
             isRecording = false;
         }
     }
 
     public int stopRecoding() {
-        if(recorder != null){
+        if (recorder != null) {
             isRecording = false;
             recorder.stop();
             recorder.release();
             recorder = null;
 
-            if(file == null || !file.exists() || !file.isFile()){
+            if (file == null || !file.exists() || !file.isFile()) {
                 return EMError.FILE_INVALID;
             }
             if (file.length() == 0) {

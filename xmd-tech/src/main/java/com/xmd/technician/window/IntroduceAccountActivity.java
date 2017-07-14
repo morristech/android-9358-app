@@ -18,13 +18,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+
 import com.google.zxing.Result;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.common.DecodeImage;
-import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.widget.CustomWebView;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -91,6 +92,7 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
         }
         return isQR;
     }
+
     public class MyAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected void onPostExecute(String s) {
@@ -103,6 +105,7 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
             return null;
         }
     }
+
     /**
      * 根据地址获取网络图片
      *
@@ -127,6 +130,7 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
         }
         return null;
     }
+
     /**
      * bitmap 保存为jpg 图片
      *
@@ -153,6 +157,7 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
             e.printStackTrace();
         }
     }
+
     /**
      * 先保存到本地再广播到图库
      */
@@ -174,6 +179,7 @@ public class IntroduceAccountActivity extends BaseActivity implements CustomWebV
             e.printStackTrace();
         }
     }
+
     public void showBottomDialog() {
         layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         viewM = layoutInflater.inflate(R.layout.introduce_view_layout, null);

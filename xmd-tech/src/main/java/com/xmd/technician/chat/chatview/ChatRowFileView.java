@@ -2,7 +2,6 @@ package com.xmd.technician.chat.chatview;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -92,10 +91,10 @@ public class ChatRowFileView extends BaseEaseChatView {
                     mPercentageView.setVisibility(View.INVISIBLE);
                 mStatusView.setVisibility(View.VISIBLE);
                 String errorCode = mEMMessage.getStringAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_SERVER_NOT_REACHABLE);
-                if(ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)){
+                if (ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)) {
                     mProgressBar.setVisibility(View.GONE);
                     mStatusView.setVisibility(View.GONE);
-                }else {
+                } else {
                     mProgressBar.setVisibility(View.GONE);
                     mProgressBar.setVisibility(View.VISIBLE);
                 }
@@ -132,7 +131,7 @@ public class ChatRowFileView extends BaseEaseChatView {
             FileUtils.openFile(file, (Activity) mContext);
         } else {
             // download the file
-           // mContext.startActivity(new Intent(mContext, EaseShowNormalFileActivity.class).putExtra("msg", mEMMessage));
+            // mContext.startActivity(new Intent(mContext, EaseShowNormalFileActivity.class).putExtra("msg", mEMMessage));
         }
         if (mEMMessage.direct() == EMMessage.Direct.RECEIVE && !mEMMessage.isAcked() && mEMMessage.getChatType() == EMMessage.ChatType.Chat) {
             try {

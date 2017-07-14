@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.xmd.manager.R;
 import com.xmd.manager.common.Utils;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

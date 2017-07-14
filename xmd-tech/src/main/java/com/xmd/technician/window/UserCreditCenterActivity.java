@@ -209,7 +209,7 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
                     intent.putExtra(RequestConstant.KEY_UER_CREDIT_AMOUNT, mTechCreditTotal);
                     startActivity(intent);
                 } else {
-                    makeShortToast(String.format(ResourceUtils.getString(R.string.exchange_credit_limit),String.valueOf(exChangeLimitation)));
+                    makeShortToast(String.format(ResourceUtils.getString(R.string.exchange_credit_limit), String.valueOf(exChangeLimitation)));
                 }
                 break;
             case R.id.credit_get:
@@ -234,11 +234,11 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(getCreditUserAccountSubscription,mCreditStatusSubscription,mExchangeCreditResultSubscription);
+        RxBus.getInstance().unsubscribe(getCreditUserAccountSubscription, mCreditStatusSubscription, mExchangeCreditResultSubscription);
     }
 
     private void handlerCreditAmount(CreditAccountResult result) {
-        if(result.respData.size()<=0){
+        if (result.respData.size() <= 0) {
             llDetail.setVisibility(View.GONE);
             mCreditIsEmpty.setVisibility(View.VISIBLE);
             SpannableString msp = new SpannableString(ResourceUtils.getString(R.string.credit_is_shortage));

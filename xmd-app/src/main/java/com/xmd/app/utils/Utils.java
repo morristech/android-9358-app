@@ -35,7 +35,7 @@ public class Utils {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
-    public static String listToString(List<String> list,String delimiter) {
+    public static String listToString(List<String> list, String delimiter) {
         if (list.size() > 0) {
             StringBuffer buffer = new StringBuffer();
             for (int i = 0; i < list.size(); i++) {
@@ -47,6 +47,7 @@ public class Utils {
         }
 
     }
+
     /**
      * @param changeStr  要改变颜色的字符串
      * @param colorStr   要改变成的颜色的十六进制表示 如#ffffff
@@ -63,7 +64,7 @@ public class Utils {
         //make sure the endIndex is less than the length of the change string.
         int len = changeStr.length();
         if (endIndex >= len) {
-            endIndex = len ;
+            endIndex = len;
         }
         ss.setSpan(new ForegroundColorSpan(Color.parseColor(colorStr)), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return ss;

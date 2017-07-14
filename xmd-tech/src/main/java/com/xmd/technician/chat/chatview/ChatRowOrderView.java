@@ -167,6 +167,4 @@ public class ChatRowOrderView extends BaseEaseChatView {
         params.put(RequestConstant.KEY_REASON, reason);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MANAGE_ORDER, params);
     }
-
-
 }

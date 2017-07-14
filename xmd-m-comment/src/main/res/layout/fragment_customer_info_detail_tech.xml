@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorAppBackground"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAppBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +23,7 @@
                 android:id="@+id/img_customer_head"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/img_default_avatar"/>
+                android:src="@drawable/img_default_avatar" />
 
             <TextView
                 android:id="@+id/tv_customer_name"
@@ -34,7 +33,7 @@
                 android:layout_toRightOf="@id/img_customer_head"
                 android:textColor="#111111"
                 android:textSize="17sp"
-                tools:text="王先生"/>
+                tools:text="王先生" />
 
             <ImageView
                 android:id="@+id/img_customer_type_01"
@@ -44,7 +43,7 @@
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/tv_customer_name"
-                android:src="@drawable/icon_contact_fans"/>
+                android:src="@drawable/icon_contact_fans" />
 
             <ImageView
                 android:id="@+id/img_customer_type_02"
@@ -54,7 +53,7 @@
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/img_customer_type_01"
-                android:src="@drawable/icon_contact_wx"/>
+                android:src="@drawable/icon_contact_wx" />
 
             <LinearLayout
                 android:id="@+id/ll_customer_phone"
@@ -70,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:text="手机号："
                     android:textColor="#818181"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_customer_phone"
@@ -79,7 +78,7 @@
                     android:layout_marginLeft="10dp"
                     tools:text="13137558109"
                     android:textColor="#818181"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -88,15 +87,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_alignLeft="@id/tv_customer_name"
-                android:layout_below="@+id/ll_customer_phone"
-                >
+                android:layout_below="@+id/ll_customer_phone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="昵称："
                     android:textColor="#818181"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_customer_nick_name"
@@ -105,14 +103,14 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="#818181"
                     android:textSize="14sp"
-                    tools:text="符号"/>
+                    tools:text="符号" />
             </LinearLayout>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#d9d9d9"/>
+            android:background="#d9d9d9" />
 
         <LinearLayout
             android:id="@+id/ll_customer_label"
@@ -126,7 +124,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/contact_remark"/>
+                android:src="@drawable/contact_remark" />
 
             <TextView
                 android:id="@+id/tv_customer_label"
@@ -135,7 +133,7 @@
                 android:layout_marginLeft="12dp"
                 android:textColor="#ff9c0c"
                 android:textSize="15sp"
-                tools:text="爱聊天，怕热，水温高"/>
+                tools:text="爱聊天，怕热，水温高" />
         </LinearLayout>
 
         <LinearLayout
@@ -154,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:text="备注："
                 android:textColor="#666666"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_customer_mark"
@@ -163,19 +161,19 @@
                 android:layout_marginLeft="12dp"
                 android:textColor="#404040"
                 android:textSize="15sp"
-                tools:text="此处是用户备注信息"/>
+                tools:text="此处是用户备注信息" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#d9d9d9"/>
+            android:background="#d9d9d9" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="5dp"
-            android:background="#d9d9d9"/>
+            android:background="#d9d9d9" />
 
         <LinearLayout
             android:id="@+id/ll_customer_type_label"
@@ -184,30 +182,28 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="标签"
                 android:textColor="#666666"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:id="@+id/customer_type_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingRight="20dp"
-                />
+                android:paddingRight="20dp" />
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#d9d9d9"/>
+            android:background="#d9d9d9" />
 
         <LinearLayout
             android:id="@+id/ll_customer_register_time"
@@ -216,15 +212,14 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="注册时间"
                 android:textColor="#666666"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_customer_register_time"
@@ -232,7 +227,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#999999"
                 android:textSize="14sp"
-                tools:text="2017-02-08　18：20"/>
+                tools:text="2017-02-08　18：20" />
         </LinearLayout>
 
         <LinearLayout
@@ -243,15 +238,14 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            >
+            android:paddingLeft="10dp">
 
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="访问了我"
                 android:textColor="#666666"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_customer_visit_time"
@@ -259,7 +253,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#999999"
                 android:textSize="14sp"
-                tools:text="2017-02-08　18：20"/>
+                tools:text="2017-02-08　18：20" />
         </LinearLayout>
 
         <LinearLayout
@@ -270,15 +264,14 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            >
+            android:paddingLeft="10dp">
 
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="会员等级"
                 android:textColor="#666666"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_customer_membership_grade"
@@ -286,19 +279,19 @@
                 android:layout_height="wrap_content"
                 android:textColor="#999999"
                 android:textSize="14sp"
-                tools:text="金卡会员"/>
+                tools:text="金卡会员" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#d9d9d9"/>
+            android:background="#d9d9d9" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="5dp"
-            android:background="#d9d9d9"/>
+            android:background="#d9d9d9" />
 
         <RelativeLayout
             android:id="@+id/rl_customer_comment"
@@ -314,7 +307,7 @@
                 android:layout_centerVertical="true"
                 android:text="全部评论"
                 android:textColor="#666666"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/img_right"
@@ -322,7 +315,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_right"/>
+                android:src="@drawable/icon_right" />
 
             <TextView
                 android:id="@+id/tv_comment_note"
@@ -333,7 +326,7 @@
                 android:layout_toLeftOf="@id/img_right"
                 android:text="次"
                 android:textColor="#4d4d4d"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_comment_times"
@@ -344,24 +337,24 @@
                 android:layout_toLeftOf="@id/tv_comment_note"
                 android:textColor="#ff9a0c"
                 android:textSize="16sp"
-                tools:text="8"/>
+                tools:text="8" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#d9d9d9"/>
+            android:background="#d9d9d9" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="5dp"
-            android:background="#d9d9d9"/>
+            android:background="#d9d9d9" />
 
         <FrameLayout
             android:id="@+id/frame_consume_tech"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/consume_view_height"/>
+            android:layout_height="@dimen/consume_view_height" />
     </LinearLayout>
 
 

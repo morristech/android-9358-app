@@ -19,7 +19,6 @@ import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;

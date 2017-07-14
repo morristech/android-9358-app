@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg">
+
     <include layout="@layout/toolbar" />
+
     <LinearLayout
         android:id="@+id/user_pay_code"
         android:layout_width="match_parent"
@@ -17,12 +19,14 @@
         android:paddingTop="@dimen/pay_margin"
         android:layout_marginRight="@dimen/pay_margin"
         android:layout_marginLeft="@dimen/pay_margin">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/fontTitle"
             android:text="@string/accredit_code"
             android:textColor="@color/text_color" />
+
         <TextView
             android:id="@+id/pay_code"
             android:layout_width="wrap_content"
@@ -31,16 +35,19 @@
             android:textSize="@dimen/fontBig"
             android:layout_marginTop="@dimen/margin_10"
             android:gravity="center" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@color/white_p"
             android:layout_marginBottom="@dimen/pay_margin" />
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/pay_money_height"
@@ -52,6 +59,7 @@
         android:layout_marginRight="@dimen/pay_margin"
         android:layout_marginLeft="@dimen/pay_margin"
         android:layout_marginTop="@dimen/margin_10">
+
         <TextView
             android:id="@+id/spend_sum"
             android:layout_width="wrap_content"
@@ -59,6 +67,7 @@
             android:textSize="@dimen/fontTitle"
             android:text="@string/spend_sum"
             android:textColor="@color/text_color" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,6 +78,7 @@
             android:layout_marginBottom="2dp"
             android:text="（元）"
             android:textColor="@color/desc_color" />
+
         <TextView
             android:id="@+id/money_sign"
             android:layout_width="wrap_content"
@@ -79,6 +89,7 @@
             android:text="￥"
             android:gravity="bottom"
             android:layout_marginBottom="@dimen/margin_10" />
+
         <EditText
             android:id="@+id/edit_Pay_money"
             android:layout_toRightOf="@id/money_sign"
@@ -97,6 +108,7 @@
             android:maxLength="7"
 
             android:numeric="decimal" />
+
         <View
             android:id="@+id/divide_line"
             android:layout_width="match_parent"
@@ -106,6 +118,7 @@
             android:layout_marginBottom="38dp"
 
             />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,6 +129,7 @@
             android:gravity="center"
             android:layout_marginBottom="@dimen/pay_money_margin_bottom" />
     </RelativeLayout>
+
     <Button
         android:id="@+id/btn_pay"
         android:layout_width="match_parent"

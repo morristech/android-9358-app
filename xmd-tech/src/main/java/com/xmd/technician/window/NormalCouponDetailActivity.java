@@ -29,7 +29,6 @@ import com.xmd.technician.widget.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,12 +39,18 @@ import rx.Subscription;
  */
 public class NormalCouponDetailActivity extends BaseActivity {
 
-    @BindView(R.id.tv_share_text) TextView mTvShareText;
-    @BindView(R.id.tv_coupon_duration) TextView mTvCouponDuration;
-    @BindView(R.id.tv_commission) TextView mTvCommission;
-    @BindView(R.id.iv_share_qr_code) ImageView mIvShareQrCode;
-    @BindView(R.id.wv_act_content) WebView mWvActContent;
-    @BindView(R.id.btn_share) Button mShareBtn;
+    @BindView(R.id.tv_share_text)
+    TextView mTvShareText;
+    @BindView(R.id.tv_coupon_duration)
+    TextView mTvCouponDuration;
+    @BindView(R.id.tv_commission)
+    TextView mTvCommission;
+    @BindView(R.id.iv_share_qr_code)
+    ImageView mIvShareQrCode;
+    @BindView(R.id.wv_act_content)
+    WebView mWvActContent;
+    @BindView(R.id.btn_share)
+    Button mShareBtn;
     private Subscription mGetCouponInfoSubscription;
     private String mActId;
     private CouponInfoResult mCouponInfoResult;
@@ -83,7 +88,7 @@ public class NormalCouponDetailActivity extends BaseActivity {
         RxBus.getInstance().unsubscribe(mGetCouponInfoSubscription);
     }
 
-    private void initView(){
+    private void initView() {
         setTitle(ResourceUtils.getString(R.string.normal_coupon_detail_activity_title));
         setBackVisible(true);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COUPON_INFO, mActId);
@@ -98,32 +103,32 @@ public class NormalCouponDetailActivity extends BaseActivity {
         }
     }
 
-    private void onGetCouponInfoFailed(String msg){
+    private void onGetCouponInfoFailed(String msg) {
         makeShortToast(msg);
         finish();
     }
 
-    private void onGetCouponInfoSucceeded(CouponInfo couponInfo){
+    private void onGetCouponInfoSucceeded(CouponInfo couponInfo) {
 
 
         int len = mCouponInfoResult.respData.items.size();
-        for (int i = 0; i <len ; i++) {
+        for (int i = 0; i < len; i++) {
             limitList.add(mCouponInfoResult.respData.items.get(i).name);
         }
-        if(limitList.size()==0){
+        if (limitList.size() == 0) {
             limitList.add("使用不限");
         }
         initChildViews();
-        if(Utils.isEmpty(couponInfo.useTimePeriod)) {
-            couponInfo.useTimePeriod="使用不限";
+        if (Utils.isEmpty(couponInfo.useTimePeriod)) {
+            couponInfo.useTimePeriod = "使用不限";
         }
 
-        if(Utils.isEmpty(couponInfo.actContent)) {
-            couponInfo.actContent="无";
+        if (Utils.isEmpty(couponInfo.actContent)) {
+            couponInfo.actContent = "无";
         }
         String shareText = String.format(ResourceUtils.getString(R.string.normal_coupon_detail_activity_share_text), couponInfo.commission);
         SpannableString spannableString = new SpannableString(shareText);
-        spannableString.setSpan(new TextAppearanceSpan(this,R.style.text_marked),16,shareText.lastIndexOf("元"),SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new TextAppearanceSpan(this, R.style.text_marked), 16, shareText.lastIndexOf("元"), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
         mTvShareText.setText(spannableString);
 
         Glide.with(this).load(generateQrCodeUrl()).into(mIvShareQrCode);
@@ -132,12 +137,12 @@ public class NormalCouponDetailActivity extends BaseActivity {
 
         mWvActContent.getSettings().setJavaScriptEnabled(false);
         mWvActContent.getSettings().setTextZoom(Constant.WEBVIEW_TEXT_ZOOM);
-        mWvActContent.loadDataWithBaseURL(null,couponInfo.actContent , Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
+        mWvActContent.loadDataWithBaseURL(null, couponInfo.actContent, Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
 
         mShareBtn.setEnabled(true);
     }
 
-    private String generateQrCodeUrl(){
+    private String generateQrCodeUrl() {
         return SharedPreferenceHelper.getServerHost() + RequestConstant.URL_COUPON_SHARE_QR_CODE + "?token=" + SharedPreferenceHelper.getUserToken()
                 + "&actId=" + mActId + "&sessionType=" + RequestConstant.SESSION_TYPE;
     }
@@ -145,23 +150,24 @@ public class NormalCouponDetailActivity extends BaseActivity {
     @OnClick(R.id.btn_share)
     public void doShare() {
         String imgUrl = mCouponInfoResult.respData != null ? mCouponInfoResult.respData.imgUrl : "";
-        ShareController.doShare(imgUrl,mCouponInfoResult.respData.shareUrl,mCouponInfoResult.respData.clubName + "-" + mCouponInfoResult.respData.activities.actTitle,
-                mCouponInfoResult.respData.activities.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。",Constant.SHARE_COUPON,mActId);
+        ShareController.doShare(imgUrl, mCouponInfoResult.respData.shareUrl, mCouponInfoResult.respData.clubName + "-" + mCouponInfoResult.respData.activities.actTitle,
+                mCouponInfoResult.respData.activities.consumeMoneyDescription + "，超值优惠，超值享受。快来约我。", Constant.SHARE_COUPON, mActId);
     }
-    private void initChildViews(){
+
+    private void initChildViews() {
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.leftMargin = 10;
         lp.rightMargin = 10;
-        lp.topMargin = Utils.dip2px(NormalCouponDetailActivity.this,12);
+        lp.topMargin = Utils.dip2px(NormalCouponDetailActivity.this, 12);
         //  lp.bottomMargin =40;
-        for(int i = 0; i < limitList.size(); i ++){
+        for (int i = 0; i < limitList.size(); i++) {
             TextView view = new TextView(this);
-            view.setPadding(36,5,36,5);
+            view.setPadding(36, 5, 36, 5);
             view.setText(limitList.get(i));
             view.setTextColor(ResourceUtils.getColor(R.color.alert_text_color));
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.limit_project_item_bg));
-            mFlowLayout.addView(view,lp);
+            mFlowLayout.addView(view, lp);
         }
     }
 }

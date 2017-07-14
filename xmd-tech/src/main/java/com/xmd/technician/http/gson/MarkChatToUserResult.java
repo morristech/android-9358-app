@@ -7,5 +7,5 @@ import com.xmd.technician.bean.MarkChatToUserBean;
  */
 
 public class MarkChatToUserResult extends BaseResult {
-     public    MarkChatToUserBean respData;
+    public MarkChatToUserBean respData;
 }

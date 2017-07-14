@@ -36,5 +36,5 @@ public class ApplicationBean {
     public long updateDatetime;
     public String createDate;
 
-   
+
 }

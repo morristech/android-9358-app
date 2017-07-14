@@ -17,7 +17,6 @@ import com.xmd.technician.widget.CircleImageView;
 
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -35,7 +34,8 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private List<RankingListBean> mData;
     private String mCategoryId;
-    public PKRankingAdapter(Context context, List<RankingListBean> data,String categoryId) {
+
+    public PKRankingAdapter(Context context, List<RankingListBean> data, String categoryId) {
         this.mContext = context;
         this.mData = data;
         this.mCategoryId = categoryId;
@@ -46,8 +46,8 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         RankingListBean bean = mData.get(position);
-        if(Utils.isEmpty(bean.categoryId)){
-            if(Utils.isNotEmpty(mCategoryId)){
+        if (Utils.isEmpty(bean.categoryId)) {
+            if (Utils.isNotEmpty(mCategoryId)) {
                 if (mCategoryId.equals(Constant.KEY_CATEGORY_CUSTOMER_TYPE)) {
                     return REGISTER_TYPE;
                 } else if (mCategoryId.equals(Constant.KEY_CATEGORY_SAIL_TYPE)) {
@@ -57,7 +57,7 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
                 } else {
                     return SERVICE_TYPE;
                 }
-            }else{
+            } else {
                 return SERVICE_TYPE;
             }
         }
@@ -65,7 +65,7 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
             return REGISTER_TYPE;
         } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_SAIL_TYPE)) {
             return SALE_TYPE;
-        }else if(bean.categoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)){
+        } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_PAID_TYPE)) {
             return PAID_TYPE;
         } else {
             return SERVICE_TYPE;
@@ -101,23 +101,23 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
         RankingListBean bean = mData.get(position);
         teamViewHolder.tvPkActiveTeamName.setText(bean.name);
         Glide.with(mContext).load(bean.avatarUrl).into(teamViewHolder.pkActiveUserHead);
-      if(Utils.isNotEmpty(bean.categoryId)){
-          if (bean.categoryId.equals(Constant.KEY_CATEGORY_CUSTOMER_TYPE)) {
-              teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s人", bean.statValue));
-          } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_SAIL_TYPE)) {
-              teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.statValue / 100f));
-          } else {
-              teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s个", bean.statValue));
-          }
-      }else{
-          if (mCategoryId.equals(Constant.KEY_CATEGORY_CUSTOMER_TYPE)) {
-              teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s人", bean.statValue));
-          } else if (mCategoryId.equals(Constant.KEY_CATEGORY_SAIL_TYPE)) {
-              teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.statValue / 100f));
-          } else {
-              teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s个", bean.statValue));
-          }
-      }
+        if (Utils.isNotEmpty(bean.categoryId)) {
+            if (bean.categoryId.equals(Constant.KEY_CATEGORY_CUSTOMER_TYPE)) {
+                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s人", bean.statValue));
+            } else if (bean.categoryId.equals(Constant.KEY_CATEGORY_SAIL_TYPE)) {
+                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.statValue / 100f));
+            } else {
+                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s个", bean.statValue));
+            }
+        } else {
+            if (mCategoryId.equals(Constant.KEY_CATEGORY_CUSTOMER_TYPE)) {
+                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s人", bean.statValue));
+            } else if (mCategoryId.equals(Constant.KEY_CATEGORY_SAIL_TYPE)) {
+                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%1.2f元", bean.statValue / 100f));
+            } else {
+                teamViewHolder.tvPkActiveTeamMember.setText(String.format("%s个", bean.statValue));
+            }
+        }
     }
 
     @Override

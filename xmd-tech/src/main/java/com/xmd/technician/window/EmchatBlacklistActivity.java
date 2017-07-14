@@ -1,9 +1,6 @@
 package com.xmd.technician.window;
 
-import android.content.Intent;
-
-import com.example.xmd_m_comment.httprequest.ConstantResources;
-import com.xmd.technician.Constant;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ContactHandlerBean;
 import com.xmd.technician.bean.CustomerInfo;
@@ -82,7 +79,7 @@ public class EmchatBlacklistActivity extends BaseListActivity<CustomerInfo> {
 //        intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
 //        intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, true);
 //        startActivity(intent);
-        UINavigation.gotoCustomerDetailActivity(this, Utils.isEmpty(bean.userId)?bean.id:bean.userId, ConstantResources.INTENT_TYPE_TECH,false);
+        UINavigation.gotoCustomerDetailActivity(this, Utils.isEmpty(bean.userId) ? bean.id : bean.userId, ConstantResources.INTENT_TYPE_TECH, false);
     }
 
 

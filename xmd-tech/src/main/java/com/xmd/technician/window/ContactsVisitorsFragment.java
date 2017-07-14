@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.hyphenate.exceptions.HyphenateException;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.SayHiVisitorResult;
@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,9 +98,9 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
         mSwipeRefreshLayout.setRefreshing(false);
         if (result.statusCode == 200) {
             mVisitors.clear();
-            if(result.respData.userList.size() == 0 && Utils.isEmpty(mUserName)){
+            if (result.respData.userList.size() == 0 && Utils.isEmpty(mUserName)) {
                 llVisitorNone.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 llVisitorNone.setVisibility(View.GONE);
             }
             if (result.respData.userList.size() > 0) {
@@ -181,11 +180,11 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
 //        } else {
 //            Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
 //        }
-        if(Utils.isEmpty(bean.userId) ||Long.parseLong(bean.userId) <= 0){
+        if (Utils.isEmpty(bean.userId) || Long.parseLong(bean.userId) <= 0) {
             Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
             return;
-        }else{
-            UINavigation.gotoCustomerDetailActivity(getActivity(),bean.userId, ConstantResources.INTENT_TYPE_TECH,false);
+        } else {
+            UINavigation.gotoCustomerDetailActivity(getActivity(), bean.userId, ConstantResources.INTENT_TYPE_TECH, false);
         }
     }
 
@@ -212,7 +211,7 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
                 mFilterVisitors.clear();
             }
             for (UserRecentBean recentBean : mVisitors) {
-                if(Utils.isEmpty(recentBean.name)){
+                if (Utils.isEmpty(recentBean.name)) {
                     recentBean.name = ResourceUtils.getString(R.string.contact_recent_default_name);
                 }
                 if ((recentBean.name.indexOf(searchName.toString())) != -1 || characterParser.getSelling(recentBean.name).startsWith(searchName.toString())) {

@@ -9,18 +9,22 @@ import com.hyphenate.chat.EMMessage;
  */
 
 public class RevokeChatMessage extends ChatMessage {
-    public RevokeChatMessage(String revokeMsgId, EMMessage emMessage) {
-        super(emMessage, MSG_TYPE_ORIGIN_CMD);
-        EMCmdMessageBody cmdBody = new EMCmdMessageBody("revoke");
-        setAttr("messageId", revokeMsgId);
-        setAttr("time", emMessage.getMsgTime());
-        setAttr("mark", "revoke");
-        emMessage.addBody(cmdBody);
+    public RevokeChatMessage(EMMessage emMessage) {
+        super(emMessage);
     }
 
     public static RevokeChatMessage create(String remoteChatId, String revokeMsgId) {
-        EMMessage cmdMessage = EMMessage.createSendMessage(EMMessage.Type.CMD);
-        cmdMessage.setTo(remoteChatId);
-        return new RevokeChatMessage(revokeMsgId, cmdMessage);
+        EMMessage emMessage = EMMessage.createSendMessage(EMMessage.Type.CMD);
+        RevokeChatMessage message = new RevokeChatMessage(emMessage);
+        message.setMsgType(MSG_TYPE_ORIGIN_CMD);
+
+        emMessage.setTo(remoteChatId);
+        EMCmdMessageBody cmdBody = new EMCmdMessageBody("revoke");
+        message.setAttr("messageId", revokeMsgId);
+        message.setAttr("time", emMessage.getMsgTime());
+        message.setAttr("mark", "revoke");
+        emMessage.addBody(cmdBody);
+
+        return message;
     }
 }

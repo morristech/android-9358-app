@@ -9,15 +9,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
-import com.example.xmd_m_comment.bean.AllGroupListBean;
-import com.example.xmd_m_comment.bean.UserGroupListBean;
-import com.example.xmd_m_comment.event.EditCustomerGroupEvent;
+import com.xmd.m.comment.bean.AllGroupListBean;
+import com.xmd.m.comment.bean.UserGroupListBean;
+import com.xmd.m.comment.event.EditCustomerGroupEvent;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
-
-
-
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.MsgDef;

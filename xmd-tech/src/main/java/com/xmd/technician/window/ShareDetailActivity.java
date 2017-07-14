@@ -30,16 +30,23 @@ import butterknife.ButterKnife;
  * Created by Lhj on 2017/2/22.
  */
 
-public class ShareDetailActivity extends BaseActivity implements View.OnClickListener{
+public class ShareDetailActivity extends BaseActivity implements View.OnClickListener {
 
 
-    @BindView(R.id.share_web_view) WebView shareWebView;
-    @BindView(R.id.back_ImageView) ImageView back_ImageView;
-    @BindView(R.id.go_next_ImageView) ImageView go_next_ImageView;
-    @BindView(R.id.refresh_ImageView) ImageView refresh_ImageView;
-    @BindView(R.id.home_ImageView) ImageView home_ImageView;
-    @BindView(R.id.download_progressbar) SmoothProgressBar downloadProgressbar;
-    @BindView(R.id.menu_LinearLayout) LinearLayout mMenuBar;
+    @BindView(R.id.share_web_view)
+    WebView shareWebView;
+    @BindView(R.id.back_ImageView)
+    ImageView back_ImageView;
+    @BindView(R.id.go_next_ImageView)
+    ImageView go_next_ImageView;
+    @BindView(R.id.refresh_ImageView)
+    ImageView refresh_ImageView;
+    @BindView(R.id.home_ImageView)
+    ImageView home_ImageView;
+    @BindView(R.id.download_progressbar)
+    SmoothProgressBar downloadProgressbar;
+    @BindView(R.id.menu_LinearLayout)
+    LinearLayout mMenuBar;
 
     public static final String SHARE_URL = "share_url";
     public static final String SHARE_TITLE = "share_title";
@@ -50,12 +57,12 @@ public class ShareDetailActivity extends BaseActivity implements View.OnClickLis
     private String mTitle;
     private WebSettings ws;
     private boolean mShowMenu;
-    
-    public static void startShareDetailActivity(Context activity, String url,String title,Boolean showMenu) {
+
+    public static void startShareDetailActivity(Context activity, String url, String title, Boolean showMenu) {
         Intent intent = new Intent(activity, ShareDetailActivity.class);
         intent.putExtra(SHARE_URL, url);
-        intent.putExtra(SHARE_TITLE,title);
-        intent.putExtra(EXTRA_SHOW_MENU,showMenu);
+        intent.putExtra(SHARE_TITLE, title);
+        intent.putExtra(EXTRA_SHOW_MENU, showMenu);
         activity.startActivity(intent);
     }
 

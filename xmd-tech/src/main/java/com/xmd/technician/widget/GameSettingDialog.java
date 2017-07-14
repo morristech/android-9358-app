@@ -12,7 +12,6 @@ import com.xmd.technician.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,8 +40,7 @@ public class GameSettingDialog extends Dialog {
     public int integralNum = 1;
 
 
-
-    public interface ConfirmClickInterface{
+    public interface ConfirmClickInterface {
         void ConfirmClicked(int num);
     }
 
@@ -55,9 +53,7 @@ public class GameSettingDialog extends Dialog {
     }
 
 
-
-
-    public void setConfirmClickInterface(ConfirmClickInterface confirmClickInterface){
+    public void setConfirmClickInterface(ConfirmClickInterface confirmClickInterface) {
         this.mConfirmClickInterface = confirmClickInterface;
     }
 

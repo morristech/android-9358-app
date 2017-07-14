@@ -13,30 +13,31 @@ import java.io.InputStream;
  */
 public class FileUtils {
 
-    public static boolean checkFolderExists(String filePath, boolean create){
+    public static boolean checkFolderExists(String filePath, boolean create) {
         return checkFileOrFoderExists(filePath, true, create);
     }
 
     /**
      * 判断文件是否存在，并根据create标志创建文件
+     *
      * @param filePath
      * @param create
      * @return
      */
-    public static boolean checkFileExist(String filePath, boolean create){
+    public static boolean checkFileExist(String filePath, boolean create) {
         return checkFileOrFoderExists(filePath, false, create);
     }
 
-    private static boolean checkFileOrFoderExists(String filePath, boolean isFolder, boolean create){
+    private static boolean checkFileOrFoderExists(String filePath, boolean isFolder, boolean create) {
         File file = new File(filePath);
         boolean isExist = file.exists();
-        if(!isExist && create){
+        if (!isExist && create) {
             File parent = file.getParentFile();
-            if(!parent.exists()){
+            if (!parent.exists()) {
                 parent.mkdirs();
             }
             try {
-                if(isFolder){
+                if (isFolder) {
                     file.mkdir();
                 } else {
                     file.createNewFile();
@@ -51,17 +52,18 @@ public class FileUtils {
 
     /**
      * 将文件流写到具体文件上
+     *
      * @param is
      * @param target
      */
-    public static void writeStream(InputStream is, String target){
+    public static void writeStream(InputStream is, String target) {
         boolean isExist = checkFileExist(target, true);
-        if(isExist){
+        if (isExist) {
             try {
                 FileOutputStream fos = new FileOutputStream(target);
                 byte[] buffer = new byte[64 * 1024];
                 int read = 0;
-                while((read = is.read(buffer)) > 0){
+                while ((read = is.read(buffer)) > 0) {
                     fos.write(buffer, 0, read);
                 }
                 fos.close();
@@ -74,7 +76,7 @@ public class FileUtils {
         }
     }
 
-    public static void copyFromAssetsToTarget(Context context, String assetFilePath, String targetFile){
+    public static void copyFromAssetsToTarget(Context context, String assetFilePath, String targetFile) {
         try {
             InputStream is = context.getAssets().open(assetFilePath);
             FileUtils.writeStream(is, targetFile);

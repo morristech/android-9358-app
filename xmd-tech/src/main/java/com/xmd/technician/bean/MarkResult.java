@@ -1,7 +1,6 @@
 package com.xmd.technician.bean;
 
 import com.xmd.technician.http.gson.BaseResult;
-import com.xmd.technician.window.BaseActivity;
 
 import java.util.List;
 
@@ -13,8 +12,8 @@ public class MarkResult extends BaseResult {
     public List<RespDataBean> respData;
 
     public static class RespDataBean {
-        public  int id;
-        public  String tag;
-        public  String tagType;
+        public int id;
+        public String tag;
+        public String tagType;
     }
 }

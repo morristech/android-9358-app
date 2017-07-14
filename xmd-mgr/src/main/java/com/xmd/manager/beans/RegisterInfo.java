@@ -1,7 +1,6 @@
 package com.xmd.manager.beans;
 
 
-
 /**
  * Created by Lhj on 2017/1/12.
  */

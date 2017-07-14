@@ -97,9 +97,9 @@ public class ArrayBottomPopupWindow<T> extends BasePopupWindow {
           /*  if (Utils.isNotEmpty(selectedItem) && selectedItem.equals(mListDate.get(position))) {
                 textView.setTextColor(ResourceUtils.getColor(R.color.primary_color));
             }*/
-            if(selectedItem.equals(mListDate.get(position))){
+            if (selectedItem.equals(mListDate.get(position))) {
                 textView.setSelected(true);
-            }else {
+            } else {
                 textView.setSelected(false);
             }
             return view;

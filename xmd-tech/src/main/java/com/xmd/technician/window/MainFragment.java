@@ -29,10 +29,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.xmd_m_comment.CommentListActivity;
-import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.hyphenate.util.DateUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
+import com.xmd.m.comment.CommentListActivity;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.CheckBusinessPermission;
 import com.xmd.permission.PermissionConstants;
@@ -1270,7 +1270,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void onEventRequestJoinClub(EventRequestJoinClub event) {
         showTechStatus(mTech.getStatus());
     }
-
 
 
     private void handleTechPKRankingView(TechPKRankingResult techPKRankingResult) {

@@ -33,7 +33,7 @@ public abstract class ConfirmDialog extends Dialog {
         this.context = context;
     }
 
-    public ConfirmDialog(Context context,String msg) {
+    public ConfirmDialog(Context context, String msg) {
         this(context, R.style.default_dialog_style);
         this.context = context;
         this.mMessage = msg;
@@ -61,8 +61,8 @@ public abstract class ConfirmDialog extends Dialog {
             }
         });
 
-        if(!TextUtils.isEmpty(mMessage)){
-           ((TextView) findViewById(R.id.dialog_alert_message)).setText(mMessage);
+        if (!TextUtils.isEmpty(mMessage)) {
+            ((TextView) findViewById(R.id.dialog_alert_message)).setText(mMessage);
         }
     }
 

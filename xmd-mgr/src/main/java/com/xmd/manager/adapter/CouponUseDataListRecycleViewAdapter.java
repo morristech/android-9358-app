@@ -11,7 +11,6 @@ import com.xmd.manager.beans.ConsumeInfo;
 
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

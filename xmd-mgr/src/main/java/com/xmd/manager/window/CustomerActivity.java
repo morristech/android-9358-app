@@ -10,17 +10,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.chat.event.EventStartChatActivity;
-import com.example.xmd_m_comment.bean.AllGroupListBean;
-import com.example.xmd_m_comment.bean.UserGroupListBean;
+import com.xmd.m.comment.bean.AllGroupListBean;
+import com.xmd.m.comment.bean.UserGroupListBean;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.auth.AuthConstants;
 import com.xmd.manager.auth.AuthHelper;
-
 import com.xmd.manager.beans.Customer;
-import com.xmd.manager.beans.UserGroupListBean;
-
-import com.xmd.manager.chat.EmchatUserHelper;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.common.WidgetUtils;

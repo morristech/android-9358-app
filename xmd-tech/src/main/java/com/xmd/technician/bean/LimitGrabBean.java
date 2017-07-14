@@ -4,7 +4,7 @@ package com.xmd.technician.bean;
  * Created by Lhj on 2017/2/9.
  */
 
-public class LimitGrabBean  {
+public class LimitGrabBean {
 
     /**
      * amount : 36108

@@ -11,6 +11,7 @@ import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
 import com.xmd.chat.event.EventChatLoginSuccess;
+import com.xmd.m.network.EventTokenExpired;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,12 +40,22 @@ public class AccountManager {
 
     @Subscribe(sticky = true)
     public void onLogin(EventLogin eventLogin) {
+        XLogger.i(XmdChat.TAG, "user login");
         user = eventLogin.getUser();
         loopLogin();
     }
 
     @Subscribe(sticky = true)
     public void onLogout(EventLogout eventLogout) {
+        XLogger.i(XmdChat.TAG, "user logout");
+        mHandler.removeCallbacksAndMessages(null);
+        logout();
+        user = null;
+    }
+
+    @Subscribe
+    public void onTokenExpired(EventTokenExpired eventTokenExpired) {
+        XLogger.i(XmdChat.TAG, "token expire, logout");
         mHandler.removeCallbacksAndMessages(null);
         logout();
         user = null;

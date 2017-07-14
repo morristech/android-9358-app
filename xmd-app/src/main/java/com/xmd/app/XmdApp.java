@@ -44,6 +44,7 @@ public class XmdApp {
     private String mToken;
 
     private SharedPreferences sharedPreferences;
+    private Boolean appFirstStart; //app是否为第一次启动
 
     /**
      * 初始化模块
@@ -112,5 +113,16 @@ public class XmdApp {
     //返回sp
     public SharedPreferences getSp() {
         return sharedPreferences;
+    }
+
+    //app是否为首次启动
+    public boolean isAppFirstStart() {
+        if (appFirstStart == null) {
+            appFirstStart = getSp().getBoolean(SpConstants.KEY_IS_APP_FIRST_START, true);
+            if (appFirstStart) {
+                getSp().edit().putBoolean(SpConstants.KEY_IS_APP_FIRST_START, false).apply();
+            }
+        }
+        return appFirstStart;
     }
 }

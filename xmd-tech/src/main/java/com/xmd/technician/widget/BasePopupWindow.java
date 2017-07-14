@@ -27,7 +27,7 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     protected Map<String, String> mParams;
     private int mScreenHeight;
 
-    protected BasePopupWindow(View parentView, Map<String, String> params){
+    protected BasePopupWindow(View parentView, Map<String, String> params) {
         mActivity = ActivityHelper.getInstance().getCurrentActivity();
         mParentView = parentView != null ? parentView : mActivity.getWindow().getDecorView();
         mParams = params;
@@ -58,6 +58,7 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     public void showAsDownCenter(boolean toMask) {
         showAsDown(mParentView.getWidth() / 2 - mPopupWindow.getWidth() / 2, 0);
     }
+
     /**
      * 显示在点击的View下方
      */
@@ -68,7 +69,7 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     /**
      * 默认显示在屏幕中央
      */
-    public void show(){
+    public void show() {
         show(Gravity.CENTER, 0, 0);
     }
 
@@ -89,11 +90,12 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     public void showAsAbove(int offsetX, int offsetY) {
         int[] location = new int[2];
         mParentView.getLocationOnScreen(location);
-        showPopupWindow(mActivity, mPopupWindow, mParentView, Gravity.START | Gravity.BOTTOM, location[0] - mPopupWindow.getWidth()/2 + offsetX, mScreenHeight - location[1] + offsetY, true);
+        showPopupWindow(mActivity, mPopupWindow, mParentView, Gravity.START | Gravity.BOTTOM, location[0] - mPopupWindow.getWidth() / 2 + offsetX, mScreenHeight - location[1] + offsetY, true);
     }
 
     /**
      * Show with mask in the specific location
+     *
      * @param gravity
      * @param x
      * @param y
@@ -104,6 +106,7 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
 
     /**
      * show with mask in the specific location
+     *
      * @param gravity
      * @param x
      * @param y
@@ -132,7 +135,7 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
      * @param toMask
      */
     private void showPopupWindow(Activity activity, PopupWindow popupWindow, View parent, int gravity, int x,
-                                       int y, boolean toMask) {
+                                 int y, boolean toMask) {
         popupWindow.showAtLocation(parent, gravity, x, y);
         if (toMask) {
             Utils.maskScreen(activity, true);
@@ -140,7 +143,6 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     }
 
     /**
-     *
      * @param activity
      * @param popupWindow
      * @param parent
@@ -152,11 +154,11 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
             Utils.maskScreen(activity, true);
         }
     }
+
     /**
      * @param activity
      * @param popupWindow
      * @param parent
-     *
      */
     private void showPopupWindowAsDropDown(Activity activity, PopupWindow popupWindow, View parent, int x,
                                            int y) {
@@ -176,7 +178,6 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
         }
         Utils.maskScreen(activity, false);
     }
-
 
 
 }

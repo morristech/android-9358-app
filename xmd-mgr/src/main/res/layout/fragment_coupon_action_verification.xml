@@ -232,6 +232,7 @@
                     tools:text="2016.08.04至2013.16.15" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

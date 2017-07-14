@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -111,7 +110,7 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
                 doManageOrderDisappear(order.orderId);
             });
         }
-        viewHolder.mainOrderAvatar.setUserInfo(order.userId, order.headImgUrl,false);
+        viewHolder.mainOrderAvatar.setUserInfo(order.userId, order.headImgUrl, false);
         return convertView;
     }
 

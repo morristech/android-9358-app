@@ -11,7 +11,6 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.RewardBean;
 import com.xmd.technician.common.ResourceUtils;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.gson.RewardListResult;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -66,7 +65,7 @@ public class RewardActivityListFragment extends BaseListFragment<RewardBean> {
 
     private void handleRewardListResult(RewardListResult rewardListResult) {
         if (rewardListResult.statusCode == 200) {
-            if (rewardListResult.respData == null || rewardListResult.respData.size()==0) {
+            if (rewardListResult.respData == null || rewardListResult.respData.size() == 0) {
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_ACTIVITY_LIST);
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setVisibility(View.GONE);
@@ -85,7 +84,7 @@ public class RewardActivityListFragment extends BaseListFragment<RewardBean> {
     @Override
     public void onShareClicked(RewardBean bean) {
         super.onShareClicked(bean);
-        ShareController.doShare(bean.image, bean.shareUrl,bean.actName,
+        ShareController.doShare(bean.image, bean.shareUrl, bean.actName,
                 ResourceUtils.getString(R.string.reward_share_description), Constant.SHARE_TYPE_REWARD_ACTIVITY, "");
     }
 

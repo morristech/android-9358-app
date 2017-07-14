@@ -4,12 +4,9 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 
@@ -41,9 +38,10 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
         mMaxVelocity = configuration.getScaledMaximumFlingVelocity();
     }
 
-    public void clearTargetView(){
+    public void clearTargetView() {
         mTargetView = null;
     }
+
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
         Logger.v("onInterceptTouchEvent: " + e.getAction() + " | mTargetView != null: " + (mTargetView != null));
@@ -75,7 +73,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
 
                 View targetView = mCallback.findTargetView(x, y);
                 //当前需要显示菜单的view和上一次显示菜单的view不是同一个;
-                if(mTargetView != null && !mTargetView.equals(targetView)){
+                if (mTargetView != null && !mTargetView.equals(targetView)) {
                     //隐藏已经打开
                     smoothHorizontalExpandOrCollapse(DEFAULT_DURATION / 2);
                     mTargetView = null;
@@ -196,10 +194,10 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
     }
 
     @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    }
 
     /**
-     *
      * @param dx
      */
     private void dragHorizontal(int dx) {
@@ -252,7 +250,8 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
         mExpandAndCollapseAnim.setDuration(duration);
         mExpandAndCollapseAnim.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {

@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 
 import com.shidou.commonlibrary.Callback;
-import com.example.xmd_m_comment.CommentListActivity;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.chat.XmdChat;
@@ -46,9 +45,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.dinus.com.loadingdrawable.LoadingView;
-import app.dinus.com.loadingdrawable.render.LoadingRenderer;
-import app.dinus.com.loadingdrawable.render.LoadingRendererFactory;
 import butterknife.BindView;
 import rx.Subscription;
 

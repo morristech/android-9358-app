@@ -7,31 +7,27 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.shidou.commonlibrary.Callback;
-import com.xmd.app.EventBusSafeRegister;
-import com.xmd.chat.event.EventTotalUnreadCount;
-import com.xmd.chat.view.ConversationListFragment;
 import com.crazyman.library.PermissionTool;
-import com.example.xmd_m_comment.bean.UserInfoBean;
-import com.example.xmd_m_comment.event.UserInfoEvent;
 import com.hyphenate.chat.EMClient;
+import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.m.network.BaseBean;
+import com.xmd.chat.event.EventTotalUnreadCount;
+import com.xmd.chat.view.ConversationListFragment;
+import com.xmd.m.comment.bean.UserInfoBean;
+import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.notify.display.XmdDisplay;
-import com.xmd.m.notify.redpoint.RedPointService;
-import com.xmd.m.notify.redpoint.RedPointServiceImpl;
 import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.CheckBusinessPermission;
 import com.xmd.permission.IBusinessPermissionManager;
@@ -40,8 +36,6 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
-import com.xmd.technician.bean.UserInfo;
-import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.runtimepermissions.PermissionsResultAction;
 import com.xmd.technician.common.Logger;
@@ -56,14 +50,10 @@ import com.xmd.technician.msgctrl.RxBus;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,16 +72,11 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     private int mCurrentTabIndex = -1;
     private Subscription mGetUserIsBindWXSubscription;
-    //环信
-    private Subscription mUnreadEmchatCountSubscription;
-    private ChatHelper mChatHelper;
+
     private String contactPhone;
 
     @BindView(R.id.main_unread_message)
     TextView mUnreadMsgLabel;
-
-    private RedPointService redPointService = RedPointServiceImpl.getInstance();
-
 
     private IBusinessPermissionManager permissionManager = BusinessPermissionManager.getInstance();
 
@@ -326,7 +311,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                     this.makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
                     return;
                 } else {
-                    UINavigation.gotoChatActivity(this, Utils.wrapChatParams(event.bean.emChatId, event.bean.emChatName, event.bean.chatHeadUrl, event.bean.contactType));
+                    UINavigation.gotoChatActivity(this, event.bean.emChatId);
                 }
                 break;
             case 2://发短信

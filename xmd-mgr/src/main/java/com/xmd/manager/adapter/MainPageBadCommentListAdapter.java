@@ -12,9 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.xmd_m_comment.adapter.CommentItemDetailAdapter;
-import com.example.xmd_m_comment.bean.CommentBean;
 import com.xmd.app.widget.RoundImageView;
+import com.xmd.m.comment.adapter.CommentItemDetailAdapter;
+import com.xmd.m.comment.bean.CommentBean;
 import com.xmd.manager.R;
 
 import java.util.List;
@@ -90,11 +90,11 @@ public class MainPageBadCommentListAdapter extends RecyclerView.Adapter {
             viewHolder.commentProjectList.setAdapter(adapter);
         }
         if (commentBean.isAnonymous.equals("N")) {//匿名评价
-         //   viewHolder.tvVisitComment.setVisibility(View.VISIBLE);
+            //   viewHolder.tvVisitComment.setVisibility(View.VISIBLE);
             viewHolder.llCommentHandler.setVisibility(View.VISIBLE);
         } else {
             viewHolder.llCommentHandler.setVisibility(View.GONE);
-         //   viewHolder.tvVisitComment.setVisibility(View.INVISIBLE);
+            //   viewHolder.tvVisitComment.setVisibility(View.INVISIBLE);
         }
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,23 +142,23 @@ public class MainPageBadCommentListAdapter extends RecyclerView.Adapter {
 
         MainPageBadCommentViewHolder(View view) {
             super(view);
-            commentHead = (RoundImageView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_head);
-            commentName = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_name);
-            commentPhone = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_phone);
-            commentTechName = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_tech_name);
-            commentTechCode = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_tech_code);
-            commentProjectList = (RecyclerView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_project_list);
-            commentDetail = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_detail);
-            llCommentTypeTech = (LinearLayout) itemView.findViewById(com.example.xmd_m_comment.R.id.ll_comment_type_tech);
-            commentComplaintDetail = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_complaint_detail);
-            llComplaintDetail = (LinearLayout) itemView.findViewById(com.example.xmd_m_comment.R.id.ll_complaint_detail);
-            commentTime = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_time);
-            badComment = (LinearLayout) itemView.findViewById(com.example.xmd_m_comment.R.id.bad_comment);
-            tvDeleteComment = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.tv_delete_comment);
-            tvVisitComment = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.tv_visit_comment);
-            imgVisitMark = (ImageView) itemView.findViewById(com.example.xmd_m_comment.R.id.img_visit_mark);
-            imgDeleteMark = (ImageView) itemView.findViewById(com.example.xmd_m_comment.R.id.img_delete_mark);
-            llCommentHandler = (LinearLayout) itemView.findViewById(com.example.xmd_m_comment.R.id.ll_comment_handler);
+            commentHead = (RoundImageView) itemView.findViewById(com.xmd.m.R.id.comment_head);
+            commentName = (TextView) itemView.findViewById(com.xmd.m.R.id.comment_name);
+            commentPhone = (TextView) itemView.findViewById(com.xmd.m.R.id.comment_phone);
+            commentTechName = (TextView) itemView.findViewById(com.xmd.m.R.id.comment_tech_name);
+            commentTechCode = (TextView) itemView.findViewById(com.xmd.m.R.id.comment_tech_code);
+            commentProjectList = (RecyclerView) itemView.findViewById(com.xmd.m.R.id.comment_project_list);
+            commentDetail = (TextView) itemView.findViewById(com.xmd.m.R.id.comment_detail);
+            llCommentTypeTech = (LinearLayout) itemView.findViewById(com.xmd.m.R.id.ll_comment_type_tech);
+            commentComplaintDetail = (TextView) itemView.findViewById(com.xmd.m.R.id.comment_complaint_detail);
+            llComplaintDetail = (LinearLayout) itemView.findViewById(com.xmd.m.R.id.ll_complaint_detail);
+            commentTime = (TextView) itemView.findViewById(com.xmd.m.R.id.comment_time);
+            badComment = (LinearLayout) itemView.findViewById(com.xmd.m.R.id.bad_comment);
+            tvDeleteComment = (TextView) itemView.findViewById(com.xmd.m.R.id.tv_delete_comment);
+            tvVisitComment = (TextView) itemView.findViewById(com.xmd.m.R.id.tv_visit_comment);
+            imgVisitMark = (ImageView) itemView.findViewById(com.xmd.m.R.id.img_visit_mark);
+            imgDeleteMark = (ImageView) itemView.findViewById(com.xmd.m.R.id.img_delete_mark);
+            llCommentHandler = (LinearLayout) itemView.findViewById(com.xmd.m.R.id.ll_comment_handler);
         }
     }
 

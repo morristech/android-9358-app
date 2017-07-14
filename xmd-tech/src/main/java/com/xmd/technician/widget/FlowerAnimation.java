@@ -1,9 +1,5 @@
 package com.xmd.technician.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
@@ -22,6 +18,10 @@ import android.view.animation.AccelerateInterpolator;
 
 import com.xmd.technician.R;
 import com.xmd.technician.bean.Flower;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * 撒花 用到的知识点： 1、android属性动画 2、Path路径绘制 3、贝塞尔曲线
@@ -133,9 +133,9 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
                     R.drawable.icon_gold);
             Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(),
                     R.drawable.icon_gold2);
-            if(i/2==0){
+            if (i / 2 == 0) {
                 flower.setResId(bitmap);
-            }else{
+            } else {
                 flower.setResId(bitmap2);
             }
 
@@ -205,11 +205,11 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
             } else {
                 CPoint tmp = new CPoint(0, 0);
                 if (random.nextInt(100) % 2 == 0) {
-                    tmp.x = point.x + i*10;
-                 //   tmp.x = point.x;
+                    tmp.x = point.x + i * 10;
+                    //   tmp.x = point.x;
                 } else {
-                   tmp.x = point.x - i*10;
-                  //  tmp.x = point.x ;
+                    tmp.x = point.x - i * 10;
+                    //  tmp.x = point.x ;
                 }
                 tmp.y = (int) (height / (float) quadCount * i);
                 points.add(tmp);
@@ -363,19 +363,25 @@ public class FlowerAnimation extends View implements AnimatorUpdateListener {
         this.phase2 = phase2;
     }
 
-    public float getPhase3() {return phase3;}
+    public float getPhase3() {
+        return phase3;
+    }
 
     public void setPhase3(float phase3) {
         this.phase3 = phase3;
     }
 
-    public float getPhase4() {return phase4;}
+    public float getPhase4() {
+        return phase4;
+    }
 
     public void setPhase4(float phase4) {
         this.phase4 = phase4;
     }
 
-    public float getPhase5() {return phase5;}
+    public float getPhase5() {
+        return phase5;
+    }
 
     public void setPhase5(float phase5) {
         this.phase5 = phase5;

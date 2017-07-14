@@ -3,6 +3,7 @@ package com.xmd.technician.common;
 /**
  * Created by sdcm on 15-11-30.
  */
+
 import android.text.TextUtils;
 import android.util.Base64;
 
@@ -15,12 +16,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 /**
- *
+ * @author wmj911
  * @ClassName: DESede
  * @Description: 对称加密算法 3重des加密
  * @date 2015年5月30日 下午2:16:23
- * @author wmj911
- *
  */
 public final class DESede {
 
@@ -160,7 +159,7 @@ public final class DESede {
      * @throws Exception
      */
     public static String base64Decode(String src) throws Exception {
-        return new String(Base64.decode(src.getBytes(DESEDE_CHARSET_NAME),Base64.DEFAULT),DESEDE_CHARSET_NAME);
+        return new String(Base64.decode(src.getBytes(DESEDE_CHARSET_NAME), Base64.DEFAULT), DESEDE_CHARSET_NAME);
     }
 
     /**
@@ -172,7 +171,7 @@ public final class DESede {
      */
     public static byte[] base64DecodeToBytes(String src) throws Exception {
 
-        return Base64.decode(src.getBytes(DESEDE_CHARSET_NAME),Base64.DEFAULT);
+        return Base64.decode(src.getBytes(DESEDE_CHARSET_NAME), Base64.DEFAULT);
     }
 
 
@@ -181,7 +180,7 @@ public final class DESede {
      *
      * @param clientId
      */
-    public static String encrypt(String appID, String appSecret, String appKey, String masterSecret, String clientId,String telephone)  {
+    public static String encrypt(String appID, String appSecret, String appKey, String masterSecret, String clientId, String telephone) {
         //AppID、AppSecret、telephone、AppKey、MasterSecret、clientId
         String decryptPwd = appID + appSecret + telephone + appKey + masterSecret + clientId;
         Logger.v("加密前字符串:" + decryptPwd);
@@ -193,9 +192,6 @@ public final class DESede {
     }
 
 
-
-
-
     /**
      * 加密小工具
      *
@@ -203,18 +199,18 @@ public final class DESede {
      */
     public static void main(String[] args) throws Exception {
         //AppID、AppSecret、telephone、AppKey、MasterSecret、clientId
-        String appID="WvUqksV0Ob6gUBKdGxOLk8";
-        String appSecret  ="nxA8wGbyYl5tCX6aDeH3i1";
-        String appKey="OPclY7PiR37dSgU8NDtWC";
-        String masterSecret="JEZC14IDw86NZIgxAn0et5";
-        String telephone="刘德华";
-        String clientId="1234567890";
-        String decryptPwd=appID+appSecret+telephone+appKey+masterSecret+clientId;
-        System.out.println("加密前字符串:"+decryptPwd);
-        String encryptPwd=encrypt(decryptPwd);
-        System.out.println("加密:"+encryptPwd);
-        String decryptPwds=decrypt(encryptPwd);
-        System.out.println("解密后字符串:"+decryptPwds);
+        String appID = "WvUqksV0Ob6gUBKdGxOLk8";
+        String appSecret = "nxA8wGbyYl5tCX6aDeH3i1";
+        String appKey = "OPclY7PiR37dSgU8NDtWC";
+        String masterSecret = "JEZC14IDw86NZIgxAn0et5";
+        String telephone = "刘德华";
+        String clientId = "1234567890";
+        String decryptPwd = appID + appSecret + telephone + appKey + masterSecret + clientId;
+        System.out.println("加密前字符串:" + decryptPwd);
+        String encryptPwd = encrypt(decryptPwd);
+        System.out.println("加密:" + encryptPwd);
+        String decryptPwds = decrypt(encryptPwd);
+        System.out.println("解密后字符串:" + decryptPwds);
 
     }
 }

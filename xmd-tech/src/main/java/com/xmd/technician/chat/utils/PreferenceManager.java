@@ -56,8 +56,8 @@ public class PreferenceManager {
         editor = mSharedPreferences.edit();
     }
 
-    public static synchronized void init(Context cxt){
-        if(mPreferencemManager == null){
+    public static synchronized void init(Context cxt) {
+        if (mPreferencemManager == null) {
             mPreferencemManager = new PreferenceManager(cxt);
         }
     }
@@ -122,7 +122,7 @@ public class PreferenceManager {
         return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_CHATROOM_OWNER_LEAVE, true);
     }
 
-    public void setDeleteMessagesAsExitGroup(boolean value){
+    public void setDeleteMessagesAsExitGroup(boolean value) {
         editor.putBoolean(SHARED_KEY_SETTING_DELETE_MESSAGES_WHEN_EXIT_GROUP, value);
         editor.apply();
     }
@@ -158,30 +158,30 @@ public class PreferenceManager {
         return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_OFFLINE_PUSH_CALL, false);
     }
 
-    public void setGroupsSynced(boolean synced){
+    public void setGroupsSynced(boolean synced) {
         editor.putBoolean(SHARED_KEY_SETTING_GROUPS_SYNCED, synced);
         editor.apply();
     }
 
-    public boolean isGroupsSynced(){
+    public boolean isGroupsSynced() {
         return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_GROUPS_SYNCED, false);
     }
 
-    public void setContactSynced(boolean synced){
+    public void setContactSynced(boolean synced) {
         editor.putBoolean(SHARED_KEY_SETTING_CONTACT_SYNCED, synced);
         editor.apply();
     }
 
-    public boolean isContactSynced(){
+    public boolean isContactSynced() {
         return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_CONTACT_SYNCED, false);
     }
 
-    public void setBlacklistSynced(boolean synced){
+    public void setBlacklistSynced(boolean synced) {
         editor.putBoolean(SHARED_KEY_SETTING_BALCKLIST_SYNCED, synced);
         editor.apply();
     }
 
-    public boolean isBacklistSynced(){
+    public boolean isBacklistSynced() {
         return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_BALCKLIST_SYNCED, false);
     }
 
@@ -203,39 +203,39 @@ public class PreferenceManager {
         return mSharedPreferences.getString(SHARED_KEY_CURRENTUSER_AVATAR, null);
     }
 
-    public void setCurrentUserName(String username){
+    public void setCurrentUserName(String username) {
         editor.putString(SHARED_KEY_CURRENTUSER_USERNAME, username);
         editor.apply();
     }
 
-    public String getCurrentUsername(){
+    public String getCurrentUsername() {
         return mSharedPreferences.getString(SHARED_KEY_CURRENTUSER_USERNAME, null);
     }
 
-    public void setRestServer(String restServer){
+    public void setRestServer(String restServer) {
         editor.putString(SHARED_KEY_REST_SERVER, restServer).commit();
         editor.commit();
     }
 
-    public String getRestServer(){
+    public String getRestServer() {
         return mSharedPreferences.getString(SHARED_KEY_REST_SERVER, null);
     }
 
-    public void setIMServer(String imServer){
+    public void setIMServer(String imServer) {
         editor.putString(SHARED_KEY_IM_SERVER, imServer);
         editor.commit();
     }
 
-    public String getIMServer(){
+    public String getIMServer() {
         return mSharedPreferences.getString(SHARED_KEY_IM_SERVER, null);
     }
 
-    public void enableCustomServer(boolean enable){
+    public void enableCustomServer(boolean enable) {
         editor.putBoolean(SHARED_KEY_ENABLE_CUSTOM_SERVER, enable);
         editor.apply();
     }
 
-    public boolean isCustomServerEnable(){
+    public boolean isCustomServerEnable() {
         return mSharedPreferences.getBoolean(SHARED_KEY_ENABLE_CUSTOM_SERVER, false);
     }
 
@@ -270,6 +270,7 @@ public class PreferenceManager {
     /**
      * Min Video kbps
      * if no value was set, return -1
+     *
      * @return
      */
     public int getCallMinVideoKbps() {
@@ -284,6 +285,7 @@ public class PreferenceManager {
     /**
      * Max Video kbps
      * if no value was set, return -1
+     *
      * @return
      */
     public int getCallMaxVideoKbps() {
@@ -298,6 +300,7 @@ public class PreferenceManager {
     /**
      * Max frame rate
      * if no value was set, return -1
+     *
      * @return
      */
     public int getCallMaxFrameRate() {
@@ -312,6 +315,7 @@ public class PreferenceManager {
     /**
      * audio sample rate
      * if no value was set, return -1
+     *
      * @return
      */
     public int getCallAudioSampleRate() {
@@ -353,7 +357,8 @@ public class PreferenceManager {
 
     /**
      * fixed video sample rate
-     *  if no value was set, return false
+     * if no value was set, return false
+     *
      * @return
      */
     public boolean isCallFixedVideoResolution() {

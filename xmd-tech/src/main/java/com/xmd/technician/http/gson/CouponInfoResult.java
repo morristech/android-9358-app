@@ -10,6 +10,7 @@ import java.util.List;
 public class CouponInfoResult extends BaseResult {
 
     public Content respData;
+
     public class Content {
         public CouponInfo activities;
         public String shareUrl;
@@ -17,7 +18,7 @@ public class CouponInfoResult extends BaseResult {
         public String clubName;
         public List<ItemInfo> items;
 
-        public class ItemInfo{
+        public class ItemInfo {
             public String name;
         }
     }

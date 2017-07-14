@@ -1,5 +1,3 @@
-
-
 /*
  * Copyright 2009 ZXing authors
  *
@@ -15,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package com.xmd.technician.common;
- 
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.google.zxing.LuminanceSource;
 
 /**
- * 
  * This class is used to help decode images from files which arrive as RGB data
  * from Android bitmaps. It does not support cropping or rotation.
- * 
+ *
  * @author dswitkin@google.com (Daniel Switkin)
  */
 public final class RGBLuminanceSource extends LuminanceSource {
     private final byte[] luminances;
- 
-    public RGBLuminanceSource(String path){
+
+    public RGBLuminanceSource(String path) {
         this(loadBitmap(path));
     }
- 
+
     public RGBLuminanceSource(Bitmap bitmap) {
         super(bitmap.getWidth(), bitmap.getHeight());
         int width = bitmap.getWidth();
@@ -65,7 +62,7 @@ public final class RGBLuminanceSource extends LuminanceSource {
             }
         }
     }
- 
+
     @Override
     public byte[] getRow(int y, byte[] row) {
         if (y < 0 || y >= getHeight()) {
@@ -79,7 +76,7 @@ public final class RGBLuminanceSource extends LuminanceSource {
         System.arraycopy(luminances, y * width, row, 0, width);
         return row;
     }
- 
+
     // Since this class does not support cropping, the underlying byte array
     // already contains
     // exactly what the caller is asking for, so give it to them without a copy.
@@ -87,12 +84,12 @@ public final class RGBLuminanceSource extends LuminanceSource {
     public byte[] getMatrix() {
         return luminances;
     }
- 
-    private static Bitmap loadBitmap(String path){
+
+    private static Bitmap loadBitmap(String path) {
         Bitmap bitmap = BitmapFactory.decodeFile(path);
-        if(bitmap != null) {
-        	return bitmap;
-        } 
+        if (bitmap != null) {
+            return bitmap;
+        }
         return null;
     }
 }

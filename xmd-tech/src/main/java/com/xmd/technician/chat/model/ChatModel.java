@@ -17,9 +17,9 @@ import java.util.Map;
 public class ChatModel {
     UserDao dao = null;
     protected Context context = null;
-    protected Map<Key,Object> valueCache = new HashMap<Key,Object>();
+    protected Map<Key, Object> valueCache = new HashMap<Key, Object>();
 
-    public ChatModel(Context ctx){
+    public ChatModel(Context ctx) {
         context = ctx;
         PreferenceManager.init(context);
     }
@@ -35,20 +35,21 @@ public class ChatModel {
         return dao.getContactList();
     }
 
-    public void saveContact(ChatUser user){
+    public void saveContact(ChatUser user) {
         UserDao dao = new UserDao(context);
         dao.saveContact(user);
     }
 
     /**
      * save current username
+     *
      * @param username
      */
-    public void setCurrentUserName(String username){
+    public void setCurrentUserName(String username) {
         PreferenceManager.getInstance().setCurrentUserName(username);
     }
 
-    public String getCurrentUsernName(){
+    public String getCurrentUsernName() {
         return PreferenceManager.getInstance().getCurrentUsername();
     }
 
@@ -60,12 +61,12 @@ public class ChatModel {
     public boolean getSettingMsgNotification() {
         Object val = valueCache.get(Key.VibrateAndPlayToneOn);
 
-        if(val == null){
+        if (val == null) {
             val = PreferenceManager.getInstance().getSettingMsgNotification();
             valueCache.put(Key.VibrateAndPlayToneOn, val);
         }
 
-        return (Boolean) (val != null?val:true);
+        return (Boolean) (val != null ? val : true);
     }
 
     public void setSettingMsgSound(boolean paramBoolean) {
@@ -76,12 +77,12 @@ public class ChatModel {
     public boolean getSettingMsgSound() {
         Object val = valueCache.get(Key.PlayToneOn);
 
-        if(val == null){
+        if (val == null) {
             val = PreferenceManager.getInstance().getSettingMsgSound();
             valueCache.put(Key.PlayToneOn, val);
         }
 
-        return (Boolean) (val != null?val:true);
+        return (Boolean) (val != null ? val : true);
     }
 
     public void setSettingMsgVibrate(boolean paramBoolean) {
@@ -92,12 +93,12 @@ public class ChatModel {
     public boolean getSettingMsgVibrate() {
         Object val = valueCache.get(Key.VibrateOn);
 
-        if(val == null){
+        if (val == null) {
             val = PreferenceManager.getInstance().getSettingMsgVibrate();
             valueCache.put(Key.VibrateOn, val);
         }
 
-        return (Boolean) (val != null?val:true);
+        return (Boolean) (val != null ? val : true);
     }
 
     public void setSettingMsgSpeaker(boolean paramBoolean) {
@@ -108,52 +109,52 @@ public class ChatModel {
     public boolean getSettingMsgSpeaker() {
         Object val = valueCache.get(Key.SpakerOn);
 
-        if(val == null){
+        if (val == null) {
             val = PreferenceManager.getInstance().getSettingMsgSpeaker();
             valueCache.put(Key.SpakerOn, val);
         }
 
-        return (Boolean) (val != null?val:true);
+        return (Boolean) (val != null ? val : true);
     }
 
-    public List<String> getDisabledIds(){
+    public List<String> getDisabledIds() {
         Object val = valueCache.get(Key.DisabledIds);
 
-        if(dao == null){
+        if (dao == null) {
             dao = new UserDao(context);
         }
         return (List<String>) val;
     }
 
-    public void setGroupsSynced(boolean synced){
+    public void setGroupsSynced(boolean synced) {
         PreferenceManager.getInstance().setGroupsSynced(synced);
     }
 
-    public boolean isGroupsSynced(){
+    public boolean isGroupsSynced() {
         return PreferenceManager.getInstance().isGroupsSynced();
     }
 
-    public void setContactSynced(boolean synced){
+    public void setContactSynced(boolean synced) {
         PreferenceManager.getInstance().setContactSynced(synced);
     }
 
-    public boolean isContactSynced(){
+    public boolean isContactSynced() {
         return PreferenceManager.getInstance().isContactSynced();
     }
 
-    public void setBlacklistSynced(boolean synced){
+    public void setBlacklistSynced(boolean synced) {
         PreferenceManager.getInstance().setBlacklistSynced(synced);
     }
 
-    public boolean isBacklistSynced(){
+    public boolean isBacklistSynced() {
         return PreferenceManager.getInstance().isBacklistSynced();
     }
 
-    public void allowChatroomOwnerLeave(boolean value){
+    public void allowChatroomOwnerLeave(boolean value) {
         PreferenceManager.getInstance().setSettingAllowChatroomOwnerLeave(value);
     }
 
-    public boolean isChatroomOwnerLeaveAllowed(){
+    public boolean isChatroomOwnerLeaveAllowed() {
         return PreferenceManager.getInstance().getSettingAllowChatroomOwnerLeave();
     }
 
@@ -190,27 +191,27 @@ public class ChatModel {
         return PreferenceManager.getInstance().isPushCall();
     }
 
-    public void setRestServer(String restServer){
+    public void setRestServer(String restServer) {
         PreferenceManager.getInstance().setRestServer(restServer);
     }
 
-    public String getRestServer(){
-        return  PreferenceManager.getInstance().getRestServer();
+    public String getRestServer() {
+        return PreferenceManager.getInstance().getRestServer();
     }
 
-    public void setIMServer(String imServer){
+    public void setIMServer(String imServer) {
         PreferenceManager.getInstance().setIMServer(imServer);
     }
 
-    public String getIMServer(){
+    public String getIMServer() {
         return PreferenceManager.getInstance().getIMServer();
     }
 
-    public void enableCustomServer(boolean enable){
+    public void enableCustomServer(boolean enable) {
         PreferenceManager.getInstance().enableCustomServer(enable);
     }
 
-    public boolean isCustomServerEnable(){
+    public boolean isCustomServerEnable() {
         return PreferenceManager.getInstance().isCustomServerEnable();
     }
 
@@ -230,7 +231,7 @@ public class ChatModel {
         return PreferenceManager.getInstance().getCustomAppkey();
     }
 
-    enum Key{
+    enum Key {
         VibrateAndPlayToneOn,
         VibrateOn,
         PlayToneOn,

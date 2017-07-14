@@ -76,7 +76,7 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
 
     private void handleJournalListResult(JournalListResult journalListResult) {
         if (journalListResult.statusCode == 200) {
-            if (journalListResult.respData == null && journalListResult.respData.size()==0) {
+            if (journalListResult.respData == null && journalListResult.respData.size() == 0) {
 
                 MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PROPAGANDA_LIST);
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -98,17 +98,17 @@ public class ClubJournalListFragment extends BaseListFragment<ClubJournalBean> {
     @Override
     public void onShareClicked(ClubJournalBean bean) {
         super.onShareClicked(bean);
-        ShareController.doShare(bean.image, bean.shareUrl,  bean.title,
+        ShareController.doShare(bean.image, bean.shareUrl, bean.title,
                 bean.subTitle, Constant.SHARE_JOURNAL, bean.journalId);
     }
 
     @Override
     public void onItemClicked(ClubJournalBean bean) throws HyphenateException {
         super.onItemClicked(bean);
-        if(Utils.isNotEmpty(bean.shareUrl)){
-            ShareDetailActivity.startShareDetailActivity(getActivity(),bean.shareUrl, ResourceUtils.getString(R.string.club_journal_list_title),false);
+        if (Utils.isNotEmpty(bean.shareUrl)) {
+            ShareDetailActivity.startShareDetailActivity(getActivity(), bean.shareUrl, ResourceUtils.getString(R.string.club_journal_list_title), false);
 
-        }else{
+        } else {
             return;
         }
     }

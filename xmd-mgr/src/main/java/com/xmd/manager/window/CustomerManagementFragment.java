@@ -24,7 +24,6 @@ import com.xmd.manager.widget.ViewPagerTabIndicator;
 
 import java.util.ArrayList;
 
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;

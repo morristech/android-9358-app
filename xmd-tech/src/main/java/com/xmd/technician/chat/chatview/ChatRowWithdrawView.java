@@ -23,7 +23,7 @@ public class ChatRowWithdrawView extends BaseEaseChatView {
 
     @Override
     protected void onInflateView() {
-        mInflater.inflate(R.layout.chat_row_withdraw_view,this);
+        mInflater.inflate(R.layout.chat_row_withdraw_view, this);
     }
 
     @Override
@@ -40,9 +40,9 @@ public class ChatRowWithdrawView extends BaseEaseChatView {
     @Override
     protected void onSetUpView() {
         avatar.setVisibility(GONE);
-        if(mEMMessage.getFrom().equals(SharedPreferenceHelper.getEmchatId())){
+        if (mEMMessage.getFrom().equals(SharedPreferenceHelper.getEmchatId())) {
             withDrawText.setText("你撤回一条消息");
-        }else{
+        } else {
             withDrawText.setText("对方撤回一条消息");
         }
     }

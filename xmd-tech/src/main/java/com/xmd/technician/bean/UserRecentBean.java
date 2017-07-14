@@ -4,7 +4,7 @@ package com.xmd.technician.bean;
  * Created by Lhj on 17-6-6.
  */
 
-public class UserRecentBean  {
+public class UserRecentBean {
     /**
      * avatar : 测试内容0111
      * avatarUrl : http://wx.qlogo.cn/mmopen/Sia4gHVGFfgH60RjQV61ds9siaTVBWYNofUhSBYrLtXGUrY4u4yfpmb9XPCjXYNRCJMLMdGdT9qsw3xkQMQ9kicbKHkxEnjYjLq/0

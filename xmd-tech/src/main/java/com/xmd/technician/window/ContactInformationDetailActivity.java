@@ -64,7 +64,6 @@ import com.xmd.technician.widget.RoundImageView;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -856,9 +855,9 @@ public class ContactInformationDetailActivity extends BaseActivity {
             } else {
                 btnEmChat.setVisibility(View.VISIBLE);
             }
-            if(Utils.isEmpty(emChatId) && Utils.isEmpty(contactPhone)){
+            if (Utils.isEmpty(emChatId) && Utils.isEmpty(contactPhone)) {
                 btnOperation.setVisibility(View.GONE);
-            }else{
+            } else {
                 btnOperation.setVisibility(View.VISIBLE);
             }
 

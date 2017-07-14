@@ -1,7 +1,6 @@
 package com.xmd.technician.bean;
 
 import com.xmd.technician.http.gson.BaseResult;
-import com.xmd.technician.window.BaseActivity;
 
 import java.util.List;
 

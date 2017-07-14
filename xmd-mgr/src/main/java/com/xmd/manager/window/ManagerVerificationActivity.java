@@ -25,7 +25,6 @@ import com.xmd.manager.widget.AlertDialogBuilder;
 
 import java.io.Serializable;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;

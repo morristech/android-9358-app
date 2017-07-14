@@ -20,17 +20,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
-public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
     protected static final int PAGE_SIZE = 20;
 
-    @BindView(R.id.comment_list) RecyclerView mListView;
-    @BindView(R.id.swipe_refresh_widget) SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.empty_view_widget) EmptyView mEmptyView;
+    @BindView(R.id.comment_list)
+    RecyclerView mListView;
+    @BindView(R.id.swipe_refresh_widget)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.empty_view_widget)
+    EmptyView mEmptyView;
 
     private CommentAdapter mAdapter;
     private Subscription mCommentSubscription;
@@ -54,7 +56,7 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
 
         mAdapter = new CommentAdapter(this);
         mAdapter.setOnFooterClickListener(v -> loadMore());
-        mLayoutManager =  new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(this);
         mListView.setHasFixedSize(true);
         mListView.setLayoutManager(mLayoutManager);
         mListView.setAdapter(mAdapter);
@@ -84,21 +86,21 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
         loadData();
     }
 
-    private void loadMore(){
-        if(loadData()){
+    private void loadMore() {
+        if (loadData()) {
             mSwipeRefreshLayout.setRefreshing(true);
             mIsLoadingMore = true;
         }
     }
 
-    private boolean loadData(){
-        if(mPageCount < 0 || ((mPages + 1) <= mPageCount)){
+    private boolean loadData() {
+        if (mPageCount < 0 || ((mPages + 1) <= mPageCount)) {
             mPages++;
             Map<String, String> params = new HashMap<>();
-            params.put(RequestConstant.KEY_PAGE,String.valueOf(mPages));
-            params.put(RequestConstant.KEY_PAGE_SIZE,String.valueOf(PAGE_SIZE));
-            params.put(RequestConstant.KEY_SORT_TYPE,"createdAt");
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COMMENT_LIST,params);
+            params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
+            params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+            params.put(RequestConstant.KEY_SORT_TYPE, "createdAt");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_COMMENT_LIST, params);
             return true;
         }
 
@@ -119,17 +121,17 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
         loadData();
     }
 
-    private void handleCommentResult(CommentResult result){
+    private void handleCommentResult(CommentResult result) {
         mSwipeRefreshLayout.setRefreshing(false);
         mPageCount = result.pageCount;
-        if(result.respData != null){
-            if(!mIsLoadingMore){
+        if (result.respData != null) {
+            if (!mIsLoadingMore) {
                 mCommentList.clear();
             }
             for (int i = 0; i < result.respData.size(); i++) {
-               if(result.respData.get(i).userInfo != null){
-                   mCommentList.add(result.respData.get(i));
-               }
+                if (result.respData.get(i).userInfo != null) {
+                    mCommentList.add(result.respData.get(i));
+                }
             }
 
             mAdapter.setIsNoMore(mPages == mPageCount);

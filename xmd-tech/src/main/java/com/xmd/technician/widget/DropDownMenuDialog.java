@@ -96,6 +96,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
             }
         }
     }
+
     public void show(View view) {
         showAsDropDown(view, 0, 10);
     }
@@ -106,6 +107,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
         contentView.measure(0, 0);
         showAtLocation(v, Gravity.CENTER_HORIZONTAL | Gravity.TOP, location[0], location[1] - contentView.getMeasuredHeight());
     }
+
     public interface OnItemClickListener {
         void onItemClick(int index);
     }

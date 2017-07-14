@@ -23,7 +23,6 @@ import com.xmd.chat.beans.Location;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.chat.message.RewardChatMessage;
-import com.xmd.chat.order.OrderChatManager;
 import com.xmd.chat.view.ChatActivity;
 import com.xmd.chat.view.ShareListActivity;
 import com.xmd.chat.view.SubmenuEmojiFragment;
@@ -195,7 +194,7 @@ public class MenuFactory {
                     //免费预约，发送确认消息
                     isInSubmitAppointment = false;
                     MessageManager.getInstance().sendMessage(
-                            OrderChatManager.createMessage(
+                            OrderChatMessage.create(
                                     event.getData().getCustomerChatId(),
                                     ChatMessage.MSG_TYPE_ORDER_CONFIRM,
                                     event.getData()));
@@ -212,7 +211,7 @@ public class MenuFactory {
             if (event.getData().isSubmitSuccess()) {
                 //生成订单成功，发送确认消息
                 MessageManager.getInstance().sendMessage(
-                        OrderChatManager.createMessage(
+                        OrderChatMessage.create(
                                 event.getData().getCustomerChatId(),
                                 ChatMessage.MSG_TYPE_ORDER_CONFIRM,
                                 event.getData()));

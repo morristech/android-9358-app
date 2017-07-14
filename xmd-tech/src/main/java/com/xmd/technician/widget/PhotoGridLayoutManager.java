@@ -3,12 +3,7 @@ package com.xmd.technician.widget;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
-
-import com.xmd.technician.R;
-import com.xmd.technician.common.ResourceUtils;
 
 /**
  * Created by sdcm on 16-5-18.

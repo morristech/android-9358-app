@@ -383,8 +383,6 @@ public class LoginTechnician {
 
         ActivityHelper.getInstance().removeAllActivities();
         UINavigation.gotoLogin(TechApplication.getAppContext());
-
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_LOGOUT_EMCHAT);
     }
 
 

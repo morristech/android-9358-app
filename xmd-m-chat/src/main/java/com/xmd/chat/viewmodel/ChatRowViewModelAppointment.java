@@ -24,7 +24,6 @@ import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowAppointmentBinding;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
-import com.xmd.chat.order.OrderChatManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,7 +42,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
     public ChatRowViewModelAppointment(ChatMessage chatMessage) {
         super(chatMessage);
         orderChatMessage = (OrderChatMessage) chatMessage;
-        mAppointmentData = OrderChatManager.parseMessage(orderChatMessage);
+//        mAppointmentData = OrderChatManager.parseMessage(orderChatMessage);
         setupOperationButton();
         setupShowItem();
     }

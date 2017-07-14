@@ -1,12 +1,9 @@
 package com.xmd.technician.common;
+
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Looper;
-import android.widget.Toast;
 
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.window.WelcomeActivity;
@@ -26,7 +23,7 @@ import java.util.Map;
 /**
  * Created by sdcm on 15-10-26.
  */
-public class AppUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler{
+public class AppUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     //用于格式化日期,作为日志文件名的一部分
     private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -53,7 +50,7 @@ public class AppUncaughtExceptionHandler implements Thread.UncaughtExceptionHand
     /**
      * restart the app
      */
-    private void restart(){
+    private void restart() {
         // 重新启动应用
         Intent intent = new Intent(mContext, WelcomeActivity.class);
         // 销毁进程空间所有活动
@@ -86,7 +83,7 @@ public class AppUncaughtExceptionHandler implements Thread.UncaughtExceptionHand
      * 保存错误信息到文件中
      *
      * @param ex
-     * @return	返回文件名称,便于将文件传送到服务器
+     * @return 返回文件名称, 便于将文件传送到服务器
      */
     private String saveCrashInfo2File(Throwable ex) {
         StringBuffer sb = new StringBuffer();

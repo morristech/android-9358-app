@@ -9,18 +9,12 @@ import com.xmd.chat.R;
  */
 
 public class TipChatMessage extends ChatMessage {
-    private String ATTR_TIP_TYPE = "tipType";
+    private static String ATTR_TIP_TYPE = "tipType";
 
     public TipChatMessage(EMMessage emMessage) {
         super(emMessage);
-        setMsgType(ChatMessage.MSG_TYPE_TIP);
     }
 
-    public TipChatMessage(EMMessage emMessage, String tipType) {
-        super(emMessage);
-        setMsgType(ChatMessage.MSG_TYPE_TIP);
-        setAttr(ATTR_TIP_TYPE, tipType);
-    }
 
     public String getAttrType() {
         String attrType = getSafeStringAttribute(ATTR_TIP_TYPE);
@@ -67,8 +61,15 @@ public class TipChatMessage extends ChatMessage {
         return create(remoteChatId, tip, "");
     }
 
+    public static TipChatMessage create(EMMessage emMessage, String tipType) {
+        TipChatMessage message = new TipChatMessage(emMessage);
+        message.setMsgType(ChatMessage.MSG_TYPE_TIP);
+        message.setAttr(ATTR_TIP_TYPE, tipType);
+        return message;
+    }
+
     public static TipChatMessage create(String remoteChatId, String tip, String tipType) {
         EMMessage emMessage = EMMessage.createTxtSendMessage(tip, remoteChatId);
-        return new TipChatMessage(emMessage, tipType);
+        return create(emMessage, tipType);
     }
 }

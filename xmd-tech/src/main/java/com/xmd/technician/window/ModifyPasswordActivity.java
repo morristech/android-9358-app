@@ -28,14 +28,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
-public class ModifyPasswordActivity extends BaseActivity implements TextWatcher,InputFilter{
+public class ModifyPasswordActivity extends BaseActivity implements TextWatcher, InputFilter {
 
     public final static int PASSWORD_MAX_LEN = 20;
 
-    @BindView(R.id.old_password) EditText mOldPassWordEdt;
-    @BindView(R.id.new_password) EditText mNewPassWordEdt;
-    @BindView(R.id.confirm_password) EditText mConfirmPassWordEdt;
-    @BindView(R.id.confirm) Button mChangePassWordBtn;
+    @BindView(R.id.old_password)
+    EditText mOldPassWordEdt;
+    @BindView(R.id.new_password)
+    EditText mNewPassWordEdt;
+    @BindView(R.id.confirm_password)
+    EditText mConfirmPassWordEdt;
+    @BindView(R.id.confirm)
+    Button mChangePassWordBtn;
 
     private Subscription mModifyPasswordSubscription;
     private Subscription mLoginSubscription;
@@ -70,14 +74,14 @@ public class ModifyPasswordActivity extends BaseActivity implements TextWatcher,
     }
 
     @OnClick(R.id.confirm)
-    public void modifyPassword(){
-        String nPassword = null,oPassword = null;
+    public void modifyPassword() {
+        String nPassword = null, oPassword = null;
 
         nPassword = mNewPassWordEdt.getText().toString();
         oPassword = mOldPassWordEdt.getText().toString();
         mPassword = mConfirmPassWordEdt.getText().toString();
-        if(!nPassword.equals(mPassword)){
-            new LoginFailDialog(this,R.string.modify_password_failed, R.string.modify_password_change_confirm_err).show();
+        if (!nPassword.equals(mPassword)) {
+            new LoginFailDialog(this, R.string.modify_password_failed, R.string.modify_password_change_confirm_err).show();
             return;
         }
 
@@ -88,7 +92,7 @@ public class ModifyPasswordActivity extends BaseActivity implements TextWatcher,
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MODIFY_PASSWORD, params);
     }
 
-    private void login(){
+    private void login() {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_USERNAME, SharedPreferenceHelper.getUserAccount());
         params.put(RequestConstant.KEY_PASSWORD, mPassword);

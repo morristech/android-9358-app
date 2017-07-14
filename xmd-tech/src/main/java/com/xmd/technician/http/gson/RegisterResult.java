@@ -3,7 +3,7 @@ package com.xmd.technician.http.gson;
 /**
  * Created by sdcm on 16-6-2.
  */
-public class RegisterResult extends BaseResult{
+public class RegisterResult extends BaseResult {
     public String status;
     public String token;
     public String name;

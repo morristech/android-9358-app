@@ -3,6 +3,7 @@ package com.xmd.technician.chat.db;
 import android.content.Context;
 
 import com.xmd.technician.chat.ChatUser;
+
 import java.util.List;
 import java.util.Map;
 
@@ -43,17 +44,19 @@ public class UserDao {
 
     /**
      * 删除联系人
+     *
      * @param username
      */
-    public void deleteContact(String username){
+    public void deleteContact(String username) {
         ChatDBManager.getInstance().deleteContact(username);
     }
 
     /**
      * 保存联系人
+     *
      * @param user
      */
-    public void saveContact(ChatUser user){
+    public void saveContact(ChatUser user) {
         ChatDBManager.getInstance().saveContact(user);
     }
 

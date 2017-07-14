@@ -3,7 +3,9 @@ package com.xmd.chat;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.CouponChatMessage;
+import com.xmd.chat.message.CreditGiftChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
+import com.xmd.chat.message.NewOrderChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.chat.message.ShareChatMessage;
 import com.xmd.chat.message.TipChatMessage;
@@ -36,11 +38,15 @@ public class ChatMessageFactory {
                 return new ShareChatMessage(message);
             case ChatMessage.MSG_TYPE_COUPON_TIP:
             case ChatMessage.MSG_TYPE_PAID_COUPON_TIP:
-                return new TipChatMessage(message, msgType);
+                return TipChatMessage.create(message, msgType);
             case ChatMessage.MSG_TYPE_TIP:
                 return new TipChatMessage(message);
             case ChatMessage.MSG_TYPE_COUPON:
                 return new CouponChatMessage(message);
+            case ChatMessage.MSG_TYPE_CREDIT_GIFT:
+                return new CreditGiftChatMessage(message);
+            case ChatMessage.MSG_TYPE_NEW_ORDER:
+                return new NewOrderChatMessage(message);
             default:
                 return new ChatMessage(message);
         }

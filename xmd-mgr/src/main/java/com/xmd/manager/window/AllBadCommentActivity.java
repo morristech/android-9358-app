@@ -10,7 +10,6 @@ import com.xmd.manager.R;
 import com.xmd.manager.adapter.PageFragmentPagerAdapter;
 import com.xmd.manager.common.ResourceUtils;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

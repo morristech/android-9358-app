@@ -44,7 +44,7 @@ public class AppConfig {
     public static String sGetuiAppSecret = "";
     public static String sGetuiMasterSecret = "";
     public static List<String> sServerHosts;
-    public static List<String>sServerUpDateHosts;
+    public static List<String> sServerUpDateHosts;
 
     private static String sAppVersionName = "";
     private static int sAppVersionCode = -1;
@@ -66,7 +66,7 @@ public class AppConfig {
 
         }
         sServerUpDateHosts = new ArrayList<>();
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             sSDCardPath = Environment.getExternalStorageDirectory().getPath();
             if (FileUtils.checkFolderExists(getAppFolder(), true)) {
                 //Read the config Server Hosts from the /sdcard/sdspa/serverhosts
@@ -95,9 +95,10 @@ public class AppConfig {
             sServerHosts.add(Constant.DEFAULT_SERVER_HOST);
         }
     }
-    private static void readServerUpDateHostFile(){
-        File file = new File(getAppFolder()+File.separator+SERVER_HOSTS);
-        if(file.exists()){
+
+    private static void readServerUpDateHostFile() {
+        File file = new File(getAppFolder() + File.separator + SERVER_HOSTS);
+        if (file.exists()) {
             try {
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
@@ -105,13 +106,13 @@ public class AppConfig {
                 while ((line = br.readLine()) != null) {
                     sServerUpDateHosts.add(line);
                 }
-            }catch (FileNotFoundException e){
+            } catch (FileNotFoundException e) {
                 Logger.e(e.getLocalizedMessage());
-            }catch (IOException e) {
+            } catch (IOException e) {
                 Logger.e(e.getLocalizedMessage());
             }
         }
-        if(sServerUpDateHosts.isEmpty()){
+        if (sServerUpDateHosts.isEmpty()) {
             sServerUpDateHosts.add(sDefUpdateServer);
         }
 
@@ -147,7 +148,7 @@ public class AppConfig {
             });
             return;
         }
-        if(Constant.SHARE_JOURNAL.equals(sShareType)){
+        if (Constant.SHARE_JOURNAL.equals(sShareType)) {
             ThreadPoolManager.run(new Runnable() {
                 @Override
                 public void run() {
@@ -210,6 +211,7 @@ public class AppConfig {
 
         return versionCode;
     }
+
     public static List<Entry> generateEntryList() {
         List<Entry> list = new ArrayList<>();
 

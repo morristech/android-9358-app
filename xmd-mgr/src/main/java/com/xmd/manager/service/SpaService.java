@@ -1,6 +1,5 @@
 package com.xmd.manager.service;
 
-import com.example.xmd_m_comment.bean.CommentListResult;
 import com.xmd.manager.beans.CheckCouponResult;
 import com.xmd.manager.beans.CheckInfoList;
 import com.xmd.manager.beans.IndexOrderData;
@@ -99,7 +98,6 @@ import com.xmd.manager.service.response.UserCouponViewResult;
 import com.xmd.manager.service.response.UserEditGroupResult;
 import com.xmd.manager.service.response.UserGetCouponResult;
 import com.xmd.manager.service.response.UserGroupDetailListResult;
-
 import com.xmd.manager.service.response.UserGroupSaveResult;
 import com.xmd.manager.service.response.VerificationCouponDetailResult;
 import com.xmd.manager.service.response.VerificationRecordDetailResult;

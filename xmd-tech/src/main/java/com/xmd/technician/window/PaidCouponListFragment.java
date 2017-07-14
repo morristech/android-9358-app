@@ -61,7 +61,7 @@ public class PaidCouponListFragment extends BaseListFragment<ShareCouponBean> {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-        params.put(RequestConstant.KEY_COUPON_TYPE,Constant.PAID_TYPE);
+        params.put(RequestConstant.KEY_COUPON_TYPE, Constant.PAID_TYPE);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CARD_LIST_DETAIL, params);
     }
 

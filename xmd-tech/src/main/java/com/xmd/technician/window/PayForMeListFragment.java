@@ -62,7 +62,7 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL,params);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_PAY_FOR_ME_LIST_DETAIL, params);
     }
 
     @Override

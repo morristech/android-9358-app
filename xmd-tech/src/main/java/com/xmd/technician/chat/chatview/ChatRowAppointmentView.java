@@ -25,8 +25,6 @@ import com.xmd.appointment.beans.Technician;
 import com.xmd.chat.ChatMessageFactory;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
-import com.xmd.chat.order.OrderChatManager;
-import com.xmd.technician.Adapter.EaseMessageAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.databinding.ChatRowViewSubOrderBinding;
@@ -132,7 +130,7 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
     protected void onSetUpView(EMMessage message) {
         mBubbleLayout.setOnClickListener(null);
         mChatMessage = (OrderChatMessage) ChatMessageFactory.create(message);
-        mAppointmentData = OrderChatManager.parseMessage(mChatMessage);
+//        mAppointmentData = OrderChatManager.parseMessage(mChatMessage);
         setupOperationButton();
         setupShowItem();
         mBinding.setHandler(this);
@@ -225,7 +223,7 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
                     sendMessage(ChatMessage.MSG_TYPE_ORDER_CONFIRM);
                 } else {
                     //付费预约，直接生成订单
-                    OrderChatManager.fillMessage(mChatMessage, mAppointmentData);
+//                    OrderChatManager.fillMessage(mChatMessage, mAppointmentData);
                     onClickSubmitOrder();
                 }
             }
@@ -288,9 +286,9 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
         if (inProgress.get()) {
             return;
         }
-        AppointmentData data = OrderChatManager.parseMessage(mChatMessage);
-        EventBusSafeRegister.register(this);
-        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, TAG, data));
+//        AppointmentData data = OrderChatManager.parseMessage(mChatMessage);
+//        EventBusSafeRegister.register(this);
+//        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_SHOW, TAG, data));
     }
 
     //点击下单
@@ -304,12 +302,13 @@ public class ChatRowAppointmentView extends BaseEaseChatView {
     }
 
     private void sendMessage(String msgType) {
-        ((EaseMessageAdapter) mAdapter)
-                .getSentMessageHelper()
-                .sendMessage(OrderChatManager.createMessage(remoteChatId, msgType, mAppointmentData));
+//        ((EaseMessageAdapter) mAdapter)
+//                .getSentMessageHelper()
+//                .sendMessage(OrderChatManager.createMessage(remoteChatId, msgType, mAppointmentData));
     }
 
     private boolean isFreeAppointment() {
-        return OrderChatManager.isFreeAppointment(mAppointmentData, mChatMessage);
+//        return OrderChatManager.isFreeAppointment(mAppointmentData, mChatMessage);
+        return false;
     }
 }

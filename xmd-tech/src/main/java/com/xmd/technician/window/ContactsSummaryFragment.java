@@ -33,7 +33,6 @@ import com.xmd.technician.widget.DropDownMenuDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,7 +66,7 @@ public class ContactsSummaryFragment extends BaseFragment {
     private List<View> tableViews;
     private FragmentController mFragmentController;
     private View view;
-    private  CircleImageView techHead;
+    private CircleImageView techHead;
 
     private Subscription mGetTechCurrentInfoSubscription;
     private Subscription getCurrentSelectedPageSubscription;
@@ -91,10 +90,10 @@ public class ContactsSummaryFragment extends BaseFragment {
 
         techHead = (CircleImageView) view.findViewById(R.id.toolbar_left_head);
         techHead.setVisibility(View.VISIBLE);
-        if(Utils.isNotEmpty(SharedPreferenceHelper.getUserAvatar())){
+        if (Utils.isNotEmpty(SharedPreferenceHelper.getUserAvatar())) {
             Glide.with(getActivity()).load(SharedPreferenceHelper.getUserAvatar()).placeholder(R.drawable.icon22).error(R.drawable.icon22).into(techHead);
-        }else{
-           Glide.with(getActivity()).load(R.drawable.icon22).into(techHead);
+        } else {
+            Glide.with(getActivity()).load(R.drawable.icon22).into(techHead);
         }
         view.findViewById(R.id.contact_more).setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_conversion);

@@ -34,7 +34,6 @@ public class GameResult extends BaseResult {
     public RespDataBean respData;
 
 
-
     public static class RespDataBean {
         public String id;
         public String clubId;

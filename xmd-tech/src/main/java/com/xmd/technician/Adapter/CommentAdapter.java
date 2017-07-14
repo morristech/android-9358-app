@@ -19,7 +19,6 @@ import com.xmd.technician.widget.CircleAvatarView;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -102,7 +101,7 @@ public class CommentAdapter extends RecyclerView.Adapter {
             }
 
             commentViewHolder.mAvatar.setUserInfo(commentInfo.userId,
-                    TextUtils.isEmpty(commentInfo.userInfo.avatarUrl) ? commentInfo.userInfo.headimgurl : commentInfo.userInfo.avatarUrl,false);
+                    TextUtils.isEmpty(commentInfo.userInfo.avatarUrl) ? commentInfo.userInfo.headimgurl : commentInfo.userInfo.avatarUrl, false);
         } else if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);

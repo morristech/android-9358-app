@@ -8,8 +8,10 @@ import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
 import com.xmd.chat.viewmodel.ChatRowViewModelAppointment;
 import com.xmd.chat.viewmodel.ChatRowViewModelCoupon;
+import com.xmd.chat.viewmodel.ChatRowViewModelCreditGift;
 import com.xmd.chat.viewmodel.ChatRowViewModelImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelLocation;
+import com.xmd.chat.viewmodel.ChatRowViewModelNewOrder;
 import com.xmd.chat.viewmodel.ChatRowViewModelOrderRequest;
 import com.xmd.chat.viewmodel.ChatRowViewModelReward;
 import com.xmd.chat.viewmodel.ChatRowViewModelRewardRequest;
@@ -19,12 +21,14 @@ import com.xmd.chat.viewmodel.ChatRowViewModelTip;
 import com.xmd.chat.viewmodel.ChatRowViewModelVoice;
 
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_COUPON;
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_CREDIT_GIFT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_IMAGE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_LOCATION;
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_NEW_ORDER;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_SHARE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TEXT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TIP;
-import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER;
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_APPOINTMENT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TYPE_ORDER_REQUEST;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_VOICE;
 
@@ -65,13 +69,19 @@ public class ChatRowViewFactory {
             case ChatMessage.MSG_TYPE_ORDER_CONFIRM:
             case ChatMessage.MSG_TYPE_ORDER_CANCEL:
             case ChatMessage.MSG_TYPE_ORDER_SUCCESS:
-                baseType = CHAT_ROW_VIEW_TYPE_ORDER;
+                baseType = CHAT_ROW_VIEW_TYPE_APPOINTMENT;
                 break;
             case ChatMessage.MSG_TYPE_ORDER_REQUEST:
                 baseType = CHAT_ROW_VIEW_TYPE_ORDER_REQUEST;
                 break;
             case ChatMessage.MSG_TYPE_COUPON:
                 baseType = CHAT_ROW_VIEW_COUPON;
+                break;
+            case ChatMessage.MSG_TYPE_CREDIT_GIFT:
+                baseType = CHAT_ROW_VIEW_CREDIT_GIFT;
+                break;
+            case ChatMessage.MSG_TYPE_NEW_ORDER:
+                baseType = CHAT_ROW_VIEW_NEW_ORDER;
                 break;
             default:
                 baseType = CHAT_ROW_VIEW_TEXT;
@@ -112,7 +122,7 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelLocation.createView(parent);
             case CHAT_ROW_VIEW_TIP:
                 return ChatRowViewModelTip.createView(parent);
-            case CHAT_ROW_VIEW_TYPE_ORDER:
+            case CHAT_ROW_VIEW_TYPE_APPOINTMENT:
                 return ChatRowViewModelAppointment.createView(parent);
             case CHAT_ROW_VIEW_VOICE:
                 return ChatRowViewModelVoice.createView(parent);
@@ -120,6 +130,10 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelShare.createView(parent);
             case CHAT_ROW_VIEW_COUPON:
                 return ChatRowViewModelCoupon.createView(parent);
+            case CHAT_ROW_VIEW_CREDIT_GIFT:
+                return ChatRowViewModelCreditGift.createView(parent);
+            case CHAT_ROW_VIEW_NEW_ORDER:
+                return ChatRowViewModelNewOrder.createView(parent);
             default:
                 return ChatRowViewModelText.createView(parent);
         }
@@ -158,6 +172,10 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelShare(message);
             case ChatMessage.MSG_TYPE_COUPON:
                 return new ChatRowViewModelCoupon(message);
+            case ChatMessage.MSG_TYPE_CREDIT_GIFT:
+                return new ChatRowViewModelCreditGift(message);
+            case ChatMessage.MSG_TYPE_NEW_ORDER:
+                return new ChatRowViewModelNewOrder(message);
             default:
                 return new ChatRowViewModelText(message);
         }

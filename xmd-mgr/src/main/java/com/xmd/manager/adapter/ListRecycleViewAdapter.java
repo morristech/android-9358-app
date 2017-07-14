@@ -70,7 +70,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -111,6 +110,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
         /**
          * Whether to display data statistics
+         *
          * @return
          */
         boolean showStatData();
@@ -774,7 +774,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         if (Utils.isNotEmpty(groupMessage.message)) {
             groupHolder.contentInfoSummary.setText(groupMessage.message);
             groupHolder.contentInfoDetail.setText(groupMessage.message);
-        }else {
+        } else {
             groupHolder.contentInfoSummary.setText("");
             groupHolder.contentInfoDetail.setText("");
         }
@@ -789,11 +789,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             groupHolder.contentTitleSummary.setVisibility(View.GONE);
         }
 
-        if(Utils.isNotEmpty(groupMessage.imageUrl) || Utils.isNotEmpty(groupMessage.message)){
+        if (Utils.isNotEmpty(groupMessage.imageUrl) || Utils.isNotEmpty(groupMessage.message)) {
             groupHolder.msgContentTip.setVisibility(View.VISIBLE);
             groupHolder.msgDetailContainer.setVisibility(View.VISIBLE);
             groupHolder.msgSummaryContainer.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             groupHolder.msgContentTip.setVisibility(View.GONE);
             groupHolder.msgDetailContainer.setVisibility(View.GONE);
             groupHolder.msgSummaryContainer.setVisibility(View.GONE);
@@ -808,13 +808,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             groupHolder.activityInfoSummary.setText(groupMessage.actName);
             groupHolder.activityInfoDetail.setText(groupMessage.actName);
 
-            if(Utils.isNotEmpty(groupMessage.msgType)){
+            if (Utils.isNotEmpty(groupMessage.msgType)) {
                 groupHolder.activityTitleSummary.setVisibility(View.VISIBLE);
                 groupHolder.activityTitleDetail.setVisibility(View.VISIBLE);
 
                 groupHolder.activityTitleSummary.setText(Constant.MESSAGE_ACTIVITY_LABELS.get(groupMessage.msgType));
                 groupHolder.activityTitleDetail.setText(Constant.MESSAGE_ACTIVITY_LABELS.get(groupMessage.msgType));
-            }else {
+            } else {
                 groupHolder.activityTitleSummary.setVisibility(View.GONE);
                 groupHolder.activityTitleDetail.setVisibility(View.GONE);
             }
@@ -841,11 +841,11 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         }
 
         if (Utils.isNotEmpty(groupMessage.subGroupLabels)) {
-            String s = String.format("%s，共%d人",groupMessage.subGroupLabels, groupMessage.sendCount);
-            groupHolder.customerTypeDetail.setText(Utils.changeColor(s, ResourceUtils.getColor(R.color.colorMain), groupMessage.subGroupLabels.length()+2,s.length()-1));
+            String s = String.format("%s，共%d人", groupMessage.subGroupLabels, groupMessage.sendCount);
+            groupHolder.customerTypeDetail.setText(Utils.changeColor(s, ResourceUtils.getColor(R.color.colorMain), groupMessage.subGroupLabels.length() + 2, s.length() - 1));
         } else {
-            String s = String.format("共%d人",groupMessage.sendCount);
-            groupHolder.customerTypeDetail.setText(Utils.changeColor(s, ResourceUtils.getColor(R.color.colorMain), 1,s.length()-1));
+            String s = String.format("共%d人", groupMessage.sendCount);
+            groupHolder.customerTypeDetail.setText(Utils.changeColor(s, ResourceUtils.getColor(R.color.colorMain), 1, s.length() - 1));
         }
 
         //消息发送时间
@@ -864,22 +864,22 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         groupHolder.sendCount.setText(String.valueOf(groupMessage.sendCount));
         groupHolder.viewCount.setText(String.valueOf(groupMessage.viewCount));
 
-        if(Constant.MSG_TYPE_JOURNAL.equals(groupMessage.msgType)){
+        if (Constant.MSG_TYPE_JOURNAL.equals(groupMessage.msgType)) {
             groupHolder.joinCount.setText("-");
-        }else {
+        } else {
             groupHolder.joinCount.setText(String.valueOf(groupMessage.joinCount));
         }
 
-        if(Constant.MSG_TYPE_JOURNAL.equals(groupMessage.msgType)||Constant.MSG_TYPE_LUCKY_WHEEL.equals(groupMessage.msgType)){
+        if (Constant.MSG_TYPE_JOURNAL.equals(groupMessage.msgType) || Constant.MSG_TYPE_LUCKY_WHEEL.equals(groupMessage.msgType)) {
             groupHolder.shopCount.setText("-");
-        }else {
+        } else {
             groupHolder.shopCount.setText(String.valueOf(groupMessage.verificationCount));
         }
 
-        if(mCallback.showStatData()){
+        if (mCallback.showStatData()) {
             groupHolder.statHintText.setVisibility(View.VISIBLE);
             groupHolder.statViewContainer.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             groupHolder.statHintText.setVisibility(View.GONE);
             groupHolder.statViewContainer.setVisibility(View.GONE);
         }
@@ -889,10 +889,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         groupHolder.putWayButton.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         groupHolder.itemView.setOnClickListener(v -> {
-            if(groupHolder.messageSummaryContainer.getVisibility()==View.VISIBLE){
+            if (groupHolder.messageSummaryContainer.getVisibility() == View.VISIBLE) {
                 groupHolder.messageSummaryContainer.setVisibility(View.GONE);
                 groupHolder.messageDetailContainer.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 groupHolder.messageSummaryContainer.setVisibility(View.VISIBLE);
                 groupHolder.messageDetailContainer.setVisibility(View.GONE);
             }
@@ -905,7 +905,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         badHolder.commentTime.setText(DateUtils.getTimestampString(new Date(badComment.createdAt)));
         if (Utils.isNotEmpty(badComment.phoneNum)) {
             badHolder.customerPhone.setText(badComment.phoneNum);
-        }else{
+        } else {
             badHolder.customerPhone.setText("");
         }
         if (badComment.commentType.equals(RequestConstant.COMMENT_TYPE_ORDER) || badComment.commentType.equals(RequestConstant.COMMENT_TYPE_TECH)) {
@@ -942,7 +942,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         if (badComment.commentRateList != null && badComment.commentRateList.size() > 0) {
             badHolder.commentProjectList.setVisibility(View.VISIBLE);
             CommentDetailItemAdapter<BadCommentRateListBean> adapter = new CommentDetailItemAdapter(mContext, badComment.commentRateList);
-            badHolder.commentProjectList.setLayoutManager(new GridLayoutManager(mContext,2));
+            badHolder.commentProjectList.setLayoutManager(new GridLayoutManager(mContext, 2));
             badHolder.commentProjectList.setAdapter(adapter);
         } else {
             badHolder.commentProjectList.setVisibility(View.GONE);
@@ -1118,7 +1118,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 adapter = new PKRankingAdapter(mContext, activityBean.rankingList, activityBean.categoryId);
             }
-            rankingViewHolder.teamList.setLayoutManager(new GridLayoutManager(mContext,3));
+            rankingViewHolder.teamList.setLayoutManager(new GridLayoutManager(mContext, 3));
             rankingViewHolder.teamList.setAdapter(adapter);
         }
         rankingViewHolder.layoutTechnicianRanking.setOnClickListener(v -> {

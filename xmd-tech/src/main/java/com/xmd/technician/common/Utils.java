@@ -491,7 +491,7 @@ public class Utils {
 
     public static String getFloat2Str(String f) {
         String fStr = String.valueOf(f);
-        while ((fStr.length() > 1) && fStr.contains(".")&&fStr.endsWith("0")) {
+        while ((fStr.length() > 1) && fStr.contains(".") && fStr.endsWith("0")) {
             fStr = fStr.substring(0, fStr.length() - 1);
         }
 
@@ -557,14 +557,15 @@ public class Utils {
         lastClickTime = time;
         return true;
     }
+
     public static String listToString(List<String> list) {
-        if(list.size()>0){
+        if (list.size() > 0) {
             StringBuffer buffer = new StringBuffer();
             for (int i = 0; i < list.size(); i++) {
                 buffer.append(list.get(i) + "、");
             }
             return buffer.toString().substring(0, buffer.length() - 1);
-        }else{
+        } else {
             return "";
         }
 

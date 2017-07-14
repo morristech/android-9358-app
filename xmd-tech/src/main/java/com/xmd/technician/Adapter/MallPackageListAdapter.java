@@ -20,7 +20,6 @@ import com.xmd.technician.widget.RoundImageView;
 
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -93,9 +92,9 @@ public class MallPackageListAdapter extends RecyclerView.Adapter {
                 cardItemViewHolder.mOnceCardDiscount.setVisibility(View.GONE);
             }
 
-            if(onceCard.cardType.equals(Constant.CREDIT_GIFT_TYPE)){
+            if (onceCard.cardType.equals(Constant.CREDIT_GIFT_TYPE)) {
                 cardItemViewHolder.tvShowCodeText.setText(ResourceUtils.getString(R.string.scan_code_to_exchange));
-            }else{
+            } else {
                 cardItemViewHolder.tvShowCodeText.setText(ResourceUtils.getString(R.string.scan_code_to_buy));
             }
             Glide.with(mContext).load(onceCard.imageUrl).into(cardItemViewHolder.mOnceCardHead);

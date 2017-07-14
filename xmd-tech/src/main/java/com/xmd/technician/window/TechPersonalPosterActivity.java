@@ -276,6 +276,4 @@ public class TechPersonalPosterActivity extends BaseActivity implements TechPost
     }
 
 
-
-
 }

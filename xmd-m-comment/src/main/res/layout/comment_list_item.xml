@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="10dp"
-              android:background="@drawable/selector_bg_white"
-              android:orientation="vertical"
-              android:paddingLeft="4dp"
-              android:paddingRight="4dp"
-              android:paddingTop="5dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/selector_bg_white"
+    android:orientation="vertical"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:paddingTop="5dp">
 
 
     <LinearLayout
@@ -22,8 +21,7 @@
             android:id="@+id/comment_head"
             android:layout_width="@dimen/feedback_btn_height"
             android:layout_height="@dimen/feedback_btn_height"
-            android:background="@drawable/img_default_avatar"
-            />
+            android:background="@drawable/img_default_avatar" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -47,7 +45,7 @@
                     android:textColor="#212121"
                     android:textSize="17sp"
                     android:maxLength="5"
-                    tools:text="林先生"/>
+                    tools:text="林先生" />
 
                 <TextView
                     android:id="@+id/comment_phone"
@@ -56,7 +54,7 @@
                     android:layout_marginLeft="5dp"
                     android:textColor="#616161"
                     android:textSize="13sp"
-                    tools:text="13137558109"/>
+                    tools:text="13137558109" />
 
                 <ImageView
                     android:id="@+id/img_visit_mark"
@@ -64,29 +62,27 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/icon_visitor_mark"/>
+                    android:src="@drawable/icon_visitor_mark" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_comment_type_tech"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#4d4d4d"
                         android:textSize="14sp"
-                        android:text="点评："/>
+                        android:text="点评：" />
 
                     <TextView
                         android:id="@+id/comment_tech_name"
@@ -94,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:textSize="14sp"
-                        tools:text="你好美"/>
+                        tools:text="你好美" />
 
                     <TextView
                         android:id="@+id/comment_tech_code"
@@ -103,15 +99,14 @@
                         android:layout_marginLeft="10dp"
                         android:textColor="#ff9a0c"
                         android:textSize="14sp"
-                        tools:text="[12345]"/>
+                        tools:text="[12345]" />
                 </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/comment_project_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    />
+                    android:layout_marginTop="5dp" />
 
                 <TextView
                     android:id="@+id/comment_detail"
@@ -122,7 +117,7 @@
                     android:lines="1"
                     android:textColor="#999999"
                     android:textSize="14sp"
-                    tools:text="技师臭脸服务态度极差，不想干了直说啊什么"/>
+                    tools:text="技师臭脸服务态度极差，不想干了直说啊什么" />
             </LinearLayout>
 
             <LinearLayout
@@ -138,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#616161"
                     android:textSize="14sp"
-                    android:text="投诉："/>
+                    android:text="投诉：" />
 
                 <TextView
                     android:id="@+id/comment_complaint_detail"
@@ -148,7 +143,7 @@
                     android:maxLines="3"
                     android:textColor="#4d4d4d"
                     android:textSize="14sp"
-                    tools:text="技师臭脸服务态度极差，不想干了直说啊什么技师臭技师臭脸服务态度极差，不想干了直说啊什么脸服务态度极差，不想干了直说啊什么"/>
+                    tools:text="技师臭脸服务态度极差，不想干了直说啊什么技师臭技师臭脸服务态度极差，不想干了直说啊什么脸服务态度极差，不想干了直说啊什么" />
             </LinearLayout>
         </LinearLayout>
 
@@ -166,7 +161,7 @@
                 android:layout_marginTop="10dp"
                 android:textColor="#999999"
                 android:textSize="12sp"
-                tools:text="13:12"/>
+                tools:text="13:12" />
 
             <ImageView
                 android:id="@+id/img_delete_mark"
@@ -174,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:src="@drawable/img_bad_deleted"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -184,7 +179,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/shape_split_line"
-        android:layerType="software"/>
+        android:layerType="software" />
 
     <LinearLayout
         android:id="@+id/ll_comment_handler"
@@ -198,7 +193,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/white"/>
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/tv_delete_comment"
@@ -208,7 +203,7 @@
             android:gravity="center"
             android:text="删除"
             android:textColor="#ff6666"
-            android:textSize="14dp"/>
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_visit_comment"
@@ -219,6 +214,6 @@
             android:gravity="center"
             android:text="已回访"
             android:textColor="@color/text_visitor_color"
-            android:textSize="14dp"/>
+            android:textSize="14dp" />
     </LinearLayout>
 </LinearLayout>

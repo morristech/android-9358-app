@@ -2,7 +2,6 @@ package com.xmd.technician.http;
 
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.BuildConfig;
-import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.Logger;
 
 import java.io.IOException;

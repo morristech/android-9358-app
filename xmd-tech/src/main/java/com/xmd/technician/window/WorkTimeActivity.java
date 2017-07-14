@@ -29,8 +29,10 @@ import rx.Subscription;
 
 public class WorkTimeActivity extends BaseActivity {
 
-    @BindView(R.id.work_time) TextView mWorkTime;
-    @BindView(R.id.work_day) TextView mWorkDay;
+    @BindView(R.id.work_time)
+    TextView mWorkTime;
+    @BindView(R.id.work_day)
+    TextView mWorkDay;
 
     private Subscription mWorkTimeSubscription;
     private Subscription mUpdateWorkTimeSubscription;
@@ -54,13 +56,13 @@ public class WorkTimeActivity extends BaseActivity {
 
         setTitle(R.string.personal_fragment_layout_work_time);
         setBackVisible(true);
-        setRightVisible(true,R.string.save);
+        setRightVisible(true, R.string.save);
 
         mWorkTimeSubscription = RxBus.getInstance().toObservable(WorkTimeResult.class).subscribe(
                 workTimeResult -> getWorkTimeResult(workTimeResult));
 
         mUpdateWorkTimeSubscription = RxBus.getInstance().toObservable(UpdateWorkTimeResult.class).subscribe(
-                updateWorkTimeResult ->  updateWorkTimeResult());
+                updateWorkTimeResult -> updateWorkTimeResult());
 
         mUpdateWorkStatusSubscription = RxBus.getInstance().toObservable(UpdateWorkStatusResult.class).subscribe(
                 updateWorkStatusResult -> {
@@ -74,12 +76,12 @@ public class WorkTimeActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mWorkTimeSubscription,mUpdateWorkTimeSubscription,mUpdateWorkStatusSubscription);
+        RxBus.getInstance().unsubscribe(mWorkTimeSubscription, mUpdateWorkTimeSubscription, mUpdateWorkStatusSubscription);
     }
 
     @OnClick(R.id.work_time_layout)
-    public void timeSetting(){
-        if(mTimeInfo == null){
+    public void timeSetting() {
+        if (mTimeInfo == null) {
             makeShortToast(getResources().getString(R.string.operation_invalid));
             return;
         }
@@ -106,7 +108,7 @@ public class WorkTimeActivity extends BaseActivity {
     }
 
     @OnClick(R.id.work_day_layout)
-    public void daySetting(){
+    public void daySetting() {
 
         Dialog dialog = new MultiCheckDialog(WorkTimeActivity.this, R.style.default_dialog_style, mDayRange) {
             @Override
@@ -133,8 +135,8 @@ public class WorkTimeActivity extends BaseActivity {
     }
 
     @OnClick(R.id.toolbar_right)
-    public void updateWorkTime(){
-        if(mWorkDay.getText().equals(ResourceUtils.getString(R.string.none_selected))){
+    public void updateWorkTime() {
+        if (mWorkDay.getText().equals(ResourceUtils.getString(R.string.none_selected))) {
             makeShortToast(getResources().getString(R.string.operation_invalid));
             return;
         }
@@ -150,8 +152,8 @@ public class WorkTimeActivity extends BaseActivity {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPDATE_WORK_TIME, params);
     }
 
-    private void getWorkTimeResult(WorkTimeResult workTimeResult){
-        if(workTimeResult.respData != null){
+    private void getWorkTimeResult(WorkTimeResult workTimeResult) {
+        if (workTimeResult.respData != null) {
             // id初始化
             mCalendarId = workTimeResult.respData.id;
             // beginTime初始化
@@ -208,7 +210,7 @@ public class WorkTimeActivity extends BaseActivity {
         }
     }
 
-    private void updateWorkTimeResult(){
+    private void updateWorkTimeResult() {
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_STATUS, mStatus);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_UPDATE_WORK_STATUS, params);

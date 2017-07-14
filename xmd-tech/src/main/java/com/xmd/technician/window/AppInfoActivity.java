@@ -10,7 +10,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -21,7 +20,7 @@ public class AppInfoActivity extends BaseActivity {
     TextView mAppVersion;
     @BindView(R.id.icon)
     ImageView icon;
-    private  int i = 0;
+    private int i = 0;
     private long starTime = 0;
     private long endTime = 0;
 
@@ -39,19 +38,20 @@ public class AppInfoActivity extends BaseActivity {
     }
 
     @OnClick(R.id.check_update)
-    public void checkUpdate(){
+    public void checkUpdate() {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_MANUALLY_CHECK_UPGRADE);
     }
+
     @OnClick(R.id.icon)
-    public void getAppMessge(){
-        if(i==0){
+    public void getAppMessge() {
+        if (i == 0) {
             starTime = System.currentTimeMillis();
         }
         endTime = System.currentTimeMillis();
         i++;
-        if(i==5&&endTime-starTime<2000){
-            i=0;
-            Intent intent = new Intent(AppInfoActivity.this,ConfigurationMonitorActivity.class);
+        if (i == 5 && endTime - starTime < 2000) {
+            i = 0;
+            Intent intent = new Intent(AppInfoActivity.this, ConfigurationMonitorActivity.class);
             startActivity(intent);
         }
 

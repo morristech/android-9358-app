@@ -155,6 +155,7 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tv_ranking_name"
                 android:layout_width="match_parent"
@@ -164,6 +165,7 @@
                 android:textSize="15sp"
                 android:layout_gravity="center_vertical"
                 tools:text="李佳绩" />
+
             <TextView
                 android:id="@+id/tv_ranking_serialNo"
                 android:layout_width="match_parent"

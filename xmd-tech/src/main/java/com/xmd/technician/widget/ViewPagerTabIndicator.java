@@ -2,14 +2,10 @@ package com.xmd.technician.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -20,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xmd.technician.R;
-import com.xmd.technician.TechApplication;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 
@@ -28,9 +23,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.xmd.technician.R.drawable.icon01;
-import static com.xmd.technician.TechApplication.getAppContext;
 
 /**
  * Created by Administrator on 2016/8/15.
@@ -237,7 +229,7 @@ public class ViewPagerTabIndicator extends FrameLayout {
     }
 
     public void setTabTextSize(int textSize) {
-        this.mTextSize = Utils.dip2px(mContext,textSize);
+        this.mTextSize = Utils.dip2px(mContext, textSize);
     }
 
     public void setWithIndicator(boolean withIndicator) {

@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.xmd.technician.chat.ChatHelper;
-import com.xmd.technician.common.Logger;
 
 /**
  * Created by Lhj on 17-4-6.

@@ -23,12 +23,12 @@ public class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             boolean isSupportHidden = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            if(isSupportHidden){
+            if (isSupportHidden) {
                 ft.hide(this);
-            }else {
+            } else {
                 ft.show(this);
             }
             ft.commit();
@@ -38,7 +38,7 @@ public class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (! (getActivity() instanceof IFragmentCallback)) {
+        if (!(getActivity() instanceof IFragmentCallback)) {
             throw new RuntimeException("Host Activity Must implement the IFragmentCallback interface");
         } else {
             mIFragmentCallback = (IFragmentCallback) getActivity();
@@ -48,9 +48,9 @@ public class BaseFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(hidden){
+        if (hidden) {
             MobclickAgent.onPageEnd(getClass().getSimpleName());
-        }else{
+        } else {
             MobclickAgent.onPageStart(getClass().getSimpleName());
         }
     }
@@ -67,8 +67,8 @@ public class BaseFragment extends Fragment {
         MobclickAgent.onPageEnd(getClass().getSimpleName());
     }
 
-    protected void initTitleView(String title){
-        mTitleView = ((TextView)getView().findViewById(R.id.toolbar_title));
+    protected void initTitleView(String title) {
+        mTitleView = ((TextView) getView().findViewById(R.id.toolbar_title));
         if (mTitleView != null) {
             mTitleView.setText(title);
         }
@@ -84,6 +84,6 @@ public class BaseFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_SAVE_IS_HIDDEN,isHidden());
+        outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());
     }
 }

@@ -228,14 +228,14 @@ public class ImageLoader {
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Utils.makeShortToast(context,"保存成功");
+                    Utils.makeShortToast(context, "保存成功");
                 }
             });
         } catch (FileNotFoundException e) {
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Utils.makeShortToast(context,"保存失败");
+                    Utils.makeShortToast(context, "保存失败");
                 }
             });
             e.printStackTrace();

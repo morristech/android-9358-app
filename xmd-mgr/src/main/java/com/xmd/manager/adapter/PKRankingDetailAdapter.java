@@ -18,7 +18,6 @@ import com.xmd.manager.widget.CircleImageView;
 
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -59,6 +58,7 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
     public interface TeamFilterListener {
         void filterTeam(View view);
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;

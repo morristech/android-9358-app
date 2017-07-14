@@ -114,33 +114,33 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
             leftDrawable.setBounds(0, 0, leftDrawable.getMinimumWidth(), leftDrawable.getMinimumHeight());
             pkActiveStatus.setCompoundDrawables(leftDrawable, null, null, null);
         }
-           initTimeFilterView(mActivityStatus);
+        initTimeFilterView(mActivityStatus);
 
     }
 
-    private void initTimeFilterView(String  activityStatus) {
-        if(activityStatus.equals("4")){
+    private void initTimeFilterView(String activityStatus) {
+        if (activityStatus.equals("4")) {
             mCurrentMillisecond = System.currentTimeMillis();
             timeToday.setText("今天");
             timeFilterTomorrow.setVisibility(View.INVISIBLE);
             timeFilterToday.setVisibility(View.VISIBLE);
             timeFilterYesterday.setText(DateUtil.getCurrentDate(mCurrentMillisecond - DAY_MILLISECOND));
             timeFilterToday.setText(DateUtil.getCurrentDate(mCurrentMillisecond));
-            if(mActivityStartDate.equals(DateUtil.getCurrentDate(mCurrentMillisecond,"yyyy-MM-dd"))){
+            if (mActivityStartDate.equals(DateUtil.getCurrentDate(mCurrentMillisecond, "yyyy-MM-dd"))) {
                 timeFilterYesterday.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 timeFilterYesterday.setVisibility(View.VISIBLE);
             }
-            mStartDate = DateUtil.getCurrentDate(mCurrentMillisecond,"yyyy-MM-dd");
+            mStartDate = DateUtil.getCurrentDate(mCurrentMillisecond, "yyyy-MM-dd");
             mEndDate = mStartDate;
-        }else{
+        } else {
             mCurrentMillisecond = DateUtil.dateToLong(mActivityEndDate);
-            if(mActivityStartDate.equals(mActivityEndDate)){
+            if (mActivityStartDate.equals(mActivityEndDate)) {
                 timeToday.setText(DateUtil.getCurrentDate(mCurrentMillisecond));
                 timeFilterTomorrow.setVisibility(View.INVISIBLE);
                 timeFilterYesterday.setVisibility(View.INVISIBLE);
                 timeFilterToday.setVisibility(View.GONE);
-            }else{
+            } else {
                 timeToday.setText(DateUtil.getCurrentDate(mCurrentMillisecond));
                 timeFilterYesterday.setText(DateUtil.getCurrentDate(mCurrentMillisecond - DAY_MILLISECOND));
                 timeFilterTomorrow.setVisibility(View.INVISIBLE);
@@ -263,23 +263,23 @@ public class TechPKRankingDetailActivity extends BaseActivity implements BaseFra
                 timeFilterToday.setVisibility(View.GONE);
             }
         } else {//已结束
-            if(mActivityStartDate.equals(mActivityEndDate)){//只有一天
+            if (mActivityStartDate.equals(mActivityEndDate)) {//只有一天
                 timeToday.setText(mCurrentTime);
                 timeFilterToday.setVisibility(View.GONE);
                 timeFilterYesterday.setVisibility(View.INVISIBLE);
                 timeFilterTomorrow.setVisibility(View.INVISIBLE);
-            }else {
-                if ( mCurrentMillisecond==mTodayMillisecond ) {
+            } else {
+                if (mCurrentMillisecond == mTodayMillisecond) {
                     timeToday.setText(mCurrentTime);
                     timeFilterTomorrow.setVisibility(View.INVISIBLE);
                     timeFilterYesterday.setVisibility(View.VISIBLE);
                     timeFilterToday.setVisibility(View.GONE);
-                }else if(mCurrentMillisecond == mStartMillisecond){
+                } else if (mCurrentMillisecond == mStartMillisecond) {
                     timeToday.setText("第一天");
                     timeFilterToday.setVisibility(View.VISIBLE);
                     timeFilterYesterday.setVisibility(View.INVISIBLE);
                     timeFilterTomorrow.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     timeToday.setText(mCurrentTime);
                     timeFilterToday.setVisibility(View.GONE);
                     timeFilterYesterday.setVisibility(View.VISIBLE);

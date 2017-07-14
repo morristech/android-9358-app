@@ -17,7 +17,7 @@ public class ChatMessageManagerDialog extends Dialog {
     private TextView textDelete;
     private OnItemClickedListener mOnItemClicked;
 
-    public interface OnItemClickedListener{
+    public interface OnItemClickedListener {
         void onItemClicked();
     }
 
@@ -25,7 +25,7 @@ public class ChatMessageManagerDialog extends Dialog {
         this(context, R.style.default_dialog_style);
     }
 
-    public void setItemClickedListener(OnItemClickedListener listener){
+    public void setItemClickedListener(OnItemClickedListener listener) {
         this.mOnItemClicked = listener;
     }
 
@@ -45,7 +45,7 @@ public class ChatMessageManagerDialog extends Dialog {
         textDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               mOnItemClicked.onItemClicked();
+                mOnItemClicked.onItemClicked();
             }
         });
     }

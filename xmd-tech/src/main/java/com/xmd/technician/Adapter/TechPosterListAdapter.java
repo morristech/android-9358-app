@@ -18,7 +18,6 @@ import com.xmd.technician.widget.RoundImageView;
 
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

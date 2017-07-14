@@ -19,7 +19,6 @@ import com.xmd.technician.widget.StartCustomTextView;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -144,10 +143,10 @@ public class ExpandableMarketListViewAdapter extends BaseExpandableListAdapter {
         chatCouponViewHolder.onceCardDiscountPrice.setTextColor(Color.parseColor("#666666"));
         if (onceCard.selectedStatus == 1) {
             chatCouponViewHolder.onceCardSelect.setSelected(false);
-            chatCouponViewHolder.llOnceCardShareView.setOnClickListener(v -> mInterface.onChildrenClickedListener(onceCard,groupPosition,childPosition,true));
+            chatCouponViewHolder.llOnceCardShareView.setOnClickListener(v -> mInterface.onChildrenClickedListener(onceCard, groupPosition, childPosition, true));
         } else {
             chatCouponViewHolder.onceCardSelect.setSelected(true);
-            chatCouponViewHolder.llOnceCardShareView.setOnClickListener(v ->mInterface.onChildrenClickedListener(onceCard,groupPosition,childPosition,false));
+            chatCouponViewHolder.llOnceCardShareView.setOnClickListener(v -> mInterface.onChildrenClickedListener(onceCard, groupPosition, childPosition, false));
         }
 
 
@@ -161,7 +160,7 @@ public class ExpandableMarketListViewAdapter extends BaseExpandableListAdapter {
     }
 
     static class ViewChildViewHolder {
-        
+
         @BindView(R.id.once_card_head)
         RoundImageView onceCardHead;
         @BindView(R.id.once_card_mark_new)

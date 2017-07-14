@@ -25,8 +25,6 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
     private OnItemClickListener mOnItemClickListener;
 
 
-
-
     public interface OnItemClickListener {
         void onItemClick(int index);
     }

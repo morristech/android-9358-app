@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.xmd.technician.R;
-import com.xmd.technician.common.XmlParserHandler;
 import com.xmd.technician.bean.CityInfo;
 import com.xmd.technician.bean.ProvinceInfo;
+import com.xmd.technician.common.XmlParserHandler;
 import com.xmd.technician.wheel.OnWheelChangedListener;
 import com.xmd.technician.wheel.WheelView;
 import com.xmd.technician.wheel.adapters.ArrayWheelAdapter;

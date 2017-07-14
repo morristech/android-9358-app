@@ -19,6 +19,7 @@ public class CreditAccountResult extends BaseResult {
      */
 
     public List<RespDataBean> respData;
+
     public class RespDataBean {
         public String id;
         public String userId;

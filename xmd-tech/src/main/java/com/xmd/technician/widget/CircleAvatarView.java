@@ -7,12 +7,10 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import com.bumptech.glide.Glide;
-import com.example.xmd_m_comment.httprequest.ConstantResources;
-import com.xmd.app.user.User;
 import com.xmd.app.widget.GlideCircleTransform;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.technician.R;
 import com.xmd.technician.common.UINavigation;
-import com.xmd.technician.model.LoginTechnician;
 
 /**
  * Created by mo on 17-6-15.

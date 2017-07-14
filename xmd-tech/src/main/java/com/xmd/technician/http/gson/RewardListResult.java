@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public class RewardListResult extends BaseResult {
-   public List<RewardBean> respData;
+    public List<RewardBean> respData;
 }

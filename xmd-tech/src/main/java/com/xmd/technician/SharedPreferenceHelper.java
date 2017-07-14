@@ -396,7 +396,6 @@ public class SharedPreferenceHelper {
     }
 
 
-
     /******************************权限*************************************/
     public static Set<String> getPermissionList() {
         return mSettingPreference.getStringSet(KEY_PERMISSION, null);

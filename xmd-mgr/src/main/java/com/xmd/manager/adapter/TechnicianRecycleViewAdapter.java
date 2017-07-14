@@ -15,7 +15,6 @@ import com.xmd.manager.widget.SelectorTextView;
 
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

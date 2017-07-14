@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.xmd_m_comment.CustomerInfoDetailActivity;
+import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.GroupMemberAdapter;
 import com.xmd.manager.beans.GroupMemberBean;
@@ -29,6 +29,7 @@ import com.xmd.manager.service.response.DeleteGroupResult;
 import com.xmd.manager.service.response.UserGroupDetailListResult;
 import com.xmd.manager.widget.AlertDialogBuilder;
 import com.xmd.manager.widget.ClearableEditText;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +120,7 @@ public class EditGroupActivity extends BaseActivity implements View.OnClickListe
         mMembers = new ArrayList<>();
         groupMemberRecyclerView.setHasFixedSize(true);
         groupMemberRecyclerView.setNestedScrollingEnabled(true);
-        groupMemberRecyclerView.setLayoutManager(new GridLayoutManager(EditGroupActivity.this,4));
+        groupMemberRecyclerView.setLayoutManager(new GridLayoutManager(EditGroupActivity.this, 4));
         groupMemberRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mAdapter = new GroupMemberAdapter(this, new GroupMemberAdapter.OnItemClickListener() {
@@ -147,7 +148,7 @@ public class EditGroupActivity extends BaseActivity implements View.OnClickListe
 //                Intent intent = new Intent(EditGroupActivity.this, CustomerActivity.class);
 //                intent.putExtra(RequestConstant.COMMENT_USER_ID, bean.id);
 //                startActivity(intent);
-                CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(EditGroupActivity.this,bean.id, "manger",false);
+                CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(EditGroupActivity.this, bean.id, "manger", false);
             }
         });
         mGroupSaveEditSubscription = RxBus.getInstance().toObservable(AddGroupResult.class).subscribe(

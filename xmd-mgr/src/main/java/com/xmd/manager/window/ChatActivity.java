@@ -51,7 +51,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;

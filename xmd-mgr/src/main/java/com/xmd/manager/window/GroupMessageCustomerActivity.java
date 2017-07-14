@@ -1,14 +1,10 @@
 package com.xmd.manager.window;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
 
-import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.FavourableActivityBean;
 import com.xmd.manager.common.FileSizeUtil;
@@ -24,10 +20,8 @@ import com.xmd.manager.service.response.AddGroupResult;
 import com.xmd.manager.service.response.AlbumUploadResult;
 import com.xmd.manager.service.response.FavourableActivityListResult;
 import com.xmd.manager.service.response.GroupInfoResult;
-import com.xmd.manager.service.response.GroupListResult;
 import com.xmd.manager.service.response.GroupTagListResult;
 import com.xmd.manager.service.response.SendGroupMessageResult;
-import com.xmd.manager.service.response.TechListResult;
 import com.xmd.manager.widget.AlertDialogBuilder;
 import com.xmd.manager.widget.LoadingDialog;
 
@@ -78,7 +72,7 @@ public class GroupMessageCustomerActivity extends BaseActivity {
                 result -> MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_GROUP_TAG_LIST));
         mGetGroupInfoSubscription = RxBus.getInstance().toObservable(GroupInfoResult.class).subscribe(
                 groupInfoResult -> {
-                    if(groupInfoResult.statusCode == 200){
+                    if (groupInfoResult.statusCode == 200) {
                         mLimitAmount = groupInfoResult.respData.limitNumber;
                         mLimitImageSize = groupInfoResult.respData.imageSize;
                     }
@@ -189,8 +183,8 @@ public class GroupMessageCustomerActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGroupSaveEditSubscription, mGetGroupInfoSubscription,mGetGroupTagListSubscription,
-                 mGetCouponListSubscription, mGroupMessageAlbumUploadSubscription,mSendGroupMessageResultSubscription);
+        RxBus.getInstance().unsubscribe(mGroupSaveEditSubscription, mGetGroupInfoSubscription, mGetGroupTagListSubscription,
+                mGetCouponListSubscription, mGroupMessageAlbumUploadSubscription, mSendGroupMessageResultSubscription);
     }
 
     public void gotoEditContentFragment() {
@@ -224,7 +218,7 @@ public class GroupMessageCustomerActivity extends BaseActivity {
             selectedCouponName = "";
             couponContent = "";
             currentMessageType = "";
-        }else {
+        } else {
             selectedCouponActId = couponInfo.actId;
             selectedCouponName = couponInfo.actName;
             couponContent = couponInfo.msg;
@@ -248,7 +242,7 @@ public class GroupMessageCustomerActivity extends BaseActivity {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GROUP_MESSAGE_SEND, params);
     }
 
-    public void send(){
+    public void send() {
         ThreadManager.postRunnable(ThreadManager.THREAD_TYPE_MAIN, () -> {
             if (mLimitAmount > 0) {
                 if (Utils.isEmpty(mEditContentFragment.getImageUrl())) {

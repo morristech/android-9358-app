@@ -19,12 +19,9 @@ import com.google.zxing.common.BitMatrix;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-
-
 import com.xmd.technician.share.ShareController;
 
 import java.util.EnumMap;
-
 import java.util.Map;
 
 
@@ -40,17 +37,19 @@ public class QRDialog extends Dialog {
     private Button mQRShareBtn;
     private String mShareUrl;
     private boolean mCanShare;
+
     public QRDialog(Context context, String showText, boolean showAsUrl) {
         super(context, R.style.dialog_qr);
-        mShowText=showText;
+        mShowText = showText;
         mShowAsUrl = showAsUrl;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_qr_code);
 
-        ImageView closeView=(ImageView)findViewById(R.id.qr_dialog_close);
+        ImageView closeView = (ImageView) findViewById(R.id.qr_dialog_close);
         closeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,19 +65,19 @@ public class QRDialog extends Dialog {
             public void onClick(View v) {
 
                 dismiss();
-                ShareController.doShare("",mShareUrl,SharedPreferenceHelper.getUserName() + "欢迎您","点我聊聊，更多优惠，更好服务！",Constant.SHARE_BUSINESS_CARD,"");
+                ShareController.doShare("", mShareUrl, SharedPreferenceHelper.getUserName() + "欢迎您", "点我聊聊，更多优惠，更好服务！", Constant.SHARE_BUSINESS_CARD, "");
             }
         });
-        mQRImageView=(ImageView)findViewById(R.id.home_fragment_qr_code_image);
-        if(mShowAsUrl){
+        mQRImageView = (ImageView) findViewById(R.id.home_fragment_qr_code_image);
+        if (mShowAsUrl) {
             Glide.with(getContext()).load(mShowText).into(mQRImageView);
-        }else {
+        } else {
             mQRImageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
-                    if(mQRBitmap==null) {
+                    if (mQRBitmap == null) {
                         try {
-                            mQRBitmap=encodeAsBitmap(0, mShowText, mQRImageView.getWidth());
+                            mQRBitmap = encodeAsBitmap(0, mShowText, mQRImageView.getWidth());
                             mQRImageView.setImageBitmap(mQRBitmap);
                         } catch (WriterException e) {
                             e.printStackTrace();
@@ -90,14 +89,14 @@ public class QRDialog extends Dialog {
         }
     }
 
-    public void updateQR(String txt){
-        if(!mShowText.equals(txt)){
-            if(mShowAsUrl){
+    public void updateQR(String txt) {
+        if (!mShowText.equals(txt)) {
+            if (mShowAsUrl) {
                 Glide.with(getContext()).load(mShowText).into(mQRImageView);
                 mShowText = txt;
-            }else {
+            } else {
                 try {
-                    mQRBitmap=encodeAsBitmap(0, txt, mQRImageView.getWidth());
+                    mQRBitmap = encodeAsBitmap(0, txt, mQRImageView.getWidth());
                     mQRImageView.setImageBitmap(mQRBitmap);
                     mShowText = txt;
                 } catch (WriterException e) {
@@ -107,16 +106,16 @@ public class QRDialog extends Dialog {
         }
     }
 
-    public void updateShareInfo(String shareUrl, boolean canShare){
+    public void updateShareInfo(String shareUrl, boolean canShare) {
         mCanShare = canShare;
         mShareUrl = shareUrl;
-        if(mQRShareBtn != null){
+        if (mQRShareBtn != null) {
             mQRShareBtn.setEnabled(canShare);
         }
     }
 
-    private Bitmap encodeAsBitmap(int logoResourceId,String contentString,int dimension) throws WriterException {
-        Map<EncodeHintType,Object> hints = new EnumMap<EncodeHintType,Object>(EncodeHintType.class);
+    private Bitmap encodeAsBitmap(int logoResourceId, String contentString, int dimension) throws WriterException {
+        Map<EncodeHintType, Object> hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         BitMatrix result;
         try {

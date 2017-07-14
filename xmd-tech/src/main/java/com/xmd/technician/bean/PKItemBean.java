@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Lhj on 17-3-23.
  */
 
-public class PKItemBean implements Parcelable{
+public class PKItemBean implements Parcelable {
     public String key;
     public String value;
 

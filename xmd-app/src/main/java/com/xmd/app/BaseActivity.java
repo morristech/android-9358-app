@@ -70,11 +70,13 @@ public class BaseActivity extends AppCompatActivity {
 
         }
     }
+
     public void setBackVisible(boolean visible) {
         if (toolbarBack != null) {
             toolbarBack.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
+
     public void setRightVisible(boolean isVisible, int srcId) {
         if (toolbarRightImage != null) {
             int visible = isVisible ? View.VISIBLE : View.GONE;

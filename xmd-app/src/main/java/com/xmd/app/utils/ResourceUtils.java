@@ -15,15 +15,15 @@ public class ResourceUtils {
         return XmdApp.getInstance().getContext().getResources();
     }
 
-    public static String getString(int stringId){
+    public static String getString(int stringId) {
         return XmdApp.getInstance().getContext().getResources().getString(stringId);
     }
 
-    public static float getDimenFloat(int dimenId){
+    public static float getDimenFloat(int dimenId) {
         return XmdApp.getInstance().getContext().getResources().getDimension(dimenId);
     }
 
-    public static int getDimenInt(int dimenId){
+    public static int getDimenInt(int dimenId) {
         return (int) XmdApp.getInstance().getContext().getResources().getDimension(dimenId);
     }
 
@@ -34,6 +34,7 @@ public class ResourceUtils {
     public static int getColor(int resId) {
         return XmdApp.getInstance().getContext().getResources().getColor(resId);
     }
+
     public static ColorStateList getColorStateList(int resId) {
         return getResources().getColorStateList(resId);
     }

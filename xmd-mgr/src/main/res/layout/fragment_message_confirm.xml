@@ -222,10 +222,12 @@
             android:layout_alignParentTop="true"
             android:layout_above="@id/send_confirm_hint"
             android:id="@+id/view">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -399,7 +401,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:background="@drawable/dash_line_bg"
-                        android:layerType="software"/>
+                        android:layerType="software" />
 
                     <TextView
                         android:id="@+id/group_detail_message_content"

@@ -212,10 +212,10 @@ public abstract class BaseEaseChatView extends LinearLayout {
                 }
             };
         } else {
-                if(!ChatHelper.getMessageSeting().contains(mEMMessage.getMsgId())){
-                    saveChatContact(mEMMessage.getTo(), mEMMessage.getMsgId());
-                    ChatHelper.getMessageSeting().add(mEMMessage.getMsgId());
-                }
+            if (!ChatHelper.getMessageSeting().contains(mEMMessage.getMsgId())) {
+                saveChatContact(mEMMessage.getTo(), mEMMessage.getMsgId());
+                ChatHelper.getMessageSeting().add(mEMMessage.getMsgId());
+            }
 
         }
         mEMMessage.setMessageStatusCallback(mMessageSendCallBack);

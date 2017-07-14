@@ -5,19 +5,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.xmd_m_comment.CustomerInfoDetailActivity;
-import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.chat.event.EventStartChatActivity;
+import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.m.notify.display.XmdActionFactory;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.technician.Constant;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
-import com.xmd.technician.window.ContactInformationDetailActivity;
 import com.xmd.technician.window.JoinClubActivity;
 import com.xmd.technician.window.LoginActivity;
 import com.xmd.technician.window.MainActivity;
@@ -106,8 +103,8 @@ public class UINavigation {
     }
 
 
-    public static void gotoCustomerDetailActivity(Activity activity, String customerId,String appType,boolean isTech) {
-        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(activity, customerId, appType,isTech);
+    public static void gotoCustomerDetailActivity(Activity activity, String customerId, String appType, boolean isTech) {
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(activity, customerId, appType, isTech);
     }
 
 

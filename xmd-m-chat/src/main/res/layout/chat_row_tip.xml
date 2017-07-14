@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#30000000"
+            android:background="@drawable/shape_r4_solid_gray"
             android:drawableLeft="@{data.getTipIcon(context)}"
             android:drawablePadding="8dp"
             android:gravity="center"

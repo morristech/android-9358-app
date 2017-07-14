@@ -48,6 +48,7 @@ public class ShareController extends AbstractController {
 
         return true;
     }
+
     //actId  用于统计
     public static void doShare(String imageUrl, String userShareUrl, String title, String description, String type, String actId) {
 

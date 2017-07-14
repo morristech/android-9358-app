@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/colorAppBackground"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAppBackground"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2sp"
-                android:src="@drawable/selector_customer_visit"/>
+                android:src="@drawable/selector_customer_visit" />
 
             <TextView
                 android:id="@+id/tv_customer_visit_text"
@@ -34,7 +34,7 @@
                 android:layout_toRightOf="@id/img_customer_visit"
                 android:text="到店"
                 android:textColor="@color/text_consume_color"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_customer_visit_times"
@@ -46,7 +46,7 @@
                 android:layout_toRightOf="@id/img_customer_visit"
                 android:text="8"
                 android:textColor="@color/text_consume_number_color"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_customer_visit_unit"
@@ -60,15 +60,14 @@
                 android:gravity="bottom"
                 android:text="次"
                 android:textColor="@color/text_consume_number_color"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
         </RelativeLayout>
 
         <View
             android:layout_width="0.5sp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
-            android:background="#cccccc"
-            />
+            android:background="#cccccc" />
 
         <RelativeLayout
             android:id="@+id/rl_customer_consume"
@@ -83,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2sp"
-                android:src="@drawable/selector_customer_consume"/>
+                android:src="@drawable/selector_customer_consume" />
 
             <TextView
                 android:id="@+id/tv_customer_consume_text"
@@ -93,7 +92,7 @@
                 android:layout_toRightOf="@id/img_customer_consume"
                 android:text="消费"
                 android:textColor="@color/text_consume_color"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_customer_consume_money"
@@ -104,7 +103,7 @@
                 android:layout_marginTop="4dp"
                 android:text="15110"
                 android:textColor="@color/text_consume_number_color"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_customer_consume_unit"
@@ -118,15 +117,14 @@
                 android:gravity="bottom"
                 android:text="元"
                 android:textColor="@color/text_consume_number_color"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
         </RelativeLayout>
 
         <View
             android:layout_width="0.5sp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
-            android:background="#cccccc"
-            />
+            android:background="#cccccc" />
 
         <RelativeLayout
             android:id="@+id/rl_customer_reward_view"
@@ -141,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2sp"
-                android:src="@drawable/selector_customer_reward"/>
+                android:src="@drawable/selector_customer_reward" />
 
             <TextView
                 android:id="@+id/tv_customer_reward_text"
@@ -151,7 +149,7 @@
                 android:layout_toRightOf="@id/img_customer_reward"
                 android:text="打赏"
                 android:textColor="@color/text_consume_color"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_customer_reward_money"
@@ -162,7 +160,7 @@
                 android:layout_marginTop="4dp"
                 android:text="15110"
                 android:textColor="@color/text_consume_number_color"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_customer_reward_unit"
@@ -176,18 +174,18 @@
                 android:gravity="bottom"
                 android:text="次"
                 android:textColor="@color/text_consume_number_color"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
         </RelativeLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#d9d9d9"/>
+        android:background="#d9d9d9" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/customer_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="240dp"/>
+        android:layout_height="240dp" />
 
 </LinearLayout>

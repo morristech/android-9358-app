@@ -18,7 +18,6 @@ import com.xmd.manager.widget.CircularBeadImageView;
 
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -58,28 +57,28 @@ public class GMessageConfirmFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
             initView();
         }
     }
 
     @Override
     protected void initView() {
-        if(Utils.isNotEmpty(imageUrl)){
+        if (Utils.isNotEmpty(imageUrl)) {
             Glide.with(getActivity()).load(imageUrl).into(groupPic);
             groupPic.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             groupPic.setVisibility(View.GONE);
         }
 
-        if(Utils.isNotEmpty(messageContent)){
+        if (Utils.isNotEmpty(messageContent)) {
             contentText.setText(messageContent);
             contentText.setVisibility(View.VISIBLE);
-        }else {
-            if(Utils.isEmpty(imageUrl)){ //图片文字都为空
+        } else {
+            if (Utils.isEmpty(imageUrl)) { //图片文字都为空
                 contentText.setText(ResourceUtils.getString(R.string.text_no_content));
                 contentText.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 contentText.setVisibility(View.GONE);
             }
         }
@@ -87,11 +86,11 @@ public class GMessageConfirmFragment extends BaseFragment {
         String s = "(" + String.valueOf(selectCustomerCount) + "个)";
         customerCountText.setText(Utils.changeColor(s, ResourceUtils.getColor(R.color.colorMain), 1, s.length() - 2));
 
-        if(activityInfo != null){
+        if (activityInfo != null) {
             activityTitleText.setVisibility(View.VISIBLE);
             activityTitleText.setText(Constant.MESSAGE_ACTIVITY_LABELS.get(activityInfo.msgType));
             activityInfoText.setText(activityInfo.name);
-        }else {
+        } else {
             activityTitleText.setVisibility(View.GONE);
             activityInfoText.setText(ResourceUtils.getString(R.string.text_no_activity_selected));
         }
@@ -99,8 +98,8 @@ public class GMessageConfirmFragment extends BaseFragment {
         customerGroupNameText.setText(useGroupType);
     }
 
-    public void initData(Map<String, Object> params){
-        if(params != null){
+    public void initData(Map<String, Object> params) {
+        if (params != null) {
             imageUrl = (String) params.get(RequestConstant.KEY_GROUP_IMAGE_ID);
             messageContent = (String) params.get(RequestConstant.KEY_GROUP_MESSAGE_CONTENT);
             selectCustomerCount = (int) params.get(RequestConstant.KEY_GROUP_SEND_COUNT);

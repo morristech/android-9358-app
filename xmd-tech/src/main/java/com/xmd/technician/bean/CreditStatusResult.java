@@ -16,7 +16,8 @@ public class CreditStatusResult extends BaseResult {
 
 
     public RespDataBean respData;
-    public  class RespDataBean {
+
+    public class RespDataBean {
         public String clubSwitch;
         public int exchangeLimitation;
         public int exchangeRatio;

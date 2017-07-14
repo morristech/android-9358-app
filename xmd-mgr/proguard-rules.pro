@@ -175,6 +175,9 @@
 -dontwarn com.xmd.permission.**
 -keep class com.xmd.permission.** {*;}
 
+-dontwarn com.xmd.m.**
+-keep class com.xmd.m.** {*;}
+
 -keep public class ** {
     @org.greenrobot.eventbus.Subscribe public <methods>;
 }

@@ -12,7 +12,6 @@ import com.xmd.manager.beans.GroupBean;
 
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

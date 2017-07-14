@@ -5,7 +5,7 @@ import com.xmd.technician.http.gson.BaseResult;
 /**
  * Created by Administrator on 2016/7/5.
  */
-public class CustomerInfo extends BaseResult{
+public class CustomerInfo extends BaseResult {
     public String id;
     public String userId;
     public String userName;
@@ -29,8 +29,6 @@ public class CustomerInfo extends BaseResult{
     public String serialNo;
     public String belongsTechName;
     public String belongsTechSerialNo;
-
-
 
 
 }

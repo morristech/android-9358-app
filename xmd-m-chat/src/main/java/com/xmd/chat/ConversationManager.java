@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.user.User;
@@ -12,6 +13,7 @@ import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.event.EventDeleteConversation;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.event.EventUnreadCount;
+import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ConversationViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -208,5 +210,19 @@ public class ConversationManager {
         return filter;
     }
 
-
+    //从会话中解析出用户信息
+    public User parseUserFromConversation(EMConversation conversation) {
+        EMMessage emMessage = conversation.getLatestMessageFromOthers();
+        if (emMessage != null) {
+            ChatMessage chatMessage = new ChatMessage(emMessage);
+            if (chatMessage.getUserId() != null) {
+                User user = new User(chatMessage.getUserId());
+                user.setName(chatMessage.getUserName());
+                user.setAvatar(chatMessage.getUserAvatar());
+                user.setChatId(chatMessage.getEmMessage().getFrom());
+                return user;
+            }
+        }
+        return null;
+    }
 }

@@ -102,7 +102,7 @@ public class Util {
         return "data:image/png;base64," + Base64.encodeToString(bytes, Base64.DEFAULT);
     }
 
-    public static byte[] bmpToByteArray(Bitmap bmp, boolean needRecycle){
+    public static byte[] bmpToByteArray(Bitmap bmp, boolean needRecycle) {
         int i;
         int j;
         if (bmp.getHeight() > bmp.getWidth()) {
@@ -117,7 +117,7 @@ public class Util {
         Canvas localCanvas = new Canvas(localBitmap);
 
         while (true) {
-            localCanvas.drawBitmap(bmp, new Rect(0, 0, i, j), new Rect(0, 0,i, j), null);
+            localCanvas.drawBitmap(bmp, new Rect(0, 0, i, j), new Rect(0, 0, i, j), null);
             if (needRecycle)
                 bmp.recycle();
             ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
@@ -154,9 +154,9 @@ public class Util {
         return false;
     }
 
-    public static String uriToRealPath(Activity activity,Uri uri) {
+    public static String uriToRealPath(Activity activity, Uri uri) {
         Cursor cursor = activity.managedQuery(uri,
-                new String[] {MediaStore.Images.Media.DATA},
+                new String[]{MediaStore.Images.Media.DATA},
                 null,
                 null,
                 null);

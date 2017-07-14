@@ -6,13 +6,16 @@
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <com.xmd.manager.widget.FlowLayout
                 android:id="@+id/selected_group"
                 android:layout_width="wrap_content"

@@ -35,12 +35,13 @@ public class CustomLocationMessage extends ChatMessage {
     private static final String ATTR_STATIC_MAP = "staticMap";
 
     public CustomLocationMessage(EMMessage emMessage) {
-        super(emMessage, MSG_TYPE_CLUB_LOCATION);
+        super(emMessage);
     }
 
     public static CustomLocationMessage create(User remoteUser, double latitude, double longitude, String address, String map) {
         EMMessage emMessage = EMMessage.createTxtSendMessage(address, remoteUser.getChatId());
         CustomLocationMessage message = new CustomLocationMessage(emMessage);
+        message.setMsgType(MSG_TYPE_CLUB_LOCATION);
         message.setAttr(ATTR_LAT, String.valueOf(latitude));
         message.setAttr(ATTR_LNG, String.valueOf(longitude));
         message.setAttr(ATTR_ADDRESS, address);

@@ -13,10 +13,8 @@ import android.widget.TextView;
 
 import com.xmd.technician.R;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 /**

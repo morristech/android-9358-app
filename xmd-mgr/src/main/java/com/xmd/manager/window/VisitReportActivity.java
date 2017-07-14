@@ -87,7 +87,7 @@ public class VisitReportActivity extends BaseActivity {
 
     private void initView() {
         isItemCanClick = true;
-      //  initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
+        //  initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
         initStartDateTime = SharedPreferenceHelper.getCurrentClubCreateTime();
         initEndDateTime = DateUtil.getCurrentDate();
         mStartTime.setText(initStartDateTime);

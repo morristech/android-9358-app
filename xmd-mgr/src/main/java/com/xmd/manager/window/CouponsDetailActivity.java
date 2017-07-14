@@ -21,7 +21,6 @@ import com.xmd.manager.widget.ViewPagerTabIndicator;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

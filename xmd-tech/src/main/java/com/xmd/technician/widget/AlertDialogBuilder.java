@@ -10,7 +10,7 @@ public class AlertDialogBuilder {
 
     private CustomAlertDialog.Builder mBuilder;
 
-    public AlertDialogBuilder(Context context){
+    public AlertDialogBuilder(Context context) {
         mBuilder = new CustomAlertDialog.Builder(context);
     }
 
@@ -44,7 +44,7 @@ public class AlertDialogBuilder {
         return this;
     }
 
-    public void show(){
+    public void show() {
         mBuilder.show();
     }
 }

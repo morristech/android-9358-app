@@ -65,7 +65,6 @@ public class UpgradeController extends AbstractController {
     }
 
 
-
     @Override
     public boolean handleMessage(Message msg) {
         switch (msg.what) {

@@ -31,7 +31,7 @@ public class ChatRowGiftView extends BaseEaseChatView {
 
     @Override
     protected void onInflateView() {
-        mInflater.inflate(R.layout.chat_row_received_gift,this);
+        mInflater.inflate(R.layout.chat_row_received_gift, this);
     }
 
     @Override
@@ -54,10 +54,10 @@ public class ChatRowGiftView extends BaseEaseChatView {
                     break;
                 case FAIL:
                     String errorCode = mEMMessage.getStringAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_SERVER_NOT_REACHABLE);
-                    if(ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)){
+                    if (ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)) {
                         mProgressBar.setVisibility(View.GONE);
                         mStatusView.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         mProgressBar.setVisibility(View.GONE);
                         mProgressBar.setVisibility(View.VISIBLE);
                     }
@@ -93,9 +93,9 @@ public class ChatRowGiftView extends BaseEaseChatView {
             String giftId = mEMMessage.getStringAttribute(ChatConstant.KEY_CREDIT_GIFT_ID, "");
             String giftUrl = SharedPreferenceHelper.getGiftImageById(giftId);
 
-            if(giftUrl.contains("gif")){
+            if (giftUrl.contains("gif")) {
                 Glide.with(mContext).load(giftUrl).asGif().error(R.drawable.gift_default).diskCacheStrategy(DiskCacheStrategy.RESULT).into(mGifeView);
-            }else{
+            } else {
                 Glide.with(mContext).load(giftUrl).error(R.drawable.gift_default).diskCacheStrategy(DiskCacheStrategy.RESULT).into(mGifeView);
             }
 

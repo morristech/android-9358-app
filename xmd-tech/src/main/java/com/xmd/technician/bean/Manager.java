@@ -1,7 +1,5 @@
 package com.xmd.technician.bean;
 
-import java.util.Comparator;
-
 /**
  * Created by Administrator on 2016/7/7.
  */

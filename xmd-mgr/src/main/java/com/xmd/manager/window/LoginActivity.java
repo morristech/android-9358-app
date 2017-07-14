@@ -34,7 +34,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;

@@ -32,33 +32,33 @@ public class MarketingFragment extends BaseFragment {
 
     @BindView(R.id.marketing_journal_text)
     TextView marketingJournalText;
-     @BindView(R.id.marketing_journal)
+    @BindView(R.id.marketing_journal)
     RelativeLayout marketingJournal;
-     @BindView(R.id.marketing_group_message_text)
+    @BindView(R.id.marketing_group_message_text)
     TextView marketingGroupMessageText;
-     @BindView(R.id.marketing_group_message)
+    @BindView(R.id.marketing_group_message)
     RelativeLayout marketingGroupMessage;
-     @BindView(R.id.marketing_reward_text)
+    @BindView(R.id.marketing_reward_text)
     TextView marketingRewardText;
-     @BindView(R.id.marketing_reward)
+    @BindView(R.id.marketing_reward)
     RelativeLayout marketingReward;
-     @BindView(R.id.marketing_deprive_text)
+    @BindView(R.id.marketing_deprive_text)
     TextView marketingDepriveText;
-     @BindView(R.id.marketing_deprive)
+    @BindView(R.id.marketing_deprive)
     RelativeLayout marketingDeprive;
-     @BindView(R.id.marketing_purchase_text)
+    @BindView(R.id.marketing_purchase_text)
     TextView marketingPurchaseText;
-     @BindView(R.id.marketing_purchase)
+    @BindView(R.id.marketing_purchase)
     RelativeLayout marketingPurchase;
-     @BindView(R.id.marketing_credit_shopping_text)
+    @BindView(R.id.marketing_credit_shopping_text)
     TextView marketingCreditShoppingText;
-     @BindView(R.id.marketing_credit_shopping)
+    @BindView(R.id.marketing_credit_shopping)
     RelativeLayout marketingCreditShopping;
-     @BindView(R.id.marketing_coupon_text)
+    @BindView(R.id.marketing_coupon_text)
     TextView marketingCouponText;
-     @BindView(R.id.marketing_coupon)
+    @BindView(R.id.marketing_coupon)
     RelativeLayout marketingCoupon;
-     @BindView(R.id.marketing_bottom_text)
+    @BindView(R.id.marketing_bottom_text)
     RelativeLayout marketingBottomText;
 
     private Subscription mMarketingItemsSubscription;

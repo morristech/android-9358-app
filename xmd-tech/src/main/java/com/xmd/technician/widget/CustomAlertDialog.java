@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.xmd.technician.R;
 import com.xmd.technician.common.Utils;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -28,11 +27,16 @@ public class CustomAlertDialog extends Dialog {
     public static class Builder {
 
         private Context mContext;
-        @BindView(R.id.dialog_title) TextView mTvTitle;
-        @BindView(R.id.flContentContainer) FrameLayout mFlContentContainer;
-        @BindView(R.id.dialog_content) TextView mTvContent;
-        @BindView(R.id.dialog_negative) Button mBtnNegative;
-        @BindView(R.id.dialog_positive) Button mBtnPositive;
+        @BindView(R.id.dialog_title)
+        TextView mTvTitle;
+        @BindView(R.id.flContentContainer)
+        FrameLayout mFlContentContainer;
+        @BindView(R.id.dialog_content)
+        TextView mTvContent;
+        @BindView(R.id.dialog_negative)
+        Button mBtnNegative;
+        @BindView(R.id.dialog_positive)
+        Button mBtnPositive;
 
         private String mTitle;
         private String mMessage;
@@ -51,7 +55,7 @@ public class CustomAlertDialog extends Dialog {
 
         public Builder setTitle(String title) {
             mTitle = title;
-            return  this;
+            return this;
         }
 
         public Builder setMessage(String message) {
@@ -66,13 +70,15 @@ public class CustomAlertDialog extends Dialog {
 
         public Builder setNegativeButton(String negativeText, View.OnClickListener negativeClickListener) {
             mNegativeText = negativeText;
-            mNegativeClickListener = negativeClickListener;;
+            mNegativeClickListener = negativeClickListener;
+            ;
             return this;
         }
 
         public Builder setPositiveButton(String positiveText, View.OnClickListener positiveClickListener) {
             mPositiveText = positiveText;
-            mPositiveClickListener = positiveClickListener;;
+            mPositiveClickListener = positiveClickListener;
+            ;
             return this;
         }
 
@@ -98,13 +104,13 @@ public class CustomAlertDialog extends Dialog {
             }
 
             if (mCustomerView != null) {
-                mFlContentContainer.addView(mCustomerView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT));
+                mFlContentContainer.addView(mCustomerView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
                 mTvContent.setVisibility(View.GONE);
-            } else if(Utils.isNotEmpty(mMessage)) {
+            } else if (Utils.isNotEmpty(mMessage)) {
                 mTvContent.setText(mMessage);
             }
 
-            if(Utils.isNotEmpty(mNegativeText)) {
+            if (Utils.isNotEmpty(mNegativeText)) {
                 mBtnNegative.setText(mNegativeText);
                 mBtnNegative.setOnClickListener(v -> {
                     if (mNegativeClickListener != null) {
@@ -116,7 +122,7 @@ public class CustomAlertDialog extends Dialog {
                 mBtnNegative.setVisibility(View.GONE);
             }
 
-            if(Utils.isNotEmpty(mPositiveText)) {
+            if (Utils.isNotEmpty(mPositiveText)) {
                 mBtnPositive.setText(mPositiveText);
                 mBtnPositive.setOnClickListener(v -> {
                     if (mPositiveClickListener != null) {

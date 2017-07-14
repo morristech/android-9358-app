@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -219,7 +220,7 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
                         } else if (cardShareListResult.respData.get(i).couponType.equals(Constant.ONCE_TYPE)) {
                             String onceCardName = cardShareListResult.respData.get(i).couponName;
                             SpannableString spannableString = new SpannableString(onceCardName);
-                            spannableString.setSpan(new TextAppearanceSpan(getActivity(),R.style.text_credit),4,onceCardName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            spannableString.setSpan(new TextAppearanceSpan(getActivity(), R.style.text_credit), 4, onceCardName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                             mOnceCardName.setText(spannableString);
                             mOnceCardTitle.setText(cardShareListResult.respData.get(i).count);
                             mOnceCardAmount = Integer.parseInt(cardShareListResult.respData.get(i).count);

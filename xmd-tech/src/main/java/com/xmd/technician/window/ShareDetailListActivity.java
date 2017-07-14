@@ -32,7 +32,7 @@ public class ShareDetailListActivity extends BaseActivity implements BaseFragmen
 
 
     private int mCurrentShareList;
-   public String mCurrentTitle;
+    public String mCurrentTitle;
     private int mTotal;
 
     public static void startShareDetailListActivity(Activity activity, int shareType, String title, int totalAmount) {

@@ -42,7 +42,7 @@ public class ChatRowLocationView extends BaseEaseChatView {
     @Override
     protected void onSetUpView() {
 
-        locationView.setText(mEMMessage.getStringAttribute(ChatConstant.KEY_LOCATION_ADDRESS,"深圳市"));
+        locationView.setText(mEMMessage.getStringAttribute(ChatConstant.KEY_LOCATION_ADDRESS, "深圳市"));
         if (mEMMessage.direct() == EMMessage.Direct.SEND) {
             setMessageSendCallback();
             switch (mEMMessage.status()) {
@@ -56,10 +56,10 @@ public class ChatRowLocationView extends BaseEaseChatView {
                     break;
                 case FAIL:
                     String errorCode = mEMMessage.getStringAttribute(ChatConstant.KEY_ERROR_CODE, ChatConstant.ERROR_SERVER_NOT_REACHABLE);
-                    if(ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)){
+                    if (ChatConstant.ERROR_IN_BLACKLIST.equals(errorCode)) {
                         mProgressBar.setVisibility(View.GONE);
                         mStatusView.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         mProgressBar.setVisibility(View.GONE);
                         mProgressBar.setVisibility(View.VISIBLE);
                     }
@@ -71,8 +71,8 @@ public class ChatRowLocationView extends BaseEaseChatView {
                 default:
                     break;
             }
-        }else{
-            if(!mEMMessage.isAcked() && mEMMessage.getChatType() == EMMessage.ChatType.Chat){
+        } else {
+            if (!mEMMessage.isAcked() && mEMMessage.getChatType() == EMMessage.ChatType.Chat) {
                 try {
                     EMClient.getInstance().chatManager().ackMessageRead(mEMMessage.getFrom(), mEMMessage.getMsgId());
                 } catch (HyphenateException e) {

@@ -14,15 +14,15 @@ public class ResourceUtils {
         return TechApplication.getAppContext().getResources();
     }
 
-    public static String getString(int stringId){
+    public static String getString(int stringId) {
         return TechApplication.getAppContext().getResources().getString(stringId);
     }
 
-    public static float getDimenFloat(int dimenId){
+    public static float getDimenFloat(int dimenId) {
         return TechApplication.getAppContext().getResources().getDimension(dimenId);
     }
 
-    public static int getDimenInt(int dimenId){
+    public static int getDimenInt(int dimenId) {
         return (int) TechApplication.getAppContext().getResources().getDimension(dimenId);
     }
 
@@ -33,6 +33,7 @@ public class ResourceUtils {
     public static int getColor(int resId) {
         return TechApplication.getAppContext().getResources().getColor(resId);
     }
+
     public static ColorStateList getColorStateList(int resId) {
         return getResources().getColorStateList(resId);
     }

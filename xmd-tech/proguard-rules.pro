@@ -169,3 +169,6 @@
 -keep public class ** {
     @org.greenrobot.eventbus.Subscribe public <methods>;
 }
+
+-dontwarn com.xmd.m.**
+-keep class com.xmd.m.** {*;}

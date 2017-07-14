@@ -9,6 +9,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.EmojiManager;
 import com.xmd.app.user.User;
+import com.xmd.chat.MessageManager;
 
 import java.util.Calendar;
 
@@ -42,7 +43,7 @@ public class ChatMessage {
     public static final String MSG_TYPE_ORDER_CANCEL = "order_cancel";
     public static final String MSG_TYPE_ORDER_SUCCESS = "order_success";
     public static final String MSG_TYPE_ORDER_REQUEST = "order_request"; //求预约
-    public static final String MSG_TYPE_ORDER = "order";//原始订单消息
+    public static final String MSG_TYPE_NEW_ORDER = "order";//原始订单消息
     //活动消息
     public static final String MSG_TYPE_JOURNAL = "journal"; //电子期刊
     public static final String MSG_TYPE_ONCE_CARD = "itemCard"; //次卡
@@ -51,9 +52,10 @@ public class ChatMessage {
     public static final String MSG_TYPE_LUCKY_WHEEL_TYPE = "luckyWheel"; //大转盘
     public static final String MSG_TYPE_REQUEST_REWARD = "begReward"; //求打赏
     public static final String MSG_TYPE_REWARD = "reward"; //用户打赏
-    public static final String MSG_TYPE_COUPON = "ordinaryCoupon";
+    public static final String MSG_TYPE_COUPON = "ordinaryCoupon"; //优惠券
     public static final String MSG_TYPE_COUPON_TIP = "couponTip"; //用户领取优惠券
     public static final String MSG_TYPE_PAID_COUPON_TIP = "paidCouponTip";//用户购买点钟券
+    public static final String MSG_TYPE_CREDIT_GIFT = "gift"; //积分礼物
 
     public static final String MSG_TAG_CUSTOMER_SERVICE = "customer_service";//客服消息
     public static final String MSG_TAG_HELLO = "hello"; //打招呼消息
@@ -74,18 +76,14 @@ public class ChatMessage {
     private static final String ATTRIBUTE_CLUB_NAME = "clubName";
 
 
+    //内部是否已处理此消息
+    private static final String ATTR_INNER_PROCESSED = "inner_processed";
+
     //预约消息
     private EMMessage emMessage;
 
     private SpannableString contentText; //缓存emoji格式化后的数据
     protected String formatTime; //缓存格式化后的时间
-
-    @Deprecated
-    public ChatMessage(EMMessage emMessage, String msgType) {
-        this.emMessage = emMessage;
-        setAttr(ATTRIBUTE_MESSAGE_TYPE, msgType);
-        setTime(String.valueOf(emMessage.getMsgTime()));
-    }
 
     public ChatMessage(EMMessage emMessage) {
         this.emMessage = emMessage;
@@ -324,6 +322,15 @@ public class ChatMessage {
         } catch (HyphenateException e) {
             return null;
         }
+    }
+
+    public String getInnerProcessed() {
+        return getSafeStringAttribute(ATTR_INNER_PROCESSED);
+    }
+
+    public void setInnerProcessed(String processedDesc) {
+        setAttr(ATTR_INNER_PROCESSED, processedDesc);
+        MessageManager.getInstance().saveMessage(this); //设置状态标记后，需要保存消息到本地
     }
 
     public static String getMsgTypeText(String msgType) {

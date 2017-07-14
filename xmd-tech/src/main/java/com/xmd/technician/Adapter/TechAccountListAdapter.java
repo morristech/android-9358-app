@@ -15,7 +15,6 @@ import com.xmd.technician.common.Utils;
 
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

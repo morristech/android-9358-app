@@ -3,12 +3,12 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.Order;
@@ -34,8 +34,10 @@ import rx.Subscription;
  */
 public class OrderFragment extends BaseListFragment<Order> {
 
-    @BindView(R.id.filter_order) RadioGroup mRgFilterOrder;
-    @BindView(R.id.toolbar_back) ImageView  mImgBack;
+    @BindView(R.id.filter_order)
+    RadioGroup mRgFilterOrder;
+    @BindView(R.id.toolbar_back)
+    ImageView mImgBack;
     private String mFilterOrder = Constant.FILTER_ORDER_SUBMIT;
     private Subscription mGetOrderListSubscription;
     private Subscription mOrderManageSubscription;
@@ -47,7 +49,7 @@ public class OrderFragment extends BaseListFragment<Order> {
     }
 
     @Override
-    protected void initView(){
+    protected void initView() {
         initTitleView(ResourceUtils.getString(R.string.order_fragment_title));
         mImgBack.setVisibility(View.VISIBLE);
 
@@ -77,7 +79,7 @@ public class OrderFragment extends BaseListFragment<Order> {
 
     @Nullable
     @OnClick(R.id.toolbar_back)
-    public void backClicked(){
+    public void backClicked() {
         getActivity().finish();
     }
 
@@ -96,7 +98,7 @@ public class OrderFragment extends BaseListFragment<Order> {
     private void handleGetOrderListResult(OrderListResult result) {
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             onGetListFailed(result.msg);
-        } else if(result.isIndexPage.equals("N")){
+        } else if (result.isIndexPage.equals("N")) {
             onGetListSucceeded(result.pageCount, result.respData);
         }
     }
@@ -132,7 +134,7 @@ public class OrderFragment extends BaseListFragment<Order> {
     private void doNegativeOrder(String description, String type, Order order, String reason) {
         new AlertDialogBuilder(getActivity())
                 .setMessage(description)
-                .setPositiveButton(ResourceUtils.getString(R.string.confirm), v -> doManageOrder(type, order,reason))
+                .setPositiveButton(ResourceUtils.getString(R.string.confirm), v -> doManageOrder(type, order, reason))
                 .setNegativeButton(ResourceUtils.getString(R.string.cancel), null)
                 .show();
     }
@@ -146,7 +148,7 @@ public class OrderFragment extends BaseListFragment<Order> {
     }
 
     private void doManageOrder(String type, Order order, String reason) {
-        Map<String,String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PROCESS_TYPE, type);
         params.put(RequestConstant.KEY_ID, order.orderId);
         params.put(RequestConstant.KEY_REASON, reason);
@@ -155,13 +157,13 @@ public class OrderFragment extends BaseListFragment<Order> {
 
     @Override
     protected void dispatchRequest() {
-        if(mPages != 1){
-            mPages = mListAdapter.getItemCount()/PAGE_SIZE + 1;
-            if(mListAdapter.getItemCount()%PAGE_SIZE > 1){
+        if (mPages != 1) {
+            mPages = mListAdapter.getItemCount() / PAGE_SIZE + 1;
+            if (mListAdapter.getItemCount() % PAGE_SIZE > 1) {
                 mPages++;
             }
         }
-        Map<String,String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_ORDER_STATUS, mFilterOrder);
         params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         params.put(RequestConstant.KEY_IS_INDEX_PAGE, "N");
@@ -172,7 +174,7 @@ public class OrderFragment extends BaseListFragment<Order> {
     protected void refreshData() {
         mIsLoadingMore = false;
         mPages = PAGE_START + 1;
-        Map<String,String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_ORDER_STATUS, mFilterOrder);
         params.put(RequestConstant.KEY_PAGE, "1");
         params.put(RequestConstant.KEY_IS_INDEX_PAGE, "N");

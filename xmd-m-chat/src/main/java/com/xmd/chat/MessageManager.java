@@ -12,6 +12,7 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.chat.beans.CreditGift;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.event.EventNewUiMessage;
@@ -22,12 +23,19 @@ import com.xmd.chat.message.CouponChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.RevokeChatMessage;
 import com.xmd.chat.message.TipChatMessage;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.m.notify.push.XmdPushMessage;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import rx.Observable;
 
 /**
  * Created by mo on 17-6-28.
@@ -47,6 +55,7 @@ public class MessageManager {
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
 
     private String currentChatId; //当前正在聊天的用户chatId,收到此人消息自动设置已读
+    private Map<String, CreditGift> creditGiftMap = new HashMap<>(); //积分礼物
 
     public void init() {
         EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
@@ -56,12 +65,12 @@ public class MessageManager {
                 ThreadPoolManager.postToUI(new Runnable() {
                     @Override
                     public void run() {
-                        //从消息中解析更新用户信息
                         for (EMMessage message : list) {
                             String chatId = message.getFrom();
                             ChatMessage chatMessage = ChatMessageFactory.create(message);
                             User user;
                             if (!TextUtils.isEmpty(chatMessage.getUserId())) {
+                                //更新用户信息
                                 user = new User(chatMessage.getUserId());
                                 user.setChatId(chatId);
                                 user.setName(chatMessage.getUserName());
@@ -122,6 +131,26 @@ public class MessageManager {
 
             }
         });
+
+        //加载积分礼物
+        Observable<BaseBean<List<CreditGift>>> observable = XmdNetwork.getInstance()
+                .getService(NetService.class)
+                .listCreditGift();
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<List<CreditGift>>>() {
+            @Override
+            public void onCallbackSuccess(BaseBean<List<CreditGift>> result) {
+                XLogger.d("load credit gift list ok!");
+                creditGiftMap.clear();
+                for (CreditGift gift : result.getRespData()) {
+                    creditGiftMap.put(gift.id, gift);
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.d("load credit list failed:" + e.getMessage());
+            }
+        });
     }
 
     //发送文本消息
@@ -177,7 +206,9 @@ public class MessageManager {
         chatMessage.setUser(user);
         EMClient.getInstance().chatManager().sendMessage(chatMessage.getEmMessage());
         EventBus.getDefault().post(new EventSendMessage(chatMessage));
-        EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
+        if (!chatMessage.getMsgType().equals(ChatMessage.MSG_TYPE_ORIGIN_CMD)) {
+            EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
+        }
         return chatMessage;
     }
 
@@ -194,6 +225,10 @@ public class MessageManager {
 
     public void setCurrentChatId(String currentChatId) {
         this.currentChatId = currentChatId;
+    }
+
+    public CreditGift getGift(String giftId) {
+        return creditGiftMap.get(giftId);
     }
 
     private void displayNotification(ChatMessage chatMessage) {

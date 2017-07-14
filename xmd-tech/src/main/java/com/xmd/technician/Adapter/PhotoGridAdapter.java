@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 /**
  * Created by sdcm on 16-4-1.
  */
-public class PhotoGridAdapter extends BaseAdapter{
+public class PhotoGridAdapter extends BaseAdapter {
     public static final int TYPE_PHOTO = 0;
     public static final int TYPE_ADD = TYPE_PHOTO + 1;
     private static final int TYPE_COUNT = TYPE_ADD + 1;
@@ -29,13 +29,13 @@ public class PhotoGridAdapter extends BaseAdapter{
     private List<AlbumInfo> mAlbums;
     private Activity mActivity;
 
-    public PhotoGridAdapter(Activity activity){
+    public PhotoGridAdapter(Activity activity) {
         mActivity = activity;
         mAlbums = new ArrayList<>();
     }
 
-    public void refreshDataSet(List<AlbumInfo> albumInfos){
-        if(albumInfos != null){
+    public void refreshDataSet(List<AlbumInfo> albumInfos) {
+        if (albumInfos != null) {
             mAlbums.clear();
             mAlbums.addAll(albumInfos);
             notifyDataSetChanged();
@@ -58,12 +58,12 @@ public class PhotoGridAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return mAlbums != null ? (mAlbums.size() + 1): 1;
+        return mAlbums != null ? (mAlbums.size() + 1) : 1;
     }
 
     @Override
     public AlbumInfo getItem(int position) {
-        if(mAlbums != null && mAlbums.size() > position){
+        if (mAlbums != null && mAlbums.size() > position) {
             return mAlbums.get(position);
         }
         return null;
@@ -98,7 +98,8 @@ public class PhotoGridAdapter extends BaseAdapter{
     }
 
     public class ViewHolder {
-        @BindView(R.id.item_image) ImageView mImageView;
+        @BindView(R.id.item_image)
+        ImageView mImageView;
 
         public ViewHolder(View itemView) {
             ButterKnife.bind(this, itemView);

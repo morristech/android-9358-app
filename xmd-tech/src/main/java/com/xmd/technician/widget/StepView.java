@@ -88,7 +88,7 @@ public class StepView extends View {
         mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
     }
 
-    public void setCurrentStep(int step){
+    public void setCurrentStep(int step) {
         mCurrentStep = step;
         invalidate();
     }
