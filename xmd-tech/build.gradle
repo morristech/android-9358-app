@@ -107,7 +107,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith("releaseVoicePlayer.apk")) {
+            if (outputFile != null && outputFile.name.endsWith("release.apk")) {
                 // output
                 def flavorName = variant.productFlavors[0].name + "_";
                 if (flavorName == "prd_") {
