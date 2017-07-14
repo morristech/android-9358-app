@@ -51,7 +51,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -59,17 +60,17 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private static final int MSG_COUNT = 20;
 
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mRefreshLayout;
-    @Bind(R.id.et_sendmessage)
+    @BindView(R.id.et_sendmessage)
     ClearableEditText mSendMsgEd;
-    @Bind(R.id.list_view)
+    @BindView(R.id.list_view)
     RecyclerView mMsgListView;
-    @Bind(R.id.btn_face)
+    @BindView(R.id.btn_face)
     View mFaceBtn;
-    @Bind(R.id.btn_common_coupon)
+    @BindView(R.id.btn_common_coupon)
     ImageButton commonCoupon;
-    @Bind(R.id.emojicon_menu_container)
+    @BindView(R.id.emojicon_menu_container)
     EmojiconMenu mEmojiconMenuContainer;
 
     private String mToChatUsername, userType;

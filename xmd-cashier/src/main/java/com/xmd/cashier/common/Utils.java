@@ -199,6 +199,9 @@ public class Utils {
     }
 
     public static String getPayChannel(String channel) {
+        if (TextUtils.isEmpty(channel)) {
+            return null;
+        }
         switch (channel) {
             case AppConstants.FAST_PAY_CHANNEL_ALI:
                 return "支付宝支付";

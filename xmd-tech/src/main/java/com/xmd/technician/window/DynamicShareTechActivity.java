@@ -27,7 +27,8 @@ import com.xmd.technician.widget.RoundImageView;
 import java.util.EnumMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -36,19 +37,19 @@ import butterknife.OnClick;
  */
 public class DynamicShareTechActivity extends BaseActivity {
 
-    @Bind(R.id.user_card_head)
+    @BindView(R.id.user_card_head)
     RoundImageView userCardHead;
-    @Bind(R.id.user_card_name)
+    @BindView(R.id.user_card_name)
     TextView userCardName;
-    @Bind(R.id.user_card_num)
+    @BindView(R.id.user_card_num)
     TextView userCardNum;
-    @Bind(R.id.ll_tech_code)
+    @BindView(R.id.ll_tech_code)
     LinearLayout llTechCode;
-    @Bind(R.id.user_card_club)
+    @BindView(R.id.user_card_club)
     TextView userCardClub;
-    @Bind(R.id.user_share_img)
+    @BindView(R.id.user_share_img)
     ImageView userShareImg;
-    @Bind(R.id.user_share_btn)
+    @BindView(R.id.user_share_btn)
     Button userShareBtn;
 
 

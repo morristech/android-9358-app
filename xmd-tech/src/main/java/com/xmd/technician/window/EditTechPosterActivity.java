@@ -27,7 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -38,13 +39,13 @@ import rx.Subscription;
 
 public class EditTechPosterActivity extends BaseActivity implements BaseFragment.IFragmentCallback {
 
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @Bind(R.id.fm_poster_edit)
+    @BindView(R.id.fm_poster_edit)
     FrameLayout fmPosterEdit;
-    @Bind(R.id.btn_next_step_edit)
+    @BindView(R.id.btn_next_step_edit)
     Button btnNextStepEdit;
-    @Bind(R.id.btn_before_step_edit)
+    @BindView(R.id.btn_before_step_edit)
     Button btnBeforeStepEdit;
 
     private ArrayList<Fragment> mFragments;

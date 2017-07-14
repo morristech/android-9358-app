@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.hyphenate.exceptions.HyphenateException;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.user.User;
@@ -20,6 +21,7 @@ import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.CharacterParser;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CustomerUserRecentListResult;
@@ -34,7 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -46,9 +49,9 @@ import rx.Subscription;
 public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
 
 
-    @Bind(R.id.btn_nearby_people)
+    @BindView(R.id.btn_nearby_people)
     Button btnNearbyPeople;
-    @Bind(R.id.ll_visitor_none)
+    @BindView(R.id.ll_visitor_none)
     LinearLayout llVisitorNone;
 
     private Subscription mContactRecentUserListSubscription;
@@ -169,14 +172,20 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
     @Override
     public void onItemClicked(UserRecentBean bean) throws HyphenateException {
         super.onItemClicked(bean);
-        if (Long.parseLong(bean.userId) > 0) {
-            Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-            intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-            intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
-            intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
-            startActivity(intent);
-        } else {
+//        if (Long.parseLong(bean.userId) > 0) {
+//            Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
+//            intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
+//            intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
+//            intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
+//            startActivity(intent);
+//        } else {
+//            Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
+//        }
+        if(Utils.isEmpty(bean.userId) ||Long.parseLong(bean.userId) <= 0){
             Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
+            return;
+        }else{
+            UINavigation.gotoCustomerDetailActivity(getActivity(),bean.userId, ConstantResources.INTENT_TYPE_TECH,false);
         }
     }
 
@@ -234,7 +243,6 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     private void sayHiRequest(String userId, String userName, String avatarUrl, String userType, String userEmchatId, String position) {

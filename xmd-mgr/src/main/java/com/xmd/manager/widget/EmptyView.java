@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import com.xmd.manager.R;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -19,21 +20,21 @@ import butterknife.OnClick;
  */
 public class EmptyView extends RelativeLayout {
     private View mainView;
-    @Bind(R.id.layout_empty_in)
+    @BindView(R.id.layout_empty_in)
     View emptyView;
-    @Bind(R.id.layout_loading_in)
+    @BindView(R.id.layout_loading_in)
     View loadingView;
-    @Bind(R.id.layout_failed_in)
+    @BindView(R.id.layout_failed_in)
     View failedView;
-    @Bind(R.id.tv_empty_tip)
+    @BindView(R.id.tv_empty_tip)
     TextView tvEmptyTip;
-    @Bind(R.id.iv_empty_tip)
+    @BindView(R.id.iv_empty_tip)
     ImageView ivEmptyPic;
-    @Bind(R.id.iv_failed_tip)
+    @BindView(R.id.iv_failed_tip)
     ImageView ivFailedPic;
-    @Bind(R.id.tv_loadingtip)
+    @BindView(R.id.tv_loadingtip)
     TextView tvLoadingTip;
-    @Bind(R.id.tv_failed_tip)
+    @BindView(R.id.tv_failed_tip)
     TextView tvFailedTip;
     private OnRefreshListener mRefreshListener;
 

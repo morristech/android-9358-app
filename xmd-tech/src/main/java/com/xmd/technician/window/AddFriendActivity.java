@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -45,19 +45,19 @@ import rx.Subscription;
  */
 public class AddFriendActivity extends BaseActivity implements TextWatcher {
 
-    @Bind(R.id.et_customer_name)
+    @BindView(R.id.et_customer_name)
     EditText mCustomerName;
-    @Bind(R.id.et_customer_telephone)
+    @BindView(R.id.et_customer_telephone)
     ClearableEditText mCustomerTelephone;
-    @Bind(R.id.btn_search_telephone)
+    @BindView(R.id.btn_search_telephone)
     Button mSearchTelephone;
-    @Bind(R.id.et_customer_remark)
+    @BindView(R.id.et_customer_remark)
     EditText mCustomerRemark;
-    @Bind(R.id.btn_save_customer)
+    @BindView(R.id.btn_save_customer)
     Button mSaveCustomer;
-    @Bind(R.id.limit_project_list)
+    @BindView(R.id.limit_project_list)
     FlowLayout mFlowLayout;
-    @Bind(R.id.text_remark_num)
+    @BindView(R.id.text_remark_num)
     TextView textRemark;
 
     private String customerName;

@@ -18,7 +18,8 @@ import com.xmd.technician.widget.RoundImageView;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -156,23 +157,23 @@ public class TechPosterListAdapter extends RecyclerView.Adapter {
     }
 
     static class PoserViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.img_poster_tech_photo)
+        @BindView(R.id.img_poster_tech_photo)
         RoundImageView imgPosterTechPhoto;
-        @Bind(R.id.tv_poster_tech_name)
+        @BindView(R.id.tv_poster_tech_name)
         TextView tvPosterTechName;
-        @Bind(R.id.img_poster_qr_code)
+        @BindView(R.id.img_poster_qr_code)
         ImageView imgPosterQrCode;
-        @Bind(R.id.tv_poster_primary_title)
+        @BindView(R.id.tv_poster_primary_title)
         TextView tvPosterPrimaryTitle;
-        @Bind(R.id.tv_poster_minor_title)
+        @BindView(R.id.tv_poster_minor_title)
         TextView tvPosterMinorTitle;
-        @Bind(R.id.tv_poster_club_name)
+        @BindView(R.id.tv_poster_club_name)
         TextView tvPosterClubName;
-        @Bind(R.id.img_poster_delete)
+        @BindView(R.id.img_poster_delete)
         ImageView imgPosterDelete;
-        @Bind(R.id.ll_poster_edit)
+        @BindView(R.id.ll_poster_edit)
         LinearLayout llPosterEdit;
-        @Bind(R.id.ll_poster_share)
+        @BindView(R.id.ll_poster_share)
         LinearLayout llPosterShare;
 
         PoserViewHolder(View view) {

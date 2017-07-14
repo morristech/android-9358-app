@@ -35,7 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -46,19 +46,19 @@ import rx.Subscription;
  */
 public class VerificationRecordListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    @Bind(R.id.search_verification)
+    @BindView(R.id.search_verification)
     ClearableEditText searchVerification;
-    @Bind(R.id.btn_search)
+    @BindView(R.id.btn_search)
     ImageView mBtnSearch;
-    @Bind(R.id.record_list_view)
+    @BindView(R.id.record_list_view)
     RecyclerView mRecordListView;
-    @Bind(R.id.swipe_refresh_layout)
+    @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.record_month)
+    @BindView(R.id.record_month)
     TextView mRecordMonth;
-    @Bind(R.id.record_total)
+    @BindView(R.id.record_total)
     TextView mRecordTotal;
-    @Bind(R.id.rl_record_total)
+    @BindView(R.id.rl_record_total)
     RelativeLayout mRlRecordTotal;
 
     private int PAGE_SIZE = 20;

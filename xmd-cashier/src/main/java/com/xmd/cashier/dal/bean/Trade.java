@@ -73,10 +73,19 @@ public class Trade {
     /**
      * 扫码在线买单
      */
+    private String onlinePayId;
     private int onlinePayPaidMoney;
     private String onlinePayChannel;
 
     // 在线扫码买单
+    public void setOnlinePayId(String payId) {
+        this.onlinePayId = payId;
+    }
+
+    public String getOnlinePayId() {
+        return this.onlinePayId;
+    }
+
     public void setOnlinePayPaidMoney(int onlineMoney) {
         this.onlinePayPaidMoney = onlineMoney;
     }

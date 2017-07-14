@@ -12,7 +12,8 @@ import com.xmd.technician.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -20,21 +21,21 @@ import butterknife.OnClick;
  * Created by Administrator on 2016/8/22.
  */
 public class GameSettingDialog extends Dialog {
-    @Bind(R.id.comment_game_one)
+    @BindView(R.id.comment_game_one)
     TextView mCommentGameOne;
-    @Bind(R.id.comment_game_ten)
+    @BindView(R.id.comment_game_ten)
     TextView mCommentGameTen;
-    @Bind(R.id.comment_game_fifty)
+    @BindView(R.id.comment_game_fifty)
     TextView mCommentGameFifty;
-    @Bind(R.id.comment_game_one_hundred)
+    @BindView(R.id.comment_game_one_hundred)
     TextView mCommentGameOneHundred;
-    @Bind(R.id.comment_game_five_hundred)
+    @BindView(R.id.comment_game_five_hundred)
     TextView mCommentGameFiveHundred;
-    @Bind(R.id.comment_game_ten_hundred)
+    @BindView(R.id.comment_game_ten_hundred)
     TextView mCommentGameTenHundred;
-    @Bind(R.id.dialog_alert_cancel_btn)
+    @BindView(R.id.dialog_alert_cancel_btn)
     Button mCommentGaemCancelBtn;
-    @Bind(R.id.dialog_alert_ok_btn)
+    @BindView(R.id.dialog_alert_ok_btn)
     Button mCommentOkBtn;
 
     public int integralNum = 1;

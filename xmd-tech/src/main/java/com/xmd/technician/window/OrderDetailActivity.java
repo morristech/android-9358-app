@@ -34,7 +34,7 @@ import com.xmd.technician.widget.StepView;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -45,50 +45,50 @@ public class OrderDetailActivity extends BaseActivity {
 
     public static final String KEY_ORDER = "order";
 
-    @Bind(R.id.order_steps)
+    @BindView(R.id.order_steps)
     StepView mOrderSteps;
-    @Bind(R.id.avatar)
+    @BindView(R.id.avatar)
     CircleImageView mAvatar;
-    @Bind(R.id.customer_name)
+    @BindView(R.id.customer_name)
     TextView mCustomerName;
-    @Bind(R.id.telephone)
+    @BindView(R.id.telephone)
     TextView mTelephone;
-    @Bind(R.id.remain_time)
+    @BindView(R.id.remain_time)
     TextView mRemainTime;
-    @Bind(R.id.down_payment)
+    @BindView(R.id.down_payment)
     TextView mDownPayment;
-    @Bind(R.id.order_reward)
+    @BindView(R.id.order_reward)
     TextView mOrderReward;
-    @Bind(R.id.order_comment)
+    @BindView(R.id.order_comment)
     TextView mOrderComment;
-    @Bind(R.id.order_ratings)
+    @BindView(R.id.order_ratings)
     RatingBar mOrderRatings;
-    @Bind(R.id.create_time)
+    @BindView(R.id.create_time)
     TextView mCreateTime;
-    @Bind(R.id.service_price)
+    @BindView(R.id.service_price)
     TextView mServicePrice;
-    @Bind(R.id.order_service)
+    @BindView(R.id.order_service)
     TextView mOrderService;
-    @Bind(R.id.order_time)
+    @BindView(R.id.order_time)
     TextView mOrderTime;
-    @Bind(R.id.action_telephone)
+    @BindView(R.id.action_telephone)
     TextView mActionTelephone;
-    @Bind(R.id.action_chat)
+    @BindView(R.id.action_chat)
     TextView mActionChat;
-    @Bind(R.id.operation)
+    @BindView(R.id.operation)
     LinearLayout mOperationLayout;
-    @Bind(R.id.comment_section)
+    @BindView(R.id.comment_section)
     LinearLayout mCommentSection;
-    @Bind(R.id.remain_time_section)
+    @BindView(R.id.remain_time_section)
     LinearLayout mRemainTimeSection;
-    @Bind(R.id.paid_order_amount_container)
+    @BindView(R.id.paid_order_amount_container)
     View mPaidAmountContainer;
-    @Bind(R.id.paid_amount_line)
+    @BindView(R.id.paid_amount_line)
     View mPaidAmountLine;
 
-    @Bind(R.id.negative)
+    @BindView(R.id.negative)
     Button mNegative;
-    @Bind(R.id.positive)
+    @BindView(R.id.positive)
     Button mPositive;
 
     private Order mOrder;

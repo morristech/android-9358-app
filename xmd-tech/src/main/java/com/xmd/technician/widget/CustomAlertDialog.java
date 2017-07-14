@@ -12,7 +12,8 @@ import android.widget.TextView;
 import com.xmd.technician.R;
 import com.xmd.technician.common.Utils;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -27,11 +28,11 @@ public class CustomAlertDialog extends Dialog {
     public static class Builder {
 
         private Context mContext;
-        @Bind(R.id.dialog_title) TextView mTvTitle;
-        @Bind(R.id.flContentContainer) FrameLayout mFlContentContainer;
-        @Bind(R.id.dialog_content) TextView mTvContent;
-        @Bind(R.id.dialog_negative) Button mBtnNegative;
-        @Bind(R.id.dialog_positive) Button mBtnPositive;
+        @BindView(R.id.dialog_title) TextView mTvTitle;
+        @BindView(R.id.flContentContainer) FrameLayout mFlContentContainer;
+        @BindView(R.id.dialog_content) TextView mTvContent;
+        @BindView(R.id.dialog_negative) Button mBtnNegative;
+        @BindView(R.id.dialog_positive) Button mBtnPositive;
 
         private String mTitle;
         private String mMessage;

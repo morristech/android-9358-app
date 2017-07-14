@@ -42,7 +42,7 @@ android {
         applicationId "com.xmd.manager"
         minSdkVersion 15
         targetSdkVersion 25
-        //TODO: releaseVoicePlayer version :
+        //TODO: release version :
         // 2.5.0.11 << 2.4.2.6 << 2.4.1 << 2.4.0 << 2.3.0, update this comment when you change the versionCode and versionName
         // 2.6.0 ,15 Mainly add the Ranking Activity, which is to load the URL
         // 2.6.3 ,16 Add the Paid Order Consume
@@ -67,7 +67,7 @@ android {
 
         manifestPlaceholders = [
                 PACKAGE_NAME      : applicationId,
-                //UMENG_APPKEY for releaseVoicePlayer
+                //UMENG_APPKEY for release
                 UMENG_APPKEY_VALUE: "565d57ade0f55a1504001a62",
                 CHANNEL_VALUE     : "xiaomodo",
         ]
@@ -134,7 +134,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith("releaseVoicePlayer.apk")) {
+            if (outputFile != null && outputFile.name.endsWith("release.apk")) {
                 // output
                 def flavorName = variant.productFlavors[0].name + "_";
                 if (flavorName == "prd_") {
@@ -164,6 +164,7 @@ dependencies {
     compile project(':xmd-app')
     compile project(':xmd-m-permission')
     compile project(':xmd-m-notify')
+    compile project(':xmd-m-comment')
     compile project(':xmd-m-chat')
     compile(name: 'xmd-image-crop-1.0', ext: 'aar')
     compile(name: 'xmd-image-selector-1.0', ext: 'aar')
@@ -177,7 +178,8 @@ dependencies {
     compile "com.android.support:design:${rootProject.ext.supportLibraryVersion}"
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.getui:sdk:2.10.2.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 
     compile "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"
     compile "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"

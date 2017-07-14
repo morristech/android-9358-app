@@ -17,7 +17,7 @@ import com.xmd.manager.service.response.StatisticsHomeDataResult;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -26,13 +26,13 @@ import rx.Subscription;
  */
 public class CouponsDetailFragment extends BaseFragment {
 
-    @Bind(R.id.tv_propagate)
+    @BindView(R.id.tv_propagate)
     TextView tvPropagate;
-    @Bind(R.id.tv_delivery)
+    @BindView(R.id.tv_delivery)
     TextView tvDelivery;
-    @Bind(R.id.tv_share)
+    @BindView(R.id.tv_share)
     TextView tvShare;
-    @Bind(R.id.tv_to_club)
+    @BindView(R.id.tv_to_club)
     TextView tvToClub;
 
     private int mRange;
@@ -99,7 +99,6 @@ public class CouponsDetailFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mGetCouponsDetailDataSubscription);
     }
 }

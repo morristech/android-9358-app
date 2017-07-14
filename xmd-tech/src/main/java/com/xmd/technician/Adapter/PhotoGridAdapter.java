@@ -14,7 +14,7 @@ import com.xmd.technician.bean.AlbumInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -98,7 +98,7 @@ public class PhotoGridAdapter extends BaseAdapter{
     }
 
     public class ViewHolder {
-        @Bind(R.id.item_image) ImageView mImageView;
+        @BindView(R.id.item_image) ImageView mImageView;
 
         public ViewHolder(View itemView) {
             ButterKnife.bind(this, itemView);

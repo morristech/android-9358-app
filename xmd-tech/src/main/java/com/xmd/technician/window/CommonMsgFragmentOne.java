@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import com.xmd.technician.R;
 import com.xmd.technician.common.CommonMsgOnClickInterface;
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -18,15 +19,15 @@ import butterknife.OnClick;
  * Created by lhj on 2016/7/30.
  */
 public class CommonMsgFragmentOne extends Fragment {
-    @Bind(R.id.text1)
+    @BindView(R.id.text1)
     TextView text1;
-    @Bind(R.id.text2)
+    @BindView(R.id.text2)
     TextView text2;
-    @Bind(R.id.text3)
+    @BindView(R.id.text3)
     TextView text3;
-    @Bind(R.id.text4)
+    @BindView(R.id.text4)
     TextView text4;
-    @Bind(R.id.text5)
+    @BindView(R.id.text5)
     TextView text5;
 
     private  static  CommonMsgOnClickInterface msgOnClickInterface;
@@ -71,6 +72,6 @@ public class CommonMsgFragmentOne extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 }

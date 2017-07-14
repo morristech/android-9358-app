@@ -24,7 +24,8 @@ import com.xmd.manager.widget.ViewPagerTabIndicator;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -33,12 +34,12 @@ import rx.Subscription;
  */
 public class CustomerManagementFragment extends BaseFragment {
 
-    @Bind(R.id.tab_indicator)
+    @BindView(R.id.tab_indicator)
     ViewPagerTabIndicator mViewPagerTabIndicator;
 
-    @Bind(R.id.vp_customer)
+    @BindView(R.id.vp_customer)
     ViewPager mVpCustomer;
-    @Bind(R.id.customer_group)
+    @BindView(R.id.customer_group)
     TextView customerGroup;
 
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;

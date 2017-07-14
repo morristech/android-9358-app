@@ -23,18 +23,18 @@ import com.xmd.technician.msgctrl.RxBus;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
 public class ResetPasswordActivity extends BaseActivity implements TextWatcher{
     public static final int ICODE_RESEND_TIME = 60000;//验证码重发时间
-    @Bind(R.id.user_name) EditText mAccountNumberEdt;
-    @Bind(R.id.icode) EditText mSecurityCodeEdt;
-    @Bind(R.id.password) EditText mPassWordEdt;
-    @Bind(R.id.send_icode) Button mSendMSMBtn;
-    @Bind(R.id.confirm) Button mConfirmBtn;
+    @BindView(R.id.user_name) EditText mAccountNumberEdt;
+    @BindView(R.id.icode) EditText mSecurityCodeEdt;
+    @BindView(R.id.password) EditText mPassWordEdt;
+    @BindView(R.id.send_icode) Button mSendMSMBtn;
+    @BindView(R.id.confirm) Button mConfirmBtn;
 
     private Handler mHandler = new Handler();
     private boolean mPhoneNumReady = false;

@@ -15,7 +15,7 @@ import com.xmd.technician.R;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.LoginTechnician;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -24,31 +24,31 @@ import butterknife.OnClick;
  */
 
 public class TechPosterDialog extends Dialog {
-    @Bind(R.id.rl_view)
+    @BindView(R.id.rl_view)
     RelativeLayout rlView;
-    @Bind(R.id.img_poster_tech_photo)
+    @BindView(R.id.img_poster_tech_photo)
     RoundImageView imgPosterTechPhoto;
-    @Bind(R.id.tv_poster_tech_name)
+    @BindView(R.id.tv_poster_tech_name)
     TextView tvPosterTechName;
-    @Bind(R.id.tv_poster_primary_title)
+    @BindView(R.id.tv_poster_primary_title)
     TextView tvPosterPrimaryTitle;
-    @Bind(R.id.tv_poster_minor_title)
+    @BindView(R.id.tv_poster_minor_title)
     TextView tvPosterMinorTitle;
-    @Bind(R.id.tv_poster_club_name)
+    @BindView(R.id.tv_poster_club_name)
     TextView tvPosterClubName;
-    @Bind(R.id.img_poster_qr_code)
+    @BindView(R.id.img_poster_qr_code)
     ImageView imgPosterQrCode;
-    @Bind(R.id.rl_poster_edit_or_save)
+    @BindView(R.id.rl_poster_edit_or_save)
     RelativeLayout rlPosterEditOrSave;
-    @Bind(R.id.ll_poster_edit_or_share)
+    @BindView(R.id.ll_poster_edit_or_share)
     LinearLayout llPosterEditOrShare;
-    @Bind(R.id.img_poster_dismiss)
+    @BindView(R.id.img_poster_dismiss)
     ImageView imgPosterDismiss;
-    @Bind(R.id.rl_poster_save_and_share)
+    @BindView(R.id.rl_poster_save_and_share)
     RelativeLayout rlPosterSaveAndShare;
-    @Bind(R.id.tv_poster_save)
+    @BindView(R.id.tv_poster_save)
     TextView tvPosterSave;
-    @Bind(R.id.tv_share_poster)
+    @BindView(R.id.tv_share_poster)
     TextView tvSharePoster;
 
     private int style;

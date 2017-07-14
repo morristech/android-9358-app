@@ -19,7 +19,7 @@ import com.xmd.manager.service.response.RegisterStatisticsResult;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -32,14 +32,14 @@ public class RegisterDetailFragment extends BaseFragment {
     public static final int TAB_CURRENT_WEEK = 1;
     public static final int TAB_CURRENT_MONTH = 2;
     public static final int TAB_ACCUMULATE = 3;
-    @Bind(R.id.totalRegister)
+    @BindView(R.id.totalRegister)
     TextView totalRegister;
 
-    @Bind(R.id.tv_weixin_count)
+    @BindView(R.id.tv_weixin_count)
     TextView weixinCount;
-    @Bind(R.id.tv_temp_count)
+    @BindView(R.id.tv_temp_count)
     TextView tempCount;
-    @Bind(R.id.tv_user_count)
+    @BindView(R.id.tv_user_count)
     TextView userCount;
 
     private int mRange;
@@ -111,7 +111,6 @@ public class RegisterDetailFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mGetRegisterDetailDataSubscription);
     }
 }

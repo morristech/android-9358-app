@@ -17,7 +17,8 @@ import com.xmd.manager.widget.CircularBeadImageView;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -141,17 +142,17 @@ public class SelectedMemberAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     static class MemberItemHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.customer_select_state)
+        @BindView(R.id.customer_select_state)
         ImageView customerSelectState;
-        @Bind(R.id.customer_head)
+        @BindView(R.id.customer_head)
         CircularBeadImageView customerHead;
-        @Bind(R.id.customer_name)
+        @BindView(R.id.customer_name)
         TextView customerName;
-        @Bind(R.id.customer_type)
+        @BindView(R.id.customer_type)
         TextView customerType;
-        @Bind(R.id.customer_phone)
+        @BindView(R.id.customer_phone)
         TextView customerPhone;
-        @Bind(R.id.customer_bad_comment_count)
+        @BindView(R.id.customer_bad_comment_count)
         TextView customerBadCommentCount;
 
         public MemberItemHolder(View itemView) {
@@ -162,7 +163,7 @@ public class SelectedMemberAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     static class ListFooterHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_footer)
+        @BindView(R.id.item_footer)
         TextView itemFooter;
 
         public ListFooterHolder(View itemView) {

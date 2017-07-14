@@ -18,7 +18,7 @@ import com.xmd.manager.service.RequestConstant;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -33,17 +33,17 @@ public class PaidCouponDetailFragment extends BaseFragment {
     public static final int TAB_CURRENT_WEEK = 1;
     public static final int TAB_CURRENT_MONTH = 2;
     public static final int TAB_ACCUMULATE = 3;
-    @Bind(R.id.tv_purchase)
+    @BindView(R.id.tv_purchase)
     TextView tvPurchase;
-    @Bind(R.id.tv_use)
+    @BindView(R.id.tv_use)
     TextView tvUse;
-    @Bind(R.id.tv_share)
+    @BindView(R.id.tv_share)
     TextView tvShare;
-    @Bind(R.id.tv_pasted)
+    @BindView(R.id.tv_pasted)
     TextView tvPasted;
-    @Bind(R.id.tv_total_income)
+    @BindView(R.id.tv_total_income)
     TextView tvTotalIncome;
-    @Bind(R.id.tv_technician_income)
+    @BindView(R.id.tv_technician_income)
     TextView tvTechnicianIncome;
 
     private int mRange;
@@ -102,7 +102,6 @@ public class PaidCouponDetailFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mGetPaidCouponDetailSubscription);
     }
 }

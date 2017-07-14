@@ -26,7 +26,7 @@ import com.xmd.manager.widget.AlertDialogBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -35,13 +35,13 @@ import rx.Subscription;
  * Created by lhj on 2016/7/28.
  */
 public class PayActivity extends BaseActivity implements TextWatcher {
-    @Bind(R.id.pay_code)
+    @BindView(R.id.pay_code)
     TextView payCode;
-    @Bind(R.id.edit_Pay_money)
+    @BindView(R.id.edit_Pay_money)
     EditText editPayMoney;
-    @Bind(R.id.btn_pay)
+    @BindView(R.id.btn_pay)
     Button btnPay;
-    @Bind(R.id.user_pay_code)
+    @BindView(R.id.user_pay_code)
     LinearLayout userCode;
 
     private String mQrNo;

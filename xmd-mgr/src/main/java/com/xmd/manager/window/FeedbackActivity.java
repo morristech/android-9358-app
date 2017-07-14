@@ -16,7 +16,7 @@ import com.xmd.manager.service.response.FeedbackResult;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -25,9 +25,9 @@ import rx.Subscription;
  */
 public class FeedbackActivity extends BaseActivity {
 
-    @Bind(R.id.feedback_content)
+    @BindView(R.id.feedback_content)
     EditText mFeedbackContent;
-    @Bind(R.id.feedback_submit)
+    @BindView(R.id.feedback_submit)
     Button mFeedbackSubmit;
 
     private Subscription mFeedbackSubscription;

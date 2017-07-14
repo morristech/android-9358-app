@@ -21,7 +21,7 @@ import com.xmd.manager.AppConfig;
 import com.xmd.manager.R;
 import com.xmd.manager.widget.SmoothProgressBar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by sdcm on 15-10-27.
@@ -32,19 +32,19 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
     public static final String EXTRA_SHOW_MENU = "show_menu";
     public static final String EXTRA_FULLSCREEN = "fullScreen";
 
-    @Bind(R.id.mainwebView)
+    @BindView(R.id.mainwebView)
     WebView mainWebView;
-    @Bind(R.id.back_ImageView)
+    @BindView(R.id.back_ImageView)
     ImageView back_ImageView;
-    @Bind(R.id.go_next_ImageView)
+    @BindView(R.id.go_next_ImageView)
     ImageView go_next_ImageView;
-    @Bind(R.id.refresh_ImageView)
+    @BindView(R.id.refresh_ImageView)
     ImageView refresh_ImageView;
-    @Bind(R.id.home_ImageView)
+    @BindView(R.id.home_ImageView)
     ImageView home_ImageView;
-    @Bind(R.id.download_progressbar)
+    @BindView(R.id.download_progressbar)
     SmoothProgressBar downloadProgressbar;
-    @Bind(R.id.menu_LinearLayout)
+    @BindView(R.id.menu_LinearLayout)
     LinearLayout mMenuBar;
 
     //    private View mCustomView;

@@ -20,8 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AlbumAdapter extends RecyclerView.Adapter {
@@ -129,7 +128,7 @@ public class AlbumAdapter extends RecyclerView.Adapter {
 
     public class AlbumViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_image) ImageView mImageView;
+        @BindView(R.id.item_image) ImageView mImageView;
         public AlbumViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

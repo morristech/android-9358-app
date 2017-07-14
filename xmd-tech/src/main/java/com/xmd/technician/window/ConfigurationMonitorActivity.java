@@ -9,14 +9,15 @@ import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.widget.DividerItemDecoration;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2016/7/22.
  */
 public class ConfigurationMonitorActivity extends BaseActivity {
-    @Bind(R.id.configuration_list)
+    @BindView(R.id.configuration_list)
     RecyclerView mConfigurationRecycleView;
 
     private LinearLayoutManager mLayoutManager;

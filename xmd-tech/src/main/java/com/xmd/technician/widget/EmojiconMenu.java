@@ -25,7 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -33,8 +34,8 @@ import butterknife.ButterKnife;
  */
 public class EmojiconMenu extends RelativeLayout{
 
-    @Bind(R.id.pager_view) ViewPager mViewPager;
-    @Bind(R.id.indicator_view) LinearLayout mIndicatorView;
+    @BindView(R.id.pager_view) ViewPager mViewPager;
+    @BindView(R.id.indicator_view) LinearLayout mIndicatorView;
 
     private Bitmap mSelectedBitmap;
     private Bitmap mUnselectedBitmap;

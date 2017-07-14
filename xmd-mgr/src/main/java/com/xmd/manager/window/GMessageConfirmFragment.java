@@ -5,29 +5,21 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.FavourableActivityBean;
-import com.xmd.manager.common.FileSizeUtil;
 import com.xmd.manager.common.ResourceUtils;
-import com.xmd.manager.common.ThreadManager;
 import com.xmd.manager.common.Utils;
-import com.xmd.manager.msgctrl.MsgDef;
-import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.service.RequestConstant;
-import com.xmd.manager.widget.AlertDialogBuilder;
 import com.xmd.manager.widget.CircularBeadImageView;
-import com.xmd.manager.widget.LoadingDialog;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -35,18 +27,18 @@ import butterknife.OnClick;
  * Created by sdcm on 17-5-23.
  */
 public class GMessageConfirmFragment extends BaseFragment {
-    @Bind(R.id.customer_count_text)
+    @BindView(R.id.customer_count_text)
     TextView customerCountText;
-    @Bind(R.id.group_pic)
+    @BindView(R.id.group_pic)
     CircularBeadImageView groupPic;
-    @Bind(R.id.group_detail_message_content)
+    @BindView(R.id.group_detail_message_content)
     TextView contentText;
 
-    @Bind(R.id.group_activity_title)
+    @BindView(R.id.group_activity_title)
     TextView activityTitleText;
-    @Bind(R.id.group_activity_info)
+    @BindView(R.id.group_activity_info)
     TextView activityInfoText;
-    @Bind(R.id.customer_group_type)
+    @BindView(R.id.customer_group_type)
     TextView customerGroupNameText;
 
     private String imageUrl;

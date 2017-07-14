@@ -17,7 +17,7 @@ import com.xmd.technician.msgctrl.RxBus;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -27,7 +27,7 @@ import rx.Subscription;
 
 public class TechAccountActivity extends BaseActivity {
 
-    @Bind(R.id.view_recycler)
+    @BindView(R.id.view_recycler)
     RecyclerView viewRecycler;
 
     private Subscription mTechAccountListSubscription;

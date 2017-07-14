@@ -3,6 +3,7 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.hyphenate.exceptions.HyphenateException;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ContactAllBean;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Util;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -29,7 +32,8 @@ import com.xmd.technician.widget.BottomContactFilterPopupWindow;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -40,11 +44,11 @@ import rx.Subscription;
 
 public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
 
-    @Bind(R.id.btn_nearby_people)
+    @BindView(R.id.btn_nearby_people)
     Button btnNearbyPeople;
-    @Bind(R.id.img_screen_contact)
+    @BindView(R.id.img_screen_contact)
     ImageView imgScreenContact;
-    @Bind(R.id.ll_register_none)
+    @BindView(R.id.ll_register_none)
     LinearLayout llRegisterNone;
 
     private Map<String, String> params;
@@ -134,20 +138,25 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
     @Override
     public void onItemClicked(ContactAllBean bean) throws HyphenateException {
         super.onItemClicked(bean);
-        Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-        if (Utils.isNotEmpty(bean.id)) {
-            intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, bean.id);
-        }
-        if (Utils.isNotEmpty(bean.userId)) {
-            intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-        }
         if (Utils.isEmpty(bean.id) && Utils.isEmpty(bean.userId)) {
             Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.contact_has_no_information_alter));
             return;
         }
-        intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, true);
-        intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
-        startActivity(intent);
+        UINavigation.gotoCustomerDetailActivity(getActivity(), TextUtils.isEmpty(bean.userId)?bean.id:bean.userId, ConstantResources.INTENT_TYPE_TECH,false);
+//        Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
+//        if (Utils.isNotEmpty(bean.id)) {
+//            intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, bean.id);
+//        }
+//        if (Utils.isNotEmpty(bean.userId)) {
+//            intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
+//        }
+//        if (Utils.isEmpty(bean.id) && Utils.isEmpty(bean.userId)) {
+//            Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.contact_has_no_information_alter));
+//            return;
+//        }
+//        intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, true);
+//        intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
+//        startActivity(intent);
     }
 
     @OnClick({R.id.img_screen_contact, R.id.btn_nearby_people})
@@ -249,7 +258,7 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
 }

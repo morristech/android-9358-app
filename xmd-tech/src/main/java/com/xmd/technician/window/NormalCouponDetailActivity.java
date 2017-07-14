@@ -29,7 +29,8 @@ import com.xmd.technician.widget.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -39,12 +40,12 @@ import rx.Subscription;
  */
 public class NormalCouponDetailActivity extends BaseActivity {
 
-    @Bind(R.id.tv_share_text) TextView mTvShareText;
-    @Bind(R.id.tv_coupon_duration) TextView mTvCouponDuration;
-    @Bind(R.id.tv_commission) TextView mTvCommission;
-    @Bind(R.id.iv_share_qr_code) ImageView mIvShareQrCode;
-    @Bind(R.id.wv_act_content) WebView mWvActContent;
-    @Bind(R.id.btn_share) Button mShareBtn;
+    @BindView(R.id.tv_share_text) TextView mTvShareText;
+    @BindView(R.id.tv_coupon_duration) TextView mTvCouponDuration;
+    @BindView(R.id.tv_commission) TextView mTvCommission;
+    @BindView(R.id.iv_share_qr_code) ImageView mIvShareQrCode;
+    @BindView(R.id.wv_act_content) WebView mWvActContent;
+    @BindView(R.id.btn_share) Button mShareBtn;
     private Subscription mGetCouponInfoSubscription;
     private String mActId;
     private CouponInfoResult mCouponInfoResult;

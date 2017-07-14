@@ -34,20 +34,21 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import rx.Subscription;
 
 public class LoginActivity extends BaseActivity {
 
-    @Bind(R.id.username)
+    @BindView(R.id.username)
     ClearableEditText mEtUsername;
-    @Bind(R.id.password)
+    @BindView(R.id.password)
     ClearableEditText mEtPassword;
-    @Bind(R.id.server_host)
+    @BindView(R.id.server_host)
     Spinner mSpServerHost;
-    @Bind(R.id.tv_version)
+    @BindView(R.id.tv_version)
     TextView mTvVersion;
 
     private String mSelectedServerHost;

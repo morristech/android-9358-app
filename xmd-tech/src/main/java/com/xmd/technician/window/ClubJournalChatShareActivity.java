@@ -25,7 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -36,9 +37,9 @@ import rx.Subscription;
 public class ClubJournalChatShareActivity extends BaseActivity implements View.OnClickListener, ChatShareAdapter.OnItemClickListener {
 
 
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     RecyclerView mListView;
-    @Bind(R.id.view_emptyView)
+    @BindView(R.id.view_emptyView)
     EmptyView viewEmptyView;
 
     private static List<ClubJournalBean> ClubJournalBeanList;

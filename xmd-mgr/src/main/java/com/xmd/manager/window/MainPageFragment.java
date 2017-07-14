@@ -26,6 +26,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
+import com.example.xmd_m_comment.CommentDetailActivity;
+import com.example.xmd_m_comment.CommentListActivity;
+import com.example.xmd_m_comment.bean.CommentBean;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.BuildConfig;
 import com.xmd.manager.ClubData;
@@ -39,7 +42,6 @@ import com.xmd.manager.adapter.PKRankingAdapter;
 import com.xmd.manager.auth.AuthConstants;
 import com.xmd.manager.auth.AuthHelper;
 import com.xmd.manager.beans.AuthData;
-import com.xmd.manager.beans.BadComment;
 import com.xmd.manager.beans.IndexOrderData;
 import com.xmd.manager.beans.QrResult;
 import com.xmd.manager.beans.SwitchIndexBean;
@@ -56,9 +58,9 @@ import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.AccountDataResult;
-import com.xmd.manager.service.response.BadCommentListResult;
 import com.xmd.manager.service.response.ChangeStatusResult;
 import com.xmd.manager.service.response.CheckVerificationTypeResult;
+import com.xmd.manager.service.response.CommentAndComplaintListResult;
 import com.xmd.manager.service.response.CouponDataResult;
 import com.xmd.manager.service.response.PropagandaDataResult;
 import com.xmd.manager.service.response.RegistryDataResult;
@@ -73,11 +75,12 @@ import com.xmd.manager.widget.ClearableEditText;
 import com.xmd.manager.widget.SlidingMenu;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -89,217 +92,217 @@ import static android.app.Activity.RESULT_OK;
  */
 public class MainPageFragment extends BaseFragment implements View.OnClickListener {
 
-    @Bind(R.id.menu_app_version)
+    @BindView(R.id.menu_app_version)
     TextView mMenuAppVersion;
-    @Bind(R.id.menu_version_update)
+    @BindView(R.id.menu_version_update)
     RelativeLayout mMenuVersionUpdate;
-    @Bind(R.id.menu_setting)
+    @BindView(R.id.menu_setting)
     RelativeLayout mMenuSetting;
-    @Bind(R.id.menu_service_phone)
+    @BindView(R.id.menu_service_phone)
     TextView mMenuServicePhone;
-    @Bind(R.id.menu_service)
+    @BindView(R.id.menu_service)
     RelativeLayout mMenuService;
-    @Bind(R.id.menu_suggest)
+    @BindView(R.id.menu_suggest)
     RelativeLayout mMenuSuggest;
-    @Bind(R.id.menu_club_name)
+    @BindView(R.id.menu_club_name)
     TextView mMenuClubName;
-    @Bind(R.id.menu_choice_club)
+    @BindView(R.id.menu_choice_club)
     RelativeLayout mMenuChoiceClub;
-    @Bind(R.id.menu_change_password)
+    @BindView(R.id.menu_change_password)
     RelativeLayout mMenuChangePassword;
-    @Bind(R.id.club_list)
+    @BindView(R.id.club_list)
     RelativeLayout mClubList;
-    @Bind(R.id.menu_activity_logout)
+    @BindView(R.id.menu_activity_logout)
     RelativeLayout mSettingsActivityLogout;
-    @Bind(R.id.tv_qr_code)
+    @BindView(R.id.tv_qr_code)
     TextView mTvQrCode;
-    @Bind(R.id.cet_paid_order_consume_code)
+    @BindView(R.id.cet_paid_order_consume_code)
     ClearableEditText mCetPaidOrderConsumeCode;
-    @Bind(R.id.btn_consume)
+    @BindView(R.id.btn_consume)
     TextView mBtnConsume;
-    @Bind(R.id.ll_verify)
+    @BindView(R.id.ll_verify)
     LinearLayout mVerifyLayout;
 
-    @Bind(R.id.main_bad_comment)
+    @BindView(R.id.main_bad_comment)
     RelativeLayout mMainBadComment;
 
-    @Bind(R.id.bad_comment_finish)
+    @BindView(R.id.bad_comment_finish)
     ImageView mBadCommentFinish;
-    @Bind(R.id.main_ranking)
+    @BindView(R.id.main_ranking)
     RelativeLayout mMainRanking;
-    @Bind(R.id.cv_star_register)
+    @BindView(R.id.cv_star_register)
     CircleImageView mCvStarRegister;
-    @Bind(R.id.tv_star_register_user)
+    @BindView(R.id.tv_star_register_user)
     TextView mTvStarRegisterUser;
-    @Bind(R.id.tv_star_register_tech_no)
+    @BindView(R.id.tv_star_register_tech_no)
     TextView mTvStarRegisterTechNo;
-    @Bind(R.id.ll_star_user)
+    @BindView(R.id.ll_star_user)
     LinearLayout mLayoutStarUser;
-    @Bind(R.id.cv_star_sales)
+    @BindView(R.id.cv_star_sales)
     CircleImageView mCvStarSales;
-    @Bind(R.id.tv_star_sales)
+    @BindView(R.id.tv_star_sales)
     TextView mTvStarSales;
-    @Bind(R.id.tv_star_sales_tech_no)
+    @BindView(R.id.tv_star_sales_tech_no)
     TextView mTvStarSalesTechNo;
-    @Bind(R.id.ll_star_sale)
+    @BindView(R.id.ll_star_sale)
     LinearLayout mLayoutStarSale;
-    @Bind(R.id.cv_star_service)
+    @BindView(R.id.cv_star_service)
     CircleImageView mCvStarService;
-    @Bind(R.id.tv_star_service)
+    @BindView(R.id.tv_star_service)
     TextView mTvStarService;
-    @Bind(R.id.tv_star_service_tech_no)
+    @BindView(R.id.tv_star_service_tech_no)
     TextView mTvStarServiceTechNo;
-    @Bind(R.id.ll_star_service)
+    @BindView(R.id.ll_star_service)
     LinearLayout mLayoutStarService;
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.team_list)
+    @BindView(R.id.team_list)
     RecyclerView mTeamList;
-    @Bind(R.id.ranking_more)
+    @BindView(R.id.ranking_more)
     TextView mRankingMore;
-    @Bind(R.id.main_page_scroll)
+    @BindView(R.id.main_page_scroll)
     NestedScrollView mMainPageScroll;
-    @Bind(R.id.sliding_menu)
+    @BindView(R.id.sliding_menu)
     SlidingMenu mSlidingMenu;
 
-    @Bind(R.id.layout_statistics)
+    @BindView(R.id.layout_statistics)
     LinearLayout mStatisticsLayout;
-    @Bind(R.id.layout_obtain_client)
+    @BindView(R.id.layout_obtain_client)
     LinearLayout mClientLayout;
-    @Bind(R.id.layout_bad_comment)
+    @BindView(R.id.layout_bad_comment)
     LinearLayout mBadCommentLayout;
-    @Bind(R.id.main_publicity_time_switch)
+    @BindView(R.id.main_publicity_time_switch)
     TextView mMainPublicityTimeSwitch;
-    @Bind(R.id.tv_current_time)
+    @BindView(R.id.tv_current_time)
     TextView mMainPublicityCurrentTime;
 
     //Wifi//网店访客
-    @Bind(R.id.ll_wifi_today)
+    @BindView(R.id.ll_wifi_today)
     LinearLayout mWifiTodayLayout;
-    @Bind(R.id.tv_title_wifi)
+    @BindView(R.id.tv_title_wifi)
     TextView mTvTitleWifi;
-    @Bind(R.id.tv_wifi_today)
+    @BindView(R.id.tv_wifi_today)
     TextView mTvWifiToday;
-    @Bind(R.id.tv_wifi_accumulate)
+    @BindView(R.id.tv_wifi_accumulate)
     TextView mTvWifiAccumulate;
-    @Bind(R.id.tv_title_client)
+    @BindView(R.id.tv_title_client)
     TextView mTvTitleClient;
-    @Bind(R.id.tv_title_statistics)
+    @BindView(R.id.tv_title_statistics)
     TextView mTvTitleStatistics;
-    @Bind(R.id.ll_visit_today)
+    @BindView(R.id.ll_visit_today)
     LinearLayout mVisitTodayLayout;
-    @Bind(R.id.tv_title_visit)
+    @BindView(R.id.tv_title_visit)
     TextView mTvTitleVisit;
-    @Bind(R.id.tv_visit_today)
+    @BindView(R.id.tv_visit_today)
     TextView mTvVisitToday;
-    @Bind(R.id.tv_visit_accumulate)
+    @BindView(R.id.tv_visit_accumulate)
     TextView mTvVisitAccumulate;
-    @Bind(R.id.ll_propaganda_view)
+    @BindView(R.id.ll_propaganda_view)
     LinearLayout mLlPropagandaView;
-    @Bind(R.id.ll_visit_view)
+    @BindView(R.id.ll_visit_view)
     LinearLayout mLlVisitView;
-    @Bind(R.id.tv_visit_today_data)
+    @BindView(R.id.tv_visit_today_data)
     TextView mTvVisitTodayData;
-    @Bind(R.id.tv_visit_yesterday_data)
+    @BindView(R.id.tv_visit_yesterday_data)
     TextView mTvVisitYesterdayData;
-    @Bind(R.id.tv_visit_accumulate_data)
+    @BindView(R.id.tv_visit_accumulate_data)
     TextView mTvVisitAccumulateData;
-    @Bind(R.id.main_marketing_time_switch)
+    @BindView(R.id.main_marketing_time_switch)
     TextView mMainMarketingTimeSwitch;
-    @Bind(R.id.tv_marketing_current_time)
+    @BindView(R.id.tv_marketing_current_time)
     TextView mMainMarketingCurrentTime;
     //新注册用户
-    @Bind(R.id.ll_new_register_today)
+    @BindView(R.id.ll_new_register_today)
     LinearLayout mNewRegisterLayout;
-    @Bind(R.id.tv_title_register)
+    @BindView(R.id.tv_title_register)
     TextView mTvTitleRegister;
-    @Bind(R.id.tv_new_register_today)
+    @BindView(R.id.tv_new_register_today)
     TextView mTvNewRegisterToday;
-    @Bind(R.id.tv_new_register_accumulate)
+    @BindView(R.id.tv_new_register_accumulate)
     TextView mTvNewRegisterAccumulate;
 
     //领券用户
-    @Bind(R.id.ll_coupon_get_today)
+    @BindView(R.id.ll_coupon_get_today)
     LinearLayout mCouponGetLayout;
-    @Bind(R.id.tv_title_coupon)
+    @BindView(R.id.tv_title_coupon)
     TextView mTvTitleCoupon;
-    @Bind(R.id.tv_coupon_get_today)
+    @BindView(R.id.tv_coupon_get_today)
     TextView mTvCouponGetToday;
-    @Bind(R.id.tv_coupon_get_accumulate)
+    @BindView(R.id.tv_coupon_get_accumulate)
     TextView mTvCouponGetAccumulate;
 
     //订单
-    @Bind(R.id.tv_title_order)
+    @BindView(R.id.tv_title_order)
     TextView mTvTitleOrder;
-    @Bind(R.id.layout_order)
+    @BindView(R.id.layout_order)
     LinearLayout mOrderLayout;
-    @Bind(R.id.tv_pending_order_count)
+    @BindView(R.id.tv_pending_order_count)
     TextView mTvPendingOrderCount;
-    @Bind(R.id.tv_accepted_order_count)
+    @BindView(R.id.tv_accepted_order_count)
     TextView mTvAcceptedOrderCount;
-    @Bind(R.id.tv_completed_order_count)
+    @BindView(R.id.tv_completed_order_count)
     TextView mTvCompletedOrderCount;
 
-    @Bind(R.id.main_bad_comment_list)
+    @BindView(R.id.main_bad_comment_list)
     RecyclerView badCommentList;
-    @Bind(R.id.toolbar_right_text)
+    @BindView(R.id.toolbar_right_text)
     TextView mToolbarRightText;
     //线上流水
-    @Bind(R.id.tv_title_account)
+    @BindView(R.id.tv_title_account)
     TextView tvTitleAccount;
-    @Bind(R.id.tv_account_current_time)
+    @BindView(R.id.tv_account_current_time)
     TextView tvAccountCurrentTime;
-    @Bind(R.id.main_account_time_switch)
+    @BindView(R.id.main_account_time_switch)
     TextView mainAccountTimeSwitch;
-    @Bind(R.id.tv_title_paid)
+    @BindView(R.id.tv_title_paid)
     TextView tvTitlePaid;
-    @Bind(R.id.tv_check_account)
+    @BindView(R.id.tv_check_account)
     TextView tvCheckAccount;
-    @Bind(R.id.tv_paid_account_total)
+    @BindView(R.id.tv_paid_account_total)
     TextView tvPaidAccountTotal;
-    @Bind(R.id.ll_account_paid)
+    @BindView(R.id.ll_account_paid)
     LinearLayout llAccountPaid;
-    @Bind(R.id.tv_title_sail)
+    @BindView(R.id.tv_title_sail)
     TextView tvTitleSail;
-    @Bind(R.id.tv_sail_account)
+    @BindView(R.id.tv_sail_account)
     TextView tvSailAccount;
-    @Bind(R.id.tv_sail_account_total)
+    @BindView(R.id.tv_sail_account_total)
     TextView tvSailAccountTotal;
-    @Bind(R.id.ll_account_sail_view)
+    @BindView(R.id.ll_account_sail_view)
     LinearLayout llAccountSailView;
-    @Bind(R.id.ll_account_view)
+    @BindView(R.id.ll_account_view)
     LinearLayout llAccountView;
-    @Bind(R.id.tv_once_card_title)
+    @BindView(R.id.tv_once_card_title)
     TextView tvOnceCardTitle;
-    @Bind(R.id.tv_once_card_account)
+    @BindView(R.id.tv_once_card_account)
     TextView tvOnceCardAccount;
-    @Bind(R.id.ll_once_card_view)
+    @BindView(R.id.ll_once_card_view)
     RelativeLayout llOnceCardView;
-    @Bind(R.id.tv_panic_title)
+    @BindView(R.id.tv_panic_title)
     TextView tvPanicTitle;
-    @Bind(R.id.tv_panic_account)
+    @BindView(R.id.tv_panic_account)
     TextView tvPanicAccount;
-    @Bind(R.id.ll_panic_view)
+    @BindView(R.id.ll_panic_view)
     RelativeLayout llPanicView;
-    @Bind(R.id.tv_pay_for_me_title)
+    @BindView(R.id.tv_pay_for_me_title)
     TextView tvPayForMeTitle;
-    @Bind(R.id.tv_pay_for_me_account)
+    @BindView(R.id.tv_pay_for_me_account)
     TextView tvPayForMeAccount;
-    @Bind(R.id.ll_pay_for_me_view)
+    @BindView(R.id.ll_pay_for_me_view)
     RelativeLayout llPayForMeView;
-    @Bind(R.id.tv_paid_title)
+    @BindView(R.id.tv_paid_title)
     TextView tvPaidTitle;
-    @Bind(R.id.tv_paid_account)
+    @BindView(R.id.tv_paid_account)
     TextView tvPaidAccount;
-    @Bind(R.id.ll_paid_view)
+    @BindView(R.id.ll_paid_view)
     RelativeLayout llPaidView;
-    @Bind(R.id.tv_sail_income)
+    @BindView(R.id.tv_sail_income)
     TextView tvSailIncome;
-    @Bind(R.id.ll_sail_view)
+    @BindView(R.id.ll_sail_view)
     LinearLayout llSailView;
-    @Bind(R.id.layout_technician_pk_ranking)
+    @BindView(R.id.layout_technician_pk_ranking)
     LinearLayout technicianPkRanking;
-    @Bind(R.id.layout_technician_ranking)
+    @BindView(R.id.layout_technician_ranking)
     LinearLayout technicianRanking;
 
 
@@ -320,7 +323,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     private int mCurrentMarketingData = 1;
     private VerificationManagementHelper mVerificationHelper;
     private MainPageBadCommentListAdapter badCommentListAdapter;
-    private List<BadComment> mBadCommentList;
+    private List<CommentBean> mCommentList;
     private boolean isHasPk;
 
     private Subscription mIndexOrderDataSubscription;
@@ -328,7 +331,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     private Subscription mRegistryDataSubscription;
     private Subscription mCouponDataSubscription;
     private Subscription mRankingDataSubscription;
-    private Subscription mBadCommentSubscription;
+    private Subscription mCommentAndComplaintSubscription;
     private Subscription mBadCommentStatusSubscription;
     private Subscription mGetVerificationTypeSubscription;
     private Subscription mVerificationHandleSubscription;
@@ -417,8 +420,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         mQrResultSubscription = RxBus.getInstance().toObservable(QrResult.class).subscribe(
                 qrResult -> onScanQrCodeSuccess(qrResult));
 
-        mBadCommentSubscription = RxBus.getInstance().toObservable(BadCommentListResult.class).subscribe(
-                badCommentListResult -> handlerBadCommentList(badCommentListResult)
+        mCommentAndComplaintSubscription = RxBus.getInstance().toObservable(CommentAndComplaintListResult.class).subscribe(
+                commentAndComplaintListResult -> handlerCommentAndComplaint(commentAndComplaintListResult)
         );
 
         mBadCommentStatusSubscription = RxBus.getInstance().toObservable(ChangeStatusResult.class).subscribe(
@@ -461,6 +464,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         mVerificationHelper = VerificationManagementHelper.getInstance();
         mVerificationHelper.initializeHelper(getActivity());
     }
+
 
     private void handlerAccountDataResult(AccountDataResult result) {
         if (result.statusCode == 200) {
@@ -566,20 +570,18 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         layoutManager.setSmoothScrollbarEnabled(true);
         layoutManager.setAutoMeasureEnabled(true);
 
-        mBadCommentList = new ArrayList<>();
+        mCommentList = new ArrayList<>();
 
-        badCommentListAdapter = new MainPageBadCommentListAdapter(getActivity(), mBadCommentList);
+        badCommentListAdapter = new MainPageBadCommentListAdapter(getActivity(), mCommentList);
         badCommentListAdapter.setCommentClickedListener(new MainPageBadCommentListAdapter.OnCommentClickedListener() {
             @Override
-            public void onCommentCallBackClick(BadComment badComment) {
+            public void onCommentCallBackClick(CommentBean badComment) {
                 showServiceOutMenu(badComment.phoneNum, badComment.userEmchatId, badComment.userName, badComment.avatarUrl, badComment.id, badComment.returnStatus);
             }
 
             @Override
-            public void onItemClicked(BadComment badComment) {
-                Intent intent = new Intent(getActivity(), BadCommentDetailActivity.class);
-                intent.putExtra(RequestConstant.KEY_COMMENT_ID, badComment.id);
-                startActivity(intent);
+            public void onItemClicked(CommentBean badComment) {
+                CommentDetailActivity.startCommentDetailActivity(getActivity(), badComment, true);
             }
         });
         badCommentList.setLayoutManager(layoutManager);
@@ -749,36 +751,55 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initBadCommentData() {
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_COMMENT_STATUS, RequestConstant.INDEX_COMMENT);
-        params.put(RequestConstant.KEY_PAGE, "1");
-        params.put(RequestConstant.KEY_PAGE_SIZE, "2");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_BAD_COMMENT_LIST, params);
+//        Map<String, String> params = new HashMap<>();
+//        params.put(RequestConstant.KEY_COMMENT_STATUS, RequestConstant.INDEX_COMMENT);
+//        params.put(RequestConstant.KEY_PAGE, "1");
+//        params.put(RequestConstant.KEY_PAGE_SIZE, "2");
+        //       MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_BAD_COMMENT_LIST, params);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_BAD_COMMENT_AND_COMPLAINT_LIST);
     }
 
-    private void handlerBadCommentList(BadCommentListResult result) {
+//    private void handlerBadCommentList(BadCommentListResult result) {
+//        if (mSwipeRefreshLayout != null) {
+//            mSwipeRefreshLayout.setRefreshing(false);
+//        }
+//        if (result.statusCode == 200 && result.commentState.equals(RequestConstant.INDEX_COMMENT)) {
+//            if (result.respData == null) {
+//                badCommentList.setVisibility(View.GONE);
+//                mBadCommentFinish.setVisibility(View.VISIBLE);
+//                return;
+//            }
+//            if (result.respData.size() > 0) {
+//
+//
+//            } else {
+//                badCommentList.setVisibility(View.GONE);
+//                mBadCommentFinish.setVisibility(View.VISIBLE);
+//            }
+//        } else if (result.statusCode != 200 && result.commentState.equals(RequestConstant.INDEX_COMMENT)) {
+//            Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.abnormal_server));
+//        }
+//    }
+
+    private void handlerCommentAndComplaint(CommentAndComplaintListResult result) {
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
-        if (result.statusCode == 200 && result.commentState.equals(RequestConstant.INDEX_COMMENT)) {
-            if (result.respData == null) {
+        if (result.statusCode == 200) {
+            if (result.respData == null || result.respData.size() == 0) {
                 badCommentList.setVisibility(View.GONE);
                 mBadCommentFinish.setVisibility(View.VISIBLE);
                 return;
-            }
-            if (result.respData.size() > 0) {
+            } else {
                 badCommentList.setVisibility(View.VISIBLE);
                 mBadCommentFinish.setVisibility(View.GONE);
-                mBadCommentList.clear();
-                mBadCommentList.addAll(result.respData);
-                badCommentListAdapter.setData(mBadCommentList);
-
-            } else {
-                badCommentList.setVisibility(View.GONE);
-                mBadCommentFinish.setVisibility(View.VISIBLE);
+                mCommentList.clear();
+                mCommentList.addAll((Collection<? extends CommentBean>) result.respData);
+                badCommentListAdapter.setData(mCommentList);
             }
-        } else if (result.statusCode != 200 && result.commentState.equals(RequestConstant.INDEX_COMMENT)) {
-            Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.abnormal_server));
+        } else {
+            badCommentList.setVisibility(View.GONE);
+            mBadCommentFinish.setVisibility(View.VISIBLE);
         }
     }
 
@@ -979,7 +1000,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.main_bad_comment:
                 //全部差评
-                startActivity(new Intent(getActivity(), AllBadCommentActivity.class));
+                CommentListActivity.startCommentListActivity(getActivity(), true, "");
                 break;
             case R.id.toolbar_right_text:
                 startActivity(new Intent(getActivity(), VerificationRecordListActivity.class));
@@ -1146,9 +1167,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mRegistryDataSubscription, mCouponDataSubscription, mRankingDataSubscription,
-                mBadCommentSubscription, mBadCommentStatusSubscription, mIndexOrderDataSubscription, mQrResultSubscription,
+                mCommentAndComplaintSubscription, mBadCommentStatusSubscription, mIndexOrderDataSubscription, mQrResultSubscription,
                 mGetVerificationTypeSubscription, mVerificationHandleSubscription, mPropagandaDataSubscription, mAccountDataSubSubscription,
                 mTechPKRankingSubscription, mSwitchChangedSubscription);
         mVerificationHelper.destroySubscription();

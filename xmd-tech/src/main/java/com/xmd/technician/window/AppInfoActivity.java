@@ -10,15 +10,16 @@ import com.xmd.technician.R;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class AppInfoActivity extends BaseActivity {
 
-    @Bind(R.id.app_version)
+    @BindView(R.id.app_version)
     TextView mAppVersion;
-    @Bind(R.id.icon)
+    @BindView(R.id.icon)
     ImageView icon;
     private  int i = 0;
     private long starTime = 0;

@@ -20,7 +20,7 @@ import com.xmd.manager.widget.ClearableEditText;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -31,11 +31,11 @@ import rx.Subscription;
 public class OrderSearchActivity extends BaseListActivity<Order, OrderSearchListResult> {
 
 
-    @Bind(R.id.iv_back)
+    @BindView(R.id.iv_back)
     ImageView mIvBack;
-    @Bind(R.id.search_order)
+    @BindView(R.id.search_order)
     ClearableEditText mSearchOrder;
-    @Bind(R.id.iv_search)
+    @BindView(R.id.iv_search)
     ImageView mIvSearch;
 
     private String mSearchPhone;

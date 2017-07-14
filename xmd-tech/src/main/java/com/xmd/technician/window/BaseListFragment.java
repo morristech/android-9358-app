@@ -15,7 +15,7 @@ import com.xmd.technician.msgctrl.RxBus;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -28,9 +28,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements ListRe
     protected static final int PAGE_START = 0;
     protected static final int PAGE_SIZE = 20;
 
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     RecyclerView mListView;
 
     protected LinearLayoutManager mLayoutManager;

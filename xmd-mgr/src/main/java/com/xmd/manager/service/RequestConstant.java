@@ -180,6 +180,8 @@ public class RequestConstant {
      */
     public static final String URL_SAVE_CONTACT_MARK_CHATTO_USER = BASE_URL + "/v1/emchat/markchattouser";
 
+    public static final String URL_COMMENT_LIST = BASE_URL + "/v2/comment/list";
+
 
     /**********************************************************************dengyixia***********************/
     /*                                           keys                                            */

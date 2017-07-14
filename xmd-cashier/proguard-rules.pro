@@ -146,6 +146,11 @@
 
 -dontwarn org.greenrobot.**
 -keep class org.greenrobot.** {*;}
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
 
 # Getui
 -dontwarn com.igexin.**

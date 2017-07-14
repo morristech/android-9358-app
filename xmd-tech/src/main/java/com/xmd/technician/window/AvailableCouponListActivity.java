@@ -30,7 +30,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -40,11 +41,11 @@ import rx.Subscription;
  */
 public class AvailableCouponListActivity extends BaseActivity implements View.OnClickListener {
     public static final String EXTRA_CHAT_ID = "chatId";
-    @Bind(R.id.toolbar_right_share)
+    @BindView(R.id.toolbar_right_share)
     TextView toolbarRightShare;
-    @Bind(R.id.view_emptyView)
+    @BindView(R.id.view_emptyView)
     EmptyView viewEmptyView;
-    @Bind(R.id.expandable_list_view)
+    @BindView(R.id.expandable_list_view)
     ExpandableListView expandableListView;
 
     private ChatCouponAdapter adapter;

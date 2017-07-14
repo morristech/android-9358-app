@@ -22,7 +22,7 @@ import com.xmd.technician.widget.EmptyView;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -32,7 +32,7 @@ import rx.Subscription;
 
 public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
 
-    @Bind(R.id.empty_view_widget)
+    @BindView(R.id.empty_view_widget)
     EmptyView mEmptyViewWidget;
     private Subscription mPayForMeListSubscription;
     private int mTotalAmount;
@@ -124,7 +124,6 @@ public class PayForMeListFragment extends BaseListFragment<PayForMeBean> {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mPayForMeListSubscription);
-        ButterKnife.unbind(this);
     }
 
     @Override

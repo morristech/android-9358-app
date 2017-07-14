@@ -18,7 +18,8 @@ import com.xmd.technician.msgctrl.RxBus;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -27,7 +28,7 @@ import rx.Subscription;
  */
 public class CreditRecordFragment extends BaseListFragment<CreditDetailBean> {
 
-    @Bind(R.id.status_progressbar)
+    @BindView(R.id.status_progressbar)
     ProgressBar statusProgressbar;
     private Subscription getCreditUserRecordsSubscription;
 
@@ -66,7 +67,6 @@ public class CreditRecordFragment extends BaseListFragment<CreditDetailBean> {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(getCreditUserRecordsSubscription);
-        ButterKnife.unbind(this);
     }
 
     private void handlerDetailResult(CreditAccountDetailResult result) {

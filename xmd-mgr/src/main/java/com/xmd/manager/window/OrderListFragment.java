@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -48,35 +48,35 @@ import rx.Subscription;
 
 public class OrderListFragment extends BaseFragment {
 
-    @Bind(R.id.toolbar_left)
+    @BindView(R.id.toolbar_left)
     ImageView mToolbarLeft;
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
-    @Bind(R.id.toolbar_customer_filter_btn)
+    @BindView(R.id.toolbar_customer_filter_btn)
     TextView mToolbarCustomerFilterBtn;
-    @Bind(R.id.toolbar_right_text)
+    @BindView(R.id.toolbar_right_text)
     TextView mToolbarRightText;
-    @Bind(R.id.toolbar_right_image)
+    @BindView(R.id.toolbar_right_image)
     ImageView mToolbarRightImage;
-    @Bind(R.id.toolbar_notice_unread_msg)
+    @BindView(R.id.toolbar_notice_unread_msg)
     TextView mToolbarNoticeUnreadMsg;
-    @Bind(R.id.toolbar_right)
+    @BindView(R.id.toolbar_right)
     FrameLayout mToolbarRight;
-    @Bind(R.id.rl_toolbar)
+    @BindView(R.id.rl_toolbar)
     RelativeLayout mRlToolbar;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.startTime)
+    @BindView(R.id.startTime)
     TextView mStartTime;
-    @Bind(R.id.endTime)
+    @BindView(R.id.endTime)
     TextView mEndTime;
-    @Bind(R.id.btnSubmit)
+    @BindView(R.id.btnSubmit)
     Button mBtnSubmit;
-    @Bind(R.id.time_text_view)
+    @BindView(R.id.time_text_view)
     LinearLayout mTimeTextView;
-    @Bind(R.id.tab_indicator)
+    @BindView(R.id.tab_indicator)
     ViewPagerTabIndicator mTabIndicator;
-    @Bind(R.id.vp_order)
+    @BindView(R.id.vp_order)
     ViewPager mViewPager;
 
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
@@ -186,7 +186,6 @@ public class OrderListFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mFilterOrderSubscription, mSwitchRangeSubscription);
     }
 

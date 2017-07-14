@@ -20,7 +20,7 @@ import com.xmd.manager.common.VerificationManagementHelper;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,47 +30,47 @@ import butterknife.OnClick;
 
 public class CouponVerificationFragment extends BaseFragment {
 
-    @Bind(R.id.coupon_no)
+    @BindView(R.id.coupon_no)
     TextView mCouponNo;
-    @Bind(R.id.coupon_no_section)
+    @BindView(R.id.coupon_no_section)
     LinearLayout mCouponNoSection;
-    @Bind(R.id.coupon_name)
+    @BindView(R.id.coupon_name)
     TextView mCouponName;
-    @Bind(R.id.coupon_type)
+    @BindView(R.id.coupon_type)
     TextView mCouponType;
-    @Bind(R.id.coupon_desc)
+    @BindView(R.id.coupon_desc)
     TextView mCouponDesc;
-    @Bind(R.id.coupon_status)
+    @BindView(R.id.coupon_status)
     TextView mCouponStatus;
-    @Bind(R.id.activity_duration)
+    @BindView(R.id.activity_duration)
     TextView mActivityDuration;
-    @Bind(R.id.coupon_duration)
+    @BindView(R.id.coupon_duration)
     TextView mCouponDuration;
-    @Bind(R.id.coupon_use_duration_label)
+    @BindView(R.id.coupon_use_duration_label)
     TextView mCouponUseDurationLabel;
-    @Bind(R.id.coupon_use_duration)
+    @BindView(R.id.coupon_use_duration)
     TextView mCouponUseDuration;
-    @Bind(R.id.coupon_use)
+    @BindView(R.id.coupon_use)
     Button mCouponUse;
-    @Bind(R.id.coupon_supplement)
+    @BindView(R.id.coupon_supplement)
     WebView mCouponSupplement;
-    @Bind(R.id.coupon_supplement_section)
+    @BindView(R.id.coupon_supplement_section)
     LinearLayout mCouponSupplementSection;
-    @Bind(R.id.coupon_item)
+    @BindView(R.id.coupon_item)
     TextView mCouponItem;
-    @Bind(R.id.coupon_items_container)
+    @BindView(R.id.coupon_items_container)
     LinearLayout mCouponItemsContainer;
-    @Bind(R.id.coupon_use_supplement)
+    @BindView(R.id.coupon_use_supplement)
     WebView mCouponUseSupplement;
-    @Bind(R.id.coupon_commission)
+    @BindView(R.id.coupon_commission)
     TextView mCouponCommission;
-    @Bind(R.id.coupon_commission_section)
+    @BindView(R.id.coupon_commission_section)
     LinearLayout mCouponCommissionSection;
-    @Bind(R.id.coupon_use_data)
+    @BindView(R.id.coupon_use_data)
     Button mCouponUseData;
-    @Bind(R.id.ll_activity_limit)
+    @BindView(R.id.ll_activity_limit)
     LinearLayout mLlActivityLimit;
-    @Bind(R.id.activity_limit)
+    @BindView(R.id.activity_limit)
     TextView mActivityLimit;
 
 
@@ -135,7 +135,6 @@ public class CouponVerificationFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick(R.id.coupon_use)

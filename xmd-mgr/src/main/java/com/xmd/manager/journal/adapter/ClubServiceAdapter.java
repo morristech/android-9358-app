@@ -15,7 +15,7 @@ import com.xmd.manager.journal.contract.ClubServiceChoiceContract;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -51,9 +51,9 @@ public class ClubServiceAdapter extends RecyclerView.Adapter<ClubServiceAdapter.
     }
 
     public class ServiceItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.service_item_title)
+        @BindView(R.id.service_item_title)
         TextView mItemTitle;
-        @Bind(R.id.list_item_view)
+        @BindView(R.id.list_item_view)
         RecyclerView mItemList;
         private ClubServiceItemAdapter mAdapter;
 

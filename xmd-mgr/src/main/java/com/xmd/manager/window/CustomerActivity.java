@@ -10,13 +10,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xmd.chat.event.EventStartChatActivity;
+import com.example.xmd_m_comment.bean.AllGroupListBean;
+import com.example.xmd_m_comment.bean.UserGroupListBean;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.auth.AuthConstants;
 import com.xmd.manager.auth.AuthHelper;
-import com.xmd.manager.beans.AllGroupListBean;
+
 import com.xmd.manager.beans.Customer;
 import com.xmd.manager.beans.UserGroupListBean;
+
+import com.xmd.manager.chat.EmchatUserHelper;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.common.WidgetUtils;
@@ -37,7 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -51,35 +55,35 @@ public class CustomerActivity extends BaseActivity {
     private Customer mCustomer;
     private String mCustomerUserId;
 
-    @Bind(R.id.civ_avatar)
+    @BindView(R.id.civ_avatar)
     CircularBeadImageView mCivAvatar;
-    @Bind(R.id.tv_customer_name)
+    @BindView(R.id.tv_customer_name)
     TextView mTvCustomerName;
-    @Bind(R.id.tv_customer_type)
+    @BindView(R.id.tv_customer_type)
     TextView mTvCustomerType;
-    @Bind(R.id.tv_telephone)
+    @BindView(R.id.tv_telephone)
     TextView mTvTelephone;
-    @Bind(R.id.tv_technician_name)
+    @BindView(R.id.tv_technician_name)
     TextView mTvTechnicianName;
-    @Bind(R.id.tv_last_visit)
+    @BindView(R.id.tv_last_visit)
     TextView mTvLastVisit;
-    @Bind(R.id.tv_orders_count)
+    @BindView(R.id.tv_orders_count)
     TextView mTvOrdersCount;
-    @Bind(R.id.tv_comments_count)
+    @BindView(R.id.tv_comments_count)
     TextView mTvCommentsCount;
-    @Bind(R.id.tv_coupons_count)
+    @BindView(R.id.tv_coupons_count)
     TextView mTvCouponsCount;
-    @Bind(R.id.ll_btn_container)
+    @BindView(R.id.ll_btn_container)
     LinearLayout mFunBtnContainer;
-    @Bind(R.id.btn_chat)
+    @BindView(R.id.btn_chat)
     Button mBtnChat;
-    @Bind(R.id.btn_sms)
+    @BindView(R.id.btn_sms)
     Button mBtnSms;
-    @Bind(R.id.btn_coupon)
+    @BindView(R.id.btn_coupon)
     Button mBtnCoupon;
-    @Bind(R.id.layout_group_data)
+    @BindView(R.id.layout_group_data)
     LinearLayout layoutGroupData;
-    @Bind(R.id.customer_group_data)
+    @BindView(R.id.customer_group_data)
     TextView mCustomerGroupData;
 
     private Subscription mGetCustomerViewSubscription;

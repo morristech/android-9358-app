@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
+import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.xmd.technician.Adapter.ExpandableClubEmployeeListViewAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ClubRoleBean;
 import com.xmd.technician.bean.ClubUserListBean;
 import com.xmd.technician.common.CharacterParser;
+import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ClubEmployeeListResult;
@@ -29,7 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -39,11 +42,11 @@ import rx.Subscription;
 
 public class ContactsTechnicianFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    @Bind(R.id.technician_empty_view)
+    @BindView(R.id.technician_empty_view)
     EmptyView technicianEmptyView;
-    @Bind(R.id.technician_expand_list)
+    @BindView(R.id.technician_expand_list)
     ExpandableListView technicianExpandList;
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout swipeRefreshWidget;
     private Subscription mClubEmployeeSubscription;
     private CharacterParser characterParser;
@@ -78,15 +81,16 @@ public class ContactsTechnicianFragment extends BaseFragment implements SwipeRef
         clubEmployeeAdapter.setChildrenClickedInterface(new ExpandableClubEmployeeListViewAdapter.OnChildrenClicked() {
             @Override
             public void onChildrenClickedListener(ClubUserListBean bean) {
-                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-                intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, bean.id);
-                intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
-                if (bean.userType.equals(Constant.CLUB_EMPLOYEE_TYPE_MANAGER)) {
-                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER);
-                } else {
-                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_TECH);
-                }
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
+//                intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, bean.id);
+//                intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
+//                if (bean.userType.equals(Constant.CLUB_EMPLOYEE_TYPE_MANAGER)) {
+//                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_MANAGER);
+//                } else {
+//                    intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_TECH);
+//                }
+//                startActivity(intent);
+                UINavigation.gotoCustomerDetailActivity(getActivity(),bean.id, ConstantResources.INTENT_TYPE_TECH,true);
             }
         });
         technicianExpandList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -228,7 +232,7 @@ public class ContactsTechnicianFragment extends BaseFragment implements SwipeRef
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
 

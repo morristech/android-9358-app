@@ -14,14 +14,15 @@ import com.xmd.technician.msgctrl.RxBus;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
 public class FeedbackActivity extends BaseActivity {
 
-    @Bind(R.id.feedback_content) EditText mContent;
+    @BindView(R.id.feedback_content) EditText mContent;
 
     private Subscription mSubmitFeedbackSubscription;
 

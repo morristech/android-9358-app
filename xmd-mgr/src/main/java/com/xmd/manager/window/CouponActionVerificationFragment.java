@@ -19,7 +19,7 @@ import com.xmd.manager.common.VerificationManagementHelper;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,29 +30,29 @@ import butterknife.OnClick;
 public class CouponActionVerificationFragment extends BaseFragment {
 
 
-    @Bind(R.id.coupon_action_verification_code)
+    @BindView(R.id.coupon_action_verification_code)
     TextView couponActionVerificationCode;
-    @Bind(R.id.coupon_action_verification_name)
+    @BindView(R.id.coupon_action_verification_name)
     TextView couponActionVerificationName;
-    @Bind(R.id.btn_coupon_action_verification)
+    @BindView(R.id.btn_coupon_action_verification)
     Button btnCouponActionVerification;
-    @Bind(R.id.coupon_name)
+    @BindView(R.id.coupon_name)
     TextView couponName;
-    @Bind(R.id.coupon_verification_time)
+    @BindView(R.id.coupon_verification_time)
     TextView couponVerificationTime;
-    @Bind(R.id.coupon_verification_available_time)
+    @BindView(R.id.coupon_verification_available_time)
     TextView couponVerificationAvailableTime;
-    @Bind(R.id.coupon_verification_user_time)
+    @BindView(R.id.coupon_verification_user_time)
     TextView couponVerificationUserTime;
-    @Bind(R.id.action_coupon_supplement)
+    @BindView(R.id.action_coupon_supplement)
     WebView actionCouponSupplement;
-    @Bind(R.id.action_type_name)
+    @BindView(R.id.action_type_name)
     TextView actionTypeName;
-    @Bind(R.id.coupon_status)
+    @BindView(R.id.coupon_status)
     TextView couponStatus;
-    @Bind(R.id.text_supplement_null)
+    @BindView(R.id.text_supplement_null)
     TextView textSupplementNull;
-    @Bind(R.id.coupon_verification_get_time)
+    @BindView(R.id.coupon_verification_get_time)
     TextView mCouponVerificationGetTime;
 
 
@@ -121,7 +121,7 @@ public class CouponActionVerificationFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     @OnClick(R.id.btn_coupon_action_verification)

@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 
 import com.shidou.commonlibrary.Callback;
+import com.example.xmd_m_comment.CommentListActivity;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.chat.XmdChat;
@@ -45,7 +46,10 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import app.dinus.com.loadingdrawable.LoadingView;
+import app.dinus.com.loadingdrawable.render.LoadingRenderer;
+import app.dinus.com.loadingdrawable.render.LoadingRendererFactory;
+import butterknife.BindView;
 import rx.Subscription;
 
 public class MainActivity extends BaseActivity implements BaseFragment.IFragmentCallback, ViewPagerTabIndicator.IOnPageChangeListener, ViewPagerTabIndicator.IOnTabClickListener {
@@ -57,13 +61,13 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     public static int sTabCoupon = -1;
 
 
-    @Bind(R.id.vp_home)
+    @BindView(R.id.vp_home)
     ViewPager mViewPager;
 
-    @Bind(R.id.tab_indicator)
+    @BindView(R.id.tab_indicator)
     ViewPagerTabIndicator mViewPagerTabIndicator;
 
-    @Bind(R.id.combine_loading_view)
+    @BindView(R.id.combine_loading_view)
     CombineLoadingView mCombineLoadingView;
 
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
@@ -112,7 +116,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                 }
         );
         loadData();
-
         processXmdDisplay(getIntent());
 
         EventBusSafeRegister.register(this);

@@ -36,7 +36,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -47,11 +47,11 @@ import rx.Subscription;
 
 public class TechPersonalPosterActivity extends BaseActivity implements TechPosterListAdapter.PosterCallBack, TechPosterDialog.PosterShareOrSaveListener {
 
-    @Bind(R.id.ll_tech_poster_empty_view)
+    @BindView(R.id.ll_tech_poster_empty_view)
     LinearLayout llTechPosterEmptyView;
-    @Bind(R.id.tech_poster_recycler_view)
+    @BindView(R.id.tech_poster_recycler_view)
     RecyclerView techPosterRecyclerView;
-    @Bind(R.id.toolbar_right)
+    @BindView(R.id.toolbar_right)
     TextView toolbarRight;
 
     private List<PosterBean> mPosterBeanList;

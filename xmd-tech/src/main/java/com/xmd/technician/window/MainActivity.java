@@ -1,12 +1,18 @@
 package com.xmd.technician.window;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +20,15 @@ import com.shidou.commonlibrary.Callback;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.view.ConversationListFragment;
+import com.crazyman.library.PermissionTool;
+import com.example.xmd_m_comment.bean.UserInfoBean;
+import com.example.xmd_m_comment.event.UserInfoEvent;
+import com.hyphenate.chat.EMClient;
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.m.network.BaseBean;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.m.notify.redpoint.RedPointService;
 import com.xmd.m.notify.redpoint.RedPointServiceImpl;
@@ -25,10 +40,15 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
+import com.xmd.technician.bean.UserInfo;
+import com.xmd.technician.chat.ChatHelper;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.runtimepermissions.PermissionsResultAction;
 import com.xmd.technician.common.Logger;
+import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
+import com.xmd.technician.common.Utils;
+import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -36,10 +56,16 @@ import com.xmd.technician.msgctrl.RxBus;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -47,6 +73,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     public static final int REQUEST_CODE_JOIN_CLUB = 1;
     public static final int REQUEST_CODE_EDIT_TECH_INFO = 2;
+    public static final int REQUEST_CODE_CALL_PERMISSION = 3;
 
     private List<Fragment> mFragmentList = new LinkedList<>();
     private List<View> mBottomBarButtonList = new LinkedList<View>();
@@ -55,8 +82,12 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     private int mCurrentTabIndex = -1;
     private Subscription mGetUserIsBindWXSubscription;
+    //环信
+    private Subscription mUnreadEmchatCountSubscription;
+    private ChatHelper mChatHelper;
+    private String contactPhone;
 
-    @Bind(R.id.main_unread_message)
+    @BindView(R.id.main_unread_message)
     TextView mUnreadMsgLabel;
 
     private RedPointService redPointService = RedPointServiceImpl.getInstance();
@@ -215,7 +246,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     protected void onDestroy() {
         super.onDestroy();
         RxBus.getInstance().unsubscribe(mGetUserIsBindWXSubscription);
-        redPointService.unBind(Constant.RED_POINT_CHAT_ALL_UNREAD, mUnreadMsgLabel);
+        EventBusSafeRegister.unregister(this);
     }
 
     public void switchFragment(int index) {
@@ -265,6 +296,80 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         return mFragmentList.size();
     }
 
+    @Subscribe
+    public void sendMessageOrCall(UserInfoEvent event) {
+        UserInfoService userService = UserInfoServiceImpl.getInstance();
+        User mUser;
+        mUser = new User(event.bean.userId);
+        mUser.setName(event.bean.emChatName);
+        mUser.setChatId(event.bean.emChatId);
+        mUser.setAvatar(event.bean.chatHeadUrl);
+        mUser.setMarkName(event.bean.userNoteName);
+        userService.saveUser(mUser);
+        XLogger.i(">>>>", "消息传递过来了>>....");
+        switch (event.toDoType) {
+            case 0://打电话
+                if (TextUtils.isEmpty(event.bean.contactPhone) || !Utils.matchPhoneNumFormat(event.bean.contactPhone)) {
+                    this.makeShortToast("手机号码不存在");
+                    return;
+                }
+                contactPhone = event.bean.contactPhone;
+                PermissionTool.requestPermission(this, new String[]{Manifest.permission.CALL_PHONE}, new String[]{"拨打电话"}, REQUEST_CODE_CALL_PERMISSION);
+                break;
+            case 1://聊天
+                // 判断emChatId是否存在
+                if (TextUtils.isEmpty(event.bean.emChatId)) {
+                    this.makeShortToast("聊天失败，缺少客户信息");
+                    return;
+                }
+                if (event.bean.emChatId.equals(SharedPreferenceHelper.getEmchatId())) {
+                    this.makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
+                    return;
+                } else {
+                    UINavigation.gotoChatActivity(this, Utils.wrapChatParams(event.bean.emChatId, event.bean.emChatName, event.bean.chatHeadUrl, event.bean.contactType));
+                }
+                break;
+            case 2://发短信
+                // 判断客户号码是否可用
+                if (TextUtils.isEmpty(event.bean.contactPhone) || !Utils.matchPhoneNumFormat(event.bean.contactPhone)) {
+                    this.makeShortToast("手机号码不存在");
+                    return;
+                }
+                Uri uri = Uri.parse("smsto:" + event.bean.contactPhone);
+                Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                intent.putExtra("sms_body", "");
+                startActivity(intent);
+                break;
+            case 3://打招呼
+                if (TextUtils.isEmpty(event.bean.emChatId)) {
+                    this.makeShortToast("打招呼失败，缺少客户信息");
+                    return;
+                }
+                sayHello(event.bean);
+                break;
+        }
+    }
+
+    // 打招呼
+    private void sayHello(UserInfoBean bean) {
+        if (!EMClient.getInstance().isConnected()) {
+            showToast("当前已经离线，请重新登录!");
+            return;
+        }
+//        if (mUser == null) {
+//            showToast("没有用户信息!");
+//            return;
+//        }
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_DETAIL);
+        params.put(RequestConstant.KEY_USERNAME, bean.emChatName);
+        params.put(RequestConstant.KEY_USER_AVATAR, bean.chatHeadUrl);
+        params.put(RequestConstant.KEY_USER_TYPE, "customer");
+        params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, bean.emChatId);
+        params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, bean.userId);
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, params);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_EDIT_TECH_INFO) {
@@ -274,6 +379,18 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                     mHomeFragment.doUpdateTechInfoSuccess();
                 }
             }
+        } else if (requestCode == REQUEST_CODE_CALL_PERMISSION) {
+            toCallPhone();
         }
+    }
+
+    public void toCallPhone() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        Uri data = Uri.parse("tel:" + contactPhone);
+        intent.setData(data);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(intent);
     }
 }

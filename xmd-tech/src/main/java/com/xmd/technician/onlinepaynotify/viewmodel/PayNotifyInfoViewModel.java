@@ -77,7 +77,7 @@ public class PayNotifyInfoViewModel {
     @BindingAdapter("avatar")
     public static void setAvatar(CircleAvatarView view, PayNotifyInfo data) {
         if (data != null) {
-            view.setUserInfo(data.userId, data.userAvatar);
+            view.setUserInfo(data.userId, data.userAvatar,false);
         }
     }
 

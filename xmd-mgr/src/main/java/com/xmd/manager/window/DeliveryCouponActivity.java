@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -45,11 +45,11 @@ import rx.Subscription;
 public class DeliveryCouponActivity extends BaseActivity implements DeliveryCouponListAdapter.CallBackListener {
     public static final String EXTRA_CHAT_ID = "chatId";
     public static final String KEY_FROM = "from";
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     RecyclerView list;
-    @Bind(R.id.btn_send)
+    @BindView(R.id.btn_send)
     Button btnSend;
-    @Bind(R.id.view_empty)
+    @BindView(R.id.view_empty)
     EmptyView viewEmpty;
     private Customer mFromCustomer;
     private String chatId;

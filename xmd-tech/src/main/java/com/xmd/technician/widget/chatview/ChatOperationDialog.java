@@ -11,14 +11,13 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.xmd.technician.Adapter.CommonRecyclerViewAdapter;
 import com.xmd.technician.R;
-import com.xmd.technician.common.Logger;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
 
 /**
  * Created by Lhj on 17-5-10.

@@ -16,7 +16,8 @@ import com.xmd.technician.bean.ServiceItemInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -85,8 +86,8 @@ public class ServiceAdapter extends RecyclerView.Adapter {
 
     public class ServiceItemViewHolder extends RecyclerView.ViewHolder implements LinkedSelectedInterface{
 
-        @Bind(R.id.service_name) CheckBox mServiceName;
-        @Bind(R.id.item_list) ListView mItemListView;
+        @BindView(R.id.service_name) CheckBox mServiceName;
+        @BindView(R.id.item_list) ListView mItemListView;
 
         public ServiceItemViewHolder(View itemView) {
             super(itemView);
@@ -196,9 +197,9 @@ public class ServiceAdapter extends RecyclerView.Adapter {
         }
 
         public class Holder {
-            @Bind(R.id.name) CheckBox mName;
-            @Bind(R.id.price) TextView mPrice;
-            @Bind(R.id.time) TextView mTime;
+            @BindView(R.id.name) CheckBox mName;
+            @BindView(R.id.price) TextView mPrice;
+            @BindView(R.id.time) TextView mTime;
 
             private ServiceItemInfo.ItemInfo mItemInfo;
 

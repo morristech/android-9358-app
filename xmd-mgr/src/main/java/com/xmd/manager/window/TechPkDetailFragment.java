@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -44,11 +44,11 @@ import rx.Subscription;
 public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, PKRankingDetailAdapter.TeamFilterListener {
     public static final String BIZ_TYPE = "type";
     public static final String PK_ACTIVITY_ID = "pkActivityId";
-    @Bind(R.id.ranking_recycler_view)
+    @BindView(R.id.ranking_recycler_view)
     RecyclerView rankingRecyclerView;
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.empty_view_widget)
+    @BindView(R.id.empty_view_widget)
     EmptyView emptyView;
 
     private String mRange;
@@ -173,7 +173,6 @@ public class TechPkDetailFragment extends BaseFragment implements SwipeRefreshLa
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mTeamRankingSubscription, mTechRankingSubscription, mDateChangedSubscription);
     }
 

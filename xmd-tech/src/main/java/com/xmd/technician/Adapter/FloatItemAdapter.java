@@ -15,7 +15,8 @@ import com.xmd.technician.widget.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -56,7 +57,7 @@ public class FloatItemAdapter extends RecyclerView.Adapter<FloatItemAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.img_multi_avatar)
+        @BindView(R.id.img_multi_avatar)
         CircleImageView mAvatar;
 
         public ViewHolder(View itemView) {

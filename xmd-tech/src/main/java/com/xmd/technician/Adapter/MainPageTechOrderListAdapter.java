@@ -22,7 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -110,7 +111,7 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
                 doManageOrderDisappear(order.orderId);
             });
         }
-        viewHolder.mainOrderAvatar.setUserInfo(order.userId, order.headImgUrl);
+        viewHolder.mainOrderAvatar.setUserInfo(order.userId, order.headImgUrl,false);
         return convertView;
     }
 
@@ -129,25 +130,25 @@ public class MainPageTechOrderListAdapter extends BaseAdapter {
     }
 
     final static class ViewHolder {
-        @Bind(R.id.main_order_avatar)
+        @BindView(R.id.main_order_avatar)
         CircleAvatarView mainOrderAvatar;
-        @Bind(R.id.order_name)
+        @BindView(R.id.order_name)
         TextView orderName;
-        @Bind(R.id.order_phone_detail)
+        @BindView(R.id.order_phone_detail)
         TextView orderPhoneDetail;
-        @Bind(R.id.order_time_detail)
+        @BindView(R.id.order_time_detail)
         TextView orderTimeDetail;
-        @Bind(R.id.order_money)
+        @BindView(R.id.order_money)
         TextView orderMoney;
-        @Bind(R.id.order_money_detail)
+        @BindView(R.id.order_money_detail)
         TextView orderMoneyDetail;
-        @Bind(R.id.paid_mark)
+        @BindView(R.id.paid_mark)
         TextView mPaidMark;
-        @Bind(R.id.main_tech_order_surplus_time_detail)
+        @BindView(R.id.main_tech_order_surplus_time_detail)
         TextView mainTechOrderSurplusTimeDetail;
-        @Bind(R.id.main_tech_order_btn_accept)
+        @BindView(R.id.main_tech_order_btn_accept)
         Button mainTechOrderBtnAccept;
-        @Bind(R.id.main_oder_to_handle)
+        @BindView(R.id.main_oder_to_handle)
         RelativeLayout mainHandle;
 
         ViewHolder(View view) {

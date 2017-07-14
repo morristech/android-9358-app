@@ -55,7 +55,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import rx.Observable;
 import rx.Subscription;
 
@@ -64,9 +64,9 @@ import rx.Subscription;
  */
 public class ChatFragment extends BaseListFragment<EMConversation> {
 
-    @Bind(R.id.empty_view_widget)
+    @BindView(R.id.empty_view_widget)
     EmptyView mEmptyView;
-    @Bind(R.id.header_container)
+    @BindView(R.id.header_container)
     FrameLayout mHeadContainer;
     protected List<EMConversation> mConversationList = new ArrayList<>();
     private Filter mFilter;

@@ -32,7 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -41,16 +42,16 @@ import butterknife.OnClick;
  */
 public class GMessageSelectCustomerFragment extends BaseFragment implements CustomerTypeExpandableAdapter.Callback {
 
-    @Bind(R.id.total_send_amount)
+    @BindView(R.id.total_send_amount)
     TextView limitSendAmount;
-    @Bind(R.id.total_send_time_limit)
+    @BindView(R.id.total_send_time_limit)
     TextView totalSendTimeLimit;
-    @Bind(R.id.group_all)
+    @BindView(R.id.group_all)
     TextView groupAll;
-    @Bind(R.id.select_customer_count)
+    @BindView(R.id.select_customer_count)
     TextView selectCustomerCountText;
 
-    @Bind(R.id.group_customer_expand_list)
+    @BindView(R.id.group_customer_expand_list)
     ExpandableListView customerGroupListView;
 
     private CustomerTypeExpandableAdapter customerExpandAdapter;

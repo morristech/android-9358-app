@@ -62,7 +62,8 @@ import com.xmd.technician.widget.TechCustomerTypeView;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -614,7 +615,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
-            viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl);
+            viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl,false);
             viewHolder.dynamicItemName.setText(Utils.StrSubstring(6, dynamicDetail.userName, true));
             if (Utils.isNotEmpty(dynamicDetail.userEmchatId)) {
                 viewHolder.btnThanks.setVisibility(View.VISIBLE);
@@ -1185,7 +1186,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class ListFooterHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_footer)
+        @BindView(R.id.item_footer)
         TextView itemFooter;
 
         public ListFooterHolder(View itemView) {
@@ -1196,29 +1197,29 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class OrderListItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.user_head_url)
+        @BindView(R.id.user_head_url)
         CircleImageView mUserHeadUrl;
-        @Bind(R.id.username)
+        @BindView(R.id.username)
         TextView mUserName;
-        @Bind(R.id.order_time)
+        @BindView(R.id.order_time)
         TextView mOrderTime;
-        @Bind(R.id.order_amount)
+        @BindView(R.id.order_amount)
         TextView mOrderAmount;
-        @Bind(R.id.paid_mark)
+        @BindView(R.id.paid_mark)
         TextView mPaidMark;
-        @Bind(R.id.submit_section)
+        @BindView(R.id.submit_section)
         LinearLayout mSubmitSection;
-        @Bind(R.id.remain_time)
+        @BindView(R.id.remain_time)
         TextView mRemainTime;
-        @Bind(R.id.other_status)
+        @BindView(R.id.other_status)
         TextView mOtherStatus;
-        @Bind(R.id.operation)
+        @BindView(R.id.operation)
         LinearLayout mOperation;
-        @Bind(R.id.negative)
+        @BindView(R.id.negative)
         Button mNegative;
-        @Bind(R.id.positive)
+        @BindView(R.id.positive)
         Button mPositive;
-        @Bind(R.id.paid_order_container)
+        @BindView(R.id.paid_order_container)
         View mPaidOrderAmountContainer;
 
         public boolean isOperationVisible;
@@ -1230,19 +1231,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class CouponListItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_consume_money_description)
+        @BindView(R.id.tv_consume_money_description)
         TextView mTvConsumeMoneyDescription;
-        @Bind(R.id.tv_coupon_title)
+        @BindView(R.id.tv_coupon_title)
         TextView mTvCouponTitle;
-        @Bind(R.id.tv_coupon_reward)
+        @BindView(R.id.tv_coupon_reward)
         TextView mTvCouponReward;
-        @Bind(R.id.tv_coupon_period)
+        @BindView(R.id.tv_coupon_period)
         TextView mCouponPeriod;
-        @Bind(R.id.coupon_amount)
+        @BindView(R.id.coupon_amount)
         TextView mCouponAmount;
-        @Bind(R.id.coupon_type)
+        @BindView(R.id.coupon_type)
         TextView mCouponType;
-        @Bind(R.id.btn_share_coupon)
+        @BindView(R.id.btn_share_coupon)
         TextView mBtnShareCoupon;
 
 
@@ -1253,19 +1254,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class ShareCouponListItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_consume_money_description)
+        @BindView(R.id.tv_consume_money_description)
         TextView mTvConsumeMoneyDescription;
-        @Bind(R.id.tv_coupon_title)
+        @BindView(R.id.tv_coupon_title)
         TextView mTvCouponTitle;
-        @Bind(R.id.tv_coupon_reward)
+        @BindView(R.id.tv_coupon_reward)
         TextView mTvCouponReward;
-        @Bind(R.id.tv_coupon_period)
+        @BindView(R.id.tv_coupon_period)
         TextView mCouponPeriod;
-        @Bind(R.id.coupon_amount)
+        @BindView(R.id.coupon_amount)
         TextView mCouponAmount;
-        @Bind(R.id.coupon_type)
+        @BindView(R.id.coupon_type)
         TextView mCouponType;
-        @Bind(R.id.btn_share_coupon)
+        @BindView(R.id.btn_share_coupon)
         TextView mBtnShareCoupon;
 
 
@@ -1277,15 +1278,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class PaidCouponUserDetailItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.avatar)
+        @BindView(R.id.avatar)
         CircleImageView mAvatar;
-        @Bind(R.id.tv_customer_name)
+        @BindView(R.id.tv_customer_name)
         TextView mTvCustomerName;
-        @Bind(R.id.tv_telephone)
+        @BindView(R.id.tv_telephone)
         TextView mTvTelephone;
-        @Bind(R.id.tv_coupon_status_description)
+        @BindView(R.id.tv_coupon_status_description)
         TextView mTvCouponStatusDescription;
-        @Bind(R.id.tv_get_date)
+        @BindView(R.id.tv_get_date)
         TextView mTvGetDate;
 
 
@@ -1297,15 +1298,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class ConversationViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.avatar)
+        @BindView(R.id.avatar)
         CircleAvatarView mAvatar;
-        @Bind(R.id.name)
+        @BindView(R.id.name)
         TextView mName;
-        @Bind(R.id.content)
+        @BindView(R.id.content)
         TextView mContent;
-        @Bind(R.id.time)
+        @BindView(R.id.time)
         TextView mTime;
-        @Bind(R.id.unread)
+        @BindView(R.id.unread)
         TextView mUnread;
 
         public ConversationViewHolder(View itemView) {
@@ -1316,15 +1317,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class CreditRecordViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.credit_from)
+        @BindView(R.id.credit_from)
         TextView mCreditFrom;
-        @Bind(R.id.avatar)
+        @BindView(R.id.avatar)
         CircleImageView mAvatar;
-        @Bind(R.id.avatar_name)
+        @BindView(R.id.avatar_name)
         TextView mAdverseName;
-        @Bind(R.id.credit_time)
+        @BindView(R.id.credit_time)
         TextView mCreditTime;
-        @Bind(R.id.credit_amount)
+        @BindView(R.id.credit_amount)
         TextView mCreditAmount;
 
         public CreditRecordViewHolder(View itemView) {
@@ -1334,15 +1335,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class CreditApplicationViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.credit_from)
+        @BindView(R.id.credit_from)
         TextView mCreditFrom;
-        @Bind(R.id.avatar)
+        @BindView(R.id.avatar)
         CircleImageView mAvatar;
-        @Bind(R.id.avatar_name)
+        @BindView(R.id.avatar_name)
         TextView mAdverseName;
-        @Bind(R.id.credit_time)
+        @BindView(R.id.credit_time)
         TextView mCreditTime;
-        @Bind(R.id.credit_amount)
+        @BindView(R.id.credit_amount)
         TextView mCreditAmount;
 
         public CreditApplicationViewHolder(View itemView) {
@@ -1352,27 +1353,27 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class DynamicItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.dynamic_item_avatar)
+        @BindView(R.id.dynamic_item_avatar)
         CircleAvatarView dynamicItemAvatar;
-        @Bind(R.id.dynamic_item_type)
+        @BindView(R.id.dynamic_item_type)
         ImageView dynamicItemType;
-        @Bind(R.id.dynamic_item_name)
+        @BindView(R.id.dynamic_item_name)
         TextView dynamicItemName;
-        @Bind(R.id.dynamic_item_telephone)
+        @BindView(R.id.dynamic_item_telephone)
         TextView dynamicItemTelephone;
-        @Bind(R.id.dynamic_item_comment_detail)
+        @BindView(R.id.dynamic_item_comment_detail)
         TextView dynamicItemCommentDetail;
-        @Bind(R.id.dynamic_item_remark)
+        @BindView(R.id.dynamic_item_remark)
         TextView dynamicItemRemark;
-        @Bind(R.id.dynamic_item_comment_starts)
+        @BindView(R.id.dynamic_item_comment_starts)
         TextView dynamicItemCommentStarts;
-        @Bind(R.id.dynamic_item_comment_reward)
+        @BindView(R.id.dynamic_item_comment_reward)
         TextView dynamicItemCommentReward;
-        @Bind(R.id.dynamic_item_comment)
+        @BindView(R.id.dynamic_item_comment)
         RelativeLayout dynamicItemComment;
-        @Bind(R.id.dynamic_time)
+        @BindView(R.id.dynamic_time)
         TextView dynamicTime;
-        @Bind(R.id.btn_thanks)
+        @BindView(R.id.btn_thanks)
         TextView btnThanks;
 
         public DynamicItemViewHolder(View view) {
@@ -1382,25 +1383,25 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class LimitGrabItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.limit_grab_head)
+        @BindView(R.id.limit_grab_head)
         RoundImageView mLimitGrabHead;
-        @Bind(R.id.limit_grab_mark)
+        @BindView(R.id.limit_grab_mark)
         TextView mLimitGrabMark;
-        @Bind(R.id.limit_grab_title)
+        @BindView(R.id.limit_grab_title)
         TextView mLimitGrabTitle;
-        @Bind(R.id.limit_grab_title_mark)
+        @BindView(R.id.limit_grab_title_mark)
         TextView mLimitGrabTitleMark;
-        @Bind(R.id.limit_grab_money)
+        @BindView(R.id.limit_grab_money)
         TextView mLimitGrabMoney;
-        @Bind(R.id.limit_grab_credit)
+        @BindView(R.id.limit_grab_credit)
         TextView mLimitGrabCredit;
-        @Bind(R.id.limit_grab_detail)
+        @BindView(R.id.limit_grab_detail)
         TextView mLimitGrabDetail;
-        @Bind(R.id.limit_grab_share)
+        @BindView(R.id.limit_grab_share)
         Button mLimitGrabShare;
-        @Bind(R.id.unit)
+        @BindView(R.id.unit)
         TextView mUnit;
-        @Bind(R.id.ll_show_code)
+        @BindView(R.id.ll_show_code)
         LinearLayout mShowCode;
 
         public LimitGrabItemViewHolder(View view) {
@@ -1410,13 +1411,13 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class RewardActivityItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.reward_head)
+        @BindView(R.id.reward_head)
         ImageView mRewardHead;
-        @Bind(R.id.reward_name)
+        @BindView(R.id.reward_name)
         TextView mRewardName;
-        @Bind(R.id.reward_time)
+        @BindView(R.id.reward_time)
         TextView mRewardTime;
-        @Bind(R.id.reward_share)
+        @BindView(R.id.reward_share)
         Button mRewardShare;
 
         public RewardActivityItemViewHolder(View view) {
@@ -1426,15 +1427,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class ClubJournalItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.journal_head)
+        @BindView(R.id.journal_head)
         CircleImageView mJournalHead;
-        @Bind(R.id.journal_name)
+        @BindView(R.id.journal_name)
         TextView mJournalName;
-        @Bind(R.id.journal_mark)
+        @BindView(R.id.journal_mark)
         TextView mJournalMark;
-        @Bind(R.id.journal_release_time)
+        @BindView(R.id.journal_release_time)
         TextView mJournalReleaseTime;
-        @Bind(R.id.journal_share)
+        @BindView(R.id.journal_share)
         Button mJournalShare;
 
         public ClubJournalItemViewHolder(View view) {
@@ -1444,19 +1445,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class PayForMeListItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.pay_for_me_head)
+        @BindView(R.id.pay_for_me_head)
         RoundImageView mPayForMeHead;
-        @Bind(R.id.pay_for_me_mark)
+        @BindView(R.id.pay_for_me_mark)
         TextView mPayForMeMark;
-        @Bind(R.id.pay_for_me_title)
+        @BindView(R.id.pay_for_me_title)
         TextView mPayForMeTitle;
-        @Bind(R.id.pay_for_me_money)
+        @BindView(R.id.pay_for_me_money)
         TextView mPayForMeMoney;
-        @Bind(R.id.pay_for_me_detail)
+        @BindView(R.id.pay_for_me_detail)
         TextView mPayForMeDetail;
-        @Bind(R.id.pay_for_me_share)
+        @BindView(R.id.pay_for_me_share)
         Button mPayForMeShare;
-        @Bind(R.id.ll_show_code)
+        @BindView(R.id.ll_show_code)
         LinearLayout mShowCode;
 
         public PayForMeListItemViewHolder(View view) {
@@ -1466,19 +1467,19 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class PKActivityRankingListItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.pk_active_name)
+        @BindView(R.id.pk_active_name)
         TextView pkActiveName;
-        @Bind(R.id.img_pk_active_status)
+        @BindView(R.id.img_pk_active_status)
         ImageView imgPkActiveStatus;
-        @Bind(R.id.pk_active_status)
+        @BindView(R.id.pk_active_status)
         TextView pkActiveStatus;
-        @Bind(R.id.team_list)
+        @BindView(R.id.team_list)
         RecyclerView teamList;
-        @Bind(R.id.pk_active_time)
+        @BindView(R.id.pk_active_time)
         TextView pkActiveTime;
-        @Bind(R.id.layout_technician_ranking)
+        @BindView(R.id.layout_technician_ranking)
         BlockChildLinearLayout layoutTechnicianRanking;
-        @Bind(R.id.ll_tech_ranking)
+        @BindView(R.id.ll_tech_ranking)
         LinearLayout llTechTanking;
 
         PKActivityRankingListItemViewHolder(View view) {
@@ -1488,21 +1489,21 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class TechPersonalRankingListItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.sort_type)
+        @BindView(R.id.sort_type)
         TextView sortType;
-        @Bind(R.id.ranking_title)
+        @BindView(R.id.ranking_title)
         LinearLayout rankingTitle;
-        @Bind(R.id.img_ranking_number)
+        @BindView(R.id.img_ranking_number)
         ImageView imgRankingNumber;
-        @Bind(R.id.text_ranking_number)
+        @BindView(R.id.text_ranking_number)
         TextView textRankingNumber;
-        @Bind(R.id.img_tech_head)
+        @BindView(R.id.img_tech_head)
         RoundImageView imgTechHead;
-        @Bind(R.id.tv_tech_name)
+        @BindView(R.id.tv_tech_name)
         TextView tvTechName;
-        @Bind(R.id.tv_tech_serialNo)
+        @BindView(R.id.tv_tech_serialNo)
         TextView tvTechSerialNo;
-        @Bind(R.id.tv_ranking_member_number)
+        @BindView(R.id.tv_ranking_member_number)
         TextView tvRankingMemberNumber;
 
         TechPersonalRankingListItemViewHolder(View view) {
@@ -1512,9 +1513,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class EmchatBlacklistListItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.customer_head)
+        @BindView(R.id.customer_head)
         CircleImageView imgCustomerHead;
-        @Bind(R.id.customer_name)
+        @BindView(R.id.customer_name)
         TextView tvCustomerName;
 
         EmchatBlacklistListItemViewHolder(View view) {
@@ -1524,17 +1525,17 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     }
 
     static class ContactListItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.contact_avatar)
+        @BindView(R.id.contact_avatar)
         CircleImageView contactAvatar;
-        @Bind(R.id.contact_name)
+        @BindView(R.id.contact_name)
         TextView contactName;
-        @Bind(R.id.iv_contact_type_fans)
+        @BindView(R.id.iv_contact_type_fans)
         ImageView ivContactTypeFans;
-        @Bind(R.id.iv_contact_type_wx)
+        @BindView(R.id.iv_contact_type_wx)
         ImageView ivContactTypeWx;
-        @Bind(R.id.contact_type_view)
+        @BindView(R.id.contact_type_view)
         TechCustomerTypeView contactTypeView;
-        @Bind(R.id.contact_service_time)
+        @BindView(R.id.contact_service_time)
         TextView contactServiceTime;
 
         ContactListItemViewHolder(View view) {
@@ -1545,23 +1546,23 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     static class ContactRecentListItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.contact_recent_avatar)
+        @BindView(R.id.contact_recent_avatar)
         CircleImageView contactRecentAvatar;
-        @Bind(R.id.contact_recent_name)
+        @BindView(R.id.contact_recent_name)
         TextView contactRecentName;
-        @Bind(R.id.iv_contact_recent_type_fans)
+        @BindView(R.id.iv_contact_recent_type_fans)
         ImageView ivContactRecentTypeFans;
-        @Bind(R.id.iv_contact_recent_type_wx)
+        @BindView(R.id.iv_contact_recent_type_wx)
         ImageView ivContactRecentTypeWx;
-        @Bind(R.id.iv_contact_recent_visit_type)
+        @BindView(R.id.iv_contact_recent_visit_type)
         ImageView ivContactRecentVisitType;
-        @Bind(R.id.contact_recent_remark)
+        @BindView(R.id.contact_recent_remark)
         TextView contactRecentRemark;
-        @Bind(R.id.contact_visitor_to_chat)
+        @BindView(R.id.contact_visitor_to_chat)
         TextView visitorToChat;
-        @Bind(R.id.contact_visitor_time)
+        @BindView(R.id.contact_visitor_time)
         TextView contactVisitorTime;
-        @Bind(R.id.ll_contact_visitor_to_chat)
+        @BindView(R.id.ll_contact_visitor_to_chat)
         LinearLayout llContactVisitorToChat;
 
 

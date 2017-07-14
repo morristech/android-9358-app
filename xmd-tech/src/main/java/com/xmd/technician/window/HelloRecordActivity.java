@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -35,11 +35,11 @@ import rx.Subscription;
 public class HelloRecordActivity extends BaseActivity {
     protected static final int DEFAULT_PAGE_SIZE = 20;
 
-    @Bind(R.id.hello_swipe_refresh)
+    @BindView(R.id.hello_swipe_refresh)
     SwipeRefreshLayout mHelloRefresh;
-    @Bind(R.id.hello_list)
+    @BindView(R.id.hello_list)
     RecyclerView mHelloRecycler;
-    @Bind(R.id.empty_view_widget)
+    @BindView(R.id.empty_view_widget)
     EmptyView mHelloEmpty;
 
     private LinearLayoutManager mLayoutManager;
@@ -142,7 +142,7 @@ public class HelloRecordActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
+
         RxBus.getInstance().unsubscribe(mGetHelloRecordListSubscription);
     }
 }

@@ -1,0 +1,29 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.xmd_m_comment">
+
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".CommentListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CommentDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CustomerInfoDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CommentSearchActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EditCustomerInformationActivity"
+            android:screenOrientation="portrait"/>
+
+    </application>
+
+</manifest>

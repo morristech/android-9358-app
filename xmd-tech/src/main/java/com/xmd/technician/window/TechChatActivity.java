@@ -99,7 +99,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -113,13 +114,13 @@ import static com.xmd.technician.chat.ChatConstant.CHAT_USER_TYPE_TECH;
 
 public class TechChatActivity extends BaseActivity implements EMMessageListener {
     private static final String TAG = "TechChatActivity";
-    @Bind(R.id.message_list_view)
+    @BindView(R.id.message_list_view)
     EaseChatMessageList messageList;
-    @Bind(R.id.voice_recorder)
+    @BindView(R.id.voice_recorder)
     EaseVoiceRecorderView voiceRecorderView;
-    @Bind(R.id.input_menu)
+    @BindView(R.id.input_menu)
     EaseChatInputMenu inputMenu;
-    @Bind(R.id.linear_chat)
+    @BindView(R.id.linear_chat)
     RelativeLayout linearChat;
 
     private static final int GET_COUPON_CODE = 0x001;

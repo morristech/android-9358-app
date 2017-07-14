@@ -35,7 +35,7 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -45,31 +45,31 @@ import butterknife.OnClick;
 
 public class TechPosterEditPosterFragment extends BaseFragment implements TechPosterDialog.PosterShareOrSaveListener {
 
-    @Bind(R.id.img_poster_select_img)
+    @BindView(R.id.img_poster_select_img)
     ImageView imgPosterSelectImg;
-    @Bind(R.id.img_poster_preview)
+    @BindView(R.id.img_poster_preview)
     ImageView imgPosterPreview;
-    @Bind(R.id.rl_poster_preview)
+    @BindView(R.id.rl_poster_preview)
     RelativeLayout rlPosterPreview;
-    @Bind(R.id.iv_poster_primary_title)
+    @BindView(R.id.iv_poster_primary_title)
     View ivPosterPrimaryTitle;
-    @Bind(R.id.edit_poster_primary_title)
+    @BindView(R.id.edit_poster_primary_title)
     ClearableEditText editPosterPrimaryTitle;
-    @Bind(R.id.iv_poster_minor_title)
+    @BindView(R.id.iv_poster_minor_title)
     View ivPosterMinorTitle;
-    @Bind(R.id.edit_poster_minor_title)
+    @BindView(R.id.edit_poster_minor_title)
     ClearableEditText editPosterMinorTitle;
-    @Bind(R.id.iv_poster_tech_name)
+    @BindView(R.id.iv_poster_tech_name)
     View ivPosterTechName;
-    @Bind(R.id.edit_poster_tech_name)
+    @BindView(R.id.edit_poster_tech_name)
     ClearableEditText editPosterTechName;
-    @Bind(R.id.iv_poster_tech_number)
+    @BindView(R.id.iv_poster_tech_number)
     View ivPosterTechNumber;
-    @Bind(R.id.edit_poster_tech_number)
+    @BindView(R.id.edit_poster_tech_number)
     TextView editPosterTechNumber;
-    @Bind(R.id.iv_poster_club_name)
+    @BindView(R.id.iv_poster_club_name)
     View ivPosterClubName;
-    @Bind(R.id.edit_poster_club_name)
+    @BindView(R.id.edit_poster_club_name)
     TextView editPosterClubName;
     private static final long ONE_MONTH_DAY_MILLISECOND = 30 * 24 * 60 * 60 * 1000l;
     private boolean primaryTitleIsSelected, minorTitleIsSelected, nickNameIsSelected, techNumberIsSelected, clubNameIsSelect;
@@ -349,7 +349,6 @@ public class TechPosterEditPosterFragment extends BaseFragment implements TechPo
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     private String saveImage(View v) {

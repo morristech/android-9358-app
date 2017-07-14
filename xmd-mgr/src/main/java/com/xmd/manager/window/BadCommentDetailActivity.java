@@ -43,7 +43,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -54,43 +55,43 @@ import rx.Subscription;
 public class BadCommentDetailActivity extends BaseActivity {
 
 
-    @Bind(R.id.comment_avatar)
+    @BindView(R.id.comment_avatar)
     CircleImageView commentAvatar;
-    @Bind(R.id.comment_customer_name)
+    @BindView(R.id.comment_customer_name)
     TextView commentCustomerName;
-    @Bind(R.id.comment_time)
+    @BindView(R.id.comment_time)
     TextView commentTime;
-    @Bind(R.id.comment_customer_phone)
+    @BindView(R.id.comment_customer_phone)
     TextView commentCustomerPhone;
-    @Bind(R.id.customer_info)
+    @BindView(R.id.customer_info)
     RelativeLayout customerInfo;
-    @Bind(R.id.comment_type)
+    @BindView(R.id.comment_type)
     TextView commentType;
-    @Bind(R.id.comment_tech_name)
+    @BindView(R.id.comment_tech_name)
     TextView commentTechName;
-    @Bind(R.id.comment_tech_code)
+    @BindView(R.id.comment_tech_code)
     TextView commentTechCode;
-    @Bind(R.id.customer_comment_tech)
+    @BindView(R.id.customer_comment_tech)
     LinearLayout customerCommentTech;
-    @Bind(R.id.starBar)
+    @BindView(R.id.starBar)
     StarBar starBar;
-    @Bind(R.id.comment_tv_tech_grade)
+    @BindView(R.id.comment_tv_tech_grade)
     TextView commentTvTechGrade;
-    @Bind(R.id.ll_comment_tech)
+    @BindView(R.id.ll_comment_tech)
     LinearLayout llCommentTech;
-    @Bind(R.id.bad_comment_detail)
+    @BindView(R.id.bad_comment_detail)
     RecyclerView badCommentDetail;
-    @Bind(R.id.comment_tech_remark)
+    @BindView(R.id.comment_tech_remark)
     TextView commentTechRemark;
-    @Bind(R.id.comment_tech_grade)
+    @BindView(R.id.comment_tech_grade)
     LinearLayout commentTechGrade;
-    @Bind(R.id.comment_detail)
+    @BindView(R.id.comment_detail)
     TextView commentDetail;
-    @Bind(R.id.button_return_visit)
+    @BindView(R.id.button_return_visit)
     Button buttonReturnVisit;
-    @Bind(R.id.menu_activity_logout)
+    @BindView(R.id.menu_activity_logout)
     RelativeLayout menuActivityLogout;
-    @Bind(R.id.total_score)
+    @BindView(R.id.total_score)
     TextView totalScore;
     private String mCommentId;
     private Boolean mIsDeleted;

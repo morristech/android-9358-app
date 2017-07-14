@@ -183,4 +183,26 @@ public class DateUtils {
     public static String weekNumberToZh(int week) {
         return WEEK_ZH.charAt(week - 1) + "";
     }
+
+    /**
+     * 获取当前日期
+     *
+     * @return
+     */
+    public static String getCurrentDate() {
+        SimpleDateFormat format = new SimpleDateFormat(DF_JUST_DAY);
+        return format.format(new Date());
+    }
+
+    public static int dateToInt(String str) {
+        if (!str.isEmpty() && str.length() == 10) {
+            String year = str.substring(0, 4);
+            String mounth = str.substring(5, 7);
+            String day = str.substring(8, 10);
+            String newStr = year + mounth + day;
+            int result = Integer.parseInt(newStr);
+            return result;
+        }
+        return -1;
+    }
 }

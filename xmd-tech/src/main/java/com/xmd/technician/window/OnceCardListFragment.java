@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -41,15 +41,15 @@ import rx.Subscription;
 
 public class OnceCardListFragment extends BaseFragment {
 
-    @Bind(R.id.empty_view_widget)
+    @BindView(R.id.empty_view_widget)
     EmptyView mEmptyViewWidget;
-    @Bind(R.id.tv_once_card_table)
+    @BindView(R.id.tv_once_card_table)
     TextView tvOnceCardTable;
-    @Bind(R.id.tv_package_table)
+    @BindView(R.id.tv_package_table)
     TextView tvPackageTable;
-    @Bind(R.id.tv_credit_gift_table)
+    @BindView(R.id.tv_credit_gift_table)
     TextView tvCreditGiftTable;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     RecyclerView recyclerView;
 
     private Subscription mOnceCardListSubscription;
@@ -159,7 +159,6 @@ public class OnceCardListFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mOnceCardListSubscription);
-        ButterKnife.unbind(this);
     }
 
 

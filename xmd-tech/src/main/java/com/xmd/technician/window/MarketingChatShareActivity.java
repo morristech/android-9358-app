@@ -19,7 +19,7 @@ import com.xmd.technician.widget.EmptyView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -28,11 +28,11 @@ import rx.Subscription;
  */
 
 public class MarketingChatShareActivity extends BaseActivity implements View.OnClickListener {
-    @Bind(R.id.expandable_list_view)
+    @BindView(R.id.expandable_list_view)
     ExpandableListView expandableListView;
-    @Bind(R.id.toolbar_right_share)
+    @BindView(R.id.toolbar_right_share)
     TextView toolbarRightShare;
-    @Bind(R.id.view_emptyView)
+    @BindView(R.id.view_emptyView)
     EmptyView viewEmptyView;
 
     private Subscription mMarketingChatShareActivitySubscription;
