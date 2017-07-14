@@ -7,10 +7,10 @@ import com.google.gson.GsonBuilder;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.SettleCurrentContract;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.SettleManager;
+import com.xmd.m.network.BaseBean;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -86,11 +86,11 @@ public class SettleCurrentPresenter implements SettleCurrentContract.Presenter {
         mGetCurrentSummarySubscription = SettleManager.getInstance().getSettleCurrent(new Callback<SettleSummaryResult>() {
             @Override
             public void onSuccess(SettleSummaryResult o) {
-                if (o.respData == null) {
+                if (o.getRespData() == null) {
                     mView.onCurrentEmpty();
                 } else {
-                    mRespData = o.respData;
-                    mView.onCurrentSuccess(o.respData.obj, o.respData.recordDetailList);
+                    mRespData = o.getRespData();
+                    mView.onCurrentSuccess(o.getRespData().obj, o.getRespData().recordDetailList);
                 }
             }
 
@@ -115,9 +115,9 @@ public class SettleCurrentPresenter implements SettleCurrentContract.Presenter {
         Gson gson = new GsonBuilder().serializeNulls().create();
         String data = gson.toJson(mRespData);
         XLogger.i("data :" + data);
-        mSettleCurrentSummarySubscription = SettleManager.getInstance().saveSettle(data, new Callback<BaseResult>() {
+        mSettleCurrentSummarySubscription = SettleManager.getInstance().saveSettle(data, new Callback<BaseBean>() {
             @Override
-            public void onSuccess(BaseResult o) {
+            public void onSuccess(BaseBean o) {
                 // 汇报成功
                 mView.hideLoading();
                 print(mRespData);

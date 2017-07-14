@@ -123,9 +123,9 @@ public abstract class BaseEaseChatView extends LinearLayout {
         }
         //设置头像和nick
         if (mEMMessage.direct() == EMMessage.Direct.SEND) {
-            mUserAvatarView.setUserInfo(null, localUserAvatar);
+            mUserAvatarView.setUserInfo(null, localUserAvatar,false);
         } else {
-            mUserAvatarView.setUserInfo(ChatMessageFactory.get(mEMMessage).getUserId(), remoteUserAvatar);
+            mUserAvatarView.setUserInfo(ChatMessageFactory.get(mEMMessage).getUserId(), remoteUserAvatar,false);
         }
 
         if (mDeliveredView != null) {

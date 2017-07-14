@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="feedback_btn_height">25dp</dimen>
+    <dimen name="consume_view_height">280dp</dimen>
+</resources>

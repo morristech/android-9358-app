@@ -33,7 +33,8 @@ import com.xmd.technician.widget.DropDownMenuDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -44,23 +45,23 @@ import rx.Subscription;
 
 public class ContactsSummaryFragment extends BaseFragment {
 
-    @Bind(R.id.ed_search_contact)
+    @BindView(R.id.ed_search_contact)
     ClearableEditText edSearchContact;
-    @Bind(R.id.img_btn_search)
+    @BindView(R.id.img_btn_search)
     ImageView imgBtnSearch;
-    @Bind(R.id.tv_customer_all)
+    @BindView(R.id.tv_customer_all)
     TextView tvCustomerAll;
-    @Bind(R.id.tv_customer_register)
+    @BindView(R.id.tv_customer_register)
     TextView tvCustomerRegister;
-    @Bind(R.id.tv_customer_visitor)
+    @BindView(R.id.tv_customer_visitor)
     TextView tvCustomerVisitor;
-    @Bind(R.id.tv_customer_technician)
+    @BindView(R.id.tv_customer_technician)
     TextView tvCustomerTechnician;
-    @Bind(R.id.contact_fragment_view)
+    @BindView(R.id.contact_fragment_view)
     FrameLayout contactFragmentView;
 
 
-    @Bind(R.id.contact_more)
+    @BindView(R.id.contact_more)
     LinearLayout llContactMore;
 
     private List<View> tableViews;
@@ -157,7 +158,7 @@ public class ContactsSummaryFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
         RxBus.getInstance().unsubscribe(mGetTechCurrentInfoSubscription, getCurrentSelectedPageSubscription, mContactHandlerSubscription);
     }
 

@@ -20,7 +20,7 @@ import com.xmd.manager.service.RequestConstant;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -30,21 +30,21 @@ import rx.Subscription;
  */
 public class OrderDetailFragment extends BaseFragment {
 
-    @Bind(R.id.untreatedOrders)
+    @BindView(R.id.untreatedOrders)
     TextView unTreatedOrders;
-    @Bind(R.id.completedOrders)
+    @BindView(R.id.completedOrders)
     TextView completedOrders;
-    @Bind(R.id.nullityOrders)
+    @BindView(R.id.nullityOrders)
     TextView nullityOrders;
-    @Bind(R.id.overtimeOrders)
+    @BindView(R.id.overtimeOrders)
     TextView overtimeOrders;
-    @Bind(R.id.refusedOrders)
+    @BindView(R.id.refusedOrders)
     TextView refusedOrders;
-    @Bind(R.id.acceptOrders)
+    @BindView(R.id.acceptOrders)
     TextView acceptOrders;
-    @Bind(R.id.un_accept_total)
+    @BindView(R.id.un_accept_total)
     TextView unAcceptTotal;
-    @Bind(R.id.had_accept_total)
+    @BindView(R.id.had_accept_total)
     TextView hadAcceptTotal;
 
     public static final String BIZ_TYPE = "type";
@@ -76,7 +76,6 @@ public class OrderDetailFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mGetOrderDetailDataSubscription);
-        ButterKnife.unbind(this);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.xmd.manager.service;
 
 import android.os.Message;
 
+import com.example.xmd_m_comment.bean.CommentListResult;
 import com.hyphenate.chat.EMMessage;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
@@ -19,6 +20,7 @@ import com.xmd.manager.beans.SwitchIndex;
 import com.xmd.manager.beans.VerificationSomeBean;
 import com.xmd.manager.beans.VisitListResult;
 import com.xmd.manager.common.DESede;
+import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.AbstractController;
@@ -41,6 +43,7 @@ import com.xmd.manager.service.response.ClubCouponViewResult;
 import com.xmd.manager.service.response.ClubEnterResult;
 import com.xmd.manager.service.response.ClubListResult;
 import com.xmd.manager.service.response.ClubResult;
+import com.xmd.manager.service.response.CommentAndComplaintListResult;
 import com.xmd.manager.service.response.CommentDeleteResult;
 import com.xmd.manager.service.response.CouponDataResult;
 import com.xmd.manager.service.response.CouponUseDataResult;
@@ -102,6 +105,7 @@ import com.xmd.manager.service.response.UserCouponViewResult;
 import com.xmd.manager.service.response.UserEditGroupResult;
 import com.xmd.manager.service.response.UserGetCouponResult;
 import com.xmd.manager.service.response.UserGroupDetailListResult;
+
 import com.xmd.manager.service.response.UserGroupSaveResult;
 import com.xmd.manager.service.response.VerificationCouponDetailResult;
 import com.xmd.manager.service.response.VerificationRecordDetailResult;
@@ -453,6 +457,9 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_GET_CHECK_INFO:
                 doGetCheckInfo((String) msg.obj);
+                break;
+            case MsgDef.MSG_DEF_BAD_COMMENT_AND_COMPLAINT_LIST:
+                getBadCommentAndComplaint();
                 break;
         }
 
@@ -2648,6 +2655,40 @@ public class RequestController extends AbstractController {
                 GroupTagListResult result = new GroupTagListResult();
                 result.msg = errorMsg;
                 RxBus.getInstance().post(result);
+            }
+        });
+    }
+
+    /**
+     *     @FormUrlEncoded
+     @POST(RequestConstant.URL_COMMENT_LIST)
+     Observable<CommentListResult> getCommentList(@Field("page") String page,
+     @Field("pageSize") String pageSize,
+     @Field("startDate") String startDate,
+     @Field("endDate") String endDate,
+     @Field("techId") String techId,
+     @Field("type") String type,
+     @Field("userName") String userName,
+     @Field("returnStatus") String returnStatus,
+     @Field("status") String status,
+     @Field("commentType") String commentType);
+     */
+    private void getBadCommentAndComplaint(){
+        Call<CommentAndComplaintListResult> call = getSpaService().getCommentAndComplaintList(SharedPreferenceHelper.getUserToken(),"1","2","2015-01-01", DateUtil.getCurrentDate(),
+                "","1","","N","valid","");
+
+        call.enqueue(new TokenCheckedCallback<CommentAndComplaintListResult>() {
+            @Override
+            protected void postResult(CommentAndComplaintListResult result) {
+                RxBus.getInstance().post(result);
+            }
+
+            @Override
+            protected void postError(String errorMsg) {
+//                VisitListResult result = new VisitListResult();
+//                result.msg = errorMsg;
+//                RxBus.getInstance().post(result);
+
             }
         });
     }

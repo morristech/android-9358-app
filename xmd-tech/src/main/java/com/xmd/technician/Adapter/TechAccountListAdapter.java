@@ -15,7 +15,8 @@ import com.xmd.technician.common.Utils;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -77,13 +78,13 @@ public class TechAccountListAdapter extends RecyclerView.Adapter<TechAccountList
     }
 
     static class TechAccountViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.img_account_head)
+        @BindView(R.id.img_account_head)
         ImageView imgAccountHead;
-        @Bind(R.id.account_name)
+        @BindView(R.id.account_name)
         TextView accountName;
-        @Bind(R.id.reward_amount)
+        @BindView(R.id.reward_amount)
         TextView rewardAmount;
-        @Bind(R.id.account_consume)
+        @BindView(R.id.account_consume)
         TextView accountConsume;
 
         public TechAccountViewHolder(View itemView) {

@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -29,9 +29,9 @@ public class ConsumeDetailActivity extends BaseActivity implements SwipeRefreshL
     public static final String EXTRA_CONSUME_TYPE = "consumeType";
     public static final String EXTRA_CONSUME_NAME = "consumeName";
 
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.list_view)
+    @BindView(R.id.list_view)
     RecyclerView mListView;
 
     private ConsumeDetailAdapter mAdapter;

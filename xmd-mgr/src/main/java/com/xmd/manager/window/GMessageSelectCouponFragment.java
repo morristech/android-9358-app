@@ -2,13 +2,9 @@ package com.xmd.manager.window;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -23,15 +19,14 @@ import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.FavourableActivityListResult;
-import com.xmd.manager.service.response.GroupListResult;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -39,9 +34,9 @@ import butterknife.OnClick;
  * Created by sdcm on 17-5-22.
  */
 public class GMessageSelectCouponFragment extends BaseFragment implements CustomerTypeExpandableAdapter.Callback{
-    @Bind(R.id.select_coupon_hint)
+    @BindView(R.id.select_coupon_hint)
     TextView selectCouponHint;
-    @Bind(R.id.coupon_list)
+    @BindView(R.id.coupon_list)
     ExpandableListView couponListView;
 
     private CustomerTypeExpandableAdapter couponAdapter;

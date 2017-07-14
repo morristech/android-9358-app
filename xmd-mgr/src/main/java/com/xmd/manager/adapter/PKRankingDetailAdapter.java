@@ -18,7 +18,8 @@ import com.xmd.manager.widget.CircleImageView;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -182,27 +183,27 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
     }
 
     static class PkRankingDetailViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.team_ranking_title)
+        @BindView(R.id.team_ranking_title)
         LinearLayout teamRankingTitle;
-        @Bind(R.id.img_ranking_number)
+        @BindView(R.id.img_ranking_number)
         ImageView imgRankingNumber;
-        @Bind(R.id.text_ranking_number)
+        @BindView(R.id.text_ranking_number)
         TextView textRankingNumber;
-        @Bind(R.id.img_ranking_head)
+        @BindView(R.id.img_ranking_head)
         CircleImageView imgRankingHead;
-        @Bind(R.id.tv_captain_mark)
+        @BindView(R.id.tv_captain_mark)
         TextView tvCaptainMark;
-        @Bind(R.id.tv_ranking_name)
+        @BindView(R.id.tv_ranking_name)
         TextView tvRankingName;
-        @Bind(R.id.tv_ranking_member)
+        @BindView(R.id.tv_ranking_member)
         TextView tvRankingMember;
-        @Bind(R.id.tv_ranking_member_number)
+        @BindView(R.id.tv_ranking_member_number)
         TextView tvRankingMemberNumber;
-        @Bind(R.id.tv_ranking_serialNo)
+        @BindView(R.id.tv_ranking_serialNo)
         TextView tvRankingSerial;
-        @Bind(R.id.ll_team_filter)
+        @BindView(R.id.ll_team_filter)
         LinearLayout llTeamFilter;
-        @Bind(R.id.tv_selected_team)
+        @BindView(R.id.tv_selected_team)
         TextView tvSelectedTeam;
 
         PkRankingDetailViewHolder(View view) {
@@ -212,7 +213,7 @@ public class PKRankingDetailAdapter extends RecyclerView.Adapter {
     }
 
     static class BottomViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_bottom_text)
+        @BindView(R.id.tv_bottom_text)
         TextView tvBottomText;
 
         BottomViewHolder(View view) {

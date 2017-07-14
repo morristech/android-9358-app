@@ -10,7 +10,8 @@ import com.xmd.manager.R;
 import com.xmd.manager.adapter.PageFragmentPagerAdapter;
 import com.xmd.manager.common.ResourceUtils;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -19,11 +20,11 @@ import butterknife.OnClick;
  */
 public class AllBadCommentActivity extends BaseActivity {
 
-    @Bind(R.id.btn_wait_return_visit)
+    @BindView(R.id.btn_wait_return_visit)
     Button btnWaitReturnVisit;
-    @Bind(R.id.btn_had_return_visited)
+    @BindView(R.id.btn_had_return_visited)
     Button btnHadReturnVisited;
-    @Bind(R.id.vp_bad_comment_contact)
+    @BindView(R.id.vp_bad_comment_contact)
     ViewPager mVpBadCommentContact;
 
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;

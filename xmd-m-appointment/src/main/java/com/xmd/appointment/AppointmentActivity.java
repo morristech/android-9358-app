@@ -64,8 +64,8 @@ public class AppointmentActivity extends BaseActivity
         durations.add(new ServiceItemDuration(60));
         durations.add(new ServiceItemDuration(90));
         durations.add(new ServiceItemDuration(120));
-        durationAdapter.setData(R.layout.list_item_service_duration, BR.data, durations);
-        durationAdapter.setHandler(BR.handler, this);
+        durationAdapter.setData(R.layout.list_item_service_duration, com.xmd.appointment.BR.data, durations);
+        durationAdapter.setHandler(com.xmd.appointment.BR.handler, this);
         mBinding.durationRecyclerView.setAdapter(durationAdapter);
 
         if (mData.getDuration() == 0) {
@@ -88,7 +88,9 @@ public class AppointmentActivity extends BaseActivity
         if (mData.getCustomerId() != null && mData.getCustomerPhone() == null) {
             loadSetting();
         }
+        setBackVisible(false);
     }
+
 
     @Override
     protected void onDestroy() {

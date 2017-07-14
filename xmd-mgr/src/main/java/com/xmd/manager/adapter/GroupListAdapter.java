@@ -12,7 +12,8 @@ import com.xmd.manager.beans.GroupBean;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -104,9 +105,9 @@ public class GroupListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
     static class GroupViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.group_name)
+        @BindView(R.id.group_name)
         TextView groupName;
-        @Bind(R.id.group_description)
+        @BindView(R.id.group_description)
         TextView groupDescription;
 
         public GroupViewHolder(View itemView) {
@@ -116,7 +117,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     static class GroupAddViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.group_new_add)
+        @BindView(R.id.group_new_add)
         TextView groupAdd;
 
         public GroupAddViewHolder(View itemView) {

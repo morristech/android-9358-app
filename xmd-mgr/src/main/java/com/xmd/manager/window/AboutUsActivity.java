@@ -11,7 +11,8 @@ import com.xmd.manager.Manager;
 import com.xmd.manager.R;
 import com.xmd.manager.common.ResourceUtils;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -21,9 +22,9 @@ public class AboutUsActivity extends BaseActivity {
 
     private static final int ENTER_COUNT = 4;
 
-    @Bind(R.id.version_desc)
+    @BindView(R.id.version_desc)
     TextView mVersionDesc;
-    @Bind(R.id.manually_check_upgrade)
+    @BindView(R.id.manually_check_upgrade)
     Button mBtnManuallyCheckUpgrade;
 
     private int mClickedCount = 0;

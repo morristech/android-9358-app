@@ -32,7 +32,8 @@ import com.xmd.technician.msgctrl.RxBus;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -45,19 +46,19 @@ import rx.Subscription;
 public class HelloSettingActivity extends BaseActivity {
     public static final int REQUEST_CODE_LOCAL_PICTURE_HELLO = 0x01;
 
-    @Bind(R.id.rc_template_list)
+    @BindView(R.id.rc_template_list)
     RecyclerView mTemplateListView; //系统模版列表
-    @Bind(R.id.cb_custom_text_enable)
+    @BindView(R.id.cb_custom_text_enable)
     CheckBox mCustomCheck;  // 选择自定义招呼内容
-    @Bind(R.id.et_custom_text_content)
+    @BindView(R.id.et_custom_text_content)
     EditText mCustomText;   // 自定义内容
-    @Bind(R.id.layout_image)
+    @BindView(R.id.layout_image)
     View mLayoutImage;
-    @Bind(R.id.img_need_upload)
+    @BindView(R.id.img_need_upload)
     ImageView mHelloImageView;
-    @Bind(R.id.btn_add_image)
+    @BindView(R.id.btn_add_image)
     Button mAddImgBtn;      // 添加图片
-    @Bind(R.id.btn_template_confirm)
+    @BindView(R.id.btn_template_confirm)
     Button mTempConfirmBtn; // 确定保存
 
     private HelloTemplateAdapter mAdapter;
@@ -262,7 +263,6 @@ public class HelloSettingActivity extends BaseActivity {
         if (mHelloBitmap != null) {
             mHelloBitmap.recycle();
         }
-        ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mGetSysTemplateListSubscription,
                 mUploadTemplateImageSubscription,
                 mSaveHelloTemplateSubscription);

@@ -16,7 +16,7 @@ import com.xmd.manager.service.response.AddGroupResult;
 import com.xmd.manager.service.response.DeleteGroupResult;
 import com.xmd.manager.service.response.GroupListResult;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -27,9 +27,9 @@ import rx.Subscription;
 
 public class CustomerGroupListActivity extends BaseListActivity<GroupBean, GroupListResult> {
     public static final int ADD_GROUP_RESULT = 0x001;
-    @Bind(R.id.group_list_add_btn)
+    @BindView(R.id.group_list_add_btn)
     Button groupListAddBtn;
-    @Bind(R.id.group_list_null)
+    @BindView(R.id.group_list_null)
     LinearLayout groupListNull;
 
 

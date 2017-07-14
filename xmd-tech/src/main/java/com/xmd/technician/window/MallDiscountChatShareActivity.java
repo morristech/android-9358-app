@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -40,9 +40,9 @@ import rx.Subscription;
 
 public class MallDiscountChatShareActivity extends BaseActivity implements View.OnClickListener {
 
-    @Bind(R.id.view_emptyView)
+    @BindView(R.id.view_emptyView)
     EmptyView viewEmptyView;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     ExpandableListView mListView;
 
 

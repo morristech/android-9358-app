@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.example.xmd_m_comment.CustomerInfoDetailActivity;
+import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.m.notify.display.XmdActionFactory;
 import com.xmd.m.notify.display.XmdDisplay;
@@ -131,11 +133,8 @@ public class UINavigation {
     }
 
 
-    public static void gotoCustomerDetailActivity(Context context, String customerId) {
-        Intent intent = new Intent(context, ContactInformationDetailActivity.class);
-        intent.putExtra(RequestConstant.KEY_USER_ID, customerId);
-        intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
-        context.startActivity(intent);
+    public static void gotoCustomerDetailActivity(Activity activity, String customerId,String appType,boolean isTech) {
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(activity, customerId, appType,isTech);
     }
 
 

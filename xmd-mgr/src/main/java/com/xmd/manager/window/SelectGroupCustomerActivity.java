@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -46,19 +46,19 @@ import rx.Subscription;
 public class SelectGroupCustomerActivity extends BaseActivity {
 
 
-    @Bind(R.id.search_customer)
+    @BindView(R.id.search_customer)
     ClearableEditText mSearchCustomer;
-    @Bind(R.id.group_customer_selected)
+    @BindView(R.id.group_customer_selected)
     RecyclerView groupCustomerSelected;
-    @Bind(R.id.selected_customer)
+    @BindView(R.id.selected_customer)
     LinearLayout mSelectedCustomer;
-    @Bind(R.id.list_customer)
+    @BindView(R.id.list_customer)
     RecyclerView mListCustomer;
-    @Bind(R.id.title_layout_no_friends)
+    @BindView(R.id.title_layout_no_friends)
     TextView mTitleLayoutNoFriends;
-    @Bind(R.id.status_progressbar)
+    @BindView(R.id.status_progressbar)
     ProgressBar mStatusProgressbar;
-    @Bind(R.id.btn_search)
+    @BindView(R.id.btn_search)
     ImageView mBtnSearch;
 
 

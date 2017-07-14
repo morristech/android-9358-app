@@ -15,7 +15,8 @@ import com.xmd.technician.widget.CircleImageView;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -112,15 +113,15 @@ public class ChatShareAdapter<T> extends RecyclerView.Adapter {
     }
 
     static class ClubJournalItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.journal_head)
+        @BindView(R.id.journal_head)
         CircleImageView journalHead;
-        @Bind(R.id.journal_name)
+        @BindView(R.id.journal_name)
         TextView journalName;
-        @Bind(R.id.journal_mark)
+        @BindView(R.id.journal_mark)
         TextView journalMark;
-        @Bind(R.id.journal_release_time)
+        @BindView(R.id.journal_release_time)
         TextView journalReleaseTime;
-        @Bind(R.id.journal_select)
+        @BindView(R.id.journal_select)
         TextView journalSelect;
 
         ClubJournalItemViewHolder(View view) {
@@ -131,7 +132,7 @@ public class ChatShareAdapter<T> extends RecyclerView.Adapter {
 
     public class ListFooterHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_footer)
+        @BindView(R.id.item_footer)
         TextView itemFooter;
 
         public ListFooterHolder(View itemView) {

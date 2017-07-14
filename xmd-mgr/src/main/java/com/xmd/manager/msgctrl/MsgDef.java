@@ -194,4 +194,6 @@ public class MsgDef {
 
     //群发效果分析显示开关
     public static final int MSG_DEF_GET_GROUP_STAT_SWITCH = 0x0129;
+    //差评，投诉
+    public static final int MSG_DEF_BAD_COMMENT_AND_COMPLAINT_LIST = 0x0130;
 }

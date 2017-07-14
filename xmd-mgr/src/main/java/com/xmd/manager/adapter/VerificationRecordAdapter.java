@@ -18,7 +18,8 @@ import com.xmd.manager.widget.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -149,7 +150,7 @@ public class VerificationRecordAdapter extends RecyclerView.Adapter<RecyclerView
 
     static class ListFooterHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_footer)
+        @BindView(R.id.item_footer)
         TextView itemFooter;
 
         public ListFooterHolder(View itemView) {
@@ -159,27 +160,27 @@ public class VerificationRecordAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     static class VerificationRecordHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.record_month)
+        @BindView(R.id.record_month)
         TextView mRecordMonth;
-        @Bind(R.id.record_total)
+        @BindView(R.id.record_total)
         TextView mRecordTotal;
-        @Bind(R.id.rl_record_total)
+        @BindView(R.id.rl_record_total)
         RelativeLayout mRlRecordTotal;
-        @Bind(R.id.record_head)
+        @BindView(R.id.record_head)
         CircleImageView mRecordHead;
-        @Bind(R.id.record_user_name)
+        @BindView(R.id.record_user_name)
         TextView mRecordUserName;
-        @Bind(R.id.record_phone)
+        @BindView(R.id.record_phone)
         TextView mRecordPhone;
-        @Bind(R.id.record_time)
+        @BindView(R.id.record_time)
         TextView mRecordTime;
-        @Bind(R.id.record_coupon_name)
+        @BindView(R.id.record_coupon_name)
         TextView mRecordCouponName;
-        @Bind(R.id.record_holder)
+        @BindView(R.id.record_holder)
         TextView mRecordHolder;
-        @Bind(R.id.record_type)
+        @BindView(R.id.record_type)
         TextView mRecordType;
-        @Bind(R.id.ll_record_detail)
+        @BindView(R.id.ll_record_detail)
         LinearLayout mLlRecordDetail;
 
         public VerificationRecordHolder(View itemView) {

@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.xmd_m_comment.CommentListActivity;
+import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.hyphenate.util.DateUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.technician.Adapter.MainPageTechOrderListAdapter;
@@ -41,7 +43,6 @@ import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
-import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.chat.ChatHelper;
@@ -88,7 +89,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -99,141 +100,131 @@ import rx.Subscription;
 public class MainFragment extends BaseFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
 
-    @Bind(R.id.rl_toolbar)
+    @BindView(R.id.rl_toolbar)
     RelativeLayout mRlToolBar;
-    @Bind(R.id.app_version)
+    @BindView(R.id.app_version)
     TextView mAppVersion;
-    @Bind(R.id.join_or_quit_club)
+    @BindView(R.id.join_or_quit_club)
     TextView mJoinOrQuitClub;
-    @Bind(R.id.settings_activity_join_or_quit_club)
+    @BindView(R.id.settings_activity_join_or_quit_club)
     RelativeLayout mMenuJoinOrQuitClub;
-    @Bind(R.id.menu_club_name)
+    @BindView(R.id.menu_club_name)
     TextView mMenuClubName;
-    @Bind(R.id.main_head_avatar)
+    @BindView(R.id.main_head_avatar)
     CircleImageView mMainHeadAvatar;
-    @Bind(R.id.main_head_tech_name)
+    @BindView(R.id.main_head_tech_name)
     TextView mMainHeadTechName;
-    @Bind(R.id.main_head_tech_serial)
+    @BindView(R.id.main_head_tech_serial)
     TextView mMainHeadTechSerial;
-    @Bind(R.id.btn_main_tech_rest)
+    @BindView(R.id.btn_main_tech_rest)
     ImageView mBtnMainTechRest;
-    @Bind(R.id.btn_main_tech_busy)
+    @BindView(R.id.btn_main_tech_busy)
     ImageView mBtnMainTechBusy;
-    @Bind(R.id.btn_main_tech_free)
+    @BindView(R.id.btn_main_tech_free)
     ImageView mBtnMainTechFree;
-    @Bind(R.id.main_info_too_keen_number)
+    @BindView(R.id.main_info_too_keen_number)
     TextView mMainInfoTooKeenNumber;
-    @Bind(R.id.main_send_coupon_number)
+    @BindView(R.id.main_send_coupon_number)
     TextView mMainSendCouponNumber;
-    @Bind(R.id.main_get_comment_number)
+    @BindView(R.id.main_get_comment_number)
     TextView mMainGetCommentNumber;
-    @Bind(R.id.main_total_income_number)
+    @BindView(R.id.main_total_income_number)
     TextView mMainTotalIncomeNumber;
-    @Bind(R.id.main_order_list)
+    @BindView(R.id.main_order_list)
     ListView mMainOrderList;
-    @Bind(R.id.main_dynamic_avatar1)
+    @BindView(R.id.main_dynamic_avatar1)
     CircleAvatarView mMainDynamicAvatar1;
-    @Bind(R.id.main_dynamic_name1)
+    @BindView(R.id.main_dynamic_name1)
     TextView mMainDynamicName1;
-    @Bind(R.id.main_dynamic_describe1)
+    @BindView(R.id.main_dynamic_describe1)
     TextView mMainDynamicDescribe1;
-    @Bind(R.id.main_dynamic_time1)
+    @BindView(R.id.main_dynamic_time1)
     TextView mMainDynamicTime1;
-    @Bind(R.id.main_dynamic_avatar2)
+    @BindView(R.id.main_dynamic_avatar2)
     CircleAvatarView mMainDynamicAvatar2;
-    @Bind(R.id.main_dynamic_name2)
+    @BindView(R.id.main_dynamic_name2)
     TextView mMainDynamicName2;
-    @Bind(R.id.main_dynamic_describe2)
+    @BindView(R.id.main_dynamic_describe2)
     TextView mMainDynamicDescribe2;
-    @Bind(R.id.main_dynamic_time2)
+    @BindView(R.id.main_dynamic_time2)
     TextView mMainDynamicTime2;
-    @Bind(R.id.main_dynamic_avatar3)
+    @BindView(R.id.main_dynamic_avatar3)
     CircleAvatarView mMainDynamicAvatar3;
-    @Bind(R.id.main_dynamic_name3)
+    @BindView(R.id.main_dynamic_name3)
     TextView mMainDynamicName3;
-    @Bind(R.id.main_dynamic_describe3)
+    @BindView(R.id.main_dynamic_describe3)
     TextView mMainDynamicDescribe3;
-    @Bind(R.id.main_dynamic_time3)
+    @BindView(R.id.main_dynamic_time3)
     TextView mMainDynamicTime3;
-    @Bind(R.id.main_who_care_total)
+    @BindView(R.id.main_who_care_total)
     TextView mMainWhoCareTotal;
-    @Bind(R.id.layout_visitor_list)
+    @BindView(R.id.layout_visitor_list)
     LinearLayout layoutVisitorList;
-    @Bind(R.id.cv_star_register)
+    @BindView(R.id.cv_star_register)
     CircleImageView mCvStarRegister;
-    @Bind(R.id.tv_star_register_user)
+    @BindView(R.id.tv_star_register_user)
     TextView mTvStarRegisterUser;
-    @Bind(R.id.tv_star_register_tech_no)
+    @BindView(R.id.tv_star_register_tech_no)
     TextView mTvStarRegisterTechNo;
-    @Bind(R.id.cv_star_sales)
+    @BindView(R.id.cv_star_sales)
     CircleImageView mCvStarSales;
-    @Bind(R.id.tv_star_sales)
+    @BindView(R.id.tv_star_sales)
     TextView mTvStarSales;
-    @Bind(R.id.tv_title_sale)
+    @BindView(R.id.tv_title_sale)
     TextView mTvTitleSale;
-    @Bind(R.id.cv_star_service)
+    @BindView(R.id.cv_star_service)
     CircleImageView mCvStarService;
-    @Bind(R.id.tv_star_service)
+    @BindView(R.id.tv_star_service)
     TextView mTvStarService;
-    @Bind(R.id.tv_title_service)
+    @BindView(R.id.tv_title_service)
     TextView mTvTitleService;
-    @Bind(R.id.main_scroll_view)
+    @BindView(R.id.main_scroll_view)
     NestedScrollView mMainScrollView;
-    @Bind(R.id.main_sliding_layout)
+    @BindView(R.id.main_sliding_layout)
     SlidingMenu mMainSlidingLayout;
-    @Bind(R.id.main_dynamic1)
+    @BindView(R.id.main_dynamic1)
     LinearLayout mMainDynamic1;
-    @Bind(R.id.main_dynamic2)
+    @BindView(R.id.main_dynamic2)
     LinearLayout mMainDynamic2;
-    @Bind(R.id.main_dynamic3)
+    @BindView(R.id.main_dynamic3)
     LinearLayout mMainDynamic3;
-    //    @Bind(R.id.main_visit_avatar1)
-//    CircleImageView visitAvatar1;
-//    @Bind(R.id.main_visit_avatar2)
-//    CircleImageView visitAvatar2;
-//    @Bind(R.id.main_visit_avatar3)
-//    CircleImageView visitAvatar3;
-//    @Bind(R.id.main_visit_avatar4)
-//    CircleImageView visitAvatar4;
-//    @Bind(R.id.main_visit_avatar5)
-//    CircleImageView visitAvatar5;
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.rl_visit_null)
+    @BindView(R.id.rl_visit_null)
     RelativeLayout mVisitNull;
-    @Bind(R.id.main_head_tech_status)
+    @BindView(R.id.main_head_tech_status)
     TextView mTechStatus;
-    @Bind(R.id.order_figure_out)
+    @BindView(R.id.order_figure_out)
     TextView mOrderFigureOut;
-    @Bind(R.id.team_list)
+    @BindView(R.id.team_list)
     RecyclerView mTeamList;
-    @Bind(R.id.ranking_more)
+    @BindView(R.id.ranking_more)
     TextView mRankingMore;
 
     // 附近的人
-    @Bind(R.id.nearby_layout)
+    @BindView(R.id.nearby_layout)
     RelativeLayout mNearbyLayout;
-    @Bind(R.id.main_nearby_position)
+    @BindView(R.id.main_nearby_position)
     TextView mNearbyPosition;
-    @Bind(R.id.main_nearby_desc)
+    @BindView(R.id.main_nearby_desc)
     TextView mNearbyDesc;
-    @Bind(R.id.main_nearby_say_hello)
+    @BindView(R.id.main_nearby_say_hello)
     Button mNearbySayHello;
-    @Bind(R.id.main_nearby_go_toker)
+    @BindView(R.id.main_nearby_go_toker)
     Button mNearbyGoToker;
 
     //支付通知
-    @Bind(R.id.online_pay_notify_layout)
+    @BindView(R.id.online_pay_notify_layout)
     View mPayNotifyLayout;
-    @Bind(R.id.pay_notify_header)
+    @BindView(R.id.pay_notify_header)
     RelativeLayout mPayNotifyHeader;
     //声音，震动
-    @Bind(R.id.switch_sound)
+    @BindView(R.id.switch_sound)
     SwitchButton mSwitchSound;
-    @Bind(R.id.switch_vibrate)
+    @BindView(R.id.switch_vibrate)
     SwitchButton mSwitchVibrate;
     //空View
-    @Bind(R.id.view_transparent)
+    @BindView(R.id.view_transparent)
     View mViewTransparent;
 
     private OnlinePayNotifyFragment mPayNotifyFragment;
@@ -295,7 +286,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initPkRanking();
         isInitNormalRanking = false;
         sendDataRequest();
-
         return mRootView;
     }
 
@@ -771,8 +761,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void initMenuWorkProject() {
         initMenuItem(R.id.menu_work_project);
     }
+
     @CheckBusinessPermission(PermissionConstants.NEARBY_USER)
-    public void initMenuHelloSetting(){
+    public void initMenuHelloSetting() {
         initMenuItem(R.id.menu_hello_setting);
     }
 
@@ -798,13 +789,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
-    @OnClick({R.id.menu_work_time, R.id.menu_work_project, R.id.menu_hello_setting,R.id.menu_about_us, R.id.menu_suggest, R.id.settings_activity_modify_pw, R.id.settings_activity_join_club,
+    @OnClick({R.id.menu_work_time, R.id.menu_work_project, R.id.menu_hello_setting, R.id.menu_about_us, R.id.menu_suggest, R.id.settings_activity_modify_pw, R.id.settings_activity_join_club,
             R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout, R.id.view_transparent})
     public void onMainMenuSettingClicked(View view) {
         switch (view.getId()) {
             case R.id.menu_work_time:
                 Intent intent = new Intent(getActivity(), WorkTimeActivity.class);
                 startActivity(intent);
+
                 break;
             case R.id.menu_work_project:
                 Intent intentProject = new Intent(getActivity(), ServiceItemActivity.class);
@@ -927,7 +919,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 ((BaseFragmentActivity) getActivity()).makeShortToast(getString(R.string.main_no_coupon_alert_message));
                 break;
             case R.id.main_get_comment:
-                startActivity(new Intent(getActivity(), CommentActivity.class));
+                CommentListActivity.startCommentListActivity(getActivity(), false, mTech.getUserId());
                 break;
             case R.id.pay_notify_header:
                 startActivity(new Intent(getActivity(), OnlinePayNotifyActivity.class));
@@ -1066,7 +1058,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mDynamicList.addAll(result.respData);
             if (mDynamicList.size() > 0) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
-                mMainDynamicAvatar1.setUserInfo(mDynamicList.get(0).userId, Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl);
+                mMainDynamicAvatar1.setUserInfo(mDynamicList.get(0).userId, Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl, false);
                 mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
@@ -1075,7 +1067,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
             if (mDynamicList.size() > 1) {
                 mMainDynamic2.setVisibility(View.VISIBLE);
-                mMainDynamicAvatar2.setUserInfo(mDynamicList.get(1).userId, Utils.isNotEmpty(mDynamicList.get(1).avatarUrl) ? mDynamicList.get(1).avatarUrl : mDynamicList.get(1).imageUrl);
+                mMainDynamicAvatar2.setUserInfo(mDynamicList.get(1).userId, Utils.isNotEmpty(mDynamicList.get(1).avatarUrl) ? mDynamicList.get(1).avatarUrl : mDynamicList.get(1).imageUrl, false);
                 mMainDynamicName2.setText(Utils.StrSubstring(6, mDynamicList.get(1).userName, true));
                 mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
                 mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
@@ -1083,7 +1075,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
             if (mDynamicList.size() > 2) {
                 mMainDynamic3.setVisibility(View.VISIBLE);
-                mMainDynamicAvatar3.setUserInfo(mDynamicList.get(2).userId, Utils.isNotEmpty(mDynamicList.get(2).avatarUrl) ? mDynamicList.get(2).avatarUrl : mDynamicList.get(2).imageUrl);
+                mMainDynamicAvatar3.setUserInfo(mDynamicList.get(2).userId, Utils.isNotEmpty(mDynamicList.get(2).avatarUrl) ? mDynamicList.get(2).avatarUrl : mDynamicList.get(2).imageUrl, false);
                 mMainDynamicName3.setText(Utils.StrSubstring(6, mDynamicList.get(2).userName, true));
                 mMainDynamicDescribe3.setText(getRecentStatusDes(mDynamicList.get(2).bizType));
                 mMainDynamicTime3.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(2).createTime)));
@@ -1142,7 +1134,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         avatarView.getLayoutParams().width = 0;
         avatarView.getLayoutParams().height = ScreenUtils.dpToPx(45);
         ((LinearLayout.LayoutParams) avatarView.getLayoutParams()).weight = 1;
-        avatarView.setUserInfo(visitor.userId, visitor.avatarUrl);
+        avatarView.setUserInfo(visitor.userId, visitor.avatarUrl, false);
     }
 
     // 最近访客:跳转聊天或者详情
@@ -1154,17 +1146,23 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                     Utils.isEmpty(bean.userNoteName) ? bean.userName : bean.userNoteName, bean.avatarUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
         } else {
             // 详情
-            if (Long.parseLong(bean.userId) > 0) {
-                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-                intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(RequestConstant.KEY_CONTACT_PERMISSION_INFO, result.respData);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            } else {
+            if (Utils.isEmpty(bean.userId) || Long.parseLong(bean.userId) <= 0) {
                 Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
+                return;
+            } else {
+                UINavigation.gotoCustomerDetailActivity(getActivity(), bean.userId, ConstantResources.INTENT_TYPE_TECH, false);
             }
+//            if (Long.parseLong(bean.userId) > 0) {
+//                Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
+//                intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
+//                intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable(RequestConstant.KEY_CONTACT_PERMISSION_INFO, result.respData);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//            } else {
+//
+//            }
         }
     }
 
@@ -1248,13 +1246,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
 
     public void onScrollViewChanged(int l, int t) {
         if (t > Utils.dip2px(getActivity(), 100)) {
-            mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.recent_status_reward));
+            mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.colorPrimary));
         } else {
             mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
         }
@@ -1280,6 +1277,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void onEventRequestJoinClub(EventRequestJoinClub event) {
         showTechStatus(mTech.getStatus());
     }
+
+
 
     private void handleTechPKRankingView(TechPKRankingResult techPKRankingResult) {
         if (techPKRankingResult.statusCode == 200) {

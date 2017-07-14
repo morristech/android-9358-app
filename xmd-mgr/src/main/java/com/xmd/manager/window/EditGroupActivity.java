@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.xmd_m_comment.CustomerInfoDetailActivity;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.GroupMemberAdapter;
 import com.xmd.manager.beans.GroupMemberBean;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -44,25 +45,25 @@ import rx.Subscription;
 
 public class EditGroupActivity extends BaseActivity implements View.OnClickListener {
 
-    @Bind(R.id.group_name_edit)
+    @BindView(R.id.group_name_edit)
     ClearableEditText groupNameEdit;
-    @Bind(R.id.group_remark_edit)
+    @BindView(R.id.group_remark_edit)
     ClearableEditText groupRemarkEdit;
-    @Bind(R.id.group_member_recycler_view)
+    @BindView(R.id.group_member_recycler_view)
     RecyclerView groupMemberRecyclerView;
-    @Bind(R.id.btn_delete_group)
+    @BindView(R.id.btn_delete_group)
     Button btnDeleteGroup;
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @Bind(R.id.toolbar_right)
+    @BindView(R.id.toolbar_right)
     FrameLayout mToolbarRight;
-    @Bind(R.id.toolbar_right_text)
+    @BindView(R.id.toolbar_right_text)
     TextView toolbarRightText;
-    @Bind(R.id.toolbar_left)
+    @BindView(R.id.toolbar_left)
     ImageView toolbarLeft;
-    @Bind(R.id.smooth_scroll_view)
+    @BindView(R.id.smooth_scroll_view)
     ScrollView mSmoothScrollView;
-    @Bind(R.id.progress_bar)
+    @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
     public static final int SELECT_GROUP_RESULT = 0x001;
@@ -143,9 +144,10 @@ public class EditGroupActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onItemDetail(GroupMemberBean bean) {
-                Intent intent = new Intent(EditGroupActivity.this, CustomerActivity.class);
-                intent.putExtra(RequestConstant.COMMENT_USER_ID, bean.id);
-                startActivity(intent);
+//                Intent intent = new Intent(EditGroupActivity.this, CustomerActivity.class);
+//                intent.putExtra(RequestConstant.COMMENT_USER_ID, bean.id);
+//                startActivity(intent);
+                CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(EditGroupActivity.this,bean.id, "manger",false);
             }
         });
         mGroupSaveEditSubscription = RxBus.getInstance().toObservable(AddGroupResult.class).subscribe(

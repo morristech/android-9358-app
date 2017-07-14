@@ -23,7 +23,7 @@ import com.xmd.manager.widget.ViewPagerTabIndicator;
 import java.util.ArrayList;
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -33,35 +33,35 @@ import butterknife.OnClick;
 
 public class TechPersonalRankingDetailActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar_back)
+    @BindView(R.id.toolbar_back)
     ImageView toolbarBack;
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @Bind(R.id.pk_detail_time_filter)
+    @BindView(R.id.pk_detail_time_filter)
     TextView pkDetailTimeFilter;
-    @Bind(R.id.rl_toolbar)
+    @BindView(R.id.rl_toolbar)
     RelativeLayout rlToolbar;
-    @Bind(R.id.pk_active_status)
+    @BindView(R.id.pk_active_status)
     TextView pkActiveStatus;
-    @Bind(R.id.time_filter_before)
+    @BindView(R.id.time_filter_before)
     TextView timeFilterBefore;
-    @Bind(R.id.time_filter_today)
+    @BindView(R.id.time_filter_today)
     TextView timeFilterToday;
-    @Bind(R.id.time_filter_next)
+    @BindView(R.id.time_filter_next)
     TextView timeFilterNext;
-    @Bind(R.id.tabIndicator)
+    @BindView(R.id.tabIndicator)
     ViewPagerTabIndicator tabIndicator;
-    @Bind(R.id.viewPager)
+    @BindView(R.id.viewPager)
     ViewPager viewPager;
-    @Bind(R.id.ll_filter_selected_total)
+    @BindView(R.id.ll_filter_selected_total)
     LinearLayout llFilterSelectedTotal;
-    @Bind(R.id.rl_pk_detail_time)
+    @BindView(R.id.rl_pk_detail_time)
     RelativeLayout rlPkDetailTime;
-    @Bind(R.id.ll_filter_by_day)
+    @BindView(R.id.ll_filter_by_day)
     LinearLayout llFilterByDay;
-    @Bind(R.id.time_today)
+    @BindView(R.id.time_today)
     TextView timeToday;
-    @Bind(R.id.empty_view_widget)
+    @BindView(R.id.empty_view_widget)
     EmptyView emptyView;
 
 

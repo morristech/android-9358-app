@@ -11,7 +11,8 @@ import com.xmd.manager.beans.ConsumeInfo;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -58,9 +59,9 @@ public class CouponUseDataListRecycleViewAdapter extends RecyclerView.Adapter<Re
 
     static class ConsumeListViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.phone_number)
+        @BindView(R.id.phone_number)
         TextView phoneNumber;
-        @Bind(R.id.consume_date)
+        @BindView(R.id.consume_date)
         TextView consumeDate;
 
         public ConsumeListViewHolder(View itemView) {

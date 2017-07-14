@@ -15,7 +15,7 @@ import com.xmd.technician.widget.RoundImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -25,13 +25,13 @@ import butterknife.OnClick;
 
 public class TechPosterChoiceModelFragment extends BaseFragment {
 
-    @Bind(R.id.img_select_model)
+    @BindView(R.id.img_select_model)
     RoundImageView imgselectedModel;
-    @Bind(R.id.img_model_square)
+    @BindView(R.id.img_model_square)
     ImageView imgModelSquare;
-    @Bind(R.id.img_model_circular)
+    @BindView(R.id.img_model_circular)
     ImageView imgModelCircular;
-    @Bind(R.id.img_model_flower)
+    @BindView(R.id.img_model_flower)
     ImageView imgModelFlower;
 
     private List<View> mViews;
@@ -58,7 +58,6 @@ public class TechPosterChoiceModelFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick({R.id.img_model_square, R.id.img_model_circular, R.id.img_model_flower})

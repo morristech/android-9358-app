@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -49,9 +49,9 @@ import rx.Subscription;
  */
 
 public class NearbyActivity extends BaseActivity {
-    @Bind(R.id.tv_nearby_desc)
+    @BindView(R.id.tv_nearby_desc)
     TextView mDescText;
-    @Bind(R.id.list_nearby_customer)
+    @BindView(R.id.list_nearby_customer)
     RecyclerView mCusRecyclerView;
 
     private static final int DEFAULT_CUS_PAGE_SIZE = 10;
@@ -262,7 +262,6 @@ public class NearbyActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
         RxBus.getInstance().unsubscribe(mGetHelloLeftCountSubscription,
                 mGetNearbyCusListSubscription,
                 mSayHiNearbySubscription);

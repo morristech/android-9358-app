@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ShowBigImageActivity extends BaseActivity {
@@ -34,9 +34,9 @@ public class ShowBigImageActivity extends BaseActivity {
     private String mLocalFilePath;
     private Bitmap mBitmap;
 
-    @Bind(R.id.imageView)
+    @BindView(R.id.imageView)
     ScaleView mImageView;
-    @Bind(R.id.progressBar)
+    @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
     @Override

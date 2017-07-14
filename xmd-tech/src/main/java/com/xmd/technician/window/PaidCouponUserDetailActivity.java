@@ -18,7 +18,7 @@ import com.xmd.technician.widget.ListPopupWindow;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -29,7 +29,7 @@ public class PaidCouponUserDetailActivity extends BaseListActivity<PaidCouponUse
 
     private String mActId;
     private Map<String, String> mParams = new HashMap<>();
-    @Bind(R.id.tv_filter_status)
+    @BindView(R.id.tv_filter_status)
     TextView mTvFilterStatus;
 
     @Override

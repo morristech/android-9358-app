@@ -52,7 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -63,41 +63,41 @@ import rx.Subscription;
 public class SendGroupMessageActivity extends BaseActivity implements TextWatcher {
     public static final int REQUEST_CODE_LOCAL_PICTURE = 1;
 
-    @Bind(R.id.selected_coupon)
+    @BindView(R.id.selected_coupon)
     TextView mSelectedCoupon;
-    @Bind(R.id.btn_select_coupon)
+    @BindView(R.id.btn_select_coupon)
     ImageView btnSelectCoupon;
-    @Bind(R.id.btn_reset)
+    @BindView(R.id.btn_reset)
     Button btnReset;
-    @Bind(R.id.btn_send)
+    @BindView(R.id.btn_send)
     Button btnSend;
-    @Bind(R.id.edit_content)
+    @BindView(R.id.edit_content)
     EditText mEditContent;
-    @Bind(R.id.editable_amount)
+    @BindView(R.id.editable_amount)
     TextView mEditAbleAmount;
-    @Bind(R.id.total_send_amount)
+    @BindView(R.id.total_send_amount)
     TextView limitSendAmount;
-    @Bind(R.id.group_all)
+    @BindView(R.id.group_all)
     TextView groupAll;
-    @Bind(R.id.group_active)
+    @BindView(R.id.group_active)
     TextView groupActive;
-    @Bind(R.id.group_valid)
+    @BindView(R.id.group_valid)
     TextView groupValid;
-    @Bind(R.id.rl_select_coupon_btn)
+    @BindView(R.id.rl_select_coupon_btn)
     RelativeLayout rlSelectCouponBtn;
-    @Bind(R.id.total_send_time_limit)
+    @BindView(R.id.total_send_time_limit)
     TextView totalSendTimeLimit;
-    @Bind(R.id.group_add_pic)
+    @BindView(R.id.group_add_pic)
     CircularBeadImageView groupAddPic;
-    @Bind(R.id.group_list)
+    @BindView(R.id.group_list)
     RecyclerView groupListView;
-    @Bind(R.id.limit_image_size)
+    @BindView(R.id.limit_image_size)
     TextView limitImageSize;
-    @Bind(R.id.image_delete)
+    @BindView(R.id.image_delete)
     ImageView imageDelete;
-    @Bind(R.id.image_groups)
+    @BindView(R.id.image_groups)
     ImageView imageGroups;
-    @Bind(R.id.rl_groups)
+    @BindView(R.id.rl_groups)
     RelativeLayout rlGroups;
 
     private ImageTool mImageTool = new ImageTool();

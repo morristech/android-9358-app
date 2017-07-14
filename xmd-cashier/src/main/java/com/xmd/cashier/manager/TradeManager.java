@@ -22,11 +22,9 @@ import com.xmd.cashier.dal.bean.ClubQrcodeBytes;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.bean.VerificationItem;
-import com.xmd.cashier.dal.net.NetworkSubscriber;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaOkHttp;
-import com.xmd.cashier.dal.net.SpaRetrofit;
-import com.xmd.cashier.dal.net.response.BaseResult;
+import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
@@ -36,14 +34,18 @@ import com.xmd.cashier.dal.net.response.MemberPayResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.sp.SPManager;
-import com.xmd.cashier.exceptions.NetworkException;
-import com.xmd.cashier.exceptions.ServerException;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkException;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.ServerException;
+import com.xmd.m.network.XmdNetwork;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import retrofit2.Call;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -108,100 +110,84 @@ public class TradeManager {
     /*******************************************支付相关********************************************/
     // 生成Pos在线买单单号:临时单号,用来生成二维码
     public Subscription fetchOnlinePayId(final Callback<StringResult> callback) {
-        return SpaRetrofit.getService().getXMDOnlineOrderId(AccountManager.getInstance().getToken())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<StringResult>() {
-                    @Override
-                    public void onCallbackSuccess(StringResult result) {
-                        mTrade.tradeNo = result.respData;
-                        mTrade.tradeTime = DateUtils.doDate2String(new Date());
-                        XLogger.i("OnlinePayTempId : " + mTrade.tradeNo);
-                        callback.onSuccess(result);
-                    }
+        Observable<StringResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getXMDOnlineOrderId(AccountManager.getInstance().getToken());
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<StringResult>() {
+            @Override
+            public void onCallbackSuccess(StringResult result) {
+                mTrade.tradeNo = result.getRespData();
+                mTrade.tradeTime = DateUtils.doDate2String(new Date());
+                XLogger.i("OnlinePayTempId : " + mTrade.tradeNo);
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 生成订单号:可用来生成交易流水
     public Subscription fetchTradeNo(final Callback<GetTradeNoResult> callback) {
-        return SpaRetrofit.getService().getTradeNo(
-                AccountManager.getInstance().getToken(),
-                mTrade.getOriginMoney(),
-                formatCouponList(mTrade.getCouponList()),
-                RequestConstant.DEFAULT_SIGN_VALUE)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<GetTradeNoResult>() {
-                    @Override
-                    public void onCallbackSuccess(GetTradeNoResult result) {
-                        mTrade.tradeNo = result.respData;
-                        XLogger.i("PosTradeNo : " + mTrade.tradeNo);
-                        callback.onSuccess(result);
-                    }
+        Observable<GetTradeNoResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getTradeNo(AccountManager.getInstance().getToken(), mTrade.getOriginMoney(), formatCouponList(mTrade.getCouponList()), RequestConstant.DEFAULT_SIGN_VALUE);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GetTradeNoResult>() {
+            @Override
+            public void onCallbackSuccess(GetTradeNoResult result) {
+                mTrade.tradeNo = result.getRespData();
+                XLogger.i("PosTradeNo : " + mTrade.tradeNo);
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 获取会员信息
     public Subscription fetchMemberInfo(final String memberToken, final Callback<MemberInfo> callback) {
-        return SpaRetrofit.getService().getMemberInfo(AccountManager.getInstance().getToken(),
-                memberToken, RequestConstant.DEFAULT_SIGN_VALUE)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<GetMemberInfo>() {
+        Observable<GetMemberInfo> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getMemberInfo(AccountManager.getInstance().getToken(), memberToken, RequestConstant.DEFAULT_SIGN_VALUE);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GetMemberInfo>() {
+            @Override
+            public void onCallbackSuccess(GetMemberInfo result) {
+                mTrade.memberInfo = result.getRespData();
+                mTrade.memberInfo.token = memberToken;
+                callback.onSuccess(mTrade.memberInfo);
+                XLogger.i("MemberInfo : " + mTrade.memberInfo.toString());
+            }
 
-                    @Override
-                    public void onCallbackSuccess(GetMemberInfo result) {
-                        mTrade.memberInfo = result.respData;
-                        mTrade.memberInfo.token = memberToken;
-                        callback.onSuccess(mTrade.memberInfo);
-                        XLogger.i("MemberInfo : " + mTrade.memberInfo.toString());
-                    }
-
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
 
     // 会员支付
     public Subscription memberPay(final Callback<MemberPayResult.PayResult> callback) {
-        return SpaRetrofit.getService().memberPay(
-                AccountManager.getInstance().getToken(),
-                mTrade.memberInfo.token,
-                mTrade.tradeNo,
-                mTrade.memberNeedPayMoney,
-                mTrade.memberCanDiscount,
-                "")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<MemberPayResult>() {
-                    @Override
-                    public void onCallbackSuccess(MemberPayResult result) {
-                        mTrade.setMemberPaidMoney(result.respData.payMoney);
-                        mTrade.memberPoints = result.respData.creditAmount;
-                        mTrade.memberPayCertificate = result.respData.tradeId;
-                        mTrade.memberPayResult = AppConstants.PAY_RESULT_SUCCESS;
-                        callback.onSuccess(result.respData);
-                        XLogger.i("MemberPaySuccess : payMoney=" + mTrade.getMemberPaidMoney() + " & creditAmount=" + mTrade.memberPoints);
-                    }
+        Observable<MemberPayResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .memberPay(AccountManager.getInstance().getToken(), mTrade.memberInfo.token, mTrade.tradeNo, mTrade.memberNeedPayMoney, mTrade.memberCanDiscount, "");
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberPayResult>() {
+            @Override
+            public void onCallbackSuccess(MemberPayResult result) {
+                mTrade.setMemberPaidMoney(result.getRespData().payMoney);
+                mTrade.memberPoints = result.getRespData().creditAmount;
+                mTrade.memberPayCertificate = result.getRespData().tradeId;
+                mTrade.memberPayResult = AppConstants.PAY_RESULT_SUCCESS;
+                callback.onSuccess(result.getRespData());
+                XLogger.i("MemberPaySuccess : payMoney=" + mTrade.getMemberPaidMoney() + " & creditAmount=" + mTrade.memberPoints);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 收银台支付
@@ -287,23 +273,19 @@ public class TradeManager {
 
     // 支付成功汇报手机号获得积分
     public Subscription gainPoints(String phone, final Callback<Void> callback) {
-        return SpaRetrofit.getService().gainPoints(AccountManager.getInstance().getToken(),
-                mTrade.tradeNo,
-                phone,
-                RequestConstant.DEFAULT_SIGN_VALUE)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<BaseResult>() {
-                    @Override
-                    public void onCallbackSuccess(BaseResult result) {
-                        callback.onSuccess(null);
-                    }
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .gainPoints(AccountManager.getInstance().getToken(), mTrade.tradeNo, phone, RequestConstant.DEFAULT_SIGN_VALUE);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                callback.onSuccess(null);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     /*******************************************二维码相关******************************************/
@@ -351,31 +333,38 @@ public class TradeManager {
             clubQrcodeBytes = c.data;
             return clubQrcodeBytes;
         }
-        SpaRetrofit.getService().getClubWXQrcode(AccountManager.getInstance().getClubId(), mTrade.tradeNo)
-                .subscribe(new Action1<StringResult>() {
-                    @Override
-                    public void call(StringResult stringResult) {
-                        byte[] bitmapBytes = SpaOkHttp.getClubWXQrcode(stringResult.respData);
-                        if (bitmapBytes != null) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
-                            Matrix matrix = new Matrix();
-                            matrix.postScale(240.f / bitmap.getWidth(), 240.f / bitmap.getHeight());
-                            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
-                                clubQrcodeBytes = bos.toByteArray();
-                                ClubQrcodeBytes cc = new ClubQrcodeBytes();
-                                cc.data = clubQrcodeBytes;
-                                LocalPersistenceManager.writeClubQrcodeBytes(clubId, cc);
-                            } else {
-                                XLogger.e("bitmap.compress failed!");
-                            }
-                            bitmap.recycle();
-                        } else {
-                            XLogger.e("can not get qrcode !");
-                        }
+
+        Call<StringResult> call = XmdNetwork.getInstance().getService(SpaService.class)
+                .getClubWXQrcode(AccountManager.getInstance().getClubId(), mTrade.tradeNo);
+        XmdNetwork.getInstance().requestSync(call, new NetworkSubscriber<StringResult>() {
+            @Override
+            public void onCallbackSuccess(StringResult result) {
+                byte[] bitmapBytes = SpaOkHttp.getClubWXQrcode(result.getRespData());
+                if (bitmapBytes != null) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+                    Matrix matrix = new Matrix();
+                    matrix.postScale(240.f / bitmap.getWidth(), 240.f / bitmap.getHeight());
+                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
+                        clubQrcodeBytes = bos.toByteArray();
+                        ClubQrcodeBytes cc = new ClubQrcodeBytes();
+                        cc.data = clubQrcodeBytes;
+                        LocalPersistenceManager.writeClubQrcodeBytes(clubId, cc);
+                    } else {
+                        XLogger.e("bitmap.compress failed!");
                     }
-                });
+                    bitmap.recycle();
+                } else {
+                    XLogger.e("can not get qrcode !");
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+
+            }
+        });
         return clubQrcodeBytes;
     }
 
@@ -384,74 +373,70 @@ public class TradeManager {
 
     // 根据手机号获取可核销的 券+付费预约
     public Subscription getVerifyList(String phone, final Callback<CheckInfoListResult> callback) {
-        return SpaRetrofit.getService().getCheckInfoList(phone, AccountManager.getInstance().getToken())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<CheckInfoListResult>() {
-                    @Override
-                    public void onCallbackSuccess(CheckInfoListResult result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<CheckInfoListResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getCheckInfoList(phone, AccountManager.getInstance().getToken());
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<CheckInfoListResult>() {
+            @Override
+            public void onCallbackSuccess(CheckInfoListResult result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 根据核销码获取券信息
     public Subscription getVerifyCoupon(String couponNo, final Callback<CouponResult> callback) {
-        return SpaRetrofit.getService().getCouponInfo(AccountManager.getInstance().getToken(), couponNo)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<CouponResult>() {
-                    @Override
-                    public void onCallbackSuccess(CouponResult result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<CouponResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getCouponInfo(AccountManager.getInstance().getToken(), couponNo);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<CouponResult>() {
+            @Override
+            public void onCallbackSuccess(CouponResult result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 根据核销码获取预约信息
     public Subscription getVerifyOrder(String orderNo, final Callback<OrderResult> callback) {
-        return SpaRetrofit.getService().getPaidOrderInfo(AccountManager.getInstance().getToken(), orderNo)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<OrderResult>() {
-                    @Override
-                    public void onCallbackSuccess(OrderResult result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<OrderResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getPaidOrderInfo(AccountManager.getInstance().getToken(), orderNo);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OrderResult>() {
+            @Override
+            public void onCallbackSuccess(OrderResult result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 根据核销码获取请客信息
     public Subscription getVerifyTreat(String treatNo, final Callback<CommonVerifyResult> callback) {
-        return SpaRetrofit.getService().getCommonVerifyInfo(AccountManager.getInstance().getToken(), treatNo, AppConstants.TYPE_PAY_FOR_OTHER)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetworkSubscriber<CommonVerifyResult>() {
-                    @Override
-                    public void onCallbackSuccess(CommonVerifyResult result) {
-                        callback.onSuccess(result);
-                    }
+        Observable<CommonVerifyResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .getCommonVerifyInfo(AccountManager.getInstance().getToken(), treatNo, AppConstants.TYPE_PAY_FOR_OTHER);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<CommonVerifyResult>() {
+            @Override
+            public void onCallbackSuccess(CommonVerifyResult result) {
+                callback.onSuccess(result);
+            }
 
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        callback.onError(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        });
     }
 
     // 核销选中的券
@@ -468,51 +453,53 @@ public class TradeManager {
                             switch (v.type) {
                                 case AppConstants.TYPE_COUPON:
                                     // 处理券
-                                    SpaRetrofit.getService().verifyCommon(AccountManager.getInstance().getToken(), v.code)
-                                            .subscribe(new NetworkSubscriber<BaseResult>() {
-                                                @Override
-                                                public void onCallbackSuccess(BaseResult result) {
-                                                    // 核销成功
-                                                    v.success = true;
-                                                    v.errorMsg = AppConstants.APP_REQUEST_YES;
-                                                }
+                                    Call<BaseBean> commonCall = XmdNetwork.getInstance().getService(SpaService.class)
+                                            .verifyCommonCall(AccountManager.getInstance().getToken(), v.code);
+                                    XmdNetwork.getInstance().requestSync(commonCall, new NetworkSubscriber<BaseBean>() {
+                                        @Override
+                                        public void onCallbackSuccess(BaseBean result) {
+                                            // 核销成功
+                                            v.success = true;
+                                            v.errorMsg = AppConstants.APP_REQUEST_YES;
+                                        }
 
-                                                @Override
-                                                public void onCallbackError(Throwable e) {
-                                                    // 核销失败
-                                                    v.success = false;
-                                                    v.errorMsg = e.getLocalizedMessage();
-                                                    if (e instanceof NetworkException) {
-                                                        v.errorCode = ErrCode.ERRCODE_NETWORK;
-                                                    } else if (e instanceof ServerException) {
-                                                        v.errorCode = ErrCode.ERRCODE_SERVER;
-                                                    }
-                                                }
-                                            });
+                                        @Override
+                                        public void onCallbackError(Throwable e) {
+                                            // 核销失败
+                                            v.success = false;
+                                            v.errorMsg = e.getLocalizedMessage();
+                                            if (e instanceof NetworkException) {
+                                                v.errorCode = ErrCode.ERRCODE_NETWORK;
+                                            } else if (e instanceof ServerException) {
+                                                v.errorCode = ErrCode.ERRCODE_SERVER;
+                                            }
+                                        }
+                                    });
                                     break;
                                 case AppConstants.TYPE_ORDER:
                                     // 处理预约
-                                    SpaRetrofit.getService().verifyPaidOrder(AccountManager.getInstance().getToken(), v.code, AppConstants.PAID_ORDER_OP_VERIFIED)
-                                            .subscribe(new NetworkSubscriber<BaseResult>() {
-                                                @Override
-                                                public void onCallbackSuccess(BaseResult result) {
-                                                    // 核销成功
-                                                    v.success = true;
-                                                    v.errorMsg = AppConstants.APP_REQUEST_YES;
-                                                }
+                                    Call<BaseBean> orderCall = XmdNetwork.getInstance().getService(SpaService.class)
+                                            .verifyPaidOrderCall(AccountManager.getInstance().getToken(), v.code, AppConstants.PAID_ORDER_OP_VERIFIED);
+                                    XmdNetwork.getInstance().requestSync(orderCall, new NetworkSubscriber<BaseBean>() {
+                                        @Override
+                                        public void onCallbackSuccess(BaseBean result) {
+                                            // 核销成功
+                                            v.success = true;
+                                            v.errorMsg = AppConstants.APP_REQUEST_YES;
+                                        }
 
-                                                @Override
-                                                public void onCallbackError(Throwable e) {
-                                                    // 核销失败
-                                                    v.success = false;
-                                                    v.errorMsg = e.getLocalizedMessage();
-                                                    if (e instanceof NetworkException) {
-                                                        v.errorCode = ErrCode.ERRCODE_NETWORK;
-                                                    } else if (e instanceof ServerException) {
-                                                        v.errorCode = ErrCode.ERRCODE_SERVER;
-                                                    }
-                                                }
-                                            });
+                                        @Override
+                                        public void onCallbackError(Throwable e) {
+                                            // 核销失败
+                                            v.success = false;
+                                            v.errorMsg = e.getLocalizedMessage();
+                                            if (e instanceof NetworkException) {
+                                                v.errorCode = ErrCode.ERRCODE_NETWORK;
+                                            } else if (e instanceof ServerException) {
+                                                v.errorCode = ErrCode.ERRCODE_SERVER;
+                                            }
+                                        }
+                                    });
                                     break;
                                 default:
                                     break;
@@ -532,27 +519,28 @@ public class TradeManager {
                                     v.success = true;
                                     continue;
                                 }
-                                SpaRetrofit.getService().verifyWithMoney(AccountManager.getInstance().getToken(), String.valueOf(v.treatInfo.useMoney), v.treatInfo.authorizeCode, v.type)
-                                        .subscribe(new NetworkSubscriber<BaseResult>() {
-                                            @Override
-                                            public void onCallbackSuccess(BaseResult result) {
-                                                // 核销成功
-                                                v.success = true;
-                                                v.errorMsg = AppConstants.APP_REQUEST_YES;
-                                            }
+                                Call<BaseBean> withMoneyCall = XmdNetwork.getInstance().getService(SpaService.class)
+                                        .verifyWithMoneyCall(AccountManager.getInstance().getToken(), String.valueOf(v.treatInfo.useMoney), v.treatInfo.authorizeCode, v.type);
+                                XmdNetwork.getInstance().requestSync(withMoneyCall, new NetworkSubscriber<BaseBean>() {
+                                    @Override
+                                    public void onCallbackSuccess(BaseBean result) {
+                                        // 核销成功
+                                        v.success = true;
+                                        v.errorMsg = AppConstants.APP_REQUEST_YES;
+                                    }
 
-                                            @Override
-                                            public void onCallbackError(Throwable e) {
-                                                // 核销失败
-                                                v.success = false;
-                                                v.errorMsg = e.getLocalizedMessage();
-                                                if (e instanceof NetworkException) {
-                                                    v.errorCode = ErrCode.ERRCODE_NETWORK;
-                                                } else if (e instanceof ServerException) {
-                                                    v.errorCode = ErrCode.ERRCODE_SERVER;
-                                                }
-                                            }
-                                        });
+                                    @Override
+                                    public void onCallbackError(Throwable e) {
+                                        // 核销失败
+                                        v.success = false;
+                                        v.errorMsg = e.getLocalizedMessage();
+                                        if (e instanceof NetworkException) {
+                                            v.errorCode = ErrCode.ERRCODE_NETWORK;
+                                        } else if (e instanceof ServerException) {
+                                            v.errorCode = ErrCode.ERRCODE_SERVER;
+                                        }
+                                    }
+                                });
                             }
                         }
                         subscriber.onNext(verificationItems);
@@ -819,8 +807,12 @@ public class TradeManager {
         mPos.printRight("实收 " + Utils.moneyToStringEx(mTrade.getOnlinePayPaidMoney()) + " 元");
         mPos.printDivide();
 
-        mPos.printText("交易号:", mTrade.tradeNo);
+        mPos.printText("交易号:", TextUtils.isEmpty(mTrade.getOnlinePayId()) ? mTrade.tradeNo : mTrade.getOnlinePayId());
         mPos.printText("付款方式:", "小摩豆在线买单");
+
+        String channel = Utils.getPayChannel(mTrade.getOnlinePayChannel());
+        mPos.printText("支付方式:", TextUtils.isEmpty(channel) ? "未知" : channel);
+
         mPos.printText("交易时间:", mTrade.tradeTime);
         mPos.printText("打印时间:", DateUtils.doDate2String(new Date()));
         mPos.printText("收银员:", AccountManager.getInstance().getUser().userName);

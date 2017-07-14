@@ -1,10 +1,12 @@
 package com.xmd.cashier.dal.net.response;
 
+import com.xmd.m.network.BaseBean;
+
 /**
  * Created by heyangya on 16-8-22.
  */
 
-public class LoginResult extends BaseResult {
+public class LoginResult extends BaseBean {
     public String status;
     public String token;
     public String name;

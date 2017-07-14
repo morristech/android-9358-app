@@ -23,36 +23,37 @@ import com.xmd.technician.presenter.LoginPresenter;
 import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.ClearableEditText;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
 
-    @Bind(R.id.layout_phone_login)
+    @BindView(R.id.layout_phone_login)
     View mLayoutPhoneLogin;
-    @Bind(R.id.layout_tech_no_login)
+    @BindView(R.id.layout_tech_no_login)
     View mLayoutTechNoLogin;
 
-    @Bind(R.id.phone_number)
+    @BindView(R.id.phone_number)
     ClearableEditText mEtUsername;
-    @Bind(R.id.password1)
+    @BindView(R.id.password1)
     ClearableEditText mEtPassword;
-    @Bind(R.id.login_btn1)
+    @BindView(R.id.login_btn1)
     Button mBtnLogin1;
 
-    @Bind(R.id.invite_code)
+    @BindView(R.id.invite_code)
     EditText mInviteCodeEditText;
-    @Bind(R.id.tech_no)
+    @BindView(R.id.tech_no)
     EditText mTechNoEditText;
-    @Bind(R.id.password2)
+    @BindView(R.id.password2)
     ClearableEditText mPasswordEditText2;
-    @Bind(R.id.login_btn2)
+    @BindView(R.id.login_btn2)
     Button mBtnLogin2;
-    @Bind(R.id.tv_version)
+    @BindView(R.id.tv_version)
     TextView mTvVersion;
-    @Bind(R.id.server_host)
+    @BindView(R.id.server_host)
     Spinner mSpServerHost;
     private String mSelectedServerHost;
 

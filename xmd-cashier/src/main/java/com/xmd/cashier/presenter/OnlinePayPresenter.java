@@ -6,12 +6,12 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.OnlinePayContract;
 import com.xmd.cashier.dal.bean.OnlinePayInfo;
-import com.xmd.cashier.dal.net.response.BaseResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.NotifyManager;
+import com.xmd.m.network.BaseBean;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -95,11 +95,11 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
             @Override
             public void onSuccess(OnlinePayListResult o) {
                 mView.clearData();
-                if (o.respData == null || o.respData.size() == 0) {
+                if (o.getRespData() == null || o.getRespData().size() == 0) {
                     mView.showRefreshEmpty();
                 } else {
                     mView.showRefreshSuccess();
-                    if (pageIndex < o.pageCount) {
+                    if (pageIndex < o.getPageCount()) {
                         pageIndex++;
                         hasMore = true;
                         mView.showMoreSuccess();
@@ -107,7 +107,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                         hasMore = false;
                         mView.showMoreNone();
                     }
-                    mView.showData(o.respData);
+                    mView.showData(o.getRespData());
                 }
                 isRefreshing = false;
             }
@@ -141,7 +141,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
         mGetOnlinePaySubscription = NotifyManager.getInstance().getOnlinePayList(pageIndex, mSearch, mFilter, new Callback<OnlinePayListResult>() {
             @Override
             public void onSuccess(OnlinePayListResult o) {
-                if (pageIndex < o.pageCount) {
+                if (pageIndex < o.getPageCount()) {
                     pageIndex++;
                     hasMore = true;
                     mView.showMoreSuccess();
@@ -149,7 +149,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
                     hasMore = false;
                     mView.showMoreNone();
                 }
-                mView.showData(o.respData);
+                mView.showData(o.getRespData());
                 isLoading = false;
             }
 
@@ -207,9 +207,9 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
             mPassOnlinePaySubscription.unsubscribe();
         }
 
-        mPassOnlinePaySubscription = NotifyManager.getInstance().passOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_PASS, new Callback<BaseResult>() {
+        mPassOnlinePaySubscription = NotifyManager.getInstance().passOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_PASS, new Callback<BaseBean>() {
             @Override
-            public void onSuccess(BaseResult o) {
+            public void onSuccess(BaseBean o) {
                 mView.hideLoading();
                 mView.updateDataStatus(AppConstants.ONLINE_PAY_STATUS_PASS, position);
                 mView.showToast("买单成功");
@@ -241,9 +241,9 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
         if (mUnpassOnlinePaySubscription != null) {
             mUnpassOnlinePaySubscription.unsubscribe();
         }
-        mUnpassOnlinePaySubscription = NotifyManager.getInstance().unPassOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS, new Callback<BaseResult>() {
+        mUnpassOnlinePaySubscription = NotifyManager.getInstance().unPassOnlinePay(info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS, new Callback<BaseBean>() {
             @Override
-            public void onSuccess(BaseResult o) {
+            public void onSuccess(BaseBean o) {
                 mView.hideLoading();
                 mView.updateDataStatus(AppConstants.ONLINE_PAY_STATUS_UNPASS, position);
                 mView.showToast("已通知请到前台");

@@ -18,7 +18,7 @@ import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.share.ShareConstant;
 import com.xmd.technician.window.BaseActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  */
 public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler {
 
-    @Bind(R.id.wx_share_result) TextView mShareResult;
+    @BindView(R.id.wx_share_result) TextView mShareResult;
     private IWXAPI api;
 
     @Override

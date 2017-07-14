@@ -17,7 +17,8 @@ import com.xmd.manager.widget.CircleImageView;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -131,13 +132,13 @@ public class PKRankingAdapter extends RecyclerView.Adapter {
     }
 
     static class PKRankingTeamItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.pk_active_user_head)
+        @BindView(R.id.pk_active_user_head)
         CircleImageView pkActiveUserHead;
-        @Bind(R.id.tv_pk_active_team_name)
+        @BindView(R.id.tv_pk_active_team_name)
         TextView tvPkActiveTeamName;
-        @Bind(R.id.tv_pk_active_team_member)
+        @BindView(R.id.tv_pk_active_team_member)
         TextView tvPkActiveTeamMember;
-        @Bind(R.id.ll_star_user)
+        @BindView(R.id.ll_star_user)
         LinearLayout llStarUser;
 
         PKRankingTeamItemViewHolder(View view) {

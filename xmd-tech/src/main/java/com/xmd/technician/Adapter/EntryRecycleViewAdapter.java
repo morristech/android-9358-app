@@ -11,7 +11,8 @@ import com.xmd.technician.bean.Entry;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -58,9 +59,9 @@ public class EntryRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     static class EntryViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.entry_key)
+        @BindView(R.id.entry_key)
         TextView entryKey;
-        @Bind(R.id.entry_value) TextView entryValue;
+        @BindView(R.id.entry_value) TextView entryValue;
 
         public EntryViewHolder(View itemView) {
             super(itemView);

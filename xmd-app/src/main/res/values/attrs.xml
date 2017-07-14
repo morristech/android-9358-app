@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RatingBar">
+        <attr format="dimension" name="starDistance" />
+        <attr format="dimension" name="starSize" />
+        <attr format="integer" name="starCount" />
+        <attr format="reference" name="starEmpty" />
+        <attr format="reference" name="starFill" />
+    </declare-styleable>
+    <declare-styleable name="ClearableEditText">
+        <attr name="bg_color_filter" format="color"></attr>
+    </declare-styleable>
+</resources>

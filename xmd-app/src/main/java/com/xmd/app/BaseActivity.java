@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XProgressDialog;
@@ -16,11 +21,80 @@ import org.greenrobot.eventbus.Subscribe;
 
 public class BaseActivity extends AppCompatActivity {
     private XProgressDialog progressDialog;
+    private Toolbar mToolbar;
+    private RelativeLayout toolbarBack;
+    private RelativeLayout toolbarRightImage;
+    private ImageView rightImage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        initToolbar();
+    }
+
+    @Override
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
+        super.setContentView(view, params);
+        initToolbar();
+    }
+
+    @Override
+    public void setContentView(View view) {
+        super.setContentView(view);
+        initToolbar();
+    }
+
+    protected void initToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+            toolbarBack = (RelativeLayout) findViewById(R.id.rl_toolbar_back);
+            toolbarBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+
+            toolbarRightImage = (RelativeLayout) findViewById(R.id.rl_toolbar_right);
+            rightImage = (ImageView) findViewById(R.id.img_toolbar_right);
+            setRightVisible(false, -1);
+
+        }
+    }
+    public void setBackVisible(boolean visible) {
+        if (toolbarBack != null) {
+            toolbarBack.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+    public void setRightVisible(boolean isVisible, int srcId) {
+        if (toolbarRightImage != null) {
+            int visible = isVisible ? View.VISIBLE : View.GONE;
+            toolbarRightImage.setVisibility(visible);
+            if (isVisible && srcId != -1) {
+                rightImage.setImageResource(srcId);
+                toolbarRightImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onRightImageClickedListener();
+                    }
+                });
+            }
+        }
+
+    }
+
+    public void onRightImageClickedListener() {
+
     }
 
     @Override

@@ -129,7 +129,8 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_TECH_PK_PERSONAL_RANKING_LIST,
                 MsgDef.MSG_DEF_TECH_RANKING_LIST,
                 MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT,
-                MsgDef.MSG_DEF_GET_CHECK_INFO
+                MsgDef.MSG_DEF_GET_CHECK_INFO,
+                MsgDef.MSG_DEF_BAD_COMMENT_AND_COMPLAINT_LIST
         });
     }
 

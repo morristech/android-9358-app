@@ -9,11 +9,11 @@ import com.xmd.manager.R;
 import com.xmd.manager.adapter.EntryRecycleViewAdapter;
 import com.xmd.manager.widget.DividerItemDecoration;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class ConfigurationMonitorActivity extends BaseActivity {
 
-    @Bind(R.id.configuration_list)
+    @BindView(R.id.configuration_list)
     RecyclerView mConfigurationRecycleView;
 
     private LinearLayoutManager mLayoutManager;

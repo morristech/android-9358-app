@@ -5,6 +5,8 @@
     <dimen name="activity_normal_margin">10dp</dimen>
     <dimen name="activity_small_margin">8dp</dimen>
     <dimen name="activity_little_margin">5dp</dimen>
+    <dimen name="small_padding">5dp</dimen>
+
 
     <dimen name="fontDisplay4">112sp</dimen>
     <dimen name="fontDisplay3">56sp</dimen>
@@ -16,4 +18,18 @@
     <dimen name="fontBody">15sp</dimen>
     <dimen name="fontButton">15sp</dimen>
     <dimen name="fontCaption">13sp</dimen>
+    <dimen name="small_text_size">16sp</dimen>
+
+    <dimen name="tab_height">48dp</dimen>
+    <dimen name="tab_indicator_text_padding">8dp</dimen>
+    <dimen name="tab_indicator_text_padding_bottom">4dp</dimen>
+    <dimen name="line_width">1dp</dimen>
+    <dimen name="line_margin_bottom">0dp</dimen>
+    <dimen name="tab_notice_size">12dp</dimen>
+    <dimen name="tab_notice_text_size">10sp</dimen>
+    <dimen name="tab_notice_margin_top">5dp</dimen>
+    <dimen name="tab_notice_margin_right">28dp</dimen>
+    <dimen name="tab_indicator_indicator_height">2dp</dimen>
+    <dimen name="tiny_space">3dp</dimen>
+
 </resources>

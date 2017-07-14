@@ -30,7 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -41,15 +42,15 @@ import rx.Subscription;
  */
 public class EditContactInformation extends BaseActivity implements TextWatcher{
 
-    @Bind(R.id.et_remark_name)
+    @BindView(R.id.et_remark_name)
     EditText mRemarkName;
-    @Bind(R.id.ed_remark_message)
+    @BindView(R.id.ed_remark_message)
     EditText mRemarkMessage;
-    @Bind(R.id.btn_save_edit)
+    @BindView(R.id.btn_save_edit)
     Button mSaveEdit;
-    @Bind(R.id.text_remark_num)
+    @BindView(R.id.text_remark_num)
     TextView remarkNum;
-    @Bind(R.id.limit_project_list)
+    @BindView(R.id.limit_project_list)
     FlowLayout mFlowLayout;
 
     private String remarkName;

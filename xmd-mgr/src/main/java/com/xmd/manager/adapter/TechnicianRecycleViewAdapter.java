@@ -15,7 +15,8 @@ import com.xmd.manager.widget.SelectorTextView;
 
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -113,7 +114,7 @@ public class TechnicianRecycleViewAdapter extends RecyclerView.Adapter<RecyclerV
 
     static class TechnicanListItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_name)
+        @BindView(R.id.tv_name)
         SelectorTextView mTvName;
 
         public TechnicanListItemViewHolder(View itemView) {

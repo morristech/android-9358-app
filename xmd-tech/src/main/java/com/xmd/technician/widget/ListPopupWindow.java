@@ -14,7 +14,7 @@ import com.xmd.technician.common.ResourceUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by linms@xiaomodo.com on 16-5-5.
@@ -25,7 +25,7 @@ public class ListPopupWindow<T> extends BasePopupWindow {
         void onPopupWindowItemClicked(T bean);
     }
 
-    @Bind(R.id.ll_popup_window) LinearLayout mContainer;
+    @BindView(R.id.ll_popup_window) LinearLayout mContainer;
 
     public ListPopupWindow(View parentView, List<T> data, Callback<T> callback) {
         super(parentView, null);

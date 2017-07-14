@@ -17,7 +17,7 @@ import com.xmd.manager.common.VerificationManagementHelper;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -27,17 +27,17 @@ import butterknife.OnClick;
 
 public class AwardVerificationFragment extends BaseFragment {
 
-    @Bind(R.id.reward_verification_code)
+    @BindView(R.id.reward_verification_code)
     TextView rewardVerificationCode;
-    @Bind(R.id.reward_verification_name)
+    @BindView(R.id.reward_verification_name)
     TextView rewardVerificationName;
-    @Bind(R.id.btn_reward_verification)
+    @BindView(R.id.btn_reward_verification)
     Button btnRewardVerification;
-    @Bind(R.id.reward_name)
+    @BindView(R.id.reward_name)
     TextView rewardName;
-    @Bind(R.id.verification_award_introduce)
+    @BindView(R.id.verification_award_introduce)
     WebView verificationAwardIntroduce;
-    @Bind(R.id.text_supplement_null)
+    @BindView(R.id.text_supplement_null)
     TextView supplementNull;
 
     private AwardVerificationBean mAward;
@@ -83,7 +83,7 @@ public class AwardVerificationFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     @OnClick(R.id.btn_reward_verification)

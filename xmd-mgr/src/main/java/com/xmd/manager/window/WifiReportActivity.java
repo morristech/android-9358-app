@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SimpleTimeZone;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -37,13 +37,13 @@ import rx.Subscription;
  */
 public class WifiReportActivity extends BaseActivity {
 
-    @Bind(R.id.startTime)
+    @BindView(R.id.startTime)
     TextView mStartTime;
-    @Bind(R.id.endTime)
+    @BindView(R.id.endTime)
     TextView mEndTime;
-    @Bind(R.id.btnSubmit)
+    @BindView(R.id.btnSubmit)
     Button mBtnSubmit;
-    @Bind(R.id.statistics_chart_view)
+    @BindView(R.id.statistics_chart_view)
     StatisticsView mStatisticsView;
 
     private StatisticsDataRecycleViewAdapter mAdapter;

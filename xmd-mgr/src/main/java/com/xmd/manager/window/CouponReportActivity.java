@@ -34,7 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.SimpleTimeZone;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -43,35 +44,35 @@ import rx.Subscription;
  * Created by lhj on 2016/9/21.
  */
 public class CouponReportActivity extends BaseActivity {
-    @Bind(R.id.startTime)
+    @BindView(R.id.startTime)
     TextView mStartTime;
-    @Bind(R.id.endTime)
+    @BindView(R.id.endTime)
     TextView mEndTime;
-    @Bind(R.id.btnSubmit)
+    @BindView(R.id.btnSubmit)
     Button mBtnSubmit;
-    @Bind(R.id.statistics_chart_view)
+    @BindView(R.id.statistics_chart_view)
     StatisticsView mStatisticsView;
-    @Bind(R.id.tv_coupon_propagate)
+    @BindView(R.id.tv_coupon_propagate)
     TextView tvCouponPropagate;
-    @Bind(R.id.tv_coupon_delivery)
+    @BindView(R.id.tv_coupon_delivery)
     TextView tvCouponDelivery;
-    @Bind(R.id.tv_coupon_share)
+    @BindView(R.id.tv_coupon_share)
     TextView tvCouponShare;
-    @Bind(R.id.tv_coupon_personal)
+    @BindView(R.id.tv_coupon_personal)
     TextView tvCouponPersonal;
-    @Bind(R.id.tv_coupon_total_income)
+    @BindView(R.id.tv_coupon_total_income)
     TextView tvCouponTotalIncome;
-    @Bind(R.id.tv_coupon_tech_income)
+    @BindView(R.id.tv_coupon_tech_income)
     TextView tvCouponTechIncome;
-    @Bind(R.id.layout_order)
+    @BindView(R.id.layout_order)
     LinearLayout layoutOrder;
-    @Bind(R.id.coupon_detail)
+    @BindView(R.id.coupon_detail)
     LinearLayout couponDetail;
-    @Bind(R.id.scroll_view)
+    @BindView(R.id.scroll_view)
     ScrollView mScrollView;
-    @Bind(R.id.coupon_head)
+    @BindView(R.id.coupon_head)
     LinearLayout couponHead;
-    @Bind(R.id.recycleview)
+    @BindView(R.id.recycleview)
     AutoRecyclerView mRecyclerView;
 
 
@@ -111,7 +112,7 @@ public class CouponReportActivity extends BaseActivity {
     }
 
     private void initView() {
-      //  initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
+        //  initStartDateTime = DateUtil.getDesignatedDate(DateUtil.MONTH);
         initStartDateTime = SharedPreferenceHelper.getCurrentClubCreateTime();
         initEndDateTime = DateUtil.getCurrentDate();
         mStartTime.setText(initStartDateTime);

@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.BuildConfig;
+import com.xmd.m.network.XmdNetwork;
 
 /**
  * Created by heyangya on 16-8-23.
@@ -27,12 +28,13 @@ public class SPManager {
     }
 
     public String getSpaServerAddress() {
-        return mSharedPreferences.getString(SPConstants.SERVER_ADDRESS, BuildConfig.SERVER_HOST);
+        return mSharedPreferences.getString(SPConstants.SERVER_ADDRESS, "http://" + BuildConfig.SERVER_HOST);
     }
 
     public void setSpaServerAddress(String address) {
         XLogger.i("set server to " + address);
-        mSharedPreferences.edit().putString(SPConstants.SERVER_ADDRESS, address).apply();
+        XmdNetwork.getInstance().changeServer("http://" + address);
+        mSharedPreferences.edit().putString(SPConstants.SERVER_ADDRESS, "http://" + address).apply();
     }
 
     // ---核销成功
@@ -87,5 +89,35 @@ public class SPManager {
 
     public void setOnlinePaySwitch(boolean status) {
         mSharedPreferences.edit().putBoolean(SPConstants.ONLINE_PAY_PRINT_SWITCH, status).apply();
+    }
+
+    public int getFastPayPushTag() {
+        return mSharedPreferences.getInt(SPConstants.FASTPAY_PUSH_TAG, 0);
+    }
+
+    public void setFastPayPushTag(int count) {
+        mSharedPreferences.edit().putInt(SPConstants.FASTPAY_PUSH_TAG, count).apply();
+    }
+
+    public void updateFastPayPushTag() {
+        int count = getFastPayPushTag();
+        if (count > 0) {
+            setFastPayPushTag(count - 1);
+        }
+    }
+
+    public int getOrderPushTag() {
+        return mSharedPreferences.getInt(SPConstants.ORDER_PUSH_TAG, 0);
+    }
+
+    public void setOrderPushTag(int count) {
+        mSharedPreferences.edit().putInt(SPConstants.ORDER_PUSH_TAG, count).apply();
+    }
+
+    public void updateOrderPushTag() {
+        int count = getOrderPushTag();
+        if (count > 0) {
+            setOrderPushTag(count - 1);
+        }
     }
 }

@@ -25,7 +25,8 @@ import com.xmd.technician.widget.DropDownMenuDialog;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
@@ -35,9 +36,9 @@ import rx.Subscription;
 public class DynamicDetailActivity extends BaseListActivity<DynamicDetail> {
 
 
-    @Bind(R.id.toolbar_right_img)
+    @BindView(R.id.toolbar_right_img)
     ImageView toolbarRightImg;
-    @Bind(R.id.contact_more)
+    @BindView(R.id.contact_more)
     LinearLayout toolbarMore;
 
     private UserInfoService userService = UserInfoServiceImpl.getInstance();

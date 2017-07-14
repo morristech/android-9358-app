@@ -31,7 +31,7 @@ import com.xmd.technician.share.ShareController;
 import java.util.EnumMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -41,21 +41,21 @@ import butterknife.OnClick;
 public class TechShareCardActivity extends BaseActivity {
 
 
-    @Bind(R.id.user_card_head)
+    @BindView(R.id.user_card_head)
     ImageView mCardHead;
-    @Bind(R.id.user_card_name)
+    @BindView(R.id.user_card_name)
     TextView mCardName;
-    @Bind(R.id.user_card_num)
+    @BindView(R.id.user_card_num)
     TextView mCardNum;
-    @Bind(R.id.user_card_club)
+    @BindView(R.id.user_card_club)
     TextView mCardClub;
-    @Bind(R.id.user_share_btn)
+    @BindView(R.id.user_share_btn)
     Button mShareBtn;
-    @Bind(R.id.user_share_img)
+    @BindView(R.id.user_share_img)
     ImageView mUserShareCode;
-    @Bind(R.id.ll_tech_code)
+    @BindView(R.id.ll_tech_code)
     LinearLayout mTechCode;
-    @Bind(R.id.user_save_btn)
+    @BindView(R.id.user_save_btn)
     Button userSaveBtn;
 
 

@@ -13,8 +13,9 @@ import com.xmd.technician.widget.BasePopupWindow;
 
 import java.util.Map;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+import butterknife.BindView;
+
 import butterknife.OnClick;
 
 /**
@@ -22,8 +23,8 @@ import butterknife.OnClick;
  */
 public class SharePlatformPopupWindow extends BasePopupWindow {
 
-    @Bind(R.id.share_to_friend) TextView mBtnShareToFriend;
-    @Bind(R.id.share_to_timeline) TextView mBtnShareToTimeline;
+    @BindView(R.id.share_to_friend) TextView mBtnShareToFriend;
+    @BindView(R.id.share_to_timeline) TextView mBtnShareToTimeline;
     private Map<String, Object> params;
 
     public SharePlatformPopupWindow(Map<String, String> params) {

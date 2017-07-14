@@ -24,7 +24,7 @@ import com.xmd.manager.widget.ClearableEditText;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -35,7 +35,7 @@ import rx.Subscription;
 
 public class OnlinePaySearchFragment extends BaseListFragment<OnlinePayBean> {
 
-    @Bind(R.id.search_word)
+    @BindView(R.id.search_word)
     ClearableEditText mCetSearchWord;
 
     private String mSearchUserName = "";
@@ -154,7 +154,6 @@ public class OnlinePaySearchFragment extends BaseListFragment<OnlinePayBean> {
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mOnlinePaySubscription);
-        ButterKnife.unbind(this);
     }
 
 }

@@ -18,17 +18,17 @@ import com.xmd.technician.widget.EmptyView;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
 public class ServiceItemActivity extends BaseActivity {
 
-    @Bind(R.id.list_view) RecyclerView mListView;
-    @Bind(R.id.confirm) Button mConfirmBtn;
-    @Bind(R.id.header_container) View mHearContainer;
-    @Bind(R.id.empty_view_widget) EmptyView mEmptyView;
+    @BindView(R.id.list_view) RecyclerView mListView;
+    @BindView(R.id.confirm) Button mConfirmBtn;
+    @BindView(R.id.header_container) View mHearContainer;
+    @BindView(R.id.empty_view_widget) EmptyView mEmptyView;
 
     private ServiceAdapter mAdapter;
 

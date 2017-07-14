@@ -105,14 +105,14 @@ public class VerifyRecordPresenter implements VerifyRecordContract.Presenter {
                     @Override
                     public void onSuccess(VerifyRecordResult o) {
                         mView.clearData();
-                        if (o.respData == null) {
+                        if (o.getRespData() == null) {
                             isRefreshing = false;
                             mView.showRefreshEmpty();
                         } else {
-                            if (o.respData.total == 0) {
+                            if (o.getRespData().total == 0) {
                                 // 当前没有返回数据
                                 isRefreshing = false;
-                                if (o.respData.remainderCount == 0) {
+                                if (o.getRespData().remainderCount == 0) {
                                     // 无剩余数据
                                     hasMore = false;
                                     mView.showRefreshEmpty();
@@ -126,12 +126,12 @@ public class VerifyRecordPresenter implements VerifyRecordContract.Presenter {
                             } else {
                                 // 存在数据
                                 mView.showRefreshSuccess();
-                                for (VerifyRecordInfo info : o.respData.data) {
-                                    info.currentCount = o.respData.total;
+                                for (VerifyRecordInfo info : o.getRespData().data) {
+                                    info.currentCount = o.getRespData().total;
                                 }
-                                mView.showData(o.respData.data);
-                                initPageCount += o.respData.data.size();
-                                if (pageIndex < o.pageCount) {
+                                mView.showData(o.getRespData().data);
+                                initPageCount += o.getRespData().data.size();
+                                if (pageIndex < o.getPageCount()) {
                                     pageIndex++;
                                     hasMore = true;
                                     startDate = start;
@@ -139,7 +139,7 @@ public class VerifyRecordPresenter implements VerifyRecordContract.Presenter {
                                     mView.showMoreSuccess();
                                     isRefreshing = false;
                                 } else {
-                                    if (o.respData.remainderCount == 0) {
+                                    if (o.getRespData().remainderCount == 0) {
                                         hasMore = false;
                                         mView.showMoreNone();
                                         isRefreshing = false;
@@ -193,14 +193,14 @@ public class VerifyRecordPresenter implements VerifyRecordContract.Presenter {
                 new Callback<VerifyRecordResult>() {
                     @Override
                     public void onSuccess(VerifyRecordResult o) {
-                        if (o.respData == null) {
+                        if (o.getRespData() == null) {
                             isLoading = false;
                             mView.showMoreError();
                         } else {
-                            if (o.respData.total == 0) {
+                            if (o.getRespData().total == 0) {
                                 // 当前没有返回数据
                                 isLoading = false;
-                                if (o.respData.remainderCount == 0) {
+                                if (o.getRespData().remainderCount == 0) {
                                     // 无剩余数据
                                     hasMore = false;
                                     mView.showMoreNone();
@@ -214,18 +214,18 @@ public class VerifyRecordPresenter implements VerifyRecordContract.Presenter {
                                 }
                             } else {
                                 // 存在数据
-                                for (VerifyRecordInfo info : o.respData.data) {
-                                    info.currentCount = o.respData.total;
+                                for (VerifyRecordInfo info : o.getRespData().data) {
+                                    info.currentCount = o.getRespData().total;
                                 }
-                                mView.showData(o.respData.data);
-                                initPageCount += o.respData.data.size();
-                                if (pageIndex < o.pageCount) {
+                                mView.showData(o.getRespData().data);
+                                initPageCount += o.getRespData().data.size();
+                                if (pageIndex < o.getPageCount()) {
                                     pageIndex++;
                                     hasMore = true;
                                     mView.showMoreSuccess();
                                     isLoading = false;
                                 } else {
-                                    if (o.respData.remainderCount == 0) {
+                                    if (o.getRespData().remainderCount == 0) {
                                         hasMore = false;
                                         mView.showMoreNone();
                                         isLoading = false;
@@ -262,7 +262,7 @@ public class VerifyRecordPresenter implements VerifyRecordContract.Presenter {
         mGetVerifyTypeMapSubscription = VerifyManager.getInstance().getVerifyTypeList(new Callback<VerifyTypeResult>() {
             @Override
             public void onSuccess(VerifyTypeResult o) {
-                mTypeMap = o.respData;
+                mTypeMap = o.getRespData();
                 if (mTypeMap.size() > 0) {
                     List<String> tempList = new ArrayList<>();
                     for (VerifyTypeInfo info : mTypeMap) {

@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -25,11 +25,11 @@ import butterknife.OnClick;
  */
 public class AllTechBadCommentActivity extends BaseActivity {
 
-    @Bind(R.id.bad_comment_num)
+    @BindView(R.id.bad_comment_num)
     TextView badCommentNum;
-    @Bind(R.id.bad_comment_ratio)
+    @BindView(R.id.bad_comment_ratio)
     TextView badCommentRatio;
-    @Bind(R.id.toolbar_right_text)
+    @BindView(R.id.toolbar_right_text)
     TextView tvToolbarRight;
 
 

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorAppBackground"
+              android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fragment_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></FrameLayout>
+        <!-- 操作按钮 -->
+        <LinearLayout
+            android:id="@+id/ll_operation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:orientation="vertical"
+            android:paddingBottom="32dp">
+
+            <LinearLayout
+                android:id="@+id/layout_operation_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.0"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_call_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/btn_phone"
+                    android:visibility="visible"/>
+
+                <ImageButton
+                    android:id="@+id/btn_EmChat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/btn_chat"
+                    android:visibility="visible"/>
+
+                <ImageButton
+                    android:id="@+id/btn_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/btn_message"
+                    android:visibility="visible"/>
+
+                <ImageButton
+                    android:id="@+id/btn_EmHello"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/btn_hello"
+                    android:visibility="visible"/>
+
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_operation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src="@drawable/transition_btn_contact"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

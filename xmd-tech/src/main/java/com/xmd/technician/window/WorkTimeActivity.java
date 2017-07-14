@@ -22,15 +22,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
 public class WorkTimeActivity extends BaseActivity {
 
-    @Bind(R.id.work_time) TextView mWorkTime;
-    @Bind(R.id.work_day) TextView mWorkDay;
+    @BindView(R.id.work_time) TextView mWorkTime;
+    @BindView(R.id.work_day) TextView mWorkDay;
 
     private Subscription mWorkTimeSubscription;
     private Subscription mUpdateWorkTimeSubscription;

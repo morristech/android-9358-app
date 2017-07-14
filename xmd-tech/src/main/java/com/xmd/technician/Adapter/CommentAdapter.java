@@ -19,7 +19,8 @@ import com.xmd.technician.widget.CircleAvatarView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -101,7 +102,7 @@ public class CommentAdapter extends RecyclerView.Adapter {
             }
 
             commentViewHolder.mAvatar.setUserInfo(commentInfo.userId,
-                    TextUtils.isEmpty(commentInfo.userInfo.avatarUrl) ? commentInfo.userInfo.headimgurl : commentInfo.userInfo.avatarUrl);
+                    TextUtils.isEmpty(commentInfo.userInfo.avatarUrl) ? commentInfo.userInfo.headimgurl : commentInfo.userInfo.avatarUrl,false);
         } else if (holder instanceof ListFooterHolder) {
             ListFooterHolder footerHolder = (ListFooterHolder) holder;
             String desc = ResourceUtils.getString(R.string.order_list_item_loading);
@@ -137,17 +138,17 @@ public class CommentAdapter extends RecyclerView.Adapter {
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.avatar)
+        @BindView(R.id.avatar)
         CircleAvatarView mAvatar;
-        @Bind(R.id.name)
+        @BindView(R.id.name)
         TextView mName;
-        @Bind(R.id.ratings)
+        @BindView(R.id.ratings)
         RatingBar mRatings;
-        @Bind(R.id.comment)
+        @BindView(R.id.comment)
         TextView mComment;
-        @Bind(R.id.time)
+        @BindView(R.id.time)
         TextView mTime;
-        @Bind(R.id.reward_amount)
+        @BindView(R.id.reward_amount)
         TextView mRewardAmount;
 
         public CommentViewHolder(View itemView) {
@@ -158,7 +159,7 @@ public class CommentAdapter extends RecyclerView.Adapter {
 
     public class ListFooterHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_footer)
+        @BindView(R.id.item_footer)
         TextView itemFooter;
 
         public ListFooterHolder(View itemView) {

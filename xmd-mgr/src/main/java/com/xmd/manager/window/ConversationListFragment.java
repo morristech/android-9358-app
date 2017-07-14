@@ -30,7 +30,7 @@ import com.xmd.manager.widget.ChatMessageManagerDialog;
 import com.xmd.manager.widget.ClearableEditText;
 import com.xmd.manager.widget.DividerItemDecoration;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import rx.Subscription;
 
 import static com.xmd.manager.common.Utils.makeShortToast;
@@ -40,7 +40,7 @@ import static com.xmd.manager.common.Utils.makeShortToast;
  */
 public class ConversationListFragment extends BaseListFragment<EMConversation> {
 
-    @Bind(R.id.search_word)
+    @BindView(R.id.search_word)
     ClearableEditText mCevSearchWord;
 
     private Subscription mGetEmchatMsgCountSubscription;

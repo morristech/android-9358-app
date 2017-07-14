@@ -14,7 +14,7 @@ import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.widget.AlertDialogBuilder;
 import com.xmd.manager.widget.BasePopupWindow;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -22,11 +22,11 @@ import butterknife.OnClick;
  */
 public class MorePopupWindow extends BasePopupWindow {
 
-    @Bind(R.id.about_us)
+    @BindView(R.id.about_us)
     Button mBtnAboutUs;
-    @Bind(R.id.logout)
+    @BindView(R.id.logout)
     Button mBtnLogout;
-    @Bind(R.id.setting)
+    @BindView(R.id.setting)
     Button mBtnSetting;
 
     protected MorePopupWindow(View parentView) {

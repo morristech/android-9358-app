@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.xmd.technician.R;
 import com.xmd.technician.common.Utils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -18,7 +18,7 @@ import butterknife.OnClick;
  */
 public class SuccessDialog extends Dialog {
 
-    @Bind(R.id.icon_success)
+    @BindView(R.id.icon_success)
     ImageView iconSuccess;
 
     private TextView text;

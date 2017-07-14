@@ -5,6 +5,7 @@
     <color name="primary_color">#ff6666</color>
     <color name="primary_line_color">#ff6666</color>
     <color name="app_bg">#EFEFF4</color>
+    <color name="colorPrimary">#ff6666</color>
 
     <color name="transparent">#00000000</color>
     <color name="white_p">#EEEEEE</color>

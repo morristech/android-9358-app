@@ -34,7 +34,7 @@ import com.xmd.technician.widget.SuccessDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -43,31 +43,31 @@ import rx.Subscription;
  * Created by Administrator on 2016/8/8.
  */
 public class UserCreditCenterActivity extends BaseActivity implements BaseFragment.IFragmentCallback {
-    @Bind(R.id.credit_total)
+    @BindView(R.id.credit_total)
     TextView mCreditAmount;
-    @Bind(R.id.freeze_total)
+    @BindView(R.id.freeze_total)
     TextView mCreditFreeze;
-    @Bind(R.id.credit_rule)
+    @BindView(R.id.credit_rule)
     TextView mCreditRule;
-    @Bind(R.id.credit_exchange)
+    @BindView(R.id.credit_exchange)
     Button mCreditExchange;
-    @Bind(R.id.get_credit_way)
+    @BindView(R.id.get_credit_way)
     RelativeLayout mCreditIsEmpty;
-    @Bind(R.id.credit_get)
+    @BindView(R.id.credit_get)
     TextView mGetCredit;
-    @Bind(R.id.iv_tab_bottom_img)
+    @BindView(R.id.iv_tab_bottom_img)
     ImageView mTabBottomImg;
-    @Bind(R.id.credit_record)
+    @BindView(R.id.credit_record)
     RelativeLayout mCreditRecord;
-    @Bind(R.id.credit_apply)
+    @BindView(R.id.credit_apply)
     RelativeLayout mCreditApply;
-    @Bind(R.id.table_apply)
+    @BindView(R.id.table_apply)
     TextView mTableApply;
-    @Bind(R.id.table_record)
+    @BindView(R.id.table_record)
     TextView mTableRecord;
-    @Bind(R.id.vp_contact)
+    @BindView(R.id.vp_contact)
     ViewPager mViewpagerContact;
-    @Bind(R.id.ll_detail)
+    @BindView(R.id.ll_detail)
     LinearLayout llDetail;
 
     private Subscription getCreditUserAccountSubscription;

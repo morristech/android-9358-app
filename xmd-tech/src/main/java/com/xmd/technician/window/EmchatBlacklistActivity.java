@@ -2,11 +2,14 @@ package com.xmd.technician.window;
 
 import android.content.Intent;
 
+import com.example.xmd_m_comment.httprequest.ConstantResources;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ContactHandlerBean;
 import com.xmd.technician.bean.CustomerInfo;
 import com.xmd.technician.common.ResourceUtils;
+import com.xmd.technician.common.UINavigation;
+import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.TechBlacklistResult;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -73,12 +76,13 @@ public class EmchatBlacklistActivity extends BaseListActivity<CustomerInfo> {
 
     @Override
     public void onItemClicked(CustomerInfo bean) {
-        Intent intent = new Intent(this, ContactInformationDetailActivity.class);
-        intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, bean.id);
-        intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-        intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
-        intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, true);
-        startActivity(intent);
+//        Intent intent = new Intent(this, ContactInformationDetailActivity.class);
+//        intent.putExtra(RequestConstant.KEY_CUSTOMER_ID, bean.id);
+//        intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
+//        intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
+//        intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, true);
+//        startActivity(intent);
+        UINavigation.gotoCustomerDetailActivity(this, Utils.isEmpty(bean.userId)?bean.id:bean.userId, ConstantResources.INTENT_TYPE_TECH,false);
     }
 
 

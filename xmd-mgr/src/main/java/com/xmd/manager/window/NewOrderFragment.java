@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -41,9 +41,9 @@ import rx.Subscription;
 
 public class NewOrderFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, ListRecycleViewAdapter.Callback {
 
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     RecyclerView mList;
-    @Bind(R.id.swipe_refresh_widget)
+    @BindView(R.id.swipe_refresh_widget)
     SwipeRefreshLayout mSwipeRefreshWidget;
 
 
@@ -211,7 +211,6 @@ public class NewOrderFragment extends BaseFragment implements SwipeRefreshLayout
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.getInstance().unsubscribe(mGetOrderListSubscription, mOrderManageSubscription, mFilterOrderSubscription);
-        ButterKnife.unbind(this);
     }
 
     private void getData() {

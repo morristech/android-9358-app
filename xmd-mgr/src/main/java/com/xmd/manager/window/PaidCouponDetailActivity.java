@@ -23,7 +23,7 @@ import com.xmd.manager.widget.ViewPagerTabIndicator;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -32,15 +32,15 @@ import butterknife.OnClick;
  */
 public class PaidCouponDetailActivity extends BaseActivity {
 
-    @Bind(R.id.startTime)
+    @BindView(R.id.startTime)
     TextView startTime;
-    @Bind(R.id.endTime)
+    @BindView(R.id.endTime)
     TextView endTime;
-    @Bind(R.id.btnSubmit)
+    @BindView(R.id.btnSubmit)
     Button btnSubmit;
-    @Bind(R.id.tabIndicator)
+    @BindView(R.id.tabIndicator)
     ViewPagerTabIndicator tabIndicator;
-    @Bind(R.id.viewPager)
+    @BindView(R.id.viewPager)
     ViewPager viewPager;
 
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;

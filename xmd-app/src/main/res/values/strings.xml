@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">xmd-app</string>
+    <string name="contact_mark_tech_add">通讯录</string>
+    <string name="contact_mark_new_add">新客</string>
+    <string name="contact_mark_activation">待激活</string>
+    <string name="contact_mark_big">大客</string>
+    <string name="contact_mark_normal">普客</string>
 </resources>

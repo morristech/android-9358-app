@@ -81,7 +81,7 @@ public class ManagerApplication extends Application {
                 }
 
                 //打开友盟错误统计,可以和全局错误拦截器共存
-                MobclickAgent.setCatchUncaughtExceptions(true);
+                MobclickAgent.setCatchUncaughtExceptions(false);
                 // 应用入口，禁止默认的页面统计方式
                 MobclickAgent.openActivityDurationTrack(false);
                 //设置日志加密

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.xmd.technician.R;
 import com.xmd.technician.common.ResourceUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -20,10 +20,10 @@ import butterknife.OnClick;
  */
 public class RewardConfirmDialog extends Dialog{
 
-    @Bind(R.id.dialog_alert_title) TextView mTitleTxt;
-    @Bind(R.id.dialog_alert_message) TextView mTipsTxt;
-    @Bind(R.id.dialog_alert_ok_btn) Button mBtnOk;
-    @Bind(R.id.dialog_alert_cancel_btn) Button mBtnCancel;
+    @BindView(R.id.dialog_alert_title) TextView mTitleTxt;
+    @BindView(R.id.dialog_alert_message) TextView mTipsTxt;
+    @BindView(R.id.dialog_alert_ok_btn) Button mBtnOk;
+    @BindView(R.id.dialog_alert_cancel_btn) Button mBtnCancel;
 
     private String mTitle;
     private String mTipInfo;

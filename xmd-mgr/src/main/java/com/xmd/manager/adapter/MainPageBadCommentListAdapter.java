@@ -3,30 +3,21 @@ package com.xmd.manager.adapter;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.hyphenate.util.DateUtils;
+import com.example.xmd_m_comment.adapter.CommentItemDetailAdapter;
+import com.example.xmd_m_comment.bean.CommentBean;
+import com.xmd.app.widget.RoundImageView;
 import com.xmd.manager.R;
-import com.xmd.manager.beans.BadComment;
-import com.xmd.manager.beans.BadCommentRateListBean;
-import com.xmd.manager.common.ResourceUtils;
-import com.xmd.manager.common.Utils;
-import com.xmd.manager.service.RequestConstant;
-import com.xmd.manager.widget.CircleImageView;
 
-import java.util.Date;
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 
 /**
@@ -35,18 +26,18 @@ import butterknife.ButterKnife;
 
 public class MainPageBadCommentListAdapter extends RecyclerView.Adapter {
 
-    public List<BadComment> mBadComments;
+    public List<CommentBean> mBadComments;
     private Context mContext;
     private OnCommentClickedListener mCommentClickedListener;
 
     public interface OnCommentClickedListener {
-        void onCommentCallBackClick(BadComment comment);
+        void onCommentCallBackClick(CommentBean comment);
 
-        void onItemClicked(BadComment badComment);
+        void onItemClicked(CommentBean badComment);
     }
 
 
-    public MainPageBadCommentListAdapter(Context context, List<BadComment> comments) {
+    public MainPageBadCommentListAdapter(Context context, List<CommentBean> comments) {
         mContext = context;
         this.mBadComments = comments;
 
@@ -56,7 +47,7 @@ public class MainPageBadCommentListAdapter extends RecyclerView.Adapter {
         mCommentClickedListener = commentClickedListener;
     }
 
-    public void setData(List<BadComment> comments) {
+    public void setData(List<CommentBean> comments) {
         this.mBadComments = comments;
         notifyDataSetChanged();
     }
@@ -70,75 +61,59 @@ public class MainPageBadCommentListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        MainPageBadCommentViewHolder badHolder = (MainPageBadCommentViewHolder) holder;
-        final BadComment badComment = mBadComments.get(position);
-        badHolder.commentTime.setText(DateUtils.getTimestampString(new Date(badComment.createdAt)));
-        if (Utils.isNotEmpty(badComment.phoneNum)) {
-            badHolder.customerPhone.setText(badComment.phoneNum);
-        }
-        if (badComment.commentType.equals(RequestConstant.COMMENT_TYPE_ORDER) || badComment.commentType.equals(RequestConstant.COMMENT_TYPE_TECH)) {
-            badHolder.commentType.setText(ResourceUtils.getString(R.string.comment_text));
-            badHolder.commentTechName.setText(Utils.isEmpty(badComment.techName) ? ResourceUtils.getString(R.string.tech_text) : badComment.techName);
-            if (Utils.isNotEmpty(badComment.techNo)) {
-                int startIndex = 1;
-                int endIndex = startIndex + badComment.techNo.length();
-                Spannable spanString = Utils.changeColor("[" + badComment.techNo + "]",
-                        ResourceUtils.getColor(R.color.number_color), startIndex, endIndex);
-                badHolder.commentTechCode.setText(spanString);
-                badHolder.commentTechCode.setVisibility(View.VISIBLE);
-            } else {
-                badHolder.commentTechCode.setVisibility(View.GONE);
-            }
-        } else if (badComment.commentType.equals(RequestConstant.COMMENT_TYPE_CLUB)) {
-            badHolder.commentType.setText(ResourceUtils.getString(R.string.comment_text));
-            badHolder.commentTechName.setText(ResourceUtils.getString(R.string.comment_club));
-            badHolder.commentTechCode.setVisibility(View.GONE);
+        MainPageBadCommentViewHolder viewHolder = (MainPageBadCommentViewHolder) holder;
+        final CommentBean commentBean = mBadComments.get(position);
+        Glide.with(mContext).load(commentBean.avatarUrl).into(viewHolder.commentHead);
+        viewHolder.commentName.setText(TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName);
+        viewHolder.commentPhone.setText(TextUtils.isEmpty(commentBean.phoneNum) ? "" : commentBean.phoneNum);
+        viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "技师" : commentBean.techName);
+        viewHolder.commentTechCode.setText(TextUtils.isEmpty(commentBean.techNo) ? "" : String.format("[%s]", commentBean.techNo));
+        viewHolder.commentTime.setText(com.shidou.commonlibrary.util.DateUtils.doLong2String(commentBean.createdAt, "MM-dd HH:mm"));
+
+        if (commentBean.returnStatus.equals("Y")) {
+            viewHolder.imgVisitMark.setVisibility(View.VISIBLE);
+            viewHolder.tvVisitComment.setText("操作");
         } else {
-            badHolder.commentType.setText(ResourceUtils.getString(R.string.comment_qr_code));
-            badHolder.commentTechName.setText(Utils.isEmpty(badComment.techName) ? ResourceUtils.getString(R.string.tech_text) : badComment.techName);
-            if (Utils.isNotEmpty(badComment.techNo)) {
-                int startIndex = 1;
-                int endIndex = startIndex + badComment.techNo.length();
-                Spannable spanString = Utils.changeColor("[" + badComment.techNo + "]",
-                        ResourceUtils.getColor(R.color.number_color), startIndex, endIndex);
-                badHolder.commentTechCode.setText(spanString);
-                badHolder.commentTechCode.setVisibility(View.VISIBLE);
-            } else {
-                badHolder.commentTechCode.setVisibility(View.GONE);
-            }
+            viewHolder.imgVisitMark.setVisibility(View.GONE);
+            viewHolder.tvVisitComment.setText("回访");
         }
-        if (badComment.commentRateList != null && badComment.commentRateList.size() > 0) {
-            badHolder.mainListView.setVisibility(View.VISIBLE);
-            CommentDetailItemAdapter<BadCommentRateListBean> adapter = new CommentDetailItemAdapter(mContext, badComment.commentRateList);
-            badHolder.mainListView.setLayoutManager(new GridLayoutManager(mContext, 2));
-            badHolder.mainListView.setAdapter(adapter);
+        if (commentBean.commentType.equals("complaint")) {//投诉
+            viewHolder.llComplaintDetail.setVisibility(View.VISIBLE);
+            viewHolder.llCommentTypeTech.setVisibility(View.GONE);
+            viewHolder.commentComplaintDetail.setText(TextUtils.isEmpty(commentBean.comment) ? "" : commentBean.comment);
+        } else {//评论
+            viewHolder.llCommentTypeTech.setVisibility(View.VISIBLE);
+            viewHolder.llComplaintDetail.setVisibility(View.GONE);
+            viewHolder.commentDetail.setText(TextUtils.isEmpty(commentBean.comment) ? "" : commentBean.comment);
+            CommentItemDetailAdapter adapter = new CommentItemDetailAdapter(mContext, commentBean.commentRateList);
+            viewHolder.commentProjectList.setLayoutManager(new GridLayoutManager(mContext, 2));
+            viewHolder.commentProjectList.setAdapter(adapter);
+        }
+        if (commentBean.isAnonymous.equals("N")) {//匿名评价
+         //   viewHolder.tvVisitComment.setVisibility(View.VISIBLE);
+            viewHolder.llCommentHandler.setVisibility(View.VISIBLE);
         } else {
-            badHolder.mainListView.setVisibility(View.GONE);
+            viewHolder.llCommentHandler.setVisibility(View.GONE);
+         //   viewHolder.tvVisitComment.setVisibility(View.INVISIBLE);
         }
-        if (Utils.isNotEmpty(badComment.comment)) {
-            badHolder.commentDetail.setText(badComment.comment);
-            badHolder.commentDetail.setVisibility(View.VISIBLE);
-        } else {
-            badHolder.commentDetail.setVisibility(View.GONE);
-        }
-        badHolder.customerName.setText(Utils.StrSubstring(5, badComment.userName, true));
-        if (badComment.isAnonymous.equals("Y")) {
-            Glide.with(mContext).load(R.drawable.icon22).into(badHolder.commentCustomerHead);
-            badHolder.commentReturnVisit.setVisibility(View.GONE);
-        } else {
-            Glide.with(mContext).load(badComment.avatarUrl).into(badHolder.commentCustomerHead);
-            badHolder.commentReturnVisit.setVisibility(View.VISIBLE);
-            badHolder.commentReturnVisit.setOnClickListener(v -> {
-                mCommentClickedListener.onCommentCallBackClick(badComment);
-            });
-        }
-        badHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCommentClickedListener.onItemClicked(badComment);
+                mCommentClickedListener.onItemClicked(commentBean);
             }
         });
+
+        viewHolder.tvVisitComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCommentClickedListener.onCommentCallBackClick(commentBean);
+            }
+        });
+
+
+        return;
     }
+
 
     @Override
     public int getItemCount() {
@@ -147,38 +122,43 @@ public class MainPageBadCommentListAdapter extends RecyclerView.Adapter {
 
 
     final static class MainPageBadCommentViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.comment_customer_head)
-        CircleImageView commentCustomerHead;
-        @Bind(R.id.customer_name)
-        TextView customerName;
-        @Bind(R.id.customer_phone)
-        TextView customerPhone;
-        @Bind(R.id.comment_type)
-        TextView commentType;
-        @Bind(R.id.comment_tech_name)
+        RoundImageView commentHead;
+        TextView commentName;
+        TextView commentPhone;
         TextView commentTechName;
-        @Bind(R.id.comment_tech_code)
         TextView commentTechCode;
-        @Bind(R.id.comment_tech)
-        LinearLayout commentTech;
-        @Bind(R.id.main_list_view)
-        RecyclerView mainListView;
-        @Bind(R.id.comment_detail)
+        RecyclerView commentProjectList;
         TextView commentDetail;
-        @Bind(R.id.comment_time)
+        LinearLayout llCommentTypeTech;
+        TextView commentComplaintDetail;
+        LinearLayout llComplaintDetail;
         TextView commentTime;
-        @Bind(R.id.img_btn_delete)
-        ImageButton imgBtnDelete;
-        @Bind(R.id.img_delete_mark)
-        ImageView imgDeleteMark;
-        @Bind(R.id.comment_return_visit)
-        TextView commentReturnVisit;
-        @Bind(R.id.bad_comment)
         LinearLayout badComment;
+        TextView tvDeleteComment;
+        TextView tvVisitComment;
+        ImageView imgVisitMark;
+        ImageView imgDeleteMark;
+        LinearLayout llCommentHandler;
 
         MainPageBadCommentViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
+            commentHead = (RoundImageView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_head);
+            commentName = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_name);
+            commentPhone = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_phone);
+            commentTechName = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_tech_name);
+            commentTechCode = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_tech_code);
+            commentProjectList = (RecyclerView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_project_list);
+            commentDetail = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_detail);
+            llCommentTypeTech = (LinearLayout) itemView.findViewById(com.example.xmd_m_comment.R.id.ll_comment_type_tech);
+            commentComplaintDetail = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_complaint_detail);
+            llComplaintDetail = (LinearLayout) itemView.findViewById(com.example.xmd_m_comment.R.id.ll_complaint_detail);
+            commentTime = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.comment_time);
+            badComment = (LinearLayout) itemView.findViewById(com.example.xmd_m_comment.R.id.bad_comment);
+            tvDeleteComment = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.tv_delete_comment);
+            tvVisitComment = (TextView) itemView.findViewById(com.example.xmd_m_comment.R.id.tv_visit_comment);
+            imgVisitMark = (ImageView) itemView.findViewById(com.example.xmd_m_comment.R.id.img_visit_mark);
+            imgDeleteMark = (ImageView) itemView.findViewById(com.example.xmd_m_comment.R.id.img_delete_mark);
+            llCommentHandler = (LinearLayout) itemView.findViewById(com.example.xmd_m_comment.R.id.ll_comment_handler);
         }
     }
 

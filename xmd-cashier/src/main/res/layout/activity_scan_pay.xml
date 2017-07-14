@@ -185,7 +185,7 @@
                 android:drawableLeft="@drawable/ic_scan"
                 android:drawablePadding="@dimen/activity_normal_margin"
                 android:gravity="center"
-                android:text="微信扫码支付"
+                android:text="微信或支付宝扫码"
                 android:textColor="@color/colorMemberPaySuccess"
                 android:textSize="@dimen/font_size_14"
                 android:visibility="visible" />

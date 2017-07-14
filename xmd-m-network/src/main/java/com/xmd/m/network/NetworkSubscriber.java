@@ -49,6 +49,7 @@ public abstract class NetworkSubscriber<T> extends Subscriber<T> {
             }
             onCallbackError(new ServerException(r.getMsg(), r.getStatusCode()));
         } catch (Exception e) {
+            e.printStackTrace();
             onCallbackError(new ServerException("网络结果处理错误", 400));
         }
     }

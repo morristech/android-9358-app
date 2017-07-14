@@ -18,7 +18,8 @@ import com.xmd.technician.widget.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -133,13 +134,13 @@ public class HelloRecordAdapter extends RecyclerView.Adapter {
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.img_item_avatar)
+        @BindView(R.id.img_item_avatar)
         CircleImageView mAvatar;
-        @Bind(R.id.tv_item_nickname)
+        @BindView(R.id.tv_item_nickname)
         TextView mNickName;
-        @Bind(R.id.tv_item_date)
+        @BindView(R.id.tv_item_date)
         TextView mHelloDate;
-        @Bind(R.id.tv_item_status)
+        @BindView(R.id.tv_item_status)
         TextView mReplyStatus;
 
         public ItemViewHolder(View itemView) {
@@ -149,7 +150,7 @@ public class HelloRecordAdapter extends RecyclerView.Adapter {
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.item_footer)
+        @BindView(R.id.item_footer)
         TextView mFooterView;
 
         public FooterViewHolder(View itemView) {
