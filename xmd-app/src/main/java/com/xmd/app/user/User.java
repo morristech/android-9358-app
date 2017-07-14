@@ -158,6 +158,18 @@ public class User implements Serializable {
         return h;
     }
 
+    public String getUserType() {
+        if (!TextUtils.isEmpty(getRoles())) {
+            if (getRoles().contains(User.ROLE_MANAGER)) {
+                return "manager";
+            }
+            if (getRoles().contains(User.ROLE_FLOOR) || getRoles().contains(User.ROLE_TECH)) {
+                return "tech";
+            }
+        }
+        return "user";
+    }
+
     @Override
     public String toString() {
         return "User{" +

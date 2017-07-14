@@ -57,4 +57,24 @@ public interface NetService {
     @POST("/spa-manager/api/v2/tech/profile/order/manage")
     Observable<BaseBean> manageOrder(@Field("processType") String processType,
                                      @Field("id") String id);
+
+    /**
+     * 通知用户有消息
+     *
+     * @param currentChatId   当前用户chatId
+     * @param currentUserType 当前用户类型 user,tech,manager
+     * @param friendChatId    对方chatId
+     * @param friendUserType  对方用户类型
+     * @param msgId           消息id
+     * @param msgType         消息类型  text, paid_coupon ..等等
+     */
+    @FormUrlEncoded
+    @POST("/spa-manager/api/v1/emchat/markchattouser")
+    Observable<BaseBean> notifyServerChatMessage(@Field("currentChatId") String currentChatId,
+                                                 @Field("currentUserType") String currentUserType,
+                                                 @Field("friendChatId") String friendChatId,
+                                                 @Field("friendUserType") String friendUserType,
+                                                 @Field("msgId") String msgId,
+                                                 @Field("msgType") String msgType
+    );
 }

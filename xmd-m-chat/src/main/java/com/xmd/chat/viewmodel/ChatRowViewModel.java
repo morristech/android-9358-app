@@ -16,14 +16,23 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.widget.GlideCircleTransform;
+import com.xmd.chat.AccountManager;
 import com.xmd.chat.MessageManager;
+import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.event.EventDeleteMessage;
 import com.xmd.chat.event.EventRevokeMessage;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
+
+import rx.Observable;
 
 /**
  * Created by mo on 17-6-30.
@@ -37,7 +46,7 @@ public abstract class ChatRowViewModel {
     public ObservableBoolean error = new ObservableBoolean();
     public ObservableBoolean showTime = new ObservableBoolean();
 
-    public ChatRowViewModel(ChatMessage chatMessage) {
+    public ChatRowViewModel(final ChatMessage chatMessage) {
         this.chatMessage = chatMessage;
         error.set(false);
         progress.set(false);
@@ -46,6 +55,36 @@ public abstract class ChatRowViewModel {
             public void onSuccess() {
                 progress.set(false);
                 error.set(false);
+                String msgType;
+                if (!chatMessage.getEmMessage().getType().equals(EMMessage.Type.TXT)) {
+                    msgType = "text";
+                } else {
+                    msgType = chatMessage.getMsgType();
+                    if (msgType.equals(ChatMessage.MSG_TYPE_ORIGIN_TXT)) {
+                        msgType = "text";
+                    }
+                }
+                //通知服务器有新的消息
+                Observable<BaseBean> observable = XmdNetwork.getInstance()
+                        .getService(NetService.class)
+                        .notifyServerChatMessage(
+                                AccountManager.getInstance().getChatId(),
+                                AccountManager.getInstance().getUserType(),
+                                chatMessage.getRemoteChatId(),
+                                UserInfoServiceImpl.getInstance().getUserByChatId(chatMessage.getRemoteChatId()).getUserType(),
+                                chatMessage.getEmMessage().getMsgId(),
+                                msgType);
+                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+                    @Override
+                    public void onCallbackSuccess(BaseBean result) {
+                        XLogger.d("notifyServerChatMessage success");
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        XLogger.d("notifyServerChatMessage failed:" + e.getMessage());
+                    }
+                });
             }
 
             @Override

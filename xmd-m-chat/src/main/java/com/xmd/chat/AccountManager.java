@@ -122,4 +122,12 @@ public class AccountManager {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public String getChatId() {
+        return user == null ? null : user.getChatId();
+    }
+
+    public String getUserType() {
+        return user == null ? null : user.getUserType();
+    }
 }
