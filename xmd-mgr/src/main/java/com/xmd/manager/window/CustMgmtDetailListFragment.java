@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.m.comment.CustomerInfoDetailActivity;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.ListRecycleViewAdapter;
@@ -364,7 +365,7 @@ public class CustMgmtDetailListFragment extends BaseFragment implements ListRecy
 //        Intent intent = new Intent(getActivity(), CustomerActivity.class);
 //        intent.putExtra(CustomerActivity.ARG_CUSTOMER, bean);
 //        startActivity(intent);
-        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.userId, "manger", false);
+        CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.userId, ConstantResources.INTENT_TYPE_MANAGER, false);
     }
 
     @Override

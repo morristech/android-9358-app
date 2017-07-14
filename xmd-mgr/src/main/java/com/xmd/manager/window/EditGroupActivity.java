@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xmd.m.comment.CustomerInfoDetailActivity;
+import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.GroupMemberAdapter;
 import com.xmd.manager.beans.GroupMemberBean;
@@ -148,7 +149,7 @@ public class EditGroupActivity extends BaseActivity implements View.OnClickListe
 //                Intent intent = new Intent(EditGroupActivity.this, CustomerActivity.class);
 //                intent.putExtra(RequestConstant.COMMENT_USER_ID, bean.id);
 //                startActivity(intent);
-                CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(EditGroupActivity.this, bean.id, "manger", false);
+                CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(EditGroupActivity.this, bean.id, ConstantResources.INTENT_TYPE_MANAGER, false);
             }
         });
         mGroupSaveEditSubscription = RxBus.getInstance().toObservable(AddGroupResult.class).subscribe(
