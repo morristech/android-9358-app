@@ -49,8 +49,6 @@ public abstract class ChatRowViewModel {
 
     public ChatRowViewModel(final ChatMessage chatMessage) {
         this.chatMessage = chatMessage;
-        error.set(false);
-        progress.set(false);
         chatMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
             @Override
             public void onSuccess() {
@@ -99,6 +97,9 @@ public abstract class ChatRowViewModel {
                 progress.set(true);
             }
         });
+
+        error.set(false);
+        progress.set(false);
         EMMessage.Status status = chatMessage.getEmMessage().status();
         switch (status) {
             case SUCCESS:
@@ -149,8 +150,7 @@ public abstract class ChatRowViewModel {
     public void reSend() {
         error.set(false);
         progress.set(true);
-        MessageManager.getInstance().sendMessage(chatMessage);
-        EventBus.getDefault().post(new EventDeleteMessage(this));
+        MessageManager.getInstance().resendMessage(chatMessage);
     }
 
     public boolean onLongClick(final View view) {

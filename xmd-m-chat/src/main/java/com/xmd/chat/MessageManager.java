@@ -212,6 +212,10 @@ public class MessageManager {
         return chatMessage;
     }
 
+    public void resendMessage(ChatMessage chatMessage){
+        EMClient.getInstance().chatManager().sendMessage(chatMessage.getEmMessage());
+    }
+
 
     //将消息保存到本地
     public void saveMessage(final ChatMessage chatMessage) {

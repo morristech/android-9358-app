@@ -61,6 +61,9 @@ public class ConversationListFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        setTitle("消息");
+
         mAdapter = new CommonRecyclerViewAdapter<ConversationViewModel>() {
             @Override
             public void onViewRecycled(ViewHolder holder) {
