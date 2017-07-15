@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -25,11 +26,14 @@ import com.crazyman.library.PermissionTool;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.ExCommonRecyclerViewAdapter;
+import com.xmd.app.SpConstants;
+import com.xmd.app.XmdApp;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -84,6 +88,7 @@ public class ChatActivity extends BaseActivity {
     public static final int REQUEST_CODE_PERMISSION_REQUEST = 0x800;
 
     private LinearLayoutManager layoutManager;
+    private int softwareKeyboardHeight = ScreenUtils.dpToPx(300);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +108,18 @@ public class ChatActivity extends BaseActivity {
             XToast.show("无法找到用户信息!");
             finish();
             return;
+        }
+
+        //根据有无键盘高度设置进入时显示/隐藏键盘
+        softwareKeyboardHeight = XmdApp.getInstance().getSp().getInt(SpConstants.KEY_KEYBOARD_HEIGHT, 0);
+        if (softwareKeyboardHeight == 0) {
+            getWindow().setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE |
+                            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            mBinding.sendEditText.requestFocus();
+        } else {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            mBinding.submenuLayout.getLayoutParams().height = softwareKeyboardHeight;
         }
 
         setTitle(mRemoteUser.getShowName());
@@ -133,9 +150,13 @@ public class ChatActivity extends BaseActivity {
                 if (oldh > h) {
                     //small size, need to scroll to last visible position
                     mBinding.recyclerView.scrollToPosition(layoutManager.findLastVisibleItemPosition());
-                }
-                if (mBinding.recyclerView.isMaxHeight() && mFocusMenuView != null) {
-                    showSubMenu.set(true);
+
+                    if (softwareKeyboardHeight == 0) {
+                        //这是键盘弹出导致的高度变化，在这里可以计算键盘高度
+                        softwareKeyboardHeight = oldh - h;
+                        XLogger.i("softwareKeyboardHeight=" + softwareKeyboardHeight);
+                        mBinding.submenuLayout.getLayoutParams().height = softwareKeyboardHeight;
+                    }
                 }
             }
         });
@@ -306,13 +327,6 @@ public class ChatActivity extends BaseActivity {
         }
     }
 
-    //点击输入框时隐藏子菜单
-    public boolean onTouchEditText(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            hideFocusMenu();
-        }
-        return false;
-    }
 
     //增加一条消息到列表
     public void addNewChatMessageToUi(ChatMessage chatMessage) {
@@ -343,8 +357,8 @@ public class ChatActivity extends BaseActivity {
 
     //初始化菜单
     public void initMenu() {
-        mBinding.pageIndicator.setViewPager(mBinding.submenuLayout, R.drawable.chat_menu_indicator_normal, R.drawable.chat_menu_indicator_focus);
-        mBinding.submenuLayout.addOnPageChangeListener(mBinding.pageIndicator);
+        mBinding.pageIndicator.setViewPager(mBinding.submenuContentLayout, R.drawable.chat_menu_indicator_normal, R.drawable.chat_menu_indicator_focus);
+        mBinding.submenuContentLayout.addOnPageChangeListener(mBinding.pageIndicator);
         List<ChatMenu> chatMenuList = XmdChat.getInstance().getMenuFactory()
                 .createMenuList(this, mRemoteUser, mBinding.sendEditText.getText());
         for (final ChatMenu chatMenu : chatMenuList) {
@@ -381,15 +395,27 @@ public class ChatActivity extends BaseActivity {
     //显示子菜单
     public void showSubMenu(ImageView menuView, final ChatMenu chatMenu) {
         if (mFocusMenuView != null) {
+            //当前显示聊天菜单
             mFocusMenuView.setSelected(false);
+        } else if (!mBinding.recyclerView.isMaxHeight()) {
+            //当前显示键盘
+            lockRecyclerViewHeight();
+            hideSoftwareInput();
+            ThreadPoolManager.postToUIDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    unLockRecyclerViewHeight();
+                }
+            }, 100);
         }
+
         if (mFocusMenuView == menuView) {
             hideFocusMenu();
             return;
         }
 
-        mBinding.submenuLayout.setAdapter(chatMenu.adapter);
-        mBinding.submenuLayout.getAdapter().notifyDataSetChanged();
+        mBinding.submenuContentLayout.setAdapter(chatMenu.adapter);
+        mBinding.submenuContentLayout.getAdapter().notifyDataSetChanged();
         if (chatMenu.subMenuList.size() > 1) {
             mBinding.pageIndicator.setVisibility(View.VISIBLE);
             mBinding.pageIndicator.drawIcons(chatMenu.subMenuList.size());
@@ -397,14 +423,10 @@ public class ChatActivity extends BaseActivity {
             mBinding.pageIndicator.setVisibility(View.GONE);
         }
 
-        hideSoftwareInput();
+
         mFocusMenuView = menuView;
         mFocusMenuView.setSelected(true);
-        //如果当前recyclerView是最大高度状态（键盘是隐藏的），那么直接显示
-        //否则等recyclerView达到最大高度时再显示，解决闪烁问题
-        if (mBinding.recyclerView.isMaxHeight()) {
-            showSubMenu.set(true);
-        }
+        showSubMenu.set(true);
     }
 
     //转换文字和语音
@@ -420,6 +442,21 @@ public class ChatActivity extends BaseActivity {
         }
     }
 
+    //点击输入框
+    public boolean onTouchEditText(View v, MotionEvent event) {
+        if (mFocusMenuView != null) {
+            lockRecyclerViewHeight();
+            hideFocusMenu();
+            ThreadPoolManager.postToUIDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    unLockRecyclerViewHeight();
+                }
+            }, 100);
+        }
+        return false;
+    }
+
     @Override
     public void onBackPressed() {
         if (mFocusMenuView != null) {
@@ -429,6 +466,7 @@ public class ChatActivity extends BaseActivity {
         super.onBackPressed();
     }
 
+    //关闭输入法
     private void hideSoftwareInput() {
         if (mInputMethodManager == null) {
             mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -436,12 +474,27 @@ public class ChatActivity extends BaseActivity {
         mInputMethodManager.hideSoftInputFromWindow(mBinding.sendEditText.getWindowToken(), 0);
     }
 
+    //关闭聊天子菜单
     private void hideFocusMenu() {
         if (mFocusMenuView != null) {
             mFocusMenuView.setSelected(false);
             mFocusMenuView = null;
             showSubMenu.set(false);
         }
+    }
+
+    //锁定聊天列表高度
+    private void lockRecyclerViewHeight() {
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mBinding.refreshLayout.getLayoutParams();
+        lp.height = mBinding.recyclerView.getHeight();
+        lp.weight = 0;
+    }
+
+    //解锁聊天列表高度
+    private void unLockRecyclerViewHeight() {
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mBinding.refreshLayout.getLayoutParams();
+        lp.height = 0;
+        lp.weight = 1;
     }
 
     private View.OnTouchListener voiceButtonListener = new View.OnTouchListener() {

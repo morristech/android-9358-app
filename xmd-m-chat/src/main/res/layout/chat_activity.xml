@@ -31,7 +31,8 @@
             <com.xmd.chat.view.ChatRecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -68,8 +69,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:background="@color/colorWhite"
                 android:afterTextChanged="@{(s)->data.setTextMessageContent(s)}"
+                android:background="@color/colorWhite"
                 android:onTouch="@{(v,e)->data.onTouchEditText(v,e)}"
                 android:text="@{data.textMessageContent}"
                 android:visibility="@{data.voiceInputMode?View.GONE:View.VISIBLE}" />
@@ -105,15 +106,15 @@
             android:background="@color/colorDivide" />
 
         <FrameLayout
+            android:id="@+id/submenuLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
             android:visibility="@{data.showSubMenu?View.VISIBLE:View.GONE}">
 
             <com.shidou.commonlibrary.widget.AutoHeightViewPager
-                android:id="@+id/submenuLayout"
+                android:id="@+id/submenuContentLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
             <com.shidou.commonlibrary.widget.XViewPageIndicator
                 android:id="@+id/pageIndicator"

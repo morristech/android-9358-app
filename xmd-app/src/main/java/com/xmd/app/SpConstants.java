@@ -46,4 +46,6 @@ public class SpConstants {
     public static final String KEY_LAST_UPLOAD_STAT = "07208C27204A99B2112E6868030C55DC";//lastUploadStat
 
     public static final String KEY_CLIENT_ID = "F3FFE8E1F804F2074AA5CC55233673B8";//clientId
+
+    public static final String KEY_KEYBOARD_HEIGHT = "067a25ceacf3ae582457b4197cc9a87b";//软键盘高度
 }
