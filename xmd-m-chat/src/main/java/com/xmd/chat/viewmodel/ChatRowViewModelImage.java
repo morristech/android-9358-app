@@ -3,6 +3,7 @@ package com.xmd.chat.viewmodel;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
+import android.databinding.ViewDataBinding;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,10 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
 
     public ChatRowViewModelImage(ChatMessage chatMessage) {
         super(chatMessage);
+        if (maxWidth == 0) {
+            maxWidth = ScreenUtils.getScreenWidth() >> 1;
+            maxHeight = ScreenUtils.getScreenHeight() >> 2;
+        }
     }
 
     public static View createView(ViewGroup parent) {
@@ -43,9 +48,24 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
     }
 
     @Override
-    public void onBindView(View view) {
+    public ViewDataBinding onBindView(View view) {
         ChatRowImageBinding binding = DataBindingUtil.getBinding(view);
+        EMImageMessageBody body = (EMImageMessageBody) chatMessage.getEmMessage().getBody();
+        ViewGroup.LayoutParams lp = binding.imageView.getLayoutParams();
+        int w = body.getWidth();
+        int h = body.getHeight();
+        if (w > h && w > maxWidth) {
+            lp.height = maxWidth * h / w;
+            lp.width = maxWidth;
+        } else if (h > w && h > maxHeight) {
+            lp.width = w * maxHeight / h;
+            lp.height = maxHeight;
+        } else {
+            lp.width = w;
+            lp.height = h;
+        }
         binding.setData(this);
+        return binding;
     }
 
     @Override
@@ -83,23 +103,11 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
 
     @BindingAdapter("image")
     public static void bindImage(ImageView imageView, final ChatRowViewModelImage data) {
-        if (maxWidth == 0) {
-            maxWidth = ScreenUtils.getScreenWidth() >> 1;
-            maxHeight = ScreenUtils.getScreenHeight() >> 2;
-        }
+
         EMImageMessageBody body = (EMImageMessageBody) data.chatMessage.getEmMessage().getBody();
-        int w = body.getWidth();
-        int h = body.getHeight();
-        if (w > h && w > maxWidth) {
-            h = w * h / maxWidth;
-            w = maxWidth;
-        } else if (h > w && h > maxHeight) {
-            w = w * h / maxHeight;
-            h = maxHeight;
-        }
         if (data.chatMessage.isReceivedMessage()) {
             if (body.thumbnailDownloadStatus().equals(EMImageMessageBody.EMDownloadStatus.SUCCESSED)) {
-                Glide.with(imageView.getContext()).load(body.thumbnailLocalPath()).override(w, h).into(imageView);
+                Glide.with(imageView.getContext()).load(body.thumbnailLocalPath()).into(imageView);
             } else {
                 data.loading.set(true);
                 Glide.with(imageView.getContext()).load(body.getThumbnailUrl()).listener(new RequestListener<String, GlideDrawable>() {
@@ -114,11 +122,11 @@ public class ChatRowViewModelImage extends ChatRowViewModel {
                         data.loading.set(false);
                         return false;
                     }
-                }).override(w, h).into(imageView);
+                }).into(imageView);
             }
         } else {
             if (body.getLocalUrl() != null) {
-                Glide.with(imageView.getContext()).load(body.getLocalUrl()).override(w, h).into(imageView);
+                Glide.with(imageView.getContext()).load(body.getLocalUrl()).into(imageView);
             } else {
                 imageView.setImageResource(R.drawable.chat_default_image);
             }

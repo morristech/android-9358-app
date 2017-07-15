@@ -2,6 +2,7 @@ package com.xmd.chat.viewmodel;
 
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,9 +37,10 @@ public class ChatRowViewModelCreditGift extends ChatRowViewModel {
     }
 
     @Override
-    public void onBindView(View view) {
+    public ViewDataBinding onBindView(View view) {
         ChatRowCreditGiftBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
+        return binding;
     }
 
     @Override

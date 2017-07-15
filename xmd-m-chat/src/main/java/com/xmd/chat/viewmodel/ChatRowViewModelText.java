@@ -1,6 +1,7 @@
 package com.xmd.chat.viewmodel;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,10 @@ public class ChatRowViewModelText extends ChatRowViewModel {
     }
 
     @Override
-    public void onBindView(View view) {
+    public ViewDataBinding onBindView(View view) {
         ChatRowTextBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
+        return binding;
     }
 
     @Override

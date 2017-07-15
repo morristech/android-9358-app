@@ -3,6 +3,7 @@ package com.xmd.chat.viewmodel;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
+import android.databinding.ViewDataBinding;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,9 +43,10 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
     }
 
     @Override
-    public void onBindView(View view) {
+    public ViewDataBinding onBindView(View view) {
         binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
+        return binding;
     }
 
     @Override
@@ -83,6 +85,7 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
                                 inProcess.set(false);
                                 chatMessage.setInnerProcessed("已拒绝");
                                 binding.setData(ChatRowViewModelNewOrder.this);
+                                binding.executePendingBindings();
                             }
 
                             @Override
@@ -112,6 +115,7 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
                 inProcess.set(false);
                 chatMessage.setInnerProcessed("已授受");
                 binding.setData(ChatRowViewModelNewOrder.this);
+                binding.executePendingBindings();
             }
 
             @Override

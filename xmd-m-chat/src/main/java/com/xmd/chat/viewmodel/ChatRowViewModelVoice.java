@@ -3,6 +3,7 @@ package com.xmd.chat.viewmodel;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
+import android.databinding.ViewDataBinding;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,9 +45,10 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
     }
 
     @Override
-    public void onBindView(View view) {
+    public ViewDataBinding onBindView(View view) {
         binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
+        return binding;
     }
 
     @Override
@@ -100,12 +102,14 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
         }
         playing = true;
         binding.setData(ChatRowViewModelVoice.this);
+        binding.executePendingBindings();
         EMVoiceMessageBody body = (EMVoiceMessageBody) getChatMessage().getEmMessage().getBody();
         VoiceManager.getInstance().play(body.getLocalUrl(), new Callback<Void>() {
             @Override
             public void onResponse(Void result, Throwable error) {
                 playing = false;
                 binding.setData(ChatRowViewModelVoice.this);
+                binding.executePendingBindings();
                 if (error != null) {
                     XToast.show("播放失败：" + error.getMessage());
                 }

@@ -3,6 +3,7 @@ package com.xmd.chat.viewmodel;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
+import android.databinding.ViewDataBinding;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
     public ChatRowViewModelAppointment(ChatMessage chatMessage) {
         super(chatMessage);
         orderChatMessage = (OrderChatMessage) chatMessage;
-//        mAppointmentData = OrderChatManager.parseMessage(orderChatMessage);
+//        mAppointmentData = OrderChatManager.parseMessage(orderChatMessage); //FIXME
         setupOperationButton();
         setupShowItem();
     }
@@ -67,9 +68,10 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
     }
 
     @Override
-    public void onBindView(View view) {
+    public ViewDataBinding onBindView(View view) {
         binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
+        return binding;
     }
 
     @Override
@@ -102,6 +104,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
         operateRefuseAndAccept = false;
         status = "已拒绝";
         binding.setData(this);
+        binding.executePendingBindings();
         orderChatMessage.setInnerProcessed(status);
         sendMessage(ChatMessage.MSG_TYPE_ORDER_REFUSE);
     }
@@ -119,6 +122,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
         operateCancel = false;
         status = "已取消";
         binding.setData(this);
+        binding.executePendingBindings();
         orderChatMessage.setInnerProcessed(status);
         sendMessage(ChatMessage.MSG_TYPE_ORDER_CANCEL);
     }
@@ -248,6 +252,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
                     operateRefuseAndAccept = false;
                     operateChangeAndConfirm = false;
                     binding.setData(this);
+                    binding.executePendingBindings();
                     orderChatMessage.setInnerProcessed("已处理");
                     sendMessage(ChatMessage.MSG_TYPE_ORDER_CONFIRM);
                 } else {
@@ -268,6 +273,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
                     operateCancel = false;
                     operateChangeAndConfirm = false;
                     binding.setData(this);
+                    binding.executePendingBindings();
                     orderChatMessage.setInnerProcessed(status);
                     sendMessage(ChatMessage.MSG_TYPE_ORDER_SUCCESS);
                 } else {
@@ -276,6 +282,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
                     operateCancel = false;
                     operateChangeAndConfirm = false;
                     binding.setData(this);
+                    binding.executePendingBindings();
                     orderChatMessage.setInnerProcessed(status);
                     sendMessage(ChatMessage.MSG_TYPE_ORDER_CONFIRM);
                 }

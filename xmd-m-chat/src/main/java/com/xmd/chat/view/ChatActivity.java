@@ -150,12 +150,15 @@ public class ChatActivity extends BaseActivity {
                 if (oldh > h) {
                     //small size, need to scroll to last visible position
                     mBinding.recyclerView.scrollToPosition(layoutManager.findLastVisibleItemPosition());
-
-                    if (softwareKeyboardHeight == 0) {
-                        //这是键盘弹出导致的高度变化，在这里可以计算键盘高度
+                    if (mFocusMenuView == null) {
+                        //当前显示的是键盘，那么更新高度
+                        if (softwareKeyboardHeight == 0) {
+                            //首次更新，需要设置聊天子菜单高度
+                            mBinding.submenuLayout.getLayoutParams().height = oldh - h;
+                        }
                         softwareKeyboardHeight = oldh - h;
-                        XLogger.i("softwareKeyboardHeight=" + softwareKeyboardHeight);
-                        mBinding.submenuLayout.getLayoutParams().height = softwareKeyboardHeight;
+                        XLogger.d("softwareKeyboardHeight=" + softwareKeyboardHeight);
+                        XmdApp.getInstance().getSp().edit().putInt(SpConstants.KEY_KEYBOARD_HEIGHT, softwareKeyboardHeight).apply();
                     }
                 }
             }
@@ -246,8 +249,7 @@ public class ChatActivity extends BaseActivity {
         public void onDataBinding(ViewDataBinding binding, int position) {
             ChatRowViewModel data = getDataList().get(position);
             FrameLayout layout = (FrameLayout) binding.getRoot().findViewById(R.id.contentView);
-            data.onBindView(layout.getChildAt(0));
-            binding.executePendingBindings();
+            data.bindSubView(layout.getChildAt(0));
         }
 
         @Override

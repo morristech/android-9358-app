@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
+import android.databinding.ViewDataBinding;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -187,7 +188,15 @@ public abstract class ChatRowViewModel {
         return false;
     }
 
-    public abstract void onBindView(View view);
+    //绑定子view
+    public void bindSubView(View view) {
+        ViewDataBinding binding = onBindView(view);
+        if (binding != null) {
+            binding.executePendingBindings();
+        }
+    }
+
+    public abstract ViewDataBinding onBindView(View view);
 
     public abstract void onUnbindView();
 }

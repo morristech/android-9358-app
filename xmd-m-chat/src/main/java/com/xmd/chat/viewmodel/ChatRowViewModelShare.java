@@ -2,6 +2,7 @@ package com.xmd.chat.viewmodel;
 
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +32,11 @@ public class ChatRowViewModelShare extends ChatRowViewModel {
     }
 
     @Override
-    public void onBindView(View view) {
+    public ViewDataBinding onBindView(View view) {
         view.getLayoutParams().width = ScreenUtils.getScreenWidth() * 3 / 5;
         ChatRowShareBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
+        return binding;
     }
 
     @Override

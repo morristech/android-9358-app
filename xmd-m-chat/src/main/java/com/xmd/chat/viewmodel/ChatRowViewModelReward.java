@@ -2,6 +2,7 @@ package com.xmd.chat.viewmodel;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -22,10 +23,11 @@ public class ChatRowViewModelReward extends ChatRowViewModelText {
     }
 
     @Override
-    public void onBindView(View view) {
+    public ViewDataBinding onBindView(View view) {
         super.onBindView(view);
         ChatRowTextBinding binding = DataBindingUtil.getBinding(view);
         binding.text.setTextColor(0xffffffff);
+        return binding;
     }
 
     @Override
