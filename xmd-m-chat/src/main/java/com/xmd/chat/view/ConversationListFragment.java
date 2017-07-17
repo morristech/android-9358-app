@@ -50,6 +50,16 @@ public class ConversationListFragment extends BaseFragment {
 
     private ConversationManager conversationManager = ConversationManager.getInstance();
 
+    private static final String ARG_TITLE = "title";
+
+    public static ConversationListFragment newInstance(String title) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_TITLE, title);
+        ConversationListFragment fragment = new ConversationListFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,7 +72,7 @@ public class ConversationListFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setTitle("消息");
+        setTitle(getArguments().getString(ARG_TITLE));
 
         mAdapter = new CommonRecyclerViewAdapter<ConversationViewModel>() {
             @Override

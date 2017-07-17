@@ -166,7 +166,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
     @CheckBusinessPermission(PermissionConstants.MGR_TAB_CHAT)
     public void initPageChat() {
-        mPageFragmentPagerAdapter.addFragment(new ConversationListFragment());
+        ConversationListFragment fragment = ConversationListFragment.newInstance("消息");
+        mPageFragmentPagerAdapter.addFragment(fragment);
         tabTexts.add("消息");
         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_chat));
         sTabChat = tabTexts.size() - 1;

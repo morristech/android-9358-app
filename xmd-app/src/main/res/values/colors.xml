@@ -68,4 +68,8 @@
     <color name="white">#FFF</color>
     <color name="tab_text_normal_color">#333</color>
 
+    <!-- toolbar 标题栏样式 -->
+    <color name="toolbarTitleColor">#ffffff</color>
+    <color name="toolbarBackground">@color/colorPrimary</color>
+
 </resources>

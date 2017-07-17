@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.WindowManager;
 
 import com.shidou.commonlibrary.helper.CrashHandler;
@@ -19,17 +20,22 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.EmojiManager;
 import com.xmd.app.XmdApp;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.chat.MenuFactory;
 import com.xmd.chat.XmdChat;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
+import com.xmd.manager.beans.ClubInfo;
 import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ToastUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.window.DeliveryCouponActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -125,6 +131,25 @@ public class ManagerApplication extends Application {
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");
+
+
+                if (!TextUtils.isEmpty(SharedPreferenceHelper.getUserToken())) {
+                    //广播用户登录事件
+                    EventBus.getDefault().removeStickyEvent(EventLogout.class);
+                    User user = new User(SharedPreferenceHelper.getUserId());
+                    user.setRoles(User.ROLE_MANAGER);
+                    user.setChatId(SharedPreferenceHelper.getEmchatId());
+                    user.setChatPassword(SharedPreferenceHelper.getEmchatPassword());
+                    user.setName(SharedPreferenceHelper.getUserName());
+                    user.setAvatar(SharedPreferenceHelper.getUserAvatar());
+                    ClubInfo clubInfo = ClubData.getInstance().getClubInfo();
+                    if (clubInfo != null) {
+                        user.setClubId(clubInfo.clubId);
+                        user.setClubName(clubInfo.clubName);
+                    }
+                    EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), user);
+                    EventBus.getDefault().postSticky(eventLogin);
+                }
             }
         }
     }

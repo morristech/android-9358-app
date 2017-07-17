@@ -35,4 +35,7 @@
     <dimen name="tab_indicator_indicator_height">2dp</dimen>
     <dimen name="tiny_space">3dp</dimen>
 
+    <!-- toolbar 标题栏样式 -->
+    <dimen name="toolbarTitleSize">@dimen/fontTitle</dimen>
+
 </resources>

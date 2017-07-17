@@ -153,9 +153,17 @@ public abstract class ChatRowViewModel {
         MessageManager.getInstance().resendMessage(chatMessage);
     }
 
+    public boolean isReceiveMessage() {
+        return chatMessage.isReceivedMessage();
+    }
+
+    protected int getMenuResource() {
+        return chatMessage.isReceivedMessage() ? R.menu.message_receive : R.menu.message_send;
+    }
+
     public boolean onLongClick(final View view) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-        popupMenu.inflate(chatMessage.isReceivedMessage() ? R.menu.message_receive_actions : R.menu.message_send_actions);
+        popupMenu.inflate(getMenuResource());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

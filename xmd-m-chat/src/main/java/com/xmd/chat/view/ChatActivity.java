@@ -504,10 +504,13 @@ public class ChatActivity extends BaseActivity {
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    onVoiceButtonDown();
+                    onVoiceButtonDown(event);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    XLogger.d("move " + event.getX() + "," + event.getY());
                     break;
                 case MotionEvent.ACTION_UP:
-                    onVoiceButtonUp();
+                    onVoiceButtonUp(event);
                     break;
             }
             return true;
@@ -515,7 +518,7 @@ public class ChatActivity extends BaseActivity {
     };
 
     //按下录音键
-    private void onVoiceButtonDown() {
+    private void onVoiceButtonDown(MotionEvent event) {
         XLogger.d("onVoiceButtonDown");
         if (voiceRecording.get()) {
             return;
@@ -528,7 +531,7 @@ public class ChatActivity extends BaseActivity {
     }
 
     //放到录音键
-    private void onVoiceButtonUp() {
+    private void onVoiceButtonUp(MotionEvent event) {
         XLogger.d("onVoiceButtonUp");
         if (!voiceRecording.get()) {
             return;
@@ -542,7 +545,12 @@ public class ChatActivity extends BaseActivity {
             XToast.show("录制失败！");
             return;
         }
-        MessageManager.getInstance()
-                .sendVoiceMessage(mRemoteUser, path, (int) VoiceManager.getInstance().getRecordTime() / 1000);
+        if (event.getY() < -50) {
+            XLogger.d("取消发送，y=" + event.getY());
+            file.delete();
+        } else {
+            MessageManager.getInstance()
+                    .sendVoiceMessage(mRemoteUser, path, (int) VoiceManager.getInstance().getRecordTime() / 1000);
+        }
     }
 }

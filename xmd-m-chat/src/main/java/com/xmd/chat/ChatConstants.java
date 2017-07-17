@@ -32,4 +32,7 @@ public class ChatConstants {
     public static final int CHAT_ROW_VIEW_TIP = 0x20;//提示
 
     public static final int CHAT_ROW_VIEW_TYPE_MAX = 0x200;
+
+
+    public static final String SP_AUDIO_MODE_SPEAKER = "sp_audio_mode_speaker"; //是否为扬声器模式
 }

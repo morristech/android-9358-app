@@ -21,6 +21,8 @@ import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.EmojiManager;
 import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.chat.MenuFactory;
@@ -33,10 +35,13 @@ import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.model.HelloReplyService;
+import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.ControllerRegister;
 import com.xmd.technician.notify.NotificationCenter;
 import com.xmd.technician.window.AvailableCouponListActivity;
 import com.xmd.technician.window.WelcomeActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -147,6 +152,9 @@ public class TechApplication extends MultiDexApplication {
 
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");
+
+                EventBus.getDefault().removeStickyEvent(EventLogout.class);
+                EventBus.getDefault().postSticky(new EventLogin(LoginTechnician.getInstance().getToken(), LoginTechnician.getInstance().getUserInfo()));
             }
         }
     }

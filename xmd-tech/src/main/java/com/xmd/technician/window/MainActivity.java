@@ -196,7 +196,11 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(getFragmentTagById(id));
             if (fragment == null) {
                 try {
-                    fragment = (Fragment) clazz.newInstance();
+                    if (clazz.equals(ConversationListFragment.class)) {
+                        fragment = ConversationListFragment.newInstance("消息");
+                    } else {
+                        fragment = (Fragment) clazz.newInstance();
+                    }
                     ft.add(R.id.fragment_container, fragment, getFragmentTagById(id));
                 } catch (Exception e) {
                     Logger.e("init fragment failed:" + e.getLocalizedMessage());

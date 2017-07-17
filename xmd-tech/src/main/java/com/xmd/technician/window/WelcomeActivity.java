@@ -4,16 +4,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
-import com.xmd.app.event.EventLogin;
-import com.xmd.app.event.EventLogout;
 import com.xmd.technician.R;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
-
-import org.greenrobot.eventbus.EventBus;
 
 import rx.Subscription;
 
@@ -35,8 +31,6 @@ public class WelcomeActivity extends BaseActivity {
                 }
             }, 500);
         } else {
-            EventBus.getDefault().removeStickyEvent(EventLogout.class);
-            EventBus.getDefault().postSticky(new EventLogin(LoginTechnician.getInstance().getToken(), LoginTechnician.getInstance().getUserInfo()));
             mTechInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class).subscribe(
                     techInfoResult -> {
                         if (techInfoResult.statusCode == 200) {

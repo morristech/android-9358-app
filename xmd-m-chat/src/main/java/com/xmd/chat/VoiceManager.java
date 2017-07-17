@@ -8,11 +8,12 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 
 import com.hyphenate.util.PathUtil;
-import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.XmdApp;
 
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * Created by mo on 17-7-8.
@@ -26,8 +27,9 @@ public class VoiceManager {
     private String recordFile;
     private long recordStartTime;
     private long recordTime;
-    private boolean handsFree;
+    private boolean audioSpeakerMode;
     private AudioManager audioManager;
+    private OnPlayListener mOnPlayListener;
 
     public static VoiceManager getInstance() {
         return ourInstance;
@@ -35,20 +37,27 @@ public class VoiceManager {
 
     private VoiceManager() {
         audioManager = (AudioManager) XmdChat.getInstance().getContext().getSystemService(Context.AUDIO_SERVICE);
+        audioSpeakerMode = XmdApp.getInstance().getSp().getBoolean(ChatConstants.SP_AUDIO_MODE_SPEAKER, false);
     }
 
-    public void play(String filePath, final Callback<Void> callback) {
-        XLogger.d("play " + filePath);
-        if (stopPlayVoiceListener != null) {
-            stopPlayVoiceListener.onStop(mediaPlayer);
-            stopPlayVoiceListener = null;
+    //播放语音
+    public void startPlayVoice(final String filePath, final OnPlayListener listener) {
+        if (!XmdApp.getInstance().getSp().contains(ChatConstants.SP_AUDIO_MODE_SPEAKER)) {
+            XToast.show("长按消息可切换到杨声器模式");
+            XmdApp.getInstance().getSp().edit().putBoolean(ChatConstants.SP_AUDIO_MODE_SPEAKER, audioSpeakerMode).apply();
         }
+        XLogger.d("play " + filePath);
+        if (mOnPlayListener != null) {
+            mOnPlayListener.onStop();
+            mOnPlayListener = null;
+        }
+        mOnPlayListener = listener;
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
         }
-        audioManager.setSpeakerphoneOn(handsFree);
-        audioManager.setMode(handsFree ? AudioManager.MODE_NORMAL : AudioManager.MODE_IN_COMMUNICATION);
-        mediaPlayer.setAudioStreamType(handsFree ? AudioManager.STREAM_MUSIC : AudioManager.STREAM_VOICE_CALL);
+        audioManager.setSpeakerphoneOn(audioSpeakerMode);
+        audioManager.setMode(audioSpeakerMode ? AudioManager.MODE_NORMAL : AudioManager.MODE_IN_COMMUNICATION);
+        mediaPlayer.setAudioStreamType(audioSpeakerMode ? AudioManager.STREAM_MUSIC : AudioManager.STREAM_VOICE_CALL);
         try {
             mediaPlayer.stop();
             mediaPlayer.reset();
@@ -57,50 +66,46 @@ public class VoiceManager {
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    stopPlayVoiceListener = null;
-                    callback.onResponse(null, new Throwable("无法播放：what=" + what + ",extra=" + extra));
+                    mOnPlayListener.onError("无法播放：what=" + what + ",extra=" + extra);
+                    mOnPlayListener = null;
                     return true;
                 }
             });
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    stopPlayVoiceListener = null;
-                    callback.onResponse(null, null);
+                    mOnPlayListener.onStop();
+                    mOnPlayListener = null;
                 }
             });
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mp.start();
-                }
-            });
-            setStopPlayVoiceListener(new OnStopListener() {
-                @Override
-                public void onStop(MediaPlayer mediaPlayer) {
-                    stopPlayVoiceListener = null;
-                    callback.onResponse(null, null);
+                    mOnPlayListener.onPlay();
                 }
             });
             mediaPlayer.prepareAsync();
         } catch (IOException e) {
-            callback.onResponse(null, e);
+            mOnPlayListener.onError("无法播放：" + e.getMessage());
+            mOnPlayListener = null;
         }
     }
 
+    //停止播放
     public void stopPlayVoice() {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
-            if (stopPlayVoiceListener != null) {
-                stopPlayVoiceListener.onStop(mediaPlayer);
-                stopPlayVoiceListener = null;
+            if (mOnPlayListener != null) {
+                mOnPlayListener.onStop();
+                mOnPlayListener = null;
             }
         }
     }
 
-
+    //清除资源
     public void cleanResource() {
-        stopPlayVoiceListener = null;
+        stopPlayVoice();
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
@@ -109,21 +114,6 @@ public class VoiceManager {
             mediaRecorder.release();
             mediaRecorder = null;
         }
-    }
-
-
-    private interface OnStopListener {
-        void onStop(MediaPlayer mediaPlayer);
-    }
-
-    private OnStopListener stopPlayVoiceListener;
-
-    private OnStopListener getStopPlayVoiceListener() {
-        return stopPlayVoiceListener;
-    }
-
-    private void setStopPlayVoiceListener(OnStopListener stopPlayVoiceListener) {
-        this.stopPlayVoiceListener = stopPlayVoiceListener;
     }
 
 
@@ -173,11 +163,24 @@ public class VoiceManager {
         return recordTime;
     }
 
-    public boolean isHandsFree() {
-        return handsFree;
+    public boolean isAudioSpeakerMode() {
+        return audioSpeakerMode;
     }
 
-    public void setHandsFree(boolean handsFree) {
-        this.handsFree = handsFree;
+    public void switchAudioMode() {
+        audioSpeakerMode = !audioSpeakerMode;
+        XmdApp.getInstance().getSp().edit().putBoolean(ChatConstants.SP_AUDIO_MODE_SPEAKER, audioSpeakerMode).apply();
+        XToast.show(String.format(Locale.getDefault(), "已切换到%s模式", audioSpeakerMode ? "扬声器" : "听筒"));
     }
+
+
+    public interface OnPlayListener {
+        void onPlay();
+
+        void onStop();
+
+        void onError(String error);
+    }
+
+
 }
