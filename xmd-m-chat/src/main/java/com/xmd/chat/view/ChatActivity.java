@@ -506,9 +506,6 @@ public class ChatActivity extends BaseActivity {
                 case MotionEvent.ACTION_DOWN:
                     onVoiceButtonDown(event);
                     break;
-                case MotionEvent.ACTION_MOVE:
-                    XLogger.d("move " + event.getX() + "," + event.getY());
-                    break;
                 case MotionEvent.ACTION_UP:
                     onVoiceButtonUp(event);
                     break;

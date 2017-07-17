@@ -153,8 +153,10 @@ public class TechApplication extends MultiDexApplication {
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");
 
-                EventBus.getDefault().removeStickyEvent(EventLogout.class);
-                EventBus.getDefault().postSticky(new EventLogin(LoginTechnician.getInstance().getToken(), LoginTechnician.getInstance().getUserInfo()));
+                if (LoginTechnician.getInstance().isLogin()) {
+                    EventBus.getDefault().removeStickyEvent(EventLogout.class);
+                    EventBus.getDefault().postSticky(new EventLogin(LoginTechnician.getInstance().getToken(), LoginTechnician.getInstance().getUserInfo()));
+                }
             }
         }
     }

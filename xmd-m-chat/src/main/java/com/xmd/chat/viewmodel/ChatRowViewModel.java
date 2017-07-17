@@ -52,6 +52,7 @@ public abstract class ChatRowViewModel {
         chatMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
             @Override
             public void onSuccess() {
+                XLogger.d("onSuccess -- " + getChatMessage().getContentText());
                 progress.set(false);
                 error.set(false);
                 String msgType;
@@ -88,12 +89,14 @@ public abstract class ChatRowViewModel {
 
             @Override
             public void onError(int i, String s) {
+                XLogger.d("onError -- " + getChatMessage().getContentText());
                 progress.set(false);
                 error.set(true);
             }
 
             @Override
             public void onProgress(int i, String s) {
+                XLogger.d("onProgress -- " + getChatMessage().getContentText());
                 progress.set(true);
             }
         });

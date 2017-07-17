@@ -50,8 +50,6 @@ public class XmdChat {
         this.context = context;
 
         EMOptions options = new EMOptions();
-        options.setRequireAck(true);
-        options.setRequireDeliveryAck(true);
         EMClient.getInstance().init(context, options);
         EMClient.getInstance().setDebugMode(debug);
 
