@@ -33,6 +33,8 @@ public class CustomLocationMessage extends ChatMessage {
     private static final String ATTR_LNG = "lng";
     private static final String ATTR_ADDRESS = "address";
     private static final String ATTR_STATIC_MAP = "staticMap";
+    private static final String ATTR_STATIC_MAP_W = "staticMapWidth";
+    private static final String ATTR_STATIC_MAP_H = "staticMapHeight";
 
     public CustomLocationMessage(EMMessage emMessage) {
         super(emMessage);
