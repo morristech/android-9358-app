@@ -16,10 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.XmdApp;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.m.R;
 import com.xmd.m.R2;
@@ -27,10 +31,14 @@ import com.xmd.m.comment.adapter.ListRecycleViewAdapter;
 import com.xmd.m.comment.bean.CommentBean;
 import com.xmd.m.comment.bean.CommentListResult;
 import com.xmd.m.comment.bean.CommentStatusResult;
+import com.xmd.m.comment.bean.UserInfoBean;
+import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.comment.httprequest.DataManager;
 import com.xmd.m.comment.httprequest.RequestConstant;
 import com.xmd.m.network.NetworkSubscriber;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,6 +84,9 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
     private String mUserName;
     private String mCommentType;
     private String contactPhone;
+
+
+
 
     @Nullable
     @Override
@@ -228,6 +239,7 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
 
     @Override
     public void onItemClicked(CommentBean bean) {
+
         CommentDetailActivity.startCommentDetailActivity(getActivity(), bean, true);
     }
 
@@ -240,7 +252,7 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
     @Override
     public void onPositiveButtonClicked(CommentBean bean, int position) {
         //回访
-        showServiceOutMenu(bean.phoneNum, bean.userEmchatId, bean.userName, bean.avatarUrl, bean.id, bean.returnStatus, position);
+        showServiceOutMenu(bean.userId, bean.phoneNum, bean.userEmchatId, bean.userName, bean.avatarUrl, bean.id, bean.returnStatus, position);
     }
 
     @Override
@@ -258,32 +270,22 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
         dispatchRequest();
     }
 
-    private void showServiceOutMenu(String phone, final String emChatId, final String userName, final String userHeadImgUrl, final String commentId, final String returnStatus, final int positon) {
+    private void showServiceOutMenu(final String userId, String phone, final String emChatId, final String userName, final String userHeadImgUrl, final String commentId, final String returnStatus, final int positon) {
 
         BottomPopupWindow popupWindow = BottomPopupWindow.getInstance(getActivity(), phone, emChatId, commentId, returnStatus, new BottomPopupWindow.OnRootSelectedListener() {
             @Override
             public void onItemSelected(ReturnVisitMenu rootMenu) {
                 switch (rootMenu.getType()) {
                     case 1:
-                        XLogger.i(">>>", "打电话");
-                        //     PermissionTool.requestPermission(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, new String[]{"拨打电话"}, REQUEST_CODE_CALL_PERMISSION);
+                        PermissionTool.requestPermission(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, new String[]{"拨打电话"}, REQUEST_CODE_CALL_PERMISSION);
                         break;
                     case 2:
-                        XLogger.i(">>>", "发环信");
-                        Intent intent = new Intent();
-                        intent.setClassName(getActivity(), "com.xmd.manager.window.ChatActivity");
-                        intent.putExtra(ConstantResources.EMCHAT_ID, emChatId);
-                        intent.putExtra(ConstantResources.EMCHAT_NICKNAME, userName);
-                        intent.putExtra(ConstantResources.EMCHAT_AVATAR, userHeadImgUrl);
-                        startActivity(intent);
-
+                        EventBus.getDefault().post(new UserInfoEvent(0, 1, new UserInfoBean(userId, emChatId, userName, userHeadImgUrl)));
                         break;
                     case 3:
-                        XLogger.i(">>>", "标记已回访");
                         changeCommentStatus(commentId, returnStatus, positon);
                         break;
                     case 4:
-                        XLogger.i(">>>", "标记未回访");
                         changeCommentStatus(commentId, returnStatus, positon);
                         break;
 

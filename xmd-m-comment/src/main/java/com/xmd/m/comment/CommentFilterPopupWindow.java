@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.DateTimePickDialog;
@@ -78,7 +79,7 @@ public class CommentFilterPopupWindow extends PopupWindow implements View.OnClic
         tvCommentComplaintOnly = (TextView) mRootView.findViewById(R.id.tv_comment_complaint_only);
         commentFilterCancel = (TextView) mRootView.findViewById(R.id.comment_filter_reset);
         commentFilterSubmit = (TextView) mRootView.findViewById(R.id.comment_filter_submit);
-        startTime.setText(DateUtils.getCurrentDate());
+        startTime.setText("2017-01-01");
         endTime.setText(DateUtils.getCurrentDate());
         mViewList = new ArrayList<>();
 
@@ -184,6 +185,7 @@ public class CommentFilterPopupWindow extends PopupWindow implements View.OnClic
         if (i == R.id.comment_filter_submit) {
             String start = startTime.getText().toString();
             String end = endTime.getText().toString();
+            XLogger.i(">>>","start>>"+start);
             String techLest = Utils.listToString(mSelectedTechNumber, ",");
             String currentCommentFilter = mCurrentCommentFilter;
             if (mCommentInterface != null) {

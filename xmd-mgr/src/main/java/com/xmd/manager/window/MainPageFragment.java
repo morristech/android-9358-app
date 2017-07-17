@@ -26,9 +26,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.m.comment.CommentDetailActivity;
 import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.comment.bean.CommentBean;
+import com.xmd.m.comment.bean.UserInfoBean;
+import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.BuildConfig;
 import com.xmd.manager.ClubData;
@@ -73,6 +76,8 @@ import com.xmd.manager.widget.BottomPopupWindow;
 import com.xmd.manager.widget.CircleImageView;
 import com.xmd.manager.widget.ClearableEditText;
 import com.xmd.manager.widget.SlidingMenu;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -576,7 +581,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         badCommentListAdapter.setCommentClickedListener(new MainPageBadCommentListAdapter.OnCommentClickedListener() {
             @Override
             public void onCommentCallBackClick(CommentBean badComment) {
-                showServiceOutMenu(badComment.phoneNum, badComment.userEmchatId, badComment.userName, badComment.avatarUrl, badComment.id, badComment.returnStatus);
+                showServiceOutMenu(badComment.userId, badComment.phoneNum, badComment.userEmchatId, badComment.userName, badComment.avatarUrl, badComment.id, badComment.returnStatus);
             }
 
             @Override
@@ -751,35 +756,10 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initBadCommentData() {
-//        Map<String, String> params = new HashMap<>();
-//        params.put(RequestConstant.KEY_COMMENT_STATUS, RequestConstant.INDEX_COMMENT);
-//        params.put(RequestConstant.KEY_PAGE, "1");
-//        params.put(RequestConstant.KEY_PAGE_SIZE, "2");
-        //       MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_BAD_COMMENT_LIST, params);
+
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_BAD_COMMENT_AND_COMPLAINT_LIST);
     }
 
-//    private void handlerBadCommentList(BadCommentListResult result) {
-//        if (mSwipeRefreshLayout != null) {
-//            mSwipeRefreshLayout.setRefreshing(false);
-//        }
-//        if (result.statusCode == 200 && result.commentState.equals(RequestConstant.INDEX_COMMENT)) {
-//            if (result.respData == null) {
-//                badCommentList.setVisibility(View.GONE);
-//                mBadCommentFinish.setVisibility(View.VISIBLE);
-//                return;
-//            }
-//            if (result.respData.size() > 0) {
-//
-//
-//            } else {
-//                badCommentList.setVisibility(View.GONE);
-//                mBadCommentFinish.setVisibility(View.VISIBLE);
-//            }
-//        } else if (result.statusCode != 200 && result.commentState.equals(RequestConstant.INDEX_COMMENT)) {
-//            Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.abnormal_server));
-//        }
-//    }
 
     private void handlerCommentAndComplaint(CommentAndComplaintListResult result) {
         if (mSwipeRefreshLayout != null) {
@@ -853,7 +833,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-    private void showServiceOutMenu(String phone, String emChatId, String userName, String userHeadImgUrl, String commentId, String returnStatus) {
+    private void showServiceOutMenu(String userId, String phone, String emChatId, String userName, String userHeadImgUrl, String commentId, String returnStatus) {
 
 
         BottomPopupWindow popupWindow = BottomPopupWindow.getInstance(getActivity(), phone, emChatId, commentId, returnStatus, new BottomPopupWindow.OnRootSelectedListener() {
@@ -863,11 +843,11 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                     case 1:
                         PermissionTool.requestPermission(MainPageFragment.this,
                                 new String[]{Manifest.permission.CALL_PHONE},
-                                new String[]{"拨打客服电话"},
+                                new String[]{"拨打电话"},
                                 REQUEST_CODE_PHONE);
                         break;
                     case 2:
-                        EmchatUserHelper.startToChat(emChatId, userName, userHeadImgUrl);
+                        EventBus.getDefault().post(new UserInfoEvent(0, 1, new UserInfoBean(userId, emChatId, userName, userHeadImgUrl)));
                         break;
                     case 3:
                         doRemarkComment(commentId, RequestConstant.FINISH_COMMENT);
@@ -1122,7 +1102,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
             case R.id.menu_service:
-                showServiceOutMenu(servicePhone, "", "", "", "", "");
+                showServiceOutMenu("",servicePhone, "", "", "", "", "");
                 break;
             case R.id.menu_suggest:
                 startActivity(new Intent(getActivity(), FeedbackActivity.class));

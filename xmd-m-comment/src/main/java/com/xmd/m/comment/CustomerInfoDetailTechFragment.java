@@ -107,6 +107,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
     private String techNo;
     private String userPhone;
     private String userName;
+    private UserInfoBean userBean;
 
 
     @Nullable
@@ -175,9 +176,10 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
     }
 
     private void initUserModelView(TechUserDetailModelBean userDetailModel) {
-        EventBus.getDefault().post(new UserInfoBean(userDetailModel.id, userDetailModel.userLoginName, userDetailModel.emchatId, userDetailModel.userName, userDetailModel.avatarUrl, "contact",
+        userBean = new UserInfoBean(userDetailModel.id, userDetailModel.userLoginName, userDetailModel.emchatId, userDetailModel.userName, userDetailModel.avatarUrl, "contact",
                 userDetailModel.userId, TextUtils.isEmpty(userDetailModel.userNoteName) ? "" : userDetailModel.userNoteName, TextUtils.isEmpty(userDetailModel.remark) ? "" : userDetailModel.remark,
-                TextUtils.isEmpty(userDetailModel.impression) ? "" : userDetailModel.impression));
+                TextUtils.isEmpty(userDetailModel.impression) ? "" : userDetailModel.impression);
+        EventBus.getDefault().post(userBean);
         techNo = userDetailModel.belongsTechSerialNo;
         userPhone = userDetailModel.userLoginName;
         userName = userDetailModel.userName;
@@ -206,7 +208,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_tech_add);
             }
         }
-        if (TextUtils.isEmpty(userDetailModel.userLoginName)) {
+        if (TextUtils.isEmpty(userDetailModel.userLoginName) || !userDetailModel.userLoginName.startsWith("1")) {
             llCustomerPhone.setVisibility(View.GONE);
         } else {
             llCustomerPhone.setVisibility(View.VISIBLE);
@@ -247,6 +249,14 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
     @OnClick(R2.id.rl_customer_comment)
     public void onRlCustomerCommentClicked() {
         CommentSearchActivity.startCommentSearchActivity(getActivity(), false, false, techNo, TextUtils.isEmpty(userPhone) ? userName : userPhone);
+    }
+
+    @OnClick(R2.id.ll_label_and_mark)
+    public void onLLLabelAndMarkClicked() {
+        if (userBean == null) {
+            return;
+        }
+        EditCustomerInformationActivity.startEditCustomerInformationActivity(getActivity(), userBean.id, ConstantResources.INTENT_TYPE_TECH, userBean.emChatName, userBean.userNoteName, userBean.contactPhone, userBean.remarkMessage, userBean.remarkImpression);
     }
 
 

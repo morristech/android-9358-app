@@ -1,20 +1,27 @@
 package com.xmd.m.comment;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.BaseActivity;
+import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.DropDownMenuDialog;
 import com.xmd.app.widget.PromptConfirmDialog;
 import com.xmd.m.R;
@@ -59,6 +66,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     @BindView(R2.id.btn_operation)
     ImageButton btnOperation;
 
+    public static final int REQUEST_CODE_CALL_PERMISSION = 0x001;
     public static final String INTENT_FORM_TYPE = "fromType";
     public static final String CURRENT_USER_IS_TECH = "isTech";
     public static final String CURRENT_USER_ID = "userId";
@@ -66,15 +74,16 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     private String fromType;  //来自管理者，来自技师manager,tech
     private boolean customerIsTech; //技师详情，用户详情
     private String userId; //用户Id;
-    private CustomerInfoDetailManagerFragment mInfoManagerFragment;
-    private CustomerInfoDetailTechFragment mInfoTechFragment;
-    private UserAddInfoDetailFragment mUserAddInfoDetailFragment;
-    private TechInfoDetailFragment mTechInfoDetailFragment;
+    private CustomerInfoDetailManagerFragment mInfoManagerFragment; //管理者客户
+    private CustomerInfoDetailTechFragment mInfoTechFragment;//技师普通客户
+    private UserAddInfoDetailFragment mUserAddInfoDetailFragment;//技师添加客户
+    private TechInfoDetailFragment mTechInfoDetailFragment;//会所成员
     private boolean inBlackList;
     private RelativeLayout rlRightMore;
     private boolean showOperationButtons;
     private ContactPermissionInfo permissionInfo;
     private UserInfoBean mBean;
+    private String contactPhone;
 
 
     public static void StartCustomerInfoDetailActivity(Activity activity, String userId, String fromType, boolean customerIsTech) {
@@ -106,8 +115,9 @@ public class CustomerInfoDetailActivity extends BaseActivity {
 
     private void initView() {
         setTitle(R.string.customer_info_detail_activity_title);
+        setBackVisible(true);
         if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-            llOperation.setVisibility(View.GONE);
+            showButton();
         } else {
             llOperation.setVisibility(View.VISIBLE);
         }
@@ -136,6 +146,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
                 mTechInfoDetailFragment = new TechInfoDetailFragment();
                 mTechInfoDetailFragment.setArguments(bundle);
                 ft.replace(R.id.fragment_detail, mTechInfoDetailFragment);
+                showButton();
             } else {
                 mInfoTechFragment = new CustomerInfoDetailTechFragment();
                 mInfoTechFragment.setArguments(bundle);
@@ -219,7 +230,6 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         DataManager.getInstance().loadBooleanInBlackList(userId, new NetworkSubscriber<InBlacklistResult>() {
             @Override
             public void onCallbackSuccess(InBlacklistResult result) {
-                XLogger.i(">>>", "是否在黑名单中加载成功");
                 inBlackList = (boolean) result.getRespData();
             }
 
@@ -234,7 +244,6 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         DataManager.getInstance().loadContactPermission(userId, new NetworkSubscriber<ContactPermissionResult>() {
             @Override
             public void onCallbackSuccess(ContactPermissionResult result) {
-                XLogger.i(">>>", "权限加载成功");
                 permissionInfo = result.getRespData();
                 showButton();
             }
@@ -292,13 +301,44 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     }
 
     private void showButton() {
-        if (inBlackList) {
+        if (inBlackList) {//在黑名单中
             btnEmHello.setVisibility(View.GONE);
             btnEmChat.setVisibility(View.GONE);
             btnCallPhone.setVisibility(View.GONE);
             btnChat.setVisibility(View.GONE);
             btnOperation.setVisibility(View.GONE);
             layoutOperationButtons.setVisibility(View.GONE);
+            return;
+        }
+        if (customerIsTech) {//本店成员
+            btnEmHello.setVisibility(View.GONE);
+            btnOperation.setVisibility(View.GONE);
+            btnEmChat.setVisibility(View.VISIBLE);
+            btnCallPhone.setVisibility(View.VISIBLE);
+            btnChat.setVisibility(View.VISIBLE);
+            layoutOperationButtons.setAlpha(1.0f);
+            layoutOperationButtons.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD)) { //添加的用户
+            btnEmHello.setVisibility(View.GONE);
+            btnEmChat.setVisibility(View.GONE);
+            btnOperation.setVisibility(View.GONE);
+            btnCallPhone.setVisibility(View.VISIBLE);
+            btnChat.setVisibility(View.VISIBLE);
+            layoutOperationButtons.setAlpha(1.0f);
+            layoutOperationButtons.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
+            btnEmHello.setVisibility(View.GONE);
+            btnOperation.setVisibility(View.GONE);
+            btnEmChat.setVisibility(View.VISIBLE);
+            btnCallPhone.setVisibility(View.VISIBLE);
+            btnChat.setVisibility(View.VISIBLE);
+            layoutOperationButtons.setAlpha(1.0f);
+            layoutOperationButtons.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -308,7 +348,6 @@ public class CustomerInfoDetailActivity extends BaseActivity {
                 showOperationButtonsLessThanThree();
             } else {
                 btnOperation.setVisibility(showOperation ? View.VISIBLE : View.GONE);
-                layoutOperationButtons.setVisibility(showOperation ? View.VISIBLE : View.GONE);
             }
 
             // 更新按钮状态
@@ -316,6 +355,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             btnEmChat.setVisibility(permissionInfo.echat ? View.VISIBLE : View.GONE);
             btnCallPhone.setVisibility(permissionInfo.call ? View.VISIBLE : View.GONE);
             btnChat.setVisibility(permissionInfo.sms ? View.VISIBLE : View.GONE);
+            layoutOperationButtons.setVisibility(View.GONE);
         }
     }
 
@@ -324,39 +364,6 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         showOperationButtons = true;
         layoutOperationButtons.setVisibility(View.VISIBLE);
         layoutOperationButtons.setAlpha(1.0f);
-    }
-
-    @OnClick(R2.id.btn_call_phone)
-    public void onBtnCallPhoneClicked() {
-        XLogger.i(">>>", "打电话");
-        if (null != mBean) {
-            EventBus.getDefault().post(new UserInfoEvent(0, mBean));
-        }
-
-    }
-
-    @OnClick(R2.id.btn_EmChat)
-    public void onBtnEmChatClicked() {
-        XLogger.i(">>>", "发消息");
-        if (null != mBean) {
-            EventBus.getDefault().post(new UserInfoEvent(1, mBean));
-        }
-    }
-
-    @OnClick(R2.id.btn_chat)
-    public void onBtnChatClicked() {
-        XLogger.i(">>>", "发短信");
-        if (null != mBean) {
-            EventBus.getDefault().post(new UserInfoEvent(2, mBean));
-        }
-    }
-
-    @OnClick(R2.id.btn_EmHello)
-    public void onBtnEmHelloClicked() {
-        XLogger.i(">>>", "打招呼");
-        if (null != mBean) {
-            EventBus.getDefault().post(new UserInfoEvent(3, mBean));
-        }
     }
 
     @OnClick(R2.id.btn_operation)
@@ -377,6 +384,70 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         }
         showOperationButtons = !showOperationButtons;
     }
+
+    @OnClick(R2.id.btn_call_phone)
+    public void onBtnCallPhoneClicked() {
+        if (null != mBean) {
+            contactPhone = mBean.contactPhone;
+            PermissionTool.requestPermission(this, new String[]{Manifest.permission.CALL_PHONE}, new String[]{"拨打电话"}, REQUEST_CODE_CALL_PERMISSION);
+        }
+
+    }
+
+    @OnClick(R2.id.btn_EmChat)
+    public void onBtnEmChatClicked() {
+        if (null != mBean) {
+            if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
+                EventBus.getDefault().post(new UserInfoEvent(0, 1, mBean));
+            } else {
+                EventBus.getDefault().post(new UserInfoEvent(1, 1, mBean));
+            }
+        }
+    }
+
+    @OnClick(R2.id.btn_EmHello)
+    public void onBtnEmHelloClicked() {
+        if (null != mBean) {
+            if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
+                EventBus.getDefault().post(new UserInfoEvent(0, 3, mBean));
+            } else {
+                EventBus.getDefault().post(new UserInfoEvent(1, 3, mBean));
+            }
+        }
+    }
+
+    @OnClick(R2.id.btn_chat)
+    public void onBtnChatClicked() {
+        if (null != mBean) {
+            if (TextUtils.isEmpty(mBean.contactPhone) || !Utils.matchPhoneNumFormat(mBean.contactPhone)) {
+                Toast.makeText(this, "手机号码不存在", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Uri uri = Uri.parse("smsto:" + mBean.contactPhone);
+            Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+            intent.putExtra("sms_body", "");
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CALL_PERMISSION) {
+            toCallPhone();
+        }
+    }
+
+    public void toCallPhone() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        Uri data = Uri.parse("tel:" + contactPhone);
+        intent.setData(data);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onDestroy() {

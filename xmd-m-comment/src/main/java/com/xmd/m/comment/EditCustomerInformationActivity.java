@@ -116,6 +116,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
 
     private void initView() {
         setTitle("修改备注");
+        setBackVisible(true);
         etRemarkName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

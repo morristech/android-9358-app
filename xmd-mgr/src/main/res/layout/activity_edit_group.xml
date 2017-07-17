@@ -28,6 +28,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/edit_group_group_name"
                     android:padding="@dimen/inter_space"
+                    android:textColor="#212121"
                     android:text="@string/group_name" />
 
                 <View style="@style/line" />
@@ -41,7 +42,8 @@
                     android:maxLength="14"
                     android:padding="@dimen/inter_space"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    app:bg_color_filter="@color/white" />
+                    app:bg_color_filter="@color/white"
+                    android:textColor="#c3c3c3"/>
 
                 <View style="@style/line" />
 
@@ -50,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/edit_group_group_name"
                     android:padding="@dimen/inter_space"
+                    android:textColor="#212121"
                     android:text="@string/group_remark" />
 
                 <View style="@style/horizontal_line" />
@@ -63,7 +66,8 @@
                     android:maxLength="20"
                     android:padding="@dimen/inter_space"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    app:bg_color_filter="@color/white" />
+                    app:bg_color_filter="@color/white"
+                    android:textColor="#c3c3c3"/>
 
                 <View style="@style/horizontal_line" />
 
@@ -72,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/edit_group_group_name"
                     android:padding="@dimen/inter_space"
+                    android:textColor="#212121"
                     android:text="@string/group_member" />
 
                 <android.support.v7.widget.RecyclerView
