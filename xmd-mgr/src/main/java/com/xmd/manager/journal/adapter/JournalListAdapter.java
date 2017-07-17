@@ -34,7 +34,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.chat_share_list_item_wrapper, parent, false);
+        View view = layoutInflater.inflate(R.layout.list_item_journal, parent, false);
         return new ViewHolder(view, mPresenter);
     }
 

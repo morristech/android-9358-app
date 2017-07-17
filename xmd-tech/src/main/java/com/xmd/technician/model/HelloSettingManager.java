@@ -5,15 +5,12 @@ import android.text.TextUtils;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
-import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.MessageManager;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.technician.Constant;
-import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.HelloTemplateInfo;
@@ -154,31 +151,15 @@ public class HelloSettingManager {
             return;
         }
         // 招呼文本
-        EMMessage txtMessage = EMMessage.createTxtSendMessage(templateContentText.replace(TechApplication.getAppContext().getResources().getString(R.string.hello_setting_content_replace), user.getName()), user.getChatId());
-        emSendMessage(txtMessage);
+        ChatMessage chatMessage = ChatMessage.createTextMessage(user.getChatId(), templateContentText.replace("[客户昵称]", user.getName()));
+        chatMessage.addTag(ChatMessage.MSG_TAG_HELLO);
+        MessageManager.getInstance().sendMessage(chatMessage);
         if (!TextUtils.isEmpty(templateImageCachePath)) {
             // 招呼图片
-            EMMessage imgMessage = EMMessage.createImageSendMessage(templateImageCachePath, false, user.getChatId());
-            emSendMessage(imgMessage);
+            ChatMessage imgMessage = ChatMessage.createImageMessage(user.getChatId(), templateImageCachePath);
+            imgMessage.addTag(ChatMessage.MSG_TAG_HELLO);
+            MessageManager.getInstance().sendMessage(imgMessage);
         }
-    }
-
-    private void emSendMessage(EMMessage msg) {
-        ChatMessage message = ChatMessageFactory.create(msg);
-        message.addTag(ChatMessage.MSG_TAG_HELLO);
-        message.setUserId(SharedPreferenceHelper.getUserId());
-        message.setUserName(SharedPreferenceHelper.getUserName());
-        message.setUserAvatar(SharedPreferenceHelper.getUserAvatar());
-        message.setTime(String.valueOf(System.currentTimeMillis()));
-
-        message.setClubId(SharedPreferenceHelper.getUserClubId());
-        message.setClubName(SharedPreferenceHelper.getUserClubName());
-        message.setTechNo(SharedPreferenceHelper.getSerialNo());
-
-        //TODO REMOVE
-        message.setTechId(SharedPreferenceHelper.getUserId());
-
-        EMClient.getInstance().chatManager().sendMessage(message.getEmMessage());
     }
 
     public void checkHelloReply() {

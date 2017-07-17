@@ -26,11 +26,11 @@
 
         <com.xmd.technician.widget.CircleImageView
             android:id="@+id/toolbar_left_head"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/avatarSize"
+            android:layout_height="@dimen/avatarSize"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_margin="8dp"
             android:background="@drawable/icon22"
             android:clickable="true"
             android:visibility="gone" />

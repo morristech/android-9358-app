@@ -329,7 +329,6 @@ public class ChatActivity extends BaseActivity {
         }
     }
 
-
     //增加一条消息到列表
     public void addNewChatMessageToUi(ChatMessage chatMessage) {
         ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);

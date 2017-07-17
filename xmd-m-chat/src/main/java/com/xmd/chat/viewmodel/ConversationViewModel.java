@@ -72,6 +72,10 @@ public class ConversationViewModel {
         view.getContext().startActivity(intent);
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public String getChatId() {
         return user.getChatId();
     }

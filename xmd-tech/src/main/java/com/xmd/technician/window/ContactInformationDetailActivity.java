@@ -29,6 +29,7 @@ import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.chat.XmdChat;
 import com.xmd.permission.CheckBusinessPermission;
 import com.xmd.permission.ContactPermissionInfo;
 import com.xmd.permission.PermissionConstants;
@@ -879,8 +880,8 @@ public class ContactInformationDetailActivity extends BaseActivity {
 
     // 打招呼
     private void sayHello(String customerId) {
-        if (!EMClient.getInstance().isConnected()) {
-            showToast("当前已经离线，请重新登录!");
+        if (!XmdChat.getInstance().isOnline()) {
+            showToast("当前已经离线，无法打招呼!");
             return;
         }
         if (mUser == null) {

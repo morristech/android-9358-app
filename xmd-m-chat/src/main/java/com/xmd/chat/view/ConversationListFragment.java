@@ -12,12 +12,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.Callback;
 import com.xmd.app.BaseFragment;
+import com.xmd.app.BaseViewModel;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.user.User;
+import com.xmd.chat.AccountManager;
 import com.xmd.chat.BR;
 import com.xmd.chat.ConversationManager;
 import com.xmd.chat.R;
@@ -186,5 +190,14 @@ public class ConversationListFragment extends BaseFragment {
         }
         mAdapter.setData(R.layout.list_item_conversation, BR.data, conversationManager.listConversationData(s.toString()));
         mAdapter.notifyDataSetChanged();
+    }
+
+    public String getUserAvatar() {
+        User user = AccountManager.getInstance().getUser();
+        return user == null ? null : user.getAvatar();
+    }
+
+    public void bindAvatar(ImageView view, String avatar) {
+        BaseViewModel.bindCircleImage(view, avatar);
     }
 }

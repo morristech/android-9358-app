@@ -206,8 +206,6 @@ public class ContactsSummaryFragment extends BaseFragment {
             case R.id.tv_customer_technician:
                 changeViewState(tvCustomerTechnician);
                 break;
-
-
         }
     }
 

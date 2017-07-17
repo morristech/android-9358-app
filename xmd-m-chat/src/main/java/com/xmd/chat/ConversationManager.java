@@ -55,6 +55,9 @@ public class ConversationManager {
     public void loadConversationList(final Callback<List<ConversationViewModel>> callback) {
         mConversationList.clear();
         Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
+        if (conversationMap.size() == 0) {
+            callback.onResponse(new ArrayList<ConversationViewModel>(), null);
+        }
         for (String key : conversationMap.keySet()) {
             EMConversation conversation = conversationMap.get(key);
             if (!TextUtils.isEmpty(key) && conversation != null) {
@@ -202,7 +205,7 @@ public class ConversationManager {
     /***************************会话过滤，不通过的会话会被删除**********************/
     private ConversationFilter filter;
 
-    interface ConversationFilter {
+    public interface ConversationFilter {
         void filter(ConversationViewModel data, Callback<Boolean> listener);
     }
 

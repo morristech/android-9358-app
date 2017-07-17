@@ -64,6 +64,7 @@ public class XmdChat {
         EventBusSafeRegister.register(this);
 
         if (XmdApp.getInstance().isAppFirstStart()) {
+
             //历史原因，需要初始化用户信息
             EMClient.getInstance().chatManager().loadAllConversations();
             for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
@@ -120,5 +121,13 @@ public class XmdChat {
 
     public int getTotalUnreadCount() {
         return EMClient.getInstance().chatManager().getUnreadMessageCount();
+    }
+
+    public void setConversationFilter(ConversationManager.ConversationFilter filter) {
+        ConversationManager.getInstance().setFilter(filter);
+    }
+
+    public boolean isOnline() {
+        return EMClient.getInstance().isConnected();
     }
 }

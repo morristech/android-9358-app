@@ -63,7 +63,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                     mChatIdMap.put(user.getChatId(), user);
                 }
 
-                XLogger.i(TAG, "find user: " + user);
+                XLogger.d(TAG, "find user: " + user);
             }
         }
     }
