@@ -29,9 +29,9 @@ public class XmdDisplay implements Serializable {
     private int style;
     private int flags;
 
-    private CharSequence title;
-    private CharSequence message;
-    private CharSequence audioUri;
+    private String title;
+    private String message;
+    private String audioUri;
     private String action;
     private String actionData;
 
@@ -66,27 +66,27 @@ public class XmdDisplay implements Serializable {
         this.flags = flags;
     }
 
-    public CharSequence getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(CharSequence title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public CharSequence getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(CharSequence message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public CharSequence getAudioUri() {
+    public String getAudioUri() {
         return audioUri;
     }
 
-    public void setAudioUri(CharSequence audioUri) {
+    public void setAudioUri(String audioUri) {
         this.audioUri = audioUri;
     }
 

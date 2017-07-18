@@ -160,8 +160,8 @@
 -dontwarn com.xmd.m.notify.**
 -keep class com.xmd.m.notify.** {*;}
 
--dontwarn com.xmd.chat.message.**
--keep class com.xmd.chat.message.** {*;}
+-dontwarn com.xmd.chat.**
+-keep class com.xmd.chat.** {*;}
 
 -dontwarn com.xmd.permission.**
 -keep class com.xmd.permission.** {*;}

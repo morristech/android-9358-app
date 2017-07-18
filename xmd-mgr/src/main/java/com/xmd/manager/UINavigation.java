@@ -8,6 +8,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.chat.view.ChatActivity;
 import com.xmd.m.notify.display.XmdActionFactory;
 import com.xmd.m.notify.display.XmdDisplay;
+import com.xmd.manager.window.LoginActivity;
 import com.xmd.manager.window.MainActivity;
 import com.xmd.manager.window.OnlinePayActivity;
 
@@ -58,6 +59,12 @@ public class UINavigation {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ChatActivity.EXTRA_CHAT_ID, chatId);
+        context.startActivity(intent);
+    }
+
+    public static void gotoLogin(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 }

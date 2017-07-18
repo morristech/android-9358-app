@@ -245,7 +245,7 @@ public class ChatMessage {
         return contentText;
     }
 
-    public CharSequence getOriginContentText() {
+    public String getOriginContentText() {
         if (emMessage.getType().equals(EMMessage.Type.TXT)) {
             return ((EMTextMessageBody) emMessage.getBody()).getMessage();
         } else {

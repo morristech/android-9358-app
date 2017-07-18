@@ -20,10 +20,12 @@ import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.EmojiManager;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.app.event.EventRestartApplication;
 import com.xmd.app.user.User;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.chat.ConversationManager;
@@ -33,6 +35,7 @@ import com.xmd.chat.viewmodel.ConversationViewModel;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
+import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.ContactPermissionInfo;
 import com.xmd.permission.ContactPermissionManager;
 import com.xmd.technician.common.ActivityHelper;
@@ -48,6 +51,7 @@ import com.xmd.technician.window.AvailableCouponListActivity;
 import com.xmd.technician.window.WelcomeActivity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.IOException;
@@ -155,6 +159,9 @@ public class TechApplication extends MultiDexApplication {
                 DataRefreshService.start();
                 HelloReplyService.start();
 
+                //初始化权限模块
+                BusinessPermissionManager.getInstance().init();
+
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");
 
@@ -162,6 +169,8 @@ public class TechApplication extends MultiDexApplication {
                     EventBus.getDefault().removeStickyEvent(EventLogout.class);
                     EventBus.getDefault().postSticky(new EventLogin(LoginTechnician.getInstance().getToken(), LoginTechnician.getInstance().getUserInfo()));
                 }
+
+                EventBusSafeRegister.register(this);
             }
         }
     }
@@ -184,7 +193,8 @@ public class TechApplication extends MultiDexApplication {
         return null;
     }
 
-    public static void restart() {
+    @Subscribe
+    public void restart(EventRestartApplication event) {
         XLogger.i("----------restart application----------");
         ActivityHelper.getInstance().removeAllActivities();
         Intent intent = new Intent(appContext, WelcomeActivity.class);

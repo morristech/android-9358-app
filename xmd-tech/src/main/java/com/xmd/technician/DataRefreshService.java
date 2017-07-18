@@ -10,7 +10,6 @@ import com.xmd.technician.common.Logger;
 import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
 
 import rx.Subscription;
 
@@ -25,7 +24,6 @@ public class DataRefreshService extends Service {
     private final static int CMD_CHECK_HELLO_REPLY = 3;
 
     private boolean mRefreshPersonalData;
-    private boolean mRefreshPayNotify;
     private boolean mRefreshHelloReply;
 
     private Subscription mTokenExpiredSubscription;
@@ -59,10 +57,6 @@ public class DataRefreshService extends Service {
         if (intent != null) {
             int cmd = intent.getIntExtra(EXTRA_CMD, -1);
             switch (cmd) {
-                case CMD_CHECK_PAY_NOTIFY:
-                    mRefreshPayNotify = intent.getBooleanExtra(EXTRA_CMD_DATA, false);
-                    Logger.i("set refresh pay notify to " + mRefreshPayNotify);
-                    break;
                 case CMD_REFRESH_PERSONAL_DATA:
                     mRefreshPersonalData = intent.getBooleanExtra(EXTRA_CMD_DATA, false);
                     Logger.i("set refresh personal data to " + mRefreshPersonalData);
@@ -94,11 +88,6 @@ public class DataRefreshService extends Service {
         public void run() {
             while (mRun) {
                 Logger.i("-------------work thread running-----------");
-                if (mRefreshPayNotify) {
-                    //定时刷新买单通知
-                    Logger.i("work thread: check pay notify");
-                    PayNotifyInfoManager.getInstance().checkNewPayNotify();
-                }
                 if (mRefreshPersonalData) {
                     Logger.i("work thread: refresh personal data");
                     LoginTechnician.getInstance().getTechPersonalData();
@@ -130,7 +119,6 @@ public class DataRefreshService extends Service {
     }
 
     public void handleLogoutEvent(EventLogout event) {
-        mRefreshPayNotify = false;
         mRefreshPersonalData = false;
         mRefreshHelloReply = false;
     }
@@ -139,14 +127,6 @@ public class DataRefreshService extends Service {
         Context context = TechApplication.getAppContext();
         Intent intent = new Intent(context, DataRefreshService.class);
         intent.putExtra(EXTRA_CMD, DataRefreshService.CMD_REFRESH_PERSONAL_DATA);
-        intent.putExtra(EXTRA_CMD_DATA, on);
-        context.startService(intent);
-    }
-
-    public static void refreshPayNotify(boolean on) {
-        Context context = TechApplication.getAppContext();
-        Intent intent = new Intent(context, DataRefreshService.class);
-        intent.putExtra(EXTRA_CMD, DataRefreshService.CMD_CHECK_PAY_NOTIFY);
         intent.putExtra(EXTRA_CMD_DATA, on);
         context.startService(intent);
     }

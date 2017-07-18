@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimaryDark">#ff6666</color>
-    <color name="colorPrimary">#ff6666</color>
+    <color name="colorPrimaryDark">#ff8c86</color>
+    <color name="colorPrimary">#ff8c86</color>
     <color name="colorAccent">#FF6666</color>
 
     <color name="transparent">#00000000</color>
@@ -178,6 +178,6 @@
     <color name="chat_share_text">#757575</color>
 
     <!-- toolbar 标题栏样式 -->
-    <color name="toolbarTitleColor">@color/colorHead</color>
-    <color name="toolbarBackground">@color/appColorTable</color>
+    <color name="toolbarTitleColor">#ffffff</color>
+    <color name="toolbarBackground">@color/colorPrimaryDark</color>
 </resources>

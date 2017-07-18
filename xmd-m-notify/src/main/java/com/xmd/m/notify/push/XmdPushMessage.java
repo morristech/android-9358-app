@@ -14,6 +14,7 @@ import java.util.List;
 public class XmdPushMessage {
     public static final String BUSINESS_TYPE_CHAT_MESSAGE = "chat_message";
     public static final String BUSINESS_TYPE_FAST_PAY = "fast_pay";
+    public static final String BUSINESS_TYPE_JOIN_CLUB = "join_club";
 
     private String businessType; //业务类型
     private List<XmdDisplay> displayList; //展示详情

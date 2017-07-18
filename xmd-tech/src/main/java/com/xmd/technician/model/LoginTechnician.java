@@ -6,6 +6,7 @@ import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
 import com.xmd.m.network.EventTokenExpired;
+import com.xmd.permission.event.EventRequestSyncPermission;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
 import com.xmd.technician.DataRefreshService;
@@ -16,8 +17,6 @@ import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.event.EventExitClub;
-import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.JoinClubResult;
@@ -219,11 +218,6 @@ public class LoginTechnician {
         //开始刷新回复
         DataRefreshService.refreshHelloReply(true);
 
-        if (isActiveStatus()) {
-            //开始刷新买单通知
-            DataRefreshService.refreshPayNotify(true);
-        }
-
         //开始汇报状态
         if (needSendLoginEvent) {
             needSendLoginEvent = false;
@@ -331,7 +325,8 @@ public class LoginTechnician {
 
     //管理员审核通过，正式加入会所
     private void onJoinedClub() {
-        RxBus.getInstance().post(new EventJoinedClub(getClubName()));
+        //请求同步权限
+        EventBus.getDefault().post(new EventRequestSyncPermission());
     }
 
     //退出会所，返回QuitClubResult
@@ -347,12 +342,9 @@ public class LoginTechnician {
         setClubInviteCode(null);
         setClubName(null);
         setClubPosition(null);
-        //关闭刷新买单通知
-        DataRefreshService.refreshPayNotify(false);
-        if (isActiveStatus()) {
-            RxBus.getInstance().post(new EventExitClub());
-        }
         setStatus(Constant.TECH_STATUS_VALID);
+        //请求同步权限
+        EventBus.getDefault().post(new EventRequestSyncPermission());
     }
 
     //退出登录,返回LogoutResult
@@ -369,8 +361,6 @@ public class LoginTechnician {
 
         //停止刷新个人数据
         DataRefreshService.refreshPersonalData(false);
-        //停止刷新买单通知
-        DataRefreshService.refreshPayNotify(false);
         //停止刷新回复
         DataRefreshService.refreshHelloReply(false);
 

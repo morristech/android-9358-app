@@ -7,6 +7,8 @@ import com.shidou.commonlibrary.Callback;
  */
 
 public interface IBusinessPermissionManager {
+    void init();
+
     //检查是否包含某个权限,一般来说不用调用，而是使用@CheckBusinessPermission注解
     boolean containPermission(String[] permissions);
 

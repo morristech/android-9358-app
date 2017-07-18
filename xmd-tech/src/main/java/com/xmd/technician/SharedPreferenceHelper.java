@@ -186,8 +186,8 @@ public class SharedPreferenceHelper {
      * @return
      */
     public static String getServerHost() {
-        //   return "http://192.168.2.74:8080";
-        // return "http://192.168.1.100:9880";
+//           return "http://192.168.2.74:8080";
+//         return "http://192.168.1.100:9880";
         return mSettingPreference.getString(KEY_SERVER_HOST, RequestConstant.SERVER_HOST);
     }
 

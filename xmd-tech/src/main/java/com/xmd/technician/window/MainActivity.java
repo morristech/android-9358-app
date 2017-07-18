@@ -103,6 +103,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                     permissionManager.checkAndSyncPermissions();
                 } else {
                     Toast.makeText(MainActivity.this, "加载权限失败:" + error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    UINavigation.gotoLogin(MainActivity.this);
                 }
             }
         });

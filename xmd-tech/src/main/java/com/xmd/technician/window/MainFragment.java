@@ -40,7 +40,6 @@ import com.xmd.technician.Adapter.MainPageTechOrderListAdapter;
 import com.xmd.technician.Adapter.PKRankingAdapter;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
-import com.xmd.technician.DataRefreshService;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.DynamicDetail;
@@ -53,7 +52,6 @@ import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.event.EventJoinedClub;
 import com.xmd.technician.event.EventRequestJoinClub;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.ContactPermissionVisitorResult;
@@ -248,7 +246,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private Subscription mGetRecentlyVisitorSubscription;
     private Subscription mOrderManageSubscription;
     private Subscription mGetMomentListSubscription;
-    private Subscription mJoinedClubSubscription;
     private Subscription mRequestJoinClubSubscription;
     private Subscription mGetNearbyCusCountSubscription;    // 附近的人:获取会所附近客户数量;
     private Subscription mGetHelloSetTemplateSubscription;  // 获取打招呼内容
@@ -306,7 +303,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 mOrderManageSubscription,
                 mGetMomentListSubscription,
                 mGetRecentlyVisitorSubscription,
-                mJoinedClubSubscription,
                 mRequestJoinClubSubscription,
                 mGetNearbyCusCountSubscription,
                 mGetHelloSetTemplateSubscription,
@@ -377,8 +373,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void registerRequestHandlers() {
         mGetTechCurrentInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class).subscribe(
                 techCurrentResult -> handleTechCurrentResult(techCurrentResult));
-
-        mJoinedClubSubscription = RxBus.getInstance().toObservable(EventJoinedClub.class).subscribe(this::onEventJoinedClub);
 
         mRequestJoinClubSubscription = RxBus.getInstance().toObservable(EventRequestJoinClub.class).subscribe(this::onEventRequestJoinClub);
 
@@ -457,7 +451,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mPayNotifyFragment.setFilter(startTime, endTime, PayNotifyInfo.STATUS_ALL, true);
             mPayNotifyFragment.loadData(true);
         }
-        DataRefreshService.refreshPayNotify(true);
     }
 
     /**************************
@@ -1259,11 +1252,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         mTech.loadTechInfo();
         sendDataRequest();
         BusinessPermissionManager.getInstance().syncPermissionsImmediately(null);//刷新权限
-    }
-
-    //成功通过会所审核
-    private void onEventJoinedClub(EventJoinedClub event) {
-        Toast.makeText(getContext(), "成功通过会所审核！", Toast.LENGTH_LONG).show();
     }
 
     //申请加入会所事件

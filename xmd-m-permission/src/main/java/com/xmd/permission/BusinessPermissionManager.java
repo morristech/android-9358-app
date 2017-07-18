@@ -2,6 +2,7 @@ package com.xmd.permission;
 
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.SpConstants;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
@@ -10,6 +11,7 @@ import com.xmd.app.event.EventRestartApplication;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
+import com.xmd.permission.event.EventRequestSyncPermission;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,6 +41,15 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
 
     private BusinessPermissionManager() {
 
+    }
+
+    public void init() {
+        EventBusSafeRegister.register(this);
+    }
+
+    @Subscribe
+    public void onRequestEvent(EventRequestSyncPermission event) {
+        syncPermissionsImmediately(null);
     }
 
     @Subscribe
@@ -105,7 +116,6 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
             }
         }
         return pass;
-//        return true;
     }
 
     /******************
