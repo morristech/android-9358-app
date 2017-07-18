@@ -30,8 +30,9 @@
                 android:id="@+id/layout_operation_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:alpha="0.0"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
 
                 <ImageButton
                     android:id="@+id/btn_call_phone"
@@ -39,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_phone"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/btn_EmChat"
@@ -47,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_chat"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/btn_chat"
@@ -55,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_message"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/btn_EmHello"
@@ -63,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/btn_hello"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
 
             </LinearLayout>

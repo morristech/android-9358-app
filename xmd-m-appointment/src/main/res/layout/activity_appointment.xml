@@ -273,6 +273,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:afterTextChanged="@{(e)->handler.onCustomerPhoneChange(e)}"
+                        android:inputType="phone"
+                        android:maxLength="11"
                         android:text='@{data.customerPhone}' />
                 </LinearLayout>
 

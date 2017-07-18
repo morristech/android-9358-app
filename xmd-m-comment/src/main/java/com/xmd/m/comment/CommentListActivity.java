@@ -58,6 +58,7 @@ public class CommentListActivity extends BaseActivity implements CommentFilterPo
 
     private void initView() {
         setTitle(R.string.comment_activity_title);
+        setBackVisible(true);
         toolbarRight = (ImageView) findViewById(R.id.img_toolbar_right);
         if (isFromManager) {
             setRightVisible(true, R.drawable.icon_comment_filter);
@@ -121,7 +122,7 @@ public class CommentListActivity extends BaseActivity implements CommentFilterPo
             }
             popupWindow.showAsViewDown(toolbarRight, 0, 40);
         } else {
-            CommentSearchActivity.startCommentSearchActivity(CommentListActivity.this, isFromManager, true, techNo, "dasfasdfasdfa");
+            CommentSearchActivity.startCommentSearchActivity(CommentListActivity.this, isFromManager, true, techNo, "11111111111");
         }
 
     }

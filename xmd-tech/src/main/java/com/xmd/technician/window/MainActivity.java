@@ -1,13 +1,9 @@
 package com.xmd.technician.window;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -15,10 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crazyman.library.PermissionTool;
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.Callback;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
@@ -41,7 +35,6 @@ import com.xmd.technician.chat.runtimepermissions.PermissionsResultAction;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
@@ -63,7 +56,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     public static final int REQUEST_CODE_JOIN_CLUB = 1;
     public static final int REQUEST_CODE_EDIT_TECH_INFO = 2;
-    public static final int REQUEST_CODE_CALL_PERMISSION = 3;
+
 
     private List<Fragment> mFragmentList = new LinkedList<>();
     private List<View> mBottomBarButtonList = new LinkedList<View>();
@@ -296,48 +289,31 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mUser.setAvatar(event.bean.chatHeadUrl);
         mUser.setMarkName(event.bean.userNoteName);
         userService.saveUser(mUser);
-        XLogger.i(">>>>", "消息传递过来了>>....");
-        switch (event.toDoType) {
-            case 0://打电话
-                if (TextUtils.isEmpty(event.bean.contactPhone) || !Utils.matchPhoneNumFormat(event.bean.contactPhone)) {
-                    this.makeShortToast("手机号码不存在");
-                    return;
-                }
-                contactPhone = event.bean.contactPhone;
-                PermissionTool.requestPermission(this, new String[]{Manifest.permission.CALL_PHONE}, new String[]{"拨打电话"}, REQUEST_CODE_CALL_PERMISSION);
-                break;
-            case 1://聊天
-                // 判断emChatId是否存在
-                if (TextUtils.isEmpty(event.bean.emChatId)) {
-                    this.makeShortToast("聊天失败，缺少客户信息");
-                    return;
-                }
-                if (event.bean.emChatId.equals(SharedPreferenceHelper.getEmchatId())) {
-                    this.makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
-                    return;
-                } else {
-                    UINavigation.gotoChatActivity(this, event.bean.emChatId);
-                }
-                break;
-            case 2://发短信
-                // 判断客户号码是否可用
-                if (TextUtils.isEmpty(event.bean.contactPhone) || !Utils.matchPhoneNumFormat(event.bean.contactPhone)) {
-                    this.makeShortToast("手机号码不存在");
-                    return;
-                }
-                Uri uri = Uri.parse("smsto:" + event.bean.contactPhone);
-                Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-                intent.putExtra("sms_body", "");
-                startActivity(intent);
-                break;
-            case 3://打招呼
-                if (TextUtils.isEmpty(event.bean.emChatId)) {
-                    this.makeShortToast("打招呼失败，缺少客户信息");
-                    return;
-                }
-                sayHello(event.bean);
-                break;
+        if(event.appType == 1){
+            switch (event.toDoType) {
+                case 1://聊天
+                    // 判断emChatId是否存在
+                    if (TextUtils.isEmpty(event.bean.emChatId)) {
+                        this.makeShortToast("聊天失败，缺少客户信息");
+                        return;
+                    }
+                    if (event.bean.emChatId.equals(SharedPreferenceHelper.getEmchatId())) {
+                        this.makeShortToast(ResourceUtils.getString(R.string.cant_chat_with_yourself));
+                        return;
+                    } else {
+                        UINavigation.gotoChatActivity(this, event.bean.emChatId);
+                    }
+                    break;
+                case 3://打招呼
+                    if (TextUtils.isEmpty(event.bean.emChatId)) {
+                        this.makeShortToast("打招呼失败，缺少客户信息");
+                        return;
+                    }
+                    sayHello(event.bean);
+                    break;
+            }
         }
+
     }
 
     // 打招呼
@@ -369,18 +345,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
                     mHomeFragment.doUpdateTechInfoSuccess();
                 }
             }
-        } else if (requestCode == REQUEST_CODE_CALL_PERMISSION) {
-            toCallPhone();
         }
     }
 
-    public void toCallPhone() {
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        Uri data = Uri.parse("tel:" + contactPhone);
-        intent.setData(data);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        startActivity(intent);
-    }
+
 }

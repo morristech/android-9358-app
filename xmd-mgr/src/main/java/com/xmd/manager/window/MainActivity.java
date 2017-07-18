@@ -7,11 +7,17 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.XmdChat;
+import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.view.ConversationListFragment;
+import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.manager.ClubData;
 import com.xmd.manager.Manager;
@@ -40,6 +46,7 @@ import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.CheckBusinessPermission;
 import com.xmd.permission.PermissionConstants;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -59,19 +66,18 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
     @BindView(R.id.vp_home)
     ViewPager mViewPager;
-
     @BindView(R.id.tab_indicator)
     ViewPagerTabIndicator mViewPagerTabIndicator;
-
     @BindView(R.id.combine_loading_view)
     CombineLoadingView mCombineLoadingView;
 
-    private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
 
+    private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
     private Subscription mGetNewOrderCountSubscription;
     private Subscription mGetClubSubscription;
     private Subscription mSwitchIndex;
     private int mCurrentPosition;
+    private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
 
     List<String> tabTexts = new ArrayList<>();
     List<Drawable> icons = new ArrayList<>();
@@ -315,4 +321,23 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
             mViewPagerTabIndicator.setNotice(sTabChat, event.getCount());
         }
     }
+
+    @Subscribe
+    public void sendMessageOrCall(UserInfoEvent event) {
+        if (event.appType == 0) {
+            if (event.toDoType == 1) {
+                XLogger.i(">>>","此处接受到消息,应该去聊天...");
+                User user = new User(event.bean.userId);
+                user.setChatId(event.bean.emChatId);
+                user.setName(event.bean.emChatName);
+                user.setAvatar(event.bean.chatHeadUrl);
+                userInfoService.saveUser(user);
+                EventBus.getDefault().post(new EventStartChatActivity(event.bean.emChatId));
+            } else if (event.toDoType == 3) { //打招呼
+
+            }
+        }
+    }
+
+
 }

@@ -77,6 +77,7 @@ public class CommentSearchActivity extends BaseActivity implements View.OnClickL
             llSearchView.setVisibility(View.VISIBLE);
             setTitle("搜索");
         }
+        setBackVisible(true);
         imgBtnSearch.setOnClickListener(this);
     }
 

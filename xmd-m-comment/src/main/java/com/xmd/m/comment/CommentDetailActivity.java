@@ -18,9 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.BaseActivity;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.app.widget.StarBar;
@@ -29,10 +33,14 @@ import com.xmd.m.R2;
 import com.xmd.m.comment.adapter.CommentItemDetailAdapter;
 import com.xmd.m.comment.bean.CommentBean;
 import com.xmd.m.comment.bean.CommentStatusResult;
+import com.xmd.m.comment.bean.UserInfoBean;
+import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.comment.httprequest.DataManager;
 import com.xmd.m.comment.httprequest.RequestConstant;
 import com.xmd.m.network.NetworkSubscriber;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -110,6 +118,7 @@ public class CommentDetailActivity extends BaseActivity {
 
     private void initView() {
         setTitle(ResourceUtils.getString(R.string.comment_detail_activity_title));
+        setBackVisible(true);
         contactPhone = mCommentBean.phoneNum;
         if (isFromManager && !mCommentBean.status.equals(ConstantResources.COMMENT_STATUS_DELETE)) {
             setRightVisible(true, R.drawable.icon_comment_mark_delete);
@@ -198,7 +207,7 @@ public class CommentDetailActivity extends BaseActivity {
 
     @OnClick(R2.id.btn_visit)
     public void onViewClicked() {
-        showServiceOutMenu(mCommentBean.phoneNum, mCommentBean.userEmchatId, mCommentBean.userName, mCommentBean.avatarUrl, mCommentBean.id, mCommentBean.returnStatus);
+        showServiceOutMenu(mCommentBean.userId, mCommentBean.phoneNum, mCommentBean.userEmchatId, mCommentBean.userName, mCommentBean.avatarUrl, mCommentBean.id, mCommentBean.returnStatus);
     }
 
     @Override
@@ -207,26 +216,22 @@ public class CommentDetailActivity extends BaseActivity {
         mUnBinder.unbind();
     }
 
-    private void showServiceOutMenu(String phone, final String emChatId, final String userName, final String userHeadImgUrl, final String commentId, final String returnStatus) {
+    private void showServiceOutMenu(final String userId, String phone, final String emChatId, final String userName, final String userHeadImgUrl, final String commentId, final String returnStatus) {
 
         BottomPopupWindow popupWindow = BottomPopupWindow.getInstance(this, phone, emChatId, commentId, returnStatus, new BottomPopupWindow.OnRootSelectedListener() {
             @Override
             public void onItemSelected(ReturnVisitMenu rootMenu) {
                 switch (rootMenu.getType()) {
                     case 1:
-                        XLogger.i(">>>", "打电话");
-
+                        PermissionTool.requestPermission(CommentDetailActivity.this, new String[]{Manifest.permission.CALL_PHONE}, new String[]{"拨打电话"}, REQUEST_CODE_CALL_PERMISSION);
                         break;
                     case 2:
-                        XLogger.i(">>>", "发环信");
-
+                        EventBus.getDefault().post(new UserInfoEvent(0, 1, new UserInfoBean(userId, emChatId, userName, userHeadImgUrl)));
                         break;
                     case 3:
-                        XLogger.i(">>>", "标记已回访");
                         changeCommentStatus(commentId, returnStatus);
                         break;
                     case 4:
-                        XLogger.i(">>>", "标记未回访");
                         changeCommentStatus(commentId, returnStatus);
                         break;
 

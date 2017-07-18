@@ -140,9 +140,7 @@
         <activity
             android:name=".window.CellphoneContactListActivity"
             android:screenOrientation="portrait"/>
-        <activity
-            android:name=".window.ContactInformationDetailActivity"
-            android:screenOrientation="portrait"/>
+
         <activity android:name=".window.SysNoticeListActivity"/>
         <activity
             android:name=".window.EditContactInformation"

@@ -314,7 +314,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_tech_add);
             }
         }
-        if (TextUtils.isEmpty(userDetailModel.userLoginName)) {
+        if (TextUtils.isEmpty(userDetailModel.userLoginName) || !userDetailModel.userLoginName.startsWith("1")) {
             llCustomerPhone.setVisibility(View.GONE);
         } else {
             llCustomerPhone.setVisibility(View.VISIBLE);

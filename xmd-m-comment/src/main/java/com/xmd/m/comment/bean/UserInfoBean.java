@@ -19,6 +19,13 @@ public class UserInfoBean implements Serializable {
     public String remarkImpression;
     public String id;
 
+    public UserInfoBean(String userId,String emChatId,String name,String headUrl) {
+        this.id = userId;
+        this.emChatId = emChatId;
+        this.emChatName = name;
+        this.chatHeadUrl = headUrl;
+    }
+
     public UserInfoBean(String id, String contactPhone, String emChatId, String emChatName, String chatHeadUrl, String contactType, String userId, String userNoteName,
                         String remarkMessage, String remarkImpression) {
         this.id = id;

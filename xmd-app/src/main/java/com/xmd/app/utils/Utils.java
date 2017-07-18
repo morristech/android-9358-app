@@ -5,10 +5,13 @@ import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.WindowManager;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Lhj on 17-7-4.
@@ -68,5 +71,21 @@ public class Utils {
         }
         ss.setSpan(new ForegroundColorSpan(Color.parseColor(colorStr)), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return ss;
+    }
+
+    /**
+     * @param text
+     * @return
+     */
+    public static boolean matchPhoneNumFormat(String text) {
+        if (TextUtils.isEmpty(text)) {
+            return false;
+        }
+        Pattern p = Pattern
+                .compile("^((13[0-9])|(14[0-9])|(17[0-9])|(15[0-9])|(18[0-9]))\\d{8}$");
+
+        Matcher m = p.matcher(text);
+
+        return m.matches();
     }
 }

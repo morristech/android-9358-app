@@ -139,7 +139,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             Glide.with(mContext).load(commentBean.avatarUrl).into(viewHolder.commentHead);
             viewHolder.commentName.setText(TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName);
             viewHolder.commentPhone.setText(TextUtils.isEmpty(commentBean.phoneNum) ? "" : commentBean.phoneNum);
-            viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "技师" : commentBean.techName);
+            viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "会所" : commentBean.techName);
             viewHolder.commentTechCode.setText(TextUtils.isEmpty(commentBean.techNo) ? "" : String.format("[%s]", commentBean.techNo));
             viewHolder.commentTime.setText(DateUtils.doLong2String(commentBean.createdAt, "MM-dd HH:mm"));
             if (isManager) {
@@ -174,12 +174,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.commentProjectList.setLayoutManager(new GridLayoutManager(mContext, 2));
                 viewHolder.commentProjectList.setAdapter(adapter);
             }
-            if (commentBean.isAnonymous.equals("N")) {//匿名评价
-                // viewHolder.tvVisitComment.setVisibility(View.VISIBLE);
+            if (commentBean.isAnonymous.equals("N") && isManager) {//匿名评价
                 viewHolder.llCommentHandler.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.llCommentHandler.setVisibility(View.GONE);
-                // viewHolder.tvVisitComment.setVisibility(View.INVISIBLE);
             }
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
