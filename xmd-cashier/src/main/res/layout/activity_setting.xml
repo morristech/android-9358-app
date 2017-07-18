@@ -60,7 +60,7 @@
                     android:layout_marginRight="@dimen/activity_small_margin"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="微信买单成功"
+                    android:text="扫码买单成功"
                     android:textSize="@dimen/font_size_16" />
 
                 <Switch
