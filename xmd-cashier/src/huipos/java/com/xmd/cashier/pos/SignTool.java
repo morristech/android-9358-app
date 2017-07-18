@@ -61,9 +61,9 @@ public class SignTool {
             Response response = OkHttpUtil.getInstance().getClient().newCall(request).execute();
             String responseString = response.body().string();
             StringResult result = new Gson().fromJson(responseString, StringResult.class);
-            if (result.respData != null) {
-                XLogger.i("sign result:" + result.respData);
-                return result.respData;
+            if (result.getRespData() != null) {
+                XLogger.i("sign result:" + result.getRespData());
+                return result.getRespData();
             } else {
                 XLogger.e("sign failed: respData is null!!");
             }
