@@ -1,12 +1,12 @@
 package com.xmd.manager;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
@@ -45,7 +45,7 @@ import java.util.Set;
 /**
  * Created by sdcm on 15-10-22.
  */
-public class ManagerApplication extends Application {
+public class ManagerApplication extends MultiDexApplication {
     private static final String TAG = "ManagerApplication";
 
     private static Context appContext;

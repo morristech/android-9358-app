@@ -195,4 +195,7 @@ dependencies {
 
     //aspectj
     compile "org.aspectj:aspectjrt:${rootProject.ext.aspectjrtVersion}"
+
+    // for multidex
+    compile 'com.android.support:multidex:1.0.1'
 }
