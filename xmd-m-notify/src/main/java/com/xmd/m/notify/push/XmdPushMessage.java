@@ -15,6 +15,8 @@ public class XmdPushMessage {
     public static final String BUSINESS_TYPE_CHAT_MESSAGE = "chat_message";
     public static final String BUSINESS_TYPE_FAST_PAY = "fast_pay";
     public static final String BUSINESS_TYPE_JOIN_CLUB = "join_club";
+    public static final String BUSINESS_TYPE_ORDER = "order";
+    public static final String BUSINESS_TYPE_CUSTOMER = "customer";
 
     private String businessType; //业务类型
     private List<XmdDisplay> displayList; //展示详情

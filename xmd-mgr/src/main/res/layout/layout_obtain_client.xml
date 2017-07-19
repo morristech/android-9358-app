@@ -65,6 +65,13 @@
                     style="@style/main_fragment_layout_statistics_value_style"
                     android:text="0" />
 
+                <TextView
+                    android:id="@+id/newCustomerCountMark"
+                    android:layout_width="@dimen/redPointSize"
+                    android:layout_height="@dimen/redPointSize"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/red_circle"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

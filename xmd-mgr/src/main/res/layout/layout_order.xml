@@ -80,10 +80,26 @@
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/inter_space">
 
-                    <TextView
-                        style="@style/main_fragment_layout_order_label_style"
-                        android:layout_toRightOf="@+id/v_accept_line"
-                        android:text="@string/pending_order" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/main_fragment_layout_order_label_style"
+                            android:layout_toRightOf="@+id/v_accept_line"
+                            android:text="@string/pending_order" />
+
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/newOrderMark"
+                            android:layout_marginLeft="4dp"
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/red_circle" />
+                    </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/tv_pending_order_count"

@@ -26,12 +26,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.m.comment.CommentDetailActivity;
 import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.comment.bean.CommentBean;
 import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.UserInfoEvent;
+import com.xmd.m.notify.push.XmdPushMessage;
+import com.xmd.m.notify.redpoint.RedPointService;
+import com.xmd.m.notify.redpoint.RedPointServiceImpl;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.BuildConfig;
 import com.xmd.manager.ClubData;
@@ -48,7 +50,6 @@ import com.xmd.manager.beans.AuthData;
 import com.xmd.manager.beans.IndexOrderData;
 import com.xmd.manager.beans.QrResult;
 import com.xmd.manager.beans.SwitchIndexBean;
-import com.xmd.manager.chat.EmchatUserHelper;
 import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.ReturnVisitMenu;
@@ -310,6 +311,13 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     @BindView(R.id.layout_technician_ranking)
     LinearLayout technicianRanking;
 
+    @BindView(R.id.newOrderMark)
+    TextView newOrderMark;
+    @BindView(R.id.fastPayMark)
+    TextView fastPayMark;
+    @BindView(R.id.newCustomerCountMark)
+    TextView customerCountMark;
+
 
     private static final int REQUEST_CODE_PHONE = 0x0001;
     private static final int REQUEST_CODE_CAMERA = 0x002;
@@ -345,13 +353,31 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     private Subscription mTechPKRankingSubscription;
     private Subscription mSwitchChangedSubscription;
 
+    private RedPointService redPointService = RedPointServiceImpl.getInstance();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main_page, container, false);
         ButterKnife.bind(this, view);
         initView(view);
+        redPointService.bind(XmdPushMessage.BUSINESS_TYPE_ORDER, newOrderMark, RedPointService.SHOW_TYPE_POINT);
+        redPointService.bind(XmdPushMessage.BUSINESS_TYPE_FAST_PAY, fastPayMark, RedPointService.SHOW_TYPE_POINT);
+        redPointService.bind(XmdPushMessage.BUSINESS_TYPE_CUSTOMER, customerCountMark, RedPointService.SHOW_TYPE_POINT);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        RxBus.getInstance().unsubscribe(mRegistryDataSubscription, mCouponDataSubscription, mRankingDataSubscription,
+                mCommentAndComplaintSubscription, mBadCommentStatusSubscription, mIndexOrderDataSubscription, mQrResultSubscription,
+                mGetVerificationTypeSubscription, mVerificationHandleSubscription, mPropagandaDataSubscription, mAccountDataSubSubscription,
+                mTechPKRankingSubscription, mSwitchChangedSubscription);
+        mVerificationHelper.destroySubscription();
+        redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_ORDER, newOrderMark);
+        redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_FAST_PAY, fastPayMark);
+        redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_CUSTOMER, customerCountMark);
     }
 
     @Override
@@ -946,6 +972,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 Intent intentOrder = new Intent(getActivity(), OrdersDetailActivity.class);
                 intentOrder.putExtra(Constant.PARAM_RANGE, 0);
                 startActivity(intentOrder);
+                redPointService.clear(XmdPushMessage.BUSINESS_TYPE_ORDER);
                 break;
             case R.id.layout_technician_ranking:
                 if (isHasPk) {
@@ -972,6 +999,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 Intent intentRegister = new Intent(getActivity(), RegisterReportActivity.class);
                 intentRegister.putExtra(RequestConstant.KEY_MAIN_TITLE, mTvTitleRegister.getText().toString().substring(0, mTvTitleRegister.getText().toString().length() - 1));
                 startActivity(intentRegister);
+                redPointService.clear(XmdPushMessage.BUSINESS_TYPE_CUSTOMER);
                 break;
             case R.id.ll_coupon_get_today:
                 Intent intentCoupon = new Intent(getActivity(), CouponReportActivity.class);
@@ -988,6 +1016,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
             case R.id.ll_account_paid:
                 //线上买单
                 UINavigation.gotoOnlinePayNotifyList(getContext());
+                redPointService.clear(XmdPushMessage.BUSINESS_TYPE_FAST_PAY);
                 break;
             case R.id.ll_account_sail_view:
             case R.id.ll_sail_view:
@@ -1102,7 +1131,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
             case R.id.menu_service:
-                showServiceOutMenu("",servicePhone, "", "", "", "", "");
+                showServiceOutMenu("", servicePhone, "", "", "", "", "");
                 break;
             case R.id.menu_suggest:
                 startActivity(new Intent(getActivity(), FeedbackActivity.class));
@@ -1144,14 +1173,5 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         mSlidingMenu.toggle();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        RxBus.getInstance().unsubscribe(mRegistryDataSubscription, mCouponDataSubscription, mRankingDataSubscription,
-                mCommentAndComplaintSubscription, mBadCommentStatusSubscription, mIndexOrderDataSubscription, mQrResultSubscription,
-                mGetVerificationTypeSubscription, mVerificationHandleSubscription, mPropagandaDataSubscription, mAccountDataSubSubscription,
-                mTechPKRankingSubscription, mSwitchChangedSubscription);
-        mVerificationHelper.destroySubscription();
-    }
 
 }

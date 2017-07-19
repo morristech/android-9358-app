@@ -16,6 +16,9 @@ import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import rx.Observable;
 import rx.Subscription;
@@ -37,7 +40,6 @@ public class XmdPushManager {
     }
 
     private Context context;
-    private XmdPushMessageListener listener;
 
     private String getuiAppId;
     private String getuiAppKey;
@@ -60,7 +62,7 @@ public class XmdPushManager {
         }
         context = context.getApplicationContext();
         this.context = context;
-        this.listener = listener;
+        addListener(listener);
         this.userType = userType;
 
         try {
@@ -202,11 +204,26 @@ public class XmdPushManager {
         }
     }
 
-    public XmdPushMessageListener getListener() {
-        return listener;
+    private List<XmdPushMessageListener> listenerList = new ArrayList<>();
+
+    public void addListener(XmdPushMessageListener listener) {
+        if (listener != null && !listenerList.contains(listener)) {
+            listenerList.add(listener);
+        }
     }
 
-    public void setListener(XmdPushMessageListener listener) {
-        this.listener = listener;
+    public void removeListener(XmdPushMessageListener listener) {
+        listenerList.remove(listener);
+    }
+
+    public void notifyMessage(XmdPushMessage message, String rowMessage) {
+        for (XmdPushMessageListener listener : listenerList) {
+            if (message != null) {
+                listener.onMessage(message);
+            }
+            if (!TextUtils.isEmpty(rowMessage)) {
+                listener.onRawMessage(rowMessage);
+            }
+        }
     }
 }

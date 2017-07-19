@@ -126,7 +126,8 @@ public class UINavigation {
             Intent intent = new Intent(TechApplication.getAppContext(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(EXTRA_XMD_DISPLAY, display);
-            return PendingIntent.getActivity(TechApplication.getAppContext(), REQUEST_CODE_UI_ROUTE, intent, PendingIntent.FLAG_ONE_SHOT);
+            intent.setAction(String.valueOf(System.currentTimeMillis()));
+            return PendingIntent.getActivity(TechApplication.getAppContext(), REQUEST_CODE_UI_ROUTE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
     };
 

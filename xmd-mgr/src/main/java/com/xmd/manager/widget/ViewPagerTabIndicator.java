@@ -141,7 +141,7 @@ public class ViewPagerTabIndicator extends FrameLayout {
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(ResourceUtils.getColor(R.color.primary_color));
+        mPaint.setColor(0xffff0000);
         mPaint.setStyle(Paint.Style.FILL);
     }
 

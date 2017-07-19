@@ -292,5 +292,6 @@
     <dimen name="fontButton">15sp</dimen>
     <dimen name="fontCaption">13sp</dimen>
 
+    <dimen name="redPointSize">12dp</dimen>
 
 </resources>

@@ -19,6 +19,11 @@ import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.view.ConversationListFragment;
 import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.notify.display.XmdDisplay;
+import com.xmd.m.notify.push.XmdPushManager;
+import com.xmd.m.notify.push.XmdPushMessage;
+import com.xmd.m.notify.push.XmdPushMessageListener;
+import com.xmd.m.notify.redpoint.RedPointService;
+import com.xmd.m.notify.redpoint.RedPointServiceImpl;
 import com.xmd.manager.ClubData;
 import com.xmd.manager.Manager;
 import com.xmd.manager.R;
@@ -40,7 +45,6 @@ import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.ClubResult;
 import com.xmd.manager.service.response.NewOrderCountResult;
-import com.xmd.manager.widget.CombineLoadingView;
 import com.xmd.manager.widget.ViewPagerTabIndicator;
 import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.CheckBusinessPermission;
@@ -68,8 +72,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     ViewPager mViewPager;
     @BindView(R.id.tab_indicator)
     ViewPagerTabIndicator mViewPagerTabIndicator;
-    @BindView(R.id.combine_loading_view)
-    CombineLoadingView mCombineLoadingView;
 
 
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
@@ -79,8 +81,11 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     private int mCurrentPosition;
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
 
-    List<String> tabTexts = new ArrayList<>();
-    List<Drawable> icons = new ArrayList<>();
+    private List<String> tabTexts = new ArrayList<>();
+    private List<Drawable> icons = new ArrayList<>();
+
+    private int newOrderCount;
+    private RedPointService redPointService = RedPointServiceImpl.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +111,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         Manager.getInstance().checkUpgrade(true);
 
         mGetNewOrderCountSubscription = RxBus.getInstance().toObservable(NewOrderCountResult.class).subscribe(
-                result -> mViewPagerTabIndicator.setNotice(sTabOrder, result.respData)
+                result -> {
+                    newOrderCount = result.respData;
+                    mViewPagerTabIndicator.setNotice(sTabOrder, newOrderCount);
+                }
         );
 
         mGetClubSubscription = RxBus.getInstance().toObservable(ClubResult.class).subscribe(
@@ -122,6 +130,15 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         processXmdDisplay(getIntent());
 
         EventBusSafeRegister.register(this);
+        XmdPushManager.getInstance().addListener(xmdPushMessageListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.getInstance().unsubscribe(mGetNewOrderCountSubscription, mSwitchIndex, mGetClubSubscription);
+        EventBusSafeRegister.unregister(this);
+        XmdPushManager.getInstance().removeListener(xmdPushMessageListener);
     }
 
     private void initView() {
@@ -200,7 +217,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     @CheckBusinessPermission(PermissionConstants.MGR_TAB_COUPON)
     public void initPageMarketing() {
         mPageFragmentPagerAdapter.addFragment(new MarketingFragment());
-        icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_coupon));
+        icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_marketing));
         tabTexts.add("营销");
         sTabCoupon = tabTexts.size() - 1;
     }
@@ -222,19 +239,12 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     }
 
     private void loadData() {
-        mCombineLoadingView.setStatus(CombineLoadingView.STATUS_LOADING);
         EmchatUserHelper.login(null);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_INFO);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_AUTH_CONFIG);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGetNewOrderCountSubscription, mSwitchIndex, mGetClubSubscription);
-        EventBusSafeRegister.unregister(this);
-    }
 
     @Override
     public void onBackPressed() {
@@ -277,7 +287,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     private void handleGetClubResult(ClubResult result) {
         if (result.statusCode == RequestConstant.RESP_ERROR_CODE_FOR_LOCAL) {
             makeShortToast(ResourceUtils.getString(R.string.get_club_failed));
-            mCombineLoadingView.setStatus(CombineLoadingView.STATUS_ERROR);
         } else {
             onGetClubResultSucceeded(result);
         }
@@ -302,6 +311,11 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     public void onPageSelected(int position) {
         setRightIcon(position);
         mCurrentPosition = position;
+        if (position == sTabOrder) {
+            newOrderCount = 0;
+            mViewPagerTabIndicator.setNotice(sTabOrder, 0);
+            redPointService.clear(XmdPushMessage.BUSINESS_TYPE_ORDER);
+        }
     }
 
     @Override
@@ -326,7 +340,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     public void sendMessageOrCall(UserInfoEvent event) {
         if (event.appType == 0) {
             if (event.toDoType == 1) {
-                XLogger.i(">>>","此处接受到消息,应该去聊天...");
+                XLogger.i(">>>", "此处接受到消息,应该去聊天...");
                 User user = new User(event.bean.userId);
                 user.setChatId(event.bean.emChatId);
                 user.setName(event.bean.emChatName);
@@ -339,5 +353,30 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         }
     }
 
+    private XmdPushMessageListener xmdPushMessageListener = new XmdPushMessageListener() {
+        @Override
+        public void onMessage(XmdPushMessage message) {
+            switch (message.getBusinessType()) {
+                case XmdPushMessage.BUSINESS_TYPE_ORDER:
+                    if (sTabOrder >= 0) {
+                        newOrderCount++;
+                        mViewPagerTabIndicator.setNotice(sTabOrder, newOrderCount);
+                        redPointService.set(message.getBusinessType(), newOrderCount);
+                    }
+                    break;
+                case XmdPushMessage.BUSINESS_TYPE_FAST_PAY:
+                    redPointService.inc(XmdPushMessage.BUSINESS_TYPE_FAST_PAY);
+                    break;
+                case XmdPushMessage.BUSINESS_TYPE_CUSTOMER:
+                    redPointService.inc(XmdPushMessage.BUSINESS_TYPE_CUSTOMER);
+                    break;
+            }
+        }
+
+        @Override
+        public void onRawMessage(String message) {
+
+        }
+    };
 
 }

@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.m.notify.XmdPushModule;
 
@@ -33,27 +34,26 @@ public class GetuiReceiveService extends GTIntentService {
     public void onReceiveMessageData(Context context, GTTransmitMessage gtTransmitMessage) {
         byte[] payload = gtTransmitMessage.getPayload();
         if (payload != null) {
-            String data = new String(payload);
+            final String data = new String(payload);
             XLogger.d(XmdPushModule.TAG, "onReceiveMessageData:" + data);
             if (TextUtils.isEmpty(data)) {
                 return;
             }
 
-            try {
-                XmdPushMessage message = gson.fromJson(data, XmdPushMessage.class);
-                //显示
-                message.show();
-                //传递给外界处理
-                if (XmdPushManager.getInstance().getListener() != null) {
-                    XmdPushManager.getInstance().getListener().onMessage(message);
+            ThreadPoolManager.postToUI(new Runnable() {
+                @Override
+                public void run() {
+                    XmdPushMessage message = null;
+                    try {
+                        message = gson.fromJson(data, XmdPushMessage.class);
+                        //显示
+                        message.show();
+                    } catch (Exception e) {
+                        XLogger.e(XmdPushModule.TAG, "parse message error:" + e.getMessage() + ",data:" + data);
+                    }
+                    XmdPushManager.getInstance().notifyMessage(message, data);
                 }
-            } catch (Exception e) {
-                XLogger.e(XmdPushModule.TAG, "parse message error:" + e.getMessage() + ",data:" + data);
-            }
-
-            if (XmdPushManager.getInstance().getListener() != null) {
-                XmdPushManager.getInstance().getListener().onRawMessage(data);
-            }
+            });
         }
     }
 
