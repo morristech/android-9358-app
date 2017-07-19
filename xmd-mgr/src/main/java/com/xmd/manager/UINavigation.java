@@ -1,16 +1,20 @@
 package com.xmd.manager;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.chat.view.ChatActivity;
+import com.xmd.m.comment.CommentDetailActivity;
+import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.notify.display.XmdActionFactory;
 import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.manager.window.LoginActivity;
 import com.xmd.manager.window.MainActivity;
 import com.xmd.manager.window.OnlinePayActivity;
+import com.xmd.manager.window.OrdersDetailActivity;
 
 /**
  * Created by mo on 17-6-29.
@@ -43,11 +47,32 @@ public class UINavigation {
             case XmdDisplay.ACTION_VIEW_FAST_PAY:
                 gotoOnlinePayNotifyList(context);
                 break;
+            case XmdDisplay.ACTION_VIEW_ORDER_DETAIL:
+                gotoOrderDetail(context, display.getActionData());
+                break;
+            case XmdDisplay.ACTION_VIEW_COMMENT:
+                gotoComment(context);
+                break;
+            case XmdDisplay.ACTION_VIEW_COMMENT_DETAIL:
+                gotoCommentDetail(context, display.getActionData());
             default:
                 break;
         }
     }
 
+    public static void gotoOrderDetail(Context context, String orderId) {
+        Intent intent = new Intent(context, OrdersDetailActivity.class);
+//        intent.putExtra(OrderDetailActivity.KEY_ORDER_ID, orderId);
+        context.startActivity(intent);
+    }
+
+    public static void gotoComment(Context context) {
+        CommentListActivity.startCommentListActivity((Activity) context, true, null);
+    }
+
+    public static void gotoCommentDetail(Context context, String commentId) {
+        CommentDetailActivity.startCommentDetailActivity((Activity) context, commentId, true);
+    }
 
     public static void gotoOnlinePayNotifyList(Context context) {
         Intent intent = new Intent(context, OnlinePayActivity.class);

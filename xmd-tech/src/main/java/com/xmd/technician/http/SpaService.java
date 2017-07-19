@@ -1,5 +1,6 @@
 package com.xmd.technician.http;
 
+import com.xmd.m.network.BaseBean;
 import com.xmd.technician.bean.CreditAccountDetailResult;
 import com.xmd.technician.bean.CreditAccountResult;
 import com.xmd.technician.bean.CreditApplicationsResult;
@@ -10,6 +11,7 @@ import com.xmd.technician.bean.CustomerListResult;
 import com.xmd.technician.bean.GameResult;
 import com.xmd.technician.bean.GiftListResult;
 import com.xmd.technician.bean.MarkResult;
+import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SaveChatUserResult;
 import com.xmd.technician.bean.SayHiBaseResult;
@@ -100,6 +102,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Observable;
 
 /**
  * Created by sdcm on 16-1-11.
@@ -940,4 +943,7 @@ public interface SpaService {
                                                   @Query(RequestConstant.KEY_POSTER_ID) String id);
 
 
+    //获取订单详情
+    @GET("/spa-manager/api/v2/tech/profile/order/{orderId}")
+    Observable<BaseBean<Order>> getOrderDetail(@Path("orderId") String orderId);
 }

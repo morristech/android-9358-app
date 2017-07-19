@@ -21,10 +21,8 @@ import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
-import com.xmd.app.user.User;
-import com.xmd.app.user.UserInfoService;
-import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.app.widget.StarBar;
@@ -37,8 +35,11 @@ import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.comment.httprequest.DataManager;
+import com.xmd.m.comment.httprequest.NetService;
 import com.xmd.m.comment.httprequest.RequestConstant;
+import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -46,6 +47,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.Observable;
+import rx.Subscription;
 
 /**
  * Created by Lhj on 17-7-4.
@@ -90,6 +93,8 @@ public class CommentDetailActivity extends BaseActivity {
     private String contactPhone;
     private CommentItemDetailAdapter mCommentItemDetailAdapter;
     private CommentBean mCommentBean;
+    private String commentId;
+    private Subscription loadDataSubscription;
     private boolean isFromManager;
 
     public static void startCommentDetailActivity(Activity activity, CommentBean bean, boolean isManager) {
@@ -99,21 +104,57 @@ public class CommentDetailActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
+    public static void startCommentDetailActivity(Activity activity, String commentId, boolean isManager) {
+        Intent intent = new Intent(activity, CommentDetailActivity.class);
+        intent.putExtra(ConstantResources.COMMENT_ID, commentId);
+        intent.putExtra(ConstantResources.COMMENT_DETAIL_INTENT_IS_MANAGER, isManager);
+        activity.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment_detail);
         mUnBinder = ButterKnife.bind(this);
-        getIntentData();
-        initView();
+        init();
+
     }
 
-    public void getIntentData() {
+
+    public void init() {
         mCommentBean = getIntent().getParcelableExtra(ConstantResources.COMMENT_DETAIL);
         isFromManager = getIntent().getBooleanExtra(ConstantResources.COMMENT_DETAIL_INTENT_IS_MANAGER, false);
-        if (mCommentBean == null) {
-            return;
+        if (mCommentBean != null) {
+            initView();
+        } else {
+            commentId = getIntent().getStringExtra(ConstantResources.COMMENT_ID);
+            if (commentId == null) {
+                XToast.show("缺少参数！");
+                finish();
+                return;
+            }
+            loadData();
         }
+    }
+
+    private void loadData() {
+        Observable<BaseBean<CommentBean>> observable = XmdNetwork.getInstance()
+                .getService(NetService.class)
+                .getCommentDetail(commentId);
+        loadDataSubscription = XmdNetwork.getInstance()
+                .request(observable, new NetworkSubscriber<BaseBean<CommentBean>>() {
+                    @Override
+                    public void onCallbackSuccess(BaseBean<CommentBean> result) {
+                        mCommentBean = result.getRespData();
+                        initView();
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        XToast.show("数据加载失败:" + e.getMessage());
+                        finish();
+                    }
+                });
     }
 
     private void initView() {
@@ -214,6 +255,9 @@ public class CommentDetailActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         mUnBinder.unbind();
+        if (loadDataSubscription != null) {
+            loadDataSubscription.unsubscribe();
+        }
     }
 
     private void showServiceOutMenu(final String userId, String phone, final String emChatId, final String userName, final String userHeadImgUrl, final String commentId, final String returnStatus) {

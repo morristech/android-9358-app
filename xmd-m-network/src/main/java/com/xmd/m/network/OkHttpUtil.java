@@ -139,20 +139,21 @@ public class OkHttpUtil {
 
     private String requestToString(Request request) {
         String result = request.method() + ":" + request.url().toString();
-        if (!TextUtils.isEmpty(mCommonHeader.get("token"))) {
-            if (request.method().equals("GET")) {
-                result += (request.url().toString().contains("?") ? "&" : "?") + "token=" + mCommonHeader.get("token");
-            }
+        if (request.method().equals("GET") && !result.contains("token") && !TextUtils.isEmpty(mCommonHeader.get("token"))) {
+            result += (request.url().toString().contains("?") ? "&" : "?") + "token=" + mCommonHeader.get("token");
         }
         RequestBody requestBody = request.body();
         if (requestBody != null) {
             if (requestBody instanceof FormBody) {
                 FormBody body = (FormBody) request.body();
                 result += " -d '";
-                if (!TextUtils.isEmpty(mCommonHeader.get("token"))) {
+                if (!result.contains("token") && !TextUtils.isEmpty(mCommonHeader.get("token"))) {
                     result += "token=" + mCommonHeader.get("token") + "&";
                 }
                 for (int i = 0; i < body.size(); i++) {
+                    if (result.contains("token") && body.name(i).equals("token")) {
+                        continue;
+                    }
                     result += body.name(i) + "=" + body.value(i) + "&";
                 }
                 result = result.substring(0, result.length() - 1) + "'";

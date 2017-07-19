@@ -15,9 +15,11 @@ import com.xmd.technician.TechApplication;
 import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.onlinepaynotify.view.OnlinePayNotifyActivity;
 import com.xmd.technician.window.CompleteRegisterInfoActivity;
+import com.xmd.technician.window.DynamicDetailActivity;
 import com.xmd.technician.window.JoinClubActivity;
 import com.xmd.technician.window.LoginActivity;
 import com.xmd.technician.window.MainActivity;
+import com.xmd.technician.window.OrderDetailActivity;
 import com.xmd.technician.window.RegisterActivity;
 import com.xmd.technician.window.TechChatActivity;
 
@@ -107,6 +109,16 @@ public class UINavigation {
         CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(activity, customerId, appType, isTech);
     }
 
+    public static void gotoOrderDetail(Context context, String orderId) {
+        Intent intent = new Intent(context, OrderDetailActivity.class);
+        intent.putExtra(OrderDetailActivity.KEY_ORDER_ID, orderId);
+        context.startActivity(intent);
+    }
+
+    public static void gotoComment(Context context) {
+        context.startActivity(new Intent(context, DynamicDetailActivity.class));
+    }
+
 
     public static XmdActionFactory xmdActionFactory = new XmdActionFactory() {
         @Override
@@ -129,6 +141,12 @@ public class UINavigation {
                 break;
             case XmdDisplay.ACTION_VIEW_FAST_PAY:
                 gotoOnlinePayNotifyList(context);
+                break;
+            case XmdDisplay.ACTION_VIEW_ORDER_DETAIL:
+                gotoOrderDetail(context, display.getActionData());
+                break;
+            case XmdDisplay.ACTION_VIEW_COMMENT:
+                gotoComment(context);
                 break;
             default:
                 break;

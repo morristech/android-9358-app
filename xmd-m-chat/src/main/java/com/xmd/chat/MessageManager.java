@@ -212,7 +212,7 @@ public class MessageManager {
         return chatMessage;
     }
 
-    public void resendMessage(ChatMessage chatMessage){
+    public void resendMessage(ChatMessage chatMessage) {
         EMClient.getInstance().chatManager().sendMessage(chatMessage.getEmMessage());
     }
 
@@ -236,6 +236,10 @@ public class MessageManager {
     }
 
     private void displayNotification(ChatMessage chatMessage) {
+        //忽略一些由个推推送的消息
+        if (chatMessage.getMsgType().equals(ChatMessage.MSG_TYPE_NEW_ORDER)) {
+            return;
+        }
         XmdDisplay display = new XmdDisplay();
         display.setBusinessType(XmdPushMessage.BUSINESS_TYPE_CHAT_MESSAGE);
         display.setScene(XmdDisplay.SCENE_BG);

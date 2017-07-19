@@ -18,6 +18,7 @@ public class ConstantResources {
     public static final String EMCHAT_NICKNAME = "emchatNickname";
     public static final String EMCHAT_AVATAR = "emchatAvatar";
     public static final String COMMENT_DETAIL = "commentDetail";
+    public static final String COMMENT_ID = "commentId";
     public static final String COMMENT_DETAIL_INTENT_IS_MANAGER = "isManager";
     public static final String COMMENT_TYPE_COMPLAINT = "complaint"; //只看投诉
     public static final String COMMENT_TYPE_COMMENT = "comment";//只看评论

@@ -123,6 +123,7 @@ public class ChatActivity extends BaseActivity {
         }
 
         setTitle(mRemoteUser.getShowName());
+        setBackVisible(true);
 
         layoutManager = new LinearLayoutManager(this);
         mBinding.recyclerView.setLayoutManager(layoutManager);

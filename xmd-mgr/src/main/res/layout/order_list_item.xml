@@ -149,7 +149,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/margin_2"
                             android:text="（全额预约）"
-                            android:textColor="@color/primary_color"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="12sp"
                             android:visibility="gone" />
 

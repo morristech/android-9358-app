@@ -39,10 +39,6 @@ public class GetuiReceiveService extends GTIntentService {
                 return;
             }
 
-            if (XmdPushManager.getInstance().getListener() != null) {
-                XmdPushManager.getInstance().getListener().onRawMessage(data);
-            }
-
             try {
                 XmdPushMessage message = gson.fromJson(data, XmdPushMessage.class);
                 //显示
@@ -53,6 +49,10 @@ public class GetuiReceiveService extends GTIntentService {
                 }
             } catch (Exception e) {
                 XLogger.e(XmdPushModule.TAG, "parse message error:" + e.getMessage() + ",data:" + data);
+            }
+
+            if (XmdPushManager.getInstance().getListener() != null) {
+                XmdPushManager.getInstance().getListener().onRawMessage(data);
             }
         }
     }

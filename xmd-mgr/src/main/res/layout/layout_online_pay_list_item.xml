@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingLeft="@dimen/inter_space"
-                android:textColor="@color/primary_color"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/inter_text_size"
                 tools:text="80.00" />
         </LinearLayout>

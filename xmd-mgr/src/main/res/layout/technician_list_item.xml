@@ -9,6 +9,6 @@
     android:textColor="@color/customer_technician_list_item_text_color"
     android:textSize="@dimen/fontBody"
     app:selected_background="@color/tab_bg"
-    app:selected_color="@color/primary_color"
+    app:selected_color="@color/colorPrimary"
     app:selected_width="@dimen/card_elevation" />
 

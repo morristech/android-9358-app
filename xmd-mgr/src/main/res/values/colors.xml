@@ -5,7 +5,6 @@
     <color name="colorAccent">#F27533</color>
 
     <color name="primary_color_normal">#ddff6666</color>
-    <color name="primary_color">#ff6666</color>
     <color name="primary_line_color">#ff6666</color>
     <color name="app_bg">#EFEFF4</color>
 
@@ -25,8 +24,8 @@
 
     <color name="tab_bg">#FFF</color>
     <color name="tab_bg_clicked">#d2d2d2</color>
-    <color name="tab_indicator_color">@color/primary_color</color>
-    <color name="tab_text_checked_color">@color/primary_color</color>
+    <color name="tab_indicator_color">@color/colorPrimary</color>
+    <color name="tab_text_checked_color">@color/colorPrimary</color>
     <color name="tab_text_normal_color">#666</color>
     <color name="tab_bottom_line_color">#dadada</color>
 
@@ -49,11 +48,11 @@
     <color name="label_color">#999999</color>
     <color name="desc_color">#666</color>
     <color name="value_color">#333333</color>
-    <color name="amount_color">@color/primary_color</color>
+    <color name="amount_color">@color/colorPrimary</color>
     <color name="number_color">#ff9d09</color>
     <color name="list_item_bg">#FFF</color>
     <color name="list_item_line_color">#EEE</color>
-    <color name="border_line_color">@color/primary_color</color>
+    <color name="border_line_color">@color/colorPrimary</color>
     <color name="dialog_line_gray">#DDD</color>
     <color name="comment_name">#4d4d4d</color>
 
@@ -85,7 +84,7 @@
 
     <color name="dialog_button_bg_pressed">#c9443a</color>
 
-    <color name="primary_button_color_normal">@color/primary_color</color>
+    <color name="primary_button_color_normal">@color/colorPrimary</color>
     <color name="primary_button_color_pressed">#70ff6666</color>
     <color name="primary_button_text_color">#FFF</color>
 

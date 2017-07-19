@@ -89,7 +89,7 @@
                         android:id="@+id/tv_pending_order_count"
                         style="@style/main_fragment_layout_order_value_style"
                         android:layout_toRightOf="@+id/v_accept_line"
-                        android:textColor="@color/primary_color"
+                        android:textColor="@color/colorPrimary"
                         android:text="0" />
 
                 </LinearLayout>
@@ -120,7 +120,7 @@
                         android:id="@+id/tv_completed_order_count"
                         style="@style/main_fragment_layout_order_value_style"
                         android:layout_toRightOf="@+id/v_complete_line"
-                        android:textColor="@color/primary_color"
+                        android:textColor="@color/colorPrimary"
                         android:text="0" />
 
                 </LinearLayout>

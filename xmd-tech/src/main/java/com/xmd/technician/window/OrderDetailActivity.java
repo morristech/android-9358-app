@@ -14,9 +14,13 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.Order;
@@ -24,6 +28,7 @@ import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.http.SpaService;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.AlertDialogBuilder;
@@ -36,12 +41,15 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscription;
 
 /**
  * Created by sdcm on 16-4-12.
  */
 public class OrderDetailActivity extends BaseActivity {
 
+    public static final String KEY_ORDER_ID = "orderId";
     public static final String KEY_ORDER = "order";
 
     @BindView(R.id.order_steps)
@@ -90,9 +98,12 @@ public class OrderDetailActivity extends BaseActivity {
     @BindView(R.id.positive)
     Button mPositive;
 
+    private String mOrderId;
     private Order mOrder;
     private User mUser;
     private UserInfoService userService = UserInfoServiceImpl.getInstance();
+
+    private Subscription getOrderRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,18 +117,47 @@ public class OrderDetailActivity extends BaseActivity {
         }
 
         Object obj = arguments.get(KEY_ORDER);
-        if (!(obj instanceof Order)) {
-            makeShortToast("Order should be sent to this activity");
-            finish();
+        if (obj != null) {
+            mOrder = (Order) obj;
+        } else {
+            mOrderId = arguments.getString(KEY_ORDER_ID);
         }
 
-        mOrder = (Order) obj;
+        if (mOrder == null && mOrderId == null) {
+            XToast.show("请传入Order或者OrderId!");
+            finish();
+            return;
+        }
 
         setContentView(R.layout.activity_order_detail);
         ButterKnife.bind(this);
         setTitle(R.string.order_fragment_title);
         setBackVisible(true);
-        initView();
+
+        if (mOrder != null) {
+            initView();
+        } else {
+            loadOrderById();
+        }
+    }
+
+    private void loadOrderById() {
+        Observable<BaseBean<Order>> observable = XmdNetwork.getInstance()
+                .getService(SpaService.class)
+                .getOrderDetail(mOrderId);
+        getOrderRequest = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<Order>>() {
+            @Override
+            public void onCallbackSuccess(BaseBean<Order> result) {
+                mOrder = result.getRespData();
+                initView();
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XToast.show("加载订单失败！");
+                finish();
+            }
+        });
     }
 
     private void initView() {

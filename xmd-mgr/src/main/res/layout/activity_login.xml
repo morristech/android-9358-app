@@ -26,7 +26,7 @@
             android:drawablePadding="@dimen/inter_space"
             android:hint="@string/login_activity_input_username"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            app:bg_color_filter="@color/primary_color" />
+            app:bg_color_filter="@color/colorPrimary" />
 
         <com.xmd.manager.widget.ClearableEditText
             android:id="@+id/password"
@@ -37,7 +37,7 @@
             android:hint="@string/login_activity_input_password"
             android:inputType="textPassword"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            app:bg_color_filter="@color/primary_color" />
+            app:bg_color_filter="@color/colorPrimary" />
 
         <Spinner
             android:id="@+id/server_host"

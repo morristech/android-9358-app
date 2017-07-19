@@ -14,7 +14,7 @@
     </item>
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
-            <stroke android:color="@color/primary_color" android:width="1dp" />
+            <stroke android:color="@color/colorPrimary" android:width="1dp" />
             <corners android:radius="3dp"></corners>
         </shape>
     </item>

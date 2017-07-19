@@ -162,7 +162,7 @@
                     android:textColor="@color/text_color"
                     android:textColorHint="@color/text_color_hint"
                     android:textSize="@dimen/consume_activity_customer_phone_text_size"
-                    app:bg_color_filter="@color/primary_color" />
+                    app:bg_color_filter="@color/colorPrimary" />
 
                 <Button
                     android:id="@+id/btn_manually_consume"

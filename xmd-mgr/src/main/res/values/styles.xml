@@ -20,7 +20,7 @@
     </style>
 
     <style name="AppTheme.ToolBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:background">@color/primary_color</item>
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="progressDialog" parent="@android:style/Theme.Dialog">

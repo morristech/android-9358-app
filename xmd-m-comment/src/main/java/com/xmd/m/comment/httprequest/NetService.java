@@ -3,6 +3,7 @@ package com.xmd.m.comment.httprequest;
 
 import com.xmd.m.comment.bean.AddToBlacklistResult;
 import com.xmd.m.comment.bean.ClubEmployeeDetailResult;
+import com.xmd.m.comment.bean.CommentBean;
 import com.xmd.m.comment.bean.CommentListResult;
 import com.xmd.m.comment.bean.CommentStatusResult;
 import com.xmd.m.comment.bean.ConsumeListResult;
@@ -21,6 +22,7 @@ import com.xmd.m.comment.bean.TechUserDetailResult;
 import com.xmd.m.comment.bean.TechVisitorListResult;
 import com.xmd.m.comment.bean.UserEditGroupResult;
 import com.xmd.m.comment.bean.VisitorListResult;
+import com.xmd.m.network.BaseBean;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -144,4 +146,7 @@ public interface NetService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_DO_GROUP_USER_EDIT_GROUP)
     Observable<UserEditGroupResult> userEditGroup(@Field(RequestConstant.KEY_USER_ID) String userId);
+
+    @GET("/spa-manager/api/v2/comment/{commentId}")
+    Observable<BaseBean<CommentBean>> getCommentDetail(@Path("commentId") String commentId);
 }
