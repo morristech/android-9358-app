@@ -18,7 +18,6 @@ import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.event.EventTotalUnreadCount;
-import com.xmd.chat.view.ConversationListFragment;
 import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.notify.display.XmdDisplay;
@@ -170,7 +169,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @CheckBusinessPermission(PermissionConstants.MESSAGE)
     public void addFragmentMessage() {
-        addFragment(R.id.main_button_message, ConversationListFragment.class);
+        addFragment(R.id.main_button_message, TechChatConversationListFragment.class);
     }
 
     @CheckBusinessPermission(PermissionConstants.CONTACTS)
@@ -190,8 +189,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(getFragmentTagById(id));
             if (fragment == null) {
                 try {
-                    if (clazz.equals(ConversationListFragment.class)) {
-                        fragment = ConversationListFragment.newInstance("消息");
+                    if (clazz.equals(TechChatConversationListFragment.class)) {
+                        fragment = TechChatConversationListFragment.newInstance("消息");
                     } else {
                         fragment = (Fragment) clazz.newInstance();
                     }

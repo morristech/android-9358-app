@@ -683,7 +683,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
             mTvNewRegisterToday.setText(Utils.getNumToString(registryData.respData.userCount, true));
             mTvNewRegisterAccumulate.setText(Utils.getNumToString(registryData.respData.totalUserCount, true));
         }
-
     }
 
     private void handlerCouponResult(CouponDataResult couponData) {

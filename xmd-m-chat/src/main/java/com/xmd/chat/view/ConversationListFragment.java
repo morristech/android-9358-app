@@ -54,7 +54,7 @@ public class ConversationListFragment extends BaseFragment {
 
     private ConversationManager conversationManager = ConversationManager.getInstance();
 
-    private static final String ARG_TITLE = "title";
+    protected static final String ARG_TITLE = "title";
 
     public static ConversationListFragment newInstance(String title) {
         Bundle bundle = new Bundle();
