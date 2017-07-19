@@ -41,7 +41,7 @@ import butterknife.Unbinder;
 public class TechCommentListFragment extends BaseFragment implements ListRecycleViewAdapter.Callback<CommentBean>, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String BIZ_TYPE = "comment_type";
-    public static final String TECH_NO = "tech_no";
+    public static final String TECH_ID = "tech_no";
     @BindView(R2.id.list_view)
     RecyclerView mListView;
     @BindView(R2.id.swipe_refresh_widget)
@@ -90,16 +90,18 @@ public class TechCommentListFragment extends BaseFragment implements ListRecycle
         mPages = PAGE_START;
         mStartDate = "2015-01-01";
         mEndDate = DateUtils.getCurrentDate();
-        mTechId = getArguments().getString(ConstantResources.INTENT_TECH_NO);
+        mTechId = getArguments().getString(ConstantResources.INTENT_TECH_ID);
         if (currentBizType.equals(ResourceUtils.getString(R.string.comment_table_bad))) {
             mType = "1";
         } else if (currentBizType.equals(ResourceUtils.getString(R.string.comment_table_middle))) {
             mType = "2";
         } else if (currentBizType.equals(ResourceUtils.getString(R.string.comment_table_good))) {
             mType = "3";
+        }else{
+            mType = "4";
         }
         mUserName = "";
-        mCommentType = "";
+        mCommentType = "comment";
     }
 
 
@@ -123,6 +125,8 @@ public class TechCommentListFragment extends BaseFragment implements ListRecycle
         mParams.put(RequestConstant.KEY_TYPE, mType);
         mParams.put(RequestConstant.KEY_USER_NAME, mUserName);
         mParams.put(RequestConstant.KEY_COMMENT_TYPE, mCommentType);
+        mParams.put(RequestConstant.KEY_RETURN_STATUS,"");
+        mParams.put(RequestConstant.KEY_STATUS,"valid");
 
         DataManager.getInstance().loadCommentList(mParams, new NetworkSubscriber<CommentListResult>() {
                     @Override
@@ -150,7 +154,7 @@ public class TechCommentListFragment extends BaseFragment implements ListRecycle
             }
             mCommentList.addAll(list);
             mListAdapter.setIsNoMore(mPages == mPageCount);
-            mListAdapter.setData(mCommentList, false);
+            mListAdapter.setData(mCommentList, false,mType);
         }
     }
 
@@ -207,9 +211,14 @@ public class TechCommentListFragment extends BaseFragment implements ListRecycle
         });
     }
 
+//    @Override
+//    public void onItemClicked(CommentBean bean) {
+//        CommentDetailActivity.startCommentDetailActivity(getActivity(), bean, false);
+//    }
+
     @Override
-    public void onItemClicked(CommentBean bean) {
-        CommentDetailActivity.startCommentDetailActivity(getActivity(), bean, false);
+    public void onItemClicked(CommentBean bean, String type) {
+        CommentDetailActivity.startCommentDetailActivity(getActivity(), bean, false,type);
     }
 
     @Override

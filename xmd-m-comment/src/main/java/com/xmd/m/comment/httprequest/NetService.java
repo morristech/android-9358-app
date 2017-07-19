@@ -48,7 +48,10 @@ public interface NetService {
                                                  @Field("techId") String techId,
                                                  @Field("type") String type,
                                                  @Field("userName") String userName,
-                                                 @Field("commentType") String commentType);
+                                                 @Field("userId") String userId,
+                                                 @Field("commentType") String commentType,
+                                                 @Field("returnStatus") String returnStatus,
+                                                 @Field("status") String status);
 
     @GET(RequestConstant.URL_COMMENT_TECH_LIST)
     Observable<TechListResult> getTechList();
@@ -136,7 +139,8 @@ public interface NetService {
 
     @FormUrlEncoded
     @POST(RequestConstant.URL_EDIT_CUSTOMER)
-    Observable<EditCustomerResult> addOrEditCustomer(@Field("id") String id,
+    Observable<EditCustomerResult> addOrEditCustomer(@Field("userId") String userId,
+                                                     @Field("id") String id,
                                                      @Field("phoneNum") String phoneNum,
                                                      @Field("remark") String remark,
                                                      @Field("noteName") String noteName,

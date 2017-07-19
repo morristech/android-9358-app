@@ -21,4 +21,6 @@ public class ManagerUserDetailBean {
     public ManagerUserDetailModelBean userDetailModel;
     public List<ManagerGroupListBean> groupList;
     public List<ManagerUserTagListBean> userTagList;
+    public boolean memberSwitchOn;
+    public boolean creditSwitchOn;
 }

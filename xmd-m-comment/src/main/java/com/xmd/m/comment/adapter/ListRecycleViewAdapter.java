@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
+import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.m.R;
 import com.xmd.m.R2;
@@ -34,7 +36,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     public interface Callback<T> {
 
-        void onItemClicked(T bean);
+        void onItemClicked(T bean,String type);
 
         void onNegativeButtonClicked(T bean, int position);
 
@@ -57,6 +59,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private Callback mCallback;
     private Context mContext;
     private boolean isManager;
+    private String mType;
 
 
     public ListRecycleViewAdapter(Context context, List<T> data, Callback callback) {
@@ -65,12 +68,15 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         mCallback = callback;
     }
 
-    public void setData(List<T> data, boolean isManager) {
+    //type
+    public void setData(List<T> data, boolean isManager, String type) {
         mData = data;
         mIsEmpty = data.isEmpty();
         this.isManager = isManager;
         notifyDataSetChanged();
+        this.mType = type;
     }
+
 
     public void setIsNoMore(boolean isNoMore) {
         mIsNoMore = isNoMore;
@@ -136,11 +142,25 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             final CommentBean commentBean = (CommentBean) obj;
             CommentViewHolder viewHolder = (CommentViewHolder) holder;
-            Glide.with(mContext).load(commentBean.avatarUrl).into(viewHolder.commentHead);
-            viewHolder.commentName.setText(TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName);
-            viewHolder.commentPhone.setText(TextUtils.isEmpty(commentBean.phoneNum) ? "" : commentBean.phoneNum);
-            viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "会所" : commentBean.techName);
-            viewHolder.commentTechCode.setText(TextUtils.isEmpty(commentBean.techNo) ? "" : String.format("[%s]", commentBean.techNo));
+            if(!isManager && mType.equals("1")){//差评
+                String commentUserName = TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName;
+                viewHolder.commentName.setText(String.format("%s**(匿名)",commentUserName.substring(0,1)));
+                viewHolder.commentPhone.setText("");
+                Glide.with(mContext).load(R.drawable.img_default_avatar).into(viewHolder.commentHead);
+            }else{
+                Glide.with(mContext).load(commentBean.avatarUrl).into(viewHolder.commentHead);
+                String commentUserName = TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName;
+                viewHolder.commentName.setText(Utils.StrSubstring(7, commentUserName, true));
+                viewHolder.commentPhone.setText(TextUtils.isEmpty(commentBean.phoneNum) ? "" : commentBean.phoneNum);
+            }
+
+            if(isManager){
+                viewHolder.llTechInfo.setVisibility(View.VISIBLE);
+                viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "会所" : commentBean.techName);
+                viewHolder.commentTechCode.setText(TextUtils.isEmpty(commentBean.techNo) ? "" : String.format("[%s]", commentBean.techNo));
+            }else{
+                viewHolder.llTechInfo.setVisibility(View.GONE);
+            }
             viewHolder.commentTime.setText(DateUtils.doLong2String(commentBean.createdAt, "MM-dd HH:mm"));
             if (isManager) {
                 viewHolder.llCommentHandler.setVisibility(View.VISIBLE);
@@ -182,7 +202,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCallback.onItemClicked(commentBean);
+                    mCallback.onItemClicked(commentBean,mType);
                 }
             });
 
@@ -227,17 +247,24 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 viewHolder.tvRewardDetail.setText(String.format("%1.2f元", rewardBean.amount / 100f));
             }
-            if (!TextUtils.isEmpty(rewardBean.techName)) {
-                viewHolder.tvRewardTechName.setText(rewardBean.techName);
-                if (!TextUtils.isEmpty(rewardBean.techNo)) {
-                    viewHolder.tvRewardTechNo.setText(String.format("[%s]", rewardBean.techNo));
+            if (isManager) {
+                viewHolder.tvRewardTechName.setVisibility(View.VISIBLE);
+                if (!TextUtils.isEmpty(rewardBean.techName)) {
+                    viewHolder.tvRewardTechName.setText(rewardBean.techName);
+                    if (!TextUtils.isEmpty(rewardBean.techNo)) {
+                        viewHolder.tvRewardTechNo.setText(String.format("[%s]", rewardBean.techNo));
+                    } else {
+                        viewHolder.tvRewardTechNo.setText("");
+                    }
                 } else {
+                    viewHolder.tvRewardTechName.setText("未归属");
                     viewHolder.tvRewardTechNo.setText("");
                 }
             } else {
-                viewHolder.tvRewardTechName.setText("未归属");
+                viewHolder.tvRewardTechName.setVisibility(View.GONE);
                 viewHolder.tvRewardTechNo.setText("");
             }
+
             return;
         }
         if (holder instanceof VisitorViewHolder) {
@@ -249,17 +276,22 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             VisitorViewHolder viewHolder = (VisitorViewHolder) holder;
             viewHolder.tvVisitorTime.setText(DateUtils.doLong2String(visitBean.createTime, "MM月dd日　HH:mm"));
             viewHolder.tvVisitorType.setText(visitBean.businessTypeName);
-            if (!TextUtils.isEmpty(visitBean.techName)) {
-                viewHolder.tvVisitorTechName.setText(visitBean.techName);
-                if (!TextUtils.isEmpty(visitBean.techNo)) {
-                    viewHolder.tvVisitorTechNo.setText(String.format("[%s]", visitBean.techNo));
-                } else {
-                    viewHolder.tvVisitorTechNo.setText("");
-                }
-            } else {
-                viewHolder.tvVisitorTechName.setText("未归属");
-                viewHolder.tvVisitorTechNo.setText("");
-            }
+       if(isManager){
+           if (!TextUtils.isEmpty(visitBean.techName)) {
+               viewHolder.tvVisitorTechName.setText(visitBean.techName);
+               if (!TextUtils.isEmpty(visitBean.techNo)) {
+                   viewHolder.tvVisitorTechNo.setText(String.format("[%s]", visitBean.techNo));
+               } else {
+                   viewHolder.tvVisitorTechNo.setText("");
+               }
+           } else {
+               viewHolder.tvVisitorTechName.setText("未归属");
+               viewHolder.tvVisitorTechNo.setText("");
+           }
+       }else{
+           viewHolder.tvVisitorTechName.setText("");
+           viewHolder.tvVisitorTechNo.setText("");
+       }
             return;
         }
         if (holder instanceof FooterViewHolder) {
@@ -295,6 +327,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         ImageView imgVisitMark;
         ImageView imgDeleteMark;
         LinearLayout llCommentHandler;
+        LinearLayout llTechInfo;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
@@ -315,6 +348,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             imgVisitMark = (ImageView) itemView.findViewById(R.id.img_visit_mark);
             imgDeleteMark = (ImageView) itemView.findViewById(R.id.img_delete_mark);
             llCommentHandler = (LinearLayout) itemView.findViewById(R.id.ll_comment_handler);
+            llTechInfo = (LinearLayout) itemView.findViewById(R.id.ll_comment_tech_info);
         }
     }
 

@@ -133,9 +133,9 @@ public class CustomerVisitorDetailFragment extends BaseFragment implements ListR
             mVisitList.addAll(list);
             mListAdapter.setIsNoMore(mPages == mPageCount);
             if (intentType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-                mListAdapter.setData(mVisitList, true);
+                mListAdapter.setData(mVisitList, true,"");
             } else {
-                mListAdapter.setData(mVisitList, false);
+                mListAdapter.setData(mVisitList, false,"");
             }
 
 
@@ -146,8 +146,9 @@ public class CustomerVisitorDetailFragment extends BaseFragment implements ListR
         Toast.makeText(getActivity(), localizedMessage, Toast.LENGTH_SHORT).show();
     }
 
+
     @Override
-    public void onItemClicked(VisitorBean bean) {
+    public void onItemClicked(VisitorBean bean, String type) {
 
     }
 

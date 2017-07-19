@@ -393,7 +393,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     private void onScrollChanged(int scrollX, int scrollY) {
         if (scrollY > Utils.dip2px(getActivity(), 100)) {
-            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.primary_color));
+            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.toolbarBackground));
         } else {
             mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
         }
@@ -612,7 +612,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
             @Override
             public void onItemClicked(CommentBean badComment) {
-                CommentDetailActivity.startCommentDetailActivity(getActivity(), badComment, true);
+                CommentDetailActivity.startCommentDetailActivity(getActivity(), badComment, true,"");
             }
         });
         badCommentList.setLayoutManager(layoutManager);

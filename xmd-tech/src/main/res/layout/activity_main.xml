@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    tools:context="com.xmd.technician.window.MainActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground"
+                tools:context="com.xmd.technician.window.MainActivity">
 
     <LinearLayout
         android:id="@+id/main_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_button_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/appColorTable"
+        android:background="#F9F9F9"
         android:orientation="horizontal"
         android:paddingTop="@dimen/margin_5">
 
@@ -27,11 +27,11 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:drawableTop="@drawable/home_personal_bg"
-                android:scaleType="centerInside"
                 android:gravity="center"
+                android:scaleType="centerInside"
                 android:text="@string/main_page"
                 android:textColor="@color/home_button_text_bg"
-                android:textSize="@dimen/fontRemark" />
+                android:textSize="@dimen/fontRemark"/>
 
             <TextView
                 android:id="@+id/main_unread_personal"
@@ -44,7 +44,7 @@
                 android:minWidth="@dimen/search_pic_height"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/fontRemark"
-                android:visibility="invisible" />
+                android:visibility="invisible"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -63,7 +63,7 @@
                 android:scaleType="centerInside"
                 android:text="@string/main_chat"
                 android:textColor="@color/home_button_text_bg"
-                android:textSize="@dimen/fontRemark" />
+                android:textSize="@dimen/fontRemark"/>
 
             <TextView
                 android:id="@+id/main_unread_message"
@@ -76,7 +76,7 @@
                 android:minWidth="@dimen/search_pic_height"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/fontRemark"
-                android:visibility="invisible" />
+                android:visibility="invisible"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -95,7 +95,7 @@
                 android:scaleType="centerInside"
                 android:text="@string/main_conversion"
                 android:textColor="@color/home_button_text_bg"
-                android:textSize="@dimen/fontRemark" />
+                android:textSize="@dimen/fontRemark"/>
 
             <TextView
                 android:id="@+id/main_unread_contacts"
@@ -108,7 +108,7 @@
                 android:minWidth="@dimen/search_pic_height"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/fontRemark"
-                android:visibility="invisible" />
+                android:visibility="invisible"/>
         </RelativeLayout>
 
         <!--<RelativeLayout-->
@@ -160,7 +160,7 @@
                 android:scaleType="centerInside"
                 android:text="@string/main_market"
                 android:textColor="@color/home_button_text_bg"
-                android:textSize="@dimen/fontRemark" />
+                android:textSize="@dimen/fontRemark"/>
 
             <TextView
                 android:id="@+id/main_unread_marketing"
@@ -173,7 +173,7 @@
                 android:minWidth="@dimen/search_pic_height"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/fontRemark"
-                android:visibility="invisible" />
+                android:visibility="invisible"/>
         </RelativeLayout>
 
     </LinearLayout>
@@ -183,13 +183,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/stroke_width"
         android:layout_above="@+id/main_bottom_bar"
-        android:background="@color/colorLineDivideTable" />
+        android:background="@color/colorLineDivideTable"/>
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/divider"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/toolbar"/>
 
 </RelativeLayout>

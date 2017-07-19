@@ -34,17 +34,19 @@ public class CommentSearchActivity extends BaseActivity implements View.OnClickL
     LinearLayout llSearchView;
 
     private boolean isFromManager;
-    private String techNo;
+    private String techId;
     private boolean isSearch;
     private String searchTelephone;
+    private String userId;
     private SearchCommentListFragment mCommentListFragment;
 
-    public static void startCommentSearchActivity(Activity activity, boolean isFromManager, boolean isSearch, String techNo, String telephone) {
+    public static void startCommentSearchActivity(Activity activity, boolean isFromManager, boolean isSearch, String techId, String telephone,String userId) {
         Intent intent = new Intent(activity, CommentSearchActivity.class);
         intent.putExtra(ConstantResources.INTENT_TYPE, isFromManager);
         intent.putExtra(ConstantResources.KEY_IS_SEARCH, isSearch);
         intent.putExtra(ConstantResources.KEY_SEARCH_TELEPHONE, telephone);
-        intent.putExtra(ConstantResources.INTENT_TECH_NO, techNo);
+        intent.putExtra(ConstantResources.INTENT_TECH_ID, techId);
+        intent.putExtra(ConstantResources.KEY_USER_ID,userId);
         activity.startActivity(intent);
     }
 
@@ -63,7 +65,8 @@ public class CommentSearchActivity extends BaseActivity implements View.OnClickL
         isFromManager = getIntent().getBooleanExtra(ConstantResources.INTENT_TYPE, false);
         isSearch = getIntent().getBooleanExtra(ConstantResources.KEY_IS_SEARCH, false);
         searchTelephone = getIntent().getStringExtra(ConstantResources.KEY_SEARCH_TELEPHONE);
-        techNo = getIntent().getStringExtra(ConstantResources.INTENT_TECH_NO);
+        techId = getIntent().getStringExtra(ConstantResources.INTENT_TECH_ID);
+        userId = getIntent().getStringExtra(ConstantResources.KEY_USER_ID);
     }
 
     private void initView() {
@@ -89,9 +92,10 @@ public class CommentSearchActivity extends BaseActivity implements View.OnClickL
         ft.replace(R.id.search_fragment, mCommentListFragment);
         Bundle args = new Bundle();
         args.putBoolean(ConstantResources.INTENT_TYPE, isFromManager);
-        args.putString(ConstantResources.INTENT_TECH_NO, techNo);
+        args.putString(ConstantResources.INTENT_TECH_ID, techId);
         args.putBoolean(ConstantResources.KEY_IS_SEARCH, isSearch);
         args.putString(ConstantResources.KEY_SEARCH_TELEPHONE, searchTelephone);
+        args.putString(ConstantResources.KEY_USER_ID,userId);
         mCommentListFragment.setArguments(args);
         ft.commit();
     }

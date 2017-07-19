@@ -17,6 +17,8 @@ public class TechUserDetailBean {
     public MemberInfo memberInfo;
     public TechUserDetailModelBean userDetailModel;
     public List<ManagerUserTagListBean> userTagList;
+    public boolean memberSwitchOn;
+    public boolean creditSwitchOn;
 
     public static class MemberInfo {
         public String memberTypeId;

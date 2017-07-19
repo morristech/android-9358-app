@@ -54,7 +54,7 @@ public class CommentListFragmentTech extends BaseFragment {
         for (int i = 0; i < tabTexts.length; i++) {
             Bundle args = new Bundle();
             args.putSerializable(TechCommentListFragment.BIZ_TYPE, tabTexts[i]);
-            args.putSerializable(TechCommentListFragment.TECH_NO, techId);
+            args.putSerializable(TechCommentListFragment.TECH_ID, techId);
             mPageFragmentAdapter.addFragment(TechCommentListFragment.class.getName(), args);
         }
         commentViewPager.setOffscreenPageLimit(3);

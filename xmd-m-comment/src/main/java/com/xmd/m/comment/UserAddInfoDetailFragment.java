@@ -17,6 +17,7 @@ import com.xmd.m.R2;
 import com.xmd.m.comment.bean.TechUserDetailBean;
 import com.xmd.m.comment.bean.TechUserDetailResult;
 import com.xmd.m.comment.bean.UserInfoBean;
+import com.xmd.m.comment.event.ShowCustomerHeadEvent;
 import com.xmd.m.comment.httprequest.DataManager;
 import com.xmd.m.network.NetworkSubscriber;
 
@@ -24,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -99,4 +101,12 @@ public class UserAddInfoDetailFragment extends BaseFragment {
         tvCustomerMark.setText(TextUtils.isEmpty(respData.userDetailModel.remark) ? "-" : respData.userDetailModel.remark);
         tvCustomerLabel.setText(TextUtils.isEmpty(respData.userDetailModel.impression) ? "-" : respData.userDetailModel.impression);
     }
+
+//    @OnClick(R2.id.img_customer_head)
+//    public void onImageCustomerHeadClicked(){
+//        if(TextUtils.isEmpty(userHeadUrl)){
+//            return;
+//        }
+//        EventBus.getDefault().post(new ShowCustomerHeadEvent(userHeadUrl));
+//    }
 }

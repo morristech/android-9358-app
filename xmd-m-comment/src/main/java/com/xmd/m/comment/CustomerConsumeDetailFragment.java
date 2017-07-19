@@ -134,9 +134,9 @@ public class CustomerConsumeDetailFragment extends BaseFragment implements ListR
             mConsumeList.addAll(list);
             mListAdapter.setIsNoMore(mPages == mPageCount);
             if (intentType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-                mListAdapter.setData(mConsumeList, true);
+                mListAdapter.setData(mConsumeList, true,"");
             } else {
-                mListAdapter.setData(mConsumeList, false);
+                mListAdapter.setData(mConsumeList, false,"");
             }
 
         }
@@ -153,8 +153,10 @@ public class CustomerConsumeDetailFragment extends BaseFragment implements ListR
     }
 
 
+
+
     @Override
-    public void onItemClicked(ConsumeBean bean) {
+    public void onItemClicked(ConsumeBean bean, String type) {
 
     }
 

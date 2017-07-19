@@ -1044,7 +1044,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             mDynamicList.addAll(result.respData);
             if (mDynamicList.size() > 0) {
                 mMainDynamic1.setVisibility(View.VISIBLE);
-                mMainDynamicAvatar1.setUserInfo(mDynamicList.get(0).userId, Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl, false);
+                if (mDynamicList.get(0).userName.endsWith("**(匿名)")) {
+                    mMainDynamicAvatar1.setImageResource(R.drawable.img_default_avatar);
+                } else {
+                    mMainDynamicAvatar1.setUserInfo(mDynamicList.get(0).userId, Utils.isNotEmpty(mDynamicList.get(0).avatarUrl) ? mDynamicList.get(0).avatarUrl : mDynamicList.get(0).imageUrl, false);
+                }
+
                 mMainDynamicName1.setText(Utils.StrSubstring(6, mDynamicList.get(0).userName, true));
                 mMainDynamicDescribe1.setText(getRecentStatusDes(mDynamicList.get(0).bizType));
                 mMainDynamicTime1.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(0).createTime)));
@@ -1053,7 +1058,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
             if (mDynamicList.size() > 1) {
                 mMainDynamic2.setVisibility(View.VISIBLE);
-                mMainDynamicAvatar2.setUserInfo(mDynamicList.get(1).userId, Utils.isNotEmpty(mDynamicList.get(1).avatarUrl) ? mDynamicList.get(1).avatarUrl : mDynamicList.get(1).imageUrl, false);
+                if (mDynamicList.get(1).userName.endsWith("**(匿名)")) {
+                    mMainDynamicAvatar2.setImageResource(R.drawable.img_default_avatar);
+                } else {
+                    mMainDynamicAvatar2.setUserInfo(mDynamicList.get(1).userId, Utils.isNotEmpty(mDynamicList.get(1).avatarUrl) ? mDynamicList.get(1).avatarUrl : mDynamicList.get(1).imageUrl, false);
+                }
+
                 mMainDynamicName2.setText(Utils.StrSubstring(6, mDynamicList.get(1).userName, true));
                 mMainDynamicDescribe2.setText(getRecentStatusDes(mDynamicList.get(1).bizType));
                 mMainDynamicTime2.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(1).createTime)));
@@ -1061,7 +1071,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             }
             if (mDynamicList.size() > 2) {
                 mMainDynamic3.setVisibility(View.VISIBLE);
-                mMainDynamicAvatar3.setUserInfo(mDynamicList.get(2).userId, Utils.isNotEmpty(mDynamicList.get(2).avatarUrl) ? mDynamicList.get(2).avatarUrl : mDynamicList.get(2).imageUrl, false);
+                if (mDynamicList.get(2).userName.endsWith("**(匿名)")) {
+                    mMainDynamicAvatar2.setImageResource(R.drawable.img_default_avatar);
+                } else {
+                    mMainDynamicAvatar3.setUserInfo(mDynamicList.get(2).userId, Utils.isNotEmpty(mDynamicList.get(2).avatarUrl) ? mDynamicList.get(2).avatarUrl : mDynamicList.get(2).imageUrl, false);
+                }
                 mMainDynamicName3.setText(Utils.StrSubstring(6, mDynamicList.get(2).userName, true));
                 mMainDynamicDescribe3.setText(getRecentStatusDes(mDynamicList.get(2).bizType));
                 mMainDynamicTime3.setText(DateUtils.getTimestampString(new Date(mDynamicList.get(2).createTime)));

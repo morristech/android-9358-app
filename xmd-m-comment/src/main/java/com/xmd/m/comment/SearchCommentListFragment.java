@@ -17,20 +17,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.XmdApp;
+import com.xmd.app.utils.ResourceUtils;
 import com.xmd.m.R;
 import com.xmd.m.R2;
 import com.xmd.m.comment.adapter.ListRecycleViewAdapter;
 import com.xmd.m.comment.bean.CommentBean;
 import com.xmd.m.comment.bean.CommentListResult;
 import com.xmd.m.comment.bean.CommentStatusResult;
+import com.xmd.m.comment.bean.UserInfoBean;
+import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.comment.httprequest.DataManager;
 import com.xmd.m.comment.httprequest.RequestConstant;
 import com.xmd.m.network.NetworkSubscriber;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +46,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.internal.operators.OnSubscribeFromIterable;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -71,14 +78,15 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
     private String mStartDate;
     private String mEndDate;
     private String mTechId;//techId 字符串
-    private String mType; //1,差评，２，中评，３，好评
+    private String mType; //1:差评，２:中评，３:好评,4:好评,中评
     private String mUserName;
     private String mCommentType;
+    private String mUserId;
     private String contactPhone;
     private boolean isFromManager;
-    private String techNo;
-    private boolean isSearch;
+    private String techId;
     private String searchPhone;
+    private String userId;
 
     @Nullable
     @Override
@@ -93,9 +101,9 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
 
     private void initView() {
         isFromManager = getArguments().getBoolean(ConstantResources.INTENT_TYPE, false);
-        techNo = getArguments().getString(ConstantResources.INTENT_TECH_NO);
-        isSearch = getArguments().getBoolean(ConstantResources.KEY_IS_SEARCH);
+        techId = getArguments().getString(ConstantResources.INTENT_TECH_ID);
         searchPhone = getArguments().getString(ConstantResources.KEY_SEARCH_TELEPHONE);
+        userId = getArguments().getString(ConstantResources.KEY_USER_ID);
         mCommentList = new ArrayList<>();
         initListLayout();
         mParams = new HashMap<>();
@@ -106,10 +114,10 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
         mPages = PAGE_START;
         mStartDate = "2015-01-01";
         mEndDate = DateUtils.getCurrentDate();
-        if (TextUtils.isEmpty(techNo)) {
+        if (TextUtils.isEmpty(techId)) {
             mTechId = "";
         } else {
-            mTechId = techNo;
+            mTechId = techId;
         }
         if (TextUtils.isEmpty(searchPhone)) {
             mUserName = "";
@@ -121,14 +129,19 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
         } else {
             mCommentType = "comment";
         }
-        mType = "4";//搜索
-
+        if (TextUtils.isEmpty(userId)) {
+            mUserId = "";
+        } else {
+            mUserId = userId;
+        }
+        if (isFromManager) {
+            mType = "5";//管理者搜索,不区分好评,差评,中评
+        } else {
+            mType = "4";//技师搜索,只搜索好评,中评
+        }
     }
 
     private void requestData() {
-//        if (!mType.equals("4")) {
-//
-//        }
         dispatchRequest();
     }
 
@@ -152,8 +165,15 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
         mParams.put(RequestConstant.KEY_END_DATE, mEndDate);
         mParams.put(RequestConstant.KEY_TECH_ID, mTechId);
         mParams.put(RequestConstant.KEY_TYPE, mType);
-        mParams.put(RequestConstant.KEY_USER_NAME, mUserName);
         mParams.put(RequestConstant.KEY_COMMENT_TYPE, mCommentType);
+        mParams.put(RequestConstant.KEY_USER_NAME, mUserName);
+        mParams.put(RequestConstant.KEY_USER_ID, mUserId);
+        if (isFromManager) {
+            mParams.put(RequestConstant.KEY_STATUS, "");
+        } else {
+            mParams.put(RequestConstant.KEY_STATUS, "valid");
+        }
+
 
         DataManager.getInstance().loadCommentList(mParams, new NetworkSubscriber<CommentListResult>() {
                     @Override
@@ -181,7 +201,7 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
             }
             mCommentList.addAll(list);
             mListAdapter.setIsNoMore(mPages == mPageCount);
-            mListAdapter.setData(mCommentList, isFromManager);
+            mListAdapter.setData(mCommentList, isFromManager, "5");
         }
     }
 
@@ -240,7 +260,7 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
     }
 
     @Override
-    public void onItemClicked(CommentBean bean) {
+    public void onItemClicked(CommentBean bean, String type) {
         // CommentDetailActivity.startCommentDetailActivity(getActivity(), bean, true);
     }
 
@@ -253,7 +273,7 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
     @Override
     public void onPositiveButtonClicked(CommentBean bean, int position) {
         //回访
-        showServiceOutMenu(bean.phoneNum, bean.userEmchatId, bean.userName, bean.avatarUrl, bean.id, bean.returnStatus, position);
+        showServiceOutMenu(bean.userId, bean.phoneNum, bean.userEmchatId, bean.userName, bean.avatarUrl, bean.id, bean.returnStatus, position);
     }
 
     @Override
@@ -271,32 +291,22 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
         dispatchRequest();
     }
 
-    private void showServiceOutMenu(String phone, final String emChatId, final String userName, final String userHeadImgUrl, final String commentId, final String returnStatus, final int positon) {
+    private void showServiceOutMenu(final String userId, String phone, final String emChatId, final String userName, final String userHeadImgUrl, final String commentId, final String returnStatus, final int positon) {
 
         BottomPopupWindow popupWindow = BottomPopupWindow.getInstance(getActivity(), phone, emChatId, commentId, returnStatus, new BottomPopupWindow.OnRootSelectedListener() {
             @Override
             public void onItemSelected(ReturnVisitMenu rootMenu) {
                 switch (rootMenu.getType()) {
                     case 1:
-                        XLogger.i(">>>", "打电话");
-                        //     PermissionTool.requestPermission(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, new String[]{"拨打电话"}, REQUEST_CODE_CALL_PERMISSION);
+                        PermissionTool.requestPermission(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, new String[]{"拨打电话"}, REQUEST_CODE_CALL_PERMISSION);
                         break;
                     case 2:
-                        XLogger.i(">>>", "发环信");
-                        Intent intent = new Intent();
-                        intent.setClassName(getActivity(), "com.xmd.manager.window.ChatActivity");
-                        intent.putExtra(ConstantResources.EMCHAT_ID, emChatId);
-                        intent.putExtra(ConstantResources.EMCHAT_NICKNAME, userName);
-                        intent.putExtra(ConstantResources.EMCHAT_AVATAR, userHeadImgUrl);
-                        startActivity(intent);
-
+                        EventBus.getDefault().post(new UserInfoEvent(0, 1, new UserInfoBean(userId, emChatId, userName, userHeadImgUrl)));
                         break;
                     case 3:
-                        XLogger.i(">>>", "标记已回访");
                         changeCommentStatus(commentId, returnStatus, positon);
                         break;
                     case 4:
-                        XLogger.i(">>>", "标记未回访");
                         changeCommentStatus(commentId, returnStatus, positon);
                         break;
 

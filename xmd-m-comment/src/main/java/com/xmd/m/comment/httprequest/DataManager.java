@@ -67,7 +67,8 @@ public class DataManager {
     //评论列表
     public void loadCommentList(Map<String, String> params, NetworkSubscriber<CommentListResult> listener) {
         mLoadCommentList = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getCommentList(params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
-                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_TECH_ID), params.get(RequestConstant.KEY_TYPE), params.get(RequestConstant.KEY_USER_NAME), params.get(RequestConstant.KEY_COMMENT_TYPE)), listener);
+                params.get(RequestConstant.KEY_START_DATE), params.get(RequestConstant.KEY_END_DATE), params.get(RequestConstant.KEY_TECH_ID), params.get(RequestConstant.KEY_TYPE), params.get(RequestConstant.KEY_USER_NAME), params.get(RequestConstant.KEY_USER_ID),
+                params.get(RequestConstant.KEY_COMMENT_TYPE),params.get(RequestConstant.KEY_RETURN_STATUS),params.get(RequestConstant.KEY_STATUS)), listener);
     }
 
     public void loadTechList(NetworkSubscriber<TechListResult> listener) {
@@ -138,8 +139,8 @@ public class DataManager {
         mImpression = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getContactMark(), listener);
     }
 
-    public void SaveCustomerRemark(String id, String phoneNum, String remark, String noteName, String imPression, NetworkSubscriber<EditCustomerResult> listener) {
-        mEditOrAddCustomer = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).addOrEditCustomer(id, phoneNum, remark, noteName, imPression), listener);
+    public void SaveCustomerRemark(String userId,String id, String phoneNum, String remark, String noteName, String imPression, NetworkSubscriber<EditCustomerResult> listener) {
+        mEditOrAddCustomer = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).addOrEditCustomer(userId,id, phoneNum, remark, noteName, imPression), listener);
     }
 
     public void editUserGroup(String userId, NetworkSubscriber<UserEditGroupResult> listener) {

@@ -83,7 +83,7 @@ public class CommentListFragmentManager extends BaseFragment {
 
     @OnClick(R2.id.ll_comment_search)
     public void onLlCommentSearchClicked() {
-        CommentSearchActivity.startCommentSearchActivity(getActivity(), true, true, "", "1245645647987");
+        CommentSearchActivity.startCommentSearchActivity(getActivity(), true, true, "", "1245645647987","");
     }
 
     @OnClick(R2.id.img_comment_ranking_list)
