@@ -86,8 +86,6 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
     private String contactPhone;
 
 
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -118,6 +116,8 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
             mType = "2";
         } else if (currentBizType.equals(ResourceUtils.getString(R.string.comment_table_good))) {
             mType = "3";
+        } else {
+            mType = "4";
         }
         mUserName = "";
         mCommentType = "";
@@ -151,6 +151,8 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
         mParams.put(RequestConstant.KEY_TYPE, mType);
         mParams.put(RequestConstant.KEY_USER_NAME, mUserName);
         mParams.put(RequestConstant.KEY_COMMENT_TYPE, mCommentType);
+        mParams.put(RequestConstant.KEY_RETURN_STATUS, "");
+        mParams.put(RequestConstant.KEY_STATUS, "");
 
         DataManager.getInstance().loadCommentList(mParams, new NetworkSubscriber<CommentListResult>() {
                     @Override
@@ -178,7 +180,7 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
             }
             mCommentList.addAll(list);
             mListAdapter.setIsNoMore(mPages == mPageCount);
-            mListAdapter.setData(mCommentList, true);
+            mListAdapter.setData(mCommentList, true, mType);
         }
     }
 
@@ -237,10 +239,10 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
         });
     }
 
-    @Override
-    public void onItemClicked(CommentBean bean) {
 
-        CommentDetailActivity.startCommentDetailActivity(getActivity(), bean, true);
+    @Override
+    public void onItemClicked(CommentBean bean, String type) {
+        CommentDetailActivity.startCommentDetailActivity(getActivity(), bean, true, "");
     }
 
     @Override

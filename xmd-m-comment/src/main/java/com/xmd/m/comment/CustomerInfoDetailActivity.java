@@ -3,6 +3,8 @@ package com.xmd.m.comment;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.TransitionDrawable;
@@ -13,15 +15,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.utils.Utils;
+import com.xmd.app.widget.CustomerHeadDialog;
 import com.xmd.app.widget.DropDownMenuDialog;
 import com.xmd.app.widget.PromptConfirmDialog;
 import com.xmd.m.R;
@@ -33,6 +40,7 @@ import com.xmd.m.comment.bean.DeleteCustomerResult;
 import com.xmd.m.comment.bean.InBlacklistResult;
 import com.xmd.m.comment.bean.RemoveFromBlacklistResult;
 import com.xmd.m.comment.bean.UserInfoBean;
+import com.xmd.m.comment.event.ShowCustomerHeadEvent;
 import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.comment.httprequest.DataManager;
@@ -84,6 +92,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     private ContactPermissionInfo permissionInfo;
     private UserInfoBean mBean;
     private String contactPhone;
+    private CustomerHeadDialog mCustomerHeadDialog;
 
 
     public static void StartCustomerInfoDetailActivity(Activity activity, String userId, String fromType, boolean customerIsTech) {
@@ -213,9 +222,9 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             return;
         }
         if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-            EditCustomerInformationActivity.startEditCustomerInformationActivity(this, mBean.id, ConstantResources.INTENT_TYPE_MANAGER, mBean.emChatName, mBean.userNoteName, mBean.contactPhone, mBean.remarkMessage, mBean.remarkImpression);
+            EditCustomerInformationActivity.startEditCustomerInformationActivity(this,mBean.userId, mBean.id, ConstantResources.INTENT_TYPE_MANAGER, mBean.emChatName, mBean.userNoteName, mBean.contactPhone, mBean.remarkMessage, mBean.remarkImpression);
         } else {
-            EditCustomerInformationActivity.startEditCustomerInformationActivity(this, mBean.id, ConstantResources.INTENT_TYPE_TECH, mBean.emChatName, mBean.userNoteName, mBean.contactPhone, mBean.remarkMessage, mBean.remarkImpression);
+            EditCustomerInformationActivity.startEditCustomerInformationActivity(this, mBean.userId,mBean.id, ConstantResources.INTENT_TYPE_TECH, mBean.emChatName, mBean.userNoteName, mBean.contactPhone, mBean.remarkMessage, mBean.remarkImpression);
         }
 
 
@@ -224,6 +233,13 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     @Subscribe
     public void userInfo(UserInfoBean bean) {
         mBean = bean;
+    }
+
+    @Subscribe
+    public void showCustomerHead(ShowCustomerHeadEvent event) {
+        mCustomerHeadDialog = new CustomerHeadDialog(this);
+        mCustomerHeadDialog.show();
+        mCustomerHeadDialog.setImageHead(event.headUrl);
     }
 
     private void loadBlackInfo() {
@@ -355,7 +371,12 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             btnEmChat.setVisibility(permissionInfo.echat ? View.VISIBLE : View.GONE);
             btnCallPhone.setVisibility(permissionInfo.call ? View.VISIBLE : View.GONE);
             btnChat.setVisibility(permissionInfo.sms ? View.VISIBLE : View.GONE);
-            layoutOperationButtons.setVisibility(View.GONE);
+            if(showOperation && permissionInfo.sms){
+                layoutOperationButtons.setVisibility(View.GONE);
+            }else{
+                layoutOperationButtons.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 

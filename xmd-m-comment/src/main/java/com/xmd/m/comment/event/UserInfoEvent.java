@@ -7,7 +7,7 @@ import com.xmd.m.comment.bean.UserInfoBean;
  */
 
 public class UserInfoEvent {
-    public int appType; //管理者,1技师
+    public int appType; //0:管理者,1:技师
     public int toDoType;//0:打电话,1:聊天,2:发短信,3:打招呼
     public UserInfoBean bean;
 

@@ -57,7 +57,7 @@
     <color name="operation_button_bg_pressed">#c9443a</color>
 
     <color name="colorServiceName">#f9f9f9</color>
-    <color name="appColorTable">#F9F9F9</color>
+    <color name="appColorTable">@color/colorPrimary</color>
     <color name="colorServiceHead">#f0eff5</color>
 
     <color name="order_detail_section_bg_color">#fff</color>

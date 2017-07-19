@@ -47,7 +47,9 @@ public class RequestConstant {
     public static final String KEY_TYPE = "type";//1:差评，２，中评，３，好评
     public static final String KEY_USER_NAME = "userName";//complaint:只看投诉，comment只看评论
     public static final String KEY_USER_SEARCH = "search";
-    public static final String KEY_USER_ID = "userId";
+    public static final String KEY_USER_ID = "userId";//用户id
+    public static final String KEY_RETURN_STATUS = "returnStatus"; //回访状态
+    public static final String KEY_STATUS = "status";//评论状态
 
     public static final String KEY_COMMENT_ID = "commentId";
     public static final String KEY_COMMENT_STATUS = "status";

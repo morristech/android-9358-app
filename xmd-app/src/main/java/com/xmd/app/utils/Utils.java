@@ -1,6 +1,7 @@
 package com.xmd.app.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -87,5 +88,41 @@ public class Utils {
         Matcher m = p.matcher(text);
 
         return m.matches();
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    public static int px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    public static String StrSubstring(int length, String s, Boolean end) {
+        if (TextUtils.isEmpty(s) || length <= 0) {
+            return "";
+        }
+        StringBuffer stringBuffer = new StringBuffer();
+        int sum = 0;
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (sum >= (length * 3)) {
+                if (end) {
+                    stringBuffer.append("...");
+                }
+                break;
+            }
+            char bt = chars[i];
+            if (bt > 64 && bt < 123) {
+                stringBuffer.append(String.valueOf(bt));
+                sum += 2;
+            } else {
+                stringBuffer.append(String.valueOf(bt));
+                sum += 3;
+            }
+        }
+        return stringBuffer.toString();
     }
 }

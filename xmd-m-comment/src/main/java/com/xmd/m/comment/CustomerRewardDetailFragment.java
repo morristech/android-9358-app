@@ -134,9 +134,9 @@ public class CustomerRewardDetailFragment extends BaseFragment implements ListRe
             mRewardList.addAll(list);
             mListAdapter.setIsNoMore(mPages == mPageCount);
             if (intentType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-                mListAdapter.setData(mRewardList, true);
+                mListAdapter.setData(mRewardList, true,"");
             } else {
-                mListAdapter.setData(mRewardList, false);
+                mListAdapter.setData(mRewardList, false,"");
             }
 
         }
@@ -146,8 +146,10 @@ public class CustomerRewardDetailFragment extends BaseFragment implements ListRe
         Toast.makeText(getActivity(), localizedMessage, Toast.LENGTH_SHORT).show();
     }
 
+
+
     @Override
-    public void onItemClicked(RewardBean bean) {
+    public void onItemClicked(RewardBean bean, String type) {
 
     }
 

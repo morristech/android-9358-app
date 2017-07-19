@@ -17,6 +17,7 @@ import com.xmd.m.R2;
 import com.xmd.m.comment.bean.ClubEmployeeBean;
 import com.xmd.m.comment.bean.ClubEmployeeDetailResult;
 import com.xmd.m.comment.bean.UserInfoBean;
+import com.xmd.m.comment.event.ShowCustomerHeadEvent;
 import com.xmd.m.comment.httprequest.DataManager;
 import com.xmd.m.network.NetworkSubscriber;
 
@@ -24,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -49,6 +51,7 @@ public class TechInfoDetailFragment extends BaseFragment {
 
     Unbinder unbinder;
     private String userId;
+    private String userHeadUrl;
 
     @Nullable
     @Override
@@ -83,6 +86,7 @@ public class TechInfoDetailFragment extends BaseFragment {
 
     private void handlerEmployeeView(ClubEmployeeBean respData) {
         EventBus.getDefault().post(new UserInfoBean(respData.id, respData.telephone, respData.emchatId, respData.name, respData.avatarUrl, respData.roles, respData.id, "", "", ""));
+        userHeadUrl = respData.avatarUrl;
         Glide.with(getActivity()).load(respData.avatarUrl).error(R.drawable.img_default_avatar).into(imgTechHead);
         tvTechName.setText(TextUtils.isEmpty(respData.name) ? "技师" : respData.name);
         tvTechNo.setText(TextUtils.isEmpty(respData.techNo) ? "" : String.format("[%s]", respData.techNo));
@@ -98,6 +102,14 @@ public class TechInfoDetailFragment extends BaseFragment {
         } else {
             llTechMark.setVisibility(View.GONE);
         }
+    }
+
+    @OnClick(R2.id.img_tech_head)
+    public void onImageCustomerHeadClicked() {
+        if (TextUtils.isEmpty(userHeadUrl)) {
+            return;
+        }
+        EventBus.getDefault().post(new ShowCustomerHeadEvent(userHeadUrl));
     }
 
 

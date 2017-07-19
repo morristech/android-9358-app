@@ -15,11 +15,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
@@ -36,6 +37,7 @@ import com.xmd.m.comment.bean.UserEditGroupResult;
 import com.xmd.m.comment.bean.UserGroupListBean;
 import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.EditCustomerGroupEvent;
+import com.xmd.m.comment.event.ShowCustomerHeadEvent;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.comment.httprequest.DataManager;
 import com.xmd.m.comment.httprequest.RequestConstant;
@@ -169,6 +171,12 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     RelativeLayout rlCustomerComment;
     @BindView(R2.id.frame_consume_manager)
     FrameLayout frameConsumeManager;
+    @BindView(R2.id.ll_card_view)
+    LinearLayout llCardView;
+    @BindView(R2.id.ll_credit_view)
+    LinearLayout llCreditView;
+//    @BindView(R2.id.main_scroll_view)
+//    ScrollView mainScrollView;
 
     Unbinder unbinder;
     private String userId;
@@ -179,7 +187,9 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     private List<AllGroupListBean> allGroupList;
     private List<UserGroupListBean> userGroupList;
     private String userTelephone;
-    private String userName;
+    private String userHeadUrl;
+    private boolean hasMembershipCard;
+    private String customerId;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -239,7 +249,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.i(">>>", "获取失败");
+                Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 tvCustomerGroup.setText("尚未添加分组,赶紧去添加吧");
             }
         });
@@ -252,8 +262,8 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
 
     private void initConsumeView() {
         typeLabelViewIsOpen = true;
-        memberShipViewIsOpen = true;
-        creditViewIsOpen = true;
+        memberShipViewIsOpen = false;
+        creditViewIsOpen = false;
         FragmentManager fg = getChildFragmentManager();
         FragmentTransaction ft = fg.beginTransaction();
         mFragment = new CustomerConsumeFragment();
@@ -272,8 +282,8 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
                 initUserModelView(result.getRespData().userDetailModel);
                 initGroupView(result.getRespData().groupList);
                 initTypeLabelView(result.getRespData().userTagList);
-                initMemberShipView(result.getRespData().memberInfo);
-                initCreditView(result.getRespData().creditStatInfo);
+                initMemberShipView(result.getRespData().memberInfo, result.getRespData().memberSwitchOn);
+                initCreditView(result.getRespData().creditStatInfo, result.getRespData().creditSwitchOn);
             }
 
             @Override
@@ -284,12 +294,12 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     }
 
     private void initUserModelView(ManagerUserDetailModelBean userDetailModel) {
-        //String contactPhone, String emChatId, String emChatName, String chatHeadUrl, String contactType, String userId
         userTelephone = userDetailModel.userLoginName;
-        userName = userDetailModel.userName;
+        customerId = userDetailModel.userId;
         EventBus.getDefault().post(new UserInfoBean(userDetailModel.id, userDetailModel.userLoginName, userDetailModel.emchatId, userDetailModel.userName, userDetailModel.avatarUrl, "contact",
                 userDetailModel.userId, TextUtils.isEmpty(userDetailModel.userNoteName) ? "" : userDetailModel.userNoteName, TextUtils.isEmpty(userDetailModel.remark) ? "" : userDetailModel.remark,
                 TextUtils.isEmpty(userDetailModel.impression) ? "" : userDetailModel.impression));
+        userHeadUrl = userDetailModel.avatarUrl;
         Glide.with(getActivity()).load(userDetailModel.avatarUrl).error(R.drawable.img_default_avatar).into(imgCustomerHead);
         if (TextUtils.isEmpty(userDetailModel.userNoteName)) {
             llCustomerNickName.setVisibility(View.INVISIBLE);
@@ -327,9 +337,9 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         tvCustomerConsumeMoney.setText(String.format("%1.2f 元", userDetailModel.consumeAmount / 100f));
         //消费次数
         if (TextUtils.isEmpty(userDetailModel.consumeDate)) {
-            tvCustomerConsumeTimes.setText(String.format("%s次", userDetailModel.shopCount));
+            tvCustomerConsumeTimes.setText(String.format("%s次", userDetailModel.consumeAmount));
         } else {
-            tvCustomerConsumeTimes.setText(String.format("%s次（最近消费%s)", userDetailModel.shopCount, userDetailModel.consumeDate));
+            tvCustomerConsumeTimes.setText(String.format("%s次（最近消费%s)", userDetailModel.consumeAmount, userDetailModel.consumeDate));
         }
 
         //网店访问
@@ -342,7 +352,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
             tvCustomerBelongTechName.setText(userDetailModel.belongsTechName);
             tvCustomerBelongTechNo.setText(TextUtils.isEmpty(userDetailModel.belongsTechSerialNo) ? "" : String.format("[%s]", userDetailModel.belongsTechSerialNo));
         }
-        mFragment.setViewData(String.valueOf(userDetailModel.shopCount), String.valueOf(userDetailModel.consumeAmount), String.valueOf(userDetailModel.rewardCount));
+        mFragment.setViewData(String.valueOf(userDetailModel.shopCount), String.format("%1.2f", userDetailModel.consumeAmount / 100f), String.valueOf(userDetailModel.rewardCount));
         //评论数
         tvCommentTimes.setText(String.valueOf(userDetailModel.commentCount));
     }
@@ -361,7 +371,12 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     }
 
     private void initTypeLabelView(List<ManagerUserTagListBean> userTagList) {
+        if (userTagList == null || userTagList.size() == 0) {
+            return;
+        }
         customerTypeLabel.removeAllViews();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(10, 0, 0, 0);
         for (ManagerUserTagListBean bean : userTagList) {
             TextView tv = new TextView(getActivity());
             tv.setText(bean.tagName);
@@ -370,16 +385,22 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
             tv.setTextColor(Color.parseColor("#ff8909"));
             tv.setPadding(14, 0, 14, 0);
             tv.setGravity(Gravity.CENTER);
-            customerTypeLabel.addView(tv);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-            lp.setMargins(10, 0, 0, 0);
             tv.setLayoutParams(lp);
+            customerTypeLabel.addView(tv);
         }
     }
 
-    private void initMemberShipView(ManagerMemberInfoBean memberInfo) {
-        if (memberInfo == null) {
+    private void initMemberShipView(ManagerMemberInfoBean memberInfo, boolean memberSwitchOn) {
+        if (!memberSwitchOn) {
+            llCardView.setVisibility(View.GONE);
             return;
+        }
+        if (memberInfo == null) {
+            hasMembershipCard = false;
+            tvCustomerMembershipGrade.setText("非会员");
+            return;
+        } else {
+            hasMembershipCard = true;
         }
         tvCustomerMembershipGrade.setText(TextUtils.isEmpty(memberInfo.memberTypeName) ? "" : String.format("%s会员", memberInfo.memberTypeName));
         String gradeMoney = String.format("余额　%1.2f元", memberInfo.amount / 100f);
@@ -388,7 +409,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         tvCustomerCardNumber.setText(memberInfo.cardNo);
         //生日
 //        tvCustomerCardUserBirthday.setText();
-        //开卡人
+        //开卡
         tvCustomerCardHandler.setText(TextUtils.isEmpty(memberInfo.operatorName) ? "会所" : memberInfo.operatorName);
         //累计充值
         ivCustomerCardRechargeTotal.setText(String.format("%1.2f", memberInfo.cumulativeAmount / 100f));
@@ -398,7 +419,11 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         ivCustomerCardConsumeTotal.setText(String.format("%1.2f", memberInfo.consumeAmount / (100f * memberInfo.consumeCount)));
     }
 
-    private void initCreditView(ManagerCreditStatInfoBean creditStatInfo) {
+    private void initCreditView(ManagerCreditStatInfoBean creditStatInfo, boolean creditSwitchOn) {
+        if (creditStatInfo == null || !creditSwitchOn) {
+            llCreditView.setVisibility(View.GONE);
+            return;
+        }
         String creditAccount = String.format("余额 %s", creditStatInfo.amount);
         tvCustomerCredit.setText(Utils.changeColor(creditAccount, "#ff9a0c", 2, creditAccount.length()));
         ivCustomerCreditTotal.setText(String.valueOf(creditStatInfo.totalAmount));
@@ -409,7 +434,6 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
 
     @OnClick(R2.id.ll_customer_group)
     public void onLlCustomerGroupClicked() {
-        XLogger.i(">>>", "分组");
         Intent intentAdd = new Intent();
         intentAdd.setClassName(getActivity(), "com.xmd.manager.window.AddGroupActivity");
         intentAdd.putExtra(ConstantResources.KEY_USER_GROUPS, (Serializable) userGroupList);
@@ -421,7 +445,6 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
 
     @OnClick(R2.id.ll_customer_type_label)
     public void onLlCustomerTypeLabelClicked() {
-        XLogger.i(">>>", "标签");
         if (typeLabelViewIsOpen) {
             typeLabelViewIsOpen = false;
             llCustomerLabelDetail.setVisibility(View.GONE);
@@ -435,7 +458,10 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
 
     @OnClick(R2.id.ll_customer_membership_grade)
     public void onLlCustomerMembershipGradeClicked() {
-        XLogger.i(">>>", "会员卡");
+        if (!hasMembershipCard) {
+            XToast.show("该用户尚未开通会员卡服务");
+            return;
+        }
         if (memberShipViewIsOpen) {
             memberShipViewIsOpen = false;
             llCustomerMembershipDetail.setVisibility(View.GONE);
@@ -449,8 +475,6 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
 
     @OnClick(R2.id.ll_customer_credit)
     public void onLlCustomerCreditClicked() {
-        XLogger.i(">>>", "积分");
-        //llCustomerCreditDetail
         if (creditViewIsOpen) {
             creditViewIsOpen = false;
             llCustomerCreditDetail.setVisibility(View.GONE);
@@ -465,8 +489,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
 
     @OnClick(R2.id.rl_customer_comment)
     public void onCommentClicked() {
-        XLogger.i(">>>", "点评投诉");
-        CommentSearchActivity.startCommentSearchActivity(getActivity(), true, false, "", TextUtils.isEmpty(userTelephone) ? userName : userTelephone);
+        CommentSearchActivity.startCommentSearchActivity(getActivity(), true, false, "", "", customerId);
     }
 
     @Override
@@ -474,6 +497,14 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
         EventBus.getDefault().unregister(this);
+    }
+
+    @OnClick(R2.id.img_customer_head)
+    public void onImageCustomerHeadClicked() {
+        if (TextUtils.isEmpty(userHeadUrl)) {
+            return;
+        }
+        EventBus.getDefault().post(new ShowCustomerHeadEvent(userHeadUrl));
     }
 
 

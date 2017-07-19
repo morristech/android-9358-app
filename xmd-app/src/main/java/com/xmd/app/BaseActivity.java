@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XProgressDialog;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.m.network.EventTokenExpired;
@@ -74,6 +75,8 @@ public class BaseActivity extends AppCompatActivity {
     public void setBackVisible(boolean visible) {
         if (toolbarBack != null) {
             toolbarBack.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }else{
+            XLogger.i(">>>","lallalla");
         }
     }
 

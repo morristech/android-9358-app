@@ -18,7 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
+import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.m.R;
 import com.xmd.m.R2;
@@ -27,6 +29,7 @@ import com.xmd.m.comment.bean.TechUserDetailModelBean;
 import com.xmd.m.comment.bean.TechUserDetailResult;
 import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.EditCustomerRemarkSuccessEvent;
+import com.xmd.m.comment.event.ShowCustomerHeadEvent;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.comment.httprequest.DataManager;
 import com.xmd.m.comment.httprequest.RequestConstant;
@@ -102,12 +105,14 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
 
 
     Unbinder unbinder;
+    private String customerId;
     private String userId;
     private CustomerConsumeFragment mFragment;
-    private String techNo;
+    private String techId;
     private String userPhone;
     private String userName;
     private UserInfoBean userBean;
+    private String userHeadUrl;
 
 
     @Nullable
@@ -141,7 +146,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
                 if (result.getRespData().memberInfo != null) {
                     tvCustomerMembershipGrade.setText(result.getRespData().memberInfo.memberTypeName);
                 } else {
-                    tvCustomerMembershipGrade.setText("该用户尚未办理会员卡");
+                    tvCustomerMembershipGrade.setText("非会员");
                 }
                 initTypeLabelView(result.getRespData().userTagList);
                 initUserModelView(result.getRespData().userDetailModel);
@@ -155,11 +160,14 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
         });
     }
 
+
     private void initTypeLabelView(List<ManagerUserTagListBean> userTagList) {
         if (userTagList == null || userTagList.size() == 0) {
             return;
         }
         customerTypeLabel.removeAllViews();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(10, 0, 0, 0);
         for (ManagerUserTagListBean bean : userTagList) {
             TextView tv = new TextView(getActivity());
             tv.setText(bean.tagName);
@@ -168,10 +176,8 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
             tv.setTextColor(Color.parseColor("#ff8909"));
             tv.setPadding(14, 0, 14, 0);
             tv.setGravity(Gravity.CENTER);
-            customerTypeLabel.addView(tv);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-            lp.setMargins(10, 0, 0, 0);
             tv.setLayoutParams(lp);
+            customerTypeLabel.addView(tv);
         }
     }
 
@@ -180,9 +186,11 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
                 userDetailModel.userId, TextUtils.isEmpty(userDetailModel.userNoteName) ? "" : userDetailModel.userNoteName, TextUtils.isEmpty(userDetailModel.remark) ? "" : userDetailModel.remark,
                 TextUtils.isEmpty(userDetailModel.impression) ? "" : userDetailModel.impression);
         EventBus.getDefault().post(userBean);
-        techNo = userDetailModel.belongsTechSerialNo;
+        customerId = userDetailModel.userId;
+        techId = userDetailModel.techId;
         userPhone = userDetailModel.userLoginName;
         userName = userDetailModel.userName;
+        userHeadUrl = userDetailModel.avatarUrl;
         Glide.with(getActivity()).load(userDetailModel.avatarUrl).error(R.drawable.img_default_avatar).into(imgCustomerHead);
         if (TextUtils.isEmpty(userDetailModel.userNoteName)) {
             llCustomerNickName.setVisibility(View.INVISIBLE);
@@ -218,8 +226,8 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
         tvCustomerLabel.setText(TextUtils.isEmpty(userDetailModel.impression) ? "您尚未为该用户添加标签" : userDetailModel.impression);
         tvCustomerMark.setText(TextUtils.isEmpty(userDetailModel.remark) ? "您尚未为该用户添加备注信息" : userDetailModel.remark);
         tvCustomerRegisterTime.setText(userDetailModel.registerDate);
-        tvCustomerVisitTime.setText(userDetailModel.recentVisitDate);
-        mFragment.setViewData(String.valueOf(userDetailModel.shopCount), String.valueOf(userDetailModel.consumeAmount), String.valueOf(userDetailModel.rewardCount));
+        tvCustomerVisitTime.setText(TextUtils.isEmpty(userDetailModel.recentVisitDate)?"无":userDetailModel.recentVisitDate);
+        mFragment.setViewData(String.valueOf(userDetailModel.shopCount), String.format("%1.2f", userDetailModel.consumeAmount / 100f), String.valueOf(userDetailModel.rewardCount));
         tvCommentTimes.setText(String.valueOf(userDetailModel.commentCount));
 
     }
@@ -248,7 +256,12 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
 
     @OnClick(R2.id.rl_customer_comment)
     public void onRlCustomerCommentClicked() {
-        CommentSearchActivity.startCommentSearchActivity(getActivity(), false, false, techNo, TextUtils.isEmpty(userPhone) ? userName : userPhone);
+        if (TextUtils.isEmpty(userName) && TextUtils.isEmpty(userPhone)) {
+            XToast.show("匿名用户无评价详情");
+        } else {
+            CommentSearchActivity.startCommentSearchActivity(getActivity(), false, false, techId, "",customerId);
+        }
+
     }
 
     @OnClick(R2.id.ll_label_and_mark)
@@ -256,7 +269,15 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
         if (userBean == null) {
             return;
         }
-        EditCustomerInformationActivity.startEditCustomerInformationActivity(getActivity(), userBean.id, ConstantResources.INTENT_TYPE_TECH, userBean.emChatName, userBean.userNoteName, userBean.contactPhone, userBean.remarkMessage, userBean.remarkImpression);
+        EditCustomerInformationActivity.startEditCustomerInformationActivity(getActivity(),userBean.userId, userBean.id, ConstantResources.INTENT_TYPE_TECH, userBean.emChatName, userBean.userNoteName, userBean.contactPhone, userBean.remarkMessage, userBean.remarkImpression);
+    }
+
+    @OnClick(R2.id.img_customer_head)
+    public void onImageCustomerHeadClicked() {
+        if (TextUtils.isEmpty(userHeadUrl)) {
+            return;
+        }
+        EventBus.getDefault().post(new ShowCustomerHeadEvent(userHeadUrl));
     }
 
 

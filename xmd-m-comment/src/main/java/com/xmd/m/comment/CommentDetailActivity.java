@@ -96,11 +96,13 @@ public class CommentDetailActivity extends BaseActivity {
     private String commentId;
     private Subscription loadDataSubscription;
     private boolean isFromManager;
+    private String mType;
 
-    public static void startCommentDetailActivity(Activity activity, CommentBean bean, boolean isManager) {
+    public static void startCommentDetailActivity(Activity activity, CommentBean bean, boolean isManager, String type) {
         Intent intent = new Intent(activity, CommentDetailActivity.class);
         intent.putExtra(ConstantResources.COMMENT_DETAIL, bean);
         intent.putExtra(ConstantResources.COMMENT_DETAIL_INTENT_IS_MANAGER, isManager);
+        intent.putExtra(ConstantResources.BIZ_TYPE, type);
         activity.startActivity(intent);
     }
 
@@ -123,6 +125,7 @@ public class CommentDetailActivity extends BaseActivity {
 
     public void init() {
         mCommentBean = getIntent().getParcelableExtra(ConstantResources.COMMENT_DETAIL);
+        mType = getIntent().getStringExtra(ConstantResources.BIZ_TYPE);
         isFromManager = getIntent().getBooleanExtra(ConstantResources.COMMENT_DETAIL_INTENT_IS_MANAGER, false);
         if (mCommentBean != null) {
             initView();
@@ -188,9 +191,17 @@ public class CommentDetailActivity extends BaseActivity {
     }
 
     private void initCommentView() {
-        Glide.with(this).load(mCommentBean.avatarUrl).error(ResourceUtils.getDrawable(R.drawable.img_default_avatar)).into(userHead);
-        userName.setText(TextUtils.isEmpty(mCommentBean.userName) ? "匿名用户" : mCommentBean.userName);
-        userPhone.setText(TextUtils.isEmpty(mCommentBean.phoneNum) ? "" : mCommentBean.phoneNum);
+
+        if (!isFromManager && mType.equals("1")) {//差评
+            String commentUserName = TextUtils.isEmpty(mCommentBean.userName) ? "匿名用户" : mCommentBean.userName;
+            userName.setText(String.format("%s**(匿名)", commentUserName.substring(0, 1)));
+            userPhone.setText("");
+            Glide.with(this).load(R.drawable.img_default_avatar).into(userHead);
+        } else {
+            Glide.with(this).load(mCommentBean.avatarUrl).error(ResourceUtils.getDrawable(R.drawable.img_default_avatar)).into(userHead);
+            userName.setText(TextUtils.isEmpty(mCommentBean.userName) ? "匿名用户" : mCommentBean.userName);
+            userPhone.setText(TextUtils.isEmpty(mCommentBean.phoneNum) ? "" : mCommentBean.phoneNum);
+        }
         if (mCommentBean.returnStatus.equals("Y")) {
             imgVisitMark.setVisibility(View.VISIBLE);
         } else {
@@ -233,6 +244,10 @@ public class CommentDetailActivity extends BaseActivity {
 
     @OnClick(R2.id.rl_comment_user_info)
     public void onInfoViewClicked() {
+        if (!isFromManager && mType.equals("1")) {
+            showToast(ResourceUtils.getString(R.string.comment_anonymous_alter_message));
+            return;
+        }
         if (mCommentBean.isAnonymous.equals("N")) {
             if (isFromManager) {
                 CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(this, mCommentBean.userId, ConstantResources.INTENT_TYPE_MANAGER, false);

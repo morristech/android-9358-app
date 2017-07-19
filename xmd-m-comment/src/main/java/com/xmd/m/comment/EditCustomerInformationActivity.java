@@ -66,6 +66,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
 
     private String[] oldImpression;
 
+    private String mUserId;
     private String mCustomerId;
     private String mCustomerFromType;
     private String mCustomerName;
@@ -80,10 +81,11 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
     private String mRemarkPhoneNum;
 
 
-    public static void startEditCustomerInformationActivity(Activity activity, String userId, String formType, String nickName, String remarkName, String phoneNum, String remarkMessage,
+    public static void startEditCustomerInformationActivity(Activity activity, String userId, String id, String formType, String nickName, String remarkName, String phoneNum, String remarkMessage,
                                                             String remarkImpression) {
         Intent intent = new Intent(activity, EditCustomerInformationActivity.class);
-        intent.putExtra(ConstantResources.KEY_CUSTOMER_ID, userId);
+        intent.putExtra(ConstantResources.KEY_USER_ID, userId);
+        intent.putExtra(ConstantResources.KEY_CUSTOMER_ID, id);
         intent.putExtra(ConstantResources.KEY_FROM_TYPE, formType);
         intent.putExtra(ConstantResources.KEY_USERNAME, nickName);
         intent.putExtra(ConstantResources.KEY_NOTE_NAME, remarkName);
@@ -105,6 +107,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
 
     private void getIntentData() {
         Intent data = getIntent();
+        mUserId = data.getStringExtra(ConstantResources.KEY_USER_ID);
         mCustomerId = data.getStringExtra(ConstantResources.KEY_CUSTOMER_ID);
         mCustomerFromType = data.getStringExtra(ConstantResources.KEY_FROM_TYPE);
         mCustomerName = data.getStringExtra(ConstantResources.KEY_USERNAME);
@@ -130,7 +133,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 8) {
+                if (s.length() > 10) {
                     Toast.makeText(EditCustomerInformationActivity.this, "备注名不可超过10个字符", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -271,7 +274,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
         mRemarkPhoneNum = mCustomerPhone;
         mRemarkMessage = edRemarkMessage.getText().toString();
         mRemarkImpression = Utils.listToString(markSelectList, "、");
-        DataManager.getInstance().SaveCustomerRemark(mCustomerId, mRemarkPhoneNum, mRemarkMessage, mRemarkNoteName, mRemarkImpression, new NetworkSubscriber<EditCustomerResult>() {
+        DataManager.getInstance().SaveCustomerRemark(mUserId,mCustomerId, mRemarkPhoneNum, mRemarkMessage, mRemarkNoteName, mRemarkImpression, new NetworkSubscriber<EditCustomerResult>() {
             @Override
             public void onCallbackSuccess(EditCustomerResult result) {
                 Toast.makeText(EditCustomerInformationActivity.this, "保存成功", Toast.LENGTH_SHORT).show();

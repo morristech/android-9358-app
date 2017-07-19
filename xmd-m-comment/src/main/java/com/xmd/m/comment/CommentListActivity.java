@@ -35,10 +35,10 @@ public class CommentListActivity extends BaseActivity implements CommentFilterPo
     private CommentFilterPopupWindow popupWindow;
     private String techNo;
 
-    public static void startCommentListActivity(Activity activity, boolean isManager, String techNo) {
+    public static void startCommentListActivity(Activity activity, boolean isManager, String techId) {
         Intent intent = new Intent(activity, CommentListActivity.class);
         intent.putExtra(ConstantResources.INTENT_TYPE, isManager);
-        intent.putExtra(ConstantResources.INTENT_TECH_NO, techNo);
+        intent.putExtra(ConstantResources.INTENT_TECH_ID, techId);
         activity.startActivity(intent);
     }
 
@@ -53,7 +53,7 @@ public class CommentListActivity extends BaseActivity implements CommentFilterPo
     public void getIntentData() {
         Intent intentData = getIntent();
         isFromManager = intentData.getBooleanExtra(ConstantResources.INTENT_TYPE, false);
-        techNo = intentData.getStringExtra(ConstantResources.INTENT_TECH_NO);
+        techNo = intentData.getStringExtra(ConstantResources.INTENT_TECH_ID);
     }
 
     private void initView() {
@@ -122,7 +122,7 @@ public class CommentListActivity extends BaseActivity implements CommentFilterPo
             }
             popupWindow.showAsViewDown(toolbarRight, 0, 40);
         } else {
-            CommentSearchActivity.startCommentSearchActivity(CommentListActivity.this, isFromManager, true, techNo, "11111111111");
+            CommentSearchActivity.startCommentSearchActivity(CommentListActivity.this, isFromManager, true, techNo, "11111111111","");
         }
 
     }

@@ -3,6 +3,7 @@ package com.xmd.technician.window;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -30,6 +32,8 @@ import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +67,7 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
     private String mUserName;
     private CharacterParser characterParser;
     private boolean hasNearbyPeople;
+
 
     @Nullable
     @Override
@@ -118,7 +123,6 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
             }
 
         } else {
-            //contactAllEmptyView.setStatus(EmptyView.Status.Failed);
             onGetListFailed(result.msg);
         }
 
@@ -158,8 +162,7 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
     @Override
     public void onPositiveButtonClicked(UserRecentBean bean) {//感谢
         super.onPositiveButtonClicked(bean);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(bean.emchatId,
-                Utils.isNotEmpty(bean.userNoteName) ? bean.userNoteName : bean.name, bean.avatarUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
+        EventBus.getDefault().post(new EventStartChatActivity(bean.emchatId));
     }
 
     @Override
@@ -171,15 +174,6 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
     @Override
     public void onItemClicked(UserRecentBean bean) throws HyphenateException {
         super.onItemClicked(bean);
-//        if (Long.parseLong(bean.userId) > 0) {
-//            Intent intent = new Intent(getActivity(), ContactInformationDetailActivity.class);
-//            intent.putExtra(RequestConstant.KEY_USER_ID, bean.userId);
-//            intent.putExtra(RequestConstant.KEY_IS_MY_CUSTOMER, false);
-//            intent.putExtra(RequestConstant.KEY_CONTACT_TYPE, Constant.CONTACT_INFO_DETAIL_TYPE_CUSTOMER);
-//            startActivity(intent);
-//        } else {
-//            Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
-//        }
         if (Utils.isEmpty(bean.userId) || Long.parseLong(bean.userId) <= 0) {
             Utils.makeShortToast(getActivity(), ResourceUtils.getString(R.string.visitor_has_no_message));
             return;
