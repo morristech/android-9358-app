@@ -15,4 +15,10 @@ public interface UserInfoService extends IFunctionInit {
     User getUserByUserId(String userId);
 
     void saveUser(User user);
+
+    //获取当前登录的用户
+    User getCurrentUser();
+
+    //获取token值
+    String getCurrentToken();
 }

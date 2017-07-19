@@ -5,6 +5,11 @@ import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +41,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private static final String USER_ID_LIST = "user_id_list";
 
+    private User currentUser;
+    private String currentToken;
+
     @Override
     public void init(Context context) {
         try {
@@ -66,6 +74,8 @@ public class UserInfoServiceImpl implements UserInfoService {
                 XLogger.d(TAG, "find user: " + user);
             }
         }
+
+        EventBusSafeRegister.register(this);
     }
 
     @Override
@@ -103,5 +113,29 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (!TextUtils.isEmpty(user.getChatId())) {
             mChatIdMap.put(user.getChatId(), user);
         }
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    @Override
+    public String getCurrentToken() {
+        return currentToken;
+    }
+
+    @Subscribe(sticky = true)
+    public void onLogin(EventLogin eventLogin) {
+        XLogger.i(TAG, "===>user logout");
+        currentUser = eventLogin.getUser();
+        currentToken = eventLogin.getToken();
+    }
+
+    @Subscribe(sticky = true)
+    public void onLogout(EventLogout eventLogout) {
+        XLogger.i(TAG, "<===user logout");
+        currentUser = null;
+        currentToken = null;
     }
 }

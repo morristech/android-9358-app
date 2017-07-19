@@ -13,4 +13,15 @@ public class ContactPermissionInfo implements Serializable {
     public boolean hello;   //是否可以打招呼
     public boolean sms;     //是否可以发短信
     public String customerId;   //客户ID
+
+    @Override
+    public String toString() {
+        return "ContactPermissionInfo{" +
+                "call=" + call +
+                ", echat=" + echat +
+                ", hello=" + hello +
+                ", sms=" + sms +
+                ", customerId='" + customerId + '\'' +
+                '}';
+    }
 }

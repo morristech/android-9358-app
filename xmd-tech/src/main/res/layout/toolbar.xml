@@ -3,7 +3,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/actionBarSize"
-    android:background="@color/appColorTable"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -42,8 +42,8 @@
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:singleLine="true"
-            android:textColor="@color/colorHead"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/fontHead" />
 
         <FrameLayout

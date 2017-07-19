@@ -165,7 +165,7 @@ public class OrderDetailActivity extends BaseActivity {
         setupStepView();
         setupButtons();
         if (!TextUtils.isEmpty(mOrder.emchatId)) {
-            mUser = new User(mOrder.emchatId);
+            mUser = new User(mOrder.userId);
             mUser.setName(mOrder.userName);
             mUser.setChatId(mOrder.emchatId);
             mUser.setAvatar(mOrder.headImgUrl);

@@ -258,6 +258,7 @@ public class TechApplication extends MultiDexApplication {
             ContactPermissionManager.getInstance().getPermission(data.getUser().getId(), new NetworkSubscriber<ContactPermissionInfo>() {
                 @Override
                 public void onCallbackSuccess(ContactPermissionInfo result) {
+                    XLogger.i("load permission for " + data.getChatId() + "," + data.getName() + " result:" + result);
                     listener.onResponse(result.echat, null);
                 }
 

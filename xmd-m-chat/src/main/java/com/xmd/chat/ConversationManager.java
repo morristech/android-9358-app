@@ -54,6 +54,7 @@ public class ConversationManager {
     //加载会话列表
     public void loadConversationList(final Callback<List<ConversationViewModel>> callback) {
         mConversationList.clear();
+        needDeleteConversationList.clear();
         Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
         if (conversationMap.size() == 0) {
             callback.onResponse(new ArrayList<ConversationViewModel>(), null);
@@ -62,6 +63,9 @@ public class ConversationManager {
             EMConversation conversation = conversationMap.get(key);
             if (!TextUtils.isEmpty(key) && conversation != null) {
                 User user = userInfoService.getUserByChatId(key);
+                if (user == null) {
+                    user = parseUserFromConversation(conversation);
+                }
                 if (user == null) {
                     XLogger.e(XmdChat.TAG, " not found user by chatId:" + key);
                     needDeleteConversationList.add(key);

@@ -17,8 +17,6 @@ import com.xmd.technician.R;
 import com.xmd.technician.bean.NearbyCusInfo;
 import com.xmd.technician.bean.SayHiNearbyResult;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.ChatUser;
-import com.xmd.technician.chat.utils.UserUtils;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -243,11 +241,6 @@ public class NearbyActivity extends BaseActivity {
             mCusAdapter.updateCurrentItem(result.cusPosition, result.respData.customerLeft, result.cusSayHiTime);
             // 成功提示
             showToast("打招呼成功");
-            ChatUser chatUser = new ChatUser(result.userEmchatId);
-            chatUser.setAvatar(result.userAvatar);
-            chatUser.setNick(result.userName);
-            chatUser.setUserType(ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER);
-            UserUtils.saveUser(chatUser);
         } else {
             // 错误提示
             showToast("向客户打招呼失败:" + result.msg);
