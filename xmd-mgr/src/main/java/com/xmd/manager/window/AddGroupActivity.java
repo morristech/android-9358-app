@@ -150,7 +150,7 @@ public class AddGroupActivity extends BaseActivity {
 
         for (int i = 0; i < selected.size(); i++) {
             TextView view = new TextView(this);
-            view.setPadding(10, 10, 10, 10);
+            view.setPadding(Utils.dip2px(AddGroupActivity.this,10), 10, Utils.dip2px(AddGroupActivity.this,10), 10);
             view.setText(selected.get(i));
             view.setTextColor(ResourceUtils.getColor(R.color.number_color));
             view.setBackgroundResource(R.drawable.bg_group_selected);
@@ -203,7 +203,7 @@ public class AddGroupActivity extends BaseActivity {
         lp.bottomMargin = Utils.dip2px(this, 10);
         for (int i = 0; i < allGroups.size(); i++) {
             TextView view = new TextView(this);
-            view.setPadding(10, 10, 10, 10);
+            view.setPadding(Utils.dip2px(AddGroupActivity.this,10), 10, Utils.dip2px(AddGroupActivity.this,10), 10);
             view.setText(allGroups.get(i));
             if (selectedGroups.contains(allGroups.get(i))) {
                 view.setTextColor(ResourceUtils.getColor(R.color.number_color));

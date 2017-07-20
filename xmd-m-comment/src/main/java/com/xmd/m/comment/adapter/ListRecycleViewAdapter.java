@@ -36,7 +36,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
 
     public interface Callback<T> {
 
-        void onItemClicked(T bean,String type);
+        void onItemClicked(T bean, String type);
 
         void onNegativeButtonClicked(T bean, int position);
 
@@ -142,23 +142,23 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             final CommentBean commentBean = (CommentBean) obj;
             CommentViewHolder viewHolder = (CommentViewHolder) holder;
-            if(!isManager && mType.equals("1")){//差评
+            if (!isManager && mType.equals("1")) {//差评
                 String commentUserName = TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName;
-                viewHolder.commentName.setText(String.format("%s**(匿名)",commentUserName.substring(0,1)));
+                viewHolder.commentName.setText(String.format("%s**(匿名)", commentUserName.substring(0, 1)));
                 viewHolder.commentPhone.setText("");
                 Glide.with(mContext).load(R.drawable.img_default_avatar).into(viewHolder.commentHead);
-            }else{
+            } else {
                 Glide.with(mContext).load(commentBean.avatarUrl).into(viewHolder.commentHead);
                 String commentUserName = TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName;
                 viewHolder.commentName.setText(Utils.StrSubstring(7, commentUserName, true));
                 viewHolder.commentPhone.setText(TextUtils.isEmpty(commentBean.phoneNum) ? "" : commentBean.phoneNum);
             }
 
-            if(isManager){
+            if (isManager) {
                 viewHolder.llTechInfo.setVisibility(View.VISIBLE);
                 viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "会所" : commentBean.techName);
                 viewHolder.commentTechCode.setText(TextUtils.isEmpty(commentBean.techNo) ? "" : String.format("[%s]", commentBean.techNo));
-            }else{
+            } else {
                 viewHolder.llTechInfo.setVisibility(View.GONE);
             }
             viewHolder.commentTime.setText(DateUtils.doLong2String(commentBean.createdAt, "MM-dd HH:mm"));
@@ -174,14 +174,18 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.imgDeleteMark.setVisibility(View.GONE);
                 viewHolder.tvDeleteComment.setVisibility(View.VISIBLE);
             }
-
-            if (commentBean.returnStatus.equals("Y")) {
-                viewHolder.imgVisitMark.setVisibility(View.VISIBLE);
-                viewHolder.tvVisitComment.setText("操作");
+            if (isManager) {
+                if (commentBean.returnStatus.equals("Y")) {
+                    viewHolder.imgVisitMark.setVisibility(View.VISIBLE);
+                    viewHolder.tvVisitComment.setText("操作");
+                } else {
+                    viewHolder.imgVisitMark.setVisibility(View.GONE);
+                    viewHolder.tvVisitComment.setText("回访");
+                }
             } else {
                 viewHolder.imgVisitMark.setVisibility(View.GONE);
-                viewHolder.tvVisitComment.setText("回访");
             }
+
             if (commentBean.commentType.equals("complaint")) {//投诉
                 viewHolder.llComplaintDetail.setVisibility(View.VISIBLE);
                 viewHolder.llCommentTypeTech.setVisibility(View.GONE);
@@ -202,7 +206,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCallback.onItemClicked(commentBean,mType);
+                    mCallback.onItemClicked(commentBean, mType);
                 }
             });
 
@@ -248,6 +252,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.tvRewardDetail.setText(String.format("%1.2f元", rewardBean.amount / 100f));
             }
             if (isManager) {
+                viewHolder.llRewardTech.setVisibility(View.VISIBLE);
                 viewHolder.tvRewardTechName.setVisibility(View.VISIBLE);
                 if (!TextUtils.isEmpty(rewardBean.techName)) {
                     viewHolder.tvRewardTechName.setText(rewardBean.techName);
@@ -261,8 +266,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     viewHolder.tvRewardTechNo.setText("");
                 }
             } else {
-                viewHolder.tvRewardTechName.setVisibility(View.GONE);
-                viewHolder.tvRewardTechNo.setText("");
+//                viewHolder.tvRewardTechName.setVisibility(View.GONE);
+//                viewHolder.tvRewardTechNo.setText("");
+                viewHolder.llRewardTech.setVisibility(View.GONE);
             }
 
             return;
@@ -276,22 +282,22 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             VisitorViewHolder viewHolder = (VisitorViewHolder) holder;
             viewHolder.tvVisitorTime.setText(DateUtils.doLong2String(visitBean.createTime, "MM月dd日　HH:mm"));
             viewHolder.tvVisitorType.setText(visitBean.businessTypeName);
-       if(isManager){
-           if (!TextUtils.isEmpty(visitBean.techName)) {
-               viewHolder.tvVisitorTechName.setText(visitBean.techName);
-               if (!TextUtils.isEmpty(visitBean.techNo)) {
-                   viewHolder.tvVisitorTechNo.setText(String.format("[%s]", visitBean.techNo));
-               } else {
-                   viewHolder.tvVisitorTechNo.setText("");
-               }
-           } else {
-               viewHolder.tvVisitorTechName.setText("未归属");
-               viewHolder.tvVisitorTechNo.setText("");
-           }
-       }else{
-           viewHolder.tvVisitorTechName.setText("");
-           viewHolder.tvVisitorTechNo.setText("");
-       }
+            if (isManager) {
+                if (!TextUtils.isEmpty(visitBean.techName)) {
+                    viewHolder.tvVisitorTechName.setText(visitBean.techName);
+                    if (!TextUtils.isEmpty(visitBean.techNo)) {
+                        viewHolder.tvVisitorTechNo.setText(String.format("[%s]", visitBean.techNo));
+                    } else {
+                        viewHolder.tvVisitorTechNo.setText("");
+                    }
+                } else {
+                    viewHolder.tvVisitorTechName.setText("未归属");
+                    viewHolder.tvVisitorTechNo.setText("");
+                }
+            } else {
+                viewHolder.tvVisitorTechName.setText("");
+                viewHolder.tvVisitorTechNo.setText("");
+            }
             return;
         }
         if (holder instanceof FooterViewHolder) {

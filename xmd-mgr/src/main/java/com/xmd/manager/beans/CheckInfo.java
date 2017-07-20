@@ -18,7 +18,7 @@ public class CheckInfo implements Parcelable {
     public static final int INFO_TYPE_ORDER = 2;
 
     private String typeName; //业务名称
-    private String type; //业务类型,paid_coupon-点钟券,coupon-优惠券,service_item_coupon-项目券,order-付费预约
+    private String type; //业务类型,paid_coupon-点钟券,coupon-优惠券,service_item_coupon-项目券,order-付费预约,discount_coupon-折扣券
     private String title;
     private String description; //描述
     private String code; //核销码
