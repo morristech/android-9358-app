@@ -65,13 +65,6 @@
                     style="@style/main_fragment_layout_statistics_value_style"
                     android:text="0" />
 
-                <TextView
-                    android:id="@+id/newCustomerCountMark"
-                    android:layout_width="@dimen/redPointSize"
-                    android:layout_height="@dimen/redPointSize"
-                    android:layout_marginLeft="8dp"
-                    android:background="@drawable/red_circle"
-                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -79,6 +72,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
@@ -95,6 +89,13 @@
                     style="@style/main_fragment_layout_statistics_accumulate_value_style"
                     android:text="@string/person_unit" />
 
+                <TextView
+                    android:id="@+id/newCustomerCountMark"
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/arrow_up_red"
+                    android:visibility="gone" />
             </LinearLayout>
 
         </LinearLayout>
@@ -130,6 +131,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:gravity="center">
 
                 <TextView

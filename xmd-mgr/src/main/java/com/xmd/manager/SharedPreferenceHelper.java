@@ -40,6 +40,9 @@ public class SharedPreferenceHelper {
 
     private static final String KEY_IS_WARNNING_VIDEO_RECORD = "key_is_warnning_video_record";
 
+    public static final String KEY_LAST_VIEW_CUSTOMER_COUNT = "3cb666ab6be8ddc7d5c7da071e6aa2f8";
+    public static final String KEY_LAST_VIEW_FAST_PAY_VALUE = "b39e3160bff4be0862a18d062d7abbfe";
+
     public static void initialize() {
         if (mSettingPreference == null) {
             mSettingPreference = ManagerApplication.getAppContext().getSharedPreferences(SETTING_PREFERENCE, Activity.MODE_PRIVATE);
@@ -257,4 +260,21 @@ public class SharedPreferenceHelper {
     public static void setIsWarnningVideoRecord(boolean value) {
         mSettingPreference.edit().putBoolean(KEY_IS_WARNNING_VIDEO_RECORD, value).apply();
     }
+
+    public static int getLastViewCustomerCount() {
+        return mSettingPreference.getInt(KEY_LAST_VIEW_CUSTOMER_COUNT, -1);
+    }
+
+    public static void setLastViewCustomerCount(int count) {
+        mSettingPreference.edit().putInt(KEY_LAST_VIEW_CUSTOMER_COUNT, count).apply();
+    }
+
+    public static int getListViewFastPayValue() {
+        return mSettingPreference.getInt(KEY_LAST_VIEW_FAST_PAY_VALUE, -1);
+    }
+
+    public static void setLastViewFastPayValue(int count) {
+        mSettingPreference.edit().putInt(KEY_LAST_VIEW_FAST_PAY_VALUE, count).apply();
+    }
+
 }

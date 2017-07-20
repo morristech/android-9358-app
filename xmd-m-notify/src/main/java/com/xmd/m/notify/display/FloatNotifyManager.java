@@ -1,4 +1,4 @@
-package com.xmd.app;
+package com.xmd.m.notify.display;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.xmd.m.notify.R;
 
 /**
  * Created by mo on 17-6-16.
@@ -58,8 +60,8 @@ public class FloatNotifyManager {
         LayoutInflater inflater = LayoutInflater.from(context.getApplicationContext());
         mLayout = inflater.inflate(R.layout.float_notify, null);
 
-        iconView = (ImageView) mLayout.findViewById(R.id.icon);
-        messageView = (TextView) mLayout.findViewById(R.id.message);
+        iconView = (ImageView) mLayout.findViewById(com.xmd.app.R.id.icon);
+        messageView = (TextView) mLayout.findViewById(com.xmd.app.R.id.message);
 
         mHandler = new Handler();
     }
@@ -72,6 +74,7 @@ public class FloatNotifyManager {
 
     public FloatNotifyManager setMessage(CharSequence message) {
         messageView.setTag(null);
+        messageView.setOnClickListener(null);
         messageView.setMovementMethod(null);
         messageView.setVisibility(View.VISIBLE);
         messageView.setText(message);
@@ -145,6 +148,15 @@ public class FloatNotifyManager {
         messageView.setMovementMethod(LinkMovementMethod.getInstance());
         messageView.setVisibility(View.VISIBLE);
         messageView.setText(spannableString);
+        return this;
+    }
+
+    public FloatNotifyManager setMessage(String message, View.OnClickListener listener) {
+        messageView.setTag(null);
+        messageView.setMovementMethod(null);
+        messageView.setVisibility(View.VISIBLE);
+        messageView.setText(message);
+        messageView.setOnClickListener(listener);
         return this;
     }
 }

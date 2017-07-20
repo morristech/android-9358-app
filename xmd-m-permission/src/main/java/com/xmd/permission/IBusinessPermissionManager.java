@@ -10,7 +10,9 @@ public interface IBusinessPermissionManager {
     void init();
 
     //检查是否包含某个权限,一般来说不用调用，而是使用@CheckBusinessPermission注解
-    boolean containPermission(String[] permissions);
+    boolean containPermissions(String[] permissions);
+
+    boolean containPermission(String permission);
 
     //从缓存或网络加载权限
     void loadPermissions(Callback<Void> callback);

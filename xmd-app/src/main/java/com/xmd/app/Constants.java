@@ -22,4 +22,20 @@ public class Constants {
     public static final String USER_MARK_ACTIVATION = "待激活";//待激活
     public static final String USER_MARK_BIG = "大客";//大客
     public static final String USER_MARK_NORMAL = "普客";//普客
+
+    /**
+     * 订单状态
+     */
+    public static final String ORDER_STATUS_UNPAID = "unpaid";  //待支付
+    public static final String ORDER_STATUS_SUBMIT = "submit"; //待接受
+    public static final String ORDER_STATUS_ACCEPT = "accept"; //接受
+    public static final String ORDER_STATUS_REJECT = "reject"; //拒绝
+    public static final String ORDER_STATUS_CANCEL = "cancel"; //取消
+    public static final String ORDER_STATUS_CLOSED = "complete"; //完成|已核销
+    public static final String ORDER_STATUS_EXPIRE = "expire"; //过期
+    public static final String ORDER_STATUS_FAILURE = "failure"; //失效,过期
+    public static final String ORDER_STATUS_OVERTIME = "overtime"; //超时
+    public static final String ORDER_STATUS_DELETE = "delete"; //删除
+    public static final String ORDER_STATUS_ERROR = "error"; //下单支付成功，下单出错
+    public static final String ORDER_STATUS_PROCESS = "process"; //付款处理中，用户版查看用的
 }

@@ -9,7 +9,6 @@ import com.xmd.m.network.EventTokenExpired;
 import com.xmd.permission.event.EventRequestSyncPermission;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
-import com.xmd.technician.DataRefreshService;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.TechInfo;
@@ -212,12 +211,6 @@ public class LoginTechnician {
         setShareUrl(techInfo.shareUrl);
         setCustomerService(techInfo.customerService);
 
-        //开始刷新个人数据
-        DataRefreshService.refreshPersonalData(true);
-
-        //开始刷新回复
-        DataRefreshService.refreshHelloReply(true);
-
         //开始汇报状态
         if (needSendLoginEvent) {
             needSendLoginEvent = false;
@@ -282,7 +275,7 @@ public class LoginTechnician {
         setEmchatId(result.emchatId);
         setEmchatPassword(result.emchatPassword);
 
-        DataRefreshService.refreshPersonalData(true);
+        loadTechInfo();
     }
 
 
@@ -358,11 +351,6 @@ public class LoginTechnician {
         needSendLoginEvent = true;
         EventBus.getDefault().postSticky(new EventLogout(getToken(), getUserId()));
         RxBus.getInstance().post(new EventLogout(getToken(), getUserId()));
-
-        //停止刷新个人数据
-        DataRefreshService.refreshPersonalData(false);
-        //停止刷新回复
-        DataRefreshService.refreshHelloReply(false);
 
         //清空当前用户打招呼数据
         HelloSettingManager.getInstance().resetTemplate();

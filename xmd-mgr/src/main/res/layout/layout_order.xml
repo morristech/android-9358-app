@@ -65,7 +65,9 @@
             </LinearLayout>
 
 
-            <LinearLayout style="@style/main_fragment_layout_order_section_style">
+            <LinearLayout
+                android:id="@+id/newOrderLayout"
+                style="@style/main_fragment_layout_order_section_style">
 
                 <View
                     android:id="@+id/v_accept_line"
@@ -91,13 +93,13 @@
                             android:text="@string/pending_order" />
 
                         <TextView
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:id="@+id/newOrderMark"
                             android:layout_marginLeft="4dp"
                             android:layout_width="8dp"
-                            android:layout_height="8dp"
+                            android:layout_height="12dp"
                             android:layout_gravity="center_vertical"
-                            android:background="@drawable/red_circle" />
+                            android:background="@drawable/arrow_up_red" />
                     </LinearLayout>
 
 

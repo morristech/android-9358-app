@@ -21,7 +21,6 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.EmojiManager;
 import com.xmd.app.EventBusSafeRegister;
-import com.xmd.app.FloatNotifyManager;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
@@ -35,6 +34,7 @@ import com.xmd.chat.viewmodel.ConversationViewModel;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
+import com.xmd.m.notify.display.FloatNotifyManager;
 import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.ContactPermissionInfo;
 import com.xmd.permission.ContactPermissionManager;
@@ -43,7 +43,6 @@ import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.model.HelloReplyService;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.ControllerRegister;
 import com.xmd.technician.window.AvailableCouponListActivity;
@@ -152,8 +151,8 @@ public class TechApplication extends MultiDexApplication {
                 XmdChat.getInstance().init(this, BuildConfig.DEBUG, menuFactory);
                 XmdChat.getInstance().setConversationFilter(conversationFilter);
 
-                DataRefreshService.start();
-                HelloReplyService.start();
+//                DataRefreshService.start();
+//                HelloReplyService.start();
 
                 //初始化权限模块
                 BusinessPermissionManager.getInstance().init();

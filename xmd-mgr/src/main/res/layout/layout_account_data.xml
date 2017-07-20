@@ -66,13 +66,7 @@
                     style="@style/main_fragment_layout_statistics_value_style"
                     android:text="0" />
 
-                <TextView
-                    android:id="@+id/fastPayMark"
-                    android:layout_width="@dimen/redPointSize"
-                    android:layout_height="@dimen/redPointSize"
-                    android:layout_marginLeft="8dp"
-                    android:background="@drawable/red_circle"
-                    android:visibility="gone" />
+
 
                 <!--<TextView-->
                 <!--style="@style/main_fragment_layout_statistics_accumulate_value_style"-->
@@ -86,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:layout_marginTop="4dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -100,6 +95,14 @@
                 <TextView
                     style="@style/main_fragment_layout_statistics_accumulate_value_style"
                     android:text="@string/amount_unit" />
+
+                <TextView
+                    android:id="@+id/fastPayMark"
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/arrow_up_red"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -145,6 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:layout_marginTop="4dp"
                 android:orientation="horizontal">
 
                 <TextView

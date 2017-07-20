@@ -358,5 +358,6 @@ public class Constant {
         put(MSG_TYPE_PLUM_FLOWER, ResourceUtils.getString(R.string.club_one_yuan));
     }};
 
+    public static final String RED_POINT_NEW_ORDER = "newOrder";
 }
 

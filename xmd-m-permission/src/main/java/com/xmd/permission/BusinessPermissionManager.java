@@ -106,7 +106,7 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
 
     //检查是否包含某个权限,一般来说不用调用，而是使用@CheckBusinessPermission注解
     @Override
-    public boolean containPermission(String[] permissions) {
+    public boolean containPermissions(String[] permissions) {
         boolean pass = true;
 
         for (String permissionCode : permissions) {
@@ -116,6 +116,11 @@ public class BusinessPermissionManager implements IBusinessPermissionManager {
             }
         }
         return pass;
+    }
+
+    @Override
+    public boolean containPermission(String permissionCode) {
+        return mPermissionList.contains(permissionCode);
     }
 
     /******************

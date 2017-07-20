@@ -22,6 +22,7 @@ public class XmdDisplay implements Serializable {
 
     public static final int STYLE_NONE = 1;
     public static final int STYLE_NOTIFICATION = 2;
+    public static final int STYLE_FLOAT_TOAST = 100;
 
     public static final int FLAG_RING = 1;
     public static final int FLAG_VIBRATE = 2;
@@ -37,6 +38,10 @@ public class XmdDisplay implements Serializable {
     private String audioUri;
     private String action;
     private String actionData;
+
+    private int x;
+    private int y;
+    private int duration;
 
     public XmdDisplay() {
         scene = SCENE_BG;
@@ -117,6 +122,29 @@ public class XmdDisplay implements Serializable {
         this.businessType = businessType;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
     @Override
     public String toString() {

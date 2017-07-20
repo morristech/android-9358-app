@@ -16,7 +16,8 @@ public class XmdPushMessage {
     public static final String BUSINESS_TYPE_FAST_PAY = "fast_pay";
     public static final String BUSINESS_TYPE_JOIN_CLUB = "join_club";
     public static final String BUSINESS_TYPE_ORDER = "order";
-    public static final String BUSINESS_TYPE_CUSTOMER = "customer";
+    public static final String BUSINESS_TYPE_NEW_CUSTOMER = "new_customer";
+    public static final String BUSINESS_TYPE_COMMENT = "comment";
 
     private String businessType; //业务类型
     private List<XmdDisplay> displayList; //展示详情
@@ -43,5 +44,9 @@ public class XmdPushMessage {
             display.setBusinessType(businessType);
             EventBus.getDefault().post(display);
         }
+    }
+
+    public String getData() {
+        return data;
     }
 }

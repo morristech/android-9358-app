@@ -16,7 +16,7 @@ public class BusinessPermissionAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = joinPoint.getTarget().getClass().getMethod(signature.getName(), signature.getParameterTypes());
         CheckBusinessPermission annotation = method.getAnnotation(CheckBusinessPermission.class);
-        if (pm.containPermission(annotation.value())) {
+        if (pm.containPermissions(annotation.value())) {
             joinPoint.proceed();
         }
     }

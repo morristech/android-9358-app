@@ -26,12 +26,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.m.comment.CommentDetailActivity;
 import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.comment.bean.CommentBean;
 import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.UserInfoEvent;
+import com.xmd.m.notify.push.XmdPushManager;
 import com.xmd.m.notify.push.XmdPushMessage;
+import com.xmd.m.notify.push.XmdPushMessageListener;
 import com.xmd.m.notify.redpoint.RedPointService;
 import com.xmd.m.notify.redpoint.RedPointServiceImpl;
 import com.xmd.manager.AppConfig;
@@ -317,7 +320,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     TextView fastPayMark;
     @BindView(R.id.newCustomerCountMark)
     TextView customerCountMark;
-
+    @BindView(R.id.newOrderLayout)
+    View newOrderLayout;
 
     private static final int REQUEST_CODE_PHONE = 0x0001;
     private static final int REQUEST_CODE_CAMERA = 0x002;
@@ -355,15 +359,20 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     private RedPointService redPointService = RedPointServiceImpl.getInstance();
 
+    private int customerCount;
+    private int fastPayAmount;
+    private boolean showFastPay;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main_page, container, false);
         ButterKnife.bind(this, view);
         initView(view);
-        redPointService.bind(XmdPushMessage.BUSINESS_TYPE_ORDER, newOrderMark, RedPointService.SHOW_TYPE_POINT);
+        redPointService.bind(Constant.RED_POINT_NEW_ORDER, newOrderMark, RedPointService.SHOW_TYPE_POINT);
         redPointService.bind(XmdPushMessage.BUSINESS_TYPE_FAST_PAY, fastPayMark, RedPointService.SHOW_TYPE_POINT);
-        redPointService.bind(XmdPushMessage.BUSINESS_TYPE_CUSTOMER, customerCountMark, RedPointService.SHOW_TYPE_POINT);
+        redPointService.bind(XmdPushMessage.BUSINESS_TYPE_NEW_CUSTOMER, customerCountMark, RedPointService.SHOW_TYPE_POINT);
+        XmdPushManager.getInstance().addListener(xmdPushMessageListener);
         return view;
     }
 
@@ -375,9 +384,10 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 mGetVerificationTypeSubscription, mVerificationHandleSubscription, mPropagandaDataSubscription, mAccountDataSubSubscription,
                 mTechPKRankingSubscription, mSwitchChangedSubscription);
         mVerificationHelper.destroySubscription();
-        redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_ORDER, newOrderMark);
+        redPointService.unBind(Constant.RED_POINT_NEW_ORDER, newOrderMark);
         redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_FAST_PAY, fastPayMark);
-        redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_CUSTOMER, customerCountMark);
+        redPointService.unBind(XmdPushMessage.BUSINESS_TYPE_NEW_CUSTOMER, customerCountMark);
+        XmdPushManager.getInstance().removeListener(xmdPushMessageListener);
     }
 
     @Override
@@ -423,7 +433,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         getAccountData(mCurrentAccountData);
         getMarketingData(mCurrentMarketingData);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET__INDEX_ORDER_DATA);
-        initBadCommentData();
+        getBadCommentData();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_PK_RANKING);
 
     }
@@ -458,7 +468,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         mBadCommentStatusSubscription = RxBus.getInstance().toObservable(ChangeStatusResult.class).subscribe(
                 changeStatusResult -> {
                     if (changeStatusResult.statusCode == 200) {
-                        initBadCommentData();
+                        getBadCommentData();
                     }
                 });
 
@@ -509,7 +519,20 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                     tvTitlePaid.setText(String.format("%s：", result.respData.amountList.get(0).accountTypeName));
                 }
                 tvCheckAccount.setText(Utils.getNumToString(result.respData.amountList.get(0).amount, false));
-                tvPaidAccountTotal.setText(Utils.getNumToString(result.respData.amountList.get(0).totalAmount, false));
+                fastPayAmount = result.respData.amountList.get(0).totalAmount;
+                tvPaidAccountTotal.setText(Utils.getNumToString(fastPayAmount, false));
+                if (result.respData.amountList.get(0).accountType.equals("fast_pay")) {
+                    //在线买单
+                    showFastPay = true;
+                    int lastViewFastPayValue = SharedPreferenceHelper.getListViewFastPayValue();
+                    if (lastViewFastPayValue < 0) {
+                        SharedPreferenceHelper.setLastViewFastPayValue(fastPayAmount);
+                    } else if (fastPayAmount > lastViewFastPayValue) {
+                        fastPayMark.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    showFastPay = false;
+                }
                 if (Utils.isNotEmpty(result.respData.amountList.get(1).accountTypeName)) {
                     tvTitleSail.setText(String.format("%s：", result.respData.amountList.get(1).accountTypeName));
                 }
@@ -612,7 +635,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
             @Override
             public void onItemClicked(CommentBean badComment) {
-                CommentDetailActivity.startCommentDetailActivity(getActivity(), badComment, true,"");
+                CommentDetailActivity.startCommentDetailActivity(getActivity(), badComment, true, "");
             }
         });
         badCommentList.setLayoutManager(layoutManager);
@@ -681,7 +704,15 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     private void handlerRegistryResult(RegistryDataResult registryData) {
         if (registryData != null) {
             mTvNewRegisterToday.setText(Utils.getNumToString(registryData.respData.userCount, true));
-            mTvNewRegisterAccumulate.setText(Utils.getNumToString(registryData.respData.totalUserCount, true));
+            customerCount = registryData.respData.totalUserCount;
+            mTvNewRegisterAccumulate.setText(String.valueOf(customerCount));
+
+            int lastViewCount = SharedPreferenceHelper.getLastViewCustomerCount();
+            if (lastViewCount < 0) {
+                SharedPreferenceHelper.setLastViewCustomerCount(customerCount);
+            } else if (customerCount != lastViewCount) {
+                customerCountMark.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -696,11 +727,14 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     private void handlerIndexOrderResult(IndexOrderData orderData) {
         if (orderData != null) {
-            mTvPendingOrderCount.setText(orderData.respData.submitCount);
-            mTvAcceptedOrderCount.setText(Utils.getNumToString(Integer.parseInt(orderData.respData.acceptTotal), true));
-            mTvCompletedOrderCount.setText(orderData.respData.acceptCount);
+            try {
+                mTvPendingOrderCount.setText(orderData.respData.submitCount);
+                mTvAcceptedOrderCount.setText(Utils.getNumToString(Integer.parseInt(orderData.respData.acceptTotal), true));
+                mTvCompletedOrderCount.setText(orderData.respData.acceptCount);
+            } catch (Exception e) {
+                XLogger.e("parse int error: " + e.getMessage());
+            }
         }
-
     }
 
 
@@ -780,8 +814,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         });
     }
 
-    private void initBadCommentData() {
-
+    private void getBadCommentData() {
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_BAD_COMMENT_AND_COMPLAINT_LIST);
     }
 
@@ -954,8 +987,10 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    @OnClick({R.id.main_marketing_time_switch, R.id.main_publicity_time_switch, R.id.main_account_time_switch, R.id.main_bad_comment, R.id.layout_technician_ranking, R.id.layout_technician_pk_ranking, R.id.layout_order, R.id.ll_wifi_today, R.id.ll_visit_today,
-            R.id.ll_new_register_today, R.id.ll_coupon_get_today, R.id.tv_qr_code, R.id.toolbar_right_text, R.id.ll_account_paid, R.id.ll_account_sail_view, R.id.ll_sail_view, R.id.ll_visit_view})
+    @OnClick({R.id.main_marketing_time_switch, R.id.main_publicity_time_switch, R.id.main_account_time_switch,
+            R.id.main_bad_comment, R.id.layout_technician_ranking, R.id.layout_technician_pk_ranking, R.id.layout_order, R.id.ll_wifi_today, R.id.ll_visit_today,
+            R.id.ll_new_register_today, R.id.ll_coupon_get_today, R.id.tv_qr_code, R.id.toolbar_right_text,
+            R.id.ll_account_paid, R.id.ll_account_sail_view, R.id.ll_sail_view, R.id.ll_visit_view, R.id.newOrderLayout})
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.main_publicity_time_switch:
@@ -971,7 +1006,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 Intent intentOrder = new Intent(getActivity(), OrdersDetailActivity.class);
                 intentOrder.putExtra(Constant.PARAM_RANGE, 0);
                 startActivity(intentOrder);
-                redPointService.clear(XmdPushMessage.BUSINESS_TYPE_ORDER);
                 break;
             case R.id.layout_technician_ranking:
                 if (isHasPk) {
@@ -998,7 +1032,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 Intent intentRegister = new Intent(getActivity(), RegisterReportActivity.class);
                 intentRegister.putExtra(RequestConstant.KEY_MAIN_TITLE, mTvTitleRegister.getText().toString().substring(0, mTvTitleRegister.getText().toString().length() - 1));
                 startActivity(intentRegister);
-                redPointService.clear(XmdPushMessage.BUSINESS_TYPE_CUSTOMER);
+                SharedPreferenceHelper.setLastViewCustomerCount(customerCount);
+                redPointService.clear(XmdPushMessage.BUSINESS_TYPE_NEW_CUSTOMER);
                 break;
             case R.id.ll_coupon_get_today:
                 Intent intentCoupon = new Intent(getActivity(), CouponReportActivity.class);
@@ -1015,6 +1050,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
             case R.id.ll_account_paid:
                 //线上买单
                 UINavigation.gotoOnlinePayNotifyList(getContext());
+                SharedPreferenceHelper.setLastViewFastPayValue(fastPayAmount);
                 redPointService.clear(XmdPushMessage.BUSINESS_TYPE_FAST_PAY);
                 break;
             case R.id.ll_account_sail_view:
@@ -1027,7 +1063,10 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 visitIntent.putExtra(RequestConstant.KEY_MAIN_TITLE, mTvTitleVisit.getText().toString().substring(0, mTvTitleVisit.getText().toString().length() - 1));
                 startActivity(visitIntent);
                 break;
-
+            case R.id.newOrderLayout:
+                redPointService.clear(XmdPushMessage.BUSINESS_TYPE_ORDER);
+                ((MainActivity) getActivity()).switchTo(MainActivity.sTabOrder);
+                break;
 
         }
     }
@@ -1050,28 +1089,26 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         if (mMainMarketingTimeSwitch.getText().equals(ResourceUtils.getString(R.string.layout_main_btn_today))) {
             mMainMarketingTimeSwitch.setText(ResourceUtils.getString(R.string.layout_main_btn_yesterday));
             mMainMarketingCurrentTime.setText(ResourceUtils.getString(R.string.layout_main_publicity_today));
-            getMarketingData(0);
             mCurrentMarketingData = 0;
         } else {
             mMainMarketingTimeSwitch.setText(ResourceUtils.getString(R.string.layout_main_btn_today));
             mMainMarketingCurrentTime.setText(ResourceUtils.getString(R.string.layout_main_publicity_yesterday));
-            getMarketingData(1);
             mCurrentMarketingData = 1;
         }
+        getMarketingData(mCurrentMarketingData);
     }
 
     private void switchMainAccountTimeData() {
         if (mainAccountTimeSwitch.getText().equals(ResourceUtils.getString(R.string.layout_main_btn_today))) {
             mainAccountTimeSwitch.setText(ResourceUtils.getString(R.string.layout_main_btn_yesterday));
             tvAccountCurrentTime.setText(ResourceUtils.getString(R.string.layout_main_publicity_today));
-            getAccountData(0);
             mCurrentAccountData = 0;
         } else {
             mainAccountTimeSwitch.setText(ResourceUtils.getString(R.string.layout_main_btn_today));
             tvAccountCurrentTime.setText(ResourceUtils.getString(R.string.layout_main_publicity_yesterday));
-            getAccountData(1);
             mCurrentAccountData = 1;
         }
+        getAccountData(mCurrentAccountData);
     }
 
     private void getMarketingData(int i) {
@@ -1099,6 +1136,10 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
             params.put(RequestConstant.KEY_DATE, DateUtil.longToDate(yesterday));
         }
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DATA_STATISTICS_WIFI_DATA, params);
+    }
+
+    private void getOrderData() {
+        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET__INDEX_ORDER_DATA);
     }
 
     private void getAccountData(int currentAccountData) {
@@ -1164,7 +1205,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         MainActivity activity;
         activity = (MainActivity) this.getActivity();
         activity.gotoLoginActivity("");
-
     }
 
     @Override
@@ -1173,4 +1213,33 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
 
+    private XmdPushMessageListener xmdPushMessageListener = new XmdPushMessageListener() {
+        @Override
+        public void onMessage(XmdPushMessage message) {
+            switch (message.getBusinessType()) {
+                case XmdPushMessage.BUSINESS_TYPE_ORDER:
+                    getOrderData();
+                    break;
+                case XmdPushMessage.BUSINESS_TYPE_FAST_PAY:
+                    if (showFastPay) {
+                        redPointService.inc(XmdPushMessage.BUSINESS_TYPE_FAST_PAY);
+                        getAccountData(mCurrentAccountData);
+                    }
+                    break;
+                case XmdPushMessage.BUSINESS_TYPE_NEW_CUSTOMER:
+                    redPointService.inc(XmdPushMessage.BUSINESS_TYPE_NEW_CUSTOMER);
+                    customerCount++;
+                    mTvNewRegisterAccumulate.setText(String.valueOf(customerCount));
+                    break;
+                case XmdPushMessage.BUSINESS_TYPE_COMMENT:
+                    getBadCommentData();
+                    break;
+            }
+        }
+
+        @Override
+        public void onRawMessage(String message) {
+
+        }
+    };
 }

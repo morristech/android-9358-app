@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 
+import com.google.gson.Gson;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
@@ -19,12 +21,14 @@ import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.view.ConversationListFragment;
 import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.notify.display.XmdDisplay;
+import com.xmd.m.notify.push.PushMessageDataOrder;
 import com.xmd.m.notify.push.XmdPushManager;
 import com.xmd.m.notify.push.XmdPushMessage;
 import com.xmd.m.notify.push.XmdPushMessageListener;
 import com.xmd.m.notify.redpoint.RedPointService;
 import com.xmd.m.notify.redpoint.RedPointServiceImpl;
 import com.xmd.manager.ClubData;
+import com.xmd.manager.Constant;
 import com.xmd.manager.Manager;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
@@ -84,7 +88,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     private List<String> tabTexts = new ArrayList<>();
     private List<Drawable> icons = new ArrayList<>();
 
-    private int newOrderCount;
+    private int pendingOrderCount;
     private RedPointService redPointService = RedPointServiceImpl.getInstance();
 
     @Override
@@ -112,8 +116,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
         mGetNewOrderCountSubscription = RxBus.getInstance().toObservable(NewOrderCountResult.class).subscribe(
                 result -> {
-                    newOrderCount = result.respData;
-                    mViewPagerTabIndicator.setNotice(sTabOrder, newOrderCount);
+                    pendingOrderCount = result.respData;
+                    mViewPagerTabIndicator.setNotice(sTabOrder, pendingOrderCount);
                 }
         );
 
@@ -312,9 +316,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         setRightIcon(position);
         mCurrentPosition = position;
         if (position == sTabOrder) {
-            newOrderCount = 0;
-            mViewPagerTabIndicator.setNotice(sTabOrder, 0);
-            redPointService.clear(XmdPushMessage.BUSINESS_TYPE_ORDER);
+            redPointService.clear(Constant.RED_POINT_NEW_ORDER);
         }
     }
 
@@ -327,6 +329,11 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     public void onTabClick(int position) {
         setRightIcon(position);
         RxBus.getInstance().post(new SwitchIndexBean(position));
+    }
+
+    public void switchTo(int position) {
+        onTabClick(position);
+        mViewPagerTabIndicator.updateSelectedPosition(position);
     }
 
     @Subscribe
@@ -359,16 +366,19 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
             switch (message.getBusinessType()) {
                 case XmdPushMessage.BUSINESS_TYPE_ORDER:
                     if (sTabOrder >= 0) {
-                        newOrderCount++;
-                        mViewPagerTabIndicator.setNotice(sTabOrder, newOrderCount);
-                        redPointService.set(message.getBusinessType(), newOrderCount);
+                        PushMessageDataOrder data = new Gson().fromJson(message.getData(), PushMessageDataOrder.class);
+                        if (data == null) {
+                            return;
+                        }
+                        if (Constants.ORDER_STATUS_SUBMIT.equals(data.status)) {
+                            pendingOrderCount++;
+                        } else if (Constants.ORDER_STATUS_ACCEPT.equals(data.status)
+                                || Constants.ORDER_STATUS_REJECT.equals(data.status)) {
+                            pendingOrderCount--;
+                        }
+                        mViewPagerTabIndicator.setNotice(sTabOrder, pendingOrderCount);
+                        redPointService.set(Constant.RED_POINT_NEW_ORDER, pendingOrderCount);
                     }
-                    break;
-                case XmdPushMessage.BUSINESS_TYPE_FAST_PAY:
-                    redPointService.inc(XmdPushMessage.BUSINESS_TYPE_FAST_PAY);
-                    break;
-                case XmdPushMessage.BUSINESS_TYPE_CUSTOMER:
-                    redPointService.inc(XmdPushMessage.BUSINESS_TYPE_CUSTOMER);
                     break;
             }
         }

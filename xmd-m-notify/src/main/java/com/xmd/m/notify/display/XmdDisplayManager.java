@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.os.Vibrator;
+import android.view.View;
 
 import com.shidou.commonlibrary.util.AppUtils;
 import com.xmd.app.EventBusSafeRegister;
@@ -55,6 +56,9 @@ public class XmdDisplayManager {
             case XmdDisplay.STYLE_NOTIFICATION:
                 showNotification(display);
                 break;
+            case XmdDisplay.STYLE_FLOAT_TOAST:
+                showFloatToast(display);
+                break;
         }
     }
 
@@ -82,6 +86,22 @@ public class XmdDisplayManager {
         NotificationManager.getInstance().show(display);
     }
 
-    //显示toast消息
-
+    //显示浮动消息
+    private void showFloatToast(final XmdDisplay display) {
+        FloatNotifyManager.getInstance()
+                .setMessage(display.getMessage(), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PendingIntent intent = XmdDisplayManager.getInstance().createPendingIntent(display);
+                        if (intent != null) {
+                            try {
+                                intent.send();
+                            } catch (PendingIntent.CanceledException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                })
+                .show(display.getX(), display.getY(), display.getDuration());
+    }
 }

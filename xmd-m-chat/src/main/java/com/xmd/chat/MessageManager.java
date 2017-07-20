@@ -8,6 +8,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
@@ -254,8 +255,18 @@ public class MessageManager {
         XmdDisplay fgDisplay = new XmdDisplay();
         fgDisplay.setBusinessType(XmdPushMessage.BUSINESS_TYPE_CHAT_MESSAGE);
         fgDisplay.setScene(XmdDisplay.SCENE_FG);
-        fgDisplay.setStyle(XmdDisplay.STYLE_NONE);
         fgDisplay.setFlags(XmdDisplay.FLAG_LIGHT | XmdDisplay.FLAG_RING);
+        if (!chatMessage.getRemoteChatId().equals(currentChatId) && chatMessage.isCustomerService()) {
+            fgDisplay.setX(ScreenUtils.dpToPx(0));
+            fgDisplay.setY(ScreenUtils.getScreenHeight() / 10);
+            fgDisplay.setStyle(XmdDisplay.STYLE_FLOAT_TOAST);
+            fgDisplay.setMessage("您收到一条客服消息，点击可查看");
+            fgDisplay.setDuration(3000);
+            fgDisplay.setAction(XmdDisplay.ACTION_CHAT_TO);
+            fgDisplay.setActionData(chatMessage.getRemoteChatId());
+        } else {
+            fgDisplay.setStyle(XmdDisplay.STYLE_NONE);
+        }
         EventBus.getDefault().post(fgDisplay);
     }
 }

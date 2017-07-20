@@ -32,8 +32,6 @@ import com.hyphenate.util.DateUtils;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
-import com.xmd.manager.auth.AuthConstants;
-import com.xmd.manager.auth.AuthHelper;
 import com.xmd.manager.beans.ActivityRankingBean;
 import com.xmd.manager.beans.BadComment;
 import com.xmd.manager.beans.BadCommentRateListBean;
@@ -63,6 +61,8 @@ import com.xmd.manager.common.WidgetUtils;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.widget.BlockChildLinearLayout;
 import com.xmd.manager.widget.CircleImageView;
+import com.xmd.permission.BusinessPermissionManager;
+import com.xmd.permission.PermissionConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -443,7 +443,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             itemHolder.paidMark.setVisibility(View.GONE);
         }
 
-        WidgetUtils.setViewVisibleOrGone(itemHolder.operation, AuthHelper.checkAuthorized(AuthConstants.AUTH_CODE_ORDER_OPERATE));
+        WidgetUtils.setViewVisibleOrGone(itemHolder.operation, BusinessPermissionManager.getInstance().containPermission(PermissionConstants.MRG_ORDER_OPERATE));
         if (!WidgetUtils.isVisible(itemHolder.operation)) {
             return;
         }
