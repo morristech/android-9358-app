@@ -49,71 +49,71 @@ public class PermissionConstants {
 
 
     /************管理者*********/
-    public final static String MGR_TAB_INDEX = "index";//首页
-    public final static String MGR_TAB_CHAT = "chat";//消息
-    public final static String MGR_TAB_CUSTOMER = "custMgr";//客户
-    public final static String MGR_TAB_ORDER = "order";//订单
-    public final static String MGR_TAB_COUPON = "coupon";//营销
+    public final static String MG_TAB_INDEX = "index";//首页
+    public final static String MG_TAB_CHAT = "chat";//消息
+    public final static String MG_TAB_CUSTOMER = "custMgr";//客户
+    public final static String MG_TAB_ORDER = "order";//订单
+    public final static String MG_TAB_COUPON = "coupon";//营销
 
     /**********************         Level 2  start      ******************************/
 
     /**
      * 核销
      */
-    public static final String MRG_INDEX_VERIFY = "index.verify";
+    public static final String MG_INDEX_VERIFY = "index.verify";
 
     /**
      * 今天数据
      */
-    public static final String MRG_INDEX_STAT = "index.statistics";
+    public static final String MG_INDEX_STAT = "index.statistics";
 
     /**
      * wifi统计
      */
-    public static final String MRG_INDEX_WIFI = "index.wifi";
+    public static final String MG_INDEX_WIFI = "index.wifi";
     /**
      * 网店访客
      */
-    public static final String MRG_INDEX_ONLINE = "index.online";
+    public static final String MG_INDEX_ONLINE = "index.online";
     /**
      * 拓客锁客
      */
-    public static final String MRG_EXPAND_CUSTOMERS = "expandCustomers";
+    public static final String MG_EXPAND_CUSTOMERS = "expandCustomers";
     /**
      * 客户统计
      */
-    public static final String MRG_INDEX_REGISTER = "index.register";
+    public static final String MG_INDEX_REGISTER = "index.register";
 
     /**
      * 优惠券统计
      */
-    public static final String MRG_INDEX_COUPON = "index.coupon";
+    public static final String MG_INDEX_COUPON = "index.coupon";
 
     /**
      * 订单统计
      */
-    public static final String MRG_INDEX_ORDER = "index.order";
+    public static final String MG_INDEX_ORDER = "index.order";
 
     /**
      * 差评管理
      */
-    public static final String MRG_INDEX_BAD_COMMENT = "index.badcomment";
+    public static final String MG_INDEX_BAD_COMMENT = "index.badcomment";
 
 
     /**
      * 排行榜统计
      */
-    public static final String MRG_INDEX_RANKING = "index.ranking";
+    public static final String MG_INDEX_RANKING = "index.ranking";
 
     /**
      * 订单操作
      */
-    public static final String MRG_ORDER_OPERATE = "order.orderOperate";
+    public static final String MG_ORDER_OPERATE = "order.orderOperate";
 
     /**
      * 优惠券的使用数据
      */
-    public static final String MRG_COUPON_USE_DATA = "coupon.useData";
+    public static final String MG_COUPON_USE_DATA = "coupon.useData";
 
 //    核销	index.verify
 //    网店宣传	index.statistics

@@ -8,7 +8,8 @@
         android:id="@+id/ll_verify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/small_space">
+        android:padding="@dimen/small_space"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_qr_code"

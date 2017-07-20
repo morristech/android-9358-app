@@ -2,6 +2,7 @@ package com.xmd.manager.auth;
 
 import com.xmd.manager.ClubData;
 import com.xmd.manager.beans.AuthData;
+import com.xmd.permission.BusinessPermissionManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,18 +46,7 @@ public class AuthHelper {
      * @return
      */
     public static boolean checkAuthorized(String authCode) {
-        if (cache.containsKey(authCode)) {
-            return true;
-        }
-        List<AuthData> menus = ClubData.getInstance().getAuthDataList();
-        if (menus != null && !menus.isEmpty()) {
-            AuthData authData = doCheckAuth(menus, authCode);
-            if (authData != null) {
-                cache.put(authCode, authData);
-                return true;
-            }
-        }
-        return false;
+        return BusinessPermissionManager.getInstance().containPermission(authCode);
     }
 
     /**

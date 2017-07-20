@@ -39,7 +39,6 @@ import com.xmd.m.notify.redpoint.RedPointService;
 import com.xmd.m.notify.redpoint.RedPointServiceImpl;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.BuildConfig;
-import com.xmd.manager.ClubData;
 import com.xmd.manager.Constant;
 import com.xmd.manager.Manager;
 import com.xmd.manager.R;
@@ -47,9 +46,6 @@ import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.UINavigation;
 import com.xmd.manager.adapter.MainPageBadCommentListAdapter;
 import com.xmd.manager.adapter.PKRankingAdapter;
-import com.xmd.manager.auth.AuthConstants;
-import com.xmd.manager.auth.AuthHelper;
-import com.xmd.manager.beans.AuthData;
 import com.xmd.manager.beans.IndexOrderData;
 import com.xmd.manager.beans.QrResult;
 import com.xmd.manager.beans.SwitchIndexBean;
@@ -59,7 +55,6 @@ import com.xmd.manager.common.ReturnVisitMenu;
 import com.xmd.manager.common.ToastUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.common.VerificationManagementHelper;
-import com.xmd.manager.common.WidgetUtils;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
@@ -80,6 +75,8 @@ import com.xmd.manager.widget.BottomPopupWindow;
 import com.xmd.manager.widget.CircleImageView;
 import com.xmd.manager.widget.ClearableEditText;
 import com.xmd.manager.widget.SlidingMenu;
+import com.xmd.permission.CheckBusinessPermission;
+import com.xmd.permission.PermissionConstants;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -737,64 +734,69 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
+    @CheckBusinessPermission(PermissionConstants.MG_INDEX_VERIFY)
+    public void initVerify() {
+        mVerifyLayout.setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MG_INDEX_BAD_COMMENT)
+    public void initBadComments() {
+        mBadCommentLayout.setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MG_INDEX_ORDER)
+    public void initOrderLayout() {
+        mOrderLayout.setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MG_INDEX_STAT)
+    public void initStatisticLayout() {
+        mStatisticsLayout.setVisibility(View.VISIBLE);
+        initStatisticsWifi();
+        initStatisticsVisit();
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MG_INDEX_WIFI)
+    public void initStatisticsWifi() {
+        mWifiTodayLayout.setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MG_INDEX_ONLINE)
+    public void initStatisticsVisit() {
+        mVisitTodayLayout.setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MG_EXPAND_CUSTOMERS)
+    public void initMarketingLayout() {
+        mClientLayout.setVisibility(View.VISIBLE);
+        initStatisticsNewCustomer();
+        initMarketingCouponDeliver();
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MG_INDEX_REGISTER)
+    public void initStatisticsNewCustomer() {
+        mNewRegisterLayout.setVisibility(View.VISIBLE);
+    }
+
+    @CheckBusinessPermission(PermissionConstants.MG_INDEX_COUPON)
+    public void initMarketingCouponDeliver() {
+        mCouponGetLayout.setVisibility(View.VISIBLE);
+    }
 
     private void initVisibilityForViews() {
-        if (ClubData.getInstance().getAuthDataList() == null || ClubData.getInstance().getAuthDataList().isEmpty()) {
-            return;
-        }
         //核销
-        WidgetUtils.setViewVisibleOrGone(mVerifyLayout, AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_VERIFY) != null, true);
-        //差评
-        WidgetUtils.setViewVisibleOrGone(mBadCommentLayout, AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_BAD_COMMENT) != null, false);
+        initVerify();
+        //统计数据
+        initStatisticLayout();
+        //营销数据
+        initMarketingLayout();
         //订单
-        WidgetUtils.setViewVisibleOrGone(mOrderLayout, AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_ORDER) != null, false);
+        initOrderLayout();
+        //差评
+        initBadComments();
+
         //排行榜
         //  WidgetUtils.setViewVisibleOrGone(mRankingLayout, AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_RANKING) != null, false);
-        AuthData stat = AuthHelper.checkAuth(AuthConstants.AUTH_CODE_INDEX_STAT);
-        //网店宣传
-        WidgetUtils.setViewVisibleOrGone(mStatisticsLayout, stat != null, false);
-        AuthData client = AuthHelper.checkAuth(AuthConstants.AUTH_CODE_EXPAND_CUSTOMERS);
-        //营销数据
-        WidgetUtils.setViewVisibleOrGone(mClientLayout, client != null, true);
-        if (stat != null) {
-            mTvTitleStatistics.setText(stat.name);
-            setStatisticsTitleByAuthData(mWifiTodayLayout, mTvTitleWifi, AuthConstants.AUTH_CODE_INDEX_WIFI);
-            setStatisticsTitleByAuthData(mVisitTodayLayout, mTvTitleVisit, AuthConstants.AUTH_CODE_INDEX_ONLINE);
-        }
-        if (client != null) {
-            mTvTitleClient.setText(client.name);
-            setStatisticsTitleByAuthData(mNewRegisterLayout, mTvTitleRegister, AuthConstants.AUTH_CODE_INDEX_REGISTER);
-            setStatisticsTitleByAuthData(mCouponGetLayout, mTvTitleCoupon, AuthConstants.AUTH_CODE_INDEX_COUPON);
-        }
-
-        setStatisticsTitleByAuthData(mTvTitleOrder, AuthConstants.AUTH_CODE_INDEX_ORDER);
-    }
-
-    private void setStatisticsTitleByAuthData(TextView titleView, String authCode) {
-        AuthData authData = AuthHelper.checkAuth(authCode);
-        if (authData != null) {
-            titleView.setText(authData.name);
-        }
-    }
-
-    private void setStatisticsTitleByAuthData(LinearLayout layout, TextView titleView, String authCode) {
-        AuthData authData = AuthHelper.checkAuth(authCode);
-        WidgetUtils.setViewVisibleOrGone(layout, authData != null);
-        if (authData != null) {
-            titleView.setText(authData.name + "：");
-        }
-        if (WidgetUtils.isVisible(mWifiTodayLayout) || WidgetUtils.isVisible(mVisitTodayLayout)) {
-            mStatisticsLayout.setVisibility(View.VISIBLE);
-        } else {
-            mStatisticsLayout.setVisibility(View.GONE);
-        }
-
-        if (WidgetUtils.isVisible(mNewRegisterLayout) || WidgetUtils.isVisible(mCouponGetLayout)) {
-            mClientLayout.setVisibility(View.VISIBLE);
-        } else {
-            mClientLayout.setVisibility(View.GONE);
-        }
-
     }
 
     private void initTitleView(View view) {

@@ -443,7 +443,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             itemHolder.paidMark.setVisibility(View.GONE);
         }
 
-        WidgetUtils.setViewVisibleOrGone(itemHolder.operation, BusinessPermissionManager.getInstance().containPermission(PermissionConstants.MRG_ORDER_OPERATE));
+        WidgetUtils.setViewVisibleOrGone(itemHolder.operation, BusinessPermissionManager.getInstance().containPermission(PermissionConstants.MG_ORDER_OPERATE));
         if (!WidgetUtils.isVisible(itemHolder.operation)) {
             return;
         }

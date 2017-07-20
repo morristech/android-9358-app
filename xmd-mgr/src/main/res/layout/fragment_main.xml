@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:background="@color/tab_bg"
         android:gravity="center"
-        android:padding="@dimen/small_space">
+        android:padding="@dimen/small_space"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_qr_code"

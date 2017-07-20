@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_round_corner_list_item_clicked"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:visibility="gone">
 
     <RelativeLayout
         style="@style/relative_layout_title_style"
@@ -46,6 +47,7 @@
 
         <LinearLayout
             android:id="@+id/ll_new_register_today"
+            android:visibility="gone"
             style="@style/main_fragment_layout_statistic_section_style">
 
 
@@ -107,6 +109,7 @@
 
         <LinearLayout
             android:id="@+id/ll_coupon_get_today"
+            android:visibility="gone"
             style="@style/main_fragment_layout_statistic_section_style">
 
 

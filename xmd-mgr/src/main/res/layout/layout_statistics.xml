@@ -4,8 +4,9 @@
     style="@style/main_page_margin_style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_round_corner_list_item_clicked"
-    android:orientation="vertical">
+    android:background="@drawable/shape_r4_solid_white"
+    android:orientation="vertical"
+    android:visibility="visible">
 
     <RelativeLayout
         style="@style/relative_layout_title_style"
@@ -49,6 +50,7 @@
 
         <LinearLayout
             android:id="@+id/ll_wifi_today"
+            android:visibility="gone"
             style="@style/main_fragment_layout_statistic_section_style">
 
             <LinearLayout
@@ -102,6 +104,7 @@
 
         <LinearLayout
             android:id="@+id/ll_visit_today"
+            android:visibility="gone"
             style="@style/main_fragment_layout_statistic_section_style">
 
 
@@ -154,7 +157,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/main_piece_bg"
         android:visibility="gone">
 
         <LinearLayout

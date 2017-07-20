@@ -238,8 +238,8 @@
         <item name="android:orientation">vertical</item>
         <item name="android:paddingRight">@dimen/inter_space</item>
         <item name="android:paddingLeft">@dimen/inter_space</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">20dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
         <item name="android:background">@drawable/main_piece_bg</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>

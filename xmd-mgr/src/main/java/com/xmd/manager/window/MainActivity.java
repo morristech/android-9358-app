@@ -184,7 +184,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         mViewPagerTabIndicator.setOnTabclickListener(this);
     }
 
-    @CheckBusinessPermission(PermissionConstants.MGR_TAB_INDEX)
+    @CheckBusinessPermission(PermissionConstants.MG_TAB_INDEX)
     public void initPageIndex() {
         mPageFragmentPagerAdapter.addFragment(new MainPageFragment());
         tabTexts.add("首页");
@@ -192,7 +192,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         sTabIndex = tabTexts.size() - 1;
     }
 
-    @CheckBusinessPermission(PermissionConstants.MGR_TAB_CHAT)
+    @CheckBusinessPermission(PermissionConstants.MG_TAB_CHAT)
     public void initPageChat() {
         ConversationListFragment fragment = ConversationListFragment.newInstance("消息");
         mPageFragmentPagerAdapter.addFragment(fragment);
@@ -202,7 +202,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         mViewPagerTabIndicator.setNotice(sTabChat, XmdChat.getInstance().getTotalUnreadCount());
     }
 
-    @CheckBusinessPermission(PermissionConstants.MGR_TAB_CUSTOMER)
+    @CheckBusinessPermission(PermissionConstants.MG_TAB_CUSTOMER)
     public void initPageCustomerManager() {
         mPageFragmentPagerAdapter.addFragment(new CustomerManagementFragment());
         tabTexts.add("客户");
@@ -210,7 +210,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         sTabCustomerManagement = tabTexts.size() - 1;
     }
 
-    @CheckBusinessPermission(PermissionConstants.MGR_TAB_ORDER)
+    @CheckBusinessPermission(PermissionConstants.MG_TAB_ORDER)
     public void initPageOrder() {
         mPageFragmentPagerAdapter.addFragment(new OrderListFragment());
         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_order));
@@ -218,7 +218,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         sTabOrder = tabTexts.size() - 1;
     }
 
-    @CheckBusinessPermission(PermissionConstants.MGR_TAB_COUPON)
+    @CheckBusinessPermission(PermissionConstants.MG_TAB_COUPON)
     public void initPageMarketing() {
         mPageFragmentPagerAdapter.addFragment(new MarketingFragment());
         icons.add(ResourceUtils.getDrawable(R.drawable.ic_tab_marketing));
