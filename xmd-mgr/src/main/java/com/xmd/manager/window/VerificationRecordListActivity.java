@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.manager.R;
 import com.xmd.manager.adapter.VerificationRecordAdapter;
@@ -19,6 +20,7 @@ import com.xmd.manager.beans.TypeBean;
 import com.xmd.manager.beans.VerificationDetailBean;
 import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.ResourceUtils;
+import com.xmd.manager.common.ThreadManager;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
@@ -77,7 +79,7 @@ public class VerificationRecordListActivity extends BaseActivity implements Swip
     private int mRemainDerTotal;
     private boolean isRefresh;
     private int mCurrentSizeTotal = 0;
-    private boolean isOver = false;
+    private boolean isOver = true;
 
 
     private Subscription mGetAllTypeSubscription;
@@ -166,7 +168,7 @@ public class VerificationRecordListActivity extends BaseActivity implements Swip
                 super.onScrolled(recyclerView, dx, dy);
                 mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
                 mFirstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
-                if (!isOver && mRecordBeanList.size() > 0) {
+                if (!isOver) {
                     mRlRecordTotal.setVisibility(View.VISIBLE);
                     mRecordMonth.setText(mRecordBeanList.get(mFirstVisibleItem).currentMonth.substring(0, 4) + "年" + mRecordBeanList.get(mFirstVisibleItem).currentMonth.substring(5, 7) + "月");
                     mRecordTotal.setText(String.format("核销数： %s", mRecordBeanList.get(mFirstVisibleItem).currentMonthTotal));
@@ -210,8 +212,8 @@ public class VerificationRecordListActivity extends BaseActivity implements Swip
         if (isRefresh) {
             mRecordBeanList.clear();
             isRefresh = false;
-
         }
+
         if (recordListResult.respData == null) {
             XToast.show("暂无数据！");
             mSwipeRefreshLayout.setRefreshing(false);
@@ -219,7 +221,7 @@ public class VerificationRecordListActivity extends BaseActivity implements Swip
         }
         mRemainDerTotal = recordListResult.respData.remainderCount;
         mCurrentSizeTotal += recordListResult.respData.data.size();
-        if (mRemainDerTotal > 0) {
+        if(mRemainDerTotal>0){
             if (recordListResult.respData.data.size() > 0) {
                 for (int i = 0; i < recordListResult.respData.data.size(); i++) {
                     recordListResult.respData.data.get(i).currentMonth = mStartTime.substring(0, 7);
@@ -240,19 +242,32 @@ public class VerificationRecordListActivity extends BaseActivity implements Swip
                     PAGE_SIZE = 20 - mCurrentSizeTotal;
                     mEndTime = DateUtil.getLastDayOfLastMonth(mStartTime);
                     mStartTime = DateUtil.getFirstDayOfLastMonth(mStartTime);
-                    getData();
+                    ThreadManager.postDelayed(ThreadManager.THREAD_TYPE_BACKGROUND, new Runnable() {
+                        @Override
+                        public void run() {
+                            getData();
+                        }
+                    },50);
+
                 }
-            } else {
+            }else{
                 mCurrentSizeTotal += 1;
-                PAGE_SIZE = 20 - mCurrentSizeTotal;
                 mRecordBeanList.add(new VerificationDetailBean(mEndTime.substring(0, 7), 0));
                 mEndTime = DateUtil.getLastDayOfLastMonth(mStartTime);
                 mStartTime = DateUtil.getFirstDayOfLastMonth(mStartTime);
-                getData();
+                if(mCurrentSizeTotal == 20){
+                    PAGE_SIZE = 20;
+                    mCurrentSizeTotal = 0;
+                    mRecordAdapter.setIsNoMore(false);
+                    mRecordAdapter.setData(mRecordBeanList);
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }else{
+                    PAGE_SIZE = 20 - mCurrentSizeTotal;
+                    getData();
+                }
             }
             isOver = false;
-        } else {
-
+        }else{
             if (recordListResult.respData.data.size() > 0) {
                 for (int i = 0; i < recordListResult.respData.data.size(); i++) {
                     recordListResult.respData.data.get(i).currentMonth = mStartTime.substring(0, 7);
@@ -260,17 +275,20 @@ public class VerificationRecordListActivity extends BaseActivity implements Swip
                 }
                 mRecordBeanList.addAll(recordListResult.respData.data);
                 mRecordAdapter.setIsNoMore(true);
-                isOver = false;
+                isOver = true;
+                mRlRecordTotal.setVisibility(View.VISIBLE);
+                mRecordMonth.setText(mStartTime.substring(0, 4) + "年" + mStartTime.substring(5, 7) + "月");
+                mRecordTotal.setText(String.format("核销数： %s", recordListResult.respData.data.size()));
                 mSwipeRefreshLayout.setRefreshing(false);
                 mRecordAdapter.setData(mRecordBeanList);
             } else {
                 isOver = true;
                 mRlRecordTotal.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
+                mRecordAdapter.setIsNoMore(true);
                 mRecordAdapter.setData(mRecordBeanList);
 
             }
-
         }
 
     }
@@ -320,6 +338,7 @@ public class VerificationRecordListActivity extends BaseActivity implements Swip
         mStartTime = DateUtil.getFirstDayOfMonth() + " 00:00:01";
         mEndTime = DateUtil.getCurrentDate() + " 23:59:59";
         mCurrentSizeTotal = 0;
+        PAGE_SIZE = 20;
         getData();
     }
 

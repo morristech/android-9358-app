@@ -9,6 +9,7 @@ import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.DynamicDetail;
 import com.xmd.technician.chat.ChatConstant;
@@ -20,6 +21,8 @@ import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.DropDownMenuDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -120,8 +123,9 @@ public class DynamicDetailActivity extends BaseListActivity<DynamicDetail> {
     @Override
     public void onSayHiButtonClicked(DynamicDetail bean) {
         super.onSayHiButtonClicked(bean);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(bean.userEmchatId,
-                bean.userName, bean.imageUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
+//        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_START_CHAT, Utils.wrapChatParams(bean.userEmchatId,
+//                bean.userName, bean.imageUrl, ChatConstant.TO_CHAT_USER_TYPE_CUSTOMER));
+        EventBus.getDefault().post(new EventStartChatActivity(bean.userEmchatId));
     }
 
     public void getDynamicList(int type) {

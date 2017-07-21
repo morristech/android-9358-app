@@ -86,6 +86,8 @@ public class CommentDetailActivity extends BaseActivity {
     LinearLayout llCommentComment;
     @BindView(R2.id.img_visit_mark)
     ImageView imgVisitMark;
+    @BindView(R2.id.ll_comment_tech)
+    LinearLayout llCommentTech;
 
 
     Unbinder mUnBinder;
@@ -137,6 +139,11 @@ public class CommentDetailActivity extends BaseActivity {
                 return;
             }
             loadData();
+        }
+        if (isFromManager) {
+            llCommentTech.setVisibility(View.VISIBLE);
+        } else {
+            llCommentTech.setVisibility(View.GONE);
         }
     }
 

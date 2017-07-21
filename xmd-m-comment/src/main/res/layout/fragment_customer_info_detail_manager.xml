@@ -240,7 +240,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="visible"
+            >
 
                 <LinearLayout
                     android:id="@+id/ll_customer_register_time"
@@ -249,7 +250,9 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:paddingTop="10dp"
+
+                    android:paddingLeft="24dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
@@ -268,7 +271,9 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingLeft="10dp">
+                    android:paddingTop="10dp"
+
+                    android:paddingLeft="24dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
@@ -288,7 +293,9 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="24dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
@@ -309,7 +316,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="10dp">
+                    android:paddingLeft="24dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
@@ -329,7 +336,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="10dp">
+                    android:paddingLeft="24dp">
 
                     <TextView
                         style="@style/CustomerDetailTextStyle"
@@ -638,8 +645,6 @@
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingLeft="40dp"
-                    android:paddingRight="40dp"
                     android:visibility="gone">
 
                     <LinearLayout

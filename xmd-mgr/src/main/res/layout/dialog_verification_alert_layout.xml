@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/round_rect_white_bg"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/small_space"
+        android:paddingTop="@dimen/small_space"
+        android:text="提示"
+        android:textColor="@color/colorClubItemTitle"
+        android:textSize="@dimen/xxx_large_text_size"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/small_space"
+        android:paddingLeft="@dimen/inter_space"
+
+        android:text="折扣券需输入消费金额,以便于计算优惠金额"
+        android:textColor="@color/colorClubItemTitle"
+        android:textSize="@dimen/inter_text_size"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <EditText
+            android:id="@+id/dialog_edit_content"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="@dimen/inter_space"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_with_border"
+            android:gravity="center_vertical"
+            android:hint="请输入消费金额"
+            android:maxLength="6"
+            android:paddingLeft="@dimen/small_padding"
+            android:inputType="phone"
+            android:textColor="@color/colorClubItemBody"
+            android:textSize="@dimen/fontCoupon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="元"
+            android:textColor="@color/colorClubItemTitle"
+            android:textSize="16sp"
+        />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_discount_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="60dp"
+        android:paddingTop="@dimen/inter_space"/>
+    <LinearLayout
+        android:id="@+id/ll_discount_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/small_padding"
+        android:paddingTop="@dimen/small_padding">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="@dimen/small_padding"
+            android:text="总计优惠金额:"/>
+
+
+        <TextView
+            android:id="@+id/tv_discount_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/small_padding"
+            android:paddingRight="@dimen/inter_space"
+            android:text="xx元"/>
+    </LinearLayout>
+    <View
+        style="@style/horizontal_line"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_button_height"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dialog_negative"
+            style="@style/dialog_negative_button"
+            android:layout_width="@dimen/zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="取消"/>
+
+        <View style="@style/vertical_line"/>
+
+        <Button
+            android:id="@+id/dialog_positive"
+            style="@style/dialog_positive_button"
+            android:layout_width="@dimen/zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="确定"
+            android:textColor="@color/colorBtnSelector"/>
+
+    </LinearLayout>
+
+</LinearLayout>

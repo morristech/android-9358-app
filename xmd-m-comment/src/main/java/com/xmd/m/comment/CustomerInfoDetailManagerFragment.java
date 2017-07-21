@@ -339,7 +339,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         if (TextUtils.isEmpty(userDetailModel.consumeDate)) {
             tvCustomerConsumeTimes.setText(String.format("%s次", userDetailModel.consumeAmount));
         } else {
-            tvCustomerConsumeTimes.setText(String.format("%s次（最近消费%s)", userDetailModel.consumeAmount, userDetailModel.consumeDate));
+            tvCustomerConsumeTimes.setText(String.format("%s次（最近消费%s)", userDetailModel.consumeCount, userDetailModel.consumeDate));
         }
 
         //网店访问

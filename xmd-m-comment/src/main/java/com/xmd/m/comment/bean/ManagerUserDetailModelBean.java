@@ -61,6 +61,7 @@ public class ManagerUserDetailModelBean {
     public String consumeDate;
     public int shopCount;
     public int consumeAmount;
+    public int consumeCount;
     public int rewardCount;
     public int commentCount;
     public int visitCount;

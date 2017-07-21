@@ -6,9 +6,12 @@ import android.content.pm.PackageManager;
 import android.os.Process;
 
 import com.shidou.commonlibrary.helper.CrashHandler;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.cashier.activity.BaseActivity;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.ThreadManager;
@@ -18,7 +21,9 @@ import com.xmd.cashier.dal.db.DBManager;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.sp.SPManager;
+import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.DataReportManager;
+import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.OkHttpUtil;
 import com.xmd.m.network.XmdNetwork;
@@ -26,6 +31,7 @@ import com.xmd.m.notify.push.XmdPushManager;
 import com.xmd.m.notify.push.XmdPushMessage;
 import com.xmd.m.notify.push.XmdPushMessageListener;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,6 +70,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
 
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(true);
+        ThreadPoolManager.init(this);
         ThreadManager.init(this);
 
         DataReportManager.getInstance().startMonitor();
@@ -106,6 +113,14 @@ public class MainApplication extends Application implements CrashHandler.Callbac
                 }
             }
         });
+
+        if (AccountManager.getInstance().isLogin()) {
+            EventBus.getDefault().removeStickyEvent(EventLogout.class);
+            com.xmd.app.user.User user = new com.xmd.app.user.User(AccountManager.getInstance().getUserId());
+            EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));
+            NotifyManager.getInstance().startGetFastPayCountAsync();
+            NotifyManager.getInstance().startGetOrderCountAsync();
+        }
 
         // 开启服务
         CustomService.start();

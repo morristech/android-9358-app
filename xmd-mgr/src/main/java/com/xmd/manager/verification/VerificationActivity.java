@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.google.gson.Gson;
@@ -24,11 +25,14 @@ import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
+import com.xmd.manager.widget.VerificationAlertDialog;
 import com.xmd.manager.window.BaseActivity;
 
 import org.xml.sax.XMLReader;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import rx.Subscription;
@@ -46,6 +50,8 @@ public class VerificationActivity extends BaseActivity implements VerificationLi
     public static final String EXTRA_DATA = "extra_data";
 
     public Subscription subscription;
+    private VerificationAlertDialog mVerificationDialog;
+    private List<VerificationCouponDetailBean> discountList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,12 +140,41 @@ public class VerificationActivity extends BaseActivity implements VerificationLi
 
     @Override
     public void onVerify(CheckInfo checkInfo) {
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_VERIFICATION_AMOUNT, "0");
-        params.put(RequestConstant.KEY_VERIFICATION_CODE, mData.getCode());
-        params.put(RequestConstant.KEY_VERIFICATION_TYPE, "");
-        params.put(RequestConstant.KEY_VERIFICATION_SOME, "some");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_VERIFICATION_COMMON_SAVE, params);
-        showLoading("正在核销 " + mData.getTitle());
+        if (discountList == null) {
+            discountList = new ArrayList<>();
+        } else {
+            discountList.clear();
+        }
+        if (checkInfo.getType().equals("discount_coupon")) {
+            discountList.add((VerificationCouponDetailBean) checkInfo.getInfo());
+            mVerificationDialog = new VerificationAlertDialog(this, discountList);
+            mVerificationDialog.show();
+            mVerificationDialog.setVerificationListener(new VerificationAlertDialog.VerificationSuccessListener() {
+                @Override
+                public void verificationSuccess(boolean canUse, float money) {
+                    if (canUse) {
+                        Map<String, String> params = new HashMap<>();
+                        params.put(RequestConstant.KEY_VERIFICATION_AMOUNT, String.valueOf((int) money * 100));
+                        params.put(RequestConstant.KEY_VERIFICATION_CODE, discountList.get(0).couponNo);
+                        params.put(RequestConstant.KEY_VERIFICATION_TYPE, "");
+                        params.put(RequestConstant.KEY_VERIFICATION_SOME, "some");
+                        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_VERIFICATION_COMMON_SAVE, params);
+                    } else {
+                        Toast.makeText(VerificationActivity.this, "所选折扣券不满足使用条件,请重新选择", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+
+            });
+        } else {
+            Map<String, String> params = new HashMap<>();
+            params.put(RequestConstant.KEY_VERIFICATION_AMOUNT, "0");
+            params.put(RequestConstant.KEY_VERIFICATION_CODE, mData.getCode());
+            params.put(RequestConstant.KEY_VERIFICATION_TYPE, "");
+            params.put(RequestConstant.KEY_VERIFICATION_SOME, "some");
+            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_VERIFICATION_COMMON_SAVE, params);
+            showLoading("正在核销 " + mData.getTitle());
+        }
+
     }
 }

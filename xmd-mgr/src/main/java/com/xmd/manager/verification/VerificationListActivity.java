@@ -9,12 +9,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.CheckInfo;
 import com.xmd.manager.beans.CheckInfoList;
+import com.xmd.manager.beans.VerificationCouponDetailBean;
 import com.xmd.manager.beans.VerificationSomeBean;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
@@ -25,6 +28,7 @@ import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.VerificationSaveResult;
 import com.xmd.manager.widget.EmptyView;
+import com.xmd.manager.widget.VerificationAlertDialog;
 import com.xmd.manager.window.BaseActivity;
 
 import java.util.ArrayList;
@@ -36,6 +40,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
+
+import static com.xmd.manager.R.drawable.dash_line_bg;
+import static com.xmd.manager.R.drawable.list;
 
 /**
  * Created by sdcm on 17-3-3.
@@ -68,7 +75,9 @@ public class VerificationListActivity extends BaseActivity implements Verificati
     private int verificationSuccess = 0;
     private int verificationFail = 0;
     private int verificationCount = 0;
-    private boolean mVerifying;
+    //  private boolean mVerifying;
+    private VerificationAlertDialog mVerificationDialog;
+    private List<VerificationCouponDetailBean> discountList;
 
     public static void startCustomerCouponListActivity(Activity activity, String phone) {
         Intent intent = new Intent(activity, VerificationListActivity.class);
@@ -155,7 +164,7 @@ public class VerificationListActivity extends BaseActivity implements Verificati
         }
         if ((verificationFail + verificationSuccess) == verificationCount) {
             hideLoading();
-            mVerifying = false;
+            //    mVerifying = false;
             if (verificationFail > 0) {
                 //部分核销成功
                 Intent intent = new Intent(VerificationListActivity.this, VerificationCouponsFailActivity.class);
@@ -211,27 +220,58 @@ public class VerificationListActivity extends BaseActivity implements Verificati
 
     @OnClick(R.id.btn_verification)
     public void onClick() {
-        showLoading();
-        mVerifying = true;
+               showLoading();
+
         verificationSuccess = 0;
         verificationFail = 0;
         mFailedVerificationList.clear();
         verificationCount = mSelectedVerificationList.size();
-        for (int i = 0; i < mSelectedVerificationList.size(); i++) {
-            Map<String, String> params = new HashMap<>();
-            params.put(RequestConstant.KEY_VERIFICATION_AMOUNT, "0");
-            params.put(RequestConstant.KEY_VERIFICATION_CODE, mSelectedVerificationList.get(i).getCode());
-            params.put(RequestConstant.KEY_VERIFICATION_TYPE, "");
-            params.put(RequestConstant.KEY_VERIFICATION_SOME, "some");
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_VERIFICATION_COMMON_SAVE, params);
+        if (discountList == null) {
+            discountList = new ArrayList<>();
+        } else {
+            discountList.clear();
         }
+        for (int i = 0; i < mSelectedVerificationList.size(); i++) {
+            if (mSelectedVerificationList.get(i).getType().equals("discount_coupon")) {
+                discountList.add((VerificationCouponDetailBean) mSelectedVerificationList.get(i).getInfo());
+            }
+        }
+        if (discountList.size() > 0) {
+            mVerificationDialog = new VerificationAlertDialog(this, discountList);
+            mVerificationDialog.show();
+            mVerificationDialog.setVerificationListener(new VerificationAlertDialog.VerificationSuccessListener() {
+                @Override
+                public void verificationSuccess(boolean canUse,float money) {
+                    if(canUse){
+                        for (int i = 0; i < mSelectedVerificationList.size(); i++) {
+                            Map<String, String> params = new HashMap<>();
+                            if (money > 0) {
+                                params.put(RequestConstant.KEY_VERIFICATION_AMOUNT, String.valueOf((int) money * 100));
+                            } else {
+                                params.put(RequestConstant.KEY_VERIFICATION_AMOUNT, "0");
+                            }
+
+                            params.put(RequestConstant.KEY_VERIFICATION_CODE, mSelectedVerificationList.get(i).getCode());
+                            params.put(RequestConstant.KEY_VERIFICATION_TYPE, "");
+                            params.put(RequestConstant.KEY_VERIFICATION_SOME, "some");
+                            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_VERIFICATION_COMMON_SAVE, params);
+                        }
+                    }else{
+                        Toast.makeText(VerificationListActivity.this,"所选折扣券不满足使用条件,请重新选择",Toast.LENGTH_LONG).show();
+                    }
+
+                }
+            });
+        }
+
+
     }
 
     @Override
     public void onItemClicked(CheckInfo checkInfo) {
-        if (mVerifying) {
-            return;
-        }
+//        if (mVerifying) {
+//            return;
+//        }
         Intent intent = new Intent(this, VerificationActivity.class);
         intent.putExtra(VerificationActivity.EXTRA_DATA, checkInfo);
         startActivityForResult(intent, REQUEST_CODE_DETAIL);
@@ -239,9 +279,10 @@ public class VerificationListActivity extends BaseActivity implements Verificati
 
     @Override
     public void onItemChecked(boolean isChecked, CheckInfo checkInfo) {
-        if (mVerifying) {
-            return;
-        }
+//        if (mVerifying) {
+//            return;
+//        }
+
         if (isChecked) {
             mSelectedVerificationList.add(checkInfo);
         } else {
@@ -252,6 +293,7 @@ public class VerificationListActivity extends BaseActivity implements Verificati
     }
 
     private void showSelectedView() {
+        XLogger.i(">>>", "" + mSelectedVerificationList.size());
         mSelectedTotal = "已选择 " + mSelectedVerificationList.size() + " 张";
         mSelectedCouponTotal.setText(Utils.changeColor(mSelectedTotal, ResourceUtils.getColor(R.color.main_btn_pressed), 3, mSelectedTotal.length() - 1));
         mBtnVerification.setEnabled(mSelectedVerificationList.size() > 0);

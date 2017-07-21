@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.m.comment.adapter.CommentItemDetailAdapter;
 import com.xmd.m.comment.bean.CommentBean;
@@ -64,7 +65,8 @@ public class MainPageBadCommentListAdapter extends RecyclerView.Adapter {
         MainPageBadCommentViewHolder viewHolder = (MainPageBadCommentViewHolder) holder;
         final CommentBean commentBean = mBadComments.get(position);
         Glide.with(mContext).load(commentBean.avatarUrl).into(viewHolder.commentHead);
-        viewHolder.commentName.setText(TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName);
+        String commentUserName = TextUtils.isEmpty(commentBean.userName) ? "匿名用户" : commentBean.userName;
+        viewHolder.commentName.setText(Utils.StrSubstring(7, commentUserName, true));
         viewHolder.commentPhone.setText(TextUtils.isEmpty(commentBean.phoneNum) ? "" : commentBean.phoneNum);
         viewHolder.commentTechName.setText(TextUtils.isEmpty(commentBean.techName) ? "技师" : commentBean.techName);
         viewHolder.commentTechCode.setText(TextUtils.isEmpty(commentBean.techNo) ? "" : String.format("[%s]", commentBean.techNo));
