@@ -5,7 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -24,6 +27,7 @@ import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
 import com.xmd.chat.message.RewardChatMessage;
 import com.xmd.chat.view.ChatActivity;
+import com.xmd.chat.view.DiceGameSettingFragment;
 import com.xmd.chat.view.ShareListActivity;
 import com.xmd.chat.view.SubmenuEmojiFragment;
 import com.xmd.chat.view.SubmenuFastReplyFragment;
@@ -67,6 +71,7 @@ public class MenuFactory {
         createMoreMarketingMenu(activity, remoteUser);
         createMoreJournalMenu(activity, remoteUser);
         createMoreMallMenu(activity, remoteUser);
+        createMoreDiceGameMenu(activity, remoteUser);
         createMoreLocationMenu(activity, remoteUser);
         createMoreMenu(activity);
 
@@ -371,6 +376,24 @@ public class MenuFactory {
                         XToast.show("加载数据失败：" + e.getMessage());
                     }
                 });
+            }
+        }, null));
+    }
+
+    //创建更多-营销活动菜单
+//    @CheckBusinessPermission(PermissionConstants.MESSAGE_PLAY_CREDIT_GAME)
+    public void createMoreDiceGameMenu(final AppCompatActivity activity, final User remoteUser) {
+        moreMenus.add(new ChatMenu(activity, "积分游戏", R.drawable.chat_menu_game, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = activity.getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                Fragment prev = fm.findFragmentByTag("fragment_dice_game_setting");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                DialogFragment current = DiceGameSettingFragment.newInstance(remoteUser.getId());
+                current.show(ft, "fragment_dice_game_setting");
             }
         }, null));
     }

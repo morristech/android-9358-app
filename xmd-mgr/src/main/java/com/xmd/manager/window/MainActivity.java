@@ -38,7 +38,6 @@ import com.xmd.manager.beans.ClubInfo;
 import com.xmd.manager.beans.SwitchIndex;
 import com.xmd.manager.beans.SwitchIndexBean;
 import com.xmd.manager.chat.EmchatUserHelper;
-import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.ImageLoader;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.ThreadManager;
@@ -95,7 +94,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        ActivityHelper.sRootActivity = this;
 
         //加载权限菜单
         BusinessPermissionManager.getInstance().loadPermissions(new Callback<Void>() {
@@ -331,6 +329,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         RxBus.getInstance().post(new SwitchIndexBean(position));
     }
 
+    //跳转到某个页面
     public void switchTo(int position) {
         onTabClick(position);
         mViewPagerTabIndicator.updateSelectedPosition(position);

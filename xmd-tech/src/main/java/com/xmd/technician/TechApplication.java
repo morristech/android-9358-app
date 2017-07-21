@@ -21,6 +21,7 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.EmojiManager;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.XmdActivityManager;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
@@ -38,7 +39,6 @@ import com.xmd.m.notify.display.FloatNotifyManager;
 import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.ContactPermissionInfo;
 import com.xmd.permission.ContactPermissionManager;
-import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
@@ -103,7 +103,7 @@ public class TechApplication extends MultiDexApplication {
                 CrashHandler.getInstance().init(getApplicationContext(), new CrashHandler.Callback() {
                     @Override
                     public void onExitApplication() {
-                        ActivityHelper.getInstance().exitAndClearApplication();
+                        XmdActivityManager.getInstance().exitApplication();
                     }
                 });
 
@@ -191,7 +191,7 @@ public class TechApplication extends MultiDexApplication {
     @Subscribe
     public void restart(EventRestartApplication event) {
         XLogger.i("----------restart application----------");
-        ActivityHelper.getInstance().removeAllActivities();
+        XmdActivityManager.getInstance().finishAll();
         Intent intent = new Intent(appContext, WelcomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         appContext.startActivity(intent);

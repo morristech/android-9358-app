@@ -2,6 +2,7 @@ package com.xmd.technician.model;
 
 import android.text.TextUtils;
 
+import com.xmd.app.XmdActivityManager;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
@@ -12,7 +13,6 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.TechInfo;
-import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
@@ -73,7 +73,7 @@ public class LoginTechnician {
     private String clubId;
     private String clubName;
     private String clubPosition;    //会所所在位置 add ZR
-    private int credit;
+    private int credit; //积分信息
     public String innerProvider;
     private String shareUrl;
 
@@ -359,7 +359,7 @@ public class LoginTechnician {
         //清空token
         setToken(null);
 
-        ActivityHelper.getInstance().removeAllActivities();
+        XmdActivityManager.getInstance().finishAll();
         UINavigation.gotoLogin(TechApplication.getAppContext());
     }
 
@@ -642,6 +642,4 @@ public class LoginTechnician {
         this.customerService = customerService;
         SharedPreferenceHelper.setCustomerService(customerService);
     }
-
-
 }

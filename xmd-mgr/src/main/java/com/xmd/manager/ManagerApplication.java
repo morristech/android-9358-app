@@ -19,6 +19,7 @@ import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.EmojiManager;
+import com.xmd.app.XmdActivityManager;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
@@ -29,7 +30,6 @@ import com.xmd.chat.XmdChat;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
 import com.xmd.manager.beans.ClubInfo;
-import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.ToastUtils;
 import com.xmd.manager.common.Utils;
@@ -87,7 +87,7 @@ public class ManagerApplication extends MultiDexApplication {
                 CrashHandler.getInstance().init(getApplicationContext(), new CrashHandler.Callback() {
                     @Override
                     public void onExitApplication() {
-                        ActivityHelper.getInstance().exitAndClearApplication();
+                        XmdActivityManager.getInstance().exitApplication();
                     }
                 });
 

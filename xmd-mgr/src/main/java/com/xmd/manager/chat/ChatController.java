@@ -7,10 +7,10 @@ import android.os.Message;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.xmd.app.XmdActivityManager;
 import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.ConversationListResult;
 import com.xmd.manager.beans.CouponSelectResult;
-import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.Logger;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.AbstractController;
@@ -130,7 +130,7 @@ public class ChatController extends AbstractController {
                 EmchatManager.getInstance().saveChatUser(emchatUser);
             }
 
-            Activity activity = ActivityHelper.getInstance().getCurrentActivity();
+            Activity activity = XmdActivityManager.getInstance().getCurrentActivity();
             Intent intent = new Intent(activity, ChatActivity.class);
             intent.putExtra(EmchatConstant.EMCHAT_ID, emchatId);
             intent.putExtra(EmchatConstant.EMCHAT_OBJECT, (CouponSelectResult) params.get(EmchatConstant.EMCHAT_OBJECT));

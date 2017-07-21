@@ -2,7 +2,7 @@ package com.xmd.technician.share;
 
 import android.content.Intent;
 
-import com.xmd.technician.common.ActivityHelper;
+import com.xmd.app.XmdActivityManager;
 
 import java.util.Map;
 
@@ -32,6 +32,6 @@ public class OtherShareUtil extends BaseShareUtil {
         intent.putExtra(Intent.EXTRA_TEXT, mShareUrl);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        ActivityHelper.getInstance().getCurrentActivity().startActivity(Intent.createChooser(intent, "请选择"));
+        XmdActivityManager.getInstance().getCurrentActivity().startActivity(Intent.createChooser(intent, "请选择"));
     }
 }

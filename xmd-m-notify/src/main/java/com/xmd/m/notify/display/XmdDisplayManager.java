@@ -7,8 +7,8 @@ import android.media.RingtoneManager;
 import android.os.Vibrator;
 import android.view.View;
 
-import com.shidou.commonlibrary.util.AppUtils;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.XmdActivityManager;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -40,7 +40,7 @@ public class XmdDisplayManager {
 
     @Subscribe
     public void show(XmdDisplay display) {
-        if (AppUtils.isBackground(context)) {
+        if (XmdActivityManager.getInstance().getActivityCount() == 0) {
             if ((display.getScene() & XmdDisplay.SCENE_BG) == 0) {
                 return;
             }

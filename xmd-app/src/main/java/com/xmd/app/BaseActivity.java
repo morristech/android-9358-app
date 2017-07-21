@@ -19,9 +19,13 @@ import com.xmd.m.network.EventTokenExpired;
 
 import org.greenrobot.eventbus.Subscribe;
 
+/**
+ * 应当作为所有activity的祖先
+ */
+
 public class BaseActivity extends AppCompatActivity {
-    private XProgressDialog progressDialog;
-    private Toolbar mToolbar;
+    protected XProgressDialog progressDialog;
+    protected Toolbar mToolbar;
     private RelativeLayout toolbarBack;
     private RelativeLayout toolbarRightImage;
     private ImageView rightImage;
@@ -30,7 +34,14 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBusSafeRegister.register(this);
+        XmdActivityManager.getInstance().addActivity(this);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBusSafeRegister.unregister(this);
+        XmdActivityManager.getInstance().removeActivity(this);
     }
 
     @Override
@@ -101,11 +112,6 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBusSafeRegister.unregister(this);
-    }
 
     @Subscribe
     public void onTokenExpired(EventTokenExpired event) {

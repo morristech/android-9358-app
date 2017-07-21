@@ -22,7 +22,7 @@ public class XmdDisplay implements Serializable {
 
     public static final int STYLE_NONE = 1;
     public static final int STYLE_NOTIFICATION = 2;
-    public static final int STYLE_FLOAT_TOAST = 100;
+    public static final int STYLE_FLOAT_TOAST = 3;
 
     public static final int FLAG_RING = 1;
     public static final int FLAG_VIBRATE = 2;
@@ -153,11 +153,14 @@ public class XmdDisplay implements Serializable {
                 ", scene=" + scene +
                 ", style=" + style +
                 ", flags=" + flags +
-                ", title=" + title +
-                ", message=" + message +
-                ", audioUri=" + audioUri +
-                ", action=" + action +
-                ", actionData=" + actionData +
+                ", title='" + title + '\'' +
+                ", message='" + message + '\'' +
+                ", audioUri='" + audioUri + '\'' +
+                ", action='" + action + '\'' +
+                ", actionData='" + actionData + '\'' +
+                ", x=" + x +
+                ", y=" + y +
+                ", duration=" + duration +
                 '}';
     }
 }

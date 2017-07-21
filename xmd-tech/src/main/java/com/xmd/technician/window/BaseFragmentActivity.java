@@ -3,7 +3,6 @@ package com.xmd.technician.window;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
-import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
 
@@ -25,7 +23,7 @@ import rx.Subscription;
 /**
  * Created by sdcm on 15-10-26.
  */
-public class BaseFragmentActivity extends AppCompatActivity {
+public class BaseFragmentActivity extends com.xmd.app.BaseActivity {
 
     protected TextView mAppTitle;
     protected ImageView mBack;
@@ -38,8 +36,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ActivityHelper.getInstance().pushActivity(this);
 
         mThrowableSubscription = RxBus.getInstance().toObservable(Throwable.class).subscribe(
                 throwable -> {
@@ -65,7 +61,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         RxBus.getInstance().unsubscribe(mThrowableSubscription);
-        ActivityHelper.getInstance().removeActivity(this);
     }
 
     @Override

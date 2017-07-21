@@ -14,7 +14,6 @@ import com.xmd.m.notify.display.XmdDisplay;
 import com.xmd.manager.window.LoginActivity;
 import com.xmd.manager.window.MainActivity;
 import com.xmd.manager.window.OnlinePayActivity;
-import com.xmd.manager.window.OrdersDetailActivity;
 
 /**
  * Created by mo on 17-6-29.
@@ -62,9 +61,10 @@ public class UINavigation {
     }
 
     public static void gotoOrderDetail(Context context, String orderId) {
-        Intent intent = new Intent(context, OrdersDetailActivity.class);
-//        intent.putExtra(OrderDetailActivity.KEY_ORDER_ID, orderId);
-        context.startActivity(intent);
+        //只能到订单页面
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).switchTo(MainActivity.sTabOrder);
+        }
     }
 
     public static void gotoComment(Context context) {

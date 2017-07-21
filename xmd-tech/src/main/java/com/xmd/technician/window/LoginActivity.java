@@ -13,10 +13,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.xmd.app.XmdActivityManager;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.contract.LoginContract;
 import com.xmd.technician.http.RetrofitServiceFactory;
 import com.xmd.technician.presenter.LoginPresenter;
@@ -153,7 +153,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                                 .setPositiveButton("确定", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        ActivityHelper.getInstance().exitAndClearApplication();
+                                        XmdActivityManager.getInstance().exitApplication();
                                     }
                                 })
                                 .show();

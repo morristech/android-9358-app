@@ -29,6 +29,7 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.xmd.app.XmdActivityManager;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.ManagerApplication;
 
@@ -153,7 +154,7 @@ public class Utils {
     public static int[] getScreenWidthHeight(Activity activity) {
         if (AppConfig.sScreenWidth < 0) {
             if (activity == null) {
-                activity = ActivityHelper.getInstance().getCurrentActivity();
+                activity = XmdActivityManager.getInstance().getCurrentActivity();
             }
             if (activity == null) {
                 return new int[]{0, 0};

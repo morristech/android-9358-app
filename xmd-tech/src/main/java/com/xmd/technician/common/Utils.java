@@ -26,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.XmdActivityManager;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
@@ -171,7 +172,7 @@ public class Utils {
      */
     public static int[] getScreenWidthHeight(Activity activity) {
         if (activity == null) {
-            activity = ActivityHelper.getInstance().getCurrentActivity();
+            activity = XmdActivityManager.getInstance().getCurrentActivity();
         }
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);

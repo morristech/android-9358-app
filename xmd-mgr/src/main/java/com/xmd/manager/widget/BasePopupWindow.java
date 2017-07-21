@@ -5,8 +5,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.PopupWindow;
 
+import com.xmd.app.XmdActivityManager;
 import com.xmd.manager.R;
-import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
 
@@ -26,7 +26,7 @@ public abstract class BasePopupWindow implements PopupWindow.OnDismissListener {
     protected int[] mWh;
 
     protected BasePopupWindow(View parentView, Map<String, String> params) {
-        mActivity = ActivityHelper.getInstance().getCurrentActivity();
+        mActivity = XmdActivityManager.getInstance().getCurrentActivity();
         mParentView = parentView != null ? parentView : mActivity.getWindow().getDecorView();
         mParams = params;
 

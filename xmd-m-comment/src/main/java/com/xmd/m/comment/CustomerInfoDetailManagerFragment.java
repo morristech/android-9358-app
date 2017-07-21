@@ -15,13 +15,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.m.R;
@@ -205,7 +205,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         initConsumeView();
         getUserInfo();
         unbinder = ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
+        EventBusSafeRegister.register(this);
         return view;
     }
 
@@ -496,7 +496,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        EventBus.getDefault().unregister(this);
+        EventBusSafeRegister.unregister(this);
     }
 
     @OnClick(R2.id.img_customer_head)

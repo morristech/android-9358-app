@@ -1,12 +1,10 @@
 package com.xmd.manager.window;
 
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +12,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.widget.XProgressDialog;
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.XmdActivityManager;
 import com.xmd.manager.ClubData;
 import com.xmd.manager.Constant;
 import com.xmd.manager.ManagerApplication;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
-import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.ToastUtils;
 import com.xmd.manager.common.Utils;
@@ -39,7 +38,7 @@ import rx.Subscription;
 /**
  * Created by sdcm on 15-10-26.
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends com.xmd.app.BaseActivity {
 
     protected ImageView mBack;
     protected FrameLayout mToolbarRight;
@@ -50,8 +49,6 @@ public class BaseActivity extends AppCompatActivity {
     protected TextView mUnreadMsg;
     protected TextView mRightText;
 
-    protected ProgressDialog mLoadingView;
-
     private ArrayBottomPopupWindow<String> mCustomerPopupWindow;
 
     private Subscription mTokenExpiredSubscription;
@@ -61,7 +58,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityHelper.getInstance().pushActivity(this);
+        XmdActivityManager.getInstance().addActivity(this);
 
         mTokenExpiredSubscription = RxBus.getInstance().toObservable(TokenExpiredResult.class).subscribe(
                 tokenExpiredResult -> {
@@ -79,7 +76,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ActivityHelper.getInstance().removeActivity(this);
+        XmdActivityManager.getInstance().removeActivity(this);
         RxBus.getInstance().unsubscribe(mTokenExpiredSubscription, mThrowableSubscription);
     }
 
@@ -295,7 +292,7 @@ public class BaseActivity extends AppCompatActivity {
         if (Utils.isNotEmpty(message)) {
             makeShortToast(message);
         }
-        ActivityHelper.getInstance().removeAllActivities();
+        XmdActivityManager.getInstance().finishAll();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -313,21 +310,10 @@ public class BaseActivity extends AppCompatActivity {
         MobclickAgent.onPause(this);
     }
 
-    protected void showLoading() {
-        showLoading("正在处理中...");
-    }
-
     protected void showLoading(String message) {
-        if (mLoadingView == null) {
-            mLoadingView = new ProgressDialog(this);
+        if (progressDialog == null) {
+            progressDialog = new XProgressDialog(this);
         }
-        mLoadingView.setMessage(message);
-        mLoadingView.show();
-    }
-
-    protected void hideLoading() {
-        if (mLoadingView != null) {
-            mLoadingView.hide();
-        }
+        progressDialog.show(message);
     }
 }

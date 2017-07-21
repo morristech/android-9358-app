@@ -1,6 +1,7 @@
 package com.xmd.chat;
 
 import com.xmd.chat.beans.CreditGift;
+import com.xmd.chat.beans.DiceGameResult;
 import com.xmd.chat.beans.Journal;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.beans.MarketingCategory;
@@ -75,6 +76,31 @@ public interface NetService {
                                                  @Field("friendChatId") String friendChatId,
                                                  @Field("friendUserType") String friendUserType,
                                                  @Field("msgId") String msgId,
-                                                 @Field("msgType") String msgType
-    );
+                                                 @Field("msgType") String msgType);
+
+
+    /**
+     * 发起骰子游戏邀请
+     *
+     * @param emchatId 对方的聊天id
+     * @param clubId   会所id
+     * @param amount   积分值
+     */
+    @FormUrlEncoded
+    @POST("/spa-manager/api/v2/credit/game/dice/submit")
+    Observable<BaseBean<DiceGameResult>> playGame(@Field("emchatId") String emchatId,
+                                                  @Field("clubId") String clubId,
+                                                  @Field("amount") int amount);
+
+    /**
+     * 玩骰子游戏，返回结果
+     *
+     * @param gameId 游戏ID
+     * @param status 状态
+     * @return 游戏结果
+     */
+    @FormUrlEncoded
+    @POST("/spa-manager/api/v2/credit/game/dice/accept")
+    Observable<BaseBean<DiceGameResult>> playGame(@Field("gameId") String gameId,
+                                                  @Field("status") String status);
 }

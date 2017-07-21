@@ -8,9 +8,9 @@ import com.shidou.update.IUpdater;
 import com.shidou.update.UpdateConfig;
 import com.shidou.update.UpdateConstants;
 import com.shidou.update.UpdaterController;
+import com.xmd.app.XmdActivityManager;
 import com.xmd.manager.Constant;
 import com.xmd.manager.SharedPreferenceHelper;
-import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.ThreadManager;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.AbstractController;
@@ -54,7 +54,7 @@ public class UpgradeController extends AbstractController {
                             @Override
                             public void onUserCancel(UpdateConfig updateConfig) {
                                 if (mIsForeUpdate) {
-                                    ActivityHelper.getInstance().exitAndClearApplication();
+                                    XmdActivityManager.getInstance().exitApplication();
                                 }
                             }
 

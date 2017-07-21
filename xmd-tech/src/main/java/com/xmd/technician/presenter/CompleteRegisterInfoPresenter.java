@@ -11,9 +11,9 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.XmdActivityManager;
 import com.xmd.image_tool.ImageTool;
 import com.xmd.technician.Constant;
-import com.xmd.technician.common.ActivityHelper;
 import com.xmd.technician.common.ImageUploader;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.contract.CompleteRegisterInfoContract;
@@ -164,7 +164,7 @@ public class CompleteRegisterInfoPresenter extends BasePresenter<CompleteRegiste
         if (mJoinClub) {
             UINavigation.gotoJoinClubFrom(mContext, UINavigation.OPEN_JOIN_CLUB_FROM_START);
         } else {
-            ActivityHelper.getInstance().removeAllActivities();
+            XmdActivityManager.getInstance().finishAll();
             UINavigation.gotoMainActivityFromStart(mContext);
         }
         mView.finishSelf();

@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.Constants;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.IFunctionInit;
 import com.xmd.app.XmdApp;
 import com.xmd.m.network.BaseBean;
@@ -31,7 +32,7 @@ public class XmdModuleAppointment implements IFunctionInit {
 
     @Override
     public void init(Context context) {
-        EventBus.getDefault().register(this);
+        EventBusSafeRegister.register(this);
     }
 
     @Subscribe

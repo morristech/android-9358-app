@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
-import com.xmd.app.utils.Utils;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.m.R;
 import com.xmd.m.R2;
@@ -120,7 +120,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_customer_info_detail_tech, container, false);
         userId = getArguments().getString(CustomerInfoDetailActivity.CURRENT_USER_ID);
-        EventBus.getDefault().register(this);
+        EventBusSafeRegister.register(this);
         initConsumeView();
         getUserInfo();
         unbinder = ButterKnife.bind(this, view);
@@ -250,7 +250,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-
+        EventBusSafeRegister.unregister(this);
     }
 
 

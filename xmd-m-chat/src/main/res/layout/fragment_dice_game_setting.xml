@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.xmd.chat.view.DiceGameSettingFragment" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_r4_solid_white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="每局筹码"
+                android:textSize="@dimen/fontSubheading" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#dddddd" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text='@{"当前积分余额："+String.valueOf(data.credit)}' />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@{data.isSelect(1)?@drawable/shape_r4_stoke_green:@drawable/shape_r4_stoke_gray}"
+                        android:gravity="center"
+                        android:onClick="@{()->data.selectCredit(1)}"
+                        android:padding="8dp"
+                        android:text="1" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@{data.isSelect(10)?@drawable/shape_r4_stoke_green:@drawable/shape_r4_stoke_gray}"
+                        android:gravity="center"
+                        android:onClick="@{()->data.selectCredit(10)}"
+                        android:padding="8dp"
+                        android:text="10" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@{data.isSelect(50)?@drawable/shape_r4_stoke_green:@drawable/shape_r4_stoke_gray}"
+                        android:gravity="center"
+                        android:onClick="@{()->data.selectCredit(50)}"
+                        android:padding="8dp"
+                        android:text="50" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@{data.isSelect(100)?@drawable/shape_r4_stoke_green:@drawable/shape_r4_stoke_gray}"
+                        android:gravity="center"
+                        android:onClick="@{()->data.selectCredit(100)}"
+                        android:padding="8dp"
+                        android:text="100" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@{data.isSelect(500)?@drawable/shape_r4_stoke_green:@drawable/shape_r4_stoke_gray}"
+                        android:gravity="center"
+                        android:onClick="@{()->data.selectCredit(500)}"
+                        android:padding="8dp"
+                        android:text="500" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@{data.isSelect(1000)?@drawable/shape_r4_stoke_green:@drawable/shape_r4_stoke_gray}"
+                        android:gravity="center"
+                        android:onClick="@{()->data.selectCredit(1000)}"
+                        android:padding="8dp"
+                        android:text="1000" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/icon_dice" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="比大小，每局胜方将获得负方所选积分"
+                android:textColor="#999999" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#dddddd" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="@{()->data.onClickCancel()}"
+                    android:padding="16dp"
+                    android:text="取消"
+                    android:textColor="#212121" />
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#dddddd" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:enabled="@{data.canInvite}"
+                    android:gravity="center"
+                    android:onClick="@{()->data.onClickOk()}"
+                    android:padding="16dp"
+                    android:text="邀请"
+                    android:textColor="@{data.canInvite?0xffff6666:0xffdddddd}" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ccffffff"
+            android:clickable="true"
+            android:onClick="@{()->data.reLoad()}"
+            android:visibility="@{(data.loading || data.error!=null)?View.VISIBLE:View.GONE}">
+
+            <ProgressBar
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:visibility="@{data.loading?View.VISIBLE:View.GONE}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#800000"
+                android:visibility="@{data.error!=null?View.VISIBLE:View.GONE}" />
+        </FrameLayout>
+    </FrameLayout>
+</layout>

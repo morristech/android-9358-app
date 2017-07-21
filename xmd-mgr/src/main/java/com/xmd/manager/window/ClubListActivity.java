@@ -7,12 +7,12 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 
+import com.xmd.app.XmdActivityManager;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Manager;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.ClubInfo;
-import com.xmd.manager.common.ActivityHelper;
 import com.xmd.manager.common.CharacterParserUtil;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.Utils;
@@ -117,7 +117,7 @@ public class ClubListActivity extends BaseListActivity<ClubInfo, ClubListResult>
     private void handleLoginResult(ClubEnterResult result) {
         if (result.statusCode == 200) {
             SharedPreferenceHelper.saveUser(result.respData);
-            ActivityHelper.getInstance().removeAllActivities();
+            XmdActivityManager.getInstance().finishAll();
             startActivity(new Intent(ClubListActivity.this, MainActivity.class));
             finish();
         } else {
