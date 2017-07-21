@@ -61,7 +61,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/icon_visitor_mark" />
+                    android:src="@drawable/icon_visitor_mark"
+                android:visibility="gone"/>
             </LinearLayout>
 
             <LinearLayout

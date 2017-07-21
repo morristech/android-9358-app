@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.VerificationCouponDetailBean;
@@ -113,13 +114,12 @@ public class CouponVerificationFragment extends BaseFragment {
 
         mCouponUseSupplement.loadDataWithBaseURL(null, mCouponInfo.actContent, Constant.MIME_TYPE_HTML, Constant.DEFAULT_ENCODE, null);
         if (Utils.couponIsCanUse(mCouponInfo.startDate, mCouponInfo.endUseDate, mCouponInfo.useTimePeriod)) {
-            mCouponStatus.setText("可用");
-            mCouponUse.setEnabled(true);
+            XLogger.i(">>>","可用");
         } else {
-            mCouponStatus.setText("不可用");
-            mCouponStatus.setTextColor(ResourceUtils.getColor(R.color.primary_color));
-            mCouponUse.setEnabled(false);
+            XLogger.i(">>>","不可用");
         }
+        mCouponStatus.setText("");
+        mCouponUse.setEnabled(true);
         if (Utils.isNotEmpty(DescribeMesaageUtil.getLimitedItems(mCouponInfo.itemNames))) {
             mActivityLimit.setText(DescribeMesaageUtil.getLimitedItems(mCouponInfo.itemNames));
         } else {

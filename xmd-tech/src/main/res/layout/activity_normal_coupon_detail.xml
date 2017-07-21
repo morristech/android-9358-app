@@ -91,6 +91,7 @@
                     android:background="@drawable/share_button_selector_bg"
                     android:text="@string/share_now"
                     android:textColor="@color/color_white"
+                    android:gravity="center"
                     android:textSize="@dimen/fontHead"
                     />
             </LinearLayout>
@@ -175,7 +176,8 @@
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@+id/money_sign"
                             android:textColor="@color/colorHead"
-                            android:textSize="@dimen/fontTitle2"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="18sp"
                             />
 
                         <TextView

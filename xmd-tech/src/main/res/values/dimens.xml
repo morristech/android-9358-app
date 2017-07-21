@@ -35,7 +35,7 @@
     <dimen name="spinner_item_text_size">8dp</dimen>
 
     <dimen name="fontBig">32sp</dimen>
-    <dimen name="fontCoupon">30sp</dimen>
+    <dimen name="fontCoupon">26sp</dimen>
     <dimen name="fontOrderName">19sp</dimen>
     <dimen name="fontTechWork">22sp</dimen>
     <dimen name="fontHead">18sp</dimen>

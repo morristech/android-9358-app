@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
+import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -51,6 +52,8 @@ public class NormalCouponDetailActivity extends BaseActivity {
     WebView mWvActContent;
     @BindView(R.id.btn_share)
     Button mShareBtn;
+    @BindView(R.id.money_sign)
+    ImageView mMoneySign;
     private Subscription mGetCouponInfoSubscription;
     private String mActId;
     private CouponInfoResult mCouponInfoResult;
@@ -132,7 +135,17 @@ public class NormalCouponDetailActivity extends BaseActivity {
         mTvShareText.setText(spannableString);
 
         Glide.with(this).load(generateQrCodeUrl()).into(mIvShareQrCode);
-        mTvCommission.setText(String.valueOf(couponInfo.actValue));
+        if (couponInfo.couponType.equals("discount")) {
+            mMoneySign.setVisibility(View.GONE);
+            mTvCommission.setText(String.format("%1.1f折", couponInfo.actValue / 100f));
+        } else if (couponInfo.couponType.equals("gift")) {
+            mMoneySign.setVisibility(View.GONE);
+            mTvCommission.setText(Utils.isNotEmpty(couponInfo.actSubTitle) ? couponInfo.actSubTitle : couponInfo.actTitle);
+        } else {
+            mMoneySign.setVisibility(View.VISIBLE);
+            mTvCommission.setText(String.valueOf(couponInfo.actValue));
+        }
+
         mTvCouponDuration.setText(couponInfo.useTimePeriod);
 
         mWvActContent.getSettings().setJavaScriptEnabled(false);

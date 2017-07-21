@@ -103,15 +103,16 @@ public class CouponActionVerificationFragment extends BaseFragment {
             actionCouponSupplement.setVisibility(View.GONE);
             textSupplementNull.setVisibility(View.VISIBLE);
         }
-        if (Utils.couponIsCanUse(mActionBean.startDate, mActionBean.endUseDate, mActionBean.useTimePeriod)) {
-            btnCouponActionVerification.setEnabled(true);
-            couponStatus.setText("可用");
-        } else {
-            btnCouponActionVerification.setEnabled(false);
-            btnCouponActionVerification.setBackgroundResource(R.drawable.bg_verification_unuseable);
-            couponStatus.setText("不可用");
-            couponStatus.setTextColor(ResourceUtils.getColor(R.color.primary_color));
-        }
+//        if (Utils.couponIsCanUse(mActionBean.startDate, mActionBean.endUseDate, mActionBean.useTimePeriod)) {
+//            btnCouponActionVerification.setEnabled(true);
+//            couponStatus.setText("可用");
+//        } else {
+//            btnCouponActionVerification.setEnabled(false);
+//            btnCouponActionVerification.setBackgroundResource(R.drawable.bg_verification_unuseable);
+//            couponStatus.setText("不可用");
+//            couponStatus.setTextColor(ResourceUtils.getColor(R.color.primary_color));
+//        }
+        btnCouponActionVerification.setEnabled(true);
         if (Utils.isNotEmpty(mActionBean.getDate)) {
             mCouponVerificationGetTime.setText(mActionBean.getDate);
         }

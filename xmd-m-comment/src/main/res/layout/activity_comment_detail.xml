@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorAppBackground"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent" android:layout_height="match_parent"
+              android:background="@color/colorAppBackground"
+              android:orientation="vertical">
 
-    <include layout="@layout/layout_toolbar" />
+    <include layout="@layout/layout_toolbar"/>
 
     <RelativeLayout
         android:id="@+id/rl_comment_user_info"
@@ -19,7 +19,7 @@
             android:id="@+id/user_head"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/img_default_avatar" />
+            android:src="@drawable/img_default_avatar"/>
 
         <TextView
             android:id="@+id/user_name"
@@ -27,9 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/user_head"
-            android:text="林先生"
             android:textColor="#212121"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:text="林先生"/>
 
         <TextView
             android:id="@+id/user_phone"
@@ -38,9 +38,9 @@
             android:layout_marginLeft="14sp"
             android:layout_marginTop="2dp"
             android:layout_toRightOf="@id/user_name"
-            android:text="13137558109"
             android:textColor="#616161"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="13137558109"/>
 
         <ImageView
             android:id="@+id/img_visit_mark"
@@ -50,7 +50,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="2sp"
             android:layout_toRightOf="@id/user_phone"
-            android:src="@drawable/icon_visitor_mark" />
+            android:src="@drawable/icon_visitor_mark"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/user_comment_time"
@@ -59,221 +60,250 @@
             android:layout_alignLeft="@id/user_name"
             android:layout_below="@id/user_name"
             android:layout_marginTop="8dp"
-            android:text="2014-11-05 16:24:10"
             android:textColor="#999999"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="2014-11-05 16:24:10"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/arrow_right" />
+            android:src="@drawable/arrow_right"/>
     </RelativeLayout>
 
+
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="800dp">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/ll_comment_complaint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="17dp"
+                        android:background="#FF6666"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="投诉内容"
+                        android:textColor="#616161"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_comment_complaint_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5sp"
+                    android:text="投诉内容，提纳闷呢呢呢打撒"
+                    android:textColor="#4b4b4b"
+                    android:textSize="16sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/shape_split_line"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:padding="5dp"
+                    android:text="@string/comment_complaint_alter_message"
+                    android:textColor="#ff9a0c"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_comment_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+
+                <LinearLayout
+                    android:id="@+id/ll_comment_tech"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="点评："
+                        android:textColor="#212121"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/comment_tech_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#4d4d4d"
+                        android:textSize="16sp"
+                        tools:text="然瞪大时"/>
+
+                    <TextView
+                        android:id="@+id/comment_tech_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="#ff9a0c"
+                        android:textSize="16sp"
+                        tools:text="[456132]"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_comment_score"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="综合评分："
+                        android:textColor="#212121"
+                        android:textSize="16sp"/>
+
+                    <com.xmd.app.widget.StarBar
+                        android:id="@+id/starBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/tv_comment_score"
+                        app:starCount="5"
+                        app:starDistance="5dp"
+                        app:starEmpty="@drawable/icon_bad_comment"
+                        app:starFill="@drawable/icon_good_comment"
+                        app:starSize="20dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_comment_score_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="4.0"
+                        android:textColor="#ff9d09"
+                        android:textSize="14sp"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/bad_comment_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/starBar"
+                        android:layout_below="@id/tv_comment_score"
+                        android:layout_marginTop="5dp"/>
+
+                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/ll_comment_impression"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="印象："
+                        android:textColor="#212121"
+                        android:textSize="16sp"/>
+                    <LinearLayout
+                        android:id="@+id/ll_impression_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="评论："
+                        android:textColor="#212121"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_comment_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3dp"
+                        android:textColor="#4d4d4d"
+                        android:textSize="14sp"
+                        tools:text="万恶的评论，技师不负责，按摩手法不专业，脸子难看，我又不欠他钱，这是为何..."/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
     <LinearLayout
-        android:id="@+id/ll_comment_complaint"
+        android:id="@+id/ll_comment_visit_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:background="@color/white"
-        android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingRight="10dp"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
         android:paddingLeft="10dp"
-        android:visibility="gone">
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btn_visit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="3dp"
-                android:layout_height="17dp"
-                android:background="#FF6666" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="投诉内容"
-                android:textSize="16sp"
-                android:layout_marginLeft="5dp"
-                android:textColor="#616161" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_comment_complaint_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="投诉内容，提纳闷呢呢呢打撒"
-            android:textSize="16sp"
-            android:textColor="#4b4b4b"
-            android:paddingLeft="8dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5sp"
-            android:paddingBottom="5dp" />
-
-        <View
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@drawable/shape_split_line" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/comment_complaint_alter_message"
-            android:textSize="15sp"
-            android:textColor="#ff9a0c"
-            android:gravity="right"
-            android:padding="5dp" />
-
+            android:layout_height="40dp"
+            android:background="@drawable/selector_btn_with_corner"
+            android:gravity="center"
+            android:text="回访"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_comment_comment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:id="@+id/ll_comment_tech"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="点评："
-                android:textColor="#212121"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/comment_tech_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="然瞪大时"
-                android:textColor="#4d4d4d"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/comment_tech_no"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="[456132]"
-                android:textColor="#ff9a0c"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="5dp">
-
-            <TextView
-                android:id="@+id/tv_comment_score"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="综合评分："
-                android:textColor="#212121"
-                android:textSize="16sp" />
-
-            <com.xmd.app.widget.StarBar
-                android:id="@+id/starBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tv_comment_score"
-                app:starCount="5"
-                app:starDistance="5dp"
-                app:starEmpty="@drawable/icon_bad_comment"
-                app:starFill="@drawable/icon_good_comment"
-                app:starSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_comment_score_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textSize="14sp"
-                android:textColor="#ff9d09"
-                android:text="4.0" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/bad_comment_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_alignLeft="@id/starBar"
-                android:layout_below="@id/tv_comment_score" />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:paddingBottom="15dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="评论："
-                android:textColor="#212121"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_comment_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3dp"
-                android:text="万恶的评论，技师不负责，按摩手法不专业，脸子难看，我又不欠他钱，这是为何..."
-                android:textColor="#4d4d4d"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/ll_comment_visit_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="5dp">
-
-            <Button
-                android:id="@+id/btn_visit"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/selector_btn_with_corner"
-                android:gravity="center"
-                android:text="回访"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-
 </LinearLayout>
+
+

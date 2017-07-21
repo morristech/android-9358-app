@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,21 +109,21 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_DYNAMIC_COMMENT_ITEM = 7;
     private static final int TYPE_DYNAMIC_COLLECT_ITEM = 8;
     private static final int TYPE_DYNAMIC_COUPON_ITEM = 9;
-    private static final int TYPE_COUPON_INFO_ITEM_CASH = 11;
+//    private static final int TYPE_COUPON_INFO_ITEM_CASH = 11;
     private static final int TYPE_COUPON_INFO_ITEM_DELIVERY = 12;
     private static final int TYPE_COUPON_INFO_ITEM_FAVORABLE = 13;
     private static final int TYPE_LIMIT_GRAB_ITEM = 15;
     private static final int TYPE_REWARD_ACTIVITY_ITEM = 16;
     private static final int TYPE_CLUB_JOURNAL_ITEM = 17;
-    private static final int TYPE_COUPON_PAID_ITEM = 18;
-    private static final int TYPE_COUPON_CASH_ITEM = 19;
-    private static final int TYPE_COUPON_FAVORABLE_ITEM = 20;
-    private static final int TYPE_COUPON_PAY_FOR_ME_ITEM = 21;
-    private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 22;
-    private static final int TYPE_TECH_PERSONAL_RANKING = 23;
-    private static final int TYPE_TECH_BLACKLIST = 24;
-    private static final int TYPE_TECH_CONTACT_ALL_AND_REGISTER = 25;
-    private static final int TYPE_TECH_CONTACT_RECENT_ITEM = 26;
+    private static final int TYPE_COUPON_PAID_ITEM = 18; //点钟券
+    private static final int TYPE_COUPON_CASH_ITEM = 19;//现金券
+    private static final int TYPE_COUPON_FAVORABLE_ITEM = 20;//优惠券
+    private static final int TYPE_COUPON_PAY_FOR_ME_ITEM = 22;
+    private static final int TYPE_TECH_PK_ACTIVITY_ITEM = 23;
+    private static final int TYPE_TECH_PERSONAL_RANKING = 24;
+    private static final int TYPE_TECH_BLACKLIST = 25;
+    private static final int TYPE_TECH_CONTACT_ALL_AND_REGISTER = 26;
+    private static final int TYPE_TECH_CONTACT_RECENT_ITEM = 27;
     private static final int TYPE_FOOTER = 99;
 
     private boolean mIsNoMore = false;
@@ -170,9 +171,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             if (mData.get(position) instanceof Order) {
                 return TYPE_ORDER_ITEM;
             } else if (mData.get(position) instanceof CouponInfo) {
-                if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.cash_coupon))) {
-                    return TYPE_COUPON_INFO_ITEM_CASH;
-                } else if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
+              if (((CouponInfo) mData.get(position)).useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
                     return TYPE_COUPON_INFO_ITEM_DELIVERY;
                 } else {
                     return TYPE_COUPON_INFO_ITEM_FAVORABLE;
@@ -235,9 +234,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             case TYPE_ORDER_ITEM:
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_item, parent, false);
                 return new OrderListItemViewHolder(view);
-            case TYPE_COUPON_INFO_ITEM_CASH:
-                View viewCash = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_cush_item, parent, false);
-                return new CouponListItemViewHolder((viewCash));
             case TYPE_COUPON_INFO_ITEM_DELIVERY:
                 View viewDelivery = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_list_delivery_item, parent, false);
                 return new CouponListItemViewHolder((viewDelivery));
@@ -445,8 +441,9 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 couponListItemViewHolder.mTvCouponTitle.setText(Utils.StrSubstring(8, couponInfo.actTitle, true));
                 couponListItemViewHolder.mCouponType.setVisibility(View.VISIBLE);
+                couponListItemViewHolder.mCouponType.setText(Utils.isNotEmpty(couponInfo.couponTypeName) ? String.format("(%s)", couponInfo.couponTypeName) : couponInfo.couponTypeName);
             }
-            couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescption);
+            couponListItemViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
             couponListItemViewHolder.mCouponPeriod.setText("有效时间：" + Utils.StrSubstring(19, couponInfo.couponPeriod, true));
             if (couponInfo.commission > 0) {
                 couponListItemViewHolder.mTvCouponReward.setVisibility(View.VISIBLE);
@@ -458,10 +455,20 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 couponListItemViewHolder.mTvCouponReward.setVisibility(View.GONE);
             }
-
-            if (Utils.isNotEmpty(couponInfo.consumeMoney)) {
-                couponListItemViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
+            if (couponInfo.couponType.equals("discount")) {
+                couponListItemViewHolder.imgMoneyMark.setVisibility(View.GONE);
+                couponListItemViewHolder.mCouponAmount.setText(String.format("%1.1f折", couponInfo.actValue / 100f));
+            }else if(couponInfo.couponType.equals("gift")){
+                couponListItemViewHolder.imgMoneyMark.setVisibility(View.GONE);
+                couponListItemViewHolder.mCouponAmount.setText(TextUtils.isEmpty(couponInfo.actSubTitle)?couponInfo.actTitle:couponInfo.actSubTitle);
+            } else {
+                couponListItemViewHolder.imgMoneyMark.setVisibility(View.VISIBLE);
+                if (Utils.isNotEmpty(couponInfo.consumeMoney)) {
+                    couponListItemViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
+                }
             }
+
+
             couponListItemViewHolder.itemView.setOnClickListener(v -> {
                 try {
                     mCallback.onItemClicked(couponInfo);
@@ -615,10 +622,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             final DynamicDetail dynamicDetail = (DynamicDetail) obj;
             DynamicItemViewHolder viewHolder = (DynamicItemViewHolder) holder;
 
-            if(dynamicDetail.userName.endsWith("**(匿名)")){
+            if (dynamicDetail.userName.endsWith("**(匿名)")) {
 
-            }else{
-            viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl, false);
+            } else {
+                viewHolder.dynamicItemAvatar.setUserInfo(dynamicDetail.userId, Utils.isNotEmpty(dynamicDetail.avatarUrl) ? dynamicDetail.avatarUrl : dynamicDetail.imageUrl, false);
             }
             viewHolder.dynamicItemName.setText(Utils.StrSubstring(6, dynamicDetail.userName, true));
             if (Utils.isNotEmpty(dynamicDetail.userEmchatId)) {
@@ -1272,6 +1279,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mCouponType;
         @BindView(R.id.btn_share_coupon)
         TextView mBtnShareCoupon;
+        @BindView(R.id.img_money_mark)
+        ImageView imgMoneyMark;
 
 
         public ShareCouponListItemViewHolder(View itemView) {

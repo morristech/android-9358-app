@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +26,7 @@ import com.shidou.commonlibrary.util.DateUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.utils.ResourceUtils;
+import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.app.widget.StarBar;
 import com.xmd.m.R;
@@ -88,6 +91,10 @@ public class CommentDetailActivity extends BaseActivity {
     ImageView imgVisitMark;
     @BindView(R2.id.ll_comment_tech)
     LinearLayout llCommentTech;
+    @BindView(R2.id.ll_comment_impression)
+    LinearLayout llCommentImpression;
+    @BindView(R2.id.ll_impression_detail)
+    LinearLayout llImpressionDetail;
 
 
     Unbinder mUnBinder;
@@ -140,6 +147,7 @@ public class CommentDetailActivity extends BaseActivity {
             }
             loadData();
         }
+
         if (isFromManager) {
             llCommentTech.setVisibility(View.VISIBLE);
         } else {
@@ -176,11 +184,6 @@ public class CommentDetailActivity extends BaseActivity {
         } else {
             setRightVisible(false, -1);
         }
-        if (isFromManager) {
-            llCommentVisitBtn.setVisibility(View.VISIBLE);
-        } else {
-            llCommentVisitBtn.setVisibility(View.GONE);
-        }
         if (mCommentBean.commentType.equals(ConstantResources.COMMENT_TYPE_COMPLAINT)) {
             llCommentComplaint.setVisibility(View.VISIBLE);
             llCommentComment.setVisibility(View.GONE);
@@ -195,6 +198,20 @@ public class CommentDetailActivity extends BaseActivity {
 
     private void initComplaintView() {
         tvCommentComplaintDetail.setText(mCommentBean.comment);
+        if (mCommentBean.returnStatus.equals("Y")) {
+            imgVisitMark.setVisibility(View.VISIBLE);
+        } else {
+            imgVisitMark.setVisibility(View.GONE);
+        }
+        if (mCommentBean.isAnonymous.equals("N") && isFromManager) {
+            llCommentVisitBtn.setVisibility(View.VISIBLE);
+        } else {
+            llCommentVisitBtn.setVisibility(View.GONE);
+        }
+        Glide.with(this).load(mCommentBean.avatarUrl).error(ResourceUtils.getDrawable(R.drawable.img_default_avatar)).into(userHead);
+        userName.setText(TextUtils.isEmpty(mCommentBean.userName) ? "匿名用户" : mCommentBean.userName);
+        userPhone.setText(TextUtils.isEmpty(mCommentBean.phoneNum) ? "" : mCommentBean.phoneNum);
+        userCommentTime.setText(DateUtils.doLong2String(mCommentBean.createdAt, DateUtils.DF_DEFAULT));
     }
 
     private void initCommentView() {
@@ -214,6 +231,14 @@ public class CommentDetailActivity extends BaseActivity {
         } else {
             imgVisitMark.setVisibility(View.GONE);
         }
+        if (TextUtils.isEmpty(mCommentBean.impression)) {
+            llCommentImpression.setVisibility(View.GONE);
+        } else {
+            llCommentImpression.setVisibility(View.VISIBLE);
+            initCommentImpressionView(mCommentBean.impression);
+        }
+
+
         userCommentTime.setText(DateUtils.doLong2String(mCommentBean.createdAt, DateUtils.DF_DEFAULT));
         commentTechName.setText(TextUtils.isEmpty(mCommentBean.techName) ? "会所" : mCommentBean.techName);
         commentTechNo.setText(TextUtils.isEmpty(mCommentBean.techNo) ? "" : String.format("[%s]", mCommentBean.techNo));
@@ -228,6 +253,28 @@ public class CommentDetailActivity extends BaseActivity {
         } else {
             llCommentVisitBtn.setVisibility(View.GONE);
         }
+    }
+    private void initCommentImpressionView(String impression) {
+        if (TextUtils.isEmpty(impression)) {
+            return;
+        }
+        String[] impressionArray = impression.split("、");
+        XLogger.i(">>>", "impression>" + impressionArray);
+        llImpressionDetail.removeAllViews();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(32, 0, 0, 0);
+        for (int i = 0; i < impressionArray.length; i++) {
+            TextView tv = new TextView(CommentDetailActivity.this);
+            tv.setText(String.format("#%s",impressionArray[i]));
+            tv.setBackgroundResource(R.drawable.bg_contact_mark);
+            tv.setTextSize(14);
+            tv.setTextColor(Color.parseColor("#ff9a0c"));
+            tv.setPadding(14, 0, 14, 0);
+            tv.setGravity(Gravity.CENTER);
+            tv.setLayoutParams(lp);
+            llImpressionDetail.addView(tv);
+        }
+
     }
 
     private void fillClubStar() {
