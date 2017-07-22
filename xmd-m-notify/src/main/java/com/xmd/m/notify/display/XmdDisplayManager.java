@@ -77,7 +77,7 @@ public class XmdDisplayManager {
         }
         if ((display.getFlags() & XmdDisplay.FLAG_VIBRATE) != 0) {
             Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(new long[]{100, 400, 100, 400}, 1);
+            vibrator.vibrate(new long[]{100, 400, 100, 400}, -1);
         }
     }
 

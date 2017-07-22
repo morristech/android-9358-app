@@ -15,6 +15,8 @@ import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.beans.CreditGift;
 import com.xmd.chat.beans.Location;
+import com.xmd.chat.event.EventGameDiceAccept;
+import com.xmd.chat.event.EventGameDiceRefuse;
 import com.xmd.chat.event.EventNewMessages;
 import com.xmd.chat.event.EventNewUiMessage;
 import com.xmd.chat.event.EventSendMessage;
@@ -22,6 +24,7 @@ import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.CouponChatMessage;
 import com.xmd.chat.message.CustomLocationMessage;
+import com.xmd.chat.message.DiceGameChatMessage;
 import com.xmd.chat.message.RevokeChatMessage;
 import com.xmd.chat.message.TipChatMessage;
 import com.xmd.m.network.BaseBean;
@@ -101,6 +104,10 @@ public class MessageManager {
                                 EMConversation conversation = EMClient.getInstance().chatManager().getConversation(chatId);
                                 conversation.appendMessage(tipChatMessage.getEmMessage());
                                 EventBus.getDefault().post(new EventSendMessage(tipChatMessage));
+                            }
+
+                            if (ChatMessage.MSG_TYPE_DICE_GAME.equals(chatMessage.getMsgType())) {
+                                processDiceGameMessage((DiceGameChatMessage) chatMessage);
                             }
 
                             displayNotification(chatMessage);
@@ -269,4 +276,30 @@ public class MessageManager {
         }
         EventBus.getDefault().post(fgDisplay);
     }
+
+    private void processDiceGameMessage(DiceGameChatMessage message) {
+        EMConversation conversation = ConversationManager.getInstance().getConversation(message.getFromChatId());
+        DiceGameChatMessage inviteMessage = null;
+        for (EMMessage emMessage : conversation.getAllMessages()) {
+            ChatMessage chatMessage = ChatMessageFactory.create(emMessage);
+            if (ChatMessage.MSG_TYPE_DICE_GAME.equals(chatMessage.getMsgType())
+                    && DiceGameChatMessage.STATUS_REQUEST.equals(((DiceGameChatMessage) chatMessage).getGameStatus())) {
+                inviteMessage = (DiceGameChatMessage) chatMessage;
+                break;
+            }
+        }
+        if (inviteMessage != null) {
+            inviteMessage.setInnerProcessed(DiceGameChatMessage.getStatusText(inviteMessage.getGameStatus()));
+        }
+        if (DiceGameChatMessage.STATUS_REFUSED.equals(message.getGameStatus())) {
+            //拒绝
+            EventBus.getDefault().post(new EventGameDiceRefuse(message.getGameId()));
+            sendTipMessage(conversation, userInfoService.getUserByChatId(message.getFromChatId()), "对方拒绝游戏，返还" + message.getCredit() + "积分");
+        } else if (DiceGameChatMessage.STATUS_ACCEPT.equals(message.getGameStatus())) {
+            //接受
+            EventBus.getDefault().post(new EventGameDiceAccept(message.getGameId()));
+        }
+    }
+
+
 }

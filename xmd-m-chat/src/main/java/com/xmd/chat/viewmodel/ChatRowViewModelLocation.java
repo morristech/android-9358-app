@@ -1,8 +1,10 @@
 package com.xmd.chat.viewmodel;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +64,12 @@ public class ChatRowViewModelLocation extends ChatRowViewModel {
         webView.loadUrl(locationMessage.getMapUrl());
     }
 
-//    public String getAddress() {
+    @Override
+    public Drawable getContentViewBackground(Context context) {
+        return null;
+    }
+
+    //    public String getAddress() {
 //        return ((EMLocationMessageBody) chatMessage.getEmMessage().getBody()).getAddress();
 //    }
 //

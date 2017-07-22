@@ -130,6 +130,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         XLogger.i(TAG, "===>user logout");
         currentUser = eventLogin.getUser();
         currentToken = eventLogin.getToken();
+        saveUser(currentUser);
     }
 
     @Subscribe(sticky = true)

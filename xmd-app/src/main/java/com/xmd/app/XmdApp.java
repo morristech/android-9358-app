@@ -45,7 +45,6 @@ public class XmdApp {
 
     private SharedPreferences sharedPreferences;
     private Boolean appFirstStart; //app是否为第一次启动
-
     /**
      * 初始化模块
      *

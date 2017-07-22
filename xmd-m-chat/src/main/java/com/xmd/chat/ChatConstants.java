@@ -29,10 +29,15 @@ public class ChatConstants {
     public static final int CHAT_ROW_VIEW_CREDIT_GIFT = 0x13; //积分礼物
     public static final int CHAT_ROW_VIEW_NEW_ORDER = 0x14; //新订单
     public static final int CHAT_ROW_VIEW_SHARE = 0x15; //分享
+    public static final int CHAT_ROW_VIEW_DICE_GAME_INVITE = 0x16; //发送邀请骰子游戏
+    public static final int CHAT_ROW_VIEW_DICE_GAME_ACCEPT = 0x17; //收到邀请骰子游戏
+    public static final int CHAT_ROW_VIEW_DICE_GAME_RESULT = 0x18; //游戏结果
+
     public static final int CHAT_ROW_VIEW_TIP = 0x20;//提示
 
     public static final int CHAT_ROW_VIEW_TYPE_MAX = 0x200;
 
 
     public static final String SP_AUDIO_MODE_SPEAKER = "sp_audio_mode_speaker"; //是否为扬声器模式
+    public static final String SP_GAME_DICE_EXPIRE_TIME = "sp_game_dice_expire_time"; //游戏超时时间
 }

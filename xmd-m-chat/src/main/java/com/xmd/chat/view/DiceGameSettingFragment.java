@@ -13,12 +13,18 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.shidou.commonlibrary.widget.ScreenUtils;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.CommonNetService;
 import com.xmd.app.beans.UserCredit;
+import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.chat.MessageManager;
+import com.xmd.chat.NetService;
 import com.xmd.chat.R;
+import com.xmd.chat.beans.DiceGameRequestResult;
 import com.xmd.chat.databinding.FragmentDiceGameSettingBinding;
+import com.xmd.chat.message.DiceGameChatMessage;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -43,10 +49,12 @@ public class DiceGameSettingFragment extends DialogFragment {
     private FragmentDiceGameSettingBinding binding;
 
     private Subscription subscription;
+    private Subscription inviteSubscription;
 
     public ObservableInt credit = new ObservableInt();
 
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
+    private User user;
 
     public static DiceGameSettingFragment newInstance(String userId) {
         DiceGameSettingFragment fragment = new DiceGameSettingFragment();
@@ -67,13 +75,21 @@ public class DiceGameSettingFragment extends DialogFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding.setData(this);
-        getDialog().setTitle("每局筹码");
+        String userId = getArguments().getString(ARG_USER_ID);
+        user = userInfoService.getUserByUserId(userId);
+        if (user == null) {
+            XToast.show("参数错误，无法找到用户：" + userId);
+            dismiss();
+            return;
+        }
+
         loadData();
 
         Window window = getDialog().getWindow();
         if (window != null) {
             window.getAttributes().width = ScreenUtils.getScreenWidth();
         }
+        setCancelable(false);
     }
 
 
@@ -82,6 +98,9 @@ public class DiceGameSettingFragment extends DialogFragment {
         super.onDestroyView();
         if (subscription != null) {
             subscription.unsubscribe();
+        }
+        if (inviteSubscription != null) {
+            inviteSubscription.unsubscribe();
         }
     }
 
@@ -119,9 +138,16 @@ public class DiceGameSettingFragment extends DialogFragment {
     }
 
     public void selectCredit(int credit) {
+        if (!canSelect(credit)) {
+            return;
+        }
         selectValue = credit;
         canInvite = true;
         binding.setData(this);
+    }
+
+    public boolean canSelect(int credit) {
+        return this.credit.get() >= credit;
     }
 
     public boolean isSelect(int credit) {
@@ -133,6 +159,28 @@ public class DiceGameSettingFragment extends DialogFragment {
     }
 
     public void onClickOk() {
-        dismiss();
+        loading.set(true);
+        Observable<BaseBean<DiceGameRequestResult>> observable = XmdNetwork.getInstance()
+                .getService(NetService.class)
+                .diceGameRequest(user.getChatId(), userInfoService.getCurrentUser().getClubId(), selectValue);
+        inviteSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<DiceGameRequestResult>>() {
+            @Override
+            public void onCallbackSuccess(BaseBean<DiceGameRequestResult> result) {
+                loading.set(false);
+                DiceGameChatMessage message = DiceGameChatMessage.createMessage(
+                        DiceGameChatMessage.STATUS_REQUEST,
+                        userInfoService.getCurrentUser().getChatId(),
+                        user.getChatId(),
+                        result.getRespData().gameId,
+                        selectValue);
+                MessageManager.getInstance().sendMessage(message);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                loading.set(false);
+                XToast.show("发送邀请失败：" + e.getMessage());
+            }
+        });
     }
 }

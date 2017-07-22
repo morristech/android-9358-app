@@ -27,6 +27,19 @@ public class BaseViewModel {
         }
     }
 
+    @BindingAdapter("avatar")
+    public static void bindAvatar(ImageView imageView, String url) {
+        if (TextUtils.isEmpty(url)) {
+            imageView.setImageResource(R.drawable.img_default_avatar);
+        } else {
+            Glide.with(imageView.getContext())
+                    .load(url)
+                    .error(R.drawable.img_default_avatar)
+                    .transform(new GlideCircleTransform(imageView.getContext()))
+                    .into(imageView);
+        }
+    }
+
     @BindingAdapter("image")
     public static void bindImage(ImageView imageView, String url) {
         if (TextUtils.isEmpty(url)) {

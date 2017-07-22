@@ -27,6 +27,7 @@
             app:time="@{data}" />
 
         <LinearLayout
+            android:id="@+id/contentPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="48dp"
@@ -36,7 +37,7 @@
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                app:avatar="@{data}" />
+                app:avatar="@{data.avatar}" />
 
             <FrameLayout
                 android:id="@+id/contentView"

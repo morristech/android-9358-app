@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.xmd.chat.viewmodel.ChatRowViewModelDiceGameInvite" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:background="@drawable/shape_r4_solid_white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#7CD1D0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text='@{"邀请"+data.invitedName+"玩骰子",default="邀请王先生玩骰子"}'
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_r4_solid_white"
+                android:padding="2dp"
+                android:text='@{data.credit+"积分",default="10积分"}'
+                android:textColor="#ff9c0a"
+                android:textSize="@dimen/fontCaption" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{data.invitedName,default=王先生}"
+                android:textColor="#154f67"
+                android:textSize="@dimen/fontSubheading" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="VS" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{data.inviteName,default=张小花}"
+                android:textColor="#154f67"
+                android:textSize="@dimen/fontSubheading" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{data.status,default=等待接受}"
+                android:textColor="#616161" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/icon_dice" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                app:circle_image="@{data.inviteAvatar}" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivide"
+            android:visibility="@{data.showCancel?View.VISIBLE:View.GONE}" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:onClick="@{(v)->data.onCancel(v)}"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="取消邀请"
+                android:textColor="@color/colorAccent"
+                android:visibility="@{data.showCancel?View.VISIBLE:View.GONE}" />
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:background="@android:color/white"
+                android:padding="4dp"
+                android:visibility="@{data.inProcess?View.VISIBLE:View.GONE}" />
+        </FrameLayout>
+    </LinearLayout>
+</layout>

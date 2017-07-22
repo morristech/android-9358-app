@@ -2,6 +2,7 @@ package com.xmd.chat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -75,6 +76,8 @@ public class XmdChat {
                 conversation.clear(); //清除加载的会话数据，避免聊天窗口加载出错
             }
         }
+
+        GameManager.getInstance().loadDiceExpireTime();
     }
 
     public MenuFactory getMenuFactory() {
@@ -129,5 +132,9 @@ public class XmdChat {
 
     public boolean isOnline() {
         return EMClient.getInstance().isConnected();
+    }
+
+    public SharedPreferences getSp() {
+        return context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
     }
 }

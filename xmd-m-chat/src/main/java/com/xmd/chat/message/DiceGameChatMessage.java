@@ -1,5 +1,7 @@
 package com.xmd.chat.message;
 
+import android.text.TextUtils;
+
 import com.hyphenate.chat.EMMessage;
 
 /**
@@ -44,11 +46,15 @@ public class DiceGameChatMessage extends ChatMessage {
     }
 
     public String getGameId() {
-        return getSafeStringAttribute("gameId");
+        String text = getSafeStringAttribute("gameId");
+        if (!TextUtils.isEmpty(text) && text.contains("dice_")) {
+            return text.substring("dice_".length(), text.length());
+        }
+        return null;
     }
 
     public void setGameId(String gameId) {
-        setAttr("gameId", gameId);
+        setAttr("gameId", "dice_" + gameId);
     }
 
     public String getGameResult() {
@@ -57,5 +63,39 @@ public class DiceGameChatMessage extends ChatMessage {
 
     public void setGameResult(String gameResult) {
         setAttr("gameId", gameResult);
+    }
+
+    public String getCredit() {
+        return getContentText().toString();
+    }
+
+
+    public static String getStatusText(String status) {
+        switch (status) {
+            case DiceGameChatMessage.STATUS_OVERTIME:
+                return "已超时";
+            case DiceGameChatMessage.STATUS_REQUEST:
+                return "等待接受";
+            case DiceGameChatMessage.STATUS_REFUSED:
+                return "已拒绝";
+            case DiceGameChatMessage.STATUS_ACCEPT:
+                return "已接受";
+            case DiceGameChatMessage.STATUS_CANCEL:
+                return "已取消";
+            case DiceGameChatMessage.STATUS_OVER:
+                return "已结束";
+        }
+        return "";
+    }
+
+    public static DiceGameChatMessage createMessage(String gameStatus, String currentChatId, String remoteChatId, String gameId, int credit) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage(String.valueOf(credit), remoteChatId);
+        DiceGameChatMessage chatMessage = new DiceGameChatMessage(emMessage);
+        chatMessage.setMsgType(ChatMessage.MSG_TYPE_DICE_GAME);
+        chatMessage.setGameId(gameId);
+        chatMessage.setGameStatus(gameStatus);
+        chatMessage.setGameInvite(currentChatId);
+        chatMessage.setGameResult("0:0");
+        return chatMessage;
     }
 }

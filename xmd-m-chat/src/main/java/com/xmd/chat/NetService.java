@@ -1,7 +1,9 @@
 package com.xmd.chat;
 
 import com.xmd.chat.beans.CreditGift;
+import com.xmd.chat.beans.DiceGameRequestResult;
 import com.xmd.chat.beans.DiceGameResult;
+import com.xmd.chat.beans.DiceGameSetting;
 import com.xmd.chat.beans.Journal;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.beans.MarketingCategory;
@@ -80,6 +82,12 @@ public interface NetService {
 
 
     /**
+     * 获取游戏设定
+     */
+    @GET("/spa-manager/api/v2/credit/game/setting")
+    Observable<BaseBean<DiceGameSetting>> getGameSetting();
+
+    /**
      * 发起骰子游戏邀请
      *
      * @param emchatId 对方的聊天id
@@ -88,12 +96,12 @@ public interface NetService {
      */
     @FormUrlEncoded
     @POST("/spa-manager/api/v2/credit/game/dice/submit")
-    Observable<BaseBean<DiceGameResult>> playGame(@Field("emchatId") String emchatId,
-                                                  @Field("clubId") String clubId,
-                                                  @Field("amount") int amount);
+    Observable<BaseBean<DiceGameRequestResult>> diceGameRequest(@Field("emchatId") String emchatId,
+                                                                @Field("clubId") String clubId,
+                                                                @Field("amount") int amount);
 
     /**
-     * 玩骰子游戏，返回结果
+     * 开始玩/取消 骰子游戏，返回结果
      *
      * @param gameId 游戏ID
      * @param status 状态
@@ -101,6 +109,6 @@ public interface NetService {
      */
     @FormUrlEncoded
     @POST("/spa-manager/api/v2/credit/game/dice/accept")
-    Observable<BaseBean<DiceGameResult>> playGame(@Field("gameId") String gameId,
-                                                  @Field("status") String status);
+    Observable<BaseBean<DiceGameResult>> diceGamePlayOrCancel(@Field("gameId") String gameId,
+                                                              @Field("status") String status);
 }

@@ -7,19 +7,18 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.BaseViewModel;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.app.widget.GlideCircleTransform;
 import com.xmd.chat.AccountManager;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.NetService;
@@ -40,7 +39,7 @@ import rx.Observable;
  * 用于绑定基本聊天视图
  */
 
-public abstract class ChatRowViewModel {
+public abstract class ChatRowViewModel extends BaseViewModel {
     protected ChatMessage chatMessage;
 
     public ObservableBoolean progress = new ObservableBoolean();
@@ -128,17 +127,8 @@ public abstract class ChatRowViewModel {
                 : context.getResources().getDrawable(R.drawable.send_wrapper);
     }
 
-    @BindingAdapter("avatar")
-    public static void bindAvatar(ImageView imageView, ChatRowViewModel data) {
-        String url = data.getChatMessage().getUserAvatar();
-        if (!TextUtils.isEmpty(url)) {
-            Glide.with(imageView.getContext())
-                    .load(url)
-                    .transform(new GlideCircleTransform(imageView.getContext()))
-                    .into(imageView);
-        } else {
-            imageView.setImageResource(com.xmd.app.R.drawable.img_default_avatar);
-        }
+    public String getAvatar() {
+        return getChatMessage().getUserAvatar();
     }
 
     @BindingAdapter("time")
@@ -158,6 +148,10 @@ public abstract class ChatRowViewModel {
 
     public boolean isReceiveMessage() {
         return chatMessage.isReceivedMessage();
+    }
+
+    public String getInnerProcessed() {
+        return chatMessage.getInnerProcessed();
     }
 
     protected int getMenuResource() {
@@ -199,12 +193,23 @@ public abstract class ChatRowViewModel {
         return false;
     }
 
+
     //绑定子view
     public void bindSubView(View view) {
+        if (contentViewMatchParent()) {
+            view.getRootView().findViewById(R.id.contentPanel).getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+            View contentView = view.getRootView().findViewById(R.id.contentView);
+            ((LinearLayout.LayoutParams) contentView.getLayoutParams()).weight = 1;
+        }
         ViewDataBinding binding = onBindView(view);
         if (binding != null) {
             binding.executePendingBindings();
         }
+    }
+
+    //子view是否要match_parent
+    protected boolean contentViewMatchParent() {
+        return false;
     }
 
     public abstract ViewDataBinding onBindView(View view);
