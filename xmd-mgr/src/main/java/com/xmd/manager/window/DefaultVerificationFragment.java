@@ -188,7 +188,12 @@ public class DefaultVerificationFragment extends BaseFragment {
             TextView tvTitle = (TextView) view.findViewById(R.id.item_title);
             tvTitle.setText(infoList.get(position).title);
             TextView tvText = (TextView) view.findViewById(R.id.item_text);
-            tvText.setText(infoList.get(position).text);
+            if(Utils.isNotEmpty(infoList.get(position).text)){
+                tvText.setText(infoList.get(position).text);
+            }else{
+                tvText.setText("-");
+            }
+
             return view;
         }
     }

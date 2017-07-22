@@ -222,9 +222,9 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             return;
         }
         if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-            EditCustomerInformationActivity.startEditCustomerInformationActivity(this,mBean.userId, mBean.id, ConstantResources.INTENT_TYPE_MANAGER, mBean.emChatName, mBean.userNoteName, mBean.contactPhone, mBean.remarkMessage, mBean.remarkImpression);
+            EditCustomerInformationActivity.startEditCustomerInformationActivity(this, mBean.userId, mBean.id, ConstantResources.INTENT_TYPE_MANAGER, mBean.emChatName, mBean.userNoteName, mBean.contactPhone, mBean.remarkMessage, mBean.remarkImpression);
         } else {
-            EditCustomerInformationActivity.startEditCustomerInformationActivity(this, mBean.userId,mBean.id, ConstantResources.INTENT_TYPE_TECH, mBean.emChatName, mBean.userNoteName, mBean.contactPhone, mBean.remarkMessage, mBean.remarkImpression);
+            EditCustomerInformationActivity.startEditCustomerInformationActivity(this, mBean.userId, mBean.id, ConstantResources.INTENT_TYPE_TECH, mBean.emChatName, mBean.userNoteName, mBean.contactPhone, mBean.remarkMessage, mBean.remarkImpression);
         }
 
 
@@ -333,7 +333,8 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             btnCallPhone.setVisibility(View.VISIBLE);
             btnChat.setVisibility(View.VISIBLE);
             layoutOperationButtons.setAlpha(1.0f);
-            layoutOperationButtons.setVisibility(View.VISIBLE);
+            layoutOperationButtons.setVisibility(View.GONE);
+            btnOperation.setVisibility(View.VISIBLE);
             return;
         }
         if (fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD)) { //添加的用户
@@ -354,7 +355,8 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             btnCallPhone.setVisibility(View.VISIBLE);
             btnChat.setVisibility(View.VISIBLE);
             layoutOperationButtons.setAlpha(1.0f);
-            layoutOperationButtons.setVisibility(View.VISIBLE);
+            layoutOperationButtons.setVisibility(View.GONE);
+            btnOperation.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -371,9 +373,9 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             btnEmChat.setVisibility(permissionInfo.echat ? View.VISIBLE : View.GONE);
             btnCallPhone.setVisibility(permissionInfo.call ? View.VISIBLE : View.GONE);
             btnChat.setVisibility(permissionInfo.sms ? View.VISIBLE : View.GONE);
-            if(showOperation && permissionInfo.sms){
+            if (showOperation && permissionInfo.sms) {
                 layoutOperationButtons.setVisibility(View.GONE);
-            }else{
+            } else {
                 layoutOperationButtons.setVisibility(View.VISIBLE);
             }
 

@@ -121,9 +121,9 @@ public class RequestConstant {
     public static final String URL_USER_COUPON_LIST = BASE_URL + "/v2/manager/user/coupons";
     public static final String URL_CHECK_INFO = BASE_URL + "/v2/manager/checkinfo/info/{number}";
     public static final String URL_CHECK_INFO_TYPE_GET = BASE_URL + "/v2/manager/checkinfo/type/get";
-    public static final String URL_GET_PAY_ORDER_DETAIL = BASE_URL + "/v2/manager/checkinfo/paid_order/detail";
-    public static final String URL_GET_COUPON_DETAIL = BASE_URL + "/v2/manager/checkinfo/coupon/detail";
-    public static final String URL_SERVICE_ITEM_COUPON_DETAIL = BASE_URL + "/v2/manager/checkinfo/service_item_coupon/detail";
+    public static final String URL_GET_PAY_ORDER_DETAIL = BASE_URL + "/v2/manager/checkinfo/paid_order/detail";//订单详情
+    public static final String URL_GET_COUPON_DETAIL = BASE_URL + "/v2/manager/checkinfo/coupon/detail";//优惠券详情
+    public static final String URL_SERVICE_ITEM_COUPON_DETAIL = BASE_URL + "/v2/manager/checkinfo/service_item_coupon/detail";//项目券
     public static final String URL_GET_VERIFICATION_COMMON_DETAIL = BASE_URL + "/v2/manager/checkinfo/common/detail";
     public static final String URL_VERIFICATION_COMMON_SAVE = BASE_URL + "/v2/manager/checkinfo/common/save";
     public static final String URL_CHECK_INFO_ORDER_SAVE = BASE_URL + "/v2/manager/checkinfo/paid_order/save";

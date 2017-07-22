@@ -247,8 +247,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             RewardViewHolder viewHolder = (RewardViewHolder) holder;
             viewHolder.tvRewardTime.setText(DateUtils.doLong2String(rewardBean.createTime, "MM月dd日　HH:mm"));
             if (rewardBean.paidType.equals("credits")) {
-                viewHolder.tvRewardDetail.setText(String.format("%s积分", rewardBean.amount));
+                viewHolder.tvRewardType.setText("积分");
+                viewHolder.tvRewardDetail.setText(String.valueOf(rewardBean.amount));
             } else {
+                viewHolder.tvRewardType.setText("金钱");
                 viewHolder.tvRewardDetail.setText(String.format("%1.2f元", rewardBean.amount / 100f));
             }
             if (isManager) {
@@ -266,8 +268,6 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     viewHolder.tvRewardTechNo.setText("");
                 }
             } else {
-//                viewHolder.tvRewardTechName.setVisibility(View.GONE);
-//                viewHolder.tvRewardTechNo.setText("");
                 viewHolder.llRewardTech.setVisibility(View.GONE);
             }
 
@@ -283,6 +283,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             viewHolder.tvVisitorTime.setText(DateUtils.doLong2String(visitBean.createTime, "MM月dd日　HH:mm"));
             viewHolder.tvVisitorType.setText(visitBean.businessTypeName);
             if (isManager) {
+                viewHolder.llVisitorTech.setVisibility(View.VISIBLE);
                 if (!TextUtils.isEmpty(visitBean.techName)) {
                     viewHolder.tvVisitorTechName.setText(visitBean.techName);
                     if (!TextUtils.isEmpty(visitBean.techNo)) {
@@ -295,8 +296,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                     viewHolder.tvVisitorTechNo.setText("");
                 }
             } else {
-                viewHolder.tvVisitorTechName.setText("");
-                viewHolder.tvVisitorTechNo.setText("");
+                viewHolder.llVisitorTech.setVisibility(View.GONE);
             }
             return;
         }

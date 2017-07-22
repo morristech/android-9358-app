@@ -32,7 +32,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
-            android:gravity="center"
+            android:gravity="right"
+            android:paddingRight="10dp"
             android:textColor="#222222"
             android:textSize="16sp"
             tools:text="预约到店" />
@@ -41,7 +42,7 @@
             android:id="@+id/ll_visitor_tech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="2.5"
             android:gravity="right"
             android:orientation="horizontal">
 

@@ -4,6 +4,7 @@ package com.xmd.technician.Adapter;
 import android.content.Context;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,21 +121,20 @@ public class ChatCouponAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ViewChildViewHolder chatCouponViewHolder;
         CouponInfo couponInfo = mChildArray.get(groupPosition).get(childPosition);
-        if (convertView == null) {
+        //if (convertView == null) {
             if (groupPosition == 0) {
                 convertView = View.inflate(mContext, R.layout.chat_coupon_cash_item, null);
+               // chatCouponViewHolder = new ViewChildViewHolder(convertView);
+              //  convertView.setTag(chatCouponViewHolder);
             } else {
-                if (couponInfo.useTypeName.equals(ResourceUtils.getString(R.string.cash_coupon))) {
-                    convertView = View.inflate(mContext, R.layout.chat_coupon_delivery_item, null);
-                } else {
-                    convertView = View.inflate(mContext, R.layout.chat_coupon_favorable_item, null);
-                }
+                convertView = View.inflate(mContext, R.layout.chat_coupon_favorable_item, null);
+              //  chatCouponViewHolder = new ViewChildViewHolder(convertView);
+             //   convertView.setTag(chatCouponViewHolder);
             }
-            chatCouponViewHolder = new ViewChildViewHolder(convertView);
-            convertView.setTag(chatCouponViewHolder);
-        } else {
-            chatCouponViewHolder = (ViewChildViewHolder) convertView.getTag();
-        }
+        chatCouponViewHolder = new ViewChildViewHolder(convertView);
+//        } else {
+//            chatCouponViewHolder = (ViewChildViewHolder) convertView.getTag();
+//        }
 
         if (couponInfo.selectedStatus == 0) {
             chatCouponViewHolder.mTextCheck.setSelected(false);
@@ -144,12 +144,13 @@ public class ChatCouponAdapter extends BaseExpandableListAdapter {
             chatCouponViewHolder.llView.setOnClickListener(v -> mInterface.onChildrenClickedListener(couponInfo, groupPosition, childPosition, false));
         }
         chatCouponViewHolder.mTvCouponTitle.setText(couponInfo.actTitle);
-        if (couponInfo.useTypeName.equals("点钟券")) {
-            chatCouponViewHolder.mTvCouponTitle.setText("点钟券");
+        if (couponInfo.useTypeName.equals(ResourceUtils.getString(R.string.delivery_coupon))) {
+            chatCouponViewHolder.mTvCouponTitle.setText(ResourceUtils.getString(R.string.delivery_coupon));
             chatCouponViewHolder.mCouponType.setVisibility(View.GONE);
         } else {
-            chatCouponViewHolder.mTvCouponTitle.setText(Utils.StrSubstring(6, couponInfo.actTitle, true));
+            chatCouponViewHolder.mTvCouponTitle.setText(Utils.StrSubstring(8, couponInfo.actTitle, true));
             chatCouponViewHolder.mCouponType.setVisibility(View.VISIBLE);
+            chatCouponViewHolder.mCouponType.setText(Utils.isNotEmpty(couponInfo.couponTypeName) ? String.format("(%s)", couponInfo.couponTypeName) : couponInfo.couponTypeName);
         }
         chatCouponViewHolder.mTvConsumeMoneyDescription.setText(couponInfo.consumeMoneyDescription);
         chatCouponViewHolder.mCouponPeriod.setText("有效时间：" + Utils.StrSubstring(18, couponInfo.couponPeriod, true));
@@ -163,8 +164,17 @@ public class ChatCouponAdapter extends BaseExpandableListAdapter {
         } else {
             chatCouponViewHolder.mTvCouponReward.setVisibility(View.GONE);
         }
-        if (Utils.isNotEmpty(couponInfo.consumeMoney)) {
-            chatCouponViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
+        if (couponInfo.couponType.equals("discount")) {
+            chatCouponViewHolder.imgMoneyMark.setVisibility(View.GONE);
+            chatCouponViewHolder.mCouponAmount.setText(String.format("%1.1f折", couponInfo.actValue / 100f));
+        } else if (couponInfo.couponType.equals("gift")) {
+            chatCouponViewHolder.imgMoneyMark.setVisibility(View.GONE);
+            chatCouponViewHolder.mCouponAmount.setText(TextUtils.isEmpty(couponInfo.actSubTitle) ? couponInfo.actTitle : couponInfo.actSubTitle);
+        } else {
+            chatCouponViewHolder.imgMoneyMark.setVisibility(View.VISIBLE);
+            if (Utils.isNotEmpty(couponInfo.consumeMoney)) {
+                chatCouponViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
+            }
         }
 
         return convertView;
@@ -198,6 +208,8 @@ public class ChatCouponAdapter extends BaseExpandableListAdapter {
         TextView mTextCheck;
         @BindView(R.id.ll_view)
         LinearLayout llView;
+        @BindView(R.id.img_money_mark)
+        ImageView imgMoneyMark;
 
         ViewChildViewHolder(View view) {
             ButterKnife.bind(this, view);
