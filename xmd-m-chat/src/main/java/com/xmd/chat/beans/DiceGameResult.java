@@ -194,4 +194,25 @@ public class DiceGameResult {
     public void setDstPoint(int dstPoint) {
         this.dstPoint = dstPoint;
     }
+
+    @Override
+    public String toString() {
+        return "DiceGameResult{" +
+                "clubId='" + clubId + '\'' +
+                ", clubName='" + clubName + '\'' +
+                ", belongingsId=" + belongingsId +
+                ", belongingsAmount=" + belongingsAmount +
+                ", srcId='" + srcId + '\'' +
+                ", srcName='" + srcName + '\'' +
+                ", srcType='" + srcType + '\'' +
+                ", srcTelephone='" + srcTelephone + '\'' +
+                ", dstId='" + dstId + '\'' +
+                ", dstName='" + dstName + '\'' +
+                ", dstType='" + dstType + '\'' +
+                ", dstTelephone='" + dstTelephone + '\'' +
+                ", status='" + status + '\'' +
+                ", srcPoint=" + srcPoint +
+                ", dstPoint=" + dstPoint +
+                '}';
+    }
 }

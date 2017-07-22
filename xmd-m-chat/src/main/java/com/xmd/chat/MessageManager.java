@@ -203,6 +203,10 @@ public class MessageManager {
     }
 
     public ChatMessage sendMessage(ChatMessage chatMessage) {
+        return sendMessage(chatMessage, true);
+    }
+
+    public ChatMessage sendMessage(ChatMessage chatMessage, boolean show) {
         if (chatMessage == null) {
             return null;
         }
@@ -213,15 +217,23 @@ public class MessageManager {
         }
         chatMessage.setUser(user);
         EMClient.getInstance().chatManager().sendMessage(chatMessage.getEmMessage());
-        EventBus.getDefault().post(new EventSendMessage(chatMessage));
-        if (!chatMessage.getMsgType().equals(ChatMessage.MSG_TYPE_ORIGIN_CMD)) {
-            EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
+
+        if (show) {
+            EventBus.getDefault().post(new EventSendMessage(chatMessage));
+            if (!chatMessage.getMsgType().equals(ChatMessage.MSG_TYPE_ORIGIN_CMD)) {
+                EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
+            }
         }
         return chatMessage;
     }
 
     public void resendMessage(ChatMessage chatMessage) {
         EMClient.getInstance().chatManager().sendMessage(chatMessage.getEmMessage());
+    }
+
+    //删除消息
+    public void removeMessage(ChatMessage chatMessage) {
+        chatMessage.getConversation().removeMessage(chatMessage.getEmMessage().getMsgId());
     }
 
 

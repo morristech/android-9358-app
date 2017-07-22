@@ -269,7 +269,6 @@ public class ChatActivity extends BaseActivity {
     //处理删除消息
     @Subscribe
     public void onDeleteMessage(final EventDeleteMessage deleteMessage) {
-        getConversation().removeMessage(deleteMessage.getChatRowViewModel().getChatMessage().getEmMessage().getMsgId());
         removeMessageFromUi(deleteMessage.getChatRowViewModel());
     }
 

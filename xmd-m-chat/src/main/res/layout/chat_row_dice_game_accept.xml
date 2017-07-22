@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:visibility="@{(!data.inProcess &amp;&amp; data.nnerProcessed==null)?View.VISIBLE:View.GONE}">
+                android:visibility="@{(!data.inProcess &amp;&amp; data.innerProcessed==null)?View.VISIBLE:View.GONE}">
 
                 <TextView
                     android:layout_width="0dp"

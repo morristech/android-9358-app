@@ -151,7 +151,8 @@ public class ChatRowViewModelDiceGameInvite extends ChatRowViewModel {
                             message.getRemoteChatId(),
                             message.getGameId(),
                             Integer.parseInt(message.getCredit()));
-                    MessageManager.getInstance().sendMessage(cancelMessage);
+                    MessageManager.getInstance().sendMessage(cancelMessage, false);
+                    MessageManager.getInstance().removeMessage(cancelMessage);
                 }
                 //显示提示消息
                 TipChatMessage tipChatMessage = TipChatMessage.create(message.getRemoteChatId(), "取消游戏，返还" + getCredit() + "积分");

@@ -3,6 +3,8 @@ package com.xmd.chat.message;
 import android.text.SpannableString;
 import android.text.TextUtils;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
@@ -332,6 +334,10 @@ public class ChatMessage {
     public void setInnerProcessed(String processedDesc) {
         setAttr(ATTR_INNER_PROCESSED, processedDesc);
         MessageManager.getInstance().saveMessage(this); //设置状态标记后，需要保存消息到本地
+    }
+
+    public EMConversation getConversation() {
+        return EMClient.getInstance().chatManager().getConversation(getRemoteChatId());
     }
 
     public static String getMsgTypeText(String msgType) {
