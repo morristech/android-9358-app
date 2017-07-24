@@ -2,6 +2,7 @@ package com.xmd.cashier.presenter;
 
 import android.content.Context;
 
+import com.xmd.cashier.R;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyCouponContract;
 import com.xmd.cashier.dal.bean.CouponInfo;
@@ -48,7 +49,7 @@ public class VerifyCouponPresenter implements VerifyCouponContract.Presenter {
         mView.showLoading();
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
         if (mVerifyNormalCouponSubscription != null) {

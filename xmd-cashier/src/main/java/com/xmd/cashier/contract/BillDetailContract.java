@@ -20,7 +20,5 @@ public interface BillDetailContract {
 
     interface View extends BaseView<BillDetailContract.Presenter> {
         void showMorePop();
-
-        void showToast(String msg);
     }
 }

@@ -1,6 +1,8 @@
 package com.xmd.cashier.common;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +31,7 @@ public class AppConstants {
     public static final int CHECK_INFO_TYPE_COUPON = 1;
     public static final int CHECK_INFO_TYPE_ORDER = 2;
 
+    public static final int CASHIER_TYPE_ERROR = -1;
     // 会员支付
     public static final int CASHIER_TYPE_MEMBER = 0;
     // 普通支付
@@ -178,4 +181,43 @@ public class AppConstants {
 
     public static final String FAST_PAY_CHANNEL_WX = "wx";
     public static final String FAST_PAY_CHANNEL_ALI = "ali";
+
+    public static final String EXTRA_MEMBER_BUSINESS_TYPE = "member_read_type";
+    public static final String MEMBER_BUSINESS_TYPE_RECHARGE = "recharge";
+    public static final String MEMBER_BUSINESS_TYPE_PAYMENT = "payment";
+    public static final String MEMBER_BUSINESS_TYPE_CARD = "card";
+
+    public static final String EXTRA_MEMBER_INFO = "member_info";
+    public static final String EXTRA_TECH_INFO = "tech_info";
+    public static final String EXTRA_MEMBER_URL_INFO = "member_url_info";
+
+    public static final int MEMBER_CARD_MODEL_NORMAL = 1;   //电子卡实体卡
+    public static final int MEMBER_CARD_MODEL_WITHOUT = 2;  //仅电子卡
+
+    public static final String MEMBER_RECHARGE_MODEL_POS = "cashier";
+    public static final String MEMBER_TRADE_TYPE_PAY = "pay";
+    public static final String MEMBER_TRADE_TYPE_INCOME = "income";
+
+    public static final String MEMBER_GENDER_FEMALE = "female";
+    public static final String MEMBER_GENDER_MALE = "male";
+
+    public static final String MEMBER_RECORD_TYPE_CONSUME = "consume";
+    public static final String MEMBER_RECORD_TYPE_RECHARGE = "recharge";
+    public static final String MEMBER_RECORD_TYPE_CONSUME_TEXT = "会员消费";
+    public static final String MEMBER_RECORD_TYPE_RECHARGE_TEXT = "会员充值";
+
+    public static final Map<String, String> MEMBER_RECORD_STATUS_FILTER = new LinkedHashMap<String, String>() {{
+        put(STATUS_ALL_TEXT, null);
+        put(MEMBER_RECORD_TYPE_CONSUME_TEXT, MEMBER_RECORD_TYPE_CONSUME);
+        put(MEMBER_RECORD_TYPE_RECHARGE_TEXT, MEMBER_RECORD_TYPE_RECHARGE);
+    }};
+
+    public static final List<String> MEMBER_CARD_STEPS = Arrays.asList(new String[]{"手机验证", "会员资料", "绑定卡片", "开卡成功"});
+
+    // 会员支付媒介：二维码 || 接口
+    public static final String MEMBER_PAY_METHOD_CODE = "code";
+    public static final String MEMBER_PAY_METHOD_SCAN = "scan";
+
+    public static final String REPORT_DATA_BIZ_TRADE = "trade";
+    public static final String REPORT_DATA_BIZ_MEMBER = "member";
 }

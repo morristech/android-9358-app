@@ -1,17 +1,13 @@
 package com.xmd.cashier.presenter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
 
-import com.google.zxing.client.android.Intents;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.CashierContract;
-import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.bean.VerificationItem;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
@@ -19,6 +15,7 @@ import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.Callback0;
 import com.xmd.cashier.manager.CashierManager;
+import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 
 import java.util.List;
@@ -35,7 +32,6 @@ public class CashierPresenter implements CashierContract.Presenter {
 
     private Subscription mVerificationSubscription;
     private Subscription mGetTradeNoSubscription;
-    private Subscription mGetMemberInfoSubscription;
     private Subscription mGetOnlinePayOrderIdSubscription;
 
     private TradeManager mTradeManager = TradeManager.getInstance();
@@ -110,50 +106,11 @@ public class CashierPresenter implements CashierContract.Presenter {
      */
     @Override
     public void onClickMemberPay() {
-        UiNavigation.gotoScanCodeActivity(mContext);
-    }
-
-    /**
-     * 会员二维码扫描结果
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UiNavigation.REQUEST_CODE_MEMBER_SCAN) {
-            if (data != null && data.getAction().equals(Intents.Scan.ACTION)) {
-                String result = data.getStringExtra(Intents.Scan.RESULT);
-                XLogger.i(result);
-                getMemberInfo(result);
-            }
-        } else if (requestCode == UiNavigation.REQUEST_CODE_SET_COUPON) {
-
+        if (AppConstants.APP_REQUEST_YES.equals(MemberManager.getInstance().getmMemberSwitch())) {
+            UiNavigation.gotoMemberReadActivity(mContext, AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT);
+        } else {
+            mView.showError("会所会员功能未开通!");
         }
-    }
-
-    /**
-     * 获取会员详细信息
-     */
-    private void getMemberInfo(String memberToken) {
-        if (TextUtils.isEmpty(memberToken)) {
-            mView.showError("无法获取会员信息!");
-            return;
-        }
-        if (mGetMemberInfoSubscription != null) {
-            mGetMemberInfoSubscription.unsubscribe();
-        }
-        mView.showLoading();
-        mGetMemberInfoSubscription = mTradeManager.fetchMemberInfo(memberToken, new Callback<MemberInfo>() {
-            @Override
-            public void onSuccess(MemberInfo o) {
-                mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_MEMBER;
-                processTradeNo();
-            }
-
-            @Override
-            public void onError(String error) {
-                mView.hideLoading();
-                mView.showError("无法获取会员信息:" + error);
-            }
-        });
     }
 
     /**
@@ -161,7 +118,7 @@ public class CashierPresenter implements CashierContract.Presenter {
      */
     private void payMember() {
         mView.hideLoading();
-        UiNavigation.gotoMemberPayActivity(mContext);
+        UiNavigation.gotoMemberCashierActivity(mContext);
     }
 
     /**
@@ -220,7 +177,7 @@ public class CashierPresenter implements CashierContract.Presenter {
         }
         Trade trade = mTradeManager.getCurrentTrade();
         // 收银流程只处理消费金额有效(>0)的交易,不处理单独核销(首页核销入口处理)
-        if (trade.getOriginMoney() == 0 /*&& (trade.getVerificationMoney() == 0 || mTradeManager.onlyHaveTreat())*/) {
+        if (trade.getOriginMoney() == 0) {
             mView.showToast("请先输入收款信息");
             return false;
         }
@@ -230,7 +187,7 @@ public class CashierPresenter implements CashierContract.Presenter {
     /**
      * 生成Pos流水记录
      */
-    private void processTradeNo() {
+    public void processTradeNo() {
         mView.showLoading();
         if (mGetTradeNoSubscription != null) {
             mGetTradeNoSubscription.unsubscribe();
@@ -347,9 +304,6 @@ public class CashierPresenter implements CashierContract.Presenter {
         }
         if (mGetTradeNoSubscription != null) {
             mGetTradeNoSubscription.unsubscribe();
-        }
-        if (mGetMemberInfoSubscription != null) {
-            mGetMemberInfoSubscription.unsubscribe();
         }
         if (mGetOnlinePayOrderIdSubscription != null) {
             mGetOnlinePayOrderIdSubscription.unsubscribe();

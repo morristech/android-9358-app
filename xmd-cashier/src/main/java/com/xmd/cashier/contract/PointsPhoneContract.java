@@ -21,11 +21,5 @@ public interface PointsPhoneContract {
         String getPhone();
 
         void setPhone(String phone);
-
-        void showLoading();
-
-        void hideLoading();
-
-        void showError(String error);
     }
 }

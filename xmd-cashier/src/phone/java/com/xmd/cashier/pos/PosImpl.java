@@ -135,4 +135,9 @@ public class PosImpl implements IPos {
     public void textToSound(String text) {
 
     }
+
+    @Override
+    public String getMagneticReaderInfo() {
+        return null;
+    }
 }

@@ -1,16 +1,26 @@
 package com.xmd.cashier.dal.net;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.MD5Utils;
+import com.xmd.cashier.common.Utils;
+import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.ReportTradeDataResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.sp.SPManager;
+import com.xmd.cashier.manager.AccountManager;
+import com.xmd.cashier.manager.Callback;
+import com.xmd.cashier.manager.CashierManager;
+import com.xmd.cashier.manager.MemberManager;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.OkHttpUtil;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
 
 import okhttp3.FormBody;
@@ -64,6 +74,51 @@ public class SpaOkHttp {
         return MD5Utils.MD5(result);
     }
 
+    public static void reportRechargeDataSync(final Callback<MemberRecordResult> callback) {
+        FormBody.Builder builder = new FormBody.Builder();
+        Map<String, String> params = new HashMap<>();
+        params.put(RequestConstant.KEY_TOKEN, AccountManager.getInstance().getToken());
+        params.put(RequestConstant.KEY_ORDER_ID, MemberManager.getInstance().getRechargeOrderId());
+        params.put(RequestConstant.KEY_PAY_CHANNEL, Utils.getPayTypeChannel(CashierManager.getInstance().getPayType(MemberManager.getInstance().getTrade().posPayReturn)));
+        params.put(RequestConstant.KEY_TRADE_NO, MemberManager.getInstance().getTrade().tradeNo);
+        params.put(RequestConstant.KEY_SIGN, RequestConstant.DEFAULT_SIGN_VALUE);
+        Iterator<String> iterator = params.keySet().iterator();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            String value = params.get(key);
+            if (TextUtils.isEmpty(value)) {
+                iterator.remove();
+            } else {
+                builder.add(key, value);
+            }
+        }
+
+        Request request = new Request.Builder()
+                .url(SPManager.getInstance().getSpaServerAddress() + RequestConstant.URL_REPORT_MEMBER_RECHARGE_TRADE)
+                .post(builder.build())
+                .build();
+        final NetworkSubscriber<MemberRecordResult> networkCallback = new NetworkSubscriber<MemberRecordResult>() {
+            @Override
+            public void onCallbackSuccess(MemberRecordResult result) {
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onError(e.getLocalizedMessage());
+            }
+        };
+
+        try {
+            Response response = OkHttpUtil.getInstance().getClient().newCall(request).execute();
+            String body = response.body().string();
+            XLogger.i("data report resp:" + body);
+            MemberRecordResult result = new Gson().fromJson(body, MemberRecordResult.class);
+            networkCallback.onNext(result);
+        } catch (Exception e) {
+            networkCallback.onError(e);
+        }
+    }
 
     public static void reportTradeDataSync(FormBody formBody, final com.xmd.cashier.manager.Callback<ReportTradeDataResult> callback) {
         Request request = new Request.Builder()

@@ -34,14 +34,6 @@ public interface OrderRecordContract {
 
         void showData(List<OrderRecordInfo> list);
 
-        void showLoading();
-
-        void hideLoading();
-
-        void showError(String error);
-
-        void showToast(String toast);
-
         void showRefreshIng();
 
         void showRefreshError();

@@ -37,6 +37,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private TextView mVerifyConfirm;
 
     private RelativeLayout mMainCashierLayout;
+    private RelativeLayout mMainMemberLayout;
     private RelativeLayout mMainOrderLayout;
     private RelativeLayout mMainOnlinePayLayout;
     private RelativeLayout mMainRecordLayout;
@@ -105,6 +106,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mVerifyConfirm = (TextView) findViewById(R.id.btn_verify_confirm);
 
         mMainCashierLayout = (RelativeLayout) findViewById(R.id.layout_main_cashier);
+        mMainMemberLayout = (RelativeLayout) findViewById(R.id.layout_main_member);
         mMainOrderLayout = (RelativeLayout) findViewById(R.id.layout_main_order);
         mMainOnlinePayLayout = (RelativeLayout) findViewById(R.id.layout_main_online_pay);
         mMainRecordLayout = (RelativeLayout) findViewById(R.id.layout_main_record);
@@ -127,6 +129,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
             @Override
             public void onClick(View v) {
                 mPresenter.onCashierLayoutClick();
+            }
+        });
+
+        mMainMemberLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onMemberLayoutClick();
             }
         });
 

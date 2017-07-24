@@ -6,12 +6,6 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.R;
@@ -38,8 +32,6 @@ import com.xmd.m.network.ServerException;
 import com.xmd.m.network.XmdNetwork;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import rx.Observable;
 import rx.Subscription;
@@ -195,33 +187,6 @@ public class ScanPayPresenter implements Presenter {
         mQRBitmap = null;
     }
 
-    private Bitmap getQRBitmap(String content) throws WriterException {
-        if (TextUtils.isEmpty(content)) {
-            return null;
-        }
-
-        int width = 350;
-        int height = 350;
-        Map<EncodeHintType, Object> hints = new HashMap<>();
-        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-
-        BitMatrix bitMatrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);
-        int[] pixels = new int[width * height];
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                if (bitMatrix.get(x, y)) {
-                    pixels[y * width + x] = 0xff000000;
-                } else {
-                    pixels[y * width + x] = 0xffffffff;
-                }
-            }
-        }
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-        return bitmap;
-    }
-
     @Override
     public void onCancel() {
         String message;
@@ -293,7 +258,7 @@ public class ScanPayPresenter implements Presenter {
                 XLogger.d(info.orderId + " --- " + info.url);
                 // 获取二维码成功
                 try {
-                    mQRBitmap = getQRBitmap(info.url);
+                    mQRBitmap = Utils.getQRBitmap(info.url);
                 } catch (Exception e) {
                     mQRBitmap = null;
                 }

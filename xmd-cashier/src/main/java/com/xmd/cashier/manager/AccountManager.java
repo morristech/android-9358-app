@@ -143,6 +143,7 @@ public class AccountManager {
                             EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));
                             NotifyManager.getInstance().startGetFastPayCountAsync();
                             NotifyManager.getInstance().startGetOrderCountAsync();
+                            MemberManager.getInstance().getClubMemberSetting();
                         }
 
                         @Override

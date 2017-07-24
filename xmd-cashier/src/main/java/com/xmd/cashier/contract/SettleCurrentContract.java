@@ -23,13 +23,5 @@ public interface SettleCurrentContract {
         void onCurrentFailed();
 
         void onCurrentEmpty();
-
-        void showToast(String toast);
-
-        void showError(String error);
-
-        void showLoading();
-
-        void hideLoading();
     }
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_statistics"
-    style="@style/main_page_margin_style"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/shape_r4_solid_white"
-    android:orientation="vertical"
-    android:visibility="visible">
+              android:id="@+id/layout_statistics"
+              style="@style/main_page_margin_style"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="-20dp"
+              android:background="@drawable/shape_r4_solid_white"
+              android:orientation="vertical"
+              android:visibility="visible">
 
     <RelativeLayout
         style="@style/relative_layout_title_style"
@@ -17,7 +18,7 @@
             android:id="@+id/tv_title_statistics"
             style="@style/main_fragment_layout_title_left_style"
             android:drawableLeft="@drawable/icon_wifi"
-            android:text="@string/layout_statistics_title" />
+            android:text="@string/layout_statistics_title"/>
 
         <TextView
             android:id="@+id/tv_current_time"
@@ -26,7 +27,7 @@
             android:layout_alignBottom="@id/tv_title_statistics"
             android:layout_toRightOf="@id/tv_title_statistics"
             android:text="@string/layout_main_publicity_yesterday"
-            android:textSize="@dimen/fontBody" />
+            android:textSize="@dimen/fontBody"/>
 
         <TextView
             android:id="@+id/main_publicity_time_switch"
@@ -37,7 +38,7 @@
             android:paddingRight="@dimen/margin_10"
             android:text="@string/layout_main_btn_today"
             android:textColor="@color/select_publicity_time"
-            android:textSize="@dimen/fontMiddle" />
+            android:textSize="@dimen/fontMiddle"/>
 
     </RelativeLayout>
 
@@ -50,8 +51,8 @@
 
         <LinearLayout
             android:id="@+id/ll_wifi_today"
-            android:visibility="gone"
-            style="@style/main_fragment_layout_statistic_section_style">
+            style="@style/main_fragment_layout_statistic_section_style"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,12 +63,12 @@
                 <TextView
                     android:id="@+id/tv_title_wifi"
                     style="@style/main_fragment_layout_statistics_label_style"
-                    android:text="@string/layout_statistics_propagate" />
+                    android:text="@string/layout_statistics_propagate"/>
 
                 <TextView
                     android:id="@+id/tv_wifi_today"
                     style="@style/main_fragment_layout_statistics_value_style"
-                    android:text="0" />
+                    android:text="0"/>
 
             </LinearLayout>
 
@@ -80,16 +81,16 @@
 
                 <TextView
                     style="@style/main_fragment_layout_statistics_accumulate_style"
-                    android:text="@string/accumulate_with_semi_colon" />
+                    android:text="@string/accumulate_with_semi_colon"/>
 
                 <TextView
                     android:id="@+id/tv_wifi_accumulate"
                     style="@style/main_fragment_layout_statistics_accumulate_value_style"
-                    android:text="0" />
+                    android:text="0"/>
 
                 <TextView
                     style="@style/main_fragment_layout_statistics_accumulate_value_style"
-                    android:text="@string/person_units" />
+                    android:text="@string/person_units"/>
 
             </LinearLayout>
 
@@ -99,13 +100,13 @@
         <View
             style="@style/vertical_line"
             android:layout_marginBottom="@dimen/inter_space"
-            android:layout_marginTop="@dimen/inter_space" />
+            android:layout_marginTop="@dimen/inter_space"/>
 
 
         <LinearLayout
             android:id="@+id/ll_visit_today"
-            android:visibility="gone"
-            style="@style/main_fragment_layout_statistic_section_style">
+            style="@style/main_fragment_layout_statistic_section_style"
+            android:visibility="gone">
 
 
             <LinearLayout
@@ -117,12 +118,12 @@
                 <TextView
                     android:id="@+id/tv_title_visit"
                     style="@style/main_fragment_layout_statistics_label_style"
-                    android:text="@string/statistics_fragment_statistics_visit" />
+                    android:text="@string/statistics_fragment_statistics_visit"/>
 
                 <TextView
                     android:id="@+id/tv_visit_today"
                     style="@style/main_fragment_layout_statistics_value_style"
-                    android:text="0" />
+                    android:text="0"/>
 
             </LinearLayout>
 
@@ -135,16 +136,16 @@
 
                 <TextView
                     style="@style/main_fragment_layout_statistics_accumulate_style"
-                    android:text="@string/accumulate_with_semi_colon" />
+                    android:text="@string/accumulate_with_semi_colon"/>
 
                 <TextView
                     android:id="@+id/tv_visit_accumulate"
                     style="@style/main_fragment_layout_statistics_accumulate_value_style"
-                    android:text="0" />
+                    android:text="0"/>
 
                 <TextView
                     style="@style/main_fragment_layout_statistics_accumulate_value_style"
-                    android:text="@string/person_units" />
+                    android:text="@string/person_units"/>
 
             </LinearLayout>
 
@@ -179,12 +180,12 @@
 
                     <TextView
                         style="@style/main_fragment_layout_statistics_label_style"
-                        android:text="今天访客：" />
+                        android:text="今天访客："/>
 
                     <TextView
                         android:id="@+id/tv_visit_today_data"
                         style="@style/main_fragment_layout_statistics_value_style"
-                        android:text="0" />
+                        android:text="0"/>
 
                 </LinearLayout>
 
@@ -194,7 +195,7 @@
             <View
                 style="@style/vertical_line"
                 android:layout_marginBottom="@dimen/margin_10"
-                android:layout_marginTop="@dimen/margin_10" />
+                android:layout_marginTop="@dimen/margin_10"/>
 
 
             <LinearLayout
@@ -214,12 +215,12 @@
                     <TextView
 
                         style="@style/main_fragment_layout_statistics_label_style"
-                        android:text="昨天访客：" />
+                        android:text="昨天访客："/>
 
                     <TextView
                         android:id="@+id/tv_visit_yesterday_data"
                         style="@style/main_fragment_layout_statistics_value_style"
-                        android:text="0" />
+                        android:text="0"/>
 
 
                 </LinearLayout>
@@ -238,7 +239,7 @@
             android:background="@drawable/comment_detail_div_line"
             android:layerType="software"
             android:paddingLeft="@dimen/inter_space"
-            android:paddingRight="@dimen/inter_space" />
+            android:paddingRight="@dimen/inter_space"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -252,16 +253,16 @@
 
             <TextView
                 style="@style/main_fragment_layout_statistics_accumulate_style"
-                android:text="@string/visit_accumulate_with_semi_colon" />
+                android:text="@string/visit_accumulate_with_semi_colon"/>
 
             <TextView
                 android:id="@+id/tv_visit_accumulate_data"
                 style="@style/main_fragment_layout_statistics_accumulate_value_style"
-                android:text="0" />
+                android:text="0"/>
 
             <TextView
                 style="@style/main_fragment_layout_statistics_accumulate_value_style"
-                android:text="@string/person_units" />
+                android:text="@string/person_units"/>
 
         </LinearLayout>
 

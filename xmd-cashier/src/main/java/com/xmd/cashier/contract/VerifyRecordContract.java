@@ -32,14 +32,6 @@ public interface VerifyRecordContract {
 
         void showData(List<VerifyRecordInfo> list);
 
-        void showLoading();
-
-        void hideLoading();
-
-        void showError(String error);
-
-        void showToast(String toast);
-
         void showRefreshIng();
 
         void showRefreshError();

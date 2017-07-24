@@ -44,12 +44,8 @@ public interface BillSearchContract {
 
         void showMoreSuccess();
 
-        void showError(String error);
-
         void setHasMore(boolean hasMore);
 
         void showBillData(List<BillInfo> list);
-
-        void showToast(String msg);
     }
 }

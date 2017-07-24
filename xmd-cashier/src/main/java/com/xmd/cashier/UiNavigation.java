@@ -14,7 +14,15 @@ import com.xmd.cashier.activity.CashierActivity;
 import com.xmd.cashier.activity.ConfirmActivity;
 import com.xmd.cashier.activity.LoginActivity;
 import com.xmd.cashier.activity.MainActivity;
-import com.xmd.cashier.activity.MemberPayActivity;
+import com.xmd.cashier.activity.McardInfoActivity;
+import com.xmd.cashier.activity.McardPhoneActivity;
+import com.xmd.cashier.activity.McardSuccessActivity;
+import com.xmd.cashier.activity.MemberCashierActivity;
+import com.xmd.cashier.activity.MemberNavigationActivity;
+import com.xmd.cashier.activity.MemberReadActivity;
+import com.xmd.cashier.activity.MemberRechargeActivity;
+import com.xmd.cashier.activity.MemberRecordActivity;
+import com.xmd.cashier.activity.MemberScanActivity;
 import com.xmd.cashier.activity.OnlinePayActivity;
 import com.xmd.cashier.activity.OrderRecordActivity;
 import com.xmd.cashier.activity.PayTypeChoiceActivity;
@@ -26,6 +34,7 @@ import com.xmd.cashier.activity.SettingActivity;
 import com.xmd.cashier.activity.SettleCurrentActivity;
 import com.xmd.cashier.activity.SettleDetailActivity;
 import com.xmd.cashier.activity.SettleRecordActivity;
+import com.xmd.cashier.activity.TechnicianActivity;
 import com.xmd.cashier.activity.VerificationActivity;
 import com.xmd.cashier.activity.VerifyCheckInfoActivity;
 import com.xmd.cashier.activity.VerifyCommonActivity;
@@ -44,14 +53,13 @@ import com.xmd.cashier.dal.bean.PrizeInfo;
 
 public class UiNavigation {
     public static final int REQUEST_CODE_MEMBER_SCAN = 1;
-    public static final int REQUEST_CODE_SET_COUPON = 2;
 
     public static void gotoMainActivity(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
 
     public static void gotoVerificationActivity(Context context) {
-        ((Activity) context).startActivityForResult(new Intent(context, VerificationActivity.class), REQUEST_CODE_SET_COUPON);
+        context.startActivity(new Intent(context, VerificationActivity.class));
     }
 
     public static void gotoScanCodeActivity(Context context) {
@@ -76,8 +84,9 @@ public class UiNavigation {
         gotoConfirmActivity(context, null);
     }
 
-    public static void gotoMemberPayActivity(Context context) {
-        Intent intent = new Intent(context, MemberPayActivity.class);
+    public static void gotoMemberCashierActivity(Context context) {
+        Intent intent = new Intent(context, MemberCashierActivity.class);
+
         context.startActivity(intent);
     }
 
@@ -215,6 +224,54 @@ public class UiNavigation {
     // 系统设置
     public static void gotoSettingActivity(Context context) {
         Intent intent = new Intent(context, SettingActivity.class);
+        context.startActivity(intent);
+    }
+
+    // ------------------会员------------------
+    public static void gotoMemberNavigationActivity(Context context) {
+        Intent intent = new Intent(context, MemberNavigationActivity.class);
+        context.startActivity(intent);
+    }
+
+    // 会员账户记录
+    public static void gotoMemberRecordActivity(Context context) {
+        Intent intent = new Intent(context, MemberRecordActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoMcardPhoneActivity(Context context) {
+        Intent intent = new Intent(context, McardPhoneActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoMcardInfoActivity(Context context) {
+        Intent intent = new Intent(context, McardInfoActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoMemberReadActivity(Context context, String bizType) {
+        Intent intent = new Intent(context, MemberReadActivity.class);
+        intent.putExtra(AppConstants.EXTRA_MEMBER_BUSINESS_TYPE, bizType);
+        context.startActivity(intent);
+    }
+
+    public static void gotoMemberRechargeActivity(Context context) {
+        Intent intent = new Intent(context, MemberRechargeActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoMcardSuccessActivity(Context context) {
+        Intent intent = new Intent(context, McardSuccessActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoMemberScanActivity(Context context) {
+        Intent intent = new Intent(context, MemberScanActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void gotoTechnicianActivity(Context context) {
+        Intent intent = new Intent(context, TechnicianActivity.class);
         context.startActivity(intent);
     }
 }

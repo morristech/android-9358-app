@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <com.xmd.cashier.widget.StepView
+        android:id="@+id/sv_step_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/activity_normal_margin"
+        android:paddingTop="@dimen/activity_normal_margin" />
+
+    <com.xmd.cashier.widget.ClearableEditText
+        android:id="@+id/et_phone_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/activity_small_margin"
+        android:background="@drawable/bg_area_item"
+        android:clickable="true"
+        android:focusable="true"
+        android:hint="请输入手机号码"
+        android:inputType="phone"
+        android:lines="1"
+        android:maxLength="11"
+        android:padding="@dimen/activity_normal_margin"
+        android:textColor="@color/colorText4"
+        android:textColorHint="@color/colorText3"
+        android:textSize="@dimen/small_font_size" />
+
+    <Button
+        android:id="@+id/btn_phone_confirm"
+        style="@style/AppTheme.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_normal_margin"
+        android:text="确定"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/medium_font_size" />
+
+</LinearLayout>

@@ -40,10 +40,6 @@ public interface VerificationContract {
 
         void showVerificationData(List<VerificationItem> verificationItems);
 
-        void showError(String error);
-
-        void showToast(String toast);
-
         void hideKeyboard();
     }
 }

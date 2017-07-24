@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.xmd.cashier.R;
 import com.xmd.cashier.activity.VerifyConfirmActivity;
 import com.xmd.cashier.activity.VerifyCouponActivity;
 import com.xmd.cashier.activity.VerifyOrderActivity;
@@ -96,7 +97,7 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
         mView.showLoading();
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
         }
         if (mLoadCheckInfoSubscription != null) {
             mLoadCheckInfoSubscription.unsubscribe();
@@ -126,7 +127,7 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
             return;
         }
         if (!Utils.isNetworkEnabled(mContext)) {
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
         if (mVerifyCheckInfoSubscription != null) {

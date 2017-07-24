@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <com.xmd.cashier.widget.StepView
+        android:id="@+id/sv_step_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/activity_normal_margin"
+        android:paddingTop="@dimen/activity_normal_margin" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:paddingBottom="@dimen/activity_normal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_normal_margin"
+        android:shrinkColumns="1">
+
+        <TableRow android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*"
+                android:textColor="@color/colorMemberPayFailed"
+                android:textSize="@dimen/medium_font_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_small_margin"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:gravity="end"
+                android:text="姓名"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <com.xmd.cashier.widget.ClearableEditText
+                android:id="@+id/edt_info_name"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:hint="请输入姓名或昵称"
+                android:lines="1"
+                android:maxLength="20"
+                android:padding="5dp"
+                android:textColor="@color/colorText4"
+                android:textColorHint="@color/colorText3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/activity_small_margin"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*"
+                android:textColor="@color/colorMemberPayFailed"
+                android:textSize="@dimen/medium_font_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_small_margin"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:gravity="end"
+                android:text="手机"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <com.xmd.cashier.widget.ClearableEditText
+                android:id="@+id/edt_info_phone"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:hint="请输入手机号码"
+                android:inputType="phone"
+                android:lines="1"
+                android:maxLength="11"
+                android:padding="5dp"
+                android:textColor="@color/colorText4"
+                android:textColorHint="@color/colorText3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/activity_small_margin"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_small_margin"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:layout_span="2"
+                android:gravity="end"
+                android:text="性别"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <RadioGroup
+                android:id="@+id/rg_info_gender"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_info_gender_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/state_radio_normal"
+                    android:button="@null"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="3dp"
+                    android:text="男"
+                    android:textColor="@color/selector_text_white_accent" />
+
+                <RadioButton
+                    android:id="@+id/rb_info_gender_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/state_radio_normal"
+                    android:button="@null"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="3dp"
+                    android:text="女"
+                    android:textColor="@color/selector_text_white_accent" />
+
+            </RadioGroup>
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/activity_small_margin"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_small_margin"
+                android:layout_marginRight="@dimen/activity_normal_margin"
+                android:layout_span="2"
+                android:gravity="end"
+                android:text="生日"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/font_size_16" />
+
+            <TextView
+                android:id="@+id/tv_info_birthday"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_area_item"
+                android:drawableRight="@drawable/ic_arrow"
+                android:gravity="center_vertical"
+                android:hint="请选择"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textColorHint="@color/colorText3" />
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="@dimen/activity_normal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_normal_margin"
+            android:text="营销人员"
+            android:textSize="@dimen/font_size_16" />
+
+        <TextView
+            android:id="@+id/tv_tech_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_normal_margin"
+            android:paddingRight="@dimen/activity_normal_margin"
+            android:text="删除"
+            android:textColor="@color/selector_text_black_gray"
+            android:textSize="@dimen/font_size_14" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <RelativeLayout
+        android:id="@+id/layout_tech_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_area_item"
+        android:paddingBottom="@dimen/activity_normal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_normal_margin">
+
+        <TextView
+            android:id="@+id/tv_tech_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请选择"
+            android:textColor="@color/colorText3" />
+
+        <com.xmd.cashier.widget.CircleImageView
+            android:id="@+id/img_tech_avatar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_tech_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_arrow" />
+
+        <TextView
+            android:id="@+id/tv_tech_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_small_margin"
+            android:layout_marginRight="@dimen/activity_small_margin"
+            android:layout_toRightOf="@id/img_tech_avatar"
+            android:maxLength="12"
+            android:singleLine="true"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_tech_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_small_margin"
+            android:layout_toRightOf="@id/tv_tech_name"
+            android:background="@drawable/bg_text_dark"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:textSize="@dimen/font_size_14"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_mcard_info_confirm"
+        style="@style/AppTheme.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_normal_margin"
+        android:text="确定"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/medium_font_size" />
+</LinearLayout>

@@ -25,9 +25,5 @@ public interface VerifyCommonContract {
         String getAmount();
 
         boolean needAmount();
-
-        void showToast(String msg);
-
-        void showError(String msg);
     }
 }

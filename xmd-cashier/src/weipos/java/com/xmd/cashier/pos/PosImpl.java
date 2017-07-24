@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import cn.weipass.pos.sdk.BizServiceInvoker;
 import cn.weipass.pos.sdk.IPrint;
 import cn.weipass.pos.sdk.LatticePrinter;
+import cn.weipass.pos.sdk.MagneticReader;
 import cn.weipass.pos.sdk.Weipos;
 import cn.weipass.pos.sdk.impl.WeiposImpl;
 import cn.weipass.service.bizInvoke.RequestInvoke;
@@ -30,6 +31,7 @@ public class PosImpl implements IPos {
     private static PosImpl mInstance;
     private BizServiceInvoker mBizServiceInvoker;
     private LatticePrinter mLatticePrinter;
+    private MagneticReader mMagneticReader;
     private boolean isInit;
 
     public static final int smallSize = 24 * 2;
@@ -72,7 +74,8 @@ public class PosImpl implements IPos {
                         // 初始化服务调用
                         mBizServiceInvoker = WeiposImpl.as().getService(BizServiceInvoker.class);
 
-                        initPrinter();
+                        initPrinter();  //初始化打印
+                        initMagneticReader();   //初始化磁条刷卡
 
                         callback.onSuccess(null);
                         isInit = true;
@@ -335,6 +338,36 @@ public class PosImpl implements IPos {
         WeiposImpl.as().speech(text);
     }
 
+    @Override
+    public String getMagneticReaderInfo() {
+        if (mMagneticReader != null) {
+            String[] decodeData = mMagneticReader.getCardDecodeThreeTrackData();
+            if (decodeData != null && decodeData.length > 0) {
+                String retStr = "";
+                for (int i = 0; i < decodeData.length; i++) {
+                    if (decodeData[i] == null)
+                        continue;
+                    String txt = decodeData[i].trim();
+                    if (retStr.length() > 0) {
+                        retStr = retStr + "=";
+                    } else {
+                        if (txt.indexOf("=") >= 0) {
+                            String[] arr = txt.split("=");
+                            if (arr[0].length() == 16 || arr[0].length() == 19) {
+                                return arr[0];
+                            }
+                        }
+                    }
+                    retStr = retStr + txt;
+                }
+                return retStr;
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
 
     private void initPrinter() {
         try {
@@ -342,6 +375,14 @@ public class PosImpl implements IPos {
             mLatticePrinter = WeiposImpl.as().openLatticePrinter();
         } catch (Exception e2) {
             XLogger.e("can not init latticePrinter");
+        }
+    }
+
+    private void initMagneticReader() {
+        try {
+            mMagneticReader = WeiposImpl.as().openMagneticReader();
+        } catch (Exception e) {
+            XLogger.e("can not init MagneticReader");
         }
     }
 

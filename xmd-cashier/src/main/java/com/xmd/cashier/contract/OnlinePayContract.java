@@ -34,14 +34,6 @@ public interface OnlinePayContract {
 
         void showData(List<OnlinePayInfo> list);
 
-        void showLoading();
-
-        void hideLoading();
-
-        void showError(String error);
-
-        void showToast(String toast);
-
         void showRefreshIng();
 
         void showRefreshError();

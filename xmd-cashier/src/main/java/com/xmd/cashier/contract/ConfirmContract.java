@@ -30,14 +30,6 @@ public interface ConfirmContract {
 
         void showTradeStatusInfo(Trade trade);
 
-        void showLoading();
-
-        void hideLoading();
-
-        void showError(String error);
-
-        void showToast(String toast);
-
         String getStartShowMessage(); //返回需要确认的信息
 
         int getDiscountMoney();

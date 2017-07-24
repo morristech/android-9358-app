@@ -41,4 +41,7 @@
     <color name="colorStatusGray">#999999</color>
     <color name="colorStatusGreen">#66cc66</color>
     <color name="colorStatusDark">#2a3141</color>
+
+    <color name="colorSilver">#7B7B7B</color>
+    <color name="colorGolden">#C1A272</color>
 </resources>

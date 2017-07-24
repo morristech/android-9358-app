@@ -89,6 +89,8 @@
 #保留所有bean包中的类和公开变量名,用于gson解析
 -keepclasseswithmembernames class **.bean.**{*;}
 -keepclasseswithmembernames class **.bean.**$*{*;}
+-keepclasseswithmembernames class **.event.**{*;}
+-keepclasseswithmembernames class **.event.**$*{*;}
 
 -keep class com.xmd.cashier.dal.**{*;}
 -keep class com.xmd.cashier.dal.**$*{*;}

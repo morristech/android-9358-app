@@ -9,7 +9,14 @@ import com.xmd.cashier.dal.net.response.GetMemberInfo;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.LoginResult;
 import com.xmd.cashier.dal.net.response.LogoutResult;
+import com.xmd.cashier.dal.net.response.MemberCardResult;
+import com.xmd.cashier.dal.net.response.MemberListResult;
 import com.xmd.cashier.dal.net.response.MemberPayResult;
+import com.xmd.cashier.dal.net.response.MemberPlanResult;
+import com.xmd.cashier.dal.net.response.MemberRecordListResult;
+import com.xmd.cashier.dal.net.response.MemberRecordResult;
+import com.xmd.cashier.dal.net.response.MemberSettingResult;
+import com.xmd.cashier.dal.net.response.MemberUrlResult;
 import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
@@ -19,6 +26,7 @@ import com.xmd.cashier.dal.net.response.PrizeResult;
 import com.xmd.cashier.dal.net.response.SettleRecordResult;
 import com.xmd.cashier.dal.net.response.SettleSummaryResult;
 import com.xmd.cashier.dal.net.response.StringResult;
+import com.xmd.cashier.dal.net.response.TechListResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordResult;
 import com.xmd.cashier.dal.net.response.VerifyTypeResult;
@@ -83,7 +91,7 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_CLUB_WX_QRCODE)
     Call<StringResult> getClubWXQrcode(@Field(RequestConstant.KEY_CLUB_ID) String userToken,
-                                             @Field(RequestConstant.KEY_TRADE_NO) String tradeNo);
+                                       @Field(RequestConstant.KEY_TRADE_NO) String tradeNo);
 
     /**
      * 获取核销列表: 券+付费预约
@@ -592,4 +600,68 @@ public interface SpaService {
     @POST(RequestConstant.URL_DELETE_XMD_ONLINE_ORDER_ID)
     Observable<BaseBean> deleteXMDOnlineOrderId(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                 @Field(RequestConstant.KEY_ORDER_ID) String orderId);
+
+    // ***************************************POS会员*******************************************
+    // 会员设置信息获取
+    @GET(RequestConstant.URL_GET_MEMBER_SETTING_CONFIG)
+    Observable<MemberSettingResult> getMemberSettingConfig(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    // 获取会员充值套餐
+    @GET(RequestConstant.URL_GET_MEMBER_ACT_PLAN)
+    Observable<MemberPlanResult> getMemberPlanList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    // 开卡:根据手机号验证会员信息
+    @GET(RequestConstant.URL_CHECK_MEMBER_CARD_PHONE)
+    Observable<StringResult> checkMemberPhone(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                              @Query(RequestConstant.KEY_TELEPHONE) String telephone);
+
+    // 手机卡号查会员信息
+    @GET(RequestConstant.URL_GET_MEMBER_INFO)
+    Observable<MemberListResult> getMemberInfo(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                               @Query(RequestConstant.KEY_CARD_NO) String cardNo);
+
+    // 会员开卡
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_REQUEST_MEMBER_CARD)
+    Observable<MemberCardResult> cardMemberInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                @Field(RequestConstant.KEY_BIRTH) String birth,
+                                                @Field(RequestConstant.KEY_GENDER) String gender,
+                                                @Field(RequestConstant.KEY_CARD_NO) String cardNo,
+                                                @Field(RequestConstant.KEY_TECH_ID) String techId,
+                                                @Field(RequestConstant.KEY_TELEPHONE) String telephone,
+                                                @Field(RequestConstant.KEY_USER_NAME) String userName);
+
+    // 会员充值
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_REQUEST_MEMBER_RECHARGE)
+    Observable<MemberUrlResult> rechargeMemberInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                   @Field(RequestConstant.KEY_AMOUNT) String amount,
+                                                   @Field(RequestConstant.KEY_DESCRIPTION) String description,
+                                                   @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                                   @Field(RequestConstant.KEY_MEMBER_PACKAGE_ID) String packageId,
+                                                   @Field(RequestConstant.KEY_TECH_ID) String techId);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_GET_MEMBER_RECORD_LIST)
+    Observable<MemberRecordListResult> getMemberRecordList(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                           @Field(RequestConstant.KEY_PAGE_START) String page,
+                                                           @Field(RequestConstant.KEY_PAGE_SIZE) String pageSize,
+                                                           @Field(RequestConstant.KEY_TYPE) String type,
+                                                           @Field(RequestConstant.KEY_USER_NAME) String userName);
+
+    @GET(RequestConstant.URL_GET_MEMBER_RECHARGE_DETAIL)
+    Observable<MemberRecordResult> getMemberRechargeDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                           @Query(RequestConstant.KEY_ORDER_ID) String orderId);
+
+    @GET(RequestConstant.URL_REQUEST_MEMBER_PAYMENT)
+    Observable<MemberRecordResult> requestMemberPayment(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                        @Query(RequestConstant.KEY_AMOUNT) String amount,
+                                                        @Query(RequestConstant.KEY_BIZ_CATEGORY) String category,
+                                                        @Query(RequestConstant.KEY_DESCRIPTION) String description,
+                                                        @Query(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                                        @Query(RequestConstant.KEY_TRADE_NO) String tradeNO,
+                                                        @Query(RequestConstant.KEY_TRADE_TYPE) String tradeType);
+
+    @GET(RequestConstant.URL_GET_CLUB_TECH_LIST)
+    Observable<TechListResult> getTechList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 }

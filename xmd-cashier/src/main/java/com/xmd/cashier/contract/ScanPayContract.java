@@ -17,14 +17,6 @@ public interface ScanPayContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showLoading();
-
-        void hideLoading();
-
-        void showError(String error);
-
-        void showToast(String toast);
-
         void setOrigin(String origin);
 
         void setDiscount(String discount);

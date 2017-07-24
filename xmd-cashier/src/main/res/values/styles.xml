@@ -68,4 +68,31 @@
         <item name="android:windowAnimationStyle">@style/SheetAnimationAction</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
+    <style name="Activity_Anim_Style" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/Activity_Anim</item>
+    </style>
+
+    <style name="Activity_Anim" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_in_from_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_out_to_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_in_from_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_out_to_right</item>
+    </style>
+
+    <style name="StepView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:paddingTop">@dimen/activity_normal_margin</item>
+        <item name="android:paddingBottom">@dimen/activity_normal_margin</item>
+        <item name="svNormalColor">@color/colorWhite</item>
+        <item name="svTextColor">@color/colorText2</item>
+        <item name="svSelectColor">@color/colorAccent</item>
+        <item name="svFillRadius">@dimen/activity_normal_margin</item>
+        <item name="svStrokeWidth">1dp</item>
+        <item name="svLineWidth">3dp</item>
+        <item name="svTextSize">@dimen/font_size_13</item>
+        <item name="svDrawablePadding">@dimen/activity_normal_margin</item>
+    </style>
 </resources>

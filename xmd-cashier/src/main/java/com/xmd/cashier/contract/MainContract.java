@@ -25,6 +25,8 @@ public interface MainContract {
 
         void onCashierLayoutClick();
 
+        void onMemberLayoutClick();
+
         void onOrderLayoutClick();
 
         void onOnlinePayLayoutClick();
@@ -37,13 +39,6 @@ public interface MainContract {
     }
 
     interface View extends BaseView<MainContract.Presenter> {
-        void showLoading();
-
-        void hideLoading();
-
-        void showError(String error);
-
-        void showToast(String toast);
 
         void showVersionName(String versionName);
 

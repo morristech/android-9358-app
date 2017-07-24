@@ -62,6 +62,7 @@ public class CustomerVisitorDetailFragment extends BaseFragment implements ListR
         mListAdapter = new ListRecycleViewAdapter(getContext(), mVisitList, this);
         mRecyclerView.setAdapter(mListAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

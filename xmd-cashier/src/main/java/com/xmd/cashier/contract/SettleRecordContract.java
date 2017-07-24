@@ -22,14 +22,6 @@ public interface SettleRecordContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showToast(String toast);
-
-        void showError(String error);
-
-        void showLoading();
-
-        void hideLoading();
-
         void showLoadIng();
 
         void showLoadError();

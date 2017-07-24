@@ -6,7 +6,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_verify_record" />
+    <include layout="@layout/toolbar_type_record" />
 
     <EditText
         android:id="@+id/et_list_search"

@@ -35,7 +35,7 @@ public class PointsPhonePresenter implements PointsPhoneContract.Presenter {
         Trade trade = mTradeManager.getCurrentTrade();
         mView.showPoints(trade.posPoints);
         if (trade.memberInfo != null) {
-            mView.setPhone(trade.memberInfo.phone);
+            mView.setPhone(trade.memberInfo.phoneNum);
         }
     }
 

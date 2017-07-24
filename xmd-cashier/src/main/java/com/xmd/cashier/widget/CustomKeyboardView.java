@@ -595,7 +595,6 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         if (mKeyboard != null) {
-//            mKeyboard.resize(w, h); //FIXME
         }
         // Release the buffer, if any and it will be reallocated on the next draw
         mBuffer = null;
@@ -901,7 +900,6 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
             mPopupPreviewX = key.x - mPreviewText.getPaddingLeft() + getPaddingLeft();
             mPopupPreviewY = key.y - popupHeight + mPreviewOffset;
         } else {
-            // TODO: Fix this if centering is brought back
             mPopupPreviewX = 160 - mPreviewText.getMeasuredWidth() / 2;
             mPopupPreviewY = -mPreviewText.getMeasuredHeight();
         }

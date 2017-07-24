@@ -3,6 +3,7 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
@@ -64,7 +65,7 @@ public class BillSearchPresenter implements BillSearchContract.Presenter {
             return;
         }
         if (!Utils.isNetworkEnabled(mContext)) {
-            mView.showError("网络异常，请检查网络后重试...");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
 

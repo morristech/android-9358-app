@@ -66,4 +66,6 @@ public interface IPos {
     String getPosIdentifierNo();
 
     void textToSound(String text);
+
+    String getMagneticReaderInfo();
 }

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xmd.cashier.R;
-import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.ConfirmContract;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by heyangya on 16-8-24.
@@ -30,13 +28,11 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
     private ConfirmContract.Presenter mPresenter;
     private Trade mTrade;
     private int mItemCount;
-    private boolean mShowMemberPay;
 
     private List<VerificationItem> mData = new ArrayList<>();
     private final int VIEW_TYPE_COUPON = 1;
     private final int VIEW_TYPE_ORDER = 2;
     private final int VIEW_TYPE_TREAT = 3;
-    private final int VIEW_TYPE_MEMBER_PAY = 4;
 
     public ConfirmListAdapter(ConfirmContract.Presenter presenter) {
         mPresenter = presenter;
@@ -54,23 +50,12 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
             case VIEW_TYPE_TREAT:
                 view = LayoutInflater.from(context).inflate(R.layout.item_treat_status, parent, false);
                 break;
-            case VIEW_TYPE_MEMBER_PAY:
-                view = LayoutInflater.from(context).inflate(R.layout.item_member_pay_status, parent, false);
-                break;
         }
         return new ViewHolder(view, mPresenter);
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (mShowMemberPay) {
-            if (position == 0) {
-                //会员支付状态放在第一个
-                return VIEW_TYPE_MEMBER_PAY;
-            } else {
-                position--;
-            }
-        }
         String type = mData.get(position).type;
         if (type.equals(AppConstants.TYPE_COUPON)) {
             return VIEW_TYPE_COUPON;
@@ -84,14 +69,6 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (mShowMemberPay) {
-            if (position == 0) {
-                holder.bindMemberPayInfo(mTrade);
-                return;
-            } else {
-                position--;
-            }
-        }
         holder.bind(mData.get(position));
     }
 
@@ -104,11 +81,6 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
         mTrade = trade;
         mItemCount = 0;
         mData.clear();
-        if (mTrade.currentCashier == AppConstants.CASHIER_TYPE_POS && mTrade.getMemberPaidMoney() > 0) {
-            //已进行会员支付，要显示会员支付状态
-            mItemCount++;
-            mShowMemberPay = true;
-        }
         for (VerificationItem item : mTrade.getCouponList()) {
             if (item.selected) {
                 mData.add(item);
@@ -135,7 +107,6 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
         private TextView mType;
         private TextView mInfo;
         private TextView mStatus;
-        private TextView mRetry;
         private ConfirmContract.Presenter mPresenter;
 
         private ViewHolder(View itemView, ConfirmContract.Presenter presenter) {
@@ -145,7 +116,6 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
             mType = (TextView) itemView.findViewById(R.id.tv_type);
             mInfo = (TextView) itemView.findViewById(R.id.tv_info);
             mStatus = (TextView) itemView.findViewById(R.id.tv_status);
-            mRetry = (TextView) itemView.findViewById(R.id.tv_retry);
             mPresenter = presenter;
         }
 
@@ -202,25 +172,6 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
                     @Override
                     public void onClick(View v) {
                         mPresenter.onVerificationItemClicked(item);
-                    }
-                });
-            }
-        }
-
-        private void bindMemberPayInfo(Trade trade) {
-            mName.setText(String.format(Locale.getDefault(), "会员支付￥%s", Utils.moneyToString(trade.memberNeedPayMoney)));
-            if (trade.getMemberPaidMoney() == trade.memberNeedPayMoney) {
-                mStatus.setTextColor(itemView.getContext().getResources().getColor(R.color.colorMemberPaySuccess));
-                mStatus.setText("支付成功");
-                mRetry.setVisibility(View.GONE);
-            } else {
-                mStatus.setTextColor(itemView.getContext().getResources().getColor(R.color.colorMemberPayFailed));
-                mStatus.setText("支付失败：" + trade.memberPayError);
-                mRetry.setVisibility(View.VISIBLE);
-                mRetry.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        UiNavigation.gotoMemberPayActivity(itemView.getContext());
                     }
                 });
             }

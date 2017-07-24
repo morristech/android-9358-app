@@ -2,6 +2,7 @@ package com.xmd.cashier.presenter;
 
 import android.content.Context;
 
+import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.OnlinePayContract;
@@ -200,7 +201,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
         mView.showLoading();
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
         if (mPassOnlinePaySubscription != null) {
@@ -235,7 +236,7 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
         mView.showLoading();
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
-            mView.showToast("网络异常，请检查网络后重试");
+            mView.showToast(mContext.getString(R.string.network_disabled));
             return;
         }
         if (mUnpassOnlinePaySubscription != null) {
