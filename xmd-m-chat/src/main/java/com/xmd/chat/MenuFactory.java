@@ -22,6 +22,7 @@ import com.xmd.app.user.User;
 import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
 import com.xmd.appointment.beans.Technician;
+import com.xmd.chat.beans.FastReplySetting;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.OrderChatMessage;
@@ -120,25 +121,26 @@ public class MenuFactory {
     //创建快捷回复菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_FAST_REPLY)
     public void createFastReplyMenu(final AppCompatActivity activity, final User remoteUser) {
+        FastReplySetting setting = SettingManager.getInstance().getFastReplySetting();
+        if (setting == null) {
+            SettingManager.getInstance().loadFastReply(new Callback<FastReplySetting>() {
+                @Override
+                public void onResponse(FastReplySetting setting, Throwable error) {
+                    if (error != null || setting == null) {
+                        XToast.show("加载快捷回复失败：" + error.getMessage());
+                        return;
+                    }
+                }
+            });
+            return;
+        }
         List<Fragment> fragmentList = new ArrayList<>();
-        List<String> messageList1 = new ArrayList<>();
-        messageList1.add("很高兴能为您解决问题，客官给个好评哦，么么哒");
-        messageList1.add("不好意思，现在暂时回答不了您的问题，稍后回复您");
-        messageList1.add("店里搞活动啦！送您个优惠券，记得过来啊！");
-        messageList1.add("好久不见了，有空过来玩玩啊！");
-        messageList1.add("约定了，记得准时来，不见不散");
-        List<String> messageList2 = new ArrayList<>();
-        messageList2.add("客官，打赏几个铜板鼓励鼓励嘛！");
-        messageList2.add("这个月完成不了任务了，大侠可否帮忙点个钟？");
-        messageList2.add("不好意思，现在暂时回答不了您的问题，稍后回复您～");
-        messageList2.add("方便的话麻烦留一个联系方式，以后常联系～");
-        messageList2.add("多谢客官打赏");
-        SubmenuFastReplyFragment fragment1 = new SubmenuFastReplyFragment();
-        fragment1.setData(remoteUser.getChatId(), messageList1);
-        fragmentList.add(fragment1);
-        SubmenuFastReplyFragment fragment2 = new SubmenuFastReplyFragment();
-        fragment2.setData(remoteUser.getChatId(), messageList2);
-        fragmentList.add(fragment2);
+        int maxSize = setting.data.size();
+        for (int i = 0; i < maxSize; i += 5) {
+            SubmenuFastReplyFragment fragment = new SubmenuFastReplyFragment();
+            fragment.setData(remoteUser.getChatId(), setting.data.subList(i, i + 6 > maxSize ? maxSize : i + 6));
+            fragmentList.add(fragment);
+        }
         menus.add(new ChatMenu(activity, R.drawable.chat_menu_fast_reply, null, fragmentList));
     }
 

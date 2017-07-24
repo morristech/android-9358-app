@@ -4,6 +4,7 @@ import com.xmd.chat.beans.CreditGift;
 import com.xmd.chat.beans.DiceGameRequestResult;
 import com.xmd.chat.beans.DiceGameResult;
 import com.xmd.chat.beans.DiceGameSetting;
+import com.xmd.chat.beans.FastReplySetting;
 import com.xmd.chat.beans.Journal;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.beans.MarketingCategory;
@@ -12,6 +13,7 @@ import com.xmd.m.network.BaseBean;
 
 import java.util.List;
 
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -80,6 +82,13 @@ public interface NetService {
                                                  @Field("msgId") String msgId,
                                                  @Field("msgType") String msgType);
 
+    //获取快速回复
+    @GET("/spa-manager/api/v2/chat/setting/fastReply")
+    Observable<BaseBean<FastReplySetting>> getFastReplySetting();
+
+    //保存快速回复
+    @POST("/spa-manager/api/v2/chat/setting/fastReply")
+    Observable<BaseBean> setFastReplySetting(@Body FastReplySetting setting);
 
     /**
      * 获取游戏设定

@@ -94,6 +94,13 @@ public class TechApplication extends MultiDexApplication {
                 XLogger.setGloableTag("9358");
                 printMachineInfo();
 
+                //初始化磁盘缓存模块
+                try {
+                    DiskCacheManager.init(new File(getFilesDir() + File.separator + "diskCache"), (20 * 1024 * 1024));
+                } catch (IOException e) {
+                    XLogger.e("初始化磁盘缓存系统失败：" + e.getMessage());
+                }
+
                 //初始化网络库
                 XmdNetwork.getInstance().init(this, getUserAgent(), SharedPreferenceHelper.getServerHost());
                 XmdNetwork.getInstance().setDebug(BuildConfig.DEBUG);
@@ -112,12 +119,6 @@ public class TechApplication extends MultiDexApplication {
                 XToast.init(this, -1);
                 FloatNotifyManager.getInstance().init(this);
 
-                //初始化磁盘缓存模块
-                try {
-                    DiskCacheManager.init(new File(getFilesDir() + File.separator + "diskCache"), (1024 * 1024));
-                } catch (IOException e) {
-                    XLogger.e("初始化磁盘缓存系统失败：" + e.getMessage());
-                }
 
                 //打开友盟错误统计,可以和全局错误拦截器共存
                 MobclickAgent.setCatchUncaughtExceptions(true);

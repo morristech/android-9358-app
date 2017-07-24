@@ -11,7 +11,6 @@ import com.xmd.app.event.EventLogout;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -46,10 +45,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void init(Context context) {
-        try {
-            DiskCacheManager.init(context.getFilesDir(), 10 * 1024 * 1024);
-        } catch (IOException e) {
-            XLogger.e("初始化用户信息缓存失败！");
+        if (!DiskCacheManager.isInit()) {
+            throw new RuntimeException("dependency DiskCacheManager, but not init");
         }
         mChatIdMap = new HashMap<>();
         mUserIdMap = new HashMap<>();

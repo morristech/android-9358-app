@@ -81,7 +81,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     private Subscription mGetNewOrderCountSubscription;
     private Subscription mGetClubSubscription;
     private Subscription mSwitchIndex;
-    private int mCurrentPosition;
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
 
     private List<String> tabTexts = new ArrayList<>();
@@ -312,7 +311,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     @Override
     public void onPageSelected(int position) {
         setRightIcon(position);
-        mCurrentPosition = position;
         if (position == sTabOrder) {
             redPointService.clear(Constant.RED_POINT_NEW_ORDER);
         }

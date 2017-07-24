@@ -51,6 +51,21 @@
         <TextView style="@style/relative_layout_menu_right" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/menu_fast_reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_list_item_clicked"
+        android:padding="@dimen/inter_space">
+
+        <TextView
+            style="@style/drawer_menu_style"
+            android:drawableLeft="@drawable/slide_menu_fast_reply"
+            android:text="快捷回复设置" />
+
+        <TextView style="@style/relative_layout_menu_right" />
+    </RelativeLayout>
+
     <View style="@style/line" />
 
     <RelativeLayout

@@ -15,13 +15,22 @@ public class DiskCacheManager {
     private static DiskLruCache mDiskLruCache;
     private static DiskCacheManager instance = new DiskCacheManager();
     private static final String KEY_DEFAULT = "key_default";
+    private static boolean init;
 
     public static void init(File diskCacheDirectory, int maxSize) throws IOException {
+        if (init) {
+            return;
+        }
         if (!diskCacheDirectory.exists() && !diskCacheDirectory.mkdirs()) {
-            XLogger.e("create cache file failed:"+diskCacheDirectory);
+            XLogger.e("create cache file failed:" + diskCacheDirectory);
             return;
         }
         mDiskLruCache = DiskLruCache.open(diskCacheDirectory, 1, 1, maxSize);
+        init = true;
+    }
+
+    public static boolean isInit() {
+        return init;
     }
 
     private DiskCacheManager() {

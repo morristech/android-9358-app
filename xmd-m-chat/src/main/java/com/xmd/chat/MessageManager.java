@@ -197,6 +197,14 @@ public class MessageManager {
         return tipChatMessage;
     }
 
+    public ChatMessage sendTipMessageWithoutUpdateUI(EMConversation conversation, User remoteUser, String tip) {
+        TipChatMessage tipChatMessage = TipChatMessage.create(remoteUser.getChatId(), tip);
+        tipChatMessage.setUser(AccountManager.getInstance().getUser());
+        conversation.appendMessage(tipChatMessage.getEmMessage());
+        EventBus.getDefault().post(new EventSendMessage(tipChatMessage));
+        return tipChatMessage;
+    }
+
     //发送tip消息
     public ChatMessage sendTipMessage(TipChatMessage tipChatMessage) {
         tipChatMessage.getConversation().appendMessage(tipChatMessage.getEmMessage());

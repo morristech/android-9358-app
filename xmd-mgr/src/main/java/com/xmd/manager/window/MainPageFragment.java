@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.chat.XmdChat;
 import com.xmd.m.comment.CommentDetailActivity;
 import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.comment.bean.CommentBean;
@@ -450,11 +451,11 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void isOpen(boolean isOpen) {
                 if (isOpen) {
-                    XLogger.i(">>>","open");
+                    XLogger.i(">>>", "open");
 
                     mViewTransparent.setVisibility(View.VISIBLE);
                 } else {
-                    XLogger.i(">>>","close");
+                    XLogger.i(">>>", "close");
                     mViewTransparent.setVisibility(View.GONE);
                 }
             }
@@ -1173,7 +1174,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-    @OnClick({R.id.tv_setting_head, R.id.menu_version_update, R.id.menu_setting, R.id.menu_service, R.id.menu_suggest, R.id.menu_choice_club, R.id.menu_change_password, R.id.menu_activity_logout, R.id.view_transparent})
+    @OnClick({R.id.tv_setting_head, R.id.menu_version_update, R.id.menu_setting, R.id.menu_fast_reply, R.id.menu_service, R.id.menu_suggest, R.id.menu_choice_club, R.id.menu_change_password, R.id.menu_activity_logout, R.id.view_transparent})
     public void onMenuClicked(View v) {
         switch (v.getId()) {
             case R.id.tv_setting_head:
@@ -1188,6 +1189,9 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.menu_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
+                break;
+            case R.id.menu_fast_reply:
+                XmdChat.getInstance().showFastReplyEditView();
                 break;
             case R.id.menu_service:
                 showServiceOutMenu("", servicePhone, "", "", "", "", "");

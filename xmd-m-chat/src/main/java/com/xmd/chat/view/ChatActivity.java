@@ -296,7 +296,7 @@ public class ChatActivity extends BaseActivity {
         //发送撤回命令
         MessageManager.getInstance().sendRevokeMessage(mRemoteUser.getChatId(), msgId);
         //增加提示信息
-        ChatMessage chatMessage = MessageManager.getInstance().sendTipMessage(getConversation(), mRemoteUser, "你撤回了一条消息");
+        ChatMessage chatMessage = MessageManager.getInstance().sendTipMessageWithoutUpdateUI(getConversation(), mRemoteUser, "你撤回了一条消息");
         chatMessage.getEmMessage().setMsgTime(revokeMsg.getEmMessage().getMsgTime());
         insertNewChatMessageToUi(index, chatMessage);
     }

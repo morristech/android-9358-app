@@ -58,7 +58,6 @@ dependencies {
     compile(name: 'xmd-image-tool-1.0', ext: 'aar')
     compile(name: 'permission-tool-1.0', ext: 'aar')
     compile "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"
-    compile 'io.reactivex:rxandroid:1.2.1'
     compile "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"
     compile "com.squareup.retrofit2:adapter-rxjava:${rootProject.ext.retrofitVersion}"
@@ -79,6 +78,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.android.support:appcompat-v7:25.3.0'
     testCompile 'junit:junit:4.12'
 }

@@ -8,6 +8,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMOptions;
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.XmdApp;
@@ -16,6 +17,7 @@ import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.view.ChatActivity;
+import com.xmd.chat.view.ChatFastReplySettingActivity;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -47,11 +49,16 @@ public class XmdChat {
 
     public void init(Context context, boolean debug, MenuFactory menuFactory) {
         XLogger.i("---------聊天系统初始化---------------");
+
+        if (!DiskCacheManager.isInit()) {
+            throw new RuntimeException("dependency DiskCacheManager, but not init");
+        }
+
         context = context.getApplicationContext();
         this.context = context;
 
         EMOptions options = new EMOptions();
-        options.setAppKey("xiaomodo#spa");
+//        options.setAppKey("xiaomodo#spa");
         EMClient.getInstance().init(context, options);
         EMClient.getInstance().setDebugMode(debug);
 
@@ -79,7 +86,8 @@ public class XmdChat {
             }
         }
 
-        GameManager.getInstance().loadDiceExpireTime();
+        SettingManager.getInstance().loadDiceExpireTime();
+        SettingManager.getInstance().loadFastReply(null);
     }
 
     public MenuFactory getMenuFactory() {
@@ -138,5 +146,11 @@ public class XmdChat {
 
     public SharedPreferences getSp() {
         return context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+    }
+
+    public void showFastReplyEditView() {
+        Intent intent = new Intent(context, ChatFastReplySettingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

@@ -73,6 +73,13 @@ public class ManagerApplication extends MultiDexApplication {
                 XLogger.setGloableTag("9358");
                 printMachineInfo();
 
+                //初始化磁盘缓存模块
+                try {
+                    DiskCacheManager.init(new File(getFilesDir() + File.separator + "diskCache"), (20 * 1024 * 1024));
+                } catch (IOException e) {
+                    XLogger.e("初始化磁盘缓存系统失败：" + e.getMessage());
+                }
+
                 //初始化线程池
                 ThreadPoolManager.init(this);
 
@@ -97,12 +104,6 @@ public class ManagerApplication extends MultiDexApplication {
                 EmojiManager.getInstance().init(this);
                 XToast.init(this, -1);
 
-                //初始化磁盘缓存模块
-                try {
-                    DiskCacheManager.init(new File(getFilesDir() + File.separator + "diskCache"), (1024 * 1024));
-                } catch (IOException e) {
-                    XLogger.e("初始化磁盘缓存系统失败：" + e.getMessage());
-                }
 
                 //打开友盟错误统计,可以和全局错误拦截器共存
                 MobclickAgent.setCatchUncaughtExceptions(false);

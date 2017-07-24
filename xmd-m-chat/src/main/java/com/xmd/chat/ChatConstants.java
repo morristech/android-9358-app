@@ -40,4 +40,6 @@ public class ChatConstants {
 
     public static final String SP_AUDIO_MODE_SPEAKER = "sp_audio_mode_speaker"; //是否为扬声器模式
     public static final String SP_GAME_DICE_EXPIRE_TIME = "sp_game_dice_expire_time"; //游戏超时时间
+
+    public static final String CACHE_CHAT_FAST_REPLY_SETTING = "cache_chat_fast_reply_setting";
 }
