@@ -192,7 +192,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     @Override
     public void onTechDelete() {
         mView.deleteTechInfo();
-        MemberManager.getInstance().setRechargeTechInfo(null);
+        MemberManager.getInstance().setRechargeTechInfo(new TechInfo());
     }
 
     @Override

@@ -44,7 +44,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
     public void onStart() {
         Trade trade = TradeManager.getInstance().getCurrentTrade();
         int payMoney = (int) (trade.getNeedPayMoney() * (trade.memberInfo.discount / 1000.0f)); //计算折扣
-        int discountMoney = (int) (trade.getNeedPayMoney() * (1f - trade.memberInfo.discount / 1000.0f));
+        int discountMoney = (int) (trade.getNeedPayMoney() * (1000 - trade.memberInfo.discount) / 1000.0f);
         trade.memberNeedPayMoney = trade.getNeedPayMoney();
         mView.showDiscountAmount(Utils.moneyToStringEx(discountMoney));
         mView.showNeedAmount(Utils.moneyToStringEx(payMoney));

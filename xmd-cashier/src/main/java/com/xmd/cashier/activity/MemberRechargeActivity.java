@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.adapter.MemberPlanAdapter;
 import com.xmd.cashier.common.AppConstants;
@@ -135,7 +134,6 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
         mMemberAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                XLogger.e("focus");
                 if (hasFocus) {
                     mPresenter.clearPackage();
                 }
