@@ -20,11 +20,9 @@ import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.beans.DiceGameResult;
 import com.xmd.chat.databinding.ChatRowDiceGameInviteBinding;
-import com.xmd.chat.event.EventGameDiceAccept;
-import com.xmd.chat.event.EventGameDiceRefuse;
+import com.xmd.chat.event.EventGameDiceStatusChange;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.DiceGameChatMessage;
-import com.xmd.chat.message.TipChatMessage;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -113,7 +111,7 @@ public class ChatRowViewModelDiceGameInvite extends ChatRowViewModel {
     }
 
     public String getStatus() {
-        if (message.getInnerProcessed() != null || checkTimeout() != null) {
+        if (message.getInnerProcessed() != null) {
             return message.getInnerProcessed();
         }
         return DiceGameChatMessage.getStatusText(message.getGameStatus());
@@ -121,12 +119,6 @@ public class ChatRowViewModelDiceGameInvite extends ChatRowViewModel {
 
     //取消邀请
     public void onCancel(View v) {
-        //检查是否超时
-        if (message.getInnerProcessed() != null || checkTimeout() != null) {
-            binding.setData(this);
-            binding.executePendingBindings();
-            return;
-        }
         //发送取消指令
         if (inProcess.get()) {
             return;
@@ -139,9 +131,6 @@ public class ChatRowViewModelDiceGameInvite extends ChatRowViewModel {
             @Override
             public void onCallbackSuccess(BaseBean<DiceGameResult> result) {
                 inProcess.set(false);
-                message.setInnerProcessed(DiceGameChatMessage.getStatusText(result.getRespData().getStatus()));
-                binding.setData(ChatRowViewModelDiceGameInvite.this);
-                binding.executePendingBindings();
 
                 //发送取消
                 if (DiceGameChatMessage.STATUS_CANCEL.equals(result.getRespData().getStatus())) {
@@ -151,31 +140,29 @@ public class ChatRowViewModelDiceGameInvite extends ChatRowViewModel {
                             message.getRemoteChatId(),
                             message.getGameId(),
                             Integer.parseInt(message.getCredit()));
-                    MessageManager.getInstance().sendMessage(cancelMessage, false);
-                    MessageManager.getInstance().removeMessage(cancelMessage);
+                    MessageManager.getInstance().sendMessage(cancelMessage);
+                    message.setInnerProcessed(DiceGameChatMessage.getStatusText(DiceGameChatMessage.STATUS_CANCEL));
+                    binding.setData(ChatRowViewModelDiceGameInvite.this);
+                    binding.executePendingBindings();
                 }
-                //显示提示消息
-                TipChatMessage tipChatMessage = TipChatMessage.create(message.getRemoteChatId(), "取消游戏，返还" + getCredit() + "积分");
-                MessageManager.getInstance().saveMessage(tipChatMessage);
             }
 
             @Override
             public void onCallbackError(Throwable e) {
                 inProcess.set(false);
                 XToast.show("取消失败：" + e.getMessage());
+                if (e.getMessage() != null && e.getMessage().contains("游戏已结束")) {
+                    message.setInnerProcessed("已结束");
+                    binding.setData(ChatRowViewModelDiceGameInvite.this);
+                    binding.executePendingBindings();
+                }
             }
         });
     }
 
     @Subscribe
-    public void onAccept(EventGameDiceAccept event) {
-        if (event.getGameId() != null && event.getGameId().equals(message.getGameId())) {
-            binding.setData(this);
-        }
-    }
-
-    @Subscribe
-    public void onRefuse(EventGameDiceRefuse event) {
+    public void onStatusChange(EventGameDiceStatusChange event) {
+        EventBusSafeRegister.unregister(ChatRowViewModelDiceGameInvite.this);
         if (event.getGameId() != null && event.getGameId().equals(message.getGameId())) {
             binding.setData(this);
         }

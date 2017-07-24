@@ -9,19 +9,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hyphenate.EMCallBack;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.chat.AccountManager;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.beans.DiceGameResult;
 import com.xmd.chat.databinding.ChatRowDiceGameAcceptBinding;
+import com.xmd.chat.event.EventGameDiceStatusChange;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.DiceGameChatMessage;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import rx.Observable;
 
@@ -51,6 +56,9 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
     public ViewDataBinding onBindView(View view) {
         binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
+        if (message.getInnerProcessed() == null) {
+            EventBusSafeRegister.register(this);
+        }
         return binding;
     }
 
@@ -66,7 +74,7 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
 
     @Override
     public void onUnbindView() {
-
+        EventBusSafeRegister.unregister(this);
     }
 
     public String getCredit() {
@@ -80,7 +88,7 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
         inProcess.set(true);
         Observable<BaseBean<DiceGameResult>> observable = XmdNetwork.getInstance()
                 .getService(NetService.class)
-                .diceGamePlayOrCancel(message.getGameId(), DiceGameChatMessage.STATUS_REFUSED);
+                .diceGamePlayOrCancel(message.getGameId(), DiceGameChatMessage.STATUS_REJECT);
         XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<DiceGameResult>>() {
             @Override
             public void onCallbackSuccess(BaseBean<DiceGameResult> result) {
@@ -91,15 +99,30 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
                 binding.executePendingBindings();
 
                 //发送拒绝消息
-                if (DiceGameChatMessage.STATUS_REFUSED.equals(result.getRespData().getStatus())) {
-                    DiceGameChatMessage cancelMessage = DiceGameChatMessage.createMessage(
-                            DiceGameChatMessage.STATUS_REFUSED,
+                if (DiceGameChatMessage.STATUS_REJECT.equals(result.getRespData().getStatus())) {
+                    final DiceGameChatMessage refuseMessage = DiceGameChatMessage.createMessage(
+                            DiceGameChatMessage.STATUS_REJECT,
                             AccountManager.getInstance().getChatId(),
                             message.getRemoteChatId(),
                             message.getGameId(),
                             Integer.parseInt(message.getCredit()));
-                    MessageManager.getInstance().sendMessage(cancelMessage, false);
-                    MessageManager.getInstance().removeMessage(cancelMessage);
+                    refuseMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            MessageManager.getInstance().removeMessage(refuseMessage);
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+                            MessageManager.getInstance().removeMessage(refuseMessage);
+                        }
+
+                        @Override
+                        public void onProgress(int i, String s) {
+
+                        }
+                    });
+                    MessageManager.getInstance().sendMessage(refuseMessage, false);
                 }
             }
 
@@ -107,6 +130,11 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
             public void onCallbackError(Throwable e) {
                 inProcess.set(false);
                 XToast.show("拒绝失败：" + e.getMessage());
+                if (e.getMessage() != null && e.getMessage().contains("游戏已结束")) {
+                    message.setInnerProcessed("游戏已结束");
+                    binding.setData(ChatRowViewModelDiceGameAccept.this);
+                    binding.executePendingBindings();
+                }
             }
         });
     }
@@ -130,25 +158,61 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
 
                 //发送接受消息
                 if (DiceGameChatMessage.STATUS_ACCEPT.equals(result.getRespData().getStatus())) {
-                    DiceGameChatMessage acceptMessage = DiceGameChatMessage.createMessage(
+                    final DiceGameChatMessage acceptMessage = DiceGameChatMessage.createMessage(
                             DiceGameChatMessage.STATUS_ACCEPT,
                             AccountManager.getInstance().getChatId(),
                             message.getRemoteChatId(),
                             message.getGameId(),
                             Integer.parseInt(message.getCredit()));
-                    MessageManager.getInstance().sendMessage(acceptMessage, false);
-                    MessageManager.getInstance().removeMessage(acceptMessage);
-                }
+                    acceptMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            MessageManager.getInstance().removeMessage(acceptMessage);
+                        }
 
-                //发送游戏结果
-                DiceGameChatMessage resultMessage;
+                        @Override
+                        public void onError(int i, String s) {
+                            MessageManager.getInstance().removeMessage(acceptMessage);
+                        }
+
+                        @Override
+                        public void onProgress(int i, String s) {
+
+                        }
+                    });
+                    MessageManager.getInstance().sendMessage(acceptMessage, false);
+
+                    //发送游戏结果
+                    DiceGameChatMessage resultMessage = DiceGameChatMessage.createMessage(
+                            DiceGameChatMessage.STATUS_OVER,
+                            AccountManager.getInstance().getChatId(),
+                            message.getRemoteChatId(),
+                            message.getGameId(),
+                            Integer.parseInt(message.getCredit()),
+                            result.getRespData().getSrcPoint(),
+                            result.getRespData().getDstPoint());
+                    MessageManager.getInstance().sendMessage(resultMessage);
+                }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
                 inProcess.set(false);
                 XToast.show("接受失败：" + e.getMessage());
+                if (e.getMessage() != null && e.getMessage().contains("游戏已结束")) {
+                    message.setInnerProcessed("游戏已结束");
+                    binding.setData(ChatRowViewModelDiceGameAccept.this);
+                    binding.executePendingBindings();
+                }
             }
         });
+    }
+
+    @Subscribe
+    public void onStatusChangedEvent(EventGameDiceStatusChange event) {
+        if (event.getGameId() != null && event.getGameId().equals(message.getGameId())) {
+            EventBusSafeRegister.unregister(ChatRowViewModelDiceGameAccept.this);
+            binding.setData(this);
+        }
     }
 }

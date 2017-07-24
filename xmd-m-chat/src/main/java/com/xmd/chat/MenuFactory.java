@@ -386,15 +386,18 @@ public class MenuFactory {
         moreMenus.add(new ChatMenu(activity, "积分游戏", R.drawable.chat_menu_game, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fm = activity.getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                Fragment prev = fm.findFragmentByTag("fragment_dice_game_setting");
-                if (prev != null) {
-                    ft.remove(prev);
-                }
-                DialogFragment current = DiceGameSettingFragment.newInstance(remoteUser.getId());
-                current.show(ft, "fragment_dice_game_setting");
+                playDiceGame(activity.getSupportFragmentManager(), remoteUser.getId());
             }
         }, null));
+    }
+
+    public void playDiceGame(FragmentManager fm, String remoteUserId) {
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment prev = fm.findFragmentByTag("fragment_dice_game_setting");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        DialogFragment current = DiceGameSettingFragment.newInstance(remoteUserId);
+        current.show(ft, "fragment_dice_game_setting");
     }
 }

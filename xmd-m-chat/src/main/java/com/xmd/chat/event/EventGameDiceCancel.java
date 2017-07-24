@@ -5,10 +5,10 @@ package com.xmd.chat.event;
  * 骰子游戏拒绝
  */
 
-public class EventGameDiceRefuse {
+public class EventGameDiceCancel {
     private String gameId;
 
-    public EventGameDiceRefuse(String gameId) {
+    public EventGameDiceCancel(String gameId) {
         this.gameId = gameId;
     }
 

@@ -40,7 +40,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dice_game_view_height"
-                android:background="@drawable/dice_game_bg"
                 android:orientation="vertical">
 
                 <LinearLayout

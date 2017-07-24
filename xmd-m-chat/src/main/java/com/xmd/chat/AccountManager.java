@@ -40,14 +40,12 @@ public class AccountManager {
 
     @Subscribe(sticky = true)
     public void onLogin(EventLogin eventLogin) {
-        XLogger.i(XmdChat.TAG, "user login");
         user = eventLogin.getUser();
         loopLogin();
     }
 
     @Subscribe(sticky = true)
     public void onLogout(EventLogout eventLogout) {
-        XLogger.i(XmdChat.TAG, "user logout");
         mHandler.removeCallbacksAndMessages(null);
         logout();
         user = null;
@@ -79,12 +77,12 @@ public class AccountManager {
     };
 
     private void login() {
-        XLogger.d(XmdChat.TAG, "login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
+        XLogger.i(XmdChat.TAG, "login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
         EMClient.getInstance().login(user.getChatId(), user.getChatPassword(), new EMCallBack() {
             @Override
             public void onSuccess() {
                 isRunLogin = false;
-                XLogger.d(XmdChat.TAG, "login success!  chatId:" + user.getChatId());
+                XLogger.i(XmdChat.TAG, "login success!  chatId:" + user.getChatId());
                 EMClient.getInstance().chatManager().loadAllConversations();
                 EMClient.getInstance().groupManager().loadAllGroups();
                 EventBus.getDefault().post(new EventChatLoginSuccess());
@@ -100,7 +98,7 @@ public class AccountManager {
                 Message message = new Message();
                 message.what = 1;
                 mHandler.sendMessageDelayed(message, 1000);
-                XLogger.d(XmdChat.TAG, "login error:i=" + i + ",s=" + s + ",  chatId:" + user.getChatId());
+                XLogger.e(XmdChat.TAG, "login error:i=" + i + ",s=" + s + ",  chatId:" + user.getChatId());
             }
 
             @Override

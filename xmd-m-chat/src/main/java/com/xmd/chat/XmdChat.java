@@ -51,6 +51,7 @@ public class XmdChat {
         this.context = context;
 
         EMOptions options = new EMOptions();
+        options.setAppKey("xiaomodo#spa");
         EMClient.getInstance().init(context, options);
         EMClient.getInstance().setDebugMode(debug);
 
@@ -61,6 +62,7 @@ public class XmdChat {
         ConversationManager.getInstance().init();
         MessageManager.getInstance().init();
         setMenuFactory(menuFactory);
+
 
         EventBusSafeRegister.register(this);
 

@@ -4,9 +4,11 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.drawable.Drawable;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowTipBinding;
@@ -34,6 +36,9 @@ public class ChatRowViewModelTip extends ChatRowViewModel {
     public ViewDataBinding onBindView(View view) {
         ChatRowTipBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
+        if (((TipChatMessage) chatMessage).needSetMovementMethod()) {
+            ((TextView) view.findViewById(R.id.tipView)).setMovementMethod(LinkMovementMethod.getInstance());
+        }
         return binding;
     }
 
@@ -48,7 +53,7 @@ public class ChatRowViewModelTip extends ChatRowViewModel {
     }
 
     public CharSequence getTip() {
-        return chatMessage.getContentText();
+        return ((TipChatMessage) chatMessage).getTip();
     }
 
     public Drawable getTipIcon(Context context) {

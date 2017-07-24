@@ -11,6 +11,7 @@
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/contentPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -29,6 +30,8 @@
         <FrameLayout
             android:id="@+id/contentView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onLongClick="@{(v)->data.onLongClick(v)}" />
     </LinearLayout>
 </layout>

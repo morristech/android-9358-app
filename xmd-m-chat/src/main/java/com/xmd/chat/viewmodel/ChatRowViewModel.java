@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseViewModel;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.AccountManager;
@@ -89,6 +90,7 @@ public abstract class ChatRowViewModel extends BaseViewModel {
             @Override
             public void onError(int i, String s) {
                 XLogger.d("onError -- " + getChatMessage().getContentText());
+                XToast.show("发送失败：" + s);
                 progress.set(false);
                 error.set(true);
             }
@@ -198,9 +200,12 @@ public abstract class ChatRowViewModel extends BaseViewModel {
     //绑定子view
     public void bindSubView(View view) {
         if (contentViewMatchParent()) {
-            view.getRootView().findViewById(R.id.contentPanel).getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-            View contentView = view.getRootView().findViewById(R.id.contentView);
-            ((LinearLayout.LayoutParams) contentView.getLayoutParams()).weight = 1;
+            View contentPanel = view.getRootView().findViewById(R.id.contentPanel);
+            if (contentPanel != null) {
+                contentPanel.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                View contentView = view.getRootView().findViewById(R.id.contentView);
+                ((LinearLayout.LayoutParams) contentView.getLayoutParams()).weight = 1;
+            }
         }
         ViewDataBinding binding = onBindView(view);
         if (binding != null) {
