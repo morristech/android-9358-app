@@ -1,31 +1,29 @@
 package com.xmd.chat.viewmodel;
 
 import android.content.Context;
+import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
-import com.shidou.commonlibrary.widget.XToast;
+import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.AccountManager;
-import com.xmd.chat.GameManager;
 import com.xmd.chat.MessageManager;
-import com.xmd.chat.NetService;
 import com.xmd.chat.R;
-import com.xmd.chat.beans.DiceGameResult;
-import com.xmd.chat.databinding.ChatRowDiceGameInviteBinding;
+import com.xmd.chat.databinding.ChatRowDiceGameResultBinding;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.message.DiceGameChatMessage;
-import com.xmd.m.network.BaseBean;
-import com.xmd.m.network.NetworkSubscriber;
-import com.xmd.m.network.XmdNetwork;
-
-import rx.Observable;
+import com.xmd.chat.message.TipChatMessage;
 
 
 /**
@@ -35,38 +33,33 @@ import rx.Observable;
 
 public class ChatRowViewModelDiceGameResult extends ChatRowViewModel {
     private DiceGameChatMessage message;
-    private String inviteName;
-    private String inviteAvatar;
-    private String invitedName;
+    private String myName;
+    private String friendName;
 
-    private ChatRowDiceGameInviteBinding binding;
+    private ChatRowDiceGameResultBinding binding;
     public ObservableBoolean inProcess = new ObservableBoolean();
 
     public ChatRowViewModelDiceGameResult(ChatMessage chatMessage) {
         super(chatMessage);
         message = (DiceGameChatMessage) chatMessage;
-        User inviteUser = UserInfoServiceImpl.getInstance().getUserByChatId(message.getGameInvite());
-        inviteName = inviteUser.getShowName();
-        inviteAvatar = inviteUser.getAvatar();
-        String invitedChatId = message.getFromChatId();
-        if (invitedChatId.equals(message.getGameInvite())) {
-            invitedChatId = message.getToChatId();
-        }
-        User invitedUser = UserInfoServiceImpl.getInstance().getUserByChatId(invitedChatId);
-        invitedName = invitedUser.getShowName();
+        myName = AccountManager.getInstance().getUser().getName();
+        User friend = UserInfoServiceImpl.getInstance().getUserByChatId(message.getRemoteChatId());
+        friendName = friend.getShowName();
     }
 
     public static View createView(ViewGroup parent) {
-        ChatRowDiceGameInviteBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.chat_row_dice_game_invite, parent, false);
+        ChatRowDiceGameResultBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.chat_row_dice_game_result, parent, false);
         return binding.getRoot();
     }
 
 
     @Override
     public ViewDataBinding onBindView(View view) {
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) view.getLayoutParams();
+        lp.gravity = Gravity.CENTER;
         binding = DataBindingUtil.getBinding(view);
-//        binding.setData(this);
+        binding.setData(this);
         return binding;
     }
 
@@ -85,82 +78,72 @@ public class ChatRowViewModelDiceGameResult extends ChatRowViewModel {
 
     }
 
-    public String getInviteName() {
-        return inviteName;
+    public String getMyName() {
+        return myName;
     }
 
-    public String getInvitedName() {
-        return invitedName;
+    public String getFriendName() {
+        return friendName;
     }
 
     public String getCredit() {
         return message.getCredit();
     }
 
-    public String getInviteAvatar() {
-        return inviteAvatar;
+    public boolean getWin() {
+        return message.getMyPoint() > message.getRemotePoint();
     }
 
-    public boolean isShowCancel() {
-        return message.getInnerProcessed() == null && DiceGameChatMessage.STATUS_REQUEST.equals(message.getGameStatus());
+    public int getFriendPoint() {
+        return message.getRemotePoint();
     }
 
-    public String checkTimeout() {
-        if (message.getEmMessage().getMsgTime() + GameManager.getInstance().getDiceExpireTime() < System.currentTimeMillis()) {
-            message.setInnerProcessed("已超时");
-            return "已超时";
-        }
-        return null;
+    public int getMyPoint() {
+        return message.getMyPoint();
     }
 
-    public String getStatus() {
-        if (message.getInnerProcessed() != null || checkTimeout() != null) {
-            return message.getInnerProcessed();
-        }
-        return message.getStatusText(message.getGameStatus());
-    }
-
-    //取消邀请
-    public void onCancel(View v) {
-        //检查是否超时
-        if (message.getInnerProcessed() != null || checkTimeout() != null) {
-//            binding.setData(this);
-            binding.executePendingBindings();
-            return;
-        }
-        //发送取消指令
-        if (inProcess.get()) {
-            return;
-        }
-        inProcess.set(true);
-        Observable<BaseBean<DiceGameResult>> observable = XmdNetwork.getInstance()
-                .getService(NetService.class)
-                .diceGamePlayOrCancel(message.getGameId(), DiceGameChatMessage.STATUS_CANCEL);
-        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<DiceGameResult>>() {
-            @Override
-            public void onCallbackSuccess(BaseBean<DiceGameResult> result) {
-                inProcess.set(false);
-                message.setInnerProcessed(message.getStatusText(result.getRespData().getStatus()));
-//                binding.setData(ChatRowViewModelDiceGameResult.this);
-                binding.executePendingBindings();
-
-                //发送取消
-                if (DiceGameChatMessage.STATUS_CANCEL.equals(result.getRespData().getStatus())) {
-                    DiceGameChatMessage cancelMessage = DiceGameChatMessage.createMessage(
-                            DiceGameChatMessage.STATUS_CANCEL,
-                            AccountManager.getInstance().getChatId(),
-                            message.getRemoteChatId(),
-                            message.getGameId(),
-                            Integer.parseInt(message.getCredit()));
-                    MessageManager.getInstance().sendMessage(cancelMessage);
+    @BindingAdapter({"data", "point"})
+    public static void bindPoint(final ImageView view, final ChatRowViewModelDiceGameResult data, final int point) {
+        if (data.getChatMessage().getInnerProcessed() != null) {
+            view.setImageResource(getPointResource(point));
+        } else {
+            data.inProcess.set(true);
+            Glide.with(view.getContext())
+                    .load(R.drawable.dice_gif)
+                    .asGif()
+                    .into(view);
+            ThreadPoolManager.postToUIDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    view.setImageResource(getPointResource(point));
+                    if (data.getInnerProcessed() == null) {
+                        //发送再来一局消息
+                        String msg = (data.message.getMyPoint() > data.message.getRemotePoint() ? "获得" : "消费") + data.getCredit() + "积分，再玩一局";
+                        TipChatMessage tipChatMessage = TipChatMessage.create(data.message.getRemoteChatId(), msg, TipChatMessage.TIP_TYPE_PLAY_DICE);
+                        MessageManager.getInstance().sendTipMessage(tipChatMessage);
+                    }
+                    data.inProcess.set(false);
+                    data.chatMessage.setInnerProcessed("show");
                 }
-            }
+            }, 1500);
+        }
+    }
 
-            @Override
-            public void onCallbackError(Throwable e) {
-                inProcess.set(false);
-                XToast.show("取消失败：" + e.getMessage());
-            }
-        });
+    private static int getPointResource(int point) {
+        switch (point) {
+            case 1:
+                return R.drawable.dice_one;
+            case 2:
+                return R.drawable.dice_two;
+            case 3:
+                return R.drawable.dice_three;
+            case 4:
+                return R.drawable.dice_four;
+            case 5:
+                return R.drawable.dice_five;
+            case 6:
+                return R.drawable.dice_six;
+        }
+        return -1;
     }
 }

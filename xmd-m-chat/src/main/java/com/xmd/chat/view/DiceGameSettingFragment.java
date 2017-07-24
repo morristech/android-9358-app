@@ -119,6 +119,7 @@ public class DiceGameSettingFragment extends DialogFragment {
                     credit.set(0);
                 } else {
                     credit.set(creditList.get(0).amount);
+                    binding.setData(DiceGameSettingFragment.this);
                 }
             }
 
@@ -174,6 +175,7 @@ public class DiceGameSettingFragment extends DialogFragment {
                         result.getRespData().gameId,
                         selectValue);
                 MessageManager.getInstance().sendMessage(message);
+                dismiss();
             }
 
             @Override

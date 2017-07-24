@@ -100,6 +100,10 @@ public class ChatRowViewFactory {
                     case DiceGameChatMessage.STATUS_OVER:
                         baseType = CHAT_ROW_VIEW_DICE_GAME_RESULT; //游戏结果
                         break;
+                    case DiceGameChatMessage.STATUS_REJECT:
+                    case DiceGameChatMessage.STATUS_CANCEL:
+                        baseType = CHAT_ROW_VIEW_TIP;
+                        break;
                     default:
                         baseType = CHAT_ROW_VIEW_TEXT;
                 }
@@ -133,7 +137,9 @@ public class ChatRowViewFactory {
     public static int getWrapperLayout(int viewType) {
         int baseType = baseType(viewType);
         if (baseType == CHAT_ROW_VIEW_TIP) {
-            return R.layout.list_item_message_tip;
+            return R.layout.list_item_message_center;
+        } else if (baseType == CHAT_ROW_VIEW_DICE_GAME_RESULT) {
+            return R.layout.list_item_message_center;
         }
         return isSendViewType(viewType) ? R.layout.list_item_message_send : R.layout.list_item_message_receive;
     }

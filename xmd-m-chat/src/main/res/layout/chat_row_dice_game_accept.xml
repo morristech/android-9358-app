@@ -32,10 +32,15 @@
             android:text='@{"比大小，胜方将获得负方"+data.credit+"积分",default="比大小，胜方将获得负方10积分"}'
             android:textSize="@dimen/fontCaption" />
 
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#dddddd" />
+
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_marginTop="8dp">
+            android:layout_height="36dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -51,6 +51,7 @@ import com.xmd.chat.XmdChat;
 import com.xmd.chat.databinding.ChatActivityBinding;
 import com.xmd.chat.event.EventDeleteMessage;
 import com.xmd.chat.event.EventNewUiMessage;
+import com.xmd.chat.event.EventReplayDiceGame;
 import com.xmd.chat.event.EventRevokeMessage;
 import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ChatRowViewModel;
@@ -270,6 +271,11 @@ public class ChatActivity extends BaseActivity {
     @Subscribe
     public void onDeleteMessage(final EventDeleteMessage deleteMessage) {
         removeMessageFromUi(deleteMessage.getChatRowViewModel());
+    }
+
+    @Subscribe
+    public void onReplayDice(EventReplayDiceGame event) {
+        XmdChat.getInstance().getMenuFactory().playDiceGame(getSupportFragmentManager(), mRemoteUser.getId());
     }
 
     //处理撤回消息
