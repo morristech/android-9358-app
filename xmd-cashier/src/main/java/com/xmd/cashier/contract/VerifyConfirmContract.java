@@ -29,13 +29,5 @@ public interface VerifyConfirmContract {
         void setButtonText(int count);
 
         void showVerifyResultList(List<CheckInfo> list);
-
-        void showError(String message);
-
-        void showLoading();
-
-        void hideLoading();
-
-        void showToast(String message);
     }
 }

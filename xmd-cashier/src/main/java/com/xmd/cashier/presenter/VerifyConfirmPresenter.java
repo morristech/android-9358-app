@@ -2,6 +2,7 @@ package com.xmd.cashier.presenter;
 
 import android.content.Context;
 
+import com.xmd.cashier.R;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyConfirmContract;
 import com.xmd.cashier.dal.bean.CheckInfo;
@@ -63,7 +64,7 @@ public class VerifyConfirmPresenter implements VerifyConfirmContract.Presenter {
             return;
         }
         if (!Utils.isNetworkEnabled(mContext)) {
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
         if (mMultiResultVerifySubscription != null) {

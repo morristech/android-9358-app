@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_tech_layout"
+    android:layout_width="match_parent"
+    android:layout_height="62dp"
+    android:background="@drawable/bg_area_item"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <com.xmd.cashier.widget.CircleImageView
+        android:id="@+id/item_tech_avatar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_avatar" />
+
+    <TextView
+        android:id="@+id/item_tech_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="start"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/item_tech_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_text_dark"
+        android:gravity="start"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:singleLine="true"
+        android:textSize="@dimen/font_size_14" />
+</LinearLayout>

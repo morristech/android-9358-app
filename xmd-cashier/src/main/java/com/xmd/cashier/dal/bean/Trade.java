@@ -17,28 +17,30 @@ public class Trade {
     public int tradeStatus;//订单状态
     public String tradeTime;//交易时间
 
+    public int currentCashier; //当前收银方式，会员支付 OR POS收银程序 OR 小摩豆微信在线买单
+
     private int originMoney;//原始消费金额
     private int discountType;//0:系统计算 1：用户手动输入
     private int userDiscountMoney;//用户手动输入的抵扣金额
     private int couponDiscountMoney; //抵扣金额=优惠券+预付费订单+朋友请客
-
-    private int willDiscountMoney;
+    private int willDiscountMoney;//将会优惠金额
 
     /**
      * 各类优惠券，预付费订单，请客
      **/
     private List<VerificationItem> couponList;//当前优惠券列表
-    private int verificationCount;//将要核销的优惠券数量
-    private int verificationMoney;//将要核销的金额
+    private int verificationCount;  //将要核销的优惠券数量
+    private int verificationMoney;  //将要核销的金额
     private int verificationSuccessfulMoney;//核销成功的金额
     private int verificationNoUseTreatMoney;//核销成功后，没有使用的请客金额
 
-    public int currentCashier; //当前收银方式，会员支付 OR POS收银程序 OR 小摩豆微信在线买单
 
     /**
      * 会员支付
      **/
+    public String memberPayMethod;  // 支付方式：接口 或者 二维码memberToken
     public MemberInfo memberInfo;//会员支付信息
+    public String memberToken;  //会员二维码token
     public int memberNeedPayMoney;//会员需要支付的金额
     public String memberPayError; //会员支持错误提示
     public int memberPayResult; //会员支付结果
@@ -51,7 +53,6 @@ public class Trade {
     /**
      * 收银台支付
      **/
-    private int posPayType;
     private String posTradeNo; //收银台订单号
     public String posPayTypeString; //收银台支付方式
     public int posMoney; //收银台支付金额

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.xmd.cashier.widget.CircleImageView
+            android:id="@+id/item_avatar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_avatar" />
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_normal_margin"
+            android:layout_weight="1"
+            android:text="Mr Zhang"
+            android:textColor="@color/colorText4"
+            android:textSize="@dimen/small_font_size" />
+
+        <TextView
+            android:id="@+id/item_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="金卡"
+            android:textColor="@color/colorSilver"
+            android:textSize="@dimen/font_size_16" />
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="1">
+
+        <TableRow android:layout_marginTop="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手机"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/small_font_size" />
+
+            <TextView
+                android:id="@+id/item_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="18603036816"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/small_font_size" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="卡号"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/small_font_size" />
+
+            <TextView
+                android:id="@+id/item_card_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="18603036816"
+                android:textColor="@color/colorText4"
+                android:textSize="@dimen/small_font_size" />
+        </TableRow>
+
+
+        <TableRow android:layout_marginTop="@dimen/activity_normal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="金额"
+                android:textColor="@color/colorText2"
+                android:textSize="@dimen/small_font_size" />
+
+            <LinearLayout>
+
+                <TextView
+                    android:id="@+id/item_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:text="100"
+                    android:textSize="@dimen/small_font_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 元"
+                    android:textColor="@color/colorText4"
+                    android:textSize="@dimen/small_font_size" />
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/activity_small_margin"
+        android:background="@color/colorStoke" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/activity_small_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/item_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_normal_margin"
+            android:layout_weight="1"
+            android:textColor="@color/colorText3"
+            android:textSize="@dimen/font_size_14" />
+
+        <Button
+            android:id="@+id/item_print"
+            android:layout_width="58dp"
+            android:layout_height="30dp"
+            android:background="@drawable/state_btn_negative"
+            android:text="打印"
+            android:textColor="@color/colorButton"
+            android:textSize="@dimen/font_size_16" />
+    </LinearLayout>
+</LinearLayout>

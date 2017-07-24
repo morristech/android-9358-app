@@ -20,6 +20,7 @@
         android:textSize="@dimen/medium_font_size" />
 
     <ImageView
+        android:id="@+id/img_scan"
         android:layout_width="36dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"

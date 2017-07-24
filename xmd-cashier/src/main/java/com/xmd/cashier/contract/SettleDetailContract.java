@@ -19,13 +19,5 @@ public interface SettleDetailContract {
         void onDetailSuccess(SettleSummaryResult.RespData respData);
 
         void onDetailFailed();
-
-        void showToast(String toast);
-
-        void showError(String error);
-
-        void showLoading();
-
-        void hideLoading();
     }
 }

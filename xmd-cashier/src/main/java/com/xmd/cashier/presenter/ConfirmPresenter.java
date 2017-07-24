@@ -109,7 +109,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         Trade trade = mTradeManager.getCurrentTrade();
         switch (trade.currentCashier) {
             case AppConstants.CASHIER_TYPE_MEMBER:
-                UiNavigation.gotoMemberPayActivity(mContext);
+                UiNavigation.gotoMemberCashierActivity(mContext);
                 mView.finishSelf();
                 break;
             case AppConstants.CASHIER_TYPE_XMD_ONLINE:

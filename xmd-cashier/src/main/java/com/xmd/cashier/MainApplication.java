@@ -23,6 +23,7 @@ import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.DataReportManager;
+import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.NotifyManager;
 import com.xmd.cashier.service.CustomService;
 import com.xmd.m.network.OkHttpUtil;
@@ -120,6 +121,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));
             NotifyManager.getInstance().startGetFastPayCountAsync();
             NotifyManager.getInstance().startGetOrderCountAsync();
+            MemberManager.getInstance().getClubMemberSetting();
         }
 
         // 开启服务

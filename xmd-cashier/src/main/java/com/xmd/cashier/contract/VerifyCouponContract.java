@@ -14,12 +14,5 @@ public interface VerifyCouponContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showLoading();
-
-        void hideLoading();
-
-        void showToast(String toast);
-
-        void showError(String error);
     }
 }

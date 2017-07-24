@@ -19,9 +19,5 @@ public interface VerifyPrizeContract {
         void hideLoadingView();
 
         String getCode();
-
-        void showError(String msg);
-
-        void showToast(String msg);
     }
 }

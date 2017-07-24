@@ -3,6 +3,7 @@ package com.xmd.cashier.common;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -14,6 +15,12 @@ import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.WindowManager;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
@@ -24,7 +31,9 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -184,6 +193,21 @@ public class Utils {
                 return "现金支付";
             default:
                 return "其他支付";
+        }
+    }
+
+    public static String getPayTypeChannel(int payType) {
+        switch (payType) {
+            case AppConstants.PAY_TYPE_CARD:
+                return "union";
+            case AppConstants.PAY_TYPE_WECHART:
+                return "wx";
+            case AppConstants.PAY_TYPE_ALIPAY:
+                return "ali";
+            case AppConstants.PAY_TYPE_CASH:
+                return "cash";
+            default:
+                return "other";
         }
     }
 
@@ -366,5 +390,32 @@ public class Utils {
                 return "周六";
         }
         return "错误";
+    }
+
+    public static Bitmap getQRBitmap(String content) throws WriterException {
+        if (TextUtils.isEmpty(content)) {
+            return null;
+        }
+
+        int width = 350;
+        int height = 350;
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+
+        BitMatrix bitMatrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);
+        int[] pixels = new int[width * height];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (bitMatrix.get(x, y)) {
+                    pixels[y * width + x] = 0xff000000;
+                } else {
+                    pixels[y * width + x] = 0xffffffff;
+                }
+            }
+        }
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmap;
     }
 }

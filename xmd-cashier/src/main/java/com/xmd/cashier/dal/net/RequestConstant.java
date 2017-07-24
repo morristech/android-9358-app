@@ -91,6 +91,21 @@ public class RequestConstant {
     public static final String URL_GET_XMD_ONLINE_QRCODE_URL = SPA_SERVICE_BASE + "/v2/manager/fast_pay/url/get";
     public static final String URL_DELETE_XMD_ONLINE_ORDER_ID = SPA_SERVICE_BASE + "/v2/manager/order/id/delete";
 
+    // ****************************************** POS会员 **************************************
+    public static final String URL_GET_MEMBER_SETTING_CONFIG = SPA_SERVICE_BASE + "/v2/manager/member/settings/get";   //会员设置信息获取
+    public static final String URL_GET_MEMBER_ACT_PLAN = SPA_SERVICE_BASE + "/v2/manager/member/act/current/online/detail"; //获取会员充值套餐
+    public static final String URL_GET_CLUB_TECH_LIST = SPA_SERVICE_BASE + "/v2/manager/member/tech/select/list";    //获取会所技师列表
+    public static final String URL_GET_MEMBER_INFO = SPA_SERVICE_BASE + "/v2/manager/member/select/list";         //根据手机或者卡号获取会员详情
+    public static final String URL_GET_MEMBER_RECORD_LIST = SPA_SERVICE_BASE + "/v2/manager/member/order/list";      //获取会员账户记录列表
+    public static final String URL_REQUEST_MEMBER_PAYMENT = SPA_SERVICE_BASE + "/v2/manager/member/order/trade/save";      //会员支付
+
+    public static final String URL_CHECK_MEMBER_CARD_PHONE = SPA_SERVICE_BASE + "/v2/manager/member/telephone/check";   //会员开卡:手机号校验
+    public static final String URL_REQUEST_MEMBER_CARD = SPA_SERVICE_BASE + "/v2/manager/member/save";      //会员开卡
+
+    public static final String URL_REQUEST_MEMBER_RECHARGE = SPA_SERVICE_BASE + "/v2/manager/member/recharge/save";     //会员充值:提交充值请求
+    public static final String URL_GET_MEMBER_RECHARGE_DETAIL = SPA_SERVICE_BASE + "/v2/manager/member/order/detail";              //会员充值:查询充值请求详情
+    public static final String URL_REPORT_MEMBER_RECHARGE_TRADE = SPA_SERVICE_BASE + "/v2/manager/member/order/recharge/success";  //会员充值:汇报POS支付情况 需要签名
+
     /*********************************************************************************************/
     /*                                           keys                                            */
     /*********************************************************************************************/
@@ -195,6 +210,19 @@ public class RequestConstant {
     public static final String KEY_DISCOUNT = "discount";
     public static final String KEY_COUNT = "count";
     public static final String KEY_BUSINESS_TYPE = "businessType";
+
+    public static final String KEY_BIRTH = "birth"; //yyyy-MM-dd
+    public static final String KEY_GENDER = "gender";   // male||female
+    public static final String KEY_CARD_NO = "cardNo";
+    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_MEMBER_PACKAGE_ID = "packageId";
+    public static final String KEY_TECH_ID = "techId";
+    public static final String KEY_USER_NAME = "userName";
+    public static final String KEY_MEMBER_ID = "memberId";
+    public static final String KEY_BIZ_CATEGORY = "businessCategory";
+    public static final String KEY_TRADE_TYPE = "tradeType";
+    public static final String KEY_PAY_CHANNEL = "payChannel";
+
 
     /*********************************************************************************************/
     /*                                        configs                                            */

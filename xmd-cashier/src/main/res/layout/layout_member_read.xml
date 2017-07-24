@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_bg_scan">
+
+        <ImageView
+            android:id="@+id/img_member_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_bg_circle" />
+
+        <ImageView
+            android:id="@+id/img_member_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_bg_card" />
+    </RelativeLayout>
+
+    <com.xmd.cashier.widget.ClearableEditText
+        android:id="@+id/et_member_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/activity_small_margin"
+        android:background="@drawable/bg_area_gray"
+        android:clickable="true"
+        android:focusable="true"
+        android:hint="输入会员手机号或会员卡号"
+        android:inputType="number"
+        android:lines="1"
+        android:maxLength="16"
+        android:padding="@dimen/activity_normal_margin"
+        android:textColor="@color/colorText4"
+        android:textColorHint="@color/colorText3"
+        android:textSize="@dimen/small_font_size" />
+
+    <Button
+        android:id="@+id/btn_member_read_confirm"
+        style="@style/AppTheme.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_normal_margin"
+        android:text="确定"
+        android:onClick="onConfirm"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/medium_font_size" />
+
+</LinearLayout>

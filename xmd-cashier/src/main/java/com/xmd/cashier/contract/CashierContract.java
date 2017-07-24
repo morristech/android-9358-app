@@ -1,7 +1,5 @@
 package com.xmd.cashier.contract;
 
-import android.content.Intent;
-
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
 
@@ -23,7 +21,7 @@ public interface CashierContract {
 
         void onClickXMDOnlinePay();
 
-        void onActivityResult(int requestCode, int resultCode, Intent data);
+        void processTradeNo();
 
         boolean checkInput();
     }
@@ -41,13 +39,5 @@ public interface CashierContract {
         void setFinallyMoney(String value);
 
         void setCouponButtonText(String text);
-
-        void showLoading();
-
-        void hideLoading();
-
-        void showError(String error);
-
-        void showToast(String toast);
     }
 }

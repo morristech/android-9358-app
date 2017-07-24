@@ -30,14 +30,6 @@ public interface VerifyCheckInfoContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showLoading();
-
-        void hideLoading();
-
-        void showError(String error);
-
-        void showToast(String toast);
-
         void showCheckInfo(List<CheckInfo> list);
 
         void clearCheckInfo();

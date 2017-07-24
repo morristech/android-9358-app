@@ -1,6 +1,5 @@
 package com.xmd.cashier.activity;
 
-import android.content.Intent;
 import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,11 +11,14 @@ import android.widget.TextView;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.CashierContract;
+import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.presenter.CashierPresenter;
 import com.xmd.cashier.widget.ActionSheetDialog;
 import com.xmd.cashier.widget.CustomKeyboardView;
 import com.xmd.cashier.widget.CustomMoneyEditText;
 import com.xmd.cashier.widget.OnMyKeyboardCallback;
+
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by zr on 17-4-13.
@@ -55,7 +57,7 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
             public boolean onKeyEnter() {
                 if (mPresenter.checkInput()) {
                     ActionSheetDialog dialog = new ActionSheetDialog(CashierActivity.this);
-                    dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, /*AppConstants.CASHIER_TYPE_MEMBER_TEXT,*/ AppConstants.CASHIER_TYPE_POS_TEXT});
+                    dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_MEMBER_TEXT, AppConstants.CASHIER_TYPE_POS_TEXT});
                     dialog.setCancelText("取消");
                     dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
                         @Override
@@ -68,6 +70,8 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
                                     mPresenter.onClickCashier();
                                     break;
                                 case AppConstants.CASHIER_TYPE_MEMBER_TEXT:
+                                    mPresenter.onClickMemberPay();
+                                    break;
                                 default:
                                     break;
                             }
@@ -195,8 +199,8 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
         mOriginCustomMoneyEditText.requestFocus();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mPresenter.onActivityResult(requestCode, resultCode, data);
+    @Subscribe
+    public void onEvent(MemberInfo info) {
+        mPresenter.processTradeNo();
     }
 }

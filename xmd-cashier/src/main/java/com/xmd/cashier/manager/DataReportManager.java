@@ -3,6 +3,7 @@ package com.xmd.cashier.manager;
 import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.dal.bean.ReportData;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.db.DataReportTable;
@@ -43,7 +44,7 @@ public class DataReportManager {
         return mInstance;
     }
 
-    public void reportData(Trade trade) {
+    public void reportData(Trade trade, String biz) {
         FormBody.Builder builder = new FormBody.Builder();
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_TOKEN, mAccountManager.getToken());
@@ -53,22 +54,24 @@ public class DataReportManager {
         params.put(RequestConstant.KEY_STATUS, String.valueOf(trade.tradeStatus));
         params.put(RequestConstant.KEY_ORIGIN_MONEY, String.valueOf(trade.getOriginMoney()));
 
-        if (TradeManager.getInstance().haveSelected()) {
-            params.put(RequestConstant.KEY_COUPON_LIST, TradeManager.formatCouponList(trade.getCouponList()));
-            params.put(RequestConstant.KEY_COUPON_RESULT, TradeManager.formatCouponResult(trade.getCouponList()));
-            params.put(RequestConstant.KEY_COUPON_MONEY, String.valueOf(trade.getVerificationMoney()));
-        }
+        if (AppConstants.REPORT_DATA_BIZ_TRADE.equals(biz)) {
+            if (TradeManager.getInstance().haveSelected()) {
+                params.put(RequestConstant.KEY_COUPON_LIST, TradeManager.formatCouponList(trade.getCouponList()));
+                params.put(RequestConstant.KEY_COUPON_RESULT, TradeManager.formatCouponResult(trade.getCouponList()));
+                params.put(RequestConstant.KEY_COUPON_MONEY, String.valueOf(trade.getVerificationMoney()));
+            }
 
-        params.put(RequestConstant.KEY_DISCOUNT_TYPE, String.valueOf(trade.getDiscountType()));
-        params.put(RequestConstant.KEY_COUPON_DISCOUNT_MONEY, String.valueOf(trade.getCouponDiscountMoney()));
-        params.put(RequestConstant.KEY_USER_DISCOUNT_MONEY, String.valueOf(trade.getUserDiscountMoney()));
+            params.put(RequestConstant.KEY_DISCOUNT_TYPE, String.valueOf(trade.getDiscountType()));
+            params.put(RequestConstant.KEY_COUPON_DISCOUNT_MONEY, String.valueOf(trade.getCouponDiscountMoney()));
+            params.put(RequestConstant.KEY_USER_DISCOUNT_MONEY, String.valueOf(trade.getUserDiscountMoney()));
 
-        if (trade.getMemberPaidMoney() > 0) {
-            params.put(RequestConstant.KEY_MEMBER_CARD_NO, trade.memberInfo.cardNo);
-            params.put(RequestConstant.KEY_MEMBER_PAY_MONEY, String.valueOf(trade.getMemberPaidMoney()));
-            params.put(RequestConstant.KEY_MEMBER_PAY_DISCOUNT_MONEY, String.valueOf(trade.getMemberPaidDiscountMoney()));
-            params.put(RequestConstant.KEY_MEMBER_PAY_RESULT, String.valueOf(trade.memberPayResult));
-            params.put(RequestConstant.KEY_MEMBER_PAY_CERTIFICATE, trade.memberPayCertificate);
+            if (trade.getMemberPaidMoney() > 0) {
+                params.put(RequestConstant.KEY_MEMBER_CARD_NO, trade.memberInfo.cardNo);
+                params.put(RequestConstant.KEY_MEMBER_PAY_MONEY, String.valueOf(trade.getMemberPaidMoney()));
+                params.put(RequestConstant.KEY_MEMBER_PAY_DISCOUNT_MONEY, String.valueOf(trade.getMemberPaidDiscountMoney()));
+                params.put(RequestConstant.KEY_MEMBER_PAY_RESULT, String.valueOf(trade.memberPayResult));
+                params.put(RequestConstant.KEY_MEMBER_PAY_CERTIFICATE, trade.memberPayCertificate);
+            }
         }
 
         if (trade.posPayReturn != null) {
@@ -126,7 +129,6 @@ public class DataReportManager {
 
         @Override
         public void onError(String error) {
-            //TODO 加入数据库，下次汇报
             XLogger.e("trade data report failed:" + error);
             if (!DataReportTable.isDataExist(tradeNo)) {
                 params.remove(RequestConstant.KEY_TOKEN);

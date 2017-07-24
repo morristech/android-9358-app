@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_qr" />
+
+    <com.xmd.cashier.widget.StepView
+        android:id="@+id/sv_step_read"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_normal_margin"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/activity_normal_margin"
+        android:paddingTop="@dimen/activity_normal_margin" />
+
+    <include layout="@layout/layout_member_read" />
+
+</LinearLayout>

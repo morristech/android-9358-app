@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_item_plan"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_check_line"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:minWidth="75dp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:minHeight="75dp">
+
+        <TextView
+            android:id="@+id/tv_recharge_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/ic_bg_banner"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_little_margin"
+            android:paddingRight="@dimen/activity_small_margin"
+            android:text="套餐A套餐A"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_13" />
+
+        <TextView
+            android:id="@+id/tv_recharge_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_normal_margin"
+            android:layout_marginRight="@dimen/activity_normal_margin"
+            android:gravity="center_vertical"
+            android:text="充" />
+
+        <TextView
+            android:id="@+id/tv_recharge_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_recharge_desc"
+            android:gravity="center_vertical"
+            android:text="1000"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/medium_font_size"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@color/colorStoke" />
+
+    <TextView
+        android:id="@+id/tv_send_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_normal_margin"
+        android:layout_marginRight="@dimen/activity_small_margin"
+        android:text="  送"
+        android:visibility="visible" />
+
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:minHeight="75dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ry_send_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/activity_little_margin"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/img_recharge_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:src="@drawable/ic_bg_conner" />
+    </RelativeLayout>
+</LinearLayout>

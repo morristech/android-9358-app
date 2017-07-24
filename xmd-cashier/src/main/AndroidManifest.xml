@@ -3,6 +3,7 @@
     package="com.xmd.cashier">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -29,6 +30,7 @@
 
         <activity
             android:name=".activity.LoginActivity"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,9 +46,6 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.ConfirmActivity"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".activity.MemberPayActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.PointsPhoneActivity"
@@ -133,6 +132,44 @@
         <meta-data
             android:name="GETUI_MASTER_SECRET"
             android:value="${GETUI_MASTER_SECRET}" />
+
+        <!--           会员卡需求         -->
+        <activity
+            android:name=".activity.MemberNavigationActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.MemberReadActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.MemberScanActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.MemberRechargeActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.TechnicianActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.MemberRecordActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.McardPhoneActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.McardInfoActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.McardSuccessActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.MemberCashierActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

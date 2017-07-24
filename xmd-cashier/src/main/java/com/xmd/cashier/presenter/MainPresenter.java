@@ -27,6 +27,7 @@ import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.CashierManager;
+import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.manager.UpdateManager;
 import com.xmd.cashier.manager.VerifyManager;
@@ -94,6 +95,9 @@ public class MainPresenter implements MainContract.Presenter {
             mLogoutSubscription.unsubscribe();
         }
         mTradeManager.newTrade();
+        MemberManager.getInstance().newRechargeProcess();
+        MemberManager.getInstance().newCardProcess();
+        MemberManager.getInstance().newTrade();
         UiNavigation.gotoLoginActivity(mContext);
         mView.finishSelf();
         mLogoutSubscription = AccountManager.getInstance().logout(new Callback<LogoutResult>() {
@@ -120,6 +124,15 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onCashierLayoutClick() {
         UiNavigation.gotoCashierActivity(mContext);
+    }
+
+    @Override
+    public void onMemberLayoutClick() {
+        if (!AppConstants.APP_REQUEST_NO.equals(MemberManager.getInstance().getmMemberSwitch())) {
+            UiNavigation.gotoMemberNavigationActivity(mContext);
+        } else {
+            mView.showError("会所会员功能未开通!");
+        }
     }
 
     @Override
@@ -190,7 +203,7 @@ public class MainPresenter implements MainContract.Presenter {
     private void getVerifyType(final String code) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
         if (mGetVerifyTypeSubscription != null) {
@@ -240,7 +253,7 @@ public class MainPresenter implements MainContract.Presenter {
     private void getNormalCouponInfo(String code) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
         if (mGetNormalCouponInfoSubscription != null) {
@@ -269,7 +282,7 @@ public class MainPresenter implements MainContract.Presenter {
     private void getOrderInfo(String code) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
 
@@ -298,7 +311,7 @@ public class MainPresenter implements MainContract.Presenter {
     private void getServiceCouponInfo(String code) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
         if (mGetServiceCouponInfoSubscription != null) {
@@ -328,7 +341,7 @@ public class MainPresenter implements MainContract.Presenter {
     private void getPrizeInfo(String code) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
         if (mGetPrizeInfoSubscription != null) {
@@ -355,7 +368,7 @@ public class MainPresenter implements MainContract.Presenter {
     private void getCommonVerifyInfo(String code) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
-            mView.showError("网络异常，请检查网络后重试");
+            mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
         if (mGetCommonVerifySubscription != null) {
@@ -431,8 +444,8 @@ public class MainPresenter implements MainContract.Presenter {
                 // POS初始化成功之后添加请求头:设备信息
                 XmdNetwork.getInstance().setHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
                 // 开始轮询
-                CustomService.refreshOnlinePayNotify(true);
-                CustomService.refreshOrderRecordNotify(true);
+//                CustomService.refreshOnlinePayNotify(true);
+//                CustomService.refreshOrderRecordNotify(true);
             }
 
             @Override

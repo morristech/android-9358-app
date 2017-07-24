@@ -22,4 +22,11 @@ public interface BaseView<T> {
 
     void finishSelf();
 
+    void showError(String error);
+
+    void showToast(String toast);
+
+    void showLoading();
+
+    void hideLoading();
 }
