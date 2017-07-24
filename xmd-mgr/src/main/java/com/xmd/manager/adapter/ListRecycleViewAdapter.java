@@ -1096,6 +1096,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         viewHolder.tvGrabIncome.setText(String.format("%1.2f", bean.paidServiceItemAmount / 100f));
         viewHolder.tvPaidIncome.setText(String.format("%1.2f", bean.paidCouponAmount / 100f));
         viewHolder.tvPayForMeIncome.setText(String.format("%1.2f", bean.oneYuanAmount / 100f));
+        viewHolder.tvMixedPackageIncome.setText(String.format("%1.2f", bean.packageCardAmount / 100f));
     }
 
     private void bindPkActivityListItemViewHolder(RecyclerView.ViewHolder holder, Object obj) {
@@ -1629,6 +1630,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView tvPayForMeIncome;
         @BindView(R.id.tv_paid_income)
         TextView tvPaidIncome;
+        @BindView(R.id.tv_mixed_package_income)
+        TextView tvMixedPackageIncome;
 
         MarketingIncomeItemViewHolder(View view) {
             super(view);

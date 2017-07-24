@@ -21,5 +21,6 @@ public class MarketingIncomeBean {
     public int oneYuanAmount;
     public int paidServiceItemAmount;
     public int totalAmount;
+    public int packageCardAmount;
     public boolean showItemCard;
 }
