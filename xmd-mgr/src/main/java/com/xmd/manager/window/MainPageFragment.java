@@ -319,6 +319,9 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     TextView customerCountMark;
     @BindView(R.id.newOrderLayout)
     View newOrderLayout;
+    //空View
+    @BindView(R.id.view_transparent)
+    View mViewTransparent;
 
     private static final int REQUEST_CODE_PHONE = 0x0001;
     private static final int REQUEST_CODE_CAMERA = 0x002;
@@ -443,6 +446,20 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         initVisibilityForViews();
         initTitleView(view);
         initBadCommentView();
+        mSlidingMenu.setOnCloseOrOpenListener(new SlidingMenu.CloseOrOpenListener() {
+            @Override
+            public void isOpen(boolean isOpen) {
+                if (isOpen) {
+                    XLogger.i(">>>","open");
+
+                    mViewTransparent.setVisibility(View.VISIBLE);
+                } else {
+                    XLogger.i(">>>","close");
+                    mViewTransparent.setVisibility(View.GONE);
+                }
+            }
+        });
+
         mPropagandaDataSubscription = RxBus.getInstance().toObservable(PropagandaDataResult.class).subscribe(
                 result -> handlerPropagandaDataResult(result)
         );
@@ -1156,7 +1173,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-    @OnClick({R.id.tv_setting_head, R.id.menu_version_update, R.id.menu_setting, R.id.menu_service, R.id.menu_suggest, R.id.menu_choice_club, R.id.menu_change_password, R.id.menu_activity_logout})
+    @OnClick({R.id.tv_setting_head, R.id.menu_version_update, R.id.menu_setting, R.id.menu_service, R.id.menu_suggest, R.id.menu_choice_club, R.id.menu_change_password, R.id.menu_activity_logout, R.id.view_transparent})
     public void onMenuClicked(View v) {
         switch (v.getId()) {
             case R.id.tv_setting_head:
@@ -1188,6 +1205,9 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.menu_activity_logout:
                 doLogout();
+                break;
+            case R.id.view_transparent:
+                mSlidingMenu.closeMenu();
                 break;
         }
 
