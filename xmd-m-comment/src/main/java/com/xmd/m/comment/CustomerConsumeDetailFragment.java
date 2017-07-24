@@ -63,6 +63,7 @@ public class CustomerConsumeDetailFragment extends BaseFragment implements ListR
         mListAdapter = new ListRecycleViewAdapter(getContext(), mConsumeList, this);
         mRecyclerView.setAdapter(mListAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

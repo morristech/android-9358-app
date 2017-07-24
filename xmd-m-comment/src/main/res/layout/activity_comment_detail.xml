@@ -237,7 +237,7 @@
                     android:orientation="horizontal"
                     android:padding="10dp">
                     <TextView
-                        android:layout_width="80dp"
+                        android:layout_width="68dp"
                         android:layout_height="wrap_content"
                         android:text="印象："
                         android:textColor="#212121"

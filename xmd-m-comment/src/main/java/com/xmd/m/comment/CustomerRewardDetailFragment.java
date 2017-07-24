@@ -63,6 +63,7 @@ public class CustomerRewardDetailFragment extends BaseFragment implements ListRe
         mListAdapter = new ListRecycleViewAdapter(getContext(), mRewardList, this);
         mRecyclerView.setAdapter(mListAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

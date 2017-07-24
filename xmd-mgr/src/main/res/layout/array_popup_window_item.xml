@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_item"
@@ -11,15 +11,16 @@
         android:layout_height="@dimen/array_popup_window_item_height"
         android:background="@drawable/array_popup_window_item_bg"
         android:gravity="center"
-        android:padding="@dimen/inter_space"
+        android:paddingLeft="@dimen/inter_space"
+        android:paddingRight="@dimen/inter_space"
         android:singleLine="true"
         android:textColor="@color/colorClubItemTitle"
-        android:textSize="@dimen/fontBody" />
+        android:textSize="@dimen/fontBody"/>
 
     <View
         style="@style/line"
         android:layout_marginLeft="@dimen/small_space"
-        android:layout_marginRight="@dimen/small_space" />
+        android:layout_marginRight="@dimen/small_space"/>
 
 
 </LinearLayout>
