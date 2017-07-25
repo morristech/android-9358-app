@@ -314,7 +314,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             public void onSuccess(CouponResult o) {
                 CouponInfo info = o.getRespData();
                 info.customType = ("paid".equals(info.couponType) ? AppConstants.TYPE_PAID_COUPON : AppConstants.TYPE_COUPON);
-                info.valid = Utils.getCouponValid(info.startDate, info.endUseDate, info.useTimePeriod);
+                info.valid = true;
                 VerificationItem item = new VerificationItem();
                 item.code = info.couponNo;
                 item.type = type;

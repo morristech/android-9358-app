@@ -18,6 +18,7 @@ public class MemberInfo implements Serializable {
     public int discount;
     public String userId;
     public String name;
+    public String avatarUrl;
     public String phoneNum;
     public String birth;
     public String gender;

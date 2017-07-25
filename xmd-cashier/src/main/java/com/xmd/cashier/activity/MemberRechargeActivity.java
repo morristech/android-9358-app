@@ -254,6 +254,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
     @Override
     public void clearAmount() {
         mMemberAmount.setText(null);
+        mMemberAmount.clearFocus();
     }
 
     @Override

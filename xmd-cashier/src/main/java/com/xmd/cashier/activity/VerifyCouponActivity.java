@@ -86,12 +86,7 @@ public class VerifyCouponActivity extends BaseActivity implements VerifyCouponCo
             mActContentView.loadDataWithBaseURL(null, mInfo.actContent, "text/html", "utf-8", null);
         }
 
-        if (isShow) {
-            mVerifyBtn.setVisibility(View.VISIBLE);
-            mVerifyBtn.setEnabled(mInfo.valid);
-        } else {
-            mVerifyBtn.setVisibility(View.GONE);
-        }
+        mVerifyBtn.setVisibility(isShow ? View.VISIBLE : View.GONE);
         mCouponStatus.setText(mInfo.valid ? "可用" : "不可用");
         mCouponStatus.setTextColor(mInfo.valid ? getResources().getColor(R.color.colorText4) : getResources().getColor(R.color.colorPink));
 
