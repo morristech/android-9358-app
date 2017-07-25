@@ -21,10 +21,15 @@ import java.util.List;
 public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHolder> {
     private Context mContext;
     private List<MemberPlanInfo.PackageItem> mData = new ArrayList<>();
+    private CallBack mCallBack;
 
     public void setData(List<MemberPlanInfo.PackageItem> list) {
         mData.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public void setCallBack(CallBack callback) {
+        mCallBack = callback;
     }
 
     @Override
@@ -41,6 +46,12 @@ public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHo
         } else {
             holder.mContent.setText(item.name + " * " + item.itemCount);
         }
+        holder.mContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallBack.onPlanItemClick();
+            }
+        });
     }
 
     @Override
@@ -58,5 +69,9 @@ public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHo
             super(itemView);
             mContent = (TextView) itemView.findViewById(R.id.tv_sub_item);
         }
+    }
+
+    public interface CallBack {
+        void onPlanItemClick();
     }
 }

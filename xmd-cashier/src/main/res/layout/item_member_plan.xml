@@ -4,9 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_check_line"
-    android:clickable="true"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:minWidth="75dp"
     android:orientation="horizontal">
 
@@ -91,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
-            android:src="@drawable/ic_bg_conner" />
+            android:src="@drawable/ic_bg_conner"
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

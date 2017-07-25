@@ -265,7 +265,7 @@ public class MainPresenter implements MainContract.Presenter {
                 mView.hideLoading();
                 CouponInfo couponInfo = o.getRespData();
                 couponInfo.customType = ("paid".equals(couponInfo.couponType) ? AppConstants.TYPE_PAID_COUPON : AppConstants.TYPE_COUPON);
-                couponInfo.valid = Utils.getCouponValid(couponInfo.startDate, couponInfo.endUseDate, couponInfo.useTimePeriod);
+                couponInfo.valid = true;
                 UiNavigation.gotoVerifyCouponActivity(mContext, couponInfo, true);
             }
 
@@ -324,7 +324,7 @@ public class MainPresenter implements MainContract.Presenter {
                 mView.hideLoading();
                 CouponInfo couponInfo = o.getRespData();
                 couponInfo.customType = AppConstants.TYPE_SERVICE_ITEM_COUPON;
-                couponInfo.valid = Utils.getCouponValid(couponInfo.startDate, couponInfo.endUseDate, couponInfo.useTimePeriod);
+                couponInfo.valid = true;
                 UiNavigation.gotoVerifyCouponActivity(mContext, couponInfo, true);
             }
 

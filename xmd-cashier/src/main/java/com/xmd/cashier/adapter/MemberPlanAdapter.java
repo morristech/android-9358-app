@@ -77,6 +77,13 @@ public class MemberPlanAdapter extends RecyclerView.Adapter<MemberPlanAdapter.Vi
         if (packagePlan.packageItems != null && packagePlan.packageItems.size() > 0) {
             holder.mSendDesc.setVisibility(View.VISIBLE);
             PlanItemAdapter adapter = new PlanItemAdapter();
+            adapter.setCallBack(new PlanItemAdapter.CallBack() {
+                @Override
+                public void onPlanItemClick() {
+                    setSelectedPosition(position);
+                    mCallBack.onItemClick(mData.get(position), position);
+                }
+            });
             adapter.setData(packagePlan.packageItems);
             holder.mSendList.setLayoutManager(new LinearLayoutManager(mContext));
             holder.mSendList.setAdapter(adapter);
