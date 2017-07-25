@@ -6,11 +6,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberCashierContract;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.presenter.MemberCashierPresenter;
+import com.xmd.cashier.widget.CircleImageView;
 
 /**
  * Created by zr on 17-7-22.
@@ -19,6 +21,7 @@ import com.xmd.cashier.presenter.MemberCashierPresenter;
 public class MemberCashierActivity extends BaseActivity implements MemberCashierContract.View {
     public MemberCashierContract.Presenter mPresenter;
 
+    private CircleImageView mMemberAvatar;
     private TextView mMemberName;
     private TextView mMemberLevel;
     private TextView mMemberPhone;
@@ -43,6 +46,7 @@ public class MemberCashierActivity extends BaseActivity implements MemberCashier
 
     private void initView() {
         showToolbar(R.id.toolbar, "会员消费");
+        mMemberAvatar = (CircleImageView) findViewById(R.id.img_member_avatar);
         mMemberName = (TextView) findViewById(R.id.tv_member_name);
         mMemberLevel = (TextView) findViewById(R.id.tv_member_level);
         mMemberPhone = (TextView) findViewById(R.id.tv_member_phone);
@@ -66,6 +70,7 @@ public class MemberCashierActivity extends BaseActivity implements MemberCashier
 
     @Override
     public void showInfo(MemberInfo info) {
+        Glide.with(this).load(info.avatarUrl).dontAnimate().placeholder(R.drawable.ic_avatar).into(mMemberAvatar);
         mMemberName.setText(info.name);
         mMemberLevel.setText(info.memberTypeName);
         mMemberPhone.setText(info.phoneNum);
