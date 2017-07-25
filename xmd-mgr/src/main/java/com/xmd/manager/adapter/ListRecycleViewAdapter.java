@@ -30,6 +30,8 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.DateUtils;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
+import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.ActivityRankingBean;
@@ -50,7 +52,6 @@ import com.xmd.manager.beans.TechRankingBean;
 import com.xmd.manager.beans.VisitInfo;
 import com.xmd.manager.chat.CommonUtils;
 import com.xmd.manager.chat.EmchatConstant;
-import com.xmd.manager.chat.EmchatUserHelper;
 import com.xmd.manager.chat.SmileUtils;
 import com.xmd.manager.common.DescribeMesaageUtil;
 import com.xmd.manager.common.ItemSlideHelper;
@@ -406,7 +407,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         boolean isPaidOrder = Constant.ORDER_TYPE_PAID.equals(order.orderType);
         OrderListItemViewHolder itemHolder = (OrderListItemViewHolder) holder;
         Glide.with(mContext).load(order.headImgUrl).error(R.drawable.icon22).into(itemHolder.avatar);
-        itemHolder.avatar.setOnClickListener(v -> EmchatUserHelper.startToChat(order.emchatId, order.customerName, order.headImgUrl));
+        itemHolder.avatar.setUserInfo(UserInfoServiceImpl.getInstance().getUserByChatId(order.emchatId));
         itemHolder.customerName.setText(Utils.briefString(order.customerName, 4));
         itemHolder.customerPhone.setText(order.phoneNum);
         itemHolder.bookTime.setText(order.createdAt);
@@ -1210,7 +1211,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     static class OrderListItemViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.avatar)
-        CircleImageView avatar;
+        CircleAvatarView avatar;
         @BindView(R.id.custom_name)
         TextView customerName;
         @BindView(R.id.custom_phone)

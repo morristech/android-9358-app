@@ -44,7 +44,7 @@ public class CircleAvatarView extends android.support.v7.widget.AppCompatImageVi
     //设置用户信息
     public void setUserInfo(final User user) {
         this.user = user;
-        if (!TextUtils.isEmpty(user.getAvatar())) {
+        if (user != null && !TextUtils.isEmpty(user.getAvatar())) {
             Glide.with(getContext()).load(user.getAvatar()).transform(new GlideCircleTransform(getContext())).error(R.drawable.img_default_avatar).into(this);
         } else {
             setImageResource(R.drawable.img_default_avatar);

@@ -181,6 +181,7 @@ public class User implements Serializable {
                 ", clubId='" + clubId + '\'' +
                 ", clubName='" + clubName + '\'' +
                 ", techNo='" + techNo + '\'' +
+                ", roles='" + roles + '\'' +
                 ", markName='" + markName + '\'' +
                 '}';
     }

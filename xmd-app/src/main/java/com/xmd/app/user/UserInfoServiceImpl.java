@@ -38,6 +38,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private Map<String, User> mChatIdMap;
     private Map<String, User> mUserIdMap;
 
+    private static final String USER_CURRENT_USER = "user_current_user";
     private static final String USER_ID_LIST = "user_id_list";
 
     private User currentUser;
@@ -50,6 +51,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         mChatIdMap = new HashMap<>();
         mUserIdMap = new HashMap<>();
+
+        currentUser = (User) DiskCacheManager.getInstance().get(USER_CURRENT_USER);
+        XLogger.i("get current user=" + currentUser);
 
         mUserIdList = (List<String>) DiskCacheManager.getInstance().get(USER_ID_LIST);
         if (mUserIdList == null) {
@@ -118,16 +122,22 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public void saveCurrentUser(User user) {
+        DiskCacheManager.getInstance().put(USER_CURRENT_USER, user);
+    }
+
+    @Override
     public String getCurrentToken() {
         return currentToken;
     }
 
     @Subscribe(sticky = true)
     public void onLogin(EventLogin eventLogin) {
-        XLogger.i(TAG, "===>user logout");
+        XLogger.i(TAG, "===>user login");
         currentUser = eventLogin.getUser();
         currentToken = eventLogin.getToken();
         saveUser(currentUser);
+        saveCurrentUser(currentUser);
     }
 
     @Subscribe(sticky = true)
@@ -135,5 +145,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         XLogger.i(TAG, "<===user logout");
         currentUser = null;
         currentToken = null;
+        saveCurrentUser(null);
     }
 }

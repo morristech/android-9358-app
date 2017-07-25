@@ -12,6 +12,8 @@ import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.XmdApp;
+import com.xmd.app.event.EventLogin;
+import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.beans.Location;
@@ -41,7 +43,6 @@ public class XmdChat {
 
     private XmdChat() {
     }
-
 
     private Context context;
     private MenuFactory menuFactory;
@@ -85,9 +86,6 @@ public class XmdChat {
                 conversation.clear(); //清除加载的会话数据，避免聊天窗口加载出错
             }
         }
-
-        SettingManager.getInstance().loadDiceExpireTime();
-        SettingManager.getInstance().loadFastReply(null);
     }
 
     public MenuFactory getMenuFactory() {
@@ -152,5 +150,18 @@ public class XmdChat {
         Intent intent = new Intent(context, ChatFastReplySettingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    @Subscribe(sticky = true)
+    public void onLogin(EventLogin eventLogin) {
+        AccountManager.getInstance().login(eventLogin);
+        SettingManager.getInstance().loadDiceExpireTime();
+        SettingManager.getInstance().loadFastReply(null);
+    }
+
+    @Subscribe(sticky = true)
+    public void onLogout(EventLogout eventLogout) {
+        AccountManager.getInstance().logout(eventLogout);
+        SettingManager.getInstance().clear();
     }
 }

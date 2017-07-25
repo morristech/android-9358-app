@@ -43,7 +43,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
     public ChatRowViewModelAppointment(ChatMessage chatMessage) {
         super(chatMessage);
         orderChatMessage = (OrderChatMessage) chatMessage;
-//        mAppointmentData = OrderChatManager.parseMessage(orderChatMessage); //FIXME
+        mAppointmentData = orderChatMessage.parseOrderData(); //FIXME
         setupOperationButton();
         setupShowItem();
     }
@@ -72,6 +72,11 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
         binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
         return binding;
+    }
+
+    @Override
+    protected boolean contentViewMatchParent() {
+        return true;
     }
 
     @Override

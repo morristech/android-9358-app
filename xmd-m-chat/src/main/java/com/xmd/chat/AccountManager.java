@@ -6,15 +6,12 @@ import android.os.Message;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
 import com.xmd.chat.event.EventChatLoginSuccess;
-import com.xmd.m.network.EventTokenExpired;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by mo on 17-6-28.
@@ -35,25 +32,15 @@ public class AccountManager {
     private User user;
 
     public void init() {
-        EventBusSafeRegister.register(this);
+
     }
 
-    @Subscribe(sticky = true)
-    public void onLogin(EventLogin eventLogin) {
+    public void login(EventLogin eventLogin) {
         user = eventLogin.getUser();
         loopLogin();
     }
 
-    @Subscribe(sticky = true)
-    public void onLogout(EventLogout eventLogout) {
-        mHandler.removeCallbacksAndMessages(null);
-        logout();
-        user = null;
-    }
-
-    @Subscribe
-    public void onTokenExpired(EventTokenExpired eventTokenExpired) {
-        XLogger.i(XmdChat.TAG, "token expire, logout");
+    public void logout(EventLogout eventLogout) {
         mHandler.removeCallbacksAndMessages(null);
         logout();
         user = null;

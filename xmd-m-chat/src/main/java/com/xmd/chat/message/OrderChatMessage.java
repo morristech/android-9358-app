@@ -2,6 +2,10 @@ package com.xmd.chat.message;
 
 import com.hyphenate.chat.EMMessage;
 import com.xmd.appointment.AppointmentData;
+import com.xmd.appointment.beans.ServiceItem;
+import com.xmd.appointment.beans.Technician;
+
+import java.util.Date;
 
 /**
  * Created by heyangya on 17-6-7.
@@ -139,7 +143,6 @@ public class OrderChatMessage extends ChatMessage {
     }
 
 
-
     public String getOrderType() {
         return getSafeStringAttribute(ATTR_ORDER_TYPE);
     }
@@ -183,6 +186,46 @@ public class OrderChatMessage extends ChatMessage {
         if (data.getSubmitOrderId() != null) {
             setOrderId(data.getSubmitOrderId());
         }
+    }
+
+    public AppointmentData parseOrderData() {
+        AppointmentData data = new AppointmentData();
+        if (getCustomerName() != null) {
+            data.setCustomerName(getCustomerName());
+        }
+        if (getCustomerPhone() != null) {
+            data.setCustomerPhone(getCustomerPhone());
+        }
+        if (getOrderServiceTime() != null) {
+            data.setAppointmentTime(new Date(getOrderServiceTime()));
+        }
+        if (getOrderTechId() != null) {
+            Technician technician = new Technician();
+            technician.setId(getOrderTechId());
+            technician.setName(getOrderTechName());
+            technician.setAvatarUrl(getOrderTechAvatar());
+            data.setTechnician(technician);
+        }
+        if (getOrderServiceId() != null) {
+            ServiceItem serviceItem = new ServiceItem();
+            serviceItem.setId(getOrderServiceId());
+            serviceItem.setName(getOrderServiceName());
+            if (getOrderServicePrice() != null) {
+                serviceItem.setPrice(String.valueOf(getOrderServicePrice()));
+            }
+            if (getOrderServiceDuration() != null) {
+                serviceItem.setDuration(String.valueOf(getOrderServiceDuration()));
+                data.setDuration(getOrderServiceDuration());
+            }
+            data.setServiceItem(serviceItem);
+        }
+        if (getOrderPayMoney() != null) {
+            data.setFontMoney(getOrderPayMoney());
+        }
+        if (getOrderId() != null) {
+            data.setSubmitOrderId(getOrderId());
+        }
+        return data;
     }
 
     public static OrderChatMessage create(String toChatId, String msgType, AppointmentData data) {

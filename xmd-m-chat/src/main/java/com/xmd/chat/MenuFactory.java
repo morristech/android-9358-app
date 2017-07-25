@@ -10,12 +10,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.View;
 
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.BaseActivity;
 import com.xmd.app.Constants;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
@@ -100,7 +100,7 @@ public class MenuFactory {
 
     //创建图片菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_PICTURE)
-    public void createPictureMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createPictureMenu(final BaseActivity activity, final User remoteUser) {
         menus.add(new ChatMenu(activity, R.drawable.chat_menu_image, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +119,7 @@ public class MenuFactory {
 
     //创建表情菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_EMOJI)
-    public void createEmojiMenu(final AppCompatActivity activity, Editable editable) {
+    public void createEmojiMenu(final BaseActivity activity, Editable editable) {
         List<Fragment> emojiFragmentList = new ArrayList<>();
         SubmenuEmojiFragment submenuEmojiFragment = new SubmenuEmojiFragment();
         submenuEmojiFragment.setOutputView(editable);
@@ -129,7 +129,7 @@ public class MenuFactory {
 
     //创建快捷回复菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_FAST_REPLY)
-    public void createFastReplyMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createFastReplyMenu(final BaseActivity activity, final User remoteUser) {
         menus.add(new ChatMenu(activity, "快捷回复", R.drawable.chat_menu_fast_reply, null, createFastReplySubMenu(remoteUser.getChatId())));
     }
 
@@ -159,7 +159,7 @@ public class MenuFactory {
 
     //创建发券菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_COUPON)
-    public void createCouponMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createCouponMenu(final BaseActivity activity, final User remoteUser) {
         menus.add(new ChatMenu(activity, R.drawable.chat_menu_coupon, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +175,7 @@ public class MenuFactory {
 
     //创建预约菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER)
-    public void createAppointmentMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createAppointmentMenu(final BaseActivity activity, final User remoteUser) {
         menus.add(new ChatMenu(activity, R.drawable.chat_menu_appointment, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,7 +242,7 @@ public class MenuFactory {
     }
 
     //创建更多菜单
-    public void createMoreMenu(final AppCompatActivity activity) {
+    public void createMoreMenu(final BaseActivity activity) {
         if (moreMenus.size() == 0) {
             return;
         }
@@ -255,7 +255,7 @@ public class MenuFactory {
 
     //创建更多-位置菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_LOCATION)
-    public void createMoreLocationMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createMoreLocationMenu(final BaseActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "会所位置", R.drawable.chat_menu_location, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,7 +274,7 @@ public class MenuFactory {
 
     //创建更多-求预约菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ORDER_REQUEST)
-    public void createMoreRequestOrderMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createMoreRequestOrderMenu(final BaseActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "求预约", R.drawable.chat_menu_order_request, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -296,7 +296,7 @@ public class MenuFactory {
 
     //创建更多-求打赏菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_REWARD)
-    public void createMoreRequestRewardMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createMoreRequestRewardMenu(final BaseActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "求打赏", R.drawable.chat_menu_request_reward, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -318,13 +318,15 @@ public class MenuFactory {
 
     //创建更多-电子期刊菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_JOURNAL)
-    public void createMoreJournalMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createMoreJournalMenu(final BaseActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "电子期刊", R.drawable.chat_menu_journal, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activity.showLoading();
                 ShareDataManager.getInstance().loadJournalList(new NetworkSubscriber<Void>() {
                     @Override
                     public void onCallbackSuccess(Void v) {
+                        activity.hideLoading();
                         Intent intent = new Intent(activity, ShareListActivity.class);
                         intent.putExtra(Constants.EXTRA_CHAT_ID, remoteUser.getChatId());
                         ArrayList<String> dataTypeList = new ArrayList<>();
@@ -344,13 +346,15 @@ public class MenuFactory {
 
     //创建更多-商城菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_MALL_INFO)
-    public void createMoreMallMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createMoreMallMenu(final BaseActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "特惠商城", R.drawable.chat_menu_mall, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activity.showLoading();
                 ShareDataManager.getInstance().loadOnceCardList(new NetworkSubscriber<Void>() {
                     @Override
                     public void onCallbackSuccess(Void v) {
+                        activity.hideLoading();
                         Intent intent = new Intent(activity, ShareListActivity.class);
                         intent.putExtra(Constants.EXTRA_CHAT_ID, remoteUser.getChatId());
                         ArrayList<String> dataTypeList = new ArrayList<>();
@@ -372,13 +376,15 @@ public class MenuFactory {
 
     //创建更多-营销活动菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_SEND_ACTIVITY)
-    public void createMoreMarketingMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createMoreMarketingMenu(final BaseActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "营销活动", R.drawable.chat_menu_marketing, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activity.showLoading();
                 ShareDataManager.getInstance().loadMarketingList(new NetworkSubscriber<Void>() {
                     @Override
                     public void onCallbackSuccess(Void v) {
+                        activity.hideLoading();
                         Intent intent = new Intent(activity, ShareListActivity.class);
                         intent.putExtra(Constants.EXTRA_CHAT_ID, remoteUser.getChatId());
                         intent.putStringArrayListExtra(ShareListActivity.EXTRA_DATA_TYPE_LIST,
@@ -397,7 +403,7 @@ public class MenuFactory {
 
     //创建更多-营销活动菜单
 //    @CheckBusinessPermission(PermissionConstants.MESSAGE_PLAY_CREDIT_GAME)
-    public void createMoreDiceGameMenu(final AppCompatActivity activity, final User remoteUser) {
+    public void createMoreDiceGameMenu(final BaseActivity activity, final User remoteUser) {
         moreMenus.add(new ChatMenu(activity, "积分游戏", R.drawable.chat_menu_game, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

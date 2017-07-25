@@ -37,7 +37,6 @@ import com.xmd.manager.adapter.PageFragmentPagerAdapter;
 import com.xmd.manager.beans.ClubInfo;
 import com.xmd.manager.beans.SwitchIndex;
 import com.xmd.manager.beans.SwitchIndexBean;
-import com.xmd.manager.chat.EmchatUserHelper;
 import com.xmd.manager.common.ImageLoader;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.ThreadManager;
@@ -238,9 +237,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     }
 
     private void loadData() {
-        EmchatUserHelper.login(null);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_INFO);
-//        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
     }
 
 
@@ -299,7 +296,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
                 SharedPreferenceHelper.setUserAvatar(clubInfo.imageUrl);
                 SharedPreferenceHelper.setCurrentClubName(clubInfo.name);
                 SharedPreferenceHelper.setCurrentClubCreateTime(Utils.StrSubstring(10, clubInfo.createTime, false));
-                EmchatUserHelper.saveUser(SharedPreferenceHelper.getEmchatId(), clubInfo.name, clubInfo.imageUrl);
             });
         }
     }

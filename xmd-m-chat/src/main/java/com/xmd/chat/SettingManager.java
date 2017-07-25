@@ -34,6 +34,13 @@ public class SettingManager {
         return fastReplySetting;
     }
 
+    public void clear() {
+        fastReplySetting = null;
+        DiskCacheManager.getInstance().put(ChatConstants.CACHE_CHAT_FAST_REPLY_SETTING, null);
+        diceExpireTime = 0;
+        XmdChat.getInstance().getSp().edit().remove(ChatConstants.SP_GAME_DICE_EXPIRE_TIME).apply();
+    }
+
     //加载快速回复
     public void loadFastReply(final Callback<FastReplySetting> callback) {
         if (callback != null && fastReplySetting != null) {

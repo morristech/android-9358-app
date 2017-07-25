@@ -2,6 +2,8 @@ package com.xmd.manager;
 
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.manager.beans.AuthData;
 import com.xmd.manager.beans.ClubInfo;
 
@@ -37,6 +39,13 @@ public class ClubData {
             mClubInfo = clubInfo;
             DiskCacheManager.getInstance().put("current_club_info", mClubInfo);
             mClubImageLocalPath = AppConfig.getAvatarFolder() + File.separator + clubInfo.clubId;
+
+            User currentUser = UserInfoServiceImpl.getInstance().getCurrentUser();
+            if (currentUser != null) {
+                currentUser.setClubId(clubInfo.clubId);
+                currentUser.setClubName(clubInfo.clubName);
+                UserInfoServiceImpl.getInstance().saveCurrentUser(currentUser);
+            }
         }
     }
 

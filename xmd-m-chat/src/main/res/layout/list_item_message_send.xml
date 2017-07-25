@@ -41,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/time"
+            android:layout_marginRight="4dp"
             android:layout_marginTop="4dp"
             android:layout_toLeftOf="@id/avatarView"
             android:layout_toStartOf="@id/avatarView"

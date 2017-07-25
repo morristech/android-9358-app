@@ -23,7 +23,6 @@ import com.xmd.manager.R;
 import com.xmd.manager.adapter.CommentDetailItemAdapter;
 import com.xmd.manager.beans.BadCommentDetailBean;
 import com.xmd.manager.beans.CommentRateListBean;
-import com.xmd.manager.chat.EmchatUserHelper;
 import com.xmd.manager.common.DateUtil;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.ReturnVisitMenu;
@@ -276,7 +275,7 @@ public class BadCommentDetailActivity extends BaseActivity {
                         PermissionTool.requestPermission(BadCommentDetailActivity.this, new String[]{Manifest.permission.CALL_PHONE}, new String[]{"拨打电话"}, REQUEST_CODE_PHONE);
                         break;
                     case 2:
-                        EmchatUserHelper.startToChat(emChatId, userName, userHeadImgUrl);
+//                        EmchatUserHelper.startToChat(emChatId, userName, userHeadImgUrl);
                         break;
                     case 3:
                         doRemarkComment(commentId, RequestConstant.FINISH_COMMENT);
