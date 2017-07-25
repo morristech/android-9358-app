@@ -160,7 +160,6 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             return;
         }
         MemberManager.getInstance().setRechargePayType(type);
-        MemberManager.getInstance().setDescription("会员卡充值");
         // 扫码支付
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.showError(mContext.getString(R.string.network_disabled));
