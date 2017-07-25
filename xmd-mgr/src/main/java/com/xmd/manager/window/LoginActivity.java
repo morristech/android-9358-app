@@ -13,7 +13,6 @@ import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
 import com.xmd.m.network.OkHttpUtil;
-import com.xmd.m.network.XmdNetwork;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
@@ -117,8 +116,6 @@ public class LoginActivity extends BaseActivity {
             ToastUtils.showToastShort(LoginActivity.this, ResourceUtils.getString(R.string.login_activity_hint_server_host_not_empty));
             return;
         }
-
-        XmdNetwork.getInstance().changeServer(mSelectedServerHost);
 
         hideKeyboard();
         //Save the usernames
