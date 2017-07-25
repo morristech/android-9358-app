@@ -288,14 +288,39 @@ public class MemberManager {
         return mRechargeProcess.getOrderId();
     }
 
+    public void setAmountType(String type) {
+        mRechargeProcess.setRechargeAmountType(type);
+    }
+
+    public String getAmountType() {
+        return mRechargeProcess.getRechargeAmountType();
+    }
+
     // 生成充值请求
     public Subscription requestRecharge(final Callback<MemberUrlResult> callback) {
+        int amount = 0;
+        String description = "充值";
+        String packageId = null;
+        switch (getAmountType()) {
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
+                amount = mRechargeProcess.getPackageAmount();
+                description = mRechargeProcess.getPackageName();
+                packageId = mRechargeProcess.getPackageId();
+                break;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
+                amount = mRechargeProcess.getAmount();
+                description = "指定金额" + Utils.moneyToStringEx(amount) + "元";
+                packageId = null;
+                break;
+            default:
+                break;
+        }
         Observable<MemberUrlResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .rechargeMemberInfo(AccountManager.getInstance().getToken(),
-                        String.valueOf(mRechargeProcess.getAmount()),
-                        mRechargeProcess.getDescription(),
+                        String.valueOf(amount),
+                        description,
                         String.valueOf(mRechargeProcess.getMemberId()),
-                        mRechargeProcess.getPackageId(),
+                        packageId,
                         mRechargeProcess.getTechInfo().id);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberUrlResult>() {
             @Override
@@ -335,8 +360,19 @@ public class MemberManager {
 
     // POS支付获取TradeNo
     public Subscription fetchTradeNo(final Callback<GetTradeNoResult> callback) {
+        int amount = 0;
+        switch (getAmountType()) {
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
+                amount = mRechargeProcess.getPackageAmount();
+                break;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
+                amount = mRechargeProcess.getAmount();
+                break;
+            default:
+                break;
+        }
         Observable<GetTradeNoResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getTradeNo(AccountManager.getInstance().getToken(), mRechargeProcess.getAmount(), null, RequestConstant.DEFAULT_SIGN_VALUE);
+                .getTradeNo(AccountManager.getInstance().getToken(), amount, null, RequestConstant.DEFAULT_SIGN_VALUE);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GetTradeNoResult>() {
             @Override
             public void onCallbackSuccess(GetTradeNoResult result) {
@@ -456,26 +492,41 @@ public class MemberManager {
         });
     }
 
-
     public void printInfo(MemberRecordInfo info, boolean retry) {
         mPos.printCenter(AccountManager.getInstance().getClubName());
         if (retry) {
-            mPos.printCenter("重打小票");
+            mPos.printCenter("(补打小票)");
         }
         mPos.printDivide();
-        mPos.printText("卡号  " + info.cardNo);
-        mPos.printText("等级  " + info.memberTypeName);
-        mPos.printText("说明  " + info.description);
+        mPos.printText("会员卡号  " + info.cardNo);
+        mPos.printText("会员等级  " + info.memberTypeName);
+        switch (info.tradeType) {
+            case AppConstants.MEMBER_TRADE_TYPE_INCOME:
+                // 充值:
+                mPos.printText("充值内容  " + info.description);
+                mPos.printText("支付金额  " + Utils.moneyToStringEx(info.orderAmount) + "元");
+                break;
+            case AppConstants.MEMBER_TRADE_TYPE_PAY:
+                // 消费:消费金额|折扣信息|实收金额|当前余额
+                mPos.printText("消费金额  " + Utils.moneyToStringEx(info.orderAmount) + "元");
+                mPos.printText("折扣金额  " + Utils.moneyToStringEx(info.discountAmount) + "元");
+                mPos.printText("实收金额  " + Utils.moneyToStringEx(info.amount) + "元");
+                break;
+            default:
+                break;
+        }
         mPos.printDivide();
-
         mPos.printRight("余额 " + Utils.moneyToStringEx(info.accountAmount) + " 元");
         mPos.printDivide();
 
         mPos.printText("交易号:", info.tradeNo);
         mPos.printText("付款方式:", info.payChannelName);
-        mPos.printText("下单时间:", info.createTime);
+        mPos.printText("交易时间:", info.createTime);
         mPos.printText("打印时间:", Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT));
         mPos.printText("收银人员:", TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().userName : info.operatorName);
+        if (!TextUtils.isEmpty(info.techName)) {
+            mPos.printText("营销人员:", info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));
+        }
         mPos.printBitmap(TradeManager.getInstance().getClubQRCodeSync());
         mPos.printCenter("扫一扫，关注9358，约技师，享优惠");
         mPos.printEnd();

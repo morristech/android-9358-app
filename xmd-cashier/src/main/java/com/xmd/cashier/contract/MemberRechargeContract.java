@@ -7,8 +7,6 @@ import com.xmd.cashier.dal.bean.MemberPlanInfo;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.TechInfo;
 
-import java.util.List;
-
 /**
  * Created by zr on 17-7-11.
  */
@@ -38,6 +36,8 @@ public interface MemberRechargeContract {
         void clearPackage();
 
         void onReportResult(MemberRecordInfo info);
+
+        void onConfirm();
     }
 
     interface View extends BaseView<Presenter> {
@@ -57,5 +57,7 @@ public interface MemberRechargeContract {
         void clearAmount();
 
         void clearPackage();
+
+        void showDialog();
     }
 }

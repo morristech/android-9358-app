@@ -7,6 +7,7 @@ import android.os.Handler;
 import com.google.zxing.WriterException;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.cashier.PosFactory;
+import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberScanContract;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
@@ -68,12 +69,19 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
 
     @Override
     public void onCreate() {
-        if (MemberManager.getInstance().getAmount() > 0) {
-            // 直接充值金额
-            mView.showScanInfo(MemberManager.getInstance().getDescription(), Utils.moneyToStringEx(MemberManager.getInstance().getAmount()), null);
-        } else {
-            // 充值套餐
-            mView.showScanInfo(MemberManager.getInstance().getDescription(), Utils.moneyToStringEx(MemberManager.getInstance().getPackageAmount()), MemberManager.getInstance().getPackageName());
+        switch (MemberManager.getInstance().getAmountType()) {
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
+                String amount = Utils.moneyToStringEx(MemberManager.getInstance().getAmount());
+                mView.showScanInfo("会员充值", "充值金额", amount + "元", amount);
+                break;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
+                String packageAmount = Utils.moneyToStringEx(MemberManager.getInstance().getPackageAmount());
+                mView.showScanInfo("会员充值", "充值套餐", MemberManager.getInstance().getPackageName(), packageAmount);
+                break;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE:
+            default:
+                XLogger.i("amount type exception");
+                break;
         }
 
         Bitmap bitmap;
@@ -109,7 +117,8 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        MemberManager.getInstance().printInfo(memberRecordInfo, true);
+                        // 扫码充值
+                        MemberManager.getInstance().printInfo(memberRecordInfo, false);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }

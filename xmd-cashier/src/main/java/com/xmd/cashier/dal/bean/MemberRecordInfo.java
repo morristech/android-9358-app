@@ -32,6 +32,12 @@ public class MemberRecordInfo {
     public String operatorName; //操作人
     public String createTime;   //创建时间
     public String description;  //订单描述
+
     public int discount;     //折扣
     public int discountAmount;  //优惠金额
+    public int orderAmount; //原订单金额
+
+    public String techId;
+    public String techName;
+    public String techNo;
 }

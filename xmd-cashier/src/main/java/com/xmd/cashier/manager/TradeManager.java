@@ -30,7 +30,6 @@ import com.xmd.cashier.dal.net.response.CommonVerifyResult;
 import com.xmd.cashier.dal.net.response.CouponResult;
 import com.xmd.cashier.dal.net.response.GetMemberInfo;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
-import com.xmd.cashier.dal.net.response.MemberPayResult;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.OrderResult;
 import com.xmd.cashier.dal.net.response.StringResult;
@@ -169,16 +168,7 @@ public class TradeManager {
             public void onCallbackSuccess(GetMemberInfo result) {
                 mTrade.currentCashier = AppConstants.CASHIER_TYPE_MEMBER;
                 mTrade.memberPayMethod = AppConstants.MEMBER_PAY_METHOD_SCAN;
-                GetMemberInfo.OldMemberInfo old = result.getRespData();
-                MemberInfo info = new MemberInfo();
-                info.amount = old.balance;
-                info.discount = old.discount;
-                info.phoneNum = old.phone;
-                info.cardNo = old.cardNo;
-                info.name = old.name;
-                info.avatarUrl = old.avatarUrl;
-                info.memberTypeName = old.memberTypeName;
-                mTrade.memberInfo = info;
+                mTrade.memberInfo = result.getRespData();
                 mTrade.memberToken = memberToken;
                 callback.onSuccess(mTrade.memberInfo);
             }
@@ -190,36 +180,26 @@ public class TradeManager {
         });
     }
 
-
-    // 会员支付
-    public Subscription memberPayByScan(final Callback<MemberPayResult.PayResult> callback) {
-        Observable<MemberPayResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .memberPay(AccountManager.getInstance().getToken(), mTrade.memberToken, mTrade.tradeNo, mTrade.memberNeedPayMoney, mTrade.memberCanDiscount, "");
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberPayResult>() {
-            @Override
-            public void onCallbackSuccess(MemberPayResult result) {
-                mTrade.setMemberPaidMoney(result.getRespData().payMoney);
-                mTrade.memberPoints = result.getRespData().creditAmount;
-                mTrade.memberPayCertificate = result.getRespData().tradeId;
-                mTrade.memberPayResult = AppConstants.PAY_RESULT_SUCCESS;
-                callback.onSuccess(result.getRespData());
-                XLogger.i("MemberPaySuccess : payMoney=" + mTrade.getMemberPaidMoney() + " & creditAmount=" + mTrade.memberPoints);
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                callback.onError(e.getLocalizedMessage());
-            }
-        });
-    }
-
-    public Subscription memberPayByCode(final Callback<MemberRecordResult> callback) {
-        Observable<MemberRecordResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .requestMemberPayment(AccountManager.getInstance().getToken(), String.valueOf(mTrade.memberNeedPayMoney), "consume", null, String.valueOf(mTrade.memberInfo.id), mTrade.tradeNo, AppConstants.MEMBER_TRADE_TYPE_PAY);
+    public Subscription memberPay(String method, final Callback<MemberRecordResult> callback) {
+        Observable<MemberRecordResult> observable = null;
+        switch (method) {
+            case AppConstants.MEMBER_PAY_METHOD_CODE:
+                observable = XmdNetwork.getInstance().getService(SpaService.class)
+                        .requestMemberPayment(AccountManager.getInstance().getToken(), String.valueOf(mTrade.memberNeedPayMoney), "consume", "会员消费", String.valueOf(mTrade.memberInfo.id), mTrade.tradeNo, AppConstants.MEMBER_TRADE_TYPE_PAY);
+                break;
+            case AppConstants.MEMBER_PAY_METHOD_SCAN:
+                observable = XmdNetwork.getInstance().getService(SpaService.class)
+                        .memberPay(AccountManager.getInstance().getToken(), mTrade.memberToken, mTrade.tradeNo, mTrade.memberNeedPayMoney, mTrade.memberCanDiscount, "");
+                break;
+            default:
+                break;
+        }
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberRecordResult>() {
             @Override
             public void onCallbackSuccess(MemberRecordResult result) {
                 mTrade.setMemberPaidMoney(result.getRespData().amount);
+                mTrade.memberPayCertificate = result.getRespData().id;
+                mTrade.memberPayResult = AppConstants.PAY_RESULT_SUCCESS;
                 callback.onSuccess(result);
             }
 
@@ -284,8 +264,15 @@ public class TradeManager {
                                 printOnlinePay(); // 打印
                                 newTrade();         // 重置
                                 break;
-                            case AppConstants.CASHIER_TYPE_POS:
                             case AppConstants.CASHIER_TYPE_MEMBER:
+                                reportTradeDataSync(tradeStatus);
+                                if (mTrade.posPoints > 0) {
+                                    UiNavigation.gotoPointsPhoneActivity(context);
+                                } else {
+                                    newTrade();
+                                }
+                                break;
+                            case AppConstants.CASHIER_TYPE_POS:
                             default:
                                 reportTradeDataSync(tradeStatus);
                                 if (mTrade.posPoints > 0) {

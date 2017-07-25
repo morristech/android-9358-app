@@ -167,6 +167,7 @@ public class MemberRecordPresenter implements MemberRecordContract.Presenter {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
+                        // 重打
                         MemberManager.getInstance().printInfo(info, retry);
                         subscriber.onNext(null);
                         subscriber.onCompleted();

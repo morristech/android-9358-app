@@ -218,6 +218,10 @@ public class AppConstants {
     public static final String MEMBER_PAY_METHOD_CODE = "code";
     public static final String MEMBER_PAY_METHOD_SCAN = "scan";
 
+    public static final String MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE = "package";
+    public static final String MEMBER_RECHARGE_AMOUNT_TYPE_MONEY = "money";
+    public static final String MEMBER_RECHARGE_AMOUNT_TYPE_NONE = "none";
+
     public static final String REPORT_DATA_BIZ_TRADE = "trade";
     public static final String REPORT_DATA_BIZ_MEMBER = "member";
 }

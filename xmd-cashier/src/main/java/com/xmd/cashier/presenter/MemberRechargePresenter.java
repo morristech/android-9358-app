@@ -22,7 +22,10 @@ import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-7-11.
@@ -46,6 +49,8 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     @Override
     public void onCreate() {
         mView.showMemberInfo(MemberManager.getInstance().getRechargeMemberInfo());
+        clearAmount();
+        clearPackage();
         loadPlanData();
     }
 
@@ -110,7 +115,18 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     }
 
     private void doPosCashier() {
-        MemberManager.getInstance().posRecharge(mContext, (MemberManager.getInstance().getAmount() > 0) ? MemberManager.getInstance().getAmount() : MemberManager.getInstance().getPackageAmount(), new Callback<Void>() {
+        int amount = 0;
+        switch (MemberManager.getInstance().getAmountType()) {
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
+                amount = MemberManager.getInstance().getAmount();
+                break;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
+                amount = MemberManager.getInstance().getPackageAmount();
+                break;
+            default:
+                break;
+        }
+        MemberManager.getInstance().posRecharge(mContext, amount, new Callback<Void>() {
             @Override
             public void onSuccess(Void o) {
                 doReportRecharge();
@@ -201,14 +217,17 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         if (TextUtils.isEmpty(amount)) {
             MemberManager.getInstance().setAmount(0);
         } else {
+            // 以分为单位
             MemberManager.getInstance().setAmount(Utils.stringToMoney(amount));
         }
+        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY);
     }
 
     @Override
     public void clearAmount() {
         MemberManager.getInstance().setAmount(0);
         mView.clearAmount();
+        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE);
     }
 
     @Override
@@ -217,6 +236,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         MemberManager.getInstance().setPackageId(String.valueOf(item.id));
         MemberManager.getInstance().setPackageAmount(item.amount);
         MemberManager.getInstance().setPackageName(item.name);
+        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE);
     }
 
     @Override
@@ -225,14 +245,52 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         MemberManager.getInstance().setPackageName(null);
         MemberManager.getInstance().setPackageAmount(0);
         mView.clearPackage();
+        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE);
     }
 
     @Override
-    public void onReportResult(MemberRecordInfo info) {
+    public void onReportResult(final MemberRecordInfo info) {
         mView.hideLoading();
-        MemberManager.getInstance().printInfo(info, false);
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        // POS充值:银联|现金
+                        MemberManager.getInstance().printInfo(info, false);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
         MemberManager.getInstance().newTrade();
         MemberManager.getInstance().newRechargeProcess();
         mView.finishSelf();
+    }
+
+    @Override
+    public void onConfirm() {
+        switch (MemberManager.getInstance().getAmountType()) {
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE:
+                mView.showError("支付数据异常!");
+                return;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
+                // 充值金额
+                if (MemberManager.getInstance().getAmount() <= 0) {
+                    mView.showError("请确认充值金额!");
+                    return;
+                }
+                mView.showDialog();
+                break;
+            case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
+                // 充值套餐
+                if (TextUtils.isEmpty(MemberManager.getInstance().getPackageId())) {
+                    mView.showError("请选择充值内容!");
+                    return;
+                }
+                mView.showDialog();
+                break;
+        }
     }
 }

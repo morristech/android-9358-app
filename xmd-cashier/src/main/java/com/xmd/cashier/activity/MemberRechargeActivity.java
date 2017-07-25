@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -21,7 +23,6 @@ import com.xmd.cashier.dal.bean.MemberPlanInfo;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
-import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.presenter.MemberRechargePresenter;
 import com.xmd.cashier.widget.ActionSheetDialog;
 import com.xmd.cashier.widget.CircleImageView;
@@ -97,8 +98,8 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
         mAdapter.setCallBack(new MemberPlanAdapter.CallBack() {
             @Override
             public void onItemClick(MemberPlanInfo.PackagePlanItem item, int position) {
-                mPresenter.onPackageSet(item);
                 mPresenter.clearAmount();
+                mPresenter.onPackageSet(item);
             }
         });
         mPlanList.setHasFixedSize(true);
@@ -131,6 +132,23 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
             }
         });
 
+        mMemberAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mPresenter.onAmountSet(mMemberAmount.getText().toString());
+            }
+        });
+
         mMemberAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -143,44 +161,11 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.onAmountSet(mMemberAmount.getText().toString());
-                if (MemberManager.getInstance().getAmount() == 0 && MemberManager.getInstance().getPackageAmount() == 0) {
-                    showError("支付金额异常");
-                    return;
-                }
-                ActionSheetDialog dialog = new ActionSheetDialog(MemberRechargeActivity.this);
-                dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_POS_TEXT});
-                dialog.setCancelText("取消");
-                dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
-                    @Override
-                    public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
-                        int type = AppConstants.CASHIER_TYPE_ERROR;
-                        switch (item) {
-                            case AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT:
-                                // 扫码支付
-                                type = AppConstants.CASHIER_TYPE_XMD_ONLINE;
-                                break;
-                            case AppConstants.CASHIER_TYPE_POS_TEXT:
-                                // POS刷卡或者现金
-                                type = AppConstants.CASHIER_TYPE_POS;
-                                break;
-                            default:
-                                break;
-                        }
-                        mPresenter.onRecharge(type);
-                        dialog.dismiss();
-                    }
-
-                    @Override
-                    public void onCancelItemClick(ActionSheetDialog dialog) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.show();
+                mPresenter.onConfirm();
             }
         });
     }
+
 
     @Override
     protected void onDestroy() {
@@ -260,6 +245,40 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
     @Override
     public void clearPackage() {
         mAdapter.setSelectedPosition(-1);
+    }
+
+    @Override
+    public void showDialog() {
+        ActionSheetDialog dialog = new ActionSheetDialog(MemberRechargeActivity.this);
+        dialog.setContents(new String[]{AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT, AppConstants.CASHIER_TYPE_POS_TEXT});
+        dialog.setCancelText("取消");
+        dialog.setEventListener(new ActionSheetDialog.OnEventListener() {
+            @Override
+            public void onActionItemClick(ActionSheetDialog dialog, String item, int position) {
+                int type = AppConstants.CASHIER_TYPE_ERROR;
+                switch (item) {
+                    case AppConstants.CASHIER_TYPE_XMD_ONLINE_TEXT:
+                        // 扫码支付
+                        type = AppConstants.CASHIER_TYPE_XMD_ONLINE;
+                        break;
+                    case AppConstants.CASHIER_TYPE_POS_TEXT:
+                        // POS刷卡或者现金
+                        type = AppConstants.CASHIER_TYPE_POS;
+                        break;
+                    default:
+                        break;
+                }
+                mPresenter.onRecharge(type);
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onCancelItemClick(ActionSheetDialog dialog) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

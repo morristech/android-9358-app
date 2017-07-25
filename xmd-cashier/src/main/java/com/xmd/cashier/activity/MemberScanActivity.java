@@ -82,17 +82,10 @@ public class MemberScanActivity extends BaseActivity implements MemberScanContra
     }
 
     @Override
-    public void showScanInfo(String description, String amount, String packageName) {
-        mScanContentText.setText(description);
-        if (TextUtils.isEmpty(packageName)) {
-            // 充值金额
-            mScanDescText.setText("充值金额");
-            mScanPlanOrAmountText.setText(amount);
-        } else {
-            //充值套餐
-            mScanDescText.setText("充值套餐");
-            mScanPlanOrAmountText.setText(packageName);
-        }
+    public void showScanInfo(String content, String subTitle, String subDetail, String amount) {
+        mScanContentText.setText(content);
+        mScanDescText.setText(subTitle);
+        mScanPlanOrAmountText.setText(subDetail);
         mScanAmountText.setText(amount);
     }
 
