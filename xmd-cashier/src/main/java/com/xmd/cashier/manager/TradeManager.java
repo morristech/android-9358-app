@@ -175,6 +175,7 @@ public class TradeManager {
                 info.discount = old.discount;
                 info.phoneNum = old.phone;
                 info.cardNo = old.cardNo;
+                info.name = old.name;
                 info.memberTypeName = old.memberTypeName;
                 mTrade.memberInfo = info;
                 mTrade.memberToken = memberToken;
