@@ -327,11 +327,11 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             btnEmHello.setVisibility(View.GONE);
             btnOperation.setVisibility(View.GONE);
             btnEmChat.setVisibility(View.VISIBLE);
-            btnCallPhone.setVisibility(View.VISIBLE);
-            btnChat.setVisibility(View.VISIBLE);
+            btnCallPhone.setVisibility(View.GONE);
+            btnChat.setVisibility(View.GONE);
             layoutOperationButtons.setAlpha(1.0f);
-            layoutOperationButtons.setVisibility(View.GONE);
-            btnOperation.setVisibility(View.VISIBLE);
+            layoutOperationButtons.setVisibility(View.VISIBLE);
+            btnOperation.setVisibility(View.GONE);
             return;
         }
         if (fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD)) { //添加的用户
