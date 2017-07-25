@@ -139,7 +139,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
             mSpServerHost.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    SharedPreferenceHelper.setServerHost((String) parent.getItemAtPosition(position));
+                    String serverHost = (String) parent.getItemAtPosition(position);
+                    SharedPreferenceHelper.setServerHost(serverHost);
                     RetrofitServiceFactory.recreateService();
                     if (SharedPreferenceHelper.isDevelopMode() && SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com")) {
                         mNeedRestartApp = true;

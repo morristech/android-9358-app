@@ -116,6 +116,7 @@ public class LoginActivity extends BaseActivity {
             ToastUtils.showToastShort(LoginActivity.this, ResourceUtils.getString(R.string.login_activity_hint_server_host_not_empty));
             return;
         }
+
         hideKeyboard();
         //Save the usernames
         SharedPreferenceHelper.setUserAccount(username);
