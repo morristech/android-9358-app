@@ -240,14 +240,6 @@ public class MemberManager {
         mRechargeProcess.setRechargePayType(type);
     }
 
-    public void setDescription(String desc) {
-        mRechargeProcess.setDescription(desc);
-    }
-
-    public String getDescription() {
-        return mRechargeProcess.getDescription();
-    }
-
     public void setPackageName(String name) {
         mRechargeProcess.setPackageName(name);
     }

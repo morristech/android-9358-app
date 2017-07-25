@@ -28,9 +28,6 @@ public class MemberRechargeProcess {
 
     private String rechargeAmountType;
 
-    // 充值描述
-    private String description;
-
     // 充值支付方式:区分POS支付或者扫码支付
     private int rechargePayType;
 
@@ -107,14 +104,6 @@ public class MemberRechargeProcess {
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public int getRechargePayType() {
