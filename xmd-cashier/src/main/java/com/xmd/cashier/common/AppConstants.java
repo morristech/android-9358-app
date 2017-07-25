@@ -224,4 +224,10 @@ public class AppConstants {
 
     public static final String REPORT_DATA_BIZ_TRADE = "trade";
     public static final String REPORT_DATA_BIZ_MEMBER = "member";
+
+    public static final int MEMBER_PLAN_ITEM_TYPE_CREDIT = 0;
+    public static final int MEMBER_PLAN_ITEM_TYPE_GIF = 1;
+    public static final int MEMBER_PLAN_ITEM_TYPE_COUPON = 2;
+    public static final int MEMBER_PLAN_ITEM_TYPE_SERVICE = 3;
+    public static final int MEMBER_PLAN_ITEM_TYPE_MONEY = 4;
 }
