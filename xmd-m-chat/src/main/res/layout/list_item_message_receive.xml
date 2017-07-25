@@ -34,10 +34,10 @@
             android:layout_marginTop="4dp"
             android:layout_weight="1">
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                app:avatar="@{data.avatar}" />
+            <com.xmd.app.widget.CircleAvatarView
+                android:layout_width="@dimen/avatarSize"
+                android:layout_height="@dimen/avatarSize"
+                app:user="@{data.user}" />
 
             <FrameLayout
                 android:id="@+id/contentView"

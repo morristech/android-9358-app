@@ -3,8 +3,7 @@ package com.xmd.m.comment;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.TransitionDrawable;
@@ -15,17 +14,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
-import com.shidou.commonlibrary.helper.XLogger;
-import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.CustomerHeadDialog;
@@ -95,12 +89,15 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     private CustomerHeadDialog mCustomerHeadDialog;
 
 
-    public static void StartCustomerInfoDetailActivity(Activity activity, String userId, String fromType, boolean customerIsTech) {
-        Intent intent = new Intent(activity, CustomerInfoDetailActivity.class);
+    public static void StartCustomerInfoDetailActivity(Context context, String userId, String fromType, boolean customerIsTech) {
+        Intent intent = new Intent(context, CustomerInfoDetailActivity.class);
         intent.putExtra(CURRENT_USER_ID, userId);
         intent.putExtra(INTENT_FORM_TYPE, fromType);
         intent.putExtra(CURRENT_USER_IS_TECH, customerIsTech);
-        activity.startActivity(intent);
+        if (!(context instanceof Activity)) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        context.startActivity(intent);
     }
 
 

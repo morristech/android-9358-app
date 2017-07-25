@@ -19,6 +19,7 @@ import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseViewModel;
+import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.AccountManager;
 import com.xmd.chat.MessageManager;
@@ -221,4 +222,8 @@ public abstract class ChatRowViewModel extends BaseViewModel {
     public abstract ViewDataBinding onBindView(View view);
 
     public abstract void onUnbindView();
+
+    public User getUser() {
+        return UserInfoServiceImpl.getInstance().getUserByChatId(chatMessage.getRemoteChatId());
+    }
 }

@@ -4,11 +4,11 @@ import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
 import android.widget.TextView;
 
+import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.technician.R;
 import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfo;
 import com.xmd.technician.onlinepaynotify.model.PayNotifyInfoManager;
-import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.Locale;
 

@@ -27,6 +27,7 @@ import com.xmd.app.user.User;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.chat.MenuFactory;
 import com.xmd.chat.XmdChat;
+import com.xmd.m.comment.XmdComment;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
 import com.xmd.manager.beans.ClubInfo;
@@ -151,6 +152,8 @@ public class ManagerApplication extends MultiDexApplication {
                     EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), user);
                     EventBus.getDefault().postSticky(eventLogin);
                 }
+
+                XmdComment.getInstance().init();
             }
         }
     }

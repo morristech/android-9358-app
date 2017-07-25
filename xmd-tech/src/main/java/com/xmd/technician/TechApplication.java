@@ -32,6 +32,7 @@ import com.xmd.chat.ConversationManager;
 import com.xmd.chat.MenuFactory;
 import com.xmd.chat.XmdChat;
 import com.xmd.chat.viewmodel.ConversationViewModel;
+import com.xmd.m.comment.XmdComment;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
@@ -167,6 +168,8 @@ public class TechApplication extends MultiDexApplication {
                 }
 
                 EventBusSafeRegister.register(this);
+
+                XmdComment.getInstance().init();
             }
         }
     }

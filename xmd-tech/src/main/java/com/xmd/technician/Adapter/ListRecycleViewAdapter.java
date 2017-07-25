@@ -3,7 +3,6 @@ package com.xmd.technician.Adapter;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -20,10 +19,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
-import com.xmd.app.user.User;
-import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.ActivityRankingBean;
@@ -43,19 +40,15 @@ import com.xmd.technician.bean.ShareCouponBean;
 import com.xmd.technician.bean.TechRankingBean;
 import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.chat.utils.EaseCommonUtils;
-import com.xmd.technician.chat.utils.SmileUtils;
 import com.xmd.technician.common.DateUtil;
 import com.xmd.technician.common.DateUtils;
 import com.xmd.technician.common.ItemSlideHelper;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
-import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.widget.BlockChildLinearLayout;
-import com.xmd.technician.widget.CircleAvatarView;
 import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RoundImageView;
 import com.xmd.technician.widget.TechCustomerTypeView;
@@ -500,55 +493,55 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             return;
         }
         if (holder instanceof ConversationViewHolder) {
-            Object obj = mData.get(position);
-            if (!(obj instanceof EMConversation)) {
-                return;
-            }
-            final EMConversation conversation = (EMConversation) obj;
-            ConversationViewHolder conversationHolder = (ConversationViewHolder) holder;
-
-            if (conversation.getUnreadMsgCount() > 0) {
-                conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
-                conversationHolder.mUnread.setVisibility(View.VISIBLE);
-            } else {
-                conversationHolder.mUnread.setVisibility(View.INVISIBLE);
-            }
-
-            if (conversation.getAllMsgCount() != 0) {
-                // 把最后一条消息的内容作为item的message内容
-                EMMessage lastMessage = conversation.getLastMessage();
-                Spannable span = SmileUtils.getSmiledText(mContext, EaseCommonUtils.getMessageDigest(lastMessage, mContext));
-                conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
-                conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
-                String remoteChatId = lastMessage.getFrom();
-                if (remoteChatId != null && remoteChatId.equals(LoginTechnician.getInstance().getEmchatId())) {
-                    remoteChatId = lastMessage.getTo();
-                }
-                User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
-                if (user != null) {
-                    conversationHolder.mAvatar.setUserInfo(user.getId(), user.getAvatar());
-                    conversationHolder.mName.setText(user.getShowName());
-                } else {
-                    conversationHolder.mAvatar.setUserInfo(null, null);
-                    conversationHolder.mName.setText("匿名用户");
-                }
-            }
-
-            holder.itemView.setOnClickListener(v -> {
-                try {
-                    mCallback.onItemClicked(conversation);
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    mCallback.onLongClicked(conversation);
-                    return true;
-                }
-            });
-            return;
+//            Object obj = mData.get(position);
+//            if (!(obj instanceof EMConversation)) {
+//                return;
+//            }
+//            final EMConversation conversation = (EMConversation) obj;
+//            ConversationViewHolder conversationHolder = (ConversationViewHolder) holder;
+//
+//            if (conversation.getUnreadMsgCount() > 0) {
+//                conversationHolder.mUnread.setText(String.valueOf(conversation.getUnreadMsgCount()));
+//                conversationHolder.mUnread.setVisibility(View.VISIBLE);
+//            } else {
+//                conversationHolder.mUnread.setVisibility(View.INVISIBLE);
+//            }
+//
+//            if (conversation.getAllMsgCount() != 0) {
+//                // 把最后一条消息的内容作为item的message内容
+//                EMMessage lastMessage = conversation.getLastMessage();
+//                Spannable span = SmileUtils.getSmiledText(mContext, EaseCommonUtils.getMessageDigest(lastMessage, mContext));
+//                conversationHolder.mContent.setText(span, TextView.BufferType.EDITABLE);
+//                conversationHolder.mTime.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
+//                String remoteChatId = lastMessage.getFrom();
+//                if (remoteChatId != null && remoteChatId.equals(LoginTechnician.getInstance().getEmchatId())) {
+//                    remoteChatId = lastMessage.getTo();
+//                }
+//                User user = UserInfoServiceImpl.getInstance().getUserByChatId(remoteChatId);
+//                if (user != null) {
+//                    conversationHolder.mAvatar.setUserInfo(user.getId(), user.getAvatar());
+//                    conversationHolder.mName.setText(user.getShowName());
+//                } else {
+//                    conversationHolder.mAvatar.setUserInfo(null, null);
+//                    conversationHolder.mName.setText("匿名用户");
+//                }
+//            }
+//
+//            holder.itemView.setOnClickListener(v -> {
+//                try {
+//                    mCallback.onItemClicked(conversation);
+//                } catch (HyphenateException e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View v) {
+//                    mCallback.onLongClicked(conversation);
+//                    return true;
+//                }
+//            });
+//            return;
         }
         if (holder instanceof CreditRecordViewHolder) {
             Object obj = mData.get(position);

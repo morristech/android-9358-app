@@ -20,7 +20,7 @@
         android:paddingLeft="@dimen/view_margin_left"
         android:paddingRight="@dimen/chat_head_padding">
 
-        <com.xmd.technician.widget.CircleAvatarView
+        <com.xmd.app.widget.CircleAvatarView
             android:id="@+id/avatar"
             android:layout_width="@dimen/avatar_head"
             android:layout_height="@dimen/avatar_head"

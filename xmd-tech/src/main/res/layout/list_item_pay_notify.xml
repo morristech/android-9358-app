@@ -27,7 +27,7 @@
             android:paddingLeft="@dimen/common_h_margin"
             android:paddingRight="@dimen/common_h_margin">
 
-            <com.xmd.technician.widget.CircleAvatarView
+            <com.xmd.app.widget.CircleAvatarView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/temporary_user"

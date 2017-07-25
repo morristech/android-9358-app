@@ -92,6 +92,11 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
                             public void onCallbackError(Throwable e) {
                                 inProcess.set(false);
                                 XToast.show("操作失败：" + e.getMessage());
+                                if (e.getMessage() != null && e.getMessage().contains("已处理")) {
+                                    chatMessage.setInnerProcessed("已处理");
+                                    binding.setData(ChatRowViewModelNewOrder.this);
+                                    binding.executePendingBindings();
+                                }
                             }
                         });
                     }
@@ -122,6 +127,11 @@ public class ChatRowViewModelNewOrder extends ChatRowViewModel {
             public void onCallbackError(Throwable e) {
                 inProcess.set(false);
                 XToast.show("操作失败：" + e.getMessage());
+                if (e.getMessage() != null && e.getMessage().contains("已处理")) {
+                    chatMessage.setInnerProcessed("已处理");
+                    binding.setData(ChatRowViewModelNewOrder.this);
+                    binding.executePendingBindings();
+                }
             }
         });
     }

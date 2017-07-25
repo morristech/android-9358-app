@@ -15,7 +15,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.DateUtils;
-import com.xmd.chat.ChatMessageFactory;
+import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.technician.Adapter.EaseMessageAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.chat.ChatConstant;
@@ -26,7 +26,6 @@ import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
-import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -122,11 +121,11 @@ public abstract class BaseEaseChatView extends LinearLayout {
             }
         }
         //设置头像和nick
-        if (mEMMessage.direct() == EMMessage.Direct.SEND) {
-            mUserAvatarView.setUserInfo(null, localUserAvatar);
-        } else {
-            mUserAvatarView.setUserInfo(ChatMessageFactory.create(mEMMessage).getUserId(), remoteUserAvatar);
-        }
+//        if (mEMMessage.direct() == EMMessage.Direct.SEND) {
+//            mUserAvatarView.setUserInfo(null, localUserAvatar);
+//        } else {
+//            mUserAvatarView.setUserInfo(ChatMessageFactory.create(mEMMessage).getUserId(), remoteUserAvatar);
+//        }
 
         if (mDeliveredView != null) {
             if (mEMMessage.isDelivered()) {

@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CommentInfo;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.widget.CircleAvatarView;
 
 import java.util.ArrayList;
 import java.util.List;

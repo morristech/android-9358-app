@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/margin_10"
@@ -21,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.xmd.technician.widget.CircleAvatarView
+            <com.xmd.app.widget.CircleAvatarView
                 android:id="@+id/dynamic_item_avatar"
                 android:layout_width="@dimen/main_order_btn_width"
                 android:layout_height="@dimen/main_order_btn_width"

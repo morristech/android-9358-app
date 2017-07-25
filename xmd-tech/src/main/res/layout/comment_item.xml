@@ -7,7 +7,7 @@
     android:paddingRight="@dimen/personal_padding"
     android:paddingTop="@dimen/personal_padding">
 
-    <com.xmd.technician.widget.CircleAvatarView
+    <com.xmd.app.widget.CircleAvatarView
         android:id="@+id/avatar"
         android:layout_width="@dimen/search_view_height"
         android:layout_height="@dimen/search_view_height"

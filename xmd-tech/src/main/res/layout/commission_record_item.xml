@@ -15,7 +15,7 @@
         android:minHeight="40dp"
         android:orientation="horizontal">
 
-        <com.xmd.technician.widget.CircleAvatarView
+        <com.xmd.app.widget.CircleAvatarView
             android:id="@+id/avatar"
             android:layout_width="@dimen/search_view_height"
             android:layout_height="@dimen/search_view_height"

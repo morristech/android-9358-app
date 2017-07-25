@@ -31,7 +31,7 @@
         android:paddingTop="@dimen/margin_2"
         android:visibility="gone">
 
-        <com.xmd.technician.widget.CircleAvatarView
+        <com.xmd.app.widget.CircleAvatarView
             android:id="@+id/main_dynamic_avatar1"
             android:layout_width="@dimen/main_dynamic_width"
             android:layout_height="@dimen/main_dynamic_width"
@@ -79,7 +79,7 @@
         android:paddingTop="@dimen/margin_2"
         android:visibility="gone">
 
-        <com.xmd.technician.widget.CircleAvatarView
+        <com.xmd.app.widget.CircleAvatarView
             android:id="@+id/main_dynamic_avatar2"
             android:layout_width="@dimen/main_dynamic_width"
             android:layout_height="@dimen/main_dynamic_width"
@@ -127,7 +127,7 @@
         android:paddingTop="@dimen/margin_2"
         android:visibility="gone">
 
-        <com.xmd.technician.widget.CircleAvatarView
+        <com.xmd.app.widget.CircleAvatarView
             android:id="@+id/main_dynamic_avatar3"
             android:layout_width="@dimen/main_dynamic_width"
             android:layout_height="@dimen/main_dynamic_width"

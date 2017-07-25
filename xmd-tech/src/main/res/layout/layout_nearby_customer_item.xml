@@ -49,7 +49,7 @@
                     android:textSize="@dimen/fontBody" />
             </RelativeLayout>
 
-            <com.xmd.technician.widget.CircleAvatarView
+            <com.xmd.app.widget.CircleAvatarView
                 android:id="@+id/cus_item_avatar"
                 android:layout_width="90dp"
                 android:layout_height="90dp"

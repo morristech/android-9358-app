@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.xmd.app.user.User;
+import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.app.widget.GlideCircleTransform;
 
 /**
@@ -25,6 +27,11 @@ public class BaseViewModel {
                     .transform(new GlideCircleTransform(imageView.getContext()))
                     .into(imageView);
         }
+    }
+
+    @BindingAdapter("user")
+    public static void bindAvatar(CircleAvatarView imageView, User user) {
+        imageView.setUserInfo(user);
     }
 
     @BindingAdapter("avatar")

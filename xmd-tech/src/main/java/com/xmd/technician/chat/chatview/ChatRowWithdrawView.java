@@ -5,9 +5,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hyphenate.chat.EMMessage;
+import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
-import com.xmd.technician.widget.CircleAvatarView;
 
 /**
  * Created by Lhj on 17-5-11.
