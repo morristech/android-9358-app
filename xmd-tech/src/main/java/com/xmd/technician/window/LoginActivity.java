@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.xmd.app.XmdActivityManager;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -139,7 +140,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
             mSpServerHost.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    SharedPreferenceHelper.setServerHost((String) parent.getItemAtPosition(position));
+                    String serverHost = (String) parent.getItemAtPosition(position);
+                    SharedPreferenceHelper.setServerHost(serverHost);
+                    XmdNetwork.getInstance().changeServer(serverHost);
                     RetrofitServiceFactory.recreateService();
                     if (SharedPreferenceHelper.isDevelopMode() && SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com")) {
                         mNeedRestartApp = true;
