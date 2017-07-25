@@ -6,22 +6,42 @@
         <variable
             name="data"
             type="java.lang.String" />
+
+        <variable
+            name="handler"
+            type="com.xmd.chat.view.ChatFastReplySettingActivity" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:minWidth="48dp"
+            android:onClick="@{()->handler.onDelete(data)}"
+            android:scaleType="centerInside"
+            android:src="@drawable/delete_red" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:minHeight="64dp"
+            android:onClick="@{()->handler.onEdit(data)}"
             android:padding="8dp"
             android:text="@{data}" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/colorDivide" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:minWidth="48dp"
+            android:onTouch="@{(v,e)->handler.onTouch(v,e,data)}"
+            android:scaleType="centerInside"
+            android:src="@drawable/menu_gray" />
     </LinearLayout>
 </layout>

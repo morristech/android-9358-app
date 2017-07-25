@@ -83,9 +83,8 @@ public class EmojiManager {
     }
 
 
-
     public SpannableString format(String src) {
-        SpannableString s = new SpannableString(Html.fromHtml(src));
+        SpannableString s = new SpannableString(Html.fromHtml(src.replace("\n", "<br/>")));
         for (Pattern pattern : emojiPatternMap.keySet()) {
             Matcher matcher = pattern.matcher(src);
             while (matcher.find()) {

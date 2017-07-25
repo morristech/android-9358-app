@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shidou.commonlibrary.helper.ThreadPoolManager;
-
 import java.util.List;
 
 public class ChatMenu {
@@ -46,17 +44,17 @@ public class ChatMenu {
             @Override
             public void finishUpdate(final ViewGroup container) {
                 super.finishUpdate(container);
-                if (needRequestLayout) {
-                    //因为动态增加到viewpager，在没有增加子view之前viewpager的size是无效的，
-                    // 这里是首次增加子view，所以强制viewpager计算一下size
-                    ThreadPoolManager.postToUI(new Runnable() {
-                        @Override
-                        public void run() {
-                            container.requestLayout();
-                        }
-                    });
-                    needRequestLayout = false;
-                }
+//                if (needRequestLayout) {
+//                    //因为动态增加到viewpager，在没有增加子view之前viewpager的size是无效的，
+//                    // 这里是首次增加子view，所以强制viewpager计算一下size
+//                    ThreadPoolManager.postToUI(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            container.requestLayout();
+//                        }
+//                    });
+//                    needRequestLayout = false;
+//                }
             }
 
             @Override
@@ -69,5 +67,13 @@ public class ChatMenu {
                 super.setPrimaryItem(container, position, object);
             }
         };
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setSubMenuList(List<Fragment> subMenuList) {
+        this.subMenuList = subMenuList;
     }
 }

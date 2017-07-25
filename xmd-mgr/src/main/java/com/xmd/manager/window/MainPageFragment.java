@@ -746,6 +746,11 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 mTvPendingOrderCount.setText(orderData.respData.submitCount);
                 mTvAcceptedOrderCount.setText(Utils.getNumToString(Integer.parseInt(orderData.respData.acceptTotal), true));
                 mTvCompletedOrderCount.setText(orderData.respData.acceptCount);
+                try {
+                    ((MainActivity) getActivity()).setPendingOrderCount(Integer.parseInt(orderData.respData.submitCount));
+                } catch (Exception ignore) {
+
+                }
             } catch (Exception e) {
                 XLogger.e("parse int error: " + e.getMessage());
             }

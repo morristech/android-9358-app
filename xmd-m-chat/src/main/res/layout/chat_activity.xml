@@ -119,30 +119,51 @@
             android:paddingRight="16dp"
             android:paddingTop="8dp" />
 
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorDivide" />
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/submenuLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="240dp"
+            android:orientation="vertical"
             android:visibility="@{data.showSubMenu?View.VISIBLE:View.GONE}">
 
-            <com.shidou.commonlibrary.widget.AutoHeightViewPager
+            <android.support.v4.view.ViewPager
                 android:id="@+id/submenuContentLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-            <com.shidou.commonlibrary.widget.XViewPageIndicator
-                android:id="@+id/pageIndicator"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:gravity="center" />
-        </FrameLayout>
+                android:layout_height="36dp">
+
+                <com.shidou.commonlibrary.widget.XViewPageIndicator
+                    android:id="@+id/pageIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@android:color/white"
+                    android:gravity="bottom|end"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom|start"
+                    android:drawableLeft="@drawable/edit_blue"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@drawable/double_arrow_right_blue"
+                    android:onClick="@{()->data.onClickEditFastReply()}"
+                    android:padding="8dp"
+                    android:text="编辑快捷回复"
+                    android:textColor="#1c79d8"
+                    android:visibility="@{data.showSubMenuFastReply?View.VISIBLE:View.GONE}" />
+            </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 </layout>
 

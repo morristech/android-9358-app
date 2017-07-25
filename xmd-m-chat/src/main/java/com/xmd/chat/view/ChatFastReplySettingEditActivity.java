@@ -19,7 +19,9 @@ import com.xmd.chat.databinding.ActivityChatFastReplySettingAddBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatFastReplySettingAddActivity extends BaseActivity {
+public class ChatFastReplySettingEditActivity extends BaseActivity {
+    public final static String EXTRA_EDIT_INDEX = "extra_edit_index";
+
     private ActivityChatFastReplySettingAddBinding binding;
 
     public ObservableBoolean loading = new ObservableBoolean();
@@ -29,14 +31,25 @@ public class ChatFastReplySettingAddActivity extends BaseActivity {
     private int wordsLimit = 30;
     private String content;
 
+    private int editIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat_fast_reply_setting_add);
-        binding.setData(this);
-
-        setTitle("添加快捷回复");
+        editIndex = getIntent().getIntExtra(EXTRA_EDIT_INDEX, -1);
+        if (editIndex >= 0) {
+            setTitle("修改快捷回复");
+            content = SettingManager.getInstance().getFastReplySetting().getData().get(editIndex);
+            words.set(content.length());
+            binding.editText.setText(content);
+            binding.editText.setSelection(content.length());
+        } else {
+            setTitle("添加快捷回复");
+        }
         setBackVisible(true);
+
+        binding.setData(this);
     }
 
     public void onClickSave() {
@@ -45,13 +58,18 @@ public class ChatFastReplySettingAddActivity extends BaseActivity {
             return;
         }
         showLoading();
+        FastReplySetting saveSetting;
         FastReplySetting setting = SettingManager.getInstance().getFastReplySetting();
         if (setting == null) {
             setting = new FastReplySetting();
         }
         List<String> list = new ArrayList<>(setting.data);
-        list.add(0, content);
-        FastReplySetting saveSetting = new FastReplySetting();
+        if (editIndex < 0) {
+            list.add(0, content);
+        } else {
+            list.set(editIndex, content);
+        }
+        saveSetting = new FastReplySetting();
         saveSetting.setData(list);
         SettingManager.getInstance().saveFastReply(saveSetting, new Callback<Void>() {
             @Override
@@ -75,5 +93,9 @@ public class ChatFastReplySettingAddActivity extends BaseActivity {
 
     public int getWordsLimit() {
         return wordsLimit;
+    }
+
+    public String getContent() {
+        return content;
     }
 }

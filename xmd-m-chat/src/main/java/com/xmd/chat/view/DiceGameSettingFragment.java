@@ -89,7 +89,6 @@ public class DiceGameSettingFragment extends DialogFragment {
         if (window != null) {
             window.getAttributes().width = ScreenUtils.getScreenWidth();
         }
-        setCancelable(false);
     }
 
 

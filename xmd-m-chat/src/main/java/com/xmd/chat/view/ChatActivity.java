@@ -84,12 +84,14 @@ public class ChatActivity extends BaseActivity {
     public ObservableBoolean showSubMenu = new ObservableBoolean();
     public ObservableBoolean voiceInputMode = new ObservableBoolean();
     public ObservableBoolean voiceRecording = new ObservableBoolean();
+    public ObservableBoolean showSubMenuFastReply = new ObservableBoolean();
 
     private InputMethodManager mInputMethodManager;
     public static final int REQUEST_CODE_PERMISSION_REQUEST = 0x800;
+    public static final int REQUEST_CODE_FAST_REPLY = 0x801;
 
     private LinearLayoutManager layoutManager;
-    private int softwareKeyboardHeight = ScreenUtils.dpToPx(300);
+    private int softwareKeyboardHeight = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,11 +156,8 @@ public class ChatActivity extends BaseActivity {
                     mBinding.recyclerView.scrollToPosition(layoutManager.findLastVisibleItemPosition());
                     if (mFocusMenuView == null) {
                         //当前显示的是键盘，那么更新高度
-                        if (softwareKeyboardHeight == 0) {
-                            //首次更新，需要设置聊天子菜单高度
-                            mBinding.submenuLayout.getLayoutParams().height = oldh - h;
-                        }
                         softwareKeyboardHeight = oldh - h;
+                        mBinding.submenuLayout.getLayoutParams().height = softwareKeyboardHeight;
                         XLogger.d("softwareKeyboardHeight=" + softwareKeyboardHeight);
                         XmdApp.getInstance().getSp().edit().putInt(SpConstants.KEY_KEYBOARD_HEIGHT, softwareKeyboardHeight).apply();
                     }
@@ -189,6 +188,13 @@ public class ChatActivity extends BaseActivity {
                 voiceInputMode.set(true);
                 hideSoftwareInput();
                 hideFocusMenu();
+            }
+        } else if (requestCode == REQUEST_CODE_FAST_REPLY) {
+            if (resultCode == RESULT_OK) {
+                ChatMenu fastReplyMenu = XmdChat.getInstance().getMenuFactory().findMenuByName("快捷回复");
+                if (fastReplyMenu != null) {
+                    fastReplyMenu.setSubMenuList(XmdChat.getInstance().getMenuFactory().createFastReplySubMenu(mRemoteUser.getChatId()));
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -375,6 +381,7 @@ public class ChatActivity extends BaseActivity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    showSubMenuFastReply.set(false);
                     if (chatMenu.subMenuList != null && chatMenu.subMenuList.size() > 0) {
                         showSubMenu(imageView, chatMenu);
                     } else {
@@ -430,6 +437,9 @@ public class ChatActivity extends BaseActivity {
             mBinding.pageIndicator.setVisibility(View.GONE);
         }
 
+        if ("快捷回复".equals(chatMenu.getName())) {
+            showSubMenuFastReply.set(true);
+        }
 
         mFocusMenuView = menuView;
         mFocusMenuView.setSelected(true);
@@ -554,5 +564,11 @@ public class ChatActivity extends BaseActivity {
             MessageManager.getInstance()
                     .sendVoiceMessage(mRemoteUser, path, (int) VoiceManager.getInstance().getRecordTime() / 1000);
         }
+    }
+
+    public void onClickEditFastReply() {
+        hideFocusMenu();
+        Intent intent = new Intent(this, ChatFastReplySettingActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_FAST_REPLY);
     }
 }

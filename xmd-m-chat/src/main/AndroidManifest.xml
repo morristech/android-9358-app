@@ -61,7 +61,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.ChatFastReplySettingAddActivity"
+            android:name=".view.ChatFastReplySettingEditActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
     </application>

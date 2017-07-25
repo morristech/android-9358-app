@@ -79,6 +79,15 @@ public class MenuFactory {
         return menus;
     }
 
+    public ChatMenu findMenuByName(String name) {
+        for (ChatMenu menu : menus) {
+            if (name.equals(menu.getName())) {
+                return menu;
+            }
+        }
+        return null;
+    }
+
     //清除菜单资源
     public void cleanMenus() {
         menus.clear();
@@ -121,6 +130,10 @@ public class MenuFactory {
     //创建快捷回复菜单
     @CheckBusinessPermission(PermissionConstants.MESSAGE_FAST_REPLY)
     public void createFastReplyMenu(final AppCompatActivity activity, final User remoteUser) {
+        menus.add(new ChatMenu(activity, "快捷回复", R.drawable.chat_menu_fast_reply, null, createFastReplySubMenu(remoteUser.getChatId())));
+    }
+
+    public List<Fragment> createFastReplySubMenu(String remoteChatId) {
         FastReplySetting setting = SettingManager.getInstance().getFastReplySetting();
         if (setting == null) {
             SettingManager.getInstance().loadFastReply(new Callback<FastReplySetting>() {
@@ -132,16 +145,16 @@ public class MenuFactory {
                     }
                 }
             });
-            return;
+            return new ArrayList<>();
         }
         List<Fragment> fragmentList = new ArrayList<>();
         int maxSize = setting.data.size();
         for (int i = 0; i < maxSize; i += 5) {
             SubmenuFastReplyFragment fragment = new SubmenuFastReplyFragment();
-            fragment.setData(remoteUser.getChatId(), setting.data.subList(i, i + 6 > maxSize ? maxSize : i + 6));
+            fragment.setData(remoteChatId, setting.data.subList(i, i + 6 > maxSize ? maxSize : i + 6));
             fragmentList.add(fragment);
         }
-        menus.add(new ChatMenu(activity, R.drawable.chat_menu_fast_reply, null, fragmentList));
+        return fragmentList;
     }
 
     //创建发券菜单

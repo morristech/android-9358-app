@@ -47,7 +47,6 @@ import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.response.ClubResult;
-import com.xmd.manager.service.response.NewOrderCountResult;
 import com.xmd.manager.widget.ViewPagerTabIndicator;
 import com.xmd.permission.BusinessPermissionManager;
 import com.xmd.permission.CheckBusinessPermission;
@@ -78,7 +77,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
 
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
-    private Subscription mGetNewOrderCountSubscription;
     private Subscription mGetClubSubscription;
     private Subscription mSwitchIndex;
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
@@ -111,12 +109,12 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
         Manager.getInstance().checkUpgrade(true);
 
-        mGetNewOrderCountSubscription = RxBus.getInstance().toObservable(NewOrderCountResult.class).subscribe(
-                result -> {
-                    pendingOrderCount = result.respData;
-                    mViewPagerTabIndicator.setNotice(sTabOrder, pendingOrderCount);
-                }
-        );
+//        mGetNewOrderCountSubscription = RxBus.getInstance().toObservable(NewOrderCountResult.class).subscribe(
+//                result -> {
+//                    pendingOrderCount = result.respData;
+//                    mViewPagerTabIndicator.setNotice(sTabOrder, pendingOrderCount);
+//                }
+//        );
 
         mGetClubSubscription = RxBus.getInstance().toObservable(ClubResult.class).subscribe(
                 clubResult -> handleGetClubResult(clubResult)
@@ -137,7 +135,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mGetNewOrderCountSubscription, mSwitchIndex, mGetClubSubscription);
+        RxBus.getInstance().unsubscribe(mSwitchIndex, mGetClubSubscription);
         EventBusSafeRegister.unregister(this);
         XmdPushManager.getInstance().removeListener(xmdPushMessageListener);
     }
@@ -242,8 +240,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     private void loadData() {
         EmchatUserHelper.login(null);
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CLUB_INFO);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_AUTH_CONFIG);
+//        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_NEW_ORDER_COUNT);
     }
 
 
@@ -314,6 +311,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
         if (position == sTabOrder) {
             redPointService.clear(Constant.RED_POINT_NEW_ORDER);
         }
+    }
+
+    public void setPendingOrderCount(int count) {
+        mViewPagerTabIndicator.setNotice(sTabOrder, count);
     }
 
     @Override
