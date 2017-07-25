@@ -7,14 +7,19 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberCashierContract;
+import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.Trade;
-import com.xmd.cashier.dal.net.response.MemberPayResult;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.Callback0;
+import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-7-22.
@@ -24,8 +29,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
     private Context mContext;
     private MemberCashierContract.View mView;
 
-    private Subscription mMemberPayByCodeSubscription;
-    private Subscription mMemberPayByScanSubscription;
+    private Subscription mMemberPaySubscription;
 
     public MemberCashierPresenter(Context context, MemberCashierContract.View view) {
         mContext = context;
@@ -53,25 +57,20 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
 
     @Override
     public void onDestroy() {
-        if (mMemberPayByCodeSubscription != null) {
-            mMemberPayByCodeSubscription.unsubscribe();
-        }
-
-        if (mMemberPayByScanSubscription != null) {
-            mMemberPayByScanSubscription.unsubscribe();
+        if (mMemberPaySubscription != null) {
+            mMemberPaySubscription.unsubscribe();
         }
     }
 
     @Override
     public void onMemberPay() {
-        switch (TradeManager.getInstance().getCurrentTrade().memberPayMethod) {
+        String method = TradeManager.getInstance().getCurrentTrade().memberPayMethod;
+        switch (method) {
             case AppConstants.MEMBER_PAY_METHOD_CODE:
                 // 接口
-                doPayByCode();
-                break;
             case AppConstants.MEMBER_PAY_METHOD_SCAN:
                 // 二维码
-                doPayByScan();
+                doMemberPay(method);
                 break;
             default:
                 mView.showError("支付过程出现未知异常");
@@ -79,51 +78,21 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
         }
     }
 
-    private void doPayByCode() {
+    private void doMemberPay(String memberPayMethod) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
-        if (mMemberPayByCodeSubscription != null) {
-            mMemberPayByCodeSubscription.unsubscribe();
+        if (mMemberPaySubscription != null) {
+            mMemberPaySubscription.unsubscribe();
         }
         mView.showLoading();
-        mMemberPayByCodeSubscription = TradeManager.getInstance().memberPayByCode(new Callback<MemberRecordResult>() {
+        mMemberPaySubscription = TradeManager.getInstance().memberPay(memberPayMethod, new Callback<MemberRecordResult>() {
             @Override
             public void onSuccess(MemberRecordResult o) {
                 mView.hideLoading();
-                TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
-                    @Override
-                    public void onFinished(Void result) {
-                        mView.hideLoading();
-                        mView.showToast("支付成功！");
-                        mView.finishSelf();
-                    }
-                });
-            }
-
-            @Override
-            public void onError(String error) {
-                mView.hideLoading();
-                mView.showError("会员支付失败:" + error);
-                TradeManager.getInstance().getCurrentTrade().memberPayError = error;
-            }
-        });
-    }
-
-    private void doPayByScan() {
-        if (!Utils.isNetworkEnabled(mContext)) {
-            mView.showError(mContext.getString(R.string.network_disabled));
-            return;
-        }
-        if (mMemberPayByScanSubscription != null) {
-            mMemberPayByScanSubscription.unsubscribe();
-        }
-        mView.showLoading();
-        mMemberPayByScanSubscription = TradeManager.getInstance().memberPayByScan(new Callback<MemberPayResult.PayResult>() {
-            @Override
-            public void onSuccess(MemberPayResult.PayResult o) {
-                mView.hideLoading();
+                // 会员帐号手机号
+                print(o.getRespData());
                 TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
                     @Override
                     public void onFinished(Void result) {
@@ -150,5 +119,21 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
         }
         UiNavigation.gotoConfirmActivity(mContext, null);
         mView.finishSelf();
+    }
+
+    private void print(final MemberRecordInfo info) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        // POS充值:银联|现金
+                        MemberManager.getInstance().printInfo(info, false);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 }

@@ -23,8 +23,11 @@ public class MemberRechargeProcess {
     private String packageName;
     // 充值套餐金额
     private int packageAmount;
-    // 充值应付金额
+    // 充值指定金额
     private int amount;
+
+    private String rechargeAmountType;
+
     // 充值描述
     private String description;
 
@@ -144,5 +147,13 @@ public class MemberRechargeProcess {
 
     public void setTechInfo(TechInfo techInfo) {
         this.techInfo = techInfo;
+    }
+
+    public String getRechargeAmountType() {
+        return rechargeAmountType;
+    }
+
+    public void setRechargeAmountType(String rechargeAmountType) {
+        this.rechargeAmountType = rechargeAmountType;
     }
 }

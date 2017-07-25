@@ -11,7 +11,6 @@ import com.xmd.cashier.dal.net.response.LoginResult;
 import com.xmd.cashier.dal.net.response.LogoutResult;
 import com.xmd.cashier.dal.net.response.MemberCardResult;
 import com.xmd.cashier.dal.net.response.MemberListResult;
-import com.xmd.cashier.dal.net.response.MemberPayResult;
 import com.xmd.cashier.dal.net.response.MemberPlanResult;
 import com.xmd.cashier.dal.net.response.MemberRecordListResult;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
@@ -146,12 +145,12 @@ public interface SpaService {
      */
     @FormUrlEncoded
     @POST(RequestConstant.URL_MEMBER_PAY)
-    Observable<MemberPayResult> memberPay(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                          @Field(RequestConstant.KEY_MEMBER_TOKEN) String memberToken,
-                                          @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
-                                          @Field(RequestConstant.KEY_AMOUNT) int payMoney,
-                                          @Field(RequestConstant.KEY_MEMBER_CAN_DISCOUNT) String canDisCount,
-                                          @Field(RequestConstant.KEY_SIGN) String requestSign);
+    Observable<MemberRecordResult> memberPay(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                             @Field(RequestConstant.KEY_MEMBER_TOKEN) String memberToken,
+                                             @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                             @Field(RequestConstant.KEY_AMOUNT) int payMoney,
+                                             @Field(RequestConstant.KEY_MEMBER_CAN_DISCOUNT) String canDisCount,
+                                             @Field(RequestConstant.KEY_SIGN) String requestSign);
 
     /**
      * 现金消费增加积分
