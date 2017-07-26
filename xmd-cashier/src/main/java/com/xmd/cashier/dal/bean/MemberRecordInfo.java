@@ -40,4 +40,6 @@ public class MemberRecordInfo {
     public String techId;
     public String techName;
     public String techNo;
+
+    public PackagePlanItem packageInfo;
 }

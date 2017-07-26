@@ -34,12 +34,12 @@ public class ApplicationRecordFragment extends BaseListFragment<ApplicationBean>
 
     @Override
     protected void dispatchRequest() {
-        if (mPages != 1) {
-            mPages = mListAdapter.getItemCount() / PAGE_SIZE + 1;
-        }
-        if (mListAdapter.getItemCount() % PAGE_SIZE > 1) {
-            mPages++;
-        }
+//        if (mPages != 1) {
+//            mPages = mListAdapter.getItemCount() / PAGE_SIZE + 1;
+//        }
+//        if (mListAdapter.getItemCount() % PAGE_SIZE > 1) {
+//            mPages++;
+//        }
         Map<String, String> params = new HashMap<>();
         params.put(RequestConstant.KEY_PAGE, String.valueOf(mPages));
         params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
@@ -69,16 +69,7 @@ public class ApplicationRecordFragment extends BaseListFragment<ApplicationBean>
 
     }
 
-    @Override
-    public void onRefresh() {
-        mIsLoadingMore = false;
-        mPages = PAGE_START + 1;
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_PAGE, "1");
-        params.put(RequestConstant.KEY_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-        params.put(RequestConstant.KEY_STATUS, "");
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET_CREDIT_APPLICATIONS, params);
-    }
+
 
 
     @Override

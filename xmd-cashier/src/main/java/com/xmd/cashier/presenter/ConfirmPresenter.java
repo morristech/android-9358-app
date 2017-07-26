@@ -107,6 +107,17 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
     public void onClickOk() {
         mView.hideKeyboard();
         Trade trade = mTradeManager.getCurrentTrade();
+        if (trade.getNeedPayMoney() == 0) {
+            trade.withoutPay = true;
+            //不需要支付
+            mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+                @Override
+                public void onFinished(Void result) {
+                    mView.finishSelf();
+                }
+            });
+            return;
+        }
         switch (trade.currentCashier) {
             case AppConstants.CASHIER_TYPE_MEMBER:
                 UiNavigation.gotoMemberCashierActivity(mContext);
@@ -126,16 +137,6 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
 
     private void posPay(int money) {
         if (!mProcessLocker.compareAndSet(false, true)) {
-            return;
-        }
-        if (money == 0) {
-            //不需要支付
-            mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
-                @Override
-                public void onFinished(Void result) {
-                    mView.finishSelf();
-                }
-            });
             return;
         }
         mTradeManager.posPay(mContext, money, new Callback<Void>() {

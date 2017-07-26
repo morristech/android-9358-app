@@ -255,6 +255,7 @@ public class CashierPresenter implements CashierContract.Presenter {
         Trade trade = mTradeManager.getCurrentTrade();
         int needPayMoney = trade.getNeedPayMoney();
         if (needPayMoney == 0) {
+            trade.withoutPay = true;
             //当前不需要支付
             mView.hideLoading();
             mView.showToast("支付成功！");

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.MemberPlanInfo;
+import com.xmd.cashier.dal.bean.PackagePlanItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
 
 public class MemberPlanAdapter extends RecyclerView.Adapter<MemberPlanAdapter.ViewHolder> implements View.OnClickListener {
     private Context mContext;
-    private List<MemberPlanInfo.PackagePlanItem> mData = new ArrayList<>();
+    private List<PackagePlanItem> mData = new ArrayList<>();
     private CallBack mCallBack;
     private int selectedPosition;
 
@@ -33,7 +33,7 @@ public class MemberPlanAdapter extends RecyclerView.Adapter<MemberPlanAdapter.Vi
         selectedPosition = -1;
     }
 
-    public void setData(List<MemberPlanInfo.PackagePlanItem> list) {
+    public void setData(List<PackagePlanItem> list) {
         mData.addAll(list);
         notifyDataSetChanged();
     }
@@ -62,7 +62,7 @@ public class MemberPlanAdapter extends RecyclerView.Adapter<MemberPlanAdapter.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final MemberPlanInfo.PackagePlanItem packagePlan = mData.get(position);
+        final PackagePlanItem packagePlan = mData.get(position);
         if (selectedPosition == position) {
             holder.mPlanLayout.setBackgroundResource(R.drawable.bg_check_negative);
             holder.mSelectImg.setVisibility(View.VISIBLE);
@@ -72,7 +72,7 @@ public class MemberPlanAdapter extends RecyclerView.Adapter<MemberPlanAdapter.Vi
             holder.mSelectImg.setVisibility(View.GONE);
             holder.mRechargeDesc.setTextColor(mContext.getResources().getColor(R.color.colorText4));
         }
-        holder.mPlanName.setText(packagePlan.name);
+        holder.mPlanName.setText("套餐" + packagePlan.name);
         holder.mPlanAmount.setText(Utils.moneyToString(packagePlan.amount));
         if (packagePlan.packageItems != null && packagePlan.packageItems.size() > 0) {
             holder.mSendDesc.setVisibility(View.VISIBLE);
@@ -132,6 +132,6 @@ public class MemberPlanAdapter extends RecyclerView.Adapter<MemberPlanAdapter.Vi
     }
 
     public interface CallBack {
-        void onItemClick(MemberPlanInfo.PackagePlanItem item, int position);
+        void onItemClick(PackagePlanItem item, int position);
     }
 }

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -34,6 +36,11 @@ public class MemberReadActivity extends BaseActivity implements MemberReadContra
 
     private StepView mStepView;
 
+    private ImageView imgCircle;
+    private ImageView imgCard;
+    private Animation animCircle;
+    private Animation animCard;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +55,16 @@ public class MemberReadActivity extends BaseActivity implements MemberReadContra
     protected void onResume() {
         super.onResume();
         mPresenter.onResume();
+        imgCard.startAnimation(animCard);
+        imgCircle.startAnimation(animCircle);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mPresenter.onPause();
+        imgCard.clearAnimation();
+        imgCircle.clearAnimation();
     }
 
     @Override
@@ -64,6 +75,10 @@ public class MemberReadActivity extends BaseActivity implements MemberReadContra
 
     private void initView() {
         String title = Utils.getStringFromResource(R.string.app_name);
+        imgCircle = (ImageView) findViewById(R.id.img_member_circle);
+        imgCard = (ImageView) findViewById(R.id.img_member_card);
+        animCircle = AnimationUtils.loadAnimation(this, R.anim.anim_scale_repeat);
+        animCard = AnimationUtils.loadAnimation(this, R.anim.anim_traslate_single);
         mMemberInput = (ClearableEditText) findViewById(R.id.et_member_input);
         mReadConfirm = (Button) findViewById(R.id.btn_member_read_confirm);
         mStepView = (StepView) findViewById(R.id.sv_step_read);

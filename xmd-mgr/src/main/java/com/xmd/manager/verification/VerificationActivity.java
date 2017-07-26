@@ -63,7 +63,7 @@ public class VerificationActivity extends BaseActivity implements VerificationLi
             finish();
             return;
         }
-        setTitle(mData.getTitle());
+        setTitle(mData.getTypeName());
         mData.setShowDetail(true);
         //设置显示信息
         int layoutId;

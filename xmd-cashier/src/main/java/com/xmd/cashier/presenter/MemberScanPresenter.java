@@ -11,6 +11,7 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberScanContract;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
+import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.manager.Callback;
@@ -49,6 +50,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
                     EventBus.getDefault().post(new RechargeFinishEvent());
                     mView.showScanSuccess();
                     memberRecordInfo = o.getRespData();
+                    memberRecordInfo.packageInfo = MemberManager.getInstance().getPackageInfo();
                 }
 
                 @Override
@@ -75,8 +77,11 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
                 mView.showScanInfo("会员充值", "充值金额", amount + "元", amount);
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
-                String packageAmount = Utils.moneyToStringEx(MemberManager.getInstance().getPackageAmount());
-                mView.showScanInfo("会员充值", "充值套餐", MemberManager.getInstance().getPackageName(), packageAmount);
+                PackagePlanItem info = MemberManager.getInstance().getPackageInfo();
+                if (info != null) {
+                    String packageAmount = Utils.moneyToStringEx(info.amount);
+                    mView.showScanInfo("会员充值", "充值套餐", "套餐" + info.name, packageAmount);
+                }
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE:
             default:

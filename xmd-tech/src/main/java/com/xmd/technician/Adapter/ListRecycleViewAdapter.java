@@ -450,11 +450,14 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             }
             if (couponInfo.couponType.equals("discount")) {
                 couponListItemViewHolder.imgMoneyMark.setVisibility(View.GONE);
+                couponListItemViewHolder.emptyView.setVisibility(View.VISIBLE);
                 couponListItemViewHolder.mCouponAmount.setText(String.format("%1.1f折", couponInfo.actValue / 100f));
             }else if(couponInfo.couponType.equals("gift")){
+                couponListItemViewHolder.emptyView.setVisibility(View.VISIBLE);
                 couponListItemViewHolder.imgMoneyMark.setVisibility(View.GONE);
                 couponListItemViewHolder.mCouponAmount.setText(TextUtils.isEmpty(couponInfo.actSubTitle)?couponInfo.actTitle:couponInfo.actSubTitle);
             } else {
+                couponListItemViewHolder.emptyView.setVisibility(View.GONE);
                 couponListItemViewHolder.imgMoneyMark.setVisibility(View.VISIBLE);
                 if (Utils.isNotEmpty(couponInfo.consumeMoney)) {
                     couponListItemViewHolder.mCouponAmount.setText(String.valueOf(couponInfo.actValue));
@@ -1274,6 +1277,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView mBtnShareCoupon;
         @BindView(R.id.img_money_mark)
         ImageView imgMoneyMark;
+        @BindView(R.id.coupon_empty_view)
+        View emptyView;
 
 
         public ShareCouponListItemViewHolder(View itemView) {

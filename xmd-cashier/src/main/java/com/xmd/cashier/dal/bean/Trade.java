@@ -12,6 +12,8 @@ public class Trade {
     public static final int DISCOUNT_TYPE_COUPON = 2;
     public static final int DISCOUNT_TYPE_USER = 1;
 
+    public boolean withoutPay = false;  //优惠金额足以支付,没有会员扫码pos支付
+
     //订单信息
     public String tradeNo; //订单号
     public int tradeStatus;//订单状态

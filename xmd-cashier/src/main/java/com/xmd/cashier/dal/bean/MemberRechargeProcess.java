@@ -9,6 +9,7 @@ public class MemberRechargeProcess {
     public MemberRechargeProcess() {
         memberInfo = new MemberInfo();
         techInfo = new TechInfo();
+        packageInfo = null;
     }
 
     // 会员ID
@@ -17,12 +18,9 @@ public class MemberRechargeProcess {
     private MemberInfo memberInfo;
     // 充值订单ID
     private String orderId;
-    // 充值套餐ID
-    private String packageId;
-    // 充值套餐名称
-    private String packageName;
-    // 充值套餐金额
-    private int packageAmount;
+
+    // 充值指定套餐
+    private PackagePlanItem packageInfo;
     // 充值指定金额
     private int amount;
 
@@ -74,30 +72,6 @@ public class MemberRechargeProcess {
         this.orderId = orderId;
     }
 
-    public String getPackageId() {
-        return packageId;
-    }
-
-    public void setPackageId(String packageId) {
-        this.packageId = packageId;
-    }
-
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
-    public int getPackageAmount() {
-        return packageAmount;
-    }
-
-    public void setPackageAmount(int packageAmount) {
-        this.packageAmount = packageAmount;
-    }
-
     public int getAmount() {
         return amount;
     }
@@ -144,5 +118,13 @@ public class MemberRechargeProcess {
 
     public void setRechargeAmountType(String rechargeAmountType) {
         this.rechargeAmountType = rechargeAmountType;
+    }
+
+    public PackagePlanItem getPackageInfo() {
+        return packageInfo;
+    }
+
+    public void setPackageInfo(PackagePlanItem packageInfo) {
+        this.packageInfo = packageInfo;
     }
 }

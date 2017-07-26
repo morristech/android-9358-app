@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xmd.cashier.R;
-import com.xmd.cashier.common.Utils;
-import com.xmd.cashier.dal.bean.MemberPlanInfo;
+import com.xmd.cashier.common.AppConstants;
+import com.xmd.cashier.dal.bean.PackagePlanItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ import java.util.List;
 
 public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHolder> {
     private Context mContext;
-    private List<MemberPlanInfo.PackageItem> mData = new ArrayList<>();
+    private List<PackagePlanItem.PackageItem> mData = new ArrayList<>();
     private CallBack mCallBack;
 
-    public void setData(List<MemberPlanInfo.PackageItem> list) {
+    public void setData(List<PackagePlanItem.PackageItem> list) {
         mData.addAll(list);
         notifyDataSetChanged();
     }
@@ -39,13 +39,22 @@ public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(PlanItemAdapter.ViewHolder holder, int position) {
-        MemberPlanInfo.PackageItem item = mData.get(position);
-        //如果是现金
-        if (item.type == 6) {
-            holder.mContent.setText("现金" + Utils.moneyToString(item.oriAmount) + "元");
-        } else {
-            holder.mContent.setText(item.name + " * " + item.itemCount);
+        PackagePlanItem.PackageItem item = mData.get(position);
+        String content = null;
+        switch (item.type) {
+            case AppConstants.MEMBER_PLAN_ITEM_TYPE_CREDIT:
+                // 积分
+                content = item.name + "积分";
+                break;
+            case AppConstants.MEMBER_PLAN_ITEM_TYPE_MONEY:
+                // 现金
+                content = "现金" + item.name + "元";
+                break;
+            default:
+                content = item.name + " * " + item.itemCount;
+                break;
         }
+        holder.mContent.setText(content);
         holder.mContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

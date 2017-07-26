@@ -90,12 +90,13 @@ public class TechInfoDetailFragment extends BaseFragment {
         Glide.with(getActivity()).load(respData.avatarUrl).error(R.drawable.img_default_avatar).into(imgTechHead);
         tvTechName.setText(TextUtils.isEmpty(respData.name) ? "技师" : respData.name);
         tvTechNo.setText(TextUtils.isEmpty(respData.techNo) ? "" : String.format("[%s]", respData.techNo));
-        if (TextUtils.isEmpty(respData.telephone)) {
-            llTechPhone.setVisibility(View.GONE);
-        } else {
-            llTechPhone.setVisibility(View.VISIBLE);
-            tvTechPhone.setText(respData.telephone);
-        }
+//        if (TextUtils.isEmpty(respData.telephone)) {
+//            llTechPhone.setVisibility(View.GONE);
+//        } else {
+//            llTechPhone.setVisibility(View.VISIBLE);
+//            tvTechPhone.setText(respData.telephone);
+//        }
+        llTechPhone.setVisibility(View.GONE);
         if (respData.roles.equals("tech")) {
             llTechMark.setVisibility(View.VISIBLE);
             tvTechMark.setText(TextUtils.isEmpty(respData.description) ? "该用户尚未添加个人简介信息..." : respData.description);

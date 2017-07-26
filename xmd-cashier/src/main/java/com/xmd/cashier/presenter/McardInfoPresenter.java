@@ -1,6 +1,7 @@
 package com.xmd.cashier.presenter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
@@ -39,6 +40,14 @@ public class McardInfoPresenter implements McardInfoContract.Presenter {
 
     @Override
     public void onConfirm() {
+        if (TextUtils.isEmpty(MemberManager.getInstance().getName())) {
+            mView.showError("请设置姓名");
+            return;
+        }
+        if (TextUtils.isEmpty(MemberManager.getInstance().getPhone())) {
+            mView.showError("请设置手机号");
+            return;
+        }
         UiNavigation.gotoMemberReadActivity(mContext, AppConstants.MEMBER_BUSINESS_TYPE_CARD);
         mView.showEnterAnim();
     }

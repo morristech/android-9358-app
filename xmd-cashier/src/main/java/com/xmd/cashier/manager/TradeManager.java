@@ -269,6 +269,9 @@ public class TradeManager {
                                 if (mTrade.posPoints > 0) {
                                     UiNavigation.gotoPointsPhoneActivity(context);
                                 } else {
+                                    if (mTrade.withoutPay) {
+                                        print();
+                                    }
                                     newTrade();
                                 }
                                 break;

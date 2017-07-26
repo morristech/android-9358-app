@@ -21,6 +21,7 @@ import com.xmd.cashier.contract.MemberRechargeContract;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.MemberPlanInfo;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
+import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
 import com.xmd.cashier.presenter.MemberRechargePresenter;
@@ -97,7 +98,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
         mAdapter = new MemberPlanAdapter(this);
         mAdapter.setCallBack(new MemberPlanAdapter.CallBack() {
             @Override
-            public void onItemClick(MemberPlanInfo.PackagePlanItem item, int position) {
+            public void onItemClick(PackagePlanItem item, int position) {
                 mPresenter.clearAmount();
                 mPresenter.onPackageSet(item);
             }
