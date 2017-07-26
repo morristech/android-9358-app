@@ -2,7 +2,6 @@ package com.xmd.manager.verification;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.DefaultItemAnimator;
