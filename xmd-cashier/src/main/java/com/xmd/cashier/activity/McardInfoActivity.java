@@ -195,7 +195,6 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
         mPhoneInput.setEnabled(false);
         if (!TextUtils.isEmpty(name)) {
             mNameInput.setText(name);
-            mNameInput.setEnabled(false);
         }
     }
 
