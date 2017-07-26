@@ -2,6 +2,7 @@ package com.xmd.manager.verification;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,7 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.manager.Constant;
 import com.xmd.manager.R;
@@ -41,8 +41,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 
-import static com.xmd.manager.R.drawable.dash_line_bg;
-import static com.xmd.manager.R.drawable.list;
 
 /**
  * Created by sdcm on 17-3-3.
@@ -78,6 +76,7 @@ public class VerificationListActivity extends BaseActivity implements Verificati
     //  private boolean mVerifying;
     private VerificationAlertDialog mVerificationDialog;
     private List<VerificationCouponDetailBean> discountList;
+    private List<VerificationCouponDetailBean> normalCouponList;
 
     public static void startCustomerCouponListActivity(Activity activity, String phone) {
         Intent intent = new Intent(activity, VerificationListActivity.class);
@@ -144,6 +143,7 @@ public class VerificationListActivity extends BaseActivity implements Verificati
     }
 
     private void handleVerificationResult(VerificationSomeBean result) {
+        //hideLoading();
         if (!result.verificationSucceed) {//核销失败
             verificationFail++;
             for (int i = 0; i < mSelectedVerificationList.size(); i++) {
@@ -163,7 +163,6 @@ public class VerificationListActivity extends BaseActivity implements Verificati
             }
         }
         if ((verificationFail + verificationSuccess) == verificationCount) {
-            hideLoading();
             //    mVerifying = false;
             if (verificationFail > 0) {
                 //部分核销成功
@@ -220,8 +219,7 @@ public class VerificationListActivity extends BaseActivity implements Verificati
 
     @OnClick(R.id.btn_verification)
     public void onClick() {
-               showLoading();
-
+        //  showLoading();
         verificationSuccess = 0;
         verificationFail = 0;
         mFailedVerificationList.clear();
@@ -231,18 +229,26 @@ public class VerificationListActivity extends BaseActivity implements Verificati
         } else {
             discountList.clear();
         }
+        if (normalCouponList == null) {
+            normalCouponList = new ArrayList<>();
+        } else {
+            normalCouponList.clear();
+        }
         for (int i = 0; i < mSelectedVerificationList.size(); i++) {
             if (mSelectedVerificationList.get(i).getType().equals("discount_coupon")) {
                 discountList.add((VerificationCouponDetailBean) mSelectedVerificationList.get(i).getInfo());
+            } else {
+                normalCouponList.add((VerificationCouponDetailBean) mSelectedVerificationList.get(i).getInfo());
             }
         }
+
         if (discountList.size() > 0) {
             mVerificationDialog = new VerificationAlertDialog(this, discountList);
             mVerificationDialog.show();
             mVerificationDialog.setVerificationListener(new VerificationAlertDialog.VerificationSuccessListener() {
                 @Override
-                public void verificationSuccess(boolean canUse,float money) {
-                    if(canUse){
+                public void verificationSuccess(boolean canUse, float money) {
+                    if (canUse) {
                         for (int i = 0; i < mSelectedVerificationList.size(); i++) {
                             Map<String, String> params = new HashMap<>();
                             if (money > 0) {
@@ -250,18 +256,31 @@ public class VerificationListActivity extends BaseActivity implements Verificati
                             } else {
                                 params.put(RequestConstant.KEY_VERIFICATION_AMOUNT, "0");
                             }
-
                             params.put(RequestConstant.KEY_VERIFICATION_CODE, mSelectedVerificationList.get(i).getCode());
                             params.put(RequestConstant.KEY_VERIFICATION_TYPE, "");
                             params.put(RequestConstant.KEY_VERIFICATION_SOME, "some");
                             MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_VERIFICATION_COMMON_SAVE, params);
                         }
-                    }else{
-                        Toast.makeText(VerificationListActivity.this,"所选折扣券不满足使用条件,请重新选择",Toast.LENGTH_LONG).show();
+                    } else {
+                        //        hideLoading();
+                        Toast.makeText(VerificationListActivity.this, "所选折扣券不满足使用条件,请重新选择", Toast.LENGTH_LONG).show();
+                        return;
+
                     }
 
                 }
             });
+        }
+
+        if (normalCouponList.size() > 0) {
+            for (int i = 0; i < normalCouponList.size(); i++) {
+                Map<String, String> params = new HashMap<>();
+                params.put(RequestConstant.KEY_VERIFICATION_AMOUNT, "0");
+                params.put(RequestConstant.KEY_VERIFICATION_CODE, mSelectedVerificationList.get(i).getCode());
+                params.put(RequestConstant.KEY_VERIFICATION_TYPE, "");
+                params.put(RequestConstant.KEY_VERIFICATION_SOME, "some");
+                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_DO_VERIFICATION_COMMON_SAVE, params);
+            }
         }
 
 
@@ -293,7 +312,6 @@ public class VerificationListActivity extends BaseActivity implements Verificati
     }
 
     private void showSelectedView() {
-        XLogger.i(">>>", "" + mSelectedVerificationList.size());
         mSelectedTotal = "已选择 " + mSelectedVerificationList.size() + " 张";
         mSelectedCouponTotal.setText(Utils.changeColor(mSelectedTotal, ResourceUtils.getColor(R.color.main_btn_pressed), 3, mSelectedTotal.length() - 1));
         mBtnVerification.setEnabled(mSelectedVerificationList.size() > 0);
