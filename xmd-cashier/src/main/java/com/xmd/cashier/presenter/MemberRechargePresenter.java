@@ -8,8 +8,8 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberRechargeContract;
-import com.xmd.cashier.dal.bean.MemberPlanInfo;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
+import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
@@ -121,7 +121,10 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
                 amount = MemberManager.getInstance().getAmount();
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
-                amount = MemberManager.getInstance().getPackageAmount();
+                PackagePlanItem info = MemberManager.getInstance().getPackageInfo();
+                if (info != null) {
+                    amount = info.amount;
+                }
                 break;
             default:
                 break;
@@ -230,19 +233,15 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     }
 
     @Override
-    public void onPackageSet(MemberPlanInfo.PackagePlanItem item) {
+    public void onPackageSet(PackagePlanItem item) {
         // 设置套餐
-        MemberManager.getInstance().setPackageId(String.valueOf(item.id));
-        MemberManager.getInstance().setPackageAmount(item.amount);
-        MemberManager.getInstance().setPackageName("套餐" + item.name);
+        MemberManager.getInstance().setPackageInfo(item);
         MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE);
     }
 
     @Override
     public void clearPackage() {
-        MemberManager.getInstance().setPackageId(null);
-        MemberManager.getInstance().setPackageName(null);
-        MemberManager.getInstance().setPackageAmount(0);
+        MemberManager.getInstance().setPackageInfo(null);
         mView.clearPackage();
         MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE);
     }
@@ -284,7 +283,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
                 // 充值套餐
-                if (TextUtils.isEmpty(MemberManager.getInstance().getPackageId())) {
+                if (MemberManager.getInstance().getPackageInfo() == null) {
                     mView.showError("请选择充值内容!");
                     return;
                 }

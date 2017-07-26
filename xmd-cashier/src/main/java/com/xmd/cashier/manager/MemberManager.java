@@ -13,6 +13,7 @@ import com.xmd.cashier.dal.bean.MemberCardProcess;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.MemberRechargeProcess;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
+import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.RequestConstant;
@@ -240,24 +241,12 @@ public class MemberManager {
         mRechargeProcess.setRechargePayType(type);
     }
 
-    public void setPackageName(String name) {
-        mRechargeProcess.setPackageName(name);
+    public void setPackageInfo(PackagePlanItem info) {
+        mRechargeProcess.setPackageInfo(info);
     }
 
-    public void setPackageAmount(int amount) {
-        mRechargeProcess.setPackageAmount(amount);
-    }
-
-    public String getPackageName() {
-        return mRechargeProcess.getPackageName();
-    }
-
-    public String getPackageId() {
-        return mRechargeProcess.getPackageId();
-    }
-
-    public void setPackageId(String packageId) {
-        mRechargeProcess.setPackageId(packageId);
+    public PackagePlanItem getPackageInfo() {
+        return mRechargeProcess.getPackageInfo();
     }
 
     public void setAmount(int amount) {
@@ -266,10 +255,6 @@ public class MemberManager {
 
     public int getAmount() {
         return mRechargeProcess.getAmount();
-    }
-
-    public int getPackageAmount() {
-        return mRechargeProcess.getPackageAmount();
     }
 
     public String getRechargeUrl() {
@@ -295,9 +280,12 @@ public class MemberManager {
         String packageId = null;
         switch (getAmountType()) {
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
-                amount = mRechargeProcess.getPackageAmount();
-                description = mRechargeProcess.getPackageName();
-                packageId = mRechargeProcess.getPackageId();
+                PackagePlanItem info = mRechargeProcess.getPackageInfo();
+                if (info != null) {
+                    amount = info.amount;
+                    description = "套餐" + info.name;
+                    packageId = String.valueOf(info.id);
+                }
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
                 amount = mRechargeProcess.getAmount();
@@ -340,6 +328,7 @@ public class MemberManager {
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberRecordResult>() {
             @Override
             public void onCallbackSuccess(MemberRecordResult result) {
+
                 callback.onSuccess(result);
             }
 
@@ -355,7 +344,10 @@ public class MemberManager {
         int amount = 0;
         switch (getAmountType()) {
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
-                amount = mRechargeProcess.getPackageAmount();
+                PackagePlanItem info = mRechargeProcess.getPackageInfo();
+                if (info != null) {
+                    amount = info.amount;
+                }
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
                 amount = mRechargeProcess.getAmount();
@@ -450,7 +442,9 @@ public class MemberManager {
         SpaOkHttp.reportRechargeDataSync(new Callback<MemberRecordResult>() {
             @Override
             public void onSuccess(MemberRecordResult o) {
-                EventBus.getDefault().post(o.getRespData());
+                MemberRecordInfo record = o.getRespData();
+                record.packageInfo = mRechargeProcess.getPackageInfo();
+                EventBus.getDefault().post(record);
                 resultRecharge = true;
             }
 
@@ -497,6 +491,31 @@ public class MemberManager {
                 // 充值:
                 mPos.printText("充值内容  " + info.description);
                 mPos.printText("支付金额  " + Utils.moneyToStringEx(info.orderAmount) + "元");
+                if (info.packageInfo != null && info.packageInfo.packageItems != null && !info.packageInfo.packageItems.isEmpty()) {
+                    mPos.printText("套餐优惠");
+                    for (PackagePlanItem.PackageItem item : info.packageInfo.packageItems) {
+                        switch (item.type) {
+                            case AppConstants.MEMBER_PLAN_ITEM_TYPE_CREDIT:
+                                mPos.printText("|--" + item.name + "积分");
+                                break;
+                            case AppConstants.MEMBER_PLAN_ITEM_TYPE_MONEY:
+                                mPos.printText("|--现金" + item.name + "元");
+                                break;
+                            case AppConstants.MEMBER_PLAN_ITEM_TYPE_GIF:
+                                mPos.printText("|--" + item.name + " * " + item.itemCount, "礼品券");
+                                break;
+                            case AppConstants.MEMBER_PLAN_ITEM_TYPE_COUPON:
+                                mPos.printText("|--" + item.name + " * " + item.itemCount, "优惠券");
+                                break;
+                            case AppConstants.MEMBER_PLAN_ITEM_TYPE_SERVICE:
+                                mPos.printText("|--" + item.name + " * " + item.itemCount, "项目券");
+                                break;
+                            default:
+                                mPos.printText("|--" + item.name + " * " + item.itemCount);
+                                break;
+                        }
+                    }
+                }
                 break;
             case AppConstants.MEMBER_TRADE_TYPE_PAY:
                 // 消费:消费金额|折扣信息|实收金额|当前余额
