@@ -9,6 +9,7 @@ import com.google.zxing.client.android.Intents;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
+import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberReadContract;
@@ -199,6 +200,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
                 while (isRun) {
                     String readerResult = MemberManager.getInstance().getMagneticReaderResult();
                     if (!TextUtils.isEmpty(readerResult)) {
+                        PosFactory.getCurrentCashier().textToSound("读卡成功");
                         MagneticReaderEvent event = new MagneticReaderEvent();
                         event.setResult(readerResult);
                         EventBus.getDefault().post(event);
@@ -215,6 +217,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
     private NFCManager.NFCListener mNFCListener = new NFCManager.NFCListener() {
         @Override
         public void onReceiveDataOffline(String id) {
+            PosFactory.getCurrentCashier().textToSound("读卡成功");
             mView.setInputContent(id);
             mNFCManager.clearNFCParams();
         }
@@ -240,6 +243,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
 
         mNFCManager = NFCManager.getInstance();
         mNFCManager.init(mContext);
+        PosFactory.getCurrentCashier().textToSound("请刷会员卡");
     }
 
     @Override

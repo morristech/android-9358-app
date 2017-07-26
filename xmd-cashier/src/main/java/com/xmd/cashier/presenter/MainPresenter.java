@@ -443,9 +443,8 @@ public class MainPresenter implements MainContract.Presenter {
                 mView.showToast("初始化支付环境成功！");
                 // POS初始化成功之后添加请求头:设备信息
                 XmdNetwork.getInstance().setHeader("Device-Identifier", PosImpl.getInstance().getPosIdentifierNo());
-                // 开始轮询
-//                CustomService.refreshOnlinePayNotify(true);
-//                CustomService.refreshOrderRecordNotify(true);
+                CustomService.refreshOnlinePayNotify(true);
+                CustomService.refreshOrderRecordNotify(true);
             }
 
             @Override
