@@ -129,6 +129,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
 
         EventBusSafeRegister.register(this);
         XmdPushManager.getInstance().addListener(xmdPushMessageListener);
+
+        XmdChat.getInstance().loadConversation();
     }
 
     @Override

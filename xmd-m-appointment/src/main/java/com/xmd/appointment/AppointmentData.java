@@ -67,7 +67,7 @@ public class AppointmentData implements Serializable {
         }
     }
 
-    private void checkCanSubmit() {
+    public void checkCanSubmit() {
         submitEnable.set(!TextUtils.isEmpty(getCustomerName())
                 && CodeUtils.matchPhoneNumFormat(getCustomerPhone())
                 && getAppointmentTime() != null

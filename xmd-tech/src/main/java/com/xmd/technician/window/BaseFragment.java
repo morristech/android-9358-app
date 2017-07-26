@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.technician.R;
 
 /**
@@ -16,6 +19,7 @@ import com.xmd.technician.R;
 public class BaseFragment extends Fragment {
 
     private TextView mTitleView;
+    protected CircleAvatarView avatarView;
 
     protected IFragmentCallback mIFragmentCallback;
     private static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
@@ -71,6 +75,14 @@ public class BaseFragment extends Fragment {
         mTitleView = ((TextView) getView().findViewById(R.id.toolbar_title));
         if (mTitleView != null) {
             mTitleView.setText(title);
+        }
+    }
+
+    public void showAvatarInTitleBar() {
+        avatarView = (CircleAvatarView) getView().findViewById(R.id.avatarView);
+        if (avatarView != null) {
+            avatarView.setVisibility(View.VISIBLE);
+            avatarView.setUserInfo(UserInfoServiceImpl.getInstance().getCurrentUser());
         }
     }
 

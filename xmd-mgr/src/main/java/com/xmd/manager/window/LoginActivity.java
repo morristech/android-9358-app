@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
+import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.OkHttpUtil;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
@@ -188,5 +189,10 @@ public class LoginActivity extends BaseActivity {
             if (getCurrentFocus() != null)
                 mInputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    @Override
+    public void onTokenExpired(EventTokenExpired event) {
+        //do nothing
     }
 }

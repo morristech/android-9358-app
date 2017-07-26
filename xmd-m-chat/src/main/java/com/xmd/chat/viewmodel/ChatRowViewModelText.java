@@ -2,10 +2,13 @@ package com.xmd.chat.viewmodel;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
+import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowTextBinding;
 import com.xmd.chat.message.ChatMessage;
@@ -28,6 +31,7 @@ public class ChatRowViewModelText extends ChatRowViewModel {
 
     @Override
     public ViewDataBinding onBindView(View view) {
+        ((FrameLayout.LayoutParams) view.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
         ChatRowTextBinding binding = DataBindingUtil.getBinding(view);
         binding.setData(this);
         return binding;
@@ -36,6 +40,10 @@ public class ChatRowViewModelText extends ChatRowViewModel {
     @Override
     public void onUnbindView() {
 
+    }
+
+    public int getMaxWidth() {
+        return ScreenUtils.getScreenWidth() * 2 / 3;
     }
 
     public CharSequence getMessage() {

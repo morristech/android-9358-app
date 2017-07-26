@@ -15,18 +15,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.ContactHandlerBean;
 import com.xmd.technician.bean.CurrentSelectPage;
 import com.xmd.technician.common.FragmentController;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.http.gson.TechInfoResult;
 import com.xmd.technician.msgctrl.RxBus;
-import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.ClearableEditText;
 import com.xmd.technician.widget.DropDownMenuDialog;
 
@@ -66,7 +62,6 @@ public class ContactsSummaryFragment extends BaseFragment {
     private List<View> tableViews;
     private FragmentController mFragmentController;
     private View view;
-    private CircleImageView techHead;
 
     private Subscription mGetTechCurrentInfoSubscription;
     private Subscription getCurrentSelectedPageSubscription;
@@ -86,15 +81,13 @@ public class ContactsSummaryFragment extends BaseFragment {
         return view;
     }
 
-    private void initView() {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        showAvatarInTitleBar();
+    }
 
-        techHead = (CircleImageView) view.findViewById(R.id.toolbar_left_head);
-        techHead.setVisibility(View.VISIBLE);
-        if (Utils.isNotEmpty(SharedPreferenceHelper.getUserAvatar())) {
-            Glide.with(getActivity()).load(SharedPreferenceHelper.getUserAvatar()).placeholder(R.drawable.icon22).error(R.drawable.icon22).into(techHead);
-        } else {
-            Glide.with(getActivity()).load(R.drawable.icon22).into(techHead);
-        }
+    private void initView() {
         view.findViewById(R.id.contact_more).setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_conversion);
         tableViews = new ArrayList<>();
@@ -114,8 +107,8 @@ public class ContactsSummaryFragment extends BaseFragment {
 
             }
         });
-        mGetTechCurrentInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class).subscribe(
-                techCurrentResult -> handleTechCurrentResult(techCurrentResult));
+//        mGetTechCurrentInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class).subscribe(
+//                techCurrentResult -> handleTechCurrentResult(techCurrentResult));
         getCurrentSelectedPageSubscription = RxBus.getInstance().toObservable(CurrentSelectPage.class).subscribe(
                 selectedPage -> {
                     getActivity().runOnUiThread(new Runnable() {
@@ -139,13 +132,13 @@ public class ContactsSummaryFragment extends BaseFragment {
         );
     }
 
-    private void handleTechCurrentResult(TechInfoResult techCurrentResult) {
-        if (techCurrentResult.respData == null) {
-            Glide.with(getActivity()).load(R.drawable.icon22).into(techHead);
-            return;
-        }
-        Glide.with(getActivity()).load(techCurrentResult.respData.imageUrl).into(techHead);
-    }
+//    private void handleTechCurrentResult(TechInfoResult techCurrentResult) {
+//        if (techCurrentResult.respData == null) {
+//            Glide.with(getActivity()).load(R.drawable.icon22).into(techHead);
+//            return;
+//        }
+//        Glide.with(getActivity()).load(techCurrentResult.respData.imageUrl).into(techHead);
+//    }
 
     //技师对用户进行了操作,刷新相关列表
     private void handlerContact() {
@@ -178,13 +171,9 @@ public class ContactsSummaryFragment extends BaseFragment {
         })).show(llContactMore);
     }
 
-    @OnClick({R.id.toolbar_left_head, R.id.img_btn_search, R.id.tv_customer_all, R.id.tv_customer_register, R.id.tv_customer_visitor, R.id.tv_customer_technician})
+    @OnClick({R.id.img_btn_search, R.id.tv_customer_all, R.id.tv_customer_register, R.id.tv_customer_visitor, R.id.tv_customer_technician})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.toolbar_left_head:
-                Intent intent = new Intent(getActivity(), TechInfoActivity.class);
-                startActivity(intent);
-                break;
             case R.id.img_btn_search:
                 mSearchText = edSearchContact.getText().toString();
                 if (Utils.isEmpty(mSearchText)) {

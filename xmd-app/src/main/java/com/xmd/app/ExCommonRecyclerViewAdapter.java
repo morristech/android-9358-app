@@ -43,10 +43,11 @@ public abstract class ExCommonRecyclerViewAdapter<T> extends RecyclerView.Adapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         ViewDataBinding binding = holder.getBinding();
         Object data = mData.get(position);
-        binding.setVariable(mDataBR, data);
-        binding.executePendingBindings();
 
         onDataBinding(binding, position);
+
+        binding.setVariable(mDataBR, data);
+        binding.executePendingBindings();
     }
 
     @Override

@@ -16,6 +16,9 @@ import com.xmd.chat.viewmodel.ChatRowViewModelDiceGameResult;
 import com.xmd.chat.viewmodel.ChatRowViewModelImage;
 import com.xmd.chat.viewmodel.ChatRowViewModelLocation;
 import com.xmd.chat.viewmodel.ChatRowViewModelNewOrder;
+import com.xmd.chat.viewmodel.ChatRowViewModelOrderRequest;
+import com.xmd.chat.viewmodel.ChatRowViewModelReward;
+import com.xmd.chat.viewmodel.ChatRowViewModelRewardRequest;
 import com.xmd.chat.viewmodel.ChatRowViewModelShare;
 import com.xmd.chat.viewmodel.ChatRowViewModelText;
 import com.xmd.chat.viewmodel.ChatRowViewModelTip;
@@ -29,6 +32,8 @@ import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_DICE_GAME_RESULT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_IMAGE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_LOCATION;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_NEW_ORDER;
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_REWARD;
+import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_REWARD_REQUEST;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_SHARE;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TEXT;
 import static com.xmd.chat.ChatConstants.CHAT_ROW_VIEW_TIP;
@@ -86,6 +91,12 @@ public class ChatRowViewFactory {
                 break;
             case ChatMessage.MSG_TYPE_NEW_ORDER:
                 baseType = CHAT_ROW_VIEW_NEW_ORDER;
+                break;
+            case ChatMessage.MSG_TYPE_REQUEST_REWARD:
+                baseType = CHAT_ROW_VIEW_REWARD_REQUEST;
+                break;
+            case ChatMessage.MSG_TYPE_REWARD:
+                baseType = CHAT_ROW_VIEW_REWARD;
                 break;
             case ChatMessage.MSG_TYPE_DICE_GAME: {
                 String gameStatus = ((DiceGameChatMessage) chatMessage).getGameStatus();
@@ -156,6 +167,8 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelTip.createView(parent);
             case CHAT_ROW_VIEW_TYPE_APPOINTMENT:
                 return ChatRowViewModelAppointment.createView(parent);
+            case CHAT_ROW_VIEW_TYPE_ORDER_REQUEST:
+                return ChatRowViewModelOrderRequest.createView(parent);
             case CHAT_ROW_VIEW_VOICE:
                 return ChatRowViewModelVoice.createView(parent);
             case CHAT_ROW_VIEW_SHARE:
@@ -172,6 +185,10 @@ public class ChatRowViewFactory {
                 return ChatRowViewModelDiceGameAccept.createView(parent);
             case CHAT_ROW_VIEW_DICE_GAME_RESULT:
                 return ChatRowViewModelDiceGameResult.createView(parent);
+            case CHAT_ROW_VIEW_REWARD_REQUEST:
+                return ChatRowViewModelRewardRequest.createView(parent);
+            case CHAT_ROW_VIEW_REWARD:
+                return ChatRowViewModelReward.createView(parent);
             default:
                 return ChatRowViewModelText.createView(parent);
         }
@@ -190,6 +207,8 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelTip(message);
             case CHAT_ROW_VIEW_TYPE_APPOINTMENT:
                 return new ChatRowViewModelAppointment(message);
+            case CHAT_ROW_VIEW_TYPE_ORDER_REQUEST:
+                return new ChatRowViewModelOrderRequest(message);
             case CHAT_ROW_VIEW_VOICE:
                 return new ChatRowViewModelVoice(message);
             case CHAT_ROW_VIEW_SHARE:
@@ -200,6 +219,10 @@ public class ChatRowViewFactory {
                 return new ChatRowViewModelCreditGift(message);
             case CHAT_ROW_VIEW_NEW_ORDER:
                 return new ChatRowViewModelNewOrder(message);
+            case CHAT_ROW_VIEW_REWARD_REQUEST:
+                return new ChatRowViewModelRewardRequest(message);
+            case CHAT_ROW_VIEW_REWARD:
+                return new ChatRowViewModelReward(message);
             case CHAT_ROW_VIEW_DICE_GAME_INVITE:
                 return new ChatRowViewModelDiceGameInvite(message);
             case CHAT_ROW_VIEW_DICE_GAME_ACCEPT:

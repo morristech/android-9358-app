@@ -44,6 +44,7 @@ public class ChatRowViewModelShare extends ChatRowViewModel {
 
     }
 
+
     @BindingAdapter("image")
     public static void bindImage(ImageView imageView, ChatRowViewModelShare data) {
         switch (data.getChatMessage().getMsgType()) {

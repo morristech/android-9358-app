@@ -256,6 +256,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
                     status = "已处理";
                     operateRefuseAndAccept = false;
                     operateChangeAndConfirm = false;
+                    operateCancel = false;
                     binding.setData(this);
                     binding.executePendingBindings();
                     orderChatMessage.setInnerProcessed("已处理");

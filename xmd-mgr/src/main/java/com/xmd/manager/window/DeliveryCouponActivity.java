@@ -136,7 +136,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                         remainSendCount--;
                         MessageManager.getInstance().sendCouponMessage(
                                 chatId,
-                                String.format("<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod),
+                                getShareText(couponInfo),
                                 couponInfo.actId, SharedPreferenceHelper.getUserInviteCode());
                     }
                 }
@@ -150,9 +150,10 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
         if (result.respData != null) {
             //用户领取成功，那么发送环信消息
             CouponInfo couponInfo = result.couponInfo;
-            CouponChatMessage chatMessage = CouponChatMessage.create(chatId,
-                    result.respData.userActId, String.format(Locale.getDefault(), "<i>%s</i><span>%d</span>元<b>%s</b>",
-                            couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod),
+            CouponChatMessage chatMessage = CouponChatMessage.create(
+                    chatId,
+                    result.respData.userActId,
+                    getShareText(couponInfo),
                     SharedPreferenceHelper.getUserInviteCode());
             MessageManager.getInstance().sendMessage(chatMessage);
             successCount++;
@@ -160,6 +161,19 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
             failedCount++;
         }
         checkDeliverResult();
+    }
+
+    private String getShareText(CouponInfo couponInfo) {
+        switch (couponInfo.couponType) {
+            case Constant.COUPON_TYPE_PAID:
+                return String.format(Locale.getDefault(), "<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod);
+            case Constant.COUPON_TYPE_DISCOUNT:
+                return String.format(Locale.getDefault(), "<i>%s</i><span>%.1f</span>折<b>%s</b>", couponInfo.useTypeName, (float) couponInfo.actValue / 100, couponInfo.couponPeriod);
+            case Constant.COUPON_TYPE_GIFT:
+                return String.format(Locale.getDefault(), "<i>%s</i><span>%s</span><b>%s</b>", couponInfo.useTypeName, couponInfo.actSubTitle, couponInfo.couponPeriod);
+            default:
+                return String.format(Locale.getDefault(), "<i>%s</i><span>%d</span>元<b>%s</b>", couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod);
+        }
     }
 
     public void checkDeliverResult() {

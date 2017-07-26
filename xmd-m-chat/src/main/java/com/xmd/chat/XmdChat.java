@@ -49,7 +49,7 @@ public class XmdChat {
     private Location location;
 
     public void init(Context context, boolean debug, MenuFactory menuFactory) {
-        XLogger.i("---------聊天系统初始化---------------");
+        XLogger.i("---------聊天系统初始化---------------debug=" + debug);
 
         if (!DiskCacheManager.isInit()) {
             throw new RuntimeException("dependency DiskCacheManager, but not init");
@@ -63,8 +63,7 @@ public class XmdChat {
         EMClient.getInstance().init(context, options);
         EMClient.getInstance().setDebugMode(debug);
 
-        EMClient.getInstance().chatManager().loadAllConversations();
-        EMClient.getInstance().groupManager().loadAllGroups();
+        loadConversation();
 
         AccountManager.getInstance().init();
         ConversationManager.getInstance().init();
@@ -86,6 +85,11 @@ public class XmdChat {
                 conversation.clear(); //清除加载的会话数据，避免聊天窗口加载出错
             }
         }
+    }
+
+    public void loadConversation() {
+        EMClient.getInstance().chatManager().loadAllConversations();
+        EMClient.getInstance().groupManager().loadAllGroups();
     }
 
     public MenuFactory getMenuFactory() {

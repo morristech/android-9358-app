@@ -16,8 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_r4_solid_white"
-        android:orientation="vertical"
-        android:paddingBottom="8dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,102 +50,98 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp">
+            android:orientation="vertical"
+            android:layout_margin="8dp">
 
-            <TextView
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="到店时间:"
+                    android:textColor="#616161" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="待定"
+                    android:textColor="#212121"
+                    android:textSize="@dimen/fontCaption"
+                    app:order_service_time="@{data.orderChatMessage}" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="到店时间:"
-                android:textColor="#616161" />
+                android:layout_marginTop="4dp"
+                android:visibility="@{data.serviceVisible?View.VISIBLE:View.GONE}">
 
-            <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预约项目:"
+                    android:textColor="#616161" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text='@{data.orderChatMessage.orderServiceName??"到店选择"}'
+                    android:textColor="#212121"
+                    android:textSize="@dimen/fontCaption" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="待定"
-                android:textColor="#212121"
-                android:textSize="@dimen/fontCaption"
-                app:order_service_time="@{data.orderChatMessage}" />
+                android:layout_marginTop="4dp"
+                android:visibility="@{data.techVisible?View.VISIBLE:View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预约技师:"
+                    android:textColor="#616161" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text='@{data.orderChatMessage.orderTechName??"到店选择"}'
+                    android:textColor="#212121"
+                    android:textSize="@dimen/fontCaption" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:visibility="@{data.orderChatMessage.orderPayMoney!=null?View.VISIBLE:View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预约金额:"
+                    android:textColor="#616161" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="#ff6666"
+                    android:textSize="@dimen/fontCaption"
+                    app:order_pay_money='@{data.orderChatMessage}' />
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="4dp"
-            android:visibility="@{data.serviceVisible?View.VISIBLE:View.GONE}">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="预约项目:"
-                android:textColor="#616161" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text='@{data.orderChatMessage.orderServiceName??"到店选择"}'
-                android:textColor="#212121"
-                android:textSize="@dimen/fontCaption" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="4dp"
-            android:visibility="@{data.techVisible?View.VISIBLE:View.GONE}">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="预约技师:"
-                android:textColor="#616161" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text='@{data.orderChatMessage.orderTechName??"到店选择"}'
-                android:textColor="#212121"
-                android:textSize="@dimen/fontCaption" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="4dp"
-            android:visibility="@{data.orderChatMessage.orderPayMoney!=null?View.VISIBLE:View.GONE}">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="预约金额:"
-                android:textColor="#616161" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:textColor="#ff6666"
-                android:textSize="@dimen/fontCaption"
-                app:order_pay_money='@{data.orderChatMessage}' />
-        </LinearLayout>
-
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="8dp"
             android:background="#dddddd"
             android:visibility="@{data.showOperateSplitLine?View.VISIBLE:View.GONE}" />
 

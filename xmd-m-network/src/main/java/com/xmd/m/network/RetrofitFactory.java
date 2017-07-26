@@ -35,10 +35,6 @@ class RetrofitFactory {
         mServiceMap.clear();
     }
 
-    public static String getBaseUrl() {
-        return baseUrl;
-    }
-
     static void setBaseUrl(String baseUrl) {
         RetrofitFactory.baseUrl = baseUrl;
     }

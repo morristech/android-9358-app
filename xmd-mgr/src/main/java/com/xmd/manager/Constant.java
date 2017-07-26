@@ -248,6 +248,8 @@ public class Constant {
     public static final String USE_TYPE_COUPON = "coupon";
 
     public static final String COUPON_TYPE_PAID = "paid";
+    public static final String COUPON_TYPE_DISCOUNT = "discount";
+    public static final String COUPON_TYPE_GIFT = "gift";
 
     public static final String ORDER_TYPE_APPOINT = "appoint";
     public static final String ORDER_TYPE_PAID = "paid";

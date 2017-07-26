@@ -32,8 +32,9 @@ public class ChatConstants {
     public static final int CHAT_ROW_VIEW_DICE_GAME_INVITE = 0x16; //发送邀请骰子游戏
     public static final int CHAT_ROW_VIEW_DICE_GAME_ACCEPT = 0x17; //收到邀请骰子游戏
     public static final int CHAT_ROW_VIEW_DICE_GAME_RESULT = 0x18; //游戏结果
-
-    public static final int CHAT_ROW_VIEW_TIP = 0x20;//提示
+    public static final int CHAT_ROW_VIEW_REWARD_REQUEST = 0x19; //求打赏
+    public static final int CHAT_ROW_VIEW_REWARD = 0x20;//打赏
+    public static final int CHAT_ROW_VIEW_TIP = 0x21;//提示
 
     public static final int CHAT_ROW_VIEW_TYPE_MAX = 0x200;
 

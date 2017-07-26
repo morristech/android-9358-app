@@ -32,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.xmd.app.widget.CircleAvatarView;
+import com.xmd.chat.XmdChat;
 import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.permission.BusinessPermissionManager;
@@ -776,7 +777,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     @OnClick({R.id.menu_work_time, R.id.menu_work_project, R.id.menu_hello_setting, R.id.menu_about_us, R.id.menu_suggest, R.id.settings_activity_modify_pw, R.id.settings_activity_join_club,
-            R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout, R.id.view_transparent})
+            R.id.settings_activity_join_or_quit_club, R.id.settings_activity_logout, R.id.view_transparent, R.id.menu_fast_reply})
     public void onMainMenuSettingClicked(View view) {
         switch (view.getId()) {
             case R.id.menu_work_time:
@@ -829,6 +830,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         super.onConfirmClick();
                     }
                 }.show();
+                break;
+            case R.id.menu_fast_reply:
+                XmdChat.getInstance().showFastReplyEditView();
                 break;
             case R.id.view_transparent:
                 mMainSlidingLayout.closeMenu();

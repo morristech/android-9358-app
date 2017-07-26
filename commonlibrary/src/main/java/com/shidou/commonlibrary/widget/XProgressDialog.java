@@ -29,7 +29,7 @@ public class XProgressDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.process_dialog);
 
-        setCancelable(false);
+//        setCancelable(false);
 
         ImageView imageView = (ImageView) findViewById(R.id.progress);
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.progress);

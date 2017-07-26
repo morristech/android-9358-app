@@ -21,6 +21,8 @@
     <dimen name="fontSmall">10sp</dimen>
 
     <dimen name="avatarSize">48dp</dimen>
+    <dimen name="avatarSizeSmall">36dp</dimen>
+
     <dimen name="small_text_size">16sp</dimen>
 
     <dimen name="tab_height">48dp</dimen>

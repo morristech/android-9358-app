@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/actionBarSize"
     android:background="@color/colorPrimary"
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -24,15 +25,13 @@
             android:src="@drawable/icon_back_white"
             android:visibility="gone" />
 
-        <com.xmd.technician.widget.CircleImageView
-            android:id="@+id/toolbar_left_head"
+        <com.xmd.app.widget.CircleAvatarView
+            android:id="@+id/avatarView"
             android:layout_width="@dimen/avatarSize"
             android:layout_height="@dimen/avatarSize"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_margin="8dp"
-            android:src="@drawable/icon22"
-            android:clickable="true"
+            android:padding="4dp"
             android:visibility="gone" />
 
         <TextView

@@ -10,7 +10,7 @@
             type="com.xmd.chat.viewmodel.ChatRowViewModel" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -20,32 +20,39 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="@{data.showTime?View.VISIBLE:View.GONE}"
             app:time="@{data}" />
 
+        <com.xmd.app.widget.CircleAvatarView
+            android:id="@+id/avatarview"
+            android:layout_width="@dimen/avatarSizeSmall"
+            android:layout_height="@dimen/avatarSizeSmall"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/time"
+            android:layout_marginTop="4dp"
+            app:user="@{data.user}" />
+
         <LinearLayout
-            android:id="@+id/contentPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="48dp"
+            android:layout_below="@id/time"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="@dimen/avatarSizeSmall"
             android:layout_marginTop="4dp"
-            android:layout_weight="1">
-
-            <com.xmd.app.widget.CircleAvatarView
-                android:layout_width="@dimen/avatarSize"
-                android:layout_height="@dimen/avatarSize"
-                app:user="@{data.user}" />
+            android:layout_toRightOf="@id/avatarview">
 
             <FrameLayout
                 android:id="@+id/contentView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
+                android:layout_weight="@{data.contentWeight}"
                 android:background="@{data.getContentViewBackground(context)}"
                 android:onLongClick="@{(v)->data.onLongClick(v)}" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

@@ -18,7 +18,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
             android:background="@color/toolbarBackground"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -38,12 +38,12 @@
                     android:textColor="@color/toolbarTitleColor"
                     android:textSize="@dimen/toolbarTitleSize" />
 
-                <ImageView
+                <com.xmd.app.widget.CircleAvatarView
                     android:layout_width="@dimen/avatarSize"
                     android:layout_height="@dimen/avatarSize"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
-                    app:avatar="@{data.userAvatar}" />
+                    android:padding="4dp"
+                    app:user="@{data.user}" />
 
                 <LinearLayout
                     android:id="@+id/rightLinearLayout"

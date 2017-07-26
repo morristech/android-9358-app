@@ -112,6 +112,8 @@ public class ChatConstant {
     public static final String KEY_OVER_GAME_TYPE = "over";
     public static final String KEY_CANCEL_GAME_TYPE = "cancel";
     public static final String KEY_COUPON_PAID_TYPE = "paid";
+    public static final String KEY_COUPON_TYPE_DISCOUNT = "discount";
+    public static final String KEY_COUPON_TYPE_GIFT = "gift";
 
     public static final String KEY_REQUEST_GAME_STATUS = "request";
     public static final String KEY_ACCEPT_GAME_STATUS = "accept";

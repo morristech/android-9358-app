@@ -76,6 +76,22 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/menu_fast_reply"
+        style="@style/menu_setting_relative_style">
+
+        <ImageView
+            android:layout_width="@dimen/personal_item_icon_height"
+            android:layout_height="@dimen/personal_item_icon_height"
+            android:paddingLeft="@dimen/margin_2"
+            android:layout_centerVertical="true"
+            android:src="@drawable/slide_menu_fast_reply" />
+
+        <TextView
+            style="@style/menu_setting_text_style"
+            android:text="快捷回复设置" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/menu_about_us"
         style="@style/menu_setting_relative_style"
         android:layout_marginTop="@dimen/inter_space"

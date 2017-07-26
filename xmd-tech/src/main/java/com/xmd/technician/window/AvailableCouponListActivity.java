@@ -197,18 +197,30 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
             remainSendCount = mSelectedCouponInfo.size();
             for (CouponInfo couponInfo : mSelectedCouponInfo) {
                 if (!(ChatConstant.KEY_COUPON_PAID_TYPE).equals(couponInfo.couponType)) {
-                    String content = String.format(Locale.getDefault(), "<i>%s</i><span>%d</span>元<b>%s</b>", couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod);
-                    EaseCommonUtils.userGetCoupon(content, couponInfo.actId, "tech", chatId);
+                    EaseCommonUtils.userGetCoupon(getShareText(couponInfo), couponInfo.actId, "tech", chatId);
                 } else {
                     successCount++;
                     remainSendCount--;
                     MessageManager.getInstance().sendCouponMessage(
                             chatId,
-                            String.format(Locale.getDefault(), "<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod),
+                            getShareText(couponInfo),
                             couponInfo.actId, LoginTechnician.getInstance().getInviteCode());
                 }
             }
             checkDeliverResult();
+        }
+    }
+
+    private String getShareText(CouponInfo couponInfo) {
+        switch (couponInfo.couponType) {
+            case ChatConstant.KEY_COUPON_PAID_TYPE:
+                return String.format(Locale.getDefault(), "<i>求点钟</i>立减<span>%1$d</span>元<b>%2$s</b>", couponInfo.actValue, couponInfo.couponPeriod);
+            case ChatConstant.KEY_COUPON_TYPE_DISCOUNT:
+                return String.format(Locale.getDefault(), "<i>%s</i><span>%.1f</span>折<b>%s</b>", couponInfo.useTypeName, (float) couponInfo.actValue / 100, couponInfo.couponPeriod);
+            case ChatConstant.KEY_COUPON_TYPE_GIFT:
+                return String.format(Locale.getDefault(), "<i>%s</i><span>%s</span><b>%s</b>", couponInfo.useTypeName, couponInfo.actSubTitle, couponInfo.couponPeriod);
+            default:
+                return String.format(Locale.getDefault(), "<i>%s</i><span>%d</span>元<b>%s</b>", couponInfo.useTypeName, couponInfo.actValue, couponInfo.couponPeriod);
         }
     }
 

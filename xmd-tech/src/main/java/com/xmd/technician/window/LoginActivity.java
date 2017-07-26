@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.xmd.app.XmdActivityManager;
+import com.xmd.m.network.EventTokenExpired;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
@@ -257,5 +258,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         public void afterTextChanged(Editable s) {
 
         }
+    }
+
+    @Override
+    public void onTokenExpired(EventTokenExpired event) {
+        //do nothing
     }
 }

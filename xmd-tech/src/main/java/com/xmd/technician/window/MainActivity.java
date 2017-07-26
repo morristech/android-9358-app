@@ -17,6 +17,7 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.chat.XmdChat;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.UserInfoEvent;
@@ -109,6 +110,8 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_AUTO_CHECK_UPGRADE);
 
         EventBusSafeRegister.register(this);
+
+        XmdChat.getInstance().loadConversation();
     }
 
     @TargetApi(23)
@@ -288,7 +291,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mUser.setAvatar(event.bean.chatHeadUrl);
         mUser.setMarkName(event.bean.userNoteName);
         userService.saveUser(mUser);
-        if(event.appType == 1){
+        if (event.appType == 1) {
             switch (event.toDoType) {
                 case 1://聊天
                     // 判断emChatId是否存在

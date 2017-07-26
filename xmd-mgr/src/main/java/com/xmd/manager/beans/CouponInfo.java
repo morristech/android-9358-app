@@ -24,6 +24,7 @@ public class CouponInfo implements Parcelable, Cloneable {
     public String couponNo;
     public String actId;
     public String actTitle;
+    public String actSubTitle;
     public String couponType;
     public String actStatus;
     public String actStatusName;

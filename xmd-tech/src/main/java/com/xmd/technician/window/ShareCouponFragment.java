@@ -149,7 +149,8 @@ public class ShareCouponFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     private void initView() {
-        initTitleView(ResourceUtils.getString(R.string.copuon_fragment_title));
+        initTitleView("营销");
+        showAvatarInTitleBar();
         mGetTechCurrentInfoSubscription = RxBus.getInstance().toObservable(TechInfoResult.class).subscribe(
                 techCurrentResult -> handleTechCurrentResult(techCurrentResult));
         mShareCouponViewSubscription = RxBus.getInstance().toObservable(CardShareListResult.class).subscribe(

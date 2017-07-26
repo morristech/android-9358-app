@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -47,6 +46,9 @@ public abstract class ChatRowViewModel extends BaseViewModel {
     public ObservableBoolean progress = new ObservableBoolean();
     public ObservableBoolean error = new ObservableBoolean();
     public ObservableBoolean showTime = new ObservableBoolean();
+
+    private int paddingWeight = 100;
+    private int contentWeight = 0;
 
     public ChatRowViewModel(final ChatMessage chatMessage) {
         this.chatMessage = chatMessage;
@@ -200,18 +202,15 @@ public abstract class ChatRowViewModel extends BaseViewModel {
 
     //绑定子view
     public void bindSubView(View view) {
-        if (contentViewMatchParent()) {
-            View contentPanel = view.getRootView().findViewById(R.id.contentPanel);
-            if (contentPanel != null) {
-                contentPanel.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-                View contentView = view.getRootView().findViewById(R.id.contentView);
-                ((LinearLayout.LayoutParams) contentView.getLayoutParams()).weight = 1;
-            }
-        }
+        contentWeight = contentViewMatchParent() ? 1 : 0;
         ViewDataBinding binding = onBindView(view);
         if (binding != null) {
             binding.executePendingBindings();
         }
+    }
+
+    public int getContentWeight() {
+        return contentWeight;
     }
 
     //子view是否要match_parent
@@ -225,5 +224,10 @@ public abstract class ChatRowViewModel extends BaseViewModel {
 
     public User getUser() {
         return UserInfoServiceImpl.getInstance().getUserByChatId(chatMessage.getRemoteChatId());
+    }
+
+    @BindingAdapter("android:layout_weight")
+    public static void bindWeight(View view, int weight) {
+        ((LinearLayout.LayoutParams) view.getLayoutParams()).weight = weight;
     }
 }

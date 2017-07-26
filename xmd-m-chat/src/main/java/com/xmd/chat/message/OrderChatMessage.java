@@ -190,6 +190,7 @@ public class OrderChatMessage extends ChatMessage {
 
     public AppointmentData parseOrderData() {
         AppointmentData data = new AppointmentData();
+
         if (getCustomerName() != null) {
             data.setCustomerName(getCustomerName());
         }

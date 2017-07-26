@@ -21,6 +21,7 @@ import com.xmd.app.BaseViewModel;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.AccountManager;
 import com.xmd.chat.BR;
 import com.xmd.chat.ConversationManager;
@@ -199,5 +200,9 @@ public class ConversationListFragment extends BaseFragment {
 
     public void bindAvatar(ImageView view, String avatar) {
         BaseViewModel.bindCircleImage(view, avatar);
+    }
+
+    public User getUser() {
+        return UserInfoServiceImpl.getInstance().getCurrentUser();
     }
 }

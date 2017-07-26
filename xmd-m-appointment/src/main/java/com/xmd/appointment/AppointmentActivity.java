@@ -51,6 +51,7 @@ public class AppointmentActivity extends BaseActivity
 
         eventTag = getIntent().getStringExtra(Constants.EXTRA_EVENT_TAG);
         mData = (AppointmentData) getIntent().getSerializableExtra(Constants.EXTRA_DATA);
+
         mBinding.setData(mData);
         mBinding.setHandler(this);
 
@@ -84,10 +85,8 @@ public class AppointmentActivity extends BaseActivity
             mSelectedDuration.viewSelected.set(true);
         }
 
-        //若有用户ID，加载预约数据
-        if (mData.getCustomerId() != null && mData.getCustomerPhone() == null) {
-            loadSetting();
-        }
+        //加载预约数据
+        loadSetting();
         setBackVisible(false);
     }
 

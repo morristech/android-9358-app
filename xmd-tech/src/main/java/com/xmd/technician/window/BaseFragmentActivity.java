@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
+import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.msgctrl.RxBus;
@@ -30,6 +32,8 @@ public class BaseFragmentActivity extends com.xmd.app.BaseActivity {
     protected TextView mToolbarRight;
     protected Toolbar mToolbar;
     private ProgressDialog mProgressDialog;
+
+    protected CircleAvatarView avatarView;
 
     private Subscription mThrowableSubscription;
 
@@ -100,12 +104,21 @@ public class BaseFragmentActivity extends com.xmd.app.BaseActivity {
 
             mAppTitle = (TextView) findViewById(R.id.toolbar_title);
             mAppTitle.setText(getTitle());
+
+            avatarView = (CircleAvatarView) findViewById(R.id.avatarview);
         }
     }
 
     public void setBackVisible(boolean visible) {
         if (mBack != null) {
             mBack.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void showAvatarInTitleBar() {
+        if (avatarView != null) {
+            avatarView.setVisibility(View.VISIBLE);
+            avatarView.setUserInfo(UserInfoServiceImpl.getInstance().getCurrentUser());
         }
     }
 
