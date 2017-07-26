@@ -5,6 +5,7 @@ import com.xmd.cashier.BaseView;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.MemberPlanInfo;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
+import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
 
 /**
@@ -31,7 +32,7 @@ public interface MemberRechargeContract {
 
         void clearAmount();
 
-        void onPackageSet(MemberPlanInfo.PackagePlanItem planItem);
+        void onPackageSet(PackagePlanItem planItem);
 
         void clearPackage();
 

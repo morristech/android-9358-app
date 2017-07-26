@@ -15,23 +15,4 @@ public class MemberPlanInfo {
     public long id;
     public String name;
     public List<PackagePlanItem> packageList;
-
-
-    public class PackageItem {
-        public long id;
-        public int itemCount;
-        public String itemId;
-        public String name;
-        public int oriAmount;
-        public int type;
-    }
-
-    public class PackagePlanItem {
-        public int amount;
-        public int commissionAmount;
-        public long id;
-        public String name;
-        public int type;
-        public List<PackageItem> packageItems;
-    }
 }

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.dal.bean.MemberPlanInfo;
+import com.xmd.cashier.dal.bean.PackagePlanItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ import java.util.List;
 
 public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHolder> {
     private Context mContext;
-    private List<MemberPlanInfo.PackageItem> mData = new ArrayList<>();
+    private List<PackagePlanItem.PackageItem> mData = new ArrayList<>();
     private CallBack mCallBack;
 
-    public void setData(List<MemberPlanInfo.PackageItem> list) {
+    public void setData(List<PackagePlanItem.PackageItem> list) {
         mData.addAll(list);
         notifyDataSetChanged();
     }
@@ -39,7 +39,7 @@ public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(PlanItemAdapter.ViewHolder holder, int position) {
-        MemberPlanInfo.PackageItem item = mData.get(position);
+        PackagePlanItem.PackageItem item = mData.get(position);
         String content = null;
         switch (item.type) {
             case AppConstants.MEMBER_PLAN_ITEM_TYPE_CREDIT:
