@@ -234,7 +234,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
         // 设置套餐
         MemberManager.getInstance().setPackageId(String.valueOf(item.id));
         MemberManager.getInstance().setPackageAmount(item.amount);
-        MemberManager.getInstance().setPackageName(item.name);
+        MemberManager.getInstance().setPackageName("套餐" + item.name);
         MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE);
     }
 

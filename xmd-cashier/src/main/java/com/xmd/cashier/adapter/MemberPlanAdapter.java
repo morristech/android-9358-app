@@ -72,7 +72,7 @@ public class MemberPlanAdapter extends RecyclerView.Adapter<MemberPlanAdapter.Vi
             holder.mSelectImg.setVisibility(View.GONE);
             holder.mRechargeDesc.setTextColor(mContext.getResources().getColor(R.color.colorText4));
         }
-        holder.mPlanName.setText(packagePlan.name);
+        holder.mPlanName.setText("套餐" + packagePlan.name);
         holder.mPlanAmount.setText(Utils.moneyToString(packagePlan.amount));
         if (packagePlan.packageItems != null && packagePlan.packageItems.size() > 0) {
             holder.mSendDesc.setVisibility(View.VISIBLE);
