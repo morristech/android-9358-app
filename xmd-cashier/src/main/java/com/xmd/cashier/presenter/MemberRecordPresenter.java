@@ -168,7 +168,7 @@ public class MemberRecordPresenter implements MemberRecordContract.Presenter {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
                         // 重打
-                        MemberManager.getInstance().printInfo(info, retry);
+                        MemberManager.getInstance().printInfo(info, retry, false);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }

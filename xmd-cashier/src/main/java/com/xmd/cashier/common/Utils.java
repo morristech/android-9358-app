@@ -418,4 +418,22 @@ public class Utils {
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;
     }
+
+    // 保留手机号码前3后4
+    public static String formatPhone(String phone) {
+        if (TextUtils.isEmpty(phone)) {
+            return null;
+        } else {
+            return phone.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+        }
+    }
+
+    // 保留后4位
+    public static String formatCode(String code) {
+        if (TextUtils.isEmpty(code)) {
+            return null;
+        } else {
+            return code.replaceAll("\\d*(\\d{4})", "****$1");
+        }
+    }
 }

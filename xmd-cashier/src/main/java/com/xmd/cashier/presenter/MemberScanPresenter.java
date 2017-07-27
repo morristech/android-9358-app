@@ -123,7 +123,8 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
                         // 扫码充值
-                        MemberManager.getInstance().printInfo(memberRecordInfo, false);
+                        MemberManager.getInstance().printInfo(memberRecordInfo, false, false);
+                        MemberManager.getInstance().printInfo(memberRecordInfo, false, true);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }
@@ -131,5 +132,8 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+        MemberManager.getInstance().newTrade();
+        MemberManager.getInstance().newRechargeProcess();
+        mView.finishSelf();
     }
 }

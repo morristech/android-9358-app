@@ -51,6 +51,7 @@ public class Trade {
     public int memberPoints; //交易后会员获得的积分
     public String memberCanDiscount;// Y打折，N不打折
     public String memberPayCertificate;//会员支付凭证
+    public MemberRecordInfo memberRecordInfo;
 
     /**
      * 收银台支付

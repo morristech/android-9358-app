@@ -95,12 +95,17 @@ public class PosImpl implements IPos {
     }
 
     @Override
+    public void printText(String text, boolean highLight) {
+
+    }
+
+    @Override
     public void printRight(String text) {
 
     }
 
     @Override
-    public void printText(String text, int gravity) {
+    public void printRight(String text, boolean highLight) {
 
     }
 
@@ -111,7 +116,17 @@ public class PosImpl implements IPos {
     }
 
     @Override
+    public void printText(String left, String right, boolean highLight) {
+
+    }
+
+    @Override
     public void printCenter(String text) {
+
+    }
+
+    @Override
+    public void printCenter(String text, boolean highLight) {
 
     }
 

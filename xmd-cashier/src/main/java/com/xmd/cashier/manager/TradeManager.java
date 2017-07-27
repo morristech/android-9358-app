@@ -20,6 +20,7 @@ import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.bean.ClubQrcodeBytes;
 import com.xmd.cashier.dal.bean.MemberInfo;
+import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.bean.VerificationItem;
 import com.xmd.cashier.dal.net.RequestConstant;
@@ -271,6 +272,8 @@ public class TradeManager {
                                 } else {
                                     if (mTrade.withoutPay) {
                                         print();
+                                    } else {
+                                        printMemberPay(mTrade.memberRecordInfo);
                                     }
                                     newTrade();
                                 }
@@ -816,6 +819,12 @@ public class TradeManager {
     }
 
     /*********************************************打印相关******************************************/
+    // 打印会员消费信息
+    public void printMemberPay(MemberRecordInfo info) {
+        MemberManager.getInstance().printInfo(info, false, false);
+        MemberManager.getInstance().printInfo(info, false, true);
+    }
+
     // 打印在线买单交易信息
     public void printOnlinePay() {
         if (!SPManager.getInstance().getOnlinePaySwitch()) {
@@ -834,7 +843,7 @@ public class TradeManager {
         mPos.printText("减免", Utils.moneyToStringEx(mTrade.getCouponDiscountMoney() + mTrade.getUserDiscountMoney()) + " 元");
 
         mPos.printDivide();
-        mPos.printRight("实收 " + Utils.moneyToStringEx(mTrade.getOnlinePayPaidMoney()) + " 元");
+        mPos.printRight("实收 " + Utils.moneyToStringEx(mTrade.getOnlinePayPaidMoney()) + " 元", true);
         mPos.printDivide();
 
         mPos.printText("交易号:", TextUtils.isEmpty(mTrade.getOnlinePayId()) ? mTrade.tradeNo : mTrade.getOnlinePayId());
@@ -861,9 +870,12 @@ public class TradeManager {
         }
         XLogger.i("print trade info ....");
         mTrade.qrCodeBytes = getQRCodeSync(); //获取二维码
+        mPos.printCenter(AccountManager.getInstance().getClubName());
+        mPos.printCenter("(消费单)");
+        mPos.printDivide();
         mPos.printText("交易号 ：" + mTrade.tradeNo);
-        mPos.printText("订单金额：", "￥" + Utils.moneyToStringEx(mTrade.getOriginMoney()));
-        mPos.printText("减免金额：", "￥" + Utils.moneyToStringEx(mTrade.getReallyDiscountMoney() + mTrade.getMemberPaidDiscountMoney()));
+        mPos.printText("订单金额：", "￥" + Utils.moneyToStringEx(mTrade.getOriginMoney()), true);
+        mPos.printText("减免金额：", "￥" + Utils.moneyToStringEx(mTrade.getReallyDiscountMoney() + mTrade.getMemberPaidDiscountMoney()), true);
         XLogger.i("减扣类型：" + mTrade.getDiscountType());
         switch (mTrade.getDiscountType()) {
             case Trade.DISCOUNT_TYPE_COUPON:
@@ -878,7 +890,7 @@ public class TradeManager {
                 break;
         }
         mPos.printText("|--会员折扣：", "￥" + Utils.moneyToStringEx(mTrade.getMemberPaidDiscountMoney()));
-        mPos.printText("实收金额：", "￥" + Utils.moneyToStringEx(mTrade.getPosMoney() + mTrade.getMemberPaidMoney()));
+        mPos.printText("实收金额：", "￥" + Utils.moneyToStringEx(mTrade.getPosMoney() + mTrade.getMemberPaidMoney()), true);
         mPos.printText("|--" + (TextUtils.isEmpty(mTrade.getPosPayTypeString()) ? "其他支付" : mTrade.getPosPayTypeString()) + "：", "￥" + Utils.moneyToStringEx(mTrade.getPosMoney()));
         mPos.printText("|--会员支付：", "￥" + Utils.moneyToStringEx(mTrade.getMemberPaidMoney()));
 

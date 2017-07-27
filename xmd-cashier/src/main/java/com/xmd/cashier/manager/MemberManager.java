@@ -478,19 +478,20 @@ public class MemberManager {
         });
     }
 
-    public void printInfo(MemberRecordInfo info, boolean retry) {
+    public void printInfo(MemberRecordInfo info, boolean retry, boolean keep) {
         mPos.printCenter(AccountManager.getInstance().getClubName());
         if (retry) {
-            mPos.printCenter("(补打小票)");
+            mPos.printCenter("--补打小票--");
+        } else {
+            mPos.printCenter(keep ? "商户存根" : "客户联");
         }
         mPos.printDivide();
-        mPos.printText("会员卡号  " + info.cardNo);
+        mPos.printText("会员卡号  " + Utils.formatCode(info.cardNo));
         mPos.printText("会员等级  " + info.memberTypeName);
         switch (info.tradeType) {
             case AppConstants.MEMBER_TRADE_TYPE_INCOME:
                 // 充值:
                 mPos.printText("充值内容  " + info.description);
-                mPos.printText("支付金额  " + Utils.moneyToStringEx(info.orderAmount) + "元");
                 if (info.packageInfo != null && info.packageInfo.packageItems != null && !info.packageInfo.packageItems.isEmpty()) {
                     mPos.printText("套餐优惠");
                     for (PackagePlanItem.PackageItem item : info.packageInfo.packageItems) {
@@ -516,19 +517,23 @@ public class MemberManager {
                         }
                     }
                 }
+                mPos.printDivide();
+                mPos.printText("支付金额  ", Utils.moneyToStringEx(info.orderAmount) + "元", true);
+                mPos.printText("账户余额  ", Utils.moneyToStringEx(info.accountAmount) + "元", true);
+                mPos.printDivide();
                 break;
             case AppConstants.MEMBER_TRADE_TYPE_PAY:
                 // 消费:消费金额|折扣信息|实收金额|当前余额
                 mPos.printText("消费金额  " + Utils.moneyToStringEx(info.orderAmount) + "元");
                 mPos.printText("折扣金额  " + Utils.moneyToStringEx(info.discountAmount) + "元");
-                mPos.printText("实收金额  " + Utils.moneyToStringEx(info.amount) + "元");
+                mPos.printDivide();
+                mPos.printText("实收金额  ", Utils.moneyToStringEx(info.amount) + "元", true);
+                mPos.printText("账户余额  ", Utils.moneyToStringEx(info.accountAmount) + "元", true);
+                mPos.printDivide();
                 break;
             default:
                 break;
         }
-        mPos.printDivide();
-        mPos.printRight("余额 " + Utils.moneyToStringEx(info.accountAmount) + " 元");
-        mPos.printDivide();
 
         mPos.printText("交易号:", info.tradeNo);
         mPos.printText("付款方式:", info.payChannelName);
@@ -538,8 +543,10 @@ public class MemberManager {
         if (!TextUtils.isEmpty(info.techName)) {
             mPos.printText("营销人员:", info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));
         }
-        mPos.printBitmap(TradeManager.getInstance().getClubQRCodeSync());
-        mPos.printCenter("扫一扫，关注9358，约技师，享优惠");
+        if (!keep) {
+            mPos.printBitmap(TradeManager.getInstance().getClubQRCodeSync());
+            mPos.printCenter("扫一扫，关注9358，约技师，享优惠");
+        }
         mPos.printEnd();
     }
 }

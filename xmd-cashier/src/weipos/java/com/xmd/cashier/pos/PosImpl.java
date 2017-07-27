@@ -261,43 +261,62 @@ public class PosImpl implements IPos {
 
     @Override
     public void printText(String text) {
-        printText(text, GRAVITY_LEFT);
+        printText(text, false);
+    }
+
+    @Override
+    public void printText(String text, boolean highLight) {
+        printText(text, GRAVITY_LEFT, highLight);
     }
 
     @Override
     public void printRight(String text) {
-        printText(text, GRAVITY_RIGHT);
+        printRight(text, false);
+    }
+
+    @Override
+    public void printRight(String text, boolean highLight) {
+        printText(text, GRAVITY_RIGHT, highLight);
     }
 
     @Override
     public void printCenter(String text) {
-        printText(text, GRAVITY_CENTER);
+        printCenter(text, false);
     }
 
     @Override
-    public void printText(String text, int gravity) {
+    public void printCenter(String text, boolean highLight) {
+        printText(text, GRAVITY_CENTER, highLight);
+    }
+
+    private void printText(String text, int gravity, boolean highLight) {
         if (mLatticePrinter != null) {
             String printText;
             switch (gravity) {
                 case GRAVITY_CENTER:
-                    printText = getBlankBySize((mediumSize - stringSize(text)) / 2) + text;
+                    printText = getBlankBySize(((highLight ? largeSize : mediumSize) - stringSize(text)) / 2) + text;
                     break;
                 case GRAVITY_RIGHT:
-                    printText = getBlankBySize(mediumSize - stringSize(text)) + text;
+                    printText = getBlankBySize((highLight ? largeSize : mediumSize) - stringSize(text)) + text;
                     break;
                 default:
                     printText = text;
                     break;
             }
-            mLatticePrinter.printText(printText + "\n", LatticePrinter.FontFamily.SONG, LatticePrinter.FontSize.MEDIUM, LatticePrinter.FontStyle.NORMAL);
+            mLatticePrinter.printText(printText + "\n", LatticePrinter.FontFamily.SONG, (highLight ? LatticePrinter.FontSize.LARGE : LatticePrinter.FontSize.MEDIUM), LatticePrinter.FontStyle.NORMAL);
         }
     }
 
     @Override
     public void printText(String left, String right) {
+        printText(left, right, false);
+    }
+
+    @Override
+    public void printText(String left, String right, boolean highLight) {
         if (mLatticePrinter != null) {
-            String printText = left + getBlankBySize(mediumSize - stringSize(left) - stringSize(right)) + right;
-            mLatticePrinter.printText(printText + "\n", LatticePrinter.FontFamily.SONG, LatticePrinter.FontSize.MEDIUM, LatticePrinter.FontStyle.NORMAL);
+            String printText = left + getBlankBySize((highLight ? largeSize : mediumSize) - stringSize(left) - stringSize(right)) + right;
+            mLatticePrinter.printText(printText + "\n", LatticePrinter.FontFamily.SONG, (highLight ? LatticePrinter.FontSize.LARGE : LatticePrinter.FontSize.MEDIUM), LatticePrinter.FontStyle.NORMAL);
         }
     }
 

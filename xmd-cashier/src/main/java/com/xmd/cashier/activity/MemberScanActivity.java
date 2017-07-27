@@ -58,11 +58,10 @@ public class MemberScanActivity extends BaseActivity implements MemberScanContra
             @Override
             public void onClick(View v) {
                 mPresenter.printResult();
-                finishSelf();
             }
         });
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

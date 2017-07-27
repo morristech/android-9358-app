@@ -254,7 +254,8 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
                         // POS充值:银联|现金
-                        MemberManager.getInstance().printInfo(info, false);
+                        MemberManager.getInstance().printInfo(info, false, false);
+                        MemberManager.getInstance().printInfo(info, false, true);
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }

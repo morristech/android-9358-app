@@ -75,13 +75,13 @@ public class BillManager {
     public void print(BillInfo info) {
         String format = MainApplication.getInstance().getString(R.string.cashier_money);
         mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(消费单)");
-        mPos.printCenter("--重打小票--");
+        mPos.printCenter("(消费账单)");
+        mPos.printCenter("--补打小票--");
 
         mPos.printDivide();
-        mPos.printText("订单金额: ", String.format(format, Utils.moneyToStringEx(info.originMoney)));
+        mPos.printText("订单金额: ", String.format(format, Utils.moneyToStringEx(info.originMoney)), true);
 
-        mPos.printText("减免金额: ", String.format(format, Utils.moneyToStringEx(info.userDiscountMoney + info.memberPayDiscountMoney + info.couponDiscountMoney)));
+        mPos.printText("减免金额: ", String.format(format, Utils.moneyToStringEx(info.userDiscountMoney + info.memberPayDiscountMoney + info.couponDiscountMoney)), true);
         switch (info.discountType) {
             case Trade.DISCOUNT_TYPE_COUPON:
                 mPos.printText("|--优惠金额: ", String.format(format, Utils.moneyToStringEx(info.couponDiscountMoney)));
@@ -96,7 +96,7 @@ public class BillManager {
         }
         mPos.printText("|--会员折扣: ", String.format(format, Utils.moneyToStringEx(info.memberPayDiscountMoney)));
 
-        mPos.printText("实收金额: ", String.format(format, Utils.moneyToStringEx(info.memberPayMoney + info.posPayMoney)));
+        mPos.printText("实收金额: ", String.format(format, Utils.moneyToStringEx(info.memberPayMoney + info.posPayMoney)), true);
         mPos.printText("|--" + Utils.getPayTypeString(info.posPayType) + ": ", String.format(format, Utils.moneyToStringEx(info.posPayMoney)));
         mPos.printText("|--会员支付: ", String.format(format, Utils.moneyToStringEx(info.memberPayMoney)));
 

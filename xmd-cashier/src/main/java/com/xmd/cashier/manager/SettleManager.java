@@ -112,18 +112,18 @@ public class SettleManager {
             mPos.printCenter(AccountManager.getInstance().getClubName());
             mPos.printCenter("(结算清单)");
             if (retry) {
-                mPos.printCenter("--重打小票--");
+                mPos.printCenter("--补打小票--");
             }
             mPos.printDivide();
 
-            mPos.printText("订单总金额", "￥" + Utils.moneyToStringEx(info.orderTotalMoney));
+            mPos.printText("订单总金额", "￥" + Utils.moneyToStringEx(info.orderTotalMoney), true);
 
-            mPos.printText("减免总金额", "￥" + Utils.moneyToStringEx(info.deductTotalMoney));
+            mPos.printText("减免总金额", "￥" + Utils.moneyToStringEx(info.deductTotalMoney), true);
             mPos.printText("    优惠减免：", "￥" + Utils.moneyToStringEx(info.preferentialDeduct) + "  ");
             mPos.printText("    手动减免：", "￥" + Utils.moneyToStringEx(info.manualDeduct) + "  ");
             mPos.printText("    会员折扣：", "￥" + Utils.moneyToStringEx(info.discountDeduct) + "  ");
 
-            mPos.printText("实收总金额", "￥" + Utils.moneyToStringEx(info.incomeTotalMoney));
+            mPos.printText("实收总金额", "￥" + Utils.moneyToStringEx(info.incomeTotalMoney), true);
             mPos.printText("    银行卡实收：", "￥" + Utils.moneyToStringEx(info.bankCardIncome) + "  ");
             mPos.printText("    现金实收：", "￥" + Utils.moneyToStringEx(info.moneyIncome) + "  ");
             mPos.printText("    微信实收：", "￥" + Utils.moneyToStringEx(info.wechatIncome) + "  ");

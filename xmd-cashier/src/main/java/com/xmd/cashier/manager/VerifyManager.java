@@ -566,7 +566,7 @@ public class VerifyManager {
                 mPos.printCenter("(核销小票)");
                 mPos.printCenter("\n");
                 mPos.printText("客户:", coupon.userName);
-                mPos.printText("手机:", coupon.userPhone);
+                mPos.printText("手机:", Utils.formatPhone(coupon.userPhone));
                 mPos.printText("核销类型:", "优惠券");
                 mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
                 mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
@@ -585,7 +585,7 @@ public class VerifyManager {
                 mPos.printCenter("(核销小票)");
                 mPos.printCenter("\n");
                 mPos.printText("客户:", paidCoupon.userName);
-                mPos.printText("手机:", paidCoupon.userPhone);
+                mPos.printText("手机:", Utils.formatPhone(paidCoupon.userPhone));
                 mPos.printText("核销类型:", "点钟券");
                 mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
                 mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
@@ -603,7 +603,7 @@ public class VerifyManager {
                 mPos.printCenter("(核销小票)");
                 mPos.printCenter("\n");
                 mPos.printText("客户:", serviceCoupon.userName);
-                mPos.printText("手机:", serviceCoupon.userPhone);
+                mPos.printText("手机:", Utils.formatPhone(serviceCoupon.userPhone));
                 mPos.printText("核销类型:", "项目券");
                 mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
                 mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
@@ -641,7 +641,7 @@ public class VerifyManager {
                 mPos.printCenter("(核销小票)");
                 mPos.printCenter("\n");
                 mPos.printText("客户:", orderInfo.customerName);
-                mPos.printText("手机:", orderInfo.phoneNum);
+                mPos.printText("手机:", Utils.formatPhone(orderInfo.phoneNum));
                 mPos.printText("核销类型:", "付费预约");
                 mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
                 mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
@@ -665,7 +665,7 @@ public class VerifyManager {
                 mPos.printCenter("(核销小票)");
                 mPos.printCenter("\n");
                 mPos.printText("客户:", prizeInfo.userName);
-                mPos.printText("手机:", prizeInfo.telephone);
+                mPos.printText("手机:", Utils.formatPhone(prizeInfo.telephone));
                 mPos.printText("核销类型:", "奖品");
                 mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
                 mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
@@ -682,7 +682,7 @@ public class VerifyManager {
                 mPos.printCenter("(核销小票)");
                 mPos.printCenter("\n");
                 mPos.printText("客户:", treatInfo.userName);
-                mPos.printText("手机:", treatInfo.userPhone);
+                mPos.printText("手机:", Utils.formatPhone(treatInfo.userPhone));
                 mPos.printText("核销类型:", "会员请客");
                 mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
                 mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);

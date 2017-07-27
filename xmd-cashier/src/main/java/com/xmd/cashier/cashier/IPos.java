@@ -41,17 +41,22 @@ public interface IPos {
     // 默认居左
     void printText(String text);
 
+    void printText(String text, boolean highLight);
+
     // 居右
     void printRight(String text);
+
+    void printRight(String text, boolean highLight);
 
     // 居中
     void printCenter(String text);
 
-    // 通用
-    void printText(String text, int gravity);
+    void printCenter(String text, boolean highLight);
 
     // 效果:left居左 right居右 huipos未实现
     void printText(String left, String right);
+
+    void printText(String left, String right, boolean highLight);
 
     // 效果:打印分隔线 huipos空行
     void printDivide();

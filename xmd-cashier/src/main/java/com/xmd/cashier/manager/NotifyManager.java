@@ -212,18 +212,18 @@ public class NotifyManager {
 
     // 打印预约订单小票
     public void print(OrderRecordInfo info, boolean retry) {
-        mPos.printCenter("小摩豆预约订单");
+        mPos.printCenter(AccountManager.getInstance().getClubName());
+        mPos.printCenter("(预约订单)");
         if (retry) {
-            mPos.printCenter("--重打小票--");
+            mPos.printCenter("--补打小票--");
         }
-        mPos.printCenter("\n");
         mPos.printDivide();
-        mPos.printText("客户: ", (TextUtils.isEmpty(info.phoneNum) ? info.customerName : String.format("%s(%s)", info.customerName, info.phoneNum)));
+        mPos.printText("客户: ", (TextUtils.isEmpty(info.phoneNum) ? info.customerName : String.format("%s(%s)", info.customerName, Utils.formatPhone(info.phoneNum))));
         mPos.printText("技师: ", TextUtils.isEmpty(info.techSerialNo) ? info.techName : String.format("%s[%s]", info.techName, info.techSerialNo));
         mPos.printText("项目: ", TextUtils.isEmpty(info.itemName) ? "到店选择" : info.itemName);
-        mPos.printDivide();
         mPos.printText("到店: ", info.appointTime);
-        mPos.printText("已付: ", info.downPayment + "元");
+        mPos.printDivide();
+        mPos.printRight("已付: " + info.downPayment + "元", true);
         mPos.printDivide();
         mPos.printText("订单编号: ", info.id);
         mPos.printText("下单时间: ", info.createdAt);
@@ -273,14 +273,14 @@ public class NotifyManager {
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(结账单)");
         if (retry) {
-            mPos.printCenter("--重打小票--");
+            mPos.printCenter("--补打小票--");
         }
 
         mPos.printDivide();
         mPos.printText("消费", Utils.moneyToStringEx(info.originalAmount) + " 元");
         mPos.printText("减免", Utils.moneyToStringEx(info.originalAmount - info.payAmount) + " 元");
         mPos.printDivide();
-        mPos.printRight("实收 " + Utils.moneyToStringEx(info.payAmount) + " 元");
+        mPos.printRight("实收 " + Utils.moneyToStringEx(info.payAmount) + " 元", true);
         mPos.printDivide();
         mPos.printText("交易号: ", info.payId);
         mPos.printText("付款方式: ", "小摩豆在线买单");

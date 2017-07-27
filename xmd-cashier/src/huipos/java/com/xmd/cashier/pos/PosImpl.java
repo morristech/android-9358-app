@@ -289,8 +289,18 @@ public class PosImpl implements IPos {
     }
 
     @Override
+    public void printText(String text, boolean highLight) {
+        printText(text);
+    }
+
+    @Override
     public void printRight(String text) {
         printText(text, GRAVITY_RIGHT);
+    }
+
+    @Override
+    public void printRight(String text, boolean highLight) {
+        printRight(text);
     }
 
     @Override
@@ -299,7 +309,11 @@ public class PosImpl implements IPos {
     }
 
     @Override
-    public void printText(String text, int gravity) {
+    public void printCenter(String text, boolean highLight) {
+        printCenter(text);
+    }
+
+    private void printText(String text, int gravity) {
         if (!text.endsWith("\n")) {
             text += "\n";
         }
@@ -309,6 +323,11 @@ public class PosImpl implements IPos {
     @Override
     public void printText(String left, String right) {
         printText(left + right, GRAVITY_LEFT);
+    }
+
+    @Override
+    public void printText(String left, String right, boolean highLight) {
+        printText(left, right);
     }
 
     @Override
@@ -332,6 +351,11 @@ public class PosImpl implements IPos {
     @Override
     public void textToSound(String text) {
 
+    }
+
+    @Override
+    public String getMagneticReaderInfo() {
+        return null;
     }
 
     private void printerFlush() {

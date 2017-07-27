@@ -7,19 +7,13 @@ import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberCashierContract;
-import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.Callback0;
-import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 
-import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 17-7-22.
@@ -92,7 +86,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
             public void onSuccess(MemberRecordResult o) {
                 mView.hideLoading();
                 // 会员帐号手机号
-                print(o.getRespData());
+                TradeManager.getInstance().getCurrentTrade().memberRecordInfo = o.getRespData();
                 TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
                     @Override
                     public void onFinished(Void result) {
@@ -119,21 +113,5 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
         }
         UiNavigation.gotoConfirmActivity(mContext, null);
         mView.finishSelf();
-    }
-
-    private void print(final MemberRecordInfo info) {
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        // POS充值:银联|现金
-                        MemberManager.getInstance().printInfo(info, false);
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
     }
 }
