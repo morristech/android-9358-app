@@ -148,10 +148,6 @@ public class MemberManager {
         mCardProcess.getMemberInfo().gender = gender;
     }
 
-    public void setCardTechInfo(TechInfo info) {
-        mCardProcess.setTechInfo(info);
-    }
-
     public void setCardNo(String cardNo) {
         mCardProcess.getMemberInfo().cardNo = cardNo;
     }
@@ -168,9 +164,7 @@ public class MemberManager {
     public Subscription requestCard(final Callback<MemberCardResult> callback) {
         MemberInfo info = mCardProcess.getMemberInfo();
         Observable<MemberCardResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .cardMemberInfo(AccountManager.getInstance().getToken(), info.birth, info.gender, info.cardNo,
-                        mCardProcess.getTechInfo().id,
-                        info.phoneNum, info.name);
+                .cardMemberInfo(AccountManager.getInstance().getToken(), info.birth, info.gender, info.cardNo, info.phoneNum, info.name);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberCardResult>() {
             @Override
             public void onCallbackSuccess(MemberCardResult result) {

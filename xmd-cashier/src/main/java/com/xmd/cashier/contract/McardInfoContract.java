@@ -2,7 +2,6 @@ package com.xmd.cashier.contract;
 
 import com.xmd.cashier.BasePresenter;
 import com.xmd.cashier.BaseView;
-import com.xmd.cashier.dal.bean.TechInfo;
 
 /**
  * Created by zr on 17-7-11.
@@ -11,12 +10,6 @@ import com.xmd.cashier.dal.bean.TechInfo;
 public interface McardInfoContract {
     interface Presenter extends BasePresenter {
         void onConfirm();
-
-        void onTechClick();
-
-        void onTechSelect(TechInfo info);
-
-        void onTechDelete();
 
         void onGenderSelect(String gender);
 
@@ -29,10 +22,6 @@ public interface McardInfoContract {
 
     interface View extends BaseView<Presenter> {
         void showInfo(String phone, String name);
-
-        void showTechInfo(TechInfo info);
-
-        void deleteTechInfo();
 
         void showBirth(String birth);
 

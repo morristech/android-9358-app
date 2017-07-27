@@ -225,9 +225,10 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/activity_normal_margin"
                     android:paddingRight="@dimen/activity_normal_margin"
-                    android:text="删除"
+                    android:text="删除重选"
                     android:textColor="@color/selector_text_black_gray"
-                    android:textSize="@dimen/font_size_14" />
+                    android:textSize="@dimen/font_size_14"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <View
