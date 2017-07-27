@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/activity_normal_margin"
-                    android:text="充值会员"
+                    android:text="充值"
                     android:textColor="@color/colorWhite" />
 
                 <LinearLayout
