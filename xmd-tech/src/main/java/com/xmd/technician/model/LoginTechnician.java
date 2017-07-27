@@ -346,6 +346,9 @@ public class LoginTechnician {
             //已经登出了，不再次调用
             return;
         }
+        //清除个人数据
+        SharedPreferenceHelper.setCustomerService(null);
+        SharedPreferenceHelper.setRoles(null);
 
         //发送登出事件
         needSendLoginEvent = true;
