@@ -80,6 +80,7 @@ public class XmdChat {
             for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
                 User user = ConversationManager.getInstance().parseUserFromConversation(conversation);
                 if (user != null) {
+                    XLogger.i("found user: " + user);
                     UserInfoServiceImpl.getInstance().saveUser(user);
                 }
                 conversation.clear(); //清除加载的会话数据，避免聊天窗口加载出错

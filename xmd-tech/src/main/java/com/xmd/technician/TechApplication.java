@@ -78,7 +78,7 @@ public class TechApplication extends MultiDexApplication {
             if (processName.contains(":pushservice")) {
                 Logger.v("getui process Start !");
             } else {
-                Logger.v("Technician initialize !");
+                Logger.v("CurrentUser initialize !");
                 appContext = getApplicationContext();
 
                 WindowManager windowManager = (WindowManager) appContext.getSystemService(WINDOW_SERVICE);

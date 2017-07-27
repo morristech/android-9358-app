@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.technician.Adapter.PageFragmentPagerAdapter;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.CreditAccountResult;
@@ -78,6 +79,7 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
     private int currentIndex;
     private int screenWidth;
     private int exChangeLimitation;
+    private int exChangeRadio;
     private List<Fragment> mFragmentViews;
     private PageFragmentPagerAdapter mPageFragmentPagerAdapter;
 
@@ -122,7 +124,10 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
                 result -> handlerCreditAmount(result)
         );
         mCreditStatusSubscription = RxBus.getInstance().toObservable(CreditStatusResult.class).subscribe(
-                statusResult -> exChangeLimitation = statusResult.respData.exchangeLimitation
+                statusResult -> {
+                    exChangeRadio = statusResult.respData.exchangeRatio;
+                    exChangeLimitation = statusResult.respData.exchangeLimitation;
+                }
         );
         initImageView();
         initViewPager();
@@ -204,6 +209,10 @@ public class UserCreditCenterActivity extends BaseActivity implements BaseFragme
                 break;
             case R.id.credit_exchange:
                 //兑换积分
+                if (exChangeRadio <= 0) {
+                    XToast.show("无法兑换，会所未设置兑换比例");
+                    return;
+                }
                 if (mTechCreditTotal > exChangeLimitation) {
                     Intent intent = new Intent(UserCreditCenterActivity.this, CreditExchangeActivity.class);
                     intent.putExtra(RequestConstant.KEY_UER_CREDIT_AMOUNT, mTechCreditTotal);

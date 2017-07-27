@@ -1,5 +1,6 @@
 package com.xmd.app.user;
 
+import com.shidou.commonlibrary.Callback;
 import com.xmd.app.IFunctionInit;
 
 /**
@@ -8,6 +9,11 @@ import com.xmd.app.IFunctionInit;
  */
 
 public interface UserInfoService extends IFunctionInit {
+    //加载用户信息
+    void loadUserInfoByUserId(String userId, Callback<User> callback);
+
+    void loadUserInfoByChatId(String chatId, Callback<User> callback);
+
     //聊天ID获取用户信息
     User getUserByChatId(String chatId);
 

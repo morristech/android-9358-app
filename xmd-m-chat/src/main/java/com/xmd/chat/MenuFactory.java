@@ -189,7 +189,7 @@ public class MenuFactory {
                 data.setCustomerId(remoteUser.getId());
                 data.setCustomerName(remoteUser.getName());
                 User user = AccountManager.getInstance().getUser();
-                boolean fixTech = user.getRoles() != null && !user.getRoles().contains(User.ROLE_FLOOR);
+                boolean fixTech = user.getUserRoles() != null && !user.getUserRoles().contains(User.ROLE_FLOOR);
                 if (fixTech) {
                     Technician tech = new Technician();
                     tech.setId(user.getId());

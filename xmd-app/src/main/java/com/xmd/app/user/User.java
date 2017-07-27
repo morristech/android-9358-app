@@ -10,27 +10,32 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable {
-    private static final long serialVersionUID = 88750009432710L;
+    private static final long serialVersionUID = 88750009432718L;
 
     public final static String ROLE_USER = "user"; //客户
     public final static String ROLE_TECH = "tech";//技师
     public final static String ROLE_FLOOR = "floor_staff";//楼面
     public final static String ROLE_MANAGER = "club_manager";//管理者
 
-    private String id; //用户ID
+    public final static String USER_TYPE_USER = "user";
+    public final static String USER_TYPE_TECH = "tech";
+    public final static String USER_TYPE_MANAGER = "manager";
+
+    private String userId; //用户ID
+    private String chatId; //用户聊天ID
     private String avatar; //用户头像
     private String name; //用户名称
-    private String chatId; //用户聊天ID
-    private String chatPassword; //聊天密码，当前登录用户设置
+    private String userType;
+    private String userRoles;
+    private String telephone;
+    private ContactPermission contactPermission;
+
+    private String markName; //用户备注名
 
     private String clubId;
     private String clubName;
-
     private String techNo;
-
-    private String roles;
-
-    private String markName;
+    private String chatPassword; //聊天密码，当前登录用户设置
 
     //返回显示的名字，优先显示备注名
     public String getShowName() {
@@ -41,15 +46,23 @@ public class User implements Serializable {
     }
 
     public User(String id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public String getId() {
-        return id;
+        return userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public String getAvatar() {
@@ -77,12 +90,12 @@ public class User implements Serializable {
         this.chatId = chatId;
     }
 
-    public String getRoles() {
-        return roles;
+    public String getUserRoles() {
+        return userRoles;
     }
 
-    public void setRoles(String roles) {
-        this.roles = roles;
+    public void setUserRoles(String roles) {
+        this.userRoles = roles;
     }
 
     public String getMarkName() {
@@ -125,12 +138,51 @@ public class User implements Serializable {
         this.techNo = techNo;
     }
 
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getUserType() {
+        if (userType != null) {
+            return userType;
+        }
+        if (!TextUtils.isEmpty(getUserRoles())) {
+            if (getUserRoles().contains(User.ROLE_MANAGER)) {
+                return USER_TYPE_MANAGER;
+            }
+            if (getUserRoles().contains(User.ROLE_FLOOR) || getUserRoles().contains(User.ROLE_TECH)) {
+                return USER_TYPE_TECH;
+            }
+        }
+        return USER_TYPE_USER;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public ContactPermission getContactPermission() {
+        return contactPermission;
+    }
+
+    public void setContactPermission(ContactPermission contactPermission) {
+        this.contactPermission = contactPermission;
+    }
+
     public User update(User n) {
         chatId = n.chatId != null ? n.chatId : chatId;
         name = n.name != null ? n.name : name;
         avatar = n.avatar != null ? n.avatar : avatar;
         markName = n.markName != null ? n.markName : markName;
-        roles = n.roles != null ? n.roles : roles;
+        userRoles = n.userRoles != null ? n.userRoles : userRoles;
+        userType = n.userType != null ? n.userType : userType;
+        telephone = n.telephone != null ? n.telephone : telephone;
+        contactPermission = n.contactPermission != null ? n.contactPermission : contactPermission;
         return this;
     }
 
@@ -140,17 +192,21 @@ public class User implements Serializable {
             return false;
         }
         User o = (User) obj;
-        return TextUtils.equals(id, o.id)
+        return TextUtils.equals(userId, o.userId)
+                && TextUtils.equals(chatId, o.chatId)
                 && TextUtils.equals(avatar, o.avatar)
                 && TextUtils.equals(name, o.name)
-                && TextUtils.equals(chatId, o.chatId)
-                && TextUtils.equals(markName, o.markName);
+                && TextUtils.equals(userType, o.userType)
+                && TextUtils.equals(telephone, o.telephone)
+                && TextUtils.equals(userRoles, o.userRoles)
+                && TextUtils.equals(markName, o.markName)
+                && (o.contactPermission == null || o.contactPermission.equals(contactPermission));
     }
 
     @Override
     public int hashCode() {
         int h = 0x48;
-        h += id == null ? 0 : id.hashCode();
+        h += userId == null ? 0 : userId.hashCode();
         h += name == null ? 0 : name.hashCode();
         h += avatar == null ? 0 : avatar.hashCode();
         h += chatId == null ? 0 : chatId.hashCode();
@@ -158,31 +214,22 @@ public class User implements Serializable {
         return h;
     }
 
-    public String getUserType() {
-        if (!TextUtils.isEmpty(getRoles())) {
-            if (getRoles().contains(User.ROLE_MANAGER)) {
-                return "manager";
-            }
-            if (getRoles().contains(User.ROLE_FLOOR) || getRoles().contains(User.ROLE_TECH)) {
-                return "tech";
-            }
-        }
-        return "user";
-    }
-
     @Override
     public String toString() {
         return "User{" +
-                "id='" + id + '\'' +
+                "userId='" + userId + '\'' +
+                ", chatId='" + chatId + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", name='" + name + '\'' +
-                ", chatId='" + chatId + '\'' +
-                ", chatPassword='" + chatPassword + '\'' +
+                ", userType='" + userType + '\'' +
+                ", userRoles='" + userRoles + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", contactPermission=" + contactPermission +
+                ", markName='" + markName + '\'' +
                 ", clubId='" + clubId + '\'' +
                 ", clubName='" + clubName + '\'' +
                 ", techNo='" + techNo + '\'' +
-                ", roles='" + roles + '\'' +
-                ", markName='" + markName + '\'' +
+                ", chatPassword='" + chatPassword + '\'' +
                 '}';
     }
 }

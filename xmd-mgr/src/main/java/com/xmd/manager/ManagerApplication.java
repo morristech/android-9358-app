@@ -139,7 +139,7 @@ public class ManagerApplication extends MultiDexApplication {
                     //广播用户登录事件
                     EventBus.getDefault().removeStickyEvent(EventLogout.class);
                     User user = new User(SharedPreferenceHelper.getUserId());
-                    user.setRoles(User.ROLE_MANAGER);
+                    user.setUserRoles(User.ROLE_MANAGER);
                     user.setChatId(SharedPreferenceHelper.getEmchatId());
                     user.setChatPassword(SharedPreferenceHelper.getEmchatPassword());
                     user.setName(SharedPreferenceHelper.getUserName());

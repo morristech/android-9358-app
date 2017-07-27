@@ -108,7 +108,7 @@ public class ChatMessage {
 
     //设置用户信息，发送时设置
     public void setUser(User user) {
-        setUserRoles(user.getRoles());
+        setUserRoles(user.getUserRoles());
         setUserId(user.getId());
         setUserName(user.getName());
         setUserAvatar(user.getAvatar());

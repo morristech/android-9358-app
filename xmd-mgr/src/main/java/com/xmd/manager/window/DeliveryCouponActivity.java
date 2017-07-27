@@ -96,7 +96,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
             for (int i = 0; i < result.respData.size(); i++) {
                 result.respData.get(i).isSelected = 1;
                 if (result.respData.get(i).actStatus.equals("online")) {
-                    if (result.respData.get(i).useTypeName.equals("优惠券") || result.respData.get(i).useTypeName.equals("现金券")) {
+                    if (!result.respData.get(i).couponType.equals(Constant.COUPON_TYPE_PAID)) {
                         mCoupons.add(result.respData.get(i));
                     }
                 }

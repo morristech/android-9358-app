@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xmd.manager.Constant;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.CouponInfo;
 
@@ -57,7 +58,11 @@ public class DeliveryCouponListAdapter extends RecyclerView.Adapter<RecyclerView
 
             itemHolder.mCouponName.setText(couponInfo.actTitle);
             itemHolder.mCouponType.setText(couponInfo.useTypeName);
-            itemHolder.mCouponDesc.setText(couponInfo.consumeMoneyDescription);
+            if (couponInfo.couponType.equals(Constant.COUPON_TYPE_GIFT)) {
+                itemHolder.mCouponDesc.setText(couponInfo.actSubTitle);
+            } else {
+                itemHolder.mCouponDesc.setText(couponInfo.consumeMoneyDescription);
+            }
             itemHolder.mCouponDuration.setText(couponInfo.couponPeriod);
             if (couponInfo.isSelected == 1) {
                 itemHolder.mImgCouponDelected.setSelected(false);

@@ -7,7 +7,7 @@ package com.xmd.app;
 
 public class SpConstants {
 
-    public static final String KEY_IS_APP_FIRST_START = "0a794fb4f4f4c10e4a46be0e9c00b93f";//app 第一次启动
+    public static final String KEY_IS_APP_FIRST_START = "0a794fb4f4f4c10e4a46be0e9c00b9a0";//app 第一次启动
 
     public static final String KEY_DEV_MODE = "e9fbb7c44116f423bbf68ce03f8d1096"; //开发者模式
 

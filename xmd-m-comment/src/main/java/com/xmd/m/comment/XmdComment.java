@@ -37,17 +37,17 @@ public class XmdComment {
             return;
         }
         String fromType;
-        if (currentUser.getRoles().contains(User.ROLE_MANAGER)) {
+        if (currentUser.getUserRoles().contains(User.ROLE_MANAGER)) {
             fromType = ConstantResources.INTENT_TYPE_MANAGER;
-        } else if (currentUser.getRoles().contains(User.ROLE_TECH)
-                || currentUser.getRoles().contains(User.ROLE_FLOOR)) {
+        } else if (currentUser.getUserRoles().contains(User.ROLE_TECH)
+                || currentUser.getUserRoles().contains(User.ROLE_FLOOR)) {
             fromType = ConstantResources.INTENT_TYPE_TECH;
         } else {
             return;
         }
         boolean customerIsTech = false;
-        if (user.getRoles() != null && (user.getRoles().contains(User.ROLE_TECH)
-                || user.getRoles().contains(User.ROLE_FLOOR))) {
+        if (user.getUserRoles() != null && (user.getUserRoles().contains(User.ROLE_TECH)
+                || user.getUserRoles().contains(User.ROLE_FLOOR))) {
             customerIsTech = true;
         }
         CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(XmdApp.getInstance().getContext(), user.getId(), fromType, customerIsTech);

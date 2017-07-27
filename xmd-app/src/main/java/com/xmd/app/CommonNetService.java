@@ -1,11 +1,13 @@
 package com.xmd.app;
 
 import com.xmd.app.beans.UserCredit;
+import com.xmd.app.user.User;
 import com.xmd.m.network.BaseBean;
 
 import java.util.List;
 
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -15,6 +17,14 @@ import rx.Observable;
  */
 
 public interface CommonNetService {
+
+    /**
+     * 获取用户基本信息和联系权限
+     */
+    @GET("/spa-manager/api/v2/chat/userInfo/{id}")
+    Observable<BaseBean<User>> getUserBaseInfo(@Path("id") String id,
+                                               @Query("idType") String idType,
+                                               @Query("getPermission") boolean getPermission);
 
     /**
      * 获取用户积分

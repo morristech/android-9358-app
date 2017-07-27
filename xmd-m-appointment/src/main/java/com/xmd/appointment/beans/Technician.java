@@ -197,7 +197,7 @@ public class Technician implements Serializable {
 
     @Override
     public String toString() {
-        return "Technician{" +
+        return "CurrentUser{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", status='" + status + '\'' +

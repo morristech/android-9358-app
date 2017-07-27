@@ -3,11 +3,16 @@ package com.xmd.app.user;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.CommonNetService;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -16,6 +21,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import rx.Observable;
 
 /**
  * Created by heyangya on 17-6-5.
@@ -129,6 +136,34 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public String getCurrentToken() {
         return currentToken;
+    }
+
+    @Override
+    public void loadUserInfoByUserId(String userId, Callback<User> callback) {
+
+    }
+
+    @Override
+    public void loadUserInfoByChatId(String chatId, Callback<User> callback) {
+
+    }
+
+    private void loadUserInfo(String id, String idType, final Callback<User> callback) {
+        Observable<BaseBean<User>> observable = XmdNetwork.getInstance()
+                .getService(CommonNetService.class)
+                .getUserBaseInfo(id, idType, true);
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<User>>() {
+            @Override
+            public void onCallbackSuccess(BaseBean<User> result) {
+                saveUser(result.getRespData());
+                callback.onResponse(result.getRespData(), null);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onResponse(null, null);
+            }
+        });
     }
 
     @Subscribe(sticky = true)

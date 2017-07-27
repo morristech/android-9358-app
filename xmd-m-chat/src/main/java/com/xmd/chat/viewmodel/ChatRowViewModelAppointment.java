@@ -91,7 +91,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
         if (currentUser == null) {
             return;
         }
-        boolean fixTech = currentUser.getRoles() != null && !currentUser.getRoles().contains(User.ROLE_FLOOR);
+        boolean fixTech = currentUser.getUserRoles() != null && !currentUser.getUserRoles().contains(User.ROLE_FLOOR);
         if (fixTech) {
             Technician tech = new Technician();
             tech.setId(currentUser.getId());

@@ -229,7 +229,7 @@ public class LoginTechnician {
         user.setClubId(getClubId());
         user.setClubName(getClubName());
         user.setTechNo(getTechNo());
-        user.setRoles(getRoles());
+        user.setUserRoles(getRoles());
         return user;
     }
 
