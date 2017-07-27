@@ -433,7 +433,7 @@ public class Utils {
         if (TextUtils.isEmpty(code)) {
             return null;
         } else {
-            return code.replaceAll("\\d*(\\d{4})", "****$1");
+            return code.replaceAll("[A-Za-z0-9]*([A-Za-z0-9]{4})", "****$1");
         }
     }
 }
