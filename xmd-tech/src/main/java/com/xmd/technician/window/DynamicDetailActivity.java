@@ -12,7 +12,6 @@ import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.DynamicDetail;
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -76,7 +75,7 @@ public class DynamicDetailActivity extends BaseListActivity<DynamicDetail> {
                         mUser.setName(dynamic.userName);
                         mUser.setChatId(dynamic.userEmchatId);
                         mUser.setAvatar(dynamic.avatarUrl);
-                        mUser.setMarkName("");
+                        mUser.setNoteName("");
                         userService.saveUser(mUser);
                     }
                 }

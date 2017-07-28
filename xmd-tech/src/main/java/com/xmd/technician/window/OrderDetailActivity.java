@@ -169,7 +169,7 @@ public class OrderDetailActivity extends BaseActivity {
             mUser.setName(mOrder.userName);
             mUser.setChatId(mOrder.emchatId);
             mUser.setAvatar(mOrder.headImgUrl);
-            mUser.setMarkName(Utils.isEmpty(mOrder.customerName) ? mOrder.userName : mOrder.customerName);
+            mUser.setNoteName(Utils.isEmpty(mOrder.customerName) ? mOrder.userName : mOrder.customerName);
             userService.saveUser(mUser);
         }
 

@@ -289,7 +289,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
         mUser.setName(event.bean.emChatName);
         mUser.setChatId(event.bean.emChatId);
         mUser.setAvatar(event.bean.chatHeadUrl);
-        mUser.setMarkName(event.bean.userNoteName);
+        mUser.setNoteName(event.bean.userNoteName);
         userService.saveUser(mUser);
         if (event.appType == 1) {
             switch (event.toDoType) {

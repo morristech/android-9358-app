@@ -48,7 +48,7 @@ public class ConversationManager {
     }
 
     //加载会话列表
-    public void loadConversationList(final Callback<List<ConversationViewModel>> callback) {
+    public void loadConversationList(final boolean forceLoadUserInfo, final Callback<List<ConversationViewModel>> callback) {
         mConversationList.clear();
         Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
         if (conversationMap.size() == 0) {
@@ -59,13 +59,17 @@ public class ConversationManager {
             final EMConversation conversation = conversationMap.get(key);
             if (!TextUtils.isEmpty(key) && conversation != null) {
                 final User user = userInfoService.getUserByChatId(key);
-                if (user == null || user.getContactPermission() == null || !user.getContactPermission().isEchat()) {
+                if (forceLoadUserInfo || user == null || user.getContactPermission() == null || !user.getContactPermission().isEchat()) {
                     XLogger.d("load user " + key + " from server");
                     userInfoService.loadUserInfoByChatId(key, new Callback<User>() {
                         @Override
                         public void onResponse(User result, Throwable error) {
                             if (error != null) {
                                 XLogger.e(XmdChat.TAG, " not found user by chatId:" + key);
+                            }
+                            if (forceLoadUserInfo && user != null && user.getContactPermission() != null) {
+                                XLogger.i("load user info from server failed,use cache instead!");
+                                error = null;
                             }
                             onLoadFinish(error != null, user, conversation, callback);
                         }
@@ -132,7 +136,6 @@ public class ConversationManager {
         EventBus.getDefault().post(new EventDeleteConversation(position, data));
         deleteConversationInner(chatId);
     }
-
 
 
     public void markAllMessagesRead(String chatId) {

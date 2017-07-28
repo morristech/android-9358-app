@@ -24,13 +24,12 @@ public class User implements Serializable {
     private String userId; //用户ID
     private String chatId; //用户聊天ID
     private String avatar; //用户头像
+    private String noteName; //用户备注名
     private String name; //用户名称
     private String userType;
     private String userRoles;
     private String telephone;
     private ContactPermission contactPermission;
-
-    private String markName; //用户备注名
 
     private String clubId;
     private String clubName;
@@ -39,8 +38,8 @@ public class User implements Serializable {
 
     //返回显示的名字，优先显示备注名
     public String getShowName() {
-        if (!TextUtils.isEmpty(markName)) {
-            return markName;
+        if (!TextUtils.isEmpty(noteName)) {
+            return noteName;
         }
         return name;
     }
@@ -98,12 +97,12 @@ public class User implements Serializable {
         this.userRoles = roles;
     }
 
-    public String getMarkName() {
-        return markName;
+    public String getNoteName() {
+        return noteName;
     }
 
-    public void setMarkName(String markName) {
-        this.markName = markName;
+    public void setNoteName(String noteName) {
+        this.noteName = noteName;
     }
 
     public String getChatPassword() {
@@ -178,7 +177,7 @@ public class User implements Serializable {
         chatId = n.chatId != null ? n.chatId : chatId;
         name = n.name != null ? n.name : name;
         avatar = n.avatar != null ? n.avatar : avatar;
-        markName = n.markName != null ? n.markName : markName;
+        noteName = n.noteName != null ? n.noteName : noteName;
         userRoles = n.userRoles != null ? n.userRoles : userRoles;
         userType = n.userType != null ? n.userType : userType;
         telephone = n.telephone != null ? n.telephone : telephone;
@@ -199,7 +198,7 @@ public class User implements Serializable {
                 && TextUtils.equals(userType, o.userType)
                 && TextUtils.equals(telephone, o.telephone)
                 && TextUtils.equals(userRoles, o.userRoles)
-                && TextUtils.equals(markName, o.markName)
+                && TextUtils.equals(noteName, o.noteName)
                 && (o.contactPermission == null || o.contactPermission.equals(contactPermission));
     }
 
@@ -210,7 +209,7 @@ public class User implements Serializable {
         h += name == null ? 0 : name.hashCode();
         h += avatar == null ? 0 : avatar.hashCode();
         h += chatId == null ? 0 : chatId.hashCode();
-        h += markName == null ? 0 : markName.hashCode();
+        h += noteName == null ? 0 : noteName.hashCode();
         return h;
     }
 
@@ -225,7 +224,7 @@ public class User implements Serializable {
                 ", userRoles='" + userRoles + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", contactPermission=" + contactPermission +
-                ", markName='" + markName + '\'' +
+                ", noteName='" + noteName + '\'' +
                 ", clubId='" + clubId + '\'' +
                 ", clubName='" + clubName + '\'' +
                 ", techNo='" + techNo + '\'' +

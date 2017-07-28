@@ -111,7 +111,7 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
                     User user = new User(visitor.userId);
                     user.setChatId(visitor.emchatId);
                     user.setName(visitor.name);
-                    user.setMarkName(visitor.userNoteName);
+                    user.setNoteName(visitor.userNoteName);
                     user.setAvatar(visitor.avatarUrl);
                     UserInfoServiceImpl.getInstance().saveUser(user);
                 }

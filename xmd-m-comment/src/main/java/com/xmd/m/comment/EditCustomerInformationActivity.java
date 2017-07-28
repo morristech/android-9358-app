@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xmd.app.BaseActivity;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.ClearableEditText;
@@ -274,13 +276,18 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
         mRemarkPhoneNum = mCustomerPhone;
         mRemarkMessage = edRemarkMessage.getText().toString();
         mRemarkImpression = Utils.listToString(markSelectList, "、");
-        DataManager.getInstance().SaveCustomerRemark(mUserId,mCustomerId, mRemarkPhoneNum, mRemarkMessage, mRemarkNoteName, mRemarkImpression, new NetworkSubscriber<EditCustomerResult>() {
+        DataManager.getInstance().SaveCustomerRemark(mUserId, mCustomerId, mRemarkPhoneNum, mRemarkMessage, mRemarkNoteName, mRemarkImpression, new NetworkSubscriber<EditCustomerResult>() {
             @Override
             public void onCallbackSuccess(EditCustomerResult result) {
                 Toast.makeText(EditCustomerInformationActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
                 EventBus.getDefault().post(new EditCustomerRemarkSuccessEvent(mCustomerName, mRemarkNoteName, mRemarkMessage, mRemarkImpression));
                 EditCustomerInformationActivity.this.finish();
 
+                User user = UserInfoServiceImpl.getInstance().getUserByUserId(mUserId);
+                if (user != null) {
+                    user.setNoteName(mRemarkNoteName);
+                    UserInfoServiceImpl.getInstance().saveUser(user);
+                }
             }
 
             @Override

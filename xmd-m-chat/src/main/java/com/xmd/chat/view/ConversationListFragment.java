@@ -90,7 +90,7 @@ public class ConversationListFragment extends BaseFragment {
         mBinding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadData(null);
+                loadConversation(true);
             }
         });
 
@@ -108,8 +108,12 @@ public class ConversationListFragment extends BaseFragment {
 
     @Subscribe
     public void loadData(EventChatLoginSuccess event) {
+        loadConversation(false);
+    }
+
+    private void loadConversation(boolean forceLoadUserInfo) {
         showLoading.set(true);
-        conversationManager.loadConversationList(new Callback<List<ConversationViewModel>>() {
+        conversationManager.loadConversationList(forceLoadUserInfo, new Callback<List<ConversationViewModel>>() {
             @Override
             public void onResponse(List<ConversationViewModel> result, Throwable error) {
                 mBinding.refreshLayout.setRefreshing(false);

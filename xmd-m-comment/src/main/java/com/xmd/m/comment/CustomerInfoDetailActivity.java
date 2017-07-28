@@ -223,8 +223,6 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         } else {
             EditCustomerInformationActivity.startEditCustomerInformationActivity(this, mBean.userId, mBean.id, ConstantResources.INTENT_TYPE_TECH, mBean.emChatName, mBean.userNoteName, mBean.contactPhone, mBean.remarkMessage, mBean.remarkImpression);
         }
-
-
     }
 
     @Subscribe
