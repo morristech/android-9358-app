@@ -46,18 +46,21 @@ public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHo
                 // 积分
                 String credit = item.name + "积分";
                 holder.mContent.setText(credit);
+                holder.mPlus.setVisibility(View.GONE);
                 holder.mCount.setVisibility(View.GONE);
                 break;
             case AppConstants.MEMBER_PLAN_ITEM_TYPE_MONEY:
                 // 现金
                 String money = "现金" + item.name + "元";
                 holder.mContent.setText(money);
+                holder.mPlus.setVisibility(View.GONE);
                 holder.mCount.setVisibility(View.GONE);
                 break;
             default:
-                holder.mContent.setText(item.name + " *");
+                holder.mContent.setText(item.name);
+                holder.mPlus.setVisibility(View.VISIBLE);
                 holder.mCount.setVisibility(View.VISIBLE);
-                holder.mCount.setText(" " + item.itemCount);
+                holder.mCount.setText(String.valueOf(item.itemCount));
                 break;
         }
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
@@ -80,12 +83,14 @@ public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHo
         public TextView mContent;
         public TextView mCount;
         public LinearLayout mLayout;
+        public TextView mPlus;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mLayout = (LinearLayout) itemView.findViewById(R.id.ll_sub_layout);
             mContent = (TextView) itemView.findViewById(R.id.tv_sub_item);
             mCount = (TextView) itemView.findViewById(R.id.tv_sub_item_count);
+            mPlus = (TextView) itemView.findViewById(R.id.tv_sub_item_plus);
         }
     }
 
