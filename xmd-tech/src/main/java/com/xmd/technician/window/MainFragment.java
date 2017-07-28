@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.hyphenate.util.DateUtils;
 import com.shidou.commonlibrary.widget.ScreenUtils;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.chat.XmdChat;
 import com.xmd.m.comment.CommentListActivity;
@@ -979,6 +980,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void initTechWorkView(TechStatisticsDataResult result) {
+        if (result.respData == null) {
+            XToast.show("加载统计数据失败");
+            return;
+        }
         mMainInfoTooKeenNumber.setText(result.respData.userCount);
         mMainSendCouponNumber.setText(result.respData.getCouponCount);
 

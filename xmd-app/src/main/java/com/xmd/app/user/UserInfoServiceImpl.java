@@ -140,12 +140,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void loadUserInfoByUserId(String userId, Callback<User> callback) {
-
+        loadUserInfo(userId, "user", callback);
     }
 
     @Override
     public void loadUserInfoByChatId(String chatId, Callback<User> callback) {
-
+        loadUserInfo(chatId, "emchat", callback);
     }
 
     private void loadUserInfo(String id, String idType, final Callback<User> callback) {
@@ -161,7 +161,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
             @Override
             public void onCallbackError(Throwable e) {
-                callback.onResponse(null, null);
+                callback.onResponse(null, e);
             }
         });
     }

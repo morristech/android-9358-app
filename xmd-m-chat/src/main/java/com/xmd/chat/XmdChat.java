@@ -139,10 +139,6 @@ public class XmdChat {
         return EMClient.getInstance().chatManager().getUnreadMessageCount();
     }
 
-    public void setConversationFilter(ConversationManager.ConversationFilter filter) {
-        ConversationManager.getInstance().setFilter(filter);
-    }
-
     public boolean isOnline() {
         return EMClient.getInstance().isConnected();
     }

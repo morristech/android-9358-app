@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.user.User;
@@ -13,7 +12,6 @@ import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.event.EventDeleteConversation;
 import com.xmd.chat.event.EventTotalUnreadCount;
 import com.xmd.chat.event.EventUnreadCount;
-import com.xmd.chat.message.ChatMessage;
 import com.xmd.chat.viewmodel.ConversationViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,9 +41,7 @@ public class ConversationManager {
 
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
     private List<ConversationViewModel> mConversationList; //会话列表，按时间倒序排列
-
-    private List<String> needDeleteConversationList = new ArrayList<>();
-    private int needFilterCount;
+    private int loadCount;
 
     public void init() {
         mConversationList = new ArrayList<>();
@@ -54,54 +50,47 @@ public class ConversationManager {
     //加载会话列表
     public void loadConversationList(final Callback<List<ConversationViewModel>> callback) {
         mConversationList.clear();
-        needDeleteConversationList.clear();
         Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
         if (conversationMap.size() == 0) {
             callback.onResponse(new ArrayList<ConversationViewModel>(), null);
         }
-        for (String key : conversationMap.keySet()) {
-            EMConversation conversation = conversationMap.get(key);
+        loadCount = conversationMap.size();
+        for (final String key : conversationMap.keySet()) {
+            final EMConversation conversation = conversationMap.get(key);
             if (!TextUtils.isEmpty(key) && conversation != null) {
-                User user = userInfoService.getUserByChatId(key);
-                if (user == null) {
-                    user = parseUserFromConversation(conversation);
+                final User user = userInfoService.getUserByChatId(key);
+                if (user == null || user.getContactPermission() == null || !user.getContactPermission().isEchat()) {
+                    XLogger.d("load user " + key + " from server");
+                    userInfoService.loadUserInfoByChatId(key, new Callback<User>() {
+                        @Override
+                        public void onResponse(User result, Throwable error) {
+                            if (error != null) {
+                                XLogger.e(XmdChat.TAG, " not found user by chatId:" + key);
+                            }
+                            onLoadFinish(error != null, user, conversation, callback);
+                        }
+                    });
+                } else {
+                    XLogger.d("load user " + key + " from cache");
+                    onLoadFinish(false, user, conversation, callback);
                 }
-                if (user == null) {
-                    XLogger.e(XmdChat.TAG, " not found user by chatId:" + key);
-                    needDeleteConversationList.add(key);
-                    continue;
-                }
+            }
+        }
+    }
+
+    private void onLoadFinish(boolean error, User user, EMConversation conversation, Callback<List<ConversationViewModel>> callback) {
+        if (!error) {
+            if (!user.getContactPermission().isEchat()) {
+                EMClient.getInstance().chatManager().getAllConversations().remove(user.getChatId());
+                EMClient.getInstance().chatManager().deleteConversation(user.getChatId(), true);
+                XLogger.i(XmdChat.TAG, "delete conversation:" + user.getChatId());
+            } else {
                 ConversationViewModel data = new ConversationViewModel(user, conversation);
                 mConversationList.add(data);
             }
         }
-
-        deleteConversations(needDeleteConversationList);
-
-        //filter
-        if (filter != null) {
-            needFilterCount = mConversationList.size();
-            for (final ConversationViewModel data : mConversationList) {
-                filter.filter(data, new Callback<Boolean>() {
-                    @Override
-                    public void onResponse(Boolean result, Throwable error) {
-                        if (error != null) {
-                            //此会话检查失败，暂时移除不显示
-                            removeConversationData(data.getChatId());
-                        } else if (!result) {
-                            //检查不通过，那么删除此会话
-                            needDeleteConversationList.add(data.getChatId());
-                        }
-                        if (--needFilterCount == 0) {
-                            //全部检查完毕
-                            deleteConversations(needDeleteConversationList);
-                            sortConversationByTime(mConversationList);
-                            callback.onResponse(mConversationList, null);
-                        }
-                    }
-                });
-            }
-        } else {
+        loadCount--;
+        if (loadCount == 0) {
             sortConversationByTime(mConversationList);
             callback.onResponse(mConversationList, null);
         }
@@ -144,10 +133,7 @@ public class ConversationManager {
         deleteConversationInner(chatId);
     }
 
-    //设置过滤器
-    public void setFilter(ConversationFilter filter) {
-        this.filter = filter;
-    }
+
 
     public void markAllMessagesRead(String chatId) {
         ConversationViewModel conversationViewModel = getConversationData(chatId);
@@ -207,29 +193,33 @@ public class ConversationManager {
     }
 
     /***************************会话过滤，不通过的会话会被删除**********************/
-    private ConversationFilter filter;
-
-    public interface ConversationFilter {
-        void filter(ConversationViewModel data, Callback<Boolean> listener);
-    }
-
-    public ConversationFilter getFilter() {
-        return filter;
-    }
-
-    //从会话中解析出用户信息
-    public User parseUserFromConversation(EMConversation conversation) {
-        EMMessage emMessage = conversation.getLatestMessageFromOthers();
-        if (emMessage != null) {
-            ChatMessage chatMessage = new ChatMessage(emMessage);
-            if (chatMessage.getUserId() != null) {
-                User user = new User(chatMessage.getUserId());
-                user.setName(chatMessage.getUserName());
-                user.setAvatar(chatMessage.getUserAvatar());
-                user.setChatId(chatMessage.getEmMessage().getFrom());
-                return user;
-            }
-        }
-        return null;
-    }
+    //设置过滤器
+//    public void setFilter(ConversationFilter filter) {
+//        this.filter = filter;
+//    }
+//    private ConversationFilter filter;
+//
+//    public interface ConversationFilter {
+//        void filter(ConversationViewModel data, Callback<Boolean> listener);
+//    }
+//
+//    public ConversationFilter getFilter() {
+//        return filter;
+//    }
+//
+//    //从会话中解析出用户信息
+//    public User parseUserFromConversation(EMConversation conversation) {
+//        EMMessage emMessage = conversation.getLatestMessageFromOthers();
+//        if (emMessage != null) {
+//            ChatMessage chatMessage = new ChatMessage(emMessage);
+//            if (chatMessage.getUserId() != null) {
+//                User user = new User(chatMessage.getUserId());
+//                user.setName(chatMessage.getUserName());
+//                user.setAvatar(chatMessage.getUserAvatar());
+//                user.setChatId(chatMessage.getEmMessage().getFrom());
+//                return user;
+//            }
+//        }
+//        return null;
+//    }
 }

@@ -10,7 +10,6 @@ import android.os.Build;
 import android.support.multidex.MultiDexApplication;
 import android.view.WindowManager;
 
-import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
@@ -28,18 +27,13 @@ import com.xmd.app.event.EventLogout;
 import com.xmd.app.event.EventRestartApplication;
 import com.xmd.app.user.User;
 import com.xmd.appointment.XmdModuleAppointment;
-import com.xmd.chat.ConversationManager;
 import com.xmd.chat.MenuFactory;
 import com.xmd.chat.XmdChat;
-import com.xmd.chat.viewmodel.ConversationViewModel;
 import com.xmd.m.comment.XmdComment;
-import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
 import com.xmd.m.notify.display.FloatNotifyManager;
 import com.xmd.permission.BusinessPermissionManager;
-import com.xmd.permission.ContactPermissionInfo;
-import com.xmd.permission.ContactPermissionManager;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
@@ -151,7 +145,6 @@ public class TechApplication extends MultiDexApplication {
 
                 //初始化聊天模块
                 XmdChat.getInstance().init(this, BuildConfig.DEBUG, menuFactory);
-                XmdChat.getInstance().setConversationFilter(conversationFilter);
 
 //                DataRefreshService.start();
 //                HelloReplyService.start();
@@ -254,22 +247,22 @@ public class TechApplication extends MultiDexApplication {
         }
     };
 
-    //聊天会话列表过滤器
-    private ConversationManager.ConversationFilter conversationFilter = new ConversationManager.ConversationFilter() {
-        @Override
-        public void filter(ConversationViewModel data, Callback<Boolean> listener) {
-            ContactPermissionManager.getInstance().getPermission(data.getUser().getId(), new NetworkSubscriber<ContactPermissionInfo>() {
-                @Override
-                public void onCallbackSuccess(ContactPermissionInfo result) {
-                    XLogger.i("load permission for " + data.getChatId() + "," + data.getName() + " result:" + result);
-                    listener.onResponse(result.echat, null);
-                }
-
-                @Override
-                public void onCallbackError(Throwable e) {
-                    listener.onResponse(null, e);
-                }
-            });
-        }
-    };
+//    //聊天会话列表过滤器
+//    private ConversationManager.ConversationFilter conversationFilter = new ConversationManager.ConversationFilter() {
+//        @Override
+//        public void filter(ConversationViewModel data, Callback<Boolean> listener) {
+//            ContactPermissionManager.getInstance().getPermission(data.getUser().getId(), new NetworkSubscriber<ContactPermissionInfo>() {
+//                @Override
+//                public void onCallbackSuccess(ContactPermissionInfo result) {
+//                    XLogger.i("load permission for " + data.getChatId() + "," + data.getName() + " result:" + result);
+//                    listener.onResponse(result.echat, null);
+//                }
+//
+//                @Override
+//                public void onCallbackError(Throwable e) {
+//                    listener.onResponse(null, e);
+//                }
+//            });
+//        }
+//    };
 }

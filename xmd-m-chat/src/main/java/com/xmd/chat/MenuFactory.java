@@ -337,6 +337,7 @@ public class MenuFactory {
 
                     @Override
                     public void onCallbackError(Throwable e) {
+                        activity.hideLoading();
                         XToast.show("加载数据失败：" + e.getMessage());
                     }
                 });
@@ -367,6 +368,7 @@ public class MenuFactory {
 
                     @Override
                     public void onCallbackError(Throwable e) {
+                        activity.hideLoading();
                         XToast.show("加载数据失败：" + e.getMessage());
                     }
                 });
@@ -394,6 +396,7 @@ public class MenuFactory {
 
                     @Override
                     public void onCallbackError(Throwable e) {
+                        activity.hideLoading();
                         XToast.show("加载数据失败：" + e.getMessage());
                     }
                 });
