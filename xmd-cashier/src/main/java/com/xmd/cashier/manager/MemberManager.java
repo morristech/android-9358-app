@@ -473,6 +473,7 @@ public class MemberManager {
     }
 
     public void printInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
+        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         mPos.setPrintListener(callback);
         mPos.printCenter(AccountManager.getInstance().getClubName());
         if (retry) {
@@ -486,7 +487,13 @@ public class MemberManager {
         switch (info.tradeType) {
             case AppConstants.MEMBER_TRADE_TYPE_INCOME:
                 // 充值:
-                mPos.printText("充值内容  " + info.description);
+                if (info.packageId != null) {
+                    // 套餐:充XXX送XXX
+                    mPos.printText("充值内容  " + "充" + Utils.moneyToString(info.orderAmount) + (info.discountAmount > 0 ? "送" + Utils.moneyToString(info.discountAmount) : ""));
+                } else {
+                    // 金额:指定金额XX元
+                    mPos.printText("充值内容  " + "指定金额" + Utils.moneyToStringEx(info.orderAmount) + "元");
+                }
                 if (info.packageInfo != null && info.packageInfo.packageItems != null && !info.packageInfo.packageItems.isEmpty()) {
                     mPos.printText("套餐优惠");
                     for (PackagePlanItem.PackageItem item : info.packageInfo.packageItems) {
@@ -539,7 +546,9 @@ public class MemberManager {
             mPos.printText("营销人员:", info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));
         }
         if (!keep) {
-            mPos.printBitmap(TradeManager.getInstance().getClubQRCodeSync());
+            if (qrCodeBytes != null) {
+                mPos.printBitmap(qrCodeBytes);
+            }
             mPos.printCenter("扫一扫，关注9358，约技师，享优惠");
         }
         mPos.printEnd();
