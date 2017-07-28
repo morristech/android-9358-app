@@ -43,6 +43,7 @@ public class McardSuccessPresenter implements McardSuccessContract.Presenter {
 
     @Override
     public void onConfirm() {
+        MemberManager.getInstance().setMemberId(info.id);
         MemberManager.getInstance().setRechargeMemberInfo(info);
         UiNavigation.gotoMemberRechargeActivity(mContext);
     }

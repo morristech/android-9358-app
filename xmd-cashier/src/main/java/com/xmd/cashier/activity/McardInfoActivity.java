@@ -7,23 +7,20 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
 import com.bigkoo.pickerview.listener.CustomListener;
-import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.McardInfoContract;
-import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.event.CardFinishEvent;
 import com.xmd.cashier.presenter.McardInfoPresenter;
-import com.xmd.cashier.widget.CircleImageView;
 import com.xmd.cashier.widget.ClearableEditText;
 import com.xmd.cashier.widget.StepView;
 
@@ -47,14 +44,7 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
     private RadioButton mFemaleButton;
     private TextView mBirthText;
 
-    private RelativeLayout mTechLayout;
-    private TextView mTechDelete;
-    private TextView mTechHint;
-    private CircleImageView mTechAvatarImg;
-    private TextView mTechName;
-    private TextView mTechNo;
-
-    private TextView mInfoConfirm;
+    private Button mInfoConfirm;
 
     private TimePickerView mPickerView;
 
@@ -80,14 +70,7 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
         mMaleButton = (RadioButton) findViewById(R.id.rb_info_gender_male);
         mBirthText = (TextView) findViewById(R.id.tv_info_birthday);
 
-        mTechLayout = (RelativeLayout) findViewById(R.id.layout_tech_info);
-        mTechDelete = (TextView) findViewById(R.id.tv_tech_delete);
-        mTechHint = (TextView) findViewById(R.id.tv_tech_hint);
-        mTechAvatarImg = (CircleImageView) findViewById(R.id.img_tech_avatar);
-        mTechName = (TextView) findViewById(R.id.tv_tech_name);
-        mTechNo = (TextView) findViewById(R.id.tv_tech_no);
-
-        mInfoConfirm = (TextView) findViewById(R.id.btn_mcard_info_confirm);
+        mInfoConfirm = (Button) findViewById(R.id.btn_mcard_info_confirm);
 
         mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS);
         mStepView.selectedStep(2);
@@ -133,20 +116,6 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
             @Override
             public void afterTextChanged(Editable s) {
                 mPresenter.onNameChange(mNameInput.getText().toString());
-            }
-        });
-
-        mTechLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTechClick();
-            }
-        });
-
-        mTechDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTechDelete();
             }
         });
     }
@@ -207,29 +176,6 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
     }
 
     @Override
-    public void showTechInfo(TechInfo info) {
-        mTechHint.setVisibility(View.GONE);
-        mTechAvatarImg.setVisibility(View.VISIBLE);
-        mTechName.setVisibility(View.VISIBLE);
-        Glide.with(this).load(info.avatarUrl).dontAnimate().placeholder(R.drawable.ic_avatar).into(mTechAvatarImg);
-        if (!TextUtils.isEmpty(info.techNo)) {
-            mTechNo.setVisibility(View.VISIBLE);
-            mTechNo.setText(info.techNo);
-        } else {
-            mTechNo.setVisibility(View.GONE);
-        }
-        mTechName.setText(info.name);
-    }
-
-    @Override
-    public void deleteTechInfo() {
-        mTechHint.setVisibility(View.VISIBLE);
-        mTechAvatarImg.setVisibility(View.GONE);
-        mTechName.setVisibility(View.GONE);
-        mTechNo.setVisibility(View.GONE);
-    }
-
-    @Override
     public void showBirth(String birth) {
         mBirthText.setText(birth);
     }
@@ -259,11 +205,6 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
         finishSelf();
         showExitAnim();
         return true;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(TechInfo info) {
-        mPresenter.onTechSelect(info);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

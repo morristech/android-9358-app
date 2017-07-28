@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.McardInfoContract;
-import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.manager.MemberManager;
 
 /**
@@ -50,24 +49,6 @@ public class McardInfoPresenter implements McardInfoContract.Presenter {
         }
         UiNavigation.gotoMemberReadActivity(mContext, AppConstants.MEMBER_BUSINESS_TYPE_CARD);
         mView.showEnterAnim();
-    }
-
-    @Override
-    public void onTechClick() {
-        UiNavigation.gotoTechnicianActivity(mContext);
-    }
-
-    @Override
-    public void onTechSelect(TechInfo info) {
-        mView.showTechInfo(info);
-        MemberManager.getInstance().setCardTechInfo(info);
-    }
-
-
-    @Override
-    public void onTechDelete() {
-        mView.deleteTechInfo();
-        MemberManager.getInstance().setCardTechInfo(new TechInfo());
     }
 
     @Override

@@ -216,6 +216,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
 
     @Override
     public void showTechInfo(TechInfo info) {
+        mTechDelete.setVisibility(View.VISIBLE);
         mTechHint.setVisibility(View.GONE);
         mTechAvatar.setVisibility(View.VISIBLE);
         mTechName.setVisibility(View.VISIBLE);
@@ -231,6 +232,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
 
     @Override
     public void deleteTechInfo() {
+        mTechDelete.setVisibility(View.GONE);
         mTechHint.setVisibility(View.VISIBLE);
         mTechAvatar.setVisibility(View.GONE);
         mTechName.setVisibility(View.GONE);

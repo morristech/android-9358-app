@@ -115,7 +115,7 @@ public class MemberPlanAdapter extends RecyclerView.Adapter<MemberPlanAdapter.Vi
         public TextView mPlanName;
         public TextView mRechargeDesc;
         public TextView mPlanAmount;
-        public TextView mSendDesc;
+        public ImageView mSendDesc;
         public RecyclerView mSendList;
         public ImageView mSelectImg;
 
@@ -125,7 +125,7 @@ public class MemberPlanAdapter extends RecyclerView.Adapter<MemberPlanAdapter.Vi
             mPlanName = (TextView) itemView.findViewById(R.id.tv_recharge_name);
             mRechargeDesc = (TextView) itemView.findViewById(R.id.tv_recharge_desc);
             mPlanAmount = (TextView) itemView.findViewById(R.id.tv_recharge_amount);
-            mSendDesc = (TextView) itemView.findViewById(R.id.tv_send_desc);
+            mSendDesc = (ImageView) itemView.findViewById(R.id.tv_send_desc);
             mSendList = (RecyclerView) itemView.findViewById(R.id.ry_send_list);
             mSelectImg = (ImageView) itemView.findViewById(R.id.img_recharge_select);
         }

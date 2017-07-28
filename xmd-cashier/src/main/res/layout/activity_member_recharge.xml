@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/activity_normal_margin"
-                    android:text="充值会员"
+                    android:text="充值"
                     android:textColor="@color/colorWhite" />
 
                 <LinearLayout
@@ -225,9 +225,10 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/activity_normal_margin"
                     android:paddingRight="@dimen/activity_normal_margin"
-                    android:text="删除"
+                    android:text="删除重选"
                     android:textColor="@color/selector_text_black_gray"
-                    android:textSize="@dimen/font_size_14" />
+                    android:textSize="@dimen/font_size_14"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <View

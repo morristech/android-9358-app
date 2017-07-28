@@ -626,7 +626,6 @@ public interface SpaService {
                                                 @Field(RequestConstant.KEY_BIRTH) String birth,
                                                 @Field(RequestConstant.KEY_GENDER) String gender,
                                                 @Field(RequestConstant.KEY_CARD_NO) String cardNo,
-                                                @Field(RequestConstant.KEY_TECH_ID) String techId,
                                                 @Field(RequestConstant.KEY_TELEPHONE) String telephone,
                                                 @Field(RequestConstant.KEY_USER_NAME) String userName);
 
