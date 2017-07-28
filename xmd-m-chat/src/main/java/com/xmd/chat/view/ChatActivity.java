@@ -105,55 +105,7 @@ public class ChatActivity extends BaseActivity {
             finish();
             return;
         }
-
-        userInfoService.loadUserInfoByChatId(chatId, new Callback<User>() {
-            @Override
-            public void onResponse(User result, Throwable error) {
-                if (error != null) {
-                    XToast.show("无法找到用户：" + chatId);
-                    finish();
-                    return;
-                }
-                mRemoteUser = result;
-                setTitle(mRemoteUser.getShowName());
-                setBackVisible(true);
-                MessageManager.getInstance().setCurrentChatId(chatId);
-
-                mBinding.setData(ChatActivity.this);
-                loadData(null);
-
-                mBinding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        loadData(mAdapter.getDataList().get(0).getChatMessage().getEmMessage().getMsgId());
-                        mBinding.refreshLayout.setRefreshing(false);
-                    }
-                });
-            }
-        });
-
         ConversationManager.getInstance().markAllMessagesRead(chatId);
-
-
-        //根据有无键盘高度设置进入时显示/隐藏键盘
-        softwareKeyboardHeight = XmdApp.getInstance().getSp().getInt(SpConstants.KEY_KEYBOARD_HEIGHT, 0);
-        if (softwareKeyboardHeight == 0) {
-            getWindow().setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE |
-                            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            mBinding.sendEditText.requestFocus();
-        } else {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            mBinding.submenuLayout.getLayoutParams().height = softwareKeyboardHeight;
-        }
-
-        layoutManager = new LinearLayoutManager(this);
-        mBinding.recyclerView.setLayoutManager(layoutManager);
-        mBinding.recyclerView.setAdapter(mAdapter);
-
-        mBinding.inputVoice.setOnTouchListener(voiceButtonListener);
-
-        initMenu();
 
         mBinding.recyclerView.setOnSizeChangedListener(new ChatRecyclerView.OnSizeChangedListener() {
             @Override
@@ -169,6 +121,50 @@ public class ChatActivity extends BaseActivity {
                         XmdApp.getInstance().getSp().edit().putInt(SpConstants.KEY_KEYBOARD_HEIGHT, softwareKeyboardHeight).apply();
                     }
                 }
+            }
+        });
+
+        //根据有无键盘高度设置进入时显示/隐藏键盘
+        softwareKeyboardHeight = XmdApp.getInstance().getSp().getInt(SpConstants.KEY_KEYBOARD_HEIGHT, 0);
+        if (softwareKeyboardHeight == 0) {
+            getWindow().setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE |
+                            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            mBinding.sendEditText.requestFocus();
+        } else {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            mBinding.submenuLayout.getLayoutParams().height = softwareKeyboardHeight;
+        }
+
+
+        layoutManager = new LinearLayoutManager(this);
+        mBinding.recyclerView.setLayoutManager(layoutManager);
+        mBinding.recyclerView.setAdapter(mAdapter);
+        mBinding.inputVoice.setOnTouchListener(voiceButtonListener);
+
+        userInfoService.loadUserInfoByChatId(chatId, new Callback<User>() {
+            @Override
+            public void onResponse(User result, Throwable error) {
+                if (error != null) {
+                    XToast.show("无法找到用户：" + chatId);
+                    finish();
+                    return;
+                }
+                mRemoteUser = result;
+                setTitle(mRemoteUser.getShowName());
+                setBackVisible(true);
+                MessageManager.getInstance().setCurrentChatId(chatId);
+                initMenu();
+                mBinding.setData(ChatActivity.this);
+                loadData(null);
+
+                mBinding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        loadData(mAdapter.getDataList().get(0).getChatMessage().getEmMessage().getMsgId());
+                        mBinding.refreshLayout.setRefreshing(false);
+                    }
+                });
             }
         });
     }
