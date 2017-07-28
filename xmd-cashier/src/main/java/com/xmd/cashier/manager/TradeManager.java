@@ -273,7 +273,9 @@ public class TradeManager {
                                     if (mTrade.withoutPay) {
                                         print();
                                     } else {
-                                        printMemberPay(mTrade.memberRecordInfo);
+                                        if (mTrade.isRemain) {
+                                            printMemberPay(mTrade.memberRecordInfo);
+                                        }
                                     }
                                     newTrade();
                                 }
@@ -821,8 +823,7 @@ public class TradeManager {
     /*********************************************打印相关******************************************/
     // 打印会员消费信息
     public void printMemberPay(MemberRecordInfo info) {
-        MemberManager.getInstance().printInfo(info, false, false);
-        MemberManager.getInstance().printInfo(info, false, true);
+        MemberManager.getInstance().printInfo(info, false, true, null);
     }
 
     // 打印在线买单交易信息

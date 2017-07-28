@@ -358,6 +358,11 @@ public class PosImpl implements IPos {
         return null;
     }
 
+    @Override
+    public void setPrintListener(Callback<?> callback) {
+
+    }
+
     private void printerFlush() {
         PrintJobInfo printJobInfo = new PrintJobInfo();
         for (PrintItemJobInfo jobInfo : mPrintItemJobInfoList) {

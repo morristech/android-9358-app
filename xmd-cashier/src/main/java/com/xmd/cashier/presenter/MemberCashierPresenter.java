@@ -1,17 +1,21 @@
 package com.xmd.cashier.presenter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.MemberCashierContract;
+import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.Callback0;
+import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
+import com.xmd.cashier.widget.CustomAlertDialogBuilder;
 
 import rx.Subscription;
 
@@ -72,6 +76,58 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
         }
     }
 
+    private void print(MemberRecordInfo info) {
+        mView.showLoading();
+        MemberManager.getInstance().printInfo(info, false, false, new Callback<MemberRecordInfo>() {
+            @Override
+            public void onSuccess(MemberRecordInfo o) {
+                mView.hideLoading();
+                new CustomAlertDialogBuilder(mContext)
+                        .setMessage("是否打印商户存根?")
+                        .setPositiveButton("打印", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                TradeManager.getInstance().getCurrentTrade().isRemain = true;
+                                TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+                                    @Override
+                                    public void onFinished(Void result) {
+                                        mView.finishSelf();
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("完成交易", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                TradeManager.getInstance().getCurrentTrade().isRemain = false;
+                                TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+                                    @Override
+                                    public void onFinished(Void result) {
+                                        mView.finishSelf();
+                                    }
+                                });
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+
+            @Override
+            public void onError(String error) {
+                mView.hideLoading();
+                mView.showToast("打印异常:" + error);
+                TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+                    @Override
+                    public void onFinished(Void result) {
+                        mView.finishSelf();
+                    }
+                });
+            }
+        });
+    }
+
     private void doMemberPay(String memberPayMethod) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.showError(mContext.getString(R.string.network_disabled));
@@ -85,16 +141,9 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
             @Override
             public void onSuccess(MemberRecordResult o) {
                 mView.hideLoading();
-                // 会员帐号手机号
+                mView.showToast("会员支付成功，正在出票...");
                 TradeManager.getInstance().getCurrentTrade().memberRecordInfo = o.getRespData();
-                TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
-                    @Override
-                    public void onFinished(Void result) {
-                        mView.hideLoading();
-                        mView.showToast("支付成功！");
-                        mView.finishSelf();
-                    }
-                });
+                print(o.getRespData());
             }
 
             @Override

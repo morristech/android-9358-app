@@ -142,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/activity_normal_margin"
-            android:text="打印小票"
+            android:text="打印小票，完成交易"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/medium_font_size" />
 

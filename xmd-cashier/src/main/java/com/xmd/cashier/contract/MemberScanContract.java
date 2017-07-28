@@ -12,6 +12,8 @@ import com.xmd.cashier.BaseView;
 public interface MemberScanContract {
     interface Presenter extends BasePresenter {
         void printResult();
+
+        void onKeyEventBack();
     }
 
     interface View extends BaseView<Presenter> {

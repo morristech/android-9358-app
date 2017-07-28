@@ -387,6 +387,35 @@ public class PosImpl implements IPos {
         return null;
     }
 
+    @Override
+    public void setPrintListener(final Callback<?> callback) {
+        if (mLatticePrinter != null) {
+            mLatticePrinter.setOnEventListener(new IPrint.OnEventListener() {
+                @Override
+                public void onEvent(int i, String s) {
+                    switch (i) {
+                        case IPrint.EVENT_CONNECTED:
+                            //连接打印机成功
+                        case IPrint.EVENT_STATE_OK:
+                            //打印机状态正常
+                            break;
+                        case IPrint.EVENT_OK:
+                            //打印完成结束
+                            if (callback != null) {
+                                callback.onSuccess(null);
+                            }
+                            break;
+                        default:
+                            if (callback != null) {
+                                callback.onError(s);
+                            }
+                            break;
+                    }
+                }
+            });
+        }
+    }
+
 
     private void initPrinter() {
         try {
