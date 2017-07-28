@@ -86,8 +86,6 @@ public class BaseActivity extends AppCompatActivity {
     public void setBackVisible(boolean visible) {
         if (toolbarBack != null) {
             toolbarBack.setVisibility(visible ? View.VISIBLE : View.GONE);
-        }else{
-            XLogger.i(">>>","lallalla");
         }
     }
 

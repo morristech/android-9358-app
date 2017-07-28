@@ -26,7 +26,6 @@ import com.shidou.commonlibrary.util.DateUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.utils.ResourceUtils;
-import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.app.widget.StarBar;
 import com.xmd.m.R;
@@ -254,18 +253,18 @@ public class CommentDetailActivity extends BaseActivity {
             llCommentVisitBtn.setVisibility(View.GONE);
         }
     }
+
     private void initCommentImpressionView(String impression) {
         if (TextUtils.isEmpty(impression)) {
             return;
         }
         String[] impressionArray = impression.split("、");
-        XLogger.i(">>>", "impression>" + impressionArray);
         llImpressionDetail.removeAllViews();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(32, 0, 0, 0);
         for (int i = 0; i < impressionArray.length; i++) {
             TextView tv = new TextView(CommentDetailActivity.this);
-            tv.setText(String.format("#%s",impressionArray[i]));
+            tv.setText(String.format("#%s", impressionArray[i]));
             tv.setBackgroundResource(R.drawable.bg_contact_mark);
             tv.setTextSize(14);
             tv.setTextColor(Color.parseColor("#ff9a0c"));
@@ -300,6 +299,10 @@ public class CommentDetailActivity extends BaseActivity {
     public void onInfoViewClicked() {
         if (!isFromManager && mType.equals("1")) {
             showToast(ResourceUtils.getString(R.string.comment_anonymous_alter_message));
+            return;
+        }
+        if (mCommentBean != null && TextUtils.isEmpty(mCommentBean.userId)) {
+            XToast.show("该用户无详情信息");
             return;
         }
         if (mCommentBean.isAnonymous.equals("N")) {

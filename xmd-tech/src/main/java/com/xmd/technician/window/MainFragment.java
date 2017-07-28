@@ -278,7 +278,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         initWorkStatus();
         initNearbyUser();
         showHeadView();
-        HeartBeatTimer.getInstance().start(60, mTask);
+    //    HeartBeatTimer.getInstance().start(60, mTask);
         initPkRanking();
         isInitNormalRanking = false;
         sendDataRequest();
@@ -295,7 +295,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onDestroy() {
         super.onDestroy();
 
-        HeartBeatTimer.getInstance().shutdown();
+    //    HeartBeatTimer.getInstance().shutdown();
 
         RxBus.getInstance().unsubscribe(
                 mGetTechCurrentInfoSubscription,
