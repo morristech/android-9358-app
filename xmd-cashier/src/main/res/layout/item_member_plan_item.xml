@@ -17,15 +17,24 @@
         android:paddingBottom="@dimen/activity_normal_margin"
         android:paddingLeft="@dimen/activity_normal_margin"
         android:paddingTop="@dimen/activity_normal_margin"
+        android:singleLine="true"
         android:textColor="@color/colorText2"
+        android:textSize="@dimen/font_size_14" />
+
+    <TextView
+        android:id="@+id/tv_sub_item_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorText2"
+        android:text=" * "
         android:textSize="@dimen/font_size_14" />
 
     <TextView
         android:id="@+id/tv_sub_item_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/font_size_14"
+        android:text="12"
         android:textStyle="bold" />
 </LinearLayout>
