@@ -10,8 +10,12 @@ import com.xmd.app.IFunctionInit;
 
 public interface UserInfoService extends IFunctionInit {
     //加载用户信息
-    void loadUserInfoByUserId(String userId, Callback<User> callback);
+    void loadUserInfoByUserIdFromServer(String userId, Callback<User> callback);
 
+    //从网络加载用户信息
+    void loadUserInfoByChatIdFromServer(String chatId, Callback<User> callback);
+
+    //从网络或者缓存加载用户信息
     void loadUserInfoByChatId(String chatId, Callback<User> callback);
 
     //聊天ID获取用户信息

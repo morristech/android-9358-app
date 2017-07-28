@@ -61,7 +61,7 @@ public class ConversationManager {
                 final User user = userInfoService.getUserByChatId(key);
                 if (forceLoadUserInfo || user == null || user.getContactPermission() == null || !user.getContactPermission().isEchat()) {
                     XLogger.d("load user " + key + " from server");
-                    userInfoService.loadUserInfoByChatId(key, new Callback<User>() {
+                    userInfoService.loadUserInfoByChatIdFromServer(key, new Callback<User>() {
                         @Override
                         public void onResponse(User result, Throwable error) {
                             if (error != null) {

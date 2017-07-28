@@ -26,6 +26,7 @@ import com.crazyman.library.PermissionTool;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.ScreenUtils;
@@ -98,20 +99,41 @@ public class ChatActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.chat_activity);
 
-        String chatId = getIntent().getStringExtra(EXTRA_CHAT_ID);
+        final String chatId = getIntent().getStringExtra(EXTRA_CHAT_ID);
         if (TextUtils.isEmpty(chatId)) {
             XToast.show("必须传入聊天ID!");
             finish();
             return;
         }
+
+        userInfoService.loadUserInfoByChatId(chatId, new Callback<User>() {
+            @Override
+            public void onResponse(User result, Throwable error) {
+                if (error != null) {
+                    XToast.show("无法找到用户：" + chatId);
+                    finish();
+                    return;
+                }
+                mRemoteUser = result;
+                setTitle(mRemoteUser.getShowName());
+                setBackVisible(true);
+                MessageManager.getInstance().setCurrentChatId(chatId);
+
+                mBinding.setData(ChatActivity.this);
+                loadData(null);
+
+                mBinding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        loadData(mAdapter.getDataList().get(0).getChatMessage().getEmMessage().getMsgId());
+                        mBinding.refreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+        });
+
         ConversationManager.getInstance().markAllMessagesRead(chatId);
-        MessageManager.getInstance().setCurrentChatId(chatId);
-        mRemoteUser = userInfoService.getUserByChatId(chatId);
-        if (mRemoteUser == null) {
-            XToast.show("无法找到用户信息!");
-            finish();
-            return;
-        }
+
 
         //根据有无键盘高度设置进入时显示/隐藏键盘
         softwareKeyboardHeight = XmdApp.getInstance().getSp().getInt(SpConstants.KEY_KEYBOARD_HEIGHT, 0);
@@ -125,28 +147,13 @@ public class ChatActivity extends BaseActivity {
             mBinding.submenuLayout.getLayoutParams().height = softwareKeyboardHeight;
         }
 
-        setTitle(mRemoteUser.getShowName());
-        setBackVisible(true);
-
         layoutManager = new LinearLayoutManager(this);
         mBinding.recyclerView.setLayoutManager(layoutManager);
         mBinding.recyclerView.setAdapter(mAdapter);
 
-        mBinding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadData(mAdapter.getDataList().get(0).getChatMessage().getEmMessage().getMsgId());
-                mBinding.refreshLayout.setRefreshing(false);
-            }
-        });
-
-        mBinding.setData(this);
-
         mBinding.inputVoice.setOnTouchListener(voiceButtonListener);
 
         initMenu();
-
-        loadData(null);
 
         mBinding.recyclerView.setOnSizeChangedListener(new ChatRecyclerView.OnSizeChangedListener() {
             @Override

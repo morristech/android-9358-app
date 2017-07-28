@@ -139,16 +139,26 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void loadUserInfoByUserId(String userId, Callback<User> callback) {
-        loadUserInfo(userId, "user", callback);
+    public void loadUserInfoByUserIdFromServer(String userId, Callback<User> callback) {
+        loadUserInfoFromServer(userId, "user", callback);
+    }
+
+    @Override
+    public void loadUserInfoByChatIdFromServer(String chatId, Callback<User> callback) {
+        loadUserInfoFromServer(chatId, "emchat", callback);
     }
 
     @Override
     public void loadUserInfoByChatId(String chatId, Callback<User> callback) {
-        loadUserInfo(chatId, "emchat", callback);
+        User user = getUserByChatId(chatId);
+        if (user != null) {
+            callback.onResponse(user, null);
+        } else {
+            loadUserInfoByChatIdFromServer(chatId, callback);
+        }
     }
 
-    private void loadUserInfo(String id, String idType, final Callback<User> callback) {
+    private void loadUserInfoFromServer(String id, String idType, final Callback<User> callback) {
         Observable<BaseBean<User>> observable = XmdNetwork.getInstance()
                 .getService(CommonNetService.class)
                 .getUserBaseInfo(id, idType, true);
