@@ -403,11 +403,11 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void onScrollChanged(int scrollX, int scrollY) {
-        if (scrollY > Utils.dip2px(getActivity(), 100)) {
-            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.toolbarBackground));
-        } else {
-            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
-        }
+//        if (scrollY > Utils.dip2px(getActivity(), 100)) {
+//            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.toolbarBackground));
+//        } else {
+//            mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.colorPrimary));
+//        }
     }
 
     @Override
@@ -824,7 +824,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
 
     private void initTitleView(View view) {
         mRlToolbar = (RelativeLayout) view.findViewById(R.id.rl_toolbar);
-        mRlToolbar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
         imageLeft = (ImageView) view.findViewById(R.id.toolbar_left);
         imageLeft.setImageResource(R.drawable.mainpage_imgleft_selected);
         imageLeft.setVisibility(View.VISIBLE);
