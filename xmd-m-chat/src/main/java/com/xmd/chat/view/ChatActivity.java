@@ -272,8 +272,8 @@ public class ChatActivity extends BaseActivity {
 
     //处理新的UI消息
     @Subscribe
-    public void onNewUiMessages(EventNewUiMessage message) {
-        addNewChatMessageToUi(message.getChatMessage());
+    public void onNewUiMessages(EventNewUiMessage event) {
+        addNewChatMessageToUi(event.getViewModel());
     }
 
     //处理删除消息
@@ -345,8 +345,7 @@ public class ChatActivity extends BaseActivity {
     }
 
     //增加一条消息到列表
-    public void addNewChatMessageToUi(ChatMessage chatMessage) {
-        ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
+    public void addNewChatMessageToUi(ChatRowViewModel data) {
         setShowTime(mDataList.size() > 0 ? mDataList.get(mDataList.size() - 1) : null, data);
         mDataList.add(data);
         mAdapter.notifyItemInserted(mDataList.size() - 1);

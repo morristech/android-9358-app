@@ -1,6 +1,7 @@
 package com.xmd.chat.event;
 
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.chat.viewmodel.ChatRowViewModel;
 
 /**
  * Created by mo on 17-7-8.
@@ -8,13 +9,17 @@ import com.xmd.chat.message.ChatMessage;
  */
 
 public class EventNewUiMessage {
-    private ChatMessage chatMessage;
+    private ChatRowViewModel viewModel;
 
-    public EventNewUiMessage(ChatMessage chatMessage) {
-        this.chatMessage = chatMessage;
+    public EventNewUiMessage(ChatRowViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 
     public ChatMessage getChatMessage() {
-        return chatMessage;
+        return viewModel.getChatMessage();
+    }
+
+    public ChatRowViewModel getViewModel() {
+        return viewModel;
     }
 }

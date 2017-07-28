@@ -27,6 +27,7 @@ import com.xmd.chat.message.CustomLocationMessage;
 import com.xmd.chat.message.DiceGameChatMessage;
 import com.xmd.chat.message.RevokeChatMessage;
 import com.xmd.chat.message.TipChatMessage;
+import com.xmd.chat.viewmodel.ChatRowViewModel;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -123,7 +124,7 @@ public class MessageManager {
 
                             if (currentChatId != null && currentChatId.equals(chatMessage.getFromChatId())) {
                                 ConversationManager.getInstance().markAllMessagesRead(currentChatId);
-                                EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
+                                EventBus.getDefault().post(new EventNewUiMessage(ChatRowViewFactory.createViewModel(chatMessage)));
                             }
 
                             displayNotification(chatMessage);
@@ -206,7 +207,7 @@ public class MessageManager {
         tipChatMessage.setUser(AccountManager.getInstance().getUser());
         conversation.appendMessage(tipChatMessage.getEmMessage());
         EventBus.getDefault().post(new EventSendMessage(tipChatMessage));
-        EventBus.getDefault().post(new EventNewUiMessage(tipChatMessage));
+        EventBus.getDefault().post(new EventNewUiMessage(ChatRowViewFactory.createViewModel(tipChatMessage)));
         return tipChatMessage;
     }
 
@@ -222,7 +223,7 @@ public class MessageManager {
     public ChatMessage sendTipMessage(TipChatMessage tipChatMessage) {
         tipChatMessage.getConversation().appendMessage(tipChatMessage.getEmMessage());
         EventBus.getDefault().post(new EventSendMessage(tipChatMessage));
-        EventBus.getDefault().post(new EventNewUiMessage(tipChatMessage));
+        EventBus.getDefault().post(new EventNewUiMessage(ChatRowViewFactory.createViewModel(tipChatMessage)));
         return tipChatMessage;
     }
 
@@ -249,12 +250,15 @@ public class MessageManager {
             return null;
         }
         chatMessage.setUser(user);
+        //在发送之前创建ChatRowViewModel,避免消息发送成功，但是没有收到成功的状态
+        ChatRowViewModel data = ChatRowViewFactory.createViewModel(chatMessage);
+        //发送消息
         EMClient.getInstance().chatManager().sendMessage(chatMessage.getEmMessage());
 
         if (show) {
             EventBus.getDefault().post(new EventSendMessage(chatMessage));
             if (!chatMessage.getMsgType().equals(ChatMessage.MSG_TYPE_ORIGIN_CMD)) {
-                EventBus.getDefault().post(new EventNewUiMessage(chatMessage));
+                EventBus.getDefault().post(new EventNewUiMessage(data));
             }
         }
         return chatMessage;
