@@ -14,9 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="end"
-        android:paddingBottom="@dimen/activity_normal_margin"
         android:paddingLeft="@dimen/activity_normal_margin"
-        android:paddingTop="@dimen/activity_normal_margin"
         android:singleLine="true"
         android:textColor="@color/colorText2"
         android:textSize="@dimen/font_size_14" />

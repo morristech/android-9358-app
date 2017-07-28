@@ -11,8 +11,8 @@
 
     <com.xmd.cashier.widget.CircleImageView
         android:id="@+id/item_tech_avatar"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:src="@drawable/ic_avatar" />
 

@@ -48,7 +48,7 @@
                             android:singleLine="true"
                             android:text="小摩豆"
                             android:textColor="@color/colorGolden"
-                            android:textSize="@dimen/medium_font_size" />
+                            android:textSize="@dimen/small_font_size" />
 
                         <TextView
                             android:id="@+id/tv_info_level"
@@ -56,7 +56,7 @@
                             android:layout_height="wrap_content"
                             android:text="金卡"
                             android:textColor="@color/colorGolden"
-                            android:textSize="@dimen/medium_font_size" />
+                            android:textSize="@dimen/small_font_size" />
                     </LinearLayout>
 
                     <TextView
@@ -70,7 +70,7 @@
                         android:singleLine="true"
                         android:text="18603036816"
                         android:textColor="@color/colorGolden"
-                        android:textSize="@dimen/medium_font_size" />
+                        android:textSize="@dimen/small_font_size" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -239,7 +239,7 @@
             <RelativeLayout
                 android:id="@+id/layout_tech_info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@drawable/bg_area_item"
                 android:paddingBottom="@dimen/activity_normal_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -250,13 +250,14 @@
                     android:id="@+id/tv_tech_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:text="请选择"
                     android:textColor="@color/colorText3" />
 
                 <com.xmd.cashier.widget.CircleImageView
                     android:id="@+id/img_tech_avatar"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_avatar"
