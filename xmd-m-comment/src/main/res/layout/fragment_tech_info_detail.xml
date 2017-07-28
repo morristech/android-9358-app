@@ -36,7 +36,7 @@
             android:layout_toRightOf="@id/tv_tech_name"
             android:textColor="#ff9a0c"
             android:textSize="16sp"
-            tools:text="王先生" />
+            tools:text="[123]" />
 
         <LinearLayout
             android:id="@+id/ll_tech_phone"
