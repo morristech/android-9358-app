@@ -57,14 +57,14 @@
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:background="@color/colorStoke" />
 
-    <TextView
+    <ImageView
         android:id="@+id/tv_send_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/activity_normal_margin"
         android:layout_marginRight="@dimen/activity_small_margin"
-        android:text="  送"
+        android:src="@drawable/ic_song"
         android:visibility="visible" />
 
 

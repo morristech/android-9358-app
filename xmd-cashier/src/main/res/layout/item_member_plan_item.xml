@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_sub_item"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_sub_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="end"
-    android:padding="@dimen/activity_normal_margin"
-    android:text="现金"
-    android:textColor="@color/colorText2"
-    android:textSize="@dimen/font_size_14" />
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/activity_normal_margin"
+    android:paddingRight="@dimen/activity_normal_margin">
+
+    <TextView
+        android:id="@+id/tv_sub_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:paddingBottom="@dimen/activity_normal_margin"
+        android:paddingLeft="@dimen/activity_normal_margin"
+        android:paddingTop="@dimen/activity_normal_margin"
+        android:textColor="@color/colorText2"
+        android:textSize="@dimen/font_size_14" />
+
+    <TextView
+        android:id="@+id/tv_sub_item_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/font_size_14"
+        android:textStyle="bold" />
+</LinearLayout>

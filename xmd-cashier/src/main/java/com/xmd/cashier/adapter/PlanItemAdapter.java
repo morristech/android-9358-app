@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xmd.cashier.R;
@@ -40,22 +41,26 @@ public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHo
     @Override
     public void onBindViewHolder(PlanItemAdapter.ViewHolder holder, int position) {
         PackagePlanItem.PackageItem item = mData.get(position);
-        String content = null;
         switch (item.type) {
             case AppConstants.MEMBER_PLAN_ITEM_TYPE_CREDIT:
                 // 积分
-                content = item.name + "积分";
+                String credit = item.name + "积分";
+                holder.mContent.setText(credit);
+                holder.mCount.setVisibility(View.GONE);
                 break;
             case AppConstants.MEMBER_PLAN_ITEM_TYPE_MONEY:
                 // 现金
-                content = "现金" + item.name + "元";
+                String money = "现金" + item.name + "元";
+                holder.mContent.setText(money);
+                holder.mCount.setVisibility(View.GONE);
                 break;
             default:
-                content = item.name + " * " + item.itemCount;
+                holder.mContent.setText(item.name + " *");
+                holder.mCount.setVisibility(View.VISIBLE);
+                holder.mCount.setText(" " + item.itemCount);
                 break;
         }
-        holder.mContent.setText(content);
-        holder.mContent.setOnClickListener(new View.OnClickListener() {
+        holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCallBack.onPlanItemClick();
@@ -73,10 +78,14 @@ public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mContent;
+        public TextView mCount;
+        public LinearLayout mLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mLayout = (LinearLayout) itemView.findViewById(R.id.ll_sub_layout);
             mContent = (TextView) itemView.findViewById(R.id.tv_sub_item);
+            mCount = (TextView) itemView.findViewById(R.id.tv_sub_item_count);
         }
     }
 
