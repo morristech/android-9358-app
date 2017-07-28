@@ -5,17 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMOptions;
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
-import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
-import com.xmd.app.user.User;
-import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.beans.Location;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.view.ChatActivity;
@@ -72,20 +68,6 @@ public class XmdChat {
 
 
         EventBusSafeRegister.register(this);
-
-        if (XmdApp.getInstance().isAppFirstStart()) {
-
-            //历史原因，需要初始化用户信息
-            EMClient.getInstance().chatManager().loadAllConversations();
-            for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
-                User user = ConversationManager.getInstance().parseUserFromConversation(conversation);
-                if (user != null) {
-                    XLogger.i("found user: " + user);
-                    UserInfoServiceImpl.getInstance().saveUser(user);
-                }
-                conversation.clear(); //清除加载的会话数据，避免聊天窗口加载出错
-            }
-        }
     }
 
     public void loadConversation() {

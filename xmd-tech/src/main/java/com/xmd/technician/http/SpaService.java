@@ -14,7 +14,7 @@ import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SaveChatUserResult;
-import com.xmd.technician.bean.SayHiBaseResult;
+import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserSwitchesResult;
@@ -739,13 +739,6 @@ public interface SpaService {
                                                @Query(RequestConstant.KEY_PAGE) String page,
                                                @Query(RequestConstant.KEY_PAGE_SIZE) String page_size);
 
-    // 打招呼
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_TECH_SAY_HELLO)
-    Call<SayHiBaseResult> techSayHello(@Path(RequestConstant.KEY_NEW_CUSTOMER_ID) String customerId,
-                                       @Field(RequestConstant.KEY_TOKEN) String userToken,
-                                       @Field(RequestConstant.KEY_HELLO_TEMPLATE_ID) String templateId);
-
     // 获取剩余打招呼次数
     @GET(RequestConstant.URL_GET_HELLO_LEFT_COUNT)
     Call<HelloLeftCountResult> getHelloLeftCount(@Query(RequestConstant.KEY_TOKEN) String userToken);
@@ -946,4 +939,10 @@ public interface SpaService {
     //获取订单详情
     @GET("/spa-manager/api/v2/tech/profile/order/{orderId}")
     Observable<BaseBean<Order>> getOrderDetail(@Path("orderId") String orderId);
+
+    //打招呼
+    @FormUrlEncoded
+    @POST("/spa-manager/api/v2/tech/hello/{customerId}")
+    Observable<BaseBean<SayHiResult>> sayHiToUser(@Path("customerId") String customerId,
+                                                  @Field("templateId") long templateId);
 }

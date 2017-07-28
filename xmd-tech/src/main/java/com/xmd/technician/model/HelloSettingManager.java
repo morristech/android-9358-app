@@ -8,14 +8,20 @@ import com.bumptech.glide.request.FutureTarget;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.message.ChatMessage;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 import com.xmd.technician.Constant;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.HelloTemplateInfo;
+import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.http.RetrofitServiceFactory;
+import com.xmd.technician.http.SpaService;
 import com.xmd.technician.http.gson.HelloReplyResult;
 
 import java.io.File;
@@ -24,6 +30,8 @@ import java.io.Serializable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.Subscription;
 
 /**
  * Created by zr on 17-3-18.
@@ -145,21 +153,43 @@ public class HelloSettingManager {
     /**
      * 打招呼
      */
-    public void sendHelloTemplate(User user) {
-        if (user == null) {
+    public Subscription sendHelloTemplate(String chatId, com.shidou.commonlibrary.Callback<SayHiResult> callback) {
+        if (chatId == null) {
             XToast.show("参数错误");
-            return;
+            callback.onResponse(null, new RuntimeException("参数错误"));
+            return null;
         }
-        // 招呼文本
-        ChatMessage chatMessage = ChatMessage.createTextMessage(user.getChatId(), templateContentText.replace("[客户昵称]", user.getName()));
-        chatMessage.addTag(ChatMessage.MSG_TAG_HELLO);
-        MessageManager.getInstance().sendMessage(chatMessage);
-        if (!TextUtils.isEmpty(templateImageCachePath)) {
-            // 招呼图片
-            ChatMessage imgMessage = ChatMessage.createImageMessage(user.getChatId(), templateImageCachePath);
-            imgMessage.addTag(ChatMessage.MSG_TAG_HELLO);
-            MessageManager.getInstance().sendMessage(imgMessage);
+        User user = UserInfoServiceImpl.getInstance().getUserByChatId(chatId);
+        if (user == null) {
+            XToast.show("没有用户信息");
+            callback.onResponse(null, new RuntimeException("没有用户信息"));
+            return null;
         }
+        Observable<BaseBean<SayHiResult>> observable = XmdNetwork.getInstance()
+                .getService(SpaService.class)
+                .sayHiToUser(user.getId(), getTemplateId());
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<SayHiResult>>() {
+            @Override
+            public void onCallbackSuccess(BaseBean<SayHiResult> result) {
+                // 招呼文本
+                ChatMessage chatMessage = ChatMessage.createTextMessage(user.getChatId(), templateContentText.replace("[客户昵称]", user.getName()));
+                chatMessage.addTag(ChatMessage.MSG_TAG_HELLO);
+                MessageManager.getInstance().sendMessage(chatMessage);
+                if (!TextUtils.isEmpty(templateImageCachePath)) {
+                    // 招呼图片
+                    ChatMessage imgMessage = ChatMessage.createImageMessage(user.getChatId(), templateImageCachePath);
+                    imgMessage.addTag(ChatMessage.MSG_TAG_HELLO);
+                    MessageManager.getInstance().sendMessage(imgMessage);
+                }
+                callback.onResponse(result.getRespData(), null);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callback.onResponse(null, e);
+            }
+        });
+
     }
 
     public void checkHelloReply() {

@@ -112,7 +112,6 @@ public class ControllerRegister {
                 MsgDef.MSG_DEF_GET_NEARBY_CUS_COUNT,
                 MsgDef.MSG_DEF_GET_NEARBY_CUS_LIST,
                 MsgDef.MSG_DEF_GET_HELLO_LEFT_COUNT,
-                MsgDef.MSG_DEF_TECH_SAY_HELLO,
                 MsgDef.MSG_DEF_GET_HELLO_RECORD_LIST,
                 MsgDef.MSG_DEF_GET_CONTACT_PERMISSION,
                 MsgDef.MSG_DEF_GET_SET_TEMPLATE,

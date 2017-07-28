@@ -82,7 +82,7 @@ public class ConversationViewModel {
     }
 
     public String getName() {
-        return user.getName();
+        return user.getShowName();
     }
 
     public String getAvatar() {

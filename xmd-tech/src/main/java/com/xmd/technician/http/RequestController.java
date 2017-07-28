@@ -23,14 +23,10 @@ import com.xmd.technician.bean.MarkResult;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.RecentlyVisitorResult;
 import com.xmd.technician.bean.SaveChatUserResult;
-import com.xmd.technician.bean.SayHiBaseResult;
-import com.xmd.technician.bean.SayHiNearbyResult;
-import com.xmd.technician.bean.SayHiVisitorResult;
 import com.xmd.technician.bean.SendGameResult;
 import com.xmd.technician.bean.UserGetCouponResult;
 import com.xmd.technician.bean.UserSwitchesResult;
 import com.xmd.technician.bean.VisitBean;
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.http.gson.AccountMoneyResult;
@@ -400,9 +396,6 @@ public class RequestController extends AbstractController {
                 break;
             case MsgDef.MSG_DEF_GET_HELLO_RECORD_LIST:
                 getHelloRecordList((Map<String, String>) msg.obj);
-                break;
-            case MsgDef.MSG_DEF_TECH_SAY_HELLO:
-                techSayHi((Map<String, String>) msg.obj);
                 break;
 //            case MsgDef.MSG_DEF_CHECK_HELLO_RECENTLY:
 //                checkHelloRecently((Map<String, String>) msg.obj);
@@ -1975,43 +1968,6 @@ public class RequestController extends AbstractController {
             @Override
             protected void postResult(NearbyCusListResult result) {
                 RxBus.getInstance().post(result);
-            }
-        });
-    }
-
-    // 打招呼
-    private void techSayHi(Map<String, String> params) {
-        String type = params.get(RequestConstant.KEY_REQUEST_SAY_HI_TYPE);
-        Call<SayHiBaseResult> call = getSpaService().techSayHello(params.get(RequestConstant.KEY_NEW_CUSTOMER_ID),
-                SharedPreferenceHelper.getUserToken(),
-                String.valueOf(HelloSettingManager.getInstance().getTemplateId()));
-        call.enqueue(new TokenCheckedCallback<SayHiBaseResult>() {
-            @Override
-            protected void postResult(SayHiBaseResult result) {
-                result.userName = params.get(RequestConstant.KEY_USERNAME);
-                result.userEmchatId = params.get(RequestConstant.KEY_GAME_USER_EMCHAT_ID);
-                result.userAvatar = params.get(RequestConstant.KEY_USER_AVATAR);
-                result.userType = params.get(RequestConstant.KEY_USER_TYPE);
-                switch (type) {
-                    case Constant.REQUEST_SAY_HI_TYPE_NEARBY:
-                        // 附近的人打招呼
-                        SayHiNearbyResult nearbyResult = new SayHiNearbyResult(result);
-                        nearbyResult.cusPosition = Integer.parseInt(params.get(ChatConstant.KEY_SAY_HI_POSITION));
-                        nearbyResult.cusSayHiTime = params.get(RequestConstant.KEY_TIME_STAMP);
-                        RxBus.getInstance().post(nearbyResult);
-                        break;
-                    case Constant.REQUEST_SAY_HI_TYPE_VISITOR:
-                        // 最近访客打招呼
-                        SayHiVisitorResult visitorResult = new SayHiVisitorResult(result);
-                        visitorResult.position = params.get(ChatConstant.KEY_SAY_HI_POSITION);
-                        RxBus.getInstance().post(visitorResult);
-                        break;
-                    case Constant.REQUEST_SAY_HI_TYPE_DETAIL:
-                        RxBus.getInstance().post(result);
-                        break;
-                    default:
-                        break;
-                }
             }
         });
     }

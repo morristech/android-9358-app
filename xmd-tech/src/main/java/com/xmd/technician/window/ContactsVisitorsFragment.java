@@ -10,21 +10,20 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.hyphenate.exceptions.HyphenateException;
+import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.m.comment.httprequest.ConstantResources;
-import com.xmd.technician.Constant;
 import com.xmd.technician.R;
-import com.xmd.technician.bean.SayHiVisitorResult;
+import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.bean.UserRecentBean;
-import com.xmd.technician.chat.ChatConstant;
 import com.xmd.technician.common.CharacterParser;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
 import com.xmd.technician.common.Utils;
-import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.CustomerUserRecentListResult;
 import com.xmd.technician.http.gson.NearbyCusCountResult;
 import com.xmd.technician.model.HelloSettingManager;
@@ -90,9 +89,6 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
         mContactRecentUserListSubscription = RxBus.getInstance().toObservable(CustomerUserRecentListResult.class).subscribe(
                 result -> handlerRecentUserList(result)
         );
-        mSayHiVisitorResultSubscription = RxBus.getInstance().toObservable(SayHiVisitorResult.class).subscribe(
-                result -> handlerSayHiVisitorResult(result)
-        );
         mGetNearbyCusCountSubscription = RxBus.getInstance().toObservable(NearbyCusCountResult.class).subscribe(
                 this::handleNearbyStatus);
     }
@@ -127,23 +123,6 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
 
     }
 
-    private void handlerSayHiVisitorResult(SayHiVisitorResult result) {
-        if (result.statusCode == 200) {
-            position = Integer.parseInt(result.position);
-            if (position != -1) {
-                mVisitors.get(position).canSayHello = "N";
-                mListAdapter.notifyItemChanged(position);
-            }
-            // 环信打招呼
-            HelloSettingManager.getInstance().sendHelloTemplate(UserInfoServiceImpl.getInstance().getUserByChatId(result.userEmchatId));
-            Map<String, String> saveParams = new HashMap<>();
-            saveParams.put(RequestConstant.KEY_FRIEND_CHAT_ID, result.userEmchatId);
-            saveParams.put(RequestConstant.KEY_CHAT_MSG_ID, "");
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_SAVE_CHAT_TO_CHONTACT, saveParams);
-        }
-
-    }
-
     // 附近的人
     private void handleNearbyStatus(NearbyCusCountResult result) {
 
@@ -167,7 +146,20 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
     @Override
     public void onNegativeButtonClicked(UserRecentBean bean) {//打招呼
         super.onNegativeButtonClicked(bean);
-        sayHiRequest(bean.userId, Utils.isNotEmpty(bean.userNoteName) ? bean.userNoteName : bean.name, bean.avatarUrl, bean.customerType, bean.emchatId, String.valueOf(bean.intListPosition));
+        mSayHiVisitorResultSubscription = HelloSettingManager.getInstance().sendHelloTemplate(bean.emchatId, new Callback<SayHiResult>() {
+            @Override
+            public void onResponse(SayHiResult result, Throwable error) {
+                if (error != null) {
+                    XToast.show("打招呼失败：" + error.getMessage());
+                    return;
+                }
+                position = bean.intListPosition;
+                if (position != -1) {
+                    mVisitors.get(position).canSayHello = "N";
+                    mListAdapter.notifyItemChanged(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -235,17 +227,5 @@ public class ContactsVisitorsFragment extends BaseListFragment<UserRecentBean> {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    private void sayHiRequest(String userId, String userName, String avatarUrl, String userType, String userEmchatId, String position) {
-        mSayHiParams.clear();
-        mSayHiParams.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_VISITOR);
-        mSayHiParams.put(RequestConstant.KEY_NEW_CUSTOMER_ID, userId);
-        mSayHiParams.put(RequestConstant.KEY_USERNAME, userName);
-        mSayHiParams.put(RequestConstant.KEY_USER_AVATAR, avatarUrl);
-        mSayHiParams.put(RequestConstant.KEY_USER_TYPE, userType);
-        mSayHiParams.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, userEmchatId);
-        mSayHiParams.put(ChatConstant.KEY_SAY_HI_POSITION, position);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, mSayHiParams);
     }
 }

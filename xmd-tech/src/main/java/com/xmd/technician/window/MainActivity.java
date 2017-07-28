@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
@@ -30,12 +31,13 @@ import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.SharedPreferenceHelper;
 import com.xmd.technician.bean.IsBindResult;
+import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.chat.runtimepermissions.PermissionsManager;
 import com.xmd.technician.chat.runtimepermissions.PermissionsResultAction;
 import com.xmd.technician.common.Logger;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.UINavigation;
-import com.xmd.technician.http.RequestConstant;
+import com.xmd.technician.model.HelloSettingManager;
 import com.xmd.technician.model.LoginTechnician;
 import com.xmd.technician.msgctrl.MsgDef;
 import com.xmd.technician.msgctrl.MsgDispatcher;
@@ -43,10 +45,8 @@ import com.xmd.technician.msgctrl.RxBus;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -324,18 +324,16 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
             showToast("当前已经离线，请重新登录!");
             return;
         }
-//        if (mUser == null) {
-//            showToast("没有用户信息!");
-//            return;
-//        }
-        Map<String, String> params = new HashMap<>();
-        params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_DETAIL);
-        params.put(RequestConstant.KEY_USERNAME, bean.emChatName);
-        params.put(RequestConstant.KEY_USER_AVATAR, bean.chatHeadUrl);
-        params.put(RequestConstant.KEY_USER_TYPE, "customer");
-        params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, bean.emChatId);
-        params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, bean.userId);
-        MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, params);
+        HelloSettingManager.getInstance().sendHelloTemplate(bean.emChatId, new Callback<SayHiResult>() {
+            @Override
+            public void onResponse(SayHiResult result, Throwable error) {
+                if (error != null) {
+                    XToast.show("打招呼失败：" + error.getMessage());
+                } else {
+                    XToast.show("打招呼成功！");
+                }
+            }
+        });
     }
 
     @Override

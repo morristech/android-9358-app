@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.user.User;
@@ -15,8 +16,7 @@ import com.xmd.technician.Adapter.NearbyCusAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
 import com.xmd.technician.bean.NearbyCusInfo;
-import com.xmd.technician.bean.SayHiNearbyResult;
-import com.xmd.technician.chat.ChatConstant;
+import com.xmd.technician.bean.SayHiResult;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
@@ -85,9 +85,6 @@ public class NearbyActivity extends BaseActivity {
             handleNearbyCusListResult(result);
         });
 
-        mSayHiNearbySubscription = RxBus.getInstance().toObservable(SayHiNearbyResult.class).subscribe(result -> {
-            handleSayHiNearbyResult(result);
-        });
 
         getHelloLeftCount();
         getNearbyCusList();
@@ -108,16 +105,25 @@ public class NearbyActivity extends BaseActivity {
                 return;
             }
             // 打招呼
-            Map<String, String> params = new HashMap<>();
-            params.put(RequestConstant.KEY_REQUEST_SAY_HI_TYPE, Constant.REQUEST_SAY_HI_TYPE_NEARBY);
-            params.put(RequestConstant.KEY_NEW_CUSTOMER_ID, info.userId);
-            params.put(RequestConstant.KEY_USERNAME, info.userName);
-            params.put(RequestConstant.KEY_USER_AVATAR, info.userAvatar);
-            params.put(RequestConstant.KEY_USER_TYPE, info.userType);
-            params.put(RequestConstant.KEY_GAME_USER_EMCHAT_ID, info.userEmchatId);
-            params.put(ChatConstant.KEY_SAY_HI_POSITION, String.valueOf(position));
-            params.put(RequestConstant.KEY_TIME_STAMP, formatter.format(new Date()));
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_SAY_HELLO, params);
+            mSayHiNearbySubscription = HelloSettingManager.getInstance().sendHelloTemplate(info.userEmchatId, new Callback<SayHiResult>() {
+                @Override
+                public void onResponse(SayHiResult result, Throwable error) {
+                    if (error != null) {
+                        XToast.show("打招呼失败：" + error.getMessage());
+                        return;
+                    }
+                    //刷新打招呼次数
+                    updateHelloLeftCount(result.technicianLeft);
+                    //更新列表状态
+                    mAdapterList.get(position).userLeftHelloCount = result.customerLeft;
+                    mAdapterList.get(position).techHelloRecently = true;
+                    String cusSayHiTime = formatter.format(new Date());
+                    mAdapterList.get(position).lastTechHelloTime = cusSayHiTime;
+                    mCusAdapter.updateCurrentItem(position, result.customerLeft, cusSayHiTime);
+                    // 成功提示
+                    showToast("打招呼成功");
+                }
+            });
         });
         mCusRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mCusRecyclerView.setAdapter(mCusAdapter);
@@ -225,27 +231,6 @@ public class NearbyActivity extends BaseActivity {
         }
     }
 
-    // 打招呼
-    private void handleSayHiNearbyResult(SayHiNearbyResult result) {
-        if (result != null && result.statusCode == 200) {
-            //环信招呼
-            HelloSettingManager.getInstance().sendHelloTemplate(UserInfoServiceImpl.getInstance().getUserByChatId(result.userEmchatId));
-            //刷新打招呼次数
-            updateHelloLeftCount(result.respData.technicianLeft);
-            //保存用户好友关系链
-            saveChatContact(result.userEmchatId);
-            //更新列表状态
-            mAdapterList.get(result.cusPosition).userLeftHelloCount = result.respData.customerLeft;
-            mAdapterList.get(result.cusPosition).techHelloRecently = true;
-            mAdapterList.get(result.cusPosition).lastTechHelloTime = result.cusSayHiTime;
-            mCusAdapter.updateCurrentItem(result.cusPosition, result.respData.customerLeft, result.cusSayHiTime);
-            // 成功提示
-            showToast("打招呼成功");
-        } else {
-            // 错误提示
-            showToast("向客户打招呼失败:" + result.msg);
-        }
-    }
 
     @Override
     protected void onDestroy() {
