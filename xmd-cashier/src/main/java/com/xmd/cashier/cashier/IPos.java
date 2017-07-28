@@ -73,4 +73,6 @@ public interface IPos {
     void textToSound(String text);
 
     String getMagneticReaderInfo();
+
+    void setPrintListener(Callback<?> callback);
 }

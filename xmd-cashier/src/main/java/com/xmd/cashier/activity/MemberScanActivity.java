@@ -3,7 +3,6 @@ package com.xmd.cashier.activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -97,5 +96,11 @@ public class MemberScanActivity extends BaseActivity implements MemberScanContra
     public void showScanSuccess() {
         mScanNormalLayout.setVisibility(View.GONE);
         mScanSuccessLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onKeyEventBack() {
+        mPresenter.onKeyEventBack();
+        return true;
     }
 }

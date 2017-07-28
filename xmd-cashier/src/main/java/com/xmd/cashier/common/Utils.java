@@ -87,7 +87,7 @@ public class Utils {
     }
 
     public static boolean checkPassword(String password) {
-        if (TextUtils.isEmpty(password) || password.length() > 45 || password.length() < 6) {
+        if (TextUtils.isEmpty(password) || password.length() > 45) {
             return false;
         }
         return true;

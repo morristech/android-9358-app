@@ -472,7 +472,8 @@ public class MemberManager {
         });
     }
 
-    public void printInfo(MemberRecordInfo info, boolean retry, boolean keep) {
+    public void printInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
+        mPos.setPrintListener(callback);
         mPos.printCenter(AccountManager.getInstance().getClubName());
         if (retry) {
             mPos.printCenter("--补打小票--");

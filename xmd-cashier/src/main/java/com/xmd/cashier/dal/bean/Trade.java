@@ -52,6 +52,7 @@ public class Trade {
     public String memberCanDiscount;// Y打折，N不打折
     public String memberPayCertificate;//会员支付凭证
     public MemberRecordInfo memberRecordInfo;
+    public boolean isRemain;
 
     /**
      * 收银台支付

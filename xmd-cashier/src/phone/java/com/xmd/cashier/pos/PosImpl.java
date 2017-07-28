@@ -155,4 +155,9 @@ public class PosImpl implements IPos {
     public String getMagneticReaderInfo() {
         return null;
     }
+
+    @Override
+    public void setPrintListener(Callback<?> callback) {
+
+    }
 }
