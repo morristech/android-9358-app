@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
@@ -18,6 +19,7 @@ import com.xmd.chat.BR;
 import com.xmd.chat.R;
 import com.xmd.chat.ShareDataManager;
 import com.xmd.chat.databinding.ChatShareListActivityBinding;
+import com.xmd.chat.databinding.ChatShareListTypeBinding;
 import com.xmd.chat.viewmodel.ShareViewModel;
 
 import java.util.ArrayList;
@@ -47,6 +49,8 @@ public class ShareListActivity extends BaseActivity {
     public ObservableInt selectCount = new ObservableInt();
 
     private List<String> dataTypeList;
+    private List<RecyclerView> recyclerViewList;
+    private List<ImageView> arrowViewList;
 
     private ShareDataManager dataManager = ShareDataManager.getInstance();
 
@@ -61,13 +65,17 @@ public class ShareListActivity extends BaseActivity {
             finish();
             return;
         }
-
+        recyclerViewList = new ArrayList<>();
+        arrowViewList = new ArrayList<>();
         for (int i = 0; i < dataTypeList.size(); i++) {
-            ViewDataBinding typeBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.chat_share_list_type, binding.contentView, true);
+            ChatShareListTypeBinding typeBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.chat_share_list_type, binding.contentView, true);
             typeBinding.setVariable(BR.data, dataTypeList.get(i));
             typeBinding.setVariable(BR.handler, this);
+            arrowViewList.add(typeBinding.arrowView);
 
             RecyclerView recyclerView = new RecyclerView(this);
+            recyclerViewList.add(recyclerView);
+
             binding.contentView.addView(recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             final int finalI = i;
@@ -143,5 +151,16 @@ public class ShareListActivity extends BaseActivity {
                 selectCount.set(selectCount.get() - 1);
             }
         }
+    }
+
+    public void onClickGroup(String title) {
+        int position = dataTypeList.indexOf(title);
+        if (position < 0) {
+            return;
+        }
+        RecyclerView recyclerView = recyclerViewList.get(position);
+        boolean isShow = recyclerView.getVisibility() == View.VISIBLE;
+        recyclerView.setVisibility(isShow ? View.GONE : View.VISIBLE);
+        arrowViewList.get(position).setImageResource(isShow ? R.drawable.arrow_right : R.drawable.arrow_down);
     }
 }

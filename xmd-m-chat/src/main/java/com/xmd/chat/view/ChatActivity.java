@@ -384,6 +384,9 @@ public class ChatActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     showSubMenuFastReply.set(false);
+                    if (voiceInputMode.get()) {
+                        voiceInputMode.set(false);
+                    }
                     if (chatMenu.subMenuList != null && chatMenu.subMenuList.size() > 0) {
                         showSubMenu(imageView, chatMenu);
                     } else {
@@ -559,13 +562,17 @@ public class ChatActivity extends BaseActivity {
             XToast.show("录制失败！");
             return;
         }
+        int duration = (int) VoiceManager.getInstance().getRecordTime() / 1000;
+        if (duration < 1) {
+            XToast.show("录音时间太短");
+            file.delete();
+            return;
+        }
         if (event.getY() < -50) {
             XLogger.d("取消发送，y=" + event.getY());
             file.delete();
-        } else {
-            MessageManager.getInstance()
-                    .sendVoiceMessage(mRemoteUser, path, (int) VoiceManager.getInstance().getRecordTime() / 1000);
         }
+        MessageManager.getInstance().sendVoiceMessage(mRemoteUser, path, duration);
     }
 
     public void onClickEditFastReply() {

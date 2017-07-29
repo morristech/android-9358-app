@@ -72,6 +72,10 @@ public class XmdPushManager {
             getuiAppKey = applicationInfo.metaData.getString("PUSH_APPKEY", "");
             getuiAppSecret = applicationInfo.metaData.getString("PUSH_APPSECRET", "");
             getuiMasterSecret = applicationInfo.metaData.getString("GETUI_MASTER_SECRET", "");
+            XLogger.i("getuiAppId:" + getuiAppId);
+            XLogger.i("getuiAppKey:" + getuiAppKey);
+            XLogger.i("getuiAppSecret:" + getuiAppSecret);
+            XLogger.i("getuiMasterSecret:" + getuiMasterSecret);
         } catch (PackageManager.NameNotFoundException e) {
             throw new RuntimeException("can not get meta data!");
         }
