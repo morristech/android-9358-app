@@ -14,6 +14,7 @@ import java.util.Date;
 
 public class OrderChatMessage extends ChatMessage {
     private final static String ATTR_ORDER_TYPE = "orderAppointType"; //预约类型,电话，免费，订金，全额
+    private final static String ATTR_ORDER_CUSTOMER_ID = "orderCustomerId";
     private final static String ATTR_ORDER_CUSTOMER_PHONE = "orderCustomerPhone"; //客户手机
     private final static String ATTR_ORDER_CUSTOMER_NAME = "orderCustomerName"; //客户名称
     private final static String ATTR_ORDER_TECH_ID = "orderTechId"; //技师ID
@@ -52,6 +53,14 @@ public class OrderChatMessage extends ChatMessage {
 
     public void setCustomerName(String customerName) {
         setAttr(ATTR_ORDER_CUSTOMER_NAME, customerName);
+    }
+
+    public String getCustomerId() {
+        return getSafeStringAttribute(ATTR_ORDER_CUSTOMER_ID);
+    }
+
+    public void setCustomerId(String customerId) {
+        setAttr(ATTR_ORDER_CUSTOMER_NAME, customerId);
     }
 
     public String getCustomerPhone() {
@@ -154,6 +163,9 @@ public class OrderChatMessage extends ChatMessage {
 
     //设置订单数据
     public void setOrderData(AppointmentData data) {
+        if (data.getCustomerId() != null) {
+            setCustomerId(data.getCustomerId());
+        }
         if (data.getCustomerName() != null) {
             setCustomerName(data.getCustomerName());
         }
@@ -190,7 +202,7 @@ public class OrderChatMessage extends ChatMessage {
 
     public AppointmentData parseOrderData() {
         AppointmentData data = new AppointmentData();
-        data.setCustomerId(getUserId());
+        data.setCustomerId(getCustomerId());
         if (getCustomerName() != null) {
             data.setCustomerName(getCustomerName());
         }
