@@ -50,7 +50,6 @@ import com.xmd.technician.bean.Order;
 import com.xmd.technician.bean.RecentlyVisitorBean;
 import com.xmd.technician.bean.UserRecentBean;
 import com.xmd.technician.chat.ChatConstant;
-import com.xmd.technician.common.HeartBeatTimer;
 import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.common.ThreadManager;
 import com.xmd.technician.common.UINavigation;
@@ -684,8 +683,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 }
                 break;
             case R.id.btn_main_credit_center:
-                Intent intentCredit = new Intent(getActivity(), UserCreditCenterActivity.class);
-                startActivity(intentCredit);
+                UINavigation.gotoCreditCenter(getActivity());
                 break;
         }
     }

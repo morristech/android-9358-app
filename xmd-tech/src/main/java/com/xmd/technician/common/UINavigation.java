@@ -22,6 +22,7 @@ import com.xmd.technician.window.MainActivity;
 import com.xmd.technician.window.OrderDetailActivity;
 import com.xmd.technician.window.RegisterActivity;
 import com.xmd.technician.window.TechChatActivity;
+import com.xmd.technician.window.UserCreditCenterActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -119,6 +120,11 @@ public class UINavigation {
         context.startActivity(new Intent(context, DynamicDetailActivity.class));
     }
 
+    public static void gotoCreditCenter(Context context) {
+        Intent intent = new Intent(context, UserCreditCenterActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 
     public static XmdActionFactory xmdActionFactory = new XmdActionFactory() {
         @Override
@@ -148,6 +154,9 @@ public class UINavigation {
                 break;
             case XmdDisplay.ACTION_VIEW_COMMENT:
                 gotoComment(context);
+                break;
+            case XmdDisplay.ACTION_VIEW_CREDIT_CENTER:
+                gotoCreditCenter(context);
                 break;
             default:
                 break;
