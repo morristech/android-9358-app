@@ -603,7 +603,7 @@ public interface SpaService {
     // ***************************************POS会员*******************************************
     // 会员设置信息获取
     @GET(RequestConstant.URL_GET_MEMBER_SETTING_CONFIG)
-    Observable<MemberSettingResult> getMemberSettingConfig(@Query(RequestConstant.KEY_TOKEN) String userToken);
+    Call<MemberSettingResult> getMemberSettingConfig(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
     // 获取会员充值套餐
     @GET(RequestConstant.URL_GET_MEMBER_ACT_PLAN)

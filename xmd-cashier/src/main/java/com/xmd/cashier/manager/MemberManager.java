@@ -27,6 +27,7 @@ import com.xmd.cashier.dal.net.response.MemberSettingResult;
 import com.xmd.cashier.dal.net.response.MemberUrlResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.ServerException;
 import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,6 +35,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import retrofit2.Call;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -94,24 +96,56 @@ public class MemberManager {
         return mMemberSwitch;
     }
 
-    public void getClubMemberSetting() {
-        Observable<MemberSettingResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+    private Call<MemberSettingResult> callMemberSetting;
+    private RetryPool.RetryRunnable mRetryGetMemberSetting;
+    private boolean resultMemberSetting;
+
+    public void startGetMemberSetting() {
+        mRetryGetMemberSetting = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
+            @Override
+            public boolean run() {
+                return getFastPayCount();
+            }
+        });
+        RetryPool.getInstance().postWork(mRetryGetMemberSetting);
+    }
+
+    public void stopGetMemberSetting() {
+        if (callMemberSetting != null && !callMemberSetting.isCanceled()) {
+            callMemberSetting.cancel();
+        }
+        if (mRetryGetMemberSetting != null) {
+            RetryPool.getInstance().removeWork(mRetryGetMemberSetting);
+            mRetryGetMemberSetting = null;
+        }
+    }
+
+    private boolean getFastPayCount() {
+        callMemberSetting = XmdNetwork.getInstance().getService(SpaService.class)
                 .getMemberSettingConfig(AccountManager.getInstance().getToken());
-        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberSettingResult>() {
+        XmdNetwork.getInstance().requestSync(callMemberSetting, new NetworkSubscriber<MemberSettingResult>() {
             @Override
             public void onCallbackSuccess(MemberSettingResult result) {
-                if (result != null) {
+                if (result != null && result.getRespData() != null) {
                     mCardMode = result.getRespData().cardMode;
                     mRechargeMode = result.getRespData().rechargeMode;
                     mMemberSwitch = result.getRespData().memberSwitch;
                 }
+                resultMemberSetting = true;
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                XLogger.e(e.getLocalizedMessage());
+                XLogger.i("getMemberSetting error :" + e.getLocalizedMessage());
+                if (e instanceof ServerException && ((ServerException) e).statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
+                    // token过期
+                    resultMemberSetting = true;
+                } else {
+                    resultMemberSetting = false;
+                }
             }
         });
+        return resultMemberSetting;
     }
 
     //----------------开卡-------------------

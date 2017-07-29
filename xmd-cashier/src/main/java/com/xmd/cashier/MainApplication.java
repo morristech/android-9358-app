@@ -121,7 +121,7 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));
             NotifyManager.getInstance().startGetFastPayCountAsync();
             NotifyManager.getInstance().startGetOrderCountAsync();
-            MemberManager.getInstance().getClubMemberSetting();
+            MemberManager.getInstance().startGetMemberSetting();
         }
 
         // 开启服务

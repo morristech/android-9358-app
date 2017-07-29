@@ -143,7 +143,7 @@ public class AccountManager {
                             EventBus.getDefault().postSticky(new EventLogin(AccountManager.getInstance().getToken(), user));
                             NotifyManager.getInstance().startGetFastPayCountAsync();
                             NotifyManager.getInstance().startGetOrderCountAsync();
-                            MemberManager.getInstance().getClubMemberSetting();
+                            MemberManager.getInstance().startGetMemberSetting();
                         }
 
                         @Override
@@ -181,6 +181,7 @@ public class AccountManager {
         EventBus.getDefault().postSticky(new EventLogout(AccountManager.getInstance().getToken(), AccountManager.getInstance().getUserId()));
         NotifyManager.getInstance().stopGetFastPayCountAsync();
         NotifyManager.getInstance().stopGetOrderCountAsync();
+        MemberManager.getInstance().stopGetMemberSetting();
 
         Observable<LogoutResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .logout(getToken(), AppConstants.SESSION_TYPE);
