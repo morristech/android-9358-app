@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XProgressDialog;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.m.network.EventTokenExpired;
@@ -42,6 +41,18 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         EventBusSafeRegister.unregister(this);
         XmdActivityManager.getInstance().removeActivity(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        XmdActivityManager.getInstance().onStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        XmdActivityManager.getInstance().onStop(this);
     }
 
     @Override

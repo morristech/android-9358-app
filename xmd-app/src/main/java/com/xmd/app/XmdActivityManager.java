@@ -16,6 +16,8 @@ public class XmdActivityManager {
         return ourInstance;
     }
 
+    private static int startCount;
+
     private XmdActivityManager() {
     }
 
@@ -53,4 +55,17 @@ public class XmdActivityManager {
     public int getActivityCount() {
         return activities.size();
     }
+
+    public void onStart(Activity activity) {
+        startCount++;
+    }
+
+    public void onStop(Activity activity) {
+        startCount--;
+    }
+
+    public boolean isForeground() {
+        return startCount > 0;
+    }
+
 }

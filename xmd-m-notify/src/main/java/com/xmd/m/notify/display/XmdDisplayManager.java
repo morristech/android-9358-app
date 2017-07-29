@@ -7,6 +7,7 @@ import android.media.RingtoneManager;
 import android.os.Vibrator;
 import android.view.View;
 
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.XmdActivityManager;
 
@@ -40,7 +41,8 @@ public class XmdDisplayManager {
 
     @Subscribe
     public void show(XmdDisplay display) {
-        if (XmdActivityManager.getInstance().getActivityCount() == 0) {
+        XLogger.d("current is " + (XmdActivityManager.getInstance().isForeground() ? "bg" : "fg"));
+        if (!XmdActivityManager.getInstance().isForeground()) {
             if ((display.getScene() & XmdDisplay.SCENE_BG) == 0) {
                 return;
             }
