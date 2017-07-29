@@ -41,7 +41,7 @@ public class XmdDisplayManager {
 
     @Subscribe
     public void show(XmdDisplay display) {
-        XLogger.d("current is " + (XmdActivityManager.getInstance().isForeground() ? "bg" : "fg"));
+        XLogger.d("current is " + (XmdActivityManager.getInstance().isForeground() ? "fg" : "bg"));
         if (!XmdActivityManager.getInstance().isForeground()) {
             if ((display.getScene() & XmdDisplay.SCENE_BG) == 0) {
                 return;
