@@ -19,21 +19,17 @@ import com.xmd.manager.ClubData;
 import com.xmd.manager.Constant;
 import com.xmd.manager.ManagerApplication;
 import com.xmd.manager.R;
-import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.common.ResourceUtils;
 import com.xmd.manager.common.ToastUtils;
 import com.xmd.manager.common.Utils;
 import com.xmd.manager.msgctrl.MsgDef;
 import com.xmd.manager.msgctrl.MsgDispatcher;
-import com.xmd.manager.msgctrl.RxBus;
-import com.xmd.manager.service.response.TokenExpiredResult;
 import com.xmd.manager.widget.AlertDialogBuilder;
 import com.xmd.manager.widget.ArrayBottomPopupWindow;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import rx.Subscription;
 
 /**
  * Created by sdcm on 15-10-26.
@@ -51,33 +47,16 @@ public class BaseActivity extends com.xmd.app.BaseActivity {
 
     private ArrayBottomPopupWindow<String> mCustomerPopupWindow;
 
-    private Subscription mTokenExpiredSubscription;
-    private Subscription mThrowableSubscription;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         XmdActivityManager.getInstance().addActivity(this);
-
-        mTokenExpiredSubscription = RxBus.getInstance().toObservable(TokenExpiredResult.class).subscribe(
-                tokenExpiredResult -> {
-                    SharedPreferenceHelper.clearUserInfo();
-                    gotoLoginActivity(tokenExpiredResult.expiredReason);
-                }
-        );
-
-        mThrowableSubscription = RxBus.getInstance().toObservable(Throwable.class).subscribe(
-                throwable -> makeShortToast(throwable.getLocalizedMessage())
-        );
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         XmdActivityManager.getInstance().removeActivity(this);
-        RxBus.getInstance().unsubscribe(mTokenExpiredSubscription, mThrowableSubscription);
     }
 
     @Override

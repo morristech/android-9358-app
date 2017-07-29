@@ -57,6 +57,10 @@
             android:name="CHANNEL"
             android:value="${CHANNEL_VALUE}" />
 
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="${EASEMOB_APPKEY_VALUE}" />
+
         <!-- 设置环信应用的appkey -->
         <!--<meta-data-->
         <!--android:name="EASEMOB_APPKEY"-->

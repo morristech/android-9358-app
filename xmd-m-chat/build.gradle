@@ -14,7 +14,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders = [
-                EASEMOB_APPKEY_VALUE: "xiaomodo#spatest",
+                EASEMOB_APPKEY_VALUE: "---",
                 GETUI_APP_ID        : "---",
                 GETUI_APP_KEY       : "---",
                 GETUI_APP_SECRET    : "---",

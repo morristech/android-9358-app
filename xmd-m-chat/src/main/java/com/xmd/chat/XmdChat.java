@@ -3,6 +3,8 @@ package com.xmd.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
@@ -50,6 +52,16 @@ public class XmdChat {
         if (!DiskCacheManager.isInit()) {
             throw new RuntimeException("dependency DiskCacheManager, but not init");
         }
+        PackageManager packageManager = context.getPackageManager();
+        ApplicationInfo applicationInfo = null;
+        try {
+            applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            String appId = applicationInfo.metaData.getString("EASEMOB_APPKEY", "");
+            XLogger.i(TAG, "EASEMOB_APPKEY=" + appId);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
         context = context.getApplicationContext();
         this.context = context;

@@ -17,10 +17,7 @@ import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.technician.R;
 import com.xmd.technician.TechApplication;
-import com.xmd.technician.msgctrl.RxBus;
 import com.xmd.technician.widget.AlertDialogBuilder;
-
-import rx.Subscription;
 
 /**
  * Created by sdcm on 15-10-26.
@@ -35,18 +32,10 @@ public class BaseFragmentActivity extends com.xmd.app.BaseActivity {
 
     protected CircleAvatarView avatarView;
 
-    private Subscription mThrowableSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mThrowableSubscription = RxBus.getInstance().toObservable(Throwable.class).subscribe(
-                throwable -> {
-                    dismissProgressDialogIfShowing();
-                    makeShortToast(throwable.getLocalizedMessage());
-                }
-        );
     }
 
     @Override
@@ -64,7 +53,6 @@ public class BaseFragmentActivity extends com.xmd.app.BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unsubscribe(mThrowableSubscription);
     }
 
     @Override

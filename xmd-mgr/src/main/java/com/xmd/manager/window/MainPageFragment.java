@@ -436,7 +436,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_GET__INDEX_ORDER_DATA);
         getBadCommentData();
         MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TECH_PK_RANKING);
-
     }
 
 
