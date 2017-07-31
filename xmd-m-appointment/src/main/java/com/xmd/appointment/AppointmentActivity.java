@@ -56,6 +56,8 @@ public class AppointmentActivity extends BaseActivity
         mBinding.setHandler(this);
 
         setTitle("完善预约");
+        initToolbar();
+        setBackVisible(true);
 
         //初始化服务时长选择列表
         mBinding.durationRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -87,7 +89,6 @@ public class AppointmentActivity extends BaseActivity
 
         //加载预约数据
         loadSetting();
-        setBackVisible(false);
     }
 
 
@@ -334,25 +335,30 @@ public class AppointmentActivity extends BaseActivity
     }
 
     @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage("确定退出？")
+                .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton("退出", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, null));
+                        finish();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            new AlertDialog.Builder(this)
-                    .setMessage("确定退出？")
-                    .setPositiveButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .setNegativeButton("退出", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            EventBus.getDefault().post(new AppointmentEvent(AppointmentEvent.CMD_HIDE, eventTag, null));
-                            finish();
-                        }
-                    })
-                    .create()
-                    .show();
+            onBackPressed();
             return true;
         }
         return super.onKeyDown(keyCode, event);

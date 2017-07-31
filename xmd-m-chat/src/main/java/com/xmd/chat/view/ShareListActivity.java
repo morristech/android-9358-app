@@ -59,6 +59,8 @@ public class ShareListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.chat_share_list_activity);
 
+        initToolbar();
+        setBackVisible(true);
         dataTypeList = getIntent().getStringArrayListExtra(EXTRA_DATA_TYPE_LIST);
         if (dataTypeList == null || dataTypeList.size() == 0) {
             XToast.show("必须设置 " + EXTRA_DATA_TYPE_LIST);
