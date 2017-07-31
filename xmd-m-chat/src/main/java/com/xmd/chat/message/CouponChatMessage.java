@@ -26,11 +26,12 @@ public class CouponChatMessage extends ChatMessage {
         timeLimit = str.length > 5 ? str[5] : "--";
     }
 
-    public static CouponChatMessage create(String remoteChatId, String couponId, String couponText, String inviteCode) {
+    public static CouponChatMessage create(String remoteChatId, boolean paid, String couponId, String couponText, String inviteCode) {
         EMMessage emMessage = EMMessage.createTxtSendMessage(couponText, remoteChatId);
         CouponChatMessage chatMessage = new CouponChatMessage(emMessage);
         chatMessage.setAttr(ATTR_COUPON_ID, couponId);
         chatMessage.setAttr(ATTR_INVITE_CODE, inviteCode);
+        chatMessage.setMsgType(paid ? MSG_TYPE_PAID_COUPON : MSG_TYPE_COUPON);
         return chatMessage;
     }
 

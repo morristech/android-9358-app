@@ -83,6 +83,7 @@ public class ChatRowViewFactory {
             case ChatMessage.MSG_TYPE_ORDER_REQUEST:
                 baseType = CHAT_ROW_VIEW_TYPE_ORDER_REQUEST;
                 break;
+            case ChatMessage.MSG_TYPE_PAID_COUPON:
             case ChatMessage.MSG_TYPE_COUPON:
                 baseType = CHAT_ROW_VIEW_COUPON;
                 break;

@@ -55,6 +55,7 @@ public class ChatMessage {
     public static final String MSG_TYPE_REQUEST_REWARD = "begReward"; //求打赏
     public static final String MSG_TYPE_REWARD = "reward"; //用户打赏
     public static final String MSG_TYPE_COUPON = "ordinaryCoupon"; //优惠券
+    public static final String MSG_TYPE_PAID_COUPON = "paidCoupon"; //优惠券
     public static final String MSG_TYPE_COUPON_TIP = "couponTip"; //用户领取优惠券
     public static final String MSG_TYPE_PAID_COUPON_TIP = "paidCouponTip";//用户购买点钟券
     public static final String MSG_TYPE_CREDIT_GIFT = "gift"; //积分礼物

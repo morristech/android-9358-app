@@ -227,8 +227,17 @@ public class MessageManager {
         return tipChatMessage;
     }
 
-    public void sendCouponMessage(String remoteChatId, String content, String actId, String inviteCode) {
-        CouponChatMessage chatMessage = CouponChatMessage.create(remoteChatId, actId, content, inviteCode);
+    /**
+     * 发送优惠券消息
+     *
+     * @param remoteChatId
+     * @param paid         是否为点钟券（需要支付）
+     * @param content
+     * @param actId
+     * @param inviteCode
+     */
+    public void sendCouponMessage(String remoteChatId, boolean paid, String content, String actId, String inviteCode) {
+        CouponChatMessage chatMessage = CouponChatMessage.create(remoteChatId, paid, actId, content, inviteCode);
         sendMessage(chatMessage);
     }
 

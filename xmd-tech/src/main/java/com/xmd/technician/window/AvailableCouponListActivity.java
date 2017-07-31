@@ -177,7 +177,7 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
         remainSendCount--;
         if (result.respData != null) {
             //用户领取成功，那么发送环信消息
-            MessageManager.getInstance().sendCouponMessage(chatId, result.content, result.actId, LoginTechnician.getInstance().getInviteCode());
+            MessageManager.getInstance().sendCouponMessage(chatId, false, result.content, result.actId, LoginTechnician.getInstance().getInviteCode());
             successCount++;
         } else {
             failedCount++;
@@ -203,6 +203,7 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
                     remainSendCount--;
                     MessageManager.getInstance().sendCouponMessage(
                             chatId,
+                            true,
                             getShareText(couponInfo),
                             couponInfo.actId, LoginTechnician.getInstance().getInviteCode());
                 }

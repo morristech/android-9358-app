@@ -136,6 +136,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                         remainSendCount--;
                         MessageManager.getInstance().sendCouponMessage(
                                 chatId,
+                                true,
                                 getShareText(couponInfo),
                                 couponInfo.actId, SharedPreferenceHelper.getUserInviteCode());
                     }
@@ -152,6 +153,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
             CouponInfo couponInfo = result.couponInfo;
             CouponChatMessage chatMessage = CouponChatMessage.create(
                     chatId,
+                    false,
                     result.respData.userActId,
                     getShareText(couponInfo),
                     SharedPreferenceHelper.getUserInviteCode());

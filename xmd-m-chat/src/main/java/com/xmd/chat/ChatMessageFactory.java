@@ -43,6 +43,7 @@ public class ChatMessageFactory {
             case ChatMessage.MSG_TYPE_TIP:
                 return new TipChatMessage(message);
             case ChatMessage.MSG_TYPE_COUPON:
+            case ChatMessage.MSG_TYPE_PAID_COUPON:
                 return new CouponChatMessage(message);
             case ChatMessage.MSG_TYPE_CREDIT_GIFT:
                 return new CreditGiftChatMessage(message);
