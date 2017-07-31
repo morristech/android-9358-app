@@ -3,7 +3,6 @@ package com.xmd.technician.window;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -355,12 +354,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     private void initTitleView(View view) {
         ((TextView) view.findViewById(R.id.toolbar_title)).setText(R.string.main_page);
-        ((TextView) view.findViewById(R.id.toolbar_title)).setTextColor(Color.WHITE);
         view.findViewById(R.id.divide_line).setVisibility(View.GONE);
         mContactMore = (LinearLayout) view.findViewById(R.id.contact_more);
         mContactMore.setVisibility(View.VISIBLE);
         mContactMore.setOnClickListener(this);
-        view.findViewById(R.id.rl_toolbar).setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
         imageRight = ((ImageView) view.findViewById(R.id.toolbar_right_img));
         imageRight.setVisibility(View.GONE);
         initQRCode();
@@ -1257,11 +1254,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
 
     public void onScrollViewChanged(int l, int t) {
-        if (t > Utils.dip2px(getActivity(), 100)) {
-            mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.colorPrimary));
-        } else {
-            mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
-        }
+//        if (t > Utils.dip2px(getActivity(), 100)) {
+//            mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.colorPrimary));
+//        } else {
+//            mRlToolBar.setBackgroundColor(ResourceUtils.getColor(R.color.main_tool_bar_bg));
+//        }
     }
 
     public void doUpdateTechInfoSuccess() {
