@@ -170,6 +170,10 @@
         <activity
             android:name=".activity.MemberCashierActivity"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.DiscountCouponActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/DialogActivity" />
     </application>
 
 </manifest>

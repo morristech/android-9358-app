@@ -25,6 +25,8 @@ public interface OnlinePayContract {
         void setFilter(String filter);
 
         void setSearch(String search);
+
+        void detail(String code);
     }
 
     interface View extends BaseView<Presenter> {

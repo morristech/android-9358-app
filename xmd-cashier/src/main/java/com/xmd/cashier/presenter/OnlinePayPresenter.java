@@ -3,6 +3,7 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 
 import com.xmd.cashier.R;
+import com.xmd.cashier.UiNavigation;
 import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.OnlinePayContract;
@@ -274,5 +275,10 @@ public class OnlinePayPresenter implements OnlinePayContract.Presenter {
     public void setSearch(String search) {
         // 设置查询条件
         mSearch = search;
+    }
+
+    @Override
+    public void detail(String code) {
+        UiNavigation.gotoDiscountCouponActivity(mContext, code);
     }
 }

@@ -95,4 +95,13 @@
         <item name="svTextSize">@dimen/font_size_13</item>
         <item name="svDrawablePadding">@dimen/activity_normal_margin</item>
     </style>
+
+    <style name="DialogActivity" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>

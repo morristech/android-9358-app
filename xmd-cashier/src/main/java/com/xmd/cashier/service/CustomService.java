@@ -32,6 +32,7 @@ import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.OrderRecordInfo;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaService;
+import com.xmd.cashier.dal.net.response.OnlinePayCouponResult;
 import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.NotifyManager;
@@ -359,7 +360,7 @@ public class CustomService extends Service {
         adapter.setCallBack(new OrderRecordNotifyAdapter.OrderRecordNotifyCallBack() {
             @Override
             public void onAccept(final OrderRecordInfo info, final int position) {
-                adapter.updateDisable(position);    // 更新处理时的状态
+                adapter.setLoadingStatus(position);    // 更新处理时的状态
                 Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
                         .updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_ACCEPT, info.id);
                 XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
@@ -389,9 +390,9 @@ public class CustomService extends Service {
                             if (tempStr.contains("处理")) {
                                 tempStr = "订单已被处理，详情请查看付费预约列表";
                             }
-                            adapter.updateError(position, tempStr);
+                            adapter.setNormalStatus(position, tempStr);
                         } else {
-                            adapter.updateNormal(position);
+                            adapter.setNormalStatus(position);
                             Toast.makeText(MainApplication.getInstance().getApplicationContext(), "接单失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -400,7 +401,7 @@ public class CustomService extends Service {
 
             @Override
             public void onReject(final OrderRecordInfo info, final int position) {
-                adapter.updateDisable(position);    // 更新处理时的状态
+                adapter.setLoadingStatus(position);    // 更新处理时的状态
                 Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
                         .updateOrderRecordStatus(AccountManager.getInstance().getToken(), AppConstants.SESSION_TYPE, AppConstants.ORDER_RECORD_STATUS_REJECT, info.id);
                 XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
@@ -430,9 +431,9 @@ public class CustomService extends Service {
                             if (tempStr.contains("处理")) {
                                 tempStr = "订单已被处理，详情请查看付费预约列表";
                             }
-                            adapter.updateError(position, tempStr);
+                            adapter.setNormalStatus(position, tempStr);
                         } else {
-                            adapter.updateNormal(position);
+                            adapter.setNormalStatus(position);
                             Toast.makeText(MainApplication.getInstance().getApplicationContext(), "拒绝失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -474,7 +475,7 @@ public class CustomService extends Service {
         adapter.setCallBack(new OnlinePayNotifyAdapter.OnlinePayNotifyCallBack() {
             @Override
             public void onPass(final OnlinePayInfo info, final int position) {
-                adapter.updateDisable(position);
+                adapter.setLoadingStatus(position);
                 Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
                         .updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_PASS);
                 XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
@@ -505,9 +506,9 @@ public class CustomService extends Service {
                             if (tempStr.contains("处理")) {
                                 tempStr = "买单已被处理，详情请查看在线买单列表";
                             }
-                            adapter.updateError(position, tempStr);
+                            adapter.setNormalStatus(position, tempStr);
                         } else {
-                            adapter.updateNormal(position);
+                            adapter.setNormalStatus(position);
                             Toast.makeText(MainApplication.getInstance().getApplicationContext(), "买单确认失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -516,7 +517,7 @@ public class CustomService extends Service {
 
             @Override
             public void onUnpass(final OnlinePayInfo info, final int position) {
-                adapter.updateDisable(position);
+                adapter.setLoadingStatus(position);
                 Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
                         .updateOnlinePayStatus(AccountManager.getInstance().getToken(), info.id, AppConstants.ONLINE_PAY_STATUS_UNPASS);
                 XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
@@ -547,9 +548,9 @@ public class CustomService extends Service {
                             if (tempStr.contains("处理")) {
                                 tempStr = "买单已被处理，详情请查看在线买单列表";
                             }
-                            adapter.updateError(position, tempStr);
+                            adapter.setNormalStatus(position, tempStr);
                         } else {
-                            adapter.updateNormal(position);
+                            adapter.setNormalStatus(position);
                             Toast.makeText(MainApplication.getInstance().getApplicationContext(), "请到前台失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -564,6 +565,31 @@ public class CustomService extends Service {
                     hide();
                     refreshOnlinePayNotify(true);
                 }
+            }
+
+            @Override
+            public void onReturn(int position) {
+                adapter.setNormalStatus(position);
+            }
+
+            @Override
+            public void onDetail(OnlinePayInfo.OnlinePayDiscountInfo info, final int position) {
+                adapter.setLoadingStatus(position);
+                Observable<OnlinePayCouponResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                        .getDiscountCoupon(AccountManager.getInstance().getToken(), info.verifyCode);
+                XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayCouponResult>() {
+                    @Override
+                    public void onCallbackSuccess(OnlinePayCouponResult result) {
+                        adapter.setDetailStatus(position, result.getRespData());
+                    }
+
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        e.printStackTrace();
+                        Toast.makeText(MainApplication.getInstance().getApplicationContext(), "查看详情失败:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        adapter.setNormalStatus(position);
+                    }
+                });
             }
         });
         rv.setLayoutManager(new CustomNotifyLayoutManager());

@@ -1,6 +1,7 @@
 package com.xmd.cashier.dal.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by zr on 17-4-11.
@@ -34,4 +35,19 @@ public class OnlinePayInfo implements Serializable {
 
     public int tempNo;   //用来标识是此次列表中的第几个元素
     public String tempErrMsg;
+    public List<OnlinePayDiscountInfo> orderDiscountList;
+
+    public class OnlinePayDiscountInfo implements Serializable {
+        public int amount;//	抵扣金额		单位分
+        public String bizId;//	业务id
+        public String bizName;//	名称
+        public String clubId;//	会所id
+        public String createTime;//	创建时间
+        public long id;
+        public String orderId;//	订单id
+        public String type;//	抵扣类型		coupon优惠券;paid_order付费预约
+        public String verifyCode;//	核销码
+    }
+
+    public PayCouponInfo payCouponInfo;
 }

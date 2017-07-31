@@ -1,5 +1,6 @@
 package com.xmd.cashier.dal.net;
 
+import com.xmd.cashier.dal.bean.PayCouponInfo;
 import com.xmd.cashier.dal.net.response.BillRecordResult;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.ClubResult;
@@ -16,6 +17,7 @@ import com.xmd.cashier.dal.net.response.MemberRecordListResult;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.MemberSettingResult;
 import com.xmd.cashier.dal.net.response.MemberUrlResult;
+import com.xmd.cashier.dal.net.response.OnlinePayCouponResult;
 import com.xmd.cashier.dal.net.response.OnlinePayDetailResult;
 import com.xmd.cashier.dal.net.response.OnlinePayListResult;
 import com.xmd.cashier.dal.net.response.OnlinePayUrlResult;
@@ -390,6 +392,10 @@ public interface SpaService {
                                                 @Field(RequestConstant.KEY_IS_POS) String isPos,
                                                 @Field(RequestConstant.KEY_TECH_NAME) String techName, // 搜索条件:技师名称或者编号
                                                 @Field(RequestConstant.KEY_STATUS) String status);     // 筛选条件:在线买单状态
+
+    @GET(RequestConstant.URL_GET_DISCOUNT_COUPON_DETAIL)
+    Observable<OnlinePayCouponResult> getDiscountCoupon(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                        @Query(RequestConstant.KEY_CODE) String code);
 
     /**
      * 修改在线买单状态

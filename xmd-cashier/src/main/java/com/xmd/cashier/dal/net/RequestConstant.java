@@ -90,6 +90,7 @@ public class RequestConstant {
     public static final String URL_GET_XMD_ONLINE_SCAN_STATUS = SPA_SERVICE_BASE + "/v2/manager/order/id/status";
     public static final String URL_GET_XMD_ONLINE_QRCODE_URL = SPA_SERVICE_BASE + "/v2/manager/fast_pay/url/get";
     public static final String URL_DELETE_XMD_ONLINE_ORDER_ID = SPA_SERVICE_BASE + "/v2/manager/order/id/delete";
+    public static final String URL_GET_DISCOUNT_COUPON_DETAIL = SPA_SERVICE_BASE + "/v2/user/fastpay/coupon/detail";    // 买单抵扣券详情
 
     // ****************************************** POS会员 **************************************
     public static final String URL_GET_MEMBER_SETTING_CONFIG = SPA_SERVICE_BASE + "/v2/manager/member/settings/get";   //会员设置信息获取

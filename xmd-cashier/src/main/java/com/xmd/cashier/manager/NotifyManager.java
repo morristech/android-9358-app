@@ -277,8 +277,24 @@ public class NotifyManager {
         }
 
         mPos.printDivide();
-        mPos.printText("消费", Utils.moneyToStringEx(info.originalAmount) + " 元");
-        mPos.printText("减免", Utils.moneyToStringEx(info.originalAmount - info.payAmount) + " 元");
+        mPos.printText("消费金额", Utils.moneyToStringEx(info.originalAmount) + " 元");
+        if (info.orderDiscountList != null && !info.orderDiscountList.isEmpty()) {
+            for (OnlinePayInfo.OnlinePayDiscountInfo discountInfo : info.orderDiscountList) {
+                switch (discountInfo.type) {
+                    case AppConstants.ONLINE_PAY_DISCOUNT_COUPON:
+                        mPos.printText("用券抵扣", Utils.moneyToStringEx(discountInfo.amount) + " 元");
+                        break;
+                    case AppConstants.ONLINE_PAY_DISCOUNT_ORDER:
+                        mPos.printText("预约抵扣", Utils.moneyToStringEx(discountInfo.amount) + " 元");
+                        break;
+                    default:
+                        mPos.printText("其他抵扣", Utils.moneyToStringEx(discountInfo.amount) + " 元");
+                        break;
+                }
+            }
+        } else {
+            mPos.printText("减免金额", Utils.moneyToStringEx(info.originalAmount - info.payAmount) + " 元");
+        }
         mPos.printDivide();
         mPos.printRight("实收 " + Utils.moneyToStringEx(info.payAmount) + " 元", true);
         mPos.printDivide();

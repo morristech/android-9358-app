@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/activity_little_margin"
+    android:paddingTop="@dimen/activity_little_margin">
+
+    <TextView
+        android:id="@+id/item_discount_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textColor="@color/colorText3"
+        android:textSize="@dimen/font_size_16" />
+
+    <TextView
+        android:id="@+id/item_discount_coupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/font_size_14" />
+
+    <TextView
+        android:id="@+id/item_discount_money"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:textColor="@color/colorText"
+        android:textSize="@dimen/font_size_16" />
+</LinearLayout>

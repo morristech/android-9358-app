@@ -130,9 +130,9 @@ public class AppConstants {
     public static final String ONLINE_PAY_STATUS_UNPASS_TEXT = "到前台";
 
     public static final String STATUS_ALL_TEXT = "全部";
-    public static final String STATUS_ERROR = "error";
-    public static final String STATUS_DISABLE = "disable";
+    public static final String STATUS_LOADING = "loading";
     public static final String STATUS_NORMAL = "normal";
+    public static final String STATUS_DETAIL = "detail";
 
     public static final Map<String, String> ONLINE_PAY_STATUS_FILTER = new LinkedHashMap<String, String>() {{
         put(STATUS_ALL_TEXT, null);
@@ -164,6 +164,7 @@ public class AppConstants {
     public static final String EXTRA_NOTIFY_TYPE_ONLINE_PAY = "online_pay";
     public static final String EXTRA_RECORD_ID = "record_id";
     public static final String EXTRA_IS_SHOW = "is_show";
+    public static final String EXTRA_COUPON_CODE = "coupon_code";
 
     public static final String APP_REQUEST_YES = "Y";
     public static final String APP_REQUEST_NO = "N";
@@ -186,10 +187,6 @@ public class AppConstants {
     public static final String MEMBER_BUSINESS_TYPE_RECHARGE = "recharge";
     public static final String MEMBER_BUSINESS_TYPE_PAYMENT = "payment";
     public static final String MEMBER_BUSINESS_TYPE_CARD = "card";
-
-    public static final String EXTRA_MEMBER_INFO = "member_info";
-    public static final String EXTRA_TECH_INFO = "tech_info";
-    public static final String EXTRA_MEMBER_URL_INFO = "member_url_info";
 
     public static final int MEMBER_CARD_MODEL_NORMAL = 1;   //电子卡实体卡
     public static final int MEMBER_CARD_MODEL_WITHOUT = 2;  //仅电子卡
@@ -230,4 +227,7 @@ public class AppConstants {
     public static final int MEMBER_PLAN_ITEM_TYPE_COUPON = 2;
     public static final int MEMBER_PLAN_ITEM_TYPE_SERVICE = 3;
     public static final int MEMBER_PLAN_ITEM_TYPE_MONEY = 4;
+
+    public static final String ONLINE_PAY_DISCOUNT_COUPON = "coupon";
+    public static final String ONLINE_PAY_DISCOUNT_ORDER = "paid_order";
 }

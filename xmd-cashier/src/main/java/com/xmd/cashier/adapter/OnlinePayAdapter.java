@@ -2,6 +2,7 @@ package com.xmd.cashier.adapter;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -48,6 +49,9 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         void onConfirm(OnlinePayInfo info, int position);
 
         void onException(OnlinePayInfo info, int position);
+
+        // 查看券详情
+        void onDetail(OnlinePayInfo.OnlinePayDiscountInfo info);
     }
 
     @IntDef({AppConstants.FOOTER_STATUS_SUCCESS, AppConstants.FOOTER_STATUS_ERROR, AppConstants.FOOTER_STATUS_NO_NETWORK, AppConstants.FOOTER_STATUS_NONE, AppConstants.FOOTER_STATUS_LOADING})
@@ -127,7 +131,7 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         } else {
             final OnlinePayInfo info = mData.get(position);
-            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             switch (info.status) {
                 case AppConstants.ONLINE_PAY_STATUS_PAID:
                     // 已支付,待确认
@@ -214,6 +218,34 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     mCallBack.onException(info, position);
                 }
             });
+
+            itemViewHolder.mDiscountLayout.setVisibility(View.GONE);
+            itemViewHolder.mCashierMoneyLayout.setVisibility(View.VISIBLE);
+            itemViewHolder.mCashierMoneySub.setText("￥" + Utils.moneyToStringEx(info.payAmount));
+            itemViewHolder.mOriginMoney.setText("￥" + Utils.moneyToStringEx(info.originalAmount));
+            itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int visible = itemViewHolder.mDiscountLayout.getVisibility();
+                    if (visible == View.GONE) {
+                        itemViewHolder.mDiscountLayout.setVisibility(View.VISIBLE);
+                        itemViewHolder.mCashierMoneyLayout.setVisibility(View.GONE);
+                    } else {
+                        itemViewHolder.mDiscountLayout.setVisibility(View.GONE);
+                        itemViewHolder.mCashierMoneyLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+            OnlinePayDiscountAdapter discountAdapter = new OnlinePayDiscountAdapter();
+            discountAdapter.setCallBack(new OnlinePayDiscountAdapter.CallBack() {
+                @Override
+                public void onItemClick(OnlinePayInfo.OnlinePayDiscountInfo info) {
+                    mCallBack.onDetail(info);
+                }
+            });
+            discountAdapter.setData(info.orderDiscountList);
+            itemViewHolder.mDiscountItemList.setLayoutManager(new LinearLayoutManager(mContext));
+            itemViewHolder.mDiscountItemList.setAdapter(discountAdapter);
         }
     }
 
@@ -275,11 +307,17 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public TextView mTradeNo;
         public TextView mCashierTime;
         public TextView mPayChannel;
+        public TableRow mCashierMoneyLayout;
 
         public Button mPrintBtn;
         public LinearLayout mOperateLayout;
         public Button mConfirmBtn;
         public Button mExceptionBtn;
+
+        public LinearLayout mDiscountLayout;
+        public TextView mOriginMoney;
+        public RecyclerView mDiscountItemList;
+        public TextView mCashierMoneySub;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -304,6 +342,13 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mConfirmBtn = (Button) itemView.findViewById(R.id.item_btn_confirm);
             mExceptionBtn = (Button) itemView.findViewById(R.id.item_btn_exception);
             mPayChannel = (TextView) itemView.findViewById(R.id.item_pay_channel);
+
+            mDiscountLayout = (LinearLayout) itemView.findViewById(R.id.item_discount_layout);
+            mOriginMoney = (TextView) itemView.findViewById(R.id.item_origin_money);
+            mDiscountItemList = (RecyclerView) itemView.findViewById(R.id.item_discount_list);
+
+            mCashierMoneyLayout = (TableRow) itemView.findViewById(R.id.tr_cashier_layout);
+            mCashierMoneySub = (TextView) itemView.findViewById(R.id.item_cashier_money_sub);
         }
     }
 

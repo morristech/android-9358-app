@@ -51,69 +51,69 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final OrderRecordInfo info = mData.get(position);
-        if (mTempCount == 1) {
-            holder.mNotifyCount.setVisibility(View.GONE);
-        } else {
-            holder.mNotifyCount.setVisibility(View.VISIBLE);
-            String temp = String.format("(%d/%d)", info.tempNo, mTempCount);
-            holder.mNotifyCount.setText(Utils.changeColor(temp, mContext.getResources().getColor(R.color.colorStatusYellow), 1, temp.length() - 1));
-        }
-        holder.mArriveTime.setText(info.appointTime);
-        holder.mCustomerName.setText(info.customerName);
-        holder.mCustomerPhone.setText(info.phoneNum);
-        holder.mTechName.setText(info.techName);
-        holder.mTechNo.setText(info.techSerialNo);
-        holder.mServiceItem.setText(TextUtils.isEmpty(info.itemName) ? "到店选择" : info.itemName);
-        holder.mPayDown.setText("￥" + info.downPayment);
-
         switch (info.status) {
-            case AppConstants.STATUS_ERROR:
-                holder.mTipText.setVisibility(View.VISIBLE);
-                holder.mTipBtn.setVisibility(View.VISIBLE);
-                holder.mOperateLayout.setVisibility(View.GONE);
-                holder.mTipText.setText(info.tempErrMsg);
-                break;
-            case AppConstants.STATUS_DISABLE:
-                holder.mTipText.setVisibility(View.GONE);
-                holder.mTipBtn.setVisibility(View.GONE);
-                holder.mOperateLayout.setVisibility(View.VISIBLE);
-                holder.mRejectBtn.setEnabled(false);
-                holder.mAcceptBtn.setEnabled(false);
+            case AppConstants.STATUS_LOADING:
+                holder.mLoadingLayout.setVisibility(View.VISIBLE);
+                holder.mNormalLayout.setVisibility(View.GONE);
                 break;
             case AppConstants.STATUS_NORMAL:
             default:
-                holder.mTipText.setVisibility(View.GONE);
-                holder.mTipBtn.setVisibility(View.GONE);
-                holder.mOperateLayout.setVisibility(View.VISIBLE);
-                holder.mRejectBtn.setEnabled(true);
-                holder.mAcceptBtn.setEnabled(true);
+                holder.mLoadingLayout.setVisibility(View.GONE);
+                holder.mNormalLayout.setVisibility(View.VISIBLE);
+                if (mTempCount == 1) {
+                    holder.mNotifyCount.setVisibility(View.GONE);
+                } else {
+                    holder.mNotifyCount.setVisibility(View.VISIBLE);
+                    String temp = String.format("(%d/%d)", info.tempNo, mTempCount);
+                    holder.mNotifyCount.setText(Utils.changeColor(temp, mContext.getResources().getColor(R.color.colorStatusYellow), 1, temp.length() - 1));
+                }
+                holder.mArriveTime.setText(info.appointTime);
+                holder.mCustomerName.setText(info.customerName);
+                holder.mCustomerPhone.setText(info.phoneNum);
+                holder.mTechName.setText(info.techName);
+                holder.mTechNo.setText(info.techSerialNo);
+                holder.mServiceItem.setText(TextUtils.isEmpty(info.itemName) ? "到店选择" : info.itemName);
+                holder.mPayDown.setText("￥" + info.downPayment);
+
+                if (TextUtils.isEmpty(info.tempErrMsg)) {
+                    holder.mTipText.setVisibility(View.GONE);
+                    holder.mTipBtn.setVisibility(View.GONE);
+                    holder.mOperateLayout.setVisibility(View.VISIBLE);
+                    holder.mRejectBtn.setEnabled(true);
+                    holder.mAcceptBtn.setEnabled(true);
+                } else {
+                    holder.mTipText.setVisibility(View.VISIBLE);
+                    holder.mTipBtn.setVisibility(View.VISIBLE);
+                    holder.mOperateLayout.setVisibility(View.GONE);
+                    holder.mTipText.setText(info.tempErrMsg);
+                }
+
+                holder.mImageOff.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCallBack.onClose(position);
+                    }
+                });
+                holder.mAcceptBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCallBack.onAccept(info, position);
+                    }
+                });
+                holder.mRejectBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCallBack.onReject(info, position);
+                    }
+                });
+                holder.mTipBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCallBack.onClose(position);
+                    }
+                });
                 break;
         }
-
-        holder.mImageOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallBack.onClose(position);
-            }
-        });
-        holder.mAcceptBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallBack.onAccept(info, position);
-            }
-        });
-        holder.mRejectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallBack.onReject(info, position);
-            }
-        });
-        holder.mTipBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallBack.onClose(position);
-            }
-        });
     }
 
     @Override
@@ -121,18 +121,18 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
         return mData.size();
     }
 
-    public void updateDisable(int position) {
-        mData.get(position).status = AppConstants.STATUS_DISABLE;
+    public void setLoadingStatus(int position) {
+        mData.get(position).status = AppConstants.STATUS_LOADING;
         notifyItemChanged(position);
     }
 
-    public void updateError(int position, String error) {
-        mData.get(position).status = AppConstants.STATUS_ERROR;
+    public void setNormalStatus(int position, String error) {
+        mData.get(position).status = AppConstants.STATUS_NORMAL;
         mData.get(position).tempErrMsg = error;
         notifyItemChanged(position);
     }
 
-    public void updateNormal(int position) {
+    public void setNormalStatus(int position) {
         mData.get(position).status = AppConstants.STATUS_NORMAL;
         notifyItemChanged(position);
     }
@@ -143,6 +143,7 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout mNormalLayout;
         private ImageView mImageOff;
         private TextView mNotifyCount;
         private TextView mArriveTime;
@@ -158,8 +159,11 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
         private Button mTipBtn;
         private TextView mTipText;
 
+        private LinearLayout mLoadingLayout;
+
         public ViewHolder(View itemView) {
             super(itemView);
+            mNormalLayout = (LinearLayout) itemView.findViewById(R.id.layout_order_record_normal);
             mImageOff = (ImageView) itemView.findViewById(R.id.notify_order_record_off);
             mNotifyCount = (TextView) itemView.findViewById(R.id.notify_order_record_count);
             mArriveTime = (TextView) itemView.findViewById(R.id.notify_order_arrive_time);
@@ -174,6 +178,8 @@ public class OrderRecordNotifyAdapter extends RecyclerView.Adapter<OrderRecordNo
             mOperateLayout = (LinearLayout) itemView.findViewById(R.id.notify_order_ly_operate);
             mTipBtn = (Button) itemView.findViewById(R.id.notify_order_btn_tip);
             mTipText = (TextView) itemView.findViewById(R.id.notify_order_tip);
+
+            mLoadingLayout = (LinearLayout) itemView.findViewById(R.id.layout_order_record_loading);
         }
     }
 

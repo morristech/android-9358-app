@@ -133,6 +133,11 @@ public class OnlinePayActivity extends BaseActivity implements OnlinePayContract
                 // 请到前台
                 mPresenter.unpass(info, position);
             }
+
+            @Override
+            public void onDetail(OnlinePayInfo.OnlinePayDiscountInfo info) {
+                mPresenter.detail(info.verifyCode);
+            }
         });
         mRecyclerList.setAdapter(mAdapter);
 
