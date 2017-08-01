@@ -343,7 +343,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.IFragment
     public void sendMessageOrCall(UserInfoEvent event) {
         if (event.appType == 0) {
             if (event.toDoType == 1) {
-                XLogger.i(">>>", "此处接受到消息,应该去聊天...");
                 User user = new User(event.bean.userId);
                 user.setChatId(event.bean.emChatId);
                 user.setName(event.bean.emChatName);
