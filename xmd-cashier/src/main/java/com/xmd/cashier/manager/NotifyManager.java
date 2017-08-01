@@ -270,6 +270,7 @@ public class NotifyManager {
 
     // 打印在线买单小票 带二维码
     public void print(OnlinePayInfo info, boolean retry) {
+        byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(结账单)");
         if (retry) {
@@ -317,7 +318,7 @@ public class NotifyManager {
             mPos.printText("买单状态: ", status);
         }
         mPos.printText("操作人: ", TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().userName : info.operatorName);
-        mPos.printBitmap(TradeManager.getInstance().getClubQRCodeSync());
+        mPos.printBitmap(qrCodeBytes);
         mPos.printCenter("--- 微信扫码，选技师，享优惠 ---");
         mPos.printEnd();
     }

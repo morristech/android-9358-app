@@ -181,6 +181,7 @@ public class AppConstants {
 
     public static final String FAST_PAY_CHANNEL_WX = "wx";
     public static final String FAST_PAY_CHANNEL_ALI = "ali";
+    public static final String FAST_PAY_CHANNEL_MEMBER = "account";
 
     public static final String EXTRA_MEMBER_BUSINESS_TYPE = "member_read_type";
     public static final String MEMBER_BUSINESS_TYPE_RECHARGE = "recharge";

@@ -74,6 +74,7 @@ public class BillManager {
 
     public void print(BillInfo info) {
         String format = MainApplication.getInstance().getString(R.string.cashier_money);
+
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(消费账单)");
         mPos.printCenter("--补打小票--");
