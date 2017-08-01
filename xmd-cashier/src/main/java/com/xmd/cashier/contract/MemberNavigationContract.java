@@ -21,8 +21,6 @@ public interface MemberNavigationContract {
     interface View extends BaseView<Presenter> {
         void enterRecharge(boolean enter);
 
-        void enterCard(boolean enter);
-
         void showEnterAnim();
     }
 }

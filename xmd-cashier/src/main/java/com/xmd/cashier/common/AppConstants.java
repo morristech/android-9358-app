@@ -182,6 +182,7 @@ public class AppConstants {
 
     public static final String FAST_PAY_CHANNEL_WX = "wx";
     public static final String FAST_PAY_CHANNEL_ALI = "ali";
+    public static final String FAST_PAY_CHANNEL_MEMBER = "account";
 
     public static final String EXTRA_MEMBER_BUSINESS_TYPE = "member_read_type";
     public static final String MEMBER_BUSINESS_TYPE_RECHARGE = "recharge";
@@ -209,7 +210,8 @@ public class AppConstants {
         put(MEMBER_RECORD_TYPE_RECHARGE_TEXT, MEMBER_RECORD_TYPE_RECHARGE);
     }};
 
-    public static final List<String> MEMBER_CARD_STEPS = Arrays.asList(new String[]{"手机验证", "会员资料", "绑定卡片", "开卡成功"});
+    public static final List<String> MEMBER_CARD_STEPS_NORMAL = Arrays.asList(new String[]{"手机验证", "会员资料", "绑定卡片", "开卡成功"});
+    public static final List<String> MEMBER_CARD_STEPS_WITHOUT = Arrays.asList(new String[]{"手机验证", "会员资料", "开卡成功"});
 
     // 会员支付媒介：二维码 || 接口
     public static final String MEMBER_PAY_METHOD_CODE = "code";

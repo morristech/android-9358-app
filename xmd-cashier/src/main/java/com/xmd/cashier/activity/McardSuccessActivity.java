@@ -44,8 +44,6 @@ public class McardSuccessActivity extends BaseActivity implements McardSuccessCo
         mItemCardNo = (TextView) findViewById(R.id.item_card_no);
         mConfirmBtn = (Button) findViewById(R.id.btn_success_confirm);
         mStepView = (StepView) findViewById(R.id.sv_step_success);
-        mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS);
-        mStepView.selectedStep(4);
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,5 +95,19 @@ public class McardSuccessActivity extends BaseActivity implements McardSuccessCo
     @Override
     public void showExitAnim() {
         overridePendingTransition(R.anim.activity_in_from_left, R.anim.activity_out_to_right);
+    }
+
+    @Override
+    public void showStepView(int cardModel) {
+        switch (cardModel) {
+            case AppConstants.MEMBER_CARD_MODEL_NORMAL:
+                mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS_NORMAL);
+                mStepView.selectedStep(4);
+                break;
+            default:
+                mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS_WITHOUT);
+                mStepView.selectedStep(3);
+                break;
+        }
     }
 }

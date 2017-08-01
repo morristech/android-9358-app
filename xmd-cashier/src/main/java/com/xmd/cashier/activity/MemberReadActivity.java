@@ -98,7 +98,7 @@ public class MemberReadActivity extends BaseActivity implements MemberReadContra
                 mMemberInput.setHint("输入会员卡号");
                 mScanImage.setVisibility(View.GONE);
                 mStepView.setVisibility(View.VISIBLE);
-                mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS);
+                mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS_NORMAL);
                 mStepView.selectedStep(3);
                 break;
             default:

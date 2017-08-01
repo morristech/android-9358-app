@@ -28,5 +28,7 @@ public interface McardInfoContract {
         void showEnterAnim();
 
         void showExitAnim();
+
+        void showStepView(int cardModel);
     }
 }

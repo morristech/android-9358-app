@@ -29,7 +29,6 @@ public class MemberNavigationPresenter implements MemberNavigationContract.Prese
 
     @Override
     public void onStart() {
-        mView.enterCard(MemberManager.getInstance().getmCardMode() == AppConstants.MEMBER_CARD_MODEL_NORMAL);
         if (!TextUtils.isEmpty(MemberManager.getInstance().getmRechargeMode())) {
             mView.enterRecharge(MemberManager.getInstance().getmRechargeMode().contains(AppConstants.MEMBER_RECHARGE_MODEL_POS));
         }

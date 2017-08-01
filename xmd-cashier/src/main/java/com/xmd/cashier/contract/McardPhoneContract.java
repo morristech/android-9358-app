@@ -18,5 +18,7 @@ public interface McardPhoneContract {
         void showEnterAnim();
 
         void showExitAnim();
+
+        void showStepView(int cardModel);
     }
 }

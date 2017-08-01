@@ -1,5 +1,6 @@
 package com.xmd.cashier.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -72,9 +74,6 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
 
         mInfoConfirm = (Button) findViewById(R.id.btn_mcard_info_confirm);
 
-        mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS);
-        mStepView.selectedStep(2);
-
         mInfoConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +84,10 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
         mBirthText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm.isActive()) {
+                    imm.hideSoftInputFromWindow(mNameInput.getWindowToken(), 0);
+                }
                 mPickerView.show();
             }
         });
@@ -188,6 +191,20 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
     @Override
     public void showExitAnim() {
         overridePendingTransition(R.anim.activity_in_from_left, R.anim.activity_out_to_right);
+    }
+
+    @Override
+    public void showStepView(int cardModel) {
+        switch (cardModel) {
+            case AppConstants.MEMBER_CARD_MODEL_NORMAL:
+                mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS_NORMAL);
+                mStepView.selectedStep(2);
+                break;
+            default:
+                mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS_WITHOUT);
+                mStepView.selectedStep(2);
+                break;
+        }
     }
 
     @Override
