@@ -414,7 +414,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         tvCustomerCardCreateTime.setText(memberInfo.createTime);
         tvCustomerCardNumber.setText(memberInfo.cardNo);
         //生日
-        tvCustomerCardUserBirthday.setText(memberInfo.birth);
+        tvCustomerCardUserBirthday.setText(TextUtils.isEmpty(memberInfo.birth)?"-":memberInfo.birth);
         //开卡
         tvCustomerCardHandler.setText(TextUtils.isEmpty(memberInfo.creatorName) ? "会所" : memberInfo.creatorName);
         //累计充值
@@ -422,7 +422,12 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         //累计赠送
         ivCustomerCardRewardTotal.setText(String.format("%1.2f", memberInfo.giveAmount / 100f));
         //次均消费d
-        ivCustomerCardConsumeTotal.setText(String.format("%1.2f", memberInfo.consumeAmount / (100f * memberInfo.consumeCount)));
+        if(memberInfo.consumeCount>0){
+            ivCustomerCardConsumeTotal.setText(String.format("%1.2f", memberInfo.consumeAmount / (100f * memberInfo.consumeCount)));
+        }else{
+            ivCustomerCardConsumeTotal.setText("-");
+        }
+
     }
 
     private void initCreditView(ManagerCreditStatInfoBean creditStatInfo, boolean creditSwitchOn) {
