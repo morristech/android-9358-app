@@ -2,10 +2,11 @@ package com.xmd.technician.model;
 
 import android.text.TextUtils;
 
-import com.xmd.app.XmdActivityManager;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
+import com.xmd.m.network.EventTokenExpired;
 import com.xmd.permission.event.EventRequestSyncPermission;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
@@ -29,6 +30,7 @@ import com.xmd.technician.msgctrl.MsgDispatcher;
 import com.xmd.technician.msgctrl.RxBus;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,8 +86,6 @@ public class LoginTechnician {
     private String roles;
     private String customerService;//rest,working
 
-    private boolean needSendLoginEvent = true;
-
 
     private LoginTechnician() {
 
@@ -117,6 +117,8 @@ public class LoginTechnician {
         //客服消息
         customerService = SharedPreferenceHelper.getCustomerService();
         RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(this::onGetTechPersonalData);
+
+        EventBusSafeRegister.register(this);
     }
 
 
@@ -153,6 +155,11 @@ public class LoginTechnician {
         setNickName(loginResult.name);
         setAvatarUrl(loginResult.avatarUrl);
         setRoles(loginResult.roles);
+
+        //发送登录事件
+        EventBus.getDefault().removeStickyEvent(EventLogout.class);
+        EventBus.getDefault().postSticky(new EventLogin(getToken(), getUserInfo()));
+        RxBus.getInstance().post(new EventLogin(getToken(), getUserInfo()));
     }
 
     //备用技师编号登录成功
@@ -163,6 +170,11 @@ public class LoginTechnician {
         setClubName(result.clubName);
         setUserId(result.spareTechId);
         setRoles(result.roles);
+
+        //发送登录事件
+        EventBus.getDefault().removeStickyEvent(EventLogout.class);
+        EventBus.getDefault().postSticky(new EventLogin(getToken(), getUserInfo()));
+        RxBus.getInstance().post(new EventLogin(getToken(), getUserInfo()));
     }
 
     public void clearTechNoLoginResult() {
@@ -177,6 +189,17 @@ public class LoginTechnician {
     //获取技师信息,返回TechInfoResult
     public void loadTechInfo() {
         MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_GET_TECH_INFO);
+    }
+
+    //检查有无token缓存，有的话广播登录消息
+    public void checkAndLogin() {
+        String token = SharedPreferenceHelper.getUserToken();
+        if (TextUtils.isEmpty(token)) {
+            return;
+        }
+        EventBus.getDefault().removeStickyEvent(EventLogout.class);
+        EventBus.getDefault().postSticky(new EventLogin(getToken(), getUserInfo()));
+        RxBus.getInstance().post(new EventLogin(getToken(), getUserInfo()));
     }
 
     public void onLoadTechInfo(TechInfoResult result) {
@@ -203,14 +226,6 @@ public class LoginTechnician {
         setQrCodeUrl(techInfo.qrCodeUrl);
         setShareUrl(techInfo.shareUrl);
         setCustomerService(techInfo.customerService);
-
-        //开始汇报状态
-        if (needSendLoginEvent) {
-            needSendLoginEvent = false;
-            EventBus.getDefault().removeStickyEvent(EventLogout.class);
-            EventBus.getDefault().postSticky(new EventLogin(getToken(), getUserInfo()));
-            RxBus.getInstance().post(new EventLogin(getToken(), getUserInfo()));
-        }
     }
 
     public User getUserInfo() {
@@ -333,8 +348,12 @@ public class LoginTechnician {
         EventBus.getDefault().post(new EventRequestSyncPermission());
     }
 
-    //退出登录,返回LogoutResult
-    public void logout() {
+    @Subscribe
+    public void onTokeExpired(EventTokenExpired expired) {
+        cleanWhenLogout();
+    }
+
+    private void cleanWhenLogout() {
         if (TextUtils.isEmpty(getToken())) {
             //已经登出了，不再次调用
             return;
@@ -343,19 +362,26 @@ public class LoginTechnician {
         SharedPreferenceHelper.setCustomerService(null);
         SharedPreferenceHelper.setRoles(null);
 
-        //发送登出事件
-        needSendLoginEvent = true;
-        EventBus.getDefault().postSticky(new EventLogout(getToken(), getUserId()));
-        RxBus.getInstance().post(new EventLogout(getToken(), getUserId()));
-
         //清空当前用户打招呼数据
         HelloSettingManager.getInstance().resetTemplate();
 
         //清空token
         setToken(null);
 
-        XmdActivityManager.getInstance().finishAll();
+        //跳转到登录页面
         UINavigation.gotoLogin(TechApplication.getAppContext());
+    }
+
+    //退出登录,返回LogoutResult
+    public void logout() {
+        String token = getToken();
+        String userId = getUserId();
+
+        cleanWhenLogout();
+
+        //发送登出事件
+        EventBus.getDefault().postSticky(new EventLogout(token, userId));
+        RxBus.getInstance().post(new EventLogout(token, userId));
     }
 
 

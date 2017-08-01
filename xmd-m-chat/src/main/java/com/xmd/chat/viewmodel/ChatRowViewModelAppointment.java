@@ -19,7 +19,7 @@ import com.xmd.appointment.AppointmentData;
 import com.xmd.appointment.AppointmentEvent;
 import com.xmd.appointment.beans.AppointmentSetting;
 import com.xmd.appointment.beans.Technician;
-import com.xmd.chat.AccountManager;
+import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowAppointmentBinding;
@@ -87,7 +87,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
     //点击完善信息
     public void onClickCreateOrder() {
         EventBusSafeRegister.register(this);
-        User currentUser = AccountManager.getInstance().getUser();
+        User currentUser = ChatAccountManager.getInstance().getUser();
         if (currentUser == null) {
             return;
         }

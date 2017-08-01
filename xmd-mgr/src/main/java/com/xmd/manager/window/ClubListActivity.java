@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import com.xmd.app.XmdActivityManager;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Manager;
+import com.xmd.manager.ManagerAccountManager;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.beans.ClubInfo;
@@ -117,6 +118,7 @@ public class ClubListActivity extends BaseListActivity<ClubInfo, ClubListResult>
     private void handleLoginResult(ClubEnterResult result) {
         if (result.statusCode == 200) {
             SharedPreferenceHelper.saveUser(result.respData);
+            ManagerAccountManager.getInstance().onLogin();
             XmdActivityManager.getInstance().finishAll();
             startActivity(new Intent(ClubListActivity.this, MainActivity.class));
             finish();

@@ -45,6 +45,7 @@ public class XmdApp {
 
     private SharedPreferences sharedPreferences;
     private Boolean appFirstStart; //app是否为第一次启动
+
     /**
      * 初始化模块
      *
@@ -89,9 +90,9 @@ public class XmdApp {
     /**
      * 登出事件 ，清除token
      */
-    @Subscribe(sticky = true)
+    @Subscribe(sticky = true, priority = -1)
     public void onLogout(EventLogout eventLogout) {
-        XLogger.i("event logout, clear token ");
+        XLogger.i("event logout");
         XmdNetwork.getInstance().setToken(null);
     }
 

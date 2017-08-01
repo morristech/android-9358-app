@@ -129,7 +129,7 @@ public class ShareDataManager {
     public Subscription loadJournalList(final NetworkSubscriber<Void> networkSubscriber) {
         Observable<BaseBean<List<Journal>>> observable = XmdNetwork.getInstance()
                 .getService(NetService.class)
-                .listShareJournal(AccountManager.getInstance().getUser().getClubId(), "0", "1000");
+                .listShareJournal(ChatAccountManager.getInstance().getUser().getClubId(), "0", "1000");
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<List<Journal>>>() {
             @Override
             public void onCallbackSuccess(BaseBean<List<Journal>> result) {
@@ -152,7 +152,7 @@ public class ShareDataManager {
     public Subscription loadOnceCardList(final NetworkSubscriber<Void> networkSubscriber) {
         Observable<BaseBean<ResultOnceCard>> observable = XmdNetwork.getInstance()
                 .getService(NetService.class)
-                .listOnceCards(AccountManager.getInstance().getUser().getClubId(), "true", "0", String.valueOf(Integer.MAX_VALUE));
+                .listOnceCards(ChatAccountManager.getInstance().getUser().getClubId(), "true", "0", String.valueOf(Integer.MAX_VALUE));
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<ResultOnceCard>>() {
             @Override
             public void onCallbackSuccess(BaseBean<ResultOnceCard> result) {

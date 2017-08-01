@@ -11,6 +11,7 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -185,9 +186,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         saveCurrentUser(currentUser);
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe(sticky = true, priority = -1)
     public void onLogout(EventLogout eventLogout) {
         XLogger.i(TAG, "<===user logout");
+        currentUser = null;
+        currentToken = null;
+        saveCurrentUser(null);
+    }
+
+    @Subscribe
+    public void onTokenExpire(EventTokenExpired tokenExpired) {
+        XLogger.i(TAG, "<===user expired");
         currentUser = null;
         currentToken = null;
         saveCurrentUser(null);

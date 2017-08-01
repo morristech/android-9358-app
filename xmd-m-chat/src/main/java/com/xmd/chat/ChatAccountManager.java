@@ -6,43 +6,54 @@ import android.os.Message;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.util.DeviceInfoUtils;
+import com.xmd.app.CommonNetService;
+import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
-import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
 import com.xmd.chat.event.EventChatLoginSuccess;
+import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
+
+import rx.Observable;
 
 /**
  * Created by mo on 17-6-28.
  * 账号管理（登录，登出）
  */
 
-public class AccountManager {
-    private static final AccountManager ourInstance = new AccountManager();
+public class ChatAccountManager {
+    private static final ChatAccountManager ourInstance = new ChatAccountManager();
 
-    public static AccountManager getInstance() {
+    public static ChatAccountManager getInstance() {
         return ourInstance;
     }
 
-    private AccountManager() {
+    private ChatAccountManager() {
     }
 
     private boolean isRunLogin;
     private User user;
+    private String token;
+    private String deviceId;
 
     public void init() {
-
+        deviceId = DeviceInfoUtils.getDeviceId(XmdApp.getInstance().getContext());
     }
 
     public void login(EventLogin eventLogin) {
         user = eventLogin.getUser();
+        token = eventLogin.getToken();
         loopLogin();
     }
 
-    public void logout(EventLogout eventLogout) {
+    public void logout() {
         mHandler.removeCallbacksAndMessages(null);
-        logout();
+        EMClient.getInstance().logout(false, null);
+        isRunLogin = false;
         user = null;
     }
 
@@ -64,10 +75,39 @@ public class AccountManager {
     };
 
     private void login() {
-        XLogger.i(XmdChat.TAG, "login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
+        if (!isRunLogin) {
+            return;
+        }
+        XLogger.i(XmdChat.TAG, "check token --> login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(CommonNetService.class)
+                .reportAlive(token, deviceId);
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                chatLogin();
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.e(e.getMessage());
+                Message message = new Message();
+                message.what = 1;
+                mHandler.sendMessageDelayed(message, 1000);
+            }
+        });
+    }
+
+    private void chatLogin() {
+        if (!isRunLogin) {
+            return;
+        }
+        XLogger.i(XmdChat.TAG, "chat login --> login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
         EMClient.getInstance().login(user.getChatId(), user.getChatPassword(), new EMCallBack() {
             @Override
             public void onSuccess() {
+                if (!isRunLogin) {
+                    return;
+                }
                 isRunLogin = false;
                 XLogger.i(XmdChat.TAG, "login success!  chatId:" + user.getChatId());
                 EMClient.getInstance().chatManager().loadAllConversations();
@@ -77,7 +117,10 @@ public class AccountManager {
 
             @Override
             public void onError(int i, String s) {
-                isRunLogin = false;
+                XLogger.e(XmdChat.TAG, "login error:i=" + i + ",s=" + s);
+                if (!isRunLogin) {
+                    return;
+                }
                 if (i == 200) {
                     onSuccess();
                     return;
@@ -85,7 +128,6 @@ public class AccountManager {
                 Message message = new Message();
                 message.what = 1;
                 mHandler.sendMessageDelayed(message, 1000);
-                XLogger.e(XmdChat.TAG, "login error:i=" + i + ",s=" + s + ",  chatId:" + user.getChatId());
             }
 
             @Override
@@ -93,11 +135,6 @@ public class AccountManager {
 
             }
         });
-    }
-
-    private void logout() {
-        EMClient.getInstance().logout(false);
-        isRunLogin = false;
     }
 
     public User getUser() {

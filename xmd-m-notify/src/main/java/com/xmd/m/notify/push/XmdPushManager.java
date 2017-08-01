@@ -11,6 +11,7 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -106,9 +107,19 @@ public class XmdPushManager {
     @Subscribe(sticky = true)
     public void handleLogout(EventLogout eventLogout) {
         XLogger.d(TAG, "on event logout:" + eventLogout);
+        RetryPool.getInstance().removeWork(retryRunnable);
         setUserId(null);
         setToken(null);
         unbind();
+    }
+
+    //token失效事件
+    @Subscribe
+    public void onTokenExpire(EventTokenExpired tokenExpired) {
+        RetryPool.getInstance().removeWork(retryRunnable);
+        binding = false;
+        setUserId(null);
+        setToken(null);
     }
 
     //返回是否绑定

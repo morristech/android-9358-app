@@ -22,15 +22,12 @@ import com.xmd.app.EmojiManager;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.XmdActivityManager;
 import com.xmd.app.XmdApp;
-import com.xmd.app.event.EventLogin;
-import com.xmd.app.event.EventLogout;
 import com.xmd.app.event.EventRestartApplication;
 import com.xmd.app.user.User;
 import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.chat.MenuFactory;
 import com.xmd.chat.XmdChat;
 import com.xmd.m.comment.XmdComment;
-import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
 import com.xmd.m.notify.display.FloatNotifyManager;
@@ -44,7 +41,6 @@ import com.xmd.technician.msgctrl.ControllerRegister;
 import com.xmd.technician.window.AvailableCouponListActivity;
 import com.xmd.technician.window.WelcomeActivity;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
@@ -156,14 +152,11 @@ public class TechApplication extends MultiDexApplication {
                 long end = System.currentTimeMillis();
                 Logger.v("Start cost : " + (end - start) + " ms");
 
-                if (LoginTechnician.getInstance().isLogin()) {
-                    EventBus.getDefault().removeStickyEvent(EventLogout.class);
-                    EventBus.getDefault().postSticky(new EventLogin(LoginTechnician.getInstance().getToken(), LoginTechnician.getInstance().getUserInfo()));
-                }
-
                 EventBusSafeRegister.register(this);
 
                 XmdComment.getInstance().init();
+
+                LoginTechnician.getInstance().checkAndLogin();
             }
         }
     }
@@ -247,10 +240,4 @@ public class TechApplication extends MultiDexApplication {
             activity.startActivity(intent);
         }
     };
-
-    @Subscribe
-    public void onTokenExpire(EventTokenExpired expired) {
-        XToast.show(expired.getReason());
-        LoginTechnician.getInstance().logout();
-    }
 }

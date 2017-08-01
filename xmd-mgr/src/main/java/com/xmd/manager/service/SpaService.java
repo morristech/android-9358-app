@@ -1,5 +1,6 @@
 package com.xmd.manager.service;
 
+import com.xmd.m.network.BaseBean;
 import com.xmd.manager.beans.CheckCouponResult;
 import com.xmd.manager.beans.CheckInfoList;
 import com.xmd.manager.beans.IndexOrderData;
@@ -1179,5 +1180,15 @@ public interface SpaService {
                                                                    @Field("returnStatus") String returnStatus,
                                                                    @Field("status") String status,
                                                                    @Field("commentType") String commentType);
+
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_LOGOUT)
+    Observable<BaseBean> doLogout();
+
+
+    //检查
+    @GET(RequestConstant.URL_CLUB_INFO)
+    Observable<BaseBean> checkToken(@Query(RequestConstant.KEY_TOKEN) String userToken);
 }
 

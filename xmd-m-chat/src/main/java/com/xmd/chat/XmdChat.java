@@ -19,6 +19,7 @@ import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.view.ChatActivity;
 import com.xmd.chat.view.ChatFastReplySettingActivity;
 import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -73,7 +74,7 @@ public class XmdChat {
 
         loadConversation();
 
-        AccountManager.getInstance().init();
+        ChatAccountManager.getInstance().init();
         ConversationManager.getInstance().init();
         MessageManager.getInstance().init();
         setMenuFactory(menuFactory);
@@ -149,14 +150,20 @@ public class XmdChat {
 
     @Subscribe(sticky = true)
     public void onLogin(EventLogin eventLogin) {
-        AccountManager.getInstance().login(eventLogin);
+        ChatAccountManager.getInstance().login(eventLogin);
         SettingManager.getInstance().loadDiceExpireTime();
         SettingManager.getInstance().loadFastReply(null);
     }
 
     @Subscribe(sticky = true)
     public void onLogout(EventLogout eventLogout) {
-        AccountManager.getInstance().logout(eventLogout);
+        ChatAccountManager.getInstance().logout();
+        SettingManager.getInstance().clear();
+    }
+
+    @Subscribe
+    public void onTokenExpire(EventTokenExpired tokenExpired) {
+        ChatAccountManager.getInstance().logout();
         SettingManager.getInstance().clear();
     }
 }

@@ -41,7 +41,7 @@ import com.xmd.m.notify.redpoint.RedPointServiceImpl;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.BuildConfig;
 import com.xmd.manager.Constant;
-import com.xmd.manager.Manager;
+import com.xmd.manager.ManagerAccountManager;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.UINavigation;
@@ -1230,10 +1230,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void doInnerLogout() {
-        Manager.getInstance().prepareBeforeUserLogout();
-        MainActivity activity;
-        activity = (MainActivity) this.getActivity();
-        activity.gotoLoginActivity("");
+        ManagerAccountManager.getInstance().logout();
     }
 
     @Override

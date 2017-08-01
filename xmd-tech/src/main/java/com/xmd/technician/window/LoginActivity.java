@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.xmd.app.XmdActivityManager;
+import com.xmd.app.event.EventLogout;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.R;
@@ -23,6 +24,8 @@ import com.xmd.technician.http.RetrofitServiceFactory;
 import com.xmd.technician.presenter.LoginPresenter;
 import com.xmd.technician.widget.AlertDialogBuilder;
 import com.xmd.technician.widget.ClearableEditText;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -262,6 +265,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void onTokenExpired(EventTokenExpired event) {
+        //do nothing
+    }
+
+    @Subscribe
+    public void onLogoutEvent(EventLogout logout) {
         //do nothing
     }
 }

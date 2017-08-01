@@ -945,4 +945,8 @@ public interface SpaService {
     @POST("/spa-manager/api/v2/tech/hello/{customerId}")
     Observable<BaseBean<SayHiResult>> sayHiToUser(@Path("customerId") String customerId,
                                                   @Field("templateId") long templateId);
+
+
+    @GET(RequestConstant.URL_GET_TECH_INFO)
+    Observable<TechInfoResult> doGetTechInfo(@Query(RequestConstant.KEY_TOKEN) String userToken);
 }

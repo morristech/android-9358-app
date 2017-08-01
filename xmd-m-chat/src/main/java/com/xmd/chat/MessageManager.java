@@ -204,7 +204,7 @@ public class MessageManager {
     //发送tip消息
     public ChatMessage sendTipMessage(EMConversation conversation, User remoteUser, String tip) {
         TipChatMessage tipChatMessage = TipChatMessage.create(remoteUser.getChatId(), tip);
-        tipChatMessage.setUser(AccountManager.getInstance().getUser());
+        tipChatMessage.setUser(ChatAccountManager.getInstance().getUser());
         conversation.appendMessage(tipChatMessage.getEmMessage());
         EventBus.getDefault().post(new EventSendMessage(tipChatMessage));
         EventBus.getDefault().post(new EventNewUiMessage(ChatRowViewFactory.createViewModel(tipChatMessage)));
@@ -213,7 +213,7 @@ public class MessageManager {
 
     public ChatMessage sendTipMessageWithoutUpdateUI(EMConversation conversation, User remoteUser, String tip) {
         TipChatMessage tipChatMessage = TipChatMessage.create(remoteUser.getChatId(), tip);
-        tipChatMessage.setUser(AccountManager.getInstance().getUser());
+        tipChatMessage.setUser(ChatAccountManager.getInstance().getUser());
         conversation.appendMessage(tipChatMessage.getEmMessage());
         EventBus.getDefault().post(new EventSendMessage(tipChatMessage));
         return tipChatMessage;
@@ -253,7 +253,7 @@ public class MessageManager {
         if (chatMessage == null) {
             return null;
         }
-        User user = AccountManager.getInstance().getUser();
+        User user = ChatAccountManager.getInstance().getUser();
         if (user == null) {
             XToast.show("无法发送消息，没有用户信息!");
             return null;

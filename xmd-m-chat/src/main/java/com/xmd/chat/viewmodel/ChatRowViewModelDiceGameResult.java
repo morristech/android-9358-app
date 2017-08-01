@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.chat.AccountManager;
+import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.ChatRowDiceGameResultBinding;
@@ -42,7 +42,7 @@ public class ChatRowViewModelDiceGameResult extends ChatRowViewModel {
     public ChatRowViewModelDiceGameResult(ChatMessage chatMessage) {
         super(chatMessage);
         message = (DiceGameChatMessage) chatMessage;
-        myName = AccountManager.getInstance().getUser().getName();
+        myName = ChatAccountManager.getInstance().getUser().getName();
         User friend = UserInfoServiceImpl.getInstance().getUserByChatId(message.getRemoteChatId());
         friendName = friend.getShowName();
     }

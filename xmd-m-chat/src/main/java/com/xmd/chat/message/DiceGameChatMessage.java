@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.hyphenate.chat.EMMessage;
 import com.shidou.commonlibrary.helper.XLogger;
-import com.xmd.chat.AccountManager;
+import com.xmd.chat.ChatAccountManager;
 
 /**
  * Created by mo on 17-7-21.
@@ -95,7 +95,7 @@ public class DiceGameChatMessage extends TipChatMessage {
                 String[] points = result.split(":");
                 int srcPoint = Integer.parseInt(points[0]);
                 int dstPoint = Integer.parseInt(points[1]);
-                if (getGameInvite().equals(AccountManager.getInstance().getChatId())) {
+                if (getGameInvite().equals(ChatAccountManager.getInstance().getChatId())) {
                     //我是发起方
                     myPoint = srcPoint;
                     remotePoint = dstPoint;

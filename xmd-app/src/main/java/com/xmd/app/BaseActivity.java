@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XProgressDialog;
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.app.event.EventLogout;
 import com.xmd.m.network.EventTokenExpired;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -124,6 +125,11 @@ public class BaseActivity extends AppCompatActivity {
 
     @Subscribe
     public void onTokenExpired(EventTokenExpired event) {
+        finish();
+    }
+
+    @Subscribe
+    public void onLogoutEvent(EventLogout logout) {
         finish();
     }
 

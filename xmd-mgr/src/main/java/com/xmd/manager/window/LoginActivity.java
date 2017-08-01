@@ -9,13 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
-import com.xmd.app.user.User;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.OkHttpUtil;
 import com.xmd.manager.AppConfig;
 import com.xmd.manager.Constant;
+import com.xmd.manager.ManagerAccountManager;
 import com.xmd.manager.R;
 import com.xmd.manager.SharedPreferenceHelper;
 import com.xmd.manager.common.ResourceUtils;
@@ -30,7 +29,7 @@ import com.xmd.manager.service.response.LoginResult;
 import com.xmd.manager.widget.ClearableEditText;
 import com.xmd.manager.widget.LoadingDialog;
 
-import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -159,15 +158,7 @@ public class LoginActivity extends BaseActivity {
             SharedPreferenceHelper.saveUser(loginResult);
             SharedPreferenceHelper.setMultiClubToken(loginResult.token);
 
-            EventBus.getDefault().removeStickyEvent(EventLogout.class);
-            User user = new User(loginResult.userId);
-            user.setUserRoles(User.ROLE_MANAGER);
-            user.setChatId(loginResult.emchatId);
-            user.setChatPassword(loginResult.emchatPassword);
-            user.setName(loginResult.name);
-            user.setAvatar(loginResult.avatarUrl);
-            EventLogin eventLogin = new EventLogin(SharedPreferenceHelper.getUserToken(), user);
-            EventBus.getDefault().postSticky(eventLogin);
+            ManagerAccountManager.getInstance().onLogin();
 
             if (Constant.MULTI_CLUB_ROLE.equals(loginResult.roles)) {
                 startActivity(new Intent(LoginActivity.this, ClubListActivity.class));
@@ -193,6 +184,11 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onTokenExpired(EventTokenExpired event) {
+        //do nothing
+    }
+
+    @Subscribe
+    public void onLogoutEvent(EventLogout logout) {
         //do nothing
     }
 }

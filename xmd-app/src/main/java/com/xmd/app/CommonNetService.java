@@ -6,7 +6,10 @@ import com.xmd.m.network.BaseBean;
 
 import java.util.List;
 
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -17,6 +20,10 @@ import rx.Observable;
  */
 
 public interface CommonNetService {
+    @POST("/spa-manager/api/v2/app/heartbeat")
+    @FormUrlEncoded
+    Observable<BaseBean> reportAlive(@Field("token") String token,
+                                     @Field("deviceId") String deviceId);
 
     /**
      * 获取用户基本信息和联系权限

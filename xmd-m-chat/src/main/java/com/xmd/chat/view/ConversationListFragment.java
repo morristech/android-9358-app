@@ -22,8 +22,8 @@ import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.chat.AccountManager;
 import com.xmd.chat.BR;
+import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.ConversationManager;
 import com.xmd.chat.R;
 import com.xmd.chat.databinding.FragmentConversationBinding;
@@ -202,7 +202,7 @@ public class ConversationListFragment extends BaseFragment {
     }
 
     public String getUserAvatar() {
-        User user = AccountManager.getInstance().getUser();
+        User user = ChatAccountManager.getInstance().getUser();
         return user == null ? null : user.getAvatar();
     }
 

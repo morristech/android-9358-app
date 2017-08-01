@@ -13,7 +13,7 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.chat.AccountManager;
+import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
@@ -136,7 +136,7 @@ public class ChatRowViewModelDiceGameInvite extends ChatRowViewModel {
                 if (DiceGameChatMessage.STATUS_CANCEL.equals(result.getRespData().getStatus())) {
                     DiceGameChatMessage cancelMessage = DiceGameChatMessage.createMessage(
                             DiceGameChatMessage.STATUS_CANCEL,
-                            AccountManager.getInstance().getChatId(),
+                            ChatAccountManager.getInstance().getChatId(),
                             message.getRemoteChatId(),
                             message.getGameId(),
                             Integer.parseInt(message.getCredit()));

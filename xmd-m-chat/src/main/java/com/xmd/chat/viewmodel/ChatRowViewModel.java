@@ -20,7 +20,7 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseViewModel;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.chat.AccountManager;
+import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
@@ -71,8 +71,8 @@ public abstract class ChatRowViewModel extends BaseViewModel {
                 Observable<BaseBean> observable = XmdNetwork.getInstance()
                         .getService(NetService.class)
                         .notifyServerChatMessage(
-                                AccountManager.getInstance().getChatId(),
-                                AccountManager.getInstance().getUserType(),
+                                ChatAccountManager.getInstance().getChatId(),
+                                ChatAccountManager.getInstance().getUserType(),
                                 chatMessage.getRemoteChatId(),
                                 UserInfoServiceImpl.getInstance().getUserByChatId(chatMessage.getRemoteChatId()).getUserType(),
                                 chatMessage.getEmMessage().getMsgId(),

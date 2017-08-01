@@ -23,7 +23,7 @@ public abstract class NetworkSubscriber<T> extends Subscriber<T> {
         if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
             if (httpException.code() == 401) {
-                EventBus.getDefault().post(new EventTokenExpired("server return 401"));
+                EventBus.getDefault().post(new EventTokenExpired("会话失效，用户可能在其他地方登录"));
             }
         }
         XLogger.e("", "network error:" + e.getMessage());

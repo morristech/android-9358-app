@@ -13,7 +13,7 @@ import com.hyphenate.EMCallBack;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.EventBusSafeRegister;
-import com.xmd.chat.AccountManager;
+import com.xmd.chat.ChatAccountManager;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
@@ -102,7 +102,7 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
                 if (DiceGameChatMessage.STATUS_REJECT.equals(result.getRespData().getStatus())) {
                     final DiceGameChatMessage refuseMessage = DiceGameChatMessage.createMessage(
                             DiceGameChatMessage.STATUS_REJECT,
-                            AccountManager.getInstance().getChatId(),
+                            ChatAccountManager.getInstance().getChatId(),
                             message.getRemoteChatId(),
                             message.getGameId(),
                             Integer.parseInt(message.getCredit()));
@@ -160,7 +160,7 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
                 if (DiceGameChatMessage.STATUS_ACCEPT.equals(result.getRespData().getStatus())) {
                     final DiceGameChatMessage acceptMessage = DiceGameChatMessage.createMessage(
                             DiceGameChatMessage.STATUS_ACCEPT,
-                            AccountManager.getInstance().getChatId(),
+                            ChatAccountManager.getInstance().getChatId(),
                             message.getRemoteChatId(),
                             message.getGameId(),
                             Integer.parseInt(message.getCredit()));
@@ -185,7 +185,7 @@ public class ChatRowViewModelDiceGameAccept extends ChatRowViewModel {
                     //发送游戏结果
                     DiceGameChatMessage resultMessage = DiceGameChatMessage.createMessage(
                             DiceGameChatMessage.STATUS_OVER,
-                            AccountManager.getInstance().getChatId(),
+                            ChatAccountManager.getInstance().getChatId(),
                             message.getRemoteChatId(),
                             message.getGameId(),
                             Integer.parseInt(message.getCredit()),

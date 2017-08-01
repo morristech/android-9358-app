@@ -14,10 +14,12 @@ import android.support.annotation.Nullable;
 import com.google.gson.stream.MalformedJsonException;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DeviceInfoUtils;
+import com.xmd.app.CommonNetService;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.m.network.BaseBean;
+import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -83,6 +85,16 @@ public class AliveReportService extends Service {
         XLogger.i("<<< AliveReportService--stop---");
     }
 
+    @Subscribe
+    public void onTokenExpire(EventTokenExpired tokenExpired) {
+        mHandler.removeMessages(MSG_REPORT);
+        mLastReportTime = 0;
+        if (mRequestSubscription != null) {
+            mRequestSubscription.unsubscribe();
+            mRequestSubscription = null;
+        }
+    }
+
     private static Message createStartMessage(String token) {
         Message msg = new Message();
         msg.what = MSG_REPORT;
@@ -113,27 +125,27 @@ public class AliveReportService extends Service {
     private static void reportAlive(final String token) {
         XLogger.i(">>>reportAlive: " + token);
         Observable<BaseBean> observable = XmdNetwork.getInstance()
-                .getService(NetService.class)
+                .getService(CommonNetService.class)
                 .reportAlive(token, DeviceInfoUtils.getDeviceId(XmdApp.getInstance().getContext()));
         mRequestSubscription =
                 XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
-                            @Override
-                            public void onCallbackSuccess(BaseBean result) {
-                                mLastReportSuccess = true;
-                                XLogger.i("<<<reportAlive: " + token + " sucess");
-                            }
+                    @Override
+                    public void onCallbackSuccess(BaseBean result) {
+                        mLastReportSuccess = true;
+                        XLogger.i("<<<reportAlive: " + token + " sucess");
+                    }
 
-                            @Override
-                            public void onCallbackError(Throwable e) {
-                                if (e instanceof MalformedJsonException) {
-                                    mLastReportSuccess = true;
-                                    XLogger.i("<<<reportAlive: " + token + " sucess");
-                                    return;
-                                }
-                                mLastReportSuccess = false;
-                                XLogger.e("<<<reportAlive: " + token + " failed:" + e.getLocalizedMessage());
-                            }
-                        });
+                    @Override
+                    public void onCallbackError(Throwable e) {
+                        if (e instanceof MalformedJsonException) {
+                            mLastReportSuccess = true;
+                            XLogger.i("<<<reportAlive: " + token + " sucess");
+                            return;
+                        }
+                        mLastReportSuccess = false;
+                        XLogger.e("<<<reportAlive: " + token + " failed:" + e.getLocalizedMessage());
+                    }
+                });
     }
 
 
