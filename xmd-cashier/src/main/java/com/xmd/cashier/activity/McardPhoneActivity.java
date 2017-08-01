@@ -33,6 +33,7 @@ public class McardPhoneActivity extends BaseActivity implements McardPhoneContra
         setContentView(R.layout.activity_mcard_phone);
         mPresenter = new McardPhonePresenter(this, this);
         initView();
+        mPresenter.onCreate();
     }
 
     private void initView() {
@@ -40,8 +41,6 @@ public class McardPhoneActivity extends BaseActivity implements McardPhoneContra
         mPhoneInput = (ClearableEditText) findViewById(R.id.et_phone_input);
         mConfirm = (Button) findViewById(R.id.btn_phone_confirm);
         mStepView = (StepView) findViewById(R.id.sv_step_phone);
-        mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS);
-        mStepView.selectedStep(1);
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +80,20 @@ public class McardPhoneActivity extends BaseActivity implements McardPhoneContra
     @Override
     public void showExitAnim() {
         overridePendingTransition(R.anim.activity_in_from_left, R.anim.activity_out_to_right);
+    }
+
+    @Override
+    public void showStepView(int cardModel) {
+        switch (cardModel) {
+            case AppConstants.MEMBER_CARD_MODEL_NORMAL:
+                mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS_NORMAL);
+                mStepView.selectedStep(1);
+                break;
+            default:
+                mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS_WITHOUT);
+                mStepView.selectedStep(1);
+                break;
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

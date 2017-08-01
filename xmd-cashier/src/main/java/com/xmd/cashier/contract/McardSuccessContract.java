@@ -21,5 +21,7 @@ public interface McardSuccessContract {
         void showEnterAnim();
 
         void showExitAnim();
+
+        void showStepView(int cardModel);
     }
 }

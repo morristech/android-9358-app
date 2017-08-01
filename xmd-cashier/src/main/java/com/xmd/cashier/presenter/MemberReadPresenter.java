@@ -66,7 +66,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
     public void onConfirm(final String readType) {
         String cardNo = mView.getInputContent();
         if (TextUtils.isEmpty(cardNo)) {
-            mView.showError("需要输入数据");
+            mView.showError("请输入内容");
             return;
         }
 

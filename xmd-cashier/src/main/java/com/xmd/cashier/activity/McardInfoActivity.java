@@ -72,9 +72,6 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
 
         mInfoConfirm = (Button) findViewById(R.id.btn_mcard_info_confirm);
 
-        mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS);
-        mStepView.selectedStep(2);
-
         mInfoConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,6 +185,20 @@ public class McardInfoActivity extends BaseActivity implements McardInfoContract
     @Override
     public void showExitAnim() {
         overridePendingTransition(R.anim.activity_in_from_left, R.anim.activity_out_to_right);
+    }
+
+    @Override
+    public void showStepView(int cardModel) {
+        switch (cardModel) {
+            case AppConstants.MEMBER_CARD_MODEL_NORMAL:
+                mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS_NORMAL);
+                mStepView.selectedStep(2);
+                break;
+            default:
+                mStepView.setSteps(AppConstants.MEMBER_CARD_STEPS_WITHOUT);
+                mStepView.selectedStep(2);
+                break;
+        }
     }
 
     @Override

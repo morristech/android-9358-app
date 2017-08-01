@@ -212,7 +212,8 @@ public class AppConstants {
         put(MEMBER_RECORD_TYPE_RECHARGE_TEXT, MEMBER_RECORD_TYPE_RECHARGE);
     }};
 
-    public static final List<String> MEMBER_CARD_STEPS = Arrays.asList(new String[]{"手机验证", "会员资料", "绑定卡片", "开卡成功"});
+    public static final List<String> MEMBER_CARD_STEPS_NORMAL = Arrays.asList(new String[]{"手机验证", "会员资料", "绑定卡片", "开卡成功"});
+    public static final List<String> MEMBER_CARD_STEPS_WITHOUT = Arrays.asList(new String[]{"手机验证", "会员资料", "开卡成功"});
 
     // 会员支付媒介：二维码 || 接口
     public static final String MEMBER_PAY_METHOD_CODE = "code";

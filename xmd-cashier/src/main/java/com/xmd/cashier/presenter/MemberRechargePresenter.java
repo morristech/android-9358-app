@@ -306,12 +306,12 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     public void onConfirm() {
         switch (MemberManager.getInstance().getAmountType()) {
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE:
-                mView.showError("支付数据异常!");
+                mView.showError("请选择充值内容!");
                 return;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
                 // 充值金额
                 if (MemberManager.getInstance().getAmount() <= 0) {
-                    mView.showError("请确认充值金额!");
+                    mView.showError("请输入充值金额!");
                     return;
                 }
                 mView.showDialog();
@@ -319,7 +319,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
                 // 充值套餐
                 if (MemberManager.getInstance().getPackageInfo() == null) {
-                    mView.showError("请选择充值内容!");
+                    mView.showError("请添加充值套餐!");
                     return;
                 }
                 mView.showDialog();
