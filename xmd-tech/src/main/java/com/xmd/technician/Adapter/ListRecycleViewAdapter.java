@@ -1107,7 +1107,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.ivContactRecentTypeWx.setVisibility(View.GONE);
             }
             viewHolder.contactVisitorTime.setText(DateUtils.getTimestampString(DateUtil.stringToDateMinute(userRecent.createTime)));
-            //viewHolder.contactVisitorTime.setText(RelativeDateFormatUtil.format(DateUtil.stringDateToLong(userRecent.createTime)));
+       //   viewHolder.contactVisitorTime.setText(RelativeDateFormatUtil.format(DateUtil.stringDateToLong(userRecent.createTime)));
             viewHolder.itemView.setOnClickListener(v -> {
                 try {
                     mCallback.onItemClicked(userRecent);

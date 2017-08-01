@@ -408,10 +408,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         OrderListItemViewHolder itemHolder = (OrderListItemViewHolder) holder;
         Glide.with(mContext).load(order.headImgUrl).error(R.drawable.icon22).into(itemHolder.avatar);
         itemHolder.avatar.setUserInfo(UserInfoServiceImpl.getInstance().getUserByChatId(order.emchatId));
-        itemHolder.customerName.setText(Utils.briefString(order.customerName, 4));
+        itemHolder.customerName.setText(Utils.briefString(order.customerName, 7));
         itemHolder.customerPhone.setText(order.phoneNum);
         itemHolder.bookTime.setText(order.createdAt);
-        itemHolder.techName.setText(Utils.isEmpty(order.techName) ? ResourceUtils.getString(R.string.order_list_item_not_decided) : Utils.briefString(order.techName, 4));
+        itemHolder.techName.setText(Utils.isEmpty(order.techName) ? ResourceUtils.getString(R.string.order_list_item_not_decided) : Utils.briefString(order.techName, 7));
         if (Utils.isEmpty(order.techName)) {
             itemHolder.techSerial.setVisibility(View.GONE);
         } else {
