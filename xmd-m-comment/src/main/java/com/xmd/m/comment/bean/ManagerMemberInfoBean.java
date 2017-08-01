@@ -6,46 +6,39 @@ package com.xmd.m.comment.bean;
 
 public class ManagerMemberInfoBean {
     /**
-     * id : 5
-     * name : 算法的技术
-     * phoneNum : 13137558109
-     * cardNo : 5895681612000001
-     * accountId : 807043347448360960
-     * accountAmount : 999000
-     * memberTypeId : 13
-     * memberTypeName : 普通
-     * freezeAmount : 0
-     * discount : 1000
-     * clubId : 601679316694081536
-     * createTime : 2016-12-09 10:05:02
-     * modifyTime : null
-     * operatorName : null
-     * clubName : null
-     * clubImage : null
-     * styleId : 1
-     * description : 请在会员结账时主动提供会员支付二维码
-     * amount : 999000
+     * id : 143
+     * name : null
+     * phoneNum : null
+     * cardNo : 111111111111111111
+     * userId : null
+     * amount : 172000
+     * memberTypeId : 120
+     * memberTypeName : 金卡
+     * birth : 2017-07-20
+     * freezeAmount : 1000
+     * discount : 0
+     * avatar : null
+     * consumeCount : 3
+     * consumeAmount : 4000
+     * cumulativeAmount : 137000
+     * giveAmount : 110000
+     * creatorName : dingweifeng
+     * createTime : 2017-07-22 15:29:44
+     * avatarUrl : null
      */
 
     public int id;
     public String name;
     public String phoneNum;
     public String cardNo;
-    public String accountId;
-    public int accountAmount;
+    public String userId;
+    public int amount;
     public int memberTypeId;
     public String memberTypeName;
+    public String birth;
     public int freezeAmount;
     public int discount;
-    public String clubId;
-    public String createTime;
-    public String modifyTime;
-    public String operatorName;
-    public String clubName;
-    public String clubImage;
-    public int styleId;
-    public String description;
-    public int amount;
+    public String avatar;
     /**
      * 消费笔数
      */
@@ -62,4 +55,8 @@ public class ManagerMemberInfoBean {
      * 赠送总金额
      */
     public long giveAmount;
+    public String creatorName;
+    public String createTime;
+    public String avatarUrl;
+
 }

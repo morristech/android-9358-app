@@ -386,7 +386,12 @@
 
                     <TextView
                         android:id="@+id/tv_customer_membership_grade"
-                        style="@style/CustomerDetailTextStyle"
+                        android:layout_width="wrap_content"
+                        android:maxWidth="200dp"
+                        android:lines="1"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="#666666"
                         tools:text="金卡会员"/>
 
                     <TextView
@@ -396,6 +401,7 @@
                         android:layout_weight="1"
                         android:textColor="#616161"
                         android:textSize="14sp"
+                        android:paddingLeft="20dp"
                         tools:text="余额　201111.77元"/>
 
                     <ImageView
