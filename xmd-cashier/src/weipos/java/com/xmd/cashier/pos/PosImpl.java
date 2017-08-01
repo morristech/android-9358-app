@@ -390,29 +390,31 @@ public class PosImpl implements IPos {
     @Override
     public void setPrintListener(final Callback<?> callback) {
         if (mLatticePrinter != null) {
-            mLatticePrinter.setOnEventListener(new IPrint.OnEventListener() {
-                @Override
-                public void onEvent(int i, String s) {
-                    switch (i) {
-                        case IPrint.EVENT_CONNECTED:
-                            //连接打印机成功
-                        case IPrint.EVENT_STATE_OK:
-                            //打印机状态正常
-                            break;
-                        case IPrint.EVENT_OK:
-                            //打印完成结束
-                            if (callback != null) {
+            if (callback != null) {
+                mLatticePrinter.setOnEventListener(new IPrint.OnEventListener() {
+                    @Override
+                    public void onEvent(int i, String s) {
+                        switch (i) {
+                            case IPrint.EVENT_CONNECTED:
+                                //连接打印机成功
+                            case IPrint.EVENT_STATE_OK:
+                                //打印机状态正常
+                                break;
+                            case IPrint.EVENT_OK:
+                                //打印完成结束
                                 callback.onSuccess(null);
-                            }
-                            break;
-                        default:
-                            if (callback != null) {
+                                break;
+                            default:
                                 callback.onError(s);
-                            }
-                            break;
+                                break;
+                        }
+                        // 打印回调处理完成后清空
+                        mLatticePrinter.setOnEventListener(null);
                     }
-                }
-            });
+                });
+            } else {
+                mLatticePrinter.setOnEventListener(null);
+            }
         }
     }
 

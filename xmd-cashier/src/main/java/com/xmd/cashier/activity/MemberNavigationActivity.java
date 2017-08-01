@@ -73,11 +73,6 @@ public class MemberNavigationActivity extends BaseActivity implements MemberNavi
     }
 
     @Override
-    public void enterCard(boolean enter) {
-        mCardLayout.setVisibility(enter ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
     public void showEnterAnim() {
         overridePendingTransition(R.anim.activity_in_from_right, R.anim.activity_out_to_left);
     }

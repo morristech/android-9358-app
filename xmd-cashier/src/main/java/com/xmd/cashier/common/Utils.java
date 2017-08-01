@@ -231,6 +231,8 @@ public class Utils {
                 return "支付宝支付";
             case AppConstants.FAST_PAY_CHANNEL_WX:
                 return "微信支付";
+            case AppConstants.FAST_PAY_CHANNEL_MEMBER:
+                return "会员支付";
             default:
                 return null;
         }
