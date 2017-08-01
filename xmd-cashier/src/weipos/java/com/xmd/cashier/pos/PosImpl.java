@@ -408,6 +408,8 @@ public class PosImpl implements IPos {
                                 callback.onError(s);
                                 break;
                         }
+                        // 打印回调处理完成后清空
+                        mLatticePrinter.setOnEventListener(null);
                     }
                 });
             } else {

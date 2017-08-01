@@ -586,6 +586,5 @@ public class MemberManager {
             mPos.printCenter("扫一扫，关注9358，约技师，享优惠");
         }
         mPos.printEnd();
-        mPos.setPrintListener(null);
     }
 }
