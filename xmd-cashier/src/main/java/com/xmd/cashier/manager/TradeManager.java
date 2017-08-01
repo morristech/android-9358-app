@@ -266,19 +266,14 @@ public class TradeManager {
                                 newTrade();         // 重置
                                 break;
                             case AppConstants.CASHIER_TYPE_MEMBER:
-                                reportTradeDataSync(tradeStatus);
-                                if (mTrade.posPoints > 0) {
-                                    UiNavigation.gotoPointsPhoneActivity(context);
+                                if (mTrade.withoutPay) {
+                                    print();
                                 } else {
-                                    if (mTrade.withoutPay) {
-                                        print();
-                                    } else {
-                                        if (mTrade.isRemain) {
-                                            printMemberPay(mTrade.memberRecordInfo);
-                                        }
+                                    if (mTrade.isRemain) {
+                                        printMemberPay(mTrade.memberRecordInfo);
                                     }
-                                    newTrade();
                                 }
+                                newTrade();
                                 break;
                             case AppConstants.CASHIER_TYPE_POS:
                             default:
