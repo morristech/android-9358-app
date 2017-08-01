@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,6 +120,11 @@ public class MarketingIncomeListFragment extends BaseListFragment<MarketingIncom
                     bean.showItemCard = true;
                 } else {
                     bean.showItemCard = false;
+                }
+                if (Utils.isNotEmpty(listResult.respData.packageCardSwitch) && !listResult.respData.packageCardSwitch.equals("on")) {
+                    bean.showPageCard = false;
+                } else {
+                    bean.showPageCard = true;
                 }
                 incomeList.add(bean);
             }

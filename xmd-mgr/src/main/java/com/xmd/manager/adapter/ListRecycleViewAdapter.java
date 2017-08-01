@@ -1089,6 +1089,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             viewHolder.llOnceCardIncomeView.setVisibility(View.GONE);
         }
 
+        if(bean.showPageCard){
+            viewHolder.tvMixedPackageIncome.setVisibility(View.VISIBLE);
+        }else{
+            viewHolder.tvMixedPackageIncome.setVisibility(View.GONE);
+        }
+
         viewHolder.tvIncomeTime.setText(bean.dealDate);//changeSize
         String total = String.format("%1.2f", bean.totalAmount / 100f);
         Spannable ss = new SpannableString(total);
