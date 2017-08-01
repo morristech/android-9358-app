@@ -343,7 +343,12 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
         }
 
         //网店访问
-        tvCustomerVisitTime.setText(String.format("%s次（最近访问%s）", userDetailModel.visitCount, userDetailModel.recentVisitDate));
+        if (userDetailModel.visitCount > 0) {
+            tvCustomerVisitTime.setText(String.format("%s次（最近访问%s）", userDetailModel.visitCount, userDetailModel.recentVisitDate));
+        } else {
+            tvCustomerVisitTime.setText("0次");
+        }
+
         //拓客者
         if (TextUtils.isEmpty(userDetailModel.belongsTechName)) {
             tvCustomerBelongTechName.setText("-");
