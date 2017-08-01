@@ -23,4 +23,5 @@ public class MarketingIncomeBean {
     public int totalAmount;
     public int packageCardAmount;
     public boolean showItemCard;
+    public boolean showPageCard;
 }

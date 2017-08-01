@@ -17,6 +17,7 @@ public class MarketingIncomeListResult extends BaseResult {
 
         public int allAmount;
         public String itemCardSwitch;
+        public String packageCardSwitch;
         public List<MarketingIncomeBean> saleList;
 
 
