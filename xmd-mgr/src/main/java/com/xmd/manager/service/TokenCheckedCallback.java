@@ -1,12 +1,11 @@
 package com.xmd.manager.service;
 
-import com.xmd.manager.R;
+import com.xmd.m.network.EventTokenExpired;
 import com.xmd.manager.common.Logger;
-import com.xmd.manager.common.ResourceUtils;
-import com.xmd.manager.msgctrl.MsgDef;
-import com.xmd.manager.msgctrl.MsgDispatcher;
 import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.response.BaseResult;
+
+import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,7 +24,7 @@ public abstract class TokenCheckedCallback<T extends BaseResult> implements Call
             if (200 == result.statusCode) {
                 postResult(result);
             } else if (result.statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
-                MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TOKEN_EXPIRE, result.msg);
+                EventBus.getDefault().post(new EventTokenExpired("账号在其他地方登录，请重新登录"));
             } else {
                 postError(result.msg);
             }
@@ -33,7 +32,7 @@ public abstract class TokenCheckedCallback<T extends BaseResult> implements Call
             //No Content But OK
             postResult(response.body());
         } else if (401 == response.code()) {
-            MsgDispatcher.dispatchMessage(MsgDef.MSG_DEF_TOKEN_EXPIRE, ResourceUtils.getString(R.string.token_expired_error_msg));
+            EventBus.getDefault().post(new EventTokenExpired("账号在其他地方登录，请重新登录"));
         } else {
             try {
                 String errorStr = response.errorBody().string();

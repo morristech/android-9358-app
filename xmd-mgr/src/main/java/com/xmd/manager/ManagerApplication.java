@@ -19,6 +19,7 @@ import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.umeng.analytics.MobclickAgent;
 import com.xmd.app.EmojiManager;
+import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.XmdActivityManager;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
@@ -28,6 +29,7 @@ import com.xmd.appointment.XmdModuleAppointment;
 import com.xmd.chat.MenuFactory;
 import com.xmd.chat.XmdChat;
 import com.xmd.m.comment.XmdComment;
+import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.XmdNetwork;
 import com.xmd.m.notify.XmdPushModule;
 import com.xmd.manager.beans.ClubInfo;
@@ -37,6 +39,7 @@ import com.xmd.manager.common.Utils;
 import com.xmd.manager.window.DeliveryCouponActivity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,12 +69,15 @@ public class ManagerApplication extends MultiDexApplication {
             } else {
                 appContext = getApplicationContext();
 
+                boolean debug = BuildConfig.DEBUG || BuildConfig.FLAVOR.equals("dev");
+
                 //解析APP版本和渠道信息
                 parseAppVersion();
 
                 //初始化日志
                 XLogger.init(7, getFilesDir().getPath() + File.separator + "logs");
                 XLogger.setGloableTag("9358");
+                XLogger.setLogcat(debug);
                 printMachineInfo();
 
                 //初始化磁盘缓存模块
@@ -88,7 +94,7 @@ public class ManagerApplication extends MultiDexApplication {
 
                 //初始化网络库
                 XmdNetwork.getInstance().init(this, getUserAgent(), SharedPreferenceHelper.getServerHost());
-                XmdNetwork.getInstance().setDebug(BuildConfig.DEBUG);
+                XmdNetwork.getInstance().setDebug(debug);
                 XmdNetwork.getInstance().setToken(SharedPreferenceHelper.getUserToken()); //处理旧的toke数据
 
                 //初始化错误拦截器
@@ -127,7 +133,7 @@ public class ManagerApplication extends MultiDexApplication {
                 XmdModuleAppointment.getInstance().init(this);
 
                 //初始化聊天模块
-                XmdChat.getInstance().init(this, BuildConfig.DEBUG, menuFactory);
+                XmdChat.getInstance().init(this, debug, menuFactory);
 
                 XmdPushModule.getInstance().init(this, "manager", UINavigation.xmdActionFactory, null);
 
@@ -154,6 +160,8 @@ public class ManagerApplication extends MultiDexApplication {
                 }
 
                 XmdComment.getInstance().init();
+
+                EventBusSafeRegister.register(this);
             }
         }
     }
@@ -203,4 +211,11 @@ public class ManagerApplication extends MultiDexApplication {
             activity.startActivity(intent);
         }
     };
+
+    @Subscribe
+    public void onTokenExpire(EventTokenExpired expired) {
+        XmdActivityManager.getInstance().finishAll();
+        XToast.show(expired.getReason());
+        UINavigation.gotoLogin(this);
+    }
 }

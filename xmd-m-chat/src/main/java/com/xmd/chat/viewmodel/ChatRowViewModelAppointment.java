@@ -43,7 +43,7 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
     public ChatRowViewModelAppointment(ChatMessage chatMessage) {
         super(chatMessage);
         orderChatMessage = (OrderChatMessage) chatMessage;
-        mAppointmentData = orderChatMessage.parseOrderData(); //FIXME
+        mAppointmentData = orderChatMessage.parseOrderData();
         setupOperationButton();
         setupShowItem();
     }

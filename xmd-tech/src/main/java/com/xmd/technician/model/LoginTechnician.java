@@ -6,7 +6,6 @@ import com.xmd.app.XmdActivityManager;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
-import com.xmd.m.network.EventTokenExpired;
 import com.xmd.permission.event.EventRequestSyncPermission;
 import com.xmd.technician.AppConfig;
 import com.xmd.technician.Constant;
@@ -118,12 +117,6 @@ public class LoginTechnician {
         //客服消息
         customerService = SharedPreferenceHelper.getCustomerService();
         RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(this::onGetTechPersonalData);
-
-        RxBus.getInstance().toObservable(EventTokenExpired.class).subscribe(
-                eventTokenExpired -> {
-                    logout();
-                }
-        );
     }
 
 
@@ -357,7 +350,6 @@ public class LoginTechnician {
 
         //清空当前用户打招呼数据
         HelloSettingManager.getInstance().resetTemplate();
-
 
         //清空token
         setToken(null);

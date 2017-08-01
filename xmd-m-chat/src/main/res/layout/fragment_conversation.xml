@@ -3,6 +3,7 @@
 
     <data>
 
+        <import type="android.view.View" />
         <variable
             name="data"
             type="com.xmd.chat.view.ConversationListFragment" />
@@ -43,7 +44,8 @@
                     android:layout_height="@dimen/avatarSize"
                     android:layout_gravity="center_vertical"
                     android:padding="4dp"
-                    app:user="@{data.user}" />
+                    app:user="@{data.user}"
+                    android:visibility="@{data.showSelfAvatar?View.VISIBLE:View.GONE}" />
 
                 <LinearLayout
                     android:id="@+id/rightLinearLayout"

@@ -4,9 +4,7 @@ package com.xmd.technician.http;
 import android.text.TextUtils;
 
 import com.xmd.m.network.EventTokenExpired;
-import com.xmd.technician.R;
 import com.xmd.technician.common.Logger;
-import com.xmd.technician.common.ResourceUtils;
 import com.xmd.technician.http.gson.BaseResult;
 import com.xmd.technician.http.gson.QuitClubResult;
 import com.xmd.technician.msgctrl.RxBus;
@@ -29,8 +27,7 @@ public abstract class TokenCheckedCallback<T extends BaseResult> implements Call
             T result = response.body();
             if (result.statusCode == RequestConstant.RESP_TOKEN_EXPIRED) {
                 //token 失效
-                EventBus.getDefault().post(new EventTokenExpired(result.msg));
-                RxBus.getInstance().post(new EventTokenExpired(result.msg));
+                EventBus.getDefault().post(new EventTokenExpired("账号在其他地方登录，请重新登录"));
             } else if (result.statusCode == RequestConstant.RESP_ERROR && !(result instanceof QuitClubResult)) {
                 postError(result.msg);
             } else {
@@ -41,8 +38,7 @@ public abstract class TokenCheckedCallback<T extends BaseResult> implements Call
             postResult(response.body());
         } else if (401 == response.code()) {
             //token 失效
-            EventBus.getDefault().post(new EventTokenExpired(ResourceUtils.getString(R.string.token_expired_error_msg)));
-            RxBus.getInstance().post(new EventTokenExpired(ResourceUtils.getString(R.string.token_expired_error_msg)));
+            EventBus.getDefault().post(new EventTokenExpired("账号在其他地方登录，请重新登录"));
         } else {
             try {
                 String errorStr = response.errorBody().string();

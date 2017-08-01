@@ -26,7 +26,7 @@ public abstract class NetworkSubscriber<T> extends Subscriber<T> {
                 EventBus.getDefault().post(new EventTokenExpired("server return 401"));
             }
         }
-        XLogger.e("", "network error:" + e.getMessage(), e);
+        XLogger.e("", "network error:" + e.getMessage());
         onCallbackError(new NetworkException(e.getMessage()));
     }
 

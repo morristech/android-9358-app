@@ -47,6 +47,11 @@ public class TechChatConversationListFragment extends ConversationListFragment {
     }
 
     @Override
+    public boolean getShowSelfAvatar() {
+        return true;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (changeCustomerStatusSubscription != null) {

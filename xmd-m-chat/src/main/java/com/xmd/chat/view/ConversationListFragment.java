@@ -106,6 +106,10 @@ public class ConversationListFragment extends BaseFragment {
         EventBusSafeRegister.unregister(this);
     }
 
+    public boolean getShowSelfAvatar() {
+        return false;
+    }
+
     @Subscribe
     public void loadData(EventChatLoginSuccess event) {
         loadConversation(false);
