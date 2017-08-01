@@ -284,6 +284,11 @@ public class LoginTechnician {
         setEmchatPassword(result.emchatPassword);
 
         loadTechInfo();
+
+        //发送登录事件
+        EventBus.getDefault().removeStickyEvent(EventLogout.class);
+        EventBus.getDefault().postSticky(new EventLogin(getToken(), getUserInfo()));
+        RxBus.getInstance().post(new EventLogin(getToken(), getUserInfo()));
     }
 
 
