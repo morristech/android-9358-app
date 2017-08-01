@@ -16,8 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
@@ -249,7 +247,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
 
             @Override
             public void onCallbackError(Throwable e) {
-                Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                XToast.show(e.getLocalizedMessage());
                 tvCustomerGroup.setText("尚未添加分组,赶紧去添加吧");
             }
         });
@@ -288,7 +286,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
 
             @Override
             public void onCallbackError(Throwable e) {
-                Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }
@@ -296,7 +294,7 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     private void initUserModelView(ManagerUserDetailModelBean userDetailModel) {
         userTelephone = userDetailModel.userLoginName;
         customerId = userDetailModel.userId;
-        EventBus.getDefault().post(new UserInfoBean(userDetailModel.id, userDetailModel.userLoginName, userDetailModel.emchatId, userDetailModel.userName, userDetailModel.avatarUrl, "contact",
+        EventBus.getDefault().post(new UserInfoBean(userDetailModel.id, userTelephone, userDetailModel.emchatId, userDetailModel.userName, userDetailModel.avatarUrl, "contact",
                 userDetailModel.userId, TextUtils.isEmpty(userDetailModel.userNoteName) ? "" : userDetailModel.userNoteName, TextUtils.isEmpty(userDetailModel.remark) ? "" : userDetailModel.remark,
                 TextUtils.isEmpty(userDetailModel.impression) ? "" : userDetailModel.impression));
         userHeadUrl = userDetailModel.avatarUrl;
