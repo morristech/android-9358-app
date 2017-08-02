@@ -219,8 +219,14 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
 
-            itemViewHolder.mDiscountLayout.setVisibility(View.GONE);
-            itemViewHolder.mCashierMoneyLayout.setVisibility(View.VISIBLE);
+            if (info.isDetail) {
+                itemViewHolder.mDiscountLayout.setVisibility(View.VISIBLE);
+                itemViewHolder.mCashierMoneyLayout.setVisibility(View.GONE);
+            } else {
+                itemViewHolder.mDiscountLayout.setVisibility(View.GONE);
+                itemViewHolder.mCashierMoneyLayout.setVisibility(View.VISIBLE);
+            }
+
             itemViewHolder.mCashierMoneySub.setText("￥" + Utils.moneyToStringEx(info.payAmount));
             itemViewHolder.mOriginMoney.setText("￥" + Utils.moneyToStringEx(info.originalAmount));
             itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -230,9 +236,11 @@ public class OnlinePayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     if (visible == View.GONE) {
                         itemViewHolder.mDiscountLayout.setVisibility(View.VISIBLE);
                         itemViewHolder.mCashierMoneyLayout.setVisibility(View.GONE);
+                        info.isDetail = true;
                     } else {
                         itemViewHolder.mDiscountLayout.setVisibility(View.GONE);
                         itemViewHolder.mCashierMoneyLayout.setVisibility(View.VISIBLE);
+                        info.isDetail = false;
                     }
                 }
             });

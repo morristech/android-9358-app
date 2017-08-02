@@ -33,6 +33,8 @@ public class OnlinePayInfo implements Serializable {
     public String modifyTime;    //最后操作时间	yyy-MM-dd HH:mm:ss
     public String operatorName;    //最后操作人
 
+    public boolean isDetail;
+
     public int tempNo;   //用来标识是此次列表中的第几个元素
     public String tempErrMsg;
     public List<OnlinePayDiscountInfo> orderDiscountList;
