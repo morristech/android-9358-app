@@ -43,7 +43,7 @@ public class ClubData {
             User currentUser = UserInfoServiceImpl.getInstance().getCurrentUser();
             if (currentUser != null) {
                 currentUser.setClubId(clubInfo.clubId);
-                currentUser.setClubName(clubInfo.clubName);
+                currentUser.setClubName(clubInfo.name);
                 UserInfoServiceImpl.getInstance().saveCurrentUser(currentUser);
             }
         }

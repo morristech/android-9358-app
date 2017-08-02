@@ -86,7 +86,6 @@ public class SharedPreferenceHelper {
         setUserAvatar(loginResult.avatarUrl);
         setUserInviteCode(loginResult.inviteCode);
         setUserRole(loginResult.roles);
-
     }
 
     public static void clearUserInfo() {
