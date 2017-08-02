@@ -20,7 +20,6 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.contract.MemberRechargeContract;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.MemberPlanInfo;
-import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
@@ -292,11 +291,6 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(TechInfo info) {
         mPresenter.onTechSelect(info);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MemberRecordInfo info) {
-        mPresenter.onReportResult(info);
     }
 }
 

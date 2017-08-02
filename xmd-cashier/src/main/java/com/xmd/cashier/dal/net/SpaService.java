@@ -1,6 +1,5 @@
 package com.xmd.cashier.dal.net;
 
-import com.xmd.cashier.dal.bean.PayCouponInfo;
 import com.xmd.cashier.dal.net.response.BillRecordResult;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.ClubResult;
@@ -653,10 +652,6 @@ public interface SpaService {
                                                            @Field(RequestConstant.KEY_TYPE) String type,
                                                            @Field(RequestConstant.KEY_USER_NAME) String userName);
 
-    @GET(RequestConstant.URL_GET_MEMBER_RECHARGE_DETAIL)
-    Observable<MemberRecordResult> getMemberRechargeDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                           @Query(RequestConstant.KEY_ORDER_ID) String orderId);
-
     @GET(RequestConstant.URL_REQUEST_MEMBER_PAYMENT)
     Observable<MemberRecordResult> requestMemberPayment(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                         @Query(RequestConstant.KEY_AMOUNT) String amount,
@@ -668,4 +663,16 @@ public interface SpaService {
 
     @GET(RequestConstant.URL_GET_CLUB_TECH_LIST)
     Observable<TechListResult> getTechList(@Query(RequestConstant.KEY_TOKEN) String userToken);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_REPORT_MEMBER_RECHARGE_TRADE)
+    Call<MemberRecordResult> reportMemberRecharge(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Field(RequestConstant.KEY_ORDER_ID) String orderId,
+                                                  @Field(RequestConstant.KEY_PAY_CHANNEL) String payChannel,
+                                                  @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                                  @Field(RequestConstant.KEY_SIGN) String requestSign);
+
+    @GET(RequestConstant.URL_GET_MEMBER_RECHARGE_DETAIL)
+    Call<MemberRecordResult> detailMemberRecharge(@Query(RequestConstant.KEY_TOKEN) String userToken,
+                                                  @Query(RequestConstant.KEY_ORDER_ID) String orderId);
 }

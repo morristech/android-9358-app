@@ -3,9 +3,9 @@ package com.xmd.cashier.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.os.Handler;
 
 import com.google.zxing.WriterException;
+import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
@@ -14,16 +14,20 @@ import com.xmd.cashier.contract.MemberScanContract;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
+import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.MemberRecordResult;
+import com.xmd.cashier.manager.AccountManager;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
+import com.xmd.m.network.NetworkSubscriber;
+import com.xmd.m.network.XmdNetwork;
 
 import org.greenrobot.eventbus.EventBus;
 
+import retrofit2.Call;
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -32,45 +36,62 @@ import rx.schedulers.Schedulers;
  */
 
 public class MemberScanPresenter implements MemberScanContract.Presenter {
-    private static final int INTERVAL = 5 * 1000;
     private Context mContext;
     private MemberScanContract.View mView;
     private MemberRecordInfo memberRecordInfo;
     private boolean success = false;
 
-    private Subscription mGetRechargeOrderDetailSubscription;
-    private Handler mHandler;
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (mGetRechargeOrderDetailSubscription != null) {
-                mGetRechargeOrderDetailSubscription.unsubscribe();
-            }
-            mGetRechargeOrderDetailSubscription = MemberManager.getInstance().requestRechargeDetail(new Callback<MemberRecordResult>() {
-                @Override
-                public void onSuccess(MemberRecordResult o) {
-                    success = true;
-                    PosFactory.getCurrentCashier().textToSound("充值成功");
-                    EventBus.getDefault().post(new RechargeFinishEvent());
-                    mView.showScanSuccess();
-                    memberRecordInfo = o.getRespData();
-                    memberRecordInfo.packageInfo = MemberManager.getInstance().getPackageInfo();
-                }
+    private Call<MemberRecordResult> callDetailRecharge;
+    private RetryPool.RetryRunnable mRetryDetailRecharge;
+    private boolean resultDetailRecharge = false;
 
-                @Override
-                public void onError(String error) {
-                    XLogger.d("查询失败：" + error);
-                    mHandler.postDelayed(mRunnable, INTERVAL);
-                }
-            });
+    public void startDetailRecharge() {
+        mRetryDetailRecharge = new RetryPool.RetryRunnable(5000, 1.0f, new RetryPool.RetryExecutor() {
+            @Override
+            public boolean run() {
+                return detailRechargeTrade();
+            }
+        });
+        RetryPool.getInstance().postWork(mRetryDetailRecharge);
+    }
+
+    public void stopDetailRecharge() {
+        if (callDetailRecharge != null && !callDetailRecharge.isCanceled()) {
+            callDetailRecharge.cancel();
         }
-    };
+        if (mRetryDetailRecharge != null) {
+            RetryPool.getInstance().removeWork(mRetryDetailRecharge);
+            mRetryDetailRecharge = null;
+        }
+    }
+
+    private boolean detailRechargeTrade() {
+        callDetailRecharge = XmdNetwork.getInstance().getService(SpaService.class)
+                .detailMemberRecharge(AccountManager.getInstance().getToken(), MemberManager.getInstance().getRechargeOrderId());
+        XmdNetwork.getInstance().requestSync(callDetailRecharge, new NetworkSubscriber<MemberRecordResult>() {
+            @Override
+            public void onCallbackSuccess(MemberRecordResult result) {
+                success = true;
+                PosFactory.getCurrentCashier().textToSound("充值成功");
+                memberRecordInfo = result.getRespData();
+                memberRecordInfo.packageInfo = MemberManager.getInstance().getPackageInfo();
+                resultDetailRecharge = true;
+                EventBus.getDefault().post(new RechargeFinishEvent());
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.d("查询失败：" + e.getLocalizedMessage());
+                resultDetailRecharge = false;
+            }
+        });
+        return resultDetailRecharge;
+    }
 
     public MemberScanPresenter(Context context, MemberScanContract.View view) {
         mContext = context;
         mView = view;
         mView.setPresenter(this);
-        mHandler = new Handler();
     }
 
     @Override
@@ -103,7 +124,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
             mView.showToast("二维码解析异常");
         } else {
             mView.showQrcode(bitmap);
-            mHandler.postDelayed(mRunnable, INTERVAL);
+            startDetailRecharge();
         }
     }
 
@@ -114,10 +135,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
 
     @Override
     public void onDestroy() {
-        mHandler.removeCallbacks(mRunnable);
-        if (mGetRechargeOrderDetailSubscription != null) {
-            mGetRechargeOrderDetailSubscription.unsubscribe();
-        }
+        stopDetailRecharge();
     }
 
     @Override

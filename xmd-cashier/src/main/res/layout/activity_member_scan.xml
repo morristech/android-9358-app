@@ -129,7 +129,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30dp"
             android:drawablePadding="@dimen/activity_horizontal_margin"
             android:drawableTop="@drawable/ic_scan_ok_lg"
             android:gravity="center"
@@ -142,9 +143,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/activity_normal_margin"
-            android:text="打印小票，完成交易"
+            android:text="打印小票"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/medium_font_size" />
+            android:textSize="@dimen/small_font_size" />
 
     </RelativeLayout>
 </LinearLayout>

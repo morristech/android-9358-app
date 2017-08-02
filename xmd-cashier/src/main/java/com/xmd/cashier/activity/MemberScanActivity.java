@@ -12,7 +12,11 @@ import android.widget.TextView;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.contract.MemberScanContract;
+import com.xmd.cashier.dal.event.RechargeFinishEvent;
 import com.xmd.cashier.presenter.MemberScanPresenter;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by zr on 17-7-11.
@@ -102,5 +106,10 @@ public class MemberScanActivity extends BaseActivity implements MemberScanContra
     public boolean onKeyEventBack() {
         mPresenter.onKeyEventBack();
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RechargeFinishEvent event) {
+        showScanSuccess();
     }
 }

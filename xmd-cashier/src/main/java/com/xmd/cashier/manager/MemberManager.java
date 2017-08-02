@@ -17,20 +17,16 @@ import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.net.RequestConstant;
-import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
 import com.xmd.cashier.dal.net.response.MemberCardResult;
 import com.xmd.cashier.dal.net.response.MemberListResult;
-import com.xmd.cashier.dal.net.response.MemberRecordResult;
 import com.xmd.cashier.dal.net.response.MemberSettingResult;
 import com.xmd.cashier.dal.net.response.MemberUrlResult;
 import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.ServerException;
 import com.xmd.m.network.XmdNetwork;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -349,24 +345,6 @@ public class MemberManager {
         });
     }
 
-    // 查询充值详情
-    public Subscription requestRechargeDetail(final Callback<MemberRecordResult> callback) {
-        Observable<MemberRecordResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getMemberRechargeDetail(AccountManager.getInstance().getToken(), mRechargeProcess.getOrderId());
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberRecordResult>() {
-            @Override
-            public void onCallbackSuccess(MemberRecordResult result) {
-
-                callback.onSuccess(result);
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                callback.onError(e.getLocalizedMessage());
-            }
-        });
-    }
-
     // POS支付获取TradeNo
     public Subscription fetchTradeNo(final Callback<GetTradeNoResult> callback) {
         int amount = 0;
@@ -443,45 +421,6 @@ public class MemberManager {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
-
-    private RetryPool.RetryRunnable mRetryGetRechargeResult;
-    private boolean resultRecharge;
-
-    public void startGetRechargeResult() {
-        stopGetRechargeResult();
-        mRetryGetRechargeResult = new RetryPool.RetryRunnable(3000, 1.0f, new RetryPool.RetryExecutor() {
-            @Override
-            public boolean run() {
-                return reportRechargeResult();
-            }
-        });
-        RetryPool.getInstance().postWork(mRetryGetRechargeResult);
-    }
-
-    public void stopGetRechargeResult() {
-        if (mRetryGetRechargeResult != null) {
-            RetryPool.getInstance().removeWork(mRetryGetRechargeResult);
-            mRetryGetRechargeResult = null;
-        }
-    }
-
-    private boolean reportRechargeResult() {
-        SpaOkHttp.reportRechargeDataSync(new Callback<MemberRecordResult>() {
-            @Override
-            public void onSuccess(MemberRecordResult o) {
-                MemberRecordInfo record = o.getRespData();
-                record.packageInfo = mRechargeProcess.getPackageInfo();
-                EventBus.getDefault().post(record);
-                resultRecharge = true;
-            }
-
-            @Override
-            public void onError(String error) {
-                resultRecharge = false;
-            }
-        });
-        return resultRecharge;
     }
 
     // 获取会员信息
