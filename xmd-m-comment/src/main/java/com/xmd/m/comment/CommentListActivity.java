@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.m.R;
 import com.xmd.m.comment.bean.TechBean;
@@ -78,7 +78,7 @@ public class CommentListActivity extends BaseActivity implements CommentFilterPo
             ft.replace(R.id.fragment_comment_list, mFragmentManager);
         } else {
             if (TextUtils.isEmpty(techNo)) {
-                Toast.makeText(this, "技师id为空", Toast.LENGTH_SHORT).show();
+                XToast.show("技师id为空");
             } else {
                 mFragmentTech = CommentListFragmentTech.newInstance(techNo);
                 ft.replace(R.id.fragment_comment_list, mFragmentTech);

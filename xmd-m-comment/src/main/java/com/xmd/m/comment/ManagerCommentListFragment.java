@@ -14,16 +14,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
 
 import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.XmdApp;
-import com.xmd.app.user.User;
-import com.xmd.app.user.UserInfoService;
-import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.utils.ResourceUtils;
 import com.xmd.m.R;
 import com.xmd.m.R2;
@@ -33,7 +31,6 @@ import com.xmd.m.comment.bean.CommentListResult;
 import com.xmd.m.comment.bean.CommentStatusResult;
 import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.UserInfoEvent;
-import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.comment.httprequest.DataManager;
 import com.xmd.m.comment.httprequest.RequestConstant;
 import com.xmd.m.network.NetworkSubscriber;
@@ -187,7 +184,7 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
     private void onGetListFailed(String errorMsg) {
         mSwipeRefreshLayout.setRefreshing(false);
         if (XmdApp.getInstance().getContext() != null) {
-            Toast.makeText(XmdApp.getInstance().getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+            XToast.show(errorMsg);
         }
 
     }
@@ -304,7 +301,7 @@ public class ManagerCommentListFragment extends BaseFragment implements ListRecy
             if (resultCode == RESULT_OK) {
                 toCallPhone();
             } else {
-                Toast.makeText(getActivity(), "获取权限失败", Toast.LENGTH_SHORT).show();
+               XToast.show("获取权限失败");
             }
             return;
         }

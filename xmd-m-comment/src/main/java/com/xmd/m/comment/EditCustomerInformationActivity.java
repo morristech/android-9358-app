@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
@@ -136,7 +136,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 10) {
-                    Toast.makeText(EditCustomerInformationActivity.this, "备注名不可超过10个字符", Toast.LENGTH_SHORT).show();
+                    XToast.show("备注名不可超过10个字符");
                 }
             }
         });
@@ -171,7 +171,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
 
             @Override
             public void onCallbackError(Throwable e) {
-                Toast.makeText(EditCustomerInformationActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+               XToast.show(e.getLocalizedMessage());
             }
         });
     }
@@ -255,7 +255,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
     @Override
     public void afterTextChanged(Editable s) {
         if (s.length() > 30) {
-            Toast.makeText(EditCustomerInformationActivity.this, "备注信息不可超过30个字符", Toast.LENGTH_SHORT).show();
+            XToast.show("备注信息不可超过30个字符");
             btnSaveEdit.setEnabled(false);
         } else {
             if ((30 - s.length()) > 0) {
@@ -279,7 +279,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
         DataManager.getInstance().SaveCustomerRemark(mUserId, mCustomerId, mRemarkPhoneNum, mRemarkMessage, mRemarkNoteName, mRemarkImpression, new NetworkSubscriber<EditCustomerResult>() {
             @Override
             public void onCallbackSuccess(EditCustomerResult result) {
-                Toast.makeText(EditCustomerInformationActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                XToast.show("保存成功");
                 EventBus.getDefault().post(new EditCustomerRemarkSuccessEvent(mCustomerName, mRemarkNoteName, mRemarkMessage, mRemarkImpression));
                 EditCustomerInformationActivity.this.finish();
 
@@ -292,7 +292,7 @@ public class EditCustomerInformationActivity extends BaseActivity implements Tex
 
             @Override
             public void onCallbackError(Throwable e) {
-                Toast.makeText(EditCustomerInformationActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }

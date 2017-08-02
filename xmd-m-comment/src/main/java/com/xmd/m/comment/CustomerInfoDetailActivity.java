@@ -17,9 +17,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.crazyman.library.PermissionTool;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.CustomerHeadDialog;
@@ -246,7 +246,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
 
             @Override
             public void onCallbackError(Throwable e) {
-                Toast.makeText(CustomerInfoDetailActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }
@@ -261,7 +261,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
 
             @Override
             public void onCallbackError(Throwable e) {
-                Toast.makeText(CustomerInfoDetailActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                XToast.show(e.getLocalizedMessage());
             }
         });
 
@@ -276,7 +276,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
 
             @Override
             public void onCallbackError(Throwable e) {
-                Toast.makeText(CustomerInfoDetailActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }
@@ -286,13 +286,13 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             @Override
             public void onCallbackSuccess(AddToBlacklistResult result) {
                 inBlackList = true;
-                Toast.makeText(CustomerInfoDetailActivity.this, "已成功加入黑名单", Toast.LENGTH_SHORT).show();
+                XToast.show("已成功加入黑名单");
                 CustomerInfoDetailActivity.this.finish();
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                Toast.makeText(CustomerInfoDetailActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }
@@ -301,12 +301,12 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         DataManager.getInstance().deleteCustomer(userId, new NetworkSubscriber<DeleteCustomerResult>() {
             @Override
             public void onCallbackSuccess(DeleteCustomerResult result) {
-                Toast.makeText(CustomerInfoDetailActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                XToast.show("删除成功");
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                Toast.makeText(CustomerInfoDetailActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }
@@ -438,7 +438,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     public void onBtnChatClicked() {
         if (null != mBean) {
             if (TextUtils.isEmpty(mBean.contactPhone) || !Utils.matchPhoneNumFormat(mBean.contactPhone)) {
-                Toast.makeText(this, "手机号码不存在", Toast.LENGTH_SHORT).show();
+                XToast.show("手机号码不存在");
                 return;
             }
             Uri uri = Uri.parse("smsto:" + mBean.contactPhone);

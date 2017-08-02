@@ -8,6 +8,8 @@ import java.io.Serializable;
  */
 
 public class ContactPermission implements Serializable {
+
+
     private boolean hello;//打招呼
     private boolean echat;//网络聊天
     private boolean call;//打电话
@@ -34,5 +36,14 @@ public class ContactPermission implements Serializable {
 
     public void setCall(boolean call) {
         this.call = call;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactPermission{" +
+                "hello=" + hello +
+                ", echat=" + echat +
+                ", call=" + call +
+                '}';
     }
 }

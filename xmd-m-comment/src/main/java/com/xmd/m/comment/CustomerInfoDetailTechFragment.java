@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.widget.XToast;
@@ -155,7 +154,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
 
             @Override
             public void onCallbackError(Throwable e) {
-                Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+               XToast.show(e.getLocalizedMessage());
             }
         });
     }

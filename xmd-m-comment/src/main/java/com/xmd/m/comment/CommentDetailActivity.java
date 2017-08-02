@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.bumptech.glide.Glide;
 import com.crazyman.library.PermissionTool;
@@ -364,7 +364,7 @@ public class CommentDetailActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 toCallPhone();
             } else {
-                Toast.makeText(this, "获取权限失败", Toast.LENGTH_SHORT).show();
+                XToast.show("获取权限失败");
             }
             return;
         }
@@ -400,7 +400,7 @@ public class CommentDetailActivity extends BaseActivity {
                     imgVisitMark.setVisibility(View.GONE);
                 } else {
                     mCommentBean.status = "delete";
-                    Toast.makeText(CommentDetailActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    XToast.show("删除成功");
                     CommentDetailActivity.this.finish();
                 }
 

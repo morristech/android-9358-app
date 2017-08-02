@@ -3,6 +3,7 @@ package com.xmd.m.comment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.util.TimeZone;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,14 +16,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.crazyman.library.PermissionTool;
 import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.XmdApp;
-import com.xmd.app.utils.ResourceUtils;
 import com.xmd.m.R;
 import com.xmd.m.R2;
 import com.xmd.m.comment.adapter.ListRecycleViewAdapter;
@@ -208,7 +208,7 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
     private void onGetListFailed(String errorMsg) {
         mSwipeRefreshLayout.setRefreshing(false);
         if (XmdApp.getInstance().getContext() != null) {
-            Toast.makeText(XmdApp.getInstance().getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+            XToast.show(errorMsg);
         }
 
     }
@@ -323,7 +323,7 @@ public class SearchCommentListFragment extends BaseFragment implements ListRecyc
             if (resultCode == RESULT_OK) {
                 toCallPhone();
             } else {
-                Toast.makeText(getActivity(), "获取权限失败", Toast.LENGTH_SHORT).show();
+                XToast.show("获取权限失败");
             }
             return;
         }

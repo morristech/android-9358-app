@@ -10,7 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.shidou.commonlibrary.Callback;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.app.BaseFragment;
+import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.m.R;
 import com.xmd.m.R2;
@@ -60,7 +64,24 @@ public class TechInfoDetailFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_tech_info_detail, container, false);
         unbinder = ButterKnife.bind(this, view);
         getInfoData();
+        getCurrentUserInfo();
         return view;
+    }
+
+    private void getCurrentUserInfo() {
+        UserInfoServiceImpl.getInstance().loadUserInfoByUserIdFromServer(userId, new Callback<User>() {
+            @Override
+            public void onResponse(User result, Throwable error) {
+                if (result != null) {
+
+                    if (result.getContactPermission().isCall()) {
+                        llTechPhone.setVisibility(View.VISIBLE);
+                    } else {
+                        llTechPhone.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -90,12 +111,11 @@ public class TechInfoDetailFragment extends BaseFragment {
         Glide.with(getActivity()).load(respData.avatarUrl).error(R.drawable.img_default_avatar).into(imgTechHead);
         tvTechName.setText(TextUtils.isEmpty(respData.name) ? "技师" : respData.name);
         tvTechNo.setText(TextUtils.isEmpty(respData.techNo) ? "" : String.format("[%s]", respData.techNo));
-//        if (TextUtils.isEmpty(respData.telephone)) {
-//            llTechPhone.setVisibility(View.GONE);
-//        } else {
-//            llTechPhone.setVisibility(View.VISIBLE);
-//            tvTechPhone.setText(respData.telephone);
-//        }
+        if (!TextUtils.isEmpty(respData.telephone)) {
+            tvTechPhone.setText(respData.telephone);
+        }
+        User user = UserInfoServiceImpl.getInstance().getCurrentUser();
+        XLogger.i(">>>", "roles" + user.getUserRoles());
         llTechPhone.setVisibility(View.GONE);
         if (respData.roles.equals("tech")) {
             llTechMark.setVisibility(View.VISIBLE);

@@ -9,9 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.shidou.commonlibrary.util.DateUtils;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.XmdApp;
 import com.xmd.app.utils.ResourceUtils;
@@ -161,7 +161,7 @@ public class TechCommentListFragment extends BaseFragment implements ListRecycle
     private void onGetListFailed(String errorMsg) {
         mSwipeRefreshLayout.setRefreshing(false);
         if (XmdApp.getInstance().getContext() != null) {
-            Toast.makeText(XmdApp.getInstance().getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+            XToast.show(errorMsg);
         }
 
     }

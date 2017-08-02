@@ -60,8 +60,8 @@ android {
         // 3.7.0 : verification record
         // 3.7.2 : mainPage data show,Tech Pk,verification by telephone,evaluation label
         // 3.7.4 : add verify by phone number
-        versionCode 54
-        versionName "3.8.2"
+        versionCode 55
+        versionName "3.8.3"
 
         multiDexEnabled true
 

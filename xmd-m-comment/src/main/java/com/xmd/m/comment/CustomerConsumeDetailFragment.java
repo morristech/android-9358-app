@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.m.R;
 import com.xmd.m.comment.adapter.ListRecycleViewAdapter;
@@ -144,7 +144,7 @@ public class CustomerConsumeDetailFragment extends BaseFragment implements ListR
     }
 
     private void onGetListFailed(String localizedMessage) {
-        Toast.makeText(getActivity(), localizedMessage, Toast.LENGTH_SHORT).show();
+        XToast.show(localizedMessage);
     }
 
     @Override
