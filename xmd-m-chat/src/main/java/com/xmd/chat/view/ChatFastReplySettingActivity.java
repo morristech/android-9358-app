@@ -18,8 +18,8 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.CommonRecyclerViewAdapter;
 import com.xmd.chat.BR;
+import com.xmd.chat.ChatSettingManager;
 import com.xmd.chat.R;
-import com.xmd.chat.SettingManager;
 import com.xmd.chat.beans.FastReplySetting;
 import com.xmd.chat.databinding.ActivityChatFastReplySettingBinding;
 
@@ -68,7 +68,7 @@ public class ChatFastReplySettingActivity extends BaseActivity {
 
     private void loadData() {
         loading.set(true);
-        SettingManager.getInstance().loadFastReply(new Callback<FastReplySetting>() {
+        ChatSettingManager.getInstance().loadFastReply(new Callback<FastReplySetting>() {
             @Override
             public void onResponse(FastReplySetting result, Throwable error) {
                 loading.set(false);
@@ -84,8 +84,8 @@ public class ChatFastReplySettingActivity extends BaseActivity {
     }
 
     public void onClickAdd() {
-        if (SettingManager.getInstance().getFastReplySetting() == null ||
-                SettingManager.getInstance().getFastReplySetting().data.size() >= 20) {
+        if (ChatSettingManager.getInstance().getFastReplySetting() == null ||
+                ChatSettingManager.getInstance().getFastReplySetting().data.size() >= 20) {
             XToast.show("最多只能自定义20条快捷回复!");
             return;
         }
@@ -156,7 +156,7 @@ public class ChatFastReplySettingActivity extends BaseActivity {
     private void updateSetting(List<String> dataList, final boolean isCancel) {
         FastReplySetting setting = new FastReplySetting();
         setting.getData().addAll(dataList);
-        SettingManager.getInstance().saveFastReply(setting, new Callback<Void>() {
+        ChatSettingManager.getInstance().saveFastReply(setting, new Callback<Void>() {
             @Override
             public void onResponse(Void result, Throwable error) {
                 setResult(RESULT_OK);

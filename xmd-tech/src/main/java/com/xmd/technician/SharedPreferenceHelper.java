@@ -17,7 +17,7 @@ public class SharedPreferenceHelper {
     private static final String SETTING_PREFERENCE = "00DF60D934C0D482F0C950B6D3605F50"; //setting_preference
     private static SharedPreferences mSettingPreference;
 
-    private static final String KEY_DEV_MODE = "e9fbb7c44116f423bbf68ce03f8d1096"; //开发者模式
+    private static final String KEY_DEV_MODE = "e9fbb7c44116f423bbf68ce03f8d1096"; //开发者模式(开发+测试）
 
     private static final String KEY_USER_ACCOUNT = "4E6EF539AAF119D82AC4C2BC84FBA21F";//userAccount
     private static final String KEY_USER_TOKEN = "CE4A0B029C785BFAA2B398C06E1D94C0"; //userToken
@@ -47,6 +47,7 @@ public class SharedPreferenceHelper {
     private static final String KEY_PERMISSION_SYNC_DATE = "5d2de249318aa422e6937cb56b8952b3";
     private static final String KEY_ROLES = "850492d1891afe4a11982b73224b7e40";
     private static final String KEY_CUSTOMER_SERVICE = "fb776cf319f0518d402d9da706264898";
+    private static final String KEY_AVATAR_ID = "bdeed5eb7f43a441ecbde1df9539943a";
     /**
      * Last time to check the upgrade automatically
      */
@@ -157,6 +158,14 @@ public class SharedPreferenceHelper {
 
     public static String getUserAvatar() {
         return mSettingPreference.getString(KEY_USER_AVATAR, "");
+    }
+
+    public static String getAvatarId() {
+        return mSettingPreference.getString(KEY_AVATAR_ID, null);
+    }
+
+    public static void setAvatarId(String avatarId) {
+        mSettingPreference.edit().putString(KEY_AVATAR_ID, avatarId).apply();
     }
 
     public static void setUserId(String userId) {

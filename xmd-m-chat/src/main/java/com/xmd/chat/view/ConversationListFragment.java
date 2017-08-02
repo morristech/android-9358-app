@@ -134,7 +134,6 @@ public class ConversationListFragment extends BaseFragment {
         if (data == null) {
             //new conversation,refresh all list
             loadData(null);
-            return;
         } else {
             data.setLastMessage(chatMessage);
             int fromPosition = mAdapter.getDataList().indexOf(data);

@@ -24,6 +24,7 @@ public class User implements Serializable {
     private String userId; //用户ID
     private String chatId; //用户聊天ID
     private String avatar; //用户头像
+    private String avatarId; //用户头像ID
     private String noteName; //用户备注名
     private String name; //用户名称
     private String userType;
@@ -33,6 +34,7 @@ public class User implements Serializable {
 
     private String clubId;
     private String clubName;
+    private String techId;
     private String techNo;
     private String chatPassword; //聊天密码，当前登录用户设置
 
@@ -137,6 +139,21 @@ public class User implements Serializable {
         this.techNo = techNo;
     }
 
+    public String getAvatarId() {
+        return avatarId;
+    }
+
+    public void setAvatarId(String avatarId) {
+        this.avatarId = avatarId;
+    }
+
+    public String getTechId() {
+        return techId;
+    }
+
+    public void setTechId(String techId) {
+        this.techId = techId;
+    }
 
     public void setUserType(String userType) {
         this.userType = userType;

@@ -696,9 +696,21 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 mMainPublicityTimeSwitch.setVisibility(View.GONE);
                 mLlPropagandaView.setVisibility(View.GONE);
                 mLlVisitView.setVisibility(View.VISIBLE);
-                mTvVisitTodayData.setText(Utils.getNumToString(Integer.parseInt(result.respData.todayUv), true));
-                mTvVisitYesterdayData.setText(Utils.getNumToString(Integer.parseInt(result.respData.yesterdayUv), true));
-                mTvVisitAccumulateData.setText(Utils.getNumToString(Integer.parseInt(result.respData.totalUv), true));
+                try {
+                    mTvVisitTodayData.setText(Utils.getNumToString(Integer.parseInt(result.respData.todayUv), true));
+                } catch (Exception e) {
+                    mTvVisitTodayData.setText("0");
+                }
+                try {
+                    mTvVisitYesterdayData.setText(Utils.getNumToString(Integer.parseInt(result.respData.yesterdayUv), true));
+                } catch (Exception e) {
+                    mTvVisitYesterdayData.setText("0");
+                }
+                try {
+                    mTvVisitAccumulateData.setText(Utils.getNumToString(Integer.parseInt(result.respData.totalUv), true));
+                } catch (Exception e) {
+                    mTvVisitAccumulateData.setText("0");
+                }
             } else {
                 mTvTitleStatistics.setText(ResourceUtils.getString(R.string.layout_statistics_title));
                 mMainPublicityCurrentTime.setVisibility(View.VISIBLE);
@@ -711,8 +723,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
                 mTvVisitAccumulate.setText(Utils.getNumToString(Integer.parseInt(result.respData.totalUv), true));
             }
         }
-
-
     }
 
     private void handlerRegistryResult(RegistryDataResult registryData) {
@@ -735,7 +745,6 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
             mTvCouponGetToday.setText(Utils.getNumToString(couponData.respData.couponGetCount, true));
             mTvCouponGetAccumulate.setText(Utils.getNumToString(couponData.respData.totalCouponGetCount, true));
         }
-
     }
 
 

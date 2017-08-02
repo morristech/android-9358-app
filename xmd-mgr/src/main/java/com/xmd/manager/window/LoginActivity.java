@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.xmd.app.XmdActivityManager;
 import com.xmd.app.event.EventLogout;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.m.network.OkHttpUtil;
@@ -26,6 +28,7 @@ import com.xmd.manager.msgctrl.RxBus;
 import com.xmd.manager.service.RequestConstant;
 import com.xmd.manager.service.RetrofitServiceFactory;
 import com.xmd.manager.service.response.LoginResult;
+import com.xmd.manager.widget.AlertDialogBuilder;
 import com.xmd.manager.widget.ClearableEditText;
 import com.xmd.manager.widget.LoadingDialog;
 
@@ -54,6 +57,7 @@ public class LoginActivity extends BaseActivity {
     private Subscription mLoginSubscription;
     private InputMethodManager mInputManager;
     private LoadingDialog mLoadingDialog;
+    private boolean mNeedRestartApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +98,37 @@ public class LoginActivity extends BaseActivity {
         }
 
         mTvVersion.setText("v" + AppConfig.getAppVersionNameAndCode());
+
+        mSpServerHost.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String serverHost = (String) parent.getItemAtPosition(position);
+                SharedPreferenceHelper.setServerHost(serverHost);
+                RetrofitServiceFactory.recreateService();
+                if (SharedPreferenceHelper.isDevelopMode() && SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com")) {
+                    mNeedRestartApp = true;
+                } else if (!SharedPreferenceHelper.isDevelopMode() && !SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com")) {
+                    mNeedRestartApp = true;
+                }
+                SharedPreferenceHelper.setDevelopMode(!SharedPreferenceHelper.getServerHost().contains("spa.93wifi.com"));
+                if (mNeedRestartApp) {
+                    new AlertDialogBuilder(LoginActivity.this).setMessage("切换运行环境，需要重新打开应用")
+                            .setCancelable(false)
+                            .setPositiveButton("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    XmdActivityManager.getInstance().exitApplication();
+                                }
+                            })
+                            .show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @OnClick(R.id.login)

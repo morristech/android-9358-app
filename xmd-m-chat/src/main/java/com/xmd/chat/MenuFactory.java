@@ -134,9 +134,9 @@ public class MenuFactory {
     }
 
     public List<Fragment> createFastReplySubMenu(String remoteChatId) {
-        FastReplySetting setting = SettingManager.getInstance().getFastReplySetting();
+        FastReplySetting setting = ChatSettingManager.getInstance().getFastReplySetting();
         if (setting == null) {
-            SettingManager.getInstance().loadFastReply(new Callback<FastReplySetting>() {
+            ChatSettingManager.getInstance().loadFastReply(new Callback<FastReplySetting>() {
                 @Override
                 public void onResponse(FastReplySetting setting, Throwable error) {
                     if (error != null || setting == null) {
@@ -259,7 +259,7 @@ public class MenuFactory {
         moreMenus.add(new ChatMenu(activity, "会所位置", R.drawable.chat_menu_location, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                XmdChat.getInstance().getClubLocation(new Callback<Location>() {
+                ChatSettingManager.getInstance().loadClubLocation(false, new Callback<Location>() {
                     @Override
                     public void onResponse(Location result, Throwable error) {
                         if (result != null) {

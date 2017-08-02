@@ -526,7 +526,10 @@ public class RequestController extends AbstractController {
 
             @Override
             public void onFailure(Call<LoginResult> call, Throwable t) {
-                RxBus.getInstance().post(t);
+                LoginResult loginResult = new LoginResult();
+                loginResult.statusCode = 400;
+                loginResult.status = t.getMessage();
+                RxBus.getInstance().post(loginResult);
             }
         });
     }

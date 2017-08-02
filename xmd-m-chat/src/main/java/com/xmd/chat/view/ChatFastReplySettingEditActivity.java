@@ -11,8 +11,8 @@ import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.CommonRecyclerViewAdapter;
+import com.xmd.chat.ChatSettingManager;
 import com.xmd.chat.R;
-import com.xmd.chat.SettingManager;
 import com.xmd.chat.beans.FastReplySetting;
 import com.xmd.chat.databinding.ActivityChatFastReplySettingAddBinding;
 
@@ -40,7 +40,7 @@ public class ChatFastReplySettingEditActivity extends BaseActivity {
         editIndex = getIntent().getIntExtra(EXTRA_EDIT_INDEX, -1);
         if (editIndex >= 0) {
             setTitle("修改快捷回复");
-            content = SettingManager.getInstance().getFastReplySetting().getData().get(editIndex);
+            content = ChatSettingManager.getInstance().getFastReplySetting().getData().get(editIndex);
             words.set(content.length());
             binding.editText.setText(content);
             binding.editText.setSelection(content.length());
@@ -59,7 +59,7 @@ public class ChatFastReplySettingEditActivity extends BaseActivity {
         }
         showLoading();
         FastReplySetting saveSetting;
-        FastReplySetting setting = SettingManager.getInstance().getFastReplySetting();
+        FastReplySetting setting = ChatSettingManager.getInstance().getFastReplySetting();
         if (setting == null) {
             setting = new FastReplySetting();
         }
@@ -71,7 +71,7 @@ public class ChatFastReplySettingEditActivity extends BaseActivity {
         }
         saveSetting = new FastReplySetting();
         saveSetting.setData(list);
-        SettingManager.getInstance().saveFastReply(saveSetting, new Callback<Void>() {
+        ChatSettingManager.getInstance().saveFastReply(saveSetting, new Callback<Void>() {
             @Override
             public void onResponse(Void result, Throwable error) {
                 hideLoading();

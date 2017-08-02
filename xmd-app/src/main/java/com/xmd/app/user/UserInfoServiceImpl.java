@@ -131,6 +131,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void saveCurrentUser(User user) {
+        currentUser = user;
         DiskCacheManager.getInstance().put(USER_CURRENT_USER, user);
     }
 
@@ -177,7 +178,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         });
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe(sticky = true, priority = 10)
     public void onLogin(EventLogin eventLogin) {
         XLogger.i(TAG, "===>user login");
         currentUser = eventLogin.getUser();

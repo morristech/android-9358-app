@@ -10,6 +10,8 @@ import com.shidou.commonlibrary.util.DeviceInfoUtils;
 import com.xmd.app.XmdApp;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoService;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.event.EventChatLoginSuccess;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,25 +32,25 @@ public class ChatAccountManager {
     }
 
     private boolean isRunLogin;
-    private User user;
     private String token;
     private String deviceId;
+    private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
 
     public void init() {
         deviceId = DeviceInfoUtils.getDeviceId(XmdApp.getInstance().getContext());
     }
 
     public void login(EventLogin eventLogin) {
-        user = eventLogin.getUser();
+        XLogger.i(XmdChat.TAG, "login=>" + eventLogin);
         token = eventLogin.getToken();
         loopLogin();
     }
 
     public void logout() {
+        XLogger.i(XmdChat.TAG, "logout=<");
         mHandler.removeCallbacksAndMessages(null);
         EMClient.getInstance().logout(false, null);
         isRunLogin = false;
-        user = null;
     }
 
     private void loopLogin() {
@@ -96,6 +98,7 @@ public class ChatAccountManager {
         if (!isRunLogin) {
             return;
         }
+        User user = userInfoService.getCurrentUser();
         XLogger.i(XmdChat.TAG, "chat login --> login chatId:" + user.getChatId() + ",chatPassword:" + user.getChatPassword());
         EMClient.getInstance().login(user.getChatId(), user.getChatPassword(), new EMCallBack() {
             @Override
@@ -104,7 +107,7 @@ public class ChatAccountManager {
                     return;
                 }
                 isRunLogin = false;
-                XLogger.i(XmdChat.TAG, "login success!  chatId:" + user.getChatId());
+                XLogger.i(XmdChat.TAG, "login success!  chatId:" + userInfoService.getCurrentUser().getChatId());
                 EMClient.getInstance().chatManager().loadAllConversations();
                 EMClient.getInstance().groupManager().loadAllGroups();
                 EventBus.getDefault().post(new EventChatLoginSuccess());
@@ -133,18 +136,16 @@ public class ChatAccountManager {
     }
 
     public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+        return userInfoService.getCurrentUser();
     }
 
     public String getChatId() {
+        User user = userInfoService.getCurrentUser();
         return user == null ? null : user.getChatId();
     }
 
     public String getUserType() {
+        User user = userInfoService.getCurrentUser();
         return user == null ? null : user.getUserType();
     }
 }

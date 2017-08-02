@@ -1,5 +1,7 @@
 package com.xmd.chat.viewmodel;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.BindingAdapter;
@@ -7,6 +9,7 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -55,7 +58,6 @@ public abstract class ChatRowViewModel extends BaseViewModel {
         chatMessage.getEmMessage().setMessageStatusCallback(new EMCallBack() {
             @Override
             public void onSuccess() {
-                XLogger.d("onSuccess -- " + getChatMessage().getContentText());
                 progress.set(false);
                 error.set(false);
                 String msgType;
@@ -92,7 +94,6 @@ public abstract class ChatRowViewModel extends BaseViewModel {
 
             @Override
             public void onError(int i, String s) {
-                XLogger.d("onError -- " + getChatMessage().getContentText());
                 XToast.show("发送失败：" + s);
                 progress.set(false);
                 error.set(true);
@@ -100,7 +101,6 @@ public abstract class ChatRowViewModel extends BaseViewModel {
 
             @Override
             public void onProgress(int i, String s) {
-                XLogger.d("onProgress -- " + getChatMessage().getContentText());
                 progress.set(true);
             }
         });
@@ -159,13 +159,17 @@ public abstract class ChatRowViewModel extends BaseViewModel {
         return chatMessage.getInnerProcessed();
     }
 
-    protected int getMenuResource() {
-        return chatMessage.isReceivedMessage() ? R.menu.message_receive : R.menu.message_send;
+    protected void addMenuItems(Menu menu) {
+        menu.add(Menu.NONE, R.id.menu_copy, Menu.NONE, "复制");
+        menu.add(Menu.NONE, R.id.menu_delete, Menu.NONE, "删除");
+        if (!isReceiveMessage()) {
+            menu.add(Menu.NONE, R.id.menu_revoke, Menu.NONE, "撤回");
+        }
     }
 
     public boolean onLongClick(final View view) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-        popupMenu.inflate(getMenuResource());
+        addMenuItems(popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -193,10 +197,22 @@ public abstract class ChatRowViewModel extends BaseViewModel {
                     .show();
             return true;
         } else if (i == R.id.menu_revoke) {
+            //撤回
             EventBus.getDefault().post(new EventRevokeMessage(this));
+            return true;
+        } else if (i == R.id.menu_copy) {
+            //复制
+            ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clipData = ClipData.newPlainText("", getCopyData());
+            cm.setPrimaryClip(clipData);
+            XToast.show("信息已复制");
             return true;
         }
         return false;
+    }
+
+    protected CharSequence getCopyData() {
+        return chatMessage.getContentText();
     }
 
 

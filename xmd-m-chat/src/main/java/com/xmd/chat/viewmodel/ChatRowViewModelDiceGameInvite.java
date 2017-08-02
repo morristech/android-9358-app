@@ -14,10 +14,10 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.chat.ChatAccountManager;
+import com.xmd.chat.ChatSettingManager;
 import com.xmd.chat.MessageManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
-import com.xmd.chat.SettingManager;
 import com.xmd.chat.beans.DiceGameResult;
 import com.xmd.chat.databinding.ChatRowDiceGameInviteBinding;
 import com.xmd.chat.event.EventGameDiceStatusChange;
@@ -103,7 +103,7 @@ public class ChatRowViewModelDiceGameInvite extends ChatRowViewModel {
     }
 
     public String checkTimeout() {
-        if (message.getEmMessage().getMsgTime() + SettingManager.getInstance().getDiceExpireTime() < System.currentTimeMillis()) {
+        if (message.getEmMessage().getMsgTime() + ChatSettingManager.getInstance().getDiceExpireTime() < System.currentTimeMillis()) {
             message.setInnerProcessed("已超时");
             return "已超时";
         }

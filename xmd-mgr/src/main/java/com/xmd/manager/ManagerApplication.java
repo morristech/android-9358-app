@@ -124,7 +124,8 @@ public class ManagerApplication extends MultiDexApplication {
                 XmdModuleAppointment.getInstance().init(this);
 
                 //初始化聊天模块
-                XmdChat.getInstance().init(this, debug, menuFactory);
+                String chatAppKey = SharedPreferenceHelper.isDevelopMode() ? "xiaomodo#spatest" : "xiaomodo#spa";
+                XmdChat.getInstance().init(this, chatAppKey, debug, menuFactory);
 
                 XmdPushModule.getInstance().init(this, "manager", UINavigation.xmdActionFactory, null);
 

@@ -59,6 +59,7 @@ public class TechApplication extends MultiDexApplication {
     private String mAppVersionName;
     private int mAppVersionCode;
     private String mUserAgent;
+    private boolean debug;
 
     @Override
     public void onCreate() {
@@ -71,6 +72,7 @@ public class TechApplication extends MultiDexApplication {
             } else {
                 Logger.v("CurrentUser initialize !");
                 appContext = getApplicationContext();
+                debug = BuildConfig.DEBUG || BuildConfig.FLAVOR.equals("dev");
 
                 WindowManager windowManager = (WindowManager) appContext.getSystemService(WINDOW_SERVICE);
                 ScreenUtils.initScreenSize(windowManager);
@@ -82,7 +84,7 @@ public class TechApplication extends MultiDexApplication {
                 parseAppVersion();
 
                 //初始化日志
-                XLogger.init(7, getFilesDir().getPath() + File.separator + "logs");
+                XLogger.init(7, null);
                 XLogger.setGloableTag("9358");
                 printMachineInfo();
 
@@ -95,7 +97,7 @@ public class TechApplication extends MultiDexApplication {
 
                 //初始化网络库
                 XmdNetwork.getInstance().init(this, getUserAgent(), SharedPreferenceHelper.getServerHost());
-                XmdNetwork.getInstance().setDebug(BuildConfig.DEBUG || BuildConfig.FLAVOR.equals("dev"));
+                XmdNetwork.getInstance().setDebug(debug);
                 XmdNetwork.getInstance().setToken(SharedPreferenceHelper.getUserToken()); //处理旧的toke数据
 
                 //初始化错误拦截器
@@ -141,7 +143,8 @@ public class TechApplication extends MultiDexApplication {
                 XmdPushModule.getInstance().init(this, "tech", UINavigation.xmdActionFactory, new PushMessageListener());
 
                 //初始化聊天模块
-                XmdChat.getInstance().init(this, BuildConfig.DEBUG, menuFactory);
+                String chatAppKey = SharedPreferenceHelper.isDevelopMode() ? "xiaomodo#spatest" : "xiaomodo#spa";
+                XmdChat.getInstance().init(this, chatAppKey, debug, menuFactory);
 
 //                DataRefreshService.start();
 //                HelloReplyService.start();

@@ -7,11 +7,11 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 
 import com.hyphenate.chat.EMVoiceMessageBody;
 import com.shidou.commonlibrary.widget.XToast;
@@ -60,24 +60,10 @@ public class ChatRowViewModelVoice extends ChatRowViewModel {
     }
 
     @Override
-    protected int getMenuResource() {
-        return chatMessage.isReceivedMessage() ? R.menu.voice_message_receive : R.menu.voice_message_send;
-    }
-
-    @Override
-    public boolean onLongClick(final View view) {
-        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-        popupMenu.inflate(getMenuResource());
-        String switchTitle = VoiceManager.getInstance().isAudioSpeakerMode() ? "使用听筒模式" : "使用扬声器模式";
-        popupMenu.getMenu().findItem(R.id.menu_switch_audio_mode).setTitle(switchTitle);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return onClickMenu(view.getContext(), item);
-            }
-        });
-        popupMenu.show();
-        return true;
+    protected void addMenuItems(Menu menu) {
+        menu.add(Menu.NONE, R.id.menu_switch_audio_mode, Menu.NONE,
+                VoiceManager.getInstance().isAudioSpeakerMode() ? "使用听筒模式" : "使用扬声器模式");
+        super.addMenuItems(menu);
     }
 
     @Override

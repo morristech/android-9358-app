@@ -72,6 +72,7 @@ public class ChatMessage {
     private static final String ATTRIBUTE_USER_ID = "userId";
     private static final String ATTRIBUTE_USER_NAME = "name";
     private static final String ATTRIBUTE_USER_AVATAR = "header";
+    private static final String ATTRIBUTE_USER_AVATAR_ID = "avatar";
     private static final String ATTRIBUTE_TIME = "time";
 
     private static final String ATTRIBUTE_SERIAL_NO = "no";
@@ -113,10 +114,12 @@ public class ChatMessage {
         setUserId(user.getId());
         setUserName(user.getName());
         setUserAvatar(user.getAvatar());
+        setUserAvatarId(user.getAvatarId());
 
         setClubId(user.getClubId());
         setClubName(user.getClubName());
         setTechNo(user.getTechNo());
+        setTechId(user.getId());
     }
 
     public String getTag() {
@@ -170,6 +173,14 @@ public class ChatMessage {
 
     public void setUserAvatar(String userAvatar) {
         setAttr(ATTRIBUTE_USER_AVATAR, userAvatar);
+    }
+
+    public String getUserAvatarId() {
+        return getSafeStringAttribute(ATTRIBUTE_USER_AVATAR_ID);
+    }
+
+    public void setUserAvatarId(String userAvatarId) {
+        setAttr(ATTRIBUTE_USER_AVATAR_ID, userAvatarId);
     }
 
     public String getTime() {

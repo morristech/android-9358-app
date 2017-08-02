@@ -2,8 +2,10 @@ package com.xmd.chat;
 
 import com.shidou.commonlibrary.Callback;
 import com.shidou.commonlibrary.helper.DiskCacheManager;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.chat.beans.DiceGameSetting;
 import com.xmd.chat.beans.FastReplySetting;
+import com.xmd.chat.beans.Location;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
@@ -14,18 +16,18 @@ import rx.Observable;
  * Created by mo on 17-7-22.
  */
 
-public class SettingManager {
-    private static final SettingManager ourInstance = new SettingManager();
+public class ChatSettingManager {
+    private static final ChatSettingManager ourInstance = new ChatSettingManager();
 
-    public static SettingManager getInstance() {
+    public static ChatSettingManager getInstance() {
         return ourInstance;
     }
 
+    private Location clubLocation;
     private FastReplySetting fastReplySetting;
-
     private long diceExpireTime;
 
-    private SettingManager() {
+    private ChatSettingManager() {
         fastReplySetting = (FastReplySetting) DiskCacheManager.getInstance().get(ChatConstants.CACHE_CHAT_FAST_REPLY_SETTING);
         diceExpireTime = XmdChat.getInstance().getSp().getLong(ChatConstants.SP_GAME_DICE_EXPIRE_TIME, 3600 * 1000);
     }
@@ -108,6 +110,33 @@ public class SettingManager {
             @Override
             public void onCallbackError(Throwable e) {
 
+            }
+        });
+    }
+
+    public void loadClubLocation(boolean forceNetwork, final Callback<Location> callback) {
+        if (!forceNetwork && clubLocation != null) {
+            callback.onResponse(clubLocation, null);
+            return;
+        }
+        Observable<BaseBean<Location>> observable = XmdNetwork.getInstance()
+                .getService(NetService.class)
+                .getClubLocation();
+        XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean<Location>>() {
+            @Override
+            public void onCallbackSuccess(BaseBean<Location> result) {
+                clubLocation = result.getRespData();
+                if (callback != null) {
+                    callback.onResponse(clubLocation, null);
+                }
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.e(XmdChat.TAG, "加载会所位置失败：" + e.getMessage());
+                if (callback != null) {
+                    callback.onResponse(null, e);
+                }
             }
         });
     }

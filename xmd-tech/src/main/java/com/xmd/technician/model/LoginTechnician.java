@@ -6,6 +6,7 @@ import com.xmd.app.EventBusSafeRegister;
 import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.app.user.User;
+import com.xmd.app.user.UserInfoServiceImpl;
 import com.xmd.m.network.EventTokenExpired;
 import com.xmd.permission.event.EventRequestSyncPermission;
 import com.xmd.technician.AppConfig;
@@ -15,7 +16,6 @@ import com.xmd.technician.TechApplication;
 import com.xmd.technician.bean.TechInfo;
 import com.xmd.technician.common.DESede;
 import com.xmd.technician.common.UINavigation;
-import com.xmd.technician.common.Utils;
 import com.xmd.technician.http.RequestConstant;
 import com.xmd.technician.http.gson.AvatarResult;
 import com.xmd.technician.http.gson.JoinClubResult;
@@ -58,6 +58,7 @@ public class LoginTechnician {
     private String gender;
     private String phoneNumber;
     private String nickName;
+    private String avatarId;
     private String avatarUrl;
     private String description;
 
@@ -97,6 +98,7 @@ public class LoginTechnician {
         phoneNumber = SharedPreferenceHelper.getUserAccount();
         nickName = SharedPreferenceHelper.getUserName();
         avatarUrl = SharedPreferenceHelper.getUserAvatar();
+        avatarId = SharedPreferenceHelper.getAvatarId();
         description = SharedPreferenceHelper.getTechDescription();
 
         emchatId = SharedPreferenceHelper.getEmchatId();
@@ -119,6 +121,29 @@ public class LoginTechnician {
         RxBus.getInstance().toObservable(TechPersonalDataResult.class).subscribe(this::onGetTechPersonalData);
 
         EventBusSafeRegister.register(this);
+    }
+
+    //切换账号时，清除所有数据
+    private void cleanAllDataWhenSwitchAccount() {
+        setUserId(null);
+        setGender(null);
+        setPhoneNumber(null);
+        setNickName(null);
+        setAvatarId(null);
+        setAvatarUrl(null);
+        setDescription(null);
+        setEmchatId(null);
+        setEmchatPassword(null);
+        setTechNo(null);
+        setClubInviteCode(null);
+        setInviteCode(null);
+        setQrCodeUrl(null);
+        setClubId(null);
+        setClubName(null);
+        setClubPosition(null);
+        setRoles(null);
+        setStatus(null);
+        setCustomerService(null);
     }
 
 
@@ -148,6 +173,11 @@ public class LoginTechnician {
 
     //登录成功后，保存数据
     public void onLoginResult(LoginResult loginResult) {
+        if (!loginResult.userId.equals(getUserId())) {
+            cleanAllDataWhenSwitchAccount();
+        }
+        setPhoneNumber(loginResult.loginName);
+        setInviteCode(loginResult.inviteCode);
         setToken(loginResult.token);
         setUserId(loginResult.userId);
         setEmchatId(loginResult.emchatId);
@@ -155,6 +185,8 @@ public class LoginTechnician {
         setNickName(loginResult.name);
         setAvatarUrl(loginResult.avatarUrl);
         setRoles(loginResult.roles);
+        setClubId(loginResult.clubId);
+        setClubName(loginResult.clubName);
 
         //发送登录事件
         EventBus.getDefault().removeStickyEvent(EventLogout.class);
@@ -163,19 +195,12 @@ public class LoginTechnician {
     }
 
     //备用技师编号登录成功
-    public void onTechNoLoginResult(String techNo, String inviteCode, LoginResult result) {
-        setClubInviteCode(inviteCode);
+    public void onTechNoLoginResult(String techNo, String clubInviteCode, LoginResult loginResult) {
+        onLoginResult(loginResult);
         setTechNo(techNo);
-        setClubId(result.clubId);
-        setClubName(result.clubName);
-        setUserId(result.spareTechId);
-        setRoles(result.roles);
-
-        //发送登录事件
-        EventBus.getDefault().removeStickyEvent(EventLogout.class);
-        EventBus.getDefault().postSticky(new EventLogin(getToken(), getUserInfo()));
-        RxBus.getInstance().post(new EventLogin(getToken(), getUserInfo()));
+        setClubInviteCode(clubInviteCode);
     }
+
 
     public void clearTechNoLoginResult() {
         setClubInviteCode(null);
@@ -206,11 +231,9 @@ public class LoginTechnician {
         TechInfo techInfo = result.respData;
 
         setPhoneNumber(phoneNumber);
-        if (Utils.isNotEmpty(techInfo.imageUrl)) {
-            setAvatarUrl(techInfo.imageUrl);
-        } else {
-            setAvatarUrl(techInfo.avatar);
-        }
+        setAvatarUrl(techInfo.imageUrl);
+        setAvatarId(techInfo.avatar);
+
         setUserId(techInfo.id);
         setNickName(techInfo.userName);
         setDescription(techInfo.description);
@@ -226,17 +249,21 @@ public class LoginTechnician {
         setQrCodeUrl(techInfo.qrCodeUrl);
         setShareUrl(techInfo.shareUrl);
         setCustomerService(techInfo.customerService);
+
+        UserInfoServiceImpl.getInstance().saveCurrentUser(getUserInfo());
     }
 
     public User getUserInfo() {
         User user = new User(getUserId());
         user.setName(getNickName());
         user.setAvatar(getAvatarUrl());
+        user.setAvatarId(getAvatarId());
         user.setChatId(getEmchatId());
         user.setChatPassword(getEmchatPassword());
         user.setClubId(getClubId());
         user.setClubName(getClubName());
         user.setTechNo(getTechNo());
+        user.setTechId(getUserId());
         user.setUserRoles(getRoles());
         return user;
     }
@@ -465,6 +492,15 @@ public class LoginTechnician {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
         SharedPreferenceHelper.setUserAvatar(avatarUrl);
+    }
+
+    public String getAvatarId() {
+        return avatarId;
+    }
+
+    public void setAvatarId(String avatarId) {
+        this.avatarId = avatarId;
+        SharedPreferenceHelper.setAvatarId(avatarId);
     }
 
     public void setToken(String token) {
