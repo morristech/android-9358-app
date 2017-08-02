@@ -79,7 +79,6 @@
         android:drawableLeft="@drawable/ic_set_version"
         android:drawablePadding="@dimen/activity_horizontal_margin"
         android:gravity="left|center_vertical"
-        android:onClick="onClickVersion"
         android:padding="@dimen/activity_horizontal_margin"
         android:textColor="@color/colorText2"
         android:textSize="@dimen/font_size_16" />

@@ -11,6 +11,7 @@ import com.xmd.cashier.activity.BillDetailActivity;
 import com.xmd.cashier.activity.BillRecordActivity;
 import com.xmd.cashier.activity.BillSearchActivity;
 import com.xmd.cashier.activity.CashierActivity;
+import com.xmd.cashier.activity.ConfigurationActivity;
 import com.xmd.cashier.activity.ConfirmActivity;
 import com.xmd.cashier.activity.DiscountCouponActivity;
 import com.xmd.cashier.activity.LoginActivity;
@@ -279,6 +280,11 @@ public class UiNavigation {
     public static void gotoDiscountCouponActivity(Context context, String code) {
         Intent intent = new Intent(context, DiscountCouponActivity.class);
         intent.putExtra(AppConstants.EXTRA_COUPON_CODE, code);
+        context.startActivity(intent);
+    }
+
+    public static void gotoConfigurationActivity(Context context) {
+        Intent intent = new Intent(context, ConfigurationActivity.class);
         context.startActivity(intent);
     }
 }

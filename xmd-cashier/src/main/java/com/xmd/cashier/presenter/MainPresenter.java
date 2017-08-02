@@ -118,7 +118,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onClickVersion() {
-        // do nothing
+        UiNavigation.gotoConfigurationActivity(mContext);
     }
 
     @Override

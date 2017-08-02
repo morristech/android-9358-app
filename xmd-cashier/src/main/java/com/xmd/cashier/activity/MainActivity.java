@@ -173,6 +173,14 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 mPresenter.onVerifyClick();
             }
         });
+
+        mDrawerVersion.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mPresenter.onClickVersion();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -204,10 +212,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     public void onClickSetting(View view) {
         mPresenter.onClickSetting();
-    }
-
-    public void onClickVersion(View view) {
-        mPresenter.onClickVersion();
     }
 
     @Override

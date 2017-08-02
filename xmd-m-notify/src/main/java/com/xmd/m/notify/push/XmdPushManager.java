@@ -94,6 +94,10 @@ public class XmdPushManager {
         loopBind(token, clientId);
     }
 
+    public String getClientId() {
+        return this.clientId;
+    }
+
     //登录事件
     @Subscribe(sticky = true)
     public void handleLogin(EventLogin eventLogin) {
