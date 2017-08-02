@@ -7,11 +7,13 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -94,6 +96,8 @@ public class ChatActivity extends BaseActivity {
     private LinearLayoutManager layoutManager;
     private int softwareKeyboardHeight = 0;
 
+    private AudioManager audioManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +171,8 @@ public class ChatActivity extends BaseActivity {
                 });
             }
         });
+
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
     }
 
     @Override
@@ -269,6 +275,23 @@ public class ChatActivity extends BaseActivity {
 //            data.onUnbindView();
         }
     };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+                return true;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     //处理新的UI消息
     @Subscribe
