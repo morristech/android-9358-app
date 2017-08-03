@@ -310,11 +310,21 @@ public class TradeManager {
             @Override
             public void onCallbackSuccess(StringResult result) {
                 Call<ResponseBody> callGetBytes = XmdNetwork.getInstance().getService(SpaService.class).getClubQrcodeByWX(result.getRespData());
-                XmdNetwork.getInstance().requestSync(callGetBytes, new NetworkSubscriber<ResponseBody>() {
+                XmdNetwork.getInstance().requestSync(callGetBytes, new Subscriber<ResponseBody>() {
                     @Override
-                    public void onCallbackSuccess(ResponseBody result) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        XLogger.d("getClubQRCodeBytes error:" + e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
                         try {
-                            byte[] bitmapBytes = result.bytes();
+                            byte[] bitmapBytes = responseBody.bytes();
                             if (bitmapBytes != null) {
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
                                 Matrix matrix = new Matrix();
@@ -336,11 +346,6 @@ public class TradeManager {
                         } catch (IOException e) {
                             XLogger.d("getClubQRCodeBytes exception:" + e.getLocalizedMessage());
                         }
-                    }
-
-                    @Override
-                    public void onCallbackError(Throwable e) {
-                        XLogger.d("getClubQRCodeBytes error:" + e.getLocalizedMessage());
                     }
                 });
             }
