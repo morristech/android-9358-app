@@ -32,6 +32,7 @@ import com.xmd.cashier.dal.net.response.VerifyRecordResult;
 import com.xmd.cashier.dal.net.response.VerifyTypeResult;
 import com.xmd.m.network.BaseBean;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -39,6 +40,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -84,14 +86,6 @@ public interface SpaService {
     @POST(RequestConstant.URL_CLUB_INFO)
     Observable<ClubResult> getClubInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                        @Field(RequestConstant.KEY_SESSION_TYPE) String sessionType);
-
-    /**
-     * 获取会所微信二维码
-     */
-    @FormUrlEncoded
-    @POST(RequestConstant.URL_CLUB_WX_QRCODE)
-    Call<StringResult> getClubWXQrcode(@Field(RequestConstant.KEY_CLUB_ID) String userToken,
-                                       @Field(RequestConstant.KEY_TRADE_NO) String tradeNo);
 
     /**
      * 获取核销列表: 券+付费预约
@@ -549,63 +543,33 @@ public interface SpaService {
 
 
     /******************************************** Pos在线买单 **************************************/
-    /**
-     * 获取扫码买单ID
-     *
-     * @param userToken
-     * @return
-     */
+    //获取扫码买单ID
     @GET(RequestConstant.URL_GET_XMD_ONLINE_ORDER_ID)
     Observable<StringResult> getXMDOnlineOrderId(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
-    /**
-     * 查询买单扫码状态
-     *
-     * @param userToken
-     * @param orderId
-     * @return
-     */
+    //查询买单扫码状态
     @GET(RequestConstant.URL_GET_XMD_ONLINE_SCAN_STATUS)
     Observable<StringResult> getXMDOnlineScanStatus(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                     @Query(RequestConstant.KEY_ORDER_ID) String orderId);
 
-    /**
-     * 获取Pos在线买单详情
-     *
-     * @param userToken
-     * @param orderId
-     * @return
-     */
+    //获取Pos在线买单详情
     @GET(RequestConstant.URL_GET_XMD_ONLINE_ORDER_DETAIL)
     Observable<OnlinePayDetailResult> getXMDOnlinePayDetail(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                             @Query(RequestConstant.KEY_ORDER_ID) String orderId);
 
-
-    /**
-     * 扫码买单二维码URL
-     *
-     * @param userToken
-     * @return
-     */
+    //扫码买单二维码URL
     @GET(RequestConstant.URL_GET_XMD_ONLINE_QRCODE_URL)
     Observable<OnlinePayUrlResult> getXMDOnlineQrcodeUrl(@Query(RequestConstant.KEY_TOKEN) String userToken,
-                                                         @Query(RequestConstant.KEY_ORDER_ID) String orderId,
                                                          @Query(RequestConstant.KEY_TOTAL) String total,
                                                          @Query(RequestConstant.KEY_DISCOUNT) String discount);
 
-    /**
-     * 取消买单
-     *
-     * @param userToken
-     * @param orderId
-     * @return
-     */
+    // 取消买单
     @FormUrlEncoded
     @POST(RequestConstant.URL_DELETE_XMD_ONLINE_ORDER_ID)
     Observable<BaseBean> deleteXMDOnlineOrderId(@Field(RequestConstant.KEY_TOKEN) String userToken,
                                                 @Field(RequestConstant.KEY_ORDER_ID) String orderId);
 
-    // ***************************************POS会员*******************************************
+    /******************************************************POS会员**********************************************************/
     // 会员设置信息获取
     @GET(RequestConstant.URL_GET_MEMBER_SETTING_CONFIG)
     Call<MemberSettingResult> getMemberSettingConfig(@Query(RequestConstant.KEY_TOKEN) String userToken);
@@ -644,6 +608,7 @@ public interface SpaService {
                                                    @Field(RequestConstant.KEY_MEMBER_PACKAGE_ID) String packageId,
                                                    @Field(RequestConstant.KEY_TECH_ID) String techId);
 
+    // 获取会员账户记录
     @FormUrlEncoded
     @POST(RequestConstant.URL_GET_MEMBER_RECORD_LIST)
     Observable<MemberRecordListResult> getMemberRecordList(@Field(RequestConstant.KEY_TOKEN) String userToken,
@@ -652,6 +617,7 @@ public interface SpaService {
                                                            @Field(RequestConstant.KEY_TYPE) String type,
                                                            @Field(RequestConstant.KEY_USER_NAME) String userName);
 
+    // 会员支付
     @GET(RequestConstant.URL_REQUEST_MEMBER_PAYMENT)
     Observable<MemberRecordResult> requestMemberPayment(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                         @Query(RequestConstant.KEY_AMOUNT) String amount,
@@ -661,9 +627,11 @@ public interface SpaService {
                                                         @Query(RequestConstant.KEY_TRADE_NO) String tradeNO,
                                                         @Query(RequestConstant.KEY_TRADE_TYPE) String tradeType);
 
+    // 获取会所技师列表
     @GET(RequestConstant.URL_GET_CLUB_TECH_LIST)
     Observable<TechListResult> getTechList(@Query(RequestConstant.KEY_TOKEN) String userToken);
 
+    // 充值回调
     @FormUrlEncoded
     @POST(RequestConstant.URL_REPORT_MEMBER_RECHARGE_TRADE)
     Call<MemberRecordResult> reportMemberRecharge(@Field(RequestConstant.KEY_TOKEN) String userToken,
@@ -672,7 +640,24 @@ public interface SpaService {
                                                   @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
                                                   @Field(RequestConstant.KEY_SIGN) String requestSign);
 
+    // 充值详情
     @GET(RequestConstant.URL_GET_MEMBER_RECHARGE_DETAIL)
     Call<MemberRecordResult> detailMemberRecharge(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Query(RequestConstant.KEY_ORDER_ID) String orderId);
+    /**************************************************************************************************************************/
+    /**
+     * 获取会所微信二维码
+     */
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_CLUB_WX_QRCODE)
+    Call<StringResult> getClubWXQrcodeURL(@Field(RequestConstant.KEY_CLUB_ID) String userToken);
+
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_TRADE_QR_CODE)
+    Call<StringResult> getTradeQrcode(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                      @Field(RequestConstant.KEY_TRADE_NO) String tradeNo,
+                                      @Field(RequestConstant.KEY_SIGN) String sign);
+
+    @GET
+    Call<ResponseBody> getClubQrcodeByWX(@Url String url);
 }

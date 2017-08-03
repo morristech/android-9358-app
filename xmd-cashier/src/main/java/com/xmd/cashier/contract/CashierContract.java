@@ -15,13 +15,13 @@ public interface CashierContract {
 
         void onOriginMoneyChanged();
 
-        void onClickCashier();
+        void onClickPosPay();
 
         void onClickMemberPay();
 
         void onClickXMDOnlinePay();
 
-        void processTradeNo();
+        void doCashier();
 
         boolean checkInput();
     }

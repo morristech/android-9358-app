@@ -84,13 +84,13 @@ public class BillManager {
 
         mPos.printText("减免金额: ", String.format(format, Utils.moneyToStringEx(info.userDiscountMoney + info.memberPayDiscountMoney + info.couponDiscountMoney)), true);
         switch (info.discountType) {
-            case Trade.DISCOUNT_TYPE_COUPON:
+            case AppConstants.DISCOUNT_TYPE_COUPON:
                 mPos.printText("|--优惠金额: ", String.format(format, Utils.moneyToStringEx(info.couponDiscountMoney)));
                 break;
-            case Trade.DISCOUNT_TYPE_USER:
+            case AppConstants.DISCOUNT_TYPE_USER:
                 mPos.printText("|--手动减免: ", String.format(format, Utils.moneyToStringEx(info.userDiscountMoney)));
                 break;
-            case Trade.DISCOUNT_TYPE_NONE:
+            case AppConstants.DISCOUNT_TYPE_NONE:
             default:
                 mPos.printText("|--其他优惠: ", String.format(format, Utils.moneyToStringEx(info.userDiscountMoney + info.couponDiscountMoney)));
                 break;

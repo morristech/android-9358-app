@@ -67,7 +67,7 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
                                     mPresenter.onClickXMDOnlinePay();
                                     break;
                                 case AppConstants.CASHIER_TYPE_POS_TEXT:
-                                    mPresenter.onClickCashier();
+                                    mPresenter.onClickPosPay();
                                     break;
                                 case AppConstants.CASHIER_TYPE_MEMBER_TEXT:
                                     mPresenter.onClickMemberPay();
@@ -199,8 +199,9 @@ public class CashierActivity extends BaseActivity implements CashierContract.Vie
         mOriginCustomMoneyEditText.requestFocus();
     }
 
+    // 会员支付时:扫码或者查询到的会员信息
     @Subscribe
     public void onEvent(MemberInfo info) {
-        mPresenter.processTradeNo();
+        mPresenter.doCashier();
     }
 }

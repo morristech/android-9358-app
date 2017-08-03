@@ -143,9 +143,8 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
                 switch (readType) {
                     case AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT:
                         // 消费
-                        TradeManager.getInstance().setMemberInfo(o);
-                        TradeManager.getInstance().setCurrentCashier(AppConstants.CASHIER_TYPE_MEMBER);
-                        TradeManager.getInstance().setMemberMethod(AppConstants.MEMBER_PAY_METHOD_CODE);
+                        TradeManager.getInstance().getCurrentTrade().memberInfo = o;
+                        TradeManager.getInstance().getCurrentTrade().memberPayMethod = AppConstants.MEMBER_PAY_METHOD_CODE;
                         EventBus.getDefault().post(o);
                         mView.finishSelf();
                         break;

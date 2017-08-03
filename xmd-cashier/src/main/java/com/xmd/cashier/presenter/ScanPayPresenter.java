@@ -117,9 +117,7 @@ public class ScanPayPresenter implements Presenter {
                     // 支付成功
                     PosFactory.getCurrentCashier().textToSound("买单成功");
                     mTradeManager.getCurrentTrade().tradeTime = result.getRespData().createTime;
-                    mTradeManager.getCurrentTrade().setOnlinePayPaidMoney(result.getRespData().payAmount);
-                    mTradeManager.getCurrentTrade().setOnlinePayChannel(result.getRespData().payChannel);
-                    mTradeManager.getCurrentTrade().setOnlinePayId(result.getRespData().payId);
+                    mTradeManager.getCurrentTrade().onlinePayInfo = result.getRespData();
                     UiNavigation.gotoScanPayResultActivity(mContext, result.getRespData());
                     mView.finishSelf();
                 } else {
@@ -246,11 +244,13 @@ public class ScanPayPresenter implements Presenter {
             mGetXMDOnlineQrcodeUrlSubscription.unsubscribe();
         }
         Observable<OnlinePayUrlResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getXMDOnlineQrcodeUrl(AccountManager.getInstance().getToken(), mTradeManager.getCurrentTrade().tradeNo, String.valueOf(mTradeManager.getCurrentTrade().getOriginMoney()), String.valueOf(mTradeManager.getCurrentTrade().getWillDiscountMoney()));
+                .getXMDOnlineQrcodeUrl(AccountManager.getInstance().getToken(), String.valueOf(mTradeManager.getCurrentTrade().getOriginMoney()), String.valueOf(mTradeManager.getCurrentTrade().getWillDiscountMoney()));
         mGetXMDOnlineQrcodeUrlSubscription = XmdNetwork.getInstance().request(observable, new NetworkSubscriber<OnlinePayUrlResult>() {
             @Override
             public void onCallbackSuccess(OnlinePayUrlResult result) {
                 OnlinePayUrlInfo info = result.getRespData();
+                mTradeManager.getCurrentTrade().tradeNo = info.orderId;
+                mTradeManager.getCurrentTrade().tradeTime = DateUtils.doDate2String(new Date());
                 if (info == null || TextUtils.isEmpty(info.url)) {
                     mView.showQrError("获取二维码数据异常");
                     return;

@@ -32,12 +32,9 @@ public class AppConstants {
     public static final int CHECK_INFO_TYPE_ORDER = 2;
 
     public static final int CASHIER_TYPE_ERROR = -1;
-    // 会员支付
-    public static final int CASHIER_TYPE_MEMBER = 0;
-    // 普通支付
-    public static final int CASHIER_TYPE_POS = 1;
-    // 小摩豆在线买单
-    public static final int CASHIER_TYPE_XMD_ONLINE = 2;
+    public static final int CASHIER_TYPE_MEMBER = 0;// 会员支付
+    public static final int CASHIER_TYPE_POS = 1;// 普通支付
+    public static final int CASHIER_TYPE_XMD_ONLINE = 2;// 小摩豆在线买单
 
     public static final int PAY_TYPE_UNKNOWN = 0;
     public static final int PAY_TYPE_CASH = 1;
@@ -45,6 +42,10 @@ public class AppConstants {
     public static final int PAY_TYPE_WECHART = 3;
     public static final int PAY_TYPE_CARD = 4;
     public static final int PAY_TYPE_MEMBER = 5;
+
+    public static final int DISCOUNT_TYPE_NONE = 0;
+    public static final int DISCOUNT_TYPE_COUPON = 2;
+    public static final int DISCOUNT_TYPE_USER = 1;
 
     public static final int PAY_RESULT_SUCCESS = 1;
     public static final int PAY_RESULT_CANCEL = 2;

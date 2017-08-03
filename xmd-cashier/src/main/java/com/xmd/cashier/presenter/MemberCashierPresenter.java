@@ -47,7 +47,6 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
         Trade trade = TradeManager.getInstance().getCurrentTrade();
         int payMoney = (int) (trade.getNeedPayMoney() * (trade.memberInfo.discount / 1000.0f)); //计算折扣
         int discountMoney = (int) (trade.getNeedPayMoney() * (1000 - trade.memberInfo.discount) / 1000.0f);
-        trade.memberNeedPayMoney = trade.getNeedPayMoney();
         mView.showDiscountAmount(Utils.moneyToStringEx(discountMoney));
         mView.showNeedAmount(Utils.moneyToStringEx(payMoney));
         mView.showButton(trade.memberInfo.amount >= payMoney);
@@ -78,36 +77,26 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
 
     private void print(MemberRecordInfo info) {
         mView.showLoading();
-        MemberManager.getInstance().printInfo(info, false, false, new Callback<MemberRecordInfo>() {
+        MemberManager.getInstance().printInfo(info, false, true, new Callback<MemberRecordInfo>() {
             @Override
             public void onSuccess(MemberRecordInfo o) {
                 mView.hideLoading();
                 new CustomAlertDialogBuilder(mContext)
-                        .setMessage("是否打印商户存根?")
+                        .setMessage("是否需要打印客户联小票?")
                         .setPositiveButton("打印", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                TradeManager.getInstance().getCurrentTrade().isRemain = true;
-                                TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
-                                    @Override
-                                    public void onFinished(Void result) {
-                                        mView.finishSelf();
-                                    }
-                                });
+                                TradeManager.getInstance().getCurrentTrade().isMemberRemain = true;
+                                finishMemberPay();
                             }
                         })
                         .setNegativeButton("完成交易", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                TradeManager.getInstance().getCurrentTrade().isRemain = false;
-                                TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
-                                    @Override
-                                    public void onFinished(Void result) {
-                                        mView.finishSelf();
-                                    }
-                                });
+                                TradeManager.getInstance().getCurrentTrade().isMemberRemain = false;
+                                finishMemberPay();
                             }
                         })
                         .create()
@@ -118,12 +107,15 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
             public void onError(String error) {
                 mView.hideLoading();
                 mView.showToast("打印异常:" + error);
-                TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
-                    @Override
-                    public void onFinished(Void result) {
-                        mView.finishSelf();
-                    }
-                });
+                finishMemberPay();
+            }
+        });
+    }
+    private void finishMemberPay() {
+        TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
+            @Override
+            public void onFinished(Void result) {
+                mView.finishSelf();
             }
         });
     }
@@ -150,16 +142,12 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
             public void onError(String error) {
                 mView.hideLoading();
                 mView.showError("会员支付失败:" + error);
-                TradeManager.getInstance().getCurrentTrade().memberPayError = error;
             }
         });
     }
 
     @Override
     public void onNavigationBack() {
-        if (TradeManager.getInstance().getCurrentTrade().memberPayResult == 0) {
-            TradeManager.getInstance().getCurrentTrade().memberPayResult = AppConstants.PAY_RESULT_CANCEL;
-        }
         UiNavigation.gotoConfirmActivity(mContext, null);
         mView.finishSelf();
     }

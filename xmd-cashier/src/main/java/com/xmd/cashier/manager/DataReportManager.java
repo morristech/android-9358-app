@@ -64,14 +64,6 @@ public class DataReportManager {
             params.put(RequestConstant.KEY_DISCOUNT_TYPE, String.valueOf(trade.getDiscountType()));
             params.put(RequestConstant.KEY_COUPON_DISCOUNT_MONEY, String.valueOf(trade.getCouponDiscountMoney()));
             params.put(RequestConstant.KEY_USER_DISCOUNT_MONEY, String.valueOf(trade.getUserDiscountMoney()));
-
-            if (trade.getMemberPaidMoney() > 0) {
-                params.put(RequestConstant.KEY_MEMBER_CARD_NO, trade.memberInfo.cardNo);
-                params.put(RequestConstant.KEY_MEMBER_PAY_MONEY, String.valueOf(trade.getMemberPaidMoney()));
-                params.put(RequestConstant.KEY_MEMBER_PAY_DISCOUNT_MONEY, String.valueOf(trade.getMemberPaidDiscountMoney()));
-                params.put(RequestConstant.KEY_MEMBER_PAY_RESULT, String.valueOf(trade.memberPayResult));
-                params.put(RequestConstant.KEY_MEMBER_PAY_CERTIFICATE, trade.memberPayCertificate);
-            }
         }
 
         if (trade.posPayReturn != null) {

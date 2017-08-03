@@ -148,15 +148,15 @@ public class BillDetailActivity extends BaseActivity implements BillDetailContra
             // 减免金额
             mCutMoneyText.setText(String.format(getString(R.string.cashier_money), Utils.moneyToStringEx(info.memberPayDiscountMoney + info.userDiscountMoney + info.couponDiscountMoney)));
             switch (info.discountType) {
-                case Trade.DISCOUNT_TYPE_COUPON:
+                case AppConstants.DISCOUNT_TYPE_COUPON:
                     mCouponDiscountRow.setVisibility(View.VISIBLE);
                     mCouponDiscountMoneyText.setText(String.format(getString(R.string.cashier_money), Utils.moneyToStringEx(info.couponDiscountMoney)));
                     break;
-                case Trade.DISCOUNT_TYPE_USER:
+                case AppConstants.DISCOUNT_TYPE_USER:
                     mUserDiscountRow.setVisibility(View.VISIBLE);
                     mUserDiscountMoneyText.setText(String.format(getString(R.string.cashier_money), Utils.moneyToStringEx(info.userDiscountMoney)));
                     break;
-                case Trade.DISCOUNT_TYPE_NONE:
+                case AppConstants.DISCOUNT_TYPE_NONE:
                 default:
                     mOtherDiscountRow.setVisibility(View.VISIBLE);
                     mOtherDiscountMoneyText.setText(String.format(getString(R.string.cashier_money), Utils.moneyToStringEx(info.userDiscountMoney + info.couponDiscountMoney)));

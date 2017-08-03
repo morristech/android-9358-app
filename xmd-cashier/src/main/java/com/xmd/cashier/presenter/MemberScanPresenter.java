@@ -141,12 +141,12 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
     @Override
     public void printResult() {
         mView.showLoading();
-        MemberManager.getInstance().printInfo(memberRecordInfo, false, false, new Callback<MemberRecordInfo>() {
+        MemberManager.getInstance().printInfo(memberRecordInfo, false, true, new Callback<MemberRecordInfo>() {
             @Override
             public void onSuccess(MemberRecordInfo o) {
                 mView.hideLoading();
                 new CustomAlertDialogBuilder(mContext)
-                        .setMessage("是否打印商户存根?")
+                        .setMessage("是否需要打印客户联小票?")
                         .setPositiveButton("打印", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -156,7 +156,7 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
                                             @Override
                                             public void call(Subscriber<? super Void> subscriber) {
                                                 // 扫码充值
-                                                MemberManager.getInstance().printInfo(memberRecordInfo, false, true, null);
+                                                MemberManager.getInstance().printInfo(memberRecordInfo, false, false, null);
                                                 subscriber.onNext(null);
                                                 subscriber.onCompleted();
                                             }
