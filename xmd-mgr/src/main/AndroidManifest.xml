@@ -95,6 +95,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="app"
+                    android:host="xmd"
+                    android:path="/manager" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".window.LoginActivity"
@@ -358,9 +369,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".window.GroupMessageCustomerActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".window.GroupMessageCounponActivity"
             android:screenOrientation="portrait" />
 
     </application>
