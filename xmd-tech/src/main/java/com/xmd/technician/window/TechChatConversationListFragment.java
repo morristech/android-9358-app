@@ -61,11 +61,8 @@ public class TechChatConversationListFragment extends ConversationListFragment {
 
     //显示客服上下线开关
     private void initToolBarCustomerService() {
-        if (technician.getCustomerService() == null) {
-            return;
-        }
         LinearLayout container = (LinearLayout) getView().findViewById(R.id.rightLinearLayout);
-        container.setVisibility(View.VISIBLE);
+        container.setVisibility(technician.getCustomerService() == null ? View.GONE : View.VISIBLE);
         ImageView imageView = new ImageView(getContext());
         container.addView(imageView);
         imageView.setImageResource(R.drawable.ic_service);
