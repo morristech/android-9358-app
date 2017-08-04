@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
 import com.xmd.cashier.common.AppConstants;
@@ -513,7 +514,7 @@ public class MemberManager {
         mPos.printText("交易号:", info.tradeNo);
         mPos.printText("付款方式:", info.payChannelName);
         mPos.printText("交易时间:", info.createTime);
-        mPos.printText("打印时间:", Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT));
+        mPos.printText("打印时间:", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
         mPos.printText("收银人员:", TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().userName : info.operatorName);
         if (!TextUtils.isEmpty(info.techName)) {
             mPos.printText("营销人员:", info.techName + (TextUtils.isEmpty(info.techNo) ? "" : "[" + info.techNo + "]"));

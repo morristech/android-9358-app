@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.shidou.commonlibrary.helper.RetryPool;
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.MainApplication;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
@@ -227,7 +228,7 @@ public class NotifyManager {
         mPos.printDivide();
         mPos.printText("订单编号: ", info.id);
         mPos.printText("下单时间: ", info.createdAt);
-        mPos.printText("打印时间: ", Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT));
+        mPos.printText("打印时间: ", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
         String status = null;
         switch (info.status) {
             case AppConstants.ORDER_RECORD_STATUS_ACCEPT:
@@ -315,7 +316,7 @@ public class NotifyManager {
             }
         }
         mPos.printText("交易时间: ", info.createTime);
-        mPos.printText("打印时间: ", Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT));
+        mPos.printText("打印时间: ", Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT));
         String status = null;
         switch (info.status) {
             case AppConstants.ONLINE_PAY_STATUS_PAID:

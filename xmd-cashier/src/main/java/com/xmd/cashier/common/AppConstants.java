@@ -11,19 +11,27 @@ import java.util.Map;
 
 public class AppConstants {
     public static String SESSION_TYPE = "app";
-
-    public static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String ACTION_CUSTOM_NOTIFY_RECEIVER = "com.xmd.cashier.CUSTOM_NOTIFY";
 
     // 核销类型
-    public static final String TYPE_COUPON = "coupon";      // 优惠券
+    public static final String TYPE_COUPON = "coupon";      // 优惠券-->体验券
+    public static final String TYPE_CASH_COUPON = "cash_coupon";    //现金券
+    public static final String TYPE_GIFT_COUPON = "gift_coupon";    //礼品券
     public static final String TYPE_PAID_COUPON = "paid_coupon";    //点钟券
+    public static final String TYPE_DISCOUNT_COUPON = "discount_coupon";    //折扣券
+    public static final String TYPE_SERVICE_ITEM_COUPON = "service_item_coupon";    //项目券
     public static final String TYPE_ORDER = "order";        // 付费预约
     public static final String TYPE_PAY_FOR_OTHER = "pay_for_other";    //请客
-    public static final String TYPE_PAID_SERVICE_ITEM = "paid_service_item";        //抢项目
-    public static final String TYPE_SERVICE_ITEM_COUPON = "service_item_coupon";    //项目券
     public static final String TYPE_LUCKY_WHEEL = "lucky_wheel";    // 大转盘
     public static final String TYPE_PHONE = "phone";        // 手机号
+
+    // 券类型
+    public static final String COUPON_TYPE_COUPON = "coupon";//体验券
+    public static final String COUPON_TYPE_PAID = "paid";   //点钟券
+    public static final String COUPON_TYPE_GIFT = "gift";   //礼品券
+    public static final String COUPON_TYPE_CASH = "cash";   //现金券
+    public static final String COUPON_TYPE_DISCOUNT = "discount";   //折扣券
+    public static final String COUPON_TYPE_SERVICE_ITEM = "service_item";    //项目券
 
     public static final int MAX_MONEY_INT_BIT = 7;
     public static final int MAX_COUPON_NUMBER_LENGTH = 19;

@@ -199,7 +199,7 @@ public class MainPresenter implements MainContract.Presenter {
         getVerifyType(code);
     }
 
-    // 获取券类型
+    // 获取核销类型
     private void getVerifyType(final String code) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.hideLoading();
@@ -209,33 +209,33 @@ public class MainPresenter implements MainContract.Presenter {
         if (mGetVerifyTypeSubscription != null) {
             mGetVerifyTypeSubscription.unsubscribe();
         }
+
         mGetVerifyTypeSubscription = VerifyManager.getInstance().getVerifyType(code, new Callback<StringResult>() {
             @Override
             public void onSuccess(StringResult o) {
                 switch (o.getRespData()) {
-                    case AppConstants.TYPE_PHONE:
-                        // 手机号:核销券和付费预约
+                    case AppConstants.TYPE_PHONE:   //手机号
                         mView.hideLoading();
                         UiNavigation.gotoVerifyCheckInfoActivity(mContext, code);
                         break;
-                    case AppConstants.TYPE_COUPON:
-                        // 券
+                    case AppConstants.TYPE_COUPON:  // 体验券
+                    case AppConstants.TYPE_CASH_COUPON: //现金券
+                    case AppConstants.TYPE_GIFT_COUPON: //礼品券
+                    case AppConstants.TYPE_PAID_COUPON: //点钟券
+                    case AppConstants.TYPE_DISCOUNT_COUPON: //折扣券
                         getNormalCouponInfo(code);
                         break;
-                    case AppConstants.TYPE_ORDER:
-                        // 预约订单
+                    case AppConstants.TYPE_ORDER:   //预约订单
                         getOrderInfo(code);
                         break;
-                    case AppConstants.TYPE_SERVICE_ITEM_COUPON:
-                        // 项目券
+                    case AppConstants.TYPE_SERVICE_ITEM_COUPON: //项目券
                         getServiceCouponInfo(code);
                         break;
-                    case AppConstants.TYPE_LUCKY_WHEEL:
-                        // 大转盘
+                    case AppConstants.TYPE_LUCKY_WHEEL: //大转盘:奖品
                         getPrizeInfo(code);
                         break;
-                    default:
-                        // 通用
+                    case AppConstants.TYPE_PAY_FOR_OTHER:   //会员请客
+                    default:    //默认核销
                         getCommonVerifyInfo(code);
                         break;
                 }

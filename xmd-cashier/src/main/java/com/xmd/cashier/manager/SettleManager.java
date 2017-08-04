@@ -2,9 +2,9 @@ package com.xmd.cashier.manager;
 
 import android.text.TextUtils;
 
+import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.cashier.cashier.IPos;
 import com.xmd.cashier.cashier.PosFactory;
-import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.bean.SettleSummaryInfo;
 import com.xmd.cashier.dal.net.SpaService;
@@ -134,7 +134,7 @@ public class SettleManager {
             mPos.printRight("开始时间：" + info.startTime);
             mPos.printRight("截止时间：" + info.endTime);
             mPos.printRight("结算人员：" + (TextUtils.isEmpty(info.operatorName) ? AccountManager.getInstance().getUser().userName : info.operatorName));
-            mPos.printRight("结算时间：" + (TextUtils.isEmpty(info.createTime) ? Utils.getFormatString(new Date(), AppConstants.DEFAULT_DATE_FORMAT) : info.createTime));
+            mPos.printRight("结算时间：" + (TextUtils.isEmpty(info.createTime) ? Utils.getFormatString(new Date(), DateUtils.DF_DEFAULT) : info.createTime));
             if (!TextUtils.isEmpty(info.cashierName)) {
                 mPos.printRight("收款人员：" + info.cashierName);
             }
