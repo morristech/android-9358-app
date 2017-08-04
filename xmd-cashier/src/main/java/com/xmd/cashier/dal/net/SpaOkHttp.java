@@ -91,37 +91,4 @@ public class SpaOkHttp {
             networkCallback.onError(e);
         }
     }
-
-    public static byte[] getClubWXQrcode(String url) {
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
-        try {
-            Response response = OkHttpUtil.getInstance().getClient().newCall(request).execute();
-            return response.body().bytes();
-        } catch (IOException e) {
-            XLogger.e("getClubWXQrcode failed:" + e.getLocalizedMessage());
-        }
-        return null;
-    }
-
-    public static String getTradeQrcode(String token, String tradeNo) {
-        FormBody.Builder builder = new FormBody.Builder();
-        builder.add(RequestConstant.KEY_TOKEN, token);
-        builder.add(RequestConstant.KEY_TRADE_NO, tradeNo);
-        builder.add(RequestConstant.KEY_SIGN, RequestConstant.DEFAULT_SIGN_VALUE);
-        Request request = new Request.Builder()
-                .url(SPManager.getInstance().getSpaServerAddress() + RequestConstant.URL_TRADE_QR_CODE)
-                .post(builder.build())
-                .build();
-        try {
-            Response response = OkHttpUtil.getInstance().getClient().newCall(request).execute();
-            StringResult stringResult = new Gson().fromJson(response.body().string(), StringResult.class);
-            return stringResult.getRespData();
-        } catch (Exception e) {
-            XLogger.e("getTradeQrcode failed:" + e.getLocalizedMessage());
-        }
-        return null;
-    }
 }

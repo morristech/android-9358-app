@@ -11,7 +11,6 @@ import com.xmd.cashier.contract.CashierContract;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.bean.VerificationItem;
 import com.xmd.cashier.dal.net.response.GetTradeNoResult;
-import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.Callback0;
 import com.xmd.cashier.manager.CashierManager;
@@ -32,10 +31,10 @@ public class CashierPresenter implements CashierContract.Presenter {
 
     private Subscription mVerificationSubscription;
     private Subscription mGetTradeNoSubscription;
-    private Subscription mGetOnlinePayOrderIdSubscription;
 
     private TradeManager mTradeManager = TradeManager.getInstance();
     private CashierManager mCashierManager = CashierManager.getInstance();
+    private MemberManager mMemberManager = MemberManager.getInstance();
 
     public CashierPresenter(Context context, CashierContract.View view) {
         mContext = context;
@@ -60,14 +59,60 @@ public class CashierPresenter implements CashierContract.Presenter {
         updateFinallyMoney();
     }
 
-    /**
-     * *******************************************Pos收银*******************************************
-     * 设置收银类型->获取TradeNo->核销->Pos支付
-     */
+    // POS支付
     @Override
-    public void onClickCashier() {
+    public void onClickPosPay() {
         mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_POS;
         processTradeNo();
+    }
+
+    // POS支付:生成交易号汇报
+    public void processTradeNo() {
+        mView.showLoading();
+        if (mGetTradeNoSubscription != null) {
+            mGetTradeNoSubscription.unsubscribe();
+        }
+        mGetTradeNoSubscription = mTradeManager.fetchTradeNo(new Callback<GetTradeNoResult>() {
+            @Override
+            public void onSuccess(GetTradeNoResult o) {
+                doCashier();
+            }
+
+            @Override
+            public void onError(String error) {
+                mView.hideLoading();
+                mView.showError("获取订单号失败，请重试");
+            }
+        });
+    }
+
+    // 会员支付
+    @Override
+    public void onClickMemberPay() {
+        if (AppConstants.APP_REQUEST_YES.equals(mMemberManager.getmMemberSwitch())) {
+            UiNavigation.gotoMemberReadActivity(mContext, AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT);
+            mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_MEMBER;
+        } else {
+            mView.showError("会所会员功能未开通!");
+        }
+    }
+
+    // 小摩豆买单
+    @Override
+    public void onClickXMDOnlinePay() {
+        mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_XMD_ONLINE;
+        doCashier();
+    }
+
+    @Override
+    public void doCashier() {
+        if (mTradeManager.haveSelected()) {
+            //处理优惠券信息
+            processCoupon();
+        } else {
+            //没有优惠券
+            processPay();
+        }
     }
 
     /**
@@ -99,72 +144,19 @@ public class CashierPresenter implements CashierContract.Presenter {
         });
     }
 
-
     /**
-     * *******************************************会员支付*******************************************
-     * 扫描会员二维码->获取会员信息->设置收银类型->获取TradeNo->核销->会员支付
-     */
-    @Override
-    public void onClickMemberPay() {
-        if (AppConstants.APP_REQUEST_YES.equals(MemberManager.getInstance().getmMemberSwitch())) {
-            UiNavigation.gotoMemberReadActivity(mContext, AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT);
-        } else {
-            mView.showError("会所会员功能未开通!");
-        }
-    }
-
-    /**
-     * 会员支付
+     * 会员买单
      */
     private void payMember() {
-        mView.hideLoading();
         UiNavigation.gotoMemberCashierActivity(mContext);
-    }
-
-    /**
-     * **********************************************小摩豆在线买单***********************************
-     * 获取买单编号->设置收银类型->核销->微信扫描二维码买单
-     */
-    @Override
-    public void onClickXMDOnlinePay() {
-        processOnlinePayTradeNo();
     }
 
     /**
      * 在线买单
      */
     private void payXMDOnline() {
-        mView.hideLoading();
         UiNavigation.gotoScanPayActivity(mContext);
     }
-
-    /**
-     * 生成小摩豆在线买单ID
-     */
-    private void processOnlinePayTradeNo() {
-        mView.showLoading();
-        if (mGetOnlinePayOrderIdSubscription != null) {
-            mGetOnlinePayOrderIdSubscription.unsubscribe();
-        }
-        mGetOnlinePayOrderIdSubscription = mTradeManager.fetchOnlinePayId(new Callback<StringResult>() {
-            @Override
-            public void onSuccess(StringResult o) {
-                mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_XMD_ONLINE;
-                if (mTradeManager.haveSelected()) {
-                    processCoupon();
-                } else {
-                    processPay();
-                }
-            }
-
-            @Override
-            public void onError(String error) {
-                mView.hideLoading();
-                mView.showError("生成买单信息失败，请重试");
-            }
-        });
-    }
-
 
     /**
      * 检查网络和收款金额
@@ -183,35 +175,6 @@ public class CashierPresenter implements CashierContract.Presenter {
         }
         return true;
     }
-
-    /**
-     * 生成Pos流水记录
-     */
-    public void processTradeNo() {
-        mView.showLoading();
-        if (mGetTradeNoSubscription != null) {
-            mGetTradeNoSubscription.unsubscribe();
-        }
-        mGetTradeNoSubscription = mTradeManager.fetchTradeNo(new Callback<GetTradeNoResult>() {
-            @Override
-            public void onSuccess(GetTradeNoResult o) {
-                if (mTradeManager.haveSelected()) {
-                    //处理优惠券信息
-                    processCoupon();
-                } else {
-                    //没有优惠券
-                    processPay();
-                }
-            }
-
-            @Override
-            public void onError(String error) {
-                mView.hideLoading();
-                mView.showError("获取订单号失败，请重试");
-            }
-        });
-    }
-
 
     /**
      * 核销优惠券
@@ -255,10 +218,10 @@ public class CashierPresenter implements CashierContract.Presenter {
         Trade trade = mTradeManager.getCurrentTrade();
         int needPayMoney = trade.getNeedPayMoney();
         if (needPayMoney == 0) {
-            trade.withoutPay = true;
             //当前不需要支付
             mView.hideLoading();
             mView.showToast("支付成功！");
+            mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_ERROR;
             mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
                 @Override
                 public void onFinished(Void result) {
@@ -278,9 +241,11 @@ public class CashierPresenter implements CashierContract.Presenter {
                 payXMDOnline();
                 break;
             case AppConstants.CASHIER_TYPE_POS:
-            default:
                 // pos收银
                 payCashier(needPayMoney);
+                break;
+            default:
+                XLogger.d("unknow cashier type");
                 break;
         }
     }
@@ -305,9 +270,6 @@ public class CashierPresenter implements CashierContract.Presenter {
         }
         if (mGetTradeNoSubscription != null) {
             mGetTradeNoSubscription.unsubscribe();
-        }
-        if (mGetOnlinePayOrderIdSubscription != null) {
-            mGetOnlinePayOrderIdSubscription.unsubscribe();
         }
     }
 

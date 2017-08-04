@@ -21,10 +21,10 @@ import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.bean.ClubQrcodeBytes;
 import com.xmd.cashier.dal.bean.MemberInfo;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
+import com.xmd.cashier.dal.bean.OnlinePayInfo;
 import com.xmd.cashier.dal.bean.Trade;
 import com.xmd.cashier.dal.bean.VerificationItem;
 import com.xmd.cashier.dal.net.RequestConstant;
-import com.xmd.cashier.dal.net.SpaOkHttp;
 import com.xmd.cashier.dal.net.SpaService;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.dal.net.response.CommonVerifyResult;
@@ -42,10 +42,12 @@ import com.xmd.m.network.ServerException;
 import com.xmd.m.network.XmdNetwork;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import rx.Observable;
 import rx.Subscriber;
@@ -82,10 +84,6 @@ public class TradeManager {
         return mTrade;
     }
 
-    public void setCurrentCashier(int currentCashier) {
-        mTrade.currentCashier = currentCashier;
-    }
-
     //检查POS收银程序是否在支付，如果在支付则切换到POS机收银程序
     public boolean checkAndProcessPosStatus(Context context) {
         if (mInPosPay.get()) {
@@ -113,26 +111,6 @@ public class TradeManager {
     }
 
     /*******************************************支付相关********************************************/
-    // 生成Pos在线买单单号:临时单号,用来生成二维码
-    public Subscription fetchOnlinePayId(final Callback<StringResult> callback) {
-        Observable<StringResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
-                .getXMDOnlineOrderId(AccountManager.getInstance().getToken());
-        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<StringResult>() {
-            @Override
-            public void onCallbackSuccess(StringResult result) {
-                mTrade.tradeNo = result.getRespData();
-                mTrade.tradeTime = DateUtils.doDate2String(new Date());
-                XLogger.i("OnlinePayTempId : " + mTrade.tradeNo);
-                callback.onSuccess(result);
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                callback.onError(e.getLocalizedMessage());
-            }
-        });
-    }
-
     // 生成订单号:可用来生成交易流水
     public Subscription fetchTradeNo(final Callback<GetTradeNoResult> callback) {
         Observable<GetTradeNoResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
@@ -152,14 +130,6 @@ public class TradeManager {
         });
     }
 
-    public void setMemberInfo(MemberInfo info) {
-        mTrade.memberInfo = info;
-    }
-
-    public void setMemberMethod(String method) {
-        mTrade.memberPayMethod = method;
-    }
-
     // 获取会员信息
     public Subscription fetchMemberInfo(final String memberToken, final Callback<MemberInfo> callback) {
         Observable<GetMemberInfo> observable = XmdNetwork.getInstance().getService(SpaService.class)
@@ -167,7 +137,6 @@ public class TradeManager {
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<GetMemberInfo>() {
             @Override
             public void onCallbackSuccess(GetMemberInfo result) {
-                mTrade.currentCashier = AppConstants.CASHIER_TYPE_MEMBER;
                 mTrade.memberPayMethod = AppConstants.MEMBER_PAY_METHOD_SCAN;
                 mTrade.memberInfo = result.getRespData();
                 mTrade.memberToken = memberToken;
@@ -186,11 +155,11 @@ public class TradeManager {
         switch (method) {
             case AppConstants.MEMBER_PAY_METHOD_CODE:
                 observable = XmdNetwork.getInstance().getService(SpaService.class)
-                        .requestMemberPayment(AccountManager.getInstance().getToken(), String.valueOf(mTrade.memberNeedPayMoney), "consume", "会员消费", String.valueOf(mTrade.memberInfo.id), mTrade.tradeNo, AppConstants.MEMBER_TRADE_TYPE_PAY);
+                        .requestMemberPayment(AccountManager.getInstance().getToken(), String.valueOf(mTrade.getNeedPayMoney()), "consume", "会员消费", String.valueOf(mTrade.memberInfo.id), mTrade.tradeNo, AppConstants.MEMBER_TRADE_TYPE_PAY);
                 break;
             case AppConstants.MEMBER_PAY_METHOD_SCAN:
                 observable = XmdNetwork.getInstance().getService(SpaService.class)
-                        .memberPay(AccountManager.getInstance().getToken(), mTrade.memberToken, mTrade.tradeNo, mTrade.memberNeedPayMoney, mTrade.memberCanDiscount, "");
+                        .memberPay(AccountManager.getInstance().getToken(), mTrade.memberToken, mTrade.tradeNo, mTrade.getNeedPayMoney(), null, RequestConstant.DEFAULT_SIGN_VALUE);
                 break;
             default:
                 break;
@@ -198,9 +167,6 @@ public class TradeManager {
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberRecordResult>() {
             @Override
             public void onCallbackSuccess(MemberRecordResult result) {
-                mTrade.setMemberPaidMoney(result.getRespData().amount);
-                mTrade.memberPayCertificate = result.getRespData().id;
-                mTrade.memberPayResult = AppConstants.PAY_RESULT_SUCCESS;
                 callback.onSuccess(result);
             }
 
@@ -246,47 +212,47 @@ public class TradeManager {
                 .create(new Observable.OnSubscribe<Void>() {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
-                        printVerificationList();
+                        printVerificationList();    //打印核销内容
+                        // 更新交易数据
                         mTrade.setCouponDiscountMoney(mTrade.getVerificationSuccessfulMoney());
-                        //设置减扣类型
                         if (mTrade.getWillDiscountMoney() == 0) {
-                            mTrade.setDiscountType(Trade.DISCOUNT_TYPE_NONE);
+                            mTrade.setDiscountType(AppConstants.DISCOUNT_TYPE_NONE);
                         } else {
                             if (mTrade.getVerificationSuccessfulMoney() + mTrade.getVerificationNoUseTreatMoney() != mTrade.getWillDiscountMoney()) {
-                                mTrade.setDiscountType(Trade.DISCOUNT_TYPE_USER);
+                                mTrade.setDiscountType(AppConstants.DISCOUNT_TYPE_USER);
                                 mTrade.setUserDiscountMoney(mTrade.getWillDiscountMoney());
                             } else {
-                                mTrade.setDiscountType(Trade.DISCOUNT_TYPE_COUPON);
+                                mTrade.setDiscountType(AppConstants.DISCOUNT_TYPE_COUPON);
                             }
                         }
+
                         switch (mTrade.currentCashier) {
-                            case AppConstants.CASHIER_TYPE_XMD_ONLINE:
-                                mTrade.tradeStatus = tradeStatus;
-                                printOnlinePay(); // 打印
+                            case AppConstants.CASHIER_TYPE_XMD_ONLINE:  //小摩豆买单支付
+                                if (tradeStatus == AppConstants.TRADE_STATUS_SUCCESS) {
+                                    printOnlinePay(mTrade.onlinePayInfo); // 打印
+                                }
                                 newTrade();         // 重置
                                 break;
-                            case AppConstants.CASHIER_TYPE_MEMBER:
-                                if (mTrade.withoutPay) {
-                                    print();
-                                } else {
-                                    if (mTrade.isRemain) {
-                                        printMemberPay(mTrade.memberRecordInfo);
-                                    }
+                            case AppConstants.CASHIER_TYPE_MEMBER:  //会员支付
+                                if (tradeStatus == AppConstants.TRADE_STATUS_SUCCESS && mTrade.isMemberRemain) {
+                                    printMemberPay(mTrade.memberRecordInfo);
                                 }
                                 newTrade();
                                 break;
-                            case AppConstants.CASHIER_TYPE_POS:
-                            default:
-                                reportTradeDataSync(tradeStatus);
+                            case AppConstants.CASHIER_TYPE_POS: //Pos支付
+                                reportTradeDataSync(tradeStatus);   //汇报流水
                                 if (mTrade.posPoints > 0) {
+                                    // 如果送积分
                                     UiNavigation.gotoPointsPhoneActivity(context);
                                 } else {
                                     print();
                                     newTrade();
                                 }
                                 break;
+                            default:
+                                newTrade();
+                                break;
                         }
-
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }
@@ -327,31 +293,6 @@ public class TradeManager {
         }
     }
 
-    // 交易二维码
-    public byte[] getTradeQRCodeSync() {
-        byte[] result = null;
-        String contents = SpaOkHttp.getTradeQrcode(AccountManager.getInstance().getToken(), mTrade.tradeNo);
-        if (!TextUtils.isEmpty(contents)) {
-            try {
-                Bitmap bitmap = MyQrEncoder.encode(contents, 240, 240);
-                if (bitmap != null) {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
-                        result = bos.toByteArray();
-                    } else {
-                        XLogger.e("bitmap.compress failed!");
-                    }
-                    bitmap.recycle();
-                } else {
-                    XLogger.e("qr code encode failed!");
-                }
-            } catch (WriterException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return result;
-    }
 
     // 会所活动二维码
     private byte[] clubQrcodeBytes;
@@ -364,38 +305,97 @@ public class TradeManager {
             return clubQrcodeBytes;
         }
 
-        Call<StringResult> call = XmdNetwork.getInstance().getService(SpaService.class)
-                .getClubWXQrcode(AccountManager.getInstance().getClubId(), mTrade.tradeNo);
-        XmdNetwork.getInstance().requestSync(call, new NetworkSubscriber<StringResult>() {
+        Call<StringResult> callGetUrl = XmdNetwork.getInstance().getService(SpaService.class).getClubWXQrcodeURL(AccountManager.getInstance().getClubId());
+        XmdNetwork.getInstance().requestSync(callGetUrl, new NetworkSubscriber<StringResult>() {
             @Override
             public void onCallbackSuccess(StringResult result) {
-                byte[] bitmapBytes = SpaOkHttp.getClubWXQrcode(result.getRespData());
-                if (bitmapBytes != null) {
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
-                    Matrix matrix = new Matrix();
-                    matrix.postScale(240.f / bitmap.getWidth(), 240.f / bitmap.getHeight());
-                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
-                        clubQrcodeBytes = bos.toByteArray();
-                        ClubQrcodeBytes cc = new ClubQrcodeBytes();
-                        cc.data = clubQrcodeBytes;
-                        LocalPersistenceManager.writeClubQrcodeBytes(clubId, cc);
-                    } else {
-                        XLogger.e("bitmap.compress failed!");
+                Call<ResponseBody> callGetBytes = XmdNetwork.getInstance().getService(SpaService.class).getClubQrcodeByWX(result.getRespData());
+                XmdNetwork.getInstance().requestSync(callGetBytes, new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+
                     }
-                    bitmap.recycle();
+
+                    @Override
+                    public void onError(Throwable e) {
+                        XLogger.d("getClubQRCodeBytes error:" + e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        try {
+                            byte[] bitmapBytes = responseBody.bytes();
+                            if (bitmapBytes != null) {
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+                                Matrix matrix = new Matrix();
+                                matrix.postScale(240.f / bitmap.getWidth(), 240.f / bitmap.getHeight());
+                                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                                if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
+                                    clubQrcodeBytes = bos.toByteArray();
+                                    ClubQrcodeBytes cc = new ClubQrcodeBytes();
+                                    cc.data = clubQrcodeBytes;
+                                    LocalPersistenceManager.writeClubQrcodeBytes(clubId, cc);
+                                } else {
+                                    XLogger.e("getClubQRCodeBytes : bitmap.compress failed!");
+                                }
+                                bitmap.recycle();
+                            } else {
+                                XLogger.d("getClubQRCodeBytes : can not get qrcode !");
+                            }
+                        } catch (IOException e) {
+                            XLogger.d("getClubQRCodeBytes exception:" + e.getLocalizedMessage());
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                XLogger.d("getClubQRCodeURL error:" + e.getLocalizedMessage());
+            }
+        });
+        return clubQrcodeBytes;
+    }
+
+    // 获取交易二维码
+    private byte[] tradeQrcodeBytes;
+
+    public byte[] getTradeQRCodeSync() {
+        Call<StringResult> tradeCodeCall = XmdNetwork.getInstance().getService(SpaService.class)
+                .getTradeQrcode(AccountManager.getInstance().getToken(), mTrade.tradeNo, RequestConstant.DEFAULT_SIGN_VALUE);
+        XmdNetwork.getInstance().requestSync(tradeCodeCall, new NetworkSubscriber<StringResult>() {
+            @Override
+            public void onCallbackSuccess(StringResult result) {
+                String content = result.getRespData();
+                if (!TextUtils.isEmpty(content)) {
+                    try {
+                        Bitmap bitmap = MyQrEncoder.encode(content, 240, 240);
+                        if (bitmap != null) {
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
+                                tradeQrcodeBytes = bos.toByteArray();
+                            } else {
+                                XLogger.d("getTradeQrcode--bitmap compress failed");
+                            }
+                            bitmap.recycle();
+                        } else {
+                            XLogger.d("getTradeQrcode--Qrcode encode failed");
+                        }
+                    } catch (WriterException e) {
+                        XLogger.d("getTradeQrcode--Qrcode encode exception:" + e.getLocalizedMessage());
+                    }
                 } else {
-                    XLogger.e("can not get qrcode !");
+                    XLogger.d("getTradeQrcode--request success && isEmpty");
                 }
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-
+                XLogger.d("getTradeQrcode--request error:" + e.getLocalizedMessage());
             }
         });
-        return clubQrcodeBytes;
+        return tradeQrcodeBytes;
     }
 
     /*********************************************核销相关******************************************/
@@ -818,45 +818,16 @@ public class TradeManager {
     /*********************************************打印相关******************************************/
     // 打印会员消费信息
     public void printMemberPay(MemberRecordInfo info) {
-        MemberManager.getInstance().printInfo(info, false, true, null);
+        // 客户联小票
+        MemberManager.getInstance().printInfo(info, false, false, null);
     }
 
     // 打印在线买单交易信息
-    public void printOnlinePay() {
+    public void printOnlinePay(OnlinePayInfo info) {
         if (!SPManager.getInstance().getOnlinePaySwitch()) {
             return;
         }
-
-        if (mTrade.tradeStatus != AppConstants.TRADE_STATUS_SUCCESS) {
-            return;
-        }
-        mTrade.qrCodeBytes = getClubQRCodeSync();
-        mPos.printCenter(AccountManager.getInstance().getClubName());
-        mPos.printCenter("(结账单)");
-        mPos.printDivide();
-
-        mPos.printText("消费", Utils.moneyToStringEx(mTrade.getOriginMoney()) + " 元");
-        mPos.printText("减免", Utils.moneyToStringEx(mTrade.getCouponDiscountMoney() + mTrade.getUserDiscountMoney()) + " 元");
-
-        mPos.printDivide();
-        mPos.printRight("实收 " + Utils.moneyToStringEx(mTrade.getOnlinePayPaidMoney()) + " 元", true);
-        mPos.printDivide();
-
-        mPos.printText("交易号:", TextUtils.isEmpty(mTrade.getOnlinePayId()) ? mTrade.tradeNo : mTrade.getOnlinePayId());
-        mPos.printText("付款方式:", "小摩豆在线买单");
-
-        String channel = Utils.getPayChannel(mTrade.getOnlinePayChannel());
-        mPos.printText("支付方式:", TextUtils.isEmpty(channel) ? "未知" : channel);
-
-        mPos.printText("交易时间:", mTrade.tradeTime);
-        mPos.printText("打印时间:", DateUtils.doDate2String(new Date()));
-        mPos.printText("收银员:", AccountManager.getInstance().getUser().userName);
-
-        if (mTrade.qrCodeBytes != null) {
-            mPos.printBitmap(mTrade.qrCodeBytes);
-        }
-        mPos.printCenter("-- 微信扫码，选技师，抢优惠 --");
-        mPos.printEnd();
+        NotifyManager.getInstance().print(info, false);
     }
 
     // 打印交易信息
@@ -871,28 +842,22 @@ public class TradeManager {
         mPos.printDivide();
         mPos.printText("交易号 ：" + mTrade.tradeNo);
         mPos.printText("订单金额：", "￥" + Utils.moneyToStringEx(mTrade.getOriginMoney()), true);
-        mPos.printText("减免金额：", "￥" + Utils.moneyToStringEx(mTrade.getReallyDiscountMoney() + mTrade.getMemberPaidDiscountMoney()), true);
+        mPos.printText("减免金额：", "￥" + Utils.moneyToStringEx(mTrade.getReallyDiscountMoney()), true);
         XLogger.i("减扣类型：" + mTrade.getDiscountType());
         switch (mTrade.getDiscountType()) {
-            case Trade.DISCOUNT_TYPE_COUPON:
+            case AppConstants.DISCOUNT_TYPE_COUPON:
                 mPos.printText("|--优惠金额：", "￥" + Utils.moneyToStringEx(mTrade.getCouponDiscountMoney()));
                 break;
-            case Trade.DISCOUNT_TYPE_USER:
+            case AppConstants.DISCOUNT_TYPE_USER:
                 mPos.printText("|--手动减免：", "￥" + Utils.moneyToStringEx(mTrade.getUserDiscountMoney()));
                 break;
-            case Trade.DISCOUNT_TYPE_NONE:
+            case AppConstants.DISCOUNT_TYPE_NONE:
                 mPos.printText("|--其他优惠：", "￥" + Utils.moneyToStringEx(mTrade.getCouponDiscountMoney() + mTrade.getUserDiscountMoney()));
             default:
                 break;
         }
-        mPos.printText("|--会员折扣：", "￥" + Utils.moneyToStringEx(mTrade.getMemberPaidDiscountMoney()));
-        mPos.printText("实收金额：", "￥" + Utils.moneyToStringEx(mTrade.getPosMoney() + mTrade.getMemberPaidMoney()), true);
+        mPos.printText("实收金额：", "￥" + Utils.moneyToStringEx(mTrade.getPosMoney()), true);
         mPos.printText("|--" + (TextUtils.isEmpty(mTrade.getPosPayTypeString()) ? "其他支付" : mTrade.getPosPayTypeString()) + "：", "￥" + Utils.moneyToStringEx(mTrade.getPosMoney()));
-        mPos.printText("|--会员支付：", "￥" + Utils.moneyToStringEx(mTrade.getMemberPaidMoney()));
-
-        if (mTrade.memberPoints > 0) {
-            mPos.printText("获赠会员积分：" + mTrade.memberPoints);
-        }
         mPos.printText("交易时间：" + mTrade.tradeTime);
         mPos.printText("收银员  ：" + AccountManager.getInstance().getUser().userName);
         if (mTrade.qrCodeBytes != null) {

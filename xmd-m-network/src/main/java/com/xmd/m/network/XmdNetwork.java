@@ -147,6 +147,16 @@ public class XmdNetwork {
         }
     }
 
+    // 特殊处理
+    public <T> void requestSync(Call<T> call, Subscriber<T> subscriber) {
+        try {
+            Response<T> response = call.execute();
+            subscriber.onNext(response.body());
+        } catch (Exception e) {
+            subscriber.onError(e);
+        }
+    }
+
     /**
      * 设置token到header,当有EventTokenExpired事件时，自动清除token
      */

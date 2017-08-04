@@ -1,5 +1,7 @@
 package com.xmd.cashier.dal.bean;
 
+import com.xmd.cashier.common.AppConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,18 +10,17 @@ import java.util.List;
  */
 
 public class Trade {
-    public static final int DISCOUNT_TYPE_NONE = 0;
-    public static final int DISCOUNT_TYPE_COUPON = 2;
-    public static final int DISCOUNT_TYPE_USER = 1;
+    public Trade() {
+        couponList = new ArrayList<>();
+        discountType = AppConstants.DISCOUNT_TYPE_COUPON;
+    }
 
-    public boolean withoutPay = false;  //优惠金额足以支付,没有会员扫码pos支付
+    public int currentCashier; //当前收银方式:会员支付 OR POS收银程序 OR 小摩豆微信在线买单;为error时表示不需要支付金额
 
     //订单信息
     public String tradeNo; //订单号
     public int tradeStatus;//订单状态
     public String tradeTime;//交易时间
-
-    public int currentCashier; //当前收银方式，会员支付 OR POS收银程序 OR 小摩豆微信在线买单
 
     private int originMoney;//原始消费金额
     private int discountType;//0:系统计算 1：用户手动输入
@@ -36,23 +37,19 @@ public class Trade {
     private int verificationSuccessfulMoney;//核销成功的金额
     private int verificationNoUseTreatMoney;//核销成功后，没有使用的请客金额
 
-
     /**
      * 会员支付
      **/
     public String memberPayMethod;  // 支付方式：接口 或者 二维码memberToken
-    public MemberInfo memberInfo;//会员支付信息
+    public MemberInfo memberInfo;// 会员支付时的会员信息
     public String memberToken;  //会员二维码token
-    public int memberNeedPayMoney;//会员需要支付的金额
-    public String memberPayError; //会员支持错误提示
-    public int memberPayResult; //会员支付结果
-    public int memberPaidDiscountMoney;//会员实际折扣金额
-    private int memberPaidMoney; //会员实际支付的金额
-    public int memberPoints; //交易后会员获得的积分
-    public String memberCanDiscount;// Y打折，N不打折
-    public String memberPayCertificate;//会员支付凭证
-    public MemberRecordInfo memberRecordInfo;
-    public boolean isRemain;
+    public MemberRecordInfo memberRecordInfo;//会员支付信息
+    public boolean isMemberRemain;    //用来控制打印是否要打印存根
+
+    /**
+     * 扫码在线买单
+     */
+    public OnlinePayInfo onlinePayInfo;
 
     /**
      * 收银台支付
@@ -70,67 +67,16 @@ public class Trade {
      **/
     public byte[] qrCodeBytes;
 
-    public Trade() {
-        couponList = new ArrayList<>();
-        discountType = DISCOUNT_TYPE_COUPON;
-    }
-
-    /**
-     * 扫码在线买单
-     */
-    private String onlinePayId;
-    private int onlinePayPaidMoney;
-    private String onlinePayChannel;
-
-    // 在线扫码买单
-    public void setOnlinePayId(String payId) {
-        this.onlinePayId = payId;
-    }
-
-    public String getOnlinePayId() {
-        return this.onlinePayId;
-    }
-
-    public void setOnlinePayPaidMoney(int onlineMoney) {
-        this.onlinePayPaidMoney = onlineMoney;
-    }
-
-    public int getOnlinePayPaidMoney() {
-        return this.onlinePayPaidMoney;
-    }
-
-    public void setOnlinePayChannel(String channel) {
-        this.onlinePayChannel = channel;
-    }
-
-    public String getOnlinePayChannel() {
-        return this.onlinePayChannel;
-    }
-
     //设置原始消费金额
     public void setOriginMoney(int originMoney) {
         this.originMoney = originMoney;
-    }
-
-    //设置会员已支付金额
-    public void setMemberPaidMoney(int memberMoney) {
-        this.memberPaidMoney = memberMoney;
-        memberPaidDiscountMoney = memberNeedPayMoney - memberPaidMoney;//计算折扣金额
-    }
-
-    public int getMemberPaidMoney() {
-        return memberPaidMoney;
-    }
-
-    public int getMemberPaidDiscountMoney() {
-        return memberPaidDiscountMoney;
     }
 
     /**
      * 当前需要支付的金额
      **/
     public int getNeedPayMoney() {
-        int needPayMoney = originMoney - memberPaidMoney - memberPaidDiscountMoney - willDiscountMoney;
+        int needPayMoney = originMoney - willDiscountMoney;
         if (needPayMoney < 0) {
             needPayMoney = 0;
         }
@@ -153,9 +99,9 @@ public class Trade {
     //实际减免金额
     public int getReallyDiscountMoney() {
         switch (discountType) {
-            case DISCOUNT_TYPE_COUPON:
+            case AppConstants.DISCOUNT_TYPE_COUPON:
                 return couponDiscountMoney;
-            case DISCOUNT_TYPE_USER:
+            case AppConstants.DISCOUNT_TYPE_USER:
                 return userDiscountMoney;
         }
         return 0;

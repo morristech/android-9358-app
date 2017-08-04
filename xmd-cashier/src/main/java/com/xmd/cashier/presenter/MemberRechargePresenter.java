@@ -211,12 +211,12 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     }
 
     private void printClient(final MemberRecordInfo info) {
-        MemberManager.getInstance().printInfo(info, false, false, new Callback<MemberRecordInfo>() {
+        MemberManager.getInstance().printInfo(info, false, true, new Callback<MemberRecordInfo>() {
             @Override
             public void onSuccess(MemberRecordInfo o) {
                 mView.hideLoading();
                 new CustomAlertDialogBuilder(mContext)
-                        .setMessage("是否打印商户存根?")
+                        .setMessage("是否需要打印客户联小票?")
                         .setPositiveButton("打印", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -226,7 +226,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
                                             @Override
                                             public void call(Subscriber<? super Void> subscriber) {
                                                 // POS充值:银联|现金
-                                                MemberManager.getInstance().printInfo(info, false, true, null);
+                                                MemberManager.getInstance().printInfo(info, false, false, null);
                                                 subscriber.onNext(null);
                                                 subscriber.onCompleted();
                                             }

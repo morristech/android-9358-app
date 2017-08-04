@@ -73,9 +73,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         Trade trade = mTradeManager.getCurrentTrade();
         if (trade.getVerificationSuccessfulMoney() > 0) {
             message = "选择的优惠券已经核销无法再次使用，确定退出本次交易？";
-        } else if (trade.getMemberPaidMoney() > 0) {
-            message = "会员已支付了部分金额！请再三思考！确定退出交易？";
-        } else {
+        }  else {
             message = "确定退出交易？";
         }
         new CustomAlertDialogBuilder(mContext)
@@ -108,8 +106,8 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         mView.hideKeyboard();
         Trade trade = mTradeManager.getCurrentTrade();
         if (trade.getNeedPayMoney() == 0) {
-            trade.withoutPay = true;
             //不需要支付
+            mTradeManager.getCurrentTrade().currentCashier = AppConstants.CASHIER_TYPE_ERROR;
             mTradeManager.finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
                 @Override
                 public void onFinished(Void result) {
