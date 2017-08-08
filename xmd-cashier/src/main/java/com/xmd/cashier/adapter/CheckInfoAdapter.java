@@ -25,10 +25,6 @@ import java.util.List;
  */
 
 public class CheckInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int TYPE_ITEM_COUPON = 1;
-    private static final int TYPE_ITEM_ORDER = 2;
-    private static final int TYPE_ITEM_UNKNOW = 3;
-
     private List<CheckInfo> mData = new ArrayList<>();
     private OnCheckItemCallBack mCallBack;
     private Context mContext;
@@ -64,22 +60,22 @@ public class CheckInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemViewType(int position) {
         switch (mData.get(position).getInfoType()) {
             case AppConstants.CHECK_INFO_TYPE_COUPON:
-                return TYPE_ITEM_COUPON;
+                return AppConstants.VIEW_TYPE_COUPON;
             case AppConstants.CHECK_INFO_TYPE_ORDER:
-                return TYPE_ITEM_ORDER;
+                return AppConstants.VIEW_TYPE_ORDER;
             default:
-                return TYPE_ITEM_UNKNOW;
+                return AppConstants.VIEW_TYPE_UNKNOW;
         }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case TYPE_ITEM_COUPON:
+            case AppConstants.VIEW_TYPE_COUPON:
                 return new CouponViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_check_coupon, parent, false));
-            case TYPE_ITEM_ORDER:
+            case AppConstants.VIEW_TYPE_ORDER:
                 return new OrderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_check_order, parent, false));
-            case TYPE_ITEM_UNKNOW:
+            case AppConstants.VIEW_TYPE_UNKNOW:
             default:
                 return null;
         }

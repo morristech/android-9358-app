@@ -159,6 +159,9 @@ public class VerificationPresenter implements VerificationContract.Presenter {
         // 根据不同的类型跳转到相应的详情页
         switch (item.type) {
             case AppConstants.TYPE_COUPON:
+            case AppConstants.TYPE_CASH_COUPON:
+            case AppConstants.TYPE_PAID_COUPON:
+            case AppConstants.TYPE_DISCOUNT_COUPON:
                 UiNavigation.gotoVerifyCouponActivity(mContext, item.couponInfo, false);
                 break;
             case AppConstants.TYPE_ORDER:
@@ -213,8 +216,11 @@ public class VerificationPresenter implements VerificationContract.Presenter {
                         // 手机号
                         getList(number);
                         break;
-                    case AppConstants.TYPE_COUPON:
-                        // 券
+                    case AppConstants.TYPE_COUPON:  //体验券
+                    case AppConstants.TYPE_CASH_COUPON: //现金券
+                    case AppConstants.TYPE_DISCOUNT_COUPON: //折扣券
+                    case AppConstants.TYPE_PAID_COUPON:     //点钟券
+                        // 收银券类型不包括礼品券&项目券
                         getCoupon(number, o.getRespData());
                         break;
                     case AppConstants.TYPE_ORDER:
@@ -257,25 +263,24 @@ public class VerificationPresenter implements VerificationContract.Presenter {
                     if (info.getValid()) {
                         // 可用
                         switch (info.getType()) {
-                            case AppConstants.TYPE_COUPON:
-                            case AppConstants.TYPE_PAID_COUPON:
-                                // 券
+                            case AppConstants.TYPE_COUPON:  //体验券
+                            case AppConstants.TYPE_CASH_COUPON: //现金券
+                            case AppConstants.TYPE_DISCOUNT_COUPON: //折扣券
+                            case AppConstants.TYPE_PAID_COUPON: //点钟券
                                 if (info.getInfo() instanceof String) {
                                     info.setInfo(gson.fromJson((String) info.getInfo(), CouponInfo.class));
                                 } else {
                                     info.setInfo(gson.fromJson(gson.toJson(info.getInfo()), CouponInfo.class));
                                 }
                                 CouponInfo couponInfo = (CouponInfo) info.getInfo();
-                                couponInfo.customType = info.getType();
                                 couponInfo.valid = info.getValid();
                                 VerificationItem couponItem = new VerificationItem();
                                 couponItem.code = info.getCode();
-                                couponItem.type = AppConstants.TYPE_COUPON;
+                                couponItem.type = info.getType();
                                 couponItem.couponInfo = couponInfo;
                                 mTradeManager.addVerificationInfo(couponItem);
                                 break;
-                            case AppConstants.TYPE_ORDER:
-                                // 付费预约
+                            case AppConstants.TYPE_ORDER:   // 付费预约
                                 if (info.getInfo() instanceof String) {
                                     info.setInfo(gson.fromJson((String) info.getInfo(), OrderInfo.class));
                                 } else {
@@ -283,12 +288,12 @@ public class VerificationPresenter implements VerificationContract.Presenter {
                                 }
                                 VerificationItem orderItem = new VerificationItem();
                                 orderItem.code = info.getCode();
-                                orderItem.type = AppConstants.TYPE_ORDER;
+                                orderItem.type = info.getType();
                                 orderItem.order = (OrderInfo) info.getInfo();
                                 mTradeManager.addVerificationInfo(orderItem);
                                 break;
                             default:
-                                // 只处理优惠券点钟券和付费预约,不处理项目券
+                                // 收银不处理:礼品券项目券
                                 break;
                         }
                     }
@@ -313,7 +318,6 @@ public class VerificationPresenter implements VerificationContract.Presenter {
             @Override
             public void onSuccess(CouponResult o) {
                 CouponInfo info = o.getRespData();
-                info.customType = ("paid".equals(info.couponType) ? AppConstants.TYPE_PAID_COUPON : AppConstants.TYPE_COUPON);
                 info.valid = true;
                 VerificationItem item = new VerificationItem();
                 item.code = info.couponNo;

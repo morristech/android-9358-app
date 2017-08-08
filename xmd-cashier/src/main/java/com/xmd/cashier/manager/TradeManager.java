@@ -481,11 +481,36 @@ public class TradeManager {
                                 continue;
                             }
                             switch (v.type) {
-                                case AppConstants.TYPE_COUPON:
-                                    // 处理券
+                                case AppConstants.TYPE_COUPON:  //体验券
+                                case AppConstants.TYPE_CASH_COUPON: //现金券
+                                case AppConstants.TYPE_PAID_COUPON: //点钟券
                                     Call<BaseBean> commonCall = XmdNetwork.getInstance().getService(SpaService.class)
                                             .verifyCommonCall(AccountManager.getInstance().getToken(), v.code);
                                     XmdNetwork.getInstance().requestSync(commonCall, new NetworkSubscriber<BaseBean>() {
+                                        @Override
+                                        public void onCallbackSuccess(BaseBean result) {
+                                            // 核销成功
+                                            v.success = true;
+                                            v.errorMsg = AppConstants.APP_REQUEST_YES;
+                                        }
+
+                                        @Override
+                                        public void onCallbackError(Throwable e) {
+                                            // 核销失败
+                                            v.success = false;
+                                            v.errorMsg = e.getLocalizedMessage();
+                                            if (e instanceof NetworkException) {
+                                                v.errorCode = ErrCode.ERRCODE_NETWORK;
+                                            } else if (e instanceof ServerException) {
+                                                v.errorCode = ErrCode.ERRCODE_SERVER;
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case AppConstants.TYPE_DISCOUNT_COUPON:
+                                    Call<BaseBean> discountCall = XmdNetwork.getInstance().getService(SpaService.class)
+                                            .verifyWithMoneyCall(AccountManager.getInstance().getToken(), String.valueOf(v.couponInfo.originAmount), v.code, v.type);
+                                    XmdNetwork.getInstance().requestSync(discountCall, new NetworkSubscriber<BaseBean>() {
                                         @Override
                                         public void onCallbackSuccess(BaseBean result) {
                                             // 核销成功
@@ -611,20 +636,7 @@ public class TradeManager {
         List<VerificationItem> verificationItems = mTrade.getCouponList();
         for (VerificationItem item : verificationItems) {
             if (item.selected && item.success) {
-                // 需要根据不同的类型进行打印
-                switch (item.type) {
-                    case AppConstants.TYPE_COUPON:
-                        VerifyManager.getInstance().printSync(item.couponInfo.customType, item.couponInfo);
-                        break;
-                    case AppConstants.TYPE_ORDER:
-                        VerifyManager.getInstance().printSync(item.type, item.order);
-                        break;
-                    case AppConstants.TYPE_PAY_FOR_OTHER:
-                        VerifyManager.getInstance().printSync(item.type, item.treatInfo);
-                        break;
-                    default:
-                        break;
-                }
+                VerifyManager.getInstance().printByVerifyType(item);
             }
         }
     }
@@ -704,6 +716,9 @@ public class TradeManager {
                 selectCount++;
                 switch (info.type) {
                     case AppConstants.TYPE_COUPON:
+                    case AppConstants.TYPE_CASH_COUPON:
+                    case AppConstants.TYPE_PAID_COUPON:
+                    case AppConstants.TYPE_DISCOUNT_COUPON:
                         total += info.couponInfo.getReallyCouponMoney();
                         break;
                     case AppConstants.TYPE_ORDER:
@@ -742,6 +757,9 @@ public class TradeManager {
             if (info.selected && info.success) {
                 switch (info.type) {
                     case AppConstants.TYPE_COUPON:
+                    case AppConstants.TYPE_CASH_COUPON:
+                    case AppConstants.TYPE_PAID_COUPON:
+                    case AppConstants.TYPE_DISCOUNT_COUPON:
                         total += info.couponInfo.getReallyCouponMoney();
                         break;
                     case AppConstants.TYPE_ORDER:
@@ -774,6 +792,9 @@ public class TradeManager {
             if (item.selected) {
                 switch (item.type) {
                     case AppConstants.TYPE_COUPON:
+                    case AppConstants.TYPE_CASH_COUPON:
+                    case AppConstants.TYPE_PAID_COUPON:
+                    case AppConstants.TYPE_DISCOUNT_COUPON:
                         result.append(item.couponInfo.couponNo + "|");
                         break;
                     case AppConstants.TYPE_ORDER:

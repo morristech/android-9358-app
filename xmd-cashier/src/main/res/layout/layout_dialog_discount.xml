@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/activity_small_margin"
+        android:text="提示"
+        android:textSize="@dimen/small_font_size" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="折扣券需输入消费金额，以便于计算优惠金额"
+        android:textSize="@dimen/font_size_14" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_normal_margin">
+
+        <com.xmd.cashier.widget.ClearableEditText
+            android:id="@+id/dialog_input_amount"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/activity_small_margin"
+            android:layout_marginRight="@dimen/activity_small_margin"
+            android:layout_weight="1"
+            android:background="@drawable/bg_area_line"
+            android:clickable="true"
+            android:focusable="true"
+            android:hint="请输入消费金额"
+            android:inputType="number"
+            android:lines="1"
+            android:maxLength="6"
+            android:padding="5dp"
+            android:textColorHint="@color/colorText3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="元" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dialog_discount_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" />
+
+    <TextView
+        android:id="@+id/dialog_discount_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="@dimen/activity_small_margin"
+        android:textSize="@dimen/font_size_16" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorStoke" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dialog_negative"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_area_item"
+            android:text="取消"
+            android:textColor="@color/colorText3" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/colorStoke" />
+
+        <Button
+            android:id="@+id/dialog_positive"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_area_item"
+            android:text="确定"
+            android:textColor="@color/colorAccent" />
+    </LinearLayout>
+</LinearLayout>

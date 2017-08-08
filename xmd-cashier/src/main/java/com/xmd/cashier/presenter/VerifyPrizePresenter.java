@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.shidou.commonlibrary.helper.XLogger;
 import com.xmd.cashier.R;
-import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.contract.VerifyPrizeContract;
 import com.xmd.cashier.dal.bean.PrizeInfo;
@@ -12,7 +11,11 @@ import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.m.network.BaseBean;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 16-12-12.
@@ -42,7 +45,7 @@ public class VerifyPrizePresenter implements VerifyPrizeContract.Presenter {
         mVerifyPrizeSubscription = VerifyManager.getInstance().verifyLuckyWheel(mView.getCode(), new Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean o) {
-                VerifyManager.getInstance().print(AppConstants.TYPE_LUCKY_WHEEL, info);
+                printPrizeInfoSync(info);
                 mView.hideLoadingView();
                 mView.showToast("操作成功");
                 mView.finishSelf();
@@ -72,5 +75,20 @@ public class VerifyPrizePresenter implements VerifyPrizeContract.Presenter {
         if (mVerifyPrizeSubscription != null) {
             mVerifyPrizeSubscription.unsubscribe();
         }
+    }
+
+    private void printPrizeInfoSync(final PrizeInfo prizeInfo) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        VerifyManager.getInstance().printLuckWheel(prizeInfo);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 }

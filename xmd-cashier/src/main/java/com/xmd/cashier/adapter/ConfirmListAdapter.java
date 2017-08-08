@@ -28,11 +28,7 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
     private ConfirmContract.Presenter mPresenter;
     private Trade mTrade;
     private int mItemCount;
-
     private List<VerificationItem> mData = new ArrayList<>();
-    private final int VIEW_TYPE_COUPON = 1;
-    private final int VIEW_TYPE_ORDER = 2;
-    private final int VIEW_TYPE_TREAT = 3;
 
     public ConfirmListAdapter(ConfirmContract.Presenter presenter) {
         mPresenter = presenter;
@@ -43,12 +39,15 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
         Context context = parent.getContext();
         View view = null;
         switch (viewType) {
-            case VIEW_TYPE_COUPON:
-            case VIEW_TYPE_ORDER:
+            case AppConstants.VIEW_TYPE_COUPON:
+            case AppConstants.VIEW_TYPE_ORDER:
                 view = LayoutInflater.from(context).inflate(R.layout.item_coupon_status, parent, false);
                 break;
-            case VIEW_TYPE_TREAT:
+            case AppConstants.VIEW_TYPE_TREAT:
                 view = LayoutInflater.from(context).inflate(R.layout.item_treat_status, parent, false);
+                break;
+            case AppConstants.VIEW_TYPE_UNKNOW:
+            default:
                 break;
         }
         return new ViewHolder(view, mPresenter);
@@ -56,15 +55,18 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        String type = mData.get(position).type;
-        if (type.equals(AppConstants.TYPE_COUPON)) {
-            return VIEW_TYPE_COUPON;
-        } else if (type.equals(AppConstants.TYPE_ORDER)) {
-            return VIEW_TYPE_ORDER;
-        } else if (type.equals(AppConstants.TYPE_PAY_FOR_OTHER)) {
-            return VIEW_TYPE_TREAT;
+        switch (mData.get(position).type) {
+            case AppConstants.TYPE_COUPON:
+            case AppConstants.TYPE_CASH_COUPON:
+            case AppConstants.TYPE_DISCOUNT_COUPON:
+            case AppConstants.TYPE_PAID_COUPON:
+                return AppConstants.VIEW_TYPE_COUPON;
+            case AppConstants.TYPE_ORDER:
+                return AppConstants.VIEW_TYPE_ORDER;
+            case AppConstants.TYPE_PAY_FOR_OTHER:
+                return AppConstants.VIEW_TYPE_TREAT;
         }
-        return -1;
+        return AppConstants.VIEW_TYPE_UNKNOW;
     }
 
     @Override
@@ -119,52 +121,44 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
             mPresenter = presenter;
         }
 
-
         private void bind(final VerificationItem item) {
             switch (item.type) {
                 case AppConstants.TYPE_COUPON:
+                case AppConstants.TYPE_CASH_COUPON:
+                case AppConstants.TYPE_DISCOUNT_COUPON:
+                case AppConstants.TYPE_PAID_COUPON:
                     CouponInfo couponInfo = item.couponInfo;
                     mName.setText(couponInfo.actTitle);
                     mType.setText(couponInfo.useTypeName);
                     mInfo.setText(couponInfo.consumeMoneyDescription);
                     mMoney.setText(Utils.moneyToString(couponInfo.getReallyCouponMoney()));
+                    mStatus.setText(item.success ? "已核销" : item.errorMsg);
+                    mName.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
+                    mType.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
+                    mInfo.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
+                    mMoney.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
+                    mStatus.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorVerificationFailed));
                     break;
                 case AppConstants.TYPE_ORDER:
                     mName.setText(item.order.customerName);
                     mType.setText("付费预约");
                     mInfo.setText("技师：" + item.order.techName);
                     mMoney.setText(Utils.moneyToString(item.order.downPayment));
+                    mStatus.setText(item.success ? "已核销" : item.errorMsg);
+                    mName.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
+                    mType.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
+                    mInfo.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
+                    mMoney.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
+                    mStatus.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorVerificationFailed));
                     break;
                 case AppConstants.TYPE_PAY_FOR_OTHER:
                     (itemView.findViewById(R.id.checkbox)).setVisibility(View.GONE);
                     mName.setText("朋友请客￥" + Utils.moneyToString(item.treatInfo.amount));
+                    mName.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
                     mStatus.setVisibility(View.VISIBLE);
+                    mStatus.setText(item.success ? "已核销￥" + Utils.moneyToString(item.treatInfo.useMoney) : item.errorMsg);
+                    mStatus.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorVerificationFailed));
                     break;
-            }
-
-            if (item.success) {
-                if (item.type.equals(AppConstants.TYPE_PAY_FOR_OTHER)) {
-                    mStatus.setText("已核销￥" + Utils.moneyToString(item.treatInfo.useMoney));
-                } else {
-                    mStatus.setText("已核销");
-                }
-                mStatus.setTextColor(itemView.getContext().getResources().getColor(R.color.colorDivide));
-                mName.setTextColor(itemView.getContext().getResources().getColor(R.color.colorDivide));
-                if (item.type.equals(AppConstants.TYPE_COUPON) || item.type.equals(AppConstants.TYPE_ORDER)) {
-                    mType.setTextColor(itemView.getContext().getResources().getColor(R.color.colorDivide));
-                    mInfo.setTextColor(itemView.getContext().getResources().getColor(R.color.colorDivide));
-                    mMoney.setTextColor(itemView.getContext().getResources().getColor(R.color.colorDivide));
-                }
-
-            } else {
-                mStatus.setText(item.errorMsg);
-                mStatus.setTextColor(itemView.getContext().getResources().getColor(R.color.colorVerificationFailed));
-                mName.setTextColor(itemView.getContext().getResources().getColor(R.color.colorText));
-                if (item.type.equals(AppConstants.TYPE_COUPON) || item.type.equals(AppConstants.TYPE_ORDER)) {
-                    mType.setTextColor(itemView.getContext().getResources().getColor(R.color.colorText));
-                    mInfo.setTextColor(itemView.getContext().getResources().getColor(R.color.colorText));
-                    mMoney.setTextColor(itemView.getContext().getResources().getColor(R.color.colorText));
-                }
             }
 
             if (mPresenter != null) {

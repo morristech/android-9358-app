@@ -73,7 +73,7 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         Trade trade = mTradeManager.getCurrentTrade();
         if (trade.getVerificationSuccessfulMoney() > 0) {
             message = "选择的优惠券已经核销无法再次使用，确定退出本次交易？";
-        }  else {
+        } else {
             message = "确定退出交易？";
         }
         new CustomAlertDialogBuilder(mContext)
@@ -175,6 +175,9 @@ public class ConfirmPresenter implements ConfirmContract.Presenter {
         mView.hideKeyboard();
         switch (item.type) {
             case AppConstants.TYPE_COUPON:
+            case AppConstants.TYPE_CASH_COUPON:
+            case AppConstants.TYPE_PAID_COUPON:
+            case AppConstants.TYPE_DISCOUNT_COUPON:
                 UiNavigation.gotoVerifyCouponActivity(mContext, item.couponInfo, false);
                 break;
             case AppConstants.TYPE_ORDER:

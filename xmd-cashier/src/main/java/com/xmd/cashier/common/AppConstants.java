@@ -33,6 +33,11 @@ public class AppConstants {
     public static final String COUPON_TYPE_DISCOUNT = "discount";   //折扣券
     public static final String COUPON_TYPE_SERVICE_ITEM = "service_item";    //项目券
 
+    public static final int VIEW_TYPE_UNKNOW = -1;
+    public static final int VIEW_TYPE_COUPON = 1;
+    public static final int VIEW_TYPE_ORDER = 2;
+    public static final int VIEW_TYPE_TREAT = 3;
+
     public static final int MAX_MONEY_INT_BIT = 7;
     public static final int MAX_COUPON_NUMBER_LENGTH = 19;
 

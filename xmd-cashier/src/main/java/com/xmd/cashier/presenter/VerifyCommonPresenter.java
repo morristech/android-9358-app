@@ -13,7 +13,11 @@ import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.m.network.BaseBean;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 16-12-12.
@@ -54,7 +58,7 @@ public class VerifyCommonPresenter implements VerifyCommonContract.Presenter {
                     treatInfo.amount = Integer.parseInt(info.info.amount);
                     treatInfo.useMoney = Utils.stringToMoney(mView.getAmount());
                     treatInfo.authorizeCode = info.code;
-                    VerifyManager.getInstance().print(AppConstants.TYPE_PAY_FOR_OTHER, treatInfo);
+                    printTreatInfoSync(treatInfo);
                 }
                 mView.hideLoadingView();
                 mView.showToast("操作成功");
@@ -68,6 +72,21 @@ public class VerifyCommonPresenter implements VerifyCommonContract.Presenter {
                 mView.showError("操作失败：" + error);
             }
         });
+    }
+
+    private void printTreatInfoSync(final TreatInfo treatInfo) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        VerifyManager.getInstance().printTreatInfo(treatInfo);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     @Override

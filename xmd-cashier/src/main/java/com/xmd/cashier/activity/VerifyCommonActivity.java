@@ -111,7 +111,7 @@ public class VerifyCommonActivity extends BaseActivity implements VerifyCommonCo
         if (info.needAmount) {
             mNeedAmountLayout.setVisibility(View.VISIBLE);
             if (mAmount > 0) {
-                mAmountEdt.setHint("应支付" + Utils.moneyToString(mAmount) + "元");
+                mAmountEdt.setHint("可核销" + Utils.moneyToString(mAmount) + "元");
             }
             mAmountEdt.setInputType(0);
             mAmountEdt.setOnTouchListener(new View.OnTouchListener() {

@@ -11,7 +11,11 @@ import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
 import com.xmd.m.network.BaseBean;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zr on 2017/4/16 0016.
@@ -61,9 +65,9 @@ public class VerifyOrderPresenter implements VerifyOrderContract.Presenter {
         mModifyOrderStatusSubscription = VerifyManager.getInstance().verifyPaidOrder(info.orderNo, AppConstants.PAID_ORDER_OP_VERIFIED, new Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean o) {
-                VerifyManager.getInstance().print(AppConstants.TYPE_ORDER, info);
                 mView.hideLoading();
                 mView.showToast("核销成功");
+                printOrderInfoSync(info);
                 mView.finishSelf();
             }
 
@@ -73,5 +77,20 @@ public class VerifyOrderPresenter implements VerifyOrderContract.Presenter {
                 mView.showToast("核销失败:" + error);
             }
         });
+    }
+
+    private void printOrderInfoSync(final OrderInfo orderInfo) {
+        Observable
+                .create(new Observable.OnSubscribe<Void>() {
+                    @Override
+                    public void call(Subscriber<? super Void> subscriber) {
+                        VerifyManager.getInstance().printOrder(orderInfo);
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 }

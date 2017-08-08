@@ -3,6 +3,8 @@ package com.xmd.cashier.dal.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.xmd.cashier.common.AppConstants;
+
 import java.util.List;
 
 /**
@@ -55,7 +57,7 @@ public class CouponInfo implements Parcelable {
     public String userPhone;//用户手机
 
     public boolean valid;
-    public String customType;
+    public int originAmount;    //如果是折扣券,折扣券的消费金额
 
     public CouponInfo() {
     }
@@ -81,6 +83,7 @@ public class CouponInfo implements Parcelable {
         actTitle = in.readString();
         actSubTitle = in.readString();
         creditAmount = in.readInt();
+        originAmount = in.readInt();
         actAmount = in.readInt();
         consumeAmount = in.readInt();
         paidType = in.readString();
@@ -88,7 +91,6 @@ public class CouponInfo implements Parcelable {
         userName = in.readString();
         userPhone = in.readString();
         valid = in.readByte() != 0;
-        customType = in.readString();
     }
 
     public static final Creator<CouponInfo> CREATOR = new Creator<CouponInfo>() {
@@ -122,17 +124,21 @@ public class CouponInfo implements Parcelable {
 
     //返回实际的减扣金额
     public int getReallyCouponMoney() {
-        if ("paid".equals(couponType)) {
-            // 点钟券
-            return consumeAmount;
-        } else {
-            if ("coupon".equals(useType)) {
-                // 优惠券
+        switch (couponType) {
+            case AppConstants.COUPON_TYPE_PAID:
+                // 点钟券:XX元抵扣XXX元
+                return consumeAmount;
+            case AppConstants.COUPON_TYPE_COUPON:
+                // 体验券
                 return consumeAmount - actAmount;
-            } else {
+            case AppConstants.COUPON_TYPE_CASH:
+                // 现金券
                 return actAmount;
-            }
+            case AppConstants.COUPON_TYPE_DISCOUNT:
+                // 折扣券 actAmount为折扣比例
+                return (int) ((long) originAmount * (100000 - actAmount) / 100000);
         }
+        return 0;
     }
 
     @Override
@@ -162,6 +168,7 @@ public class CouponInfo implements Parcelable {
         dest.writeString(actTitle);
         dest.writeString(actSubTitle);
         dest.writeInt(creditAmount);
+        dest.writeInt(originAmount);
         dest.writeInt(actAmount);
         dest.writeInt(consumeAmount);
         dest.writeString(paidType);
@@ -169,6 +176,5 @@ public class CouponInfo implements Parcelable {
         dest.writeString(userName);
         dest.writeString(userPhone);
         dest.writeByte((byte) (valid ? 1 : 0));
-        dest.writeString(customType);
     }
 }

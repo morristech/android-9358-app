@@ -25,7 +25,6 @@ import com.xmd.cashier.dal.net.response.StringResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordDetailResult;
 import com.xmd.cashier.dal.net.response.VerifyRecordResult;
 import com.xmd.cashier.dal.net.response.VerifyTypeResult;
-import com.xmd.cashier.dal.sp.SPManager;
 import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkException;
 import com.xmd.m.network.NetworkSubscriber;
@@ -52,7 +51,7 @@ import rx.schedulers.Schedulers;
 public class VerifyManager {
     private IPos mPos;
 
-    private List<CheckInfo> mVerifyList;
+    private List<CheckInfo> mVerifyList;    //核销列表
 
     private static VerifyManager mInstance = new VerifyManager();
 
@@ -74,6 +73,27 @@ public class VerifyManager {
         if (mVerifyList != null) {
             mVerifyList.clear();
         }
+    }
+
+    // 获取要核销的折扣券列表
+    public List<CouponInfo> getDiscountList() {
+        List<CouponInfo> discountList = new ArrayList<>();
+        for (CheckInfo info : mVerifyList) {
+            if (info.getSelected() && !info.getSuccess() && AppConstants.TYPE_DISCOUNT_COUPON.equals(info.getType())) {
+                discountList.add((CouponInfo) info.getInfo());
+            }
+        }
+        return discountList;
+    }
+
+    // 要核销列表中是否有折扣券
+    public boolean hasDiscount() {
+        for (CheckInfo info : mVerifyList) {
+            if (info.getSelected() && !info.getSuccess() && AppConstants.TYPE_DISCOUNT_COUPON.equals(info.getType())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<CheckInfo> getResultList() {
@@ -222,7 +242,6 @@ public class VerifyManager {
                             }
                             CouponInfo couponInfo = (CouponInfo) info.getInfo();
                             couponInfo.valid = info.getValid();
-                            couponInfo.customType = info.getType();
                             break;
                         case AppConstants.CHECK_INFO_TYPE_ORDER:
                             // 付费预约
@@ -462,14 +481,18 @@ public class VerifyManager {
                             if (!info.getSelected() || info.getSuccess()) {
                                 continue;
                             }
-                            switch (info.getInfoType()) {
-                                case AppConstants.CHECK_INFO_TYPE_COUPON:
+                            switch (info.getType()) {
+                                case AppConstants.TYPE_COUPON:
+                                case AppConstants.TYPE_CASH_COUPON:
+                                case AppConstants.TYPE_GIFT_COUPON:
+                                case AppConstants.TYPE_PAID_COUPON:
+                                case AppConstants.TYPE_SERVICE_ITEM_COUPON:
                                     Call<BaseBean> commonCall = XmdNetwork.getInstance().getService(SpaService.class)
                                             .verifyCommonCall(AccountManager.getInstance().getToken(), info.getCode());
                                     XmdNetwork.getInstance().requestSync(commonCall, new NetworkSubscriber<BaseBean>() {
                                         @Override
                                         public void onCallbackSuccess(BaseBean result) {
-                                            print(info.getType(), info.getInfo());
+                                            VerifyManager.getInstance().printByVerifyType(info);
                                             info.setErrorCode(result.getStatusCode());
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
@@ -487,13 +510,38 @@ public class VerifyManager {
                                         }
                                     });
                                     break;
-                                case AppConstants.CHECK_INFO_TYPE_ORDER:
+                                case AppConstants.TYPE_DISCOUNT_COUPON:
+                                    CouponInfo discountInfo = (CouponInfo) info.getInfo();
+                                    Call<BaseBean> discountCall = XmdNetwork.getInstance().getService(SpaService.class)
+                                            .verifyWithMoneyCall(AccountManager.getInstance().getToken(), String.valueOf(discountInfo.originAmount), info.getCode(), info.getType());
+                                    XmdNetwork.getInstance().requestSync(discountCall, new NetworkSubscriber<BaseBean>() {
+                                        @Override
+                                        public void onCallbackSuccess(BaseBean result) {
+                                            VerifyManager.getInstance().printByVerifyType(info);
+                                            info.setErrorCode(result.getStatusCode());
+                                            info.setSuccess(true);
+                                            info.setErrorMsg(AppConstants.APP_REQUEST_YES);
+                                        }
+
+                                        @Override
+                                        public void onCallbackError(Throwable e) {
+                                            info.setSuccess(false);
+                                            info.setErrorMsg(e.getLocalizedMessage());
+                                            if (e instanceof NetworkException) {
+                                                info.setErrorCode(ErrCode.ERRCODE_NETWORK);
+                                            } else if (e instanceof ServerException) {
+                                                info.setErrorCode(ErrCode.ERRCODE_SERVER);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case AppConstants.TYPE_ORDER:
                                     Call<BaseBean> orderCall = XmdNetwork.getInstance().getService(SpaService.class)
                                             .verifyPaidOrderCall(AccountManager.getInstance().getToken(), info.getCode(), AppConstants.PAID_ORDER_OP_VERIFIED);
                                     XmdNetwork.getInstance().requestSync(orderCall, new NetworkSubscriber<BaseBean>() {
                                         @Override
                                         public void onCallbackSuccess(BaseBean result) {
-                                            print(info.getType(), info.getInfo());
+                                            VerifyManager.getInstance().printByVerifyType(info);
                                             info.setErrorCode(result.getStatusCode());
                                             info.setSuccess(true);
                                             info.setErrorMsg(AppConstants.APP_REQUEST_YES);
@@ -514,7 +562,6 @@ public class VerifyManager {
                                 default:
                                     break;
                             }
-
                         }
                         subscriber.onNext(infos);
                         subscriber.onCompleted();
@@ -537,21 +584,6 @@ public class VerifyManager {
                         callback.onSuccess(list);
                     }
                 });
-    }
-
-    public void print(final String type, final Object obj) {
-        Observable
-                .create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        printSync(type, obj);
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
     }
 
     // 体验券 现金券 礼品券 折扣券
@@ -592,7 +624,7 @@ public class VerifyManager {
     }
 
     // 项目券
-    private void printSeviceItemCouponInfo(CouponInfo serviceCoupon) {
+    private void printServiceItemCouponInfo(CouponInfo serviceCoupon) {
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(核销小票)");
         mPos.printCenter("\n");
@@ -630,7 +662,7 @@ public class VerifyManager {
     }
 
     //付费预约
-    private void printOrder(OrderInfo orderInfo) {
+    public void printOrder(OrderInfo orderInfo) {
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(核销小票)");
         mPos.printCenter("\n");
@@ -654,7 +686,7 @@ public class VerifyManager {
     }
 
     // 转盘奖品
-    private void printLuckWheel(PrizeInfo prizeInfo) {
+    public void printLuckWheel(PrizeInfo prizeInfo) {
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(核销小票)");
         mPos.printCenter("\n");
@@ -671,7 +703,7 @@ public class VerifyManager {
     }
 
     // 会员请客
-    private void printTreatInfo(TreatInfo treatInfo) {
+    public void printTreatInfo(TreatInfo treatInfo) {
         mPos.printCenter(AccountManager.getInstance().getClubName());
         mPos.printCenter("(核销小票)");
         mPos.printCenter("\n");
@@ -699,7 +731,7 @@ public class VerifyManager {
                 printPaidCouponInfo((CouponInfo) checkInfo.getInfo());
                 break;
             case AppConstants.TYPE_SERVICE_ITEM_COUPON:
-                printSeviceItemCouponInfo((CouponInfo) checkInfo.getInfo());
+                printServiceItemCouponInfo((CouponInfo) checkInfo.getInfo());
                 break;
             case AppConstants.TYPE_ORDER:
                 printOrder((OrderInfo) checkInfo.getInfo());
@@ -739,157 +771,13 @@ public class VerifyManager {
                 printPaidCouponInfo(info);
                 break;
             case AppConstants.COUPON_TYPE_SERVICE_ITEM:  //项目券
-                printSeviceItemCouponInfo(info);
+                printServiceItemCouponInfo(info);
                 break;
             case AppConstants.COUPON_TYPE_COUPON:   //体验券
             case AppConstants.COUPON_TYPE_GIFT:     //礼品券
             case AppConstants.COUPON_TYPE_CASH:     //现金券
             case AppConstants.COUPON_TYPE_DISCOUNT: //折扣券
                 printCouponInfo(info);
-                break;
-            default:
-                break;
-        }
-    }
-
-
-    public void printSync(String type, Object obj) {
-        // 核销成功的打印开关关闭,则不打印
-        if (!SPManager.getInstance().getVerifySuccessSwitch()) {
-            return;
-        }
-        switch (type) {
-            case AppConstants.TYPE_COUPON:
-                // 优惠券
-                CouponInfo coupon = (CouponInfo) obj;
-                mPos.printCenter(AccountManager.getInstance().getClubName());
-                mPos.printCenter("(核销小票)");
-                mPos.printCenter("\n");
-                mPos.printText("客户:", coupon.userName);
-                mPos.printText("手机:", Utils.formatPhone(coupon.userPhone));
-                mPos.printText("核销类型:", "优惠券");
-                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-                mPos.printText("核销码:", coupon.couponNo);
-                mPos.printDivide();
-                mPos.printText("优惠券名称:", coupon.actTitle);
-                mPos.printText("优惠券详情:", coupon.consumeMoneyDescription);
-                mPos.printText("优惠券类型:", coupon.useTypeName + "(" + coupon.useTypeName + ")");
-                mPos.printText("有效期:", coupon.couponPeriod);
-                mPos.printEnd();
-                break;
-            case AppConstants.TYPE_PAID_COUPON:
-                // 点钟券
-                CouponInfo paidCoupon = (CouponInfo) obj;
-                mPos.printCenter(AccountManager.getInstance().getClubName());
-                mPos.printCenter("(核销小票)");
-                mPos.printCenter("\n");
-                mPos.printText("客户:", paidCoupon.userName);
-                mPos.printText("手机:", Utils.formatPhone(paidCoupon.userPhone));
-                mPos.printText("核销类型:", "点钟券");
-                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-                mPos.printText("核销码:", paidCoupon.couponNo);
-                mPos.printDivide();
-                mPos.printText("点钟券名称:", paidCoupon.actTitle);
-                mPos.printText("点钟券详情:", paidCoupon.consumeMoneyDescription);
-                mPos.printText("有效期:", paidCoupon.couponPeriod);
-                mPos.printEnd();
-                break;
-            case AppConstants.TYPE_SERVICE_ITEM_COUPON:
-                // 项目券
-                CouponInfo serviceCoupon = (CouponInfo) obj;
-                mPos.printCenter(AccountManager.getInstance().getClubName());
-                mPos.printCenter("(核销小票)");
-                mPos.printCenter("\n");
-                mPos.printText("客户:", serviceCoupon.userName);
-                mPos.printText("手机:", Utils.formatPhone(serviceCoupon.userPhone));
-                mPos.printText("核销类型:", "项目券");
-                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-                mPos.printText("核销码:", serviceCoupon.couponNo);
-                mPos.printDivide();
-                mPos.printText("活动名称:", serviceCoupon.actSubTitle);
-                if (serviceCoupon.itemNames != null && !serviceCoupon.itemNames.isEmpty()) {
-                    StringBuilder itemsBuild = new StringBuilder();
-                    for (String item : serviceCoupon.itemNames) {
-                        itemsBuild.append(item).append(",");
-                    }
-                    itemsBuild.setLength(itemsBuild.length() - 1);
-                    mPos.printText("项目名称:", itemsBuild.toString());
-                }
-                mPos.printText("原价:", Utils.moneyToStringEx(serviceCoupon.consumeAmount) + "元");
-                switch (serviceCoupon.paidType) {
-                    case AppConstants.TYPE_PAID_AMOUNT:
-                        mPos.printText("实收:", Utils.moneyToStringEx(serviceCoupon.actAmount) + "元");
-                        break;
-                    case AppConstants.TYPE_PAID_CREDITS:
-                        mPos.printText("实收:", serviceCoupon.creditAmount + "积分");
-                        break;
-                    case AppConstants.TYPE_PAID_FREE:
-                        mPos.printText("实收:", "免费");
-                        break;
-                    default:
-                        break;
-                }
-                mPos.printEnd();
-                break;
-            case AppConstants.TYPE_ORDER:
-                // 付费预约
-                OrderInfo orderInfo = (OrderInfo) obj;
-                mPos.printCenter(AccountManager.getInstance().getClubName());
-                mPos.printCenter("(核销小票)");
-                mPos.printCenter("\n");
-                mPos.printText("客户:", orderInfo.customerName);
-                mPos.printText("手机:", Utils.formatPhone(orderInfo.phoneNum));
-                mPos.printText("核销类型:", "付费预约");
-                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-                mPos.printText("核销码:", orderInfo.orderNo);
-                mPos.printDivide();
-                mPos.printText("预约定金:", Utils.moneyToStringEx(orderInfo.downPayment) + "元");
-                if (TextUtils.isEmpty(orderInfo.techNo)) {
-                    mPos.printText("预约技师:", orderInfo.techName);
-                } else {
-                    mPos.printText("预约技师:", orderInfo.techName + "[" + orderInfo.techNo + "]");
-                }
-                mPos.printText("预约项目:", (TextUtils.isEmpty(orderInfo.serviceItemName) ? "到店选择" : orderInfo.serviceItemName));
-                mPos.printText("下单时间:", orderInfo.createdAt);
-                mPos.printText("预约时间:", orderInfo.appointTime);
-                mPos.printEnd();
-                break;
-            case AppConstants.TYPE_LUCKY_WHEEL:
-                // 转盘奖品
-                PrizeInfo prizeInfo = (PrizeInfo) obj;
-                mPos.printCenter(AccountManager.getInstance().getClubName());
-                mPos.printCenter("(核销小票)");
-                mPos.printCenter("\n");
-                mPos.printText("客户:", prizeInfo.userName);
-                mPos.printText("手机:", Utils.formatPhone(prizeInfo.telephone));
-                mPos.printText("核销类型:", "奖品");
-                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-                mPos.printText("核销码:", prizeInfo.verifyCode);
-                mPos.printDivide();
-                mPos.printText("活动名称:", prizeInfo.activityName);
-                mPos.printText("奖品:", prizeInfo.prizeName);
-                mPos.printEnd();
-                break;
-            case AppConstants.TYPE_PAY_FOR_OTHER:
-                // 会员请客
-                TreatInfo treatInfo = (TreatInfo) obj;
-                mPos.printCenter(AccountManager.getInstance().getClubName());
-                mPos.printCenter("(核销小票)");
-                mPos.printCenter("\n");
-                mPos.printText("客户:", treatInfo.userName);
-                mPos.printText("手机:", Utils.formatPhone(treatInfo.userPhone));
-                mPos.printText("核销类型:", "会员请客");
-                mPos.printText("核销时间:", DateUtils.doDate2String(new Date()));
-                mPos.printText("核销人:", AccountManager.getInstance().getUser().userName);
-                mPos.printText("核销码:", treatInfo.authorizeCode);
-                mPos.printDivide();
-                mPos.printText("抵扣金额:", Utils.moneyToStringEx(treatInfo.useMoney) + "元");
-                mPos.printEnd();
                 break;
             default:
                 break;

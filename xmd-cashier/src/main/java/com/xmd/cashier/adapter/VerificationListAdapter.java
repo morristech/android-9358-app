@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +29,6 @@ import java.util.List;
 public class VerificationListAdapter extends RecyclerView.Adapter<VerificationListAdapter.ViewHolder> {
     private VerificationContract.Presenter mPresenter;
     private List<VerificationItem> mData = new ArrayList<>();
-    public static final int VIEW_TYPE_COUPON = 1;
-    public static final int VIEW_TYPE_ORDER = 2;
-    public static final int VIEW_TYPE_TREAT = 3;
 
     public VerificationListAdapter(VerificationContract.Presenter presenter) {
         mPresenter = presenter;
@@ -43,12 +39,15 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
         Context context = parent.getContext();
         View view = null;
         switch (viewType) {
-            case VIEW_TYPE_COUPON:
-            case VIEW_TYPE_ORDER:
+            case AppConstants.VIEW_TYPE_COUPON:
+            case AppConstants.VIEW_TYPE_ORDER:
                 view = LayoutInflater.from(context).inflate(R.layout.item_coupon_trade_list, parent, false);
                 break;
-            case VIEW_TYPE_TREAT:
+            case AppConstants.VIEW_TYPE_TREAT:
                 view = LayoutInflater.from(context).inflate(R.layout.item_treat_status, parent, false);
+                break;
+            case AppConstants.VIEW_TYPE_UNKNOW:
+            default:
                 break;
         }
         return new ViewHolder(view, mPresenter);
@@ -56,15 +55,18 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
 
     @Override
     public int getItemViewType(int position) {
-        String type = mData.get(position).type;
-        if (type.equals(AppConstants.TYPE_COUPON)) {
-            return VIEW_TYPE_COUPON;
-        } else if (type.equals(AppConstants.TYPE_ORDER)) {
-            return VIEW_TYPE_ORDER;
-        } else if (type.equals(AppConstants.TYPE_PAY_FOR_OTHER)) {
-            return VIEW_TYPE_TREAT;
+        switch (mData.get(position).type) {
+            case AppConstants.TYPE_COUPON:
+            case AppConstants.TYPE_CASH_COUPON:
+            case AppConstants.TYPE_DISCOUNT_COUPON:
+            case AppConstants.TYPE_PAID_COUPON:
+                return AppConstants.VIEW_TYPE_COUPON;
+            case AppConstants.TYPE_ORDER:
+                return AppConstants.VIEW_TYPE_ORDER;
+            case AppConstants.TYPE_PAY_FOR_OTHER:
+                return AppConstants.VIEW_TYPE_TREAT;
         }
-        return -1;
+        return AppConstants.VIEW_TYPE_UNKNOW;
     }
 
     @Override
@@ -111,6 +113,9 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
         public void bind(final VerificationItem item) {
             switch (item.type) {
                 case AppConstants.TYPE_COUPON:
+                case AppConstants.TYPE_CASH_COUPON:
+                case AppConstants.TYPE_DISCOUNT_COUPON:
+                case AppConstants.TYPE_PAID_COUPON:
                     bindCouponInfo(item);
                     break;
                 case AppConstants.TYPE_ORDER:
@@ -188,10 +193,6 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
             }
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             mCheckBox.setCompoundDrawables(null, null, drawable, null);
-        }
-
-        public void hideCheckBox() {
-            mCheckBox.setVisibility(View.INVISIBLE);
         }
     }
 }

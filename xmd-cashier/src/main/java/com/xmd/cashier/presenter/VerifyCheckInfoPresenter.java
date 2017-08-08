@@ -3,6 +3,7 @@ package com.xmd.cashier.presenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.activity.VerifyConfirmActivity;
@@ -17,6 +18,7 @@ import com.xmd.cashier.dal.bean.OrderInfo;
 import com.xmd.cashier.dal.net.response.CheckInfoListResult;
 import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.VerifyManager;
+import com.xmd.cashier.widget.VerifyDiscountDialog;
 
 import java.util.List;
 
@@ -130,6 +132,14 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
             mView.showError(mContext.getString(R.string.network_disabled));
             return;
         }
+        if (VerifyManager.getInstance().hasDiscount()) {
+            setDiscount();
+        } else {
+            doVerifyRequest();
+        }
+    }
+
+    private void doVerifyRequest() {
         if (mVerifyCheckInfoSubscription != null) {
             mVerifyCheckInfoSubscription.unsubscribe();
         }
@@ -152,6 +162,31 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
             public void onError(String error) {
                 mView.hideLoading();
                 gotoVerifyResultActivity(mContext);
+            }
+        });
+    }
+
+    private void setDiscount() {
+        final List<CouponInfo> discounts = VerifyManager.getInstance().getDiscountList();
+        final VerifyDiscountDialog dialog = new VerifyDiscountDialog(mContext, discounts);
+        dialog.show();
+        dialog.setCallBack(new VerifyDiscountDialog.CallBack() {
+            @Override
+            public void onNegative() {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onPositive(String input) {
+                if (TextUtils.isEmpty(input)) {
+                    mView.showToast("请输入消费金额");
+                    return;
+                }
+                dialog.dismiss();
+                for (CouponInfo info : discounts) {
+                    info.originAmount = Utils.stringToMoney(input);
+                }
+                doVerifyRequest();
             }
         });
     }
