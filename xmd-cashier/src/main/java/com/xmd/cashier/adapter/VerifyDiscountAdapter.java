@@ -35,7 +35,7 @@ public class VerifyDiscountAdapter extends RecyclerView.Adapter<VerifyDiscountAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         CouponInfo info = mData.get(position);
         long discountAmount = (long) info.originAmount * (100000 - info.actAmount) / 100000;
-        holder.mDiscountText.setText("优惠金额:" + Utils.moneyToStringEx((int) discountAmount) + "(" + info.actAmount / 10000f + "折)");
+        holder.mDiscountText.setText("优惠金额:" + Utils.moneyToStringEx((int) discountAmount) + "元(" + info.actAmount / 10000f + "折)");
     }
 
     @Override

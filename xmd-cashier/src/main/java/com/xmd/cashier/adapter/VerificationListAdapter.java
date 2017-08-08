@@ -86,6 +86,7 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mName;
         private TextView mMoney;
+        private TextView mMoneyDesc;
         private TextView mType;
         private TextView mInfo;
         private CheckBox mCheckBox;
@@ -95,6 +96,7 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
             super(itemView);
             mName = (TextView) itemView.findViewById(R.id.tv_name);
             mMoney = (TextView) itemView.findViewById(R.id.tv_money);
+            mMoneyDesc = (TextView) itemView.findViewById(R.id.tv_money_desc);
             mType = (TextView) itemView.findViewById(R.id.tv_type);
             mInfo = (TextView) itemView.findViewById(R.id.tv_info);
             mCheckBox = (CheckBox) itemView.findViewById(R.id.checkbox);
@@ -105,6 +107,7 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
             mPresenter = presenter;
             mName = (TextView) itemView.findViewById(R.id.tv_name);
             mMoney = (TextView) itemView.findViewById(R.id.tv_money);
+            mMoneyDesc = (TextView) itemView.findViewById(R.id.tv_money_desc);
             mType = (TextView) itemView.findViewById(R.id.tv_type);
             mInfo = (TextView) itemView.findViewById(R.id.tv_info);
             mCheckBox = (CheckBox) itemView.findViewById(R.id.checkbox);
@@ -133,6 +136,10 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
                         mCheckBox.requestFocus();
                         updateCheckBox(isChecked);
                         mPresenter.onVerificationItemChecked(item, isChecked);
+                        if (AppConstants.TYPE_DISCOUNT_COUPON.equals(item.type)) {
+                            // 折扣券
+                            mMoney.setText(Utils.moneyToString(item.couponInfo.getReallyCouponMoney()));
+                        }
                     }
                 });
                 itemView.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +173,7 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
             mType.setText(couponInfo.useTypeName);
             mInfo.setText(couponInfo.consumeMoneyDescription);
             mMoney.setText(Utils.moneyToString(couponInfo.getReallyCouponMoney()));
+            mMoneyDesc.setVisibility(AppConstants.TYPE_DISCOUNT_COUPON.equals(info.type) ? View.VISIBLE : View.GONE);
         }
 
         private void bindOrderInfo(VerificationItem item) {
@@ -173,7 +181,9 @@ public class VerificationListAdapter extends RecyclerView.Adapter<VerificationLi
             mName.setText(order.customerName);
             mName.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
             mName.getPaint().setAntiAlias(true);
+            mMoneyDesc.setVisibility(View.GONE);
             mMoney.setText(Utils.moneyToString(order.downPayment));
+            mMoney.setTextColor(itemView.getContext().getResources().getColor(R.color.colorText4));
             mInfo.setText("技师：" + order.techName);
             mType.setText("付费预约");
         }

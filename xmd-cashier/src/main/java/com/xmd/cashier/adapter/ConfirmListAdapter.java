@@ -106,6 +106,7 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mName;
         private TextView mMoney;
+        private TextView mMoneyDesc;
         private TextView mType;
         private TextView mInfo;
         private TextView mStatus;
@@ -115,6 +116,7 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
             super(itemView);
             mName = (TextView) itemView.findViewById(R.id.tv_name);
             mMoney = (TextView) itemView.findViewById(R.id.tv_money);
+            mMoneyDesc = (TextView) itemView.findViewById(R.id.tv_money_desc);
             mType = (TextView) itemView.findViewById(R.id.tv_type);
             mInfo = (TextView) itemView.findViewById(R.id.tv_info);
             mStatus = (TextView) itemView.findViewById(R.id.tv_status);
@@ -132,6 +134,7 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
                     mType.setText(couponInfo.useTypeName);
                     mInfo.setText(couponInfo.consumeMoneyDescription);
                     mMoney.setText(Utils.moneyToString(couponInfo.getReallyCouponMoney()));
+                    mMoneyDesc.setVisibility(AppConstants.TYPE_DISCOUNT_COUPON.equals(item.type) ? View.VISIBLE : View.GONE);
                     mStatus.setText(item.success ? "已核销" : item.errorMsg);
                     mName.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
                     mType.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
@@ -144,6 +147,7 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
                     mType.setText("付费预约");
                     mInfo.setText("技师：" + item.order.techName);
                     mMoney.setText(Utils.moneyToString(item.order.downPayment));
+                    mMoneyDesc.setVisibility(View.GONE);
                     mStatus.setText(item.success ? "已核销" : item.errorMsg);
                     mName.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
                     mType.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));

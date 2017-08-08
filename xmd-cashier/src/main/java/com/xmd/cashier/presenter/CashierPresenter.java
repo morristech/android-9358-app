@@ -55,8 +55,11 @@ public class CashierPresenter implements CashierContract.Presenter {
 
     @Override
     public void onOriginMoneyChanged() {
-        mTradeManager.getCurrentTrade().setOriginMoney(mView.getOriginMoney());
-        updateFinallyMoney();
+        mTradeManager.getCurrentTrade().setOriginMoney(mView.getOriginMoney()); //设置交易的消费金额
+        mTradeManager.setDiscountOriginAmount();    //更新折扣券的消费金额
+        mTradeManager.calculateVerificationValue(); //计算优惠金额
+        mView.setDiscountMoney(mTradeManager.getCurrentTrade().getWillDiscountMoney()); //更新优惠金额
+        updateFinallyMoney();   //更新实收金额
     }
 
     // POS支付

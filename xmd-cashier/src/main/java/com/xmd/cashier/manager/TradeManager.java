@@ -665,12 +665,25 @@ public class TradeManager {
         return null;
     }
 
+    // 设置选中的折扣券的消费金额
+    public void setDiscountOriginAmount() {
+        for (VerificationItem v : mTrade.getCouponList()) {
+            if (v.selected && !v.success && AppConstants.TYPE_DISCOUNT_COUPON.equals(v.type)) {
+                v.couponInfo.originAmount = mTrade.getOriginMoney();
+            }
+        }
+    }
+
     // 设置某个核销项的选中状态
     public void setVerificationSelectedStatus(VerificationItem v, boolean selected) {
         int index = mTrade.getCouponList().indexOf(v);
         if (index >= 0) {
-            VerificationItem verificationItem = mTrade.getCouponList().get(index);
+            VerificationItem verificationItem = mTrade.getCouponList().get(index);//查找到指定项
             verificationItem.selected = selected;
+            // 处理折扣券
+            if (AppConstants.TYPE_DISCOUNT_COUPON.equals(verificationItem.type)) {
+                verificationItem.couponInfo.originAmount = selected ? mTrade.getOriginMoney() : 0;
+            }
         }
     }
 

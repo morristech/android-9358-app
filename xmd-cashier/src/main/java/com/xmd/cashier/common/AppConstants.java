@@ -38,7 +38,7 @@ public class AppConstants {
     public static final int VIEW_TYPE_ORDER = 2;
     public static final int VIEW_TYPE_TREAT = 3;
 
-    public static final int MAX_MONEY_INT_BIT = 7;
+    public static final int MAX_MONEY_INT_BIT = 6;
     public static final int MAX_COUPON_NUMBER_LENGTH = 19;
 
     public static final int CHECK_INFO_TYPE_COUPON = 1;

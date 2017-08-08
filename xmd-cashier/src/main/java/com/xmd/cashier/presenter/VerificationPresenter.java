@@ -149,6 +149,7 @@ public class VerificationPresenter implements VerificationContract.Presenter {
 
     @Override
     public void onVerificationItemChecked(VerificationItem item, boolean isChecked) {
+        // 核销项选中或者未选中
         mView.hideKeyboard();
         mTradeManager.setVerificationSelectedStatus(item, isChecked);
     }
