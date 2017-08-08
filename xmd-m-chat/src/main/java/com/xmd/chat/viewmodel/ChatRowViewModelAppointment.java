@@ -44,6 +44,10 @@ public class ChatRowViewModelAppointment extends ChatRowViewModel {
         super(chatMessage);
         orderChatMessage = (OrderChatMessage) chatMessage;
         mAppointmentData = orderChatMessage.parseOrderData();
+        if (TextUtils.isEmpty(mAppointmentData.getCustomerPhone())
+                && TextUtils.isEmpty(mAppointmentData.getCustomerId())) {
+            mAppointmentData.setCustomerId(chatMessage.getUserId());
+        }
         setupOperationButton();
         setupShowItem();
     }
