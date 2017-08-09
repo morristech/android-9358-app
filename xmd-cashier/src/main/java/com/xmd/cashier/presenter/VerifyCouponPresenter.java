@@ -121,6 +121,7 @@ public class VerifyCouponPresenter implements VerifyCouponContract.Presenter {
         list.add(info);
         final VerifyDiscountDialog dialog = new VerifyDiscountDialog(mContext, list);
         dialog.show();
+        dialog.setCancelable(false);
         dialog.setCallBack(new VerifyDiscountDialog.CallBack() {
             @Override
             public void onNegative() {

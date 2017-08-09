@@ -170,6 +170,7 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
         final List<CouponInfo> discounts = VerifyManager.getInstance().getDiscountList();
         final VerifyDiscountDialog dialog = new VerifyDiscountDialog(mContext, discounts);
         dialog.show();
+        dialog.setCancelable(false);
         dialog.setCallBack(new VerifyDiscountDialog.CallBack() {
             @Override
             public void onNegative() {
