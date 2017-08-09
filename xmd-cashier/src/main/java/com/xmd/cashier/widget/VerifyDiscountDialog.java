@@ -40,19 +40,21 @@ public class VerifyDiscountDialog extends Dialog {
 
     public VerifyDiscountDialog(@NonNull Context context) {
         super(context);
+        this.mContext = context;
     }
 
     public VerifyDiscountDialog(@NonNull Context context, @StyleRes int themeResId) {
         super(context, themeResId);
+        this.mContext = context;
     }
 
     protected VerifyDiscountDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
+        this.mContext = context;
     }
 
     public VerifyDiscountDialog(Context context, List<CouponInfo> discountInfos) {
-        super(context);
-        this.mContext = context;
+        this(context);
         this.discounts = discountInfos;
     }
 
