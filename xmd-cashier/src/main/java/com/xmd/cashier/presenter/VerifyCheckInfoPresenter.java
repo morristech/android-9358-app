@@ -174,6 +174,10 @@ public class VerifyCheckInfoPresenter implements VerifyCheckInfoContract.Present
             @Override
             public void onNegative() {
                 dialog.dismiss();
+                // 取消时清空设置的消费金额
+                for (CouponInfo info : discounts) {
+                    info.originAmount = 0;
+                }
             }
 
             @Override

@@ -125,6 +125,7 @@ public class VerifyCouponPresenter implements VerifyCouponContract.Presenter {
             @Override
             public void onNegative() {
                 dialog.dismiss();
+                info.originAmount = 0;
             }
 
             @Override

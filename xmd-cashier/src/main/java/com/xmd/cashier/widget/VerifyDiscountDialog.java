@@ -100,7 +100,7 @@ public class VerifyDiscountDialog extends Dialog {
                 // 每一张折扣券都设置消费金额
                 for (CouponInfo info : discounts) {
                     info.originAmount = originAmount;
-                    totalActAmount += info.actAmount;
+                    totalActAmount += (100000 - info.actAmount);
                 }
                 // 更新列表
                 mAdapter.notifyDataSetChanged();
@@ -108,7 +108,7 @@ public class VerifyDiscountDialog extends Dialog {
                 if (totalActAmount > 100000) {
                     mDiscountTotal.setText("总优惠金额:" + Utils.moneyToStringEx(originAmount) + "元");
                 } else {
-                    long discountAmount = (long) originAmount * (100000 - totalActAmount) / 100000;
+                    long discountAmount = (long) originAmount * totalActAmount / 100000;
                     mDiscountTotal.setText("总优惠金额:" + Utils.moneyToStringEx((int) discountAmount) + "元");
                 }
             }
