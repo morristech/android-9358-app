@@ -193,6 +193,7 @@ public class AppConstants {
 
     public static final String PUSH_TAG_FASTPAY = "fast_pay";
     public static final String PUSH_TAG_ORDER = "order";
+    public static final String PUSH_TAG_MEMBER_PRINT = "member_print";
 
     public static final String FAST_PAY_CHANNEL_WX = "wx";
     public static final String FAST_PAY_CHANNEL_ALI = "ali";

@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Process;
 
+import com.google.gson.Gson;
 import com.shidou.commonlibrary.helper.CrashHandler;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
 import com.shidou.commonlibrary.helper.XLogger;
@@ -17,6 +18,7 @@ import com.xmd.cashier.common.AppConstants;
 import com.xmd.cashier.common.ThreadManager;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
+import com.xmd.cashier.dal.bean.MemberRecordInfo;
 import com.xmd.cashier.dal.db.DBManager;
 import com.xmd.cashier.dal.net.RequestConstant;
 import com.xmd.cashier.dal.net.SpaOkHttp;
@@ -91,12 +93,20 @@ public class MainApplication extends Application implements CrashHandler.Callbac
             @Override
             public void onMessage(XmdPushMessage message) {
                 // 按照指定格式处理消息
+                switch (message.getBusinessType()) {
+                    case AppConstants.PUSH_TAG_MEMBER_PRINT:
+                        MemberRecordInfo info = new Gson().fromJson(message.getData(), MemberRecordInfo.class);
+                        MemberManager.getInstance().printInfo(info, false, true, null);
+                        MemberManager.getInstance().printInfo(info, false, false, null);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             @Override
             public void onRawMessage(String message) {
                 // 处理原始透传消息
-                XLogger.i("MainApplication:" + message);
                 try {
                     JSONObject jsonObject = new JSONObject(message);
                     switch (jsonObject.getString(RequestConstant.KEY_BUSINESS_TYPE)) {
