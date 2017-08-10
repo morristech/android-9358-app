@@ -150,12 +150,12 @@ public class TradeManager {
         });
     }
 
-    public Subscription memberPay(String method, final Callback<MemberRecordResult> callback) {
+    public Subscription memberPay(String method, String password, final Callback<MemberRecordResult> callback) {
         Observable<MemberRecordResult> observable = null;
         switch (method) {
             case AppConstants.MEMBER_PAY_METHOD_CODE:
                 observable = XmdNetwork.getInstance().getService(SpaService.class)
-                        .requestMemberPayment(AccountManager.getInstance().getToken(), String.valueOf(mTrade.getNeedPayMoney()), "consume", "会员消费", String.valueOf(mTrade.memberInfo.id), mTrade.tradeNo, AppConstants.MEMBER_TRADE_TYPE_PAY);
+                        .requestMemberPayment(AccountManager.getInstance().getToken(), String.valueOf(mTrade.getNeedPayMoney()), "consume", "会员消费", String.valueOf(mTrade.memberInfo.id), mTrade.tradeNo, AppConstants.MEMBER_TRADE_TYPE_PAY, password);
                 break;
             case AppConstants.MEMBER_PAY_METHOD_SCAN:
                 observable = XmdNetwork.getInstance().getService(SpaService.class)

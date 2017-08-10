@@ -20,6 +20,8 @@ import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.NFCManager;
 import com.xmd.cashier.manager.TradeManager;
+import com.xmd.cashier.widget.InputTelephoneDialog;
+import com.xmd.m.network.BaseBean;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -41,6 +43,7 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
     private Subscription mGetMemberInfoByCodeSubscription;
     private Subscription mGetMemberInfoByScanSubscription;
     private Subscription mCardMemberInfoSubscription;
+    private Subscription mUpdateMemberInfoSubscription;
 
     @Override
     public void onResume() {
@@ -140,23 +143,29 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
         mGetMemberInfoByCodeSubscription = MemberManager.getInstance().requestMemberInfo(cardNo, new Callback<MemberInfo>() {
             @Override
             public void onSuccess(MemberInfo o) {
-                switch (readType) {
-                    case AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT:
-                        // 消费
-                        TradeManager.getInstance().getCurrentTrade().memberInfo = o;
-                        TradeManager.getInstance().getCurrentTrade().memberPayMethod = AppConstants.MEMBER_PAY_METHOD_CODE;
-                        EventBus.getDefault().post(o);
-                        mView.finishSelf();
-                        break;
-                    case AppConstants.MEMBER_BUSINESS_TYPE_RECHARGE:
-                        // 充值
-                        MemberManager.getInstance().setRechargeMemberInfo(o);
-                        MemberManager.getInstance().setMemberId(o.id);
-                        UiNavigation.gotoMemberRechargeActivity(mContext);
-                        mView.finishSelf();
-                        break;
-                    default:
-                        break;
+                mView.hideLoading();
+                if (o.userId == null) {
+                    // 当前会员未绑定手机号
+                    doBindTelephone(o);
+                } else {
+                    switch (readType) {
+                        case AppConstants.MEMBER_BUSINESS_TYPE_PAYMENT:
+                            // 消费
+                            TradeManager.getInstance().getCurrentTrade().memberInfo = o;
+                            TradeManager.getInstance().getCurrentTrade().memberPayMethod = AppConstants.MEMBER_PAY_METHOD_CODE;
+                            EventBus.getDefault().post(o);
+                            mView.finishSelf();
+                            break;
+                        case AppConstants.MEMBER_BUSINESS_TYPE_RECHARGE:
+                            // 充值
+                            MemberManager.getInstance().setRechargeMemberInfo(o);
+                            MemberManager.getInstance().setMemberId(o.id);
+                            UiNavigation.gotoMemberRechargeActivity(mContext);
+                            mView.finishSelf();
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
@@ -164,6 +173,50 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
             public void onError(String error) {
                 mView.hideLoading();
                 mView.showToast("获取会员数据失败:" + error);
+            }
+        });
+    }
+
+    private void doBindTelephone(final MemberInfo info) {
+        final InputTelephoneDialog dialog = new InputTelephoneDialog(mContext);
+        dialog.show();
+        dialog.setCancelable(false);
+        dialog.setTitle("完善信息");
+        dialog.setMemberNo(info.cardNo);
+        dialog.setCallBack(new InputTelephoneDialog.BtnCallBack() {
+            @Override
+            public void onBtnNegative() {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onBtnPositive(String telephone) {
+                if (TextUtils.isEmpty(telephone)) {
+                    mView.showToast("请输入手机号码");
+                    return;
+                }
+                dialog.dismiss();
+                updateMemberInfo(String.valueOf(info.id), telephone);
+            }
+        });
+    }
+
+    private void updateMemberInfo(String memberId, String telephone) {
+        if (mUpdateMemberInfoSubscription != null) {
+            mUpdateMemberInfoSubscription.unsubscribe();
+        }
+        mView.showLoading();
+        mUpdateMemberInfoSubscription = MemberManager.getInstance().updateMemberInfo(memberId, telephone, new Callback<BaseBean>() {
+            @Override
+            public void onSuccess(BaseBean o) {
+                mView.hideLoading();
+                mView.showToast("成功绑定手机号码，请继续操作");
+            }
+
+            @Override
+            public void onError(String error) {
+                mView.hideLoading();
+                mView.showToast("手机号码绑定失败:" + error);
             }
         });
     }
@@ -264,6 +317,9 @@ public class MemberReadPresenter implements MemberReadContract.Presenter {
         }
         if (mGetMemberInfoByScanSubscription != null) {
             mGetMemberInfoByScanSubscription.unsubscribe();
+        }
+        if (mUpdateMemberInfoSubscription != null) {
+            mUpdateMemberInfoSubscription.unsubscribe();
         }
     }
 }

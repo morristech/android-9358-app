@@ -602,11 +602,13 @@ public interface SpaService {
     @FormUrlEncoded
     @POST(RequestConstant.URL_REQUEST_MEMBER_RECHARGE)
     Observable<MemberUrlResult> rechargeMemberInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
-                                                   @Field(RequestConstant.KEY_AMOUNT) String amount,
+                                                   @Field(RequestConstant.KEY_ORDER_AMOUNT) String orderAmount,
+                                                   @Field(RequestConstant.KEY_DISCOUNT_AMOUNT) String discountAmount,   //自定义赠送金额
                                                    @Field(RequestConstant.KEY_DESCRIPTION) String description,
                                                    @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
                                                    @Field(RequestConstant.KEY_MEMBER_PACKAGE_ID) String packageId,
-                                                   @Field(RequestConstant.KEY_TECH_ID) String techId);
+                                                   @Field(RequestConstant.KEY_TECH_ID) String techId,
+                                                   @Field(RequestConstant.KEY_PASSWORD) String password);
 
     // 获取会员账户记录
     @FormUrlEncoded
@@ -625,7 +627,8 @@ public interface SpaService {
                                                         @Query(RequestConstant.KEY_DESCRIPTION) String description,
                                                         @Query(RequestConstant.KEY_MEMBER_ID) String memberId,
                                                         @Query(RequestConstant.KEY_TRADE_NO) String tradeNO,
-                                                        @Query(RequestConstant.KEY_TRADE_TYPE) String tradeType);
+                                                        @Query(RequestConstant.KEY_TRADE_TYPE) String tradeType,
+                                                        @Query(RequestConstant.KEY_PASSWORD) String password);
 
     // 获取会所技师列表
     @GET(RequestConstant.URL_GET_CLUB_TECH_LIST)
@@ -644,6 +647,13 @@ public interface SpaService {
     @GET(RequestConstant.URL_GET_MEMBER_RECHARGE_DETAIL)
     Call<MemberRecordResult> detailMemberRecharge(@Query(RequestConstant.KEY_TOKEN) String userToken,
                                                   @Query(RequestConstant.KEY_ORDER_ID) String orderId);
+
+    // 更新会员信息
+    @FormUrlEncoded
+    @POST(RequestConstant.URL_UPDATE_MEMBER_INFO)
+    Observable<BaseBean> updateMemberInfo(@Field(RequestConstant.KEY_TOKEN) String userToken,
+                                          @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
+                                          @Field(RequestConstant.KEY_TELEPHONE) String telephone);
     /**************************************************************************************************************************/
     /**
      * 获取会所微信二维码

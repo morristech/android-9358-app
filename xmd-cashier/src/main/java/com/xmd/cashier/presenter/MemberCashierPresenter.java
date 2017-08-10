@@ -2,6 +2,7 @@ package com.xmd.cashier.presenter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.TextUtils;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.UiNavigation;
@@ -16,6 +17,7 @@ import com.xmd.cashier.manager.Callback0;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.manager.TradeManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
+import com.xmd.cashier.widget.InputPasswordDialog;
 
 import rx.Subscription;
 
@@ -65,9 +67,11 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
         switch (method) {
             case AppConstants.MEMBER_PAY_METHOD_CODE:
                 // 接口
+                doInputPassword(method);
+                break;
             case AppConstants.MEMBER_PAY_METHOD_SCAN:
                 // 二维码
-                doMemberPay(method);
+                doMemberPay(method, null);
                 break;
             default:
                 mView.showError("支付过程出现未知异常");
@@ -75,11 +79,35 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
         }
     }
 
+    private void doInputPassword(final String method) {
+        final InputPasswordDialog dialog = new InputPasswordDialog(mContext);
+        dialog.show();
+        dialog.setCancelable(false);
+        dialog.setTitle("会员消费");
+        dialog.setCallBack(new InputPasswordDialog.BtnCallBack() {
+            @Override
+            public void onBtnNegative() {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onBtnPositive(String password) {
+                if (TextUtils.isEmpty(password)) {
+                    mView.showToast("请输入密码");
+                    return;
+                }
+                dialog.dismiss();
+                // 调用会员支付
+                doMemberPay(method, password);
+            }
+        });
+    }
+
     private void print(MemberRecordInfo info) {
         mView.showLoading();
-        MemberManager.getInstance().printInfo(info, false, true, new Callback<MemberRecordInfo>() {
+        MemberManager.getInstance().printInfo(info, false, true, new Callback() {
             @Override
-            public void onSuccess(MemberRecordInfo o) {
+            public void onSuccess(Object o) {
                 mView.hideLoading();
                 new CustomAlertDialogBuilder(mContext)
                         .setMessage("是否需要打印客户联小票?")
@@ -111,6 +139,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
             }
         });
     }
+
     private void finishMemberPay() {
         TradeManager.getInstance().finishPay(mContext, AppConstants.TRADE_STATUS_SUCCESS, new Callback0<Void>() {
             @Override
@@ -120,7 +149,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
         });
     }
 
-    private void doMemberPay(String memberPayMethod) {
+    private void doMemberPay(String memberPayMethod, String password) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.showError(mContext.getString(R.string.network_disabled));
             return;
@@ -129,7 +158,7 @@ public class MemberCashierPresenter implements MemberCashierContract.Presenter {
             mMemberPaySubscription.unsubscribe();
         }
         mView.showLoading();
-        mMemberPaySubscription = TradeManager.getInstance().memberPay(memberPayMethod, new Callback<MemberRecordResult>() {
+        mMemberPaySubscription = TradeManager.getInstance().memberPay(memberPayMethod, password, new Callback<MemberRecordResult>() {
             @Override
             public void onSuccess(MemberRecordResult o) {
                 mView.hideLoading();

@@ -25,6 +25,7 @@ import com.xmd.cashier.manager.Callback;
 import com.xmd.cashier.manager.CashierManager;
 import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.widget.CustomAlertDialogBuilder;
+import com.xmd.cashier.widget.InputPasswordDialog;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.XmdNetwork;
 
@@ -58,7 +59,9 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     public void onCreate() {
         mView.showMemberInfo(MemberManager.getInstance().getRechargeMemberInfo());
         clearAmount();
+        clearAmountGive();
         clearPackage();
+        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE);
         loadPlanData();
     }
 
@@ -211,9 +214,9 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     }
 
     private void printClient(final MemberRecordInfo info) {
-        MemberManager.getInstance().printInfo(info, false, true, new Callback<MemberRecordInfo>() {
+        MemberManager.getInstance().printInfo(info, false, true, new Callback() {
             @Override
-            public void onSuccess(MemberRecordInfo o) {
+            public void onSuccess(Object o) {
                 mView.hideLoading();
                 new CustomAlertDialogBuilder(mContext)
                         .setMessage("是否需要打印客户联小票?")
@@ -271,13 +274,38 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     }
 
     @Override
-    public void onRecharge(final int type) {
+    public void onRecharge(int type) {
         if (type == AppConstants.CASHIER_TYPE_ERROR) {
             mView.showToast("充值流程异常...");
             return;
         }
-        MemberManager.getInstance().setRechargePayType(type);
-        // 扫码支付
+        doInputPassword(type);
+    }
+
+    private void doInputPassword(final int type) {
+        final InputPasswordDialog dialog = new InputPasswordDialog(mContext);
+        dialog.show();
+        dialog.setCancelable(false);
+        dialog.setTitle("会员充值");
+        dialog.setCallBack(new InputPasswordDialog.BtnCallBack() {
+            @Override
+            public void onBtnNegative() {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onBtnPositive(String password) {
+                if (TextUtils.isEmpty(password)) {
+                    mView.showToast("请输入密码");
+                    return;
+                }
+                dialog.dismiss();
+                doRechargeRequest(type, password);
+            }
+        });
+    }
+
+    private void doRechargeRequest(final int type, String password) {
         if (!Utils.isNetworkEnabled(mContext)) {
             mView.showError(mContext.getString(R.string.network_disabled));
             return;
@@ -286,7 +314,7 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
             mRechargeByScanSubscription.unsubscribe();
         }
         mView.showLoading();
-        mRechargeByScanSubscription = MemberManager.getInstance().requestRecharge(new Callback<MemberUrlResult>() {
+        mRechargeByScanSubscription = MemberManager.getInstance().requestRecharge(password, new Callback<MemberUrlResult>() {
             @Override
             public void onSuccess(MemberUrlResult o) {
                 mView.hideLoading();
@@ -340,10 +368,25 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     }
 
     @Override
+    public void onAmountGiveSet(String amountGive) {
+        if (TextUtils.isEmpty(amountGive)) {
+            MemberManager.getInstance().setAmountGive(0);
+        } else {
+            MemberManager.getInstance().setAmountGive(Utils.stringToMoney(amountGive));
+        }
+        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY);
+    }
+
+    @Override
     public void clearAmount() {
         MemberManager.getInstance().setAmount(0);
         mView.clearAmount();
-        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE);
+    }
+
+    @Override
+    public void clearAmountGive() {
+        MemberManager.getInstance().setAmountGive(0);
+        mView.clearAmountGive();
     }
 
     @Override
@@ -357,7 +400,6 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
     public void clearPackage() {
         MemberManager.getInstance().setPackageInfo(null);
         mView.clearPackage();
-        MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_NONE);
     }
 
     @Override

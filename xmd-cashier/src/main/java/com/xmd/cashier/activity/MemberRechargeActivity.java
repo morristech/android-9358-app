@@ -1,5 +1,6 @@
 package com.xmd.cashier.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -8,6 +9,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,6 +25,7 @@ import com.xmd.cashier.dal.bean.MemberPlanInfo;
 import com.xmd.cashier.dal.bean.PackagePlanItem;
 import com.xmd.cashier.dal.bean.TechInfo;
 import com.xmd.cashier.dal.event.RechargeFinishEvent;
+import com.xmd.cashier.manager.MemberManager;
 import com.xmd.cashier.presenter.MemberRechargePresenter;
 import com.xmd.cashier.widget.ActionSheetDialog;
 import com.xmd.cashier.widget.CircleImageView;
@@ -46,6 +49,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
     private TextView mMemberLevel;
 
     private ClearableEditText mMemberAmount;
+    private ClearableEditText mMemberGiveAmount;
     private RelativeLayout mTechInfo;
     private CircleImageView mTechAvatar;
     private TextView mTechName;
@@ -80,6 +84,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
         mMemberLevel = (TextView) findViewById(R.id.tv_info_level);
 
         mMemberAmount = (ClearableEditText) findViewById(R.id.edt_recharge_input);
+        mMemberGiveAmount = (ClearableEditText) findViewById(R.id.edt_recharge_give_input);
 
         mTechInfo = (RelativeLayout) findViewById(R.id.layout_tech_info);
         mTechAvatar = (CircleImageView) findViewById(R.id.img_tech_avatar);
@@ -98,7 +103,14 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
         mAdapter.setCallBack(new MemberPlanAdapter.CallBack() {
             @Override
             public void onItemClick(PackagePlanItem item, int position) {
+                // 隐藏软键盘
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm.isActive()) {
+                    imm.hideSoftInputFromWindow(mMemberGiveAmount.getWindowToken(), 0);
+                    imm.hideSoftInputFromWindow(mMemberAmount.getWindowToken(), 0);
+                }
                 mPresenter.clearAmount();
+                mPresenter.clearAmountGive();
                 mPresenter.onPackageSet(item);
             }
         });
@@ -132,6 +144,7 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
             }
         });
 
+        // 设置充值金额
         mMemberAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -149,11 +162,42 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
             }
         });
 
+        // 设置赠送金额
+        mMemberGiveAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mPresenter.onAmountGiveSet(mMemberGiveAmount.getText().toString());
+            }
+        });
+
+        // 充值金额获取焦点
         mMemberAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     mPresenter.clearPackage();
+                    MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY);
+                }
+            }
+        });
+
+        // 赠送金额获取焦点
+        mMemberGiveAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    mPresenter.clearPackage();
+                    MemberManager.getInstance().setAmountType(AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY);
                 }
             }
         });
@@ -236,6 +280,12 @@ public class MemberRechargeActivity extends BaseActivity implements MemberRechar
         mTechAvatar.setVisibility(View.GONE);
         mTechName.setVisibility(View.GONE);
         mTechNo.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void clearAmountGive() {
+        mMemberGiveAmount.setText(null);
+        mMemberGiveAmount.clearFocus();
     }
 
     @Override

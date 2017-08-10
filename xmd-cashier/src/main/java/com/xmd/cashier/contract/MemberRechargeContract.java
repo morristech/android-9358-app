@@ -29,7 +29,11 @@ public interface MemberRechargeContract {
 
         void onAmountSet(String amount);
 
+        void onAmountGiveSet(String amount);
+
         void clearAmount();
+
+        void clearAmountGive();
 
         void onPackageSet(PackagePlanItem planItem);
 
@@ -51,6 +55,8 @@ public interface MemberRechargeContract {
         void showTechInfo(TechInfo info);
 
         void deleteTechInfo();
+
+        void clearAmountGive();
 
         void clearAmount();
 

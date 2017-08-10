@@ -106,6 +106,7 @@ public class RequestConstant {
     public static final String URL_REQUEST_MEMBER_RECHARGE = SPA_SERVICE_BASE + "/v2/manager/member/recharge/save";     //会员充值:提交充值请求
     public static final String URL_GET_MEMBER_RECHARGE_DETAIL = SPA_SERVICE_BASE + "/v2/manager/member/order/detail";              //会员充值:查询充值请求详情
     public static final String URL_REPORT_MEMBER_RECHARGE_TRADE = SPA_SERVICE_BASE + "/v2/manager/member/order/recharge/success";  //会员充值:汇报POS支付情况 需要签名
+    public static final String URL_UPDATE_MEMBER_INFO = SPA_SERVICE_BASE + "/v2/manager/member/update"; //更新会员信息
 
     /*********************************************************************************************/
     /*                                           keys                                            */
@@ -115,15 +116,11 @@ public class RequestConstant {
 
     public static final String KEY_SESSION_TYPE = "sessionType";
     public static final String KEY_TOKEN = "token";
-    public static final String KEY_SUA_ID = "suaId";
     public static final String KEY_COUPON_NO = "couponNo";
     public static final String KEY_ORDER_NO = "orderNo";
     public static final String KEY_CODE = "code";
 
-    public static final String KEY_PHONE_NUMBER = "phoneNum";
     public static final String KEY_NUMBER = "number";
-
-    public static final String KEY_COUPON_TYPE = "couponType";
 
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
@@ -132,15 +129,12 @@ public class RequestConstant {
     public static final String KEY_ID = "id";
     public static final String KEY_APP_VERSION = "appVersion";
 
-    public static final String KEY_USED_AMOUNT = "usedAmount";
-
     public static final String KEY_STATUS = "status";
 
     public static final String KEY_REQUEST_TIME = "requestTime";
     public static final String KEY_SIGN = "sign";
 
     public static final String KEY_TRADE_NO = "tradeNo";
-    public static final String KEY_TRADE_STATUS = "tradeStatus";
 
     public static final String KEY_ORIGIN_MONEY = "originMoney";
 
@@ -152,12 +146,6 @@ public class RequestConstant {
     public static final String KEY_COUPON_DISCOUNT_MONEY = "couponDiscountMoney";
     public static final String KEY_USER_DISCOUNT_MONEY = "userDiscountMoney";
 
-    public static final String KEY_MEMBER_CARD_NO = "memberCardNo";
-    public static final String KEY_MEMBER_PAY_MONEY = "memberPayMoney";
-    public static final String KEY_MEMBER_PAY_DISCOUNT_MONEY = "memberPayDiscountMoney";
-    public static final String KEY_MEMBER_PAY_RESULT = "memberPayResult";
-    public static final String KEY_MEMBER_PAY_CERTIFICATE = "memberPayCertificate";
-
     public static final String KEY_POS_PAY_OUT_TRADE_NO = "posPayOutTradeNo";
     public static final String KEY_POS_PAY_INNER_TRADE_NO = "posPayInnerTradeNo";
     public static final String KEY_POS_PAY_MONEY = "posPayMoney";
@@ -166,23 +154,14 @@ public class RequestConstant {
     public static final String KEY_POS_PAY_EXTRAINFO = "posPayExtraInfo";
     public static final String KEY_POS_PAY_CERTIFICATE = "posPayCertificate";
 
-
     public static final String KEY_MEMBER_TOKEN = "memberToken";
     public static final String KEY_MEMBER_CAN_DISCOUNT = "canDiscount";
 
-
-    public static final String KEY_CASHIER_MONEY = "cashierMoney";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_AMOUNT = "amount";
 
-
-    public static final String KEY_EXTRA_INFO = "extraInfo";
     public static final String KEY_PAY_DATE = "payDate";
-    public static final String KEY_PAY_CERTIFICATE = "payCertificate";
-    public static final String KEY_CASHIER_TRADE_NO = "cashierTradeNo";
-    public static final String KEY_PAY_TRADE_NO = "payTradeNo";
     public static final String KEY_PAY_TYPE = "payType";
-    public static final String KEY_PAY_RESULT = "payResult";
 
     public static final String KEY_APP_ID = "appId";
     public static final String KEY_VERSION = "version";
@@ -223,16 +202,13 @@ public class RequestConstant {
     public static final String KEY_BIZ_CATEGORY = "businessCategory";
     public static final String KEY_TRADE_TYPE = "tradeType";
     public static final String KEY_PAY_CHANNEL = "payChannel";
+    public static final String KEY_ORDER_AMOUNT = "orderAmount";
+    public static final String KEY_DISCOUNT_AMOUNT = "discountAmount";
 
 
     /*********************************************************************************************/
     /*                                        configs                                            */
     /*********************************************************************************************/
-
-    public static final int REQUEST_TIMEOUT = 30 * 1000;
-
-    public static final int RESP_OK = 200;
-    public static final int RESP_OK_NO_CONTENT = 204;
     public static final int RESP_TOKEN_EXPIRED = 401;
     public static final int RESP_ERROR = 400;
 

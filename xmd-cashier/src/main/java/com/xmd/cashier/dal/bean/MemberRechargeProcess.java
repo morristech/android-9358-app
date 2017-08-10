@@ -22,20 +22,13 @@ public class MemberRechargeProcess {
     // 充值指定套餐
     private PackagePlanItem packageInfo;
     // 充值指定金额
-    private int amount;
+    private int amount;     //充
+    private int amountGive; //送
 
     private String rechargeAmountType;
 
-    // 充值支付方式:区分POS支付或者扫码支付
-    private int rechargePayType;
-
-    // 扫码支付方式:区分微信/支付宝  getPayChannel
-    private String scanPayType;
     // 充值订单二维码URL
     private String payUrl;
-
-    // POS支付方式:区分现金=1/银行卡=4  getPayTypeString
-    private int posPayType;
 
     // 营销人员ID
     private TechInfo techInfo;
@@ -80,28 +73,12 @@ public class MemberRechargeProcess {
         this.amount = amount;
     }
 
-    public int getRechargePayType() {
-        return rechargePayType;
+    public int getAmountGive() {
+        return amountGive;
     }
 
-    public void setRechargePayType(int rechargePayType) {
-        this.rechargePayType = rechargePayType;
-    }
-
-    public String getScanPayType() {
-        return scanPayType;
-    }
-
-    public void setScanPayType(String scanPayType) {
-        this.scanPayType = scanPayType;
-    }
-
-    public int getPosPayType() {
-        return posPayType;
-    }
-
-    public void setPosPayType(int posPayType) {
-        this.posPayType = posPayType;
+    public void setAmountGive(int amountGive) {
+        this.amountGive = amountGive;
     }
 
     public TechInfo getTechInfo() {

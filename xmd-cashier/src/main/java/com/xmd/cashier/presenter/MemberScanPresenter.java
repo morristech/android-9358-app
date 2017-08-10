@@ -99,7 +99,12 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
         switch (MemberManager.getInstance().getAmountType()) {
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
                 String amount = Utils.moneyToStringEx(MemberManager.getInstance().getAmount());
-                mView.showScanInfo("会员充值", "充值金额", amount + "元", amount);
+                if (MemberManager.getInstance().getAmountGive() > 0) {
+                    String giveAmount = Utils.moneyToStringEx(MemberManager.getInstance().getAmountGive());
+                    mView.showScanInfo("会员充值", "充值金额", "充" + amount + "送" + giveAmount, amount);
+                } else {
+                    mView.showScanInfo("会员充值", "充值金额", amount + "元", amount);
+                }
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_PACKAGE:
                 PackagePlanItem info = MemberManager.getInstance().getPackageInfo();
@@ -141,9 +146,9 @@ public class MemberScanPresenter implements MemberScanContract.Presenter {
     @Override
     public void printResult() {
         mView.showLoading();
-        MemberManager.getInstance().printInfo(memberRecordInfo, false, true, new Callback<MemberRecordInfo>() {
+        MemberManager.getInstance().printInfo(memberRecordInfo, false, true, new Callback() {
             @Override
-            public void onSuccess(MemberRecordInfo o) {
+            public void onSuccess(Object o) {
                 mView.hideLoading();
                 new CustomAlertDialogBuilder(mContext)
                         .setMessage("是否需要打印客户联小票?")

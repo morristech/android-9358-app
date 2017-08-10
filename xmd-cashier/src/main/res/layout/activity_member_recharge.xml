@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scrollbars="none">
 
         <LinearLayout
@@ -91,41 +92,45 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/activity_normal_margin"
-                    android:text="充值"
+                    android:text="充"
                     android:textColor="@color/colorWhite" />
 
-                <LinearLayout
+                <com.xmd.cashier.widget.ClearableEditText
+                    android:id="@+id/edt_recharge_input"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/bg_area_white"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/activity_normal_margin"
-                    android:paddingRight="@dimen/activity_normal_margin">
+                    android:hint="充值金额"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:maxLength="6"
+                    android:padding="5dp"
+                    android:textColor="@color/colorText4"
+                    android:textColorHint="@color/colorText3" />
 
-                    <com.xmd.cashier.widget.ClearableEditText
-                        android:id="@+id/edt_recharge_input"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:hint="选择套餐或输入金额"
-                        android:inputType="number"
-                        android:lines="1"
-                        android:maxLength="10"
-                        android:padding="5dp"
-                        android:textColor="@color/colorText4"
-                        android:textColorHint="@color/colorText3" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_normal_margin"
+                    android:src="@drawable/ic_song" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_normal_margin"
-                        android:text="元"
-                        android:textColor="@color/colorText4"
-                        android:textSize="@dimen/font_size_16" />
-                </LinearLayout>
+                <com.xmd.cashier.widget.ClearableEditText
+                    android:id="@+id/edt_recharge_give_input"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_area_white"
+                    android:hint="赠送金额"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:maxLength="6"
+                    android:padding="5dp"
+                    android:textColor="@color/colorText4"
+                    android:textColorHint="@color/colorText3" />
             </LinearLayout>
 
             <RelativeLayout
@@ -297,30 +302,29 @@
                     android:textSize="@dimen/font_size_14"
                     android:visibility="gone" />
             </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:background="@color/colorWhite"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/colorStoke" />
-
-                <Button
-                    android:id="@+id/btn_recharge_confirm"
-                    style="@style/AppTheme.Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_normal_margin"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_normal_margin"
-                    android:text="确定" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorStoke" />
+
+        <Button
+            android:id="@+id/btn_recharge_confirm"
+            style="@style/AppTheme.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_little_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_little_margin"
+            android:text="确定" />
+    </LinearLayout>
 </LinearLayout>

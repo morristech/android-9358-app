@@ -25,6 +25,7 @@ import com.xmd.cashier.dal.net.response.MemberListResult;
 import com.xmd.cashier.dal.net.response.MemberSettingResult;
 import com.xmd.cashier.dal.net.response.MemberUrlResult;
 import com.xmd.cashier.dal.net.response.StringResult;
+import com.xmd.m.network.BaseBean;
 import com.xmd.m.network.NetworkSubscriber;
 import com.xmd.m.network.ServerException;
 import com.xmd.m.network.XmdNetwork;
@@ -262,10 +263,6 @@ public class MemberManager {
         mRechargeProcess.setMemberId(memberId);
     }
 
-    public void setRechargePayType(int type) {
-        mRechargeProcess.setRechargePayType(type);
-    }
-
     public void setPackageInfo(PackagePlanItem info) {
         mRechargeProcess.setPackageInfo(info);
     }
@@ -278,8 +275,16 @@ public class MemberManager {
         mRechargeProcess.setAmount(amount);
     }
 
+    public void setAmountGive(int amountGive) {
+        mRechargeProcess.setAmountGive(amountGive);
+    }
+
     public int getAmount() {
         return mRechargeProcess.getAmount();
+    }
+
+    public int getAmountGive() {
+        return mRechargeProcess.getAmountGive();
     }
 
     public String getRechargeUrl() {
@@ -299,8 +304,9 @@ public class MemberManager {
     }
 
     // 生成充值请求
-    public Subscription requestRecharge(final Callback<MemberUrlResult> callback) {
+    public Subscription requestRecharge(String password, final Callback<MemberUrlResult> callback) {
         int amount = 0;
+        int amountGive = 0;
         String description = "充值";
         String packageId = null;
         switch (getAmountType()) {
@@ -314,7 +320,12 @@ public class MemberManager {
                 break;
             case AppConstants.MEMBER_RECHARGE_AMOUNT_TYPE_MONEY:
                 amount = mRechargeProcess.getAmount();
-                description = "指定金额" + Utils.moneyToStringEx(amount) + "元";
+                amountGive = mRechargeProcess.getAmountGive();
+                if (amountGive > 0) {
+                    description = "充" + Utils.moneyToStringEx(amount) + "送" + Utils.moneyToStringEx(amountGive);
+                } else {
+                    description = "指定金额" + Utils.moneyToStringEx(amount) + "元";
+                }
                 packageId = null;
                 break;
             default:
@@ -323,10 +334,12 @@ public class MemberManager {
         Observable<MemberUrlResult> observable = XmdNetwork.getInstance().getService(SpaService.class)
                 .rechargeMemberInfo(AccountManager.getInstance().getToken(),
                         String.valueOf(amount),
+                        String.valueOf(mRechargeProcess.getAmountGive()),
                         description,
                         String.valueOf(mRechargeProcess.getMemberId()),
                         packageId,
-                        mRechargeProcess.getTechInfo().id);
+                        mRechargeProcess.getTechInfo().id,
+                        password);
         return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<MemberUrlResult>() {
             @Override
             public void onCallbackSuccess(MemberUrlResult result) {
@@ -446,6 +459,23 @@ public class MemberManager {
         });
     }
 
+    // 更新会员信息
+    public Subscription updateMemberInfo(String memberId, String telephone, final Callback<BaseBean> callBack) {
+        Observable<BaseBean> observable = XmdNetwork.getInstance().getService(SpaService.class)
+                .updateMemberInfo(AccountManager.getInstance().getToken(), memberId, telephone);
+        return XmdNetwork.getInstance().request(observable, new NetworkSubscriber<BaseBean>() {
+            @Override
+            public void onCallbackSuccess(BaseBean result) {
+                callBack.onSuccess(result);
+            }
+
+            @Override
+            public void onCallbackError(Throwable e) {
+                callBack.onError(e.getLocalizedMessage());
+            }
+        });
+    }
+
     public void printInfo(MemberRecordInfo info, boolean retry, boolean keep, Callback<?> callback) {
         byte[] qrCodeBytes = TradeManager.getInstance().getClubQRCodeSync();
         mPos.setPrintListener(callback);
@@ -463,10 +493,10 @@ public class MemberManager {
                 // 充值:
                 if (info.packageId != null) {
                     // 套餐:充XXX送XXX
-                    mPos.printText("充值内容  " + "充" + Utils.moneyToString(info.orderAmount) + (info.discountAmount > 0 ? "送" + Utils.moneyToString(info.discountAmount) : ""));
+                    mPos.printText("充值套餐  " + "充" + Utils.moneyToString(info.orderAmount) + (info.discountAmount > 0 ? "送" + Utils.moneyToString(info.discountAmount) : ""));
                 } else {
                     // 金额:指定金额XX元
-                    mPos.printText("充值内容  " + "指定金额" + Utils.moneyToStringEx(info.orderAmount) + "元");
+                    mPos.printText("充值金额  " + (info.discountAmount > 0 ? "充" + Utils.moneyToStringEx(info.orderAmount) + "送" + Utils.moneyToStringEx(info.discountAmount) : "指定金额" + Utils.moneyToStringEx(info.orderAmount) + "元"));
                 }
                 if (info.packageInfo != null && info.packageInfo.packageItems != null && !info.packageInfo.packageItems.isEmpty()) {
                     mPos.printText("套餐优惠");
