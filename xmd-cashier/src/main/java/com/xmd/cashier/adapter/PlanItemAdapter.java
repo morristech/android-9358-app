@@ -51,7 +51,7 @@ public class PlanItemAdapter extends RecyclerView.Adapter<PlanItemAdapter.ViewHo
                 break;
             case AppConstants.MEMBER_PLAN_ITEM_TYPE_MONEY:
                 // 现金
-                String money = "现金" + item.name + "元";
+                String money = item.name + "元";
                 holder.mContent.setText(money);
                 holder.mPlus.setVisibility(View.GONE);
                 holder.mCount.setVisibility(View.GONE);
