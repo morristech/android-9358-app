@@ -506,7 +506,7 @@ public class MemberManager {
                                 mPos.printText("|--" + item.name + "积分");
                                 break;
                             case AppConstants.MEMBER_PLAN_ITEM_TYPE_MONEY:
-                                mPos.printText("|--现金" + item.name + "元");
+                                mPos.printText("|--" + item.name + "元");
                                 break;
                             case AppConstants.MEMBER_PLAN_ITEM_TYPE_GIF:
                                 mPos.printText("|--" + item.name + " * " + item.itemCount, "礼品券");
