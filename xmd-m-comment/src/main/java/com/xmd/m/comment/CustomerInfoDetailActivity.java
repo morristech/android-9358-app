@@ -17,22 +17,25 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.crazyman.library.PermissionTool;
-import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.CustomerHeadDialog;
 import com.xmd.app.widget.DropDownMenuDialog;
 import com.xmd.app.widget.PromptConfirmDialog;
+import com.xmd.black.BlackListManager;
+import com.xmd.black.EditCustomerInformationActivity;
+import com.xmd.black.event.AddToBlackEvent;
+import com.xmd.black.event.InUserBlackListEvent;
+import com.xmd.black.event.RemoveFromBlackEvent;
+import com.xmd.black.httprequest.ConstantResource;
 import com.xmd.m.R;
 import com.xmd.m.R2;
-import com.xmd.m.comment.bean.AddToBlacklistResult;
 import com.xmd.m.comment.bean.ContactPermissionInfo;
 import com.xmd.m.comment.bean.ContactPermissionResult;
 import com.xmd.m.comment.bean.DeleteCustomerResult;
-import com.xmd.m.comment.bean.InBlacklistResult;
-import com.xmd.m.comment.bean.RemoveFromBlacklistResult;
 import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.ShowCustomerHeadEvent;
 import com.xmd.m.comment.event.UserInfoEvent;
@@ -122,18 +125,19 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     private void initView() {
         setTitle(R.string.customer_info_detail_activity_title);
         setBackVisible(true);
-        if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-            showButton();
-        } else {
-            llOperation.setVisibility(View.VISIBLE);
-        }
-        if (!customerIsTech && (fromType.equals(ConstantResources.INTENT_TYPE_TECH) || fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD))) {
+        //管理者，全部用户，我的拓客 有更多操作按钮
+        if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || (!customerIsTech && !fromType.equals(ConstantResources.CUSTOMER_TYPE_TOOKEN))) {
             setRightVisible(true, R.drawable.contact_icon_more);
-            loadBlackInfo();
-            loadPermissionInfo();
         } else {
             setRightVisible(false, -1);
         }
+        if (fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD) || fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || customerIsTech) {
+            showButton();
+        } else if (fromType.equals(ConstantResources.INTENT_TYPE_TECH) && !customerIsTech) {
+            loadPermissionInfo();
+            llOperation.setVisibility(View.VISIBLE);
+        }
+        BlackListManager.getInstance().isInBlackList(userId);
     }
 
 
@@ -144,10 +148,18 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         bundle.putSerializable(CURRENT_USER_ID, userId);
 
         if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-            mInfoManagerFragment = new CustomerInfoDetailManagerFragment();
-            mInfoManagerFragment.setArguments(bundle);
-            ft.replace(R.id.fragment_detail, mInfoManagerFragment);
-        } else if (fromType.equals(ConstantResources.INTENT_TYPE_TECH)) {
+            if (customerIsTech) {
+                mTechInfoDetailFragment = new TechInfoDetailFragment();
+                mTechInfoDetailFragment.setArguments(bundle);
+                ft.replace(R.id.fragment_detail, mTechInfoDetailFragment);
+                showButton();
+            } else {
+                mInfoManagerFragment = new CustomerInfoDetailManagerFragment();
+                mInfoManagerFragment.setArguments(bundle);
+                ft.replace(R.id.fragment_detail, mInfoManagerFragment);
+            }
+
+        } else if (fromType.equals(ConstantResources.INTENT_TYPE_TECH) || fromType.equals(ConstantResources.CUSTOMER_TYPE_TOOKEN)) {
             if (customerIsTech) {
                 mTechInfoDetailFragment = new TechInfoDetailFragment();
                 mTechInfoDetailFragment.setArguments(bundle);
@@ -201,11 +213,11 @@ public class CustomerInfoDetailActivity extends BaseActivity {
                             new PromptConfirmDialog(CustomerInfoDetailActivity.this, "加入黑名单", "添加黑名单后,将不再接受对方消息", "", new PromptConfirmDialog.ConfirmClickedListener() {
                                 @Override
                                 public void onConfirmClick() {
-                                    addUserToBlackList();
+                                    BlackListManager.getInstance().addUserToBlack(userId);
                                 }
                             }).show();
                         } else {
-                            removeUserFromBlackList();
+                            BlackListManager.getInstance().removeUserFromBlackList(userId);
                         }
                         break;
                 }
@@ -237,18 +249,24 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         mCustomerHeadDialog.setImageHead(event.headUrl);
     }
 
-    private void loadBlackInfo() {
-        DataManager.getInstance().loadBooleanInBlackList(userId, new NetworkSubscriber<InBlacklistResult>() {
-            @Override
-            public void onCallbackSuccess(InBlacklistResult result) {
-                inBlackList = (boolean) result.getRespData();
-            }
+    @Subscribe
+    public void inUserBlackList(InUserBlackListEvent event) {
+        inBlackList = event.isInUserBlackList;
+        showButton();
+    }
 
-            @Override
-            public void onCallbackError(Throwable e) {
-                XToast.show(e.getLocalizedMessage());
-            }
-        });
+    @Subscribe
+    public void removeUserFromBlackList(RemoveFromBlackEvent event) {
+        inBlackList = false;
+        showButton();
+    }
+
+    @Subscribe
+    public void addToUserBlackList(AddToBlackEvent event) {
+        inBlackList = true;
+        Toast.makeText(CustomerInfoDetailActivity.this, "已成功加入黑名单", Toast.LENGTH_SHORT).show();
+        CustomerInfoDetailActivity.this.finish();
+
     }
 
     private void loadPermissionInfo() {
@@ -261,52 +279,23 @@ public class CustomerInfoDetailActivity extends BaseActivity {
 
             @Override
             public void onCallbackError(Throwable e) {
-                XToast.show(e.getLocalizedMessage());
+                Toast.makeText(CustomerInfoDetailActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void removeUserFromBlackList() {
-        DataManager.getInstance().removeFromBlackList(userId, new NetworkSubscriber<RemoveFromBlacklistResult>() {
-            @Override
-            public void onCallbackSuccess(RemoveFromBlacklistResult result) {
-                inBlackList = false;
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                XToast.show(e.getLocalizedMessage());
-            }
-        });
-    }
-
-    private void addUserToBlackList() {
-        DataManager.getInstance().addToBlackList(userId, new NetworkSubscriber<AddToBlacklistResult>() {
-            @Override
-            public void onCallbackSuccess(AddToBlacklistResult result) {
-                inBlackList = true;
-                XToast.show("已成功加入黑名单");
-                CustomerInfoDetailActivity.this.finish();
-            }
-
-            @Override
-            public void onCallbackError(Throwable e) {
-                XToast.show(e.getLocalizedMessage());
-            }
-        });
-    }
 
     private void deleteCustomer() {
         DataManager.getInstance().deleteCustomer(userId, new NetworkSubscriber<DeleteCustomerResult>() {
             @Override
             public void onCallbackSuccess(DeleteCustomerResult result) {
-                XToast.show("删除成功");
+                Toast.makeText(CustomerInfoDetailActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                XToast.show(e.getLocalizedMessage());
+                Toast.makeText(CustomerInfoDetailActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -322,14 +311,24 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             return;
         }
         if (customerIsTech) {//本店成员
-            btnEmHello.setVisibility(View.GONE);
-            btnOperation.setVisibility(View.GONE);
-            btnEmChat.setVisibility(View.VISIBLE);
-            btnCallPhone.setVisibility(View.GONE);
-            btnChat.setVisibility(View.GONE);
-            layoutOperationButtons.setAlpha(1.0f);
-            layoutOperationButtons.setVisibility(View.VISIBLE);
-            btnOperation.setVisibility(View.GONE);
+            if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) { //管理者
+                btnEmHello.setVisibility(View.GONE);
+                btnEmChat.setVisibility(View.VISIBLE);
+                btnCallPhone.setVisibility(View.VISIBLE);
+                btnChat.setVisibility(View.VISIBLE);
+                layoutOperationButtons.setAlpha(1.0f);
+                layoutOperationButtons.setVisibility(View.GONE);
+                btnOperation.setVisibility(View.VISIBLE);
+            } else { //技师
+                btnEmHello.setVisibility(View.GONE);
+                btnOperation.setVisibility(View.GONE);
+                btnEmChat.setVisibility(View.VISIBLE);
+                btnCallPhone.setVisibility(View.GONE);
+                btnChat.setVisibility(View.GONE);
+                layoutOperationButtons.setAlpha(1.0f);
+                layoutOperationButtons.setVisibility(View.VISIBLE);
+
+            }
             return;
         }
         if (fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD)) { //添加的用户
@@ -438,7 +437,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     public void onBtnChatClicked() {
         if (null != mBean) {
             if (TextUtils.isEmpty(mBean.contactPhone) || !Utils.matchPhoneNumFormat(mBean.contactPhone)) {
-                XToast.show("手机号码不存在");
+                Toast.makeText(this, "手机号码不存在", Toast.LENGTH_SHORT).show();
                 return;
             }
             Uri uri = Uri.parse("smsto:" + mBean.contactPhone);

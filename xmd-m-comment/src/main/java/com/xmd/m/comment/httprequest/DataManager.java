@@ -1,18 +1,13 @@
 package com.xmd.m.comment.httprequest;
 
 
-import com.xmd.m.comment.bean.AddToBlacklistResult;
 import com.xmd.m.comment.bean.ClubEmployeeDetailResult;
 import com.xmd.m.comment.bean.CommentListResult;
 import com.xmd.m.comment.bean.CommentStatusResult;
 import com.xmd.m.comment.bean.ConsumeListResult;
 import com.xmd.m.comment.bean.ContactPermissionResult;
 import com.xmd.m.comment.bean.DeleteCustomerResult;
-import com.xmd.m.comment.bean.EditCustomerResult;
-import com.xmd.m.comment.bean.InBlacklistResult;
 import com.xmd.m.comment.bean.ManagerUserDetailResult;
-import com.xmd.m.comment.bean.MarkResult;
-import com.xmd.m.comment.bean.RemoveFromBlacklistResult;
 import com.xmd.m.comment.bean.RewardListResult;
 import com.xmd.m.comment.bean.TechConsumeListResult;
 import com.xmd.m.comment.bean.TechListResult;
@@ -55,13 +50,8 @@ public class DataManager {
     public Subscription mTechRewardList;
     public Subscription mTechVisitorList;
     public Subscription mClubEmployeeDetail;
-    public Subscription mBooleanInBlackList;
-    public Subscription mRemoveBlackList;
-    public Subscription mAddBlackList;
     public Subscription mContactPermission;
     public Subscription mDeleteCustomer;
-    public Subscription mImpression;
-    public Subscription mEditOrAddCustomer;
     public Subscription mEditUserGroup;
 
     //评论列表
@@ -115,17 +105,6 @@ public class DataManager {
         mClubEmployeeDetail = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).clubEmployeeDetail(uerId), listener);
     }
 
-    public void loadBooleanInBlackList(String friendId, NetworkSubscriber<InBlacklistResult> listener) {
-        mBooleanInBlackList = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).inBlacklist(friendId), listener);
-    }
-
-    public void removeFromBlackList(String friendId, NetworkSubscriber<RemoveFromBlacklistResult> listener) {
-        mRemoveBlackList = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).removeFromBlacklist(friendId), listener);
-    }
-
-    public void addToBlackList(String friendId, NetworkSubscriber<AddToBlacklistResult> listener) {
-        mAddBlackList = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).addToBlacklist(friendId), listener);
-    }
 
     public void loadContactPermission(String id, NetworkSubscriber<ContactPermissionResult> listener) {
         mContactPermission = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getContactPermission(id, "customer"), listener);
@@ -133,14 +112,6 @@ public class DataManager {
 
     public void deleteCustomer(String id, NetworkSubscriber<DeleteCustomerResult> listener) {
         mDeleteCustomer = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).doDeleteContact(id), listener);
-    }
-
-    public void getImpressionDetail(NetworkSubscriber<MarkResult> listener) {
-        mImpression = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getContactMark(), listener);
-    }
-
-    public void SaveCustomerRemark(String userId,String id, String phoneNum, String remark, String noteName, String imPression, NetworkSubscriber<EditCustomerResult> listener) {
-        mEditOrAddCustomer = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).addOrEditCustomer(userId,id, phoneNum, remark, noteName, imPression), listener);
     }
 
     public void editUserGroup(String userId, NetworkSubscriber<UserEditGroupResult> listener) {

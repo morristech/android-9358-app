@@ -1,9 +1,15 @@
 package com.xmd.app.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.shidou.commonlibrary.helper.XLogger;
+import com.xmd.app.R;
+import com.xmd.app.utils.ResourceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +19,11 @@ import java.util.List;
  */
 
 public class FlowLayout extends ViewGroup {
+    private Context mContext;
+
     public FlowLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.mContext = context;
     }
 
     @Override
@@ -158,6 +167,50 @@ public class FlowLayout extends ViewGroup {
             top += lineHeight;
         }
 
+    }
+
+    public void initChildViews(List<String> Mark) {
+        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.rightMargin = 18;
+        lp.bottomMargin = 18;
+        for (int i = 0; i < Mark.size(); i++) {
+            final TextView view = new TextView(mContext);
+            view.setPadding(18, 5, 18, 5);
+            view.setText(Mark.get(i));
+            view.setTextSize(14);
+            if (Mark.get(i).equals("通讯录")) {
+                view.setTextColor(Color.parseColor("#4d98df"));
+                view.setBackgroundResource(R.drawable.bg_contact_tech_add_mark);
+            } else {
+                view.setBackgroundResource(R.drawable.bg_contact_mark);
+                view.setTextColor(Color.parseColor("#ff8909"));
+            }
+            this.addView(view, lp);
+        }
+    }
+
+    public void initChildRemarkViews(String remark,String delimiter) {
+        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.rightMargin = 18;
+        lp.bottomMargin = 18;
+        String[] remarkArray = remark.split(delimiter);
+        XLogger.i(">>>","remark>>"+remark);
+        for (int i = 0; i < remarkArray.length; i++) {
+            final TextView view = new TextView(mContext);
+            view.setPadding(18, 5, 18, 5);
+            view.setText(remarkArray[i]);
+            view.setTextSize(14);
+            if (remarkArray[i].equals("通讯录")) {
+                view.setTextColor(Color.parseColor("#4d98df"));
+                view.setBackgroundResource(R.drawable.bg_contact_tech_add_mark);
+            } else {
+                view.setBackgroundResource(R.drawable.bg_contact_mark);
+                view.setTextColor(Color.parseColor("#ff8909"));
+            }
+            this.addView(view, lp);
+        }
     }
 }
 

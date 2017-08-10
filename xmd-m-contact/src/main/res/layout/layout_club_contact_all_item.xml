@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/selector_bg_white"
+              android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_contact_service_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E0E0E0"
+        android:paddingBottom="5dp"
+        android:paddingLeft="12dp"
+        android:paddingTop="5dp"
+        android:text="今天新增"
+        android:textColor="#999999"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <com.xmd.app.widget.RoundImageView
+            android:id="@+id/img_contact_all_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/img_default_avatar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_contact_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:textColor="#212121"
+                    android:textSize="18sp"
+                    tools:text="黄小姐"/>
+
+                <ImageView
+                    android:id="@+id/img_contact_type_fans"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/icon_contact_fans"/>
+
+                <ImageView
+                    android:id="@+id/img_contact_type_wx"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/icon_contact_wx"/>
+                <ImageView
+                    android:id="@+id/img_contact_type_zfb"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/icon_contact_zf"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_customer_type_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:orientation="horizontal"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        style="@style/horizontal_divider_line"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>

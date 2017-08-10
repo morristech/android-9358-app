@@ -73,7 +73,6 @@ public class TechInfoDetailFragment extends BaseFragment {
             @Override
             public void onResponse(User result, Throwable error) {
                 if (result != null) {
-
                     if (result.getContactPermission().isCall()) {
                         llTechPhone.setVisibility(View.VISIBLE);
                     } else {
@@ -95,7 +94,6 @@ public class TechInfoDetailFragment extends BaseFragment {
             @Override
             public void onCallbackSuccess(ClubEmployeeDetailResult result) {
                 handlerEmployeeView(result.getRespData());
-
             }
 
             @Override
@@ -114,8 +112,7 @@ public class TechInfoDetailFragment extends BaseFragment {
         if (!TextUtils.isEmpty(respData.telephone)) {
             tvTechPhone.setText(respData.telephone);
         }
-        User user = UserInfoServiceImpl.getInstance().getCurrentUser();
-        XLogger.i(">>>", "roles" + user.getUserRoles());
+
         llTechPhone.setVisibility(View.GONE);
         if (respData.roles.equals("tech")) {
             llTechMark.setVisibility(View.VISIBLE);

@@ -19,12 +19,7 @@ public class RequestConstant {
     public static final String URL_TECH_USER_CONSUME_LIST = BASE_URL + "/v2/tech/customer/consume/list";
     public static final String URL_TECH_USER_SHOP_LIST = BASE_URL + "/v2/tech/customer/shop/list";
     public static final String URL_TECH_USER_REWARD_LIST = BASE_URL + "/v2/tech/customer/reward/list";
-    // 将联系人加入黑名单
-    public static final String URL_ADD_TO_BLACKLIST = BASE_URL + "/v2/tech/customer/add/emchat/blacklist";
-    // 将联系人移出黑名单
-    public static final String URL_REMOVE_FROM_BLACKLIST = BASE_URL + "/v2/tech/customer/remove/emchat/blacklist";
-    // 联系人是否在黑名单中
-    public static final String URL_IN_BLACKLIST = BASE_URL + "/v2/tech/customer/in/emchat/blacklist";
+
     //本店同事详情
     public static final String URL_CLUB_COLLEAGUE_DETAIL = BASE_URL + "/v2/tech/colleague/detail";
     // 查询同客户的联系限制

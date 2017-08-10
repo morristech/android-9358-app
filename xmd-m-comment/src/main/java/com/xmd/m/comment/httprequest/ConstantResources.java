@@ -11,6 +11,7 @@ public class ConstantResources {
     public static final String BIZ_TYPE = "comment_type";
     public static final String INTENT_TYPE_MANAGER = "manager";
     public static final String INTENT_TYPE_TECH = "tech";
+    public static final String INTENT_CUSTOMER_VISIT_TYPE = "visit_type";
     public static final String INTENT_TECH_ID = "techId";
     public static final String CUSTOMER_TYPE_USER_ADD = "userAdd";//添加联系人
     public static final String CUSTOMER_TYPE_TOOKEN = "tooken";//我的拓客

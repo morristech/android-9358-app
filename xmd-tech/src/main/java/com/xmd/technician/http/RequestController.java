@@ -475,7 +475,7 @@ public class RequestController extends AbstractController {
             case MsgDef.MSG_DEF_CLUB_EMPLOYEE_DETAIL:
                 getCLubEmployeeDetail(msg.obj.toString());
                 break;
-            // --------------------------------------> 联系人列表优化 <------------------------------------
+            // --------------------------------------> 技师海报 <------------------------------------
             case MsgDef.MSG_DEF_TECH_POSTER_SAVE:
                 doSaveTechPoster((Map<String, String>) msg.obj);
                 break;

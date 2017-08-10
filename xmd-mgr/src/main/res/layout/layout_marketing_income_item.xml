@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/inter_space"
-    android:layout_marginRight="@dimen/inter_space"
-    android:layout_marginTop="@dimen/inter_space"
-    android:orientation="vertical">
+                                    xmlns:tools="http://schemas.android.com/tools"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/inter_space"
+                                    android:layout_marginRight="@dimen/inter_space"
+                                    android:layout_marginTop="@dimen/inter_space"
+                                    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:drawablePadding="@dimen/small_space"
                 android:textColor="@color/colorVisitFromText"
                 android:textSize="@dimen/fontCaption"
-                tools:text="2017-01-01 16:10:00" />
+                tools:text="2017-01-01 16:10:00"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
                 android:drawablePadding="@dimen/small_space"
                 android:textColor="@color/colorVisitFromText"
                 android:textSize="@dimen/fontCaption"
-                tools:text="累计：" />
+                tools:text="累计："/>
 
             <TextView
                 android:id="@+id/tv_income_total_money"
@@ -50,10 +50,10 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/inter_text_size"
-                tools:text="80.00" />
+                tools:text="80.00"/>
         </LinearLayout>
 
-        <View style="@style/dotted_line_type" />
+        <View style="@style/dotted_line_type"/>
 
         <LinearLayout
             android:id="@+id/ll_once_card_income_view"
@@ -63,14 +63,13 @@
 
             <TextView
                 style="@style/marketing_income_name_type"
-                android:text="单项次卡" />
+                android:text="单项次卡"/>
 
             <TextView
                 android:id="@+id/tv_once_card_income"
                 style="@style/marketing_income_detail_type"
-                tools:text="90.00" />
+                tools:text="90.00"/>
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,64 +77,60 @@
 
             <TextView
                 style="@style/marketing_income_name_type"
-                android:text="抢项目" />
-
-            <TextView
-                android:id="@+id/tv_grab_income"
-                style="@style/marketing_income_detail_type"
-                tools:text="90.00" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/marketing_income_name_type"
-                android:text="夺宝" />
-
-            <TextView
-                android:id="@+id/tv_pay_for_me_income"
-                style="@style/marketing_income_detail_type"
-                tools:text="90.00" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/marketing_income_name_type"
-                android:text="点钟券" />
-
-            <TextView
-                android:id="@+id/tv_paid_income"
-                style="@style/marketing_income_detail_type"
-                tools:text="90.00" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/marketing_income_name_type"
-                android:text="混合套餐" />
+                android:text="混合套餐"/>
 
             <TextView
                 android:id="@+id/tv_mixed_package_income"
                 style="@style/marketing_income_detail_type"
-                tools:text="90.00" />
+                tools:text="90.00"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/marketing_income_name_type"
+                android:text="抢项目"/>
+
+            <TextView
+                android:id="@+id/tv_grab_income"
+                style="@style/marketing_income_detail_type"
+                tools:text="90.00"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/marketing_income_name_type"
+                android:text="夺宝"/>
+
+            <TextView
+                android:id="@+id/tv_pay_for_me_income"
+                style="@style/marketing_income_detail_type"
+                tools:text="90.00"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/marketing_income_name_type"
+                android:text="点钟券"/>
+
+            <TextView
+                android:id="@+id/tv_paid_income"
+                style="@style/marketing_income_detail_type"
+                tools:text="90.00"/>
+        </LinearLayout>
+
+
     </LinearLayout>
-
-
-
-
 
 
 </android.support.v7.widget.CardView>

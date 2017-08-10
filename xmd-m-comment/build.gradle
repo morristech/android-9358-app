@@ -38,6 +38,8 @@ dependencies {
     compile project(':xmd-app')
     compile project(':commonlibrary')
     compile project(':xmd-m-network')
+    compile project(':xmd-m-black')
+    compile project(':xmd-m-permission')
     compile(name: 'permission-tool-1.0', ext: 'aar')
     compile "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"
     compile "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"

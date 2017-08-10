@@ -191,7 +191,7 @@ public class RequestConstant {
     //技师拓客联系人
     public static final String URL_GET_TECH_CUSTOMER_USER_REGISTER_LIST = BASE_URL + "/v2/tech/customer/user/register/list";
     //本店同事列表
-    public static final String URL_GET_CLUB_EMPLOYEE_LIST = BASE_URL + "/v2//tech/colleague/list";
+    public static final String URL_GET_CLUB_EMPLOYEE_LIST = BASE_URL + "/v2/tech/colleague/list";
     //最近访客
     public static final String URL_GET_CLUB_CUSTOMER_USER_RECENT_LIST = BASE_URL + "/v2/tech/customer/user/recent/list";
     //本店同事详情

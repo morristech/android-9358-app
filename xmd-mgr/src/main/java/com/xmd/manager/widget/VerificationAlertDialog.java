@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shidou.commonlibrary.helper.XLogger;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.manager.R;
 import com.xmd.manager.beans.VerificationCouponDetailBean;
 import com.xmd.manager.common.Utils;
@@ -131,6 +133,10 @@ public class VerificationAlertDialog extends Dialog implements View.OnClickListe
                 break;
             case R.id.dialog_positive:
                 if (mVerificationListener != null) {
+                    if(TextUtils.isEmpty(dialogEditContent.getText().toString())){
+                        XToast.show("输入金额不能为空");
+                       return;
+                    }
                     for (int i = 0; i < discounts.size(); i++) {
                         if (discounts.get(i).consumeAmount <= Float.parseFloat(dialogEditContent.getText().toString()) * 100) {
                             canUse = true;

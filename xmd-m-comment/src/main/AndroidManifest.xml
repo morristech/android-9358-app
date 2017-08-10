@@ -20,9 +20,6 @@
         <activity
             android:name="com.xmd.m.comment.CommentSearchActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.xmd.m.comment.EditCustomerInformationActivity"
-            android:screenOrientation="portrait" />
 
     </application>
 

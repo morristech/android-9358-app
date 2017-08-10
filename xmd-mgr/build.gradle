@@ -166,6 +166,7 @@ dependencies {
     compile project(':xmd-m-notify')
     compile project(':xmd-m-comment')
     compile project(':xmd-m-chat')
+    compile project(':xmd-m-contact')
     compile(name: 'xmd-image-crop-1.0', ext: 'aar')
     compile(name: 'xmd-image-selector-1.0', ext: 'aar')
     compile(name: 'xmd-image-tool-1.0', ext: 'aar')

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@android:drawable/editbox_background_normal"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+    <com.xmd.app.widget.ClearableEditText
+        android:id="@+id/edit_search_contact"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="搜索"
+        android:maxLength="20"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:textColor="#666666"
+        android:textColorHint="#E0E0E0"
+        android:textSize="16sp"/>
+    <View
+        style="@style/vertical_divider_line"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
+    <ImageView
+        android:id="@+id/img_btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+    android:src="@drawable/icon_search"/>
+
+</LinearLayout>

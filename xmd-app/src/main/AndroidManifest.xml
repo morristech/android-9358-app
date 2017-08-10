@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme">
         <service android:name=".alive.AliveReportService" />
 
-        <activity android:name=".share.JournalShareActivity"></activity>
+        <!--<activity android:name=".share.JournalShareActivity"></activity>-->
     </application>
 
 </manifest>

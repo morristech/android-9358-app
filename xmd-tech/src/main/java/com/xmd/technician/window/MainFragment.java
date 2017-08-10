@@ -33,6 +33,7 @@ import com.shidou.commonlibrary.widget.ScreenUtils;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.widget.CircleAvatarView;
 import com.xmd.chat.XmdChat;
+import com.xmd.contact.event.SwitchTableToContactRecentEvent;
 import com.xmd.m.comment.CommentListActivity;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.permission.BusinessPermissionManager;
@@ -78,6 +79,8 @@ import com.xmd.technician.widget.CircleImageView;
 import com.xmd.technician.widget.RewardConfirmDialog;
 import com.xmd.technician.widget.SlidingMenu;
 import com.xmd.technician.widget.SwitchButton;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -862,10 +865,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             case R.id.main_tech_who_care_all:
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(2);
-                Map<String, Integer> params = new HashMap<String, Integer>();
-                params.put(Constant.SWITCH_FRAGMENT_INDEX, 2);
-                params.put(Constant.SWITCH_FRAGMENT_ITEM_INDEX, 2);
-                MsgDispatcher.dispatchMessage(MsgDef.MSF_DEF_SET_PAGE_SELECTED, params);
+                EventBus.getDefault().post(new SwitchTableToContactRecentEvent());
                 break;
             case R.id.layout_technician_ranking:
                 if (isHasPk) {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBackground">#f0f0f0</color>
+    <color name="alert_text_color">#616161</color>
+    <color name="contact_marker">#ff9a0c</color>
+</resources>

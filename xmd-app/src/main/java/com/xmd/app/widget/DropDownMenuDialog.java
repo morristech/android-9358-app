@@ -11,6 +11,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.xmd.app.R;
+import com.xmd.app.utils.ResourceUtils;
 
 /**
  * Created by Lhj on 17-7-8.
@@ -43,7 +44,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
         this.contentView = contentView;
         this.mOnItemClickListener = onItemClickListener;
         super.setOutsideTouchable(true);
-        super.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f0f0f0")));
+        super.setBackgroundDrawable(ResourceUtils.getDrawable(R.drawable.bg_contact_mark));
         initViews();
 
     }
@@ -54,7 +55,7 @@ public class DropDownMenuDialog extends PopupWindow implements View.OnClickListe
         }
         for (int i = 0; i < items.length; i++) {
             String item = items[i];
-            TextView textView = (TextView) inflater.inflate(R.layout.drop_down_menu_item, contentView, false);
+           TextView textView = (TextView) inflater.inflate(R.layout.drop_down_menu_item, contentView, false);
             textView.setText(item);
             textView.setTag(i);
             textView.setOnClickListener(this);

@@ -1,12 +1,10 @@
 package com.xmd.m.comment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +18,18 @@ import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseFragment;
 import com.xmd.app.EventBusSafeRegister;
+import com.xmd.app.widget.FlowLayout;
 import com.xmd.app.widget.RoundImageView;
+import com.xmd.app.widget.StationaryScrollView;
+import com.xmd.black.EditCustomerInformationActivity;
+import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.m.R;
 import com.xmd.m.R2;
 import com.xmd.m.comment.bean.ManagerUserTagListBean;
 import com.xmd.m.comment.bean.TechUserDetailModelBean;
 import com.xmd.m.comment.bean.TechUserDetailResult;
 import com.xmd.m.comment.bean.UserInfoBean;
-import com.xmd.m.comment.event.EditCustomerRemarkSuccessEvent;
+
 import com.xmd.m.comment.event.ShowCustomerHeadEvent;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.comment.httprequest.DataManager;
@@ -37,6 +39,7 @@ import com.xmd.m.network.NetworkSubscriber;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -76,7 +79,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
     @BindView(R2.id.ll_customer_mark)
     LinearLayout llCustomerMark;
     @BindView(R2.id.customer_type_label)
-    LinearLayout customerTypeLabel;
+    FlowLayout customerTypeLabel;
     @BindView(R2.id.ll_customer_type_label)
     LinearLayout llCustomerTypeLabel;
     @BindView(R2.id.tv_customer_register_time)
@@ -101,6 +104,8 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
     RelativeLayout rlCustomerComment;
     @BindView(R2.id.frame_consume_tech)
     FrameLayout frameConsumeTech;
+    @BindView(R2.id.stationary_scroll_view)
+    StationaryScrollView scrollView;
 
 
     Unbinder unbinder;
@@ -119,10 +124,10 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_customer_info_detail_tech, container, false);
         userId = getArguments().getString(CustomerInfoDetailActivity.CURRENT_USER_ID);
+        unbinder = ButterKnife.bind(this, view);
         EventBusSafeRegister.register(this);
         initConsumeView();
         getUserInfo();
-        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -136,6 +141,15 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
         mFragment.setArguments(bundle);
         ft.replace(R.id.frame_consume_tech, mFragment);
         ft.commit();
+        final View view = scrollView;
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+           ViewGroup.LayoutParams containerParams = scrollView.getLayoutParams();
+                containerParams.height = scrollView.getHeight();
+                frameConsumeTech.setLayoutParams(containerParams);
+            }
+        });
     }
 
     public void getUserInfo() {
@@ -161,23 +175,12 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
 
 
     private void initTypeLabelView(List<ManagerUserTagListBean> userTagList) {
-        if (userTagList == null || userTagList.size() == 0) {
-            return;
-        }
-        customerTypeLabel.removeAllViews();
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(10, 0, 0, 0);
-        for (ManagerUserTagListBean bean : userTagList) {
-            TextView tv = new TextView(getActivity());
-            tv.setText(bean.tagName);
-            tv.setBackgroundResource(R.drawable.bg_contact_mark);
-            tv.setTextSize(14);
-            tv.setTextColor(Color.parseColor("#ff8909"));
-            tv.setPadding(14, 0, 14, 0);
-            tv.setGravity(Gravity.CENTER);
-            tv.setLayoutParams(lp);
-            customerTypeLabel.addView(tv);
-        }
+        List<String> mList = new ArrayList<>();
+              for (ManagerUserTagListBean bean : userTagList) {
+                  mList.add(bean.tagName);
+              }
+
+        customerTypeLabel.initChildViews(mList);
     }
 
     private void initUserModelView(TechUserDetailModelBean userDetailModel) {
@@ -225,7 +228,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
         tvCustomerLabel.setText(TextUtils.isEmpty(userDetailModel.impression) ? "您尚未为该用户添加标签" : userDetailModel.impression);
         tvCustomerMark.setText(TextUtils.isEmpty(userDetailModel.remark) ? "您尚未为该用户添加备注信息" : userDetailModel.remark);
         tvCustomerRegisterTime.setText(userDetailModel.registerDate);
-        tvCustomerVisitTime.setText(TextUtils.isEmpty(userDetailModel.recentVisitDate)?"无":userDetailModel.recentVisitDate);
+        tvCustomerVisitTime.setText(TextUtils.isEmpty(userDetailModel.recentVisitDate) ? "无" : userDetailModel.recentVisitDate);
         mFragment.setViewData(String.valueOf(userDetailModel.shopCount), String.format("%1.2f", userDetailModel.consumeAmount / 100f), String.valueOf(userDetailModel.rewardCount));
         tvCommentTimes.setText(String.valueOf(userDetailModel.commentCount));
 
@@ -258,7 +261,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
         if (TextUtils.isEmpty(userName) && TextUtils.isEmpty(userPhone)) {
             XToast.show("匿名用户无评价详情");
         } else {
-            CommentSearchActivity.startCommentSearchActivity(getActivity(), false, false, techId, "",customerId);
+            CommentSearchActivity.startCommentSearchActivity(getActivity(), false, false, techId, "", customerId);
         }
 
     }
@@ -268,7 +271,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
         if (userBean == null) {
             return;
         }
-        EditCustomerInformationActivity.startEditCustomerInformationActivity(getActivity(),userBean.userId, userBean.id, ConstantResources.INTENT_TYPE_TECH, userBean.emChatName, userBean.userNoteName, userBean.contactPhone, userBean.remarkMessage, userBean.remarkImpression);
+        EditCustomerInformationActivity.startEditCustomerInformationActivity(getActivity(), userBean.userId, userBean.id, ConstantResources.INTENT_TYPE_TECH, userBean.emChatName, userBean.userNoteName, userBean.contactPhone, userBean.remarkMessage, userBean.remarkImpression);
     }
 
     @OnClick(R2.id.img_customer_head)

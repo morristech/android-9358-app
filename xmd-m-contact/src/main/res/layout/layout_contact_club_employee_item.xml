@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/ll_employee_view"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/selector_bg_white"
+              android:orientation="vertical"
+              android:paddingLeft="5dp"
+              android:paddingRight="5dp"
+              android:paddingTop="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.xmd.app.widget.RoundImageView
+            android:id="@+id/employee_head"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/img_default_avatar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/employee_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#212121"
+                android:textSize="18sp"
+                tools:text="黄小姐"/>
+
+            <TextView
+                android:id="@+id/employee_tech_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="#4d4d4d"
+                android:textSize="14sp"
+                tools:text="[ 123 ]"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+        style="@style/horizontal_divider_line"
+        android:layout_marginTop="15dp"/>
+</LinearLayout>

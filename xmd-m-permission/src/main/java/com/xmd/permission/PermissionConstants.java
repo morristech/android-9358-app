@@ -46,6 +46,7 @@ public class PermissionConstants {
     public final static String CONTACTS_ADD_CUSTOMER = "contacts_add_customer";//添加客户
     public final static String CONTACTS_MY_CLUB = "contacts_my_club";//本店
     public final static String CONTACTS_EMP_PHONE = "my_emp_phone";//手机号
+    public final static String CONTACTS_MY_CUSTOMER = "contacts_my_customer";//拓客
 
 
     /************管理者*********/
