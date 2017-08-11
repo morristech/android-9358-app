@@ -29,6 +29,8 @@ public class ContactAllBean {
     public String customerType;  //wx_user-微信用户;fans_user-手机用户;fans_wx_user-微信加手机用户;tech_add-通讯录联系人
     public String avatarUrl;
     public boolean isService;//true 是客服,false 不是客服
+    public String tagName;
+    public int distance;
 
 
     @Override

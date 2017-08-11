@@ -145,7 +145,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
         view.post(new Runnable() {
             @Override
             public void run() {
-           ViewGroup.LayoutParams containerParams = scrollView.getLayoutParams();
+                ViewGroup.LayoutParams containerParams = scrollView.getLayoutParams();
                 containerParams.height = scrollView.getHeight();
                 frameConsumeTech.setLayoutParams(containerParams);
             }
@@ -168,7 +168,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
 
             @Override
             public void onCallbackError(Throwable e) {
-               XToast.show(e.getLocalizedMessage());
+                XToast.show(e.getLocalizedMessage());
             }
         });
     }
@@ -176,9 +176,9 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
 
     private void initTypeLabelView(List<ManagerUserTagListBean> userTagList) {
         List<String> mList = new ArrayList<>();
-              for (ManagerUserTagListBean bean : userTagList) {
-                  mList.add(bean.tagName);
-              }
+        for (ManagerUserTagListBean bean : userTagList) {
+            mList.add(bean.tagName);
+        }
 
         customerTypeLabel.initChildViews(mList);
     }
@@ -214,6 +214,8 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_fans);
             } else if (userDetailModel.customerType.equals(RequestConstant.CUSTOMER_TYPE_WX)) {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_wx);
+            } else if (userDetailModel.customerType.equals(RequestConstant.CUSTOMER_TYPE_TEMP)) {
+                imgCustomerType01.setImageResource(R.drawable.icon_contact_fans);
             } else {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_tech_add);
             }
@@ -235,7 +237,7 @@ public class CustomerInfoDetailTechFragment extends BaseFragment {
     }
 
     @Subscribe
-    public void onRemarkChanged(EditCustomerRemarkSuccessEvent event) {
+    public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
         if (TextUtils.isEmpty(event.remarkName)) {
             llCustomerNickName.setVisibility(View.INVISIBLE);
             tvCustomerName.setText(TextUtils.isEmpty(event.userName) ? "匿名用户" : event.userName);

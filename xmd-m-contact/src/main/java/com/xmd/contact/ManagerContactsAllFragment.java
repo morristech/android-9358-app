@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.black.event.AddOrRemoveBlackEvent;
+import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.contact.bean.ManagerContactAllBean;
 import com.xmd.contact.bean.ManagerContactAllListResult;
 import com.xmd.contact.httprequest.ConstantResources;
@@ -16,6 +18,8 @@ import com.xmd.contact.httprequest.DataManager;
 import com.xmd.contact.httprequest.RequestConstant;
 import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.m.network.NetworkSubscriber;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +70,7 @@ public class ManagerContactsAllFragment extends BaseListFragment<ManagerContactA
         params.put(RequestConstant.KEY_CUSTOMER_LEVEL, mCustomerLevel);
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, mCustomerType);
         params.put(RequestConstant.KEY_REMARK, mCustomerRemark);
-        params.put(RequestConstant.KEY_TECH_ID, mCustomerTechId);
+        params.put(RequestConstant.KEY_TECH_NO, mCustomerTechId);
         params.put(RequestConstant.KEY_USER_GROUP, mCustomerUserGroup);
         params.put(RequestConstant.KEY_USER_NAME, mCustomerUserName);
         DataManager.getInstance().loadClubAllCustomer(params, new NetworkSubscriber<ManagerContactAllListResult>() {
@@ -111,6 +115,18 @@ public class ManagerContactsAllFragment extends BaseListFragment<ManagerContactA
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Subscribe
+    public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
+        if (event.success) {
+            onRefresh();
+        }
+    }
+
+    @Subscribe
+    public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
+        onRefresh();
     }
 
     @Override

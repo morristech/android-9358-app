@@ -3,6 +3,7 @@ package com.xmd.m.comment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class TechInfoDetailFragment extends BaseFragment {
     Unbinder unbinder;
     private String userId;
     private String userHeadUrl;
+    private String mTelephone;
 
     @Nullable
     @Override
@@ -64,7 +66,7 @@ public class TechInfoDetailFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_tech_info_detail, container, false);
         unbinder = ButterKnife.bind(this, view);
         getInfoData();
-        getCurrentUserInfo();
+
         return view;
     }
 
@@ -73,7 +75,7 @@ public class TechInfoDetailFragment extends BaseFragment {
             @Override
             public void onResponse(User result, Throwable error) {
                 if (result != null) {
-                    if (result.getContactPermission().isCall()) {
+                    if (result.getContactPermission().isCall() && !TextUtils.isEmpty(mTelephone)) {
                         llTechPhone.setVisibility(View.VISIBLE);
                     } else {
                         llTechPhone.setVisibility(View.GONE);
@@ -111,15 +113,17 @@ public class TechInfoDetailFragment extends BaseFragment {
         tvTechNo.setText(TextUtils.isEmpty(respData.techNo) ? "" : String.format("[%s]", respData.techNo));
         if (!TextUtils.isEmpty(respData.telephone)) {
             tvTechPhone.setText(respData.telephone);
+            mTelephone = respData.telephone;
+        }else {
+            mTelephone = "";
         }
-
-        llTechPhone.setVisibility(View.GONE);
         if (respData.roles.equals("tech")) {
             llTechMark.setVisibility(View.VISIBLE);
             tvTechMark.setText(TextUtils.isEmpty(respData.description) ? "该用户尚未添加个人简介信息..." : respData.description);
         } else {
             llTechMark.setVisibility(View.GONE);
         }
+        getCurrentUserInfo();
     }
 
     @OnClick(R2.id.img_tech_head)

@@ -13,7 +13,7 @@ import com.xmd.app.BaseActivity;
 import com.xmd.black.adapter.ListRecycleViewAdapter;
 import com.xmd.black.bean.BlackListResult;
 import com.xmd.black.bean.CustomerInfo;
-import com.xmd.black.event.RemoveFromBlackEvent;
+import com.xmd.black.event.AddOrRemoveBlackEvent;
 import com.xmd.black.event.ToBlackCustomerInfoDetailActivityEvent;
 import com.xmd.black.httprequest.ConstantResource;
 import com.xmd.black.httprequest.DataManager;
@@ -139,9 +139,10 @@ public class BlackListActivity extends BaseActivity implements ListRecycleViewAd
     }
 
     @Subscribe
-    public void removeFromBlackEvent(RemoveFromBlackEvent removeFromBlackEvent) {
+    public void addOrRemoveBlackList(AddOrRemoveBlackEvent event) {
         mPages = 1;
         getBlackList();
         this.finish();
     }
+
 }

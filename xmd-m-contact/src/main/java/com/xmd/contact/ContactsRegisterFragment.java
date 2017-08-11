@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.black.event.AddOrRemoveBlackEvent;
+import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.contact.bean.ContactAllBean;
 import com.xmd.contact.bean.ContactRegisterListResult;
 import com.xmd.contact.event.SwitchTableToMarketingEvent;
@@ -19,6 +21,7 @@ import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.m.network.NetworkSubscriber;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,7 +78,7 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
         params.put(RequestConstant.KEY_CUSTOMER_LEVEL, mCustomerLevel);
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, mCustomerType);
         params.put(RequestConstant.KEY_REMARK, mCustomerRemark);
-        params.put(RequestConstant.KEY_TECH_ID, mCustomerTechId);
+        params.put(RequestConstant.KEY_TECH_NO, mCustomerTechId);
         params.put(RequestConstant.KEY_USER_GROUP, mCustomerUserGroup);
         params.put(RequestConstant.KEY_USER_NAME, mCustomerUserName);
         DataManager.getInstance().loadRegisterCustomer(params, new NetworkSubscriber<ContactRegisterListResult>() {
@@ -136,15 +139,21 @@ public class ContactsRegisterFragment extends BaseListFragment<ContactAllBean> {
         EventBus.getDefault().post(new SwitchTableToMarketingEvent());
     }
 
+    @Subscribe
+    public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
+        if(event.success){
+            onRefresh();
+        }
+    }
+
+    @Subscribe
+    public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
+        onRefresh();
+    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-//        if (!hidden && hasContacts) {
-//            ((TechContactFragment) getParentFragment()).showOrHideFilterButton(true);
-//        } else {
-//            ((TechContactFragment) getParentFragment()).showOrHideFilterButton(false);
-//        }
         ((TechContactFragment) getParentFragment()).showOrHideFilterButton(true);
     }
 }

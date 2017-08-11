@@ -47,4 +47,6 @@ public class ConstantResources {
     public static final int CONTACT_RECENT_TYPE_COUPON = 3;
     public static final int CONTACT_RECENT_TYPE_PAID_COUPON = 4;
     public static final int CONTACT_RECENT_TYPE_REWARD = 5;
+    public static final int CONTACT_RECENT_TYPE_VISIT_CLUB = 10;
+    public static final int CONTACT_RECENT_TYPE_CONSUME = 11;
 }

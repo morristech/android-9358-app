@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shidou.commonlibrary.widget.XToast;
+import com.xmd.black.event.AddOrRemoveBlackEvent;
+import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.contact.bean.ContactAllBean;
 import com.xmd.contact.bean.ContactAllListResult;
 import com.xmd.contact.event.SwitchTableToMarketingEvent;
@@ -19,6 +21,7 @@ import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.m.network.NetworkSubscriber;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,7 +81,7 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
         params.put(RequestConstant.KEY_CUSTOMER_LEVEL, mCustomerLevel);
         params.put(RequestConstant.KEY_CUSTOMER_TYPE, mCustomerType);
         params.put(RequestConstant.KEY_REMARK, mCustomerRemark);
-        params.put(RequestConstant.KEY_TECH_ID, mCustomerTechId);
+        params.put(RequestConstant.KEY_TECH_NO, mCustomerTechId);
         params.put(RequestConstant.KEY_USER_GROUP, mCustomerUserGroup);
         params.put(RequestConstant.KEY_USER_NAME, mCustomerUserName);
         DataManager.getInstance().loadAllCustomer(params, new NetworkSubscriber<ContactAllListResult>() {
@@ -141,7 +144,7 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
         if (TextUtils.isEmpty(bean.userId) && TextUtils.isEmpty(bean.id)) {
             XToast.show("该用户无详情信息");
         } else if (TextUtils.isEmpty(bean.userId) && !TextUtils.isEmpty(bean.id)) {
-            CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.id, ConstantResources.CUSTOMER_TYPE_USER_ADD, false);
+            CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.id, com.xmd.m.comment.httprequest.ConstantResources.CUSTOMER_TYPE_TECH_ADD, false);
         } else {
             CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.userId, ConstantResources.APP_TYPE_TECH, false);
         }
@@ -156,12 +159,18 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-//        if (!hidden && hasContacts) {
-//            ((TechContactFragment) getParentFragment()).showOrHideFilterButton(false);
-//        } else {
-//
-//        }
         ((TechContactFragment) getParentFragment()).showOrHideFilterButton(true);
+    }
+
+    @Subscribe
+    public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
+        if(event.success){
+            onRefresh();
+        }
+    }
+    @Subscribe
+    public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
+        onRefresh();
     }
 
     @Override

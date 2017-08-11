@@ -5,10 +5,9 @@ import com.xmd.black.bean.AddToBlacklistResult;
 import com.xmd.black.bean.InBlacklistResult;
 import com.xmd.black.bean.InUserBlacklistResult;
 import com.xmd.black.bean.RemoveFromBlacklistResult;
-import com.xmd.black.event.AddToBlackEvent;
+import com.xmd.black.event.AddOrRemoveBlackEvent;
 import com.xmd.black.event.InCustomerBlackListEvent;
 import com.xmd.black.event.InUserBlackListEvent;
-import com.xmd.black.event.RemoveFromBlackEvent;
 import com.xmd.black.httprequest.DataManager;
 import com.xmd.m.network.NetworkSubscriber;
 
@@ -33,13 +32,12 @@ public class BlackListManager {
         DataManager.getInstance().addToBlackList(friendId, new NetworkSubscriber<AddToBlacklistResult>() {
             @Override
             public void onCallbackSuccess(AddToBlacklistResult result) {
-                EventBus.getDefault().post(new AddToBlackEvent(true, result.getMsg()));
+                EventBus.getDefault().post(new AddOrRemoveBlackEvent(true,true,result.getMsg()));
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                EventBus.getDefault().post(new AddToBlackEvent(false, e.getLocalizedMessage()));
-
+                EventBus.getDefault().post(new AddOrRemoveBlackEvent(false,true,e.getLocalizedMessage()));
             }
         });
     }
@@ -48,13 +46,12 @@ public class BlackListManager {
         DataManager.getInstance().removeFromBlackList(friendId, new NetworkSubscriber<RemoveFromBlacklistResult>() {
             @Override
             public void onCallbackSuccess(RemoveFromBlacklistResult result) {
-                EventBus.getDefault().post(new RemoveFromBlackEvent(true, result.getMsg()));
+                EventBus.getDefault().post(new AddOrRemoveBlackEvent(true,false,result.getMsg()));
             }
 
             @Override
             public void onCallbackError(Throwable e) {
-                // EventBus.getDefault().post(new RemoveFromBlackEvent(false, e.getLocalizedMessage()));
-                XToast.show(e.getLocalizedMessage());
+                EventBus.getDefault().post(new AddOrRemoveBlackEvent(false,false,e.getLocalizedMessage()));
             }
         });
     }

@@ -11,6 +11,8 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.CharacterParser;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.black.event.AddOrRemoveBlackEvent;
+import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.contact.bean.ManagerContactRecentBean;
 import com.xmd.contact.bean.ManagerContactRecentListResult;
 import com.xmd.contact.event.ThanksToChatEvent;
@@ -20,6 +22,7 @@ import com.xmd.m.comment.CustomerInfoDetailActivity;
 import com.xmd.m.network.NetworkSubscriber;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,5 +133,17 @@ public class ManagerContactsVisitorsFragment extends BaseListFragment<ManagerCon
             return;
         }
         CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(getActivity(), bean.userId, ConstantResources.APP_TYPE_MANAGER, false);
+    }
+
+    @Subscribe
+    public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
+        if(event.success){
+            onRefresh();
+        }
+    }
+
+    @Subscribe
+    public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
+        onRefresh();
     }
 }

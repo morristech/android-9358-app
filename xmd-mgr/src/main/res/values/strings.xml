@@ -479,7 +479,7 @@
     <string name="club_bottom_alert">——您已经到达页面底部——</string>
     <string name="all_bad_comment">全部差评</string>
     <string name="bad_comment_detail">评论详情</string>
-    <string name="bad_comment_manage">差评管理</string>
+    <string name="bad_comment_manage">差评投诉</string>
     <string name="return_visit">回访</string>
     <string name="operation">操作</string>
     <string name="comment_text">点评:</string>

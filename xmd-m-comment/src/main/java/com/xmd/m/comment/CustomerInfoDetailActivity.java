@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.crazyman.library.PermissionTool;
+import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.BaseActivity;
 import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.CustomerHeadDialog;
@@ -27,10 +28,8 @@ import com.xmd.app.widget.DropDownMenuDialog;
 import com.xmd.app.widget.PromptConfirmDialog;
 import com.xmd.black.BlackListManager;
 import com.xmd.black.EditCustomerInformationActivity;
-import com.xmd.black.event.AddToBlackEvent;
+import com.xmd.black.event.AddOrRemoveBlackEvent;
 import com.xmd.black.event.InUserBlackListEvent;
-import com.xmd.black.event.RemoveFromBlackEvent;
-import com.xmd.black.httprequest.ConstantResource;
 import com.xmd.m.R;
 import com.xmd.m.R2;
 import com.xmd.m.comment.bean.ContactPermissionInfo;
@@ -126,16 +125,25 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         setTitle(R.string.customer_info_detail_activity_title);
         setBackVisible(true);
         //管理者，全部用户，我的拓客 有更多操作按钮
-        if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || (!customerIsTech && !fromType.equals(ConstantResources.CUSTOMER_TYPE_TOOKEN))) {
+        if (!customerIsTech) {
             setRightVisible(true, R.drawable.contact_icon_more);
-        } else {
-            setRightVisible(false, -1);
         }
-        if (fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD) || fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || customerIsTech) {
+
+//        if (fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD) || fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || customerIsTech) {
+//            showButton();
+//        } else if (fromType.equals(ConstantResources.INTENT_TYPE_TECH) && !customerIsTech) {
+//
+//            llOperation.setVisibility(View.VISIBLE);
+//        }
+//        if(!fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)){
+//            loadPermissionInfo();
+//        }else{
+//            showButton();
+//        }
+        if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER) || fromType.equals(ConstantResources.CUSTOMER_TYPE_TECH_ADD)) {
             showButton();
-        } else if (fromType.equals(ConstantResources.INTENT_TYPE_TECH) && !customerIsTech) {
+        }else{
             loadPermissionInfo();
-            llOperation.setVisibility(View.VISIBLE);
         }
         BlackListManager.getInstance().isInBlackList(userId);
     }
@@ -152,19 +160,16 @@ public class CustomerInfoDetailActivity extends BaseActivity {
                 mTechInfoDetailFragment = new TechInfoDetailFragment();
                 mTechInfoDetailFragment.setArguments(bundle);
                 ft.replace(R.id.fragment_detail, mTechInfoDetailFragment);
-                showButton();
             } else {
                 mInfoManagerFragment = new CustomerInfoDetailManagerFragment();
                 mInfoManagerFragment.setArguments(bundle);
                 ft.replace(R.id.fragment_detail, mInfoManagerFragment);
             }
-
-        } else if (fromType.equals(ConstantResources.INTENT_TYPE_TECH) || fromType.equals(ConstantResources.CUSTOMER_TYPE_TOOKEN)) {
+        } else if (fromType.equals(ConstantResources.INTENT_TYPE_TECH)) {
             if (customerIsTech) {
                 mTechInfoDetailFragment = new TechInfoDetailFragment();
                 mTechInfoDetailFragment.setArguments(bundle);
                 ft.replace(R.id.fragment_detail, mTechInfoDetailFragment);
-                showButton();
             } else {
                 mInfoTechFragment = new CustomerInfoDetailTechFragment();
                 mInfoTechFragment.setArguments(bundle);
@@ -183,7 +188,7 @@ public class CustomerInfoDetailActivity extends BaseActivity {
         super.onRightImageClickedListener();
         final String[] items = new String[2];
         items[0] = "修改备注";
-        if (fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD)) {
+        if (fromType.equals(ConstantResources.CUSTOMER_TYPE_TECH_ADD)) {
             items[1] = "删除好友";
         } else {
             if (!inBlackList) {
@@ -256,17 +261,29 @@ public class CustomerInfoDetailActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void removeUserFromBlackList(RemoveFromBlackEvent event) {
-        inBlackList = false;
-        showButton();
-    }
+    public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
+        if(event.isAdd){
+            inBlackList = true;
+            if(event.success){
+                XToast.show("已成功加入黑名单");
+                CustomerInfoDetailActivity.this.finish();
+            }else {
+                Toast.makeText(CustomerInfoDetailActivity.this, event.msg, Toast.LENGTH_SHORT).show();
+            }
 
-    @Subscribe
-    public void addToUserBlackList(AddToBlackEvent event) {
-        inBlackList = true;
-        Toast.makeText(CustomerInfoDetailActivity.this, "已成功加入黑名单", Toast.LENGTH_SHORT).show();
-        CustomerInfoDetailActivity.this.finish();
+        }else {
+            inBlackList = false;
+            if(event.success){
+                if(fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)){
+                    showButton();
+                }else {
+                    loadPermissionInfo();
+                }
+            }else {
+                XToast.show(event.msg);
+            }
 
+        }
     }
 
     private void loadPermissionInfo() {
@@ -302,36 +319,22 @@ public class CustomerInfoDetailActivity extends BaseActivity {
 
     private void showButton() {
         if (inBlackList) {//在黑名单中
-            btnEmHello.setVisibility(View.GONE);
-            btnEmChat.setVisibility(View.GONE);
-            btnCallPhone.setVisibility(View.GONE);
-            btnChat.setVisibility(View.GONE);
             btnOperation.setVisibility(View.GONE);
             layoutOperationButtons.setVisibility(View.GONE);
             return;
         }
-        if (customerIsTech) {//本店成员
-            if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) { //管理者
-                btnEmHello.setVisibility(View.GONE);
-                btnEmChat.setVisibility(View.VISIBLE);
-                btnCallPhone.setVisibility(View.VISIBLE);
-                btnChat.setVisibility(View.VISIBLE);
-                layoutOperationButtons.setAlpha(1.0f);
-                layoutOperationButtons.setVisibility(View.GONE);
-                btnOperation.setVisibility(View.VISIBLE);
-            } else { //技师
-                btnEmHello.setVisibility(View.GONE);
-                btnOperation.setVisibility(View.GONE);
-                btnEmChat.setVisibility(View.VISIBLE);
-                btnCallPhone.setVisibility(View.GONE);
-                btnChat.setVisibility(View.GONE);
-                layoutOperationButtons.setAlpha(1.0f);
-                layoutOperationButtons.setVisibility(View.VISIBLE);
-
-            }
+        if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) { //管理者对所有用户
+            btnEmHello.setVisibility(View.GONE);
+            btnEmChat.setVisibility(View.VISIBLE);
+            btnCallPhone.setVisibility(View.VISIBLE);
+            btnChat.setVisibility(View.VISIBLE);
+            layoutOperationButtons.setAlpha(1.0f);
+            layoutOperationButtons.setVisibility(View.GONE);
+            btnOperation.setVisibility(View.VISIBLE);
             return;
         }
-        if (fromType.equals(ConstantResources.CUSTOMER_TYPE_USER_ADD)) { //添加的用户
+
+        if (fromType.equals(ConstantResources.CUSTOMER_TYPE_TECH_ADD)) { //技师对添加的用户
             btnEmHello.setVisibility(View.GONE);
             btnEmChat.setVisibility(View.GONE);
             btnOperation.setVisibility(View.GONE);
@@ -341,18 +344,40 @@ public class CustomerInfoDetailActivity extends BaseActivity {
             layoutOperationButtons.setVisibility(View.VISIBLE);
             return;
         }
-
-        if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
-            btnEmHello.setVisibility(View.GONE);
-            btnOperation.setVisibility(View.GONE);
-            btnEmChat.setVisibility(View.VISIBLE);
-            btnCallPhone.setVisibility(View.VISIBLE);
-            btnChat.setVisibility(View.VISIBLE);
-            layoutOperationButtons.setAlpha(1.0f);
-            layoutOperationButtons.setVisibility(View.GONE);
-            btnOperation.setVisibility(View.VISIBLE);
-            return;
-        }
+//        if (customerIsTech) {//本店成员
+//            if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) { //管理者
+//                btnEmHello.setVisibility(View.GONE);
+//                btnEmChat.setVisibility(View.VISIBLE);
+//                btnCallPhone.setVisibility(View.VISIBLE);
+//                btnChat.setVisibility(View.VISIBLE);
+//                layoutOperationButtons.setAlpha(1.0f);
+//                layoutOperationButtons.setVisibility(View.GONE);
+//                btnOperation.setVisibility(View.VISIBLE);
+//            } else { //技师
+//                btnEmHello.setVisibility(View.GONE);
+//                btnOperation.setVisibility(View.GONE);
+//                btnEmChat.setVisibility(View.VISIBLE);
+//                btnCallPhone.setVisibility(View.GONE);
+//                btnChat.setVisibility(View.GONE);
+//                layoutOperationButtons.setAlpha(1.0f);
+//                layoutOperationButtons.setVisibility(View.VISIBLE);
+//
+//            }
+//            return;
+//        }
+//
+//
+//        if (fromType.equals(ConstantResources.INTENT_TYPE_MANAGER)) {
+//            btnEmHello.setVisibility(View.GONE);
+//            btnOperation.setVisibility(View.GONE);
+//            btnEmChat.setVisibility(View.VISIBLE);
+//            btnCallPhone.setVisibility(View.VISIBLE);
+//            btnChat.setVisibility(View.VISIBLE);
+//            layoutOperationButtons.setAlpha(1.0f);
+//            layoutOperationButtons.setVisibility(View.GONE);
+//            btnOperation.setVisibility(View.VISIBLE);
+//            return;
+//        }
 
         if (permissionInfo != null) {
             boolean showOperation = permissionInfo.call || permissionInfo.hello || permissionInfo.sms || permissionInfo.echat;

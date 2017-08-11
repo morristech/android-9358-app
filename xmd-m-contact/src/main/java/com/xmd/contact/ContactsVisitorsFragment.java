@@ -11,6 +11,8 @@ import com.shidou.commonlibrary.widget.XToast;
 import com.xmd.app.CharacterParser;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoServiceImpl;
+import com.xmd.black.event.AddOrRemoveBlackEvent;
+import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.contact.bean.ContactRecentBean;
 import com.xmd.contact.bean.ContactRecentListResult;
 import com.xmd.contact.event.SayHiSuccessEvent;
@@ -122,8 +124,6 @@ public class ContactsVisitorsFragment extends BaseListFragment<ContactRecentBean
                 UserInfoServiceImpl.getInstance().saveUser(user);
             }
         }
-
-
     }
 
     @Override
@@ -145,14 +145,12 @@ public class ContactsVisitorsFragment extends BaseListFragment<ContactRecentBean
         } else {
             onRefresh();
         }
-
     }
 
     @OnClick(R2.id.btn_nearby_people)
     public void onNearbyPeopleClicked() {
         EventBus.getDefault().post(new SwitchTableToMarketingEvent());
     }
-
 
     @Override
     public void onPositiveButtonClicked(ContactRecentBean bean, int position, boolean isThanks) {
@@ -169,6 +167,18 @@ public class ContactsVisitorsFragment extends BaseListFragment<ContactRecentBean
             EventBus.getDefault().post(new SayHiToChatEvent(bean.emchatId, position));
 
         }
+    }
+
+    @Subscribe
+    public void addOrRemoveBlackListSubscribe(AddOrRemoveBlackEvent event) {
+        if (event.success) {
+            onRefresh();
+        }
+    }
+
+    @Subscribe
+    public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
+        onRefresh();
     }
 
     @Override

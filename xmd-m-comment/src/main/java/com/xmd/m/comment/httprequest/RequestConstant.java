@@ -55,6 +55,6 @@ public class RequestConstant {
     public static final String CUSTOMER_TYPE_FANS_WX = "fans_wx_user";
     public static final String CUSTOMER_TYPE_FANS = "fans_user";
     public static final String CUSTOMER_TYPE_WX = "wx_user";
-    public static final String CUSTOMER_TYPE_ADD = "temp_user";
+    public static final String CUSTOMER_TYPE_TEMP = "temp_user";
     public static final String KEY_EMP_ID = "empId";
 }

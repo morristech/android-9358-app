@@ -29,7 +29,6 @@ import com.xmd.contact.event.SayHiToChatEvent;
 import com.xmd.contact.event.SwitchTableToMarketingEvent;
 import com.xmd.contact.event.ThanksToChatEvent;
 import com.xmd.m.comment.CustomerInfoDetailActivity;
-import com.xmd.m.comment.bean.UserInfoBean;
 import com.xmd.m.comment.event.UserInfoEvent;
 import com.xmd.m.comment.httprequest.ConstantResources;
 import com.xmd.m.notify.display.XmdDisplay;
@@ -71,13 +70,10 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     private List<Fragment> mFragmentList = new LinkedList<>();
     private List<View> mBottomBarButtonList = new LinkedList<View>();
-
     private MainFragment mHomeFragment;
-
     private int mCurrentTabIndex = -1;
     private Subscription mGetUserIsBindWXSubscription;
 
-    private String contactPhone;
 
     @BindView(R.id.main_unread_message)
     TextView mUnreadMsgLabel;
@@ -188,7 +184,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
 
     @CheckBusinessPermission(PermissionConstants.CONTACTS)
     public void addFragmentContacts() {
-        // addFragment(R.id.main_button_contacts, ContactsSummaryFragment.class);
         addFragment(R.id.main_button_contacts, ContactFragment.class);
     }
 
@@ -331,7 +326,7 @@ public class MainActivity extends BaseFragmentActivity implements BaseFragment.I
     }
 
     @Subscribe
-    public void toBlaclCustomerInfoDetailActivity(ToBlackCustomerInfoDetailActivityEvent event) {
+    public void toBlackCustomerInfoDetailActivity(ToBlackCustomerInfoDetailActivityEvent event) {
         CustomerInfoDetailActivity.StartCustomerInfoDetailActivity(MainActivity.this, event.userId, ConstantResources.INTENT_TYPE_TECH, false);
     }
 

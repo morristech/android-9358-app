@@ -23,6 +23,7 @@ import com.xmd.app.utils.Utils;
 import com.xmd.app.widget.FlowLayout;
 import com.xmd.app.widget.RoundImageView;
 import com.xmd.app.widget.StationaryScrollView;
+import com.xmd.black.event.EditCustomerRemarkSuccessEvent;
 import com.xmd.m.R;
 import com.xmd.m.R2;
 import com.xmd.m.comment.bean.AllGroupListBean;
@@ -328,6 +329,8 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_fans);
             } else if (userDetailModel.customerType.equals(RequestConstant.CUSTOMER_TYPE_WX)) {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_wx);
+            }else if(userDetailModel.customerType.equals(RequestConstant.CUSTOMER_TYPE_TEMP)){
+                imgCustomerType01.setImageResource(R.drawable.icon_contact_fans);
             } else {
                 imgCustomerType01.setImageResource(R.drawable.icon_contact_tech_add);
             }
@@ -500,6 +503,19 @@ public class CustomerInfoDetailManagerFragment extends BaseFragment {
     @OnClick(R2.id.rl_customer_comment)
     public void onCommentClicked() {
         CommentSearchActivity.startCommentSearchActivity(getActivity(), true, false, "", "", customerId);
+    }
+
+    @Subscribe
+    public void onRemarkChangedSubscribe(EditCustomerRemarkSuccessEvent event) {
+        if (TextUtils.isEmpty(event.remarkName)) {
+            llCustomerNickName.setVisibility(View.INVISIBLE);
+            tvCustomerName.setText(TextUtils.isEmpty(event.userName) ? "匿名用户" : event.userName);
+        } else {
+            llCustomerNickName.setVisibility(View.VISIBLE);
+            tvCustomerName.setText(event.remarkName);
+            tvCustomerNickName.setText(event.userName);
+        }
+        tvCustomerMark.setText(TextUtils.isEmpty(event.remarkMessage) ? "您尚未为该用户添加备注信息" : event.remarkMessage);
     }
 
     @Override

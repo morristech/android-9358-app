@@ -51,14 +51,14 @@ public class DataManager {
     //技师所有联系人列表
     public void loadAllCustomer(Map<String, String> params, NetworkSubscriber<ContactAllListResult> listener) {
         mLoadClubEmployeeList = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getAllContactList(params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
-                params.get(RequestConstant.KEY_CUSTOMER_LEVEL), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_REMARK), params.get(RequestConstant.KEY_TECH_ID),
+                params.get(RequestConstant.KEY_CUSTOMER_LEVEL), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_REMARK), params.get(RequestConstant.KEY_TECH_NO),
                 params.get(RequestConstant.KEY_USER_GROUP), params.get(RequestConstant.KEY_USER_NAME)), listener);
     }
 
     //技师拓客列表
     public void loadRegisterCustomer(Map<String, String> params, NetworkSubscriber<ContactRegisterListResult> listener) {
         mLoadRegisterCustomer = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getRegisterContactList(params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
-                params.get(RequestConstant.KEY_CUSTOMER_LEVEL), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_REMARK), params.get(RequestConstant.KEY_TECH_ID),
+                params.get(RequestConstant.KEY_CUSTOMER_LEVEL), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_REMARK), params.get(RequestConstant.KEY_TECH_NO),
                 params.get(RequestConstant.KEY_USER_GROUP), params.get(RequestConstant.KEY_USER_NAME)), listener);
     }
 
@@ -75,7 +75,7 @@ public class DataManager {
     //管理者所有联系人列表
     public void loadClubAllCustomer(Map<String, String> params, NetworkSubscriber<ManagerContactAllListResult> listener) {
         mLoadClubEmployeeList = XmdNetwork.getInstance().request(XmdNetwork.getInstance().getService(NetService.class).getManagerAllContactList(params.get(RequestConstant.KEY_PAGE), params.get(RequestConstant.KEY_PAGE_SIZE),
-                params.get(RequestConstant.KEY_CUSTOMER_LEVEL), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_REMARK), params.get(RequestConstant.KEY_TECH_ID),
+                params.get(RequestConstant.KEY_CUSTOMER_LEVEL), params.get(RequestConstant.KEY_CUSTOMER_TYPE), params.get(RequestConstant.KEY_REMARK), params.get(RequestConstant.KEY_TECH_NO),
                 params.get(RequestConstant.KEY_USER_GROUP), params.get(RequestConstant.KEY_USER_NAME)), listener);
     }
 

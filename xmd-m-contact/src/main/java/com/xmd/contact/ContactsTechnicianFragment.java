@@ -211,7 +211,12 @@ public class ContactsTechnicianFragment extends BaseFragment implements SwipeRef
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        ((TechContactFragment) getParentFragment()).showOrHideFilterButton(false);
+        if(isFromManager){
+            ((ManagerContactFragment) getParentFragment()).showOrHideFilterButton(false);
+        }else{
+            ((TechContactFragment) getParentFragment()).showOrHideFilterButton(false);
+        }
+
     }
 
     @Override

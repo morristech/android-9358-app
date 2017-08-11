@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.shidou.commonlibrary.helper.ThreadPoolManager;
+import com.shidou.commonlibrary.helper.XLogger;
 import com.shidou.commonlibrary.util.DateUtils;
 import com.xmd.app.utils.RelativeDateFormatUtils;
 import com.xmd.app.utils.Utils;
@@ -109,12 +110,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case TYPE_CONTACT_VISITOR_ITEM:
-                View contactVisitView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_contact_visit_item, parent, false);
-                return new ContactVisitorListItemViewHolder(contactVisitView);
             case TYPE_CONTACT_ALL_ITEM:
                 View contactAllView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_contact_all_item, parent, false);
                 return new ContactAllViewHolder(contactAllView);
+            case TYPE_CONTACT_VISITOR_ITEM:
+                View contactVisitView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_contact_visit_item, parent, false);
+                return new ContactVisitorListItemViewHolder(contactVisitView);
             case TYPE_CLUB_CONTACT_ALL_ITEM:
                 View clubContactAllView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_club_contact_all_item, parent, false);
                 return new ClubContactAllViewHolder(clubContactAllView);
@@ -167,12 +168,20 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             } else {
                 viewHolder.contactServiceTime.setVisibility(View.GONE);
             }
-            if (TextUtils.isEmpty(contactBean.remark)) {
+//            if (TextUtils.isEmpty(contactBean.remark)) {
+//                viewHolder.llContactTypeView.setVisibility(View.INVISIBLE);
+//            } else {
+//                viewHolder.llContactTypeView.setVisibility(View.VISIBLE);
+//                initTypeLabelView(viewHolder.llContactTypeView, Utils.StringToList(contactBean.remark, ","));
+//            }
+            if (TextUtils.isEmpty(contactBean.tagName)) {
                 viewHolder.llContactTypeView.setVisibility(View.INVISIBLE);
             } else {
                 viewHolder.llContactTypeView.setVisibility(View.VISIBLE);
-                initTypeLabelView(viewHolder.llContactTypeView, Utils.StringToList(contactBean.remark, ","));
+                initTypeLabelView(viewHolder.llContactTypeView, Utils.StringToList(contactBean.tagName, ","));
             }
+
+
             if (contactBean.customerType.equals(ConstantResources.USER_FANS)) {
                 viewHolder.ivContactTypeFans.setVisibility(View.VISIBLE);
                 viewHolder.ivContactTypeWx.setVisibility(View.GONE);
@@ -243,6 +252,12 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 case ConstantResources.CONTACT_RECENT_TYPE_REWARD:
                     Glide.with(mContext).load(R.drawable.icon_recent_reward).into(viewHolder.ivContactRecentVisitType);
                     break;
+                case ConstantResources.CONTACT_RECENT_TYPE_VISIT_CLUB:
+                    Glide.with(mContext).load(R.drawable.icon_recent_visit).into(viewHolder.ivContactRecentVisitType);
+                    break;
+                case ConstantResources.CONTACT_RECENT_TYPE_CONSUME:
+                    Glide.with(mContext).load(R.drawable.icon_recent_club).into(viewHolder.ivContactRecentVisitType);
+                    break;
                 default:
                     Glide.with(mContext).load(R.drawable.icon_recent_visit).into(viewHolder.ivContactRecentVisitType);
             }
@@ -258,6 +273,23 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.visitorToChat.setEnabled(true);
                 viewHolder.visitorToChat.setText("感谢");
             }
+            if (TextUtils.isEmpty(userRecent.tagName)) {
+                viewHolder.llRecentVisitTagType.setVisibility(View.INVISIBLE);
+            } else {
+                viewHolder.llRecentVisitTagType.setVisibility(View.VISIBLE);
+                initTypeLabelView(viewHolder.llRecentVisitTagType, Utils.StringToList(userRecent.tagName, ","));
+            }
+            if (userRecent.distance > 0) {
+                if (userRecent.distance > 1000) {
+                    viewHolder.tvRecentDistance.setText(String.format("%1.1fkm", userRecent.distance / 1000f));
+                } else {
+                    viewHolder.tvRecentDistance.setText(userRecent.distance + "m");
+                }
+            } else {
+                viewHolder.tvRecentDistance.setText("");
+            }
+
+
             if (userRecent.customerType.equals(ConstantResources.USER_FANS)) {
                 viewHolder.ivContactRecentTypeFans.setVisibility(View.VISIBLE);
                 viewHolder.ivContactRecentTypeWx.setVisibility(View.GONE);
@@ -279,7 +311,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.ivContactRecentTypeWx.setVisibility(View.GONE);
                 viewHolder.ivContactRecentTypeZFB.setVisibility(View.GONE);
             }
-            viewHolder.contactVisitorTime.setText(RelativeDateFormatUtils.getTimestampString(RelativeDateFormatUtils.StringToDate(userRecent.createTime,"yyyy-MM-dd HH:mm:ss")));
+            viewHolder.contactVisitorTime.setText(RelativeDateFormatUtils.getTimestampString(RelativeDateFormatUtils.StringToDate(userRecent.createTime, "yyyy-MM-dd HH:mm:ss")));
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -410,7 +442,7 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
                 viewHolder.ivContactVisitType.setImageResource(R.drawable.icon_recent_club);
             }
             viewHolder.contactVisitRemark.setText(managerRecent.remark);
-            viewHolder.contactVisitTime.setText(RelativeDateFormatUtils.getTimestampString(RelativeDateFormatUtils.StringToDate(managerRecent.createTime,"yyyy-MM-dd HH:mm:ss")));
+            viewHolder.contactVisitTime.setText(RelativeDateFormatUtils.getTimestampString(RelativeDateFormatUtils.StringToDate(managerRecent.createTime, "yyyy-MM-dd HH:mm:ss")));
             if (managerRecent.distance > 0) {
                 if (managerRecent.distance > 1000) {
                     viewHolder.contactVisitDistance.setText(String.format("%1.1fkm", managerRecent.distance / 1000f));
@@ -520,6 +552,8 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
         TextView visitorToChat;
         TextView contactVisitorTime;
         LinearLayout llContactVisitorToChat;
+        LinearLayout llRecentVisitTagType;
+        TextView tvRecentDistance;
 
         public ContactVisitorListItemViewHolder(View contactVisitView) {
             super(contactVisitView);
@@ -531,8 +565,10 @@ public class ListRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
             ivContactRecentVisitType = (ImageView) contactVisitView.findViewById(R.id.iv_contact_recent_visit_type);
             contactRecentRemark = (TextView) contactVisitView.findViewById(R.id.contact_recent_remark);
             visitorToChat = (TextView) contactVisitView.findViewById(R.id.contact_visitor_to_chat);
-            contactVisitorTime = (TextView) contactVisitView.findViewById(R.id.contact_visitor_time);
+            contactVisitorTime = (TextView) contactVisitView.findViewById(R.id.contact_recent_time);
             llContactVisitorToChat = (LinearLayout) contactVisitView.findViewById(R.id.ll_contact_visitor_to_chat);
+            llRecentVisitTagType = (LinearLayout) contactVisitView.findViewById(R.id.ll_recent_visit_tag_type);
+            tvRecentDistance = (TextView) contactVisitView.findViewById(R.id.contact_recent_distance);
         }
     }
 

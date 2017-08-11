@@ -34,7 +34,7 @@ public interface NetService {
                                                        @Field(RequestConstant.KEY_CUSTOMER_LEVEL) String customerLevel,
                                                        @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
                                                        @Field(RequestConstant.KEY_REMARK) String remark,
-                                                       @Field(RequestConstant.KEY_TECH_ID) String techId,
+                                                       @Field(RequestConstant.KEY_TECH_NO) String serialNo,
                                                        @Field(RequestConstant.KEY_USER_GROUP) String userGroup,
                                                        @Field(RequestConstant.KEY_USER_NAME) String userName);
 
@@ -46,7 +46,7 @@ public interface NetService {
                                                                  @Field(RequestConstant.KEY_CUSTOMER_LEVEL) String customerLevel,
                                                                  @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
                                                                  @Field(RequestConstant.KEY_REMARK) String remark,
-                                                                 @Field(RequestConstant.KEY_TECH_ID) String techId,
+                                                                 @Field(RequestConstant.KEY_TECH_NO) String serialNo,
                                                                  @Field(RequestConstant.KEY_USER_GROUP) String userGroup,
                                                                  @Field(RequestConstant.KEY_USER_NAME) String userName);
 
@@ -66,7 +66,7 @@ public interface NetService {
                                                                      @Field(RequestConstant.KEY_CUSTOMER_LEVEL) String customerLevel,
                                                                      @Field(RequestConstant.KEY_CUSTOMER_TYPE) String customerType,
                                                                      @Field(RequestConstant.KEY_REMARK) String remark,
-                                                                     @Field(RequestConstant.KEY_TECH_ID) String techId,
+                                                                     @Field(RequestConstant.KEY_TECH_NO) String serialNo,
                                                                      @Field(RequestConstant.KEY_USER_GROUP) String userGroup,
                                                                      @Field(RequestConstant.KEY_USER_NAME) String userName);
 

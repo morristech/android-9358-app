@@ -29,7 +29,7 @@ public class ContactRecentBean {
     public String remark;//具体信息
     public String userId;
     public String userNoteName;
-    public int visitType;  //0-技师页;1-评论;2-收藏;3-领券;4-点钟券;5-打赏;10:访问微官网
+    public int visitType;  //0-技师页;1-评论;2-收藏;3-领券;4-点钟券;5-打赏;10:访问微官网;11:到店消费
     public String tagName;//标签
     public int distance;//位置
     public int intListPosition; //在列表中的位置

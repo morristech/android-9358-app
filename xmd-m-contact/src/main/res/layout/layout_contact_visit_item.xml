@@ -64,6 +64,13 @@
                     android:src="@drawable/icon_contact_zf"/>
 
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_recent_visit_tag_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:minHeight="16dp"
+                android:orientation="horizontal"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -89,20 +96,32 @@
                     android:textColor="#777777"
                     android:textSize="@dimen/fontBody"
                     tools:text="访问了我"/>
+                <TextView
+                    android:id="@+id/contact_recent_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="bottom"
+                    android:textColor="#777777"
+                    android:textSize="12sp"
+                    tools:text="昨天16：15"/>
 
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="12dp">
 
             <LinearLayout
                 android:id="@+id/ll_contact_visitor_to_chat"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:gravity="center">
+                android:layout_height="40dp"
+                android:gravity="right">
 
                 <TextView
                     android:id="@+id/contact_visitor_to_chat"
@@ -111,24 +130,23 @@
                     android:layout_gravity="center"
                     android:background="@drawable/selector_btn_chat"
                     android:gravity="center"
-                    android:paddingBottom="4dp"
-                    android:paddingTop="4dp"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
                     android:text="打招呼"
                     android:textColor="@color/white"
-                    android:textSize="13sp"/>
+                    android:textSize="16sp"/>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/contact_visitor_time"
-                android:layout_width="match_parent"
+                android:id="@+id/contact_recent_distance"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp"
-                android:text="27分钟前"
+                android:layout_gravity="right"
+                android:gravity="bottom"
+                android:paddingRight="5dp"
                 android:textColor="#777777"
-                android:textSize="11sp"/>
+                android:textSize="12sp"
+                tools:text="800m"/>
         </LinearLayout>
 
     </LinearLayout>

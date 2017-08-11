@@ -32,7 +32,7 @@ public class RequestConstant {
     public static final String KEY_CUSTOMER_LEVEL = "customerLevel";
     public static final String KEY_CUSTOMER_TYPE = "customerType";
     public static final String KEY_REMARK = "remark";
-    public static final String KEY_TECH_ID = "techId";
+    public static final String KEY_TECH_NO = "serialNo";
     public static final String KEY_USER_GROUP = "userGroup";
     public static final String KEY_USER_NAME = "userName";
 
