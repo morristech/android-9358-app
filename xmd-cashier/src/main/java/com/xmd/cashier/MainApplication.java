@@ -15,7 +15,6 @@ import com.xmd.app.event.EventLogin;
 import com.xmd.app.event.EventLogout;
 import com.xmd.cashier.activity.BaseActivity;
 import com.xmd.cashier.common.AppConstants;
-import com.xmd.cashier.common.ThreadManager;
 import com.xmd.cashier.common.Utils;
 import com.xmd.cashier.dal.LocalPersistenceManager;
 import com.xmd.cashier.dal.bean.MemberRecordInfo;
@@ -74,7 +73,6 @@ public class MainApplication extends Application implements CrashHandler.Callbac
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(true);
         ThreadPoolManager.init(this);
-        ThreadManager.init(this);
 
         DataReportManager.getInstance().startMonitor();
 

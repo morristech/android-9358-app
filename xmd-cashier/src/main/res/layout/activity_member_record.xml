@@ -20,7 +20,7 @@
         android:hint="输入手机号或会员卡号"
         android:imeOptions="actionSearch"
         android:inputType="number"
-        android:maxLength="16"
+        android:maxLength="18"
         android:paddingLeft="@dimen/activity_small_margin"
         android:paddingRight="@dimen/activity_small_margin"
         android:singleLine="true"
