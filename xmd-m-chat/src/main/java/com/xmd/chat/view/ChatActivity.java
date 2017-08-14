@@ -165,7 +165,9 @@ public class ChatActivity extends BaseActivity {
                 mBinding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        loadData(mAdapter.getDataList().get(0).getChatMessage().getEmMessage().getMsgId());
+                        if (mAdapter.getDataList().size() > 0) {
+                            loadData(mAdapter.getDataList().get(0).getChatMessage().getEmMessage().getMsgId());
+                        }
                         mBinding.refreshLayout.setRefreshing(false);
                     }
                 });
