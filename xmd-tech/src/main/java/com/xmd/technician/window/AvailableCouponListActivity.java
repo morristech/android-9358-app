@@ -8,7 +8,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.technician.Adapter.ChatCouponAdapter;
 import com.xmd.technician.Constant;
 import com.xmd.technician.R;
@@ -177,7 +177,7 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
         remainSendCount--;
         if (result.respData != null) {
             //用户领取成功，那么发送环信消息
-            MessageManager.getInstance().sendCouponMessage(chatId, false, result.content, result.actId, LoginTechnician.getInstance().getInviteCode());
+            ChatMessageManager.getInstance().sendCouponMessage(chatId, false, result.content, result.actId, LoginTechnician.getInstance().getInviteCode());
             successCount++;
         } else {
             failedCount++;
@@ -201,7 +201,7 @@ public class AvailableCouponListActivity extends BaseActivity implements View.On
                 } else {
                     successCount++;
                     remainSendCount--;
-                    MessageManager.getInstance().sendCouponMessage(
+                    ChatMessageManager.getInstance().sendCouponMessage(
                             chatId,
                             true,
                             getShareText(couponInfo),

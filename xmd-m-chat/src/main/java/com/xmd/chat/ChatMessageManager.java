@@ -2,7 +2,6 @@ package com.xmd.chat;
 
 import android.text.TextUtils;
 
-import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -47,14 +46,14 @@ import rx.Observable;
  * 消息管理
  */
 
-public class MessageManager {
-    private static final MessageManager ourInstance = new MessageManager();
+public class ChatMessageManager {
+    private static final ChatMessageManager ourInstance = new ChatMessageManager();
 
-    public static MessageManager getInstance() {
+    public static ChatMessageManager getInstance() {
         return ourInstance;
     }
 
-    private MessageManager() {
+    private ChatMessageManager() {
     }
 
     private UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
@@ -63,18 +62,6 @@ public class MessageManager {
     private Map<String, CreditGift> creditGiftMap = new HashMap<>(); //积分礼物
 
     public void init() {
-        EMClient.getInstance().addConnectionListener(new EMConnectionListener() {
-            @Override
-            public void onConnected() {
-                XLogger.d(XmdChat.TAG, "--connected--");
-            }
-
-            @Override
-            public void onDisconnected(int i) {
-                XLogger.d(XmdChat.TAG, "--disconnected--" + i);
-            }
-        });
-
         EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
             @Override
             public void onMessageReceived(final List<EMMessage> list) {

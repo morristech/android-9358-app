@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.shidou.commonlibrary.widget.XToast;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.event.EventStartChatActivity;
 import com.xmd.chat.message.CouponChatMessage;
 import com.xmd.manager.Constant;
@@ -134,7 +134,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                     } else {
                         successCount++;
                         remainSendCount--;
-                        MessageManager.getInstance().sendCouponMessage(
+                        ChatMessageManager.getInstance().sendCouponMessage(
                                 chatId,
                                 true,
                                 getShareText(couponInfo),
@@ -157,7 +157,7 @@ public class DeliveryCouponActivity extends BaseActivity implements DeliveryCoup
                     result.respData.userActId,
                     getShareText(couponInfo),
                     SharedPreferenceHelper.getUserInviteCode());
-            MessageManager.getInstance().sendMessage(chatMessage);
+            ChatMessageManager.getInstance().sendMessage(chatMessage);
             successCount++;
         } else {
             failedCount++;

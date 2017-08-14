@@ -45,9 +45,9 @@ import com.xmd.chat.BR;
 import com.xmd.chat.ChatConstants;
 import com.xmd.chat.ChatMenu;
 import com.xmd.chat.ChatMessageFactory;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.ChatRowViewFactory;
 import com.xmd.chat.ConversationManager;
-import com.xmd.chat.MessageManager;
 import com.xmd.chat.R;
 import com.xmd.chat.VoiceManager;
 import com.xmd.chat.XmdChat;
@@ -157,7 +157,7 @@ public class ChatActivity extends BaseActivity {
                 mRemoteUser = result;
                 setTitle(mRemoteUser.getShowName());
                 setBackVisible(true);
-                MessageManager.getInstance().setCurrentChatId(chatId);
+                ChatMessageManager.getInstance().setCurrentChatId(chatId);
                 initMenu();
                 mBinding.setData(ChatActivity.this);
                 loadData(null);
@@ -165,7 +165,9 @@ public class ChatActivity extends BaseActivity {
                 mBinding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        loadData(mAdapter.getDataList().get(0).getChatMessage().getEmMessage().getMsgId());
+                        if (mAdapter.getDataList().size() > 0) {
+                            loadData(mAdapter.getDataList().get(0).getChatMessage().getEmMessage().getMsgId());
+                        }
                         mBinding.refreshLayout.setRefreshing(false);
                     }
                 });
@@ -180,7 +182,7 @@ public class ChatActivity extends BaseActivity {
         super.onDestroy();
         VoiceManager.getInstance().cleanResource();
         XmdChat.getInstance().getMenuFactory().cleanMenus();
-        MessageManager.getInstance().setCurrentChatId(null);
+        ChatMessageManager.getInstance().setCurrentChatId(null);
     }
 
     private EMConversation getConversation() {
@@ -326,9 +328,9 @@ public class ChatActivity extends BaseActivity {
         getConversation().removeMessage(msgId);
         removeMessageFromUi(event.getChatRowViewModel());
         //发送撤回命令
-        MessageManager.getInstance().sendRevokeMessage(mRemoteUser.getChatId(), msgId);
+        ChatMessageManager.getInstance().sendRevokeMessage(mRemoteUser.getChatId(), msgId);
         //增加提示信息
-        ChatMessage chatMessage = MessageManager.getInstance().sendTipMessageWithoutUpdateUI(getConversation(), mRemoteUser, "你撤回了一条消息");
+        ChatMessage chatMessage = ChatMessageManager.getInstance().sendTipMessageWithoutUpdateUI(getConversation(), mRemoteUser, "你撤回了一条消息");
         chatMessage.getEmMessage().setMsgTime(revokeMsg.getEmMessage().getMsgTime());
         insertNewChatMessageToUi(index, chatMessage);
     }
@@ -360,7 +362,7 @@ public class ChatActivity extends BaseActivity {
 
     //发送消息
     public void sendTextMessage() {
-        ChatMessage chatMessage = MessageManager.getInstance().sendTextMessage(mRemoteUser.getChatId(), textMessageContent.get());
+        ChatMessage chatMessage = ChatMessageManager.getInstance().sendTextMessage(mRemoteUser.getChatId(), textMessageContent.get());
         if (chatMessage != null) {
             textMessageContent.set(null);
             mBinding.sendEditText.getText().clear();
@@ -595,7 +597,7 @@ public class ChatActivity extends BaseActivity {
             XLogger.d("取消发送，y=" + event.getY());
             file.delete();
         }
-        MessageManager.getInstance().sendVoiceMessage(mRemoteUser, path, duration);
+        ChatMessageManager.getInstance().sendVoiceMessage(mRemoteUser, path, duration);
     }
 
     public void onClickEditFastReply() {

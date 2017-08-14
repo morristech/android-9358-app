@@ -19,7 +19,7 @@ import com.xmd.app.beans.UserCredit;
 import com.xmd.app.user.User;
 import com.xmd.app.user.UserInfoService;
 import com.xmd.app.user.UserInfoServiceImpl;
-import com.xmd.chat.MessageManager;
+import com.xmd.chat.ChatMessageManager;
 import com.xmd.chat.NetService;
 import com.xmd.chat.R;
 import com.xmd.chat.beans.DiceGameRequestResult;
@@ -173,7 +173,7 @@ public class DiceGameSettingFragment extends DialogFragment {
                         user.getChatId(),
                         result.getRespData().gameId,
                         selectValue);
-                MessageManager.getInstance().sendMessage(message);
+                ChatMessageManager.getInstance().sendMessage(message);
                 dismiss();
             }
 

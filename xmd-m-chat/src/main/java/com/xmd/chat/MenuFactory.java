@@ -108,7 +108,7 @@ public class MenuFactory {
                     @Override
                     public void onResult(String s, Uri uri, Bitmap bitmap) {
                         if (uri != null) {
-                            MessageManager.getInstance()
+                            ChatMessageManager.getInstance()
                                     .sendImageMessage(remoteUser.getChatId(), uri.getPath());
                         }
                     }
@@ -213,7 +213,7 @@ public class MenuFactory {
                 if (OrderChatMessage.isFreeAppointment(event.getData(), null)) {
                     //免费预约，发送确认消息
                     isInSubmitAppointment = false;
-                    MessageManager.getInstance().sendMessage(
+                    ChatMessageManager.getInstance().sendMessage(
                             OrderChatMessage.create(
                                     event.getData().getCustomerChatId(),
                                     ChatMessage.MSG_TYPE_ORDER_CONFIRM,
@@ -230,7 +230,7 @@ public class MenuFactory {
             isInSubmitAppointment = false;
             if (event.getData().isSubmitSuccess()) {
                 //生成订单成功，发送确认消息
-                MessageManager.getInstance().sendMessage(
+                ChatMessageManager.getInstance().sendMessage(
                         OrderChatMessage.create(
                                 event.getData().getCustomerChatId(),
                                 ChatMessage.MSG_TYPE_ORDER_CONFIRM,
@@ -263,7 +263,7 @@ public class MenuFactory {
                     @Override
                     public void onResponse(Location result, Throwable error) {
                         if (result != null) {
-                            MessageManager.getInstance()
+                            ChatMessageManager.getInstance()
                                     .sendLocationMessage(remoteUser, result);
                         }
                     }
@@ -285,7 +285,7 @@ public class MenuFactory {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 ChatMessage chatMessage = OrderChatMessage.createRequestOrderMessage(remoteUser.getChatId());
-                                MessageManager.getInstance().sendMessage(chatMessage);
+                                ChatMessageManager.getInstance().sendMessage(chatMessage);
                             }
                         })
                         .create()
@@ -307,7 +307,7 @@ public class MenuFactory {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 ChatMessage chatMessage = RewardChatMessage.createRequestRewardMessage(remoteUser.getChatId());
-                                MessageManager.getInstance().sendMessage(chatMessage);
+                                ChatMessageManager.getInstance().sendMessage(chatMessage);
                             }
                         })
                         .create()

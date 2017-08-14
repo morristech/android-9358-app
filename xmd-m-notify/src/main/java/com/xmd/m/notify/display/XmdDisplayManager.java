@@ -51,6 +51,7 @@ public class XmdDisplayManager {
                 return;
             }
         }
+
         switch (display.getStyle()) {
             case XmdDisplay.STYLE_NONE:
                 showNoneUi(display);
@@ -71,8 +72,7 @@ public class XmdDisplayManager {
         return null;
     }
 
-    //不显示UI
-    private void showNoneUi(XmdDisplay display) {
+    private void showAudioAndVibrate(XmdDisplay display) {
         if ((display.getFlags() & XmdDisplay.FLAG_RING) != 0) {
             Ringtone rt = RingtoneManager.getRingtone(context, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
             rt.play();
@@ -83,6 +83,11 @@ public class XmdDisplayManager {
         }
     }
 
+    //不显示UI
+    private void showNoneUi(XmdDisplay display) {
+        showAudioAndVibrate(display);
+    }
+
     //显示通知栏
     private void showNotification(XmdDisplay display) {
         NotificationManager.getInstance().show(display);
@@ -90,6 +95,7 @@ public class XmdDisplayManager {
 
     //显示浮动消息
     private void showFloatToast(final XmdDisplay display) {
+        showAudioAndVibrate(display);
         FloatNotifyManager.getInstance()
                 .setMessage(display.getMessage(), new View.OnClickListener() {
                     @Override

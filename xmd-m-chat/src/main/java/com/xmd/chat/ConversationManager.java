@@ -161,7 +161,22 @@ public class ConversationManager {
         Collections.sort(dataList, new Comparator<ConversationViewModel>() {
             @Override
             public int compare(ConversationViewModel o1, ConversationViewModel o2) {
-                return (int) (o2.getTime() - o1.getTime());
+                if (o1 == null && o2 == null) {
+                    return 0;
+                }
+                if (o1 == null) {
+                    return -1;
+                }
+                if (o2 == null) {
+                    return 1;
+                }
+                if (o1.getTime() > o2.getTime()) {
+                    return -1;
+                }
+                if (o2.getTime() > o1.getTime()) {
+                    return 1;
+                }
+                return 0;
             }
         });
     }
