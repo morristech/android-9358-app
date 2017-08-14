@@ -99,7 +99,7 @@ public class ContactsAllFragment extends BaseListFragment<ContactAllBean> implem
     }
 
     private void handlerContactAllListResult(ContactAllListResult result) {
-        if (result.getRespData() == null) {
+        if (result.getRespData() == null || result.getRespData().userList == null) {
             return;
         }
         if ( TextUtils.isEmpty(mCustomerName) && result.getRespData().userList.size() == 0) {
