@@ -608,7 +608,8 @@ public interface SpaService {
                                                    @Field(RequestConstant.KEY_MEMBER_ID) String memberId,
                                                    @Field(RequestConstant.KEY_MEMBER_PACKAGE_ID) String packageId,
                                                    @Field(RequestConstant.KEY_TECH_ID) String techId,
-                                                   @Field(RequestConstant.KEY_PASSWORD) String password);
+                                                   @Field(RequestConstant.KEY_PASSWORD) String password,
+                                                   @Field(RequestConstant.KEY_SIGN) String sign);
 
     // 获取会员账户记录
     @FormUrlEncoded

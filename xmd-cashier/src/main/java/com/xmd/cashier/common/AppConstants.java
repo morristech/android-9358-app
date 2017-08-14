@@ -247,4 +247,6 @@ public class AppConstants {
 
     public static final String ONLINE_PAY_DISCOUNT_COUPON = "coupon";
     public static final String ONLINE_PAY_DISCOUNT_ORDER = "paid_order";
+
+    public static final String INPUT_DIGITS = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 }

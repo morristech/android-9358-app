@@ -140,7 +140,7 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
                     mType.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
                     mInfo.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
                     mMoney.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
-                    mStatus.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorVerificationFailed));
+                    mStatus.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorRed));
                     break;
                 case AppConstants.TYPE_ORDER:
                     mName.setText(item.order.customerName);
@@ -153,7 +153,7 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
                     mType.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
                     mInfo.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
                     mMoney.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
-                    mStatus.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorVerificationFailed));
+                    mStatus.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorRed));
                     break;
                 case AppConstants.TYPE_PAY_FOR_OTHER:
                     (itemView.findViewById(R.id.checkbox)).setVisibility(View.GONE);
@@ -161,7 +161,7 @@ public class ConfirmListAdapter extends RecyclerView.Adapter<ConfirmListAdapter.
                     mName.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorText));
                     mStatus.setVisibility(View.VISIBLE);
                     mStatus.setText(item.success ? "已核销￥" + Utils.moneyToString(item.treatInfo.useMoney) : item.errorMsg);
-                    mStatus.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorVerificationFailed));
+                    mStatus.setTextColor(itemView.getContext().getResources().getColor(item.success ? R.color.colorDivide : R.color.colorRed));
                     break;
             }
 

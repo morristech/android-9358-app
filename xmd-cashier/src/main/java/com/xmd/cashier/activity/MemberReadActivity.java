@@ -3,11 +3,15 @@ package com.xmd.cashier.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.method.DigitsKeyListener;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.xmd.cashier.R;
 import com.xmd.cashier.common.AppConstants;
@@ -110,6 +114,18 @@ public class MemberReadActivity extends BaseActivity implements MemberReadContra
             @Override
             public void onClick(View v) {
                 mPresenter.onConfirm(mReadType);
+            }
+        });
+
+        mMemberInput.setKeyListener(DigitsKeyListener.getInstance(AppConstants.INPUT_DIGITS));
+        mMemberInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mPresenter.onConfirm(mReadType);
+                    return true;
+                }
+                return false;
             }
         });
     }

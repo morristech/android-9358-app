@@ -275,11 +275,19 @@ public class MemberRechargePresenter implements MemberRechargeContract.Presenter
 
     @Override
     public void onRecharge(int type) {
-        if (type == AppConstants.CASHIER_TYPE_ERROR) {
-            mView.showToast("充值流程异常...");
-            return;
+        switch (type) {
+            case AppConstants.CASHIER_TYPE_POS:
+                // Pos银联和现金支付：需要输入收银员密码
+                doInputPassword(type);
+                break;
+            case AppConstants.CASHIER_TYPE_XMD_ONLINE:
+                doRechargeRequest(type, null);
+                break;
+            case AppConstants.CASHIER_TYPE_ERROR:
+            default:
+                mView.showToast("充值流程异常...");
+                break;
         }
-        doInputPassword(type);
     }
 
     private void doInputPassword(final int type) {

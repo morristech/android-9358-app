@@ -98,7 +98,7 @@ public class VerifyRecordActivity extends BaseActivity implements VerifyRecordCo
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_UP:
                         Drawable drawableRight = mSearchInput.getCompoundDrawables()[2];
-                        if (drawableRight != null && event.getX() > (mSearchInput.getWidth() - drawableRight.getBounds().width())) {
+                        if (drawableRight != null && event.getX() > (mSearchInput.getWidth() - drawableRight.getBounds().width() * 2)) {
                             String temp = mSearchInput.getText().toString().trim();
                             doSearch(temp);
                             flag = true;
